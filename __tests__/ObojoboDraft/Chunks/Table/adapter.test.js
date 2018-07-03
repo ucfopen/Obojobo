@@ -3,14 +3,14 @@ import GridTextGroup from '../../../../ObojoboDraft/Chunks/Table/grid-text-group
 import StylableText from '../../../../src/scripts/common/text/styleable-text'
 
 describe('Table adapter', () => {
-	it('can be constructed WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		TableAdapter.construct(model)
 
 		expect(model.modelState.textGroup).toEqual(GridTextGroup.create(3, 2, null))
 	})
 
-	it('can be constructed WITH attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		TableAdapter.construct(model, {
 			content: {
@@ -54,18 +54,29 @@ describe('Table adapter', () => {
 		)
 	})
 
-	it('can clone', () => {
-		let a = { modelState: {} }
+	test('clone creates a copy', () => {
+		let a = { modelState: { header: 'mockHeader' } }
 		let b = { modelState: {} }
 
 		TableAdapter.construct(a)
 		TableAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)
-		expect(a.modelState.textGroup).toEqual(b.modelState.textGroup)
+		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	it('can convert to text', () => {
+	test('toJSON builds a JSON representation', () => {
+		let a = { modelState: { header: 'mockHeader' } }
+		let b = { content: {} }
+
+		TableAdapter.construct(a)
+		TableAdapter.toJSON(a, b)
+
+		expect(a).not.toBe(b)
+		expect(a.modelState.header).toEqual(b.content.header)
+	})
+
+	test('toText creates a text representation', () => {
 		let model = { modelState: {} }
 		let expectedResult = `------------------------
 | First column heading     | Second column heading    |

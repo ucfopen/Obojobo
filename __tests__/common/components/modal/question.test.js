@@ -3,104 +3,125 @@ import React from 'react'
 import Question from '../../../../src/scripts/common/components/modal/question'
 import renderer from 'react-test-renderer'
 
-test('Question', () => {
-	const component = renderer.create(
-		<Question
-			cancel="cancel"
-			reject="reject"
-			confirm="confirm"
-			rejectButtonLabel="Reject Label"
-			confirmButtonLabel="Confirm Label"
-			cancelOnReject={true}
-			modal={{
-				onButtonClick: jest.fn()
-			}}
-		>
-			Content
-		</Question>
-	)
-	let tree = component.toJSON()
+describe('Question', () => {
+	test('Question component', () => {
+		const component = renderer.create(
+			<Question
+				cancel="cancel"
+				reject="reject"
+				confirm="confirm"
+				cancelOnReject={true}
+				modal={{
+					onButtonClick: jest.fn()
+				}}
+			>
+				Content
+			</Question>
+		)
+		let tree = component.toJSON()
 
-	expect(tree).toMatchSnapshot()
-})
+		expect(tree).toMatchSnapshot()
+	})
 
-test('Question confirm click', () => {
-	let onClick = jest.fn()
+	test('Question component with labels', () => {
+		const component = renderer.create(
+			<Question
+				cancel="cancel"
+				reject="reject"
+				confirm="confirm"
+				rejectButtonLabel="Reject Label"
+				confirmButtonLabel="Confirm Label"
+				cancelOnReject={true}
+				modal={{
+					onButtonClick: jest.fn()
+				}}
+			>
+				Content
+			</Question>
+		)
+		let tree = component.toJSON()
 
-	const component = shallow(
-		<Question
-			cancel="cancel"
-			reject="reject"
-			confirm="confirm"
-			rejectButtonLabel="Reject Label"
-			confirmButtonLabel="Confirm Label"
-			cancelOnReject={true}
-			modal={{
-				onButtonClick: onClick
-			}}
-		>
-			Content
-		</Question>
-	)
+		expect(tree).toMatchSnapshot()
+	})
 
-	let rejectButton = component.find('button').at(0)
-	let confirmButton = component.find('button').at(1)
+	test('Question confirm click', () => {
+		let onClick = jest.fn()
 
-	confirmButton.simulate('click')
+		const component = shallow(
+			<Question
+				cancel="cancel"
+				reject="reject"
+				confirm="confirm"
+				rejectButtonLabel="Reject Label"
+				confirmButtonLabel="Confirm Label"
+				cancelOnReject={true}
+				modal={{
+					onButtonClick: onClick
+				}}
+			>
+				Content
+			</Question>
+		)
 
-	expect(onClick).toHaveBeenCalledWith('confirm')
-})
+		let rejectButton = component.find('button').at(0)
+		let confirmButton = component.find('button').at(1)
 
-test('Question cancel click', () => {
-	let onClick = jest.fn()
+		confirmButton.simulate('click')
 
-	const component = shallow(
-		<Question
-			cancel="cancel"
-			reject="reject"
-			confirm="confirm"
-			rejectButtonLabel="Reject Label"
-			confirmButtonLabel="Confirm Label"
-			cancelOnReject={true}
-			modal={{
-				onButtonClick: onClick
-			}}
-		>
-			Content
-		</Question>
-	)
+		expect(onClick).toHaveBeenCalledWith('confirm')
+	})
 
-	let rejectButton = component.find('button').at(0)
-	let confirmButton = component.find('button').at(1)
+	test('Question cancel click', () => {
+		let onClick = jest.fn()
 
-	rejectButton.simulate('click')
+		const component = shallow(
+			<Question
+				cancel="cancel"
+				reject="reject"
+				confirm="confirm"
+				rejectButtonLabel="Reject Label"
+				confirmButtonLabel="Confirm Label"
+				cancelOnReject={true}
+				modal={{
+					onButtonClick: onClick
+				}}
+			>
+				Content
+			</Question>
+		)
 
-	expect(onClick).toHaveBeenCalledWith('cancel')
-})
+		let rejectButton = component.find('button').at(0)
+		let confirmButton = component.find('button').at(1)
 
-test('Question reject click', () => {
-	let onClick = jest.fn()
+		rejectButton.simulate('click')
 
-	const component = shallow(
-		<Question
-			cancel="cancel"
-			reject="reject"
-			confirm="confirm"
-			rejectButtonLabel="Reject Label"
-			confirmButtonLabel="Confirm Label"
-			cancelOnReject={false}
-			modal={{
-				onButtonClick: onClick
-			}}
-		>
-			Content
-		</Question>
-	)
+		expect(onClick).toHaveBeenCalledWith('cancel')
+	})
 
-	let rejectButton = component.find('button').at(0)
-	let confirmButton = component.find('button').at(1)
+	test('Question reject click', () => {
+		let onClick = jest.fn()
 
-	rejectButton.simulate('click')
+		const component = shallow(
+			<Question
+				cancel="cancel"
+				reject="reject"
+				confirm="confirm"
+				rejectButtonLabel="Reject Label"
+				confirmButtonLabel="Confirm Label"
+				cancelOnReject={false}
+				modal={{
+					onButtonClick: onClick
+				}}
+			>
+				Content
+			</Question>
+		)
 
-	expect(onClick).toHaveBeenCalledWith('reject')
+		let rejectButton = component.find('button').at(0)
+		let confirmButton = component.find('button').at(1)
+
+		rejectButton.simulate('click')
+
+		expect(onClick).toHaveBeenCalledWith('reject')
+	})
 })

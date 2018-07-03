@@ -3,7 +3,7 @@ import MCChoice from '../../server/mcchoice'
 describe('MCChoice', () => {
 	const mcChoice = new MCChoice()
 
-	it('registers expected events', () => {
+	test('registers expected events', () => {
 		expect(mcChoice.registerEvents).toHaveBeenCalledTimes(1)
 		let register = mcChoice.registerEvents.mock.calls[0]
 		expect(register).toMatchSnapshot()
@@ -12,7 +12,7 @@ describe('MCChoice', () => {
 		)
 	})
 
-	it('onSendToAssessment sets score to 0', () => {
+	test('onSendToAssessment sets score to 0', () => {
 		mcChoice.node.content = { score: 100 }
 		mcChoice.onSendToAssessment()
 		expect(mcChoice.node.content.score).toBe(0)

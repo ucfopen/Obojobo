@@ -1,15 +1,22 @@
 import StyleableText from '../../../src/scripts/common/text/styleable-text'
 import StyleRange from '../../../src/scripts/common/text/style-range'
 
-describe('StyleableText', function() {
+describe('StyleableText', () => {
 	let st, st1, st2
 
-	beforeEach(function() {
+	beforeEach(() => {
 		st = new StyleableText('123456789ABCDEF')
 		st.styleText('a', 5, 10, { href: 'website.com' })
 	})
 
-	it('exports to an object', function() {
+	test('clone creates a copy', () => {
+		let clone = st.clone()
+
+		expect(clone).not.toBe(st)
+		expect(clone).toEqual(st)
+	})
+
+	test('getExportedObject exports to an object', () => {
 		expect(st.getExportedObject()).toEqual({
 			value: '123456789ABCDEF',
 			styleList: [
@@ -25,33 +32,39 @@ describe('StyleableText', function() {
 		})
 	})
 
-	it('can set text', function() {
+	test('setText changes the text', () => {
 		st.setText('new text')
 
 		expect(st.value).toEqual('new text')
 		expect(st.styleList.length()).toBe(0)
 	})
 
-	it('can replace text', function() {
+	test('replaceText alters a portion of the text', () => {
 		st.replaceText(5, 10, '-12-')
 
 		expect(st.value).toEqual('12345-12-BCDEF')
 		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 9, 'a', { href: 'website.com' }))
 	})
 
-	it('can append text', function() {
+	test('replaceText deletes text', () => {
+		st.replaceText(5, 10, null)
+
+		expect(st.value).toEqual('12345BCDEF')
+	})
+
+	test('appendText adds on to the end', () => {
 		st.styleText('b', 5, st.length)
 		st.appendText('xyz')
 
 		expect(st.value).toEqual('123456789ABCDEFxyz')
-		st.styleList.styles.map(function(range) {
+		st.styleList.styles.map(range => {
 			if (range.type === 'b') {
 				expect(range).toEqual(new StyleRange(5, 18, 'b'))
 			}
 		})
 	})
 
-	it('move existing styles forward when inserting text before a style range', function() {
+	test('insertText moves existing styles forward when inserting text before a style range', () => {
 		st.insertText(5, 'abcde')
 
 		expect(st.value).toEqual('12345abcde6789ABCDEF')
@@ -59,7 +72,7 @@ describe('StyleableText', function() {
 		expect(st.styleList.styles[0]).toEqual(new StyleRange(10, 15, 'a', { href: 'website.com' }))
 	})
 
-	it("doesn't modify styles when inserting text after a style range", function() {
+	test("insertText doesn't modify styles when inserting text after a style range", () => {
 		st.insertText(11, 'abcde')
 
 		expect(st.value).toEqual('123456789ABabcdeCDEF')
@@ -67,7 +80,7 @@ describe('StyleableText', function() {
 		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 10, 'a', { href: 'website.com' }))
 	})
 
-	it('expands the range when inserting text at the ending edge of a style range', function() {
+	test('insertText expands the range when inserting text at the ending edge of a style range', () => {
 		st.insertText(10, 'abcde')
 
 		expect(st.value).toEqual('123456789AabcdeBCDEF')
@@ -75,14 +88,14 @@ describe('StyleableText', function() {
 		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 15, 'a', { href: 'website.com' }))
 	})
 
-	it('removes styles when deleting the styled text', function() {
+	test('deleteText removes styles when deleting the styled text', () => {
 		st.deleteText(5, 10)
 
 		expect(st.value).toEqual('12345BCDEF')
 		expect(st.styleList.length()).toBe(0)
 	})
 
-	it('modifies styles when deleting a portion inside of the styled text', function() {
+	test('deleteText modifies styles when deleting a portion inside of the styled text', () => {
 		st.deleteText(6, 10)
 
 		expect(st.value).toEqual('123456BCDEF')
@@ -90,7 +103,7 @@ describe('StyleableText', function() {
 		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 6, 'a', { href: 'website.com' }))
 	})
 
-	it('modifies styles when deleting the left portion of the styled text', function() {
+	test('deleteText modifies styles when deleting the left portion of the styled text', () => {
 		st.deleteText(5, 9)
 
 		expect(st.value).toEqual('12345ABCDEF')
@@ -98,7 +111,7 @@ describe('StyleableText', function() {
 		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 6, 'a', { href: 'website.com' }))
 	})
 
-	it('modifies styles when deleting the right portion of the styled text', function() {
+	test('deleteText modifies styles when deleting the right portion of the styled text', () => {
 		st.deleteText(6, 10)
 
 		expect(st.value).toEqual('123456BCDEF')
@@ -106,7 +119,15 @@ describe('StyleableText', function() {
 		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 6, 'a', { href: 'website.com' }))
 	})
 
-	it('deletes from the end when indicies not given', function() {
+	test('deleteText modifies styles when deleting the beginning portion of the styled text', () => {
+		st.deleteText(0, 3)
+
+		expect(st.value).toEqual('456789ABCDEF')
+		expect(st.styleList.length()).toBe(1)
+		expect(st.styleList.styles[0]).toEqual(new StyleRange(2, 7, 'a', { href: 'website.com' }))
+	})
+
+	test('deleteText deletes from the end when indicies not given', () => {
 		st.deleteText(1)
 
 		expect(st.getExportedObject()).toEqual({
@@ -115,7 +136,7 @@ describe('StyleableText', function() {
 		})
 	})
 
-	it('deletes from the beginning when indicies not given', function() {
+	test('deleteText deletes from the beginning when indicies not given', () => {
 		st.deleteText(null, 14)
 
 		expect(st.getExportedObject()).toEqual({
@@ -124,7 +145,7 @@ describe('StyleableText', function() {
 		})
 	})
 
-	it('deletes all text when no indicies given', function() {
+	test('deleteText deletes all text when no indicies given', () => {
 		st.deleteText()
 
 		expect(st.getExportedObject()).toEqual({
@@ -133,7 +154,7 @@ describe('StyleableText', function() {
 		})
 	})
 
-	it('does nothing if delete text indicies in wrong order', function() {
+	test('deleteText does nothing if delete text indicies in wrong order', () => {
 		st.deleteText(5, 4)
 
 		expect(st.getExportedObject()).toEqual({
@@ -151,14 +172,82 @@ describe('StyleableText', function() {
 		})
 	})
 
-	it('styles text', function() {
+	test('toggleStyleText first adds then removes style when toggled in a range larger than an existing style', () => {
+		st.toggleStyleText('a', 0, 10, { href: 'website.com' })
+
+		expect(st.styleList.length()).toBe(1)
+		expect(st.styleList.styles[0]).toEqual(new StyleRange(0, 10, 'a', { href: 'website.com' }))
+
+		st.toggleStyleText('a', 0, 10, { href: 'website.com' })
+
+		expect(st.styleList.length()).toBe(0)
+	})
+
+	test('toggleStyleText first removes then adds style when toggled in a range within an existing style', () => {
+		st.toggleStyleText('a', 6, 9, { href: 'website.com' })
+
+		expect(st.styleList.length()).toBe(2)
+		expect(st.getExportedObject().styleList).toEqual([
+			{
+				type: 'a',
+				start: 5,
+				end: 6,
+				data: {
+					href: 'website.com'
+				}
+			},
+			{
+				type: 'a',
+				start: 9,
+				end: 10,
+				data: {
+					href: 'website.com'
+				}
+			}
+		])
+
+		st.toggleStyleText('a', 6, 9, { href: 'website.com' })
+
+		expect(st.styleList.length()).toBe(1)
+		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 10, 'a', { href: 'website.com' }))
+	})
+
+	test('toggleStyleText first removes then adds style when toggled in a range exactly containing an existing style', () => {
+		st.toggleStyleText('a', 5, 10, { href: 'website.com' })
+
+		expect(st.styleList.length()).toBe(0)
+
+		st.toggleStyleText('a', 5, 10, { href: 'website.com' })
+		expect(st.styleList.length()).toBe(1)
+		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 10, 'a', { href: 'website.com' }))
+	})
+
+	test('toggleStyleText uses the start and end of the text if none given', () => {
+		expect(st.clone().toggleStyleText('b', 2)).toEqual(st.clone().toggleStyleText('b', 2, 15))
+		expect(st.clone().toggleStyleText('b', null, 4)).toEqual(st.clone().toggleStyleText('b', 0, 4))
+		expect(st.clone().toggleStyleText('b')).toEqual(st.clone().toggleStyleText('b', 0, 15))
+	})
+
+	test('styleText adds a StyleRange', () => {
 		st.styleText('a', 0, 5, { href: 'website.com' })
 
 		expect(st.styleList.length()).toBe(1)
 		expect(st.styleList.styles[0]).toEqual(new StyleRange(0, 10, 'a', { href: 'website.com' }))
 	})
 
-	it('unstyles text', function() {
+	test('styleText uses the start and end of the text if none given', () => {
+		expect(st.clone().styleText('b', 2)).toEqual(st.clone().styleText('b', 2, 15))
+		expect(st.clone().styleText('b', null, 4)).toEqual(st.clone().styleText('b', 0, 4))
+		expect(st.clone().styleText('b')).toEqual(st.clone().styleText('b', 0, 15))
+	})
+
+	test('unstyleText uses the start and end of the text if none given', () => {
+		expect(st.clone().unstyleText('b', 2)).toEqual(st.clone().unstyleText('b', 2, 15))
+		expect(st.clone().unstyleText('b', null, 4)).toEqual(st.clone().unstyleText('b', 0, 4))
+		expect(st.clone().unstyleText('b')).toEqual(st.clone().unstyleText('b', 0, 15))
+	})
+
+	test('unstyleText removes a StyleRange', () => {
 		st.unstyleText('a', 6, 9)
 
 		expect(st.styleList.length()).toBe(2)
@@ -182,75 +271,13 @@ describe('StyleableText', function() {
 		])
 	})
 
-	it('first adds then removes style when toggled in a range larger than an existing style', function() {
-		st.toggleStyleText('a', 0, 10, { href: 'website.com' })
+	test('getStyles returns all styles in range', () => {
+		let styles = st.getStyles(5, 10)
 
-		expect(st.styleList.length()).toBe(1)
-		expect(st.styleList.styles[0]).toEqual(new StyleRange(0, 10, 'a', { href: 'website.com' }))
-
-		st.toggleStyleText('a', 0, 10, { href: 'website.com' })
-
-		expect(st.styleList.length()).toBe(0)
+		expect(styles).toEqual({ a: 'a' })
 	})
 
-	it('first removes then adds style when toggled in a range within an existing style', function() {
-		st.toggleStyleText('a', 6, 9, { href: 'website.com' })
-
-		expect(st.styleList.length()).toBe(2)
-		expect(st.getExportedObject().styleList).toEqual([
-			{
-				type: 'a',
-				start: 5,
-				end: 6,
-				data: {
-					href: 'website.com'
-				}
-			},
-			{
-				type: 'a',
-				start: 9,
-				end: 10,
-				data: {
-					href: 'website.com'
-				}
-			}
-		])
-
-		st.toggleStyleText('a', 6, 9, { href: 'website.com' })
-
-		expect(st.styleList.length()).toBe(1)
-		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 10, 'a', { href: 'website.com' }))
-	})
-
-	it('first removes then adds style when toggled in a range exactly containing an existing style', function() {
-		st.toggleStyleText('a', 5, 10, { href: 'website.com' })
-
-		expect(st.styleList.length()).toBe(0)
-
-		st.toggleStyleText('a', 5, 10, { href: 'website.com' })
-		expect(st.styleList.length()).toBe(1)
-		expect(st.styleList.styles[0]).toEqual(new StyleRange(5, 10, 'a', { href: 'website.com' }))
-	})
-
-	it('uses the start and end of the text for toggleStyleText if none given', function() {
-		expect(st.clone().toggleStyleText('b', 2)).toEqual(st.clone().toggleStyleText('b', 2, 15))
-		expect(st.clone().toggleStyleText('b', null, 4)).toEqual(st.clone().toggleStyleText('b', 0, 4))
-		expect(st.clone().toggleStyleText('b')).toEqual(st.clone().toggleStyleText('b', 0, 15))
-	})
-
-	it('uses the start and end of the text for styleText if none given', function() {
-		expect(st.clone().styleText('b', 2)).toEqual(st.clone().styleText('b', 2, 15))
-		expect(st.clone().styleText('b', null, 4)).toEqual(st.clone().styleText('b', 0, 4))
-		expect(st.clone().styleText('b')).toEqual(st.clone().styleText('b', 0, 15))
-	})
-
-	it('uses the start and end of the text for unstyleText if none given', function() {
-		expect(st.clone().unstyleText('b', 2)).toEqual(st.clone().unstyleText('b', 2, 15))
-		expect(st.clone().unstyleText('b', null, 4)).toEqual(st.clone().unstyleText('b', 0, 4))
-		expect(st.clone().unstyleText('b')).toEqual(st.clone().unstyleText('b', 0, 15))
-	})
-
-	it('splits a styleable text', function() {
+	test('split breaks a styleable text', () => {
 		let sibling = st.split(6)
 
 		expect(st.value).toEqual('123456')
@@ -262,7 +289,7 @@ describe('StyleableText', function() {
 		expect(sibling.styleList.styles[0]).toEqual(new StyleRange(0, 4, 'a', { href: 'website.com' }))
 	})
 
-	it('splitting at the end will preserve styles for the newly created text', function() {
+	test('split at the end will preserve styles for the newly created text', () => {
 		st.styleText('b')
 
 		let sibling = st.split(15)
@@ -282,7 +309,15 @@ describe('StyleableText', function() {
 		})
 	})
 
-	it('merges two styleable texts', function() {
+	test('split at non-index does nothing', () => {
+		st.styleText('b')
+
+		let sibling = st.split(NaN)
+
+		expect(sibling).toEqual(null)
+	})
+
+	test('merge two styleable texts', () => {
 		st1 = new StyleableText('abc')
 		st1.styleText('a', 2, 3, { href: 'website.com' })
 
@@ -301,7 +336,7 @@ describe('StyleableText', function() {
 		expect(st1).toEqual(similar)
 	})
 
-	it('merges two styleable texts with an index', function() {
+	test('merge two styleable texts with an index', () => {
 		st1 = new StyleableText('abc')
 		st1.styleText('a', 2, 3, { href: 'website.com' })
 
@@ -321,7 +356,19 @@ describe('StyleableText', function() {
 		expect(st1).toEqual(similar)
 	})
 
-	it('can determine the style of an element', function() {
+	test('createFromObject builds from object representation', () => {
+		let item = StyleableText.createFromObject({
+			value: '123456789ABCDEF',
+			styleList: null
+		})
+
+		expect(item).toEqual({
+			styleList: { styles: [] },
+			value: '123456789ABCDEF'
+		})
+	})
+
+	test('getStylesOfElement determines the styles', () => {
 		let el
 
 		// no styles:
@@ -401,6 +448,12 @@ describe('StyleableText', function() {
 			}
 		])
 
+		// a - not href:
+		el = document.createElement('a')
+		document.body.appendChild(el)
+		el.textContent = '123'
+		expect(StyleableText.getStylesOfElement(el)).toEqual([])
+
 		// q:
 		el = document.createElement('q')
 		el.setAttribute('cite', 'Person McPersonface')
@@ -435,70 +488,4 @@ describe('StyleableText', function() {
 			}
 		])
 	})
-
-	// it.only('can create a styleable text from an element', () => {
-	// 	let el = document.createElement('p')
-	// 	document.body.appendChild(el)
-
-	// 	el.innerHTML =
-	// 		'<b>bold <i>italic</i></b> a <a href="google.com">link</a> <s>strike</s> y<sup>1</sup><sub>x</sub> <pre>mono</pre> <q cite="Person">Hello!</q>'
-
-	// 	expect(StyleableText.createFromElement(el)[0].getExportedObject()).toEqual({
-	// 		text: 'bold italic a link strike y1x mono Hello!',
-	// 		styleList: [
-	// 			{
-	// 				type: 'b',
-	// 				start: 0,
-	// 				end: 11,
-	// 				data: {}
-	// 			},
-	// 			{
-	// 				type: 'i',
-	// 				start: 5,
-	// 				end: 11,
-	// 				data: {}
-	// 			},
-	// 			{
-	// 				type: 'a',
-	// 				start: 14,
-	// 				end: 18,
-	// 				data: {
-	// 					href: 'google.com'
-	// 				}
-	// 			},
-	// 			{
-	// 				type: 's',
-	// 				start: 19,
-	// 				end: 25,
-	// 				data: {}
-	// 			},
-	// 			{
-	// 				type: 'sup',
-	// 				start: 21,
-	// 				end: 22,
-	// 				data: 1
-	// 			},
-	// 			{
-	// 				type: 'sup',
-	// 				start: 22,
-	// 				end: 23,
-	// 				data: -1
-	// 			},
-	// 			{
-	// 				type: 'monospace',
-	// 				start: 23,
-	// 				end: 27,
-	// 				data: {}
-	// 			},
-	// 			{
-	// 				type: 'q',
-	// 				start: 28,
-	// 				end: 34,
-	// 				data: {
-	// 					cite: 'Person'
-	// 				}
-	// 			}
-	// 		]
-	// 	})
-	// })
 })

@@ -19,31 +19,31 @@ describe('TableMenu', () => {
 		}
 	})
 
-	it('renders without error', () => {
+	test('renders without error', () => {
 		expect(shallow(tableMenuRow)).toMatchSnapshot()
 	})
 
-	it('inserts a row above', () => {
+	test('inserts a row above', () => {
 		expectCommandToFire(tableMenuRow, 'li.insert-above', 'insertRowAbove')
 	})
 
-	it('inserts a row below', () => {
+	test('inserts a row below', () => {
 		expectCommandToFire(tableMenuRow, 'li.insert-below', 'insertRowBelow')
 	})
 
-	it('deletes a row', () => {
+	test('deletes a row', () => {
 		expectCommandToFire(tableMenuRow, 'li.delete', 'deleteRow')
 	})
 
-	it('inserts a column left', () => {
+	test('inserts a column left', () => {
 		expectCommandToFire(tableMenuCol, 'li.insert-left', 'insertColLeft')
 	})
 
-	it('inserts a column right', () => {
+	test('inserts a column right', () => {
 		expectCommandToFire(tableMenuCol, 'li.insert-right', 'insertColRight')
 	})
 
-	it('deletes a column', () => {
+	test('deletes a column', () => {
 		expectCommandToFire(tableMenuCol, 'li.delete', 'deleteCol')
 	})
 })

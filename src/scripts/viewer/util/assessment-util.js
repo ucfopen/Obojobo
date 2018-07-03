@@ -1,10 +1,10 @@
 import Common from 'Common'
 
-let { Dispatcher } = Common.flux
+const { Dispatcher } = Common.flux
 
 import QuestionUtil from '../../viewer/util/question-util'
 
-var AssessmentUtil = {
+const AssessmentUtil = {
 	getAssessmentForModel(state, model) {
 		let assessmentModel
 		if (model.get('type') === 'ObojoboDraft.Sections.Assessment') {
@@ -17,7 +17,7 @@ var AssessmentUtil = {
 			return null
 		}
 
-		let assessment = state.assessments[assessmentModel.get('id')]
+		const assessment = state.assessments[assessmentModel.get('id')]
 		if (!assessment) {
 			return null
 		}
@@ -26,7 +26,7 @@ var AssessmentUtil = {
 	},
 
 	getLastAttemptForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
 		}
@@ -39,7 +39,7 @@ var AssessmentUtil = {
 	},
 
 	getHighestAttemptsForModelByAssessmentScore(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return []
 		}
@@ -48,7 +48,7 @@ var AssessmentUtil = {
 	},
 
 	getHighestAttemptsForModelByAttemptScore(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return []
 		}
@@ -57,7 +57,7 @@ var AssessmentUtil = {
 	},
 
 	getAssessmentScoreForModel(state, model) {
-		let attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+		const attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
 		if (attempts.length === 0) {
 			return null
 		}
@@ -66,7 +66,7 @@ var AssessmentUtil = {
 	},
 
 	getLastAttemptScoresForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
 		}
@@ -79,7 +79,7 @@ var AssessmentUtil = {
 	},
 
 	getCurrentAttemptForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
 		}
@@ -103,7 +103,7 @@ var AssessmentUtil = {
 	},
 
 	getLTIStateForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment) {
 			return null
 		}
@@ -111,12 +111,12 @@ var AssessmentUtil = {
 		return {
 			state: assessment.lti,
 			networkState: assessment.ltiNetworkState,
-			ltiResyncStatus: assessment.ltiResyncStatus
+			resyncState: assessment.ltiResyncState
 		}
 	},
 
 	isLTIScoreNeedingToBeResynced(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 
 		if (!assessment || !assessment.lti || !assessment.lti.gradebookStatus) {
 			return false
@@ -138,6 +138,7 @@ var AssessmentUtil = {
 			if (QuestionUtil.getResponse(questionState, questionModel, context)) {
 				return acc + 1
 			}
+			return acc
 		}
 
 		return questionModels.reduce(count, 0)
@@ -160,7 +161,7 @@ var AssessmentUtil = {
 	isInAssessment(state) {
 		if (!state) return false
 
-		for (let assessmentName in state.assessments) {
+		for (const assessmentName in state.assessments) {
 			if (state.assessments[assessmentName].current !== null) {
 				return true
 			}
@@ -170,7 +171,7 @@ var AssessmentUtil = {
 	},
 
 	getNumberOfAttemptsCompletedForModel(state, model) {
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 		if (!assessment || assessment.attempts.length === 0) {
 			return 0
 		}
@@ -186,11 +187,11 @@ var AssessmentUtil = {
 	findHighestAttempts(attempts, scoreProperty) {
 		if (attempts.length === 0) return []
 
-		let attemptsByScore = {}
+		const attemptsByScore = {}
 		let highestScore = -1
 
 		attempts.forEach(attempt => {
-			let score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty]
+			const score = attempt[scoreProperty] === null ? -1 : attempt[scoreProperty]
 
 			if (score > highestScore) {
 				highestScore = score

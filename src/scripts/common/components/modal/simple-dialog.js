@@ -41,7 +41,7 @@ const SimpleDialog = props => {
 				default: true
 			}
 		]
-	} else if (props.cancelOk) {
+	} else {
 		buttons = [
 			{
 				value: 'Cancel',

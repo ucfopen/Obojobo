@@ -54,12 +54,16 @@ describe('range-parsing', () => {
 	})
 
 	test('getParsedRangeFromSingleValue returns expected object', () => {
-		expect(getParsedRange('1')).toEqual({
+		expect(getParsedRangeFromSingleValue('1')).toEqual({
 			min: '1',
 			isMinInclusive: true,
 			max: '1',
 			isMaxInclusive: true
 		})
+	})
+
+	test('getParsedRangeFromSingleValue returns null', () => {
+		expect(getParsedRangeFromSingleValue(undefined)).toEqual(null)
 	})
 
 	test('tryGetParsedFloat parses number as float', () => {

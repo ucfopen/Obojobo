@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ObojoboDraft.Sections.Assessment adapter constructor floors decimal attempt integers 1`] = `
+exports[`ObojoboDraft.Sections.Assessment adapter construct builds with N attempts 1`] = `
 Object {
   "attempts": 6,
   "review": "never",
@@ -22,9 +22,9 @@ Object {
 }
 `;
 
-exports[`ObojoboDraft.Sections.Assessment adapter constructs with N attempts 1`] = `
+exports[`ObojoboDraft.Sections.Assessment adapter construct builds with unlimited attempts 1`] = `
 Object {
-  "attempts": 6,
+  "attempts": Infinity,
   "review": "never",
   "rubric": AssessmentRubric {
     "mods": Array [],
@@ -44,7 +44,7 @@ Object {
 }
 `;
 
-exports[`ObojoboDraft.Sections.Assessment adapter constructs with default values 1`] = `
+exports[`ObojoboDraft.Sections.Assessment adapter construct builds without attributes 1`] = `
 Object {
   "attempts": Infinity,
   "review": "never",
@@ -66,9 +66,9 @@ Object {
 }
 `;
 
-exports[`ObojoboDraft.Sections.Assessment adapter constructs with unlimited attempts 1`] = `
+exports[`ObojoboDraft.Sections.Assessment adapter construct floors decimal attempt integers 1`] = `
 Object {
-  "attempts": Infinity,
+  "attempts": 6,
   "review": "never",
   "rubric": AssessmentRubric {
     "mods": Array [],

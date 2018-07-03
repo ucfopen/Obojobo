@@ -6,6 +6,8 @@ describe('Image', () => {
 	let imageSm
 	let imageSmUrl
 	let imageCustom
+	let imageHeightOnly
+	let imageWidthOnly
 	beforeEach(() => {
 		imageSm = <Image chunk={{ modelState: { size: 'small', alt: 'alt text' } }} />
 		imageSmUrl = <Image chunk={{ modelState: { url: 'url', size: 'small', alt: 'alt text' } }} />
@@ -21,16 +23,43 @@ describe('Image', () => {
 				}}
 			/>
 		)
+		imageHeightOnly = (
+			<Image
+				chunk={{
+					modelState: {
+						url: 'url',
+						size: 'custom',
+						height: 100
+					}
+				}}
+			/>
+		)
+		imageWidthOnly = (
+			<Image
+				chunk={{
+					modelState: {
+						url: 'url',
+						size: 'custom',
+						width: 100
+					}
+				}}
+			/>
+		)
 	})
-	it('renders without error', () => {
+	test('Image component without error', () => {
 		expect(shallow(imageSm)).toMatchSnapshot()
 	})
-
-	it('creates an image with a custom url of a preset size', () => {
+	test('Image component with a custom url of a preset size', () => {
 		expect(shallow(imageSmUrl)).toMatchSnapshot()
 	})
 
-	it('creates an image with a custom url of a custom size', () => {
+	test('Image component with a custom url of a custom size', () => {
 		expect(shallow(imageCustom)).toMatchSnapshot()
+	})
+	test('Image component with height only', () => {
+		expect(shallow(imageHeightOnly)).toMatchSnapshot()
+	})
+	test('Image component with width only', () => {
+		expect(shallow(imageWidthOnly)).toMatchSnapshot()
 	})
 })

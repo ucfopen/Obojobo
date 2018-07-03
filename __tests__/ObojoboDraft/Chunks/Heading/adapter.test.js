@@ -4,18 +4,19 @@ import HeadingAdapter from '../../../../ObojoboDraft/Chunks/Heading/adapter'
 const { TextGroupAdapter } = Common.chunk.textChunk
 
 describe('Heading adapter', () => {
-	it('can be constructed WITHOUT attributes', () => {
+	test('construct builds without attributes', () => {
 		let model = { modelState: {} }
 		HeadingAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be constructed WITH attributes', () => {
+	test('construct builds with attributes', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
-				headingLevel: '2'
+				headingLevel: '2',
+				align: 'right'
 			}
 		}
 
@@ -23,7 +24,7 @@ describe('Heading adapter', () => {
 		expect(model).toMatchSnapshot()
 	})
 
-	it('can be cloned', () => {
+	test('clone produces a copy', () => {
 		let a = { modelState: {} }
 		let b = { modelState: {} }
 
@@ -34,7 +35,7 @@ describe('Heading adapter', () => {
 		expect(a.modelState).toEqual(b.modelState)
 	})
 
-	it('can covert to JSON', () => {
+	test('toJSON creates a JSON representation', () => {
 		let model = { modelState: {} }
 		let json = { content: {} }
 		let attrs = {
@@ -49,7 +50,7 @@ describe('Heading adapter', () => {
 		expect(json).toMatchSnapshot()
 	})
 
-	it('can convert to text', () => {
+	test('toText ', () => {
 		let model = { modelState: {} }
 		let attrs = {
 			content: {

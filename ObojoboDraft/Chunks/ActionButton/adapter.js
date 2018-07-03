@@ -23,13 +23,13 @@ let TextGroupAdapter = {
 
 	clone(model, clone) {
 		if (clone.modelState.textGroup) clone.modelState.textGroup = model.modelState.textGroup.clone()
-		else clone.modelState.label = model.modelState.label
+		clone.modelState.label = model.modelState.label
 		clone.modelState.align = model.modelState.align
 	},
 
 	toJSON(model, json) {
 		if (json.content.textGroup) json.content.textGroup = model.modelState.textGroup.toDescriptor()
-		else json.content.label = model.modelState.label
+		json.content.label = model.modelState.label
 		json.content.align = model.modelState.align
 	},
 

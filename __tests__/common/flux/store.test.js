@@ -83,4 +83,24 @@ describe('Store', () => {
 		expect(store.state).not.toBe(state)
 		expect(store.state).toEqual(state)
 	})
+
+	test('updateStateByContext sets states', () => {
+		let store = new Store('store-name')
+		let state = { a: {}, b: {} }
+
+		store.init()
+		store.setState(state)
+		store.updateStateByContext({ a: 1, b: 2 }, 'mockContext')
+
+		expect(store.state).toEqual({ a: { mockContext: 1 }, b: { mockContext: 2 } })
+	})
+
+	test('updateStateByContext sets states that dont exist', () => {
+		let store = new Store('store-name')
+
+		store.init()
+		store.updateStateByContext({ a: 1, b: 2 }, 'mockContext')
+
+		expect(store.state).toEqual({ a: { mockContext: 1 }, b: { mockContext: 2 } })
+	})
 })

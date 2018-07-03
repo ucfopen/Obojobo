@@ -195,6 +195,65 @@ Object {
 }
 `;
 
+exports[`NavStore gotoItem sends updates history with no previous item 1`] = `
+Object {
+  "itemsById": Object {
+    "mockId": Object {
+      "showChildren": false,
+    },
+  },
+  "navTargetHistory": Array [
+    "mockId",
+  ],
+  "navTargetId": "newItem",
+}
+`;
+
+exports[`NavStore init builds state locked state 1`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": true,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
+
+exports[`NavStore init builds state open state 1`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
+
+exports[`NavStore init builds state with basic options 1`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "visitId": 11,
+}
+`;
+
 exports[`NavStore nav:close event fires and updates state 1`] = `
 Array [
   "navstore:change",
@@ -249,6 +308,8 @@ Array [
 ]
 `;
 
+exports[`NavStore nav:goto does not go to a fake page 1`] = `undefined`;
+
 exports[`NavStore nav:gotoPath event calls gotoItem and postEvent 1`] = `
 Array [
   "root",
@@ -260,6 +321,8 @@ Array [
   },
 ]
 `;
+
+exports[`NavStore nav:gotoPath event does not go to incorrect item 1`] = `undefined`;
 
 exports[`NavStore nav:hideChildren event fires and updates state 1`] = `
 Array [
@@ -304,6 +367,8 @@ Array [
 ]
 `;
 
+exports[`NavStore nav:next does not change to invalid page 1`] = `undefined`;
+
 exports[`NavStore nav:open event fires and updates state 1`] = `
 Array [
   "navstore:change",
@@ -342,6 +407,8 @@ Array [
   },
 ]
 `;
+
+exports[`NavStore nav:prev does not change to invalid page 1`] = `undefined`;
 
 exports[`NavStore nav:setFlag event updates state and calls trigger 1`] = `
 Object {
@@ -418,6 +485,8 @@ Object {
 }
 `;
 
+exports[`NavStore question:scoreSet does not set flag if question not found 1`] = `undefined`;
+
 exports[`NavStore question:scoreSet sets flag with a score of 100 1`] = `
 Array [
   "mockID",
@@ -432,49 +501,4 @@ Array [
   "correct",
   true,
 ]
-`;
-
-exports[`NavStore should init state locked state 1`] = `
-Object {
-  "context": "practice",
-  "items": Object {},
-  "itemsByFullPath": Object {},
-  "itemsById": Object {},
-  "itemsByPath": Object {},
-  "locked": true,
-  "navTargetHistory": Array [],
-  "navTargetId": null,
-  "open": true,
-  "visitId": 11,
-}
-`;
-
-exports[`NavStore should init state open state 1`] = `
-Object {
-  "context": "practice",
-  "items": Object {},
-  "itemsByFullPath": Object {},
-  "itemsById": Object {},
-  "itemsByPath": Object {},
-  "locked": false,
-  "navTargetHistory": Array [],
-  "navTargetId": null,
-  "open": true,
-  "visitId": 11,
-}
-`;
-
-exports[`NavStore should init state with basic options 1`] = `
-Object {
-  "context": "practice",
-  "items": Object {},
-  "itemsByFullPath": Object {},
-  "itemsById": Object {},
-  "itemsByPath": Object {},
-  "locked": false,
-  "navTargetHistory": Array [],
-  "navTargetId": null,
-  "open": true,
-  "visitId": 11,
-}
 `;

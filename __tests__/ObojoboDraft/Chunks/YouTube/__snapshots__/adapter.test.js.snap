@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Youtube adapter can be constructed WITH attributes 1`] = `
+exports[`Youtube adapter construct builds with attributes 1`] = `
 Object {
   "modelState": Object {
     "videoId": "example_video_id",
@@ -8,7 +8,7 @@ Object {
 }
 `;
 
-exports[`Youtube adapter can be constructed WITHOUT attributes 1`] = `
+exports[`Youtube adapter construct builds without attributes 1`] = `
 Object {
   "modelState": Object {
     "videoId": null,
@@ -16,7 +16,7 @@ Object {
 }
 `;
 
-exports[`Youtube adapter can conver to JSON 1`] = `
+exports[`Youtube adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
     "videoId": "example_video_id",

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`QuestionContent renders all child except the last one 1`] = `
+exports[`QuestionContent QuestionContent component with multiple children 1`] = `
 <div
   className="obojobo-draft--chunks--mc-question--content"
 >
@@ -25,7 +25,7 @@ exports[`QuestionContent renders all child except the last one 1`] = `
 </div>
 `;
 
-exports[`QuestionContent renders with no children 1`] = `
+exports[`QuestionContent QuestionContent component with no children 1`] = `
 <div
   className="obojobo-draft--chunks--mc-question--content"
 />
