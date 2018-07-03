@@ -29,7 +29,7 @@ let displayEditor = (req, res, next) => {
 				WHERE deleted = FALSE
 				AND user_id = $[userId]
 			)
-			ORDER BY draft_id, id desc
+			ORDER BY draft_id, created_at desc
 		`,
 					{
 						userId: user.id
