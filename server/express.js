@@ -1,11 +1,9 @@
 const express = require('express')
 const app = express()
 const oboEvents = oboRequire('obo_events')
-const DraftModel = oboRequire('models/draft')
 const db = oboRequire('db')
 const Assessment = require('./assessment')
 const lti = oboRequire('lti')
-const insertEvent = oboRequire('insert_event')
 const logger = oboRequire('logger')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 const startAttempt = require('./attempt-start').startAttempt
@@ -14,12 +12,17 @@ const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
 
 app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
 	let currentUser
+	let currentDocument
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-			return lti.getLTIStatesByAssessmentIdForUserAndDraft(currentUser.id, req.params.draftId)
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
+			return lti.getLTIStatesByAssessmentIdForUserAndDraft(currentUser.id, currentDocument.draftId)
 		})
 		.then(result => {
 			res.success(result)
@@ -29,7 +32,8 @@ app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
 app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 	logger.info('API sendAssessmentScore', req.body)
 
-	let currentUser
+	let currentUser = null
+	let currentDocument = null
 	let ltiScoreResult
 	let assessmentScoreId
 	let draftId = req.body.draftId
@@ -39,14 +43,17 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			logger.info(
-				`API sendAssessmentScore with userId="${
-					user.id
-				}", draftId="${draftId}", assessmentId="${assessmentId}"`
+				`API sendAssessmentScore with userId="${currentUser.id}", draftId="${
+					currentDocument.draftId
+				}", assessmentId="${assessmentId}"`
 			)
 
-			return lti.sendHighestAssessmentScore(currentUser.id, draftId, assessmentId)
+			return lti.sendHighestAssessmentScore(currentUser.id, currentDocument, assessmentId)
 		})
 		.then(result => {
 			ltiScoreResult = result
@@ -67,11 +74,19 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 
 app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
+	let currentUser = null
+	let currentDocument = null
+
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			let isPreviewing = currentUser.canViewEditor
-			return endAttempt(req, res, currentUser, req.params.attemptId, isPreviewing)
+			return endAttempt(req, res, currentUser, currentDocument, req.params.attemptId, isPreviewing)
 		})
 		.then(resp => {
 			res.success(resp)
@@ -84,12 +99,17 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 	let assessmentScoreIds
 	let attemptIds
-	let currentUser
+	let currentUser = null
+	let currentDocument = null
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			let isPreviewing = currentUser.canViewEditor
 
 			if (!isPreviewing) throw 'Not in preview mode'
@@ -104,7 +124,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 					`,
 				{
 					userId: currentUser.id,
-					draftId: req.body.draftId
+					draftId: currentDocument.draftId
 				}
 			)
 		})
@@ -121,7 +141,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 				`,
 				{
 					userId: currentUser.id,
-					draftId: req.body.draftId
+					draftId: currentDocument.draftId
 				}
 			)
 		})
@@ -165,7 +185,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 						`,
 						{
 							userId: currentUser.id,
-							draftId: req.body.draftId
+							draftId: currentDocument.draftId
 						}
 					),
 					transaction.none(
@@ -177,7 +197,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 						`,
 						{
 							userId: currentUser.id,
-							draftId: req.body.draftId
+							draftId: currentDocument.draftId
 						}
 					)
 				)
@@ -196,14 +216,21 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 })
 
 app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
+	let currentUser = null
+	let currentDocument = null
 	// @TODO:
 	// check input
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			return Assessment.getAttempt(
 				currentUser.id,
-				req.params.draftId,
+				currentDocument.draftId,
 				req.params.assessmentId,
 				req.params.attemptId
 			)
@@ -215,12 +242,19 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 })
 
 app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
+	let currentUser = null
+	let currentDocument = null
 	// @TODO:
 	// check input
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			return Assessment.getAttempts(currentUser.id, req.params.draftId)
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
+			return Assessment.getAttempts(currentUser.id, currentDocument.draftId)
 		})
 		.then(result => {
 			res.success(result)
@@ -235,12 +269,23 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 })
 
 app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
+	let currentUser = null
+	let currentDocument = null
 	// @TODO:
 	// check input
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			return Assessment.getAttempts(currentUser.id, req.params.draftId, req.params.assessmentId)
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
+			return Assessment.getAttempts(
+				currentUser.id,
+				currentDocument.draftId,
+				req.params.assessmentId
+			)
 		})
 		.then(result => res.success(result))
 		.catch(error => {
