@@ -1,42 +1,45 @@
 {
 	"name": "obojobo-server",
-	"version": "3.3.0-alpha2",
+	"version": "3.3.1",
 	"private": true,
 	"scripts": {
 		"start": "yarn express:prod",
 		"dev": "yarn express:dev",
 		"dev:docEngine": "concurrently \"yarn express:dev\" \"yarn devDocEngine:start\"",
-		"db:initdocker":"docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
+		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
 		"db:reset": "node node_modules/db-migrate/bin/db-migrate reset --config config/db.json",
 		"db:migrateup": "node node_modules/db-migrate/bin/db-migrate up --config config/db.json",
 		"db:migratedown": "node node_modules/db-migrate/bin/db-migrate down --config config/db.json",
-		"db:createmigration":"node node_modules/db-migrate/bin/db-migrate create --config config/db.json",
+		"db:createmigration": "node node_modules/db-migrate/bin/db-migrate create --config config/db.json",
 		"db:remove": "docker kill db_postgres && docker rm db_postgres",
-		"db:rebuild":"yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
+		"db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
 		"sampleDraft:seed": "node ./bin/sample_draft.js seed",
 		"sampleDraft:watch": "node ./bin/sample_draft.js watch",
-		"express:dev":"DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
+		"express:dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
 		"express:prod": "pm2 start pm2_prod.yaml",
-		"assets": "NODE_ENV=production webpack -p",
-		"assets:dev": "webpack",
+		"assets": "yarn assets:docEngine && webpack --mode production --optimize-minimize",
+		"assets:dev": "yarn assets:docEngine && webpack --mode development",
+		"assets:docEngine": "cd node_modules/obojobo-draft-document-engine && yarn install && yarn build",
 		"devDocEngine:start": "cd ./node_modules/obojobo-draft-document-engine && yarn start",
 		"devDocEngine:setup": "yarn devDocEngine:clone && yarn devDocEngine:nodemodules",
-		"devDocEngine:clone":"git clone https://github.com/ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
+		"devDocEngine:clone": "git clone https://github.com/ucfcdl/Obojobo-Document-Engine.git devsrc/obojobo-draft-document-engine || echo 'already cloned'",
 		"devDocEngine:nodemodules": "cd ./devsrc/obojobo-draft-document-engine && yarn",
-		"devDocEngine:link":"cd ./devsrc/obojobo-draft-document-engine && yarn link && cd ../.. && yarn link obojobo-draft-document-engine",
+		"devDocEngine:link": "cd ./devsrc/obojobo-draft-document-engine && yarn link && cd ../.. && yarn link obojobo-draft-document-engine",
 		"devDocEngine:unlink": "yarn unlink obojobo-draft-document-engine",
 		"devXmlParser:setup": "yarn devXmlParser:clone && yarn devXmlParser:nodemodules",
-		"devXmlParser:clone":"git clone git@github.com:ucfcdl/Obojobo-Docment-XML-Parser.git devsrc/obojobo-draft-xml-parser || echo 'already cloned'",
+		"devXmlParser:clone": "git clone git@github.com:ucfcdl/Obojobo-Docment-XML-Parser.git devsrc/obojobo-draft-xml-parser || echo 'already cloned'",
 		"devXmlParser:nodemodules": "cd ./devsrc/obojobo-draft-xml-parser && yarn",
-		"devXmlParser:link":"cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
-		"test": "jest",
-		"test:ci": "CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
-		"precommit": "yarn test:ci && lint-staged",
-		"prettier:run":"prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'",
-		"prettier:debug":"prettier -l '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'"
+		"devXmlParser:link": "cd ./devsrc/obojobo-draft-xml-parser && yarn link && cd ../.. && yarn link obojobo-draft-xml-parser",
+		"test": "TZ='America/New_York' jest",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"lint": "eslint .",
+		"precommit": "lint-staged && yarn test:ci",
+		"prettier:run": "prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'",
+		"prettier:debug": "prettier -l '{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}'"
 	},
 	"engines": {
-		"node": "^6.9.4"
+		"yarn": "^1.0",
+		"node": "^10.4.1"
 	},
 	"lint-staged": {
 		"{__{tests,mocks}__,bin,config,migrations,models,routes,views}/**/*.{js,scss}": [
@@ -54,45 +57,48 @@
 		"body-parser": "^1.17.1",
 		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js-public.git#v1.0.0",
 		"compression": "^1.6.2",
-		"concat-files": "^0.1.1",
 		"connect-pg-simple": "^3.1.2",
-		"css-loader": "^0.28.1",
 		"db-migrate": "^0.10.0-beta.20",
 		"db-migrate-pg": "^0.1.11",
 		"debug": "~2.2.0",
 		"debug-logger": "^0.4.1",
 		"ejs": "^2.5.7",
-		"eslint": "^3.18.0",
 		"eventemitter": "^0.3.3",
 		"express": "~4.14.0",
-		"express-ims-lti":"https://github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5",
+		"express-ims-lti": "https://github.com/ucfcdl/express-ims-lti.git#20e4f025cf498b31bd21a981fe1af0707d2028b5",
 		"express-session": "^1.15.1",
-		"extract-text-webpack-plugin": "^2.1.0",
 		"glob": "^7.1.1",
 		"json-inflector": "^1.1.0",
 		"moment": "^2.18.0",
 		"morgan": "~1.7.0",
-		"newrelic": "^1.38.2",
-		"node-sass-middleware": "0.9.8",
-		"obojobo-draft-document-engine":"https://github.com/ucfcdl/Obojobo-Document-Engine.git#v1.0.0-alpha1",
-		"obojobo-draft-xml-parser":"https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.2.0",
-		"on-build-webpack": "^0.1.0",
+		"obojobo-draft-document-engine": "https://github.com/ucfcdl/Obojobo-Document-Engine.git#dev/4-amethyst",
+		"obojobo-draft-xml-parser": "https://github.com/ucfcdl/Obojobo-Docment-XML-Parser.git#v0.3.0",
 		"pg-promise": "^5.5.0",
-		"pm2": "^2.4.2",
-		"serve-favicon": "~2.3.0",
-		"style-loader": "^0.17.0",
-		"webpack": "^2.4.1"
+		"serve-favicon": "~2.3.0"
 	},
 	"devDependencies": {
+		"babel-eslint": "^8.2.3",
 		"babel-preset-env": "^1.5.1",
 		"concurrently": "^3.5.0",
+		"css-loader": "^0.28.1",
+		"eslint": "^4.19.1",
+		"eslint-config-standard": "^11.0.0",
+		"eslint-plugin-import": "^2.11.0",
+		"eslint-plugin-node": "^6.0.1",
+		"eslint-plugin-promise": "^3.7.0",
+		"eslint-plugin-standard": "^3.1.0",
 		"husky": "^0.13.3",
-		"jest": "^22.4.3",
+		"jest": "^23.2.0",
 		"lint-staged": "^6.1.1",
+		"mini-css-extract-plugin": "^0.4.0",
 		"nodemon": "^1.12.1",
+		"on-build-webpack": "^0.1.0",
 		"prettier": "1.11.1",
-		"webpack-dev-middleware": "^1.10.2",
-		"webpack-dev-server": "^2.7.1"
+		"style-loader": "^0.17.0",
+		"webpack": "^4.12.0",
+		"webpack-cli": "^3.0.8",
+		"webpack-dev-middleware": "^3.1.3",
+		"webpack-dev-server": "^3.1.4"
 	},
 	"nodemonConfig": {
 		"ext": "js pug",
@@ -114,11 +120,32 @@
 			"models/**/*.js",
 			"routes/**/*.js",
 			"routes/**/*.js",
-			"controllers/**/*.js"
+			"controllers/**/*.js",
+			"viewer/**/*.js"
 		],
-		"coveragePathIgnorePatterns": ["<rootDir>/node_modules", "<rootDir>/app.js", "<rootDir>/dev_nonce_store.js", "<rootDir>/devsrc"],
-		"coverageReporters": ["text", "lcov"],
-		"testPathIgnorePatterns": ["<rootDir>/devsrc"],
-		"modulePathIgnorePatterns": ["<rootDir>/devsrc"]
+		"coveragePathIgnorePatterns": [
+			"<rootDir>/node_modules",
+			"<rootDir>/app.js",
+			"<rootDir>/dev_nonce_store.js",
+			"<rootDir>/devsrc"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
+		"testPathIgnorePatterns": [
+			"<rootDir>/devsrc"
+		],
+		"modulePathIgnorePatterns": [
+			"<rootDir>/devsrc"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
 	}
 }

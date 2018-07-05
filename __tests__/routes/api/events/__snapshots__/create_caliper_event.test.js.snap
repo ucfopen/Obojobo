@@ -24,7 +24,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/attempt/testAttemptId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https://testHost/api/assessment/testDraftId/testAssessment",
+  "target": "https://testHost/api/draft-content/testContentId/assessment/testAssessment",
   "type": "GradeEvent",
 }
 `;
@@ -43,7 +43,7 @@ Event {
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": "https://testHost/api/attempt/testAttemptId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/assessment/testDraftId/testAssessment",
+  "object": "https://testHost/api/draft-content/testContentId/assessment/testAssessment",
   "session": "https://testHost/api/session/testSessionId",
   "type": "AssessmentEvent",
 }
@@ -63,7 +63,7 @@ Event {
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": "https://testHost/api/attempt/testAttemptId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/assessment/testDraftId/testAssessment",
+  "object": "https://testHost/api/draft-content/testContentId/assessment/testAssessment",
   "session": "https://testHost/api/session/testSessionId",
   "type": "AssessmentEvent",
 }
@@ -93,8 +93,8 @@ Event {
     "type": "Response",
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "object": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
   "type": "AssessmentItemEvent",
 }
 `;
@@ -110,7 +110,7 @@ Event {
     "previewMode": false,
   },
   "generated": Object {
-    "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
+    "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
     "extensions": Object {
       "selectedTargets": Object {
         "ids": Array [
@@ -123,8 +123,8 @@ Event {
     "type": "Response",
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
   "type": "AssessmentItemEvent",
 }
 `;
@@ -140,7 +140,7 @@ Event {
     "previewMode": false,
   },
   "generated": Object {
-    "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
+    "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
     "extensions": Object {
       "selectedTargets": Object {
         "ids": Array [
@@ -153,8 +153,8 @@ Event {
     "type": "Response",
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "object": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
   "type": "AssessmentItemEvent",
 }
 `;
@@ -170,7 +170,7 @@ Event {
     "previewMode": false,
   },
   "generated": Object {
-    "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
+    "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
     "extensions": Object {
       "selectedTargets": Object {
         "ids": Array [
@@ -183,8 +183,8 @@ Event {
     "type": "Response",
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "object": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
   "type": "AssessmentItemEvent",
 }
 `;
@@ -214,8 +214,8 @@ Event {
     "type": "Response",
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
-  "target": "https://testHost/api/draft/testDraftId#testTargetId",
+  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
   "type": "AssessmentItemEvent",
 }
 `;
@@ -233,9 +233,9 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testItemId",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https://testHost/api/draft/testDraftId?context=testFramename#testItemId",
+  "target": "https://testHost/api/draft-content/testContentId?context=testFramename#testItemId",
   "type": "Event",
 }
 `;
@@ -253,7 +253,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testItemId",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -289,7 +289,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#mediaId",
+  "object": "https://testHost/api/draft-content/testContentId#mediaId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "MediaEvent",
 }
@@ -308,7 +308,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -327,7 +327,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -346,7 +346,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -365,7 +365,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -384,7 +384,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -403,10 +403,51 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#navigation is going here",
-  "referrer": "https://testHost/api/draft/testDraftId#navigation came from here",
+  "object": "https://testHost/api/draft-content/testContentId#navigation is going here",
+  "referrer": "https://testHost/api/draft-content/testContentId#navigation came from here",
   "session": "https://testHost/api/session/testSessionId",
   "type": "NavigationEvent",
+}
+`;
+
+exports[`Caliper event creator createNavigationEvent with no type or action 1`] = `
+Object {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "actor": "https://mockhost/api/server",
+  "edApp": "https://mockhost/api/system",
+  "eventTime": Any<String>,
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "referrer": "https://testHost/api/draft-content/testContentId#navigation came from here",
+  "setAction": [MockFunction] {
+    "calls": Array [
+      Array [
+        "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
+      ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
+    ],
+  },
+  "setObject": [MockFunction] {
+    "calls": Array [
+      Array [
+        "https://testHost/api/draft-content/testContentId#navigation is going here",
+      ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
+    ],
+  },
 }
 `;
 
@@ -424,7 +465,7 @@ Event {
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
-    "attempt": "https://testHost/api/practice/testDraftId/testQuestionId",
+    "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
     "dateCreated": "mockDate",
     "id": "urn:uuid:123",
     "maxScore": 100,
@@ -433,7 +474,7 @@ Event {
     "type": "Score",
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "object": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "GradeEvent",
 }
@@ -452,9 +493,9 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testQuestionId",
+  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
   "type": "Event",
 }
 `;
@@ -472,8 +513,9 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
   "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
   "type": "Event",
 }
 `;
@@ -491,7 +533,7 @@ Event {
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "urn:uuid:123",
-  "target": "https://testHost/api/practice/testDraftId/testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
   "type": "Event",
 }
 `;
@@ -509,9 +551,9 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testItemId",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https://testHost/api/draft/testDraftId?context=testFramename#testItemId",
+  "target": "https://testHost/api/draft-content/testContentId?context=testFramename#testItemId",
   "type": "ViewEvent",
 }
 `;
@@ -529,7 +571,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId#testItemId",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "ViewEvent",
 }
@@ -548,7 +590,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId",
+  "object": "https://testHost/api/draft-content/testContentId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -584,7 +626,7 @@ Event {
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft/testDraftId",
+  "object": "https://testHost/api/draft-content/testContentId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -605,7 +647,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https://testHost/api/draft/testDraftId",
+  "target": "https://testHost/api/draft-content/testContentId",
   "type": "SessionEvent",
 }
 `;
@@ -625,7 +667,7 @@ Event {
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https://testHost/api/draft/testDraftId",
+  "target": "https://testHost/api/draft-content/testContentId",
   "type": "SessionEvent",
 }
 `;

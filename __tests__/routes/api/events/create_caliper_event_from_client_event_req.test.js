@@ -12,9 +12,13 @@ describe('Caliper event from req', () => {
 	const questionId = 'testQuestionIdReq'
 	const relatedEventId = 'testRelatedEventIdreq'
 
-	let buildMockReq = (action, payload) => ({
+	const buildMockReq = (action, payload) => ({
 		currentUser: {
 			id: 'testUserIdReq'
+		},
+		currentDocument: {
+			draftId: 'testDraftIdReq',
+			contentId: 'testContentIdReq'
 		},
 		session: {
 			id: 'SessionIdReq',
@@ -33,7 +37,7 @@ describe('Caliper event from req', () => {
 	})
 
 	// outline all the events to test with payload
-	let eventsToTest = {
+	const eventsToTest = {
 		'nav:goto': { from: 'fromReq', to: 'toReq' },
 		'nav:open': {},
 		'nav:close': {},
@@ -55,7 +59,6 @@ describe('Caliper event from req', () => {
 		'question:retry': { questionId },
 		'media:show': { id },
 		'media:hide': { id, actor: 'user' },
-		'media:setSize': { id, size: 'large', previousSize: 'small' },
 		'media:setZoom': { id, zoom: 1.1, previousZoom: 1 },
 		'media:resetZoom': { id, previousZoom: 2 },
 		'viewer:inactive': { inactiveDuration, lastActiveTime },
@@ -68,20 +71,20 @@ describe('Caliper event from req', () => {
 	// test each event type
 	Object.keys(eventsToTest).forEach(reqObjectKey => {
 		test(`${reqObjectKey} returns the expected snapshot`, () => {
-			let mockReq = buildMockReq(reqObjectKey, eventsToTest[reqObjectKey])
+			const mockReq = buildMockReq(reqObjectKey, eventsToTest[reqObjectKey])
 			expect(caliperEvent(mockReq)).toMatchSnapshot()
 		})
 	})
 
 	test('actorFromType returns an object with the actor type and the current users id if given ACTOR_USER', () => {
-		let mockReq = buildMockReq('viewer:close', eventsToTest['viewer:close'])
-		let result = caliperEvent(mockReq)
+		const mockReq = buildMockReq('viewer:close', eventsToTest['viewer:close'])
+		const result = caliperEvent(mockReq)
 		expect(result.actor).toBe('https://hostnameReq/api/user/testUserIdReq')
 	})
 
 	test('actorFromType returns an object with only the given type if the type is not ACTOR_USER', () => {
-		let mockReq = buildMockReq('score:clear', eventsToTest['score:clear'])
-		let result = caliperEvent(mockReq)
+		const mockReq = buildMockReq('score:clear', eventsToTest['score:clear'])
+		const result = caliperEvent(mockReq)
 		expect(result.actor).toBe('https://hostnameReq/api/server')
 	})
 })

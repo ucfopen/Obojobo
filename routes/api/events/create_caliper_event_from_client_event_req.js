@@ -4,19 +4,20 @@
 //the setting of the actor seems very haphazard
 //should all of these be in one file?
 
-let { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
-let { getSessionIds } = require('./caliper_utils')
+const { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
+const { getSessionIds } = require('./caliper_utils')
 
 module.exports = req => {
-	let caliperEvents = require('./create_caliper_event')(req, null, true)
-	let currentUser = req.currentUser || { id: null }
-	let clientEvent = req.body.event
-	let isPreviewMode = currentUser.canViewEditor
+	const caliperEvents = require('./create_caliper_event')(req, null, true)
+	const currentUser = req.currentUser || { id: null }
+	const currentDocument = req.currentDocument || { draftId: null, contentId: null }
+	const clientEvent = req.body.event
+	const isPreviewMode = currentUser.canViewEditor
 	let sessionId, launchId
-	let sessionIds = getSessionIds(req.session)
+	const sessionIds = getSessionIds(req.session)
 
-	let actorFromType = type => {
-		let actor = { type }
+	const actorFromType = type => {
+		const actor = { type }
 		if (type === ACTOR_USER) actor.id = currentUser.id
 		return actor
 	}
@@ -28,7 +29,8 @@ module.exports = req => {
 		case 'nav:next':
 			return caliperEvents.createNavigationEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				from: clientEvent.payload.from,
 				to: clientEvent.payload.to,
 				isPreviewMode,
@@ -42,7 +44,8 @@ module.exports = req => {
 		case 'nav:open':
 			return caliperEvents.createNavMenuShowedEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -54,7 +57,8 @@ module.exports = req => {
 		case 'nav:close':
 			return caliperEvents.createNavMenuHidEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -66,7 +70,8 @@ module.exports = req => {
 		case 'nav:toggle':
 			return caliperEvents.createNavMenuToggledEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -79,7 +84,8 @@ module.exports = req => {
 		case 'nav:lock':
 			return caliperEvents.createNavMenuDeactivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -91,7 +97,8 @@ module.exports = req => {
 		case 'nav:unlock': {
 			return caliperEvents.createNavMenuActivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -104,7 +111,8 @@ module.exports = req => {
 		case 'question:view':
 			return caliperEvents.createViewEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.questionId,
 				isPreviewMode,
 				sessionIds
@@ -113,7 +121,8 @@ module.exports = req => {
 		case 'question:hide':
 			return caliperEvents.createHideEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.questionId,
 				isPreviewMode,
 				sessionIds
@@ -122,7 +131,8 @@ module.exports = req => {
 		case 'question:checkAnswer':
 			return caliperEvents.createPracticeQuestionSubmittedEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
 				isPreviewMode,
 				sessionIds
@@ -131,7 +141,8 @@ module.exports = req => {
 		case 'question:showExplanation':
 			return caliperEvents.createViewEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.questionId,
 				frameName: 'explanation',
 				isPreviewMode,
@@ -141,7 +152,8 @@ module.exports = req => {
 		case 'question:hideExplanation':
 			return caliperEvents.createHideEvent({
 				actor: actorFromType(clientEvent.payload.actor),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.questionId,
 				frameName: 'explanation',
 				isPreviewMode,
@@ -152,7 +164,8 @@ module.exports = req => {
 		case 'assessment:setResponse':
 			return caliperEvents.createAssessmentItemEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
 				assessmentId: clientEvent.payload.assessmentId,
 				attemptId: clientEvent.payload.attemptId,
@@ -165,7 +178,8 @@ module.exports = req => {
 		case 'score:set':
 			return caliperEvents.createPracticeGradeEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				score: clientEvent.payload.score,
@@ -176,7 +190,8 @@ module.exports = req => {
 		case 'score:clear':
 			return caliperEvents.createPracticeUngradeEvent({
 				actor: actorFromType(ACTOR_SERVER_APP),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				isPreviewMode,
@@ -186,7 +201,8 @@ module.exports = req => {
 		case 'question:retry':
 			return caliperEvents.createPracticeQuestionResetEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
 				isPreviewMode,
 				sessionIds
@@ -195,7 +211,8 @@ module.exports = req => {
 		case 'media:show':
 			return caliperEvents.createViewEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.id,
 				isPreviewMode,
 				sessionIds
@@ -204,30 +221,18 @@ module.exports = req => {
 		case 'media:hide':
 			return caliperEvents.createHideEvent({
 				actor: actorFromType(clientEvent.payload.actor),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.id,
 				isPreviewMode,
 				sessionIds
 			})
 
-		case 'media:setSize':
-			return caliperEvents.createMediaChangedSizeEvent({
-				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
-				mediaId: clientEvent.payload.id,
-				isPreviewMode,
-				sessionIds,
-				extensions: {
-					type: 'setSize',
-					size: clientEvent.payload.size,
-					previousSize: clientEvent.payload.previousSize
-				}
-			})
-
 		case 'media:setZoom':
 			return caliperEvents.createMediaChangedSizeEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				mediaId: clientEvent.payload.id,
 				isPreviewMode,
 				sessionIds,
@@ -241,7 +246,8 @@ module.exports = req => {
 		case 'media:resetZoom':
 			return caliperEvents.createMediaChangedSizeEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				mediaId: clientEvent.payload.id,
 				isPreviewMode,
 				sessionIds,
@@ -254,7 +260,8 @@ module.exports = req => {
 		case 'viewer:inactive':
 			return caliperEvents.createViewerAbandonedEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -267,7 +274,8 @@ module.exports = req => {
 		case 'viewer:returnFromInactive':
 			return caliperEvents.createViewerResumedEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -281,7 +289,8 @@ module.exports = req => {
 		case 'viewer:close':
 			return caliperEvents.createViewerSessionLoggedOutEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds
 			})
@@ -289,7 +298,8 @@ module.exports = req => {
 		case 'viewer:leave':
 			return caliperEvents.createViewerAbandonedEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
@@ -300,7 +310,8 @@ module.exports = req => {
 		case 'viewer:return':
 			return caliperEvents.createViewerResumedEvent({
 				actor: actorFromType(ACTOR_USER),
-				draftId: clientEvent.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				isPreviewMode,
 				sessionIds,
 				extensions: {
