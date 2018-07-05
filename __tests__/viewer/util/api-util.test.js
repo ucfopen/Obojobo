@@ -51,6 +51,23 @@ describe('apiutil', () => {
 		})
 	})
 
+	test('post fetches with blank body', () => {
+		APIUtil.post('mockEndpoint')
+		expect(fetch).toHaveBeenCalled()
+		let calledEndpoint = fetch.mock.calls[0][0]
+		let calledOptions = fetch.mock.calls[0][1]
+		expect(calledEndpoint).toBe('mockEndpoint')
+		expect(calledOptions).toEqual({
+			body: JSON.stringify({}),
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+	})
+
 	test('postEvent fetches with the correct args', () => {
 		let lo = {
 			get: requestedProp => requestedProp // this will just return the prop as the value
@@ -86,7 +103,8 @@ describe('apiutil', () => {
 					draft_id: 'draftId',
 					event_version: 'eventVersion',
 					payload: 'mockPayload'
-				}
+				},
+				draftId: 'draftId'
 			})
 		})
 	})
@@ -269,6 +287,9 @@ describe('apiutil', () => {
 
 	test('endAttempt calls fetch', () => {
 		expect.assertions(3)
+		let lo = {
+			get: requestedProp => requestedProp // this will just return the prop as the value
+		}
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -276,13 +297,13 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.endAttempt({ attemptId: 999 }).then(res => {
+		return APIUtil.endAttempt(lo, { attemptId: 999 }).then(res => {
 			expect(fetch).toHaveBeenCalled()
 			let calledEndpoint = fetch.mock.calls[0][0]
 			let calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/assessments/attempt/999/end')
 			expect(calledOptions).toEqual({
-				body: '{}',
+				body: expect.anything(),
 				credentials: 'include',
 				headers: {
 					Accept: 'application/json',

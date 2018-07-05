@@ -15,7 +15,7 @@ jest.mock('../../server/assessment', () => ({
 
 const logger = oboRequire('logger')
 const db = oboRequire('db')
-const DraftModel = oboRequire('models/draft')
+const DraftDocument = oboRequire('models/draft')
 const DraftNode = oboRequire('models/draft_node')
 const lti = oboRequire('lti')
 const insertEvent = oboRequire('insert_event')
@@ -58,27 +58,28 @@ describe('Attempt End', () => {
 			assessmentScore: 'mockScoreForAttempt'
 		})
 		lti.sendHighestAssessmentScore.mockReset()
-		DraftModel.fetchById.mockReset()
 	})
 
 	test('endAttempt returns Assessment.getAttempts, sends lti highest score, and inserts 2 events', () => {
 		lti.getLatestHighestAssessmentScoreRecord.mockResolvedValueOnce({ score: 75 })
 		// provide a draft model mock
-		let draft = new DraftModel({
+		let mockDraftDocument = new DraftDocument({
 			content: {
 				rubric: 1,
 				review: 'never'
-			}
+			},
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
 		})
-		draft.yell.mockImplementationOnce(
+		mockDraftDocument.yell.mockImplementationOnce(
 			(eventType, req, res, assessmentModel, responseHistory, event) => {
 				event.addScore('q1', 0)
 				event.addScore('q2', 100)
 				return [Promise.resolve()]
 			}
 		)
-		draft.getChildNodeById.mockReturnValueOnce(draft)
-		DraftModel.fetchById.mockResolvedValueOnce(draft)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce(mockDraftDocument)
+		DraftDocument.fetchById.mockResolvedValueOnce(mockDraftDocument)
 
 		// Mock out assessment methods internally to build score data
 		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
@@ -112,11 +113,13 @@ describe('Attempt End', () => {
 		let loadAssessmentProperties = jest.fn().mockReturnValueOnce('mockProperties')
 		let reloadAttemptStateIfReviewing = jest.fn().mockReturnValueOnce('mockReload')
 
-		let req = { connection: { remoteAddress: 'mockRemoteAddress' } }
+		let req = {
+			connection: { remoteAddress: 'mockRemoteAddress' }
+		}
 		let user = { id: 'mockUserId' }
 		expect(insertEvent).toHaveBeenCalledTimes(0)
 
-		return endAttempt(req, {}, user, 'mockAttemptId', true).then(results => {
+		return endAttempt(req, {}, user, mockDraftDocument, 'mockAttemptId', true).then(results => {
 			expect(logger.info).toHaveBeenCalledTimes(8)
 			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttempt success'))
 			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttemptHistory success'))
@@ -132,7 +135,7 @@ describe('Attempt End', () => {
 			expect(results).toBe('attempts')
 			expect(lti.sendHighestAssessmentScore).toHaveBeenLastCalledWith(
 				'mockUserId',
-				'mockDraftId',
+				mockDraftDocument,
 				'mockAssessmentId'
 			)
 			expect(insertEvent).toHaveBeenCalledTimes(2)
@@ -141,6 +144,7 @@ describe('Attempt End', () => {
 				actorTime: 'mockDate',
 				caliperPayload: 'mockCaliperPayload',
 				draftId: 'mockDraftId',
+				contentId: 'mockContentId',
 				eventVersion: '2.0.0',
 				ip: 'mockRemoteAddress',
 				metadata: {},
@@ -166,6 +170,7 @@ describe('Attempt End', () => {
 				actorTime: 'mockDate',
 				caliperPayload: 'mockCaliperPayload',
 				draftId: 'mockDraftId',
+				contentId: 'mockContentId',
 				eventVersion: '1.1.0',
 				ip: 'mockRemoteAddress',
 				metadata: {},
@@ -179,22 +184,14 @@ describe('Attempt End', () => {
 	})
 
 	test('getAttempt returns an object of attempt info', () => {
-		expect.assertions(9)
+		expect.assertions(6)
 
-		let mockDraft = {
-			getChildNodeById: jest.fn(id => 'mockChild')
-		}
-		DraftModel.fetchById.mockReturnValueOnce(mockDraft)
-
-		return getAttempt('mockAttemptId').then(attempt => {
-			expect(Assessment.getAttempt).toHaveBeenCalledWith('mockAttemptId')
-			expect(DraftModel.fetchById).toHaveBeenCalledWith('mockDraftId')
-			expect(mockDraft.getChildNodeById).toHaveBeenCalledWith('mockAssessmentId')
+		return getAttempt(1).then(attempt => {
 			expect(attempt).toHaveProperty('assessmentId', 'mockAssessmentId')
 			expect(attempt).toHaveProperty('number', 6)
 			expect(attempt).toHaveProperty('attemptState', 'mockState')
 			expect(attempt).toHaveProperty('draftId', 'mockDraftId')
-			expect(attempt).toHaveProperty('model', mockDraft)
+			expect(attempt).toHaveProperty('model', expect.any(DraftDocument))
 			expect(attempt).toHaveProperty('assessmentModel', 'mockChild')
 		})
 	})
@@ -207,17 +204,6 @@ describe('Attempt End', () => {
 			'assessmentId'
 		)
 		expect(result).toBe('super bat dad')
-	})
-
-	test('getResponsesForAttempt calls Assessment method', done => {
-		return getResponsesForAttempt('mockUserId', 'mockDraftId').then(result => {
-			expect(Assessment.getResponsesForAttempt).toHaveBeenLastCalledWith(
-				'mockUserId',
-				'mockDraftId'
-			)
-			expect(result).toBe('mockResponsesForAttempt')
-			return done()
-		})
 	})
 
 	test('getCalculatedScores', () => {
@@ -287,55 +273,158 @@ describe('Attempt End', () => {
 		})
 	})
 
-	test('getCalculatedScores calls calculateScores with expected values', () => {
-		let attemptHistory = [
-			{
-				result: {
-					attemptScore: 25
-				}
-			}
-		]
+	test('insertAttemptEndEvents calls insertEvent with expected params (preview mode = true)', () => {
+		// mock the caliperEvent method
+		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent.mockReturnValueOnce({
+			createAssessmentAttemptSubmittedEvent
+		})
 
-		let attemptState = {
-			questions: [{ id: 4 }, { id: 5 }, { id: 6 }]
+		let mockDraftDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
 		}
 
-		let x = new DraftModel({ content: { rubric: 1 } })
+		let r = insertAttemptEndEvents(
+			{ id: 'mockUserId' },
+			mockDraftDocument,
+			'mockAssessmentId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockIsPreviewing',
+			'mockHostname',
+			'mockRemoteAddress'
+		)
 
-		// now we have to mock yell so that we can call addScore()
-		x.yell.mockImplementationOnce((event, req, res, model, history, funcs) => {
-			funcs.addScore(4, 10)
-			funcs.addScore(5, 66)
-			funcs.addScore(6, 77)
-			return [Promise.resolve()]
+		// make sure we get the result of insertEvent back
+		expect(r).toBe('mockInsertResult')
+
+		// make sure insert event is called
+		expect(insertEvent).toHaveBeenCalledTimes(1)
+
+		// make sure insert event is called with the arguments we expect
+		expect(insertEvent).toHaveBeenCalledWith({
+			action: 'assessment:attemptEnd',
+			actorTime: 'mockDate',
+			payload: {
+				attemptId: 'mockAttemptId',
+				attemptCount: 'mockAttemptNumber'
+			},
+			userId: 'mockUserId',
+			ip: 'mockRemoteAddress',
+			metadata: {},
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
+			eventVersion: '1.1.0',
+			caliperPayload: 'mockCaliperPayload'
 		})
 
-		return getCalculatedScores({}, {}, x, attemptState, attemptHistory, 'rh').then(result => {
-			expect(result).toEqual({
-				assessmentScoreDetails: {
-					assessmentScore: 'mockScoreForAttempt'
+		// make sure the caliper payload gets the expected inputs
+		expect(createAssessmentAttemptSubmittedEvent).toHaveBeenCalledWith({
+			actor: {
+				id: 'mockUserId',
+				type: 'user'
+			},
+			assessmentId: 'mockAssessmentId',
+			attemptId: 'mockAttemptId',
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
+			isPreviewMode: 'mockIsPreviewing'
+		})
+	})
+
+	test('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = false)', () => {
+		lti.getLatestHighestAssessmentScoreRecord.mockResolvedValue({
+			score: 'mockHighestAssessmentScore'
+		})
+		// mock the caliperEvent method
+		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent.mockReturnValueOnce({
+			createAssessmentAttemptScoredEvent
+		})
+		let mockDraftDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
+		}
+
+		return insertAttemptScoredEvents(
+			{ id: 'userId' },
+			mockDraftDocument,
+			'mockAssessmentId',
+			'mockAssessmentScoreId',
+			'mockAttemptId',
+			'mockAttemptNumber',
+			'mockAttemptScore',
+			'mockAssessmentScore',
+			'mockIsPreviewing',
+			'mockLtiScoreSent',
+			'mockLtiScoreStatus',
+			'mockLtiScoreError',
+			'mockLtiScoreErrorDetails',
+			'mockLtiAssessmentScoreId',
+			'mockHostname',
+			'mockRemoteAddress'
+		).then(r => {
+			// make sure we get the result of insertEvent back
+			expect(r).toBe('mockInsertResult')
+
+			// make sure insert event is called
+			expect(insertEvent).toHaveBeenCalledTimes(1)
+
+			// make sure insert event is called with the arguments we expect
+			expect(insertEvent).toHaveBeenCalledWith({
+				action: 'assessment:attemptScored',
+				actorTime: 'mockDate',
+				caliperPayload: 'mockCaliperPayload',
+				draftId: 'mockDraftId',
+				contentId: 'mockContentId',
+				eventVersion: '2.0.0',
+				ip: 'mockRemoteAddress',
+				metadata: {},
+				payload: {
+					assessmentScore: 'mockAssessmentScore',
+					assessmentScoreId: 'mockAssessmentScoreId',
+					attemptCount: 'mockAttemptNumber',
+					attemptId: 'mockAttemptId',
+					attemptScore: 'mockAttemptScore',
+					highestAssessmentScore: 'mockHighestAssessmentScore',
+					ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
+					ltiGradeBookStatus: 'mockLtiScoreErrorDetails',
+					ltiStatusDetails: 'mockLtiScoreError',
+					ltiScoreSent: 'mockLtiScoreSent',
+					ltiScoreStatus: 'mockLtiScoreStatus'
 				},
-				attempt: {
-					attemptScore: 51,
-					questionScores: [
-						{
-							id: 4,
-							score: 10
-						},
-						{
-							id: 5,
-							score: 66
-						},
-						{
-							id: 6,
-							score: 77
-						}
-					]
-				}
+				userId: 'userId'
 			})
 
-			expect()
+			// make sure the caliper payload gets the expected inputs
+			expect(createAssessmentAttemptScoredEvent).toHaveBeenCalledWith({
+				actor: {
+					type: 'serverApp'
+				},
+				assessmentId: 'mockAssessmentId',
+				attemptId: 'mockAttemptId',
+				attemptScore: 'mockAttemptScore',
+				draftId: 'mockDraftId',
+				contentId: 'mockContentId',
+				extensions: {
+					assessmentScore: 'mockAssessmentScore',
+					highestAssessmentScore: 'mockHighestAssessmentScore',
+					attemptCount: 'mockAttemptNumber',
+					attemptScore: 'mockAttemptScore',
+					ltiScoreSent: 'mockLtiScoreSent'
+				},
+				isPreviewMode: 'mockIsPreviewing'
+			})
 		})
+	})
+
+	test('sendLTIHighestAssessmentScore calls lti.sendLTIHighestAssessmentScore', () => {
+		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(0)
+		sendLTIHighestAssessmentScore()
+		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(1)
 	})
 
 	test('calculateScores keeps all scores in order', () => {
@@ -410,12 +499,64 @@ describe('Attempt End', () => {
 		])
 	})
 
+	test('getCalculatedScores calls calculateScores with expected values', () => {
+		let attemptHistory = [
+			{
+				result: {
+					attemptScore: 25
+				}
+			}
+		]
+
+		let attemptState = {
+			questions: [{ id: 4 }, { id: 5 }, { id: 6 }]
+		}
+
+		let x = new DraftDocument({ content: { rubric: 1 } })
+
+		// now we have to mock yell so that we can call addScore()
+		x.yell.mockImplementationOnce((event, req, res, model, history, funcs) => {
+			funcs.addScore(4, 10)
+			funcs.addScore(5, 66)
+			funcs.addScore(6, 77)
+			return [Promise.resolve()]
+		})
+
+		return getCalculatedScores({}, {}, x, attemptState, attemptHistory, 'rh').then(result => {
+			expect(result).toEqual({
+				assessmentScoreDetails: {
+					assessmentScore: 'mockScoreForAttempt'
+				},
+				attempt: {
+					attemptScore: 51,
+					questionScores: [
+						{
+							id: 4,
+							score: 10
+						},
+						{
+							id: 5,
+							score: 66
+						},
+						{
+							id: 6,
+							score: 77
+						}
+					]
+				}
+			})
+
+			expect()
+		})
+	})
+
 	test('completeAttempt calls Assessment.completeAttempt with expected values', () => {
 		let r = completeAttempt(
 			'mockAssessmentId',
 			'mockAttemptId',
 			'mockUserId',
 			'mockDraftId',
+			'mockContentId',
 			{ attempt: 'mockCalculatedScores', assessmentScoreDetails: 'mockScoreDeets' },
 			'mockPreview'
 		)
@@ -429,64 +570,11 @@ describe('Attempt End', () => {
 			'mockAttemptId',
 			'mockUserId',
 			'mockDraftId',
+			'mockContentId',
 			'mockCalculatedScores',
 			'mockScoreDeets',
 			'mockPreview'
 		)
-	})
-
-	test('insertAttemptEndEvents calls insertEvent with expected params (preview mode = true)', () => {
-		// mock the caliperEvent method
-		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
-		insertEvent.mockReturnValueOnce('mockInsertResult')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptSubmittedEvent
-		})
-
-		let r = insertAttemptEndEvents(
-			{ id: 'mockUserId' },
-			'mockDraftId',
-			'mockAssessmentId',
-			'mockAttemptId',
-			'mockAttemptNumber',
-			'mockIsPreviewing',
-			'mockHostname',
-			'mockRemoteAddress'
-		)
-
-		// make sure we get the result of insertEvent back
-		expect(r).toBe('mockInsertResult')
-
-		// make sure insert event is called
-		expect(insertEvent).toHaveBeenCalledTimes(1)
-
-		// make sure insert event is called with the arguments we expect
-		expect(insertEvent).toHaveBeenCalledWith({
-			action: 'assessment:attemptEnd',
-			actorTime: 'mockDate',
-			payload: {
-				attemptId: 'mockAttemptId',
-				attemptCount: 'mockAttemptNumber'
-			},
-			userId: 'mockUserId',
-			ip: 'mockRemoteAddress',
-			metadata: {},
-			draftId: 'mockDraftId',
-			eventVersion: '1.1.0',
-			caliperPayload: 'mockCaliperPayload'
-		})
-
-		// make sure the caliper payload gets the expected inputs
-		expect(createAssessmentAttemptSubmittedEvent).toHaveBeenCalledWith({
-			actor: {
-				id: 'mockUserId',
-				type: 'user'
-			},
-			assessmentId: 'mockAssessmentId',
-			attemptId: 'mockAttemptId',
-			draftId: 'mockDraftId',
-			isPreviewMode: 'mockIsPreviewing'
-		})
 	})
 
 	test('insertAttemptEndEvents creates a correct caliper event and internal event', () => {
@@ -497,9 +585,14 @@ describe('Attempt End', () => {
 			createAssessmentAttemptSubmittedEvent
 		})
 
+		let mockDraftDocument = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
+		}
+
 		let r = insertAttemptEndEvents(
 			{ id: 1 },
-			'mockDraftId',
+			mockDraftDocument,
 			'mockAssessmentId',
 			'mockAttemptId',
 			'mockAttemptNumber',
@@ -520,6 +613,7 @@ describe('Attempt End', () => {
 			actorTime: 'mockDate',
 			caliperPayload: 'mockCaliperPayload',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			eventVersion: '1.1.0',
 			ip: 'mockRemoteAddress',
 			metadata: {},
@@ -530,86 +624,150 @@ describe('Attempt End', () => {
 			userId: 1
 		})
 	})
-
-	test('insertAttemptScoredEvents calls insertEvent with expected params (preview mode = false, isScoreSent = false)', () => {
-		lti.getLatestHighestAssessmentScoreRecord.mockResolvedValue({
-			score: 'mockHighestAssessmentScore'
+	test('getNodeQuestion reloads score', () => {
+		const mockDraftDocument = new DraftDocument(testJson)
+		const assessmentNode = mockDraftDocument.getChildNodeById('assessment')
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
+			toObject: () => {
+				return {
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [
+						{
+							id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
+							type: 'ObojoboDraft.Chunks.Text',
+							content: {},
+							children: []
+						},
+						{
+							id: 'qb1-q1-mca',
+							type: 'ObojoboDraft.Chunks.MCAssessment',
+							content: {},
+							children: [
+								{
+									id: 'qb1-q1-mca-mc1',
+									type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+									content: { score: 100 }
+								}
+							]
+						}
+					]
+				}
+			}
 		})
-		// mock the caliperEvent method
-		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
-		insertEvent.mockReturnValueOnce('mockInsertResult')
-		createCaliperEvent.mockReturnValueOnce({
-			createAssessmentAttemptScoredEvent
+
+		const mockQuestion = {
+			id: 'qb1.q1',
+			type: 'ObojoboDraft.Chunks.Question',
+			children: [
+				{
+					id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
+					type: 'ObojoboDraft.Chunks.Text',
+					content: {},
+					children: []
+				},
+				{
+					id: 'qb1-q1-mca',
+					type: 'ObojoboDraft.Chunks.MCAssessment',
+					content: {},
+					children: [
+						{
+							id: 'qb1-q1-mca-mc1',
+							type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+							content: { score: 0 }
+						}
+					]
+				}
+			]
+		}
+
+		expect(mockQuestion.id).toBe('qb1.q1')
+		expect(mockQuestion.children[1].children[0].content.score).toBe(0)
+
+		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraftDocument)
+
+		expect(reloadedQuestion.id).toBe(mockQuestion.id)
+		expect(reloadedQuestion.children[1].children[0].content.score).toBe(100)
+	})
+
+	test('recreateChosenQuestionTree parses down a one-level question bank', () => {
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
+			toObject: () => {
+				return {
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [{}, {}]
+				}
+			}
 		})
+		const mockQB = {
+			id: 'qb.lv1',
+			type: 'ObojoboDraft.Chunks.QuestionBank',
+			children: [
+				{
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: []
+				}
+			]
+		}
 
-		return insertAttemptScoredEvents(
-			{ id: 'userId' },
-			'mockDraftId',
-			'mockAssessmentId',
-			'mockAssessmentScoreId',
-			'mockAttemptId',
-			'mockAttemptNumber',
-			'mockAttemptScore',
-			'mockAssessmentScore',
-			'mockIsPreviewing',
-			'mockLtiScoreSent',
-			'mockLtiScoreStatus',
-			'mockLtiScoreError',
-			'mockLtiScoreErrorDetails',
-			'mockLtiAssessmentScoreId',
-			'mockHostname',
-			'mockRemoteAddress'
-		).then(r => {
-			// make sure we get the result of insertEvent back
-			expect(r).toBe('mockInsertResult')
+		expect(mockQB.children.length).toBe(1)
+		expect(mockQB.children[0].children.length).toBe(0)
 
-			// make sure insert event is called
-			expect(insertEvent).toHaveBeenCalledTimes(1)
+		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
 
-			// make sure insert event is called with the arguments we expect
-			expect(insertEvent).toHaveBeenCalledWith({
-				action: 'assessment:attemptScored',
-				actorTime: 'mockDate',
-				caliperPayload: 'mockCaliperPayload',
-				draftId: 'mockDraftId',
-				eventVersion: '2.0.0',
-				ip: 'mockRemoteAddress',
-				metadata: {},
-				payload: {
-					assessmentScore: 'mockAssessmentScore',
-					assessmentScoreId: 'mockAssessmentScoreId',
-					attemptCount: 'mockAttemptNumber',
-					attemptId: 'mockAttemptId',
-					attemptScore: 'mockAttemptScore',
-					highestAssessmentScore: 'mockHighestAssessmentScore',
-					ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
-					ltiGradeBookStatus: 'mockLtiScoreErrorDetails',
-					ltiStatusDetails: 'mockLtiScoreError',
-					ltiScoreSent: 'mockLtiScoreSent',
-					ltiScoreStatus: 'mockLtiScoreStatus'
-				},
-				userId: 'userId'
-			})
+		expect(mockQB.children.length).toBe(1)
+		expect(mockQB.children[0].children.length).not.toBe(0)
+	})
 
-			// make sure the caliper payload gets the expected inputs
-			expect(createAssessmentAttemptScoredEvent).toHaveBeenCalledWith({
-				actor: {
-					type: 'serverApp'
-				},
-				assessmentId: 'mockAssessmentId',
-				attemptId: 'mockAttemptId',
-				attemptScore: 'mockAttemptScore',
-				draftId: 'mockDraftId',
-				extensions: {
-					assessmentScore: 'mockAssessmentScore',
-					highestAssessmentScore: 'mockHighestAssessmentScore',
-					attemptCount: 'mockAttemptNumber',
-					attemptScore: 'mockAttemptScore',
-					ltiScoreSent: 'mockLtiScoreSent'
-				},
-				isPreviewMode: 'mockIsPreviewing'
-			})
+	test('recreateChosenQuestionTree parses down a multi-level question bank', () => {
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
+			toObject: () => {
+				return {
+					id: 'qb1.q1',
+					type: 'ObojoboDraft.Chunks.Question',
+					children: [{}, {}]
+				}
+			}
 		})
+		const mockQB = {
+			id: 'qb.lv1',
+			type: 'ObojoboDraft.Chunks.QuestionBank',
+			children: [
+				{
+					id: 'qb.lv2',
+					type: 'ObojoboDraft.Chunks.QuestionBank',
+					children: [
+						{
+							id: 'qb.lv3',
+							type: 'ObojoboDraft.Chunks.QuestionBank',
+							children: [
+								{
+									id: 'qb1.q1',
+									type: 'ObojoboDraft.Chunks.Question',
+									children: []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+
+		expect(mockQB.children.length).toBe(1)
+		expect(mockQB.children[0].children.length).toBe(1)
+		expect(mockQB.children[0].children[0].children.length).toBe(1)
+		expect(mockQB.children[0].children[0].children[0].children.length).toBe(0)
+
+		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
+
+		expect(mockQB.children.length).toBe(1)
+		expect(mockQB.children[0].children.length).toBe(1)
+		expect(mockQB.children[0].children[0].children.length).toBe(1)
+		expect(mockQB.children[0].children[0].children[0].children.length).not.toBe(0)
 	})
 
 	test('reloadAttemptStateIfReviewing does not reload when reviews are not allowed', () => {
@@ -647,8 +805,8 @@ describe('Attempt End', () => {
 	})
 
 	test('reloadAttemptStateIfReviewing reloads only one when reviews are always allowed', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			children: [
 				{},
 				{
@@ -681,14 +839,22 @@ describe('Attempt End', () => {
 		})
 		Assessment.updateAttemptState = jest.fn()
 
-		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraft, null, false, null)
+		let response = reloadAttemptStateIfReviewing(
+			0,
+			0,
+			mockAttempt,
+			mockDraftDocument,
+			null,
+			false,
+			null
+		)
 
 		expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
 	})
 
 	test('reloadAttemptStateIfReviewing reloads all when reviews are allowed after last', done => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			children: [
 				{},
 				{
@@ -753,7 +919,7 @@ describe('Attempt End', () => {
 			]
 		})
 		// Set up mock question retrieval
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			toObject: () => {
 				return {
 					id: 'qb1.q1',
@@ -763,7 +929,7 @@ describe('Attempt End', () => {
 			},
 			childrenSet: [{}, {}]
 		})
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			toObject: () => {
 				return {
 					id: 'qb1.q1',
@@ -775,18 +941,24 @@ describe('Attempt End', () => {
 		})
 		Assessment.updateAttemptState = jest.fn()
 
-		return reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraft, { id: 1 }, false, null).then(
-			result => {
-				expect(Assessment.getAttempts).toHaveBeenCalled()
-				expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
-				return done()
-			}
-		)
+		return reloadAttemptStateIfReviewing(
+			0,
+			0,
+			mockAttempt,
+			mockDraftDocument,
+			{ id: 1 },
+			false,
+			null
+		).then(result => {
+			expect(Assessment.getAttempts).toHaveBeenCalled()
+			expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
+			return done()
+		})
 	})
 
 	test('reloadAttemptStateIfReviewing logs an error when reaching an exceptional state', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
+		const mockDraftDocument = new DraftDocument(testJson)
+		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			children: [
 				{},
 				{
@@ -824,222 +996,19 @@ describe('Attempt End', () => {
 			data: {}
 		})
 
-		let result = reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraft, { id: 1 }, false, null)
+		let result = reloadAttemptStateIfReviewing(
+			0,
+			0,
+			mockAttempt,
+			mockDraftDocument,
+			{ id: 1 },
+			false,
+			null
+		)
 
 		expect(logger.error).toHaveBeenCalledWith(
 			'Error: Reached exceptional state while reloading state for 0'
 		)
 		expect(result).toEqual(null)
-	})
-
-	test('recreateChosenQuestionTree parses down a one-level question bank', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
-			toObject: () => {
-				return {
-					id: 'qb1.q1',
-					type: 'ObojoboDraft.Chunks.Question',
-					children: [{}, {}]
-				}
-			}
-		})
-		const mockQB = {
-			id: 'qb.lv1',
-			type: 'ObojoboDraft.Chunks.QuestionBank',
-			children: [
-				{
-					id: 'qb1.q1',
-					type: 'ObojoboDraft.Chunks.Question',
-					children: []
-				}
-			]
-		}
-
-		expect(mockQB.children.length).toBe(1)
-		expect(mockQB.children[0].children.length).toBe(0)
-
-		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraft)
-
-		expect(mockQB.children.length).toBe(1)
-		expect(mockQB.children[0].children.length).not.toBe(0)
-	})
-
-	test('recreateChosenQuestionTree parses down a multi-level question bank', () => {
-		const mockDraft = new DraftModel(testJson)
-		mockDraft.getChildNodeById.mockReturnValueOnce({
-			toObject: () => {
-				return {
-					id: 'qb1.q1',
-					type: 'ObojoboDraft.Chunks.Question',
-					children: [{}, {}]
-				}
-			}
-		})
-		const mockQB = {
-			id: 'qb.lv1',
-			type: 'ObojoboDraft.Chunks.QuestionBank',
-			children: [
-				{
-					id: 'qb.lv2',
-					type: 'ObojoboDraft.Chunks.QuestionBank',
-					children: [
-						{
-							id: 'qb.lv3',
-							type: 'ObojoboDraft.Chunks.QuestionBank',
-							children: [
-								{
-									id: 'qb1.q1',
-									type: 'ObojoboDraft.Chunks.Question',
-									children: []
-								}
-							]
-						}
-					]
-				}
-			]
-		}
-
-		expect(mockQB.children.length).toBe(1)
-		expect(mockQB.children[0].children.length).toBe(1)
-		expect(mockQB.children[0].children[0].children.length).toBe(1)
-		expect(mockQB.children[0].children[0].children[0].children.length).toBe(0)
-
-		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraft)
-
-		expect(mockQB.children.length).toBe(1)
-		expect(mockQB.children[0].children.length).toBe(1)
-		expect(mockQB.children[0].children[0].children.length).toBe(1)
-		expect(mockQB.children[0].children[0].children[0].children.length).not.toBe(0)
-	})
-
-	test('getNodeQuestion reloads score', () => {
-		const mockDraft = new DraftModel(testJson)
-		const assessmentNode = mockDraft.getChildNodeById('assessment')
-		mockDraft.getChildNodeById.mockReturnValueOnce({
-			toObject: () => {
-				return {
-					id: 'qb1.q1',
-					type: 'ObojoboDraft.Chunks.Question',
-					children: [
-						{
-							id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
-							type: 'ObojoboDraft.Chunks.Text',
-							content: {},
-							children: []
-						},
-						{
-							id: 'qb1-q1-mca',
-							type: 'ObojoboDraft.Chunks.MCAssessment',
-							content: {},
-							children: [
-								{
-									id: 'qb1-q1-mca-mc1',
-									type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-									content: { score: 100 }
-								}
-							]
-						}
-					]
-				}
-			}
-		})
-
-		const mockQuestion = {
-			id: 'qb1.q1',
-			type: 'ObojoboDraft.Chunks.Question',
-			children: [
-				{
-					id: 'e3d455d5-80dd-4df8-87cf-594218016f44',
-					type: 'ObojoboDraft.Chunks.Text',
-					content: {},
-					children: []
-				},
-				{
-					id: 'qb1-q1-mca',
-					type: 'ObojoboDraft.Chunks.MCAssessment',
-					content: {},
-					children: [
-						{
-							id: 'qb1-q1-mca-mc1',
-							type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-							content: { score: 0 }
-						}
-					]
-				}
-			]
-		}
-
-		expect(mockQuestion.id).toBe('qb1.q1')
-		expect(mockQuestion.children[1].children[0].content.score).toBe(0)
-
-		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraft)
-
-		expect(reloadedQuestion.id).toBe(mockQuestion.id)
-		expect(reloadedQuestion.children[1].children[0].content.score).toBe(100)
-	})
-
-	test('loadAssessmentProperties builds the appropriate object', () => {
-		const mockDraft = {
-			getChildNodeById: jest.fn().mockReturnValueOnce({
-				children: [
-					{},
-					{
-						toObject: () => {
-							return {
-								id: 'qb1.q1',
-								type: 'ObojoboDraft.Chunks.Question',
-								children: [{}, {}]
-							}
-						},
-						childrenSet: [{}, {}]
-					}
-				]
-			})
-		}
-		const mockAttempt = {
-			number: 3,
-			assessmentId: 'mockAssessmentId',
-			assessmentModel: {
-				node: {
-					content: {
-						review: 'no-attempts-remaining',
-						attempts: 3
-					}
-				}
-			}
-		}
-
-		const properties = loadAssessmentProperties(
-			mockDraft,
-			mockAttempt,
-			'mockUser',
-			'mockPreviewing',
-			'mockAttemptHistory'
-		)
-
-		expect(properties).toEqual({
-			assessmentQBTree: {
-				children: [{}, {}],
-				id: 'qb1.q1',
-				type: 'ObojoboDraft.Chunks.Question'
-			},
-			attemptHistory: 'mockAttemptHistory',
-			childrenMap: null,
-			draftTree: {
-				getChildNodeById: expect.any(Function)
-			},
-			id: 'mockAssessmentId',
-			isPreviewing: 'mockPreviewing',
-			nodeChildrenIds: [{}, {}],
-			numAttemptsTaken: null,
-			oboNode: { children: [{}, { childrenSet: [{}, {}], toObject: expect.any(Function) }] },
-			user: 'mockUser'
-		})
-	})
-
-	test('sendLTIHighestAssessmentScore calls lti.sendLTIHighestAssessmentScore', () => {
-		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(0)
-		sendLTIHighestAssessmentScore()
-		expect(lti.sendHighestAssessmentScore).toHaveBeenCalledTimes(1)
 	})
 })

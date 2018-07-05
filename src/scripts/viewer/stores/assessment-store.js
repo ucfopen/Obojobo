@@ -202,7 +202,7 @@ class AssessmentStore extends Store {
 	tryEndAttempt(id, context) {
 		const model = OboModel.models[id]
 		const assessment = this.state.assessments[id]
-		return APIUtil.endAttempt(assessment.current)
+		return APIUtil.endAttempt(model.getRoot(), assessment.current)
 			.then(res => {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res)
