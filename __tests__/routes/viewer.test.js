@@ -199,7 +199,8 @@ describe('viewer route', () => {
 				ip: 'remoteAddress',
 				metadata: {},
 				payload: { deactivatedVisitId: 'mocked-deactivated-visit-id', visitId: 'mocked-visit-id' },
-				userId: 1
+				userId: 1,
+				preview: false
 			})
 			expect(caliperEvent().createVisitCreateEvent).toBeCalledWith({
 				actor: { id: 1, type: 'user' },

@@ -96,7 +96,7 @@ let mockSendAssessScoreDBCalls = (
 				assessmentScore: assessmentScore,
 				assessmentModdedScore: assessmentScore
 			},
-			preview: true
+			is_preview: true
 		})
 	} else {
 		db.oneOrNone.mockResolvedValueOnce({
@@ -115,7 +115,7 @@ let mockSendAssessScoreDBCalls = (
 				assessmentScore: assessmentScore,
 				assessmentModdedScore: assessmentScore
 			},
-			preview: false
+			is_preview: false
 		})
 	}
 
@@ -133,7 +133,8 @@ let mockSendAssessScoreDBCalls = (
 				status_details: null,
 				log_id: logId,
 				status: 'success',
-				gradebook_status: 'ok_gradebook_matches_assessment_score'
+				gradebook_status: 'ok_gradebook_matches_assessment_score',
+				is_preview: false
 			})
 		}
 
@@ -358,7 +359,8 @@ describe('lti', () => {
 			assessment_id: 'assessment_id',
 			attempt_id: 'attempt_id',
 			score: 'score',
-			preview: 'preview'
+			is_preview: 'preview',
+			score_details: 'details'
 		})
 
 		getLatestHighestAssessmentScoreRecord(123).then(result => {
@@ -370,7 +372,8 @@ describe('lti', () => {
 				attemptId: 'attempt_id',
 				score: 'score',
 				preview: 'preview',
-				error: null
+				error: null,
+				scoreDetails: 'details'
 			})
 
 			done()
@@ -464,7 +467,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -542,7 +546,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -620,7 +625,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -694,7 +700,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -768,7 +775,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -850,7 +858,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -932,7 +941,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1004,7 +1014,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1078,7 +1089,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1146,7 +1158,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1214,7 +1227,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1282,7 +1296,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1354,7 +1369,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1433,7 +1449,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1512,7 +1529,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1595,7 +1613,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1689,7 +1708,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			done()
@@ -1761,7 +1781,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1836,7 +1857,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1912,7 +1934,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -1986,7 +2009,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 			done()
 		})
@@ -2054,7 +2078,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 			done()
 		})
@@ -2125,7 +2150,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 			done()
 		})
@@ -2196,7 +2222,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 			done()
 		})
@@ -2269,7 +2296,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 			done()
 		})
@@ -2403,7 +2431,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({
@@ -2476,7 +2505,8 @@ describe('lti', () => {
 				ip: '',
 				eventVersion: '2.0.0',
 				metadata: {},
-				draftId: 'draft-id'
+				draftId: 'draft-id',
+				preview: false
 			})
 
 			expect(result).toEqual({

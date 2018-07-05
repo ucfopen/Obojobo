@@ -28,6 +28,7 @@ router.get('/:draftId', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: req.params.draftId,
+				preview: true,
 				payload: {
 					visitId,
 					deactivatedVisitId

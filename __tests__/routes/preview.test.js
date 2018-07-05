@@ -122,7 +122,8 @@ describe('preview route', () => {
 				ip: 'remoteAddress',
 				metadata: {},
 				payload: { visitId: 'mocked-visit-id', deactivatedVisitId: 'mocked-deactivated-visit-id' },
-				userId: 1
+				userId: 1,
+				preview: true
 			})
 			expect(mockCreateVisitCreateEvent).toBeCalledWith({
 				actor: { id: 1, type: 'user' },

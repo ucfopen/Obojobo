@@ -115,7 +115,7 @@ const getGradebookStatus = (
 //
 // Fetch methods
 //
-let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
+let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId, preview = false) => {
 	let result = {
 		id: null,
 		userId: null,
@@ -139,7 +139,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 					T1.assessment_id,
 					T1.attempt_id,
 					T1.score,
-					T1.preview,
+					T1.is_preview,
 					T1.score_details
 				FROM
 				(
@@ -149,7 +149,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 						user_id = $[userId]
 						AND draft_id = $[draftId]
 						AND assessment_id = $[assessmentId]
-						AND preview = false
+						AND is_preview = $[preview]
 				) T1
 				ORDER BY
 					T1.coalesced_score DESC,
@@ -159,7 +159,8 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 			{
 				userId,
 				draftId,
-				assessmentId
+				assessmentId,
+				preview
 			}
 		)
 		.then(dbResult => {
@@ -174,7 +175,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 			result.attemptId = dbResult.attempt_id
 			result.score = dbResult.score
 			result.scoreDetails = dbResult.score_details
-			result.preview = dbResult.preview
+			result.preview = dbResult.is_preview
 
 			return result
 		})
@@ -224,7 +225,7 @@ let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssess
 				ON S.id = L.assessment_score_id
 				WHERE S.draft_id = $[draftId]
 				AND S.user_id = $[userId]
-				AND S.preview = false
+				AND S.is_preview = false
 				${optionalAssessmentId ? "AND S.assessment_id = '" + optionalAssessmentId + "'" : ''}
 				AND L.id IS NOT NULL
 				ORDER BY S.id DESC
@@ -483,6 +484,7 @@ let insertReplaceResultEvent = (userId, draftId, launch, outcomeData, ltiResult)
 	insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
+		preview: false,
 		payload: {
 			launchId: launch ? launch.id : null,
 			launchKey: launch ? launch.key : null,

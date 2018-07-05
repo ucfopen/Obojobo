@@ -1,18 +1,22 @@
-var express = require('express')
-var router = express.Router()
-var oboEvents = oboRequire('obo_events')
-var insertEvent = oboRequire('insert_event')
-var createCaliperEvent = require('./events/create_caliper_event')
-let logger = oboRequire('logger')
+const express = require('express')
+const router = express.Router()
+const oboEvents = oboRequire('obo_events')
+const insertEvent = oboRequire('insert_event')
+const VisitModel = oboRequire('models/visit')
+const createCaliperEvent = require('./events/create_caliper_event')
+const logger = oboRequire('logger')
 
 // Create A New Event
 // mounted as /api/events
 router.post('/', (req, res, next) => {
+	let currentUser
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			// check input
-
+		.then(user => {
+			currentUser = user
+			return VisitModel.fetchById(req.body.event.visitId)
+		})
+		.then(visit => {
 			// add data to the event
 			let event = req.body.event
 
@@ -25,6 +29,7 @@ router.post('/', (req, res, next) => {
 				eventVersion: event.event_version,
 				ip: req.connection.remoteAddress,
 				metadata: {},
+				preview: visit.is_preview,
 				payload: event.payload,
 				draftId: event.draft_id,
 				caliperPayload: caliperEvent

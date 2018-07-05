@@ -7,7 +7,6 @@ const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
-const db = oboRequire('db')
 
 // launch lti view of draft - redirects to visit route
 // mounted as /visit/:draftId/:page
@@ -36,6 +35,7 @@ router.post('/:draftId/:page?', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: req.params.draftId,
+				preview: false,
 				payload: {
 					visitId,
 					deactivatedVisitId
@@ -86,6 +86,9 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 		})
 		.then(draftReturn => {
 			draft = draftReturn
+			return Visit.fetchById(req.params.visitId)
+		})
+		.then(visit => {
 			let { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
 			return insertEvent({
 				action: 'viewer:open',
@@ -94,6 +97,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: req.params.draftId,
+				preview: visit.is_preview,
 				payload: { visitId: req.params.visitId },
 				eventVersion: '1.1.0',
 				caliperPayload: createViewerOpenEvent({

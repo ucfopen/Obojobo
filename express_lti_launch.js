@@ -29,6 +29,7 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 			return insertEvent({
 				action: 'lti:launch',
 				actorTime: new Date().toISOString(),
+				preview: false,
 				payload: { launchId: insertLaunchResult.id },
 				userId: user.id,
 				ip: ip,
@@ -48,6 +49,7 @@ let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) =>
 	return insertEvent({
 		action: 'lti:pickerLaunch',
 		actorTime: new Date().toISOString(),
+		preview: false,
 		payload: {
 			ltiBody,
 			ltiConsumerKey

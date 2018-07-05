@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const db = oboRequire('db')
 const logger = oboRequire('logger')
 const DraftModel = oboRequire('models/draft')
 const VisitModel = oboRequire('models/visit')
@@ -91,6 +90,7 @@ router.post('/start', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId,
+				preview: visit.is_preview,
 				payload: { visitId },
 				eventVersion: '1.0.0',
 				caliperPayload: createViewerSessionLoggedInEvent({
