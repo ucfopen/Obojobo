@@ -1,7 +1,7 @@
-import getLTIStatusProps from '../../../../../../../ObojoboDraft/Sections/Assessment/components/post-test/lti-status/get-lti-status-props'
+import * as LTIStatus from '../../../../../../../ObojoboDraft/Sections/Assessment/components/post-test/lti-status'
 
-describe('getLTIStatusProps', () => {
-	const p = getLTIStatusProps
+describe('LTIStatus getLTIStatusProps', () => {
+	const p = LTIStatus.getLTIStatusProps
 
 	test('getLTIStatusProps transforms LTIStatus props into a flat structure', () => {
 		expect(

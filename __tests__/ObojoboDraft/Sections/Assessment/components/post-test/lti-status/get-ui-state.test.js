@@ -2,10 +2,11 @@ import Viewer from 'Viewer'
 
 const { LTIResyncStates } = Viewer.stores.assessmentStore
 
-import getLTIStatusUIState from '../../../../../../../ObojoboDraft/Sections/Assessment/components/post-test/lti-status/get-lti-status-ui-state'
-import UIStates from '../../../../../../../ObojoboDraft/Sections/Assessment/components/post-test/lti-status/lti-status-ui-states'
+import * as LTIStatus from '../../../../../../../ObojoboDraft/Sections/Assessment/components/post-test/lti-status'
 
-describe('getLTIStatusUIStates', () => {
+describe('LTIStatus getUIState', () => {
+	const UIStates = LTIStatus.UIStates
+
 	const GB_NULL_SCORE = 'ok_null_score_not_sent'
 	const GB_MATCHES = 'ok_gradebook_matches_assessment_score'
 	const GB_NO_SERVICE = 'ok_no_outcome_service'
@@ -18,7 +19,7 @@ describe('getLTIStatusUIStates', () => {
 		isResyncSucceeded,
 		gradebookStatus
 	) => {
-		return getLTIStatusUIState({
+		return LTIStatus.getUIState({
 			isPreviewing: Boolean(isPreviewing),
 			externalSystemLabel: hasExternalSystemLabel ? 'mock-external-system-label' : null,
 			isLTIDataComplete: Boolean(isLTIDataComplete),

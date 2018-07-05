@@ -8,28 +8,32 @@ import Viewer from 'Viewer'
 const { Button } = Common.components
 const { LTINetworkStates, LTIResyncStates } = Viewer.stores.assessmentStore
 
-import getLTIProps from './get-lti-status-props'
-import getUIState from './get-lti-status-ui-state'
-import UIStates from './lti-status-ui-states'
+const UIStates = {
+	UI_NOT_LTI: 'notLTI',
+	UI_ERROR: 'error',
+	UI_NO_SCORE_SENT: 'noScoreSent',
+	UI_SYNCED: 'synced',
+	UI_RESYNCED: 'resynced'
+}
 
-const renderNotLTI = () => (
-	<div className="obojobo-draft--sections--assessment--lti-status is-not-lti">&nbsp;</div>
-)
+const CLASS_NAME = 'obojobo-draft--sections--assessment--lti-status'
+
+const renderNotLTI = () => <div className={CLASS_NAME + ' is-not-lti'}>&nbsp;</div>
 
 const renderNoScoreSent = externalSystemLabel => (
-	<div className="obojobo-draft--sections--assessment--lti-status is-synced">
+	<div className={CLASS_NAME + ' is-synced'}>
 		{`No score has been sent to ${externalSystemLabel} (Only passing scores are sent)`}
 	</div>
 )
 
 const renderSynced = (assessmentScore, externalSystemLabel) => (
-	<div className="obojobo-draft--sections--assessment--lti-status is-synced">
+	<div className={CLASS_NAME + ' is-synced'}>
 		{`✔ Your recorded score of ${assessmentScore}% was sent to ${externalSystemLabel}.`}
 	</div>
 )
 
 const renderResyncedSuccessfully = (assessmentScore, externalSystemLabel) => (
-	<div className="obojobo-draft--sections--assessment--lti-status is-resynced">
+	<div className={CLASS_NAME + ' is-resynced'}>
 		<h2>Success!</h2>
 		<p
 		>{`✔ Your recorded score of ${assessmentScore}% was successfully sent to ${externalSystemLabel}.`}</p>
@@ -37,7 +41,7 @@ const renderResyncedSuccessfully = (assessmentScore, externalSystemLabel) => (
 )
 
 const renderError = (ltiResyncState, ltiNetworkState, systemLabel, onClickResendScore) => (
-	<div className="obojobo-draft--sections--assessment--lti-status is-not-synced">
+	<div className={CLASS_NAME + ' is-not-synced'}>
 		<h2>{`There was a problem sending your score to ${systemLabel}.`}</h2>
 		<p>
 			{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${systemLabel}. Click the button below to resend your score:`}
@@ -62,8 +66,49 @@ const renderError = (ltiResyncState, ltiNetworkState, systemLabel, onClickResend
 	</div>
 )
 
+const getLTIStatusProps = props => {
+	const lti = props.ltiState
+	const isLTIDataComplete = !!(lti && lti.state)
+	const gradebookStatus = lti && lti.state ? lti.state.gradebookStatus : null
+	const networkState = lti ? lti.networkState : null
+	const resyncState = lti ? lti.resyncState : null
+	const isPreviewing = props.isPreviewing
+	const externalSystemLabel = props.externalSystemLabel
+	const roundedAssessmentScore = Math.round(props.assessmentScore)
+
+	return {
+		isLTIDataComplete,
+		gradebookStatus,
+		networkState,
+		resyncState,
+		isPreviewing,
+		externalSystemLabel,
+		roundedAssessmentScore
+	}
+}
+
+const getUIState = ltiProps => {
+	if (
+		ltiProps.isPreviewing ||
+		!ltiProps.externalSystemLabel ||
+		ltiProps.gradebookStatus === 'ok_no_outcome_service'
+	) {
+		return UIStates.UI_NOT_LTI
+	}
+	if (ltiProps.externalSystemLabel && !ltiProps.isLTIDataComplete) return UIStates.UI_ERROR
+	if (ltiProps.gradebookStatus === 'ok_null_score_not_sent') return UIStates.UI_NO_SCORE_SENT
+	if (ltiProps.gradebookStatus === 'ok_gradebook_matches_assessment_score') {
+		if (ltiProps.resyncState === LTIResyncStates.RESYNC_SUCCEEDED) {
+			return UIStates.UI_RESYNCED
+		}
+		return UIStates.UI_SYNCED
+	}
+
+	return UIStates.UI_ERROR
+}
+
 const LTIStatus = props => {
-	const ltiProps = getLTIProps(props)
+	const ltiProps = getLTIStatusProps(props)
 
 	switch (getUIState(ltiProps)) {
 		case UIStates.UI_NOT_LTI:
@@ -81,7 +126,7 @@ const LTIStatus = props => {
 				ltiProps.externalSystemLabel
 			)
 
-		case UIStates.UI_ERROR:
+		// Handle UIStates.UI_ERROR and any other case:
 		default: {
 			return renderError(
 				ltiProps.resyncState,
@@ -94,3 +139,4 @@ const LTIStatus = props => {
 }
 
 export default LTIStatus
+export { getLTIStatusProps, getUIState, UIStates }
