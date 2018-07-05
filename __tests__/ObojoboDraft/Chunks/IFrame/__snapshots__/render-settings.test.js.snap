@@ -6,11 +6,9 @@ Object {
     "height": 456,
   },
   "controlsOpts": Object {
-    "expand": false,
-    "isControlsEnabled": true,
-    "newWindow": true,
+    "isControlsEnabled": false,
+    "newWindow": false,
     "reload": false,
-    "unexpand": false,
     "zoom": false,
   },
   "displayedTitle": "src",
@@ -20,9 +18,7 @@ Object {
     "width": "100%",
   },
   "isAtMinScale": false,
-  "isExpanded": false,
   "isShowing": false,
-  "mediaSize": "default-size",
   "scaleDimensions": Object {
     "containerStyle": Object {
       "width": 123,

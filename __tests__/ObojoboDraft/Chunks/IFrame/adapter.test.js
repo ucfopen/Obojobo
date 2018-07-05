@@ -112,13 +112,13 @@ describe('IFrame adapter', () => {
 
 	test('adapter sets controls correctly', () => {
 		IFrameAdapter.construct(model, { content: {} })
-		expect(model.modelState.controls).toEqual(['reload', 'expand'])
+		expect(model.modelState.controls).toEqual(['reload'])
 
 		IFrameAdapter.construct(model, { content: { type: 'webpage' } })
-		expect(model.modelState.controls).toEqual(['zoom', 'reload', 'expand'])
+		expect(model.modelState.controls).toEqual(['zoom', 'reload'])
 
 		IFrameAdapter.construct(model, { content: { type: 'media' } })
-		expect(model.modelState.controls).toEqual(['reload', 'expand'])
+		expect(model.modelState.controls).toEqual(['reload'])
 
 		IFrameAdapter.construct(model, { content: { controls: '  ExAmPle , zoom' } })
 		expect(model.modelState.controls).toEqual(['example', 'zoom'])
@@ -182,20 +182,6 @@ describe('IFrame adapter', () => {
 
 		IFrameAdapter.construct(model, { content: { autoload: true } })
 		expect(model.modelState.autoload).toBe(true)
-	})
-
-	test('adapter sets expandedSize correctly', () => {
-		IFrameAdapter.construct(model, { content: {} })
-		expect(model.modelState.expandedSize).toBe('full')
-
-		IFrameAdapter.construct(model, { content: { expandedSize: 'fULl' } })
-		expect(model.modelState.expandedSize).toBe('full')
-
-		IFrameAdapter.construct(model, { content: { expandedSize: 'other' } })
-		expect(model.modelState.expandedSize).toBe('full')
-
-		IFrameAdapter.construct(model, { content: { expandedSize: 'RESTRIctED' } })
-		expect(model.modelState.expandedSize).toBe('restricted')
 	})
 
 	test('adapter sets title correctly', () => {

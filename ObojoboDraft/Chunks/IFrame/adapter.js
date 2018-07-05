@@ -18,7 +18,7 @@ export default {
 				defaultNewWindow = true
 				defaultBorder = true
 				defaultFit = 'scroll'
-				defaultControls = ['zoom', 'reload', 'expand']
+				defaultControls = ['zoom', 'reload']
 				break
 
 			case 'media':
@@ -26,7 +26,7 @@ export default {
 				defaultNewWindow = false
 				defaultBorder = false
 				defaultFit = 'scale'
-				defaultControls = ['reload', 'expand']
+				defaultControls = ['reload']
 				break
 		}
 
@@ -41,7 +41,6 @@ export default {
 		s('autoload', false, p => p === true)
 		s('title', null)
 		s('controls', defaultControls, p => p.split(',').map(c => c.toLowerCase().replace(/ /g, '')))
-		s('expandedSize', 'full', p => p.toLowerCase(), ['full', 'restricted'])
 	},
 
 	clone(model, clone) {
@@ -55,7 +54,6 @@ export default {
 		clone.modelState.newWindowSrc = model.modelState.newWindowSrc
 		clone.modelState.autoload = model.modelState.autoload
 		clone.modelState.fit = model.modelState.fit
-		clone.modelState.expandedSize = model.modelState.expandedSize
 		clone.modelState.title = model.modelState.title
 		clone.modelState.controls = model.modelState.controls
 	},
@@ -71,7 +69,6 @@ export default {
 		json.content.newWindowSrc = model.modelState.newWindowSrc
 		json.content.autoload = model.modelState.autoload
 		json.content.fit = model.modelState.fit
-		json.content.expandedSize = model.modelState.expandedSize
 		json.content.title = model.modelState.title
 		json.content.controls = model.modelState.controls
 	},

@@ -26,7 +26,6 @@ describe('Media Store', () => {
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
-			sizeById: {},
 			zoomById: {}
 		})
 	})
@@ -52,7 +51,6 @@ describe('Media Store', () => {
 		expect(Dispatcher.on).toHaveBeenCalledWith({
 			'media:show': expect.any(Function),
 			'media:hide': expect.any(Function),
-			'media:setSize': expect.any(Function),
 			'media:setZoom': expect.any(Function),
 			'media:resetZoom': expect.any(Function)
 		})
@@ -65,7 +63,6 @@ describe('Media Store', () => {
 
 		expect(MediaStore.state).toEqual({
 			shown: { 'mocked-id': true },
-			sizeById: {},
 			zoomById: {}
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:show', '1.0.0', {
@@ -77,7 +74,6 @@ describe('Media Store', () => {
 	test('hide', () => {
 		MediaStore.state = {
 			shown: { 'mocked-id': true, 'other-id': true },
-			sizeById: { 'mocked-id': 'size', 'other-id': 'other-size' },
 			zoomById: { 'mocked-id': 2, 'other-id': 0.5 }
 		}
 		MediaStore.hide({
@@ -86,7 +82,6 @@ describe('Media Store', () => {
 
 		expect(MediaStore.state).toEqual({
 			shown: { 'other-id': true },
-			sizeById: { 'other-id': 'other-size' },
 			zoomById: { 'other-id': 0.5 }
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:hide', '1.0.0', {
@@ -114,51 +109,6 @@ describe('Media Store', () => {
 		})
 	})
 
-	test('setSize (to a set value)', () => {
-		MediaStore.setSize({
-			value: { id: 'mocked-id', size: 'mocked-size' }
-		})
-
-		expect(MediaStore.state).toEqual({
-			shown: {},
-			sizeById: { 'mocked-id': 'mocked-size' },
-			zoomById: {}
-		})
-		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:setSize', '1.0.0', {
-			id: 'mocked-id',
-			size: 'mocked-size',
-			previousSize: 'default'
-		})
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:sizeChanged', {
-			id: 'mocked-id',
-			size: 'mocked-size',
-			previousSize: 'default'
-		})
-	})
-
-	test('setSize (to null)', () => {
-		MediaStore.state.sizeById['mocked-id'] = 'other-size'
-		MediaStore.setSize({
-			value: { id: 'mocked-id', size: null }
-		})
-
-		expect(MediaStore.state).toEqual({
-			shown: {},
-			sizeById: {},
-			zoomById: {}
-		})
-		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:setSize', '1.0.0', {
-			id: 'mocked-id',
-			size: 'default',
-			previousSize: 'other-size'
-		})
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:sizeChanged', {
-			id: 'mocked-id',
-			size: 'default',
-			previousSize: 'other-size'
-		})
-	})
-
 	test('setZoom (to a set value)', () => {
 		MediaStore.setZoom({
 			value: { id: 'mocked-id', zoom: 'mocked-zoom' }
@@ -166,7 +116,6 @@ describe('Media Store', () => {
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
-			sizeById: {},
 			zoomById: { 'mocked-id': 'mocked-zoom' }
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:setZoom', '1.0.0', {
@@ -189,7 +138,6 @@ describe('Media Store', () => {
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
-			sizeById: {},
 			zoomById: {}
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:setZoom', '1.0.0', {
@@ -211,7 +159,6 @@ describe('Media Store', () => {
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
-			sizeById: {},
 			zoomById: {}
 		})
 		expect(APIUtil.postEvent).not.toHaveBeenCalled()
@@ -226,7 +173,6 @@ describe('Media Store', () => {
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
-			sizeById: {},
 			zoomById: {}
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:resetZoom', '1.0.0', {
@@ -246,7 +192,6 @@ describe('Media Store', () => {
 
 		expect(MediaStore.state).toEqual({
 			shown: {},
-			sizeById: {},
 			zoomById: {}
 		})
 		expect(APIUtil.postEvent).toHaveBeenCalledWith('root-id', 'media:resetZoom', '1.0.0', {

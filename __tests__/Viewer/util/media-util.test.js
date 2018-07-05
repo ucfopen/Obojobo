@@ -11,7 +11,7 @@ const testModel = {
 	get: () => 'mocked-id'
 }
 
-describe('QuestionUtil', () => {
+describe('MediaUtil', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 	})
@@ -51,18 +51,6 @@ describe('QuestionUtil', () => {
 		})
 	})
 
-	test('setSize', () => {
-		MediaUtil.setSize('mocked-id', 'mock-size')
-
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:setSize', {
-			value: {
-				id: 'mocked-id',
-				size: 'mock-size'
-			}
-		})
-	})
-
 	test('setZoom', () => {
 		MediaUtil.setZoom('mocked-id', 'mock-zoom')
 
@@ -84,13 +72,6 @@ describe('QuestionUtil', () => {
 				id: 'mocked-id'
 			}
 		})
-	})
-
-	test('getSize', () => {
-		expect(MediaUtil.getSize({ sizeById: {} }, testModel)).toBe(null)
-		expect(MediaUtil.getSize({ sizeById: { 'mocked-id': 'mocked-size' } }, testModel)).toBe(
-			'mocked-size'
-		)
 	})
 
 	test('getZoom', () => {

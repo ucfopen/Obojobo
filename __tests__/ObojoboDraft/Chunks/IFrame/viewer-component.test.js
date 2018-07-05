@@ -25,17 +25,14 @@ describe('IFrame', () => {
 		}
 	}
 
-	const createRenderSettings = (isExpanded, isAtMinScale, isShowing, isControlsEnabled, scale) => {
+	const createRenderSettings = (isAtMinScale, isShowing, isControlsEnabled, scale) => {
 		renderSettingsModule.getRenderSettings = jest.fn()
 		renderSettingsModule.getRenderSettings.mockReturnValue({
 			zoomValues: 'zoom-values',
 			zoom: 1,
-			mediaSize: 'media-size',
 			displayedTitle: 'displayed-title',
 			iframeStyle: {},
 			afterStyle: {},
-
-			isExpanded,
 			isAtMinScale,
 			isShowing,
 			scaleDimensions: {
@@ -74,8 +71,7 @@ describe('IFrame', () => {
 			focusState: {},
 			mediaState: {
 				shown: {},
-				zoomById: {},
-				sizeById: {}
+				zoomById: {}
 			}
 		}
 
@@ -95,193 +91,99 @@ describe('IFrame', () => {
 	test('IFrame component renders', () => {
 		let component
 
-		createRenderSettings(true, true, true, true, 0.5)
+		createRenderSettings(true, true, true, 0.5)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, true, true, 1)
+		createRenderSettings(true, true, true, 1)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, true, true, 2)
+		createRenderSettings(true, true, true, 2)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, true, false, 0.5)
+		createRenderSettings(true, true, false, 0.5)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, true, false, 1)
+		createRenderSettings(true, true, false, 1)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, true, false, 2)
+		createRenderSettings(true, true, false, 2)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, false, true, 0.5)
+		createRenderSettings(true, false, true, 0.5)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, false, true, 1)
+		createRenderSettings(true, false, true, 1)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, false, true, 2)
+		createRenderSettings(true, false, true, 2)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, false, false, 0.5)
+		createRenderSettings(true, false, false, 0.5)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, false, false, 1)
+		createRenderSettings(true, false, false, 1)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, true, false, false, 2)
+		createRenderSettings(true, false, false, 2)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, true, true, 0.5)
+		createRenderSettings(false, true, true, 0.5)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, true, true, 1)
+		createRenderSettings(false, true, true, 1)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, true, true, 2)
+		createRenderSettings(false, true, true, 2)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, true, false, 0.5)
+		createRenderSettings(false, true, false, 0.5)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, true, false, 1)
+		createRenderSettings(false, true, false, 1)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, true, false, 2)
+		createRenderSettings(false, true, false, 2)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, false, true, 0.5)
+		createRenderSettings(false, false, true, 0.5)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, false, true, 1)
+		createRenderSettings(false, false, true, 1)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, false, true, 2)
+		createRenderSettings(false, false, true, 2)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, false, false, 0.5)
+		createRenderSettings(false, false, false, 0.5)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, false, false, 1)
+		createRenderSettings(false, false, false, 1)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
-		createRenderSettings(true, false, false, false, 2)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, true, true, 0.5)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, true, true, 1)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, true, true, 2)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, true, false, 0.5)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, true, false, 1)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, true, false, 2)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, false, true, 0.5)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, false, true, 1)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, false, true, 2)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, false, false, 0.5)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, false, false, 1)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, true, false, false, 2)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, true, true, 0.5)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, true, true, 1)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, true, true, 2)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, true, false, 0.5)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, true, false, 1)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, true, false, 2)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, false, true, 0.5)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-		createRenderSettings(false, false, false, true, 1)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-		createRenderSettings(false, false, false, true, 2)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, false, false, 0.5)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, false, false, 1)
-		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
-		expect(component.toJSON()).toMatchSnapshot()
-
-		createRenderSettings(false, false, false, false, 2)
+		createRenderSettings(false, false, false, 2)
 		component = renderer.create(<IFrame model={model} moduleData={moduleData} />)
 		expect(component.toJSON()).toMatchSnapshot()
 
@@ -366,28 +268,6 @@ describe('IFrame', () => {
 		component.find('.container').simulate('click')
 
 		expect(spy).toHaveBeenCalledTimes(0)
-	})
-
-	test('onClickExpand calls MediaUtil.setSize', () => {
-		const component = shallow(<IFrame model={model} moduleData={moduleData} />)
-
-		MediaUtil.setSize = jest.fn()
-
-		component.instance().onClickExpand()
-
-		expect(MediaUtil.setSize).toHaveBeenCalledTimes(1)
-		expect(MediaUtil.setSize).toHaveBeenCalledWith('mock-obo-id', 'large')
-	})
-
-	test('onClickExpandClose calls MediaUtil.setSize', () => {
-		const component = shallow(<IFrame model={model} moduleData={moduleData} />)
-
-		MediaUtil.setSize = jest.fn()
-
-		component.instance().onClickExpandClose()
-
-		expect(MediaUtil.setSize).toHaveBeenCalledTimes(1)
-		expect(MediaUtil.setSize).toHaveBeenCalledWith('mock-obo-id', null)
 	})
 
 	test('onClickZoomReset calls MediaUtil.resetZoom', () => {

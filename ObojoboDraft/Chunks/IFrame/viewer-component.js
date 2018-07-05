@@ -28,8 +28,6 @@ export default class IFrame extends React.Component {
 		super(props)
 
 		this.boundOnClickContainer = this.onClickContainer.bind(this)
-		this.boundOnClickExpand = this.onClickExpand.bind(this)
-		this.boundOnClickExpandClose = this.onClickExpandClose.bind(this)
 		this.boundOnZoomReset = this.onClickZoomReset.bind(this)
 		this.boundOnReload = this.onClickReload.bind(this)
 		this.boundOnViewerContentAreaResized = this.onViewerContentAreaResized.bind(this)
@@ -62,14 +60,6 @@ export default class IFrame extends React.Component {
 
 	onClickContainer() {
 		MediaUtil.show(this.props.model.get('id'))
-	}
-
-	onClickExpand() {
-		MediaUtil.setSize(this.props.model.get('id'), 'large')
-	}
-
-	onClickExpandClose() {
-		MediaUtil.setSize(this.props.model.get('id'), null)
 	}
 
 	onClickZoomReset() {
@@ -126,19 +116,6 @@ export default class IFrame extends React.Component {
 		}
 	}
 
-	renderExpandedBackground() {
-		return (
-			<div className="expanded-background">
-				<Header
-					logoPosition="left"
-					moduleTitle={this.props.moduleData.model.title}
-					location={NavUtil.getNavTargetModel(this.props.moduleData.navState).title || ''}
-				/>
-				<Button onClick={this.boundOnClickExpandClose}>Close</Button>
-			</div>
-		)
-	}
-
 	render() {
 		const model = this.props.model
 		const ms = model.modelState
@@ -146,9 +123,7 @@ export default class IFrame extends React.Component {
 		const {
 			zoomValues,
 			zoom,
-			mediaSize,
 			displayedTitle,
-			isExpanded,
 			scaleDimensions,
 			isShowing,
 			controlsOpts,
@@ -159,7 +134,6 @@ export default class IFrame extends React.Component {
 			model,
 			this.state.actualWidth,
 			this.state.padding,
-			MediaStore.constructor.SIZE_DEFAULT,
 			DEFAULT_WIDTH,
 			DEFAULT_HEIGHT,
 			MIN_SCALE,
@@ -176,12 +150,10 @@ export default class IFrame extends React.Component {
 						isOrNot(isShowing, 'showing') +
 						isOrNot(controlsOpts.isControlsEnabled, 'controls-enabled') +
 						isOrNot(ms.src === null, 'missing-src') +
-						isOrNot(scaleDimensions.scale > 1, 'scaled-up') +
-						(' is-size-' + mediaSize)
+						isOrNot(scaleDimensions.scale > 1, 'scaled-up')
 					}
 					ref="main"
 				>
-					{isExpanded ? this.renderExpandedBackground() : null}
 					<div
 						className="container"
 						ref="container"
@@ -219,8 +191,6 @@ export default class IFrame extends React.Component {
 							zoomIn={this.onClickSetZoom.bind(this, parseFloat((zoom + 0.1).toFixed(2)))}
 							zoomOut={this.onClickSetZoom.bind(this, parseFloat((zoom - 0.1).toFixed(2)))}
 							zoomReset={this.boundOnZoomReset}
-							expand={this.boundOnClickExpand}
-							expandClose={this.boundOnClickExpandClose}
 						/>
 					</div>
 				</div>

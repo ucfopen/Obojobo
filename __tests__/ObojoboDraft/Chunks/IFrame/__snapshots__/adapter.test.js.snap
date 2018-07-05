@@ -7,9 +7,7 @@ Object {
     "border": false,
     "controls": Array [
       "reload",
-      "expand",
     ],
-    "expandedSize": "full",
     "fit": "scale",
     "height": null,
     "newWindow": false,
@@ -30,9 +28,7 @@ Object {
     "border": false,
     "controls": Array [
       "reload",
-      "expand",
     ],
-    "expandedSize": "full",
     "fit": "scale",
     "height": null,
     "newWindow": false,

@@ -10,46 +10,8 @@ exports[`IFrame IFrame component renders 1`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -72,7 +34,7 @@ exports[`IFrame IFrame component renders 1`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -89,46 +51,8 @@ exports[`IFrame IFrame component renders 2`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -151,7 +75,7 @@ exports[`IFrame IFrame component renders 2`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -168,46 +92,8 @@ exports[`IFrame IFrame component renders 3`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -230,7 +116,7 @@ exports[`IFrame IFrame component renders 3`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -247,46 +133,8 @@ exports[`IFrame IFrame component renders 4`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -309,7 +157,7 @@ exports[`IFrame IFrame component renders 4`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -326,46 +174,8 @@ exports[`IFrame IFrame component renders 5`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -388,7 +198,7 @@ exports[`IFrame IFrame component renders 5`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -405,46 +215,8 @@ exports[`IFrame IFrame component renders 6`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -467,7 +239,7 @@ exports[`IFrame IFrame component renders 6`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -484,46 +256,8 @@ exports[`IFrame IFrame component renders 7`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -562,7 +296,7 @@ exports[`IFrame IFrame component renders 7`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -579,46 +313,8 @@ exports[`IFrame IFrame component renders 8`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -657,7 +353,7 @@ exports[`IFrame IFrame component renders 8`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -674,46 +370,8 @@ exports[`IFrame IFrame component renders 9`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -752,7 +410,7 @@ exports[`IFrame IFrame component renders 9`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -769,46 +427,8 @@ exports[`IFrame IFrame component renders 10`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -847,7 +467,7 @@ exports[`IFrame IFrame component renders 10`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -864,46 +484,8 @@ exports[`IFrame IFrame component renders 11`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -942,7 +524,7 @@ exports[`IFrame IFrame component renders 11`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -959,46 +541,8 @@ exports[`IFrame IFrame component renders 12`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -1037,7 +581,7 @@ exports[`IFrame IFrame component renders 12`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1054,46 +598,8 @@ exports[`IFrame IFrame component renders 13`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -1116,7 +622,7 @@ exports[`IFrame IFrame component renders 13`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1133,46 +639,8 @@ exports[`IFrame IFrame component renders 14`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -1195,7 +663,7 @@ exports[`IFrame IFrame component renders 14`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1212,46 +680,8 @@ exports[`IFrame IFrame component renders 15`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -1274,7 +704,7 @@ exports[`IFrame IFrame component renders 15`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1291,46 +721,8 @@ exports[`IFrame IFrame component renders 16`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -1353,7 +745,7 @@ exports[`IFrame IFrame component renders 16`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1370,46 +762,8 @@ exports[`IFrame IFrame component renders 17`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -1432,7 +786,7 @@ exports[`IFrame IFrame component renders 17`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1449,46 +803,8 @@ exports[`IFrame IFrame component renders 18`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={null}
@@ -1511,7 +827,7 @@ exports[`IFrame IFrame component renders 18`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1528,46 +844,8 @@ exports[`IFrame IFrame component renders 19`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -1606,7 +884,7 @@ exports[`IFrame IFrame component renders 19`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1623,46 +901,8 @@ exports[`IFrame IFrame component renders 20`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -1701,7 +941,7 @@ exports[`IFrame IFrame component renders 20`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1718,46 +958,8 @@ exports[`IFrame IFrame component renders 21`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -1796,7 +998,7 @@ exports[`IFrame IFrame component renders 21`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1813,46 +1015,8 @@ exports[`IFrame IFrame component renders 22`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -1891,7 +1055,7 @@ exports[`IFrame IFrame component renders 22`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -1908,46 +1072,8 @@ exports[`IFrame IFrame component renders 23`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -1986,7 +1112,7 @@ exports[`IFrame IFrame component renders 23`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -2003,46 +1129,8 @@ exports[`IFrame IFrame component renders 24`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
   >
-    <div
-      className="expanded-background"
-    >
-      <header
-        className="viewer--components--header is-logo-left"
-      >
-        <div
-          className="wrapper"
-        >
-          <span
-            className="module-title"
-          >
-            mocked-module-title
-          </span>
-          <span
-            className="location"
-          >
-            
-          </span>
-          <div
-            className="viewer--components--logo is-not-inverted"
-          >
-            Obojobo
-          </div>
-        </div>
-      </header>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={undefined}
-          onClick={[Function]}
-          tabIndex={undefined}
-        >
-          Close
-        </button>
-      </div>
-    </div>
     <div
       className="container"
       onClick={[Function]}
@@ -2081,7 +1169,7 @@ exports[`IFrame IFrame component renders 24`] = `
         </div>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>
@@ -2098,1183 +1186,7 @@ exports[`IFrame IFrame component renders 25`] = `
   id="obo-mock-obo-id"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 26`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 27`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 28`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 29`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 30`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 31`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 32`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 33`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 34`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 35`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 36`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 37`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 38`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 39`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 40`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 41`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 42`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={null}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <iframe
-          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-          frameBorder="0"
-          is={true}
-          src="http://www.example.com"
-          style={Object {}}
-          title={null}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 43`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 44`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 45`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 46`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 47`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 48`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up is-size-media-size"
-  >
-    <div
-      className="container"
-      onClick={[Function]}
-      style={Object {}}
-    >
-      <div
-        className="iframe-container"
-      >
-        <div
-          className="blocker"
-          style={Object {}}
-        />
-      </div>
-      <div
-        className="after"
-        style={Object {}}
-      />
-      <div
-        className="click-to-load"
-      >
-        <span
-          className="title"
-        >
-          displayed-title
-        </span>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center"
-        >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
-            View Content
-          </button>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame IFrame component renders 49`] = `
-<div
-  className="component"
-  data-focussed={false}
-  data-id="mock-obo-id"
-  data-obo-component={true}
-  data-type="ObojoboDraft.Chunks.IFrame"
-  id="obo-mock-obo-id"
->
-  <div
-    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-missing-src is-scaled-up is-size-media-size"
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-missing-src is-scaled-up"
   >
     <div
       className="container"
@@ -3303,7 +1215,7 @@ exports[`IFrame IFrame component renders 49`] = `
         </span>
       </div>
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-unexpandable is-not-expandable is-not-zoomable is-not-reloadable"
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
       />
     </div>
   </div>

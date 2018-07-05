@@ -1,8 +1,6 @@
 import {
 	getIsShowing,
 	getControlsOptions,
-	getSizeState,
-	getMediaSize,
 	getDisplayedTitle,
 	getSetDimensions,
 	getScaleAmount,
@@ -16,14 +14,11 @@ import {
 describe('render-settings', () => {
 	let model
 
-	const testGetControlsOptions = (controls, newWindow, sizeState) => {
-		return getControlsOptions(
-			{
-				controls,
-				newWindow
-			},
-			sizeState
-		)
+	const testGetControlsOptions = (controls, newWindow) => {
+		return getControlsOptions({
+			controls,
+			newWindow
+		})
 	}
 
 	beforeEach(() => {
@@ -162,483 +157,124 @@ describe('render-settings', () => {
 		).toBe(false)
 	})
 
-	test('getControlsOptions (newWindow=null, sizeState="expanded")', () => {
+	test('getControlsOptions (newWindow=null)', () => {
 		const c = testGetControlsOptions
 
-		expect(c([], null, 'expanded')).toEqual({
+		expect(c([], false)).toEqual({
 			zoom: false,
 			reload: false,
-			expand: false,
-			unexpand: true,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload'], null, 'expanded')).toEqual({
-			zoom: false,
-			reload: true,
-			expand: false,
-			unexpand: true,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom'], null, 'expanded')).toEqual({
-			zoom: true,
-			reload: false,
-			expand: false,
-			unexpand: true,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['expand'], null, 'expanded')).toEqual({
-			zoom: false,
-			reload: false,
-			expand: false,
-			unexpand: true,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'zoom'], null, 'expanded')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: false,
-			unexpand: true,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand'], null, 'expanded')).toEqual({
-			zoom: false,
-			reload: true,
-			expand: false,
-			unexpand: true,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom', 'expand'], null, 'expanded')).toEqual({
-			zoom: true,
-			reload: false,
-			expand: false,
-			unexpand: true,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand', 'zoom'], null, 'expanded')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: false,
-			unexpand: true,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-	})
-
-	test('getControlsOptions (newWindow=null, sizeState="ableToExpand")', () => {
-		const c = testGetControlsOptions
-
-		expect(c([], null, 'ableToExpand')).toEqual({
-			zoom: false,
-			reload: false,
-			expand: false,
-			unexpand: false,
 			newWindow: false,
 			isControlsEnabled: false
 		})
 
-		expect(c(['reload'], null, 'ableToExpand')).toEqual({
+		expect(c(['reload'], false)).toEqual({
 			zoom: false,
 			reload: true,
-			expand: false,
-			unexpand: false,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['zoom'], null, 'ableToExpand')).toEqual({
+		expect(c(['zoom'], false)).toEqual({
 			zoom: true,
 			reload: false,
-			expand: false,
-			unexpand: false,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['expand'], null, 'ableToExpand')).toEqual({
+		expect(c(['expand'], false)).toEqual({
 			zoom: false,
 			reload: false,
-			expand: true,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'zoom'], null, 'ableToExpand')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand'], null, 'ableToExpand')).toEqual({
-			zoom: false,
-			reload: true,
-			expand: true,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom', 'expand'], null, 'ableToExpand')).toEqual({
-			zoom: true,
-			reload: false,
-			expand: true,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand', 'zoom'], null, 'ableToExpand')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: true,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-	})
-
-	test('getControlsOptions (newWindow=null, sizeState="unableToExpand")', () => {
-		const c = testGetControlsOptions
-
-		expect(c([], null, 'unableToExpand')).toEqual({
-			zoom: false,
-			reload: false,
-			expand: false,
-			unexpand: false,
 			newWindow: false,
 			isControlsEnabled: false
 		})
 
-		expect(c(['reload'], null, 'unableToExpand')).toEqual({
+		expect(c(['reload', 'zoom'], false)).toEqual({
+			zoom: true,
+			reload: true,
+			newWindow: false,
+			isControlsEnabled: true
+		})
+
+		expect(c(['reload', 'expand'], false)).toEqual({
 			zoom: false,
 			reload: true,
-			expand: false,
-			unexpand: false,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['zoom'], null, 'unableToExpand')).toEqual({
+		expect(c(['zoom', 'expand'], false)).toEqual({
 			zoom: true,
 			reload: false,
-			expand: false,
-			unexpand: false,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['expand'], null, 'unableToExpand')).toEqual({
-			zoom: false,
-			reload: false,
-			expand: false,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: false
-		})
-
-		expect(c(['reload', 'zoom'], null, 'unableToExpand')).toEqual({
+		expect(c(['reload', 'expand', 'zoom'], false)).toEqual({
 			zoom: true,
 			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand'], null, 'unableToExpand')).toEqual({
-			zoom: false,
-			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom', 'expand'], null, 'unableToExpand')).toEqual({
-			zoom: true,
-			reload: false,
-			expand: false,
-			unexpand: false,
-			newWindow: false,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand', 'zoom'], null, 'unableToExpand')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: false,
-			unexpand: false,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 	})
 
-	//here
-
-	test('getControlsOptions (newWindow=defined, sizeState="expanded")', () => {
+	test('getControlsOptions (newWindow=defined)', () => {
 		const c = testGetControlsOptions
 
-		expect(c([], 'nw', 'expanded')).toEqual({
+		expect(c([], true)).toEqual({
 			zoom: false,
 			reload: false,
-			expand: false,
-			unexpand: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['reload'], 'nw', 'expanded')).toEqual({
+		expect(c(['reload'], true)).toEqual({
 			zoom: false,
 			reload: true,
-			expand: false,
-			unexpand: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['zoom'], 'nw', 'expanded')).toEqual({
+		expect(c(['zoom'], true)).toEqual({
 			zoom: true,
 			reload: false,
-			expand: false,
-			unexpand: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['expand'], 'nw', 'expanded')).toEqual({
+		expect(c(['expand'], true)).toEqual({
 			zoom: false,
 			reload: false,
-			expand: false,
-			unexpand: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['reload', 'zoom'], 'nw', 'expanded')).toEqual({
+		expect(c(['reload', 'zoom'], true)).toEqual({
 			zoom: true,
 			reload: true,
-			expand: false,
-			unexpand: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['reload', 'expand'], 'nw', 'expanded')).toEqual({
+		expect(c(['reload', 'expand'], true)).toEqual({
 			zoom: false,
 			reload: true,
-			expand: false,
-			unexpand: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['zoom', 'expand'], 'nw', 'expanded')).toEqual({
+		expect(c(['zoom', 'expand'], true)).toEqual({
 			zoom: true,
 			reload: false,
-			expand: false,
-			unexpand: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['reload', 'expand', 'zoom'], 'nw', 'expanded')).toEqual({
+		expect(c(['reload', 'expand', 'zoom'], true)).toEqual({
 			zoom: true,
 			reload: true,
-			expand: false,
-			unexpand: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
-	})
-
-	test('getControlsOptions (newWindow=defined, sizeState="ableToExpand")', () => {
-		const c = testGetControlsOptions
-
-		expect(c([], 'nw', 'ableToExpand')).toEqual({
-			zoom: false,
-			reload: false,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload'], 'nw', 'ableToExpand')).toEqual({
-			zoom: false,
-			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom'], 'nw', 'ableToExpand')).toEqual({
-			zoom: true,
-			reload: false,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['expand'], 'nw', 'ableToExpand')).toEqual({
-			zoom: false,
-			reload: false,
-			expand: true,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'zoom'], 'nw', 'ableToExpand')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand'], 'nw', 'ableToExpand')).toEqual({
-			zoom: false,
-			reload: true,
-			expand: true,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom', 'expand'], 'nw', 'ableToExpand')).toEqual({
-			zoom: true,
-			reload: false,
-			expand: true,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand', 'zoom'], 'nw', 'ableToExpand')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: true,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-	})
-
-	test('getControlsOptions (newWindow=defined, sizeState="unableToExpand")', () => {
-		const c = testGetControlsOptions
-
-		expect(c([], 'nw', 'unableToExpand')).toEqual({
-			zoom: false,
-			reload: false,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload'], 'nw', 'unableToExpand')).toEqual({
-			zoom: false,
-			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom'], 'nw', 'unableToExpand')).toEqual({
-			zoom: true,
-			reload: false,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['expand'], 'nw', 'unableToExpand')).toEqual({
-			zoom: false,
-			reload: false,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'zoom'], 'nw', 'unableToExpand')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand'], 'nw', 'unableToExpand')).toEqual({
-			zoom: false,
-			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom', 'expand'], 'nw', 'unableToExpand')).toEqual({
-			zoom: true,
-			reload: false,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand', 'zoom'], 'nw', 'unableToExpand')).toEqual({
-			zoom: true,
-			reload: true,
-			expand: false,
-			unexpand: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-	})
-
-	test('getSizeState', () => {
-		const s = getSizeState
-
-		expect(s('full', 1, 'normal')).toBe('ableToExpand')
-		expect(s('full', 0.5, 'normal')).toBe('ableToExpand')
-		expect(s('full', 1, 'large')).toBe('expanded')
-		expect(s('full', 0.5, 'large')).toBe('expanded')
-		expect(s('restricted', 1, 'normal')).toBe('unableToExpand')
-		expect(s('restricted', 0.5, 'normal')).toBe('ableToExpand')
-		expect(s('restricted', 1, 'large')).toBe('expanded')
-		expect(s('restricted', 0.5, 'large')).toBe('expanded')
-	})
-
-	test('getMediaSize', () => {
-		const m = getMediaSize
-		const model = { get: () => 'id' }
-
-		expect(m({ sizeById: {} }, model, 'default')).toBe('default')
-		expect(m({ sizeById: { id: 'size' } }, model, 'default')).toBe('size')
 	})
 
 	test('getDisplayedTitle', () => {
@@ -669,74 +305,40 @@ describe('render-settings', () => {
 		expect(s(200, 20, 400)).toBe(180 / 400)
 	})
 
-	test('getScaleDimensions (expandedSize="full", fit="scale")', () => {
+	test('getScaleDimensions (fit="scale")', () => {
 		const d = getScaleDimensions
-		const ms = { expandedSize: 'full', fit: 'scale' }
+		const ms = { fit: 'scale' }
 
-		expect(d(ms, 123, false, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
+		expect(d(ms, 123, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
 			scale: 123 * 0.5,
 			containerStyle: {
 				width: 'w'
 			}
 		})
-		expect(d(ms, 123, true, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
-			scale: 123,
-			containerStyle: {}
-		})
-	})
-
-	test('getScaleDimensions (expandedSize="restricted", fit="scale")', () => {
-		const d = getScaleDimensions
-		const ms = { expandedSize: 'restricted', fit: 'scale' }
-
-		expect(d(ms, 123, false, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
-			scale: 123 * 0.5,
+		expect(d(ms, 123, 0.5, 200, { w: 'w', h: 'h' })).toEqual({
+			scale: 200,
 			containerStyle: {
 				width: 'w'
 			}
 		})
-		expect(d(ms, 123, true, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
-			scale: 123,
-			containerStyle: {
-				maxWidth: 'w',
-				maxHeight: 'h'
-			}
-		})
 	})
 
-	test('getScaleDimensions (expandedSize="full", fit="scroll")', () => {
+	test('getScaleDimensions (fit="scroll")', () => {
 		const d = getScaleDimensions
-		const ms = { expandedSize: 'full', fit: 'scroll' }
+		const ms = { fit: 'scroll' }
 
-		expect(d(ms, 123, false, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
+		expect(d(ms, 123, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
 			scale: 123,
 			containerStyle: {
 				width: 'w',
 				height: 'h'
 			}
 		})
-		expect(d(ms, 123, true, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
-			scale: 123,
-			containerStyle: {}
-		})
-	})
-
-	test('getScaleDimensions (expandedSize="restricted", fit="scale")', () => {
-		const d = getScaleDimensions
-		const ms = { expandedSize: 'restricted', fit: 'scroll' }
-
-		expect(d(ms, 123, false, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
-			scale: 123,
+		expect(d(ms, 123, 0.5, 200, { w: 'w', h: 'h' })).toEqual({
+			scale: 200,
 			containerStyle: {
 				width: 'w',
 				height: 'h'
-			}
-		})
-		expect(d(ms, 123, true, 0.5, 0.1, { w: 'w', h: 'h' })).toEqual({
-			scale: 123,
-			containerStyle: {
-				maxWidth: 'w',
-				maxHeight: 'h'
 			}
 		})
 	})
@@ -787,7 +389,6 @@ describe('render-settings', () => {
 	test('getRenderSettings', () => {
 		const mediaState = {
 			zoomById: {},
-			sizeById: {},
 			shown: {}
 		}
 		const model = {
@@ -798,8 +399,6 @@ describe('render-settings', () => {
 				controls: ''
 			}
 		}
-		expect(
-			getRenderSettings(model, 500, 10, 'default-size', 123, 456, 0.1, mediaState)
-		).toMatchSnapshot()
+		expect(getRenderSettings(model, 500, 10, 123, 456, 0.1, mediaState)).toMatchSnapshot()
 	})
 })

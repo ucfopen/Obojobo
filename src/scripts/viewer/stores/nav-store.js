@@ -115,7 +115,6 @@ class NavStore extends Store {
 	}
 
 	init(model, startingId, startingPath, visitId, viewState = {}) {
-		console.log('init!1!!!!!')
 		this.state = {
 			items: {},
 			itemsById: {},

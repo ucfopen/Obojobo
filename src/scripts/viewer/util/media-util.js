@@ -1,8 +1,8 @@
 import Common from 'Common'
 
-let { Dispatcher } = Common.flux
+const { Dispatcher } = Common.flux
 
-let MediaUtil = {
+const MediaUtil = {
 	show(id) {
 		return Dispatcher.trigger('media:show', {
 			value: {
@@ -16,15 +16,6 @@ let MediaUtil = {
 			value: {
 				id,
 				actor
-			}
-		})
-	},
-
-	setSize(id, size) {
-		return Dispatcher.trigger('media:setSize', {
-			value: {
-				id,
-				size
 			}
 		})
 	},
@@ -44,11 +35,6 @@ let MediaUtil = {
 				id
 			}
 		})
-	},
-
-	getSize(state, model) {
-		if (typeof state.sizeById[model.get('id')] === 'undefined') return null
-		return state.sizeById[model.get('id')]
 	},
 
 	getZoom(state, model) {
