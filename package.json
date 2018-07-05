@@ -9,27 +9,21 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "TZ='America/New_York' jest --verbose",
-		"test:ci":
-			"TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"start": "webpack --watch",
 		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
-		"build": "webpack --mode production",
-		"build:gitadd": "git add ./build",
-		"build:minifysvg":
-			"find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
+		"build": "webpack --mode production --optimize-minimize",
+		"build:dev": "webpack --mode development",
+		"build:minifysvg": "find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"precommit": "yarn test:ci && lint-staged",
 		"ci:prepare": "docker build -t docengine:latest .",
-		"ci:mounted:install":
-			"docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn install --force",
-		"ci:mounted:test":
-			"docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn test --coverage",
-		"ci:mounted:build":
-			"docker run -i -w -v $(pwd):/project/ -w /project docengine:latest yarn build",
-		"ci:isolated:test":
-			"docker run -i -e GIT_USER -e GIT_PASSWORD -e GIT_BRANCH docengine:latest /bin/docker_clone_and_test.sh",
+		"ci:mounted:install": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn install --force",
+		"ci:mounted:test": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn test --coverage",
+		"ci:mounted:build": "docker run -i -w -v $(pwd):/project/ -w /project docengine:latest yarn build",
+		"ci:isolated:test": "docker run -i -e GIT_USER -e GIT_PASSWORD -e GIT_BRANCH docengine:latest /bin/docker_clone_and_test.sh",
 		"lint": "yarn lint:js",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss"
@@ -53,6 +47,7 @@
 	"devDependencies": {
 		"babel-core": "^6.26.3",
 		"babel-eslint": "^8.2.3",
+		"babel-jest": "^23.2.0",
 		"babel-loader": "^7.0.0",
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.7.0",
@@ -95,7 +90,9 @@
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
-		"testMatch": ["**/__tests__/**/*.js?(x)"],
+		"testMatch": [
+			"**/__tests__/**/*.js?(x)"
+		],
 		"setupTestFrameworkScriptFile": "./setupTests.js",
 		"verbose": false,
 		"moduleNameMapper": {
@@ -104,9 +101,19 @@
 			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
-		"moduleDirectories": ["<rootDir>", "node_modules"],
-		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
-		"coverageReporters": ["text", "lcov"],
+		"moduleDirectories": [
+			"<rootDir>",
+			"node_modules"
+		],
+		"collectCoverageFrom": [
+			"src/scripts/**",
+			"ObojoboDraft/**",
+			"server/**"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
 		"coveragePathIgnorePatterns": [
 			"====THESE DONT NEED TESTS====",
 			"<rootDir>/src/scripts/viewer/index.js",

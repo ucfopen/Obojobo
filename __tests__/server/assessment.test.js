@@ -14,6 +14,7 @@ describe('Assessment', () => {
 	let makeMockAttempt = () => ({
 		attempt_id: 'mockAttemptId',
 		assessment_id: 'mockAssessmentId',
+		draft_content_id: 'mockContentId',
 		created_at: 'mockCreatedAt',
 		completed_at: 'mockCompletedAt',
 		state: 'mockState',
@@ -66,7 +67,8 @@ describe('Assessment', () => {
 			questionScores: ['mockScore'],
 			startTime: 'mockCreatedAt',
 			state: 'mockState',
-			userId: 'mockUserId'
+			userId: 'mockUserId',
+			contentId: 'mockContentId'
 		})
 	})
 
@@ -84,6 +86,7 @@ describe('Assessment', () => {
 			attemptNumber: 12,
 			attemptScore: null,
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			finishTime: 'mockCompletedAt',
 			isFinished: true,
 			questionScores: [],
@@ -447,31 +450,12 @@ describe('Assessment', () => {
 
 		expect(db.one).toHaveBeenCalled()
 		expect(db.one.mock.calls[0][1]).toEqual({
-			userId: 'mockUserId',
+			assessmentId: 'mockState',
+			contentId: 'mockAssessmentId',
 			draftId: 'mockDraftId',
-			assessmentId: 'mockAssessmentId',
-			state: 'mockState',
-			isPreview: 'mockPreviewing'
-		})
-	})
-
-	test('insertAssessmentScore calls db with expected values', () => {
-		Assessment.insertAssessmentScore(
-			'mockUserId',
-			'mockDraftId',
-			'mockAssessmentId',
-			'mockLaunchId',
-			'mockScore',
-			'mockPreviewing'
-		)
-
-		expect(db.one.mock.calls[0][1]).toEqual({
-			userId: 'mockUserId',
-			draftId: 'mockDraftId',
-			assessmentId: 'mockAssessmentId',
-			launchId: 'mockLaunchId',
-			score: 'mockScore',
-			isPreview: 'mockPreviewing'
+			isPreview: undefined,
+			state: 'mockPreviewing',
+			userId: 'mockUserId'
 		})
 	})
 
@@ -498,28 +482,6 @@ describe('Assessment', () => {
 		expect(db.none.mock.calls[0][1]).toEqual({
 			state: {},
 			attemptId: 0
-		})
-	})
-
-	test('insertNewAssessmentScore calls the db with expected values', () => {
-		db.one.mockResolvedValueOnce({
-			id: 'mockId'
-		})
-
-		Assessment.insertNewAssessmentScore(
-			'mockUserId',
-			'mockDraftId',
-			'mockAssessmentId',
-			'mockScore',
-			'mockPreviewing'
-		)
-
-		expect(db.one.mock.calls[0][1]).toEqual({
-			userId: 'mockUserId',
-			draftId: 'mockDraftId',
-			assessmentId: 'mockAssessmentId',
-			score: 'mockScore',
-			preview: 'mockPreviewing'
 		})
 	})
 

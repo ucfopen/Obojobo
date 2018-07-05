@@ -21,9 +21,12 @@ const endAttempt = require('../../server/attempt-end').endAttempt
 
 describe('server/express', () => {
 	const mockUser = { id: 1, canViewEditor: true }
+	const mockDocument = { draftId: 3, contentId: 12 }
+	const Assessment = require('../../server/assessment')
 	// build the req info
 	const req = {
-		requireCurrentUser: jest.fn().mockResolvedValue(mockUser),
+		requireCurrentUser: jest.fn().mockReturnValue(Promise.resolve(mockUser)),
+		requireCurrentDocument: jest.fn().mockReturnValue(Promise.resolve(mockDocument)),
 		params: {
 			draftId: 3,
 			attemptId: 5,
@@ -123,7 +126,7 @@ describe('server/express', () => {
 		return sendAssessmentScoreRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
 			// make sure the lti method is called
-			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(1, 9, 777)
+			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(1, mockDocument, 777)
 			// make sure the results are passed to res.success
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith({
@@ -186,7 +189,7 @@ describe('server/express', () => {
 		// execute
 		return endAttemptRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDocument, 5, true)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('endAttemptResult')
 		})
@@ -228,7 +231,7 @@ describe('server/express', () => {
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDocument, 5, true)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith()
 
@@ -267,7 +270,14 @@ describe('server/express', () => {
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(
+				req,
+				res,
+				mockUser,
+				{ contentId: 12, draftId: 3 },
+				5,
+				true
+			)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith()
 
@@ -305,7 +315,7 @@ describe('server/express', () => {
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, true)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDocument, 5, true)
 			expect(res.success).toHaveBeenCalledTimes(0)
 			expect(res.unexpected).toHaveBeenCalledTimes(0)
 			expect(db.manyOrNone).toHaveBeenCalledTimes(0)

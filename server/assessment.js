@@ -13,7 +13,8 @@ class Assessment extends DraftNode {
 					completed_at as "endTime",
 					assessment_id as "assessmentId",
 					state,
-					result
+					result,
+					draft_content_id as "contentId"
 				FROM attempts
 				WHERE
 					user_id = $[userId]
@@ -49,6 +50,7 @@ class Assessment extends DraftNode {
 		return {
 			userId: userId,
 			draftId: draftId,
+			contentId: attempt.draft_content_id,
 			attemptId: attempt.attempt_id,
 			assessmentScoreId: attempt.assessment_score_id,
 			attemptNumber: parseInt(attempt.attempt_number, 10),
@@ -82,6 +84,7 @@ class Assessment extends DraftNode {
 					ATT.completed_at,
 					ATT.state,
 					ATT.result,
+					ATT.draft_content_id,
 					SCO.id AS "assessment_score_id",
 					SCO.score AS "assessment_score",
 					SCO.score_details AS "score_details"
@@ -271,11 +274,11 @@ class Assessment extends DraftNode {
 		)
 	}
 
-	static insertNewAttempt(userId, draftId, assessmentId, state, isPreview) {
+	static insertNewAttempt(userId, draftId, contentId, assessmentId, state, isPreview) {
 		return db.one(
 			`
-				INSERT INTO attempts (user_id, draft_id, assessment_id, state, preview)
-				VALUES($[userId], $[draftId], $[assessmentId], $[state], $[isPreview])
+				INSERT INTO attempts (user_id, draft_id, draft_content_id, assessment_id, state, preview)
+				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[state], $[isPreview])
 				RETURNING
 				id AS "attemptId",
 				created_at as "startTime",
@@ -287,27 +290,10 @@ class Assessment extends DraftNode {
 			{
 				userId: userId,
 				draftId: draftId,
+				contentId: contentId,
 				assessmentId: assessmentId,
 				state: state,
 				isPreview: isPreview
-			}
-		)
-	}
-
-	static insertAssessmentScore(userId, draftId, assessmentId, launchId, score, isPreview) {
-		return db.one(
-			`
-				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, launch_id, score preview)
-				VALUES($[userId], $[draftId], $[assessmentId], $[launchId], $[score], $[isPreview])
-				RETURNING id
-			`,
-			{
-				userId,
-				draftId,
-				assessmentId,
-				launchId,
-				score,
-				isPreview
 			}
 		)
 	}
@@ -320,6 +306,7 @@ class Assessment extends DraftNode {
 		attemptId,
 		userId,
 		draftId,
+		contentId,
 		attemptScoreResult,
 		assessmentScoreDetails,
 		preview
@@ -346,13 +333,14 @@ class Assessment extends DraftNode {
 
 				const q2 = dbTransaction.one(
 					`
-					INSERT INTO assessment_scores (user_id, draft_id, assessment_id, attempt_id, score, score_details, preview)
-					VALUES($[userId], $[draftId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
+					INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, preview)
+					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
 					RETURNING id
 				`,
 					{
 						userId,
 						draftId,
+						contentId,
 						assessmentId,
 						attemptId,
 						score: assessmentScoreDetails.assessmentModdedScore,
@@ -381,25 +369,6 @@ class Assessment extends DraftNode {
 			`,
 			{ state: state, attemptId: attemptId }
 		)
-	}
-
-	static insertNewAssessmentScore(userId, draftId, assessmentId, score, preview) {
-		return db
-			.one(
-				`
-				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, score, preview)
-				VALUES($[userId], $[draftId], $[assessmentId], $[score], $[preview])
-				RETURNING id
-			`,
-				{
-					userId,
-					draftId,
-					assessmentId,
-					score,
-					preview
-				}
-			)
-			.then(result => result.id)
 	}
 
 	constructor(draftTree, node, initFn) {
