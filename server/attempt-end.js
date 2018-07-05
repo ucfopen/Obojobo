@@ -244,6 +244,7 @@ let insertAttemptEndEvents = (
 	return insertEvent({
 		action: 'assessment:attemptEnd',
 		actorTime: new Date().toISOString(),
+		preview: isPreviewing,
 		payload: {
 			attemptId,
 			attemptCount: attemptNumber
@@ -284,11 +285,12 @@ let insertAttemptScoredEvents = (
 	let { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
 
 	return lti
-		.getLatestHighestAssessmentScoreRecord(user.id, draftId, assessmentId)
+		.getLatestHighestAssessmentScoreRecord(user.id, draftId, assessmentId, isPreviewing)
 		.then(highestAssessmentScoreRecord => {
 			return insertEvent({
 				action: 'assessment:attemptScored',
 				actorTime: new Date().toISOString(),
+				preview: isPreviewing,
 				payload: {
 					attemptId,
 					attemptCount: attemptNumber,

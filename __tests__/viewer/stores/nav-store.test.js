@@ -59,7 +59,7 @@ describe('NavStore', () => {
 			}
 		})
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 		jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(true)
 		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
@@ -97,7 +97,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// simulate nextItem lookup
 		NavUtil.getPrev.mockReturnValueOnce({ id: 'mockPrev' })
@@ -119,7 +119,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// simulate nextItem lookup
 		NavUtil.getNext.mockReturnValueOnce({ id: 'mockNext' })
@@ -144,7 +144,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
@@ -160,7 +160,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:lock']()
@@ -178,7 +178,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:unlock']()
@@ -196,7 +196,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:close']()
@@ -214,7 +214,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:open']()
@@ -232,7 +232,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:close']()
@@ -250,7 +250,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:toggle']()

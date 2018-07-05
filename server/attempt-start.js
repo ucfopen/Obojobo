@@ -312,6 +312,7 @@ const insertAttemptStartCaliperEvent = (
 	return insertEvent({
 		action: ACTION_ASSESSMENT_ATTEMPT_START,
 		actorTime: new Date().toISOString(),
+		preview: isPreviewing,
 		payload: {
 			attemptId: attemptId,
 			attemptCount: numAttemptsTaken

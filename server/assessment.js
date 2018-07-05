@@ -21,7 +21,7 @@ class Assessment extends DraftNode {
 					AND draft_id = $[draftId]
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
-					AND preview = $[isPreview]
+					AND is_preview = $[isPreview]
 				ORDER BY completed_at`,
 			{ userId, draftId, assessmentId, isPreview }
 		)
@@ -74,7 +74,7 @@ class Assessment extends DraftNode {
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
 					${optionalAssessmentId !== null ? 'AND ATT.assessment_id = $[optionalAssessmentId]' : ''}
-					AND ATT.preview = $[isPreview]
+					AND ATT.is_preview = $[isPreview]
 				ORDER BY ATT.completed_at`,
 				{
 					userId,
@@ -188,7 +188,7 @@ class Assessment extends DraftNode {
 			WHERE
 				user_id = $[userId]
 			AND draft_id = $[draftId]
-			AND preview = $[isPreview]
+			AND is_preview = $[isPreview]
 			ORDER BY completed_at
 			`,
 			{ userId, draftId, isPreview }
@@ -229,7 +229,7 @@ class Assessment extends DraftNode {
 					FROM attempts
 					WHERE user_id = $[userId]
 					AND draft_id = $[draftId]
-					AND preview = $[isPreview]
+					AND is_preview = $[isPreview]
 					${optionalAssessmentId !== null ? "AND assessment_id = '" + optionalAssessmentId + "'" : ''}
 				) ORDER BY updated_at`,
 				{ userId, draftId, isPreview, optionalAssessmentId }
@@ -260,7 +260,7 @@ class Assessment extends DraftNode {
 	static insertNewAttempt(userId, draftId, assessmentId, state, isPreview) {
 		return db.one(
 			`
-				INSERT INTO attempts (user_id, draft_id, assessment_id, state, preview)
+				INSERT INTO attempts (user_id, draft_id, assessment_id, state, is_preview)
 				VALUES($[userId], $[draftId], $[assessmentId], $[state], $[isPreview])
 				RETURNING
 				id AS "attemptId",
@@ -271,11 +271,11 @@ class Assessment extends DraftNode {
 				result
 			`,
 			{
-				userId: userId,
-				draftId: draftId,
-				assessmentId: assessmentId,
-				state: state,
-				isPreview: isPreview
+				userId,
+				draftId,
+				assessmentId,
+				state,
+				isPreview
 			}
 		)
 	}
@@ -283,7 +283,7 @@ class Assessment extends DraftNode {
 	static insertAssessmentScore(userId, draftId, assessmentId, launchId, score, isPreview) {
 		return db.one(
 			`
-				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, launch_id, score preview)
+				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, launch_id, score, is_preview)
 				VALUES($[userId], $[draftId], $[assessmentId], $[launchId], $[score], $[isPreview])
 				RETURNING id
 			`,
@@ -332,7 +332,7 @@ class Assessment extends DraftNode {
 
 				const q2 = dbTransaction.one(
 					`
-					INSERT INTO assessment_scores (user_id, draft_id, assessment_id, attempt_id, score, score_details, preview)
+					INSERT INTO assessment_scores (user_id, draft_id, assessment_id, attempt_id, score, score_details, is_preview)
 					VALUES($[userId], $[draftId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
 					RETURNING id
 				`,
@@ -373,7 +373,7 @@ class Assessment extends DraftNode {
 		return db
 			.one(
 				`
-				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, score, preview)
+				INSERT INTO assessment_scores (user_id, draft_id, assessment_id, score, is_preview)
 				VALUES($[userId], $[draftId], $[assessmentId], $[score], $[preview])
 				RETURNING id
 			`,

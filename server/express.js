@@ -104,7 +104,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 						FROM assessment_scores
 						WHERE user_id = $[userId]
 						AND draft_id = $[draftId]
-						AND preview = true
+						AND is_preview = true
 					`,
 				{
 					userId: currentUser.id,
@@ -121,7 +121,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 					FROM attempts
 					WHERE user_id = $[userId]
 					AND draft_id = $[draftId]
-					AND preview = true
+					AND is_preview = true
 				`,
 				{
 					userId: currentUser.id,
@@ -165,7 +165,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 							DELETE FROM assessment_scores
 							WHERE user_id = $[userId]
 							AND draft_id = $[draftId]
-							AND preview = true
+							AND is_preview = true
 						`,
 						{
 							userId: currentUser.id,
@@ -177,7 +177,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 							DELETE FROM attempts
 							WHERE user_id = $[userId]
 							AND draft_id = $[draftId]
-							AND preview = true
+							AND is_preview = true
 						`,
 						{
 							userId: currentUser.id,

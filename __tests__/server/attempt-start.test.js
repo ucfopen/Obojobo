@@ -648,6 +648,7 @@ describe('start attempt route', () => {
 			eventVersion: '1.1.0',
 			ip: 'mockRemoteAddress',
 			metadata: {},
+			preview: true,
 			payload: {
 				attemptCount: 1,
 				attemptId: 'mockAttemptId'

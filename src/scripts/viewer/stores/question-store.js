@@ -3,6 +3,8 @@ import Common from 'Common'
 import APIUtil from '../../viewer/util/api-util'
 import QuestionUtil from '../../viewer/util/question-util'
 
+import NavStore from '../../viewer/stores/nav-store'
+
 let { Store } = Common.flux
 let { Dispatcher } = Common.flux
 let { OboModel } = Common.models
@@ -24,13 +26,19 @@ class QuestionStore extends Store {
 				this.state.responses[context][id] = payload.value.response
 				this.triggerChange()
 
-				APIUtil.postEvent(model.getRoot(), 'question:setResponse', '2.1.0', {
-					questionId: id,
-					response: payload.value.response,
-					targetId: payload.value.targetId,
-					context,
-					assessmentId: payload.value.assessmentId,
-					attemptId: payload.value.attemptId
+				APIUtil.postEvent({
+					draftId: model.getRoot().get('id'),
+					action: 'question:setResponse',
+					eventVersion: '2.1.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId: id,
+						response: payload.value.response,
+						targetId: payload.value.targetId,
+						context,
+						assessmentId: payload.value.assessmentId,
+						attemptId: payload.value.attemptId
+					}
 				})
 			},
 
@@ -56,8 +64,14 @@ class QuestionStore extends Store {
 			'question:showExplanation': payload => {
 				let root = OboModel.models[payload.value.id].getRoot()
 
-				APIUtil.postEvent(root, 'question:showExplanation', '1.0.0', {
-					questionId: payload.value.id
+				APIUtil.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:showExplanation',
+					eventVersion: '1.0.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId: payload.value.id
+					}
 				})
 
 				QuestionUtil.setData(payload.value.id, 'showingExplanation', true)
@@ -66,9 +80,15 @@ class QuestionStore extends Store {
 			'question:hideExplanation': payload => {
 				let root = OboModel.models[payload.value.id].getRoot()
 
-				APIUtil.postEvent(root, 'question:hideExplanation', '1.1.0', {
-					questionId: payload.value.id,
-					actor: payload.value.actor
+				APIUtil.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:hideExplanation',
+					eventVersion: '1.1.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId: payload.value.id,
+						actor: payload.value.actor
+					}
 				})
 
 				QuestionUtil.clearData(payload.value.id, 'showingExplanation')
@@ -80,8 +100,14 @@ class QuestionStore extends Store {
 			},
 
 			'question:hide': payload => {
-				APIUtil.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', '1.0.0', {
-					questionId: payload.value.id
+				APIUtil.postEvent({
+					draftId: OboModel.models[payload.value.id].getRoot().get('draftId'),
+					action: 'question:hide',
+					eventVersion: '1.0.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId: payload.value.id
+					}
 				})
 
 				delete this.state.viewedQuestions[payload.value.id]
@@ -96,8 +122,14 @@ class QuestionStore extends Store {
 			'question:view': payload => {
 				let root = OboModel.models[payload.value.id].getRoot()
 
-				APIUtil.postEvent(root, 'question:view', '1.0.0', {
-					questionId: payload.value.id
+				APIUtil.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:view',
+					eventVersion: '1.0.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId: payload.value.id
+					}
 				})
 
 				this.state.viewedQuestions[payload.value.id] = true
@@ -111,8 +143,14 @@ class QuestionStore extends Store {
 				let questionModel = OboModel.models[questionId]
 				let root = questionModel.getRoot()
 
-				APIUtil.postEvent(root, 'question:checkAnswer', '1.0.0', {
-					questionId: payload.value.id
+				APIUtil.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:checkAnswer',
+					eventVersion: '1.0.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId: payload.value.id
+					}
 				})
 			},
 
@@ -123,8 +161,14 @@ class QuestionStore extends Store {
 
 				this.clearResponses(questionId, payload.value.context)
 
-				APIUtil.postEvent(root, 'question:retry', '1.0.0', {
-					questionId: questionId
+				APIUtil.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:retry',
+					eventVersion: '1.0.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId: questionId
+					}
 				})
 
 				if (QuestionUtil.isShowingExplanation(this.state, questionModel)) {
@@ -152,11 +196,17 @@ class QuestionStore extends Store {
 				this.triggerChange()
 
 				model = OboModel.models[payload.value.itemId]
-				APIUtil.postEvent(model.getRoot(), 'question:scoreSet', '1.0.0', {
-					id: scoreId,
-					itemId: payload.value.itemId,
-					score: payload.value.score,
-					context: payload.value.context
+				APIUtil.postEvent({
+					draftId: model.getRoot().get('draftId'),
+					action: 'question:scoreSet',
+					eventVersion: '1.0.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						id: scoreId,
+						itemId: payload.value.itemId,
+						score: payload.value.score,
+						context: payload.value.context
+					}
 				})
 			},
 
@@ -168,7 +218,13 @@ class QuestionStore extends Store {
 				delete this.state.scores[payload.value.context][payload.value.itemId]
 				this.triggerChange()
 
-				APIUtil.postEvent(model.getRoot(), 'question:scoreClear', '1.0.0', scoreItem)
+				APIUtil.postEvent({
+					draftId: model.getRoot().get('draftId'),
+					action: 'question:scoreClear',
+					eventVersion: '1.0.0',
+					visitId: NavStore.getState().visitId,
+					payload: scoreItem
+				})
 			}
 		})
 	}

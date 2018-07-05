@@ -32,14 +32,15 @@ var APIUtil = {
 		})
 	},
 
-	postEvent(lo, action, eventVersion, payload) {
+	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
 		return (
 			APIUtil.post('/api/events', {
 				event: {
 					action,
-					draft_id: lo.get('draftId'),
+					draft_id: draftId,
 					actor_time: new Date().toISOString(),
 					event_version: eventVersion,
+					visitId,
 					payload
 				}
 			})
@@ -55,10 +56,6 @@ var APIUtil = {
 		)
 	},
 
-	saveState(lo, state) {
-		return APIUtil.postEvent(lo, 'saveState', state)
-	},
-
 	getDraft(id) {
 		return fetch(`/api/drafts/${id}`).then(processJsonResults)
 	},
@@ -70,24 +67,24 @@ var APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	startAttempt({ lo, assessment, visitId }) {
+	startAttempt({ draftId, assessmentId, visitId }) {
 		return APIUtil.post('/api/assessments/attempt/start', {
-			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id'),
+			draftId,
+			assessmentId,
 			visitId
 		}).then(processJsonResults)
 	},
 
-	endAttempt({ attempt, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/end`, { visitId }).then(
+	endAttempt({ attemptId, visitId }) {
+		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { visitId }).then(
 			processJsonResults
 		)
 	},
 
-	resendLTIAssessmentScore({ lo, assessment, visitId }) {
+	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
-			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id'),
+			draftId,
+			assessmentId,
 			visitId
 		}).then(processJsonResults)
 	},

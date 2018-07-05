@@ -158,7 +158,8 @@ describe('Attempt End', () => {
 					ltiScoreStatus: 'mockStatus',
 					scoreDetails: { assessmentScore: 'mockScoreForAttempt' }
 				},
-				userId: 'mockUserId'
+				userId: 'mockUserId',
+				preview: true
 			})
 
 			expect(insertEvent).toHaveBeenCalledWith({
@@ -173,7 +174,8 @@ describe('Attempt End', () => {
 					attemptCount: 6,
 					attemptId: 'mockAttemptId'
 				},
-				userId: 'mockUserId'
+				userId: 'mockUserId',
+				preview: true
 			})
 		})
 	})
@@ -296,7 +298,8 @@ describe('Attempt End', () => {
 			metadata: {},
 			draftId: 'mockDraftId',
 			eventVersion: '1.1.0',
-			caliperPayload: 'mockCaliperPayload'
+			caliperPayload: 'mockCaliperPayload',
+			preview: 'mockIsPreviewing'
 		})
 
 		// make sure the caliper payload gets the expected inputs
@@ -368,7 +371,8 @@ describe('Attempt End', () => {
 					ltiScoreSent: 'mockLtiScoreSent',
 					ltiScoreStatus: 'mockLtiScoreStatus'
 				},
-				userId: 'userId'
+				userId: 'userId',
+				preview: 'mockIsPreviewing'
 			})
 
 			// make sure the caliper payload gets the expected inputs
@@ -588,7 +592,8 @@ describe('Attempt End', () => {
 				attemptCount: 'mockAttemptNumber',
 				attemptId: 'mockAttemptId'
 			},
-			userId: 1
+			userId: 1,
+			preview: 'mockIsPreviewing'
 		})
 	})
 	test('getNodeQuestion reloads score', () => {

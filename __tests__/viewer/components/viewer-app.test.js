@@ -1,21 +1,14 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import {
 	getAttemptStartServerResponse,
 	getAttemptEndServerResponse
 } from '../../../__mocks__/assessment-server.mock'
 import {
 	AssessmentStore,
-	NavStore,
 	QuestionStore,
-	ModalStore,
-	FocusStore,
-	AssessmentUtil,
 	NavUtil,
-	QuestionUtil,
-	ModalUtil,
-	FocusUtil
+	QuestionUtil
 } from '../../../__mocks__/viewer-state.mock'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
@@ -24,6 +17,13 @@ import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import testObject from '../../../test-object.json'
 
 let viewerEl
+
+mockStaticDate()
+
+import formatDate from 'date-fns/format'
+jest.mock('date-fns/format', () => {
+	return () => 'mockDateString'
+})
 
 const _gotoAssessmentAndStartAttempt = () => {
 	// navigate to assessment
@@ -44,6 +44,7 @@ describe('ViewerApp', () => {
 		APIUtil.postEvent = jest.fn().mockResolvedValue({ status: 'ok' })
 		APIUtil.startAttempt = jest.fn().mockResolvedValue(getAttemptStartServerResponse())
 		APIUtil.endAttempt = jest.fn().mockResolvedValue(getAttemptEndServerResponse(100, 100))
+		testObject.draftId = 'mockDraftId'
 		APIUtil.getDraft = jest.fn().mockResolvedValue({ value: testObject })
 		APIUtil.requestStart = jest.fn().mockResolvedValue({
 			status: 'ok',
@@ -360,7 +361,7 @@ describe('ViewerApp', () => {
 	// should be clicking the next / nav buttons
 	// and checking to make sure the events are fired
 	test('Emitting nav events produces the appropriate event for APIUtil.postEvent', () => {
-		APIUtil.postEvent.mockReset()
+		APIUtil.postEvent.mockClear()
 		let prevBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-prev')
 		let nextBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-next')
 		let anything = expect.anything()
@@ -374,11 +375,10 @@ describe('ViewerApp', () => {
 
 		// click forward to page 2
 		nextBtnEl.simulate('click')
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(anything, 'nav:next', anything, anything)
-
 		// click back to page 1
 		prevBtnEl.simulate('click')
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(anything, 'nav:prev', anything, anything)
+
+		expect(APIUtil.postEvent).toMatchSnapshot()
 	})
 
 	test('Emitting answering assessment question fires the expected postEvents in order', done => {
@@ -396,11 +396,43 @@ describe('ViewerApp', () => {
 			// click an answer
 			viewerEl.find('#obo-' + answer).simulate('click')
 
-			// collect the event names
-			let orderedEvents = APIUtil.postEvent.mock.calls.map(c => c[1])
-
-			// expect that the interface fires
-			expect(orderedEvents).toEqual(['nav:goto', 'nav:goto', 'nav:lock', 'question:setResponse'])
+			expect(APIUtil.postEvent.mock.calls).toEqual([
+				[
+					{
+						draftId: 'mockDraftId',
+						action: 'nav:goto',
+						eventVersion: '1.0.0',
+						visitId: 123,
+						payload: expect.anything()
+					}
+				],
+				[
+					{
+						draftId: 'mockDraftId',
+						action: 'nav:goto',
+						eventVersion: '1.0.0',
+						visitId: 123,
+						payload: expect.anything()
+					}
+				],
+				[
+					{
+						draftId: 'mockDraftId',
+						action: 'nav:lock',
+						eventVersion: '1.0.0',
+						visitId: 123
+					}
+				],
+				[
+					{
+						draftId: '289325ed-4e8f-41e2-951e-1f3637fb615f',
+						action: 'question:setResponse',
+						eventVersion: '2.1.0',
+						visitId: 123,
+						payload: expect.anything()
+					}
+				]
+			])
 
 			done()
 		})
@@ -414,39 +446,13 @@ describe('ViewerApp', () => {
 		const questionId = questions[0].id
 		const answerId = questions[0].children[1].children[0].children[0].id
 
-		APIUtil.postEvent = jest.fn()
+		APIUtil.postEvent.mockClear()
 
 		QuestionUtil.setResponse(questionId, { ids: [answerId] }, answerId)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith(
-			OboModel.getRoot(),
-			'question:setResponse',
-			'2.1.0',
-			{
-				questionId: questionId,
-				targetId: answerId,
-				response: { ids: [answerId] }
-			}
-		)
-
 		QuestionUtil.hideQuestion(questionId)
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
-			OboModel.getRoot(),
-			'question:hide',
-			'1.0.0',
-			{
-				questionId: questionId
-			}
-		)
-
 		QuestionUtil.viewQuestion(questionId)
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
-			OboModel.getRoot(),
-			'question:view',
-			'1.0.0',
-			{
-				questionId: questionId
-			}
-		)
+
+		expect(APIUtil.postEvent).toMatchSnapshot()
 	})
 
 	test('registers listener to onbeforeunload', () => {
@@ -456,16 +462,12 @@ describe('ViewerApp', () => {
 	})
 
 	test('onWindowClose fires postEvent', () => {
-		APIUtil.postEvent.mockReset()
+		APIUtil.postEvent.mockClear()
 		let ViewerApp = viewerEl.instance()
 		ViewerApp.onWindowClose()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent).toHaveBeenCalledWith(
-			viewerEl.state('model'),
-			'viewer:close',
-			expect.any(String),
-			{}
-		)
+
+		expect(APIUtil.postEvent).toMatchSnapshot()
 	})
 
 	test('onBeforeWindowClose triggers event and allows closing', () => {
@@ -542,13 +544,13 @@ describe('ViewerApp', () => {
 	test('onVisibilityChange post event when hidden', () => {
 		document.hidden = true // indicates the browser tab is hidden
 		let ViewerApp = viewerEl.instance()
+
+		// clear page navigation
+		APIUtil.postEvent.mockClear()
+
 		ViewerApp.onVisibilityChange()
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
-			viewerEl.state('model'),
-			'viewer:leave',
-			'1.0.0',
-			{}
-		)
+
+		expect(APIUtil.postEvent).toMatchSnapshot()
 	})
 
 	test('onVisibilityChange post event when returning', () => {
@@ -558,24 +560,21 @@ describe('ViewerApp', () => {
 		// leaveEvent is temporarily stored on the component
 		ViewerApp.leaveEvent = { id: 'mockId' }
 
+		// clear page navigation
+		APIUtil.postEvent.mockClear()
+
 		ViewerApp.onVisibilityChange()
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
-			viewerEl.state('model'),
-			'viewer:return',
-			'1.0.0',
-			{ relatedEventId: 'mockId' }
-		)
+
+		expect(APIUtil.postEvent).toMatchSnapshot()
 	})
 
 	test('idle posts event', () => {
 		let ViewerApp = viewerEl.instance()
+		// clear page navigation
+		APIUtil.postEvent.mockClear()
+
 		ViewerApp.onIdle()
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
-			viewerEl.state('model'),
-			'viewer:inactive',
-			'2.0.0',
-			expect.any(Object)
-		)
+		expect(APIUtil.postEvent).toMatchSnapshot()
 	})
 
 	test('returnFromIdle fires event', () => {
@@ -583,14 +582,13 @@ describe('ViewerApp', () => {
 
 		// inactiveEvent is temporarily stored on the component
 		ViewerApp.inactiveEvent = { id: 'mockId' }
+		ViewerApp.lastActiveEpoch = '1530552702030'
+
+		// clear page navigation
+		APIUtil.postEvent.mockClear()
 
 		ViewerApp.onReturnFromIdle()
-		expect(APIUtil.postEvent).toHaveBeenLastCalledWith(
-			viewerEl.state('model'),
-			'viewer:returnFromInactive',
-			'2.0.0',
-			expect.any(Object)
-		)
+		expect(APIUtil.postEvent).toMatchSnapshot()
 	})
 
 	test('handles requestStart in a failure state', () => {

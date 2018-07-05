@@ -4801,13 +4801,21 @@ var APIUtil = {
 			}
 		});
 	},
-	postEvent: function postEvent(lo, action, eventVersion, payload) {
+	postEvent: function postEvent(_ref) {
+		var draftId = _ref.draftId,
+		    action = _ref.action,
+		    eventVersion = _ref.eventVersion,
+		    visitId = _ref.visitId,
+		    _ref$payload = _ref.payload,
+		    payload = _ref$payload === undefined ? {} : _ref$payload;
+
 		return APIUtil.post('/api/events', {
 			event: {
 				action: action,
-				draft_id: lo.get('draftId'),
+				draft_id: draftId,
 				actor_time: new Date().toISOString(),
 				event_version: eventVersion,
+				visitId: visitId,
 				payload: payload
 			}
 		}).then(processJsonResults)
@@ -4820,9 +4828,6 @@ var APIUtil = {
 			return res;
 		});
 	},
-	saveState: function saveState(lo, state) {
-		return APIUtil.postEvent(lo, 'saveState', state);
-	},
 	getDraft: function getDraft(id) {
 		return fetch('/api/drafts/' + id).then(processJsonResults);
 	},
@@ -4832,37 +4837,37 @@ var APIUtil = {
 			draftId: draftId
 		}).then(processJsonResults);
 	},
-	startAttempt: function startAttempt(_ref) {
-		var lo = _ref.lo,
-		    assessment = _ref.assessment,
-		    visitId = _ref.visitId;
-
-		return APIUtil.post('/api/assessments/attempt/start', {
-			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id'),
-			visitId: visitId
-		}).then(processJsonResults);
-	},
-	endAttempt: function endAttempt(_ref2) {
-		var attempt = _ref2.attempt,
+	startAttempt: function startAttempt(_ref2) {
+		var draftId = _ref2.draftId,
+		    assessmentId = _ref2.assessmentId,
 		    visitId = _ref2.visitId;
 
-		return APIUtil.post('/api/assessments/attempt/' + attempt.attemptId + '/end', { visitId: visitId }).then(processJsonResults);
-	},
-	resendLTIAssessmentScore: function resendLTIAssessmentScore(_ref3) {
-		var lo = _ref3.lo,
-		    assessment = _ref3.assessment,
-		    visitId = _ref3.visitId;
-
-		return APIUtil.post('/api/lti/sendAssessmentScore', {
-			draftId: lo.get('draftId'),
-			assessmentId: assessment.get('id'),
+		return APIUtil.post('/api/assessments/attempt/start', {
+			draftId: draftId,
+			assessmentId: assessmentId,
 			visitId: visitId
 		}).then(processJsonResults);
 	},
-	clearPreviewScores: function clearPreviewScores(_ref4) {
+	endAttempt: function endAttempt(_ref3) {
+		var attemptId = _ref3.attemptId,
+		    visitId = _ref3.visitId;
+
+		return APIUtil.post('/api/assessments/attempt/' + attemptId + '/end', { visitId: visitId }).then(processJsonResults);
+	},
+	resendLTIAssessmentScore: function resendLTIAssessmentScore(_ref4) {
 		var draftId = _ref4.draftId,
+		    assessmentId = _ref4.assessmentId,
 		    visitId = _ref4.visitId;
+
+		return APIUtil.post('/api/lti/sendAssessmentScore', {
+			draftId: draftId,
+			assessmentId: assessmentId,
+			visitId: visitId
+		}).then(processJsonResults);
+	},
+	clearPreviewScores: function clearPreviewScores(_ref5) {
+		var draftId = _ref5.draftId,
+		    visitId = _ref5.visitId;
 
 		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId: draftId, visitId: visitId }).then(processJsonResults);
 	}
@@ -4898,11 +4903,364 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _Common = __webpack_require__(1);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _questionUtil = __webpack_require__(6);
+var _navUtil = __webpack_require__(2);
+
+var _navUtil2 = _interopRequireDefault(_navUtil);
+
+var _apiUtil = __webpack_require__(3);
+
+var _apiUtil2 = _interopRequireDefault(_apiUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Store = _Common2.default.flux.Store;
+var Dispatcher = _Common2.default.flux.Dispatcher;
+var OboModel = _Common2.default.models.OboModel;
+var FocusUtil = _Common2.default.util.FocusUtil;
+
+var NavStore = function (_Store) {
+	_inherits(NavStore, _Store);
+
+	function NavStore() {
+		_classCallCheck(this, NavStore);
+
+		var item = void 0;
+		var oldNavTargetId = void 0;
+
+		var _this = _possibleConstructorReturn(this, (NavStore.__proto__ || Object.getPrototypeOf(NavStore)).call(this, 'navstore'));
+
+		Dispatcher.on({
+			'nav:setContext': function navSetContext(payload) {
+				_this.state.context = payload.value.context;
+				return _this.triggerChange();
+			},
+			'nav:rebuildMenu': function navRebuildMenu(payload) {
+				_this.buildMenu(payload.value.model);
+				_this.triggerChange();
+			},
+			'nav:gotoPath': function navGotoPath(payload) {
+				oldNavTargetId = _this.state.navTargetId;
+				if (_this.gotoItem(_this.state.itemsByPath[payload.value.path])) {
+					_apiUtil2.default.postEvent({
+						draftId: OboModel.getRoot().get('draftId'),
+						action: 'nav:gotoPath',
+						eventVersion: '1.0.0',
+						visitId: _this.state.visitId,
+						payload: {
+							from: oldNavTargetId,
+							to: _this.state.itemsByPath[payload.value.path].id
+						}
+					});
+				}
+			},
+			'nav:setFlag': function navSetFlag(payload) {
+				var navItem = _this.state.itemsById[payload.value.id];
+				navItem.flags[payload.value.flagName] = payload.value.flagValue;
+				_this.triggerChange();
+			},
+			'nav:prev': function navPrev() {
+				oldNavTargetId = _this.state.navTargetId;
+				var prev = _navUtil2.default.getPrev(_this.state);
+				if (_this.gotoItem(prev)) {
+					_apiUtil2.default.postEvent({
+						draftId: OboModel.getRoot().get('draftId'),
+						action: 'nav:prev',
+						eventVersion: '1.0.0',
+						visitId: _this.state.visitId,
+						payload: {
+							from: oldNavTargetId,
+							to: prev.id
+						}
+					});
+				}
+			},
+			'nav:next': function navNext() {
+				oldNavTargetId = _this.state.navTargetId;
+				var next = _navUtil2.default.getNext(_this.state);
+				if (_this.gotoItem(next)) {
+					// console.log('OboModel.getRoot', OboModel.getRoot().get())
+					_apiUtil2.default.postEvent({
+						draftId: OboModel.getRoot().get('draftId'),
+						action: 'nav:next',
+						eventVersion: '1.0.0',
+						visitId: _this.state.visitId,
+						payload: {
+							from: oldNavTargetId,
+							to: next.id
+						}
+					});
+				}
+			},
+			'nav:goto': function navGoto(payload) {
+				oldNavTargetId = _this.state.navTargetId;
+				if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
+					_apiUtil2.default.postEvent({
+						draftId: OboModel.getRoot().get('draftId'),
+						action: 'nav:goto',
+						eventVersion: '1.0.0',
+						visitId: _this.state.visitId,
+						payload: {
+							from: oldNavTargetId,
+							to: _this.state.itemsById[payload.value.id].id
+						}
+					});
+				}
+			},
+			'nav:lock': function navLock() {
+				_apiUtil2.default.postEvent({
+					draftId: OboModel.getRoot().get('draftId'),
+					action: 'nav:lock',
+					eventVersion: '1.0.0',
+					visitId: _this.state.visitId
+				});
+				_this.setAndTrigger({ locked: true });
+			},
+			'nav:unlock': function navUnlock() {
+				_apiUtil2.default.postEvent({
+					draftId: OboModel.getRoot().get('draftId'),
+					action: 'nav:unlock',
+					eventVersion: '1.0.0',
+					visitId: _this.state.visitId
+				});
+				_this.setAndTrigger({ locked: false });
+			},
+			'nav:close': function navClose() {
+				_apiUtil2.default.postEvent({
+					draftId: OboModel.getRoot().get('draftId'),
+					action: 'nav:close',
+					eventVersion: '1.0.0',
+					visitId: _this.state.visitId
+				});
+				_this.setAndTrigger({ open: false });
+			},
+			'nav:open': function navOpen() {
+				_apiUtil2.default.postEvent({
+					draftId: OboModel.getRoot().get('draftId'),
+					action: 'nav:open',
+					eventVersion: '1.0.0',
+					visitId: _this.state.visitId
+				});
+				_this.setAndTrigger({ open: true });
+			},
+			'nav:toggle': function navToggle() {
+				var updatedState = { open: !_this.state.open };
+				_apiUtil2.default.postEvent({
+					draftId: OboModel.getRoot().get('draftId'),
+					action: 'nav:toggle',
+					eventVersion: '1.0.0',
+					visitId: _this.state.visitId,
+					payload: updatedState
+				});
+				_this.setAndTrigger(updatedState);
+			},
+			'nav:openExternalLink': function navOpenExternalLink(payload) {
+				window.open(payload.value.url);
+				_this.triggerChange();
+			},
+			'nav:showChildren': function navShowChildren(payload) {
+				item = _this.state.itemsById[payload.value.id];
+				item.showChildren = true;
+				_this.triggerChange();
+			},
+			'nav:hideChildren': function navHideChildren(payload) {
+				item = _this.state.itemsById[payload.value.id];
+				item.showChildren = false;
+				_this.triggerChange();
+			},
+			'question:scoreSet': function questionScoreSet(payload) {
+				var navItem = _this.state.itemsById[payload.value.id];
+				if (navItem) {
+					_navUtil2.default.setFlag(payload.value.id, 'correct', payload.value.score === 100);
+				}
+			}
+		}, _this);
+		return _this;
+	}
+
+	_createClass(NavStore, [{
+		key: 'init',
+		value: function init(model, startingId, startingPath, visitId) {
+			var viewState = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
+
+			this.state = {
+				items: {},
+				itemsById: {},
+				itemsByPath: {},
+				itemsByFullPath: {},
+				navTargetHistory: [],
+				navTargetId: null,
+				locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
+				open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
+				context: 'practice',
+				visitId: visitId
+			};
+
+			this.buildMenu(model);
+			_navUtil2.default.gotoPath(startingPath);
+
+			if (startingId != null) {
+				_navUtil2.default.goto(startingId);
+			} else {
+				var first = _navUtil2.default.getFirst(this.state);
+
+				if (first && first.id) _navUtil2.default.goto(first.id);
+			}
+		}
+	}, {
+		key: 'buildMenu',
+		value: function buildMenu(model) {
+			this.state.itemsById = {};
+			this.state.itemsByPath = {};
+			this.state.itemsByFullPath = {};
+			this.state.items = this.generateNav(model);
+		}
+	}, {
+		key: 'gotoItem',
+		value: function gotoItem(navItem) {
+			if (!navItem) {
+				return false;
+			}
+
+			if (this.state.navTargetId != null) {
+				if (this.state.navTargetId === navItem.id) {
+					return;
+				}
+
+				var navTargetModel = _navUtil2.default.getNavTargetModel(this.state);
+				if (navTargetModel && navTargetModel.processTrigger) {
+					navTargetModel.processTrigger('onNavExit');
+				}
+				this.state.navTargetHistory.push(this.state.navTargetId);
+				this.state.itemsById[this.state.navTargetId].showChildren = false;
+			}
+
+			if (navItem.showChildrenOnNavigation) {
+				navItem.showChildren = true;
+			}
+
+			FocusUtil.unfocus();
+			window.history.pushState({}, document.title, navItem.fullFlatPath);
+			this.state.navTargetId = navItem.id;
+			_navUtil2.default.getNavTargetModel(this.state).processTrigger('onNavEnter');
+			this.triggerChange();
+			return true;
+		}
+	}, {
+		key: 'generateNav',
+		value: function generateNav(model, indent) {
+			if (!model) return {};
+
+			if (indent == null) {
+				indent = '';
+			}
+			var item = _Common2.default.Store.getItemForType(model.get('type'));
+
+			var navItem = null;
+			if (item.getNavItem != null) {
+				navItem = item.getNavItem(model);
+			}
+
+			if (navItem == null) {
+				navItem = {};
+			}
+
+			navItem = Object.assign({
+				type: 'hidden',
+				label: '',
+				path: '',
+				showChildren: true,
+				showChildrenOnNavigation: true
+			}, navItem);
+
+			navItem.flags = [];
+			navItem.children = [];
+			navItem.id = model.get('id');
+			navItem.fullPath = [].concat(navItem.path).filter(function (item) {
+				return item !== '';
+			});
+			navItem.flags = {
+				visited: false,
+				complete: false,
+				correct: false
+			};
+
+			var _iteratorNormalCompletion = true;
+			var _didIteratorError = false;
+			var _iteratorError = undefined;
+
+			try {
+				for (var _iterator = Array.from(model.children.models)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					var child = _step.value;
+
+					var childNavItem = this.generateNav(child, indent + '_');
+					navItem.children.push(childNavItem);
+					childNavItem.fullPath = navItem.fullPath.concat(childNavItem.fullPath).filter(function (item) {
+						return item !== '';
+					});
+
+					// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
+					var flatPath = childNavItem.fullPath.join('/');
+					childNavItem.flatPath = flatPath;
+					childNavItem.fullFlatPath = ['/view', model.getRoot().get('draftId'), 'visit', this.state.visitId, flatPath].join('/');
+					this.state.itemsByPath[flatPath] = childNavItem;
+					this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem;
+				}
+			} catch (err) {
+				_didIteratorError = true;
+				_iteratorError = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion && _iterator.return) {
+						_iterator.return();
+					}
+				} finally {
+					if (_didIteratorError) {
+						throw _iteratorError;
+					}
+				}
+			}
+
+			this.state.itemsById[model.get('id')] = navItem;
+
+			return navItem;
+		}
+	}]);
+
+	return NavStore;
+}(Store);
+
+var navStore = new NavStore();
+window.__ns = navStore;
+exports.default = navStore;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _Common = __webpack_require__(1);
+
+var _Common2 = _interopRequireDefault(_Common);
+
+var _questionUtil = __webpack_require__(7);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
@@ -5126,7 +5484,7 @@ var AssessmentUtil = {
 exports.default = AssessmentUtil;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5272,7 +5630,7 @@ var QuestionUtil = {
 exports.default = QuestionUtil;
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5302,308 +5660,6 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Common = __webpack_require__(1);
-
-var _Common2 = _interopRequireDefault(_Common);
-
-var _navUtil = __webpack_require__(2);
-
-var _navUtil2 = _interopRequireDefault(_navUtil);
-
-var _apiUtil = __webpack_require__(3);
-
-var _apiUtil2 = _interopRequireDefault(_apiUtil);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Store = _Common2.default.flux.Store;
-var Dispatcher = _Common2.default.flux.Dispatcher;
-var OboModel = _Common2.default.models.OboModel;
-var FocusUtil = _Common2.default.util.FocusUtil;
-
-var NavStore = function (_Store) {
-	_inherits(NavStore, _Store);
-
-	function NavStore() {
-		_classCallCheck(this, NavStore);
-
-		var item = void 0;
-		var oldNavTargetId = void 0;
-
-		var _this = _possibleConstructorReturn(this, (NavStore.__proto__ || Object.getPrototypeOf(NavStore)).call(this, 'navstore'));
-
-		Dispatcher.on({
-			'nav:setContext': function navSetContext(payload) {
-				_this.state.context = payload.value.context;
-				return _this.triggerChange();
-			},
-			'nav:rebuildMenu': function navRebuildMenu(payload) {
-				_this.buildMenu(payload.value.model);
-				_this.triggerChange();
-			},
-			'nav:gotoPath': function navGotoPath(payload) {
-				oldNavTargetId = _this.state.navTargetId;
-				if (_this.gotoItem(_this.state.itemsByPath[payload.value.path])) {
-					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:gotoPath', '1.0.0', {
-						from: oldNavTargetId,
-						to: _this.state.itemsByPath[payload.value.path].id
-					});
-				}
-			},
-			'nav:setFlag': function navSetFlag(payload) {
-				var navItem = _this.state.itemsById[payload.value.id];
-				navItem.flags[payload.value.flagName] = payload.value.flagValue;
-				_this.triggerChange();
-			},
-			'nav:prev': function navPrev() {
-				oldNavTargetId = _this.state.navTargetId;
-				var prev = _navUtil2.default.getPrev(_this.state);
-				if (_this.gotoItem(prev)) {
-					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:prev', '1.0.0', {
-						from: oldNavTargetId,
-						to: prev.id
-					});
-				}
-			},
-			'nav:next': function navNext() {
-				oldNavTargetId = _this.state.navTargetId;
-				var next = _navUtil2.default.getNext(_this.state);
-				if (_this.gotoItem(next)) {
-					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
-						from: oldNavTargetId,
-						to: next.id
-					});
-				}
-			},
-			'nav:goto': function navGoto(payload) {
-				oldNavTargetId = _this.state.navTargetId;
-				if (_this.gotoItem(_this.state.itemsById[payload.value.id])) {
-					_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:goto', '1.0.0', {
-						from: oldNavTargetId,
-						to: _this.state.itemsById[payload.value.id].id
-					});
-				}
-			},
-			'nav:lock': function navLock() {
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:lock', '1.0.0');
-				_this.setAndTrigger({ locked: true });
-			},
-			'nav:unlock': function navUnlock() {
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:unlock', '1.0.0');
-				_this.setAndTrigger({ locked: false });
-			},
-			'nav:close': function navClose() {
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:close', '1.0.0');
-				_this.setAndTrigger({ open: false });
-			},
-			'nav:open': function navOpen() {
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:open', '1.0.0');
-				_this.setAndTrigger({ open: true });
-			},
-			'nav:toggle': function navToggle() {
-				var updatedState = { open: !_this.state.open };
-				_apiUtil2.default.postEvent(OboModel.getRoot(), 'nav:toggle', '1.0.0', updatedState);
-				_this.setAndTrigger(updatedState);
-			},
-			'nav:openExternalLink': function navOpenExternalLink(payload) {
-				window.open(payload.value.url);
-				_this.triggerChange();
-			},
-			'nav:showChildren': function navShowChildren(payload) {
-				item = _this.state.itemsById[payload.value.id];
-				item.showChildren = true;
-				_this.triggerChange();
-			},
-			'nav:hideChildren': function navHideChildren(payload) {
-				item = _this.state.itemsById[payload.value.id];
-				item.showChildren = false;
-				_this.triggerChange();
-			},
-			'question:scoreSet': function questionScoreSet(payload) {
-				var navItem = _this.state.itemsById[payload.value.id];
-				if (navItem) {
-					_navUtil2.default.setFlag(payload.value.id, 'correct', payload.value.score === 100);
-				}
-			}
-		}, _this);
-		return _this;
-	}
-
-	_createClass(NavStore, [{
-		key: 'init',
-		value: function init(model, startingId, startingPath, visitId) {
-			var viewState = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : {};
-
-			this.state = {
-				items: {},
-				itemsById: {},
-				itemsByPath: {},
-				itemsByFullPath: {},
-				navTargetHistory: [],
-				navTargetId: null,
-				locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
-				open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
-				context: 'practice',
-				visitId: visitId
-			};
-
-			this.buildMenu(model);
-			_navUtil2.default.gotoPath(startingPath);
-
-			if (startingId != null) {
-				_navUtil2.default.goto(startingId);
-			} else {
-				var first = _navUtil2.default.getFirst(this.state);
-
-				if (first && first.id) _navUtil2.default.goto(first.id);
-			}
-		}
-	}, {
-		key: 'buildMenu',
-		value: function buildMenu(model) {
-			this.state.itemsById = {};
-			this.state.itemsByPath = {};
-			this.state.itemsByFullPath = {};
-			this.state.items = this.generateNav(model);
-		}
-	}, {
-		key: 'gotoItem',
-		value: function gotoItem(navItem) {
-			if (!navItem) {
-				return false;
-			}
-
-			if (this.state.navTargetId != null) {
-				if (this.state.navTargetId === navItem.id) {
-					return;
-				}
-
-				var navTargetModel = _navUtil2.default.getNavTargetModel(this.state);
-				if (navTargetModel && navTargetModel.processTrigger) {
-					navTargetModel.processTrigger('onNavExit');
-				}
-				this.state.navTargetHistory.push(this.state.navTargetId);
-				this.state.itemsById[this.state.navTargetId].showChildren = false;
-			}
-
-			if (navItem.showChildrenOnNavigation) {
-				navItem.showChildren = true;
-			}
-
-			FocusUtil.unfocus();
-			window.history.pushState({}, document.title, navItem.fullFlatPath);
-			this.state.navTargetId = navItem.id;
-			_navUtil2.default.getNavTargetModel(this.state).processTrigger('onNavEnter');
-			this.triggerChange();
-			return true;
-		}
-	}, {
-		key: 'generateNav',
-		value: function generateNav(model, indent) {
-			if (!model) return {};
-
-			if (indent == null) {
-				indent = '';
-			}
-			var item = _Common2.default.Store.getItemForType(model.get('type'));
-
-			var navItem = null;
-			if (item.getNavItem != null) {
-				navItem = item.getNavItem(model);
-			}
-
-			if (navItem == null) {
-				navItem = {};
-			}
-
-			navItem = Object.assign({
-				type: 'hidden',
-				label: '',
-				path: '',
-				showChildren: true,
-				showChildrenOnNavigation: true
-			}, navItem);
-
-			navItem.flags = [];
-			navItem.children = [];
-			navItem.id = model.get('id');
-			navItem.fullPath = [].concat(navItem.path).filter(function (item) {
-				return item !== '';
-			});
-			navItem.flags = {
-				visited: false,
-				complete: false,
-				correct: false
-			};
-
-			var _iteratorNormalCompletion = true;
-			var _didIteratorError = false;
-			var _iteratorError = undefined;
-
-			try {
-				for (var _iterator = Array.from(model.children.models)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-					var child = _step.value;
-
-					var childNavItem = this.generateNav(child, indent + '_');
-					navItem.children.push(childNavItem);
-					childNavItem.fullPath = navItem.fullPath.concat(childNavItem.fullPath).filter(function (item) {
-						return item !== '';
-					});
-
-					// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
-					var flatPath = childNavItem.fullPath.join('/');
-					childNavItem.flatPath = flatPath;
-					childNavItem.fullFlatPath = ['/view', model.getRoot().get('draftId'), 'visit', this.state.visitId, flatPath].join('/');
-					this.state.itemsByPath[flatPath] = childNavItem;
-					this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem;
-				}
-			} catch (err) {
-				_didIteratorError = true;
-				_iteratorError = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion && _iterator.return) {
-						_iterator.return();
-					}
-				} finally {
-					if (_didIteratorError) {
-						throw _iteratorError;
-					}
-				}
-			}
-
-			this.state.itemsById[model.get('id')] = navItem;
-
-			return navItem;
-		}
-	}]);
-
-	return NavStore;
-}(Store);
-
-var navStore = new NavStore();
-window.__ns = navStore;
-exports.default = navStore;
-
-/***/ }),
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5624,9 +5680,13 @@ var _apiUtil = __webpack_require__(3);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _questionUtil = __webpack_require__(6);
+var _questionUtil = __webpack_require__(7);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
+
+var _navStore = __webpack_require__(5);
+
+var _navStore2 = _interopRequireDefault(_navStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5662,13 +5722,19 @@ var QuestionStore = function (_Store) {
 				_this.state.responses[context][id] = payload.value.response;
 				_this.triggerChange();
 
-				_apiUtil2.default.postEvent(model.getRoot(), 'question:setResponse', '2.1.0', {
-					questionId: id,
-					response: payload.value.response,
-					targetId: payload.value.targetId,
-					context: context,
-					assessmentId: payload.value.assessmentId,
-					attemptId: payload.value.attemptId
+				_apiUtil2.default.postEvent({
+					draftId: model.getRoot().get('id'),
+					action: 'question:setResponse',
+					eventVersion: '2.1.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: {
+						questionId: id,
+						response: payload.value.response,
+						targetId: payload.value.targetId,
+						context: context,
+						assessmentId: payload.value.assessmentId,
+						attemptId: payload.value.attemptId
+					}
 				});
 			},
 
@@ -5694,8 +5760,14 @@ var QuestionStore = function (_Store) {
 			'question:showExplanation': function questionShowExplanation(payload) {
 				var root = OboModel.models[payload.value.id].getRoot();
 
-				_apiUtil2.default.postEvent(root, 'question:showExplanation', '1.0.0', {
-					questionId: payload.value.id
+				_apiUtil2.default.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:showExplanation',
+					eventVersion: '1.0.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: {
+						questionId: payload.value.id
+					}
 				});
 
 				_questionUtil2.default.setData(payload.value.id, 'showingExplanation', true);
@@ -5704,9 +5776,15 @@ var QuestionStore = function (_Store) {
 			'question:hideExplanation': function questionHideExplanation(payload) {
 				var root = OboModel.models[payload.value.id].getRoot();
 
-				_apiUtil2.default.postEvent(root, 'question:hideExplanation', '1.1.0', {
-					questionId: payload.value.id,
-					actor: payload.value.actor
+				_apiUtil2.default.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:hideExplanation',
+					eventVersion: '1.1.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: {
+						questionId: payload.value.id,
+						actor: payload.value.actor
+					}
 				});
 
 				_questionUtil2.default.clearData(payload.value.id, 'showingExplanation');
@@ -5718,8 +5796,14 @@ var QuestionStore = function (_Store) {
 			},
 
 			'question:hide': function questionHide(payload) {
-				_apiUtil2.default.postEvent(OboModel.models[payload.value.id].getRoot(), 'question:hide', '1.0.0', {
-					questionId: payload.value.id
+				_apiUtil2.default.postEvent({
+					draftId: OboModel.models[payload.value.id].getRoot().get('draftId'),
+					action: 'question:hide',
+					eventVersion: '1.0.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: {
+						questionId: payload.value.id
+					}
 				});
 
 				delete _this.state.viewedQuestions[payload.value.id];
@@ -5734,8 +5818,14 @@ var QuestionStore = function (_Store) {
 			'question:view': function questionView(payload) {
 				var root = OboModel.models[payload.value.id].getRoot();
 
-				_apiUtil2.default.postEvent(root, 'question:view', '1.0.0', {
-					questionId: payload.value.id
+				_apiUtil2.default.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:view',
+					eventVersion: '1.0.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: {
+						questionId: payload.value.id
+					}
 				});
 
 				_this.state.viewedQuestions[payload.value.id] = true;
@@ -5749,8 +5839,14 @@ var QuestionStore = function (_Store) {
 				var questionModel = OboModel.models[questionId];
 				var root = questionModel.getRoot();
 
-				_apiUtil2.default.postEvent(root, 'question:checkAnswer', '1.0.0', {
-					questionId: payload.value.id
+				_apiUtil2.default.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:checkAnswer',
+					eventVersion: '1.0.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: {
+						questionId: payload.value.id
+					}
 				});
 			},
 
@@ -5761,8 +5857,14 @@ var QuestionStore = function (_Store) {
 
 				_this.clearResponses(questionId, payload.value.context);
 
-				_apiUtil2.default.postEvent(root, 'question:retry', '1.0.0', {
-					questionId: questionId
+				_apiUtil2.default.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:retry',
+					eventVersion: '1.0.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: {
+						questionId: questionId
+					}
 				});
 
 				if (_questionUtil2.default.isShowingExplanation(_this.state, questionModel)) {
@@ -5790,11 +5892,17 @@ var QuestionStore = function (_Store) {
 				_this.triggerChange();
 
 				model = OboModel.models[payload.value.itemId];
-				_apiUtil2.default.postEvent(model.getRoot(), 'question:scoreSet', '1.0.0', {
-					id: scoreId,
-					itemId: payload.value.itemId,
-					score: payload.value.score,
-					context: payload.value.context
+				_apiUtil2.default.postEvent({
+					draftId: model.getRoot().get('draftId'),
+					action: 'question:scoreSet',
+					eventVersion: '1.0.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: {
+						id: scoreId,
+						itemId: payload.value.itemId,
+						score: payload.value.score,
+						context: payload.value.context
+					}
 				});
 			},
 
@@ -5806,7 +5914,13 @@ var QuestionStore = function (_Store) {
 				delete _this.state.scores[payload.value.context][payload.value.itemId];
 				_this.triggerChange();
 
-				_apiUtil2.default.postEvent(model.getRoot(), 'question:scoreClear', '1.0.0', scoreItem);
+				_apiUtil2.default.postEvent({
+					draftId: model.getRoot().get('draftId'),
+					action: 'question:scoreClear',
+					eventVersion: '1.0.0',
+					visitId: _navStore2.default.getState().visitId,
+					payload: scoreItem
+				});
 			}
 		});
 		return _this;
@@ -18680,7 +18794,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _assessmentUtil = __webpack_require__(5);
+var _assessmentUtil = __webpack_require__(6);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
@@ -18828,11 +18942,11 @@ var _Common = __webpack_require__(1);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _assessmentUtil = __webpack_require__(5);
+var _assessmentUtil = __webpack_require__(6);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
-var _questionUtil = __webpack_require__(6);
+var _questionUtil = __webpack_require__(7);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
@@ -18844,7 +18958,7 @@ var _navUtil = __webpack_require__(2);
 
 var _navUtil2 = _interopRequireDefault(_navUtil);
 
-var _navStore = __webpack_require__(8);
+var _navStore = __webpack_require__(5);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -19026,8 +19140,8 @@ var AssessmentStore = function (_Store) {
 			var model = OboModel.models[id];
 
 			return _apiUtil2.default.startAttempt({
-				lo: model.getRoot(),
-				assessment: model,
+				draftId: model.getRoot().get('draftId'),
+				assessmentId: model.get('id'),
 				visitId: _navStore2.default.getState().visitId
 			}).then(function (res) {
 				if (res.status === 'error') {
@@ -19101,7 +19215,7 @@ var AssessmentStore = function (_Store) {
 
 			var assessment = this.state.assessments[id];
 			return _apiUtil2.default.endAttempt({
-				attempt: assessment.current,
+				attemptId: assessment.current.attemptId,
 				visitId: _navStore2.default.getState().visitId
 			}).then(function (res) {
 				if (res.status === 'error') {
@@ -19170,7 +19284,11 @@ var AssessmentStore = function (_Store) {
 			assessment.ltiNetworkState = _ltiNetworkStates2.default.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE;
 			this.triggerChange();
 
-			return _apiUtil2.default.resendLTIAssessmentScore(assessmentModel.getRoot(), assessmentModel, _navStore2.default.getState().visitId).then(function (res) {
+			return _apiUtil2.default.resendLTIAssessmentScore({
+				draftId: assessmentModel.getRoot().get('draftId'),
+				assessmentId: assessmentModel.get('id'),
+				visitId: _navStore2.default.getState().visitId
+			}).then(function (res) {
 				assessment.ltiNetworkState = _ltiNetworkStates2.default.IDLE;
 
 				if (res.status === 'error') {
@@ -20695,7 +20813,7 @@ function checkGlobal(value) {
 }
 
 module.exports = root;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(135)(module), __webpack_require__(8)))
 
 /***/ }),
 /* 151 */
@@ -20964,7 +21082,7 @@ function isObject(value) {
 }
 
 module.exports = isFunction;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
 /* 154 */
@@ -22060,7 +22178,7 @@ URL.location = lolcation;
 URL.qs = qs;
 
 module.exports = URL;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
 /* 160 */
@@ -22259,7 +22377,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _assessmentUtil = __webpack_require__(5);
+var _assessmentUtil = __webpack_require__(6);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
@@ -22868,7 +22986,7 @@ var _assessmentStore = __webpack_require__(141);
 
 var _assessmentStore2 = _interopRequireDefault(_assessmentStore);
 
-var _navStore = __webpack_require__(8);
+var _navStore = __webpack_require__(5);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -23106,12 +23224,23 @@ var ViewerApp = function (_React$Component) {
 			var _this3 = this;
 
 			if (document.hidden) {
-				_apiUtil2.default.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(function (res) {
+				_apiUtil2.default.postEvent({
+					draftId: this.state.model.get('draftId'),
+					action: 'viewer:leave',
+					eventVersion: '1.0.0',
+					visitId: this.state.navState.visitId
+				}).then(function (res) {
 					_this3.leaveEvent = res.value;
 				});
 			} else {
-				_apiUtil2.default.postEvent(this.state.model, 'viewer:return', '1.0.0', {
-					relatedEventId: this.leaveEvent.id
+				_apiUtil2.default.postEvent({
+					draftId: this.state.model.get('draftId'),
+					action: 'viewer:return',
+					eventVersion: '1.0.0',
+					visitId: this.state.navState.visitId,
+					payload: {
+						relatedEventId: this.leaveEvent.id
+					}
 				});
 				delete this.leaveEvent;
 			}
@@ -23176,9 +23305,15 @@ var ViewerApp = function (_React$Component) {
 
 			this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime());
 
-			_apiUtil2.default.postEvent(this.state.model, 'viewer:inactive', '2.0.0', {
-				lastActiveTime: this.lastActiveEpoch,
-				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+			_apiUtil2.default.postEvent({
+				draftId: this.state.model.get('draftId'),
+				action: 'viewer:inactive',
+				eventVersion: '2.0.0',
+				preview: this.state.navState.visitId,
+				payload: {
+					lastActiveTime: this.lastActiveEpoch,
+					inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+				}
 			}).then(function (res) {
 				_this4.inactiveEvent = res.value;
 			});
@@ -23186,10 +23321,16 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'onReturnFromIdle',
 		value: function onReturnFromIdle() {
-			_apiUtil2.default.postEvent(this.state.model, 'viewer:returnFromInactive', '2.0.0', {
-				lastActiveTime: this.lastActiveEpoch,
-				inactiveDuration: Date.now() - this.lastActiveEpoch,
-				relatedEventId: this.inactiveEvent.id
+			_apiUtil2.default.postEvent({
+				draftId: this.state.model.get('draftId'),
+				action: 'viewer:returnFromInactive',
+				eventVersion: '2.0.0',
+				visitId: this.state.navState.visitId,
+				payload: {
+					lastActiveTime: this.lastActiveEpoch,
+					inactiveDuration: Date.now() - this.lastActiveEpoch,
+					relatedEventId: this.inactiveEvent.id
+				}
 			});
 
 			delete this.lastActiveEpoch;
@@ -23215,7 +23356,12 @@ var ViewerApp = function (_React$Component) {
 	}, {
 		key: 'onWindowClose',
 		value: function onWindowClose() {
-			_apiUtil2.default.postEvent(this.state.model, 'viewer:close', '1.0.0', {});
+			_apiUtil2.default.postEvent({
+				draftId: this.state.model.get('draftId'),
+				action: 'viewer:close',
+				eventVersion: '1.0.0',
+				visitId: this.state.navState.visitId
+			});
 		}
 	}, {
 		key: 'clearPreviewScores',
@@ -23425,7 +23571,7 @@ var _ltiNetworkStates = __webpack_require__(142);
 
 var _ltiNetworkStates2 = _interopRequireDefault(_ltiNetworkStates);
 
-var _navStore = __webpack_require__(8);
+var _navStore = __webpack_require__(5);
 
 var _navStore2 = _interopRequireDefault(_navStore);
 
@@ -23433,7 +23579,7 @@ var _questionStore = __webpack_require__(9);
 
 var _questionStore2 = _interopRequireDefault(_questionStore);
 
-var _assessmentUtil = __webpack_require__(5);
+var _assessmentUtil = __webpack_require__(6);
 
 var _assessmentUtil2 = _interopRequireDefault(_assessmentUtil);
 
@@ -23445,7 +23591,7 @@ var _apiUtil = __webpack_require__(3);
 
 var _apiUtil2 = _interopRequireDefault(_apiUtil);
 
-var _questionUtil = __webpack_require__(6);
+var _questionUtil = __webpack_require__(7);
 
 var _questionUtil2 = _interopRequireDefault(_questionUtil);
 
