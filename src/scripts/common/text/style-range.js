@@ -21,7 +21,6 @@ class StyleRange {
 	}
 
 	clone() {
-		//@TODO - assumes 'data' is not an object (otherwise we should clone it)
 		return new StyleRange(this.start, this.end, this.type, this.data)
 	}
 
@@ -88,16 +87,14 @@ class StyleRange {
 		//return false if @type is StyleType.SUPERSCRIPT or @type is StyleType.SUBSCRIPT
 
 		if (this.data instanceof Object) {
-			for (let k in this.data) {
-				let v = this.data[k]
+			for (const k in this.data) {
+				const v = this.data[k]
 				if (otherData[k] == null || otherData[k] !== v) {
 					return false
 				}
 			}
-		} else {
-			if (this.data !== otherData) {
-				return false
-			}
+		} else if (this.data !== otherData) {
+			return false
 		}
 
 		return true

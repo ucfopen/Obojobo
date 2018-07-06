@@ -103,10 +103,6 @@
 		.review.is-basic-review {
 			margin-top: 2em;
 
-			/*
-			@TODO: These classes should not be here - they assume that we have MCAssessment type children!
-			BEGIN shame:
-			*/
 			.result-container {
 				margin-left: 3em;
 				margin-top: 1em;
@@ -149,9 +145,6 @@
 					color: $color-correct;
 				}
 			}
-			/*
-			END shame
-			*/
 		}
 	}
 }

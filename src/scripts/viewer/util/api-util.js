@@ -13,7 +13,7 @@ var APIUtil = {
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
-			} //@TODO - Do I need this?
+			}
 		})
 	},
 

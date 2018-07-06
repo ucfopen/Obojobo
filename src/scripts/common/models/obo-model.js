@@ -117,7 +117,6 @@ class OboModel extends Backbone.Model {
 		return delete OboModel.models[model.get('id')]
 	}
 
-	// @TODO Should this dirty model or parent?
 	onChildAdd(model, collection, options) {
 		model.parent = this
 		return model.markDirty()
@@ -234,10 +233,8 @@ class OboModel extends Backbone.Model {
 	}
 
 	getDomEl() {
-		// @TODO - This work?
 		return document.body.querySelector(`.component[data-id='${this.get('id')}']`)
 	}
-	// document.body.querySelector ".component[data-component-index='#{@getIndex()}']"
 
 	getComponentClass() {
 		return Store.getItemForType(this.get('type')).componentClass
@@ -406,7 +403,6 @@ class OboModel extends Backbone.Model {
 
 OboModel.models = {}
 
-//@TODO @HACK:
 OboModel.getRoot = function() {
 	for (let id in OboModel.models) {
 		return OboModel.models[id].getRoot()
