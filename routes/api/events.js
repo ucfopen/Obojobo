@@ -1,9 +1,9 @@
-var express = require('express')
-var router = express.Router()
-var oboEvents = oboRequire('obo_events')
-var insertEvent = oboRequire('insert_event')
-var createCaliperEvent = require('./events/create_caliper_event')
-let logger = oboRequire('logger')
+const express = require('express')
+const router = express.Router()
+const oboEvents = oboRequire('obo_events')
+const insertEvent = oboRequire('insert_event')
+const createCaliperEvent = require('./events/create_caliper_event')
+const logger = oboRequire('logger')
 
 // Create A New Event
 // mounted as /api/events
@@ -21,11 +21,11 @@ router.post('/', (req, res, next) => {
 			currentDocument = draftDocument
 
 			// add data to the event
-			let event = req.body.event
+			const event = req.body.event
 
-			let caliperEvent = createCaliperEvent(req)
+			const caliperEvent = createCaliperEvent(req)
 
-			let insertObject = {
+			const insertObject = {
 				actorTime: event.actor_time,
 				action: event.action,
 				userId: currentUser.id,
@@ -46,13 +46,11 @@ router.post('/', (req, res, next) => {
 				})
 				.catch(err => {
 					logger.error('Insert Event Failure:', err)
-					// @TODO change to call next(err)
 					res.unexpected(err)
 				})
 		})
 		.catch(err => {
 			logger.error(err)
-			// @TODO change to call next(err)
 			res.notAuthorized(err)
 		})
 })

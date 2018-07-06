@@ -1,11 +1,11 @@
-let inflector = require('json-inflector')
-let logger = oboRequire('logger')
+const inflector = require('json-inflector')
+const logger = oboRequire('logger')
 
-let camelize = o => {
+const camelize = o => {
 	return inflector.transform(o, 'camelizeLower')
 }
 
-let success = (req, res, next, valueObject) => {
+const success = (req, res, next, valueObject) => {
 	return res.status(200).json(
 		camelize({
 			status: 'ok',
@@ -14,9 +14,7 @@ let success = (req, res, next, valueObject) => {
 	)
 }
 
-// @TODO - in the controller - throw an error instead of calling this
-// let the main response handler catch it and respond with this
-let badInput = (req, res, next, message) => {
+const badInput = (req, res, next, message) => {
 	return res.status(422).json(
 		camelize({
 			status: 'error',
@@ -28,9 +26,7 @@ let badInput = (req, res, next, message) => {
 	)
 }
 
-// @TODO - in the controller - throw an error instead of calling this
-// let the main response handler catch it and respond with this
-let notAuthorized = (req, res, next, message) => {
+const notAuthorized = (req, res, next, message) => {
 	return res.status(401).json(
 		camelize({
 			status: 'error',
@@ -42,7 +38,7 @@ let notAuthorized = (req, res, next, message) => {
 	)
 }
 
-let reject = (req, res, next, message) => {
+const reject = (req, res, next, message) => {
 	return res.status(403).json(
 		camelize({
 			status: 'error',
@@ -54,7 +50,7 @@ let reject = (req, res, next, message) => {
 	)
 }
 
-let missing = (req, res, next, message) => {
+const missing = (req, res, next, message) => {
 	return res.status(404).json(
 		camelize({
 			status: 'error',
@@ -66,7 +62,7 @@ let missing = (req, res, next, message) => {
 	)
 }
 
-let unexpected = (req, res, next, message) => {
+const unexpected = (req, res, next, message) => {
 	if (message instanceof Error) {
 		logger.error('error thrown', message.stack)
 		message = message.toString()
