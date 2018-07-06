@@ -24,6 +24,7 @@ describe('api visits route', () => {
 	const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
+		requireCurrentDocument: jest.fn(),
 		params: { draftId: 555 },
 		app: {
 			locals: {
@@ -44,6 +45,7 @@ describe('api visits route', () => {
 		success: jest.fn()
 	}
 	const mockNext = jest.fn()
+	const mockYell = jest.fn().mockResolvedValue(undefined)
 	let startVisitRoute
 
 	beforeAll(() => {})
@@ -51,12 +53,24 @@ describe('api visits route', () => {
 	beforeEach(() => {
 		oboRequire('routes/api/visits')
 		mockReq.requireCurrentUser.mockReset()
+		mockReq.requireCurrentDocument.mockResolvedValue({
+			draftId: 555,
+			contentId: 'draft-content-id',
+			yell: mockYell,
+			root: {
+				node: {
+					_rev: 'draft-content-id'
+				}
+			}
+		})
 		mockReq.body = {}
 		mockRes.render.mockReset()
 		mockRes.reject.mockReset()
 		mockRes.success.mockReset()
 		logger.error.mockReset()
 		db.one.mockReset()
+		insertEvent.mockReset()
+		caliperEvent().createViewerSessionLoggedInEvent.mockReset()
 		ltiUtil.retrieveLtiLaunch = jest.fn()
 		viewerState.get = jest.fn()
 		startVisitRoute = mockRouterMethods.post.mock.calls[0][1]
@@ -70,7 +84,7 @@ describe('api visits route', () => {
 		expect(mockRouterMethods.put).not.toBeCalled()
 	})
 
-	test('start fails without current user', () => {
+	test('/start fails without current user', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
 
@@ -81,7 +95,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no visit id in the request', () => {
+	test('/start fails when theres no visit id in the request', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
@@ -91,7 +105,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no matching visit', () => {
+	test('/start fails when theres no matching visit', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 1, visitId: 9 }
@@ -105,7 +119,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no linked lti launch (when not in preview mode)', () => {
+	test('/start fails when theres no linked lti launch (when not in preview mode)', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { draftId: 1, visitId: 9 }
@@ -113,19 +127,9 @@ describe('api visits route', () => {
 		Visit.fetchById.mockResolvedValueOnce(
 			new Visit({
 				is_preview: false,
-				draft_content_id: 'mocked-draft-content-id'
+				draft_content_id: 'draft-content-id'
 			})
 		)
-
-		// mock the draft
-		Draft.fetchById.mockResolvedValueOnce({
-			yell: jest.fn(),
-			root: {
-				node: {
-					_rev: 'mocked-draft-content-id'
-				}
-			}
-		})
 
 		// reject launch lookup
 		ltiUtil.retrieveLtiLaunch.mockRejectedValueOnce('no launch found')
@@ -137,19 +141,10 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when draft_content_ids do not match', () => {
+	test('/start fails when draft_content_ids do not match', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
-
-		Draft.fetchById.mockResolvedValueOnce({
-			yell: jest.fn(),
-			root: {
-				node: {
-					_rev: 'mocked-new-draft-content-id'
-				}
-			}
-		})
 
 		// resolve ltiLaunch lookup
 		let launch = {
@@ -173,19 +168,10 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start when draft_content_ids do not match in preview mode', () => {
+	test('/start fails when draft_content_ids do not match in preview mode', () => {
 		expect.assertions(4)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
-
-		Draft.fetchById.mockResolvedValueOnce({
-			yell: jest.fn(),
-			root: {
-				node: {
-					_rev: 'mocked-new-draft-content-id'
-				}
-			}
-		})
 
 		// resolve ltiLaunch lookup
 		let launch = {
@@ -210,42 +196,7 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start fails when theres no outcome service url', () => {
-		expect.assertions(3)
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		mockReq.body = { visitId: 9, draftId: 1 }
-
-		// resolve db.one lookup of visit
-		Visit.fetchById.mockResolvedValueOnce(
-			new Visit({
-				is_active: true,
-				is_preview: false,
-				draft_content_id: 'mocked-draft-content-id'
-			})
-		)
-
-		Draft.fetchById.mockResolvedValueOnce({
-			yell: jest.fn(),
-			root: {
-				node: {
-					_rev: 'mocked-draft-content-id'
-				}
-			}
-		})
-
-		// resolve ltiLaunch lookup
-		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce({})
-
-		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(logger.error).toBeCalledWith(expect.any(Error))
-			expect(mockRes.reject).toBeCalledWith(
-				"Cannot read property 'lis_outcome_service_url' of undefined"
-			)
-			expect(mockNext).not.toBeCalled()
-		})
-	})
-
-	test('start fails when theres no draft', () => {
+	test('/start fails when theres no outcome service url', () => {
 		expect.assertions(3)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.body = { visitId: 9, draftId: 1 }
@@ -260,18 +211,24 @@ describe('api visits route', () => {
 		)
 
 		// resolve ltiLaunch lookup
-		let launch = {
-			reqVars: {
-				lis_outcome_service_url: 'howtune.com'
-			}
-		}
-		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
-
-		// resolve viewerState.get
 		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce({})
 
+		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
+			expect(logger.error).toBeCalledWith(expect.any(Error))
+			expect(mockRes.reject).toBeCalledWith(
+				"Cannot read property 'lis_outcome_service_url' of undefined"
+			)
+			expect(mockNext).not.toBeCalled()
+		})
+	})
+
+	test('/start fails when theres no draft', () => {
+		expect.assertions(3)
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+		mockReq.body = { visitId: 9, draftId: 1 }
+
 		// reject fetchById
-		Draft.fetchById.mockRejectedValueOnce('no draft')
+		mockReq.requireCurrentDocument.mockRejectedValueOnce('no draft')
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith('no draft')
 			expect(mockRes.reject).toBeCalledWith('no draft')
@@ -279,10 +236,10 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start yells internal:startVisit and respond with success', () => {
+	test('/start yells internal:startVisit and respond with success', () => {
 		expect.assertions(5)
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		mockReq.body = { draftId: 8, visitId: 9 }
+		mockReq.body = { draftId: 555, visitId: 9 }
 
 		// resolve db.one lookup of visit
 		Visit.fetchById.mockResolvedValueOnce(
@@ -304,18 +261,12 @@ describe('api visits route', () => {
 		// resolve viewerState.get
 		viewerState.get.mockResolvedValueOnce('view state')
 
-		// resolve fetchById
-		let mockDraft = new Draft({
-			_rev: 'draft-content-id'
-		})
-		Draft.fetchById.mockResolvedValueOnce(mockDraft)
-
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(mockDraft.yell).toBeCalledWith(
+			expect(mockYell).toBeCalledWith(
 				'internal:startVisit',
 				mockReq,
 				mockRes,
-				8,
+				555,
 				9,
 				expect.any(Object)
 			)
@@ -334,10 +285,12 @@ describe('api visits route', () => {
 		})
 	})
 
-	test('start is also successful for a preview visit', () => {
+	test('/start is also successful for a preview visit', () => {
 		expect.assertions(5)
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		mockReq.body = { draftId: 8, visitId: 9 }
+		let user = new User()
+		user.canViewEditor = true
+		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
+		mockReq.body = { draftId: 555, visitId: 9 }
 
 		// resolve db.one lookup of visit
 		Visit.fetchById.mockResolvedValueOnce(
@@ -358,17 +311,17 @@ describe('api visits route', () => {
 		Draft.fetchById.mockResolvedValueOnce(mockDraft)
 
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(mockDraft.yell).toBeCalledWith(
+			expect(mockYell).toBeCalledWith(
 				'internal:startVisit',
 				mockReq,
 				mockRes,
-				8,
+				555,
 				9,
 				expect.any(Object)
 			)
 			expect(mockRes.success).toBeCalledWith({
 				visitId: 9,
-				isPreviewing: false,
+				isPreviewing: true,
 				lti: {
 					lis_outcome_service_url: null
 				},
@@ -391,7 +344,8 @@ describe('api visits route', () => {
 				action: 'visit:start',
 				actorTime: '2016-09-22T16:57:14.500Z',
 				caliperPayload: undefined,
-				draftId: 99,
+				draftId: 555,
+				contentId: 'draft-content-id',
 				eventVersion: '1.0.0',
 				ip: 'remoteAddress',
 				metadata: {},
@@ -400,7 +354,8 @@ describe('api visits route', () => {
 			})
 			expect(caliperEvent().createViewerSessionLoggedInEvent).toBeCalledWith({
 				actor: { id: 2, type: 'user' },
-				draftId: 99,
+				draftId: 555,
+				contentId: 'draft-content-id',
 				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined }
 			})

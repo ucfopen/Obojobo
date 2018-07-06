@@ -18,6 +18,7 @@ describe('preview route', () => {
 	const { mockRouterMethods } = require('../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
+		requireCurrentDocument: jest.fn(),
 		params: { draftId: 'mocked-draft-id' },
 		app: {
 			locals: {
@@ -44,9 +45,14 @@ describe('preview route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockReq.requireCurrentUser.mockReset()
+		mockReq.requireCurrentDocument.mockReturnValue({
+			draftId: 'mocked-draft-id',
+			contentId: 'mocked-content-id'
+		})
 		mockReq.app.get.mockReset()
 		mockRes.redirect.mockReset()
 		mockNext.mockReset()
+		logger.error.mockReset()
 		Visit.createPreviewVisit.mockReturnValueOnce({
 			visitId: 'mocked-visit-id',
 			deactivatedVisitId: 'mocked-deactivated-visit-id'
@@ -105,6 +111,21 @@ describe('preview route', () => {
 		})
 	})
 
+	test('GET preview/:draftId logs error and calls next if error thrown', () => {
+		expect.assertions(2)
+
+		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+		mockReq.session.save = jest.fn().mockImplementationOnce(funct => {
+			funct({})
+		})
+
+		return routeFunction(mockReq, mockRes, mockNext).then(result => {
+			expect(logger.error).toBeCalledWith(expect.any(Error))
+			expect(mockNext).toBeCalledWith(expect.any(Error))
+		})
+	})
+
 	test('GET preview/:draftId calls visit:create insertEvent and createVisitEvent', () => {
 		expect.assertions(2)
 		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
@@ -118,6 +139,7 @@ describe('preview route', () => {
 				actorTime: '2016-09-22T16:57:14.500Z',
 				caliperPayload: undefined,
 				draftId: 'mocked-draft-id',
+				contentId: 'mocked-content-id',
 				eventVersion: '1.0.0',
 				ip: 'remoteAddress',
 				metadata: {},
