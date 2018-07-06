@@ -1,5 +1,8 @@
 jest.mock('../../db')
 
+import Draft from '../../models/draft'
+import DraftNode from '../../models/draft_node'
+
 let mockRawDraft = {
 	id: 'whatever',
 	version: 9,
@@ -38,8 +41,7 @@ describe('models draft', () => {
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it('initializes expected properties', () => {
-		let DraftNode = oboRequire('models/draft_node')
+	test('constructor initializes expected properties', () => {
 		const draftTree = {}
 		let initFn = jest.fn()
 		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
@@ -57,8 +59,7 @@ describe('models draft', () => {
 		expect(d.children).toHaveLength(0)
 	})
 
-	it('calls passed init function', () => {
-		let DraftNode = oboRequire('models/draft_node')
+	test('init calls passed init function', () => {
 		const draftTree = {}
 		let initFn = jest.fn()
 		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
@@ -67,57 +68,93 @@ describe('models draft', () => {
 		expect(initFn).toHaveBeenCalledTimes(1)
 	})
 
-	it('converts itself to an object', () => {
-		let DraftNode = oboRequire('models/draft_node')
-		const draftTree = {}
-		let initFn = jest.fn()
-		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
-		let obj = d.toObject()
-		expect(obj).toEqual(
-			expect.objectContaining({
-				content: { nothing: true },
-				children: [], // note DraftNode wont have children when created directly
-				id: 666
-			})
-		)
+	test('get childrenSet builds childrenSet as expected', () => {
+		let d = new DraftNode({}, mockRawDraft.content, jest.fn())
+		d.children.push({ node: { id: 999 }, children: [{ node: { id: 777 }, children: [] }] })
+		d.children.push({ node: { id: 888 }, children: [] })
+
+		let childrenSet = d.childrenSet
+		expect(childrenSet.has(999)).toBe(true)
+		expect(childrenSet.has(888)).toBe(true)
+		expect(childrenSet.has(777)).toBe(true)
+		expect(childrenSet.has(333)).toBe(false)
 	})
 
-	it('yells returns an array of empty promises with no children', () => {
-		let DraftNode = oboRequire('models/draft_node')
-		const draftTree = {}
-		let initFn = jest.fn()
-		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
+	test('get childrenSet throws error if child has no id', () => {
+		let d = new DraftNode({}, mockRawDraft.content, jest.fn())
+		d.children.push({ node: { id: 999 }, children: [{ node: { id: 777 }, children: [] }] })
+		d.children.push({ node: { id: null }, children: [] })
+
+		let getChildrenIds = () => d.childrenSet
+		expect(getChildrenIds).toThrowError('Unable to add child node with missing id')
+	})
+
+	test('get immediateChildrenSet builds immediateChildrenSet as expected', () => {
+		let d = new DraftNode({}, mockRawDraft.content, jest.fn())
+		d.children.push({ node: { id: 999 }, children: [{ node: { id: 777 }, children: [] }] })
+		d.children.push({ node: { id: 888 }, children: [] })
+		let iChildrenSet = d.immediateChildrenSet
+		expect(iChildrenSet.has(999)).toBe(true)
+		expect(iChildrenSet.has(888)).toBe(true)
+		expect(iChildrenSet.has(777)).toBe(false)
+		expect(iChildrenSet.has(333)).toBe(false)
+	})
+
+	test('registerEvents sets up listeners', () => {
+		let d = new DraftNode({}, mockRawDraft.content, jest.fn())
+		let eventFn = jest.fn()
+
+		d.registerEvents({ test: eventFn, test2: eventFn })
+
+		expect(d._listeners.size).toBe(2)
+
+		d.registerEvents({ test: eventFn, test3: eventFn })
+
+		expect(d._listeners.size).toBe(3)
+	})
+
+	test('contains finds child nodes', () => {
+		let d = new Draft(mockRawDraft.content)
+		expect(d.root.contains({ id: 999 })).toBe(true)
+		expect(d.root.contains({ id: 888 })).toBe(true)
+		expect(d.root.contains({ id: 777 })).toBe(true)
+		expect(d.root.contains({ id: 333 })).toBe(false)
+	})
+
+	test('yells returns an array of empty promises with no children', () => {
+		let d = new DraftNode({}, mockRawDraft.content, jest.fn())
 		let promises = d.yell()
 		expect(promises).toBeInstanceOf(Array)
 		expect(promises).toHaveLength(0)
 	})
 
-	it('yells to children', () => {
-		expect.assertions(4)
-
-		let Draft = oboRequire('models/draft')
+	test('yells to children', () => {
+		expect.assertions(3)
 		let d = new Draft(mockRawDraft.content)
-		let children = d.getChildNodesByType('DraftNode')
+
+		let node = d.getChildNodeById(666)
 
 		// mock each draftNode's yell function
-		children.forEach(c => {
-			c.originalYell = c.yell
-			c.yell = jest.fn()
-			c.yell.mockImplementation(event => {
-				return c.originalYell(event) // use the orignial yell function
+		node.children.forEach(c => {
+			jest.spyOn(c, 'yell')
+			c.children.forEach(child => {
+				jest.spyOn(child, 'yell')
 			})
 		})
 
-		d.yell('test')
+		node.yell('test')
 
 		// make sure each draftNode.yell was called
-		children.forEach(c => {
+		node.children.forEach(c => {
 			expect(c.yell).toBeCalledWith('test')
+
+			c.children.forEach(child => {
+				expect(child.yell).toBeCalledWith('test')
+			})
 		})
 	})
 
-	it('yell fires named event listeners', () => {
-		let DraftNode = oboRequire('models/draft_node')
+	test('yell fires named event listeners', () => {
 		const draftTree = {}
 		let eventFn = jest.fn().mockImplementation(() => {
 			return 5
@@ -128,32 +165,44 @@ describe('models draft', () => {
 		expect(eventFn).toHaveBeenCalled()
 	})
 
-	it('builds childrenSet as expected', () => {
-		let Draft = oboRequire('models/draft')
-		let d = new Draft(mockRawDraft.content)
-		let childrenSet = d.getChildNodeById(666).childrenSet
-		expect(childrenSet.has(999)).toBe(true)
-		expect(childrenSet.has(888)).toBe(true)
-		expect(childrenSet.has(777)).toBe(true)
-		expect(childrenSet.has(333)).toBe(false)
+	test('yell does not fire unnamed events', () => {
+		const draftTree = {}
+		let eventFn = jest.fn().mockImplementation(() => {
+			return 5
+		})
+		let d = new DraftNode(draftTree, mockRawDraft.content)
+		d.registerEvents({ test: eventFn })
+		let promises = d.yell('mocktest')
+		expect(eventFn).not.toHaveBeenCalled()
 	})
 
-	it('builds immediateChildrenSet as expected', () => {
-		let Draft = oboRequire('models/draft')
-		let d = new Draft(mockRawDraft.content)
-		let iChildrenSet = d.getChildNodeById(666).immediateChildrenSet
-		expect(iChildrenSet.has(999)).toBe(true)
-		expect(iChildrenSet.has(888)).toBe(true)
-		expect(iChildrenSet.has(777)).toBe(false)
-		expect(iChildrenSet.has(333)).toBe(false)
+	test('yell does not return rejected promises', () => {
+		const draftTree = {}
+		let eventFn = jest.fn().mockReturnValueOnce(false)
+		let d = new DraftNode(draftTree, mockRawDraft.content)
+		d.registerEvents({ test: eventFn })
+		let promises = d.yell('test')
+		expect(eventFn).toHaveBeenCalled()
 	})
 
-	it('contains finds child nodes', () => {
-		let Draft = oboRequire('models/draft')
-		let d = new Draft(mockRawDraft.content)
-		expect(d.root.contains({ id: 999 })).toBe(true)
-		expect(d.root.contains({ id: 888 })).toBe(true)
-		expect(d.root.contains({ id: 777 })).toBe(true)
-		expect(d.root.contains({ id: 333 })).toBe(false)
+	test('toObject converts itself to an object', () => {
+		const draftTree = {}
+		let initFn = jest.fn()
+		let d = new DraftNode(draftTree, mockRawDraft.content, initFn)
+		d.children.push({
+			toObject: jest.fn().mockReturnValueOnce({
+				node: { id: 888 },
+				children: []
+			})
+		})
+
+		let obj = d.toObject()
+		expect(obj).toEqual(
+			expect.objectContaining({
+				content: { nothing: true },
+				children: [{ node: { id: 888 }, children: [] }],
+				id: 666
+			})
+		)
 	})
 })

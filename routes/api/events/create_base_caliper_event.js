@@ -43,4 +43,4 @@ let createEvent = (classRef, actorObject, IRI, { sessionId = null, launchId = nu
 	return caliperEvent
 }
 
-module.exports = createEvent
+module.exports = { createEvent }

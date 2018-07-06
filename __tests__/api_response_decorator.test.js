@@ -30,7 +30,7 @@ describe('api response middleware', () => {
 		mockJson.mockClear()
 	})
 
-	it('sets the expected properties on res', () => {
+	test('sets the expected properties on res', () => {
 		expect.assertions(apiFunctions.length * 2)
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
@@ -40,12 +40,12 @@ describe('api response middleware', () => {
 		})
 	})
 
-	it('calls next', () => {
+	test('calls next', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 		expect(mockNext).toBeCalledWith()
 	})
 
-	it('functions set status codes as expected', () => {
+	test('functions set status codes as expected', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
 		apiFunctions.forEach((prop, index) => {
@@ -54,7 +54,7 @@ describe('api response middleware', () => {
 		expect(mockStatus.mock.calls).toEqual([[200], [404], [422], [500], [403], [401]])
 	})
 
-	it('success to pass the value object', () => {
+	test('success to pass the value object', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
 		const input = { test: true }
@@ -64,7 +64,7 @@ describe('api response middleware', () => {
 		expect(mockJson).toBeCalledWith(expected)
 	})
 
-	it('messages to be returned in the value object', () => {
+	test('messages to be returned in the value object', () => {
 		expect.assertions(functionsWithMessages.length * 2)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -77,7 +77,7 @@ describe('api response middleware', () => {
 		})
 	})
 
-	it('messages to set error status in json', () => {
+	test('messages to set error status in json', () => {
 		expect.assertions(functionsWithMessages.length)
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
@@ -89,7 +89,7 @@ describe('api response middleware', () => {
 		})
 	})
 
-	it('success Camalizes all result json', () => {
+	test('success Camalizes all result json', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
 		const input = { top_value: { bottom_value: 'leave_me_alone' } }
@@ -99,13 +99,13 @@ describe('api response middleware', () => {
 		expect(mockJson).toBeCalledWith(expected)
 	})
 
-	it('deals with error messages in unexpected', () => {
+	test('deals with error messages in unexpected', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 		res.unexpected(new Error('test error'))
 		expect(mockJson.mock.calls[0][0].value.message).toBe('Error: test error')
 	})
 
-	it('functions return expected values', () => {
+	test('functions return expected values', () => {
 		expect.assertions(apiFunctions.length)
 		apiFunctions.forEach(func => {
 			let [res, req, mockJson, mockStatus, mockNext] = mockArgs

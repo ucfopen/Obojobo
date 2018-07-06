@@ -41,7 +41,7 @@ const assetForEnv = (assetPath, forceEnvTo = null) => {
 	return result
 }
 
-const getEnv = (forceEnvTo = null) => {
+const getEnv = (forceEnvTo) => {
 	return (forceEnvTo ? forceEnvTo : NODE_ENV).toLowerCase()
 }
 

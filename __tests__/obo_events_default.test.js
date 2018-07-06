@@ -4,7 +4,7 @@ describe('obo events default', () => {
 	beforeEach(() => {})
 	afterEach(() => {})
 
-	it('loads ok', () => {
+	test('loads ok', () => {
 		jest.mock('events')
 		let expectedEmitter = require('events')
 		let oboEvents = oboRequire('obo_events_default')

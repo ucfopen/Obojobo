@@ -7,10 +7,11 @@ const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
+const ltiLaunch = oboRequire('express_lti_launch')
 
 // launch lti view of draft - redirects to visit route
 // mounted as /visit/:draftId/:page
-router.post('/:draftId/:page?', (req, res, next) => {
+router.post('/:draftId/:page?', [ltiLaunch.assignment], (req, res, next) => {
 	let user
 	let createdVisitId
 
