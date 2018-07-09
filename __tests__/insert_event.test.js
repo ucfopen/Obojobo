@@ -21,7 +21,8 @@ describe('insert_event', () => {
 			userId: 9,
 			ip: '1.2.3.4',
 			metadata: { value: 'test2' },
-			draftId: '999999'
+			draftId: '999999',
+			contentId: '12'
 		}
 		// mock insert
 		db.one.mockResolvedValueOnce({ created_at: expectedCreatedAt })

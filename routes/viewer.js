@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const DraftModel = oboRequire('models/draft')
 const Visit = oboRequire('models/visit')
 const logger = oboRequire('logger')
 const insertEvent = oboRequire('insert_event')
@@ -12,30 +11,36 @@ const ltiLaunch = oboRequire('express_lti_launch')
 // launch lti view of draft - redirects to visit route
 // mounted as /visit/:draftId/:page
 router.post('/:draftId/:page?', [ltiLaunch.assignment], (req, res, next) => {
-	let user
+	let currentUser
+	let currentDocument
 	let createdVisitId
 
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			user = currentUser
+		.then(user => {
+			currentUser = user
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			return Visit.createVisit(
 				currentUser.id,
-				req.params.draftId,
+				currentDocument.draftId,
 				req.lti.body.resource_link_id,
 				req.oboLti.launchId
 			)
 		})
 		.then(({ visitId, deactivatedVisitId }) => {
 			createdVisitId = visitId
-			let { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
+			const { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
 			return insertEvent({
 				action: 'visit:create',
 				actorTime: new Date().toISOString(),
-				userId: user.id,
+				userId: currentUser.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				draftId: req.params.draftId,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				preview: false,
 				payload: {
 					visitId,
@@ -43,7 +48,7 @@ router.post('/:draftId/:page?', [ltiLaunch.assignment], (req, res, next) => {
 				},
 				eventVersion: '1.0.0',
 				caliperPayload: createVisitCreateEvent({
-					actor: { type: ACTOR_USER, id: user.id },
+					actor: { type: ACTOR_USER, id: currentUser.id },
 					sessionIds: getSessionIds(req.session),
 					visitId,
 					extensions: { deactivatedVisitId }
@@ -71,38 +76,39 @@ router.post('/:draftId/:page?', [ltiLaunch.assignment], (req, res, next) => {
 // MAIN VISIT ROUTE
 // mounted as /visit/:draftId/visit/:visitId
 router.get('/:draftId/visit/:visitId*', (req, res, next) => {
-	let user
-	let draft
+	let currentUser
+	let currentDocument
 
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			user = currentUser
-			if (user.isGuest()) throw new Error('Login Required')
-			return DraftModel.fetchById(req.params.draftId)
+		.then(user => {
+			currentUser = user
+			if (currentUser.isGuest()) throw new Error('Login Required')
+			return req.requireCurrentDocument()
 		})
-		.then(draftModel => {
-			draft = draftModel
-			return draft.yell('internal:sendToClient', req, res)
+		.then(draftDocument => {
+			currentDocument = draftDocument
+			return currentDocument.yell('internal:sendToClient', req, res)
 		})
-		.then(draftReturn => {
-			draft = draftReturn
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			return Visit.fetchById(req.params.visitId)
 		})
 		.then(visit => {
-			let { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
+			const { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
 			return insertEvent({
 				action: 'viewer:open',
 				actorTime: new Date().toISOString(),
-				userId: user.id,
+				userId: currentUser.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				draftId: req.params.draftId,
-				preview: visit.is_preview,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				payload: { visitId: req.params.visitId },
 				eventVersion: '1.1.0',
+				preview: visit.is_preview,
 				caliperPayload: createViewerOpenEvent({
-					actor: { type: ACTOR_USER, id: user.id },
+					actor: { type: ACTOR_USER, id: currentUser.id },
 					sessionIds: getSessionIds(req.session),
 					visitId: req.params.visitId
 				})
@@ -111,12 +117,12 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 		.then(() => {
 			res.render('viewer', {
 				draftTitle:
-					draft &&
-					draft.root &&
-					draft.root.node &&
-					draft.root.node.content &&
-					draft.root.node.content.title
-						? draft.root.node.content.title
+					currentDocument &&
+					currentDocument.root &&
+					currentDocument.root.node &&
+					currentDocument.root.node.content &&
+					currentDocument.root.node.content.title
+						? currentDocument.root.node.content.title
 						: ''
 			})
 		})

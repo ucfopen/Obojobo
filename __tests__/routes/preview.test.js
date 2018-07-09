@@ -18,6 +18,7 @@ describe('preview route', () => {
 	const { mockRouterMethods } = require('../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
+		requireCurrentDocument: jest.fn(),
 		params: { draftId: 'mocked-draft-id' },
 		app: {
 			locals: {
@@ -44,6 +45,10 @@ describe('preview route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockReq.requireCurrentUser.mockReset()
+		mockReq.requireCurrentDocument.mockReturnValue({
+			draftId: 'mocked-draft-id',
+			contentId: 'mocked-content-id'
+		})
 		mockReq.app.get.mockReset()
 		mockRes.redirect.mockReset()
 		mockNext.mockReset()
@@ -134,6 +139,7 @@ describe('preview route', () => {
 				actorTime: '2016-09-22T16:57:14.500Z',
 				caliperPayload: undefined,
 				draftId: 'mocked-draft-id',
+				contentId: 'mocked-content-id',
 				eventVersion: '1.0.0',
 				ip: 'remoteAddress',
 				metadata: {},

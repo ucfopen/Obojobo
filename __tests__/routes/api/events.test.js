@@ -61,9 +61,12 @@ describe('api draft events route', () => {
 					action: 'none',
 					payload: 'none',
 					draft_id: 88
-				}
+				},
+				draftId: 88
 			},
-			requireCurrentUser: () => Promise.resolve({ id: 5 })
+			requireCurrentUser: () => Promise.resolve({ id: 5 }),
+			requireCurrentDocument: () => Promise.resolve({ draftId: 88, contentId: 12 }),
+			currentDocument: { draftId: 88, contentId: 12 }
 		}
 
 		let mockRes = {
@@ -98,9 +101,11 @@ describe('api draft events route', () => {
 					action: 'none',
 					payload: 'none',
 					draft_id: 88
-				}
+				},
+				draftId: 88
 			},
-			requireCurrentUser: () => Promise.resolve({ id: 5 })
+			requireCurrentUser: () => Promise.resolve({ id: 5 }),
+			requireCurrentDocument: () => Promise.resolve({ draftId: 88, contentId: 12 })
 		}
 
 		let mockRes = {

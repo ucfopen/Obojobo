@@ -1,22 +1,23 @@
-let db = oboRequire('db')
-let insertEvent = oboRequire('insert_event')
-let User = oboRequire('models/user')
-let logger = oboRequire('logger')
-let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-let { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
+const db = oboRequire('db')
+const insertEvent = oboRequire('insert_event')
+const User = oboRequire('models/user')
+const logger = oboRequire('logger')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 
-let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
+const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 	let insertLaunchResult = null
 
 	return db
 		.one(
 			`
 		INSERT INTO launches
-		(draft_id, user_id, type, lti_key, data)
-		VALUES ($[draftId], $[userId], 'lti', $[lti_key], $[data])
+		(draft_id, draft_content_id, user_id, type, lti_key, data)
+		VALUES ($[draftId], $[contentId], $[userId], 'lti', $[lti_key], $[data])
 		RETURNING id`,
 			{
-				draftId: draftId,
+				draftId: draftDocument.draftId,
+				contentId: draftDocument.contentId,
 				userId: user.id,
 				lti_key: ltiConsumerKey,
 				data: ltiBody
@@ -32,10 +33,11 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 				preview: false,
 				payload: { launchId: insertLaunchResult.id },
 				userId: user.id,
-				ip: ip,
+				ip,
 				metadata: {},
 				eventVersion: '1.0.0',
-				draftId: draftId
+				draftId: draftDocument.draftId,
+				contentId: draftDocument.contentId
 			})
 		})
 		.then(() => {
@@ -43,8 +45,8 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 		})
 }
 
-let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) => {
-	let { createLTIPickerEvent } = createCaliperEvent(null, hostname)
+const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) => {
+	const { createLTIPickerEvent } = createCaliperEvent(null, hostname)
 
 	return insertEvent({
 		action: 'lti:pickerLaunch',
@@ -55,10 +57,11 @@ let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) =>
 			ltiConsumerKey
 		},
 		userId: user.id,
-		ip: ip,
+		ip,
 		metadata: {},
 		eventVersion: '1.0.0',
 		draftId: null,
+		contentId: null,
 		caliperPayload: createLTIPickerEvent({
 			actor: {
 				type: ACTOR_USER,
@@ -68,9 +71,9 @@ let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) =>
 	})
 }
 
-let userFromLaunch = (req, ltiBody) => {
+const userFromLaunch = (req, ltiBody) => {
 	// Save/Create the user
-	let newUser = new User({
+	const newUser = new User({
 		username: ltiBody.lis_person_sourcedid,
 		email: ltiBody.lis_person_contact_email_primary,
 		firstName: ltiBody.lis_person_name_given,
@@ -96,15 +99,20 @@ exports.assignment = (req, res, next) => {
 
 	// allows launches to redirect /view/example to /view/00000000-0000-0000-0000-000000000000
 	// the actual redirect happens in the route, this just handles the lti launch
-	let draftId =
-		req.params.draftId === 'example' ? '00000000-0000-0000-0000-000000000000' : req.params.draftId
+	let currentUser = null
+	let currentDocument = null
 
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
-		.then(user => {
+		.then(launchUser => {
+			currentUser = launchUser
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			return storeLtiLaunch(
-				draftId,
-				user,
+				currentDocument,
+				currentUser,
 				req.connection.remoteAddress,
 				req.lti.body,
 				req.lti.consumer_key

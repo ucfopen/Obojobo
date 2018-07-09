@@ -1,6 +1,7 @@
 mockVirtual('./api_response_decorator')
 mockVirtual('./dev_nonce_store')
 mockVirtual('./express_current_user')
+mockVirtual('./express_current_document')
 mockVirtual('./express_load_balancer_helper')
 mockVirtual('./express_lti_launch')
 mockVirtual('./express_register_chunks')
@@ -60,6 +61,7 @@ describe('obo express', () => {
 		expect(mockApp.on).toHaveBeenCalledWith('mount', expect.any(Function))
 		expect(registerChunks).toHaveBeenCalledWith(mockApp)
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_load_balancer_helper'))
+		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
 		expect(mockApp.use).toHaveBeenCalledWith(
 			expect.any(String),

@@ -9,7 +9,10 @@ const logger = oboRequire('logger')
 // Create A New Event
 // mounted as /api/events
 router.post('/', (req, res, next) => {
-	let currentUser
+	let currentUser = null
+	let currentDocument = null
+	let currentVisit = null
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -17,21 +20,28 @@ router.post('/', (req, res, next) => {
 			return VisitModel.fetchById(req.body.event.visitId)
 		})
 		.then(visit => {
+			currentVisit = visit
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
+
 			// add data to the event
-			let event = req.body.event
+			const event = req.body.event
 
-			let caliperEvent = createCaliperEvent(req)
+			const caliperEvent = createCaliperEvent(req)
 
-			let insertObject = {
+			const insertObject = {
 				actorTime: event.actor_time,
 				action: event.action,
 				userId: currentUser.id,
 				eventVersion: event.event_version,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				preview: visit.is_preview,
+				preview: currentVisit.is_preview,
 				payload: event.payload,
-				draftId: event.draft_id,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				caliperPayload: caliperEvent
 			}
 

@@ -120,7 +120,8 @@
 			"models/**/*.js",
 			"routes/**/*.js",
 			"routes/**/*.js",
-			"controllers/**/*.js"
+			"controllers/**/*.js",
+			"viewer/**/*.js"
 		],
 		"coveragePathIgnorePatterns": [
 			"<rootDir>/node_modules",

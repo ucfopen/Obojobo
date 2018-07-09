@@ -10,6 +10,7 @@ const assessmentId = 'testAssessment'
 const attemptId = 'testAttemptId'
 const attemptIRI = 'testAttemptIRI'
 const draftId = 'testDraftId'
+const contentId = 'testContentId'
 const extensions = { foo: 'bar' }
 const frameName = 'testFramename'
 const from = 'navigation came from here'
@@ -36,6 +37,7 @@ describe('Caliper event creator', () => {
 		const navEvent = caliperEvents.createNavigationEvent({
 			actor,
 			draftId,
+			contentId,
 			from,
 			to,
 			sessionIds,
@@ -65,6 +67,7 @@ describe('Caliper event creator', () => {
 		const navEvent = caliperEvents.createNavigationEvent({
 			actor,
 			draftId,
+			contentId,
 			from,
 			to,
 			sessionIds,
@@ -78,6 +81,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavigationEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				from,
 				to,
 				sessionIds,
@@ -92,6 +96,7 @@ describe('Caliper event creator', () => {
 		const viewEvent = caliperEvents.createViewEvent({
 			actor,
 			draftId,
+			contentId,
 			itemId,
 			sessionIds,
 			extensions
@@ -103,6 +108,7 @@ describe('Caliper event creator', () => {
 		const viewEvent = caliperEvents.createViewEvent({
 			actor,
 			draftId,
+			contentId,
 			itemId,
 			frameName,
 			sessionIds,
@@ -116,6 +122,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createViewEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				itemId,
 				frameName,
 				sessionIds,
@@ -130,6 +137,7 @@ describe('Caliper event creator', () => {
 		const hideEvent = caliperEvents.createHideEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			sessionIds,
 			extensions
@@ -141,6 +149,7 @@ describe('Caliper event creator', () => {
 		const hideEvent = caliperEvents.createHideEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			frameName,
 			sessionIds,
@@ -154,6 +163,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createHideEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				frameName,
 				sessionIds,
@@ -170,6 +180,7 @@ describe('Caliper event creator', () => {
 		const attemptStarted = caliperEvents.createAssessmentAttemptStartedEvent({
 			actor,
 			draftId,
+			contentId,
 			assessmentId,
 			attemptId,
 			sessionIds,
@@ -183,6 +194,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createAssessmentAttemptStartedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				assessmentId,
 				attemptId,
 				sessionIds,
@@ -197,6 +209,7 @@ describe('Caliper event creator', () => {
 		const attemptSubmitted = caliperEvents.createAssessmentAttemptSubmittedEvent({
 			actor,
 			draftId,
+			contentId,
 			assessmentId,
 			attemptId,
 			sessionIds,
@@ -224,6 +237,7 @@ describe('Caliper event creator', () => {
 		const attemptScored = caliperEvents.createAssessmentAttemptScoredEvent({
 			actor: { type: 'serverApp' },
 			draftId,
+			contentId,
 			assessmentId,
 			attemptId,
 			sessionIds,
@@ -251,6 +265,7 @@ describe('Caliper event creator', () => {
 		const practiceGrade = caliperEvents.createPracticeGradeEvent({
 			actor: { type: 'viewerClient' },
 			draftId,
+			contentId,
 			questionId,
 			scoreId,
 			score,
@@ -265,6 +280,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createPracticeGradeEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				scoreId,
 				score,
@@ -280,6 +296,7 @@ describe('Caliper event creator', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			assessmentId,
 			attemptId,
@@ -294,6 +311,7 @@ describe('Caliper event creator', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			assessmentId: null,
 			attemptId,
@@ -307,6 +325,7 @@ describe('Caliper event creator', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			assessmentId,
 			attemptId: null,
@@ -320,6 +339,7 @@ describe('Caliper event creator', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			assessmentId: null,
 			attemptId: null,
@@ -333,6 +353,7 @@ describe('Caliper event creator', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			targetId,
 			selectedTargets
@@ -345,6 +366,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createAssessmentItemEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				assessmentId,
 				attemptId,
@@ -361,6 +383,7 @@ describe('Caliper event creator', () => {
 		const practiceQuestionSubmitted = caliperEvents.createPracticeQuestionSubmittedEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			sessionIds,
 			extensions
@@ -373,6 +396,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createPracticeQuestionSubmittedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				sessionIds,
 				extensions
@@ -386,6 +410,7 @@ describe('Caliper event creator', () => {
 		const practiceUngrade = caliperEvents.createPracticeUngradeEvent({
 			actor: { type: 'serverApp' },
 			draftId,
+			contentId,
 			questionId,
 			scoreId,
 			extensions
@@ -398,6 +423,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createPracticeUngradeEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				scoreId,
 				extensions
@@ -411,6 +437,7 @@ describe('Caliper event creator', () => {
 		const viewerAbandoned = caliperEvents.createViewerAbandonedEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -422,6 +449,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createViewerAbandonedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -434,6 +462,7 @@ describe('Caliper event creator', () => {
 		const viewerResumed = caliperEvents.createViewerResumedEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -445,6 +474,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createViewerResumedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -457,6 +487,7 @@ describe('Caliper event creator', () => {
 		const viewerSessionLoggedIn = caliperEvents.createViewerSessionLoggedInEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -468,6 +499,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createViewerSessionLoggedInEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -480,6 +512,7 @@ describe('Caliper event creator', () => {
 		const viewerSessionLoggedOut = caliperEvents.createViewerSessionLoggedOutEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -491,6 +524,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createViewerSessionLoggedOutEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -503,6 +537,7 @@ describe('Caliper event creator', () => {
 		const practiceQuestionReset = caliperEvents.createPracticeQuestionResetEvent({
 			actor,
 			draftId,
+			contentId,
 			questionId,
 			sessionIds,
 			extensions
@@ -515,6 +550,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createPracticeQuestionResetEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				questionId,
 				extensions
 			})
@@ -527,6 +563,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuHidEvent = caliperEvents.createNavMenuHidEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -538,6 +575,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuHidEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -552,6 +590,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuShowedEvent = caliperEvents.createNavMenuShowedEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -563,6 +602,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuShowedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -577,6 +617,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -588,6 +629,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuToggledEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -602,6 +644,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuActivatedEvent = caliperEvents.createNavMenuActivatedEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -613,6 +656,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuActivatedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})
@@ -627,6 +671,7 @@ describe('Caliper event creator', () => {
 		const createNavMenuDeactivatedEvent = caliperEvents.createNavMenuDeactivatedEvent({
 			actor,
 			draftId,
+			contentId,
 			sessionIds,
 			extensions
 		})
@@ -638,6 +683,7 @@ describe('Caliper event creator', () => {
 			caliperEvents.createNavMenuDeactivatedEvent({
 				actor: { type: 'bad' },
 				draftId,
+				contentId,
 				sessionIds,
 				extensions
 			})

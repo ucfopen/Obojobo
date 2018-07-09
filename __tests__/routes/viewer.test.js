@@ -1,4 +1,3 @@
-jest.mock('../../models/draft')
 jest.mock('../../models/visit')
 jest.mock('../../models/user')
 jest.mock('../../viewer/viewer_state')
@@ -13,13 +12,13 @@ describe('viewer route', () => {
 	const insertEvent = oboRequire('insert_event')
 	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
 	const logger = oboRequire('logger')
-	const Draft = oboRequire('models/draft')
 	const Visit = oboRequire('models/visit')
 	const User = oboRequire('models/user')
 	const GuestUser = oboRequire('models/guest_user')
 	const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
 	const mockReq = {
 		requireCurrentUser: jest.fn(),
+		requireCurrentDocument: jest.fn(),
 		params: {
 			draftId: 555,
 			visitId: 'mocked-visit-id'
@@ -52,10 +51,21 @@ describe('viewer route', () => {
 	}
 	const mockNext = jest.fn()
 
+	const mockYell = jest.fn().mockResolvedValue({
+		draftId: 555,
+		contentId: 12
+	})
+
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
 		mockReq.requireCurrentUser.mockReset()
+		mockReq.requireCurrentDocument.mockReset()
+		mockReq.requireCurrentDocument.mockReturnValue({
+			draftId: 555,
+			contentId: 12,
+			yell: mockYell
+		})
 		mockReq.app.get.mockReset()
 		mockRes.render.mockReset()
 		mockNext.mockReset()
@@ -104,8 +114,9 @@ describe('viewer route', () => {
 		return draftLaunchRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(insertEvent).toBeCalledWith({
 				action: 'visit:create',
-				actorTime: '2016-09-22T16:57:14.500Z',
+				actorTime: expect.any(String),
 				caliperPayload: undefined,
+				contentId: 12,
 				draftId: 555,
 				eventVersion: '1.0.0',
 				ip: 'remoteAddress',
@@ -195,6 +206,7 @@ describe('viewer route', () => {
 				actorTime: '2016-09-22T16:57:14.500Z',
 				caliperPayload: undefined,
 				draftId: 555,
+				contentId: 12,
 				eventVersion: '1.1.0',
 				ip: 'remoteAddress',
 				metadata: {},
@@ -214,8 +226,7 @@ describe('viewer route', () => {
 		const visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		const mockDoc = {} // no contents
-		const mockYell = jest.fn().mockReturnValueOnce(mockDoc)
-		Draft.fetchById.mockResolvedValueOnce({ yell: mockYell })
+		mockYell.mockReturnValueOnce(mockDoc)
 
 		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockYell).toBeCalledWith('internal:sendToClient', mockReq, mockRes)
@@ -238,8 +249,7 @@ describe('viewer route', () => {
 			}
 		}
 
-		const mockYell = jest.fn().mockReturnValueOnce(mockDoc)
-		Draft.fetchById.mockResolvedValueOnce({ yell: mockYell })
+		mockYell.mockReturnValueOnce(mockDoc)
 
 		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockRes.render).toBeCalledWith('viewer', { draftTitle: 'my expected title' })

@@ -10,24 +10,30 @@ const { getSessionIds } = require('./api/events/caliper_utils')
 // Start a preview - redirects to visit route
 // mounts at /preview/:draftId
 router.get('/:draftId', (req, res, next) => {
-	let user = null
+	let currentUser
+	let currentDocument
+
 	return req
 		.requireCurrentUser()
-		.then(currentUser => {
-			if (!currentUser.canPreview) throw new Error('Not authorized to preview')
-
-			user = currentUser
-			return Visit.createPreviewVisit(currentUser.id, req.params.draftId)
+		.then(user => {
+			if (!user.canPreview) throw new Error('Not authorized to preview')
+			currentUser = user
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
+			return Visit.createPreviewVisit(currentUser.id, currentDocument.draftId)
 		})
 		.then(({ visitId, deactivatedVisitId }) => {
-			let { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
+			const { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
 			insertEvent({
 				action: 'visit:create',
 				actorTime: new Date().toISOString(),
-				userId: user.id,
+				userId: currentUser.id,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				draftId: req.params.draftId,
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
 				preview: true,
 				payload: {
 					visitId,
@@ -35,7 +41,7 @@ router.get('/:draftId', (req, res, next) => {
 				},
 				eventVersion: '1.0.0',
 				caliperPayload: createVisitCreateEvent({
-					actor: { type: ACTOR_USER, id: user.id },
+					actor: { type: ACTOR_USER, id: currentUser.id },
 					sessionIds: getSessionIds(req.session),
 					visitId,
 					extensions: { deactivatedVisitId }
@@ -50,7 +56,7 @@ router.get('/:draftId', (req, res, next) => {
 			})
 		})
 		.then(visitId => {
-			res.redirect(`/view/${req.params.draftId}/visit/${visitId}`)
+			res.redirect(`/view/${currentDocument.draftId}/visit/${visitId}`)
 		})
 		.catch(error => {
 			logger.error(error)

@@ -35,6 +35,8 @@ class Draft {
 	constructor(rawDraft) {
 		this.nodesById = new Map()
 		this.nodesByType = new Map()
+		this.draftId = rawDraft.draftId
+		this.contentId = rawDraft.contentId
 		this.root = this.processRawNode(rawDraft)
 	}
 
@@ -83,14 +85,16 @@ class Draft {
 				ON drafts.id = drafts_content.draft_id
 			WHERE drafts.id = $[id]
 				AND deleted = FALSE
-			ORDER BY version DESC
+			ORDER BY content_created_at DESC
 			LIMIT 1
 			`,
 				{ id }
 			)
 			.then(result => {
 				result.content.draftId = result.id
+				result.content.contentId = result.version
 				result.content._rev = result.version
+
 				return new Draft(result.content)
 			})
 			.catch(error => {
