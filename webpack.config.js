@@ -1,6 +1,6 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const bourbon = require('node-bourbon')
+const autoprefixer = require('autoprefixer')
 
 const obojoboDraftConfig = {
 	entry: {
@@ -34,7 +34,13 @@ const obojoboDraftConfig = {
 				use: [
 					MiniCssExtractPlugin.loader,
 					'css-loader',
-					'sass-loader?includePaths[]=' + bourbon.includePaths
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: () => [autoprefixer]
+						}
+					},
+					'sass-loader'
 				]
 			}
 		]
@@ -80,7 +86,13 @@ const viewerConfig = {
 				use: [
 					MiniCssExtractPlugin.loader,
 					'css-loader',
-					'sass-loader?includePaths[]=' + bourbon.includePaths
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: () => [autoprefixer]
+						}
+					},
+					'sass-loader'
 				]
 			}
 		]
@@ -185,7 +197,13 @@ const mainConfig = {
 				use: [
 					MiniCssExtractPlugin.loader,
 					'css-loader',
-					'sass-loader?includePaths[]=' + bourbon.includePaths
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: () => [autoprefixer]
+						}
+					},
+					'sass-loader'
 				]
 			}
 		]
@@ -207,3 +225,4 @@ const mainConfig = {
 }
 
 module.exports = [obojoboDraftConfig, viewerConfig, mainConfig]
+// module.exports = [obojoboDraftConfig]
