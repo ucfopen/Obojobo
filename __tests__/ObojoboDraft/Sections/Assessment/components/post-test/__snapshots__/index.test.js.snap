@@ -32,6 +32,14 @@ exports[`PostTest PostTest component 1`] = `
         Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
       </p>
       <div
+        className="is-shown"
+      >
+        <strong>
+          Sorry - That didn't work.
+        </strong>
+         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+      </div>
+      <div
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
@@ -97,6 +105,14 @@ exports[`PostTest PostTest component with recorded score 1`] = `
       <p>
         Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
       </p>
+      <div
+        className="is-shown"
+      >
+        <strong>
+          Sorry - That didn't work.
+        </strong>
+         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+      </div>
       <div
         className="obojobo-draft--components--button is-dangerous align-center"
       >
@@ -234,6 +250,14 @@ exports[`PostTest PostTest component with review 1`] = `
         Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
       </p>
       <div
+        className="is-shown"
+      >
+        <strong>
+          Sorry - That didn't work.
+        </strong>
+         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+      </div>
+      <div
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
@@ -369,6 +393,14 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
       <p>
         Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
       </p>
+      <div
+        className="is-shown"
+      >
+        <strong>
+          Sorry - That didn't work.
+        </strong>
+         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+      </div>
       <div
         className="obojobo-draft--components--button is-dangerous align-center"
       >
@@ -506,6 +538,14 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
       </p>
       <div
+        className="is-shown"
+      >
+        <strong>
+          Sorry - That didn't work.
+        </strong>
+         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+      </div>
+      <div
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
@@ -636,6 +676,14 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
       <p>
         Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
       </p>
+      <div
+        className="is-shown"
+      >
+        <strong>
+          Sorry - That didn't work.
+        </strong>
+         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+      </div>
       <div
         className="obojobo-draft--components--button is-dangerous align-center"
       >

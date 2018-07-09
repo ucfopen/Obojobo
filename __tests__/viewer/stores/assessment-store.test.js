@@ -10,6 +10,8 @@ import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
+import LTINetworkStates from '../../../src/scripts/viewer/stores/assessment-store/lti-network-states'
+import LTIResyncStates from '../../../src/scripts/viewer/stores/assessment-store/lti-resync-states'
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({ show: jest.fn() }))
 
@@ -24,8 +26,8 @@ jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/viewer/util/assessment-util.js')
 jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
 
-let originalError = describe('AssessmentStore', () => {
-	let getExampleAssessment = () => ({
+const originalError = describe('AssessmentStore', () => {
+	const getExampleAssessment = () => ({
 		id: 'rootId',
 		type: 'ObojoboDraft.Modules.Module',
 		children: [
@@ -47,7 +49,7 @@ let originalError = describe('AssessmentStore', () => {
 		]
 	})
 
-	let mockValidStartAttempt = () => {
+	const mockValidStartAttempt = () => {
 		APIUtil.startAttempt.mockResolvedValue({
 			status: 'ok',
 			value: {
@@ -105,15 +107,15 @@ let originalError = describe('AssessmentStore', () => {
 	})
 
 	test('init builds with history (populates models and state, shows dialog for unfinished attempt', () => {
-		let q1 = OboModel.create({
+		const q1 = OboModel.create({
 			id: 'question1',
 			type: 'ObojoboDraft.Chunks.Question'
 		})
-		let q2 = OboModel.create({
+		const q2 = OboModel.create({
 			id: 'question2',
 			type: 'ObojoboDraft.Chunks.Question'
 		})
-		let history = [
+		const history = [
 			{
 				assessmentId: 'assessmentId',
 				attempts: [
@@ -181,8 +183,8 @@ let originalError = describe('AssessmentStore', () => {
 					id: 'assessmentId',
 					isShowingAttemptHistory: false,
 					lti: undefined,
-					ltiErrorCount: 0,
-					ltiNetworkState: 'idle'
+					ltiResyncState: LTIResyncStates.NO_RESYNC_ATTEMPTED,
+					ltiNetworkState: LTINetworkStates.IDLE
 				}
 			}
 		})
@@ -192,8 +194,8 @@ let originalError = describe('AssessmentStore', () => {
 	})
 
 	test('resuming an unfinished attempt hides the modal, starts the attempt and triggers a change', () => {
-		let originalStartAttempt = AssessmentStore.startAttempt
-		let unfinishedAttempt = { a: 1 }
+		const originalStartAttempt = AssessmentStore.startAttempt
+		const unfinishedAttempt = { a: 1 }
 
 		AssessmentStore.startAttempt = jest.fn()
 		ModalUtil.hide = jest.fn()
@@ -252,11 +254,11 @@ let originalError = describe('AssessmentStore', () => {
 		ErrorUtil.show.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		let originalError = console.error
+		const originalError = console.error
 		console.error = jest.fn()
 
 		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
-			let errorMock = console.error
+			const errorMock = console.error
 			console.error = originalError
 			expect(ErrorUtil.show).toHaveBeenCalledTimes(1)
 			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
@@ -270,8 +272,8 @@ let originalError = describe('AssessmentStore', () => {
 		NavUtil.rebuildMenu = jest.fn()
 		NavUtil.goto = jest.fn()
 
-		let assessmentModel = OboModel.models.rootId.children.at(0)
-		let qBank = assessmentModel.children.at(1)
+		const assessmentModel = OboModel.models.rootId.children.at(0)
+		const qBank = assessmentModel.children.at(1)
 
 		assessmentModel.processTrigger = jest.fn()
 
@@ -297,8 +299,8 @@ let originalError = describe('AssessmentStore', () => {
 		NavUtil.rebuildMenu = jest.fn()
 		NavUtil.goto = jest.fn()
 
-		let assessmentModel = OboModel.models.rootId.children.at(0)
-		let qBank = assessmentModel.children.at(1)
+		const assessmentModel = OboModel.models.rootId.children.at(0)
+		const qBank = assessmentModel.children.at(1)
 
 		assessmentModel.processTrigger = jest.fn()
 
@@ -330,11 +332,11 @@ let originalError = describe('AssessmentStore', () => {
 		ErrorUtil.errorResponse.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		let originalError = console.error
+		const originalError = console.error
 		console.error = jest.fn()
 
 		return AssessmentStore.tryResendLTIScore('assessmentId').then(res => {
-			let errorMock = console.error
+			const errorMock = console.error
 			console.error = originalError
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
 			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
@@ -393,19 +395,34 @@ let originalError = describe('AssessmentStore', () => {
 
 		return AssessmentStore.tryResendLTIScore('assessmentId').then(res => {
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
-			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(2)
+			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(3)
 		})
 	})
 
-	test('updateLTIScore counts errors', () => {
+	test('updateLTIScore updates resyncState to failed if resync fails, updates lti object, calls triggerChange', () => {
 		AssessmentUtil.isLTIScoreNeedingToBeResynced.mockReturnValueOnce(true)
-		let assessment = {
-			ltiErrorCount: 0
-		}
+		const assessment = {}
 
-		AssessmentStore.updateLTIScore(assessment)
+		AssessmentStore.updateLTIScore(assessment, 'mock-lti-response')
 
-		expect(assessment.ltiErrorCount).toEqual(1)
+		expect(assessment).toEqual({
+			ltiResyncState: LTIResyncStates.RESYNC_FAILED,
+			lti: 'mock-lti-response'
+		})
+		expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+	})
+
+	test('updateLTIScore updates resyncState to success if resync works, updates lti object, calls triggerChange', () => {
+		AssessmentUtil.isLTIScoreNeedingToBeResynced.mockReturnValueOnce(false)
+		const assessment = {}
+
+		AssessmentStore.updateLTIScore(assessment, 'mock-lti-response')
+
+		expect(assessment).toEqual({
+			ltiResyncState: LTIResyncStates.RESYNC_SUCCEEDED,
+			lti: 'mock-lti-response'
+		})
+		expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 	})
 
 	test('tryEndAttempt catches unexpected errors', () => {
@@ -422,11 +439,11 @@ let originalError = describe('AssessmentStore', () => {
 		ErrorUtil.errorResponse.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		let originalError = console.error
+		const originalError = console.error
 		console.error = jest.fn()
 
 		return AssessmentStore.tryEndAttempt('assessmentId').then(res => {
-			let errorMock = console.error
+			const errorMock = console.error
 			console.error = originalError
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
 			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
@@ -608,7 +625,7 @@ let originalError = describe('AssessmentStore', () => {
 
 	test('viewer:closeAttempted calls AssessmentUtil', () => {
 		AssessmentUtil.isInAssessment.mockReturnValueOnce(true)
-		let mockFunction = jest.fn()
+		const mockFunction = jest.fn()
 
 		Dispatcher.trigger('viewer:closeAttempted', mockFunction)
 
