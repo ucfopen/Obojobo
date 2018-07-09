@@ -225,4 +225,3 @@ const mainConfig = {
 }
 
 module.exports = [obojoboDraftConfig, viewerConfig, mainConfig]
-// module.exports = [obojoboDraftConfig]
