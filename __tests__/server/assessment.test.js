@@ -232,6 +232,128 @@ describe('Assessment', () => {
 		})
 	})
 
+	test('filterIncompleteAttempts handles empty array', () => {
+		let attempts = []
+		let res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(0)
+	})
+
+	test('filterIncompleteAttempts returns all completed attempts', () => {
+		let attempts = [
+			{
+				isFinished: true,
+				finishTime: new Date(),
+				startTime: new Date()
+			}
+		]
+		let res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(1)
+		expect(res).toEqual(attempts)
+	})
+
+	test('filterIncompleteAttempts sorts completed attempts', () => {
+		let attempts = [
+			{
+				isFinished: true,
+				finishTime: new Date(301),
+				startTime: new Date(300)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(101),
+				startTime: new Date(100)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(201),
+				startTime: new Date(200)
+			}
+		]
+		let res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(3)
+		expect(res[0]).toBe(attempts[1])
+		expect(res[1]).toBe(attempts[2])
+		expect(res[2]).toBe(attempts[0])
+	})
+
+	test('filterIncompleteAttempts handles 1 incomplete attempt', () => {
+		let attempts = [
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(300)
+			}
+		]
+		let res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(1)
+		expect(res).toEqual(attempts)
+	})
+
+	test('filterIncompleteAttempts only returns the newest incomplete attempt', () => {
+		let attempts = [
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(300)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(600)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(200)
+			}
+		]
+		let res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(1)
+		expect(res[0]).toBe(attempts[1])
+	})
+
+	test('filterIncompleteAttempts removes incomplete attempts before the last completed attempt', () => {
+		let attempts = [
+			{
+				isFinished: true,
+				finishTime: new Date(302),
+				startTime: new Date(300)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(102),
+				startTime: new Date(100)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(202),
+				startTime: new Date(200)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(600)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(301) // this is just before the finishTime of the last attempt
+			}
+		]
+		let res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(4)
+		expect(res[0]).toBe(attempts[1])
+		expect(res[1]).toBe(attempts[2])
+		expect(res[2]).toBe(attempts[0])
+		expect(res[3]).toBe(attempts[3])
+	})
+
 	test('getAttemptNumber returns the attempt_number property', () => {
 		jest.spyOn(Assessment, 'getAttemptIdsForUserForDraft')
 		Assessment.getAttemptIdsForUserForDraft.mockResolvedValue([
