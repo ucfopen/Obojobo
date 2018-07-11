@@ -53,7 +53,8 @@
 		</style>
 	</head>
 	<body>
-		<% drafts.sort(function(a, b) {
+		<%
+			drafts.sort(function(a, b) {
 			if (
 				a.content
 				&& b.content
@@ -66,7 +67,17 @@
 				const bTitle = b.content.content.title.toString().toLowerCase()
 				return aTitle > bTitle
 			}
- 		}) %>
+ 			})
+
+			let timeConverter = function(a){
+				let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+				return months[a.getMonth()]
+					+ ' ' + a.getDate()
+					+ ' ' + a.getFullYear()
+					+ ' ' + a.getHours()
+					+ ':' + a.getMinutes()
+			}
+ 		%>
 		<div>
 			<h1>Obojobo Draft Manager</h1>
 			<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
@@ -81,11 +92,10 @@
 							data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content) %>">
 								<% if(draft.content && draft.content.content && draft.content.content.title){ %>
 									<p><%= draft.content.content.title %></p>
-									<span class="draft-id"><%= draft.draftId %></span>
 								<% } else { %>
 									<p><%= draft.draftId %></p>
-									<span class="draft-id"><%= draft.draftId %></span>
 								<% } %>
+								<span class="draft-id"><%= draft.draftId %><br/><%= timeConverter(draft.createdAt) %></span>
 								<a target="_blank" class="link-preview" href="/preview/<%= draft.draftId %>">Preview</a>
 								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
 								<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
