@@ -43,7 +43,7 @@ When a release is complete the milestone is closed and the dev branch is merged 
 
 ```
   ┌───────────┐    ┌────────────────────────┐    ┌──────────────────────────────────────────────────────┐
-  |  Master   |    |        Develop         |    |                        Issue                         |
+  |  Master   | ◄─ |        Develop         | ◄─ |                        Issue                         |
   └───────────┘    └────────────────────────┘    └──────────────────────────────────────────────────────┘
 
     Release    ◄──  Merge                    ◄──  Merge
