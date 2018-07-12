@@ -1,7 +1,6 @@
 const db = oboRequire('db')
 
 module.exports = insertObject => {
-	console.log('going to insert event now', insertObject)
 	return db
 		.one(
 			`
@@ -12,7 +11,6 @@ module.exports = insertObject => {
 			insertObject
 		)
 		.then(createdAt => {
-			console.log('inserting caliper')
 			if (insertObject.caliperPayload) {
 				db.none(
 					`
