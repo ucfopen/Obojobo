@@ -1,10 +1,8 @@
-var path = require('path')
-var webpack = require('webpack')
-var glob = require('glob')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var bourbon = require('node-bourbon')
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const bourbon = require('node-bourbon')
 
-var obojoboDraftConfig = {
+const obojoboDraftConfig = {
 	entry: {
 		common: [path.join(__dirname, 'src', 'scripts', 'common', 'dist.js')]
 	},
@@ -15,7 +13,7 @@ var obojoboDraftConfig = {
 		filename: '[name].js'
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.svg/,
 				use: {
@@ -33,10 +31,11 @@ var obojoboDraftConfig = {
 			},
 			{
 				test: /\.s?css$/,
-				loader: ExtractTextPlugin.extract([
+				use: [
+					MiniCssExtractPlugin.loader,
 					'css-loader',
 					'sass-loader?includePaths[]=' + bourbon.includePaths
-				])
+				]
 			}
 		]
 	},
@@ -46,10 +45,10 @@ var obojoboDraftConfig = {
 		backbone: 'Backbone',
 		katex: 'katex'
 	},
-	plugins: [new ExtractTextPlugin('[name].css')]
+	plugins: [new MiniCssExtractPlugin()]
 }
 
-var viewerConfig = {
+const viewerConfig = {
 	entry: {
 		viewer: ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'viewer', 'dist.js')]
 	},
@@ -60,7 +59,7 @@ var viewerConfig = {
 		filename: '[name].js'
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.svg/,
 				use: {
@@ -78,10 +77,11 @@ var viewerConfig = {
 			},
 			{
 				test: /\.s?css$/,
-				loader: ExtractTextPlugin.extract([
+				use: [
+					MiniCssExtractPlugin.loader,
 					'css-loader',
 					'sass-loader?includePaths[]=' + bourbon.includePaths
-				])
+				]
 			}
 		]
 	},
@@ -92,10 +92,10 @@ var viewerConfig = {
 		katex: 'katex',
 		Common: 'Common'
 	},
-	plugins: [new ExtractTextPlugin('[name].css')]
+	plugins: [new MiniCssExtractPlugin()]
 }
 
-var mainConfig = {
+const mainConfig = {
 	entry: {
 		'viewer-app': ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'viewer', 'app.js')],
 		'ObojoboDraft.Chunks.ActionButton': [
@@ -164,7 +164,7 @@ var mainConfig = {
 		filename: '[name].js'
 	},
 	module: {
-		loaders: [
+		rules: [
 			{
 				test: /\.svg/,
 				use: {
@@ -182,10 +182,11 @@ var mainConfig = {
 			},
 			{
 				test: /\.s?css$/,
-				loader: ExtractTextPlugin.extract([
+				use: [
+					MiniCssExtractPlugin.loader,
 					'css-loader',
 					'sass-loader?includePaths[]=' + bourbon.includePaths
-				])
+				]
 			}
 		]
 	},
@@ -197,7 +198,7 @@ var mainConfig = {
 		Common: 'Common',
 		Viewer: 'Viewer'
 	},
-	plugins: [new ExtractTextPlugin('[name].css')],
+	plugins: [new MiniCssExtractPlugin()],
 	resolve: {
 		alias: {
 			styles: path.join(__dirname, 'src', 'scss')

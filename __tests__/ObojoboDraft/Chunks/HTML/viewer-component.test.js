@@ -5,19 +5,36 @@ import HTML from '../../../../ObojoboDraft/Chunks/HTML/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('HTML', () => {
-	let model = OboModel.create({
-		id: 'id',
-		type: 'ObojoboDraft.Chunks.HTML',
-		content: {
-			html: '<marquee>Example text</marquee>'
+	test('HTML component', () => {
+		let moduleData = {
+			focusState: {}
 		}
+		let model = OboModel.create({
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.HTML',
+			content: {
+				html: '<marquee>Example text</marquee>'
+			}
+		})
+
+		const component = renderer.create(<HTML model={model} moduleData={moduleData} />)
+		let tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
 	})
 
-	let moduleData = {
-		focusState: {}
-	}
+	test('HTML component with equation', () => {
+		let moduleData = {
+			focusState: {}
+		}
+		let model = OboModel.create({
+			id: 'id',
+			type: 'ObojoboDraft.Chunks.HTML',
+			content: {
+				html: '<div class="latex">(x^2 + y^2 = z^2)</div>'
+			}
+		})
 
-	test('HTML component', () => {
 		const component = renderer.create(<HTML model={model} moduleData={moduleData} />)
 		let tree = component.toJSON()
 

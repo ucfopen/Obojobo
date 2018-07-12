@@ -313,23 +313,101 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
+	test('getNext returns null when the current target isnt valid', () => {
+		let mockState = buildComplexNestedState()
+		mockState.navTargetId = 99
+		// current navtarget is 4
+		// the next link that is 'previous' is mockItem1
+		let x = NavUtil.getNext(mockState)
+		expect(x).toBeNull()
+		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+	})
+
 	test('getPrevModel', () => {
 		let mockState = buildComplexNestedState()
 
-		// current navtarget is 4
-		// the next link that is 'previous' is mockItem1
-		let x = NavUtil.getPrev(mockState)
-		expect(x).toBe(mockState.itemsById[1])
-		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+		let x = NavUtil.getPrevModel(mockState)
+		expect(x).toBe(undefined)
+	})
+
+	test('getPrevModel returns null when not found', () => {
+		let mockState = buildComplexNestedState()
+		mockState.navTargetId = 99
+
+		let x = NavUtil.getPrevModel(mockState)
+		expect(x).toBe(null)
 	})
 
 	test('getNextModel', () => {
 		let mockState = buildComplexNestedState()
 		mockState.navTargetId = 1
 
-		let x = NavUtil.getNext(mockState)
-		expect(x).toBe(mockState.itemsById[4])
-		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+		let x = NavUtil.getNextModel(mockState)
+		expect(x).toBe(undefined)
+	})
+
+	test('getNextModel returns null when not found', () => {
+		let mockState = buildComplexNestedState()
+		mockState.navTargetId = 99
+
+		let x = NavUtil.getNextModel(mockState)
+		expect(x).toBe(null)
+	})
+
+	test('getNavItemForModel', () => {
+		let state = {
+			itemsById: {
+				testId: 'mockItem'
+			}
+		}
+		let model = {
+			get: jest.fn().mockReturnValueOnce('testId')
+		}
+
+		let item = NavUtil.getNavItemForModel(state, model)
+
+		expect(item).toEqual('mockItem')
+	})
+
+	test('getNavItemForModel returns null', () => {
+		let state = {
+			itemsById: {}
+		}
+		let model = {
+			get: jest.fn()
+		}
+
+		let item = NavUtil.getNavItemForModel(state, model)
+
+		expect(item).toEqual(null)
+	})
+
+	test('getNavLabelForModel', () => {
+		let state = {
+			itemsById: {
+				testId: { label: 'mockLabel' }
+			}
+		}
+		let model = {
+			get: jest.fn().mockReturnValueOnce('testId')
+		}
+
+		let item = NavUtil.getNavLabelForModel(state, model)
+
+		expect(item).toEqual('mockLabel')
+	})
+
+	test('getNavLabelForModel returns null', () => {
+		let state = {
+			itemsById: jest.fn().mockReturnValueOnce(undefined)
+		}
+		let model = {
+			get: jest.fn()
+		}
+
+		let item = NavUtil.getNavLabelForModel(state, model)
+
+		expect(item).toEqual(null)
 	})
 
 	test('canNavigate', () => {
@@ -384,5 +462,32 @@ describe('NavUtil', () => {
 		expect(x[2]).toHaveProperty('id', 4)
 
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+	})
+
+	test('getOrderedList returns assessment item', () => {
+		let assessmentModel = {
+			get: jest.fn().mockReturnValueOnce('ObojoboDraft.Sections.Assessment')
+		}
+		let assessmentItem = {
+			id: 'mockAssessment',
+			flags: {},
+			type: 'none',
+			showChildren: false
+		}
+
+		Common.models.OboModel.models.mockAssessment = assessmentModel
+		let list = NavUtil.getOrderedList({ items: assessmentItem })
+
+		expect(list).toHaveLength(1)
+		expect(list[0]).toHaveProperty('id', 'mockAssessment')
+		expect(list[0]).toHaveProperty('flags', { assessment: true })
+	})
+
+	test('setContext calls Dispatcher.trigger', () => {
+		NavUtil.setContext('mockContext')
+
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:setContext', {
+			value: { context: 'mockContext' }
+		})
 	})
 })

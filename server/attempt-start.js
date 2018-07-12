@@ -1,5 +1,4 @@
 const Assessment = require('./assessment')
-const DraftModel = oboRequire('models/draft')
 const VisitModel = oboRequire('models/visit')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
@@ -27,21 +26,26 @@ const startAttempt = (req, res) => {
 		questionUsesMap: null
 	}
 	let attemptState
+	let currentUser = null
+	let currentDocument = null
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
+			currentUser = user
 			assessmentProperties.user = user
 			return VisitModel.fetchById(req.body.visitId)
 		})
 		.then(visit => {
 			assessmentProperties.isPreviewing = visit.is_preview
-			return DraftModel.fetchById(req.body.draftId)
-		})
-		.then(draftTree => {
-			const assessmentNode = draftTree.getChildNodeById(req.body.assessmentId)
 
-			assessmentProperties.draftTree = draftTree
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
+			const assessmentNode = currentDocument.getChildNodeById(req.body.assessmentId)
+
+			assessmentProperties.draftTree = currentDocument
 			assessmentProperties.id = req.body.assessmentId
 			assessmentProperties.oboNode = assessmentNode
 			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
@@ -49,7 +53,7 @@ const startAttempt = (req, res) => {
 
 			return Assessment.getCompletedAssessmentAttemptHistory(
 				assessmentProperties.user.id,
-				req.body.draftId,
+				currentDocument.draftId,
 				req.body.assessmentId,
 				assessmentProperties.isPreviewing
 			)
@@ -58,6 +62,8 @@ const startAttempt = (req, res) => {
 			assessmentProperties.attemptHistory = attemptHistory
 			assessmentProperties.numAttemptsTaken = attemptHistory.length
 
+			// If we're in preview mode, allow unlimited attempts, else throw an error
+			// when trying to start an assessment with no attempts left.
 			if (
 				assessmentProperties.oboNode.node.content.attempts &&
 				assessmentProperties.numAttemptsTaken >= assessmentProperties.oboNode.node.content.attempts
@@ -71,10 +77,10 @@ const startAttempt = (req, res) => {
 		})
 		.then(() => {
 			const questionObjects = attemptState.questions.map(q => q.toObject())
-
 			return Assessment.insertNewAttempt(
 				assessmentProperties.user.id,
-				req.body.draftId,
+				currentDocument.draftId,
+				currentDocument.contentId,
 				req.body.assessmentId,
 				{
 					questions: questionObjects,
@@ -86,12 +92,11 @@ const startAttempt = (req, res) => {
 		})
 		.then(result => {
 			res.success(result)
-
 			return insertAttemptStartCaliperEvent(
 				result.attemptId,
 				assessmentProperties.numAttemptsTaken,
 				assessmentProperties.user.id,
-				req.body.draftId,
+				currentDocument,
 				req.body.assessmentId,
 				assessmentProperties.isPreviewing,
 				req.hostname,
@@ -302,7 +307,7 @@ const insertAttemptStartCaliperEvent = (
 	attemptId,
 	numAttemptsTaken,
 	userId,
-	draftId,
+	draftDocument,
 	assessmentId,
 	isPreviewing,
 	hostname,
@@ -320,11 +325,13 @@ const insertAttemptStartCaliperEvent = (
 		userId: userId,
 		ip: remoteAddress,
 		metadata: {},
-		draftId: draftId,
+		draftId: draftDocument.draftId,
+		contentId: draftDocument.contentId,
 		eventVersion: '1.1.0',
 		caliperPayload: createAssessmentAttemptStartedEvent({
 			actor: { type: 'user', id: userId },
-			draftId: draftId,
+			draftId: draftDocument.draftId,
+			contentId: draftDocument.contentId,
 			assessmentId: assessmentId,
 			attemptId: attemptId,
 			extensions: {

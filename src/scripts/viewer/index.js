@@ -1,6 +1,7 @@
 import ViewerApp from './components/viewer-app'
 import AssessmentStore from './stores/assessment-store'
 import LTINetworkStates from './stores/assessment-store/lti-network-states'
+import LTIResyncStates from './stores/assessment-store/lti-resync-states'
 import NavStore from './stores/nav-store'
 import QuestionStore from './stores/question-store'
 import AssessmentUtil from './util/assessment-util'
@@ -19,7 +20,8 @@ export default {
 	stores: {
 		AssessmentStore,
 		assessmentStore: {
-			LTINetworkStates
+			LTINetworkStates,
+			LTIResyncStates
 		},
 		NavStore,
 		QuestionStore

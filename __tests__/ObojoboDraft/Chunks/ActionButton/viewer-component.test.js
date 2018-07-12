@@ -5,11 +5,10 @@ import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/viewer-co
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('ActionButton', () => {
-	let moduleData = {
-		focusState: {}
-	}
-
 	test('ActionButton component with textGroup', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.ActionButton',
@@ -31,6 +30,9 @@ describe('ActionButton', () => {
 	})
 
 	test('ActionButton component with label', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.ActionButton',

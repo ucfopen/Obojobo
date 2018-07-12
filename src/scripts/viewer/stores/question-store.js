@@ -5,29 +5,26 @@ import QuestionUtil from '../../viewer/util/question-util'
 
 import NavStore from '../../viewer/stores/nav-store'
 
-let { Store } = Common.flux
-let { Dispatcher } = Common.flux
-let { OboModel } = Common.models
-let { FocusUtil } = Common.util
-let { UUID } = Common.util
+const { Store } = Common.flux
+const { Dispatcher } = Common.flux
+const { OboModel } = Common.models
+const { FocusUtil } = Common.util
+const { UUID } = Common.util
 
 class QuestionStore extends Store {
 	constructor() {
-		let id
 		let model
 		super('questionStore')
 
 		Dispatcher.on({
 			'question:setResponse': payload => {
-				let id = payload.value.id
-				let context = payload.value.context
-				let model = OboModel.models[id]
+				const id = payload.value.id
+				const context = payload.value.context
 				if (!this.state.responses[context]) this.state.responses[context] = {}
 				this.state.responses[context][id] = payload.value.response
 				this.triggerChange()
-
 				APIUtil.postEvent({
-					draftId: model.getRoot().get('id'),
+					draftId: OboModel.getRoot().get('draftId'),
 					action: 'question:setResponse',
 					eventVersion: '2.1.0',
 					visitId: NavStore.getState().visitId,
@@ -62,7 +59,7 @@ class QuestionStore extends Store {
 			},
 
 			'question:showExplanation': payload => {
-				let root = OboModel.models[payload.value.id].getRoot()
+				const root = OboModel.models[payload.value.id].getRoot()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
@@ -78,7 +75,7 @@ class QuestionStore extends Store {
 			},
 
 			'question:hideExplanation': payload => {
-				let root = OboModel.models[payload.value.id].getRoot()
+				const root = OboModel.models[payload.value.id].getRoot()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
@@ -120,7 +117,7 @@ class QuestionStore extends Store {
 			},
 
 			'question:view': payload => {
-				let root = OboModel.models[payload.value.id].getRoot()
+				const root = OboModel.models[payload.value.id].getRoot()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
@@ -139,9 +136,9 @@ class QuestionStore extends Store {
 			},
 
 			'question:checkAnswer': payload => {
-				let questionId = payload.value.id
-				let questionModel = OboModel.models[questionId]
-				let root = questionModel.getRoot()
+				const questionId = payload.value.id
+				const questionModel = OboModel.models[questionId]
+				const root = questionModel.getRoot()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
@@ -155,9 +152,9 @@ class QuestionStore extends Store {
 			},
 
 			'question:retry': payload => {
-				let questionId = payload.value.id
-				let questionModel = OboModel.models[questionId]
-				let root = questionModel.getRoot()
+				const questionId = payload.value.id
+				const questionModel = OboModel.models[questionId]
+				const root = questionModel.getRoot()
 
 				this.clearResponses(questionId, payload.value.context)
 
@@ -179,7 +176,7 @@ class QuestionStore extends Store {
 			},
 
 			'question:scoreSet': payload => {
-				let scoreId = UUID()
+				const scoreId = UUID()
 
 				if (!this.state.scores[payload.value.context]) this.state.scores[payload.value.context] = {}
 
@@ -211,7 +208,7 @@ class QuestionStore extends Store {
 			},
 
 			'question:scoreClear': payload => {
-				let scoreItem = this.state.scores[payload.value.context][payload.value.itemId]
+				const scoreItem = this.state.scores[payload.value.context][payload.value.itemId]
 
 				model = OboModel.models[scoreItem.itemId]
 
@@ -252,5 +249,5 @@ class QuestionStore extends Store {
 	}
 }
 
-let questionStore = new QuestionStore()
+const questionStore = new QuestionStore()
 export default questionStore

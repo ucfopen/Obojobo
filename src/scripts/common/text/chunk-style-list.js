@@ -43,7 +43,7 @@ class ChunkStyleList {
 		return this.styles.length
 	}
 
-	get() {
+	get(i) {
 		return this.styles[i]
 	}
 
@@ -188,10 +188,12 @@ class ChunkStyleList {
 
 			curLevel += level
 
+			// Establish the first superscript range
 			if (curRange.start === -1) {
 				curRange.start = i
 				curRange.data = curLevel
-			} else if (curRange.end === -1) {
+				// Close up the previous range and start a new one
+			} else {
 				curRange.end = i
 
 				if (curRange.data !== 0) {

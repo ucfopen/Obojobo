@@ -37,9 +37,7 @@ export default class OboComponent extends React.Component {
 					break
 
 				default:
-					if (this.props.hasOwnProperty(propKey)) {
-						otherProps[propKey] = this.props[propKey]
-					}
+					otherProps[propKey] = this.props[propKey]
 					break
 			}
 		}

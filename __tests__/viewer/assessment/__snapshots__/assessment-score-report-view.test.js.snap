@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssessmentScoreReportView AssessmentScoreReportView component 1`] = `
+<div
+  className="obojobo-draft--sections--assessment--components--score-report"
+>
+  <div
+    className="text-items"
+  />
+</div>
+`;
+
+exports[`AssessmentScoreReportView AssessmentScoreReportView component did not pass 1`] = `
+<div
+  className="obojobo-draft--sections--assessment--components--score-report"
+>
+  <div
+    className="text-items"
+  >
+    <div
+      className="value"
+    >
+      <div
+        className="label"
+      />
+      <span
+        className="amount is-null"
+      >
+        Did Not Pass
+      </span>
+    </div>
+  </div>
+  <span
+    className="score-change-description"
+  >
+    mockDescription
+  </span>
+</div>
+`;
+
+exports[`AssessmentScoreReportView AssessmentScoreReportView component with scoreChangeDescription 1`] = `
+<div
+  className="obojobo-draft--sections--assessment--components--score-report"
+>
+  <div
+    className="text-items"
+  />
+  <span
+    className="score-change-description"
+  >
+    mockDescription
+  </span>
+</div>
+`;
+
+exports[`AssessmentScoreReportView AssessmentScoreReportView component with textItems 1`] = `
+<div
+  className="obojobo-draft--sections--assessment--components--score-report"
+>
+  <div
+    className="text-items"
+  >
+    <div
+      className="text"
+    >
+      mockText
+    </div>
+    <hr
+      className="divider"
+    />
+    <div
+      className="extra-credit"
+    >
+      <span
+        className="label"
+      >
+        <span>
+          Extra-credit
+        </span>
+         - 
+      </span>
+      <span
+        className="amount is-number"
+      >
+        +5
+        %
+      </span>
+    </div>
+    <div
+      className="penalty"
+    >
+      <span
+        className="label"
+      >
+        <span>
+          Penalty
+        </span>
+         - 
+      </span>
+      <span
+        className="amount is-number"
+      >
+        -5
+        %
+      </span>
+    </div>
+    <div
+      className="value"
+    >
+      <div
+        className="label"
+      />
+      <span
+        className="amount is-number"
+      >
+        100
+        %
+      </span>
+    </div>
+    <div
+      className="total"
+    >
+      <div
+        className="label"
+      />
+      <div
+        className="amount is-number"
+      >
+        100
+        %
+        <span
+          className="great-job-you-rock"
+        >
+          😎
+        </span>
+      </div>
+    </div>
+  </div>
+  <span
+    className="score-change-description"
+  >
+    mockDescription
+  </span>
+</div>
+`;

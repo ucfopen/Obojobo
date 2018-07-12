@@ -8,7 +8,7 @@ describe('List Styles', () => {
 		expect(ls.styles).toEqual({})
 	})
 
-	test('inits correctly', () => {
+	test('init builds expected style', () => {
 		let ls = new ListStyles('type')
 		ls.init()
 
@@ -16,7 +16,7 @@ describe('List Styles', () => {
 		expect(ls.styles).toEqual({})
 	})
 
-	test('sets correctly', () => {
+	test('set places a style into the order', () => {
 		let ls = new ListStyles()
 		ls.init()
 
@@ -38,7 +38,18 @@ describe('List Styles', () => {
 		})
 	})
 
-	test('gets set and default values correctly', () => {
+	test('get retrives default values', () => {
+		let ls = new ListStyles()
+		ls.init()
+
+		expect(ls.get(0).toDescriptor()).toEqual({
+			type: 'unordered',
+			start: 1,
+			bulletStyle: 'disc'
+		})
+	})
+
+	test('get retrieves set values', () => {
 		let ls = new ListStyles()
 		ls.init()
 
@@ -50,12 +61,6 @@ describe('List Styles', () => {
 
 		ls.set(6, {
 			type: 'ordered'
-		})
-
-		expect(ls.get(0).toDescriptor()).toEqual({
-			type: 'unordered',
-			start: 1,
-			bulletStyle: 'disc'
 		})
 
 		expect(ls.get(5).toDescriptor()).toEqual({
@@ -71,7 +76,18 @@ describe('List Styles', () => {
 		})
 	})
 
-	test('gets only set values with getSetStyles', () => {
+	test('getSetStyles retrives no defaults', () => {
+		let ls = new ListStyles()
+		ls.init()
+
+		expect(ls.getSetStyles(0).toDescriptor()).toEqual({
+			type: null,
+			start: null,
+			bulletStyle: null
+		})
+	})
+
+	test('getSetStyles retrives set values', () => {
 		let ls = new ListStyles()
 		ls.init()
 
@@ -83,12 +99,6 @@ describe('List Styles', () => {
 
 		ls.set(6, {
 			type: 'ordered'
-		})
-
-		expect(ls.getSetStyles(0).toDescriptor()).toEqual({
-			type: null,
-			start: null,
-			bulletStyle: null
 		})
 
 		expect(ls.getSetStyles(5).toDescriptor()).toEqual({
@@ -104,7 +114,7 @@ describe('List Styles', () => {
 		})
 	})
 
-	test('returns unordered default styles correct', () => {
+	test('toDescriptor returns unordered styles', () => {
 		let ls = new ListStyles('unordered')
 
 		expect(ls.get(0).toDescriptor()).toEqual({
@@ -150,7 +160,7 @@ describe('List Styles', () => {
 		})
 	})
 
-	test('returns ordered default styles correct', () => {
+	test('toDescriptor returns ordered styles', () => {
 		let ls = new ListStyles('ordered')
 
 		expect(ls.get(0).toDescriptor()).toEqual({
@@ -214,7 +224,7 @@ describe('List Styles', () => {
 		})
 	})
 
-	test('clones correctly', () => {
+	test('clone creates a shallow copy', () => {
 		let orig = new ListStyles()
 		orig.init()
 
@@ -230,7 +240,7 @@ describe('List Styles', () => {
 		expect(orig.toDescriptor()).toEqual(clone.toDescriptor())
 	})
 
-	test('styles clone correctly', () => {
+	test('clone creates a deep copy', () => {
 		let ls = new ListStyles()
 		ls.init()
 

@@ -75,8 +75,8 @@ var APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	endAttempt({ attemptId, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { visitId }).then(
+	endAttempt({ attemptId, draftId, visitId }) {
+		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
 			processJsonResults
 		)
 	},

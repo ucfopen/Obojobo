@@ -22,6 +22,7 @@ jest.mock('../../../src/scripts/common/util/focus-util', () => ({
 	unfocus: jest.fn()
 }))
 
+const Common = require('../../../src/scripts/common/index').default
 const UUID = require('../../../src/scripts/common/util/uuid')
 const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
 const QuestionUtil = require('../../../src/scripts/viewer/util/question-util')
@@ -95,7 +96,7 @@ describe('QuestionStore', () => {
 		UUID.mockReturnValue('mock-uuid')
 	})
 
-	it('should init state with a specific structure and return it', () => {
+	test('init builds state with a specific structure and return it', () => {
 		QuestionStore.init()
 
 		expect(QuestionStore.getState()).toEqual({
@@ -107,19 +108,20 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('should set state', () => {
+	test('should set state', () => {
 		QuestionStore.setState({ x: 1 })
 
 		expect(QuestionStore.getState()).toEqual({ x: 1 })
 	})
 
-	it('registers the expected dispatch listeners', () => {
+	test('registers the expected dispatch listeners', () => {
 		// See where eventListeners is stored above ^
 		expect(eventListeners).toMatchSnapshot()
 	})
 
-	it('question:setResponse calls triggerChange and postEvent', () => {
-		__createModels()
+	test('question:setResponse calls triggerChange and postEvent', () => {
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		__mockTrigger('question:setResponse', {
 			value: {
@@ -132,7 +134,7 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0][0]).toEqual({
 			action: 'question:setResponse',
-			draftId: 'questionId',
+			draftId: 'mockDraftId',
 			eventVersion: '2.1.0',
 			payload: {
 				assessmentId: undefined,
@@ -146,7 +148,39 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('question:clearResponse calls triggerChange and updates state', () => {
+	test('question:setResponse calls triggerChange and postEvent', () => {
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
+
+		QuestionStore.setState({ responses: { mockContext: {} } })
+
+		__mockTrigger('question:setResponse', {
+			value: {
+				id: 'questionId',
+				response: { customResponse: 'responseValue' },
+				context: 'mockContext'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0][0]).toEqual({
+			action: 'question:setResponse',
+			draftId: 'mockDraftId',
+			eventVersion: '2.1.0',
+			payload: {
+				assessmentId: undefined,
+				attemptId: undefined,
+				context: 'mockContext',
+				questionId: 'questionId',
+				response: { customResponse: 'responseValue' },
+				targetId: undefined
+			},
+			visitId: undefined
+		})
+	})
+
+	test('question:clearResponse calls triggerChange and updates state', () => {
 		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
 
 		__mockTrigger('question:clearResponse', {
@@ -164,7 +198,20 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it("question:clearResponse calls triggerChange but doesn't change state", () => {
+	test('question:clearResponse does nothing with no context', () => {
+		QuestionStore.setState({ responses: {} })
+
+		__mockTrigger('question:clearResponse', {
+			value: {
+				context: 'mockContext',
+				id: 'mockId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
+	})
+
+	test("question:clearResponse calls triggerChange but doesn't change state", () => {
 		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
 
 		__mockTrigger('question:clearResponse', {
@@ -182,7 +229,56 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('question:setData calls triggerChange and updates state', () => {
+	test('assessment:endAttempt calls triggerChange and updates state', () => {
+		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
+
+		__mockTrigger('assessment:endAttempt', {
+			value: {
+				context: 'mockContext',
+				id: 'mockId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(QuestionStore.getState()).toEqual({
+			responses: {
+				mockContext: {}
+			}
+		})
+	})
+
+	test('assessment:endAttempt does nothing with no context', () => {
+		QuestionStore.setState({ responses: {} })
+
+		__mockTrigger('assessment:endAttempt', {
+			value: {
+				context: 'mockContext',
+				id: 'mockId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
+	})
+
+	test("assessment:endAttempt calls triggerChange but doesn't change state", () => {
+		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
+
+		__mockTrigger('assessment:endAttempt', {
+			value: {
+				context: 'mockContext',
+				id: 'otherMockId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(QuestionStore.getState()).toEqual({
+			responses: {
+				mockContext: { mockId: true }
+			}
+		})
+	})
+
+	test('question:setData calls triggerChange and updates state', () => {
 		QuestionStore.setState({
 			data: {}
 		})
@@ -202,7 +298,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('qquestion:clearData calls triggerChange and updates state', () => {
+	test('question:clearData calls triggerChange and updates state', () => {
 		QuestionStore.setState({
 			data: {
 				dataKey: 'dataValue'
@@ -221,7 +317,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('question:clearData calls triggerChange even when theres no state change', () => {
+	test('question:clearData calls triggerChange even when theres no state change', () => {
 		QuestionStore.setState({
 			data: {
 				dataKey: 'dataValue'
@@ -242,7 +338,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('question:view calls triggerChange and updates state', () => {
+	test('question:view calls triggerChange and updates state', () => {
 		__createModels()
 
 		QuestionStore.setState({
@@ -265,7 +361,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('question:view updates state.viewing with the latest question', () => {
+	test('question:view updates state.viewing with the latest question', () => {
 		__createModels()
 
 		QuestionStore.setState({
@@ -303,7 +399,24 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('question:hide marks questions as hidden, and clears viewing if it matches', () => {
+	test('question:checkAnswer calls APIUtil', () => {
+		__createModels()
+
+		QuestionStore.setState({
+			viewing: null,
+			viewedQuestions: {}
+		})
+
+		__mockTrigger('question:checkAnswer', {
+			value: {
+				id: 'questionId'
+			}
+		})
+
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+	})
+
+	test('question:hide marks questions as hidden, and clears viewing if it matches', () => {
 		__createModels()
 
 		QuestionStore.setState({
@@ -329,7 +442,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('question:hide marks questions as hidden, and does not clear viewing if it doesnt match', () => {
+	test('question:hide marks questions as hidden, and does not clear viewing if it doesnt match', () => {
 		__createModels()
 
 		QuestionStore.setState({
@@ -355,7 +468,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	it('question:showExplanation calls postEvent and sets question data', () => {
+	test('question:showExplanation calls postEvent and sets question data', () => {
 		__createModels()
 
 		__mockTrigger('question:showExplanation', {
@@ -373,7 +486,7 @@ describe('QuestionStore', () => {
 		expect(QuestionUtil.clearData).not.toHaveBeenCalled()
 	})
 
-	it('question:hideExplanation calls triggerChange and updates state', () => {
+	test('question:hideExplanation calls triggerChange and updates state', () => {
 		__createModels()
 
 		__mockTrigger('question:hideExplanation', {
@@ -392,10 +505,11 @@ describe('QuestionStore', () => {
 		expect(QuestionUtil.setData).not.toHaveBeenCalled()
 	})
 
-	it('question:scoreSet calls triggerChange', () => {
+	test('question:scoreSet calls triggerChange', () => {
 		__createModels()
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(0)
+		QuestionStore.setState({ scores: { mockContext: {} } })
 
 		__mockTrigger('question:scoreSet', {
 			value: {
@@ -408,7 +522,7 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 	})
 
-	it('question:scoreSet initializes context if missing', () => {
+	test('question:scoreSet initializes context if missing', () => {
 		__createModels()
 
 		expect(QuestionStore.getState().scores).not.toHaveProperty('mockContext')
@@ -424,7 +538,7 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.getState().scores).toHaveProperty('mockContext')
 	})
 
-	it('question:scoreSet blurs focus if correct', () => {
+	test('question:scoreSet blurs focus if correct', () => {
 		__createModels()
 
 		expect(FocusUtil.unfocus).toHaveBeenCalledTimes(0)
@@ -440,7 +554,7 @@ describe('QuestionStore', () => {
 		expect(FocusUtil.unfocus).toHaveBeenCalledTimes(1)
 	})
 
-	it('question:scoreSet doesnt blur if incorrect', () => {
+	test('question:scoreSet doesnt blur if incorrect', () => {
 		__createModels()
 
 		__mockTrigger('question:scoreSet', {
@@ -454,7 +568,7 @@ describe('QuestionStore', () => {
 		expect(FocusUtil.unfocus).not.toHaveBeenCalled()
 	})
 
-	it('question:scoreSet updates the state', () => {
+	test('question:scoreSet updates the state', () => {
 		__createModels()
 
 		expect(QuestionStore.getState()).toMatchSnapshot()
@@ -470,7 +584,7 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.getState()).toMatchSnapshot()
 	})
 
-	it('question:scoreSet posts an event', () => {
+	test('question:scoreSet posts an event', () => {
 		__createModels()
 
 		__mockTrigger('question:scoreSet', {
@@ -485,7 +599,7 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
-	it('question:scoreClear calls triggerChange', () => {
+	test('question:scoreClear calls triggerChange', () => {
 		__createModels()
 		QuestionStore.setState({
 			scores: {
@@ -508,7 +622,7 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 	})
 
-	it('question:scoreClear triggers an event', () => {
+	test('question:scoreClear triggers an event', () => {
 		__createModels()
 		QuestionStore.setState({
 			scores: {
@@ -531,7 +645,7 @@ describe('QuestionStore', () => {
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 	})
 
-	it('question:scoreClear posts an event', () => {
+	test('question:scoreClear posts an event', () => {
 		__createModels()
 		QuestionStore.setState({
 			scores: {
@@ -555,7 +669,7 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
-	it('question:retry clears responses, hides explanations and clears scores', () => {
+	test('question:retry clears responses, hides explanations and clears scores', () => {
 		__createModels()
 
 		QuestionUtil.isShowingExplanation.mockReturnValue(true)
@@ -578,6 +692,34 @@ describe('QuestionStore', () => {
 
 		// make sure hideExplanation was called
 		expect(QuestionUtil.hideExplanation).toHaveBeenCalledWith('questionId', 'viewerClient')
+
+		// make sure state.responses.mockContext.questionId is wiped out
+		expect(QuestionStore.getState().responses.mockContext).not.toHaveProperty('questionId')
+	})
+
+	test('question:retry clears scores with no explanation', () => {
+		__createModels()
+
+		QuestionUtil.isShowingExplanation.mockReturnValue(false)
+
+		QuestionStore.setState({
+			viewing: 'questionId',
+			viewedQuestions: { questionId: true },
+			responses: { mockContext: { questionId: 'response' } }
+		})
+
+		__mockTrigger('question:retry', {
+			value: {
+				context: 'mockContext',
+				id: 'questionId'
+			}
+		})
+
+		// make sure clear score was called
+		expect(QuestionUtil.clearScore).toHaveBeenCalledWith('questionId', 'mockContext')
+
+		// make sure hideExplanation was not called
+		expect(QuestionUtil.hideExplanation).not.toHaveBeenCalled()
 
 		// make sure state.responses.mockContext.questionId is wiped out
 		expect(QuestionStore.getState().responses.mockContext).not.toHaveProperty('questionId')

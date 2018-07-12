@@ -1,11 +1,14 @@
 jest.mock('../../server/attempt-start', () => ({ startAttempt: jest.fn() }))
 jest.mock('../../server/attempt-end', () => ({
-	endAttempt: jest.fn().mockReturnValue(Promise.resolve('endAttemptResult'))
+	endAttempt: jest.fn()
 }))
 jest.mock('../../server/assessment', () => ({
-	getAttempt: jest.fn().mockReturnValue(Promise.resolve('attempt')),
-	getAttempts: jest.fn().mockReturnValue(Promise.resolve('attempts'))
+	getAttempt: jest.fn(),
+	getAttempts: jest.fn()
 }))
+jest.mock('../../server/util')
+
+const logAndRespondToUnexpected = require('../../server/util').logAndRespondToUnexpected
 
 jest.mock(
 	'../../__mocks__/models/visit',
@@ -19,10 +22,12 @@ describe('server/express', () => {
 	const db = oboRequire('db')
 	require('__mocks__/__mock_express')
 	const mockUser = { id: 1 }
+	const mockDocument = { draftId: 3, contentId: 12 }
 	const Assessment = require('../../server/assessment')
 	// build the req info
 	const req = {
 		requireCurrentUser: jest.fn().mockReturnValue(Promise.resolve(mockUser)),
+		requireCurrentDocument: jest.fn().mockReturnValue(Promise.resolve(mockDocument)),
 		params: {
 			draftId: 3,
 			attemptId: 5,
@@ -64,13 +69,14 @@ describe('server/express', () => {
 		Assessment.getAttempt.mockRestore()
 		Assessment.getAttempts.mockRestore()
 		logger.error.mockReset()
+		logAndRespondToUnexpected.mockReset()
 	})
 	afterEach(() => {})
 
 	test('registers the expected routes', () => {
 		expect.assertions(10)
 
-		expect(server.get).toHaveBeenCalledTimes(1)
+		expect(server.get).toHaveBeenCalledTimes(4)
 		expect(server.post).toHaveBeenCalledTimes(4)
 		expect(server.delete).toHaveBeenCalledTimes(0)
 		expect(server.put).toHaveBeenCalledTimes(0)
@@ -89,7 +95,7 @@ describe('server/express', () => {
 		expect(draftStateRoute[0]).toBe('/api/lti/state/draft/:draftId')
 
 		// mock result
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockReturnValue('testresult')
+		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockReturnValueOnce('testresult')
 
 		// execute
 		return draftStateRoute[1](req, res, {}).then(() => {
@@ -110,7 +116,7 @@ describe('server/express', () => {
 		expect(sendAssessmentScoreRoute[0]).toBe('/api/lti/sendAssessmentScore')
 
 		// mock result
-		lti.sendHighestAssessmentScore.mockReturnValue({
+		lti.sendHighestAssessmentScore.mockReturnValueOnce({
 			scoreSent: 1,
 			status: 2,
 			statusDetails: 3,
@@ -122,7 +128,7 @@ describe('server/express', () => {
 		return sendAssessmentScoreRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
 			// make sure the lti method is called
-			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(1, 9, 777)
+			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(1, mockDocument, 777)
 			// make sure the results are passed to res.success
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith({
@@ -137,7 +143,30 @@ describe('server/express', () => {
 		})
 	})
 
-	test('start attempt route calls startAttempt', () => {
+	test('/api/lti/sendAssessmentScore calls logAndRespondToUnexpected when error occurs', () => {
+		expect.assertions(2)
+
+		// grab a ref to expected route & verify it's the route we want
+		let sendAssessmentScoreRoute = server.post.mock.calls[0]
+		expect(sendAssessmentScoreRoute[0]).toBe('/api/lti/sendAssessmentScore')
+
+		// mock result
+		lti.sendHighestAssessmentScore.mockImplementationOnce(() => {
+			throw new Error('mockUnexpectedError')
+		})
+
+		// execute
+		return sendAssessmentScoreRoute[1](req, res, {}).then(() => {
+			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
+				'Unexpected error starting a new attempt',
+				res,
+				req,
+				expect.any(Error)
+			)
+		})
+	})
+
+	test('/api/assessments/attempt/start calls startAttempt', () => {
 		expect.assertions(3)
 
 		// grab a ref to expected route & verify it's the route we want
@@ -150,23 +179,47 @@ describe('server/express', () => {
 		expect(startAttempt).toHaveBeenCalledWith(req, res)
 	})
 
-	test('end attempt route calls endAttempt', () => {
+	test('/api/assessments/attempt/:attemptId/end calls endAttempt', () => {
 		expect.assertions(5)
 
 		// grab a ref to expected route & verify it's the route we want
 		let endAttemptRoute = server.post.mock.calls[2]
 		expect(endAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/end')
 
+		endAttempt.mockReturnValueOnce(Promise.resolve('endAttemptResult'))
+
 		// execute
 		return endAttemptRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, false)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDocument, 5, false)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('endAttemptResult')
 		})
 	})
 
-	test('clear-preview-scores route runs queries to empty preview score data', () => {
+	test('/api/assessments/attempt/:attemptId/end calls logAndRespondToUnexpected when error occurs', () => {
+		expect.assertions(2)
+
+		// grab a ref to expected route & verify it's the route we want
+		let endAttemptRoute = server.post.mock.calls[2]
+		expect(endAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/end')
+
+		endAttempt.mockImplementationOnce(() => {
+			throw new Error('mockUnexpectedError')
+		})
+
+		// execute
+		return endAttemptRoute[1](req, res, {}).then(() => {
+			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
+				'Unexpected error completing your attempt',
+				res,
+				req,
+				expect.any(Error)
+			)
+		})
+	})
+
+	test('/api/assessments/clear-preview-scores runs queries to empty preview score data', () => {
 		expect.assertions(11)
 
 		// visit is preview visit
@@ -185,7 +238,7 @@ describe('server/express', () => {
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, 5, false)
+			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDocument, 5, false)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith()
 
@@ -210,13 +263,52 @@ describe('server/express', () => {
 		})
 	})
 
-	// visit is not preview mode so can't
-	test('clear-preview-scores tests previewing state', () => {
+	test('/api/assessments/clear-preview-scores runs nothing with no data', () => {
+		expect.assertions(8)
+		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
+
+		// grab a ref to expected route & verify it's the route we want
+		let clearPreviewScoresRoute = server.post.mock.calls[3]
+		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
+
+		db.manyOrNone
+			.mockReturnValueOnce(Promise.resolve([])) // assessmentScoreIdsResult
+			.mockReturnValueOnce(Promise.resolve([])) // attemptIdsResult
+
+		// execute
+		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
+			expect(res.success).toHaveBeenCalledTimes(1)
+
+			expect(db.manyOrNone).toHaveBeenCalledTimes(2)
+			expect(db.none).toHaveBeenCalledTimes(2)
+			expect(db.none).not.toHaveBeenCalledWith(
+				expect.stringContaining('DELETE FROM attempts_question_responses'),
+				expect.anything()
+			)
+			expect(db.none).not.toHaveBeenCalledWith(
+				expect.stringContaining('DELETE FROM lti_assessment_scores'),
+				expect.anything()
+			)
+			expect(db.none).toHaveBeenCalledWith(
+				expect.stringContaining('DELETE FROM assessment_scores'),
+				expect.anything()
+			)
+			expect(db.none).toHaveBeenCalledWith(
+				expect.stringContaining('DELETE FROM attempts'),
+				expect.anything()
+			)
+		})
+	})
+
+	test('/api/assessments/clear-preview-scores tests previewing state', () => {
 		expect.assertions(8)
 
 		// grab a ref to expected route & verify it's the route we want
 		let clearPreviewScoresRoute = server.post.mock.calls[3]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
+
+		// user that can't preview
+		req.requireCurrentUser.mockResolvedValueOnce({ id: 1 })
 
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
@@ -227,6 +319,185 @@ describe('server/express', () => {
 			expect(db.none).toHaveBeenCalledTimes(0)
 			expect(res.notAuthorized).toHaveBeenCalledTimes(1)
 			expect(res.notAuthorized).toHaveBeenCalledWith('Not in preview mode')
+		})
+	})
+
+	test('/api/assessments/clear-preview-scores calls logAndRespondToUnexpected when error occurs', () => {
+		expect.assertions(2)
+		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
+
+		// grab a ref to expected route & verify it's the route we want
+		let clearPreviewScoresRoute = server.post.mock.calls[3]
+		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
+
+		db.manyOrNone.mockImplementationOnce(() => {
+			throw new Error('mockUnexpectedError')
+		})
+
+		// execute
+		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
+			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
+				'Unexpected error clearing preview scores',
+				res,
+				req,
+				expect.any(Error)
+			)
+		})
+	})
+
+	// end of useless
+
+	test('/api/assessments/:draftId/:assessmentId/attempt/:attemptId calls getAttempt', () => {
+		expect.assertions(5)
+
+		// grab a ref to expected route & verify it's the route we want
+		let getAttemptRoute = server.get.mock.calls[1]
+		expect(getAttemptRoute[0]).toBe('/api/assessments/:draftId/:assessmentId/attempt/:attemptId')
+
+		Assessment.getAttempt.mockResolvedValueOnce('attempt')
+
+		// execute
+		return getAttemptRoute[1](req, res, {}).then(() => {
+			expect(req.requireCurrentUser).toHaveBeenCalled()
+			expect(res.success).toHaveBeenCalledTimes(1)
+			expect(res.success).toHaveBeenCalledWith('attempt')
+			expect(Assessment.getAttempt).toHaveBeenCalledWith(1, 3, 999, 5)
+		})
+	})
+
+	test('/api/assessments/:draftId/:assessmentId/attempt/:attemptId calls logAndRespondToUnexpected when error occurs', () => {
+		expect.assertions(2)
+
+		// grab a ref to expected route & verify it's the route we want
+		let getAttemptRoute = server.get.mock.calls[1]
+		expect(getAttemptRoute[0]).toBe('/api/assessments/:draftId/:assessmentId/attempt/:attemptId')
+
+		Assessment.getAttempt.mockImplementationOnce(() => {
+			throw new Error('mockUnexpectedError')
+		})
+
+		// execute
+		return getAttemptRoute[1](req, res, {}).then(() => {
+			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
+				'Unexpected Error Loading attempt "${:attemptId}"',
+				res,
+				req,
+				expect.any(Error)
+			)
+		})
+	})
+
+	test('/api/assessments/:draftId/attempts alls getAttempts', () => {
+		expect.assertions(5)
+
+		// grab a ref to expected route & verify it's the route we want
+		let getAttemptsRoute = server.get.mock.calls[2]
+		expect(getAttemptsRoute[0]).toBe('/api/assessments/:draftId/attempts')
+
+		Assessment.getAttempts.mockResolvedValueOnce('attempts')
+
+		// execute
+		return getAttemptsRoute[1](req, res, {}).then(() => {
+			expect(req.requireCurrentUser).toHaveBeenCalled()
+			expect(res.success).toHaveBeenCalledTimes(1)
+			expect(res.success).toHaveBeenCalledWith('attempts')
+			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3)
+		})
+	})
+
+	test('/api/assessments/:draftId/attempts calls res.notAuthorized if not logged in', () => {
+		expect.assertions(3)
+
+		// grab a ref to expected route & verify it's the route we want
+		let getAttemptsRoute = server.get.mock.calls[2]
+		expect(getAttemptsRoute[0]).toBe('/api/assessments/:draftId/attempts')
+
+		// No user found
+		req.requireCurrentUser.mockRejectedValueOnce(new Error('Login Required'))
+
+		// execute
+		return getAttemptsRoute[1](req, res, {}).then(() => {
+			expect(res.notAuthorized).toHaveBeenCalledTimes(1)
+			expect(res.notAuthorized).toHaveBeenCalledWith('Login Required')
+		})
+	})
+
+	test('/api/assessments/:draftId/attempts calls logAndRespondToUnexpected when an error occurs', () => {
+		expect.assertions(2)
+
+		// grab a ref to expected route & verify it's the route we want
+		let getAttemptsRoute = server.get.mock.calls[2]
+		expect(getAttemptsRoute[0]).toBe('/api/assessments/:draftId/attempts')
+
+		Assessment.getAttempts.mockImplementationOnce(() => {
+			throw new Error('mockUnexpectedError')
+		})
+
+		// execute
+		return getAttemptsRoute[1](req, res, {}).then(() => {
+			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
+				'Unexpected error loading attempts',
+				res,
+				req,
+				expect.any(Error)
+			)
+		})
+	})
+
+	test('/api/assessment/:draftId/:assessmentId/attempts for a given assessment returns attempts for that assessment', () => {
+		expect.assertions(5)
+
+		// grab a ref to expected route & verify it's the route we want
+		let getAttemptsRoute = server.get.mock.calls[3]
+		expect(getAttemptsRoute[0]).toBe('/api/assessment/:draftId/:assessmentId/attempts')
+
+		Assessment.getAttempts.mockResolvedValueOnce('attempts')
+
+		// execute
+		return getAttemptsRoute[1](req, res, {}).then(() => {
+			expect(req.requireCurrentUser).toHaveBeenCalled()
+			expect(res.success).toHaveBeenCalledTimes(1)
+			expect(res.success).toHaveBeenCalledWith('attempts')
+			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3)
+		})
+	})
+
+	test('/api/assessment/:draftId/:assessmentId/attempts calls res.notAuthorized if user not logged in', () => {
+		expect.assertions(3)
+
+		// grab a ref to expected route & verify it's the route we want
+		let getAttemptsRoute = server.get.mock.calls[3]
+		expect(getAttemptsRoute[0]).toBe('/api/assessment/:draftId/:assessmentId/attempts')
+
+		// No user found
+		req.requireCurrentUser.mockRejectedValueOnce(new Error('Login Required'))
+
+		// execute
+		return getAttemptsRoute[1](req, res, {}).then(() => {
+			expect(res.notAuthorized).toHaveBeenCalledTimes(1)
+			expect(res.notAuthorized).toHaveBeenCalledWith('Login Required')
+		})
+	})
+
+	test('/api/assessment/:draftId/:assessmentId/attempts calls logAndRespondToUnexpected when an error occurs', () => {
+		expect.assertions(2)
+
+		// grab a ref to expected route & verify it's the route we want
+		let getAttemptsRoute = server.get.mock.calls[3]
+		expect(getAttemptsRoute[0]).toBe('/api/assessment/:draftId/:assessmentId/attempts')
+
+		Assessment.getAttempts.mockImplementationOnce(() => {
+			throw new Error('mockUnexpectedError')
+		})
+
+		// execute
+		return getAttemptsRoute[1](req, res, {}).then(() => {
+			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
+				'Unexpected error loading attempts',
+				res,
+				req,
+				expect.any(Error)
+			)
 		})
 	})
 

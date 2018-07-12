@@ -1,5 +1,6 @@
 jest.mock('../../server/assessment')
 jest.mock('underscore')
+jest.mock('../../server/util')
 
 jest.mock(
 	'../../__mocks__/models/visit',
@@ -13,12 +14,12 @@ jest.mock(
 	'../../server/util',
 	() => ({
 		getRandom: jest.fn().mockReturnValue(0),
-		logAndRespondToUnexpected: require.requireActual('../../server/util').logAndRespondToUnexpected
+		logAndRespondToUnexpected: jest.fn()
 	}),
 	{ virtual: false }
 )
 
-const { getRandom } = require('../../server/util')
+const { getRandom, logAndRespondToUnexpected } = require('../../server/util')
 
 const AS = require('../../server/attempt-start.js')
 const {
@@ -32,7 +33,9 @@ const {
 	createChosenQuestionTree,
 	getNodeQuestions,
 	getSendToClientPromises,
-	insertAttemptStartCaliperEvent
+	insertAttemptStartCaliperEvent,
+	getState,
+	loadChildren
 } = require('../../server/attempt-start.js')
 const _ = require('underscore')
 const testJson = require('../../test-object.json')
@@ -171,7 +174,239 @@ describe('start attempt route', () => {
 		mockRes = {}
 	})
 
-	test('can retrieve question bank properties with attributes set', () => {
+	test('startAttempt calls database, inserts events, and returns expected object', done => {
+		mockRes = {
+			success: jest.fn(),
+			reject: jest.fn()
+		}
+
+		const mockAssessmentNode = {
+			getChildNodeById: jest.fn(() => ({
+				node: {
+					content: {
+						attempts: 3
+					}
+				},
+				children: [
+					{},
+					{
+						childrenSet: [],
+						toObject: jest.fn().mockReturnValueOnce({
+							children: [
+								{
+									id: 'mockQuestion',
+									type: QUESTION_NODE_TYPE,
+									children: [],
+									yell: jest.fn(),
+									toObject: jest.fn().mockReturnValueOnce({})
+								}
+							]
+						})
+					}
+				],
+				draftTree: {
+					getChildNodeById: jest.fn().mockReturnValueOnce({
+						id: 'mockQuestion',
+						type: QUESTION_NODE_TYPE,
+						children: [],
+						yell: jest.fn(),
+						toObject: jest.fn().mockReturnValueOnce({})
+					})
+				}
+			}))
+		}
+
+		mockReq = {
+			requireCurrentDocument: jest.fn(() => Promise.resolve(mockAssessmentNode)),
+			requireCurrentUser: jest.fn(() =>
+				Promise.resolve({
+					canViewEditor: true
+				})
+			),
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId'
+			},
+			hostname: 'mockHostname',
+			connection: {
+				remoteAddress: 'mockRemoteAddress'
+			}
+		}
+
+		// Set dummy versions of methods called by startAttempt
+		Assessment.getCompletedAssessmentAttemptHistory = jest.fn().mockResolvedValueOnce([])
+		Assessment.getNumberAttemptsTaken = jest.fn(() => 1)
+		Assessment.insertNewAttempt = jest.fn().mockReturnValueOnce({
+			attemptId: 'mockAttemptId'
+		})
+		const createAssessmentAttemptStartedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		insertEvent.mockReturnValueOnce('mockInsertResult')
+		createCaliperEvent.mockReturnValueOnce({
+			createAssessmentAttemptStartedEvent
+		})
+
+		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockReq.requireCurrentDocument).toHaveBeenCalled()
+			expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
+			expect(Assessment.insertNewAttempt).toHaveBeenCalled()
+
+			return done()
+		})
+	})
+
+	test('startAttempt rejects with an expected error when no attempts remain', done => {
+		mockRes = { reject: jest.fn() }
+
+		const mockAssessmentNode = {
+			getChildNodeById: jest.fn(() => ({
+				node: {
+					content: {
+						// Number of attempts the user is allowed (what we're testing here).
+						attempts: 1
+					}
+				},
+				children: [
+					{},
+					{
+						childrenSet: ['test', 'test1'],
+						toObject: jest.fn()
+					}
+				]
+			}))
+		}
+
+		mockReq = {
+			requireCurrentDocument: jest.fn(() => Promise.resolve(mockAssessmentNode)),
+			requireCurrentUser: jest.fn(() =>
+				Promise.resolve({
+					user: {}
+				})
+			),
+			body: {
+				draftId: 'mockDraftId',
+				assessmentId: 'mockAssessmentId'
+			}
+		}
+
+		Assessment.getCompletedAssessmentAttemptHistory = jest
+			.fn()
+			.mockResolvedValueOnce(['oneAttempt'])
+
+		startAttempt(mockReq, mockRes).then(() => {
+			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
+			done()
+		})
+	})
+
+	test('startAttempt calls logAndRespondToUnexpected with unexpected error', done => {
+		mockReq = {
+			requireCurrentDocument: jest.fn(() => {
+				throw new Error(ERROR_UNEXPECTED_DB_ERROR)
+			}),
+			requireCurrentUser: jest.fn(() =>
+				Promise.resolve({
+					user: {}
+				})
+			)
+		}
+
+		mockRes = { unexpected: jest.fn() }
+
+		startAttempt(mockReq, mockRes).then(() => {
+			expect(logAndRespondToUnexpected).toHaveBeenCalled()
+			done()
+		})
+	})
+
+	test('getState calls qb.buildAssessment and returns the expected state', () => {
+		const fakeChildNodes = [
+			{
+				id: 'qb1.q1',
+				type: 'ObojoboDraft.Chunks.Question',
+				children: []
+			},
+			{
+				id: 'qb1.q2',
+				type: 'ObojoboDraft.Chunks.Question',
+				children: []
+			}
+		]
+		const mockQbTree = { id: 'qb1', children: [], type: 'no-type' }
+		const mockAssessmentProperties = {
+			nodeChildrenIds: [],
+			draftTree: mockDraft,
+			attemptHistory: [],
+			oboNode: {
+				draftTree: mockDraft
+			},
+			assessmentQBTree: mockQbTree
+		}
+		// mock child lookup
+		mockDraft.getChildNodeById.mockImplementation(id => {
+			return {
+				node: {
+					id: id,
+					type: 'ObojoboDraft.Chunks.Question'
+				}
+			}
+		})
+
+		const state = getState(mockAssessmentProperties)
+
+		expect(state.questions).toEqual([])
+	})
+
+	test('loadChildren builds a full map of used questions', () => {
+		const fakeChildNodes = [{ id: 'qb1.q1', children: [] }, { id: 'qb1.q2', children: [] }]
+		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
+		const mockAssessmentProperties = {
+			nodeChildrenIds: ['qb1', 'qb1.q1', 'qb1.q2', 'qb2', 'qb2.q1', 'qb2.q2'],
+			draftTree: mockDraft,
+			attemptHistory: [
+				{
+					state: {
+						qb: mockQbTree
+					}
+				}
+			]
+		}
+		// mock child lookup
+		mockDraft.getChildNodeById.mockReturnValue({ node: { type: 'ObojoboDraft.Chunks.Question' } })
+
+		const map = loadChildren(mockAssessmentProperties)
+
+		expect(map.get('qb1')).toBe(1)
+		expect(map.get('qb1.q1')).toBe(1)
+		expect(map.get('qb1.q2')).toBe(1)
+		expect(map.get('qb2')).toBe(0)
+		expect(map.get('qb2.q1')).toBe(0)
+		expect(map.get('qb2.q2')).toBe(0)
+	})
+
+	test('loadChildren does not alter the map when an attempt does not have a qb', () => {
+		const mockAssessmentProperties = {
+			nodeChildrenIds: ['qb1', 'qb1.q1', 'qb1.q2', 'qb2', 'qb2.q1', 'qb2.q2'],
+			draftTree: mockDraft,
+			attemptHistory: [
+				{
+					state: {}
+				}
+			]
+		}
+		// mock child lookup
+		mockDraft.getChildNodeById.mockReturnValue({ node: { type: 'ObojoboDraft.Chunks.Question' } })
+
+		const map = loadChildren(mockAssessmentProperties)
+
+		expect(map.get('qb1')).toBe(0)
+		expect(map.get('qb1.q1')).toBe(0)
+		expect(map.get('qb1.q2')).toBe(0)
+		expect(map.get('qb2')).toBe(0)
+		expect(map.get('qb2.q1')).toBe(0)
+		expect(map.get('qb2.q2')).toBe(0)
+	})
+
+	test('getQuestionBankProperties retrieves question bank properties with attributes set', () => {
 		const mockQuestionBankNode = new DraftNode({}, { content: { choose: 2, select: 'test' } }, {})
 		const qbProperties = getQuestionBankProperties(mockQuestionBankNode.node)
 
@@ -180,7 +415,7 @@ describe('start attempt route', () => {
 		expect(qbProperties.select).toBe('test')
 	})
 
-	test('can retrieve question bank properties with NO attributes set', () => {
+	test('getQuestionBankProperties can retrieve question bank properties with NO attributes set', () => {
 		const mockQuestionBankNode = new DraftNode({}, { content: {} }, {})
 		const qbProperties = getQuestionBankProperties(mockQuestionBankNode.node)
 
@@ -189,7 +424,58 @@ describe('start attempt route', () => {
 		expect(qbProperties.select).toBe('sequential')
 	})
 
-	test('can initialize a map to track use of assessment questions', () => {
+	test('createAssessmentUsedQuestionMap initializes a map of questions', () => {
+		const mockAssessmentProperties = {
+			nodeChildrenIds: ['qb1', 'qb1.q1', 'qb1.q2', 'qb2', 'qb2.q1', 'qb2.q2'],
+			draftTree: mockDraft
+		}
+
+		// mock child lookup
+		mockDraft.getChildNodeById.mockReturnValue({ node: { type: 'ObojoboDraft.Chunks.Question' } })
+		mockDraft.getChildNodeById.mockReturnValueOnce({
+			node: { type: 'ObojoboDraft.Chunks.QuestionBank' }
+		})
+		mockDraft.getChildNodeById.mockReturnValueOnce({ node: { type: 'none' } })
+
+		const usedQuestionMap = createAssessmentUsedQuestionMap(mockAssessmentProperties)
+
+		expect(usedQuestionMap.constructor).toBe(Map)
+		expect(usedQuestionMap.size).toBe(5)
+		expect(usedQuestionMap.get('qb1')).toBe(0)
+		expect(usedQuestionMap.get('qb1.q2')).toBe(0)
+		expect(usedQuestionMap.get('qb2')).toBe(0)
+		expect(usedQuestionMap.get('qb2.q1')).toBe(0)
+		expect(usedQuestionMap.get('qb2.q2')).toBe(0)
+	})
+
+	test('initAssessmentUsedQuestions tracks question use from initalized map', () => {
+		const fakeChildNodes = [
+			{
+				id: 'qb1.q1',
+				children: []
+			},
+			{
+				id: 'qb1.q2',
+				children: []
+			},
+			{
+				id: 'mockId',
+				children: []
+			}
+		]
+		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
+
+		initAssessmentUsedQuestions(mockQbTree, mockUsedQuestionMap)
+
+		expect(mockUsedQuestionMap.get('qb1')).toBe(1)
+		expect(mockUsedQuestionMap.get('qb1.q1')).toBe(1)
+		expect(mockUsedQuestionMap.get('qb1.q2')).toBe(1)
+		expect(mockUsedQuestionMap.get('qb2')).toBe(0)
+		expect(mockUsedQuestionMap.get('qb2.q1')).toBe(0)
+		expect(mockUsedQuestionMap.get('qb2.q2')).toBe(0)
+	})
+
+	test('createAssessmentUsedQuestionMap can initialize a map to track use of assessment questions', () => {
 		const mockAssessmentProperties = {
 			nodeChildrenIds: ['qb1', 'qb1.q1', 'qb1.q2', 'qb2', 'qb2.q1', 'qb2.q2'],
 			draftTree: mockDraft
@@ -210,7 +496,7 @@ describe('start attempt route', () => {
 		expect(usedQuestionMap.get('qb2.q2')).toBe(0)
 	})
 
-	test('can track use of assessment questions using an initialized question map', () => {
+	test('initAssessmentUsedQuestions can track use of assessment questions using an initialized question map', () => {
 		const fakeChildNodes = [{ id: 'qb1.q1', children: [] }, { id: 'qb1.q2', children: [] }]
 		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
 
@@ -224,9 +510,7 @@ describe('start attempt route', () => {
 		expect(mockUsedQuestionMap.get('qb2.q2')).toBe(0)
 	})
 
-	// @TODO: @Zach - I'm not sure if my mocking of the datasets makes sense
-	// the results being returned are including the qb as the first index?
-	test('can choose to display unseen question banks and questions sequentially', () => {
+	test('chooseUnseenQuestionsSequentially can choose to display unseen question banks and questions sequentially', () => {
 		const mockAssessmentProperties = {
 			oboNode: { draftTree: mockDraft },
 			questionUsesMap: mockUsedQuestionMap
@@ -275,7 +559,7 @@ describe('start attempt route', () => {
 		])
 	})
 
-	test('can choose to display all question banks and questions randomly', () => {
+	test('chooseAllQuestionsRandomly can choose to display all question banks and questions randomly', () => {
 		_.shuffle = jest.fn(() => ['qb2', 'qb1'])
 
 		const mockAssessmentProperties = {
@@ -294,7 +578,7 @@ describe('start attempt route', () => {
 		expect(_.shuffle).toHaveBeenCalled()
 	})
 
-	test('can choose to display unseen question banks and questions randomly', () => {
+	test('chooseAllQuestionsRandomly can choose to display unseen question banks and questions randomly', () => {
 		getRandom.mockReturnValue(1)
 		// Unseen questions will come first, if we've seen an equal
 		// number of times, we use Math.random.
@@ -602,7 +886,7 @@ describe('start attempt route', () => {
 		expect(result).toEqual([0, 1])
 	})
 
-	test('startAttempt inserts a new attempt, creates events and replies with an expected object', () => {
+	test('insertAttemptStartCaliperEvent inserts a new attempt, creates events and replies with an expected object', () => {
 		const createAssessmentAttemptStartedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
 		insertEvent.mockReturnValueOnce('mockInsertResult')
 		createCaliperEvent.mockReturnValueOnce({
@@ -610,18 +894,22 @@ describe('start attempt route', () => {
 		})
 		Date.prototype.toISOString = () => 'date'
 
-		const r = insertAttemptStartCaliperEvent(
+		let mockDraft = {
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId'
+		}
+
+		let r = insertAttemptStartCaliperEvent(
 			'mockAttemptId',
 			1,
 			'mockUserId',
-			'mockDraftId',
+			mockDraft,
 			'mockAssessmentId',
 			true,
 			'mockHostname',
 			'mockRemoteAddress'
 		)
 
-		// Make sure we get the result of insertEvent back
 		expect(r).toBe('mockInsertResult')
 
 		// Make sure insertEvent was called
@@ -635,6 +923,7 @@ describe('start attempt route', () => {
 			assessmentId: 'mockAssessmentId',
 			attemptId: 'mockAttemptId',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			extensions: {
 				count: 1
 			}
@@ -645,6 +934,7 @@ describe('start attempt route', () => {
 			actorTime: 'date',
 			caliperPayload: 'mockCaliperPayload',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			eventVersion: '1.1.0',
 			ip: 'mockRemoteAddress',
 			metadata: {},
@@ -656,63 +946,66 @@ describe('start attempt route', () => {
 			userId: 'mockUserId'
 		})
 	})
+	// <<<<<<< HEAD
 
-	test('calling startAttempt when no attempts remain rejects with an expected error', () => {
-		mockReq = {
-			requireCurrentUser: jest.fn(() =>
-				Promise.resolve({
-					user: {
-						canViewEditor: true
-					}
-				})
-			),
-			body: {
-				draftId: 'mockDraftId',
-				assessmentId: 'mockAssessmentId'
-			}
-		}
+	// 	test('calling startAttempt when no attempts remain rejects with an expected error', () => {
+	// 		mockReq = {
+	// 			requireCurrentUser: jest.fn(() =>
+	// 				Promise.resolve({
+	// 					user: {
+	// 						canViewEditor: true
+	// 					}
+	// 				})
+	// 			),
+	// 			body: {
+	// 				draftId: 'mockDraftId',
+	// 				assessmentId: 'mockAssessmentId'
+	// 			}
+	// 		}
 
-		mockRes = { reject: jest.fn() }
+	// 		mockRes = { reject: jest.fn() }
 
-		const mockAssessmentNode = {
-			getChildNodeById: jest.fn(() => ({
-				node: {
-					content: {
-						// Number of attempts the user is allowed (what we're testing here).
-						attempts: 1
-					}
-				},
-				children: [
-					{},
-					{
-						childrenSet: ['test', 'test1'],
-						toObject: jest.fn()
-					}
-				]
-			}))
-		}
+	// 		const mockAssessmentNode = {
+	// 			getChildNodeById: jest.fn(() => ({
+	// 				node: {
+	// 					content: {
+	// 						// Number of attempts the user is allowed (what we're testing here).
+	// 						attempts: 1
+	// 					}
+	// 				},
+	// 				children: [
+	// 					{},
+	// 					{
+	// 						childrenSet: ['test', 'test1'],
+	// 						toObject: jest.fn()
+	// 					}
+	// 				]
+	// 			}))
+	// 		}
 
-		Assessment.getCompletedAssessmentAttemptHistory = jest.fn().mockResolvedValue(new Array(2))
-		Draft.fetchById = jest.fn(() => Promise.resolve(mockAssessmentNode))
+	// 		Assessment.getCompletedAssessmentAttemptHistory = jest.fn().mockResolvedValue(new Array(2))
+	// 		Draft.fetchById = jest.fn(() => Promise.resolve(mockAssessmentNode))
 
-		return startAttempt(mockReq, mockRes).then(() => {
-			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
-		})
-	})
+	// 		return startAttempt(mockReq, mockRes).then(() => {
+	// 			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
+	// 		})
+	// 	})
 
-	test('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', () => {
-		mockReq = {
-			requireCurrentUser: jest.fn().mockResolvedValue()
-		}
+	// 	test('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', () => {
+	// 		mockReq = {
+	// 			requireCurrentUser: jest.fn().mockResolvedValue()
+	// 		}
 
-		mockRes = { unexpected: jest.fn() }
+	// 		mockRes = { unexpected: jest.fn() }
 
-		Draft.fetchById = jest.fn(() => {
-			throw new Error(ERROR_UNEXPECTED_DB_ERROR)
-		})
+	// 		Draft.fetchById = jest.fn(() => {
+	// 			throw new Error(ERROR_UNEXPECTED_DB_ERROR)
+	// 		})
 
-		return startAttempt(mockReq, mockRes).then(() => {
-			expect(mockRes.unexpected).toHaveBeenCalledWith(ERROR_UNEXPECTED_DB_ERROR)
-		})
-	})
+	// 		return startAttempt(mockReq, mockRes).then(() => {
+	// 			expect(mockRes.unexpected).toHaveBeenCalledWith(ERROR_UNEXPECTED_DB_ERROR)
+	// 		})
+	// 	})
+	// =======
+	// >>>>>>> origin/dev/4-amethyst
 })

@@ -10,14 +10,14 @@ export default class StyleableTextComponent extends React.Component {
 
 		switch (el.type) {
 			case 'a':
-				if ((el.attrs != null ? el.attrs.href : undefined) != null) {
+				if (el.attrs != null && el.attrs.href != null) {
 					attrs.href = el.attrs.href
 					attrs.target = '_blank'
 				}
 				break
 
 			case 'span':
-				if ((el.attrs != null ? el.attrs['class'] : undefined) != null) {
+				if (el.attrs != null && el.attrs['class'] != null) {
 					attrs.className = el.attrs['class']
 				}
 				break

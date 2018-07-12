@@ -1,0 +1,704 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GridTextGroup addCol adds with given values 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "added row cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "added row cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+  ],
+  "maxItems": 6,
+  "numCols": 3,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup addCol adds with no values 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+  ],
+  "maxItems": 6,
+  "numCols": 3,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup addCol does not add to an empty grid 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [],
+  "maxItems": 0,
+  "numCols": 0,
+  "numRows": 0,
+}
+`;
+
+exports[`GridTextGroup addRow adds with given values 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "added row cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "added row cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+  ],
+  "maxItems": 6,
+  "numCols": 2,
+  "numRows": 3,
+}
+`;
+
+exports[`GridTextGroup addRow adds with no values 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+  ],
+  "maxItems": 6,
+  "numCols": 2,
+  "numRows": 3,
+}
+`;
+
+exports[`GridTextGroup addRow does not add to an empty grid 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [],
+  "maxItems": 0,
+  "numCols": 0,
+  "numRows": 0,
+}
+`;
+
+exports[`GridTextGroup constructor builds a GridTextGroup 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+  ],
+  "maxItems": 4,
+  "numCols": 2,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup create builds with data template 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+  ],
+  "maxItems": 4,
+  "numCols": 2,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup create builds without data template 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "",
+      },
+    },
+  ],
+  "maxItems": 4,
+  "numCols": 2,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup fromDescriptor builds a GridTextGroup from a descriptor with custom method 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+  ],
+  "maxItems": 4,
+  "numCols": 2,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup fromDescriptor builds a GridTextGroup from a descriptor with default method 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+  ],
+  "maxItems": 4,
+  "numCols": 2,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup removeCol does nothing to an empty grid 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [],
+  "maxItems": 0,
+  "numCols": 0,
+  "numRows": 0,
+}
+`;
+
+exports[`GridTextGroup removeCol removes a specified row 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+  ],
+  "maxItems": 2,
+  "numCols": 1,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup removeCol removes the last row by default 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+  ],
+  "maxItems": 2,
+  "numCols": 1,
+  "numRows": 2,
+}
+`;
+
+exports[`GridTextGroup removeRow does nothing to an empty grid 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [],
+  "maxItems": 0,
+  "numCols": 0,
+  "numRows": 0,
+}
+`;
+
+exports[`GridTextGroup removeRow removes a specified row 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "third cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "fourth cell",
+      },
+    },
+  ],
+  "maxItems": 2,
+  "numCols": 2,
+  "numRows": 1,
+}
+`;
+
+exports[`GridTextGroup removeRow removes the last row by default 1`] = `
+GridTextGroup {
+  "dataTemplate": Object {},
+  "items": Array [
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "first cell",
+      },
+    },
+    TextGroupItem {
+      "data": Object {},
+      "parent": [Circular],
+      "text": StyleableText {
+        "styleList": ChunkStyleList {
+          "styles": Array [],
+        },
+        "value": "second cell",
+      },
+    },
+  ],
+  "maxItems": 2,
+  "numCols": 2,
+  "numRows": 1,
+}
+`;

@@ -64,7 +64,6 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					let next = NavUtil.getNext(this.state)
 					if (this.gotoItem(next)) {
-						// console.log('OboModel.getRoot', OboModel.getRoot().get())
 						APIUtil.postEvent({
 							draftId: OboModel.getRoot().get('draftId'),
 							action: 'nav:next',

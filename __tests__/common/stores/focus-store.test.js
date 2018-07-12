@@ -1,14 +1,6 @@
 import FocusStore from '../../../src/scripts/common/stores/focus-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 
-jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
-	return {
-		trigger: jest.fn(),
-		on: jest.fn(),
-		off: jest.fn()
-	}
-})
-
 describe('FocusStore', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -64,5 +56,13 @@ describe('FocusStore', () => {
 			viewState: 'inactive'
 		})
 		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(2)
+	})
+
+	test('focus:component calls FocusStore._focus', () => {
+		jest.spyOn(FocusStore, '_focus')
+
+		Dispatcher.trigger('focus:component', { value: { id: 'mockId' } })
+
+		expect(FocusStore._focus).toHaveBeenCalledWith('mockId')
 	})
 })

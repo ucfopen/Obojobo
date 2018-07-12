@@ -51,13 +51,29 @@ describe('apiutil', () => {
 		})
 	})
 
+	test('post fetches with blank body', () => {
+		APIUtil.post('mockEndpoint')
+		expect(fetch).toHaveBeenCalled()
+		let calledEndpoint = fetch.mock.calls[0][0]
+		let calledOptions = fetch.mock.calls[0][1]
+		expect(calledEndpoint).toBe('mockEndpoint')
+		expect(calledOptions).toEqual({
+			body: JSON.stringify({}),
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+	})
+
 	test('postEvent fetches with the correct args', () => {
 		let obj = {
 			draftId: 'mockDraftId',
 			action: 'mockAction',
 			eventVersion: 'mockEventVersion',
-			visitId: 'mockVisitId',
-			payload: 'mockPayload'
+			visitId: 'mockVisitId'
 		}
 
 		fetch.mockResolvedValueOnce({
@@ -90,7 +106,7 @@ describe('apiutil', () => {
 					actor_time: 'mockDate',
 					draft_id: 'mockDraftId',
 					event_version: 'mockEventVersion',
-					payload: 'mockPayload',
+					payload: {},
 					visitId: 'mockVisitId'
 				}
 			})

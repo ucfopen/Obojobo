@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StyleableText Component StyleableText component 1`] = `
+<span>
+  <b />
+</span>
+`;
+
+exports[`StyleableText Component StyleableText component a 1`] = `
+<span>
+  <a
+    href="website.com"
+    target="_blank"
+  />
+</span>
+`;
+
+exports[`StyleableText Component StyleableText component a with no attributes 1`] = `
+<span>
+  <a />
+</span>
+`;
+
+exports[`StyleableText Component StyleableText component span 1`] = `
+<span>
+  <span
+    className="mockClass"
+  />
+</span>
+`;
+
+exports[`StyleableText Component StyleableText component span with no attributes 1`] = `
+<span>
+  <span />
+</span>
+`;
+
+exports[`StyleableText Component StyleableText component with children 1`] = `
+<span>
+  <b>
+    <span
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<a/>",
+        }
+      }
+    />
+    <span />
+    <span>
+      mockText 
+
+    </span>
+    <span>
+      mockText
+    </span>
+    <i />
+  </b>
+</span>
+`;

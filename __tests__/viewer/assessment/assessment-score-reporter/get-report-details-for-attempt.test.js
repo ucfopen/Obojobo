@@ -18,18 +18,19 @@ describe('getReportDetailsForAttempt', () => {
 					passingAttemptScore: 50
 				},
 				{
-					status: 'mocked-status',
+					status: 'passed',
 					attemptNumber: 1,
 					attemptScore: 100,
 					rewardedMods: [],
 					assessmentScore: 100,
+					rewardTotal: 0,
 					assessmentModdedScore: 100
 				}
 			)
 		).toEqual({
 			rubricType: 'rubric-type',
 			mods: [],
-			status: 'mocked-status',
+			status: 'passed',
 			statusResult: 'mocked-status-result',
 			isAttemptScore100: true,
 			isAssessScoreOver100: false,

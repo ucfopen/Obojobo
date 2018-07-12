@@ -1,53 +1,42 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import {
-	getAttemptStartServerResponse,
-	getAttemptEndServerResponse
-} from '../../../__mocks__/assessment-server.mock'
-import {
-	AssessmentStore,
-	QuestionStore,
-	NavUtil,
-	QuestionUtil
-} from '../../../__mocks__/viewer-state.mock'
+
+jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/stores/question-store')
+jest.mock('../../../src/scripts/common/stores/modal-store')
+jest.mock('../../../src/scripts/common/util/modal-util')
+jest.mock('../../../src/scripts/common/stores/focus-store')
+jest.mock('../../../src/scripts/common/util/focus-util')
+jest.mock('../../../src/scripts/viewer/stores/nav-store')
+jest.mock('../../../src/scripts/viewer/util/nav-util')
+jest.mock('../../../src/scripts/viewer/stores/assessment-store')
+jest.mock('../../../src/scripts/viewer/components/nav')
+jest.mock('../../../src/scripts/common/page/dom-util')
+jest.mock('../../../src/scripts/common/page/screen')
+
+import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
-import '../../../__mocks__/_load-all-chunks'
+
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
+import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
+import ModalStore from '../../../src/scripts/common/stores/modal-store'
+import ModalUtil from '../../../src/scripts/common/util/modal-util'
+import FocusStore from '../../../src/scripts/common/stores/focus-store'
+import FocusUtil from '../../../src/scripts/common/util/focus-util'
+import NavStore from '../../../src/scripts/viewer/stores/nav-store'
+import NavUtil from '../../../src/scripts/viewer/util/nav-util'
+import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
+import DOMUtil from '../../../src/scripts/common/page/dom-util'
+import Screen from '../../../src/scripts/common/page/screen'
+import Common from '../../../src/scripts/common'
+
 import testObject from '../../../test-object.json'
 
-let viewerEl
-
-mockStaticDate()
-
-import formatDate from 'date-fns/format'
-jest.mock('date-fns/format', () => {
-	return () => 'mockDateString'
-})
-
-const _gotoAssessmentAndStartAttempt = () => {
-	// navigate to assessment
-	NavUtil.goto('my-assessment')
-
-	viewerEl.update() // render
-
-	// click start assessment
-	viewerEl.find('.obojobo-draft--components--button button').simulate('click')
-}
-
-// this util helps flush promises that are in limbo w/o having to use timers
-const flushPromises = () => new Promise(resolve => setImmediate(resolve))
-
 describe('ViewerApp', () => {
-	beforeEach(done => {
-		jest.clearAllMocks()
-		APIUtil.postEvent = jest.fn().mockResolvedValue({ status: 'ok' })
-		APIUtil.startAttempt = jest.fn().mockResolvedValue(getAttemptStartServerResponse())
-		APIUtil.endAttempt = jest.fn().mockResolvedValue(getAttemptEndServerResponse(100, 100))
-		testObject.draftId = 'mockDraftId'
-		APIUtil.getDraft = jest.fn().mockResolvedValue({ value: testObject })
-		APIUtil.requestStart = jest.fn().mockResolvedValue({
-			status: 'ok',
+	let mocksForMount = (status = 'ok') => {
+		APIUtil.requestStart.mockResolvedValueOnce({
+			status: status,
 			value: {
 				visitId: 123,
 				lti: {
@@ -59,543 +48,774 @@ describe('ViewerApp', () => {
 				}
 			}
 		})
-		jest.spyOn(document, 'addEventListener')
-		jest.spyOn(document, 'removeEventListener')
-		jest.spyOn(Dispatcher, 'trigger')
-		viewerEl = mount(<ViewerApp />)
+		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
+		NavStore.getState.mockReturnValueOnce({})
+		FocusStore.getState.mockReturnValueOnce({})
+	}
+
+	beforeEach(() => {
+		jest.resetAllMocks()
+		jest.restoreAllMocks()
+	})
+
+	test('viewer:alert calls ModalUtil', () => {
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'mockTitle',
+				message: 'mockMessage'
+			}
+		})
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('viewer:scrollTo calls ModalUtil', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
 		setTimeout(() => {
-			// sometimes the veiwer needs a moment
-			viewerEl.update()
-			jest.spyOn(AssessmentStore, 'init')
-			jest.spyOn(QuestionStore, 'init')
+			component.update()
+			jest.spyOn(ReactDOM, 'findDOMNode')
+			ReactDOM.findDOMNode.mockReturnValueOnce({ scrollTop: null })
+
+			Dispatcher.trigger('viewer:scrollTo', { value: null })
+
+			expect(ReactDOM.findDOMNode).toHaveBeenCalled()
+			component.unmount()
 			done()
 		})
 	})
 
-	afterEach(() => {
-		AssessmentStore.init.mockRestore()
-		QuestionStore.init.mockRestore()
-		Dispatcher.trigger.mockRestore()
-		document.addEventListener.mockRestore()
-		document.removeEventListener.mockRestore()
-		viewerEl.unmount()
-	})
+	test('ViewerApp component', done => {
+		expect.assertions(1)
+		mocksForMount()
 
-	test('ViewerApp triggers viewer:loading & viewer:loaded events', () => {
-		return flushPromises().then(() => {
-			expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:loading')
-			expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:loaded', true)
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
 		})
 	})
 
-	test('ViewerApp clears loading element', () => {
-		expect(window.document.getElementById('viewer-app-loading')).toBe(null)
-	})
+	test('ViewerApp component with invalid status', done => {
+		expect.assertions(2)
+		mocksForMount('not ok')
 
-	test('locking navigation removes the next and prev buttons', () => {
-		expect(viewerEl.find('.viewer--components--inline-nav-button.is-prev').exists()).toBe(true)
-		expect(viewerEl.find('.viewer--components--inline-nav-button.is-next').exists()).toBe(true)
+		// No visit or draft id
+		jest.spyOn(String.prototype, 'split').mockReturnValueOnce([])
 
-		NavUtil.lock()
-		viewerEl.update()
+		// temporarily mock and unmock console.error to prevent logging to screen
+		let originalError = console.error
+		console.error = jest.fn()
+		let component = mount(<ViewerApp />)
 
-		expect(viewerEl.find('.viewer--components--inline-nav-button.is-prev').exists()).toBe(false)
-		expect(viewerEl.find('.viewer--components--inline-nav-button.is-next').exists()).toBe(false)
-	})
+		setTimeout(() => {
+			component.update()
 
-	test("Navigation doesn't navigate to a page that doesn't exist", () => {
-		let initialHtml = viewerEl.html()
+			// restore important globals
+			let errorMock = console.error
+			console.error = originalError
 
-		// click next
-		viewerEl.find('.viewer--components--inline-nav-button.is-next').simulate('click')
-		viewerEl.update()
-		expect(viewerEl.html()).not.toEqual(initialHtml)
+			expect(component.html()).toMatchSnapshot()
+			expect(errorMock).toHaveBeenCalled()
 
-		// goto assesment
-		NavUtil.goto('my-assessment')
-		viewerEl.update()
-		let assessmentHtml = viewerEl.html()
-
-		// click next
-		viewerEl.find('.viewer--components--inline-nav-button.is-next').simulate('click')
-		viewerEl.update()
-		expect(viewerEl.html()).toEqual(assessmentHtml)
-	})
-
-	test('Prev/Next buttons go to prev/next page', () => {
-		// grab a few page Ids from the test object
-		const pageIds = testObject.children[0].children.map(c => c.id)
-		const [page1, page2] = pageIds
-
-		// grab the next and previous buttons
-		const prevBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-prev')
-		const nextBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-next')
-
-		// first page should be visible
-		expect(viewerEl.find('#obo-' + page1).exists()).toBe(true)
-
-		// click back, should do nothing because theres no where to go
-		prevBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-' + page1).exists()).toBe(true)
-
-		// click next, should go to page 2
-		nextBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-' + page2).exists()).toBe(true)
-
-		// no back should go to page 1
-		prevBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-' + page1).exists()).toBe(true)
-
-		// click next once for each page to get the assessment
-		pageIds.forEach(() => {
-			nextBtnEl.simulate('click')
+			component.unmount()
+			done()
 		})
-		expect(viewerEl.find('#obo-my-assessment').exists()).toBe(true)
-
-		// click next, should do nothing becuase there's no next page
-		nextBtnEl.simulate('click')
-		expect(viewerEl.find('#obo-my-assessment').exists()).toBe(true)
 	})
 
-	// TODO: move this to Question/viewer-component.test.js
-	test('Clicking on a question shows it', () => {
-		NavUtil.goto('questions-page')
-		viewerEl.update()
+	test('ViewerApp component with no update removal', done => {
+		expect.assertions(1)
+		mocksForMount()
 
-		let questionEl = viewerEl.find('#obo-practice-question-1')
-		expect(QuestionStore.getState().viewedQuestions).toEqual({})
-		expect(QuestionStore.getState().viewing).toBe(null)
+		let component = mount(<ViewerApp />)
 
-		questionEl.find('.blocker').simulate('click')
-
-		expect(QuestionStore.getState().viewedQuestions).toEqual({
-			'practice-question-1': true
+		// This will be reset by jestReset, and is called multiple times
+		NavUtil.canNavigate.mockImplementation(() => {
+			// keeps loading element
+			component.instance().needsRemoveLoadingElement = false
+			// Sets up scrolling
+			return 'mockNav'
 		})
-		expect(QuestionStore.getState().viewing).toBe('practice-question-1')
+
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
 	})
 
-	// TODO: move this to Question/viewer-component.test.js
-	test("Answering a question incorrectly displays 'Incorrect' and shows feedback", () => {
-		NavUtil.goto('questions-page')
-		viewerEl.update()
+	test('ViewerApp component with lti service', done => {
+		expect.assertions(1)
+		mocksForMount()
 
-		let questionEl = viewerEl.find('#obo-practice-question-1')
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+			component.instance().setState({ requestStatus: 'invalid' })
 
-		// shows no correct label
-		expect(questionEl.find('.result.correct').exists()).toBe(false)
-		// shows no incorrect label
-		expect(questionEl.find('.result.incorrect').exists()).toBe(false)
-		// shows no feedback
-		expect(questionEl.find('.obojobo-draft--chunks--mc-assessment--mc-feedback').exists()).toBe(
-			false
-		)
-		// shows no solution button
-		expect(questionEl.find('.show-explanation-button').exists()).toBe(false)
+			expect(component.html()).toMatchSnapshot()
 
-		// click the question
-		questionEl.find('.flipper').simulate('click')
-		// click on the wrong answer
-		questionEl.find('#obo-pq1-answer-3').simulate('click')
-		// submit the question
-
-		questionEl.find('.submit button').simulate('click') // Check your answer button
-
-		// Fetch the question again after updating
-		questionEl = viewerEl.find('#obo-practice-question-1')
-
-		// no correct flag to show, answer is wrong
-		expect(questionEl.find('.result.correct').exists()).toBe(false)
-		// shows incorrect
-		expect(questionEl.find('.result.incorrect').exists()).toBe(true)
-		// shows feedback
-		expect(questionEl.find('.obojobo-draft--chunks--mc-assessment--mc-feedback').exists()).toBe(
-			true
-		)
-		// shows solution button
-		expect(questionEl.find('.show-explanation-button').exists()).toBe(true)
+			component.unmount()
+			done()
+		})
 	})
 
-	// @ADD BACK
-	test("Answering a question correctly displays 'Correct' and doesn't show feedback if none exists", () => {
-		NavUtil.goto('questions-page')
-		viewerEl.update()
+	test('ViewerApp component with navTarget', done => {
+		expect.assertions(1)
+		mocksForMount()
 
-		let questionEl = viewerEl.find('#obo-practice-question-1')
+		NavUtil.getNavTargetModel.mockReturnValueOnce({ title: 'mockTarget' })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
 
-		// shows no correct label
-		expect(questionEl.find('.result.correct').exists()).toBe(false)
-		// shows no incorrect label
-		expect(questionEl.find('.result.incorrect').exists()).toBe(false)
-		// shows no feedback
-		expect(questionEl.find('.obojobo-draft--chunks--mc-assessment--mc-feedback').exists()).toBe(
-			false
-		)
-		// shows no solution button
-		expect(questionEl.find('.show-explanation-button').exists()).toBe(false)
+			expect(component.html()).toMatchSnapshot()
 
-		// click the question
-		questionEl.find('.flipper').simulate('click')
-		// click on the correct answer
-		questionEl.find('#obo-pq1-answer-1').simulate('click')
-		// submit the question
-		questionEl.find('.submit button').simulate('click') // Check your answer button
-
-		// check for the items
-		questionEl = viewerEl.find('#obo-practice-question-1')
-
-		// show correct
-		expect(questionEl.find('.result.correct').exists()).toBe(true)
-		// answer is right, no incorrect to show
-		expect(questionEl.find('.result.incorrect').exists()).toBe(false)
-		// ?
-		expect(questionEl.find('.solution .score').textContent).toBe(undefined)
-		// show solution button
-		expect(questionEl.find('.show-explanation-button').exists()).toBe(true)
+			component.unmount()
+			done()
+		})
 	})
 
-	test('Clicking the button to show the solution will show the solution', () => {
-		let questionEl
-		NavUtil.goto('questions-page')
+	test('ViewerApp component with nav models and titles', done => {
+		expect.assertions(1)
+		mocksForMount()
 
-		let updateQuestion = () => {
-			viewerEl.update()
-			questionEl = viewerEl.find('#obo-practice-question-1')
+		NavUtil.canNavigate.mockReturnValueOnce(true)
+		NavUtil.getPrevModel.mockReturnValueOnce({ title: 'mockPrevTitle' })
+		NavUtil.getNextModel.mockReturnValueOnce({ title: 'mockNextTitle' })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with nav models', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		NavUtil.canNavigate.mockReturnValueOnce(true)
+		NavUtil.getPrevModel.mockReturnValueOnce({ title: null })
+		NavUtil.getNextModel.mockReturnValueOnce({ title: null })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component hidden', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		ModalUtil.getCurrentModal.mockReturnValueOnce({ hideViewer: true })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with states', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+			component.setState({
+				navState: {
+					locked: true,
+					open: true,
+					disabled: true
+				},
+				isPreviewing: false
+			})
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with ModalContainer', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		ModalUtil.getCurrentModal.mockReturnValueOnce({ component: [] })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onNavStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		jest.spyOn(component.instance(), 'setState')
+		NavStore.getState.mockReturnValueOnce({})
+
+		setTimeout(() => {
+			component.update()
+			component.instance().onNavStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ navState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onQuestionStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			QuestionStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onQuestionStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ questionState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onAssessmentStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			AssessmentStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onAssessmentStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ assessmentState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onModalStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			ModalStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onModalStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ modalState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onFocusStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			FocusStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onFocusStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ focusState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onVisibilityChange calls APIUtil when leaving', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		let originalHidden = document.hidden
+		document.hidden = true
+
+		setTimeout(() => {
+			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+			component.update()
+
+			component.instance().onVisibilityChange()
+
+			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:leave',
+				draftId: undefined,
+				eventVersion: '1.0.0',
+				visitId: undefined
+			})
+
+			component.unmount()
+			document.hidden = originalHidden
+			done()
+		})
+	})
+
+	test('onVisibilityChange calls APIUtil when returning', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.instance().leaveEvent = { id: 'mockId' }
+			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+			component.update()
+
+			component.instance().onVisibilityChange()
+
+			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:return',
+				draftId: undefined,
+				eventVersion: '1.0.0',
+				payload: { relatedEventId: 'mockId' },
+				visitId: undefined
+			})
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('getTextForVariable calls Common.Store', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(Common.Store, 'getTextForVariable')
+			component.update()
+
+			component.instance().getTextForVariable({})
+
+			expect(Common.Store.getTextForVariable).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('scrollToTop returns with no container', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(ReactDOM, 'findDOMNode')
+			ReactDOM.findDOMNode.mockReturnValueOnce(null)
+			ReactDOM.findDOMNode.mockReturnValueOnce(null)
+
+			component.update()
+
+			component.instance().scrollToTop()
+
+			expect(ReactDOM.findDOMNode).toHaveBeenCalledTimes(2)
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onMouseDown returns with no focus', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			component.instance().onMouseDown()
+
+			expect(DOMUtil.findParentComponentIds).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onMouseDown returns when clicking on focus', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			DOMUtil.findParentComponentIds.mockReturnValueOnce({
+				has: jest.fn().mockReturnValueOnce(true)
+			})
+
+			component.instance().onMouseDown({ target: 'mockFocused' })
+
+			expect(DOMUtil.findParentComponentIds).toHaveBeenCalled()
+			expect(FocusUtil.unfocus).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onMouseDown calls FocusUtil when not clicking on focus', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			DOMUtil.findParentComponentIds.mockReturnValueOnce({
+				has: jest.fn().mockReturnValueOnce(false)
+			})
+
+			component.instance().onMouseDown({ target: 'mockClicked' })
+
+			expect(DOMUtil.findParentComponentIds).toHaveBeenCalled()
+			expect(FocusUtil.unfocus).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onScroll returns with no focus', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			component.instance().onScroll()
+
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(1)
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onScroll returns with no component', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+
+			component.instance().onScroll()
+
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(Screen.isElementVisible).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onScroll returns with no element', done => {
+		expect.assertions(3)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+		let mockFocused = {
+			getDomEl: jest.fn()
 		}
 
-		updateQuestion()
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			FocusUtil.getFocussedComponent
+				.mockReturnValueOnce(mockFocused)
+				.mockReturnValueOnce(mockFocused)
 
-		// make sure no solutions are shown
-		expect(questionEl.find('.solution-container').exists()).toBe(false)
+			component.instance().onScroll()
 
-		// click the blocker/flipper
-		questionEl.find('.blocker').simulate('click')
-		updateQuestion()
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(mockFocused.getDomEl).toHaveBeenCalled()
+			expect(Screen.isElementVisible).not.toHaveBeenCalled()
 
-		// wrong answer choice
-		questionEl.find('#obo-pq1-answer-3').simulate('click')
-		updateQuestion()
-
-		// Check your answer button
-		questionEl.find('.submit button').simulate('click')
-		updateQuestion()
-
-		questionEl
-			.find('button')
-			.at(1)
-			.simulate('click') // Show solution button
-		updateQuestion()
-
-		expect(questionEl.find('.solution-container').exists()).toBe(true)
-	})
-
-	test('Clicking start assessment will lock out navigation and start the assessment', done => {
-		Dispatcher.once('assessment:attemptStarted', () => {
-			let firstPgLinkEl = viewerEl.find('.viewer--components--nav a').at(1)
-			firstPgLinkEl.simulate('click')
-
-			expect(viewerEl.find('#obo-my-assessment').exists()).toBe(true)
-			expect(viewerEl.find('#obo-page-1').exists()).toBe(false)
-
-			// preview mode allows us to unlock the navigation however
-			let previewBannerEl = viewerEl.find('.preview-banner')
-			let unlockButtonEl = previewBannerEl.find('button').at(0)
-
-			unlockButtonEl.simulate('click')
-			firstPgLinkEl.simulate('click')
-
-			expect(viewerEl.find('#obo-assessment').exists()).toBe(false)
-			expect(viewerEl.find('#obo-page-1').exists()).toBe(true)
+			component.unmount()
 			done()
 		})
-
-		_gotoAssessmentAndStartAttempt()
 	})
 
-	test('Finishing an assessment shows a score', done => {
-		const testObjectAssessment = testObject.children[1]
-		const questions = testObjectAssessment.children[1].children[0].children
+	test('onScroll returns with visible Element', done => {
+		expect.assertions(4)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+		let mockFocused = {
+			getDomEl: jest.fn().mockReturnValueOnce(true)
+		}
 
-		// after assessment starts
-		Dispatcher.once('assessment:attemptStarted', () => {
-			viewerEl.update() // render
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			FocusUtil.getFocussedComponent
+				.mockReturnValueOnce(mockFocused)
+				.mockReturnValueOnce(mockFocused)
+			Screen.isElementVisible.mockReturnValueOnce(true)
 
-			let id = questions[0].id
-			let answer = questions[0].children[1].children[0].children[0].id
-			// open a question
-			viewerEl.find('#obo-' + id + ' .flipper').simulate('click')
-			// click an answer
-			viewerEl.find('#obo-' + answer).simulate('click')
+			component.instance().onScroll()
 
-			id = questions[1].id
-			answer = questions[1].children[1].children[0].children[0].id
-			// open a question
-			viewerEl.find('#obo-' + id + ' .flipper').simulate('click')
-			// click an answer
-			viewerEl.find('#obo-' + answer).simulate('click')
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(mockFocused.getDomEl).toHaveBeenCalled()
+			expect(Screen.isElementVisible).toHaveBeenCalled()
+			expect(FocusUtil.unfocus).not.toHaveBeenCalled()
 
-			id = questions[2].id
-			answer = questions[2].children[1].children[0].children[0].id
-			// open a question
-			viewerEl.find('#obo-' + id + ' .flipper').simulate('click')
-			// click an answer
-			viewerEl.find('#obo-' + answer).simulate('click')
-
-			// click submit (not active unless an answer is chosen)
-			viewerEl.find('.submit-button button').simulate('click')
-		})
-
-		// after assessment ends
-		Dispatcher.once('assessment:attemptEnded', () => {
-			viewerEl.update() // render
-
-			// make sure the 100 score shows up on the score page
-			expect(viewerEl.find('.recorded-score .value').text()).toBe('100')
-
-			done() // finish test
-		})
-
-		_gotoAssessmentAndStartAttempt()
-	})
-
-	// @TODO - add click tests that fire nav:goto and nav:gotoPath
-	// should be clicking the next / nav buttons
-	// and checking to make sure the events are fired
-	test('Emitting nav events produces the appropriate event for APIUtil.postEvent', () => {
-		APIUtil.postEvent.mockClear()
-		let prevBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-prev')
-		let nextBtnEl = viewerEl.find('.viewer--components--inline-nav-button.is-next')
-		let anything = expect.anything()
-
-		// expect initial state
-		expect(viewerEl.find('#obo-page-1').exists()).toBe(true)
-
-		// click back, should not emit event
-		prevBtnEl.simulate('click')
-		expect(APIUtil.postEvent).not.toHaveBeenCalled()
-
-		// click forward to page 2
-		nextBtnEl.simulate('click')
-		// click back to page 1
-		prevBtnEl.simulate('click')
-
-		expect(APIUtil.postEvent).toMatchSnapshot()
-	})
-
-	test('Emitting answering assessment question fires the expected postEvents in order', done => {
-		const testObjectAssessment = testObject.children[1]
-		const questions = testObjectAssessment.children[1].children[0].children
-
-		// executes after attempt starts
-		Dispatcher.once('assessment:attemptStarted', () => {
-			viewerEl.update() // render
-
-			let id = questions[0].id
-			let answer = questions[0].children[1].children[0].children[0].id
-			// open a question
-			viewerEl.find('#obo-' + id + ' .flipper').simulate('click')
-			// click an answer
-			viewerEl.find('#obo-' + answer).simulate('click')
-
-			expect(APIUtil.postEvent.mock.calls).toEqual([
-				[
-					{
-						draftId: 'mockDraftId',
-						action: 'nav:goto',
-						eventVersion: '1.0.0',
-						visitId: 123,
-						payload: expect.anything()
-					}
-				],
-				[
-					{
-						draftId: 'mockDraftId',
-						action: 'nav:goto',
-						eventVersion: '1.0.0',
-						visitId: 123,
-						payload: expect.anything()
-					}
-				],
-				[
-					{
-						draftId: 'mockDraftId',
-						action: 'nav:lock',
-						eventVersion: '1.0.0',
-						visitId: 123
-					}
-				],
-				[
-					{
-						draftId: '289325ed-4e8f-41e2-951e-1f3637fb615f',
-						action: 'question:setResponse',
-						eventVersion: '2.1.0',
-						visitId: 123,
-						payload: expect.anything()
-					}
-				]
-			])
-
+			component.unmount()
 			done()
 		})
-
-		_gotoAssessmentAndStartAttempt()
 	})
 
-	test('Emitting question events produces the appropriate event for APIUtil.postEvent', () => {
-		const testObjectAssessment = testObject.children[1]
-		const questions = testObjectAssessment.children[1].children[0].children
-		const questionId = questions[0].id
-		const answerId = questions[0].children[1].children[0].children[0].id
+	test('onScroll unfocuses with non-visible Element', done => {
+		expect.assertions(4)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+		let mockFocused = {
+			getDomEl: jest.fn().mockReturnValueOnce(true)
+		}
 
-		APIUtil.postEvent.mockClear()
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			FocusUtil.getFocussedComponent
+				.mockReturnValueOnce(mockFocused)
+				.mockReturnValueOnce(mockFocused)
+			Screen.isElementVisible.mockReturnValueOnce(false)
 
-		QuestionUtil.setResponse(questionId, { ids: [answerId] }, answerId)
-		QuestionUtil.hideQuestion(questionId)
-		QuestionUtil.viewQuestion(questionId)
+			component.instance().onScroll()
 
-		expect(APIUtil.postEvent).toMatchSnapshot()
-	})
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(mockFocused.getDomEl).toHaveBeenCalled()
+			expect(Screen.isElementVisible).toHaveBeenCalled()
+			expect(FocusUtil.unfocus).toHaveBeenCalled()
 
-	test('registers listener to onbeforeunload', () => {
-		let ViewerApp = viewerEl.instance()
-		expect(window.onbeforeunload).toBe(ViewerApp.onBeforeWindowClose)
-		expect(window.onunload).toBe(ViewerApp.onWindowClose)
-	})
-
-	test('onWindowClose fires postEvent', () => {
-		APIUtil.postEvent.mockClear()
-		let ViewerApp = viewerEl.instance()
-		ViewerApp.onWindowClose()
-		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-
-		expect(APIUtil.postEvent).toMatchSnapshot()
-	})
-
-	test('onBeforeWindowClose triggers event and allows closing', () => {
-		let ViewerApp = viewerEl.instance()
-		expect(ViewerApp.onBeforeWindowClose()).toBe(undefined)
-		expect(Dispatcher.trigger).toHaveBeenLastCalledWith(
-			'viewer:closeAttempted',
-			expect.any(Function)
-		)
-	})
-
-	test('onBeforeWindowClose triggers event', () => {
-		// calling preventClose should change the return value to true
-		// which propmts the user before closing the window
-		Dispatcher.on('viewer:closeAttempted', preventClose => {
-			preventClose()
-		})
-
-		let ViewerApp = viewerEl.instance()
-		expect(ViewerApp.onBeforeWindowClose()).toBe(true)
-	})
-
-	test('clearPreviewScores makes call to clearPreviewScores api', () => {
-		APIUtil.clearPreviewScores = jest.fn().mockResolvedValue({ status: 'ok' })
-		// click clear scores button
-		viewerEl.find('.button-clear-scores').simulate('click')
-
-		expect(APIUtil.clearPreviewScores).toHaveBeenCalledTimes(1)
-	})
-
-	test('clearPreviewScores resets stores and triggers events', () => {
-		APIUtil.clearPreviewScores = jest.fn().mockResolvedValue({ status: 'ok' })
-		// click clear scores button
-		viewerEl.find('.button-clear-scores').simulate('click')
-
-		return flushPromises().then(() => {
-			expect(AssessmentStore.init).toHaveBeenCalledTimes(1)
-			expect(QuestionStore.init).toHaveBeenCalledTimes(1)
-			expect(Dispatcher.trigger).toHaveBeenCalledWith('modalstore:change')
-			expect(Dispatcher.trigger).toHaveBeenCalledWith('questionStore:change')
+			component.unmount()
+			done()
 		})
 	})
 
-	test('clearPreviewScores shows error dialog', () => {
-		Dispatcher.trigger.mockReset()
-		APIUtil.clearPreviewScores = jest.fn().mockResolvedValue({ status: 'error', value: 'whoops' })
-		// click clear scores button
-		viewerEl.find('.button-clear-scores').simulate('click')
+	test('onIdle posts an Event', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
 
-		return flushPromises().then(() => {
-			expect(AssessmentStore.init).not.toHaveBeenCalled()
-			expect(QuestionStore.init).not.toHaveBeenCalled()
-			expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		setTimeout(() => {
+			component.update()
+			APIUtil.postEvent.mockResolvedValueOnce({ value: {} })
+
+			component.instance().onIdle()
+
+			expect(APIUtil.postEvent).toHaveBeenCalled()
+
+			component.unmount()
+			done()
 		})
 	})
 
-	test('onVisibilityChange is registered to onVisibilityChange', () => {
-		let ViewerApp = viewerEl.instance()
-		expect(document.addEventListener).toHaveBeenCalledWith(
-			'visibilitychange',
-			ViewerApp.onVisibilityChange
-		)
+	test('onReturnFromIdle posts an Event', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			component.instance().inactiveEvent = { id: 'mockEventId' }
+
+			component.instance().onReturnFromIdle()
+
+			expect(APIUtil.postEvent).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
 	})
 
-	test('onVisibilityChange is removed to onVisibilityChange when unmounted', () => {
-		let ViewerApp = viewerEl.instance()
-		viewerEl.unmount()
-		expect(document.addEventListener).toHaveBeenCalledWith(
-			'visibilitychange',
-			ViewerApp.onVisibilityChange
-		)
+	test('onBeforeWindowClose returns undefined', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			jest.spyOn(Dispatcher, 'trigger')
+
+			let close = component.instance().onBeforeWindowClose()
+
+			expect(Dispatcher.trigger).toHaveBeenCalled()
+			expect(close).toEqual(undefined)
+
+			component.unmount()
+			done()
+		})
 	})
 
-	test('onVisibilityChange post event when hidden', () => {
-		document.hidden = true // indicates the browser tab is hidden
-		let ViewerApp = viewerEl.instance()
+	test('onBeforeWindowClose calls closePrevented', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+		let originalTrigger = Dispatcher.trigger
+		Dispatcher.trigger = jest.fn()
 
-		// clear page navigation
-		APIUtil.postEvent.mockClear()
+		setTimeout(() => {
+			component.update()
+			Dispatcher.trigger.mockImplementationOnce((type, funct) => {
+				funct()
+			})
 
-		ViewerApp.onVisibilityChange()
+			let close = component.instance().onBeforeWindowClose()
 
-		expect(APIUtil.postEvent).toMatchSnapshot()
+			expect(Dispatcher.trigger).toHaveBeenCalled()
+			expect(close).toEqual(true)
+
+			component.unmount()
+			Dispatcher.trigger = originalTrigger
+			done()
+		})
 	})
 
-	test('onVisibilityChange post event when returning', () => {
-		document.hidden = false // indicates the browser tab is not hidden
-		let ViewerApp = viewerEl.instance()
+	test('onWindowClose calls APIUtil', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
 
-		// leaveEvent is temporarily stored on the component
-		ViewerApp.leaveEvent = { id: 'mockId' }
+		setTimeout(() => {
+			component.update()
 
-		// clear page navigation
-		APIUtil.postEvent.mockClear()
+			let close = component.instance().onWindowClose()
 
-		ViewerApp.onVisibilityChange()
+			expect(APIUtil.postEvent).toHaveBeenCalled()
 
-		expect(APIUtil.postEvent).toMatchSnapshot()
+			component.unmount()
+			done()
+		})
 	})
 
-	test('idle posts event', () => {
-		let ViewerApp = viewerEl.instance()
-		// clear page navigation
-		APIUtil.postEvent.mockClear()
+	test('clearPreviewScores resets assessments and calls Modal.show', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
 
-		ViewerApp.onIdle()
-		expect(APIUtil.postEvent).toMatchSnapshot()
+		setTimeout(() => {
+			component.update()
+			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+				status: 'ok'
+			})
+
+			component.instance().clearPreviewScores()
+
+			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
 	})
 
-	test('returnFromIdle fires event', () => {
-		let ViewerApp = viewerEl.instance()
+	test('clearPreviewScores Modal.show with error', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
 
-		// inactiveEvent is temporarily stored on the component
-		ViewerApp.inactiveEvent = { id: 'mockId' }
-		ViewerApp.lastActiveEpoch = '1530552702030'
+		setTimeout(() => {
+			component.update()
+			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+				status: 'not ok',
+				error: 'Not Authorized'
+			})
 
-		// clear page navigation
-		APIUtil.postEvent.mockClear()
+			component.instance().clearPreviewScores()
 
-		ViewerApp.onReturnFromIdle()
-		expect(APIUtil.postEvent).toMatchSnapshot()
+			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
 	})
 
-	test('handles requestStart in a failure state', () => {
-		APIUtil.requestStart.mockResolvedValueOnce({ status: 'error' })
-		viewerEl = mount(<ViewerApp />)
-		return flushPromises().then(() => {
-			expect(Dispatcher.trigger).toHaveBeenLastCalledWith('viewer:loaded', false)
+	test('clearPreviewScores Modal.show with detailed error', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+				status: 'not ok',
+				error: 'Not Authorized',
+				value: {
+					message: 'mockMessage'
+				}
+			})
+
+			component.instance().clearPreviewScores()
+
+			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('unlockNavigation calls NavUtil', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			let close = component.instance().unlockNavigation()
+
+			expect(NavUtil.unlock).toHaveBeenCalled()
+
+			component.unmount()
+			done()
 		})
 	})
 })

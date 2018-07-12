@@ -1,6 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Question 1`] = `
+exports[`Question Question component 1`] = `
+<div>
+  <p>
+    Content
+  </p>
+  <button
+    onClick={[Function]}
+  >
+    No
+  </button>
+  <button
+    onClick={[Function]}
+  >
+    Yes
+  </button>
+</div>
+`;
+
+exports[`Question Question component with labels 1`] = `
 <div>
   <p>
     Content

@@ -4,11 +4,10 @@ import MCFeedback from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedba
 import OboModel from '../../../../../__mocks__/_obo-model-with-chunks'
 
 describe('MCFeedback', () => {
-	let moduleData = {
-		focusState: {}
-	}
-
-	test('MCFeedback for a correct item', () => {
+	test('MCFeedback component for a correct item', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'parent',
 			type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
@@ -17,20 +16,38 @@ describe('MCFeedback', () => {
 			},
 			children: [
 				{
-					id: 'self',
-					type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+					id: 'feedback',
+					type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+					children: [
+						{
+							id: 'choice1-feedback-text',
+							type: 'ObojoboDraft.Chunks.Text',
+							content: {
+								textGroup: [
+									{
+										text: {
+											value: 'Example Text 2'
+										}
+									}
+								]
+							}
+						}
+					]
 				}
 			]
 		})
 		const component = renderer.create(
-			<MCFeedback moduleData={moduleData} model={OboModel.models.self} />
+			<MCFeedback moduleData={moduleData} model={OboModel.models.feedback} />
 		)
 		let tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MCFeedback for an incorrect item', () => {
+	test('MCFeedback component for an incorrect item', () => {
+		let moduleData = {
+			focusState: {}
+		}
 		let model = OboModel.create({
 			id: 'parent',
 			type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
@@ -39,13 +56,28 @@ describe('MCFeedback', () => {
 			},
 			children: [
 				{
-					id: 'self',
-					type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+					id: 'feedback',
+					type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+					children: [
+						{
+							id: 'choice1-feedback-text',
+							type: 'ObojoboDraft.Chunks.Text',
+							content: {
+								textGroup: [
+									{
+										text: {
+											value: 'Example Text 2'
+										}
+									}
+								]
+							}
+						}
+					]
 				}
 			]
 		})
 		const component = renderer.create(
-			<MCFeedback moduleData={moduleData} model={OboModel.models.self} />
+			<MCFeedback moduleData={moduleData} model={OboModel.models.feedback} />
 		)
 		let tree = component.toJSON()
 
