@@ -23,7 +23,7 @@ Below you'll find guidelines for contributing that will keep our codebase clean 
 
 ### Releases and Milestones
 
-Obojobo is organized into a planned set of software releases. Each release is given a **dev branch** and a **project milestone**. These are identified with a number and an internal code name (we're using [minerals](https://en.wikipedia.org/wiki/List_of_minerals) as a source for our code names).
+Obojobo is organized into a planned set of software releases. Each release is given a **dev branch** and a **project milestone**. These are identified with a number and an internal code name (we're using [minerals](https://en.wikipedia.org/wiki/List_of_minerals) as a source for our code names because rocks rock!).
 
 To create each release we decide on a set of issues and assign them to a release milestone. We do our best to plan a few releases ahead and occasionally re-evaulate existing releases. This means we may add or move issues between releases as development continues.
 
@@ -84,7 +84,7 @@ Refer to our README.md which details how to get Obojobo running.
 Once you have everything setup you can go about working on your issue you normally would. We have a few requirements that you'll want to be aware of:
 
 * Make sure to follow our [code style guidelines](#code-style-guidelines).
-* You'll also need to include tests for the issue that you write - We're using [jest](https://github.com/facebook/jest) as our testing library of choice. We're currently maintaining a 100% coverage rate and we'd like to maintain that coverage! Ensure that your issue maintains 100% coverage
+* You'll also need to include tests for the issue that you write - We're using [jest](https://github.com/facebook/jest) as our testing library of choice. Our goal is to maintain a 100% coverage rate so you'll need to ensure that your issue upholds that coverage.
 
 #### Testing:
 
@@ -94,9 +94,7 @@ Some useful commands to know as you develop tests:
 
 * `yarn test` to run the tests.
 * `yarn test --watch` to have jest watch your files. This is recommended so that you can get feedback as you develop your tests.
-* `yarn test --coverage` to generate a coverage report. This is useful when working towards 100% coverage. You can view the generated report in a web browser by opening coverage/lcov-report/\<project name\>/index.html
-
-`yarn test` simply runs `jest` so refer to the jest documentation for more options.
+* `yarn test --coverage` (and `yarn test --watch --coverage`) to generate a coverage report. This is useful when working towards 100% coverage. You can view the generated report in a web browser by opening **coverage/lcov-report/\<project name\>/index.html**
 
 #### Pre-commit hooks
 
@@ -104,42 +102,10 @@ We have a few pre-commit hooks that require that the linters and coverage guidel
 
 If your tests pass, your coverage is at 100% and the linters are happy then you're ready to [submit a pull request](https://github.com/ucfopen/canvasapi/pulls)!
 
-#### Running tests / coverage reports
-
-Once you've written test case(s) for your issue, you'll need to run the test to verify that your changes are passing and haven't interfered with any other part of the library.
-
-You'll do this by running `coverage run -m unittest discover` from the main `canvasapi` directory. If your tests pass, you're ready to run a coverage report!
-
-Coverage reports tell us how much of our code is actually being tested. As of right now, we're happily maintaining 100% code coverage (🎉!) and our goal is to keep it there. Ensure you've covered your changes entirely by running `coverage report`. Your output should look something like this:
-
-```Formatted
-Name                             Stmts   Miss  Cover
-----------------------------------------------------
-canvasapi/__init__.py                3      0   100%
-canvasapi/account.py               166      0   100%
-canvasapi/appointment_group.py      17      0   100%
-canvasapi/assignment.py             24      0   100%
-[...]
-canvasapi/upload.py                 29      0   100%
-canvasapi/user.py                  101      0   100%
-canvasapi/util.py                   29      0   100%
-----------------------------------------------------
-TOTAL                             1586      0   100%
-```
-
-Certain statements can be omitted from the coverage report by adding `# pragma: no cover` but this should be used conservatively. If your tests pass and your coverage is at 100%, you're ready to [submit a pull request](https://github.com/ucfopen/canvasapi/pulls)!
-
 #### Making a Pull Request
 
-Be sure to include the issue number in the title with a pound sign in front of it (#123) so we know which issue the code is addressing. Point the branch at `develop` and then submit it for review.
+Be sure to include the issue number in the title with a pound sign in front of it (#123) so we know which issue the code is addressing. Point the branch at the current dev branch and then submit it for review. During review we may change the base as the project needs.
 
 ## Code Style Guidelines
 
 Please refer to LINK HERE
-
-# Contribution Guide
-
-@TODO:
-
-* If it's open source, make sure to compile a fully fledged [release doc for Github](https://help.github.com/articles/creating-releases/)
-* It is suggested that you sign release tags for extra trust ([git tag](https://git-scm.com/book/tr/v2/Git-Tools-Signing-Your-Work))
