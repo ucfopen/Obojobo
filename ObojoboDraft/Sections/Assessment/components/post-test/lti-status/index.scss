@@ -13,8 +13,8 @@
 		padding-bottom: 2em;
 	}
 
+	&.is-resynced,
 	&.is-not-synced {
-		background-color: #ffe9c3;
 		padding: 2em;
 		margin-top: 0.5em;
 		margin-bottom: 0.5em;
@@ -29,6 +29,32 @@
 		> div > p {
 			font-size: 0.9em;
 			line-height: 1.4em;
+		}
+	}
+
+	&.is-resynced {
+		background-color: transparentize($color-correct, 0.9);
+
+		> h2,
+		> p {
+			color: #156d06;
+		}
+	}
+
+	&.is-not-synced {
+		background-color: #ffe9c3;
+
+		.is-shown {
+			max-height: 6.5em;
+			transition: max-height $duration-animation-default ease-out;
+			overflow: hidden;
+			margin-bottom: 1em;
+		}
+
+		.is-not-shown {
+			max-height: 0;
+			transition: max-height $duration-animation-default ease-out;
+			overflow: hidden;
 		}
 	}
 }
