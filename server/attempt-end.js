@@ -22,7 +22,7 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreviewing) => {
 			logger.info(`End attempt "${attemptId}" - getAttempt success`)
 
 			attempt = attemptResult
-			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
+			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId, isPreviewing)
 		})
 		.then(attemptHistoryResult => {
 			logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
@@ -145,8 +145,8 @@ const getAttempt = attemptId => {
 		}))
 }
 
-const getAttemptHistory = (userId, draftId, assessmentId) =>
-	Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId)
+const getAttemptHistory = (userId, draftId, assessmentId, isPreviewing) =>
+	Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, isPreviewing)
 
 const getResponsesForAttempt = (userId, draftId) =>
 	Assessment.getResponsesForAttempt(userId, draftId)
