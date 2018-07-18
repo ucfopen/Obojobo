@@ -11,6 +11,7 @@ document.write(
 
 global.oboRequire = name => require(path.join(__dirname, '__mocks__', name))
 
+// Externals:
 window.React = require('react')
 window.ReactDOM = require('react-dom')
 window._ = require('underscore')
