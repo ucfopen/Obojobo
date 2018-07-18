@@ -155,6 +155,12 @@ const mainConfig = {
 		],
 		'ObojoboDraft.Sections.Content': [
 			path.join(__dirname, 'ObojoboDraft', 'Sections', 'Content', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Chart': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Chart', 'viewer.js')
+		],
+		'ObojoboDraft.Chunks.Graph': [
+			path.join(__dirname, 'ObojoboDraft', 'Chunks', 'Graph', 'viewer.js')
 		]
 	},
 	output: {

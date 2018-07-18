@@ -42,6 +42,8 @@
 	},
 	"author": "",
 	"dependencies": {
+		"chart.js": "^2.7.2",
+		"jsxgraph": "^0.99.7",
 		"underscore": "1.5.1"
 	},
 	"devDependencies": {
