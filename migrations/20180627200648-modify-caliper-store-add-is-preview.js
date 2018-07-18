@@ -39,7 +39,6 @@ exports.up = function(db) {
 
 						if (payload.extensions && typeof payload.extensions.previewMode !== 'undefined') {
 							isPreview = Boolean(payload.extensions.previewMode)
-							console.log('isPreview', isPreview)
 						}
 
 						return `
