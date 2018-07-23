@@ -8,20 +8,22 @@ Common.Store.registerModel('ObojoboDraft.Pages.Page', {
 	componentClass: ViewerComponent,
 	selectionHandler: null,
 	getNavItem(model) {
-		let title = ''
-		if (model.title != null) {
-			;({ title } = model)
+		let label
+
+		if (model.title) {
+			label = model.title
+		} else {
+			const pages = model.parent.children.models.filter(
+				child => child.get('type') === 'ObojoboDraft.Pages.Page'
+			)
+			label = `Page ${pages.indexOf(model) + 1}`
 		}
 
 		return {
 			type: 'link',
-			label: model.title,
-			// path: ['page-' + (model.getIndex() + 1) + '-' + model.get('id')],
-			path: [title.toLowerCase().replace(/ /g, '-')],
+			label,
+			path: [label.toLowerCase().replace(/ /g, '-')],
 			showChildren: false
 		}
 	}
-	// init: ->
-	// 	Dispatcher.on 'nav:willGotoPath', (oldNavItem, newNavItem) ->
-	// 		alert('yeah')
 })
