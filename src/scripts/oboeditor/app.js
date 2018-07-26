@@ -45,15 +45,6 @@ let moduleData = {
 	modalState: null
 }
 
-window.__oboViewerRender = () => {
-	return ReactDOM.render(
-		<div className="root">
-			<Viewer.components.ViewerApp />
-		</div>,
-		document.getElementById('viewer-app')
-	)
-}
-
 window.__oboEditorRender = () => {
 	return ReactDOM.render(
 		<div className="root">
