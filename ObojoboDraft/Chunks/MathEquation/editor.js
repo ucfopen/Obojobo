@@ -1,4 +1,5 @@
 import React from 'react'
+import katex from 'katex'
 
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
 
@@ -9,43 +10,64 @@ class Node extends React.Component {
 	}
 
 	handleLatexChange(event) {
+		const editor = this.props.editor
+		const change = editor.value.change()
+
 		this.setState({ latex: event.target.value })
+
+		change.setNodeByKey(this.props.node.key, { data: { content: {
+			latex: event.target.value,
+			label: this.state.latex
+		}}})
+		editor.onChange(change)
 	}
 
 	handleLabelChange(event) {
+		const editor = this.props.editor
+		const change = editor.value.change()
+
 		this.setState({ label: event.target.value })
+
+		change.setNodeByKey(this.props.node.key, { data: { content: {
+			label: event.target.value,
+			latex: this.state.latex
+		}}})
+		editor.onChange(change)
 	}
 
-	renderEquation() {
-		const { isFocused } = this.props
-
-		const wrapperStyle = {
-			position: 'relative',
+	renderLatex() {
+		let katexHtml = getLatexHtml(this.state.latex)
+		if (katexHtml.error) {
+			console.log(katexHtml)
+			return (
+				<div className={'katex-container katex-error'}>
+					<p>{katexHtml.error.message}</p>
+				</div>
+			)
 		}
 
-		const maskStyle = {
-			display: isFocused ? 'none' : 'block',
-			position: 'absolute',
-			top: '0',
-			left: '0',
-			height: '100%',
-			width: '100%',
-			cursor: 'cell',
-			zIndex: 1,
-		}
-
-		const inputStyle = {
-			width: '50%',
-			float: 'left',
-			textAlign: 'center'
+		katexHtml = katexHtml.html
+		if (katexHtml.length === 0) {
+			return null
 		}
 
 		return (
-			<div
-				style={wrapperStyle}
-				className={'obojobo-draft--chunks--math-equation'}>
-				<div style={maskStyle} />
-				<div style={inputStyle}>
+			<div className={'non-editable-chunk'}>
+				<div
+					className="katex-container"
+					dangerouslySetInnerHTML={{ __html: katexHtml }}
+				/>
+				{this.state.label === '' ? null : (<div className="equation-label">{this.state.label}</div>)}
+			</div>
+		)
+	}
+
+	renderEquationEditor() {
+		const { isFocused } = this.props
+
+		return (
+			<div className={'equation-editor'}>
+				<div>
 					<p>Latex Equation</p>
 					<input
 						name={'Latex Equation'}
@@ -54,7 +76,7 @@ class Node extends React.Component {
 						onClick={event => event.stopPropagation()}
 						frameBorder="0"/>
 				</div>
-				<div style={inputStyle}>
+				<div>
 					<p>Equation Label</p>
 					<input
 						name={'Equation Label'}
@@ -69,10 +91,20 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div {...this.props.attributes} >
-				{this.renderEquation()}
+			<div className={'component obojobo-draft--chunks--math-equation pad align-center'} {...this.props.attributes} >
+				{this.renderLatex()}
+				{this.renderEquationEditor()}
 			</div>
 		)
+	}
+}
+
+const getLatexHtml = latex => {
+	try {
+		let html = katex.renderToString(latex, { displayMode: true })
+		return { html }
+	} catch (e) {
+		return { error: e }
 	}
 }
 
@@ -80,7 +112,7 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: MATH_NODE,
-			data: { content: { latex: 'banana', label: '(1.1)'} },
+			data: { content: { latex: '', label: ''} },
 			isVoid: true
 		})
 		.collapseToStartOfNextText()
