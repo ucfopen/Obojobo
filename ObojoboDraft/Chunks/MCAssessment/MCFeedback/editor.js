@@ -50,9 +50,9 @@ class Node extends React.Component {
 	}
 	render(){
 		return (
-			<div className={'obojobo-draft--chunks--feedback'} {...this.props.attributes}>
+			<div className={'component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback'} {...this.props.attributes}>
 				<button className={'delete'} onClick={() => this.delete()}>X</button>
-				<p className={'label'} contentEditable={false}>{'Feedback'}</p>
+				<span className={'label'} contentEditable={false}>{'Feedback'}</span>
 				{this.props.children}
 			</div>
 		)

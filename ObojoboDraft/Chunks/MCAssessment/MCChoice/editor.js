@@ -85,11 +85,15 @@ class Node extends React.Component {
 		const hasFeedback = this.props.node.nodes.size === 2
 		return (
 			<div
-				className={'obojobo-draft--chunks--mcchoice'}
+				className={'component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-practice'}
 				{...this.props.attributes}>
 				<button className={'delete'} onClick={event => this.delete(event)}>X</button>
 				<input type="checkbox" checked={this.state.score === 100} onChange={event => this.handleScoreChange(event)}/>
-				{this.props.children}
+				<div className={'children'}>
+					<div>
+						{this.props.children}
+					</div>
+				</div>
 				{!hasFeedback ? <button onClick={() => this.addFeedback()}>{'Add Feedback'}</button> : null}
 			</div>
 		)
@@ -120,10 +124,6 @@ const plugins = {
 		switch (props.node.type) {
 			case MCCHOICE_NODE:
 				return <Node {...props} />
-			case MCANSWER_NODE:
-				return <Answer {...props} />
-			case MCFEEDBACK_NODE:
-				return <Feedback {...props} />
 		}
 	},
 	schema: {

@@ -50,7 +50,7 @@ class Node extends React.Component {
 	}
 	render(){
 		return (
-			<div className={'obojobo-draft--chunks--answer'} {...this.props.attributes}>
+			<div className={'component obojobo-draft--chunks--mc-assessment--mc-answer'} {...this.props.attributes}>
 				{this.props.children}
 			</div>
 		)

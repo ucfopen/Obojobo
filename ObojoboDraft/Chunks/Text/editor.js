@@ -4,7 +4,13 @@ import { Data } from 'slate'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const Node = props => {
-	return <p className={`indent-${props.node.data.get('content').indent}`}>{props.children}</p>
+	return (
+		<div className={'component'}>
+			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>
+				<span className={`text align-left`} data-indent={props.node.data.get('content').indent}>{props.children}</span>
+			</div>
+		</div>
+	)
 }
 
 const slateToObo = node => {
@@ -48,9 +54,14 @@ const plugins = {
 		// Shift Tab
 		if (isText && event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
-			change.value.blocks.forEach(block => change.setNodeByKey(block.key, {
-				data: { content: { indent: block.data.get('content').indent - 1 }}
-			}))
+			change.value.blocks.forEach(block => {
+				let newIndent = block.data.get('content').indent - 1
+				if(newIndent < 1) newIndent = 0
+
+				return change.setNodeByKey(block.key, {
+					data: { content: { indent: newIndent }}
+				})
+			})
 			return true
 		}
 

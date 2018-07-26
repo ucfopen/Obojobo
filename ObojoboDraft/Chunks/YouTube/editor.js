@@ -53,16 +53,12 @@ class Node extends React.Component {
 		}
 
 		return (
-			<div style={wrapperStyle}>
+			<div className={'obojobo-draft--chunks--you-tube viewer'} style={wrapperStyle}>
 				<div style={maskStyle} />
 				<iframe
-					id="ytplayer"
-					type="text/html"
-					width="640"
-					height="476"
 					src={'https://www.youtube.com/embed/' + this.state.videoId}
 					frameBorder="0"
-					style={iframeStyle}
+					allowFullScreen="true"
 				/>
 			</div>
 		)
@@ -72,7 +68,7 @@ class Node extends React.Component {
 		const { isSelected } = this.props
 
 		return (
-			<div {...this.props.attributes}>
+			<div className={'component'} {...this.props.attributes}>
 				{this.renderFrame()}
 				{isSelected ? this.renderInput() : null}
 			</div>

@@ -56,15 +56,6 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
-
-	renderChoices() {
-		return (
-			<div>
-				<p>{'Select all of the correct answers'}</p>
-				{this.props.children}
-			</div>
-		)
-	}
 	renderContent() {
 		return (
 			<div className={'content-box'}>
@@ -92,10 +83,11 @@ class Node extends React.Component {
 	}
 	render(){
 		return (
-			<div className={'obojobo-draft--chunks--mcassessment'} {...this.props.attributes}>
-				{this.renderChoices()}
+			<form className={'component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored'} {...this.props.attributes}>
+				<span className={'instructions'}>{'Pick all of the correct answers'} </span>
+				{this.props.children}
 				{this.renderContent()}
-			</div>
+			</form>
 		)
 	}
 }

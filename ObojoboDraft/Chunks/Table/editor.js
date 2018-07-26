@@ -160,16 +160,22 @@ class Node extends React.Component {
 
 	render(){
 		return (
-			<div {...this.props.attributes}>
-				<table>
-					<tbody>
-						{this.props.children}
-						{this.renderColDelete()}
-					</tbody>
-				</table>
-				<button onClick={() => this.addRow()}>{'Add Row'}</button>
-				<button onClick={() => this.addCol()}>{'Add Column'}</button>
-				<button onClick={() => this.toggleHeader()}>{'Toggle Header'}</button>
+			<div className={'component'} {...this.props.attributes}>
+				<div className={'obojobo-draft--chunks--table viewer pad'}>
+					<div className={'container'}>
+						<table className="view" ref="table" key="table">
+							<tbody>
+								{this.props.children}
+								{this.renderColDelete()}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div className={'table-editor'}>
+					<button onClick={() => this.addRow()}>{'Add Row'}</button>
+					<button onClick={() => this.addCol()}>{'Add Column'}</button>
+					<button onClick={() => this.toggleHeader()}>{'Toggle Header'}</button>
+				</div>
 			</div>
 		)
 	}

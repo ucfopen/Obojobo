@@ -52,10 +52,13 @@ class Node extends React.Component {
 	}
 	render(){
 		return (
-			<div className={'obojobo-draft--chunks--question'} {...this.props.attributes}>
-				<button className={'delete'} onClick={() => this.delete()}>X</button>
-				<p className={'label'} contentEditable={false}>{'Question'}</p>
-				{this.props.children}
+			<div className={'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'} {...this.props.attributes}>
+				<div className={'flipper'}>
+					<div className={'content back'}>
+						<button className={'delete'} onClick={() => this.delete()}>X</button>
+						{this.props.children}
+					</div>
+				</div>
 			</div>
 		)
 	}

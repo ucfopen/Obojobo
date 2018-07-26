@@ -30,4 +30,14 @@
 	.katex-error {
 		background: #FF000011;
 	}
+
+	.equation-editor {
+		overflow: auto;
+
+		div {
+			float: left;
+			width: 50%;
+			text-align: center;
+		}
+	}
 }
