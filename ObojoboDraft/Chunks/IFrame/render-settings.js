@@ -1,6 +1,9 @@
 import Viewer from 'Viewer'
 const MediaUtil = Viewer.util.MediaUtil
 
+import IFrameFitTypes from './iframe-fit-types'
+import IFrameControlTypes from './iframe-control-types'
+
 const getIsShowing = (mediaState, model) => {
 	return (
 		(model.modelState.autoload || MediaUtil.isShowingMedia(mediaState, model)) &&
@@ -9,8 +12,8 @@ const getIsShowing = (mediaState, model) => {
 }
 
 const getControlsOptions = modelState => {
-	const isZoomControlEnabled = modelState.controls.indexOf('zoom') > -1
-	const isReloadControlEnabled = modelState.controls.indexOf('reload') > -1
+	const isZoomControlEnabled = modelState.controls.indexOf(IFrameControlTypes.ZOOM) > -1
+	const isReloadControlEnabled = modelState.controls.indexOf(IFrameControlTypes.RELOAD) > -1
 	const newWindowEnabled = modelState.newWindow === true
 
 	return {
@@ -31,12 +34,10 @@ const getDisplayedTitle = modelState => {
 	return (modelState.src || '').replace(/^https?:\/\//, '')
 }
 
-const getSetDimensions = (modelState, defaultWidth, defaultHeight) => {
-	return {
-		w: modelState.width || defaultWidth,
-		h: modelState.height || defaultHeight
-	}
-}
+const getSetDimensions = (modelState, defaultWidth, defaultHeight) => ({
+	w: modelState.width || defaultWidth,
+	h: modelState.height || defaultHeight
+})
 
 const getScaleAmount = (actualWidth, padding, setWidth) => {
 	return Math.min(1, (actualWidth - padding) / setWidth)
@@ -46,7 +47,7 @@ const getScaleDimensions = (modelState, zoom, scaleAmount, minScale, setDimensio
 	let scale
 	let containerStyle = {}
 
-	if (modelState.fit === 'scroll') {
+	if (modelState.fit === IFrameFitTypes.SCROLL) {
 		scale = zoom
 		containerStyle = {
 			width: setDimensions.w,
@@ -67,16 +68,14 @@ const getScaleDimensions = (modelState, zoom, scaleAmount, minScale, setDimensio
 	}
 }
 
-const getIFrameStyle = scale => {
-	return {
-		transform: `scale(${scale})`,
-		width: 1 / scale * 100 + '%',
-		height: 1 / scale * 100 + '%'
-	}
-}
+const getIFrameStyle = scale => ({
+	transform: `scale(${scale})`,
+	width: 1 / scale * 100 + '%',
+	height: 1 / scale * 100 + '%'
+})
 
 const getAfterStyle = (setWidth, setHeight, fit) => {
-	return fit === 'scale'
+	return fit === IFrameFitTypes.SCALE
 		? {
 				paddingTop: setHeight / setWidth * 100 + '%'
 		  }

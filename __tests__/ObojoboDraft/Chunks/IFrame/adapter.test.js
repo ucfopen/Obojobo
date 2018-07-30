@@ -23,7 +23,7 @@ describe('IFrame adapter', () => {
 		IFrameAdapter.construct(model, attrs)
 	})
 
-	test('adapter sets newWindow correctly', () => {
+	test('adapter sets modelState.newWindow to true when given attributes newWindow=true (or when newWindow not specified and type="webpage")', () => {
 		IFrameAdapter.construct(model, { content: { newWindow: false } })
 		expect(model.modelState.newWindow).toBe(false)
 
@@ -49,7 +49,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.newWindow).toBe(true)
 	})
 
-	test('adapter sets border correctly', () => {
+	test('adapter sets modelState.border to true when given attributes border=true (or when border not specified and type="webpage")', () => {
 		IFrameAdapter.construct(model, { content: { border: false } })
 		expect(model.modelState.border).toBe(false)
 
@@ -75,7 +75,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.border).toBe(true)
 	})
 
-	test('adapter sets fit correctly', () => {
+	test('adapter sets modelState.fit to "scale" by default, "scale" or "scroll" when specified, "scroll" if not specified (and type="webpage") and "scale" if not specified (and type="media")', () => {
 		IFrameAdapter.construct(model, { content: { fit: 'sCroll' } })
 		expect(model.modelState.fit).toBe('scroll')
 
@@ -110,7 +110,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.fit).toBe('scale')
 	})
 
-	test('adapter sets controls correctly', () => {
+	test('adapter sets modelState.controls to "reload" by default, "zoom,reload" if not specified (and type="webpage"), "reload" if not specified (and type="media") and lower-cases and trims values if specified', () => {
 		IFrameAdapter.construct(model, { content: {} })
 		expect(model.modelState.controls).toEqual(['reload'])
 
@@ -124,7 +124,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.controls).toEqual(['example', 'zoom'])
 	})
 
-	test('adapter sets src correctly', () => {
+	test('adapter sets modelState.src to content.src (or null if not specified)', () => {
 		IFrameAdapter.construct(model, { content: {} })
 		expect(model.modelState.src).toBe(null)
 
@@ -132,7 +132,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.src).toBe('mocked-src')
 	})
 
-	test('adapter sets width correctly', () => {
+	test('adapter sets modelState.width to a number if specified and null otherwise', () => {
 		IFrameAdapter.construct(model, { content: {} })
 		expect(model.modelState.width).toBe(null)
 
@@ -143,7 +143,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.width).toBe(123)
 	})
 
-	test('adapter sets height correctly', () => {
+	test('adapter sets modelState.height to a number if specified and null otherwise', () => {
 		IFrameAdapter.construct(model, { content: {} })
 		expect(model.modelState.height).toBe(null)
 
@@ -154,7 +154,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.height).toBe(123)
 	})
 
-	test('adapter sets zoom correctly', () => {
+	test('adapter sets modelState.zoom to a number if specified and 1 otherwise', () => {
 		IFrameAdapter.construct(model, { content: {} })
 		expect(model.modelState.zoom).toBe(1)
 
@@ -165,7 +165,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.zoom).toBe(123)
 	})
 
-	test('adapter sets newWindowSrc correctly', () => {
+	test('adapter sets modelState.newWindowSrc from content.newWindowSrc (or null if not specified)', () => {
 		IFrameAdapter.construct(model, { content: {} })
 		expect(model.modelState.newWindowSrc).toBe(null)
 
@@ -173,7 +173,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.newWindowSrc).toBe('mocked-src')
 	})
 
-	test('adapter sets autoload correctly', () => {
+	test('adapter sets modelState.autoload to true if content.autoload === true, otherwise false', () => {
 		IFrameAdapter.construct(model, { content: {} })
 		expect(model.modelState.autoload).toBe(false)
 
@@ -184,7 +184,7 @@ describe('IFrame adapter', () => {
 		expect(model.modelState.autoload).toBe(true)
 	})
 
-	test('adapter sets title correctly', () => {
+	test('adapter sets modelState.title to content.title (or null if not specified)', () => {
 		IFrameAdapter.construct(model, { content: {} })
 		expect(model.modelState.title).toBe(null)
 

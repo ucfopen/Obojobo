@@ -71,6 +71,7 @@ import ErrorUtil from './util/error-util'
 import UUID from './util/uuid'
 import RangeParsing from './util/range-parsing'
 import setModelStateProp from './util/set-model-state-prop'
+import cloneProps from './util/clone-props'
 import isOrNot from './isornot'
 
 export default {
@@ -192,6 +193,7 @@ export default {
 		UUID,
 		RangeParsing,
 		setModelStateProp,
+		cloneProps,
 		isOrNot
 	}
 }
