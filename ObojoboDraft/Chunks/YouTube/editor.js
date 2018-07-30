@@ -8,7 +8,7 @@ class Node extends React.Component {
 		this.state = this.props.node.data.get('content')
 	}
 
-	handleTypeChange(event){
+	handleSourceChange(event){
 		const editor = this.props.editor
 		const change = editor.value.change()
 
@@ -97,6 +97,16 @@ const slateToObo = node => {
 	return json
 }
 
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+	json.data = { content: {} }
+
+	return json
+}
+
 const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
@@ -119,7 +129,8 @@ const YouTube = {
 	},
 	helpers: {
 		insertNode,
-		slateToObo
+		slateToObo,
+		oboToSlate
 	},
 	plugins
 }

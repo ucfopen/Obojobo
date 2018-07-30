@@ -47,6 +47,16 @@ const slateToObo = node => {
 	return json
 }
 
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+	json.data = { content: {} }
+
+	return json
+}
+
 const plugins = {
 	onKeyDown(event, change) {
 		const isText = change.value.blocks.some(block => block.type === TEXT_NODE)
@@ -94,7 +104,8 @@ const Text = {
 		Node,
 	},
 	helpers: {
-		slateToObo
+		slateToObo,
+		oboToSlate
 	},
 	plugins
 }

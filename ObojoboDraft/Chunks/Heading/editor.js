@@ -40,8 +40,54 @@ const slateToObo = node => {
 	const json = {}
 	json.id = node.key
 	json.type = node.type
-	json.content = node.data.get('content') || {}
+	json.content = {}
+	json.content.headingLevel = node.data.get('content').level
+	json.content.textGroup = []
 
+	const line = {
+		text: { value: node.text, styleList: [] }
+	}
+
+	let currIndex = 0
+
+	node.nodes.forEach(text => {
+		text.leaves.forEach(textRange => {
+			textRange.marks.forEach(mark => {
+				const style = {
+					start: currIndex,
+					end: currIndex + textRange.text.length,
+					type: mark.type,
+					data: JSON.parse(JSON.stringify(mark.data))
+				}
+				line.text.styleList.push(style)
+			})
+			currIndex += textRange.text.length
+		})
+	})
+
+	json.content.textGroup.push(line)
+
+	return json
+}
+
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+	json.data = { content: {} }
+	json.data.content.level = node.content.headingLevel
+	json.nodes = [
+		{
+			object: 'text',
+			"leaves": [
+				{
+					"text":
+						node.content.textGroup[0].text.value
+				}
+			]
+		}
+	]
 	return json
 }
 
@@ -67,7 +113,8 @@ const Heading = {
 	},
 	helpers: {
 		toggleNode,
-		slateToObo
+		slateToObo,
+		oboToSlate,
 	},
 	plugins
 }

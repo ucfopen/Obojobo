@@ -190,6 +190,45 @@ const slateToObo = node => {
 	return json
 }
 
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+	json.data = { content: node.content }
+
+	json.nodes = []
+	// If there is currently no caption, add one
+	if(!node.content.textGroup) {
+		const caption = {
+			object: 'text',
+			leaves: [
+				{
+					text: ''
+				}
+			]
+		}
+		json.nodes.push(caption)
+		return json
+	}
+
+	node.content.textGroup.forEach(line => {
+		const caption = {
+			object: 'text',
+			leaves: [
+				{
+					text: line.text.value
+				}
+			]
+		}
+
+		json.nodes.push(caption)
+	})
+
+	console.log(JSON.stringify(node))
+	return json
+}
+
 const plugins = {
 	renderNode(props){
 		switch (props.node.type) {
@@ -213,6 +252,7 @@ const Figure = {
 	helpers: {
 		insertNode,
 		slateToObo,
+		oboToSlate,
 	},
 	plugins
 }

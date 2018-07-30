@@ -90,6 +90,40 @@ const slateToObo = node => {
 		json.content.textGroup.push(codeLine)
 	})
 
+	console.log('json')
+	return json
+}
+
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+	json.data = { content: {} }
+
+	json.nodes = []
+	node.content.textGroup.forEach(line => {
+		const indent = line.data ? line.data.indent : 0
+		const codeLine = {
+			object: 'block',
+			type: CODE_LINE_NODE,
+			data: { content: { indent: indent }},
+			nodes: [
+				{
+					object: 'text',
+					leaves: [
+						{
+							text: line.text.value
+						}
+					]
+				}
+			]
+		}
+
+		json.nodes.push(codeLine)
+	})
+
+	console.log(JSON.stringify(json))
 	return json
 }
 
@@ -158,6 +192,7 @@ const Code = {
 		isType,
 		toggleNode,
 		slateToObo,
+		oboToSlate,
 	},
 	plugins
 }

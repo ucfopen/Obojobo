@@ -103,21 +103,30 @@ const plugins = [
 class PageEditor extends React.Component {
 	constructor(props) {
 		super(props)
+		console.log(props.page)
 		this.state = {
 			value: Value.fromJSON(initialValue),
 		}
 	}
 
 	render() {
+		console.log('rendering')
+
+		const v = Value.fromJSON(this.importFromJSON())
+		console.log(v)
 		return (
-			<Editor
-				className={'component obojobo-draft--pages--page'}
-				placeholder="Obojobo Visual Editor"
-				value={this.state.value}
-				onChange={change => this.onChange(change)}
-				renderMark={props => this.renderMark(props)}
-				plugins={plugins}
-			/>
+			<div>
+				<button onClick={() => this.exportToJSON()}>Export to JSON</button>
+				<p>{this.props.page.id}</p>
+				<Editor
+					className={'component obojobo-draft--pages--page'}
+					placeholder="Obojobo Visual Editor"
+					value={this.state.value}
+					onChange={change => this.onChange(change)}
+					renderMark={props => this.renderMark(props)}
+					plugins={plugins}
+				/>
+			</div>
 		)
 	}
 
@@ -185,9 +194,9 @@ class PageEditor extends React.Component {
 
 		// Build page wrapper
 		const json = {}
-		json.id = 'page-id'
+		json.id = this.props.page.id
 		json.type = PAGE_NODE
-		json.content = { title: 'Mock Page Title'}
+		json.content = this.props.page.content
 		json.children = []
 
 		value.document.nodes.forEach(child => {
@@ -200,6 +209,24 @@ class PageEditor extends React.Component {
 		})
 
 		console.log(json)
+		return json
+	}
+
+	importFromJSON() {
+		const { page } = this.props
+
+		const json = { document: { nodes: [] }}
+
+		page.children.forEach(child => {
+			// If the current Node is a registered OboNode, use its custom converter
+			if(nodes.hasOwnProperty(child.type)){
+				console.log(child.type)
+				json.document.nodes.push(nodes[child.type].helpers.oboToSlate(child))
+			} else {
+				json.document.nodes.push(DefaultNode.helpers.oboToSlate(child))
+			}
+		})
+		console.log(JSON.stringify(json))
 		return json
 	}
 

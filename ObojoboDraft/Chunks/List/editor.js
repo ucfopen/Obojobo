@@ -185,7 +185,15 @@ const slateToObo = node => {
 	return json
 }
 
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+	json.data = { content: node.content }
 
+	return json
+}
 
 const plugins = {
 	onKeyDown(event, change) {
@@ -352,6 +360,7 @@ const List = {
 		isType,
 		toggleNode,
 		slateToObo,
+		oboToSlate,
 	},
 	plugins
 }

@@ -17,6 +17,17 @@ const slateToObo = node => {
   return json
 }
 
+const oboToSlate = node => {
+  const json = {}
+  json.object = 'block'
+  json.key = node.id
+  json.type = node.type
+  json.data = { content: node.content }
+
+  console.log(json)
+  return json
+}
+
 const toggleNode = (change, toggleType) => {
   const isType = change.value.blocks.some(block => block.type === toggleType)
 
@@ -29,6 +40,7 @@ const DefaultNode = {
   },
   helpers: {
     slateToObo,
+    oboToSlate,
     toggleNode
   }
 }

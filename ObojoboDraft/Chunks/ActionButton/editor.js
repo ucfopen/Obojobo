@@ -94,8 +94,18 @@ class Node extends React.Component {
 		}})
 	}
 
-	handleLabelChange(event) {
+	handleLabelChange(event){
+		const editor = this.props.editor
+		const change = editor.value.change()
+
 		this.setState({ label: event.target.value })
+
+		change.setNodeByKey(this.props.node.key, { data: { content: {
+			label: event.target.value,
+			newTrigger: this.state.newTrigger,
+			actions: this.state.actions
+		}}})
+		editor.onChange(change)
 	}
 
 	addAction() {
@@ -230,18 +240,29 @@ const insertNode = change => {
 }
 
 const slateToObo = node => {
-	if (node.type !== BUTTON_NODE) return null
-
 	const json = {}
 	json.id = node.key
 	json.type = node.type
 	json.content = {}
 	const nodeContent = node.data.get('content')
 	json.content.label = nodeContent.label
-	json.content.triggers = {
+	json.content.triggers = [{
 		type: 'onClick',
 		actions: nodeContent.actions
-	}
+	}]
+
+	return json
+}
+
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+
+	json.data = { content: {} }
+	json.data.content.label = node.content.label
+	json.data.content.actions = node.content.triggers[0].actions
 
 	return json
 }
@@ -270,6 +291,7 @@ const ActionButton = {
 	helpers: {
 		insertNode,
 		slateToObo,
+		oboToSlate
 	},
 	plugins
 }

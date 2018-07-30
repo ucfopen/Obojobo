@@ -80,14 +80,6 @@ export default class Nav extends React.Component {
 		)
 	}
 
-	// renderSep(index) {
-	// 	return (
-	// 		<li key={index} className="seperator">
-	// 			<hr />
-	// 		</li>
-	// 	)
-	// }
-
 	getLockEl(isLocked) {
 		if (isLocked) {
 			return <div className="lock-icon" />

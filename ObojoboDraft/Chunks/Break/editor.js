@@ -39,12 +39,23 @@ const insertNode = change => {
 }
 
 const slateToObo = node => {
-	if (node.type !== BREAK_NODE) return null
-
 	const json = {}
 	json.id = node.key
 	json.type = node.type
 	json.content = node.data.get('content')
+
+	return json
+}
+
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+	json.isVoid = true
+	json.data = { content: node.content }
+
+	if(!json.data.content.width) json.data.content.width = 'normal'
 
 	return json
 }
@@ -72,6 +83,7 @@ const Break ={
 	helpers: {
 		insertNode,
 		slateToObo,
+		oboToSlate,
 	},
 	plugins
 }

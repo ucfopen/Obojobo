@@ -99,6 +99,16 @@ const slateToObo = node => {
 	return json
 }
 
+const oboToSlate = node => {
+	const json = {}
+	json.object = 'block'
+	json.key = node.id
+	json.type = node.type
+	json.data = { content: {} }
+
+	return json
+}
+
 const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
@@ -121,7 +131,8 @@ const IFrame = {
 	},
 	helpers: {
 		insertNode,
-		slateToObo
+		slateToObo,
+		oboToSlate,
 	},
 	plugins
 }
