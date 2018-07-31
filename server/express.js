@@ -226,8 +226,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -254,8 +253,7 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -283,8 +281,7 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -311,8 +308,6 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 
 oboEvents.on('client:question:setResponse', (event, req) => {
 	const eventRecordResponse = 'client:question:setResponse'
-	// @TODO: check perms
-	// @TODO: better input sanitizing
 
 	return Promise.resolve()
 		.then(() => {

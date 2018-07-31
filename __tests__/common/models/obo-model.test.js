@@ -22,7 +22,7 @@ describe('OboModel', () => {
 	})
 
 	test('should construct a new instance with defaults', () => {
-		let o = new OboModel({ id: 'testId' })
+		const o = new OboModel({ id: 'testId' })
 
 		expect(o.parent).toBe(null)
 		expect(o.children.models.length).toBe(0)
@@ -42,7 +42,7 @@ describe('OboModel', () => {
 	})
 
 	test('should construct a new instance with given attributes', () => {
-		let o = new OboModel({
+		const o = new OboModel({
 			id: 'passedInId',
 			content: {
 				triggers: [{ passedInTrigger: 1 }],
@@ -58,7 +58,7 @@ describe('OboModel', () => {
 	})
 
 	test('should construct a new instance with a given adapter', () => {
-		let o = new OboModel(
+		const o = new OboModel(
 			{
 				content: {
 					score: 100
@@ -91,7 +91,7 @@ describe('OboModel', () => {
 
 	test('should retrieve the root model', () => {
 		expect.assertions(2)
-		let o = OboModel.create({
+		const o = OboModel.create({
 			id: 'root',
 			type: 'ObojoboDraft.Modules.Module',
 			children: [
@@ -106,8 +106,7 @@ describe('OboModel', () => {
 	})
 
 	test('should process a trigger', () => {
-		global.__actionFn = jest.fn()
-		let o = new OboModel({
+		const o = new OboModel({
 			content: {
 				triggers: [
 					{
@@ -130,10 +129,6 @@ describe('OboModel', () => {
 							{
 								type: 'a3',
 								value: 3
-							},
-							{
-								type: '_js',
-								value: '__actionFn()'
 							}
 						]
 					}
@@ -154,27 +149,24 @@ describe('OboModel', () => {
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(0)
 
-		// process t2, should trigger action a3 and eval _js
+		// process t2, should trigger action a3
 		Dispatcher.trigger.mockClear()
 		o.processTrigger('t2')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toEqual(['a3', { type: 'a3', value: 3 }])
-		expect(global.__actionFn).toHaveBeenCalledTimes(1)
 
 		// process t3 which isn't defined so nothing should be triggered
 		Dispatcher.trigger.mockClear()
 		o.processTrigger('t3')
 
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
-
-		delete global.__actionFn
 	})
 
 	test('removing children sets their parent to null, marks them dirty and removes them from the model db', () => {
 		expect.assertions(4)
 		Store.getItems(items => {
-			let o = OboModel.create({
+			const o = OboModel.create({
 				id: 'root',
 				type: 'ObojoboDraft.Modules.Module',
 				children: [
@@ -185,7 +177,7 @@ describe('OboModel', () => {
 				]
 			})
 
-			let child = OboModel.models.child
+			const child = OboModel.models.child
 			child.modelState.dirty = false
 
 			o.children.remove(child)
@@ -199,8 +191,8 @@ describe('OboModel', () => {
 	})
 
 	test('adding children sets their parent and marks them dirty', () => {
-		let root = new OboModel({})
-		let child = new OboModel({})
+		const root = new OboModel({})
+		const child = new OboModel({})
 
 		expect(root.modelState.dirty).toBe(false)
 		expect(child.modelState.dirty).toBe(false)
@@ -212,8 +204,8 @@ describe('OboModel', () => {
 	})
 
 	test('removing children sets their parent to null and marks them dirty', () => {
-		let root = new OboModel({})
-		let child = new OboModel({})
+		const root = new OboModel({})
+		const child = new OboModel({})
 
 		root.children.add(child)
 
@@ -226,8 +218,8 @@ describe('OboModel', () => {
 	})
 
 	test("resetting sets the children's parent", () => {
-		let root = new OboModel({})
-		let child = new OboModel({})
+		const root = new OboModel({})
+		const child = new OboModel({})
 
 		root.children.add(child)
 		root.children.reset()
@@ -236,7 +228,7 @@ describe('OboModel', () => {
 	})
 
 	test('creates new local IDs', () => {
-		let root = new OboModel({})
+		const root = new OboModel({})
 
 		OboModel.__setNextGeneratedLocalId(null)
 
@@ -248,33 +240,33 @@ describe('OboModel', () => {
 	})
 
 	test('assign new id will assign a new id', () => {
-		let root = new OboModel({})
+		const root = new OboModel({})
 
-		let oldId = root.id
+		const oldId = root.id
 
 		root.assignNewId()
 		expect(root.id).not.toEqual(oldId)
 	})
 
 	test("clone (shallow) will clone a model (not it's children)", () => {
-		let root = new OboModel({ a: 1 })
-		let child = new OboModel({ b: 2 })
+		const root = new OboModel({ a: 1 })
+		const child = new OboModel({ b: 2 })
 
 		root.children.add(child)
 
-		let clone = root.clone()
+		const clone = root.clone()
 
 		expect(clone.get('a')).toBe(1)
 		expect(clone.children.length).toBe(0)
 	})
 
 	test("clone (deep) will clone a model (and it's children)", () => {
-		let root = new OboModel({ a: 1 })
-		let child = new OboModel({ b: 2 })
+		const root = new OboModel({ a: 1 })
+		const child = new OboModel({ b: 2 })
 
 		root.children.add(child)
 
-		let clone = root.clone(true)
+		const clone = root.clone(true)
 
 		expect(clone.get('a')).toBe(1)
 		expect(clone.children.length).toBe(1)
@@ -282,7 +274,7 @@ describe('OboModel', () => {
 	})
 
 	test("clone will clone a model based on it's adapter", () => {
-		let root = new OboModel(
+		const root = new OboModel(
 			{},
 			{
 				clone: (model, clone) => {
@@ -292,14 +284,14 @@ describe('OboModel', () => {
 			}
 		)
 
-		let clone = root.clone(true)
+		const clone = root.clone(true)
 
 		expect(root.get('wasCloned')).toBeFalsy()
 		expect(clone.get('wasCloned')).toBe(true)
 	})
 
 	test('toJSON will output a model to an object', () => {
-		let root = new OboModel({
+		const root = new OboModel({
 			type: 'nodeType',
 			content: { a: 1 }
 		})
@@ -315,7 +307,7 @@ describe('OboModel', () => {
 	})
 
 	test('toJSON will output a model with children to an object', () => {
-		let root = OboModel.create({
+		const root = OboModel.create({
 			id: 'root',
 			type: 'ObojoboDraft.Modules.Module',
 			children: [
@@ -346,7 +338,7 @@ describe('OboModel', () => {
 	})
 
 	test("toJSON will output a model to an object according with it's adapter", () => {
-		let root = new OboModel(
+		const root = new OboModel(
 			{
 				type: 'nodeType',
 				content: { a: 1 }
@@ -363,7 +355,7 @@ describe('OboModel', () => {
 	})
 
 	test('toText will output the model into a text format', () => {
-		let parent = new OboModel(
+		const parent = new OboModel(
 			{
 				id: 'parentId',
 				type: 'parentType'
@@ -375,7 +367,7 @@ describe('OboModel', () => {
 			}
 		)
 
-		let child = new OboModel(
+		const child = new OboModel(
 			{
 				id: 'childId',
 				type: 'childType'
@@ -393,7 +385,7 @@ describe('OboModel', () => {
 	})
 
 	test('toText will output the model into a text format', () => {
-		let parent = new OboModel({
+		const parent = new OboModel({
 			id: 'parentId',
 			type: 'parentType'
 		})
@@ -402,17 +394,17 @@ describe('OboModel', () => {
 	})
 
 	test('revert will clear the model but keep the index and id', () => {
-		let root = new OboModel({
+		const root = new OboModel({
 			type: 'someType',
 			content: { a: 1 },
 			index: 555
 		})
-		let child = new OboModel({})
+		const child = new OboModel({})
 
 		root.children.add(child)
 
-		let oldId = root.id
-		let oldIndex = root.attributes.index
+		const oldId = root.id
+		const oldIndex = root.attributes.index
 
 		root.revert()
 
@@ -427,7 +419,7 @@ describe('OboModel', () => {
 	})
 
 	test('markDirty sets the dirty and needsUpdate flags', () => {
-		let root = new OboModel({})
+		const root = new OboModel({})
 
 		root.modelState.dirty = root.modelState.needsUpdate = false
 
@@ -438,7 +430,7 @@ describe('OboModel', () => {
 	})
 
 	test('markForUpdate sets the needsUpdate flag', () => {
-		let root = new OboModel({})
+		const root = new OboModel({})
 
 		root.modelState.needsUpdate = false
 
@@ -448,8 +440,8 @@ describe('OboModel', () => {
 	})
 
 	test("markForUpdate sets the needsUpdate flag for itself and it's children if markChildren is true", () => {
-		let root = new OboModel({})
-		let child = new OboModel({})
+		const root = new OboModel({})
+		const child = new OboModel({})
 
 		root.children.add(child)
 		root.modelState.needsUpdate = false
@@ -462,7 +454,7 @@ describe('OboModel', () => {
 	})
 
 	test('markUpdated sets the needsUpdate flag', () => {
-		let root = new OboModel({})
+		const root = new OboModel({})
 
 		root.modelState.needsUpdate = true
 
@@ -472,8 +464,8 @@ describe('OboModel', () => {
 	})
 
 	test("markUpdated sets the needsUpdate flag for itself and it's children if markChildren is true", () => {
-		let root = new OboModel({})
-		let child = new OboModel({})
+		const root = new OboModel({})
+		const child = new OboModel({})
 
 		root.children.add(child)
 		root.modelState.needsUpdate = true
@@ -512,17 +504,17 @@ describe('OboModel', () => {
 				type: 'ObojoboDraft.Chunks.Text'
 			})
 
-			let root = OboModel.models.rootId
-			let Text = items.get('ObojoboDraft.Chunks.Text')
+			const root = OboModel.models.rootId
+			const Text = items.get('ObojoboDraft.Chunks.Text')
 
 			expect(root.getComponentClass()).toBe(Text.componentClass)
 		})
 	})
 
 	test('hasChildren reports if a model has children', () => {
-		let childless = new OboModel({})
-		let hasChild = new OboModel({})
-		let child = new OboModel({})
+		const childless = new OboModel({})
+		const hasChild = new OboModel({})
+		const child = new OboModel({})
 
 		hasChild.children.add(child)
 
@@ -531,8 +523,8 @@ describe('OboModel', () => {
 	})
 
 	test('isOrphan reports if a model has no parent', () => {
-		let root = new OboModel({})
-		let child = new OboModel({})
+		const root = new OboModel({})
+		const child = new OboModel({})
 
 		root.children.add(child)
 
@@ -545,10 +537,10 @@ describe('OboModel', () => {
 	})
 
 	test('addChildBefore adds a child before', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let newChild = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const newChild = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -561,10 +553,10 @@ describe('OboModel', () => {
 	})
 
 	test('addChildBefore does not add a child to an orphan', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let newChild = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const newChild = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -575,10 +567,10 @@ describe('OboModel', () => {
 	})
 
 	test('addChildBefore moves children if child added is already in collection', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -592,10 +584,10 @@ describe('OboModel', () => {
 	})
 
 	test('addChildAfter adds a child after', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let newChild = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const newChild = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -608,10 +600,10 @@ describe('OboModel', () => {
 	})
 
 	test('addChildAfter does not add a child after an orphan', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let newChild = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const newChild = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -622,10 +614,10 @@ describe('OboModel', () => {
 	})
 
 	test('addChildAfter moves children if child added is already in collection', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -639,10 +631,10 @@ describe('OboModel', () => {
 	})
 
 	test('moveTo will move a model to a new index', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -674,10 +666,10 @@ describe('OboModel', () => {
 	})
 
 	test('moveToTop will move a model to the first index', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -691,10 +683,10 @@ describe('OboModel', () => {
 	})
 
 	test('moveToBottom will move a model to the last index', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -708,10 +700,10 @@ describe('OboModel', () => {
 	})
 
 	test('prevSibling will return the previous sibling (or null if none exists)', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -724,10 +716,10 @@ describe('OboModel', () => {
 	})
 
 	test('nextSibling will return the next sibling (or null if none exists)', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -740,10 +732,10 @@ describe('OboModel', () => {
 	})
 
 	test('getIndex will return the position of the model', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -756,10 +748,10 @@ describe('OboModel', () => {
 	})
 
 	test('isFirst will report if a model is the first child', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -772,10 +764,10 @@ describe('OboModel', () => {
 	})
 
 	test('isLast will report if a model is the last child', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -788,10 +780,10 @@ describe('OboModel', () => {
 	})
 
 	test('isBefore will report if a model is before another model', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -806,10 +798,10 @@ describe('OboModel', () => {
 	})
 
 	test('isAfter will report if a model is after another model', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -824,8 +816,8 @@ describe('OboModel', () => {
 	})
 
 	test('remove will remove a model', () => {
-		let root = new OboModel({})
-		let child = new OboModel({})
+		const root = new OboModel({})
+		const child = new OboModel({})
 
 		root.children.add(child)
 
@@ -836,7 +828,7 @@ describe('OboModel', () => {
 	})
 
 	test('remove will not remove an orphan', () => {
-		let root = new OboModel({})
+		const root = new OboModel({})
 
 		root.remove()
 
@@ -844,11 +836,11 @@ describe('OboModel', () => {
 	})
 
 	test('replaceWith will replace a model with another model', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
-		let replaceModel = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
+		const replaceModel = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -862,11 +854,11 @@ describe('OboModel', () => {
 	})
 
 	test('replaceWith will not replace an orphan', () => {
-		let root = new OboModel({})
-		let childA = new OboModel({})
-		let childB = new OboModel({})
-		let childC = new OboModel({})
-		let replaceModel = new OboModel({})
+		const root = new OboModel({})
+		const childA = new OboModel({})
+		const childB = new OboModel({})
+		const childC = new OboModel({})
+		const replaceModel = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -878,9 +870,9 @@ describe('OboModel', () => {
 	})
 
 	test('contains will report if a model contains a given child', () => {
-		let grandparent = new OboModel({})
-		let parent = new OboModel({})
-		let child = new OboModel({})
+		const grandparent = new OboModel({})
+		const parent = new OboModel({})
+		const child = new OboModel({})
 
 		grandparent.children.add(parent)
 		parent.children.add(child)
@@ -897,9 +889,9 @@ describe('OboModel', () => {
 	})
 
 	test('getParentOfType returns a parent of a given type', () => {
-		let grandparent = new OboModel({ type: 'grandparent' })
-		let parent = new OboModel({ type: 'parent' })
-		let child = new OboModel({ type: 'child' })
+		const grandparent = new OboModel({ type: 'grandparent' })
+		const parent = new OboModel({ type: 'parent' })
+		const child = new OboModel({ type: 'child' })
 
 		grandparent.children.add(parent)
 		parent.children.add(child)
@@ -923,7 +915,7 @@ describe('OboModel', () => {
 	})
 
 	test('Obomodel.create builds default chunks', () => {
-		let model = OboModel.create('chunk')
+		const model = OboModel.create('chunk')
 
 		expect(model.toJSON()).toEqual({
 			children: null,
@@ -943,13 +935,13 @@ describe('OboModel', () => {
 	})
 
 	test('Obomodel.create builds nothing', () => {
-		let model = OboModel.create('mockChunk')
+		const model = OboModel.create('mockChunk')
 
 		expect(model).toEqual(null)
 	})
 
 	test('Obomodel.create builds nothing from object', () => {
-		let model = OboModel.create({ type: 'mockChunk' })
+		const model = OboModel.create({ type: 'mockChunk' })
 
 		expect(model).toEqual(null)
 	})
