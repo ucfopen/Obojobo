@@ -93,7 +93,7 @@ export default class ButtonBar extends React.Component {
 	render() {
 		const end = this.end
 		const maxItems = this.maxItems
-		console.log('got', maxItems)
+
 		const start = this.start
 		const children = this.props.children
 
