@@ -90,7 +90,6 @@ const slateToObo = node => {
 		json.content.textGroup.push(codeLine)
 	})
 
-	console.log('json')
 	return json
 }
 
@@ -123,7 +122,6 @@ const oboToSlate = node => {
 		json.nodes.push(codeLine)
 	})
 
-	console.log(JSON.stringify(json))
 	return json
 }
 

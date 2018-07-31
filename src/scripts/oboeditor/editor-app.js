@@ -35,7 +35,7 @@ class EditorApp extends React.Component {
 		// Make Slate nodes generate with UUIDs
 		setKeyGenerator(generateId)
 
-		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
+		this.onEditorStoreChange = () => {this.setState({ editorState: EditorStore.getState() })
 	}
 
 	componentDidMount() {
@@ -45,6 +45,7 @@ class EditorApp extends React.Component {
 		return APIUtil.getDraft(draftIdFromUrl)
 		.then(({ value: draftModel }) => {
 			this.state.model = OboModel.create(draftModel)
+			console.log(this.state.model)
 
 			EditorStore.init(
 				this.state.model,
@@ -74,12 +75,12 @@ class EditorApp extends React.Component {
 		if(this.state.loading) return <p>Loading</p>
 		return (
 			<div className={'viewer--viewer-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'}>
-				<EditorNav navState={this.state.editorState} onChange={nav => this.onNavChange(nav)}/>
+				<EditorNav navState={this.state.editorState} model={this.state.model}/>
 				<div className={'component obojobo-draft--modules--module'}>
 					<div className={'toolbar'}>
 						{'The Toolbar'}
 					</div>
-					<PageEditor page={this.state.editorState.currentModel}/>
+					<PageEditor page={this.state.editorState.currentModel} context={this.state.editorState.context}/>
 				</div>
 			</div>
 		)

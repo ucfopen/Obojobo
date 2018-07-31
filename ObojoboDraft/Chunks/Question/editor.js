@@ -88,8 +88,6 @@ const slateToObo = node => {
 		}
 	})
 
-	console.log(JSON.stringify(node.toJSON()))
-
 	return json
 }
 
@@ -98,7 +96,17 @@ const oboToSlate = node => {
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
-	json.data = { content: {} }
+	json.data = { content: node.content }
+	json.nodes = []
+
+	node.children.forEach(child => {
+		// If the current Node is a registered OboNode, use its custom converter
+		if(nodes.hasOwnProperty(child.type)){
+			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
+		} else {
+			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
+		}
+	})
 
 	return json
 }

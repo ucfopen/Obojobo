@@ -172,6 +172,15 @@ class OboModel extends Backbone.Model {
 		return json
 	}
 
+	flatJSON() {
+		let json = super.toJSON()
+		this.adapter.toJSON(this, json)
+
+		json.children = []
+
+		return json
+	}
+
 	toText() {
 		let text = this.adapter.toText(this)
 

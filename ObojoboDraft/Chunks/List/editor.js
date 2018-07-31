@@ -190,7 +190,53 @@ const oboToSlate = node => {
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
+
+	// make sure that indents exists
+	if(!node.content.listStyles.indents) node.content.listStyles.indents = {}
 	json.data = { content: node.content }
+
+	json.nodes = []
+
+	const type = node.content.listStyles.type
+	const bulletList = (type === 'unordered' ? unorderedBullets : orderedBullets)
+
+	node.content.textGroup.forEach(line => {
+		let indent = line.data ? line.data.indent : 0
+		let style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
+		let listLine = {
+			object: 'block',
+			type: LIST_LEVEL_NODE,
+			data: { content: style },
+			nodes: [{
+				object: 'block',
+				type: LIST_LINE_NODE,
+				nodes: [
+					{
+						object: 'text',
+						leaves: [
+							{
+								text: line.text.value
+							}
+						]
+					}
+				]
+			}]
+		}
+
+		while (indent > 0){
+			indent--
+			style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
+
+			listLine = {
+				object: 'block',
+				type: LIST_LEVEL_NODE,
+				data: { content: style },
+				nodes: [listLine]
+			}
+		}
+
+		json.nodes.push(listLine)
+	})
 
 	return json
 }

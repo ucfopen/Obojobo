@@ -1,6 +1,15 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--question-bank {
+	position: relative;
+	width: auto;
+	margin: .3em;
+	min-width: 9em;
+	border: 1px solid #7e18e7;
+	border-radius: .5em;
+	padding: 1em;
+	overflow: auto;
+
 	.reshuffle {
 		margin: 1rem auto;
 		text-align: center;

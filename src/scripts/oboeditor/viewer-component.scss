@@ -1,3 +1,13 @@
 @import '../../scss/includes';
 
 
+.editor {
+	position: relative;
+
+	.id-holder {
+		position: absolute;
+		top: 0;
+		left: 0;
+		color: #666666;
+	}
+}

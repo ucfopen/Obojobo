@@ -231,7 +231,42 @@ const oboToSlate = node => {
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
-	json.data = { content: {} }
+	json.data = { content: node.content }
+
+	json.nodes = []
+	const cols = node.content.textGroup.numCols
+	const hasHeader = node.content.header
+	let currRow
+
+	node.content.textGroup.textGroup.forEach((line, index) => {
+		if((index % cols) === 0){
+			currRow = {
+				object: 'block',
+				type: TABLE_ROW_NODE,
+				data: { content: { header: hasHeader && cols === 0 }},
+				nodes: []
+			}
+			json.nodes.push(currRow)
+		}
+
+		const tableCell = {
+			object: 'block',
+			type: TABLE_CELL_NODE,
+			data: { content: { header: hasHeader && index < cols }},
+			nodes: [
+				{
+					object: 'text',
+					leaves: [
+						{
+							text: line.text.value
+						}
+					]
+				}
+			]
+		}
+
+		currRow.nodes.push(tableCell)
+	})
 
 	return json
 }

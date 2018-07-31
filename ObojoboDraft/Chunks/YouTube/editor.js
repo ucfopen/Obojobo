@@ -102,7 +102,8 @@ const oboToSlate = node => {
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
-	json.data = { content: {} }
+	json.data = { content: node.content }
+	json.isVoid = true
 
 	return json
 }

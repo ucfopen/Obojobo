@@ -109,10 +109,15 @@ const slateToObo = node => {
 
 	node.nodes.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		if(child.type === MCANSWER_NODE || child.type === MCFEEDBACK_NODE){
-			json.children.push(MCAnswer.helpers.slateToObo(child))
-		} else {
-			json.children.push(DefaultNode.helpers.slateToObo(child))
+		switch(child.type) {
+			case MCANSWER_NODE:
+				json.children.push(MCAnswer.helpers.slateToObo(child))
+				break
+			case MCFEEDBACK_NODE:
+				json.children.push(MCAnswer.helpers.slateToObo(child))
+				break
+			default:
+				json.children.push(DefaultNode.helpers.slateToObo(child))
 		}
 	})
 
@@ -124,7 +129,22 @@ const oboToSlate = node => {
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
-	json.data = { content: {} }
+	json.data = { content: node.content }
+	json.nodes = []
+
+	node.children.forEach(child => {
+		// If the current Node is a registered OboNode, use its custom converter
+		switch(child.type) {
+			case MCANSWER_NODE:
+				json.nodes.push(MCAnswer.helpers.oboToSlate(child))
+				break
+			case MCFEEDBACK_NODE:
+				json.nodes.push(MCAnswer.helpers.oboToSlate(child))
+				break
+			default:
+				json.nodes.push(DefaultNode.helpers.oboToSlate(child))
+		}
+	})
 
 	return json
 }

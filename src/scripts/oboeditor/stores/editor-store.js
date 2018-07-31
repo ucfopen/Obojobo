@@ -7,6 +7,8 @@ const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
+const MODULE_NODE = 'ObojoboDraft.Modules.Module'
+
 class EditorStore extends Store {
 	constructor() {
 		let item
@@ -31,48 +33,12 @@ class EditorStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					this.gotoItem(this.state.itemsByPath[payload.value.path])
 				},
-				// @TODO may not need?
-				/*
-				'editor:setFlag': payload => {
-					let navItem = this.state.itemsById[payload.value.id]
-					navItem.flags[payload.value.flagName] = payload.value.flagValue
-					this.triggerChange()
+				'editor:deleteChild': payload => {
+					console.log('Deleting Child')
 				},
-				'editor:prev': () => {
-					oldNavTargetId = this.state.navTargetId
-					let prev = EditorUtil.getPrev(this.state)
-					if (this.gotoItem(prev)) {
-						APIUtil.postEvent(OboModel.getRoot(), 'editor:prev', '1.0.0', {
-							from: oldNavTargetId,
-							to: prev.id
-						})
-					}
-				},
-				'editor:next': () => {
-					oldNavTargetId = this.state.navTargetId
-					let next = EditorUtil.getNext(this.state)
-					if (this.gotoItem(next)) {
-						APIUtil.postEvent(OboModel.getRoot(), 'nav:next', '1.0.0', {
-							from: oldNavTargetId,
-							to: next.id
-						})
-					}
-				},
-				'editor:openExternalLink': payload => {
-					window.open(payload.value.url)
-					this.triggerChange()
-				},
-				'editor:showChildren': payload => {
-					item = this.state.itemsById[payload.value.id]
-					item.showChildren = true
-					this.triggerChange()
-				},
-				'editor:hideChildren': payload => {
-					item = this.state.itemsById[payload.value.id]
-					item.showChildren = false
-					this.triggerChange()
-				},
-				*/
+				'editor:addPage': payload => {
+					this.addPage(payload.value.newPage)
+				}
 			},
 			this
 		)
@@ -136,7 +102,7 @@ class EditorStore extends Store {
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
 		const navModel = EditorUtil.getNavTargetModel(this.state)
-		this.state.currentModel = navModel.attributes
+		this.state.currentModel = navModel
 		this.triggerChange()
 		return true
 	}
@@ -200,6 +166,17 @@ class EditorStore extends Store {
 		this.state.itemsById[model.get('id')] = navItem
 
 		return navItem
+	}
+
+	addPage(newPage) {
+		const model = this.state.currentModel.getParentOfType(MODULE_NODE)
+
+		// Add the newPage to the content
+		const pageModel = OboModel.create(newPage)
+		model.children.at(0).children.add(pageModel)
+
+		EditorUtil.rebuildMenu(model)
+		EditorUtil.goto(pageModel.id)
 	}
 }
 

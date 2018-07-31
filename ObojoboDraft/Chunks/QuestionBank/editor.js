@@ -128,7 +128,17 @@ const oboToSlate = node => {
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
-	json.data = { content: {} }
+	json.data = { content: node.content }
+	json.nodes = []
+
+	node.children.forEach(child => {
+		// If the current Node is a registered OboNode, use its custom converter
+		if(child.type === QUESTION_BANK_NODE) {
+			json.nodes.push(oboToSlate(child))
+		}else {
+			json.nodes.push(Question.helpers.oboToSlate(child))
+		}
+	})
 
 	return json
 }

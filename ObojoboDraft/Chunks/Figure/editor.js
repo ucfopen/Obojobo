@@ -225,7 +225,6 @@ const oboToSlate = node => {
 		json.nodes.push(caption)
 	})
 
-	console.log(JSON.stringify(node))
 	return json
 }
 

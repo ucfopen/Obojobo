@@ -248,7 +248,12 @@ const slateToObo = node => {
 	json.content.label = nodeContent.label
 	json.content.triggers = [{
 		type: 'onClick',
-		actions: nodeContent.actions
+		actions: nodeContent.actions.map(action => {
+			return {
+				type: action.type,
+				value: action.value !== '' ? JSON.parse(action.value) : {}
+			}
+		})
 	}]
 
 	return json
@@ -262,7 +267,21 @@ const oboToSlate = node => {
 
 	json.data = { content: {} }
 	json.data.content.label = node.content.label
-	json.data.content.actions = node.content.triggers[0].actions
+	if(!json.data.content.label){
+		node.content.textGroup.forEach(line => {
+			json.data.content.label =  line.text.value
+		})
+	}
+
+	json.data.content.actions = []
+	if(node.content.triggers) {
+		json.data.content.actions = node.content.triggers[0].actions.map(action => {
+			return {
+				type: action.type,
+				value: action.value ? JSON.stringify(action.value) : ''
+			}
+		})
+	}
 
 	return json
 }

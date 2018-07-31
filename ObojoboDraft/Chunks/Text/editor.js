@@ -52,7 +52,22 @@ const oboToSlate = node => {
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
-	json.data = { content: {} }
+	json.data = { content: node.content }
+
+	json.nodes = []
+	node.content.textGroup.forEach(line => {
+		const indent = line.data ? line.data.indent : 0
+		const textLine = {
+			object: 'text',
+			leaves: [
+				{
+					text: line.text.value
+				}
+			]
+		}
+
+		json.nodes.push(textLine)
+	})
 
 	return json
 }

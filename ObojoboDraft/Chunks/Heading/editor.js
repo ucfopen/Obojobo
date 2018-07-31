@@ -77,17 +77,21 @@ const oboToSlate = node => {
 	json.type = node.type
 	json.data = { content: {} }
 	json.data.content.level = node.content.headingLevel
-	json.nodes = [
-		{
+
+	json.nodes = []
+	node.content.textGroup.forEach(line => {
+		const headingline = {
 			object: 'text',
-			"leaves": [
+			leaves: [
 				{
-					"text":
-						node.content.textGroup[0].text.value
+					text: line.text.value
 				}
 			]
 		}
-	]
+
+		json.nodes.push(headingline)
+	})
+
 	return json
 }
 

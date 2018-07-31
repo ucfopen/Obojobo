@@ -103,21 +103,33 @@ const plugins = [
 class PageEditor extends React.Component {
 	constructor(props) {
 		super(props)
-		console.log(props.page)
 		this.state = {
-			value: Value.fromJSON(initialValue),
+			value: Value.fromJSON(this.importFromJSON()),
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		console.log('updating')
+		console.log(prevProps)
+		console.log(prevState)
+		// Save changes when switching pages
+		if(prevProps.page.id !== this.props.page.id){
+			this.exportToJSON(prevProps.page, prevState.value)
+			this.setState({value: Value.fromJSON(this.importFromJSON())})
+		}
+
+		// Save changes on current page
+		if(prevProps.context === 'editor' && this.props.context === 'saving'){
+			console.log('exporting')
+			this.exportToJSON(prevProps.page, prevState.value)
+			console.log('exported')
 		}
 	}
 
 	render() {
-		console.log('rendering')
-
-		const v = Value.fromJSON(this.importFromJSON())
-		console.log(v)
 		return (
-			<div>
-				<button onClick={() => this.exportToJSON()}>Export to JSON</button>
-				<p>{this.props.page.id}</p>
+			<div className={'editor'} >
+				<span className={'id-holder'}>{'Id: ' + this.props.page.id}</span>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
 					placeholder="Obojobo Visual Editor"
@@ -189,14 +201,12 @@ class PageEditor extends React.Component {
 		)
 	}
 
-	exportToJSON() {
-		const { value } = this.state
-
+	exportToJSON(page, value) {
 		// Build page wrapper
 		const json = {}
-		json.id = this.props.page.id
+		json.id = page.id
 		json.type = PAGE_NODE
-		json.content = this.props.page.content
+		json.content = page.content
 		json.children = []
 
 		value.document.nodes.forEach(child => {
@@ -208,7 +218,7 @@ class PageEditor extends React.Component {
 			}
 		})
 
-		console.log(json)
+		page.set('children', json.children)
 		return json
 	}
 
@@ -217,16 +227,14 @@ class PageEditor extends React.Component {
 
 		const json = { document: { nodes: [] }}
 
-		page.children.forEach(child => {
+		page.attributes.children.forEach(child => {
 			// If the current Node is a registered OboNode, use its custom converter
 			if(nodes.hasOwnProperty(child.type)){
-				console.log(child.type)
 				json.document.nodes.push(nodes[child.type].helpers.oboToSlate(child))
 			} else {
 				json.document.nodes.push(DefaultNode.helpers.oboToSlate(child))
 			}
 		})
-		console.log(JSON.stringify(json))
 		return json
 	}
 

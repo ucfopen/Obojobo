@@ -37,6 +37,13 @@ const EditorUtil = {
 			}
 		})
 	},
+	addPage(newPage) {
+		return Dispatcher.trigger('editor:addPage', {
+			value: {
+				newPage
+			}
+		})
+	},
 	gotoPath(path) {
 		return Dispatcher.trigger('editor:gotoPath', {
 			value: {
@@ -44,6 +51,51 @@ const EditorUtil = {
 			}
 		})
 	},
+	getFirst(state) {
+		let list = EditorUtil.getOrderedList(state)
+
+		for (let item of Array.from(list)) {
+			if (item.type === 'link') {
+				return item
+			}
+		}
+
+		return null
+	},
+	getNavItemForModel(state, model) {
+		let item = state.itemsById[model.get('id')]
+		if (!item) {
+			return null
+		}
+
+		return item
+	},
+	getNavLabelForModel(state, model) {
+		let item = EditorUtil.getNavItemForModel(state, model)
+		if (!item) {
+			return null
+		}
+
+		return item.label
+	},
+	getOrderedList(state) {
+		return getFlatList(state.items)
+	},
+	startSaveDraft() {
+		return Dispatcher.trigger('editor:setContext', {
+			value: {
+				context: 'saving'
+			}
+		})
+	},
+	finishSaveDraft() {
+		return Dispatcher.trigger('editor:setContext', {
+			value: {
+				context: 'editor'
+			}
+		})
+	},
+
 	setFlag(id, flagName, flagValue) {
 		return Dispatcher.trigger('editor:setFlag', {
 			value: {
@@ -109,18 +161,6 @@ const EditorUtil = {
 		return OboModel.models[navTarget.id]
 	},
 
-	getFirst(state) {
-		let list = EditorUtil.getOrderedList(state)
-
-		for (let item of Array.from(list)) {
-			if (item.type === 'link') {
-				return item
-			}
-		}
-
-		return null
-	},
-
 	getPrev(state) {
 		let list = EditorUtil.getOrderedList(state)
 		let navTarget = EditorUtil.getNavTarget(state)
@@ -184,30 +224,8 @@ const EditorUtil = {
 		return OboModel.models[nextItem.id]
 	},
 
-	getNavItemForModel(state, model) {
-		let item = state.itemsById[model.get('id')]
-		if (!item) {
-			return null
-		}
-
-		return item
-	},
-
-	getNavLabelForModel(state, model) {
-		let item = EditorUtil.getNavItemForModel(state, model)
-		if (!item) {
-			return null
-		}
-
-		return item.label
-	},
-
 	canNavigate(state) {
 		return !state.locked
-	},
-
-	getOrderedList(state) {
-		return getFlatList(state.items)
 	},
 
 	setContext(context) {
