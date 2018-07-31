@@ -67,6 +67,34 @@ class Assessment extends DraftNode {
 		}
 	}
 
+	/*
+	Filter out any incomplete attempts that have a startTime after
+	the last complete attempts' finishTime
+	This function assumes that attempts are all for the same assessment_id
+	*/
+	static filterIncompleteAttempts(attempts) {
+		let complete = attempts.filter(r => r.isFinished).sort((a, b) => a.finishTime - b.finishTime)
+
+		let incomplete = attempts.filter(r => !r.isFinished).sort((a, b) => a.startTime - b.startTime)
+
+		// no completed, return the latest incomplete
+		if (!complete.length && incomplete.length) {
+			let newestIncomplete = incomplete[incomplete.length - 1]
+			return [newestIncomplete]
+		}
+
+		if (incomplete.length) {
+			// If the last incomplete was created AFTER the last completed at date then include it too
+			let newestIncomplete = incomplete[incomplete.length - 1]
+			let newestComplete = complete[complete.length - 1]
+			if (newestIncomplete.startTime > newestComplete.finishTime) {
+				complete.push(newestIncomplete)
+			}
+		}
+
+		return complete
+	}
+
 	static getAttempts(userId, draftId, optionalAssessmentId = null) {
 		const assessments = {}
 		return db
@@ -75,7 +103,7 @@ class Assessment extends DraftNode {
 				SELECT
 					ROW_NUMBER () OVER (
 						PARTITION by ATT.assessment_id
-						ORDER BY ATT.completed_at
+						ORDER BY ATT.completed_at, ATT.created_at
 					) AS "attempt_number",
 					ATT.id AS "attempt_id",
 					ATT.assessment_id,
@@ -120,6 +148,17 @@ class Assessment extends DraftNode {
 					assessments[userAttempt.assessmentId].attempts.push(userAttempt)
 				})
 
+				/*
+					Obojobo expects there to only be one incomplete attempt at max
+					It also expects that attempt to be the most recent
+					Filter out any incomplete attempts that don't meet those requirements
+				*/
+				for (let k in assessments) {
+					let a = assessments[k]
+					a.attempts = Assessment.filterIncompleteAttempts(a.attempts)
+				}
+			})
+			.then(() => {
 				// now, get the response history for this user & draft
 				return Assessment.getResponseHistory(userId, draftId, optionalAssessmentId)
 			})
@@ -195,19 +234,20 @@ class Assessment extends DraftNode {
 	}
 
 	static getAttemptIdsForUserForDraft(userId, draftId) {
+		// Note, this must use the same sorting as getAttempts()
+		// for the attempt_number to be predictable
 		return db.manyOrNone(
 			`
 			SELECT
 			ROW_NUMBER () OVER (
 				PARTITION by assessment_id
-			  ORDER BY completed_at
+				ORDER BY completed_at, created_at
 			) AS "attempt_number",
 			id
 			FROM attempts
 			WHERE
 				user_id = $[userId]
 			AND draft_id = $[draftId]
-			ORDER BY completed_at
 			`,
 			{ userId, draftId }
 		)

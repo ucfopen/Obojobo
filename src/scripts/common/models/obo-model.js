@@ -2,7 +2,7 @@ import createUUID from '../../common/util/uuid'
 import Dispatcher from '../../common/flux/dispatcher'
 import { Store } from '../../common/store'
 
-let DefaultAdapter = {
+const DefaultAdapter = {
 	construct(attrs) {
 		return null
 	},
@@ -81,18 +81,14 @@ class OboModel extends Backbone.Model {
 
 	processTrigger(type) {
 		let index
-		let triggersToDelete = []
+		const triggersToDelete = []
 
 		for (let trigIndex = 0; trigIndex < this.triggers.length; trigIndex++) {
-			let trigger = this.triggers[trigIndex]
+			const trigger = this.triggers[trigIndex]
 			if (trigger.type === type) {
 				for (index = 0; index < trigger.actions.length; index++) {
-					let action = trigger.actions[index]
-					if (action.type === '_js') {
-						eval(action.value)
-					} else {
-						Dispatcher.trigger(action.type, action)
-					}
+					const action = trigger.actions[index]
+					Dispatcher.trigger(action.type, action)
 				}
 
 				if (trigger.run != null && trigger.run === 'once') {
@@ -102,7 +98,7 @@ class OboModel extends Backbone.Model {
 		}
 
 		return (() => {
-			let result = []
+			const result = []
 			for (index of Array.from(triggersToDelete)) {
 				result.push(this.triggers.splice(index, 1))
 			}
@@ -143,11 +139,11 @@ class OboModel extends Backbone.Model {
 		if (deep == null) {
 			deep = false
 		}
-		let clone = new OboModel(this.attributes, this.adapter.constructor)
+		const clone = new OboModel(this.attributes, this.adapter.constructor)
 		this.adapter.clone(this, clone)
 
 		if (deep && this.hasChildren()) {
-			for (let child of Array.from(this.children.models)) {
+			for (const child of Array.from(this.children.models)) {
 				clone.children.add(child.clone(true))
 			}
 		}
@@ -156,14 +152,14 @@ class OboModel extends Backbone.Model {
 	}
 
 	toJSON() {
-		let json = super.toJSON()
+		const json = super.toJSON()
 		this.adapter.toJSON(this, json)
 
 		json.children = null
 
 		if (this.hasChildren()) {
 			json.children = []
-			for (let child of Array.from(this.children.models)) {
+			for (const child of Array.from(this.children.models)) {
 				json.children.push(child.toJSON())
 			}
 		}
@@ -174,7 +170,7 @@ class OboModel extends Backbone.Model {
 	toText() {
 		let text = this.adapter.toText(this)
 
-		for (let child of Array.from(this.children.models)) {
+		for (const child of Array.from(this.children.models)) {
 			text += `\n${child.toText()}`
 		}
 
@@ -182,12 +178,12 @@ class OboModel extends Backbone.Model {
 	}
 
 	revert() {
-		let index = this.get('index')
-		let id = this.get('id')
-		let newModel = new this.constructor({})
+		const index = this.get('index')
+		const id = this.get('id')
+		const newModel = new this.constructor({})
 
-		for (let attrName in newModel.attributes) {
-			let attr = newModel.attributes[attrName]
+		for (const attrName in newModel.attributes) {
+			const attr = newModel.attributes[attrName]
 			this.set(attrName, attr)
 		}
 
@@ -253,7 +249,7 @@ class OboModel extends Backbone.Model {
 			return
 		}
 
-		let children = this.parent.children
+		const children = this.parent.children
 
 		if (children.contains(sibling)) {
 			children.remove(sibling)
@@ -267,7 +263,7 @@ class OboModel extends Backbone.Model {
 			return
 		}
 
-		let children = this.parent.children
+		const children = this.parent.children
 
 		if (children.contains(sibling)) {
 			children.remove(sibling)
@@ -281,7 +277,7 @@ class OboModel extends Backbone.Model {
 			return
 		}
 
-		let refChunk = this.parent.children.at(index)
+		const refChunk = this.parent.children.at(index)
 
 		if (index < this.getIndex()) {
 			return refChunk.addChildBefore(this)
@@ -404,7 +400,7 @@ class OboModel extends Backbone.Model {
 OboModel.models = {}
 
 OboModel.getRoot = function() {
-	for (let id in OboModel.models) {
+	for (const id in OboModel.models) {
 		return OboModel.models[id].getRoot()
 	}
 
@@ -426,15 +422,15 @@ OboModel.create = function(typeOrNameOrJson, attrs) {
 		attrs = {}
 	}
 	if (typeof typeOrNameOrJson === 'object') {
-		let oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
+		const oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
 
 		if (oboModel != null) {
-			let { children } = typeOrNameOrJson
+			const { children } = typeOrNameOrJson
 			if (children != null) {
 				// delete typeOrNameOrJson.children
 
-				for (let child of Array.from(children)) {
-					let c = OboModel.create(child)
+				for (const child of Array.from(children)) {
+					const c = OboModel.create(child)
 					// console.log 'c be', c, oboModel.children
 					oboModel.children.add(c)
 				}

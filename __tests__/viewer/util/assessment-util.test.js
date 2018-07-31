@@ -17,315 +17,315 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('getAssessmentForModel returns assesment', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: 'mockAssessment'
 			}
 		}
 
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 
 		expect(assessment).toEqual('mockAssessment')
 	})
 
 	test('getAssessmentForModel returns with no parent assesment', () => {
-		let model = {
+		const model = {
 			get: jest.fn().mockReturnValueOnce('mockType'),
 			getParentOfType: jest.fn().mockReturnValueOnce(null)
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: 'mockAssessment'
 			}
 		}
 
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 
 		expect(assessment).toEqual(null)
 	})
 
 	test('getAssessmentForModel returns with no state assessments', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {}
 		}
 
-		let assessment = AssessmentUtil.getAssessmentForModel(state, model)
+		const assessment = AssessmentUtil.getAssessmentForModel(state, model)
 
 		expect(assessment).toEqual(null)
 	})
 
 	test('getLastAttemptForModel returns null when no assessment', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {}
 		}
 
-		let attempt = AssessmentUtil.getLastAttemptForModel(state, model)
+		const attempt = AssessmentUtil.getLastAttemptForModel(state, model)
 
 		expect(attempt).toEqual(null)
 	})
 
 	test('getLastAttemptForModel returns 0 when no attempts', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: [] }
 			}
 		}
 
-		let attempt = AssessmentUtil.getLastAttemptForModel(state, model)
+		const attempt = AssessmentUtil.getLastAttemptForModel(state, model)
 
 		expect(attempt).toEqual(0)
 	})
 
 	test('getLastAttemptForModel returns attempt', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: ['mockAttempt'] }
 			}
 		}
 
-		let assessment = AssessmentUtil.getLastAttemptForModel(state, model)
+		const assessment = AssessmentUtil.getLastAttemptForModel(state, model)
 
 		expect(assessment).toEqual('mockAttempt')
 	})
 
 	test('getHighestAttemptsForModelByAssessmentScore returns empty when no assessment', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {}
 		}
 
-		let attempt = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+		const attempt = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
 
 		expect(attempt).toEqual([])
 	})
 
 	test('getHighestAttemptsForModelByAssessmentScore returns high scores', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { highestAssessmentScoreAttempts: 'mockHighest' }
 			}
 		}
 
-		let attempt = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+		const attempt = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
 
 		expect(attempt).toEqual('mockHighest')
 	})
 
 	test('getHighestAttemptsForModelByAttemptScore returns empty when no assessment', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {}
 		}
 
-		let attempt = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(state, model)
+		const attempt = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(state, model)
 
 		expect(attempt).toEqual([])
 	})
 
 	test('getHighestAttemptsForModelByAttemptScore returns high scores', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { highestAttemptScoreAttempts: 'mockHighest' }
 			}
 		}
 
-		let attempt = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(state, model)
+		const attempt = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(state, model)
 
 		expect(attempt).toEqual('mockHighest')
 	})
 
 	test('getAssessmentScoreForModel returns null when no attempts', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {}
 		}
 
-		let score = AssessmentUtil.getAssessmentScoreForModel(state, model)
+		const score = AssessmentUtil.getAssessmentScoreForModel(state, model)
 
 		expect(score).toEqual(null)
 	})
 
 	test('getAssessmentScoreForModel returns highest score', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { highestAssessmentScoreAttempts: [{ assessmentScore: 'mockScore' }] }
 			}
 		}
 
-		let score = AssessmentUtil.getAssessmentScoreForModel(state, model)
+		const score = AssessmentUtil.getAssessmentScoreForModel(state, model)
 
 		expect(score).toEqual('mockScore')
 	})
 
 	test('getLastAttemptScoresForModel returns null with no assessment', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {}
 		}
 
-		let scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
+		const scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
 
 		expect(scores).toEqual(null)
 	})
 
 	test('getLastAttemptScoresForModel returns empty with no attempts', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: [] }
 			}
 		}
 
-		let scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
+		const scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
 
 		expect(scores).toEqual([])
 	})
 
 	test('getLastAttemptScoresForModel returns scores of last attempt', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: [{ questionScores: 'mockScores' }] }
 			}
 		}
 
-		let scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
+		const scores = AssessmentUtil.getLastAttemptScoresForModel(state, model)
 
 		expect(scores).toEqual('mockScores')
 	})
 
 	test('getCurrentAttemptForModel returns null with no assessment', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {}
 		}
 
-		let attempt = AssessmentUtil.getCurrentAttemptForModel(state, model)
+		const attempt = AssessmentUtil.getCurrentAttemptForModel(state, model)
 
 		expect(attempt).toEqual(null)
 	})
 
 	test('getCurrentAttemptForModel returns current attempt', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { current: 'mockCurrent' }
 			}
 		}
 
-		let attempt = AssessmentUtil.getCurrentAttemptForModel(state, model)
+		const attempt = AssessmentUtil.getCurrentAttemptForModel(state, model)
 
 		expect(attempt).toEqual('mockCurrent')
 	})
 
 	test('getAllAttempts returns all attempts', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: 'mockAttempts' }
 			}
 		}
 
-		let attempts = AssessmentUtil.getAllAttempts(state, model)
+		const attempts = AssessmentUtil.getAllAttempts(state, model)
 
 		expect(attempts).toEqual('mockAttempts')
 	})
 
 	test('getAttemptsRemaining returns number of attempts avalible', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -334,19 +334,19 @@ describe('AssessmentUtil', () => {
 				attempts: 12
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: [] }
 			}
 		}
 
-		let attemptsRemaining = AssessmentUtil.getAttemptsRemaining(state, model)
+		const attemptsRemaining = AssessmentUtil.getAttemptsRemaining(state, model)
 
 		expect(attemptsRemaining).toEqual(12)
 	})
 
 	test('hasAttemptsRemaining returns if attempts are avalible', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -355,19 +355,19 @@ describe('AssessmentUtil', () => {
 				attempts: 12
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: [] }
 			}
 		}
 
-		let attemptsRemaining = AssessmentUtil.hasAttemptsRemaining(state, model)
+		const attemptsRemaining = AssessmentUtil.hasAttemptsRemaining(state, model)
 
 		expect(attemptsRemaining).toEqual(true)
 	})
 
 	test('getLTIStateForModel returns null with no assessment', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -376,17 +376,17 @@ describe('AssessmentUtil', () => {
 				attempts: 12
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {}
 		}
 
-		let ltiState = AssessmentUtil.getLTIStateForModel(state, model)
+		const ltiState = AssessmentUtil.getLTIStateForModel(state, model)
 
 		expect(ltiState).toEqual(null)
 	})
 
 	test('getLTIStateForModel returns if attempts are avalible', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -395,27 +395,27 @@ describe('AssessmentUtil', () => {
 				attempts: 12
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: {
 					lti: 'mockLTI',
 					ltiNetworkState: 'mockNetworkState',
-					ltiErrorCount: 'mockErrors'
+					ltiResyncState: 'mockResyncState'
 				}
 			}
 		}
 
-		let ltiState = AssessmentUtil.getLTIStateForModel(state, model)
+		const ltiState = AssessmentUtil.getLTIStateForModel(state, model)
 
 		expect(ltiState).toEqual({
 			state: 'mockLTI',
 			networkState: 'mockNetworkState',
-			errorCount: 'mockErrors'
+			resyncState: 'mockResyncState'
 		})
 	})
 
 	test('isLTIScoreNeedingToBeResynced returns false with no gradebook', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -424,7 +424,7 @@ describe('AssessmentUtil', () => {
 				attempts: 12
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: {
 					lti: {}
@@ -432,13 +432,13 @@ describe('AssessmentUtil', () => {
 			}
 		}
 
-		let ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
+		const ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
 
 		expect(ltiState).toEqual(false)
 	})
 
 	test('isLTIScoreNeedingToBeResynced returns false if synced', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -447,7 +447,7 @@ describe('AssessmentUtil', () => {
 				attempts: 12
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: {
 					lti: { gradebookStatus: GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT }
@@ -472,7 +472,7 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('isLTIScoreNeedingToBeResynced returns true if not synced', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -481,7 +481,7 @@ describe('AssessmentUtil', () => {
 				attempts: 12
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: {
 					lti: { gradebookStatus: 'mockStatus' }
@@ -489,24 +489,24 @@ describe('AssessmentUtil', () => {
 			}
 		}
 
-		let ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
+		const ltiState = AssessmentUtil.isLTIScoreNeedingToBeResynced(state, model)
 
 		expect(ltiState).toEqual(true)
 	})
 
 	test('getResponseCount returns the number of questions with responses', () => {
-		let models = [{}, {}]
+		const models = [{}, {}]
 
 		QuestionUtil.getResponse.mockReturnValueOnce(false).mockReturnValueOnce(true)
 
-		let count = AssessmentUtil.getResponseCount(models)
+		const count = AssessmentUtil.getResponseCount(models)
 
 		expect(QuestionUtil.getResponse).toHaveBeenCalledTimes(2)
 		expect(count).toBe(1)
 	})
 
 	test('isCurrentAttemptComplete returns null if no attempt', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -515,19 +515,19 @@ describe('AssessmentUtil', () => {
 				attempts: 12
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: {}
 			}
 		}
 
-		let isComplete = AssessmentUtil.isCurrentAttemptComplete(state, null, model)
+		const isComplete = AssessmentUtil.isCurrentAttemptComplete(state, null, model)
 
 		expect(isComplete).toEqual(null)
 	})
 
 	test('isCurrentAttemptComplete returns true when every question is answered', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
@@ -543,7 +543,7 @@ describe('AssessmentUtil', () => {
 				})
 			}
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { current: 'mockCurrent' }
 			}
@@ -551,96 +551,101 @@ describe('AssessmentUtil', () => {
 
 		QuestionUtil.getResponse.mockReturnValueOnce(true).mockReturnValueOnce(true)
 
-		let isComplete = AssessmentUtil.isCurrentAttemptComplete(state, null, model)
+		const isComplete = AssessmentUtil.isCurrentAttemptComplete(state, null, model)
 
 		expect(isComplete).toEqual(true)
 	})
 
 	test('isInAssessment returns false without a state', () => {
-		let inside = AssessmentUtil.isInAssessment()
+		const inside = AssessmentUtil.isInAssessment()
 
 		expect(inside).toEqual(false)
 	})
 
 	test('isInAssessment returns false without assessments', () => {
-		let state = {
+		const state = {
 			assessments: {}
 		}
-		let inside = AssessmentUtil.isInAssessment(state)
+		const inside = AssessmentUtil.isInAssessment(state)
 
 		expect(inside).toEqual(false)
 	})
 
 	test('isInAssessment returns true with current assessment', () => {
-		let state = {
+		const state = {
 			assessments: {
 				assess1: { current: null },
 				assess2: { current: true }
 			}
 		}
-		let inside = AssessmentUtil.isInAssessment(state)
+		const inside = AssessmentUtil.isInAssessment(state)
 
 		expect(inside).toEqual(true)
 	})
 
 	test('getNumberOfAttemptsCompletedForModel returns 0 when no attempts', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: [] }
 			}
 		}
 
-		let completedAttempts = AssessmentUtil.getNumberOfAttemptsCompletedForModel(state, model)
+		const completedAttempts = AssessmentUtil.getNumberOfAttemptsCompletedForModel(state, model)
 
 		expect(completedAttempts).toEqual(0)
 	})
 
 	test('getNumberOfAttemptsCompletedForModel returns number of attempts', () => {
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce(TYPE_ASSESSMENT)
 				.mockReturnValueOnce('testId')
 		}
-		let state = {
+		const state = {
 			assessments: {
 				testId: { attempts: [{}, {}, {}] }
 			}
 		}
 
-		let completedAttempts = AssessmentUtil.getNumberOfAttemptsCompletedForModel(state, model)
+		const completedAttempts = AssessmentUtil.getNumberOfAttemptsCompletedForModel(state, model)
 
 		expect(completedAttempts).toEqual(3)
 	})
 
 	test('getNumCorrect returns correct questions', () => {
-		let questionScores = [{ score: 100 }, { score: 0 }, { score: 100 }]
+		const questionScores = [{ score: 100 }, { score: 0 }, { score: 100 }]
 
-		let correct = AssessmentUtil.getNumCorrect(questionScores)
+		const correct = AssessmentUtil.getNumCorrect(questionScores)
 		expect(correct).toEqual(2)
 	})
 
 	test('findHighestAttempts returns empty if no attempts', () => {
-		let highest = AssessmentUtil.findHighestAttempts([])
+		const highest = AssessmentUtil.findHighestAttempts([])
 
 		expect(highest).toEqual([])
 	})
 
 	test('findHighestAttempts returns highest scores', () => {
-		let attempts = [{ mockScore: 100 }, { mockScore: null }, { mockScore: 68 }, { mockScore: 100 }]
-		let highest = AssessmentUtil.findHighestAttempts(attempts, 'mockScore')
+		const attempts = [
+			{ mockScore: 100 },
+			{ mockScore: null },
+			{ mockScore: 68 },
+			{ mockScore: 100 }
+		]
+		const highest = AssessmentUtil.findHighestAttempts(attempts, 'mockScore')
 
 		expect(highest).toEqual([{ mockScore: 100 }, { mockScore: 100 }])
 	})
 
 	test('startAttempt calls assessment:startAttempt', () => {
-		let model = {
+		const model = {
 			get: jest.fn().mockReturnValueOnce('testId')
 		}
 
@@ -653,7 +658,7 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('endAttempt calls assessment:endAttempt', () => {
-		let model = {
+		const model = {
 			get: jest.fn().mockReturnValueOnce('testId')
 		}
 
@@ -666,7 +671,7 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('resendLTIScore calls assessment:resendLTIScore', () => {
-		let model = {
+		const model = {
 			get: jest.fn().mockReturnValueOnce('testId')
 		}
 
