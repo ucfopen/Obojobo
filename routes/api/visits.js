@@ -10,7 +10,7 @@ const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
 
 const getDraftAndStartVisitProps = (req, res, draftDocument) => {
-	let visitStartReturnExtensionsProps = {}
+	const visitStartReturnExtensionsProps = {}
 
 	return draftDocument
 		.yell(
@@ -36,8 +36,8 @@ router.post('/start', (req, res, next) => {
 	let visitStartReturnExtensionsProps
 	let launch
 
-	let visitId = req.body.visitId
-	let draftId = req.body.draftId
+	const visitId = req.body.visitId
+	const draftId = req.body.draftId
 
 	logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
 
@@ -77,7 +77,7 @@ router.post('/start', (req, res, next) => {
 		})
 		.then(launchResult => {
 			launch = launchResult
-			let { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
+			const { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
 
 			return insertEvent({
 				action: 'visit:start',
@@ -106,7 +106,7 @@ router.post('/start', (req, res, next) => {
 			)
 
 			// Build lti data for return
-			let lti = { lis_outcome_service_url: null }
+			const lti = { lis_outcome_service_url: null }
 			if (visit.is_preview === false) {
 				lti.lis_outcome_service_url = launch.reqVars.lis_outcome_service_url
 			}

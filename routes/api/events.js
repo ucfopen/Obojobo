@@ -53,13 +53,11 @@ router.post('/', (req, res, next) => {
 				})
 				.catch(err => {
 					logger.error('Insert Event Failure:', err)
-					// @TODO change to call next(err)
 					res.unexpected(err)
 				})
 		})
 		.catch(err => {
 			logger.error(err)
-			// @TODO change to call next(err)
 			res.notAuthorized(err)
 		})
 })

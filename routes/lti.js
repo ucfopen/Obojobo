@@ -1,12 +1,12 @@
-let express = require('express')
-let router = express.Router()
-let config = oboRequire('config')
-let ltiLaunch = oboRequire('express_lti_launch')
+const express = require('express')
+const router = express.Router()
+const config = oboRequire('config')
+const ltiLaunch = oboRequire('express_lti_launch')
 
 // LTI Instructions
 // mounted as /lti/
 router.get('/', (req, res, next) => {
-	let hostname = config.general.hostname
+	const hostname = config.general.hostname
 	res.render('lti_launch_static', {
 		title: 'Obojobo LTI Launch',
 		xml_url: `https://${hostname}/lti/config.xml`,
@@ -22,8 +22,8 @@ router.get('/', (req, res, next) => {
 router.get('/config.xml', (req, res, next) => {
 	res.type('xml')
 
-	let hostname = config.general.hostname
-	let viewParams = {
+	const hostname = config.general.hostname
+	const viewParams = {
 		title: 'Obojobo Next',
 		description: 'Advanced Learning Modules',
 		domain: hostname.split(':')[0],
@@ -43,7 +43,7 @@ router.post('/canvas/course_navigation', [ltiLaunch.courseNavlaunch], (req, res,
 		.getCurrentUser(true)
 		.then(user => {
 			if (!user.canViewEditor) {
-				res.status(403).send('Unauthorized') //@TODO
+				res.status(403).send('Unauthorized')
 				return
 			}
 
@@ -57,14 +57,14 @@ router.post('/canvas/course_navigation', [ltiLaunch.courseNavlaunch], (req, res,
 // this is an array because we want to add
 // the lit launch assignmentSelection middleware
 // to all times this is executed
-let showModuleSelector = [
+const showModuleSelector = [
 	ltiLaunch.assignmentSelection,
 	(req, res, next) => {
 		return req
 			.getCurrentUser(true)
 			.then(user => {
 				if (!user.canViewEditor) {
-					res.status(403).send('Unauthorized') //@TODO
+					res.status(403).send('Unauthorized')
 					return
 				}
 

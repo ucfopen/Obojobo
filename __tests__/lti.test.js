@@ -1157,7 +1157,6 @@ describe('lti', () => {
 		})
 	})
 
-	//@TODO
 	test('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', done => {
 		mockSendAssessScoreDBCalls('missing', 1, moment().toISOString(), true, true)
 		mockDate()
