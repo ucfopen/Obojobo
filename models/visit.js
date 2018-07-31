@@ -1,10 +1,10 @@
-let db = require('../db')
-let logger = require('../logger.js')
+const db = require('../db')
+const logger = require('../logger.js')
 
 // use to initiate a new visit for a draft
 // this will deactivate old visits, preventing
 // them from being used again
-let deactivateOldVisitsAndCreateNewVisit = (
+const deactivateOldVisitsAndCreateNewVisit = (
 	userId,
 	draftId,
 	resourceLinkId,
@@ -64,19 +64,19 @@ let deactivateOldVisitsAndCreateNewVisit = (
 class Visit {
 	constructor(visitProps) {
 		// expand all the visitProps onto this object
-		for (let prop in visitProps) {
+		for (const prop in visitProps) {
 			this[prop] = visitProps[prop]
 		}
 	}
 
-	static fetchById(visitId) {
+	static fetchById(visitId, onlyFetchIfActive = true) {
 		return db
 			.one(
 				`
 			SELECT is_active, is_preview, draft_content_id
 			FROM visits
 			WHERE id = $[visitId]
-			AND is_active = true
+			${onlyFetchIfActive ? 'AND is_active = true' : ''}
 			ORDER BY created_at DESC
 			LIMIT 1
 		`,
@@ -84,7 +84,7 @@ class Visit {
 			)
 			.then(result => new Visit(result))
 			.catch(error => {
-				logger.error('Visit fetchById Error', error.message)
+				logger.error('Visit fetchById Error', visitId, error.message)
 				return Promise.reject(error)
 			})
 	}

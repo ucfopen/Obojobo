@@ -92,7 +92,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			return Visit.fetchById(req.params.visitId)
+			return Visit.fetchById(req.params.visitId, false)
 		})
 		.then(visit => {
 			const { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)

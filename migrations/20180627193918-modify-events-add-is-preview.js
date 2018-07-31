@@ -93,6 +93,7 @@ exports.up = function(db) {
 						}
 
 						if (i === 0) {
+							console.error(launchesForUserAndDraft, event.id, event.created_at)
 							throw 'Unable to find launch for event - event is before any launch! ' + event.id
 						}
 
