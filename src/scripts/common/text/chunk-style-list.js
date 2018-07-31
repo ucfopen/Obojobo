@@ -109,7 +109,6 @@ class ChunkStyleList {
 			right: []
 		}
 
-		//@TODO - optimize
 		for (let style of Array.from(this.styles)) {
 			let curComparison = style.compareToRange(from, to)
 			if (type === null || style.type === type) {
@@ -220,8 +219,6 @@ class ChunkStyleList {
 	// 6. Continue to add up numbers that you discover
 	// 7. When your total is a 0 that ends the range
 	normalize() {
-		//@TODO - possible to improve runtime if we sort the styles?
-
 		let i, styleType
 		this.cleanupSuperscripts()
 
@@ -232,7 +229,6 @@ class ChunkStyleList {
 		// [b: [b], i: [i], a: [google, microsoft]]
 		let datasToCheck = {}
 		let dataValues = {}
-		//@TODO - is it ok here to rely on this object's order?
 		for (let styleName in StyleType) {
 			styleType = StyleType[styleName]
 			datasToCheck[styleType] = []
@@ -259,8 +255,6 @@ class ChunkStyleList {
 				let start = null
 
 				for (let range of Array.from(this.styles)) {
-					// range.invalidate() if range.length() is 0 #<-----@TODO
-
 					if (range.isMergeable(styleType, data)) {
 						if (tmp[range.start] == null) {
 							tmp[range.start] = 0

@@ -63,7 +63,7 @@ import TextGroupCursor from './text-group/text-group-cursor'
 import TextGroupItem from './text-group/text-group-item'
 import TextGroupSelection from './text-group/text-group-selection'
 import TextGroupUtil from './text-group/text-group-util'
-import Console from './util/console' // @TODO
+import Console from './util/console'
 import HtmlUtil from './util/html-util'
 import ModalUtil from './util/modal-util'
 import FocusUtil from './util/focus-util'

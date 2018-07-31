@@ -1,7 +1,7 @@
-let DraftNode = oboRequire('models/draft_node')
-let db = oboRequire('db')
-let lti = oboRequire('lti')
-let logger = oboRequire('logger')
+const DraftNode = oboRequire('models/draft_node')
+const db = oboRequire('db')
+const lti = oboRequire('lti')
+const logger = oboRequire('logger')
 
 class Assessment extends DraftNode {
 	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
@@ -96,8 +96,7 @@ class Assessment extends DraftNode {
 	}
 
 	static getAttempts(userId, draftId, optionalAssessmentId = null) {
-		let assessments = {}
-
+		const assessments = {}
 		return db
 			.manyOrNone(
 				`
@@ -135,7 +134,7 @@ class Assessment extends DraftNode {
 				// turn array of results from the query into a nested object
 				// { assessment1: { id: 'assessment1', attempts: [{} , {}] }, ... }
 				attempts.forEach(attempt => {
-					let userAttempt = Assessment.createUserAttempt(userId, draftId, attempt)
+					const userAttempt = Assessment.createUserAttempt(userId, draftId, attempt)
 
 					// create new assessment object if we don't have one yet
 					if (!assessments[userAttempt.assessmentId]) {
@@ -168,14 +167,14 @@ class Assessment extends DraftNode {
 				// history is keyed by attemptId
 				// find the matching attemptID in assessments.<id>.attempts[ {attemptId:<attemptId>}, ...]
 				// and place our responses into the userAttempt objects in assessments
-				for (let attemptId in responseHistory) {
-					let responsesForAttempt = responseHistory[attemptId]
+				for (const attemptId in responseHistory) {
+					const responsesForAttempt = responseHistory[attemptId]
 
 					// loop through responses in this attempt
 					responsesForAttempt.forEach(response => {
 						if (!assessments[response.assessment_id]) return
 
-						let attemptForResponse = assessments[response.assessment_id].attempts.find(
+						const attemptForResponse = assessments[response.assessment_id].attempts.find(
 							x => x.attemptId === response.attempt_id
 						)
 
@@ -198,9 +197,9 @@ class Assessment extends DraftNode {
 				lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, draftId, optionalAssessmentId)
 			)
 			.then(ltiStates => {
-				let assessmentsArr = Object.keys(assessments).map(k => assessments[k]) //@TODO: Use Object.values if node >= 7
+				const assessmentsArr = Object.keys(assessments).map(k => assessments[k])
 				assessmentsArr.forEach(assessmentItem => {
-					let ltiState = ltiStates[assessmentItem.assessmentId]
+					const ltiState = ltiStates[assessmentItem.assessmentId]
 
 					if (!ltiState) {
 						assessmentItem.ltiState = null
@@ -256,7 +255,7 @@ class Assessment extends DraftNode {
 
 	static getAttemptNumber(userId, draftId, attemptId) {
 		return Assessment.getAttemptIdsForUserForDraft(userId, draftId).then(attempts => {
-			for (let attempt of attempts) {
+			for (const attempt of attempts) {
 				if (attempt.id === attemptId) return attempt.attempt_number
 			}
 
@@ -293,7 +292,7 @@ class Assessment extends DraftNode {
 				{ userId, draftId, optionalAssessmentId }
 			)
 			.then(result => {
-				let history = {}
+				const history = {}
 
 				result.forEach(row => {
 					if (!history[row.attempt_id]) history[row.attempt_id] = []
@@ -338,8 +337,6 @@ class Assessment extends DraftNode {
 			}
 		)
 	}
-
-	// @TODO: most things touching the db should end up in models. figure this out
 
 	// Finish an attempt and write a new assessment score record
 	static completeAttempt(

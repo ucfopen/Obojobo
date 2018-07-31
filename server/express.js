@@ -5,7 +5,6 @@ const db = oboRequire('db')
 const Assessment = require('./assessment')
 const lti = oboRequire('lti')
 const logger = oboRequire('logger')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 const startAttempt = require('./attempt-start').startAttempt
 const endAttempt = require('./attempt-end').endAttempt
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
@@ -36,8 +35,8 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 	let currentDocument = null
 	let ltiScoreResult
 	let assessmentScoreId
-	let draftId = req.body.draftId
-	let assessmentId = req.body.assessmentId
+	const draftId = req.body.draftId
+	const assessmentId = req.body.assessmentId
 
 	return req
 		.requireCurrentUser()
@@ -85,7 +84,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			let isPreviewing = currentUser.canViewEditor
+			const isPreviewing = currentUser.canViewEditor
 			return endAttempt(req, res, currentUser, currentDocument, req.params.attemptId, isPreviewing)
 		})
 		.then(resp => {
@@ -110,7 +109,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			let isPreviewing = currentUser.canViewEditor
+			const isPreviewing = currentUser.canViewEditor
 
 			if (!isPreviewing) throw 'Not in preview mode'
 
@@ -149,7 +148,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 			attemptIds = attemptIdsResult
 
 			return db.tx(transaction => {
-				let queries = []
+				const queries = []
 
 				if (assessmentScoreIds.length > 0) {
 					queries.push(
@@ -218,8 +217,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -244,8 +242,7 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -271,8 +268,7 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -299,8 +295,6 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 
 oboEvents.on('client:question:setResponse', (event, req) => {
 	const eventRecordResponse = 'client:question:setResponse'
-	// @TODO: check perms
-	// @TODO: better input sanitizing
 
 	return Promise.resolve()
 		.then(() => {
