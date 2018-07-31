@@ -186,6 +186,7 @@ const slateToObo = node => {
 	})
 
 	json.content.textGroup.push(captionLine)
+	json.children = []
 
 	return json
 }

@@ -89,6 +89,7 @@ const slateToObo = node => {
 
 		json.content.textGroup.push(codeLine)
 	})
+	json.children = []
 
 	return json
 }

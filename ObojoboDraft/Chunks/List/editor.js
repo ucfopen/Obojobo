@@ -181,6 +181,7 @@ const slateToObo = node => {
 	node.nodes.forEach(level => {
 		flattenLevels(level, 0, json.content.textGroup, json.content.listStyles.indents)
 	})
+	json.children = []
 
 	return json
 }

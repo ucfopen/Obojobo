@@ -1,6 +1,7 @@
 import React from 'react'
 
 import EditorUtil from './util/editor-util'
+import APIUtil from '../viewer/util/api-util'
 import generateId from './generate-ids'
 
 class EditorNav extends React.Component {
@@ -64,60 +65,7 @@ class EditorNav extends React.Component {
 
 	}
 
-	/*
-	postCurrentlyEditingDraft(draftContent) {
-		var mime
-		// try to parse JSON, if it works we assume we're sending JSON.
-		// otherwise send as plain text in the hopes that it's XML
-		try
-		{
-			JSON.parse(draftContent)
-			mime = 'application/json'
-		}
-		catch(e)
-		{
-			mime = 'text/plain'
-		}
-		fetch('/api/drafts/' + editingDraftId, {
-			method: 'POST',
-			credentials: 'include',
-			body: draftContent,
-			headers: {
-				'Accept': mime,
-				'Content-Type': mime
-			}
-		})
-		.then(function(res) {
-			switch (res.status) {
-				case 200:
-					res.json().then(function(json) {
-						if (json.value.id) alert('Saved! (' + json.value.id + ')')
-						else {
-							alert('Error: ' + error)
-							console.error(error)
-						}
-					})
-					break
-				default:
-					res.json().then(function(json) {
-						alert('Error: ' + json.value.message + ' (' + res.status + ')')
-					})
-					.catch(function(e) {
-						alert('Error: ' + res.statusText + ' (' + res.status + ')')
-					})
-					break
-			}
-		})
-		.catch(function(error) {
-			alert('Error: ' + error)
-			console.error(error)
-		})
-	}
-	*/
-
 	saveDraft() {
-		EditorUtil.startSaveDraft()
-
 		const json = this.props.model.flatJSON()
 
 		// deal with content
@@ -142,8 +90,11 @@ class EditorNav extends React.Component {
 		console.log(assessmentJSON)
 		json.children.push(assessmentJSON)
 
+		console.log(JSON.stringify(json))
 
-		EditorUtil.finishSaveDraft()
+		APIUtil.postDraft(this.props.draftId, json).then(result => {
+			console.log(result)
+		})
 	}
 
 	renderLabel(label) {

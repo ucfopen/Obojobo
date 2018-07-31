@@ -256,6 +256,7 @@ const slateToObo = node => {
 		})
 	}]
 
+	json.children = []
 	return json
 }
 

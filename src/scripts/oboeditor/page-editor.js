@@ -22,6 +22,7 @@ import MCAssessment from '../../../ObojoboDraft/Chunks/MCAssessment/editor'
 import MCChoice from '../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/editor'
 import MCAnswer from '../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
 import MCFeedback from '../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
+import Page from '../../../ObojoboDraft/Pages/Page/editor'
 import DefaultNode from './default-node'
 import BasicMark from './marks/basic-mark'
 
@@ -71,6 +72,7 @@ const nodes = {
 	'ObojoboDraft.Chunks.MCAssessment.MCChoice': MCChoice,
 	'ObojoboDraft.Chunks.MCAssessment.MCAnswer': MCAnswer,
 	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': MCFeedback,
+	'ObojoboDraft.Pages.Page': Page,
 }
 
 const plugins = [
@@ -109,9 +111,6 @@ class PageEditor extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log('updating')
-		console.log(prevProps)
-		console.log(prevState)
 		// Save changes when switching pages
 		if(prevProps.page.id !== this.props.page.id){
 			this.exportToJSON(prevProps.page, prevState.value)

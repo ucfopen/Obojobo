@@ -13,6 +13,7 @@ const slateToObo = node => {
   json.id = node.key
   json.type = node.type
   if (node.data) json.content = node.data.get('content') || {}
+  json.children = []
 
   return json
 }
@@ -24,7 +25,6 @@ const oboToSlate = node => {
   json.type = node.type
   json.data = { content: node.content }
 
-  console.log(json)
   return json
 }
 
