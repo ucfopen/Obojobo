@@ -41,10 +41,6 @@
 		button {
 			background-color: $color-dangerous;
 			border-bottom: 1px solid darken($color-action, 20%);
-
-			&:disabled {
-				@include disabled();
-			}
 		}
 	}
 

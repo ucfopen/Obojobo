@@ -14,16 +14,8 @@
 			border-bottom-right-radius: $dimension-rounded-radius;
 		}
 
-		&:not(:last-child) > *:not(.prev) > .obojobo-draft--components--button > button {
+		&:not(:last-child) > .obojobo-draft--components--button > button {
 			border-right: none;
-		}
-
-		&.is-selected {
-			> .obojobo-draft--components--button > button {
-				background-color: $color-highlight;
-				color: $color-bg;
-				z-index: 1;
-			}
 		}
 
 		> .obojobo-draft--components--button > button {
@@ -34,12 +26,12 @@
 			}
 		}
 
-		&:first-child.prev > .obojobo-draft--components--button > button {
-			transform: rotateY(180deg);
-			border-top-left-radius: 0;
-			border-bottom-left-radius: 0;
-			border-top-right-radius: $dimension-rounded-radius;
-			border-bottom-right-radius: $dimension-rounded-radius;
+		&.is-selected {
+			> .obojobo-draft--components--button > button {
+				background-color: $color-highlight;
+				color: $color-bg;
+				z-index: 1;
+			}
 		}
 	}
 }

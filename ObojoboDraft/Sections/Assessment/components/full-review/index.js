@@ -1,8 +1,6 @@
 import Viewer from 'Viewer'
 import Common from 'Common'
 
-import React from 'react'
-
 import ReviewIcon from '../review-icon'
 import formatDate from 'date-fns/format'
 
@@ -16,7 +14,7 @@ const { Button, ButtonBar, MoreInfoButton } = Common.components
 
 class AssessmentReviewView extends React.Component {
 	componentDidMount() {
-		const lastAttempt = AssessmentUtil.getLastAttemptForModel(
+		let lastAttempt = AssessmentUtil.getLastAttemptForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
@@ -25,13 +23,13 @@ class AssessmentReviewView extends React.Component {
 	}
 
 	render() {
-		const attemptReviewComponents = {}
+		let attemptReviewComponents = {}
 
-		const attempts = AssessmentUtil.getAllAttempts(
+		let attempts = AssessmentUtil.getAllAttempts(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		const highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(
+		let highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
@@ -41,11 +39,11 @@ class AssessmentReviewView extends React.Component {
 			allAttempts: attempts
 		})
 
-		const attemptReviewComponent = (attempt, assessment, isAHighestScoringNonNullAttempt) => {
-			const dateString = formatDate(new Date(attempt.finishTime), 'M/D/YY [at] h:mma')
-			const numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
+		let attemptReviewComponent = (attempt, assessment, isAHighestScoringNonNullAttempt) => {
+			let dateString = formatDate(new Date(attempt.finishTime), 'M/D/YY [at] h:mma')
+			let numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
 
-			const report = scoreReporter.getReportFor(attempt.attemptNumber)
+			let report = scoreReporter.getReportFor(attempt.attemptNumber)
 
 			let attemptScoreSummary = Math.round(attempt.attemptScore) + '%'
 			if (attempt.attemptScore !== attempt.assessmentScore) {
@@ -108,11 +106,11 @@ class AssessmentReviewView extends React.Component {
 			)
 		}
 
-		const getSelectedIndex = () => {
-			const context = this.props.moduleData.navState.context
+		let getSelectedIndex = () => {
+			let context = this.props.moduleData.navState.context
 
-			for (const i in attempts) {
-				const attempt = attempts[i]
+			for (let i in attempts) {
+				let attempt = attempts[i]
 
 				if (context === `assessmentReview:${attempt.attemptId}`) {
 					return parseInt(i, 10)
@@ -122,8 +120,15 @@ class AssessmentReviewView extends React.Component {
 			return attempts.length - 1
 		}
 
-		const attemptButtons = attempts.map((attempt, index) => {
-			return <Button key={index}>{attempt.attemptNumber}</Button>
+		let attemptButtons = attempts.map((attempt, index) => {
+			return (
+				<Button
+					onClick={() => NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)}
+					key={index}
+				>
+					{attempt.attemptNumber}
+				</Button>
+			)
 		})
 
 		attempts.forEach(attempt => {
@@ -134,11 +139,6 @@ class AssessmentReviewView extends React.Component {
 			)
 		})
 
-		const onButtonBarChangeSelectedItem = selectedIndex => {
-			const attempt = attempts[selectedIndex]
-			NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)
-		}
-
 		return (
 			<div className="attempt-review-container">
 				<div
@@ -146,12 +146,7 @@ class AssessmentReviewView extends React.Component {
 						attemptButtons.length <= 1 ? 'is-showing-one-item' : null
 					}`}
 				>
-					<ButtonBar
-						altAction
-						onChangeSelectedItem={onButtonBarChangeSelectedItem}
-						selectedIndex={getSelectedIndex()}
-						maxItems={15}
-					>
+					<ButtonBar altAction selectedIndex={getSelectedIndex()}>
 						{attemptButtons}
 					</ButtonBar>
 				</div>
