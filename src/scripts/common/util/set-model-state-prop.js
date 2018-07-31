@@ -14,16 +14,18 @@ const setProp = setModelStateProp.bind(this, model, attrs)
 // setProp(propName, defaultValue, getPropValueFn, allowedValues)
 setProp('type', 'media', p => (p.toLowerCase() === 'webpage' ? 'webpage' : 'media'), ['webpage', 'media'])
 
-//// Values
+//// arguments
 
-propName is the value of `type` from `attrs.content.type`. note `.type` is the value `propName`
+propName is the property from from `attrs.content`, in our example: `attrs.content.type`
+.
 defaultValue is used if:
  1. `attrs.content.type` is null or undefined
  2. getPropValueFn returns null
  3. getPropValueFn returns a value that isnt in allowedValues (if set)
 
-getPropValueFN is used to alter the incoming value of `attrs.content.type` before it's tested agains allowed values. `p` set to the value of `attrs.content.type`
+getPropValueFN is used to alter the incoming value of `attrs.content.type` before it's tested against allowed values. `p` set to the value of `attrs.content.type`
 
+allowedValues is an array of the only valid values.  If, after processing through getPrpValueFN, the value isn't in this list, the default value is used
 */
 export default (
 	model,
