@@ -1,23 +1,17 @@
-//@TODO
-//Need a way to generate a Response from an assessment:setResponse but I don't know the ID of the insert on attempts_question_responses
-//don't like the fact that there's question:setResponse and assessment:setResponse
-//the setting of the actor seems very haphazard
-//should all of these be in one file?
-
-let { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
-let { getSessionIds } = require('./caliper_utils')
+const { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
+const { getSessionIds } = require('./caliper_utils')
 
 module.exports = req => {
-	let caliperEvents = require('./create_caliper_event')(req, null, true)
-	let currentUser = req.currentUser || { id: null }
-	let currentDocument = req.currentDocument || { draftId: null, contentId: null }
-	let clientEvent = req.body.event
-	let isPreviewMode = currentUser.canViewEditor
+	const caliperEvents = require('./create_caliper_event')(req, null, true)
+	const currentUser = req.currentUser || { id: null }
+	const currentDocument = req.currentDocument || { draftId: null, contentId: null }
+	const clientEvent = req.body.event
+	const isPreviewMode = currentUser.canViewEditor
 	let sessionId, launchId
-	let sessionIds = getSessionIds(req.session)
+	const sessionIds = getSessionIds(req.session)
 
-	let actorFromType = type => {
-		let actor = { type }
+	const actorFromType = type => {
+		const actor = { type }
 		if (type === ACTOR_USER) actor.id = currentUser.id
 		return actor
 	}
