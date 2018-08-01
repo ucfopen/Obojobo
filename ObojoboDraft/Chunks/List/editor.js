@@ -132,6 +132,17 @@ const toggleNode = change => {
 			})
 	}
 }
+const insertNode = change => {
+	change
+		.insertBlock({
+			type: LIST_NODE,
+			data: { content: { listStyles: { type: 'unordered' }}}
+		})
+		.collapseToStartOfNextText()
+		.focus()
+
+	console.log('here')
+}
 
 const flattenLevels = (node, currLevel, textGroup, indents) => {
 	const indent = node.data.get('content')
@@ -378,9 +389,18 @@ const plugins = {
 							})
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.setNodeByKey(
+							if(child.object === 'block'){
+								return change.setNodeByKey(
+									child.key,
+									LIST_LINE_NODE
+								)
+							}
+
+							return change.wrapBlockByKey(
 								child.key,
-								{ type: LIST_LINE_NODE }
+								{
+									type: LIST_LINE_NODE
+								}
 							)
 						}
 						case CHILD_REQUIRED: {
@@ -406,6 +426,7 @@ const List = {
 	helpers: {
 		isType,
 		toggleNode,
+		insertNode,
 		slateToObo,
 		oboToSlate,
 	},

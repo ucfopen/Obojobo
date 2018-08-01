@@ -13,6 +13,16 @@ const Node = props => {
 	)
 }
 
+const insertNode = change => {
+	change
+		.insertBlock({
+			type: TEXT_NODE,
+			data: { content: { indent: 0 }}
+		})
+		.collapseToStartOfNextText()
+		.focus()
+}
+
 const slateToObo = node => {
 	const json = {}
 	json.id = node.key
@@ -120,6 +130,7 @@ const Text = {
 		Node,
 	},
 	helpers: {
+		insertNode,
 		slateToObo,
 		oboToSlate
 	},

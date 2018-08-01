@@ -38,6 +38,18 @@ class EditorStore extends Store {
 				},
 				'editor:addPage': payload => {
 					this.addPage(payload.value.newPage)
+				},
+				'editor:deletePage': payload => {
+					this.deletePage(payload.value.pageId)
+				},
+				'editor:moveUpPage': payload => {
+					this.moveUpPage(payload.value.pageId)
+				},
+				'editor:moveDownPage': payload => {
+					this.moveDownPage(payload.value.pageId)
+				},
+				'editor:renamePage': payload => {
+					this.renamePage(payload.value.pageId, payload.value.name)
 				}
 			},
 			this
@@ -92,7 +104,6 @@ class EditorStore extends Store {
 				navTargetModel.processTrigger('onNavExit')
 			}
 			this.state.navTargetHistory.push(this.state.navTargetId)
-			this.state.itemsById[this.state.navTargetId].showChildren = false
 		}
 
 		if (navItem.showChildrenOnNavigation) {
@@ -103,6 +114,7 @@ class EditorStore extends Store {
 		this.state.navTargetId = navItem.id
 		const navModel = EditorUtil.getNavTargetModel(this.state)
 		this.state.currentModel = navModel
+		console.log(this.state.navTargetId)
 		this.triggerChange()
 		return true
 	}
@@ -169,7 +181,7 @@ class EditorStore extends Store {
 	}
 
 	addPage(newPage) {
-		const model = this.state.currentModel.getParentOfType(MODULE_NODE)
+		const model = OboModel.getRoot()
 
 		// Add the newPage to the content
 		const pageModel = OboModel.create(newPage)
@@ -177,6 +189,28 @@ class EditorStore extends Store {
 
 		EditorUtil.rebuildMenu(model)
 		EditorUtil.goto(pageModel.id)
+	}
+
+	deletePage(pageId) {
+		const model = this.state.currentModel.getParentOfType(MODULE_NODE)
+
+		OboModel.models[pageId].remove()
+
+		EditorUtil.rebuildMenu(model)
+
+		this.state.currentModel = null
+		this.triggerChange()
+	}
+
+	moveUpPage(pageId) {
+		const model = OboModel.models[pageId].moveTo()
+
+		EditorUtil.rebuildMenu(model)
+		// @TODO what if we delete the last page?, or the start page
+
+		EditorUtil.goto(model.modelState.start)
+		this.state.currentModel = null
+		this.triggerChange()
 	}
 }
 

@@ -181,12 +181,14 @@ class Node extends React.Component {
 	}
 }
 
-const toggleNode = change => {
+const insertNode = change => {
 	change
 		.insertBlock({
 			type: TABLE_NODE,
 			data: { content: { header: true, textGroup: { numRows: 1, numCols: 1 } } }
 		})
+		.collapseToStartOfNextText()
+		.focus()
 }
 
 const slateToObo = node => {
@@ -345,7 +347,7 @@ const Table = {
 		Cell
 	},
 	helpers: {
-		toggleNode,
+		insertNode,
 		slateToObo,
 		oboToSlate
 	},

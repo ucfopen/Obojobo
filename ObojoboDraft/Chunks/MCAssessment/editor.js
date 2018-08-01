@@ -6,7 +6,7 @@ const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 import MCChoice from './MCChoice/editor'
-import DefaultNode from '../../../src/scripts/oboeditor/default-node'
+import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 
 class Node extends React.Component {
 	constructor(props) {
@@ -109,8 +109,6 @@ const slateToObo = node => {
 			json.children.push(DefaultNode.helpers.slateToObo(child))
 		}
 	})
-
-	if(correct < 1) throw 'A question must have at least one answer'
 
 	if(correct > 1 && json.content.responseType === 'pick-one'){
 		json.content.responseType = 'pick-one-multiple-correct'

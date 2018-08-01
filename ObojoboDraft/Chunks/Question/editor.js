@@ -26,7 +26,7 @@ import Table from '../Table/editor'
 import Text from '../Text/editor'
 import YouTube from '../YouTube/editor'
 import MCAssessment from '../MCAssessment/editor'
-import DefaultNode from '../../../src/scripts/oboeditor/default-node'
+import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 
 const nodes = {
 	'ObojoboDraft.Chunks.Break': Break,

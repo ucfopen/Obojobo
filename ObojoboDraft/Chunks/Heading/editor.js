@@ -71,6 +71,16 @@ const slateToObo = node => {
 	return json
 }
 
+const insertNode = change => {
+	change
+		.insertBlock({
+			type: HEADING_NODE,
+			data: { content: { level: 2 }}
+		})
+		.collapseToStartOfNextText()
+		.focus()
+}
+
 const oboToSlate = node => {
 	const json = {}
 	json.object = 'block'
@@ -118,6 +128,7 @@ const Heading = {
 	},
 	helpers: {
 		toggleNode,
+		insertNode,
 		slateToObo,
 		oboToSlate,
 	},

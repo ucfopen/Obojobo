@@ -123,7 +123,7 @@ class Node extends React.Component {
 				className={'component'}
 			{...this.props.attributes} >
 				<div className={`obojobo-draft--chunks--figure viewer ` + this.state.size}>
-					{isSelected ? this.renderEditToolbar(): null}
+					{this.renderEditToolbar()}
 					<div className={'container'}>
 						{isCustom ?
 							<img

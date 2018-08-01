@@ -32,12 +32,17 @@
 	}
 
 	.equation-editor {
+		positon: relative;
 		overflow: auto;
 
 		div {
 			float: left;
 			width: 50%;
 			text-align: center;
+		}
+
+		input {
+			position: static;
 		}
 	}
 }

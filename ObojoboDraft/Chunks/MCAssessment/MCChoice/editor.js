@@ -8,7 +8,7 @@ const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 
 import MCAnswer from '../MCAnswer/editor'
 import MCFeedback from '../MCFeedback/editor'
-import DefaultNode from '../../../../src/scripts/oboeditor/default-node'
+import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
 
 class Feedback extends React.Component {
 	delete() {

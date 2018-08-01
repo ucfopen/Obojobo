@@ -1,8 +1,10 @@
 import React from 'react'
 
-import EditorUtil from './util/editor-util'
-import APIUtil from '../viewer/util/api-util'
-import generateId from './generate-ids'
+import EditorUtil from '../util/editor-util'
+import APIUtil from '../../viewer/util/api-util'
+import generateId from '../generate-ids'
+
+import './editor-nav.scss'
 
 class EditorNav extends React.Component {
 	constructor(props) {
@@ -12,6 +14,7 @@ class EditorNav extends React.Component {
 
 	onClick(item) {
 		EditorUtil.gotoPath(item.fullPath)
+		this.setState({ navTargetId: item.id })
 	}
 
 	addPage() {
@@ -57,12 +60,11 @@ class EditorNav extends React.Component {
 		}
 
 		EditorUtil.addPage(newPage)
-		console.log(newPage)
-		this.setState({navTargetId: newPage.id})
+		this.setState({ navTargetId: newPage.id })
 	}
 
-	deletePage() {
-
+	deletePage(pageId) {
+		EditorUtil.deletePage(pageId)
 	}
 
 	saveDraft() {
@@ -80,17 +82,13 @@ class EditorNav extends React.Component {
 			})
 		}
 
-		console.log(contentJSON)
 		json.children.push(contentJSON)
 
 		const assessment = this.props.model.children.at(1) // deal with assessment
 		const assessmentJSON = assessment.flatJSON()
 		assessmentJSON.children =  assessment.get('children')
 
-		console.log(assessmentJSON)
 		json.children.push(assessmentJSON)
-
-		console.log(JSON.stringify(json))
 
 		APIUtil.postDraft(this.props.draftId, json).then(result => {
 			console.log(result)
@@ -99,6 +97,18 @@ class EditorNav extends React.Component {
 
 	renderLabel(label) {
 		return <a>{label}</a>
+	}
+
+	renderDropDown(item) {
+		return (
+			<div className={'dropdown'}>
+				<span className={'drop-arrow'}>▼</span>
+				<div className={'drop-content'}>
+					<button>Edit Name</button>
+					<button onClick={() => this.deletePage(item.id)}>Delete</button>
+				</div>
+			</div>
+		)
 	}
 
 	renderLink(index, isSelected, list) {
@@ -115,6 +125,7 @@ class EditorNav extends React.Component {
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
 				{this.renderLabel(item.label)}
+				{this.renderDropDown(item)}
 			</li>
 		)
 	}

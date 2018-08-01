@@ -44,6 +44,13 @@ const EditorUtil = {
 			}
 		})
 	},
+	deletePage(pageId) {
+		return Dispatcher.trigger('editor:deletePage', {
+			value: {
+				pageId
+			}
+		})
+	},
 	gotoPath(path) {
 		return Dispatcher.trigger('editor:gotoPath', {
 			value: {

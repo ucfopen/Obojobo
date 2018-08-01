@@ -1,0 +1,31 @@
+@import '../../../scss/includes';
+
+
+.viewer--components--nav {
+	.dropdown {
+		float: right;
+		overflow: auto;
+
+		&:hover {
+			.drop-content {
+				display: block;
+			}
+		}
+
+		.drop-content {
+			display: none;
+			position: absolute;
+			background-color: #f9f9f9;
+			right: 0;
+			z-index: 1;
+
+			button {
+				display: block;
+				border: none;
+				width: 100%;
+				background: $color-obojobo-blue;
+				color: $color-bg;
+			}
+		}
+	}
+}

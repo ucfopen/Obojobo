@@ -17,7 +17,7 @@ import MCAssessment from '../../Chunks/MCAssessment/editor'
 import MCChoice from '../../Chunks/MCAssessment/MCChoice/editor'
 import MCAnswer from '../../Chunks/MCAssessment/MCAnswer/editor'
 import MCFeedback from '../../Chunks/MCAssessment/MCFeedback/editor'
-import DefaultNode from '../../../src/scripts/oboeditor/default-node'
+import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 

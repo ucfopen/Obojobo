@@ -1,4 +1,5 @@
 import React from 'react'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -53,6 +54,13 @@ const toggleNode = change => {
 			.setBlocks(CODE_LINE_NODE)
 			.wrapBlock(CODE_NODE)
 	}
+}
+
+const insertNode = change => {
+	change
+		.insertBlock(CODE_NODE)
+		.collapseToStartOfNextText()
+		.focus()
 }
 
 const slateToObo = node => {
@@ -173,7 +181,27 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Code': {
-				nodes: [{ types: [CODE_LINE_NODE] }]
+				nodes: [{ types: [CODE_LINE_NODE] }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_TYPE_INVALID: {
+							return change.wrapBlockByKey(
+								child.key,
+								{
+									type: CODE_LINE_NODE,
+									data: { content: { indent: 0 }}
+								}
+							)
+						}
+						case CHILD_REQUIRED: {
+							const block = Block.create({
+								type: CODE_LINE_NODE,
+								data: { content: { indent: 0 }}
+							})
+							return change.insertNodeByKey(node.key, index, block)
+						}
+					}
+				}
 			},
 			'ObojoboDraft.Chunks.Code.CodeLine': {
 				nodes: [{ objects: ['text'] }]
@@ -190,6 +218,7 @@ const Code = {
 	helpers: {
 		isType,
 		toggleNode,
+		insertNode,
 		slateToObo,
 		oboToSlate,
 	},

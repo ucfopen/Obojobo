@@ -2,29 +2,28 @@ import React from 'react'
 
 import { Value, Schema } from 'slate'
 import { Editor } from 'slate-react'
-//import EditCode from 'slate-edit-code'
-import initialValue from './value.json'
+import initialValue from '../documents/value.json'
 
-import ActionButton from '../../../ObojoboDraft/Chunks/ActionButton/editor'
-import Break from '../../../ObojoboDraft/Chunks/Break/editor'
-import Code from '../../../ObojoboDraft/Chunks/Code/editor'
-import Figure from '../../../ObojoboDraft/Chunks/Figure/editor'
-import Heading from '../../../ObojoboDraft/Chunks/Heading/editor'
-import IFrame from '../../../ObojoboDraft/Chunks/IFrame/editor'
-import List from '../../../ObojoboDraft/Chunks/List/editor'
-import MathEquation from '../../../ObojoboDraft/Chunks/MathEquation/editor'
-import Table from '../../../ObojoboDraft/Chunks/Table/editor'
-import Text from '../../../ObojoboDraft/Chunks/Text/editor'
-import YouTube from '../../../ObojoboDraft/Chunks/YouTube/editor'
-import QuestionBank from '../../../ObojoboDraft/Chunks/QuestionBank/editor'
-import Question from '../../../ObojoboDraft/Chunks/Question/editor'
-import MCAssessment from '../../../ObojoboDraft/Chunks/MCAssessment/editor'
-import MCChoice from '../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/editor'
-import MCAnswer from '../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
-import MCFeedback from '../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
-import Page from '../../../ObojoboDraft/Pages/Page/editor'
+import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
+import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
+import Code from '../../../../ObojoboDraft/Chunks/Code/editor'
+import Figure from '../../../../ObojoboDraft/Chunks/Figure/editor'
+import Heading from '../../../../ObojoboDraft/Chunks/Heading/editor'
+import IFrame from '../../../../ObojoboDraft/Chunks/IFrame/editor'
+import List from '../../../../ObojoboDraft/Chunks/List/editor'
+import MathEquation from '../../../../ObojoboDraft/Chunks/MathEquation/editor'
+import Table from '../../../../ObojoboDraft/Chunks/Table/editor'
+import Text from '../../../../ObojoboDraft/Chunks/Text/editor'
+import YouTube from '../../../../ObojoboDraft/Chunks/YouTube/editor'
+import QuestionBank from '../../../../ObojoboDraft/Chunks/QuestionBank/editor'
+import Question from '../../../../ObojoboDraft/Chunks/Question/editor'
+import MCAssessment from '../../../../ObojoboDraft/Chunks/MCAssessment/editor'
+import MCChoice from '../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/editor'
+import MCAnswer from '../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
+import MCFeedback from '../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
+import Page from '../../../../ObojoboDraft/Pages/Page/editor'
 import DefaultNode from './default-node'
-import BasicMark from './marks/basic-mark'
+import BasicMark from '../marks/basic-mark'
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
@@ -111,23 +110,38 @@ class PageEditor extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		// Deal with deleted page
+		if(this.props.page === null){
+			return
+		}
+		if(prevProps.page === null){
+			this.setState({value: Value.fromJSON(this.importFromJSON())})
+			return
+		}
+
 		// Save changes when switching pages
 		if(prevProps.page.id !== this.props.page.id){
 			this.exportToJSON(prevProps.page, prevState.value)
 			this.setState({value: Value.fromJSON(this.importFromJSON())})
-		}
-
-		// Save changes on current page
-		if(prevProps.context === 'editor' && this.props.context === 'saving'){
-			console.log('exporting')
-			this.exportToJSON(prevProps.page, prevState.value)
-			console.log('exported')
+			return
 		}
 	}
 
+	renderEmpty() {
+		return <p>No content avalible, click on a page to start editing</p>
+	}
+
 	render() {
+		if(this.props.page === null) return this.renderEmpty()
+
 		return (
 			<div className={'editor'} >
+				<div className={'toolbar'}>
+					{Object.entries(nodes).map(item => {
+						return this.buildButton(item)
+					})}
+				</div>
+
 				<span className={'id-holder'}>{'Id: ' + this.props.page.id}</span>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
@@ -160,43 +174,22 @@ class PageEditor extends React.Component {
 		}
 	}
 
-	toggleBlock(toggleType) {
+	insertBlock(item) {
 		const { value } = this.state
 		const change = value.change()
 
-		if(nodes.hasOwnProperty(toggleType)){
-			// Either toggle or insert the node
-			if(nodes[toggleType].helpers.toggleNode){
-				nodes[toggleType].helpers.toggleNode(change)
-			} else {
-				nodes[toggleType].helpers.insertNode(change)
-			}
-		} else {
-			DefaultNode.helpers.toggleNode(change, toggleType)
-		}
+		item[1].helpers.insertNode(change)
 
 		this.onChange(change)
 	}
 
-	hasBlock(type) {
-		const { value } = this.state
-
-		if (type === CODE_NODE) {
-			return Code.helpers.isType(value.change())
-		}
-		return value.blocks.some(node => node.type === type)
-	}
-
-	renderBlockButton(nodeType, display, defaultType) {
-		const isActive = this.hasBlock(nodeType)
-
+	buildButton(item) {
 		return (
-			<Button
-				active={isActive}
-				onMouseDown={() => this.toggleBlock(nodeType, defaultType)}
-			>
-				<p>{display}</p>
-			</Button>
+			<button
+				key={item[0]}
+				onClick={() => this.insertBlock(item)}>
+				{item[0]}
+			</button>
 		)
 	}
 
@@ -239,7 +232,7 @@ class PageEditor extends React.Component {
 
 	renderExportButton() {
 		return (
-			<Button onMouseDown={() => this.exportToJSON()}>
+			<Button onClick={() => this.exportToJSON()}>
 				<p>{'Export To Obojobo'}</p>
 			</Button>
 		)
