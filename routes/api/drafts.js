@@ -66,6 +66,7 @@ router.post('/:draftId', (req, res, next) => {
 			// (hopefully) XML if sent as text
 			switch (typeof req.body) {
 				case 'object':
+					console.log('got here')
 					reqInput = req.body
 					break
 

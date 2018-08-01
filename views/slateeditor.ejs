@@ -24,7 +24,9 @@
 </head>
 
 <body>
-	<div id="viewer-app" style="opacity: 100;"></div>
+	<div id="viewer-app">
+		<p>Footer</p>
+	</div>
 	<%
 		if (typeof inlines !== 'undefined')
 		{
@@ -41,7 +43,7 @@
 			<% })
 		}
 	%>
-	<script>window.__oboEditorRender()</script>
+	<script>console.log("sitting in base"); window.__oboEditorRender()</script>
 </body>
 
 </html>

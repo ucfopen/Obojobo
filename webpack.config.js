@@ -37,7 +37,8 @@ module.exports = (env, argv) => {
 				`${docEngineBasePath}/common.css`,
 				`${docEngineBasePath}/viewer.js`,
 				`${docEngineBasePath}/viewer.css`,
-				`${docEngineBasePath}/viewer-app.js`
+				`${docEngineBasePath}/viewer-app.js`,
+				`${docEngineBasePath}/viewer-app.css`
 			].concat(getInstalledModules(is_production ? 'production' : 'development').assets)
 		},
 		module: {
