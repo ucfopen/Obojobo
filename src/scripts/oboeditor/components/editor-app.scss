@@ -24,10 +24,15 @@
 		top: .5em;
 		right: 2em;
 		z-index: 999;
-		background-color: $color-obojobo-blue;
-		border-radius: $dimension-rounded-radius;
-		padding: .3em;
-		color: $color-bg;
+
+		button {
+			display: block;
+			background-color: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			margin: .3em;
+			font-size: 1.3em;
+			color: $color-bg;
+		}
 
 		&:hover {
 			.drop-content {

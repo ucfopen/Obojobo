@@ -151,7 +151,7 @@ class PageEditor extends React.Component {
 		return (
 			<div className={'editor'} >
 				<div className={'dropdown'}>
-					<span>+ Insert Node</span>
+					<button>+ Insert Node</button>
 					<div className={'drop-content'}>
 						{Object.entries(nodes).map(item => {
 							return this.buildButton(item)
