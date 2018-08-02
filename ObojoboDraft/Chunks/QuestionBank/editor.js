@@ -129,6 +129,11 @@ const oboToSlate = node => {
 	json.key = node.id
 	json.type = node.type
 	json.data = { content: node.content }
+	if(!json.data.content.choose
+		|| json.data.content.choose === 'all'
+		|| json.data.content.choose === Infinity) {
+		json.data.content.choose = node.children.length
+	}
 	json.nodes = []
 
 	node.children.forEach(child => {

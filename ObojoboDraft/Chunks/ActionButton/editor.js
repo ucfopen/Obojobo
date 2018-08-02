@@ -66,7 +66,7 @@ class Trigger extends React.Component {
 				<div>
 					<p>{this.props.value}</p>
 				</div>
-				<button onClick={() => this.deleteTrigger()}>x</button>
+				<button className={'delete'} onClick={() => this.deleteTrigger()}>x</button>
 			</div>
 		)
 	}

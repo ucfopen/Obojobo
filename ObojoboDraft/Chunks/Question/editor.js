@@ -104,16 +104,12 @@ const oboToSlate = node => {
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		console.log('converting ' + child.type)
 		if(nodes.hasOwnProperty(child.type)){
 			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
 		} else {
 			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
 		}
 	})
-
-	console.log(node)
-	console.log(json)
 
 	return json
 }
