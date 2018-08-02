@@ -2,12 +2,20 @@
 
 
 .editor {
-	position: relative;
-
-	.id-holder {
-		position: absolute;
+	margin-top: 6em;
+	.toolbar {
+		position: fixed;
 		top: 0;
-		left: 0;
-		color: #666666;
+		z-index: 999;
+		width: inherit;
+		background: $color-obojobo-blue;
+	}
+
+	.exporter {
+		position: fixed;
+		bottom: 1em;
+		left: 1em;
+		z-index: 999;
+		font-size: inherit;
 	}
 }

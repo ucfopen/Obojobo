@@ -83,11 +83,11 @@ class Node extends React.Component {
 	}
 	render(){
 		return (
-			<form className={'component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored'} {...this.props.attributes}>
+			<div className={'component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored'} {...this.props.attributes}>
 				<span className={'instructions'}>{'Pick all of the correct answers'} </span>
 				{this.props.children}
 				{this.renderContent()}
-			</form>
+			</div>
 		)
 	}
 }

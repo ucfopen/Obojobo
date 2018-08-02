@@ -19,7 +19,7 @@ class EditorNav extends React.Component {
 
 	addPage() {
 		const label = window.prompt('Enter the title for the new page:')
-			|| ('Page '+this.state.list.length)
+			|| ('Default Page')
 
 		const newPage = {
 			id: generateId(),
@@ -35,7 +35,7 @@ class EditorNav extends React.Component {
 						textGroup: [
 							{
 								text: {
-									value: label
+									value: "Add a Title Here"
 								}
 							}
 						]
@@ -65,6 +65,17 @@ class EditorNav extends React.Component {
 
 	deletePage(pageId) {
 		EditorUtil.deletePage(pageId)
+	}
+
+	renamePage(pageId) {
+		const label = window.prompt('Enter the title for the new page:')
+			|| (pageId)
+		EditorUtil.renamePage(pageId, label)
+	}
+
+	moveUpPage(pageId) {
+		console.log('clicked')
+		EditorUtil.moveUpPage(pageId)
 	}
 
 	saveDraft() {
@@ -104,8 +115,10 @@ class EditorNav extends React.Component {
 			<div className={'dropdown'}>
 				<span className={'drop-arrow'}>▼</span>
 				<div className={'drop-content'}>
-					<button>Edit Name</button>
+					<button onClick={() => this.moveUpPage(item.id)}>Move Up</button>
+					<button onClick={() => this.renamePage(item.id)}>Edit Name</button>
 					<button onClick={() => this.deletePage(item.id)}>Delete</button>
+					<button>{'Id: '+ item.id}</button>
 				</div>
 			</div>
 		)

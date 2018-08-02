@@ -3,6 +3,7 @@ import React from 'react'
 import { Value, Schema } from 'slate'
 import { Editor } from 'slate-react'
 import initialValue from '../documents/value.json'
+import APIUtil from '../../viewer/util/api-util'
 
 import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
 import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
@@ -74,6 +75,14 @@ const nodes = {
 	'ObojoboDraft.Pages.Page': Page,
 }
 
+const dontInsert = [
+	'ObojoboDraft.Chunks.MCAssessment',
+	'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+	'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+	'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+	'ObojoboDraft.Pages.Page',
+]
+
 const plugins = [
 	BasicMark({ type: BOLD_MARK, key: 'b' }),
 	BasicMark({ type: ITALIC_MARK, key: 'i' }),
@@ -141,8 +150,6 @@ class PageEditor extends React.Component {
 						return this.buildButton(item)
 					})}
 				</div>
-
-				<span className={'id-holder'}>{'Id: ' + this.props.page.id}</span>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
 					placeholder="Obojobo Visual Editor"
@@ -151,6 +158,7 @@ class PageEditor extends React.Component {
 					renderMark={props => this.renderMark(props)}
 					plugins={plugins}
 				/>
+				{this.renderExportButton()}
 			</div>
 		)
 	}
@@ -184,6 +192,7 @@ class PageEditor extends React.Component {
 	}
 
 	buildButton(item) {
+		if(dontInsert.includes(item[0])) return null
 		return (
 			<button
 				key={item[0]}
@@ -196,9 +205,6 @@ class PageEditor extends React.Component {
 	exportToJSON(page, value) {
 		// Build page wrapper
 		const json = {}
-		json.id = page.id
-		json.type = PAGE_NODE
-		json.content = page.content
 		json.children = []
 
 		value.document.nodes.forEach(child => {
@@ -232,10 +238,41 @@ class PageEditor extends React.Component {
 
 	renderExportButton() {
 		return (
-			<Button onClick={() => this.exportToJSON()}>
-				<p>{'Export To Obojobo'}</p>
-			</Button>
+			<button className={'exporter'} onClick={() => this.saveDraft()}>
+				{'Save Document'}
+			</button>
 		)
+	}
+
+	saveDraft() {
+		this.exportToJSON(this.props.page, this.state.value)
+		const json = this.props.model.flatJSON()
+
+		// deal with content
+		const content = this.props.model.children.at(0)
+		const contentJSON = content.flatJSON()
+		for(let child of Array.from(content.children.models)){
+			contentJSON.children.push({
+				id: child.get('id'),
+				type: child.get('type'),
+				content: child.get('content'),
+				children: child.get('children')
+			})
+		}
+
+		json.children.push(contentJSON)
+
+		const assessment = this.props.model.children.at(1) // deal with assessment
+		const assessmentJSON = assessment.flatJSON()
+		assessmentJSON.children =  assessment.get('children')
+
+		json.children.push(assessmentJSON)
+
+		APIUtil.postDraft(this.props.draftId, json).then(result => {
+			if(result.status === 'ok'){
+				window.alert('Successfully saved draft')
+			}
+		})
 	}
 }
 

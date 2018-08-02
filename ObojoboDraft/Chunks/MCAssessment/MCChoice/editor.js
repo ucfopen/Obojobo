@@ -10,42 +10,6 @@ import MCAnswer from '../MCAnswer/editor'
 import MCFeedback from '../MCFeedback/editor'
 import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
 
-class Feedback extends React.Component {
-	delete() {
-		const editor = this.props.editor
-		const change = editor.value.change()
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
-	}
-	render(){
-		return (
-			<div className={'obojobo-draft--chunks--feedback'} {...this.props.attributes}>
-				<button className={'delete'} onClick={() => this.delete()}>X</button>
-				<p className={'label'} contentEditable={false}>{'Feedback'}</p>
-				{this.props.children}
-			</div>
-		)
-	}
-}
-
-class Answer extends React.Component {
-	delete() {
-		const editor = this.props.editor
-		const change = editor.value.change()
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
-	}
-	render(){
-		return (
-			<div className={'obojobo-draft--chunks--answer'} {...this.props.attributes}>
-				{this.props.children}
-			</div>
-		)
-	}
-}
-
 class Node extends React.Component {
 	constructor(props) {
 		super(props);
@@ -60,13 +24,15 @@ class Node extends React.Component {
 		editor.onChange(change)
 	}
 	handleScoreChange(event){
+		event.stopPropagation()
 		const editor = this.props.editor
 		const change = editor.value.change()
+		const newScore = this.state.score === 100 ? 0 : 100
 
-		this.setState({ score: event.target.checked ? 100 : 0 })
+		this.setState({score: newScore})
 
 		change.setNodeByKey(this.props.node.key, { data: { content: {
-			score: event.target.checked ? 100 : 0
+			score: newScore
 		}}})
 		editor.onChange(change)
 	}
@@ -83,12 +49,15 @@ class Node extends React.Component {
 	}
 	render(){
 		const hasFeedback = this.props.node.nodes.size === 2
+		let className =
+			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
+			isOrNot(this.state.score === 100, 'correct')
 		return (
 			<div
-				className={'component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-practice'}
+				className={className}
 				{...this.props.attributes}>
 				<button className={'delete'} onClick={event => this.delete(event)}>X</button>
-				<input type="checkbox" checked={this.state.score === 100} onChange={event => this.handleScoreChange(event)}/>
+				<button className={'correct-button'} onClick={event => this.handleScoreChange(event)}>{this.state.score === 100 ? '✔' : '✖' }</button>
 				<div className={'children'}>
 					<div>
 						{this.props.children}
@@ -193,14 +162,17 @@ const plugins = {
 const MCChoice = {
 	components: {
 		Node,
-		Answer,
-		Feedback
 	},
 	helpers: {
 		slateToObo,
 		oboToSlate,
 	},
 	plugins
+}
+
+const isOrNot = (item, text) => {
+	if(item) return ' is-'+text
+	return ' is-not-'+text
 }
 
 export default MCChoice

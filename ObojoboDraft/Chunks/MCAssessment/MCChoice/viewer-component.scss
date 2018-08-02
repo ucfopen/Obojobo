@@ -93,4 +93,24 @@
 	&:hover {
 		background: transparentize($color-highlight, 0.85);
 	}
+
+	.correct-button {
+		position: relative;
+		top: 1em;
+		left: 1em;
+		font-size: inherit;
+		background: transparent;
+	}
+
+	&.is-correct {
+		.correct-button {
+			color: $color-correct;
+		}
+	}
+
+	&.is-not-correct {
+		.correct-button {
+			color: $color-incorrect;
+		}
+	}
 }
