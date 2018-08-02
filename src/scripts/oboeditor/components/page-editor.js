@@ -10,6 +10,7 @@ import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
 import Code from '../../../../ObojoboDraft/Chunks/Code/editor'
 import Figure from '../../../../ObojoboDraft/Chunks/Figure/editor'
 import Heading from '../../../../ObojoboDraft/Chunks/Heading/editor'
+import HTML from '../../../../ObojoboDraft/Chunks/HTML/editor'
 import IFrame from '../../../../ObojoboDraft/Chunks/IFrame/editor'
 import List from '../../../../ObojoboDraft/Chunks/List/editor'
 import MathEquation from '../../../../ObojoboDraft/Chunks/MathEquation/editor'
@@ -31,6 +32,7 @@ const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
@@ -60,6 +62,7 @@ const nodes = {
 	'ObojoboDraft.Chunks.Code': Code,
 	'ObojoboDraft.Chunks.Figure': Figure,
 	'ObojoboDraft.Chunks.Heading': Heading,
+	'ObojoboDraft.Chunks.HTML': HTML,
 	'ObojoboDraft.Chunks.IFrame': IFrame,
 	'ObojoboDraft.Chunks.List': List,
 	'ObojoboDraft.Chunks.MathEquation': MathEquation,
@@ -76,6 +79,7 @@ const nodes = {
 }
 
 const dontInsert = [
+	'ObojoboDraft.Chunks.HTML',
 	'ObojoboDraft.Chunks.MCAssessment',
 	'ObojoboDraft.Chunks.MCAssessment.MCChoice',
 	'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
@@ -107,7 +111,8 @@ const plugins = [
 	MCAssessment.plugins,
 	MCChoice.plugins,
 	MCAnswer.plugins,
-	MCFeedback.plugins
+	MCFeedback.plugins,
+	HTML.plugins
 ]
 
 class PageEditor extends React.Component {

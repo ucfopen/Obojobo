@@ -6,6 +6,7 @@ const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
@@ -19,6 +20,7 @@ import Break from '../../Break/editor'
 import Code from '../../Code/editor'
 import Figure from '../../Figure/editor'
 import Heading from '../../Heading/editor'
+import HTML from '../../HTML/editor'
 import IFrame from '../../IFrame/editor'
 import List from '../../List/editor'
 import MathEquation from '../../MathEquation/editor'
@@ -38,6 +40,7 @@ const nodes = {
 	'ObojoboDraft.Chunks.Table': Table,
 	'ObojoboDraft.Chunks.Text': Text,
 	'ObojoboDraft.Chunks.YouTube': YouTube,
+	'ObojoboDraft.Chunks.HTML': HTML
 }
 
 class Node extends React.Component {
@@ -117,7 +120,8 @@ const plugins = {
 						MATH_NODE,
 						TEXT_NODE,
 						TABLE_NODE,
-						YOUTUBE_NODE
+						YOUTUBE_NODE,
+						HTML_NODE
 					], min: 1 }
 				],
 				normalize: (change, violation, { node, child, index }) => {

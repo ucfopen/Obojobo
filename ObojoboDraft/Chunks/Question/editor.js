@@ -6,6 +6,7 @@ const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
@@ -19,6 +20,7 @@ import Break from '../Break/editor'
 import Code from '../Code/editor'
 import Figure from '../Figure/editor'
 import Heading from '../Heading/editor'
+import HTML from '../HTML/editor'
 import IFrame from '../IFrame/editor'
 import List from '../List/editor'
 import MathEquation from '../MathEquation/editor'
@@ -39,7 +41,8 @@ const nodes = {
 	'ObojoboDraft.Chunks.Table': Table,
 	'ObojoboDraft.Chunks.Text': Text,
 	'ObojoboDraft.Chunks.YouTube': YouTube,
-	'ObojoboDraft.Chunks.MCAssessment': MCAssessment
+	'ObojoboDraft.Chunks.MCAssessment': MCAssessment,
+	'ObojoboDraft.Chunks.HTML': HTML
 }
 
 class Node extends React.Component {
@@ -101,12 +104,16 @@ const oboToSlate = node => {
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
+		console.log('converting ' + child.type)
 		if(nodes.hasOwnProperty(child.type)){
 			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
 		} else {
 			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
 		}
 	})
+
+	console.log(node)
+	console.log(json)
 
 	return json
 }
@@ -132,7 +139,8 @@ const plugins = {
 						MATH_NODE,
 						TEXT_NODE,
 						TABLE_NODE,
-						YOUTUBE_NODE
+						YOUTUBE_NODE,
+						HTML_NODE
 					], min: 1 },
 					{ types: [MCASSESSMENT_NODE], min: 1, max: 1}
 				],

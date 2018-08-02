@@ -93,7 +93,6 @@ const EditorUtil = {
 	},
 	getNavTargetModel(state) {
 		let navTarget = EditorUtil.getNavTarget(state)
-		console.log(navTarget)
 		if (!navTarget) {
 			return null
 		}

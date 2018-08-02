@@ -106,7 +106,6 @@ class EditorStore extends Store {
 
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
-		console.log(this.state)
 		const navModel = EditorUtil.getNavTargetModel(this.state)
 		this.state.currentModel = navModel
 		this.triggerChange()
