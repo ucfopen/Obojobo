@@ -120,10 +120,10 @@ class PageEditor extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		// Deal with deleted page
-		if(this.props.page === null){
+		if(!this.props.page){
 			return
 		}
-		if(prevProps.page === null){
+		if(!prevProps.page){
 			this.setState({value: Value.fromJSON(this.importFromJSON())})
 			return
 		}
@@ -145,10 +145,13 @@ class PageEditor extends React.Component {
 
 		return (
 			<div className={'editor'} >
-				<div className={'toolbar'}>
-					{Object.entries(nodes).map(item => {
-						return this.buildButton(item)
-					})}
+				<div className={'dropdown'}>
+					<span>+ Insert Node</span>
+					<div className={'drop-content'}>
+						{Object.entries(nodes).map(item => {
+							return this.buildButton(item)
+						})}
+					</div>
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}

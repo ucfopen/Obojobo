@@ -120,6 +120,7 @@ class OboModel extends Backbone.Model {
 	// @TODO Should this dirty model or parent?
 	onChildAdd(model, collection, options) {
 		model.parent = this
+		OboModel.models[model.get('id')] = model
 		return model.markDirty()
 	}
 

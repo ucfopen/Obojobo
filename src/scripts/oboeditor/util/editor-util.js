@@ -93,6 +93,7 @@ const EditorUtil = {
 	},
 	getNavTargetModel(state) {
 		let navTarget = EditorUtil.getNavTarget(state)
+		console.log(navTarget)
 		if (!navTarget) {
 			return null
 		}
@@ -107,10 +108,11 @@ const EditorUtil = {
 			}
 		})
 	},
-	moveUpPage(pageId){
-		return Dispatcher.trigger('editor:moveUpPage', {
+	movePage(pageId, index){
+		return Dispatcher.trigger('editor:movePage', {
 			value: {
-				pageId
+				pageId,
+				index
 			}
 		})
 	}

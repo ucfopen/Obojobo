@@ -2,7 +2,7 @@
 
 
 .editor {
-	margin-top: 6em;
+	margin-top: 1em;
 	.toolbar {
 		position: fixed;
 		top: 0;
@@ -17,5 +17,39 @@
 		left: 1em;
 		z-index: 999;
 		font-size: inherit;
+	}
+
+	.dropdown {
+		position: fixed;
+		top: .5em;
+		right: 2em;
+		z-index: 999;
+		background-color: $color-obojobo-blue;
+		border-radius: $dimension-rounded-radius;
+		padding: .3em;
+		color: $color-bg;
+
+		&:hover {
+			.drop-content {
+				display: block;
+			}
+		}
+
+		.drop-content {
+			display: none;
+			position: absolute;
+			right: 0;
+			z-index: 1;
+
+			button {
+				display: block;
+				background-color: $color-obojobo-blue;
+				border-radius: $dimension-rounded-radius;
+				margin: .3em;
+				font-size: 1.3em;
+				width: 100%;
+				color: $color-bg;
+			}
+		}
 	}
 }

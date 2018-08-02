@@ -1,10 +1,13 @@
 import React from 'react'
+import Common from 'Common'
 
 import EditorUtil from '../util/editor-util'
 import APIUtil from '../../viewer/util/api-util'
 import generateId from '../generate-ids'
 
 import './editor-nav.scss'
+
+const { OboModel } = Common.models
 
 class EditorNav extends React.Component {
 	constructor(props) {
@@ -73,37 +76,8 @@ class EditorNav extends React.Component {
 		EditorUtil.renamePage(pageId, label)
 	}
 
-	moveUpPage(pageId) {
-		console.log('clicked')
-		EditorUtil.moveUpPage(pageId)
-	}
-
-	saveDraft() {
-		const json = this.props.model.flatJSON()
-
-		// deal with content
-		const content = this.props.model.children.at(0)
-		const contentJSON = content.flatJSON()
-		for(let child of Array.from(content.children.models)){
-			contentJSON.children.push({
-				id: child.get('id'),
-				type: child.get('type'),
-				content: child.get('content'),
-				children: child.get('children')
-			})
-		}
-
-		json.children.push(contentJSON)
-
-		const assessment = this.props.model.children.at(1) // deal with assessment
-		const assessmentJSON = assessment.flatJSON()
-		assessmentJSON.children =  assessment.get('children')
-
-		json.children.push(assessmentJSON)
-
-		APIUtil.postDraft(this.props.draftId, json).then(result => {
-			console.log(result)
-		})
+	movePage(pageId, index) {
+		EditorUtil.movePage(pageId, index)
 	}
 
 	renderLabel(label) {
@@ -111,11 +85,23 @@ class EditorNav extends React.Component {
 	}
 
 	renderDropDown(item) {
+		const model = OboModel.models[item.id]
 		return (
 			<div className={'dropdown'}>
 				<span className={'drop-arrow'}>▼</span>
 				<div className={'drop-content'}>
-					<button onClick={() => this.moveUpPage(item.id)}>Move Up</button>
+					{ model.isFirst() ? null :
+						<button
+							onClick={() => this.movePage(item.id, model.getIndex()-1)}>
+							Move Up
+						</button>
+					}
+					{ model.isLast() ? null :
+						<button
+							onClick={() => this.movePage(item.id, model.getIndex()+1)}>
+							Move Down
+						</button>
+					}
 					<button onClick={() => this.renamePage(item.id)}>Edit Name</button>
 					<button onClick={() => this.deletePage(item.id)}>Delete</button>
 					<button>{'Id: '+ item.id}</button>
@@ -176,7 +162,6 @@ class EditorNav extends React.Component {
 					})}
 				</ul>
 				<button onClick={() => this.addPage()}>{'Add Page'}</button>
-				<button onClick={() => this.saveDraft()}>{'Save Draft'}</button>
 			</div>
 		)
 	}

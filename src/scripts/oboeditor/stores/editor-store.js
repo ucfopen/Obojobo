@@ -39,11 +39,8 @@ class EditorStore extends Store {
 				'editor:deletePage': payload => {
 					this.deletePage(payload.value.pageId)
 				},
-				'editor:moveUpPage': payload => {
-					this.moveUpPage(payload.value.pageId)
-				},
-				'editor:moveDownPage': payload => {
-					this.moveDownPage(payload.value.pageId)
+				'editor:movePage': payload => {
+					this.movePage(payload.value.pageId, payload.value.index)
 				},
 				'editor:renamePage': payload => {
 					this.renamePage(payload.value.pageId, payload.value.name)
@@ -109,6 +106,7 @@ class EditorStore extends Store {
 
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
+		console.log(this.state)
 		const navModel = EditorUtil.getNavTargetModel(this.state)
 		this.state.currentModel = navModel
 		this.triggerChange()
@@ -206,16 +204,11 @@ class EditorStore extends Store {
 		this.triggerChange()
 	}
 
-	moveUpPage(pageId) {
-		console.log('in here')
+	movePage(pageId, index) {
 		const model = OboModel.models[pageId]
-		console.log(pageId)
-		console.log(OboModel.models)
-		model.moveTo(model.getIndex()-1)
-		console.log(OboModel.models)
+		const newModel = model.moveTo(index)
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
-
 		this.triggerChange()
 	}
 }

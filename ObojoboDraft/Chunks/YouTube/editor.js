@@ -60,17 +60,19 @@ class Node extends React.Component {
 					frameBorder="0"
 					allowFullScreen="true"
 				/>
+				<input
+					value={this.state.videoId}
+					onChange={event => this.handleSourceChange(event)}
+					onClick={event => event.stopPropagation()} />
 			</div>
 		)
 	}
 
 	render() {
-		const { isSelected } = this.props
 
 		return (
 			<div className={'component'} {...this.props.attributes}>
 				{this.renderFrame()}
-				{isSelected ? this.renderInput() : null}
 			</div>
 		)
 	}
