@@ -18,9 +18,6 @@ const MIN_SCALE = 0.1
 const { OboComponent, Button } = Common.components
 const Dispatcher = Common.flux.Dispatcher
 const MediaUtil = Viewer.util.MediaUtil
-const NavUtil = Viewer.util.NavUtil
-const MediaStore = Viewer.stores.MediaStore
-const Header = Viewer.components.Header
 const isOrNot = Common.util.isOrNot
 
 export default class IFrame extends React.Component {
@@ -71,12 +68,7 @@ export default class IFrame extends React.Component {
 	}
 
 	onClickReload() {
-		const src = this.props.model.modelState.src
-
-		this.refs.iframe.src = ''
-		setTimeout(() => {
-			this.refs.iframe.src = src
-		})
+		this.refs.iframe.src = this.refs.iframe.src
 	}
 
 	componentDidMount() {
@@ -114,6 +106,23 @@ export default class IFrame extends React.Component {
 		if (this.isMediaNeedingToBeHidden()) {
 			MediaUtil.hide(this.props.model.get('id'), 'viewerClient')
 		}
+	}
+
+	createSrc(src) {
+		if (!src) return null
+
+		const lcSrc = src.toLowerCase()
+		if (
+			!(
+				lcSrc.indexOf('http://') === 0 ||
+				lcSrc.indexOf('https://') === 0 ||
+				lcSrc.indexOf('//') === 0
+			)
+		) {
+			src = '//' + src
+		}
+
+		return src
 	}
 
 	render() {
@@ -167,7 +176,7 @@ export default class IFrame extends React.Component {
 								<iframe
 									ref="iframe"
 									title={ms.title}
-									src={ms.src}
+									src={this.createSrc(ms.src)}
 									is
 									frameBorder="0"
 									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
@@ -183,7 +192,7 @@ export default class IFrame extends React.Component {
 							</div>
 						)}
 						<Controls
-							newWindowSrc={ms.newWindowSrc ? ms.newWindowSrc : ms.src}
+							newWindowSrc={ms.src}
 							controlsOptions={controlsOpts}
 							isZoomAbleToBeReset={zoomValues.isZoomDifferentFromInitial}
 							isUnableToZoomOut={isAtMinScale}

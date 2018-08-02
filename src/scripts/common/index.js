@@ -63,14 +63,14 @@ import TextGroupCursor from './text-group/text-group-cursor'
 import TextGroupItem from './text-group/text-group-item'
 import TextGroupSelection from './text-group/text-group-selection'
 import TextGroupUtil from './text-group/text-group-util'
-import Console from './util/console' // @TODO
+import Console from './util/console'
 import HtmlUtil from './util/html-util'
 import ModalUtil from './util/modal-util'
 import FocusUtil from './util/focus-util'
 import ErrorUtil from './util/error-util'
 import UUID from './util/uuid'
 import RangeParsing from './util/range-parsing'
-import setModelStateProp from './util/set-model-state-prop'
+import setProp from './util/set-prop'
 import cloneProps from './util/clone-props'
 import isOrNot from './isornot'
 
@@ -192,7 +192,7 @@ export default {
 		ErrorUtil,
 		UUID,
 		RangeParsing,
-		setModelStateProp,
+		setProp,
 		cloneProps,
 		isOrNot
 	}

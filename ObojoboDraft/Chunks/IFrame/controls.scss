@@ -24,8 +24,7 @@
 		height: 1em;
 
 		> button {
-			@include user-select(none);
-
+			user-select: none;
 			border: none;
 			width: 1em;
 			height: 1em;

@@ -1,27 +1,25 @@
-//@TODO - HAS TO REBUILD MOCKELEMENT STRUCTURE EVERYTIME, WOULD LIKE TO NOT HAVE TO DO THAT!
-
 import './viewer-component.scss'
 
 import ListStyles from './list-styles'
 
 import Common from 'Common'
 
-let { TextGroup } = Common.textGroup
-let { TextGroupEl } = Common.chunk.textChunk
-let { Chunk } = Common.models
-let { MockElement } = Common.mockDOM
-let { MockTextNode } = Common.mockDOM
-let { TextChunk } = Common.chunk
-let SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
-let { OboComponent } = Common.components
+const { TextGroup } = Common.textGroup
+const { TextGroupEl } = Common.chunk.textChunk
+const { Chunk } = Common.models
+const { MockElement } = Common.mockDOM
+const { MockTextNode } = Common.mockDOM
+const { TextChunk } = Common.chunk
+const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
+const { OboComponent } = Common.components
 
-let selectionHandler = new SelectionHandler()
+const selectionHandler = new SelectionHandler()
 
 const createMockListElement = (data, indentLevel) => {
-	let style = data.listStyles.get(indentLevel)
+	const style = data.listStyles.get(indentLevel)
 
-	let tag = style.type === 'unordered' ? 'ul' : 'ol'
-	let el = new MockElement(tag)
+	const tag = style.type === 'unordered' ? 'ul' : 'ol'
+	const el = new MockElement(tag)
 	el.start = style.start
 	el._listStyleType = style.bulletStyle
 
@@ -35,7 +33,7 @@ const addItemToList = (ul, li, lis) => {
 }
 
 const renderEl = (props, node, index, indent) => {
-	let key = `${props.model.cid}-${indent}-${index}`
+	const key = `${props.model.cid}-${indent}-${index}`
 
 	switch (node.nodeType) {
 		case 'text':
@@ -48,7 +46,7 @@ const renderEl = (props, node, index, indent) => {
 				/>
 			)
 		case 'element':
-			let ElType = node.type
+			const ElType = node.type
 			return (
 				<ElType key={key} start={node.start} style={{ listStyleType: node.listStyleType }}>
 					{renderChildren(props, node.children, indent + 1)}
@@ -58,9 +56,9 @@ const renderEl = (props, node, index, indent) => {
 }
 
 const renderChildren = (props, children, indent) => {
-	let els = []
+	const els = []
 	for (let index = 0; index < children.length; index++) {
-		let child = children[index]
+		const child = children[index]
 		els.push(renderEl(props, child, index, indent))
 	}
 
@@ -74,21 +72,21 @@ const __guard__ = (value, transform) => {
 export default props => {
 	let curUl
 
-	let data = props.model.modelState
+	const data = props.model.modelState
 
-	let texts = data.textGroup
+	const texts = data.textGroup
 
 	let curIndentLevel = 0
 	let curIndex = 0
-	let rootUl = (curUl = createMockListElement(data, curIndentLevel))
-	let lis = []
+	const rootUl = (curUl = createMockListElement(data, curIndentLevel))
+	const lis = []
 
 	let li = new MockElement('li')
 	addItemToList(curUl, li, lis)
 
 	for (let itemIndex = 0; itemIndex < texts.items.length; itemIndex++) {
 		// if this item is lower than the current indent level...
-		let item = texts.items[itemIndex]
+		const item = texts.items[itemIndex]
 		if (item.data.indent < curIndentLevel) {
 			// traverse up the tree looking for our curUl:
 			while (curIndentLevel > item.data.indent) {
@@ -103,8 +101,8 @@ export default props => {
 				curIndentLevel++
 
 				// Create the list for this level
-				let newUl = createMockListElement(data, curIndentLevel)
-				let newLi = new MockElement('li')
+				const newUl = createMockListElement(data, curIndentLevel)
+				const newLi = new MockElement('li')
 				addItemToList(newUl, newLi, lis)
 				curUl.lastChild.addChild(newUl)
 				curUl = newUl
@@ -118,7 +116,7 @@ export default props => {
 			addItemToList(curUl, li, lis)
 		}
 
-		let text = new MockTextNode(item.text)
+		const text = new MockTextNode(item.text)
 		text.index = curIndex
 		curIndex++
 

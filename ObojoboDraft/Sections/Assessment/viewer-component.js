@@ -3,14 +3,14 @@ import './viewer-component.scss'
 import Common from 'Common'
 import Viewer from 'Viewer'
 
-let { OboComponent } = Common.components
-let { OboModel } = Common.models
-let { Button } = Common.components
-let { Dispatcher } = Common.flux
-let { ModalUtil } = Common.util
+const { OboComponent } = Common.components
+const { OboModel } = Common.models
+const { Button } = Common.components
+const { Dispatcher } = Common.flux
+const { ModalUtil } = Common.util
 
-let { AssessmentUtil } = Viewer.util
-let { NavUtil } = Viewer.util
+const { AssessmentUtil } = Viewer.util
+const { NavUtil } = Viewer.util
 
 import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
 
@@ -53,7 +53,7 @@ export default class Assessment extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		let curStep = this.getCurrentStep()
+		const curStep = this.getCurrentStep()
 		if (curStep !== this.state.step) {
 			this.needsScroll = true
 		}
@@ -120,7 +120,7 @@ export default class Assessment extends React.Component {
 	}
 
 	exitAssessment() {
-		let scoreAction = this.getScoreAction()
+		const scoreAction = this.getScoreAction()
 
 		switch (scoreAction.action.value) {
 			case '_next':
@@ -135,11 +135,11 @@ export default class Assessment extends React.Component {
 	}
 
 	getScoreAction() {
-		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+		const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore)
+		const scoreAction = this.props.model.modelState.scoreActions.getActionForScore(assessmentScore)
 
 		if (scoreAction) {
 			return scoreAction
@@ -157,11 +157,11 @@ export default class Assessment extends React.Component {
 	}
 
 	render() {
-		let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+		const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)
-		let ltiState = AssessmentUtil.getLTIStateForModel(
+		const ltiState = AssessmentUtil.getLTIStateForModel(
 			this.props.moduleData.assessmentState,
 			this.props.model
 		)

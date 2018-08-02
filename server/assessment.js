@@ -1,7 +1,7 @@
-let DraftNode = oboRequire('models/draft_node')
-let db = oboRequire('db')
-let lti = oboRequire('lti')
-let logger = oboRequire('logger')
+const DraftNode = oboRequire('models/draft_node')
+const db = oboRequire('db')
+const lti = oboRequire('lti')
+const logger = oboRequire('logger')
 
 class Assessment extends DraftNode {
 	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
@@ -67,15 +67,43 @@ class Assessment extends DraftNode {
 		}
 	}
 
+	/*
+	Filter out any incomplete attempts that have a startTime after
+	the last complete attempts' finishTime
+	This function assumes that attempts are all for the same assessment_id
+	*/
+	static filterIncompleteAttempts(attempts) {
+		let complete = attempts.filter(r => r.isFinished).sort((a, b) => a.finishTime - b.finishTime)
+
+		let incomplete = attempts.filter(r => !r.isFinished).sort((a, b) => a.startTime - b.startTime)
+
+		// no completed, return the latest incomplete
+		if (!complete.length && incomplete.length) {
+			let newestIncomplete = incomplete[incomplete.length - 1]
+			return [newestIncomplete]
+		}
+
+		if (incomplete.length) {
+			// If the last incomplete was created AFTER the last completed at date then include it too
+			let newestIncomplete = incomplete[incomplete.length - 1]
+			let newestComplete = complete[complete.length - 1]
+			if (newestIncomplete.startTime > newestComplete.finishTime) {
+				complete.push(newestIncomplete)
+			}
+		}
+
+		return complete
+	}
+
 	static getAttempts(userId, draftId, optionalAssessmentId = null) {
-		let assessments = {}
+		const assessments = {}
 		return db
 			.manyOrNone(
 				`
 				SELECT
 					ROW_NUMBER () OVER (
 						PARTITION by ATT.assessment_id
-						ORDER BY ATT.completed_at
+						ORDER BY ATT.completed_at, ATT.created_at
 					) AS "attempt_number",
 					ATT.id AS "attempt_id",
 					ATT.assessment_id,
@@ -106,7 +134,7 @@ class Assessment extends DraftNode {
 				// turn array of results from the query into a nested object
 				// { assessment1: { id: 'assessment1', attempts: [{} , {}] }, ... }
 				attempts.forEach(attempt => {
-					let userAttempt = Assessment.createUserAttempt(userId, draftId, attempt)
+					const userAttempt = Assessment.createUserAttempt(userId, draftId, attempt)
 
 					// create new assessment object if we don't have one yet
 					if (!assessments[userAttempt.assessmentId]) {
@@ -120,6 +148,17 @@ class Assessment extends DraftNode {
 					assessments[userAttempt.assessmentId].attempts.push(userAttempt)
 				})
 
+				/*
+					Obojobo expects there to only be one incomplete attempt at max
+					It also expects that attempt to be the most recent
+					Filter out any incomplete attempts that don't meet those requirements
+				*/
+				for (let k in assessments) {
+					let a = assessments[k]
+					a.attempts = Assessment.filterIncompleteAttempts(a.attempts)
+				}
+			})
+			.then(() => {
 				// now, get the response history for this user & draft
 				return Assessment.getResponseHistory(userId, draftId, optionalAssessmentId)
 			})
@@ -128,14 +167,14 @@ class Assessment extends DraftNode {
 				// history is keyed by attemptId
 				// find the matching attemptID in assessments.<id>.attempts[ {attemptId:<attemptId>}, ...]
 				// and place our responses into the userAttempt objects in assessments
-				for (let attemptId in responseHistory) {
-					let responsesForAttempt = responseHistory[attemptId]
+				for (const attemptId in responseHistory) {
+					const responsesForAttempt = responseHistory[attemptId]
 
 					// loop through responses in this attempt
 					responsesForAttempt.forEach(response => {
 						if (!assessments[response.assessment_id]) return
 
-						let attemptForResponse = assessments[response.assessment_id].attempts.find(
+						const attemptForResponse = assessments[response.assessment_id].attempts.find(
 							x => x.attemptId === response.attempt_id
 						)
 
@@ -158,9 +197,9 @@ class Assessment extends DraftNode {
 				lti.getLTIStatesByAssessmentIdForUserAndDraft(userId, draftId, optionalAssessmentId)
 			)
 			.then(ltiStates => {
-				let assessmentsArr = Object.keys(assessments).map(k => assessments[k]) //@TODO: Use Object.values if node >= 7
+				const assessmentsArr = Object.keys(assessments).map(k => assessments[k])
 				assessmentsArr.forEach(assessmentItem => {
-					let ltiState = ltiStates[assessmentItem.assessmentId]
+					const ltiState = ltiStates[assessmentItem.assessmentId]
 
 					if (!ltiState) {
 						assessmentItem.ltiState = null
@@ -195,19 +234,20 @@ class Assessment extends DraftNode {
 	}
 
 	static getAttemptIdsForUserForDraft(userId, draftId) {
+		// Note, this must use the same sorting as getAttempts()
+		// for the attempt_number to be predictable
 		return db.manyOrNone(
 			`
 			SELECT
 			ROW_NUMBER () OVER (
 				PARTITION by assessment_id
-			  ORDER BY completed_at
+				ORDER BY completed_at, created_at
 			) AS "attempt_number",
 			id
 			FROM attempts
 			WHERE
 				user_id = $[userId]
 			AND draft_id = $[draftId]
-			ORDER BY completed_at
 			`,
 			{ userId, draftId }
 		)
@@ -215,7 +255,7 @@ class Assessment extends DraftNode {
 
 	static getAttemptNumber(userId, draftId, attemptId) {
 		return Assessment.getAttemptIdsForUserForDraft(userId, draftId).then(attempts => {
-			for (let attempt of attempts) {
+			for (const attempt of attempts) {
 				if (attempt.id === attemptId) return attempt.attempt_number
 			}
 
@@ -252,7 +292,7 @@ class Assessment extends DraftNode {
 				{ userId, draftId, optionalAssessmentId }
 			)
 			.then(result => {
-				let history = {}
+				const history = {}
 
 				result.forEach(row => {
 					if (!history[row.attempt_id]) history[row.attempt_id] = []
@@ -297,8 +337,6 @@ class Assessment extends DraftNode {
 			}
 		)
 	}
-
-	// @TODO: most things touching the db should end up in models. figure this out
 
 	// Finish an attempt and write a new assessment score record
 	static completeAttempt(

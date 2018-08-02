@@ -1,6 +1,6 @@
 import OboSelectionRect from '../../common/selection/obo-selection-rect'
 
-let PX_EDGE_PADDING = 50
+const PX_EDGE_PADDING = 50
 
 class Screen {
 	constructor(el) {
@@ -35,7 +35,7 @@ class Screen {
 	}
 
 	getScrollDistanceNeededToPutClientRectIntoView(clientRect) {
-		let rect = this.el.getBoundingClientRect()
+		const rect = this.el.getBoundingClientRect()
 
 		if (!clientRect.valid) {
 			return 0
@@ -98,26 +98,11 @@ class Screen {
 	tweenElementIntoViewIfNeeded(el) {
 		return this.tweenByDistance(this.getScrollDistanceNeededToPutElementIntoView(el))
 	}
-
-	//@TODO - delete this?
-	tweenSelectionIntoViewIfNeeded() {
-		return this.tweenByDistance(this.getScrollDistanceNeededToPutSelectionIntoView())
-	}
 }
 
 Screen.isElementVisible = function(node) {
-	let rect = node.getBoundingClientRect()
+	const rect = node.getBoundingClientRect()
 	return !(rect.top > window.innerHeight || rect.bottom < 0)
-}
-
-Screen.isElementFullyVisible = function(node) {
-	let rect = node.getBoundingClientRect()
-	return rect.top >= 0 && rect.bottom <= window.innerHeight
-}
-
-Screen.scrollElementIntoViewIfNeeded = function(element) {
-	if (Screen.isElementFullyVisible(element)) return
-	element.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
 export default Screen

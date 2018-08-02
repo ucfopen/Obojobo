@@ -309,7 +309,6 @@ class TextGroup {
 		return this.applyStyleFunction('unstyleText', arguments)
 	}
 
-	//@TODO - This won't work correctly
 	toggleStyleText(startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
 		return this.applyStyleFunction('toggleStyleText', arguments)
 	}
@@ -480,8 +479,5 @@ TextGroup.create = function(maxItems, dataTemplate, numItemsToCreate) {
 
 	return group
 }
-
-//@TODO
-window.TextGroup = TextGroup
 
 export default TextGroup

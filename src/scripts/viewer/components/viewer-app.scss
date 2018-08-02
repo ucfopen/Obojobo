@@ -86,9 +86,8 @@
 			transform: translate(0, -50%) translate(0, 0.5px);
 
 			button {
-				@include appearance(none);
-				@include user-select(none);
-
+				appearance: none;
+				user-select: none;
 				margin-left: 1em;
 				font-family: $font-default;
 				font-size: 0.75em;

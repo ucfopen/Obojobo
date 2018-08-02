@@ -1,4 +1,5 @@
 export default {
 	ZOOM: 'zoom',
-	RELOAD: 'reload'
+	RELOAD: 'reload',
+	NEW_WINDOW: 'new-window'
 }

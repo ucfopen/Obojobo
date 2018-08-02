@@ -14,13 +14,13 @@ const getIsShowing = (mediaState, model) => {
 const getControlsOptions = modelState => {
 	const isZoomControlEnabled = modelState.controls.indexOf(IFrameControlTypes.ZOOM) > -1
 	const isReloadControlEnabled = modelState.controls.indexOf(IFrameControlTypes.RELOAD) > -1
-	const newWindowEnabled = modelState.newWindow === true
+	const isNewWindowEnabled = modelState.controls.indexOf(IFrameControlTypes.NEW_WINDOW) > -1
 
 	return {
 		zoom: isZoomControlEnabled,
 		reload: isReloadControlEnabled,
-		newWindow: newWindowEnabled,
-		isControlsEnabled: isZoomControlEnabled || isReloadControlEnabled || newWindowEnabled
+		newWindow: isNewWindowEnabled,
+		isControlsEnabled: isZoomControlEnabled || isReloadControlEnabled || isNewWindowEnabled
 	}
 }
 
@@ -86,7 +86,7 @@ const getAfterStyle = (setWidth, setHeight, fit) => {
 
 const getZoomValues = (mediaState, model) => {
 	const userZoom = MediaUtil.getZoom(mediaState, model)
-	const initialZoom = model.modelState.zoom
+	const initialZoom = model.modelState.initialZoom
 	const currentZoom = userZoom || initialZoom
 	const isZoomDifferentFromInitial = currentZoom !== initialZoom
 

@@ -7,7 +7,7 @@ const Launch = Common.Launch
 const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
-import FullReview from '../full-review' //@TODO - Rename to simply "Review"
+import FullReview from '../full-review'
 
 const AssessmentPostTest = props => {
 	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
@@ -33,14 +33,14 @@ const AssessmentPostTest = props => {
 	// const scoreAction = assessment.getScoreAction()
 	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
-	let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+	const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 		props.moduleData.assessmentState,
 		props.model
 	)
 
 	let firstHighestAttempt = null
 	if (assessmentScore !== null) {
-		let highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
+		const highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
 			props.moduleData.assessmentState,
 			props.model
 		)
@@ -48,28 +48,28 @@ const AssessmentPostTest = props => {
 		firstHighestAttempt = highestAttempts[0]
 	}
 
-	let onClickResendScore = () => {
+	const onClickResendScore = () => {
 		AssessmentUtil.resendLTIScore(props.model)
 	}
 
-	let ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model)
+	const ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model)
 
-	let assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model)
+	const assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model)
 
 	let scoreActionsPage
 
 	if (props.scoreAction.page != null) {
-		let pageModel = OboModel.create(props.scoreAction.page)
-		pageModel.parent = props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
-		let PageComponent = pageModel.getComponentClass()
+		const pageModel = OboModel.create(props.scoreAction.page)
+		pageModel.parent = props.model
+		const PageComponent = pageModel.getComponentClass()
 		scoreActionsPage = <PageComponent model={pageModel} moduleData={props.moduleData} />
 	} else {
 		scoreActionsPage = <p>{props.scoreAction.message}</p>
 	}
 
-	let externalSystemLabel = props.moduleData.lti.outcomeServiceHostname
+	const externalSystemLabel = props.moduleData.lti.outcomeServiceHostname
 
-	let showFullReview = isFullReviewAvailable(props.model.modelState.review)
+	const showFullReview = isFullReviewAvailable(props.model.modelState.review)
 
 	return (
 		<div className="score unlock">

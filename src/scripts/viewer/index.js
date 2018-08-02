@@ -3,6 +3,7 @@ import Logo from './components/logo'
 import Header from './components/header'
 import AssessmentStore from './stores/assessment-store'
 import LTINetworkStates from './stores/assessment-store/lti-network-states'
+import LTIResyncStates from './stores/assessment-store/lti-resync-states'
 import NavStore from './stores/nav-store'
 import MediaStore from './stores/media-store'
 import QuestionStore from './stores/question-store'
@@ -25,7 +26,8 @@ export default {
 	stores: {
 		AssessmentStore,
 		assessmentStore: {
-			LTINetworkStates
+			LTINetworkStates,
+			LTIResyncStates
 		},
 		NavStore,
 		MediaStore,
