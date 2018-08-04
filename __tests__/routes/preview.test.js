@@ -1,136 +1,100 @@
-jest.mock('../../logger')
 jest.mock('../../models/visit')
-jest.mock('../../models/user')
-jest.mock('../../insert_event', () => jest.fn())
 
-const mockCreateVisitCreateEvent = jest.fn()
-jest.mock('../../routes/api/events/create_caliper_event', () =>
-	jest.fn().mockReturnValue({
-		createVisitCreateEvent: mockCreateVisitCreateEvent
-	})
-)
+jest.mock('../../insert_event')
+
 // make sure all Date objects use a static date
 mockStaticDate()
 
+jest.mock('../../db')
+
+jest.unmock('express') // we'll use supertest + express for this
+
+// override requireCurrentUser to provide our own
+let mockCurrentUser
+let mockSaveSessionSuccess = true
+jest.mock('../../express_current_user', () => (req, res, next) => {
+	req.requireCurrentUser = () => {
+		req.currentUser = mockCurrentUser
+		return Promise.resolve(mockCurrentUser)
+	}
+	req.saveSessionPromise = () => {
+		if (mockSaveSessionSuccess) return Promise.resolve()
+		return Promise.reject()
+	}
+	next()
+})
+
+// ovveride requireCurrentDocument to provide our own
+let mockCurrentDocument
+jest.mock('../../express_current_document', () => (req, res, next) => {
+	req.requireCurrentDocument = () => {
+		req.currentDocument = mockCurrentDocument
+		return Promise.resolve(mockCurrentDocument)
+	}
+	next()
+})
+
+// setup express server
+const db = oboRequire('db')
+const request = require('supertest')
+const express = require('express')
+const app = express()
+app.use(oboRequire('express_current_user'))
+app.use(oboRequire('express_current_document'))
+app.use('/', oboRequire('api_response_decorator'))
+app.use('/', oboRequire('routes/preview'))
+
 describe('preview route', () => {
-	const logger = oboRequire('logger')
-	const User = oboRequire('models/user')
-	const { mockRouterMethods } = require('../../__mocks__/__mock_express')
-	const mockReq = {
-		requireCurrentUser: jest.fn(),
-		params: { draftId: 'mocked-draft-id' },
-		app: {
-			locals: {
-				paths: 'paths',
-				modules: 'modules'
-			},
-			get: jest.fn()
-		},
-		session: {
-			save: cb => cb()
-		},
-		connection: {
-			remoteAddress: 'remoteAddress'
-		}
-	}
-	const mockRes = {
-		redirect: jest.fn()
-	}
-	const mockNext = jest.fn()
+	// const logger = oboRequire('logger')
 	const Visit = oboRequire('models/visit')
 	const insertEvent = oboRequire('insert_event')
 
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
-		mockReq.requireCurrentUser.mockReset()
-		mockReq.app.get.mockReset()
-		mockRes.redirect.mockReset()
-		mockNext.mockReset()
-		Visit.createPreviewVisit.mockReturnValueOnce({
+		mockCurrentUser = { id: 66, canViewDrafts: true }
+		Visit.createPreviewVisit.mockResolvedValueOnce({
 			visitId: 'mocked-visit-id',
 			deactivatedVisitId: 'mocked-deactivated-visit-id'
 		})
-		oboRequire('routes/preview')
 	})
 	afterEach(() => {})
 
-	test('registers the expected routes ', () => {
-		expect(mockRouterMethods.get).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.post).toHaveBeenCalledTimes(0)
-		expect(mockRouterMethods.get).toBeCalledWith('/:draftId', expect.any(Function))
-	})
-
-	test('GET preview/:draftId redirects to a visit (if user can view the editor)', () => {
-		expect.assertions(2)
-
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let user = new User()
-		user.canViewEditor = () => true
-
-		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
-
-		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(Visit.createPreviewVisit).toBeCalledWith(1, 'mocked-draft-id')
-			expect(mockRes.redirect).toBeCalledWith('/view/mocked-draft-id/visit/mocked-visit-id')
-		})
-	})
-
-	test('GET preview/:draftId fails if user cannot view the editor', () => {
-		expect.assertions(2)
-
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let user = new User()
-		let error = new Error('Not authorized to preview')
-
-		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
-
-		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(logger.error).toBeCalledWith(error)
-			expect(mockNext).toBeCalledWith(error)
-		})
-	})
-
-	test('GET preview/:draftId logs error and calls next if error thrown', () => {
-		expect.assertions(2)
-
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let mockedError = new Error('mocked-error')
-
-		mockReq.requireCurrentUser.mockRejectedValueOnce(mockedError)
-
-		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(logger.error).toBeCalledWith(mockedError)
-			expect(mockNext).toBeCalledWith(mockedError)
-		})
-	})
-
-	test('GET preview/:draftId calls visit:create insertEvent and createVisitEvent', () => {
-		expect.assertions(2)
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let user = new User()
-		user.canViewEditor = true
-		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
-
-		return routeFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(insertEvent).toBeCalledWith({
-				action: 'visit:create',
-				actorTime: '2016-09-22T16:57:14.500Z',
-				caliperPayload: undefined,
-				draftId: 'mocked-draft-id',
-				eventVersion: '1.0.0',
-				ip: 'remoteAddress',
-				metadata: {},
-				payload: { visitId: 'mocked-visit-id', deactivatedVisitId: 'mocked-deactivated-visit-id' },
-				userId: 1
+	test('preview requires user with canViewDrafts permission', () => {
+		expect.assertions(3)
+		mockCurrentUser = { id: 66, canViewDrafts: false }
+		return request(app)
+			.get(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(401)
+				expect(response.text).toBe('Not Authorized')
 			})
-			expect(mockCreateVisitCreateEvent).toBeCalledWith({
-				actor: { id: 1, type: 'user' },
-				isPreviewMode: true,
-				extensions: { deactivatedVisitId: 'mocked-deactivated-visit-id' },
-				visitId: 'mocked-visit-id',
-				sessionIds: { launchId: undefined, sessionId: undefined }
+	})
+
+	test('preview requires a currentDocument', () => {
+		expect.assertions(3)
+		return request(app)
+			.get(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(422)
+				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got undefined')
 			})
-		})
+	})
+
+	test('preview creates a preview visit', () => {
+		expect.assertions(3)
+		mockCurrentDocument = {
+			draftId: 3,
+			contentId: 5
+		}
+		return request(app)
+			.get(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/plain')
+				expect(response.statusCode).toBe(302)
+				expect(response.text).toBe('Found. Redirecting to /view/3/visit/mocked-visit-id')
+			})
 	})
 })

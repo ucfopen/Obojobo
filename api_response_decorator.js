@@ -1,72 +1,102 @@
-let inflector = require('json-inflector')
-let logger = oboRequire('logger')
+const inflector = require('json-inflector')
+const logger = oboRequire('logger')
+const apiUrlRegex = /\/api\/.*/
 
-let camelize = o => {
+const shouldRespondWithJson = req => {
+	// return api friendly result if route contains '/api/''
+	return req.originalUrl.match(apiUrlRegex) || (req.is('json') && req.accepts('json'))
+}
+
+const camelize = o => {
 	return inflector.transform(o, 'camelizeLower')
 }
 
-let success = (req, res, next, valueObject) => {
-	return res.status(200).json(
-		camelize({
-			status: 'ok',
-			value: valueObject
-		})
-	)
+const success = (req, res, next, valueObject) => {
+	res.status(200)
+	if(shouldRespondWithJson(req)){
+		return res.json(
+			camelize({
+				status: 'ok',
+				value: valueObject
+			})
+		)
+	}
+
+	res.send(valueObject)
 }
 
-// @TODO - in the controller - throw an error instead of calling this
-// let the main response handler catch it and respond with this
-let badInput = (req, res, next, message) => {
-	return res.status(422).json(
-		camelize({
-			status: 'error',
-			value: {
-				type: 'badInput',
-				message: message
-			}
-		})
-	)
+const badInput = (req, res, next, message) => {
+	res.status(422)
+	if(shouldRespondWithJson(req)){
+		return res.json(
+			camelize({
+				status: 'error',
+				value: {
+					type: 'badInput',
+					message: message
+				}
+			})
+		)
+	}
+
+	res.send(`Bad Input: ${message}`)
 }
 
-// @TODO - in the controller - throw an error instead of calling this
-// let the main response handler catch it and respond with this
-let notAuthorized = (req, res, next, message) => {
-	return res.status(401).json(
-		camelize({
-			status: 'error',
-			value: {
-				type: 'notAuthorized',
-				message: message
-			}
-		})
-	)
+const notAuthorized = (req, res, next, message) => {
+	res.status(401)
+	if(shouldRespondWithJson(req)){
+		return res.json(
+			camelize({
+				status: 'error',
+				value: {
+					type: 'notAuthorized',
+					message: message
+				}
+			})
+		)
+	}
+
+	res.send(`Not Authorized`)
 }
 
-let reject = (req, res, next, message) => {
-	return res.status(403).json(
-		camelize({
-			status: 'error',
-			value: {
-				type: 'reject',
-				message: message
-			}
-		})
-	)
+const reject = (req, res, next, message) => {
+	res.status(403)
+	if(shouldRespondWithJson(req)){
+		return res.json(
+			camelize({
+				status: 'error',
+				value: {
+					type: 'reject',
+					message: message
+				}
+			})
+		)
+	}
+
+	res.send(`Rejected Request: ${message}`)
 }
 
-let missing = (req, res, next, message) => {
-	return res.status(404).json(
-		camelize({
-			status: 'error',
-			value: {
-				type: 'missing',
-				message: message
-			}
-		})
-	)
+const missing = (req, res, next, message) => {
+	res.status(404)
+	if(shouldRespondWithJson(req)){
+		return res.json(
+			camelize({
+				status: 'error',
+				value: {
+					type: 'missing',
+					message: message
+				}
+			})
+		)
+	}
+
+	res.send(`Page Not Found: ${message}`)
+	next(message)
+
 }
 
-let unexpected = (req, res, next, message) => {
+const unexpected = (req, res, next, message) => {
+	res.status(500)
 	if (message instanceof Error) {
 		logger.error('error thrown', message.stack)
 		message = message.toString()
@@ -74,15 +104,19 @@ let unexpected = (req, res, next, message) => {
 		logger.error('error message', message)
 	}
 
-	return res.status(500).json(
-		camelize({
-			status: 'error',
-			value: {
-				type: 'unexpected',
-				message: message
-			}
-		})
-	)
+	if(shouldRespondWithJson(req)){
+		return res.json(
+			camelize({
+				status: 'error',
+				value: {
+					type: 'unexpected',
+					message: message
+				}
+			})
+		)
+	}
+
+	res.send(`Unexpected Error: ${message}`)
 }
 
 module.exports = (req, res, next) => {

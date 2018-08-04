@@ -48,10 +48,23 @@ let getCurrentUser = (req, isRequired = false) => {
 // sugar for getCurrentUser(true)
 let requireCurrentUser = req => req.getCurrentUser(true)
 
+let saveSessionPromise = req => {
+	return new Promise((resolve, reject) => {
+		req.session.save(err => {
+			if (err) return reject(err)
+			resolve()
+		})
+	})
+}
+
+
+
+
 module.exports = (req, res, next) => {
 	req.setCurrentUser = setCurrentUser.bind(this, req)
 	req.getCurrentUser = getCurrentUser.bind(this, req)
 	req.requireCurrentUser = requireCurrentUser.bind(this, req)
 	req.resetCurrentUser = resetCurrentUser.bind(this, req)
+	req.saveSessionPromise = saveSessionPromise.bind(this, req)
 	next()
 }

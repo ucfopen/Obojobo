@@ -16,6 +16,10 @@ describe('Caliper event from req', () => {
 		currentUser: {
 			id: 'testUserIdReq'
 		},
+		currentDocument: {
+			draftId: 'testDraftIdReq',
+			contentId: 'testContentIdReq'
+		},
 		session: {
 			id: 'SessionIdReq',
 			oboLti: {

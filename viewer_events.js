@@ -11,19 +11,19 @@ let viewerState = oboRequire('viewer/viewer_state')
 // })
 
 oboEvents.on('client:nav:open', (event, req) => {
-	setNavOpen(event.userId, event.draftId, true)
+	setNavOpen(event.userId, event.draftId, event.contentId, true)
 })
 
 oboEvents.on('client:nav:close', (event, req) => {
-	setNavOpen(event.userId, event.draftId, false)
+	setNavOpen(event.userId, event.draftId, event.contentId, false)
 })
 
 oboEvents.on('client:nav:toggle', (event, req) => {
-	setNavOpen(event.userId, event.draftId, event.payload.open)
+	setNavOpen(event.userId, event.draftId, event.contentId, event.payload.open)
 })
 
-const setNavOpen = (userId, draftId, value) => {
-	viewerState.set(userId, draftId, 'nav:isOpen', 1, value)
+const setNavOpen = (userId, draftId, contentId, value) => {
+	viewerState.set(userId, draftId, contentId, 'nav:isOpen', 1, value)
 }
 
 // @TODO: Enable this when we're able to restore the user to their last page

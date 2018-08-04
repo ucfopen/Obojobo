@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`api visits route /start in preview works and doesnt care about matching draft_content_ids 1`] = `
+Object {
+  "isPreviewing": false,
+  "lti": Object {
+    "lisOutcomeServiceUrl": null,
+  },
+  "visitId": "00000000-0000-0000-0000-000000000000",
+}
+`;

@@ -50,4 +50,4 @@ let createEvent = (
 	return caliperEvent
 }
 
-module.exports = createEvent
+module.exports = { createEvent }

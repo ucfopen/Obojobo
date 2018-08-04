@@ -1,232 +1,259 @@
-jest.mock('../../models/draft')
 jest.mock('../../models/visit')
-jest.mock('../../models/user')
-jest.mock('../../viewer/viewer_state')
-jest.mock('../../logger')
+
 jest.mock('../../insert_event')
-jest.mock('../../routes/api/events/create_caliper_event')
 
 // make sure all Date objects use a static date
 mockStaticDate()
 
+jest.mock('../../db')
+jest.unmock('fs') // need fs working for view rendering
+jest.unmock('express') // we'll use supertest + express for this
+
+// override requireCurrentUser to provide our own
+let mockCurrentUser
+let mockSaveSessionSuccess = true
+jest.mock('../../express_current_user', () => (req, res, next) => {
+	currentReq = req
+	req.requireCurrentUser = () => {
+		req.currentUser = mockCurrentUser
+		return Promise.resolve(mockCurrentUser)
+	}
+	req.saveSessionPromise = () => {
+		if (mockSaveSessionSuccess) return Promise.resolve()
+		return Promise.reject()
+	}
+	next()
+})
+
+let currentReq
+// ovveride requireCurrentDocument to provide our own
+let mockCurrentDocument
+jest.mock('../../express_current_document', () => (req, res, next) => {
+	req.requireCurrentDocument = () => {
+		req.currentDocument = mockCurrentDocument
+		return Promise.resolve(mockCurrentDocument)
+	}
+	next()
+})
+
+// ovveride requireCurrentDocument to provide our own
+let mockLtiLaunch
+jest.mock('../../express_lti_launch', () => ({
+	assignment: (req, res, next) => {
+		req.lti = { body: mockLtiLaunch }
+		req.oboLti = {
+			launchId: 'mock-launch-id',
+			body: mockLtiLaunch
+		}
+		next()
+	}
+}))
+
+// setup express server
+const db = oboRequire('db')
+const request = require('supertest')
+const express = require('express')
+const app = express()
+app.set('view engine', 'ejs')
+app.set('views', __dirname + '../../../views/')
+app.use(oboRequire('express_current_user'))
+app.use(oboRequire('express_current_document'))
+app.use('/', oboRequire('api_response_decorator'))
+app.use('/', oboRequire('routes/viewer'))
+
 describe('viewer route', () => {
 	const insertEvent = oboRequire('insert_event')
-	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
-	const logger = oboRequire('logger')
-	const Draft = oboRequire('models/draft')
 	const Visit = oboRequire('models/visit')
-	const User = oboRequire('models/user')
-	const GuestUser = oboRequire('models/guest_user')
-	const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
-	const mockReq = {
-		requireCurrentUser: jest.fn(),
-		params: {
-			draftId: 555,
-			visitId: 'mocked-visit-id'
-		},
-		app: {
-			locals: {
-				paths: 'paths',
-				modules: 'modules'
-			},
-			get: jest.fn()
-		},
-		session: {
-			save: cb => cb()
-		},
-		lti: {
-			body: {
-				resource_link_id: 'mocked-resource-link-id'
-			}
-		},
-		oboLti: {
-			launchId: 'mocked-launch-id'
-		},
-		connection: {
-			remoteAddress: 'remoteAddress'
-		}
-	}
-	const mockRes = {
-		render: jest.fn(),
-		redirect: jest.fn()
-	}
-	const mockNext = jest.fn()
+	const mockYell = jest.fn().mockResolvedValue({
+		draftId: 555,
+		contentId: 12
+	})
 
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
-		mockReq.requireCurrentUser.mockReset()
-		mockReq.app.get.mockReset()
-		mockRes.render.mockReset()
-		mockNext.mockReset()
-		Visit.createVisit.mockReturnValueOnce({
-			visitId: 'mocked-visit-id',
-			deactivatedVisitId: 'mocked-deactivated-visit-id'
-		})
-		oboRequire('routes/viewer')
+		currentReq = null
+		mockCurrentUser = { id: 4 }
+		insertEvent.mockReset()
 	})
 	afterEach(() => {})
 
-	test('registers the expected routes ', () => {
-		expect(mockRouterMethods.get).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.post).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.post).toBeCalledWith(
-			'/:draftId/:page?',
-			expect.any(Array),
-			expect.any(Function)
-		)
-		expect(mockRouterMethods.get).toBeCalledWith('/:draftId/visit/:visitId*', expect.any(Function))
-	})
-
-	test('view/draft/visit rejects guest', () => {
-		expect.assertions(1)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new GuestUser())
-
-		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(mockNext).toBeCalledWith(Error('Login Required'))
-		})
-	})
-
-	test('view/draft/visit rejects non-logged in users', () => {
-		expect.assertions(1)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
-
-		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(mockNext).toBeCalledWith('not logged in')
-		})
-	})
-
-	test('view/draft/visit rejects non-logged in users', () => {
-		expect.assertions(2)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
-
-		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(mockRes.render).not.toBeCalled()
-			expect(mockNext).toBeCalledWith('not logged in')
-		})
-	})
-
-	test('view/draft/visit inserts viewer:open event and calls createViewerOpenEvent', () => {
-		expect.assertions(2)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-
-		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(insertEvent).toBeCalledWith({
-				action: 'viewer:open',
-				actorTime: '2016-09-22T16:57:14.500Z',
-				caliperPayload: undefined,
-				draftId: 555,
-				eventVersion: '1.1.0',
-				ip: 'remoteAddress',
-				metadata: {},
-				payload: { visitId: 'mocked-visit-id' },
-				userId: 1
+	test('launch visit requires current user in form requests', () => {
+		expect.assertions(3)
+		mockCurrentUser = null
+		return request(app)
+			.post(`/${validUUID()}/`)
+			.type('application/x-www-form-urlencoded')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(401)
+				expect(response.text).toBe('Not Authorized')
 			})
-			expect(caliperEvent().createViewerOpenEvent).toBeCalledWith({
-				actor: { id: 1, type: 'user' },
-				isPreviewMode: undefined,
-				sessionIds: { launchId: undefined, sessionId: undefined },
-				visitId: 'mocked-visit-id'
+	})
+
+	test('launch visit requires current user in json requests', () => {
+		expect.assertions(5)
+		mockCurrentUser = null
+		return request(app)
+			.post(`/${validUUID()}/`)
+			.type('application/json')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 			})
-		})
 	})
 
-	test('view/draft/visit calls render', () => {
-		expect.assertions(2)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		let mockDoc = {} // no contents
-		let mockYell = jest.fn().mockReturnValueOnce(mockDoc)
-		Draft.fetchById.mockResolvedValueOnce({ yell: mockYell })
+	test('launch visit requires a currentDocument', () => {
+		expect.assertions(3)
+		mockCurrentDocument = null
 
-		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(mockYell).toBeCalledWith('internal:sendToClient', mockReq, mockRes)
-
-			expect(mockRes.render).toBeCalledWith('viewer', { draftTitle: '' })
-		})
+		return request(app)
+			.post(`/${validUUID()}/`)
+			.type('application/x-www-form-urlencoded')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(422)
+				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got null')
+			})
 	})
 
-	test('view/draft/visit calls render with the draft title', () => {
-		expect.assertions(1)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		let mockDoc = {
-			root: {
-				node: {
-					content: {
-						title: 'my expected title'
-					}
-				}
-			}
+	test('launch visit redirects', () => {
+		expect.assertions(3)
+
+		Visit.createVisit.mockResolvedValueOnce({
+			visitId: 'mocked-visit-id',
+			deactivatedVisitId: 'mocked-deactivated-visit-id'
+		})
+
+		// mockCurrentUser = {id: 44}
+		mockCurrentDocument = { draftId: validUUID() }
+		mockLtiLaunch = { resource_link_id: 3 }
+
+		return request(app)
+			.post(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/plain')
+				expect(response.statusCode).toBe(302)
+				expect(response.text).toBe(
+					'Found. Redirecting to /view/' + validUUID() + '/visit/mocked-visit-id'
+				)
+			})
+	})
+
+	test('launch visit inserts event `visit:create`', () => {
+		expect.assertions(4)
+		Visit.createVisit.mockResolvedValueOnce({
+			visitId: 'mocked-visit-id',
+			deactivatedVisitId: 'mocked-deactivated-visit-id'
+		})
+
+		mockCurrentDocument = { draftId: validUUID() }
+		mockLtiLaunch = { resource_link_id: 3 }
+
+		return request(app)
+			.post(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/plain')
+				expect(response.statusCode).toBe(302)
+				expect(insertEvent).toHaveBeenCalledTimes(1)
+				expect(insertEvent.mock.calls[0]).toMatchSnapshot()
+			})
+	})
+
+	test('launch visit doesnt redirect with session errors', () => {
+		expect.assertions(3)
+
+		mockSaveSessionSuccess = false
+
+		Visit.createVisit.mockResolvedValueOnce({
+			visitId: 'mocked-visit-id',
+			deactivatedVisitId: 'mocked-deactivated-visit-id'
+		})
+
+		mockCurrentDocument = { draftId: validUUID() }
+		mockLtiLaunch = { resource_link_id: 3 }
+
+		return request(app)
+			.post(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(404)
+				expect(insertEvent).toHaveBeenCalledTimes(1)
+			})
+	})
+
+	test('view visit requires a current user', () => {
+		expect.assertions(3)
+		mockCurrentUser = null
+
+		return request(app)
+			.get('/' + validUUID() + '/visit/3')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(401)
+				expect(response.text).toBe('Not Authorized')
+			})
+	})
+
+	test('view visit requires a current document', () => {
+		expect.assertions(3)
+
+		mockCurrentDocument = null
+		return request(app)
+			.get('/' + validUUID() + '/visit/' + validUUID())
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(422)
+				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got null')
+			})
+	})
+
+	test('view visit requires visitId be a UUID', () => {
+		expect.assertions(3)
+		mockCurrentDocument = { draftId: validUUID() }
+
+		return request(app)
+			.get('/' + validUUID() + '/visit/3')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(422)
+				expect(response.text).toBe('Bad Input: visitId must be a valid UUID, got 3')
+			})
+	})
+
+	test('view visit inserts viewer:open event', () => {
+		expect.assertions(4)
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce()
 		}
 
-		let mockYell = jest.fn().mockReturnValueOnce(mockDoc)
-		Draft.fetchById.mockResolvedValueOnce({ yell: mockYell })
-
-		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
-			expect(mockRes.render).toBeCalledWith('viewer', { draftTitle: 'my expected title' })
-		})
-	})
-
-	test('POST view/:draftId/:page? redirects to a visit', () => {
-		expect.assertions(2)
-
-		let draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-
-		return draftLaunchRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(Visit.createVisit).toBeCalledWith(
-				1,
-				555,
-				'mocked-resource-link-id',
-				'mocked-launch-id'
-			)
-			expect(mockRes.redirect).toBeCalledWith('/view/555/visit/mocked-visit-id')
-		})
-	})
-
-	test('POST view/:draftId/:page? inserts visit:create event and calls createVisitCreateEvent', () => {
-		expect.assertions(2)
-		let draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
-		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-
-		return draftLaunchRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(insertEvent).toBeCalledWith({
-				action: 'visit:create',
-				actorTime: '2016-09-22T16:57:14.500Z',
-				caliperPayload: undefined,
-				draftId: 555,
-				eventVersion: '1.0.0',
-				ip: 'remoteAddress',
-				metadata: {},
-				payload: { deactivatedVisitId: 'mocked-deactivated-visit-id', visitId: 'mocked-visit-id' },
-				userId: 1
+		return request(app)
+			.get('/' + validUUID() + '/visit/' + validUUID())
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(insertEvent).toHaveBeenCalledTimes(1)
+				expect(insertEvent.mock.calls[0]).toMatchSnapshot()
 			})
-			expect(caliperEvent().createVisitCreateEvent).toBeCalledWith({
-				actor: { id: 1, type: 'user' },
-				isPreviewMode: undefined,
-				sessionIds: { launchId: undefined, sessionId: undefined },
-				visitId: 'mocked-visit-id',
-				extensions: { deactivatedVisitId: 'mocked-deactivated-visit-id' }
-			})
-		})
 	})
 
-	test('POST view/:draftId/:page? onlogs error and calls next if error', () => {
-		expect.assertions(2)
+	test('view visit renders viewer', () => {
+		expect.assertions(3)
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce()
+		}
 
-		let draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
-		let mockedError = new Error('mocked-error')
-
-		mockReq.requireCurrentUser.mockRejectedValueOnce(mockedError)
-
-		return draftLaunchRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(logger.error).toBeCalledWith(mockedError)
-			expect(mockNext).toBeCalledWith(mockedError)
-		})
+		return request(app)
+			.get('/' + validUUID() + '/visit/' + validUUID())
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('Obojobo Next Document Viewer')
+			})
 	})
 })

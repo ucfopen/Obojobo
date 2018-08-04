@@ -20,7 +20,7 @@ let displayEditor = (req, res, next) => {
 				WHERE deleted = FALSE
 				AND user_id = $[userId]
 			)
-			ORDER BY draft_id, id desc
+			ORDER BY draft_id, created_at desc
 			`,
 			{
 				userId: req.currentUser.id
@@ -30,6 +30,7 @@ let displayEditor = (req, res, next) => {
 			res.render('editor', { drafts: drafts })
 		})
 		.catch(error => {
+			console.log('ERROR', error)
 			next(error)
 		})
 }
@@ -38,8 +39,7 @@ let displayEditor = (req, res, next) => {
 // mounted as /editor
 router
 	.route('/')
-	.all(requireCanViewEditor)
-	.post(displayEditor)
+	.get(requireCanViewEditor)
 	.get(displayEditor)
 
 module.exports = router

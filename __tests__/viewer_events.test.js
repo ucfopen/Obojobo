@@ -2,7 +2,11 @@ jest.mock('../viewer/viewer_state', () => ({ set: jest.fn() }))
 jest.mock('../obo_events', () => ({ on: jest.fn(), emit: jest.fn() }))
 
 const vs = oboRequire('viewer/viewer_state')
-const mockEvent = { userId: 1, draftId: 2 }
+const mockEvent = {
+	userId: 'mockUserId',
+	draftId: 'mockDraftId',
+	contentId: 'mockContentId'
+}
 let ve
 let oboEvents
 
@@ -23,38 +27,77 @@ describe('viewer events', () => {
 	})
 
 	test('executes next when included to support express middleware', () => {
-		let mockNext = jest.fn()
+		const mockNext = jest.fn()
 		ve({}, {}, mockNext)
 		expect(mockNext).toBeCalled()
 	})
 
-	//@TODO: Unskip when nav:lock is being stored
 	test.skip('client:nav:lock', () => {
 		oboEvents.emit(`client:nav:lock`, mockEvent)
-		expect(vs.set).toBeCalledWith(1, 2, 'nav:isLocked', 1, true)
+		expect(vs.set).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'nav:isLocked',
+			1,
+			true
+		)
 	})
 
-	//@TODO: Unskip when nav:lock is being stored
 	test.skip('client:nav:unlock', () => {
 		oboEvents.emit(`client:nav:unlock`, mockEvent)
-		expect(vs.set).toBeCalledWith(1, 2, 'nav:isLocked', 1, false)
+		expect(vs.set).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'nav:isLocked',
+			1,
+			false
+		)
 	})
 
 	test('client:nav:open', () => {
-		let clientNavOpen = oboEvents.on.mock.calls[0][1]
-		clientNavOpen({ userId: 1, draftId: 6 })
-		expect(vs.set).toBeCalledWith(1, 6, 'nav:isOpen', 1, true)
+		const clientNavOpen = oboEvents.on.mock.calls[0][1]
+		clientNavOpen(mockEvent)
+		expect(vs.set).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'nav:isOpen',
+			1,
+			true
+		)
 	})
 
 	test('client:nav:close', () => {
-		let clientNavClose = oboEvents.on.mock.calls[1][1]
-		clientNavClose({ userId: 1, draftId: 6 })
-		expect(vs.set).toBeCalledWith(1, 6, 'nav:isOpen', 1, false)
+		const clientNavClose = oboEvents.on.mock.calls[1][1]
+		clientNavClose(mockEvent)
+		expect(vs.set).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'nav:isOpen',
+			1,
+			false
+		)
 	})
 
 	test('client:nav:toggle', () => {
-		let clientNavToggle = oboEvents.on.mock.calls[2][1]
-		clientNavToggle({ userId: 1, draftId: 6, payload: { open: 'yep' } })
-		expect(vs.set).toBeCalledWith(1, 6, 'nav:isOpen', 1, 'yep')
+		const clientNavToggle = oboEvents.on.mock.calls[2][1]
+		const mockPayloadEvent = {
+			userId: 'mockUserId',
+			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
+			payload: { open: 'yep' }
+		}
+		clientNavToggle(mockPayloadEvent)
+		expect(vs.set).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'nav:isOpen',
+			1,
+			'yep'
+		)
 	})
 })

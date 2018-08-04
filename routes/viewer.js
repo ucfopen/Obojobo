@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const DraftModel = oboRequire('models/draft')
 const Visit = oboRequire('models/visit')
 const logger = oboRequire('logger')
 const insertEvent = oboRequire('insert_event')
@@ -9,34 +8,38 @@ const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
 let ltiLaunch = oboRequire('express_lti_launch')
 const db = oboRequire('db')
-const { checkValidation, requireDraftId, requireVisitId, requireCurrentUser } = oboRequire(
-	'express_validators'
-)
+const {
+	checkValidationRules,
+	requireCurrentDocument,
+	requireVisitId,
+	requireCurrentUser
+} = oboRequire('express_validators')
 
 // launch lti view of draft - redirects to visit route
 // mounted as /visit/:draftId/:page
 router
 	.route('/:draftId/:page?')
-	.post(ltiLaunch.assignment) // run through lti middleware
-	.post([requireDraftId, checkValidation, requireCurrentUser]) // run through validation middleware
+	.post([ltiLaunch.assignment, requireCurrentUser, requireCurrentDocument, checkValidationRules])
 	.post((req, res, next) => {
 		let createdVisitId
+
 		return Visit.createVisit(
 			req.currentUser.id,
-			req.params.draftId,
+			req.currentDocument.draftId,
 			req.lti.body.resource_link_id,
 			req.oboLti.launchId
 		)
 			.then(({ visitId, deactivatedVisitId }) => {
 				createdVisitId = visitId
-				let { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
+				const { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
 				return insertEvent({
 					action: 'visit:create',
 					actorTime: new Date().toISOString(),
 					userId: req.currentUser.id,
 					ip: req.connection.remoteAddress,
 					metadata: {},
-					draftId: req.params.draftId,
+					draftId: req.currentDocument.draftId,
+					contentId: req.currentDocument.contentId,
 					payload: {
 						visitId,
 						deactivatedVisitId
@@ -51,15 +54,7 @@ router
 					})
 				})
 			})
-			.then(() => {
-				// save session before redirect
-				return new Promise((resolve, reject) => {
-					req.session.save(err => {
-						if (err) return reject(err)
-						resolve()
-					})
-				})
-			})
+			.then(req.saveSessionPromise)
 			.then(() => {
 				res.redirect(`/view/${req.params.draftId}/visit/${createdVisitId}`)
 			})
@@ -73,23 +68,20 @@ router
 // mounted as /visit/:draftId/visit/:visitId
 router
 	.route('/:draftId/visit/:visitId*')
-	.get([requireDraftId, requireVisitId, checkValidation, requireCurrentUser]) // add middleware validation
+	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
 	.get((req, res, next) => {
-		return DraftModel.fetchById(req.params.draftId)
-			.then(draftModel => {
-				draft = draftModel
-				return draft.yell('internal:sendToClient', req, res)
-			})
-			.then(draftReturn => {
-				draft = draftReturn
-				let { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
+		return req.currentDocument
+			.yell('internal:sendToClient', req, res)
+			.then(() => {
+				const { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
 				return insertEvent({
 					action: 'viewer:open',
 					actorTime: new Date().toISOString(),
 					userId: req.currentUser.id,
 					ip: req.connection.remoteAddress,
 					metadata: {},
-					draftId: req.params.draftId,
+					draftId: req.currentDocument.draftId,
+					contentId: req.currentDocument.contentId,
 					payload: { visitId: req.params.visitId },
 					eventVersion: '1.1.0',
 					caliperPayload: createViewerOpenEvent({
@@ -101,6 +93,7 @@ router
 				})
 			})
 			.then(() => {
+				const draft = req.currentDocument
 				res.render('viewer', {
 					draftTitle:
 						draft &&

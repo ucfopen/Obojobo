@@ -1,22 +1,24 @@
 let db = oboRequire('db')
 let insertEvent = oboRequire('insert_event')
 let User = oboRequire('models/user')
+let DraftDocument = oboRequire('models/draft')
 let logger = oboRequire('logger')
 let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 let { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 
-let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
+let storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 	let insertLaunchResult = null
 
 	return db
 		.one(
 			`
 		INSERT INTO launches
-		(draft_id, user_id, type, lti_key, data)
-		VALUES ($[draftId], $[userId], 'lti', $[lti_key], $[data])
+		(draft_id, draft_content_id, user_id, type, lti_key, data)
+		VALUES ($[draftId], $[contentId], $[userId], 'lti', $[lti_key], $[data])
 		RETURNING id`,
 			{
-				draftId: draftId,
+				draftId: draftDocument.draftId,
+				contentId: draftDocument.contentId,
 				userId: user.id,
 				lti_key: ltiConsumerKey,
 				data: ltiBody
@@ -31,10 +33,11 @@ let storeLtiLaunch = (draftId, user, ip, ltiBody, ltiConsumerKey) => {
 				actorTime: new Date().toISOString(),
 				payload: { launchId: insertLaunchResult.id },
 				userId: user.id,
-				ip: ip,
+				ip,
 				metadata: {},
 				eventVersion: '1.0.0',
-				draftId: draftId
+				draftId: draftDocument.draftId,
+				contentId: draftDocument.contentId
 			})
 		})
 		.then(() => {
@@ -53,10 +56,11 @@ let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) =>
 			ltiConsumerKey
 		},
 		userId: user.id,
-		ip: ip,
+		ip,
 		metadata: {},
 		eventVersion: '1.0.0',
 		draftId: null,
+		contentId: null,
 		caliperPayload: createLTIPickerEvent({
 			actor: {
 				type: ACTOR_USER,
@@ -96,13 +100,20 @@ exports.assignment = (req, res, next) => {
 	// the actual redirect happens in the route, this just handles the lti launch
 	let draftId =
 		req.params.draftId === 'example' ? '00000000-0000-0000-0000-000000000000' : req.params.draftId
+	let currentUser = null
+	let currentDocument = null
 
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
-		.then(user => {
+		.then(launchUser => {
+			currentUser = launchUser
+			return req.requireCurrentDocument()
+		})
+		.then(draftDocument => {
+			currentDocument = draftDocument
 			return storeLtiLaunch(
-				draftId,
-				user,
+				currentDocument,
+				currentUser,
 				req.connection.remoteAddress,
 				req.lti.body,
 				req.lti.consumer_key
@@ -162,6 +173,7 @@ exports.assignmentSelection = (req, res, next) => {
 		})
 		.then(launchResult => next())
 		.catch(error => {
+			console.log(error)
 			logger.error('LTI Picker Launch Error', error)
 			logger.error('LTI Body', req.lti && req.lti.body ? req.lti.body : 'No LTI Body')
 

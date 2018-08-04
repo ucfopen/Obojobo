@@ -1,16 +1,14 @@
 var express = require('express')
 var router = express.Router()
-const { requireCurrentUser } = oboRequire('express_validators')
 
 // Current User's Profile
 // mounted as /profile
-router
-	.route('/')
-	.get(requireCurrentUser)
-	.get((req, res, next) => {
+router.route('/').get((req, res, next) => {
+	return req.getCurrentUser().then(() => {
 		let msg = `Hello ${req.currentUser.username}!`
 		res.send(msg)
 	})
+})
 
 // Log current user out
 // mounted as /profile/logout

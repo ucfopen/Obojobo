@@ -1,67 +1,119 @@
 jest.mock('../../db')
-jest.mock('../../models/user')
+jest.unmock('fs') // need fs working for view rendering
+jest.unmock('express') // we'll use supertest + express for this
 
-mockVirtual('../../express_validators')
-let expressValidators = oboRequire('express_validators')
-expressValidators.requireCanViewEditor = 'requireCanViewEditor'
+// override requireCurrentUser for tests to provide our own user
+let mockCurrentUser
+jest.mock('../../express_current_user', () => (req, res, next) => {
+	req.requireCurrentUser = () => {
+		req.currentUser = mockCurrentUser
+		return Promise.resolve(mockCurrentUser)
+	}
+	next()
+})
 
-const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
+// setup express server
+const db = oboRequire('db')
+const request = require('supertest')
+const express = require('express')
+const app = express()
+app.set('view engine', 'ejs')
+app.set('views', __dirname + '../../../views/')
+app.use(oboRequire('express_current_user'))
+app.use('/', oboRequire('api_response_decorator'))
+app.use('/', oboRequire('routes/editor'))
 
 describe('editor route', () => {
-	beforeAll(() => {})
-	afterAll(() => {})
-	beforeEach(() => {})
-	afterEach(() => {})
-
-	test('registers the expected routes ', () => {
-		let editor = oboRequire('routes/editor')
-		expect(mockRouterMethods.route).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.route).toBeCalledWith('/')
-
-		expect(mockRouterMethods.post).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.all).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.get).toHaveBeenCalledTimes(1)
+	beforeEach(() => {
+		db.any.mockReset()
+		mockCurrentUser = { id: 99, canViewEditor: true } // should meet auth requirements
 	})
 
-	test('applies expected validators to each route', () => {
-		let editor = oboRequire('routes/editor')
-		expect(mockRouterMethods.all).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.all).toHaveBeenCalledWith(expressValidators.requireCanViewEditor)
+	test('get editor rejects users without canViewEditor permission', () => {
+		expect.assertions(3)
+		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
+
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.statusCode).toBe(401)
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.text).toBe('Not Authorized')
+			})
 	})
 
-	test('loads the expected draft ', () => {
-		expect.assertions(1)
+	test('get returns the expected response', () => {
+		expect.assertions(3)
 
-		let db = oboRequire('db')
+		// mock the list of drafts
+		db.any.mockResolvedValueOnce([])
 
-		// mock the launch insert
-		db.any.mockResolvedValueOnce({ draft: true })
-
-		let User = oboRequire('models/user')
-		let editor = oboRequire('routes/editor')
-		let displayEditor = mockRouterMethods.post.mock.calls[0][0]
-
-		let mockReq = {
-			currentUser:{
-				id: new User()
-			}
-		}
-
-		let mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockRes.render).toBeCalledWith(
-				expect.any(String),
-				expect.objectContaining({
-					drafts: { draft: true }
-				})
-			)
-		})
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('Obojobo Editor')
+			})
 	})
 
+	test('get returns drafts sorted alphabetically', () => {
+		expect.assertions(7)
+
+		// mock the list of drafts in backwards order
+		db.any.mockResolvedValueOnce([
+			{ draftId: 99, xml: 'xml-1', content: { content: { title: 'b-mock-title' } } },
+			{ draftId: 100, xml: 'xml-2', content: { content: { title: 'a-mock-title' } } }
+		])
+
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('a-mock-title')
+				expect(response.text).toContain('b-mock-title')
+				expect(response.text).toContain('data-id="99"')
+				expect(response.text).toContain('data-id="100"')
+				expect(response.text.indexOf('a-mock-title')).toBeLessThan(
+					response.text.indexOf('b-mock-title')
+				)
+			})
+	})
+
+	test('get editor sets data-content for drafts with xml as expected', () => {
+		expect.assertions(3)
+
+		// mock the list of drafts with xml content
+		db.any.mockResolvedValueOnce([
+			{ draftId: 99, xml: 'xml-1', content: { content: { title: 'b-mock-title' } } }
+		])
+
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('data-content="xml-1"')
+			})
+	})
+
+	test('get editor sets data-content for drafts without xml as expected', () => {
+		expect.assertions(3)
+
+		// mock the list of drafts with no xml content
+		db.any.mockResolvedValueOnce([
+			{ draftId: 99, xml: null, content: { content: { title: 'b-mock-title' } } }
+		])
+
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain(
+					'{&#34;content&#34;:{&#34;title&#34;:&#34;b-mock-title&#34;}}'
+				)
+			})
+	})
 })

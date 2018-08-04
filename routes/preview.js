@@ -6,55 +6,50 @@ const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = require('./api/events/caliper_constants')
 const { getSessionIds } = require('./api/events/caliper_utils')
-const { checkValidation, requireDraftId } = oboRequire('express_validators')
+const {
+	checkValidationRules,
+	requireCurrentDocument,
+	requireDraftId,
+	requireCanViewDrafts
+} = oboRequire('express_validators')
 
 // Start a preview - redirects to visit route
 // mounts at /preview/:draftId
 router
 	.route('/:draftId')
-	.get([requireDraftId, checkValidation])
+	.get([requireCanViewDrafts, requireCurrentDocument, requireDraftId, checkValidationRules])
 	.get((req, res, next) => {
-		let user = null
-		return req
-			.requireCurrentUser()
-			.then(currentUser => {
-				if (!currentUser.canViewEditor) throw new Error('Not authorized to preview')
+		let visitId
+		return Visit.createPreviewVisit(req.currentUser.id, req.currentDocument.draftId)
+			.then(({ visitId: newVisitId, deactivatedVisitId }) => {
+				const { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
+				visitId = newVisitId
 
-				user = currentUser
-				return Visit.createPreviewVisit(currentUser.id, req.params.draftId)
-			})
-			.then(({ visitId, deactivatedVisitId }) => {
-				let { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
 				insertEvent({
 					action: 'visit:create',
 					actorTime: new Date().toISOString(),
-					userId: user.id,
+					userId: req.currentUser.id,
 					ip: req.connection.remoteAddress,
 					metadata: {},
-					draftId: req.params.draftId,
+					draftId: req.currentDocument.draftId,
+					contentId: req.currentDocument.contentId,
 					payload: {
 						visitId,
 						deactivatedVisitId
 					},
 					eventVersion: '1.0.0',
 					caliperPayload: createVisitCreateEvent({
-						actor: { type: ACTOR_USER, id: user.id },
-						isPreviewMode: user.canViewEditor,
+						actor: { type: ACTOR_USER, id: req.currentUser.id },
+						isPreviewMode: req.currentUser.canViewEditor,
 						sessionIds: getSessionIds(req.session),
 						visitId,
 						extensions: { deactivatedVisitId }
 					})
 				})
-				return new Promise((resolve, reject) => {
-					// Saving session here solves #128
-					req.session.save(err => {
-						if (err) return reject(err)
-						resolve(visitId)
-					})
-				})
 			})
-			.then(visitId => {
-				res.redirect(`/view/${req.params.draftId}/visit/${visitId}`)
+			.then(req.saveSessionPromise)
+			.then(() => {
+				res.redirect(`/view/${req.currentDocument.draftId}/visit/${visitId}`)
 			})
 			.catch(error => {
 				logger.error(error)

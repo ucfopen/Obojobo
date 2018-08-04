@@ -120,6 +120,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 		id: null,
 		userId: null,
 		draftId: null,
+		contentId: null,
 		assessmentId: null,
 		attemptId: null,
 		score: null,
@@ -136,6 +137,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 					T1.created_at,
 					T1.user_id,
 					T1.draft_id,
+					T1.draft_content_id,
 					T1.assessment_id,
 					T1.attempt_id,
 					T1.score,
@@ -169,6 +171,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId) => {
 			result.id = dbResult.id
 			result.userId = dbResult.user_id
 			result.draftId = dbResult.draft_id
+			result.contentId = dbResult.draft_content_id
 			result.assessmentId = dbResult.assessment_id
 			result.attemptId = dbResult.attempt_id
 			result.score = dbResult.score
@@ -396,13 +399,14 @@ let retrieveLtiLaunch = function(userId, draftId, logId) {
 		reqVars: null,
 		key: null,
 		createdAt: null,
+		contentId: null,
 		error: null
 	}
 
 	return db
 		.oneOrNone(
 			`
-		SELECT id, data, lti_key, created_at
+		SELECT id, data, lti_key, created_at, draft_content_id
 		FROM launches
 		WHERE user_id = $[userId]
 		AND draft_id = $[draftId]
@@ -411,8 +415,8 @@ let retrieveLtiLaunch = function(userId, draftId, logId) {
 		LIMIT 1
 	`,
 			{
-				userId: userId,
-				draftId: draftId
+				userId,
+				draftId
 			}
 		)
 		.then(dbResult => {
@@ -424,6 +428,7 @@ let retrieveLtiLaunch = function(userId, draftId, logId) {
 				result.reqVars = dbResult.data
 				result.key = dbResult.lti_key
 				result.createdAt = dbResult.created_at
+				result.contentId = dbResult.draft_content_id
 			}
 
 			if (isLaunchExpired(result.createdAt)) {
@@ -477,12 +482,12 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 
 let insertReplaceResultEvent = (
 	userId,
-	draftId,
+	draftDocument,
 	launch,
 	outcomeData,
 	ltiResult
 ) => {
-	insertEvent({
+	return insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
 		payload: {
@@ -494,11 +499,12 @@ let insertReplaceResultEvent = (
 			},
 			result: ltiResult
 		},
-		userId: userId,
+		userId,
 		ip: '',
 		eventVersion: '2.0.0',
 		metadata: {},
-		draftId: draftId
+		draftId: draftDocument.draftId,
+		contentId: draftDocument.contentId
 	}).catch(err => {
 		logger.error('There was an error inserting the lti event')
 	})
@@ -623,7 +629,7 @@ let logAndGetStatusForError = function(error, requiredData, logId) {
 //
 // MAIN METHOD:
 //
-const sendHighestAssessmentScore = (userId, draftId, assessmentId) => {
+const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 	let logId = uuid()
 	let requiredData = null
 	let outcomeData = null
@@ -640,11 +646,11 @@ const sendHighestAssessmentScore = (userId, draftId, assessmentId) => {
 
 
 	logger.info(
-		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftId}", assessmentId:"${assessmentId}"`,
+		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftDocument.draftId}", assessmentId:"${assessmentId}"`,
 		logId
 	)
 
-	return getRequiredDataForReplaceResult(userId, draftId, assessmentId, logId)
+	return getRequiredDataForReplaceResult(userId, draftDocument.draftId, assessmentId, logId)
 		.then(requiredDataResult => {
 			result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
 
@@ -655,13 +661,21 @@ const sendHighestAssessmentScore = (userId, draftId, assessmentId) => {
 
 			if (requiredData.assessmentScoreRecord.preview) {
 				throw ERROR_PREVIEW_MODE
-			} else if (requiredData.ltiScoreToSend === null) {
+			}
+
+			if (requiredData.ltiScoreToSend === null) {
 				throw ERROR_SCORE_IS_NULL
-			} else if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
+			}
+
+			if (outcomeData.type === OUTCOME_TYPE_NO_OUTCOME) {
 				throw ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH
-			} else if (requiredData.error !== null) {
+			}
+
+			if (requiredData.error !== null) {
 				throw requiredData.error
-			} else if (outcomeData.error !== null) {
+			}
+
+			if (outcomeData.error !== null) {
 				throw outcomeData.error
 			}
 
@@ -727,7 +741,7 @@ const sendHighestAssessmentScore = (userId, draftId, assessmentId) => {
 		.then(scoreId => {
 			insertReplaceResultEvent(
 				userId,
-				draftId,
+				draftDocument,
 				requiredData.launch,
 				outcomeData,
 				result

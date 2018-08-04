@@ -4,6 +4,8 @@ global.oboRequire = name => {
 	return require(`${__dirname}/${name}`)
 }
 
+global.validUUID = () => '00000000-0000-0000-0000-000000000000'
+
 jest.mock('fs')
 let fs = require('fs')
 let dbJson = {
