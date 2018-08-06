@@ -61,44 +61,42 @@ router
 		return Promise.resolve()
 			.then(() => {
 				let xml
-				let reqInput
+				let documentInput
 
-				// req.body will either be an object if sent via application/json or
-				// (hopefully) XML if sent as text
-				switch (typeof req.body) {
-					case 'object':
-						reqInput = req.body
-						break
-
-					case 'string':
-						try {
-							xml = req.body
-							const convertedXml = xmlToDraftObject(req.body, true)
-							if (typeof convertedXml === 'object') {
-								reqInput = convertedXml
-								break
-							}
-							console.log('no-error, is ', convertedXml)
-						} catch (e) {
-							logger.error('Parse XML Failed:', e, req.body)
-							// continue to intentional fall through
+				if (typeof req.body === 'string') {
+					// req.body expected to be xml document
+					try {
+						xml = req.body
+						const convertedXml = xmlToDraftObject(req.body, true)
+						if (typeof convertedXml === 'object') {
+							documentInput = convertedXml
+						} else {
+							logger.error('Parse XML non-error?', convertedXml)
 						}
-					// intentional fall through
-					default:
-						logger.error('Posting draft failed - format unexpected:', req.body)
-						res.badInput('Posting draft failed - format unexpected')
-						return
+					} catch (e) {
+						logger.error('Parse XML Failed:', e, req.body)
+					}
+				} else {
+					// req.body expected to by json document
+					documentInput = req.body
+				}
+
+				if (typeof documentInput !== 'object') {
+					logger.error('Posting draft failed - format unexpected:', req.body)
+					res.badInput('Posting draft failed - format unexpected')
+					return
 				}
 
 				// Scan through json for identical ids
-				const duplicateId = DraftModel.findDuplicateIds(reqInput)
+				const duplicateId = DraftModel.findDuplicateIds(documentInput)
+
 				if (duplicateId !== null) {
 					logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
 					res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
 					return
 				}
 
-				return DraftModel.updateContent(req.params.draftId, reqInput, xml || null).then(id => {
+				return DraftModel.updateContent(req.params.draftId, documentInput, xml || null).then(id => {
 					res.success({ id })
 				})
 			})
@@ -164,9 +162,7 @@ router
 				res.success(result)
 			})
 			.catch(err => {
-				console.log('aaaah', err)
 				logger.error(err)
-				//@TODO call next with error
 				res.unexpected(err)
 			})
 	})

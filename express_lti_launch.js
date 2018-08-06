@@ -173,7 +173,6 @@ exports.assignmentSelection = (req, res, next) => {
 		})
 		.then(launchResult => next())
 		.catch(error => {
-			console.log(error)
 			logger.error('LTI Picker Launch Error', error)
 			logger.error('LTI Body', req.lti && req.lti.body ? req.lti.body : 'No LTI Body')
 

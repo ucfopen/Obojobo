@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const logger = oboRequire('logger')
 const db = oboRequire('db')
 const { requireCanViewEditor } = oboRequire('express_validators')
 
@@ -30,7 +31,10 @@ let displayEditor = (req, res, next) => {
 			res.render('editor', { drafts: drafts })
 		})
 		.catch(error => {
-			console.log('ERROR', error)
+			// if the error is empty for some reason -
+			// make sure we have a value so next() will cause a 500
+			if (!error) error = 'Server Error'
+			logger.error(error)
 			next(error)
 		})
 }

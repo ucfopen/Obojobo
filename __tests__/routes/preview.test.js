@@ -12,6 +12,7 @@ jest.unmock('express') // we'll use supertest + express for this
 // override requireCurrentUser to provide our own
 let mockCurrentUser
 let mockSaveSessionSuccess = true
+let mockSaveSessionRejectValue
 jest.mock('../../express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
@@ -19,7 +20,7 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 	}
 	req.saveSessionPromise = () => {
 		if (mockSaveSessionSuccess) return Promise.resolve()
-		return Promise.reject()
+		return Promise.reject(mockSaveSessionRejectValue)
 	}
 	next()
 })
@@ -41,7 +42,7 @@ const express = require('express')
 const app = express()
 app.use(oboRequire('express_current_user'))
 app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('api_response_decorator'))
+app.use('/', oboRequire('express_response_decorator'))
 app.use('/', oboRequire('routes/preview'))
 
 describe('preview route', () => {
@@ -95,6 +96,39 @@ describe('preview route', () => {
 				expect(response.header['content-type']).toContain('text/plain')
 				expect(response.statusCode).toBe(302)
 				expect(response.text).toBe('Found. Redirecting to /view/3/visit/mocked-visit-id')
+			})
+	})
+
+	test('preview 500s when saveSessionPromise rejects', () => {
+		expect.assertions(3)
+		mockSaveSessionSuccess = false
+		mockCurrentDocument = {
+			draftId: 3,
+			contentId: 5
+		}
+		return request(app)
+			.get(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('Server Error')
+			})
+	})
+
+	test('preview 500s when saveSessionPromise rejects', () => {
+		expect.assertions(3)
+		mockSaveSessionSuccess = false
+		mockSaveSessionRejectValue = 'some-error'
+		mockCurrentDocument = {
+			draftId: 3,
+			contentId: 5
+		}
+		return request(app)
+			.get(`/${validUUID()}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('some-error')
 			})
 	})
 })

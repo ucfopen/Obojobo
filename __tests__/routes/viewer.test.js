@@ -30,6 +30,7 @@ let currentReq
 let mockCurrentDocument
 jest.mock('../../express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
+		if (!mockCurrentDocument) return Promise.reject()
 		req.currentDocument = mockCurrentDocument
 		return Promise.resolve(mockCurrentDocument)
 	}
@@ -58,7 +59,7 @@ app.set('view engine', 'ejs')
 app.set('views', __dirname + '../../../views/')
 app.use(oboRequire('express_current_user'))
 app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('api_response_decorator'))
+app.use('/', oboRequire('express_response_decorator'))
 app.use('/', oboRequire('routes/viewer'))
 
 describe('viewer route', () => {
@@ -116,7 +117,7 @@ describe('viewer route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got null')
+				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got undefined')
 			})
 	})
 
@@ -207,7 +208,7 @@ describe('viewer route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got null')
+				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got undefined')
 			})
 	})
 
@@ -245,7 +246,14 @@ describe('viewer route', () => {
 		expect.assertions(3)
 		mockCurrentDocument = {
 			draftId: validUUID(),
-			yell: jest.fn().mockResolvedValueOnce()
+			yell: jest.fn().mockResolvedValueOnce(),
+			root: {
+				node: {
+					content: {
+						title: 'my-title'
+					}
+				}
+			}
 		}
 
 		return request(app)
@@ -254,6 +262,38 @@ describe('viewer route', () => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
 				expect(response.text).toContain('Obojobo Next Document Viewer')
+			})
+	})
+
+	test('view 500s when yell rejects and displays error', () => {
+		expect.assertions(3)
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockRejectedValueOnce('some-error')
+		}
+
+		return request(app)
+			.get('/' + validUUID() + '/visit/' + validUUID())
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('some-error')
+			})
+	})
+
+	test('view 500s when yell rejects and displays default error', () => {
+		expect.assertions(3)
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockRejectedValueOnce()
+		}
+
+		return request(app)
+			.get('/' + validUUID() + '/visit/' + validUUID())
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('Server Error')
 			})
 	})
 })

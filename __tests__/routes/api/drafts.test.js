@@ -2,7 +2,7 @@ jest.mock('../../../models/draft')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
-// jest.mock('obojobo-draft-xml-parser/xml-to-draft-object')
+jest.mock('obojobo-draft-xml-parser/xml-to-draft-object')
 
 import DraftModel from '../../../models/draft'
 import User from '../../../models/user'
@@ -49,7 +49,7 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.text())
 app.use(oboRequire('express_current_user'))
-app.use('/', oboRequire('api_response_decorator'))
+app.use('/', oboRequire('express_response_decorator'))
 app.use('/api/drafts', drafts)
 
 describe('api draft route', () => {
@@ -57,10 +57,14 @@ describe('api draft route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockInsertNewDraft.mockReset()
+		DraftModel.findDuplicateIds.mockReset()
 		db.none.mockReset()
 		db.any.mockReset()
+		xml.mockReset()
 	})
 	afterEach(() => {})
+
+	// get draft
 
 	test('get draft returns success', () => {
 		expect.assertions(4)
@@ -93,6 +97,8 @@ describe('api draft route', () => {
 			})
 	})
 
+	// new draft
+
 	test('new draft returns success', () => {
 		expect.assertions(4)
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
@@ -120,9 +126,28 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('updating a draft with xml returns successfully', () => {
-		expect.assertions(4)
+	test('new draft 500s when createWithContent fails', () => {
+		expect.assertions(5)
+		DraftModel.createWithContent.mockRejectedValueOnce()
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/new')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+			})
+	})
+
+	// update draft
+
+	test('updating a draft with xml returns successfully', () => {
+		expect.assertions(5)
+		xml.mockReturnValueOnce({})
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('text/plain')
@@ -133,12 +158,14 @@ describe('api draft route', () => {
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
 				expect(response.body).toHaveProperty('value', { id: 'mockUpdatedContentId' })
+				expect(xml).toHaveBeenCalledWith(basicXML, true)
 			})
 	})
 
 	test('updating a draft with json returns successfully', () => {
 		expect.assertions(3)
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('application/json')
@@ -150,14 +177,39 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('updating a draft with malformed xml returns error', () => {
+	test('updating a draft errors when xmlToDraftObject returns invalid object', () => {
 		expect.assertions(6)
+		xml.mockImplementationOnce(null)
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		return request(app)
 			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.type('text/plain')
 			.accept('text/plain')
-			.send('<xml></xml>')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(422)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Posting draft failed - format unexpected'
+				)
+			})
+	})
+
+	test('updating a draft errors when xmlToDraftObject throws error', () => {
+		expect.assertions(6)
+		xml.mockImplementationOnce(() => {
+			throw 'some-error'
+		})
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(422)
@@ -190,6 +242,7 @@ describe('api draft route', () => {
 
 	test('update draft detects duplicate ids', () => {
 		expect.assertions(5)
+		xml.mockReturnValueOnce({})
 		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
 		DraftModel.findDuplicateIds.mockReturnValueOnce('duplicate-id') // mock the findDuplicateIds method
 		return request(app)
@@ -208,6 +261,29 @@ describe('api draft route', () => {
 				)
 			})
 	})
+
+	test('updating 500s when findDuplicateIds errors', () => {
+		expect.assertions(5)
+		xml.mockReturnValueOnce({})
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		DraftModel.findDuplicateIds.mockImplementationOnce(() => {
+			throw 'oh no'
+		}) // mock the findDuplicateIds method
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+			})
+	})
+
+	// delete draft
 
 	test('delete errors with permissions before draftID validation', () => {
 		expect.assertions(4)
@@ -252,6 +328,23 @@ describe('api draft route', () => {
 			})
 	})
 
+	test('delete 500s when the database errors', () => {
+		expect.assertions(5)
+		db.none.mockRejectedValueOnce('oh no')
+		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
+		return request(app)
+			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+			})
+	})
+
+	// list drafts
+
 	test('list drafts exits when user cant view drafts', () => {
 		expect.assertions(4)
 		db.any.mockResolvedValueOnce('mock-db-result')
@@ -277,6 +370,21 @@ describe('api draft route', () => {
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
 				expect(response.body).toHaveProperty('value', 'mock-db-result')
+			})
+	})
+
+	test('delete 500s when the database errors', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canViewDrafts: true } // mock current logged in user
+		db.any.mockRejectedValueOnce('rejected value') // mock result of query to get all my drafts
+		return request(app)
+			.get('/api/drafts')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
 			})
 	})
 })

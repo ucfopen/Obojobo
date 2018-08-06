@@ -43,7 +43,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(oboRequire('express_current_user'))
 app.use(oboRequire('express_current_document'))
-app.use('', oboRequire('api_response_decorator'))
+app.use('', oboRequire('express_response_decorator'))
 app.use('/api/events', oboRequire('routes/api/events')) // mounting under api so response_decorator assumes json content type
 
 describe('api draft events route', () => {
@@ -106,7 +106,7 @@ describe('api draft events route', () => {
 			})
 	})
 
-	test.only('new event requires actor_time iso string', () => {
+	test('new event requires actor_time iso string', () => {
 		expect.assertions(7)
 
 		return request(app)

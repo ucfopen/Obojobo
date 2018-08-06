@@ -59,7 +59,7 @@ app.set('view engine', 'ejs')
 app.set('views', __dirname + '../../../views/')
 app.use(bodyParser.json())
 app.use(addMockPropsToReq)
-app.use('', oboRequire('api_response_decorator'))
+app.use('', oboRequire('express_response_decorator'))
 app.use('/', oboRequire('routes/lti')) // mounting under api so response_decorator assumes json content type
 
 describe('lti route', () => {
@@ -365,6 +365,22 @@ describe('lti route', () => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
 				expect(response.text).toContain("window.__returnUrl = 'newgrounds';")
+			})
+	})
+
+	test('canvas editior_botton errors with no lti body', () => {
+		expect.assertions(3)
+		mockCurrentUser = { id: 99, canViewEditor: true }
+		mockReqProps = {
+			lti: {}
+		}
+		return request(app)
+			.post('/canvas/editor_button')
+			.type('application/x-www-form-urlencoded')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('Unknown return url for assignment selection')
 			})
 	})
 })

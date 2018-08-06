@@ -2,7 +2,7 @@ describe('Caliper event from req', () => {
 	// make sure all Date objects use a static date
 	mockStaticDate()
 
-	const caliperEvent = require('../../../../routes/api/events/create_caliper_event')
+	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
 
 	// some redundant values
 	const id = 'testIdReq'
@@ -82,5 +82,18 @@ describe('Caliper event from req', () => {
 		let mockReq = buildMockReq('score:clear', eventsToTest['score:clear'])
 		let result = caliperEvent(mockReq)
 		expect(result.actor).toBe('https://hostnameReq/api/server')
+	})
+
+	test('uses throws error when currentUser is missing', () => {
+		let mockReq = buildMockReq('nav:goto', eventsToTest['nav:goto'])
+		mockReq.currentUser = null
+		expect(() => caliperEvent(mockReq)).toThrowError('Missing required arguments: actor.id')
+	})
+
+	test('uses handles when currentDocument is missing', () => {
+		let mockReq = buildMockReq('nav:goto', eventsToTest['nav:goto'])
+		mockReq.currentDocument = null
+		const result = caliperEvent(mockReq)
+		expect(result).toHaveProperty('object', 'https://hostnameReq/api/draft-content/null#toReq')
 	})
 })

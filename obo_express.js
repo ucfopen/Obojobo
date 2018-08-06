@@ -14,7 +14,7 @@ global.oboRequire = name => {
 }
 let express = require('express')
 let app = express()
-let responseDecorator = oboRequire('api_response_decorator')
+let responseDecorator = oboRequire('express_response_decorator')
 let loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
 let currentUserMiddleware = oboRequire('express_current_user')
 let currentDocumentMiddleware = oboRequire('express_current_document')

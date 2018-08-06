@@ -1,4 +1,4 @@
-mockVirtual('./api_response_decorator')
+mockVirtual('./express_response_decorator')
 mockVirtual('./dev_nonce_store')
 mockVirtual('./express_current_user')
 mockVirtual('./express_current_document')
@@ -68,7 +68,7 @@ describe('obo express', () => {
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_load_balancer_helper'))
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
-		expect(mockApp.use).toHaveBeenCalledWith('/', oboRequire('api_response_decorator'))
+		expect(mockApp.use).toHaveBeenCalledWith('/', oboRequire('express_response_decorator'))
 	})
 
 	test('returns an express application', () => {

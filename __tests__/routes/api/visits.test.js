@@ -1,13 +1,4 @@
-// jest.mock('../../../models/draft')
-// jest.mock('../../../models/visit')
-// jest.mock('../../../models/user')
-// jest.mock('../../../db')
-// jest.mock('../../../logger')
-// jest.mock('../../../insert_event')
 jest.mock('../../../routes/api/events/create_caliper_event')
-// mockVirtual('../../../lti')
-// mockVirtual('../../../viewer/viewer_state')
-
 jest.mock('../../../models/visit')
 jest.mock('../../../insert_event')
 
@@ -52,7 +43,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(oboRequire('express_current_user'))
 app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('api_response_decorator'))
+app.use('/', oboRequire('express_response_decorator'))
 app.use('/api/', oboRequire('routes/api/visits'))
 
 // make sure all Date objects use a static date
@@ -222,7 +213,7 @@ describe('api visits route', () => {
 			})
 		)
 
-		mockCurrentUser = { id: 99 }
+		mockCurrentUser = { id: 99, canViewEditor: true }
 		mockCurrentDocument = {
 			draftId: validUUID(),
 			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),

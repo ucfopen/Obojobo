@@ -52,6 +52,9 @@ router
 				res.redirect(`/view/${req.currentDocument.draftId}/visit/${visitId}`)
 			})
 			.catch(error => {
+				// if the error is empty for some reason -
+				// make sure we have a value so next() will cause a 500
+				if (!error) error = 'Server Error'
 				logger.error(error)
 				next(error)
 			})

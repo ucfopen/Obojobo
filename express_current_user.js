@@ -57,9 +57,6 @@ let saveSessionPromise = req => {
 	})
 }
 
-
-
-
 module.exports = (req, res, next) => {
 	req.setCurrentUser = setCurrentUser.bind(this, req)
 	req.getCurrentUser = getCurrentUser.bind(this, req)

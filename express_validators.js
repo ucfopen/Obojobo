@@ -16,7 +16,7 @@ const requireCurrentUser = (req, res, next, permission = null) => {
 	return req.requireCurrentUser()
 	.then(user => {
 		if(!user || typeof user !== 'object') throw 'Missing User'
-		if(permission && !req.currentUser[permission]) throw 'Not Authorized'
+		if(permission && !user[permission]) throw 'Not Authorized'
 		next()
 	})
 	.catch(error => {

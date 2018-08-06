@@ -242,4 +242,22 @@ describe('current user middleware', () => {
 				expect(err.message).toBe('Login Required')
 			})
 	})
+
+	test('saveSessionPromise resolves when session saves', () => {
+		expect.assertions(1)
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		req.session.save = jest.fn().mockImplementation(cb => {
+			cb()
+		})
+		return expect(req.saveSessionPromise()).resolves.toBeUndefined()
+	})
+
+	test('saveSessionPromise rejects when session save fails', () => {
+		expect.assertions(1)
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		req.session.save = jest.fn().mockImplementation(cb => {
+			cb('mock-error')
+		})
+		return expect(req.saveSessionPromise()).rejects.toEqual('mock-error')
+	})
 })

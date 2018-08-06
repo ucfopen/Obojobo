@@ -20,7 +20,7 @@ const app = express()
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '../../../views/')
 app.use(oboRequire('express_current_user'))
-app.use('/', oboRequire('api_response_decorator'))
+app.use('/', oboRequire('express_response_decorator'))
 app.use('/', oboRequire('routes/editor'))
 
 describe('editor route', () => {
@@ -114,6 +114,36 @@ describe('editor route', () => {
 				expect(response.text).toContain(
 					'{&#34;content&#34;:{&#34;title&#34;:&#34;b-mock-title&#34;}}'
 				)
+			})
+	})
+
+	test('get editor handles db error with default error string', () => {
+		expect.assertions(3)
+
+		// mock the list of drafts with no xml content
+		db.any.mockRejectedValueOnce(null)
+
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('Server Error')
+			})
+	})
+
+	test('get editor handles db error with rejected string ', () => {
+		expect.assertions(3)
+
+		// mock the list of drafts with no xml content
+		db.any.mockRejectedValueOnce('rejected error')
+
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('rejected error')
 			})
 	})
 })
