@@ -68,7 +68,7 @@ export default class IFrame extends React.Component {
 	}
 
 	onClickReload() {
-		this.refs.iframe.src = this.refs.iframe.src
+		this.refs.iframe.src = this.createSrc(this.props.model.modelState.src)
 	}
 
 	componentDidMount() {
@@ -109,7 +109,7 @@ export default class IFrame extends React.Component {
 	}
 
 	createSrc(src) {
-		if (!src) return null
+		src = '' + src
 
 		const lcSrc = src.toLowerCase()
 		if (

@@ -2,22 +2,18 @@
 
 exports[`IFrame adapter construct builds without attributes 1`] = `
 Object {
-  "modelState": Object {
-    "autoload": false,
-    "border": false,
-    "controls": Array [
-      "reload",
-    ],
-    "fit": "scale",
-    "height": null,
-    "newWindow": false,
-    "newWindowSrc": null,
-    "src": null,
-    "title": null,
-    "type": "media",
-    "width": null,
-    "zoom": 1,
-  },
+  "autoload": false,
+  "border": false,
+  "controls": Array [
+    "reload",
+  ],
+  "fit": "scale",
+  "height": null,
+  "initialZoom": 1,
+  "src": null,
+  "title": null,
+  "type": "media",
+  "width": null,
 }
 `;
 
@@ -31,13 +27,11 @@ Object {
     ],
     "fit": "scale",
     "height": null,
-    "newWindow": false,
-    "newWindowSrc": null,
+    "initialZoom": 1,
     "src": "mockSrc",
     "title": null,
     "type": "media",
     "width": null,
-    "zoom": 1,
   },
 }
 `;

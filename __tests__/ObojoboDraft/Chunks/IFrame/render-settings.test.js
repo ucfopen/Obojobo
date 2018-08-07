@@ -14,13 +14,6 @@ import {
 describe('render-settings', () => {
 	let model
 
-	const testGetControlsOptions = (controls, newWindow) => {
-		return getControlsOptions({
-			controls,
-			newWindow
-		})
-	}
-
 	beforeEach(() => {
 		model = {
 			modelState: {}
@@ -157,119 +150,113 @@ describe('render-settings', () => {
 		).toBe(false)
 	})
 
-	test('getControlsOptions (newWindow=null)', () => {
-		const c = testGetControlsOptions
+	test('getControlsOptions', () => {
+		const c = controlsArr => getControlsOptions({ controls: controlsArr })
 
-		expect(c([], false)).toEqual({
+		const z = 'zoom'
+		const r = 'reload'
+		const w = 'new-window'
+		const u = 'unrecognized-option'
+
+		expect(c([])).toEqual({
 			zoom: false,
 			reload: false,
 			newWindow: false,
 			isControlsEnabled: false
 		})
 
-		expect(c(['reload'], false)).toEqual({
+		expect(c([r])).toEqual({
 			zoom: false,
 			reload: true,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['zoom'], false)).toEqual({
+		expect(c([z])).toEqual({
 			zoom: true,
 			reload: false,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['expand'], false)).toEqual({
+		expect(c([w])).toEqual({
 			zoom: false,
 			reload: false,
-			newWindow: false,
-			isControlsEnabled: false
+			newWindow: true,
+			isControlsEnabled: true
 		})
 
-		expect(c(['reload', 'zoom'], false)).toEqual({
+		expect(c([r, z])).toEqual({
 			zoom: true,
 			reload: true,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['reload', 'expand'], false)).toEqual({
+		expect(c([r, w])).toEqual({
+			zoom: false,
+			reload: true,
+			newWindow: true,
+			isControlsEnabled: true
+		})
+
+		expect(c([w, z])).toEqual({
+			zoom: true,
+			reload: false,
+			newWindow: true,
+			isControlsEnabled: true
+		})
+
+		expect(c([r, w, z])).toEqual({
+			zoom: true,
+			reload: true,
+			newWindow: true,
+			isControlsEnabled: true
+		})
+
+		expect(c([r, u])).toEqual({
 			zoom: false,
 			reload: true,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['zoom', 'expand'], false)).toEqual({
+		expect(c([z, u])).toEqual({
 			zoom: true,
 			reload: false,
 			newWindow: false,
 			isControlsEnabled: true
 		})
 
-		expect(c(['reload', 'expand', 'zoom'], false)).toEqual({
+		expect(c([w, u])).toEqual({
+			zoom: false,
+			reload: false,
+			newWindow: true,
+			isControlsEnabled: true
+		})
+
+		expect(c([r, z, u])).toEqual({
 			zoom: true,
 			reload: true,
 			newWindow: false,
 			isControlsEnabled: true
 		})
-	})
 
-	test('getControlsOptions (newWindow=defined)', () => {
-		const c = testGetControlsOptions
-
-		expect(c([], true)).toEqual({
-			zoom: false,
-			reload: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload'], true)).toEqual({
+		expect(c([r, w, u])).toEqual({
 			zoom: false,
 			reload: true,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['zoom'], true)).toEqual({
+		expect(c([w, z, u])).toEqual({
 			zoom: true,
 			reload: false,
 			newWindow: true,
 			isControlsEnabled: true
 		})
 
-		expect(c(['expand'], true)).toEqual({
-			zoom: false,
-			reload: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'zoom'], true)).toEqual({
-			zoom: true,
-			reload: true,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand'], true)).toEqual({
-			zoom: false,
-			reload: true,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['zoom', 'expand'], true)).toEqual({
-			zoom: true,
-			reload: false,
-			newWindow: true,
-			isControlsEnabled: true
-		})
-
-		expect(c(['reload', 'expand', 'zoom'], true)).toEqual({
+		expect(c([r, w, z, u])).toEqual({
 			zoom: true,
 			reload: true,
 			newWindow: true,
@@ -370,7 +357,7 @@ describe('render-settings', () => {
 
 		model = {
 			get: () => 'id',
-			modelState: { zoom: 'model-zoom' }
+			modelState: { initialZoom: 'model-zoom' }
 		}
 		expect(z({ zoomById: {} }, model)).toEqual({
 			userZoom: null,
@@ -394,7 +381,7 @@ describe('render-settings', () => {
 		const model = {
 			get: () => 'id',
 			modelState: {
-				zoom: 1,
+				initialZoom: 1,
 				src: 'src',
 				controls: ''
 			}

@@ -293,8 +293,6 @@ describe('IFrame', () => {
 	})
 
 	test('onClickReload clears out the src of the iframe then sets it back', () => {
-		jest.useFakeTimers()
-
 		model = OboModel.create({
 			id: 'mock-obo-id',
 			type: 'ObojoboDraft.Chunks.IFrame',
@@ -307,12 +305,13 @@ describe('IFrame', () => {
 		const component = mount(<IFrame model={model} moduleData={moduleData} />)
 		const iframeRef = component.ref('iframe')
 
+		expect(iframeRef.src).toEqual('http://www.example.com/')
+		iframeRef.src = 'http://www.another-website.com/'
+		expect(iframeRef.src).toEqual('http://www.another-website.com/')
+
 		component.instance().onClickReload()
 
-		expect(iframeRef.src).toEqual('')
-		jest.runAllTimers()
 		expect(iframeRef.src).toEqual('http://www.example.com/')
-		jest.useRealTimers()
 	})
 
 	test('componentDidMount sets state and (if possible) creates a ResizeObserver', () => {
@@ -516,5 +515,58 @@ describe('IFrame', () => {
 			component.instance().boundOnViewerContentAreaResized
 		)
 		expect(MediaUtil.hide).not.toHaveBeenCalled()
+	})
+
+	test('src is prepended with // if no protocol is present', () => {
+		let component
+		let iframeRef
+
+		model = OboModel.create({
+			id: 'mock-obo-id',
+			type: 'ObojoboDraft.Chunks.IFrame',
+			content: {
+				src: 'http://www.example.com/',
+				autoload: true
+			}
+		})
+		component = mount(<IFrame model={model} moduleData={moduleData} />)
+		iframeRef = component.ref('iframe')
+		expect(iframeRef.src).toEqual('http://www.example.com/')
+
+		model = OboModel.create({
+			id: 'mock-obo-id',
+			type: 'ObojoboDraft.Chunks.IFrame',
+			content: {
+				src: 'https://www.example.com/',
+				autoload: true
+			}
+		})
+		component = mount(<IFrame model={model} moduleData={moduleData} />)
+		iframeRef = component.ref('iframe')
+		expect(iframeRef.src).toEqual('https://www.example.com/')
+
+		model = OboModel.create({
+			id: 'mock-obo-id',
+			type: 'ObojoboDraft.Chunks.IFrame',
+			content: {
+				src: '//www.example.com/',
+				autoload: true
+			}
+		})
+		component = mount(<IFrame model={model} moduleData={moduleData} />)
+		iframeRef = component.ref('iframe')
+		expect(iframeRef.src).toEqual('http://www.example.com/')
+
+		model = OboModel.create({
+			id: 'mock-obo-id',
+			type: 'ObojoboDraft.Chunks.IFrame',
+			content: {
+				src: 'www.example.com/',
+				autoload: true
+			}
+		})
+		component = mount(<IFrame model={model} moduleData={moduleData} />)
+		iframeRef = component.ref('iframe')
+		expect(iframeRef.src).toEqual('http://www.example.com/')
 	})
 })

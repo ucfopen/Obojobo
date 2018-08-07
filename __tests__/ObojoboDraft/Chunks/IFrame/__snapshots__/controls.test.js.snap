@@ -8,12 +8,6 @@ exports[`IFrame controls IFrame controls component renders 1`] = `
 
 exports[`IFrame controls IFrame controls component renders 2`] = `
 <div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-/>
-`;
-
-exports[`IFrame controls IFrame controls component renders 3`] = `
-<div
   className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
 >
   <div
@@ -30,125 +24,57 @@ exports[`IFrame controls IFrame controls component renders 3`] = `
     >
       Reload
     </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 3`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+>
+  <div
+    className="size-controls"
+  >
+    <div
+      className="zoom-controls"
+    >
+      <div
+        className="control-button-container zoom-out"
+      >
+        <button
+          className="zoom-out-button"
+          disabled={false}
+          onClick={undefined}
+        >
+          Zoom out
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom out
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-in"
+      >
+        <button
+          className="zoom-in-button"
+          onClick={undefined}
+        >
+          Zoom in
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom in
+        </span>
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`IFrame controls IFrame controls component renders 4`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 5`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 6`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 7`] = `
 <div
   className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
 >
@@ -187,6 +113,80 @@ exports[`IFrame controls IFrame controls component renders 7`] = `
           className="tool-tip"
         >
           Zoom out
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-in"
+      >
+        <button
+          className="zoom-in-button"
+          onClick={undefined}
+        >
+          Zoom in
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom in
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 5`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+/>
+`;
+
+exports[`IFrame controls IFrame controls component renders 6`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+>
+  <div
+    className="control-button-container reload"
+  >
+    <button
+      className="reload-button"
+      onClick={undefined}
+    >
+      Reload
+    </button>
+    <span
+      className="tool-tip"
+    >
+      Reload
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 7`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+>
+  <div
+    className="size-controls"
+  >
+    <div
+      className="zoom-controls"
+    >
+      <div
+        className="control-button-container zoom-out"
+      >
+        <button
+          className="zoom-out-button"
+          disabled={true}
+          onClick={undefined}
+        >
+          Zoom out
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Whoa that's tiny! 😲
         </span>
       </div>
       <div
@@ -239,6 +239,95 @@ exports[`IFrame controls IFrame controls component renders 8`] = `
       >
         <button
           className="zoom-out-button"
+          disabled={true}
+          onClick={undefined}
+        >
+          Zoom out
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Whoa that's tiny! 😲
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-in"
+      >
+        <button
+          className="zoom-in-button"
+          onClick={undefined}
+        >
+          Zoom in
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom in
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 9`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+/>
+`;
+
+exports[`IFrame controls IFrame controls component renders 10`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+>
+  <div
+    className="control-button-container reload"
+  >
+    <button
+      className="reload-button"
+      onClick={undefined}
+    >
+      Reload
+    </button>
+    <span
+      className="tool-tip"
+    >
+      Reload
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 11`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+>
+  <div
+    className="size-controls"
+  >
+    <div
+      className="zoom-controls"
+    >
+      <div
+        className="control-button-container zoom-reset"
+      >
+        <button
+          className="zoom-reset-button"
+          onClick={undefined}
+        >
+          Reset zoom
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Reset zoom
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-out"
+      >
+        <button
+          className="zoom-out-button"
           disabled={false}
           onClick={undefined}
         >
@@ -270,155 +359,7 @@ exports[`IFrame controls IFrame controls component renders 8`] = `
 </div>
 `;
 
-exports[`IFrame controls IFrame controls component renders 9`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-/>
-`;
-
-exports[`IFrame controls IFrame controls component renders 10`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-/>
-`;
-
-exports[`IFrame controls IFrame controls component renders 11`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-</div>
-`;
-
 exports[`IFrame controls IFrame controls component renders 12`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 13`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 14`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 15`] = `
 <div
   className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
 >
@@ -443,6 +384,110 @@ exports[`IFrame controls IFrame controls component renders 15`] = `
     <div
       className="zoom-controls"
     >
+      <div
+        className="control-button-container zoom-reset"
+      >
+        <button
+          className="zoom-reset-button"
+          onClick={undefined}
+        >
+          Reset zoom
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Reset zoom
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-out"
+      >
+        <button
+          className="zoom-out-button"
+          disabled={false}
+          onClick={undefined}
+        >
+          Zoom out
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom out
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-in"
+      >
+        <button
+          className="zoom-in-button"
+          onClick={undefined}
+        >
+          Zoom in
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom in
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 13`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+/>
+`;
+
+exports[`IFrame controls IFrame controls component renders 14`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+>
+  <div
+    className="control-button-container reload"
+  >
+    <button
+      className="reload-button"
+      onClick={undefined}
+    >
+      Reload
+    </button>
+    <span
+      className="tool-tip"
+    >
+      Reload
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 15`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+>
+  <div
+    className="size-controls"
+  >
+    <div
+      className="zoom-controls"
+    >
+      <div
+        className="control-button-container zoom-reset"
+      >
+        <button
+          className="zoom-reset-button"
+          onClick={undefined}
+        >
+          Reset zoom
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Reset zoom
+        </span>
+      </div>
       <div
         className="control-button-container zoom-out"
       >
@@ -505,6 +550,21 @@ exports[`IFrame controls IFrame controls component renders 16`] = `
       className="zoom-controls"
     >
       <div
+        className="control-button-container zoom-reset"
+      >
+        <button
+          className="zoom-reset-button"
+          onClick={undefined}
+        >
+          Reset zoom
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Reset zoom
+        </span>
+      </div>
+      <div
         className="control-button-container zoom-out"
       >
         <button
@@ -543,16 +603,26 @@ exports[`IFrame controls IFrame controls component renders 16`] = `
 exports[`IFrame controls IFrame controls component renders 17`] = `
 <div
   className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-/>
+>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+</div>
 `;
 
 exports[`IFrame controls IFrame controls component renders 18`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-/>
-`;
-
-exports[`IFrame controls IFrame controls component renders 19`] = `
 <div
   className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
 >
@@ -570,155 +640,87 @@ exports[`IFrame controls IFrame controls component renders 19`] = `
     >
       Reload
     </span>
+  </div>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 19`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+  <div
+    className="size-controls"
+  >
+    <div
+      className="zoom-controls"
+    >
+      <div
+        className="control-button-container zoom-out"
+      >
+        <button
+          className="zoom-out-button"
+          disabled={false}
+          onClick={undefined}
+        >
+          Zoom out
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom out
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-in"
+      >
+        <button
+          className="zoom-in-button"
+          onClick={undefined}
+        >
+          Zoom in
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom in
+        </span>
+      </div>
+    </div>
   </div>
 </div>
 `;
 
 exports[`IFrame controls IFrame controls component renders 20`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 21`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 22`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 23`] = `
 <div
   className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
 >
@@ -738,26 +740,26 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
     </span>
   </div>
   <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+  <div
     className="size-controls"
   >
     <div
       className="zoom-controls"
     >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
       <div
         className="control-button-container zoom-out"
       >
@@ -772,6 +774,126 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
           className="tool-tip"
         >
           Zoom out
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-in"
+      >
+        <button
+          className="zoom-in-button"
+          onClick={undefined}
+        >
+          Zoom in
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom in
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 21`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 22`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+>
+  <div
+    className="control-button-container reload"
+  >
+    <button
+      className="reload-button"
+      onClick={undefined}
+    >
+      Reload
+    </button>
+    <span
+      className="tool-tip"
+    >
+      Reload
+    </span>
+  </div>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 23`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+  <div
+    className="size-controls"
+  >
+    <div
+      className="zoom-controls"
+    >
+      <div
+        className="control-button-container zoom-out"
+      >
+        <button
+          className="zoom-out-button"
+          disabled={true}
+          onClick={undefined}
+        >
+          Zoom out
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Whoa that's tiny! 😲
         </span>
       </div>
       <div
@@ -814,6 +936,141 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
     </span>
   </div>
   <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+  <div
+    className="size-controls"
+  >
+    <div
+      className="zoom-controls"
+    >
+      <div
+        className="control-button-container zoom-out"
+      >
+        <button
+          className="zoom-out-button"
+          disabled={true}
+          onClick={undefined}
+        >
+          Zoom out
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Whoa that's tiny! 😲
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-in"
+      >
+        <button
+          className="zoom-in-button"
+          onClick={undefined}
+        >
+          Zoom in
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom in
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 25`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 26`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+>
+  <div
+    className="control-button-container reload"
+  >
+    <button
+      className="reload-button"
+      onClick={undefined}
+    >
+      Reload
+    </button>
+    <span
+      className="tool-tip"
+    >
+      Reload
+    </span>
+  </div>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 27`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+  <div
     className="size-controls"
   >
     <div
@@ -870,185 +1127,7 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
 </div>
 `;
 
-exports[`IFrame controls IFrame controls component renders 25`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-/>
-`;
-
-exports[`IFrame controls IFrame controls component renders 26`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-/>
-`;
-
-exports[`IFrame controls IFrame controls component renders 27`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-</div>
-`;
-
 exports[`IFrame controls IFrame controls component renders 28`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 29`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 30`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 31`] = `
 <div
   className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
 >
@@ -1065,6 +1144,156 @@ exports[`IFrame controls IFrame controls component renders 31`] = `
       className="tool-tip"
     >
       Reload
+    </span>
+  </div>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+  <div
+    className="size-controls"
+  >
+    <div
+      className="zoom-controls"
+    >
+      <div
+        className="control-button-container zoom-reset"
+      >
+        <button
+          className="zoom-reset-button"
+          onClick={undefined}
+        >
+          Reset zoom
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Reset zoom
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-out"
+      >
+        <button
+          className="zoom-out-button"
+          disabled={false}
+          onClick={undefined}
+        >
+          Zoom out
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom out
+        </span>
+      </div>
+      <div
+        className="control-button-container zoom-in"
+      >
+        <button
+          className="zoom-in-button"
+          onClick={undefined}
+        >
+          Zoom in
+        </button>
+        <span
+          className="tool-tip"
+        >
+          Zoom in
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 29`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 30`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
+>
+  <div
+    className="control-button-container reload"
+  >
+    <button
+      className="reload-button"
+      onClick={undefined}
+    >
+      Reload
+    </button>
+    <span
+      className="tool-tip"
+    >
+      Reload
+    </span>
+  </div>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
+    </span>
+  </div>
+</div>
+`;
+
+exports[`IFrame controls IFrame controls component renders 31`] = `
+<div
+  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
+>
+  <div
+    className="new-window-link"
+  >
+    <a
+      href={undefined}
+      target="_blank"
+    >
+      View in a new window
+    </a>
+    <span
+      className="tool-tip"
+    >
+      localhost
     </span>
   </div>
   <div
@@ -1144,1683 +1373,10 @@ exports[`IFrame controls IFrame controls component renders 32`] = `
     </span>
   </div>
   <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 33`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
->
-  <div
     className="new-window-link"
   >
     <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 34`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 35`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 36`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 37`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 38`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 39`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 40`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 41`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 42`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 43`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 44`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 45`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 46`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 47`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 48`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 49`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 50`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 51`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 52`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 53`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 54`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 55`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 56`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={false}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom out
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 57`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 58`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 59`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 60`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 61`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 62`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable"
->
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 63`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href={null}
-      target="_blank"
-    >
-      View in a new window
-    </a>
-    <span
-      className="tool-tip"
-    >
-      localhost
-    </span>
-  </div>
-  <div
-    className="size-controls"
-  >
-    <div
-      className="zoom-controls"
-    >
-      <div
-        className="control-button-container zoom-reset"
-      >
-        <button
-          className="zoom-reset-button"
-          onClick={undefined}
-        >
-          Reset zoom
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Reset zoom
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-out"
-      >
-        <button
-          className="zoom-out-button"
-          disabled={true}
-          onClick={undefined}
-        >
-          Zoom out
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Whoa that's tiny! 😲
-        </span>
-      </div>
-      <div
-        className="control-button-container zoom-in"
-      >
-        <button
-          className="zoom-in-button"
-          onClick={undefined}
-        >
-          Zoom in
-        </button>
-        <span
-          className="tool-tip"
-        >
-          Zoom in
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`IFrame controls IFrame controls component renders 64`] = `
-<div
-  className="obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable"
->
-  <div
-    className="control-button-container reload"
-  >
-    <button
-      className="reload-button"
-      onClick={undefined}
-    >
-      Reload
-    </button>
-    <span
-      className="tool-tip"
-    >
-      Reload
-    </span>
-  </div>
-  <div
-    className="new-window-link"
-  >
-    <a
-      href="mock-new-window-src"
+      href={undefined}
       target="_blank"
     >
       View in a new window

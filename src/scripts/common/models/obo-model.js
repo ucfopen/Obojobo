@@ -70,7 +70,7 @@ class OboModel extends Backbone.Model {
 		OboModel.models[this.get('id')] = this
 	}
 
-	setModelStateProp(propName, defaultValue, transformValueFn, allowedValues) {
+	setStateProp(propName, defaultValue, transformValueFn, allowedValues) {
 		const content = this.get('content')
 		if (!content) return false
 
