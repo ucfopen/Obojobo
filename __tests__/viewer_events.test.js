@@ -27,12 +27,11 @@ describe('viewer events', () => {
 	})
 
 	test('executes next when included to support express middleware', () => {
-		let mockNext = jest.fn()
+		const mockNext = jest.fn()
 		ve({}, {}, mockNext)
 		expect(mockNext).toBeCalled()
 	})
 
-	//@TODO: Unskip when nav:lock is being stored
 	test.skip('client:nav:lock', () => {
 		oboEvents.emit(`client:nav:lock`, mockEvent)
 		expect(vs.set).toBeCalledWith(
@@ -45,7 +44,6 @@ describe('viewer events', () => {
 		)
 	})
 
-	//@TODO: Unskip when nav:lock is being stored
 	test.skip('client:nav:unlock', () => {
 		oboEvents.emit(`client:nav:unlock`, mockEvent)
 		expect(vs.set).toBeCalledWith(
@@ -59,7 +57,7 @@ describe('viewer events', () => {
 	})
 
 	test('client:nav:open', () => {
-		let clientNavOpen = oboEvents.on.mock.calls[0][1]
+		const clientNavOpen = oboEvents.on.mock.calls[0][1]
 		clientNavOpen(mockEvent)
 		expect(vs.set).toBeCalledWith(
 			'mockUserId',
@@ -72,7 +70,7 @@ describe('viewer events', () => {
 	})
 
 	test('client:nav:close', () => {
-		let clientNavClose = oboEvents.on.mock.calls[1][1]
+		const clientNavClose = oboEvents.on.mock.calls[1][1]
 		clientNavClose(mockEvent)
 		expect(vs.set).toBeCalledWith(
 			'mockUserId',
@@ -85,8 +83,8 @@ describe('viewer events', () => {
 	})
 
 	test('client:nav:toggle', () => {
-		let clientNavToggle = oboEvents.on.mock.calls[2][1]
-		let mockPayloadEvent = {
+		const clientNavToggle = oboEvents.on.mock.calls[2][1]
+		const mockPayloadEvent = {
 			userId: 'mockUserId',
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId',

@@ -1,9 +1,3 @@
-//@TODO
-//Need a way to generate a Response from an assessment:setResponse but I don't know the ID of the insert on attempts_question_responses
-//don't like the fact that there's question:setResponse and assessment:setResponse
-//the setting of the actor seems very haphazard
-//should all of these be in one file?
-
 const { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
 const { getSessionIds } = require('./caliper_utils')
 

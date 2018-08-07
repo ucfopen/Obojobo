@@ -22,12 +22,10 @@ router.get('/:draftId', (req, res, next) => {
 		})
 		.catch(err => {
 			logger.error(err)
-			//@TODO call next with error
 			res.missing('Draft not found')
 		})
 })
 
-//@TODO - Transactionify this
 // Create a Draft
 // mounted as /api/drafts/new
 router.post('/new', (req, res, next) => {
@@ -45,12 +43,10 @@ router.post('/new', (req, res, next) => {
 			res.success(newDraft)
 		})
 		.catch(err => {
-			//@TODO have this call next with error
 			res.unexpected(err)
 		})
 })
 
-//@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
 // Update a Draft
 // mounted as /api/drafts/:draftid
 router.post('/:draftId', (req, res, next) => {
@@ -103,7 +99,6 @@ router.post('/:draftId', (req, res, next) => {
 		})
 		.catch(error => {
 			logger.error(error)
-			//@TODO call next with error
 			res.unexpected(error)
 		})
 })
@@ -133,7 +128,6 @@ router.delete('/:draftId', (req, res, next) => {
 			res.success(id)
 		})
 		.catch(err => {
-			//@TODO call next with error
 			res.unexpected(err)
 		})
 })
@@ -169,7 +163,6 @@ router.get('/', (req, res, next) => {
 		})
 		.catch(err => {
 			logger.error(err)
-			//@TODO call next with error
 			res.unexpected(err)
 		})
 })
