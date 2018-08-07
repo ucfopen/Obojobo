@@ -149,6 +149,8 @@ export default class IFrame extends React.Component {
 			this.props.moduleData.mediaState
 		)
 
+		const src = this.createSrc(ms.src)
+
 		return (
 			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
 				<div
@@ -176,7 +178,7 @@ export default class IFrame extends React.Component {
 								<iframe
 									ref="iframe"
 									title={ms.title}
-									src={this.createSrc(ms.src)}
+									src={src}
 									is
 									frameBorder="0"
 									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
@@ -192,7 +194,7 @@ export default class IFrame extends React.Component {
 							</div>
 						)}
 						<Controls
-							newWindowSrc={ms.src}
+							newWindowSrc={src}
 							controlsOptions={controlsOpts}
 							isZoomAbleToBeReset={zoomValues.isZoomDifferentFromInitial}
 							isUnableToZoomOut={isAtMinScale}
