@@ -16,17 +16,16 @@ router.get('/:draftId', (req, res, next) => {
 	return req
 		.requireCurrentUser()
 		.then(user => {
+			if (!user.canPreview) throw new Error('Not authorized to preview')
 			currentUser = user
 			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			if (!currentUser.canViewEditor) throw new Error('Not authorized to preview')
-
 			return Visit.createPreviewVisit(currentUser.id, currentDocument.draftId)
 		})
 		.then(({ visitId, deactivatedVisitId }) => {
-			let { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
+			const { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
 			insertEvent({
 				action: 'visit:create',
 				actorTime: new Date().toISOString(),
@@ -35,6 +34,7 @@ router.get('/:draftId', (req, res, next) => {
 				metadata: {},
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
+				isPreview: true,
 				payload: {
 					visitId,
 					deactivatedVisitId
@@ -42,7 +42,6 @@ router.get('/:draftId', (req, res, next) => {
 				eventVersion: '1.0.0',
 				caliperPayload: createVisitCreateEvent({
 					actor: { type: ACTOR_USER, id: currentUser.id },
-					isPreviewMode: currentUser.canViewEditor,
 					sessionIds: getSessionIds(req.session),
 					visitId,
 					extensions: { deactivatedVisitId }

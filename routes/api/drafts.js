@@ -138,7 +138,7 @@ router.get('/', (req, res, next) => {
 	return req
 		.requireCurrentUser()
 		.then(currentUser => {
-			if (!currentUser.canViewDrafts) throw 'Insufficent permissions'
+			if (!currentUser.canViewDrafts) throw 'Insufficient permissions'
 			return db.any(
 				`
 			SELECT DISTINCT ON (draft_id)

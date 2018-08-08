@@ -6,7 +6,6 @@ module.exports = req => {
 	const currentUser = req.currentUser || { id: null }
 	const currentDocument = req.currentDocument || { draftId: null, contentId: null }
 	const clientEvent = req.body.event
-	const isPreviewMode = currentUser.canViewEditor
 	let sessionId, launchId
 	const sessionIds = getSessionIds(req.session)
 
@@ -27,7 +26,6 @@ module.exports = req => {
 				contentId: currentDocument.contentId,
 				from: clientEvent.payload.from,
 				to: clientEvent.payload.to,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -40,7 +38,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -53,7 +50,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -66,7 +62,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -80,7 +75,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -93,7 +87,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -108,7 +101,6 @@ module.exports = req => {
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -118,7 +110,6 @@ module.exports = req => {
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -128,7 +119,6 @@ module.exports = req => {
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -139,7 +129,6 @@ module.exports = req => {
 				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.questionId,
 				frameName: 'explanation',
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -150,7 +139,6 @@ module.exports = req => {
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
 				frameName: 'explanation',
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -165,7 +153,6 @@ module.exports = req => {
 				attemptId: clientEvent.payload.attemptId,
 				selectedTargets: clientEvent.payload.response,
 				targetId: clientEvent.payload.targetId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -177,7 +164,6 @@ module.exports = req => {
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				score: clientEvent.payload.score,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -188,7 +174,6 @@ module.exports = req => {
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -198,7 +183,6 @@ module.exports = req => {
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -207,7 +191,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'inactive',
@@ -221,7 +204,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'returnFromInactive',
@@ -236,7 +218,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -245,7 +226,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'leave'
@@ -257,7 +237,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'return',

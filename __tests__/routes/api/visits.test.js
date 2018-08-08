@@ -147,7 +147,7 @@ describe('api visits route', () => {
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve ltiLaunch lookup
-		let launch = {
+		const launch = {
 			reqVars: {
 				lis_outcome_service_url: 'howtune.com'
 			}
@@ -174,7 +174,7 @@ describe('api visits route', () => {
 		mockReq.body = { visitId: 9, draftId: 1 }
 
 		// resolve ltiLaunch lookup
-		let launch = {
+		const launch = {
 			reqVars: {
 				lis_outcome_service_url: 'howtune.com'
 			}
@@ -251,7 +251,7 @@ describe('api visits route', () => {
 		)
 
 		// resolve ltiLaunch lookup
-		let launch = {
+		const launch = {
 			reqVars: {
 				lis_outcome_service_url: 'howtune.com'
 			}
@@ -287,7 +287,7 @@ describe('api visits route', () => {
 
 	test('/start is also successful for a preview visit', () => {
 		expect.assertions(5)
-		let user = new User()
+		const user = new User()
 		user.canViewEditor = true
 		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 		mockReq.body = { draftId: 555, visitId: 9 }
@@ -305,7 +305,7 @@ describe('api visits route', () => {
 		viewerState.get.mockResolvedValueOnce('view state')
 
 		// resolve fetchById
-		let mockDraft = new Draft({
+		const mockDraft = new Draft({
 			_rev: 'draft-content-id'
 		})
 		Draft.fetchById.mockResolvedValueOnce(mockDraft)

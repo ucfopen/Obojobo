@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const oboEvents = oboRequire('obo_events')
 const insertEvent = oboRequire('insert_event')
+const VisitModel = oboRequire('models/visit')
 const createCaliperEvent = require('./events/create_caliper_event')
 const logger = oboRequire('logger')
 
@@ -10,11 +11,16 @@ const logger = oboRequire('logger')
 router.post('/', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
+	let currentVisit = null
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
+			return VisitModel.fetchById(req.body.event.visitId)
+		})
+		.then(visit => {
+			currentVisit = visit
 			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
@@ -32,6 +38,7 @@ router.post('/', (req, res, next) => {
 				eventVersion: event.event_version,
 				ip: req.connection.remoteAddress,
 				metadata: {},
+				isPreview: currentVisit.is_preview,
 				payload: event.payload,
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
