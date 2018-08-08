@@ -1,10 +1,11 @@
 const DraftNode = oboRequire('models/draft_node')
+const Visit = oboRequire('models/visit')
 const db = oboRequire('db')
 const lti = oboRequire('lti')
 const logger = oboRequire('logger')
 
 class Assessment extends DraftNode {
-	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId) {
+	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, isPreview) {
 		return db.manyOrNone(
 			`
 				SELECT
@@ -21,29 +22,10 @@ class Assessment extends DraftNode {
 					AND draft_id = $[draftId]
 					AND assessment_id = $[assessmentId]
 					AND completed_at IS NOT NULL
+					AND is_preview = $[isPreview]
 				ORDER BY completed_at`,
-			{ userId: userId, draftId: draftId, assessmentId: assessmentId }
+			{ userId, draftId, assessmentId, isPreview }
 		)
-	}
-
-	static getNumberAttemptsTaken(userId, draftId, assessmentId) {
-		return db
-			.one(
-				`
-				SELECT
-					COUNT(*)
-				FROM attempts
-				WHERE
-					user_id = $[userId]
-					AND draft_id = $[draftId]
-					AND assessment_id = $[assessmentId]
-					AND completed_at IS NOT NULL
-			`,
-				{ userId: userId, draftId: draftId, assessmentId: assessmentId }
-			)
-			.then(result => {
-				return parseInt(result.count, 10)
-			})
 	}
 
 	static createUserAttempt(userId, draftId, attempt) {
@@ -73,20 +55,20 @@ class Assessment extends DraftNode {
 	This function assumes that attempts are all for the same assessment_id
 	*/
 	static filterIncompleteAttempts(attempts) {
-		let complete = attempts.filter(r => r.isFinished).sort((a, b) => a.finishTime - b.finishTime)
+		const complete = attempts.filter(r => r.isFinished).sort((a, b) => a.finishTime - b.finishTime)
 
-		let incomplete = attempts.filter(r => !r.isFinished).sort((a, b) => a.startTime - b.startTime)
+		const incomplete = attempts.filter(r => !r.isFinished).sort((a, b) => a.startTime - b.startTime)
 
 		// no completed, return the latest incomplete
 		if (!complete.length && incomplete.length) {
-			let newestIncomplete = incomplete[incomplete.length - 1]
+			const newestIncomplete = incomplete[incomplete.length - 1]
 			return [newestIncomplete]
 		}
 
 		if (incomplete.length) {
 			// If the last incomplete was created AFTER the last completed at date then include it too
-			let newestIncomplete = incomplete[incomplete.length - 1]
-			let newestComplete = complete[complete.length - 1]
+			const newestIncomplete = incomplete[incomplete.length - 1]
+			const newestComplete = complete[complete.length - 1]
 			if (newestIncomplete.startTime > newestComplete.finishTime) {
 				complete.push(newestIncomplete)
 			}
@@ -95,8 +77,9 @@ class Assessment extends DraftNode {
 		return complete
 	}
 
-	static getAttempts(userId, draftId, optionalAssessmentId = null) {
+	static getAttempts(userId, draftId, isPreview, optionalAssessmentId = null) {
 		const assessments = {}
+
 		return db
 			.manyOrNone(
 				`
@@ -123,11 +106,13 @@ class Assessment extends DraftNode {
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
 					${optionalAssessmentId !== null ? 'AND ATT.assessment_id = $[optionalAssessmentId]' : ''}
+					AND ATT.is_preview = $[isPreview]
 				ORDER BY ATT.completed_at`,
 				{
 					userId,
 					draftId,
-					optionalAssessmentId
+					optionalAssessmentId,
+					isPreview
 				}
 			)
 			.then(attempts => {
@@ -153,14 +138,14 @@ class Assessment extends DraftNode {
 					It also expects that attempt to be the most recent
 					Filter out any incomplete attempts that don't meet those requirements
 				*/
-				for (let k in assessments) {
-					let a = assessments[k]
+				for (const k in assessments) {
+					const a = assessments[k]
 					a.attempts = Assessment.filterIncompleteAttempts(a.attempts)
 				}
 			})
 			.then(() => {
 				// now, get the response history for this user & draft
-				return Assessment.getResponseHistory(userId, draftId, optionalAssessmentId)
+				return Assessment.getResponseHistory(userId, draftId, isPreview, optionalAssessmentId)
 			})
 			.then(responseHistory => {
 				// Goal: place the responses from history into the attempts created above
@@ -233,7 +218,7 @@ class Assessment extends DraftNode {
 			})
 	}
 
-	static getAttemptIdsForUserForDraft(userId, draftId) {
+	static getAttemptIdsForUserForDraft(userId, draftId, isPreview) {
 		// Note, this must use the same sorting as getAttempts()
 		// for the attempt_number to be predictable
 		return db.manyOrNone(
@@ -248,13 +233,15 @@ class Assessment extends DraftNode {
 			WHERE
 				user_id = $[userId]
 			AND draft_id = $[draftId]
+			AND is_preview = $[isPreview]
+			ORDER BY completed_at
 			`,
-			{ userId, draftId }
+			{ userId, draftId, isPreview }
 		)
 	}
 
-	static getAttemptNumber(userId, draftId, attemptId) {
-		return Assessment.getAttemptIdsForUserForDraft(userId, draftId).then(attempts => {
+	static getAttemptNumber(userId, draftId, attemptId, isPreview) {
+		return Assessment.getAttemptIdsForUserForDraft(userId, draftId, isPreview).then(attempts => {
 			for (const attempt of attempts) {
 				if (attempt.id === attemptId) return attempt.attempt_number
 			}
@@ -276,7 +263,7 @@ class Assessment extends DraftNode {
 
 	// get all attempts containing an array of responses
 	// { <attemptId>: [ {...question response...} ] }
-	static getResponseHistory(userId, draftId, optionalAssessmentId = null) {
+	static getResponseHistory(userId, draftId, isPreview, optionalAssessmentId = null) {
 		return db
 			.manyOrNone(
 				`
@@ -287,9 +274,10 @@ class Assessment extends DraftNode {
 					FROM attempts
 					WHERE user_id = $[userId]
 					AND draft_id = $[draftId]
+					AND is_preview = $[isPreview]
 					${optionalAssessmentId !== null ? "AND assessment_id = '" + optionalAssessmentId + "'" : ''}
 				) ORDER BY updated_at`,
-				{ userId, draftId, optionalAssessmentId }
+				{ userId, draftId, isPreview, optionalAssessmentId }
 			)
 			.then(result => {
 				const history = {}
@@ -317,7 +305,7 @@ class Assessment extends DraftNode {
 	static insertNewAttempt(userId, draftId, contentId, assessmentId, state, isPreview) {
 		return db.one(
 			`
-				INSERT INTO attempts (user_id, draft_id, draft_content_id, assessment_id, state, preview)
+				INSERT INTO attempts (user_id, draft_id, draft_content_id, assessment_id, state, is_preview)
 				VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[state], $[isPreview])
 				RETURNING
 				id AS "attemptId",
@@ -328,12 +316,12 @@ class Assessment extends DraftNode {
 				result
 			`,
 			{
-				userId: userId,
-				draftId: draftId,
-				contentId: contentId,
-				assessmentId: assessmentId,
-				state: state,
-				isPreview: isPreview
+				userId,
+				draftId,
+				contentId,
+				assessmentId,
+				state,
+				isPreview
 			}
 		)
 	}
@@ -347,7 +335,7 @@ class Assessment extends DraftNode {
 		contentId,
 		attemptScoreResult,
 		assessmentScoreDetails,
-		preview
+		isPreview
 	) {
 		return db
 			.tx(dbTransaction => {
@@ -371,8 +359,8 @@ class Assessment extends DraftNode {
 
 				const q2 = dbTransaction.one(
 					`
-					INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, preview)
-					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
+					INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview)
+					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview])
 					RETURNING id
 				`,
 					{
@@ -383,7 +371,7 @@ class Assessment extends DraftNode {
 						attemptId,
 						score: assessmentScoreDetails.assessmentModdedScore,
 						scoreDetails: assessmentScoreDetails,
-						preview
+						isPreview
 					}
 				)
 
@@ -422,9 +410,16 @@ class Assessment extends DraftNode {
 	}
 
 	onStartVisit(req, res, draftId, visitId, extensionsProps) {
+		let currentUser
 		return req
 			.requireCurrentUser()
-			.then(currentUser => this.constructor.getAttempts(currentUser.id, draftId))
+			.then(user => {
+				currentUser = user
+				return Visit.fetchById(visitId)
+			})
+			.then(visit => {
+				return this.constructor.getAttempts(currentUser.id, draftId, visit.is_preview)
+			})
 			.then(attempts => {
 				extensionsProps[':ObojoboDraft.Sections.Assessment:attemptHistory'] = attempts
 			})

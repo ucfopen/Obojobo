@@ -2,6 +2,13 @@ const db = oboRequire('db')
 const lti = oboRequire('lti')
 const Assessment = require('../../server/assessment')
 
+jest.mock(
+	'../../__mocks__/models/visit',
+	() => ({
+		fetchById: jest.fn().mockReturnValue({ is_preview: false })
+	}),
+	{ virtual: true }
+)
 const logger = oboRequire('logger')
 
 describe('Assessment', () => {
@@ -23,7 +30,7 @@ describe('Assessment', () => {
 			questionScores: ['mockScore']
 		},
 		assessment_score: '15',
-		score_details: 'mockScoreDeails',
+		score_details: 'mockScoreDetails',
 		assessment_score_id: 'scoreId',
 		attempt_number: '12'
 	})
@@ -39,23 +46,13 @@ describe('Assessment', () => {
 		})
 	})
 
-	test('getNumberAttemptsTaken calls db', done => {
-		expect.assertions(1)
-		db.one.mockResolvedValueOnce({ count: 123 })
-
-		return Assessment.getNumberAttemptsTaken(0, 1, 2).then(n => {
-			expect(n).toBe(123)
-			done()
-		})
-	})
-
 	test('createUserAttempt returns attempt object', () => {
 		let mockAttempt = makeMockAttempt()
 		let res = Assessment.createUserAttempt('mockUserId', 'mockDraftId', mockAttempt)
 		expect(res).toEqual({
 			assessmentId: 'mockAssessmentId',
 			assessmentScore: 15,
-			assessmentScoreDetails: 'mockScoreDeails',
+			assessmentScoreDetails: 'mockScoreDetails',
 			assessmentScoreId: 'scoreId',
 			attemptId: 'mockAttemptId',
 			responses: {},
@@ -79,7 +76,7 @@ describe('Assessment', () => {
 		expect(res).toEqual({
 			assessmentId: 'mockAssessmentId',
 			assessmentScore: 15,
-			assessmentScoreDetails: 'mockScoreDeails',
+			assessmentScoreDetails: 'mockScoreDetails',
 			assessmentScoreId: 'scoreId',
 			attemptId: 'mockAttemptId',
 			responses: {},
@@ -106,9 +103,11 @@ describe('Assessment', () => {
 		// there's no lti state
 		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns attempts object without assessmentId', () => {
@@ -136,9 +135,11 @@ describe('Assessment', () => {
 		// there's no lti state
 		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'badAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'badAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns attempts object with response history', () => {
@@ -152,7 +153,6 @@ describe('Assessment', () => {
 				{
 					id: 'mockResponseId',
 					assessment_id: 'mockAssessmentId',
-					repsonse: 'mockResponse',
 					attempt_id: 'mockAttemptId',
 					question_id: 'mockQuestionId',
 					response: 'mockResponse'
@@ -171,9 +171,11 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns multiple attempts with same assessment', () => {
@@ -191,7 +193,7 @@ describe('Assessment', () => {
 				{
 					id: 'mockResponseId',
 					assessment_id: 'mockAssessmentId',
-					repsonse: 'mockResponse',
+					response: 'mockResponse',
 					attempt_id: 'mockAttemptId',
 					question_id: 'mockQuestionId',
 					response: 'mockResponse'
@@ -210,9 +212,11 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns no history when assessmentIds for attempt and history dont match', () => {
@@ -280,12 +284,14 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-			expect(logger.warn).toHaveBeenCalledWith(
-				"Couldn't find an attempt I was looking for ('mockUserId', 'mockDraftId', 'mockAttemptId', 'mockResponseId', 'mockAssessmentId') - Shouldn't get here!"
-			)
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+				expect(logger.warn).toHaveBeenCalledWith(
+					"Couldn't find an attempt I was looking for ('mockUserId', 'mockDraftId', 'mockAttemptId', 'mockResponseId', 'mockAssessmentId') - Shouldn't get here!"
+				)
+			}
+		)
 	})
 
 	test('getAttemptIdsForUserForDraft calls db with expected fields', () => {
@@ -566,22 +572,26 @@ describe('Assessment', () => {
 			}
 		])
 
-		return Assessment.getResponseHistory('mockUserId', 'mockDraftId', 'mockAssessmentId').then(
-			result => {
-				expect(db.manyOrNone.mock.calls[0][1]).toEqual({
-					userId: 'mockUserId',
-					draftId: 'mockDraftId',
-					optionalAssessmentId: 'mockAssessmentId'
-				})
+		return Assessment.getResponseHistory(
+			'mockUserId',
+			'mockDraftId',
+			false,
+			'mockAssessmentId'
+		).then(result => {
+			expect(db.manyOrNone.mock.calls[0][1]).toEqual({
+				userId: 'mockUserId',
+				draftId: 'mockDraftId',
+				isPreview: false,
+				optionalAssessmentId: 'mockAssessmentId'
+			})
 
-				expect(result).toEqual({
-					mockAttemptId: [{ attempt_id: 'mockAttemptId' }],
-					secondMockAttemptId: [{ attempt_id: 'secondMockAttemptId' }]
-				})
+			expect(result).toEqual({
+				mockAttemptId: [{ attempt_id: 'mockAttemptId' }],
+				secondMockAttemptId: [{ attempt_id: 'secondMockAttemptId' }]
+			})
 
-				return done()
-			}
-		)
+			return done()
+		})
 	})
 
 	test('getResponsesForAttempt calls the database with the expected value', () => {

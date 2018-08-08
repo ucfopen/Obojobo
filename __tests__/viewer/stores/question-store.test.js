@@ -22,6 +22,7 @@ jest.mock('../../../src/scripts/common/util/focus-util', () => ({
 	unfocus: jest.fn()
 }))
 
+const Common = require('../../../src/scripts/common/index').default
 const UUID = require('../../../src/scripts/common/util/uuid')
 const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
 const QuestionUtil = require('../../../src/scripts/viewer/util/question-util')
@@ -85,7 +86,7 @@ describe('QuestionStore', () => {
 		// the events we want to find are called when Common is loaded
 		// making them sort of annoying to load cleanly. Other stores are initialized too,
 		// so this is a liiiiitle fragile
-		eventListeners = Dispatcher.on.mock.calls[4][0]
+		eventListeners = Dispatcher.on.mock.calls[5][0]
 	})
 
 	beforeEach(() => {
@@ -119,7 +120,8 @@ describe('QuestionStore', () => {
 	})
 
 	test('question:setResponse calls triggerChange and postEvent', () => {
-		__createModels()
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		__mockTrigger('question:setResponse', {
 			value: {
@@ -130,17 +132,25 @@ describe('QuestionStore', () => {
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toBe(OboModel.models.questionId)
-		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('question:setResponse')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual('2.1.0')
-		expect(APIUtil.postEvent.mock.calls[0][3]).toEqual({
-			questionId: 'questionId',
-			response: { customResponse: 'responseValue' }
+		expect(APIUtil.postEvent.mock.calls[0][0]).toEqual({
+			action: 'question:setResponse',
+			draftId: 'mockDraftId',
+			eventVersion: '2.1.0',
+			payload: {
+				assessmentId: undefined,
+				attemptId: undefined,
+				context: undefined,
+				questionId: 'questionId',
+				response: { customResponse: 'responseValue' },
+				targetId: undefined
+			},
+			visitId: undefined
 		})
 	})
 
 	test('question:setResponse calls triggerChange and postEvent', () => {
-		__createModels()
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		QuestionStore.setState({ responses: { mockContext: {} } })
 
@@ -154,16 +164,19 @@ describe('QuestionStore', () => {
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
-		expect(APIUtil.postEvent.mock.calls[0][0]).toBe(OboModel.models.questionId)
-		expect(APIUtil.postEvent.mock.calls[0][1]).toEqual('question:setResponse')
-		expect(APIUtil.postEvent.mock.calls[0][2]).toEqual('2.1.0')
-		expect(APIUtil.postEvent.mock.calls[0][3]).toEqual({
-			assessmentId: undefined,
-			attemptId: undefined,
-			context: 'mockContext',
-			questionId: 'questionId',
-			response: { customResponse: 'responseValue' },
-			targetId: undefined
+		expect(APIUtil.postEvent.mock.calls[0][0]).toEqual({
+			action: 'question:setResponse',
+			draftId: 'mockDraftId',
+			eventVersion: '2.1.0',
+			payload: {
+				assessmentId: undefined,
+				attemptId: undefined,
+				context: 'mockContext',
+				questionId: 'questionId',
+				response: { customResponse: 'responseValue' },
+				targetId: undefined
+			},
+			visitId: undefined
 		})
 	})
 

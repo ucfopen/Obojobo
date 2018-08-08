@@ -7,7 +7,7 @@ Object {
     Object {
       "assessmentId": "mockAssessmentId",
       "assessmentScore": 15,
-      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreDetails": "mockScoreDetails",
       "assessmentScoreId": "scoreId",
       "attemptId": "mockAttemptId",
       "attemptNumber": 12,
@@ -45,7 +45,7 @@ Array [
       Object {
         "assessmentId": "mockAssessmentId",
         "assessmentScore": 15,
-        "assessmentScoreDetails": "mockScoreDeails",
+        "assessmentScoreDetails": "mockScoreDetails",
         "assessmentScoreId": "scoreId",
         "attemptId": "mockAttemptId",
         "attemptNumber": 12,
@@ -75,7 +75,7 @@ Object {
     Object {
       "assessmentId": "mockAssessmentId",
       "assessmentScore": 15,
-      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreDetails": "mockScoreDetails",
       "assessmentScoreId": "scoreId",
       "attemptId": "mockAttemptId",
       "attemptNumber": 12,
@@ -112,7 +112,7 @@ Object {
     Object {
       "assessmentId": "mockAssessmentId",
       "assessmentScore": 15,
-      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreDetails": "mockScoreDetails",
       "assessmentScoreId": "scoreId",
       "attemptId": "mockFirst",
       "attemptNumber": 12,
@@ -132,7 +132,7 @@ Object {
     Object {
       "assessmentId": "mockAssessmentId",
       "assessmentScore": 15,
-      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreDetails": "mockScoreDetails",
       "assessmentScoreId": "scoreId",
       "attemptId": "mockSecond",
       "attemptNumber": 12,
@@ -168,7 +168,7 @@ Array [
       Object {
         "assessmentId": "mockAssessmentId",
         "assessmentScore": 15,
-        "assessmentScoreDetails": "mockScoreDeails",
+        "assessmentScoreDetails": "mockScoreDetails",
         "assessmentScoreId": "scoreId",
         "attemptId": "mockAttemptId",
         "attemptNumber": 12,
@@ -204,7 +204,7 @@ Object {
     Object {
       "assessmentId": "mockAssessmentId",
       "assessmentScore": 15,
-      "assessmentScoreDetails": "mockScoreDeails",
+      "assessmentScoreDetails": "mockScoreDetails",
       "assessmentScoreId": "scoreId",
       "attemptId": "mockAttemptId",
       "attemptNumber": 12,
