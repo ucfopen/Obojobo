@@ -31,7 +31,7 @@ describe('viewer route', () => {
 			get: jest.fn()
 		},
 		session: {
-			save: cb => cb()
+			save: jest.fn().mockImplementation(cb => cb())
 		},
 		lti: {
 			body: {
@@ -92,7 +92,7 @@ describe('viewer route', () => {
 	test('POST /:draftId/:page? redirects to a visit', () => {
 		expect.assertions(2)
 
-		let draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
+		const draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 
 		return draftLaunchRoute(mockReq, mockRes, mockNext).then(result => {
@@ -108,7 +108,7 @@ describe('viewer route', () => {
 
 	test('POST /:draftId/:page? inserts visit:create event and calls createVisitCreateEvent', () => {
 		expect.assertions(2)
-		let draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
+		const draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 
 		return draftLaunchRoute(mockReq, mockRes, mockNext).then(result => {
@@ -121,11 +121,9 @@ describe('viewer route', () => {
 				eventVersion: '1.0.0',
 				ip: 'remoteAddress',
 				metadata: {},
-				payload: {
-					deactivatedVisitId: 'mocked-deactivated-visit-id',
-					visitId: 'mocked-visit-id'
-				},
-				userId: 1
+				payload: { deactivatedVisitId: 'mocked-deactivated-visit-id', visitId: 'mocked-visit-id' },
+				userId: 1,
+				isPreview: false
 			})
 			expect(caliperEvent().createVisitCreateEvent).toBeCalledWith({
 				actor: { id: 1, type: 'user' },
@@ -140,8 +138,8 @@ describe('viewer route', () => {
 	test('POST /:draftId/:page? onlogs error and calls next if error', () => {
 		expect.assertions(2)
 
-		let draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
-		let mockedError = new Error('mocked-error')
+		const draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
+		const mockedError = new Error('mocked-error')
 
 		mockReq.requireCurrentUser.mockRejectedValueOnce(mockedError)
 
@@ -154,21 +152,21 @@ describe('viewer route', () => {
 	test('/:draftId/:page? rejects session save errors', () => {
 		expect.assertions(2)
 
-		let draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
+		const draftLaunchRoute = mockRouterMethods.post.mock.calls[0][2]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		mockReq.session.save = jest.fn().mockImplementationOnce(funct => {
-			funct({})
+		mockReq.session.save.mockImplementationOnce(cb => {
+			cb('mockError')
 		})
 
 		return draftLaunchRoute(mockReq, mockRes, mockNext).then(result => {
-			expect(logger.error).toBeCalledWith({})
-			expect(mockNext).toBeCalledWith({})
+			expect(logger.error).toBeCalledWith('mockError')
+			expect(mockNext).toBeCalledWith('mockError')
 		})
 	})
 
 	test('view/draft/visit rejects guest', () => {
 		expect.assertions(1)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
+		const visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new GuestUser())
 
 		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
@@ -178,7 +176,7 @@ describe('viewer route', () => {
 
 	test('view/draft/visit rejects non-logged in users', () => {
 		expect.assertions(1)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
+		const visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
 
 		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
@@ -188,7 +186,7 @@ describe('viewer route', () => {
 
 	test('view/draft/visit rejects non-logged in users', () => {
 		expect.assertions(2)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
+		const visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockRejectedValueOnce('not logged in')
 
 		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
@@ -199,7 +197,7 @@ describe('viewer route', () => {
 
 	test('view/draft/visit inserts viewer:open event and calls createViewerOpenEvent', () => {
 		expect.assertions(2)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
+		const visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 
 		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
@@ -217,7 +215,6 @@ describe('viewer route', () => {
 			})
 			expect(caliperEvent().createViewerOpenEvent).toBeCalledWith({
 				actor: { id: 1, type: 'user' },
-				isPreviewMode: undefined,
 				sessionIds: { launchId: undefined, sessionId: undefined },
 				visitId: 'mocked-visit-id'
 			})
@@ -226,9 +223,9 @@ describe('viewer route', () => {
 
 	test('view/draft/visit calls render', () => {
 		expect.assertions(2)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
+		const visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		let mockDoc = {} // no contents
+		const mockDoc = {} // no contents
 		mockYell.mockReturnValueOnce(mockDoc)
 
 		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
@@ -240,9 +237,9 @@ describe('viewer route', () => {
 
 	test('view/draft/visit calls render with the draft title', () => {
 		expect.assertions(1)
-		let visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
+		const visitRouteFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
-		let mockDoc = {
+		const mockDoc = {
 			root: {
 				node: {
 					content: {
@@ -256,6 +253,23 @@ describe('viewer route', () => {
 
 		return visitRouteFunction(mockReq, mockRes, mockNext).then(result => {
 			expect(mockRes.render).toBeCalledWith('viewer', { draftTitle: 'my expected title' })
+		})
+	})
+
+	test('POST view/:draftId/:page? redirects to a visit', () => {
+		expect.assertions(2)
+
+		const routeFunction = mockRouterMethods.post.mock.calls[0][2]
+
+		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
+		return routeFunction(mockReq, mockRes, mockNext).then(result => {
+			expect(Visit.createVisit).toBeCalledWith(
+				1,
+				555,
+				'mocked-resource-link-id',
+				'mocked-launch-id'
+			)
+			expect(mockRes.redirect).toBeCalledWith('/view/555/visit/mocked-visit-id')
 		})
 	})
 })

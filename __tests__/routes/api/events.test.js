@@ -1,5 +1,7 @@
 jest.mock('../../../models/draft')
 jest.mock('../../../db')
+jest.mock('../../../models/visit')
+
 const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
 
 let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')

@@ -20,7 +20,7 @@ describe('Base Caliper Event', () => {
 			actor: 'https://mockhost/api/server',
 			edApp: 'https://mockhost/api/system',
 			eventTime: expect.any(String),
-			extensions: { previewMode: false },
+			extensions: {},
 			federatedSession: null,
 			generated: null,
 			group: null,

@@ -603,7 +603,7 @@ describe('api draft route', () => {
 
 		return routeFunction(mockReq, mockRes, mockNext)
 			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
+				expect(mockRes.unexpected).toBeCalledWith('Insufficient permissions')
 			})
 			.catch(err => {
 				expect(err).toBe('never called')

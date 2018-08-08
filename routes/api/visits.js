@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const db = oboRequire('db')
 const logger = oboRequire('logger')
 const VisitModel = oboRequire('models/visit')
 const ltiUtil = oboRequire('lti')
@@ -87,6 +86,7 @@ router.post('/start', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: currentDocument.draftId,
+				isPreview: visit.is_preview,
 				contentId: currentDocument.contentId,
 				payload: { visitId },
 				eventVersion: '1.0.0',
@@ -94,7 +94,6 @@ router.post('/start', (req, res, next) => {
 					actor: { type: ACTOR_USER, id: currentUser.id },
 					draftId: currentDocument.draftId,
 					contentId: currentDocument.contentId,
-					isPreviewMode: currentUser.canViewEditor,
 					sessionIds: getSessionIds(req.session)
 				})
 			})
@@ -114,7 +113,7 @@ router.post('/start', (req, res, next) => {
 
 			res.success({
 				visitId,
-				isPreviewing: currentUser.canViewEditor ? currentUser.canViewEditor : false,
+				isPreviewing: visit.is_preview,
 				lti,
 				viewState,
 				extensions: visitStartReturnExtensionsProps

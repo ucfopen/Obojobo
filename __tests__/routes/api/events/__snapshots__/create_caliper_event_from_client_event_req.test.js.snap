@@ -7,9 +7,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft-content/testContentIdReq#testIdReq",
@@ -26,7 +24,6 @@ Event {
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
-    "previewMode": false,
     "previousZoom": 2,
     "type": "resetZoom",
   },
@@ -46,7 +43,6 @@ Event {
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
-    "previewMode": false,
     "previousZoom": 1,
     "type": "setZoom",
     "zoom": 1.1,
@@ -66,9 +62,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft-content/testContentIdReq#testIdReq",
@@ -87,7 +81,6 @@ Event {
   "extensions": Object {
     "internalName": "nav:close",
     "navType": "close",
-    "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -107,7 +100,6 @@ Event {
   "extensions": Object {
     "internalName": "nav:goto",
     "navType": "goto",
-    "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -128,7 +120,6 @@ Event {
   "extensions": Object {
     "internalName": "nav:lock",
     "navType": "lock",
-    "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -148,7 +139,6 @@ Event {
   "extensions": Object {
     "internalName": "nav:open",
     "navType": "open",
-    "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -169,7 +159,6 @@ Event {
     "internalName": "nav:toggle",
     "isOpen": undefined,
     "navType": "toggle",
-    "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -189,7 +178,6 @@ Event {
   "extensions": Object {
     "internalName": "nav:unlock",
     "navType": "unlock",
-    "previewMode": false,
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -206,9 +194,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft-content/testContentIdReq#testQuestionIdReq",
@@ -225,9 +211,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft-content/testContentIdReq#testQuestionIdReq",
@@ -243,9 +227,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft-content/testContentIdReq#testQuestionIdReq",
@@ -262,9 +244,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft-content/testContentIdReq#testQuestionIdReq",
@@ -281,9 +261,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "generated": Object {
     "attempt": "https://hostnameReq/api/attempt/testAttemptIdReq",
@@ -309,9 +287,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft-content/testContentIdReq#testQuestionIdReq",
@@ -328,9 +304,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/draft-content/testContentIdReq#testQuestionIdReq",
@@ -346,9 +320,7 @@ Event {
   "actor": "https://hostnameReq/api/server",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "urn:uuid:testIdReq",
@@ -365,9 +337,7 @@ Event {
   "actor": "https://hostnameReq/api/viewer/client",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
@@ -393,9 +363,7 @@ Event {
   "actor": "https://hostnameReq/api/user/testUserIdReq",
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://hostnameReq/api/system",
@@ -415,7 +383,6 @@ Event {
   "extensions": Object {
     "inactiveDuration": "testInactiveDurationReq",
     "lastActiveTime": "testLastActiveTimeReq",
-    "previewMode": false,
     "type": "inactive",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
@@ -434,7 +401,6 @@ Event {
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
-    "previewMode": false,
     "type": "leave",
   },
   "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
@@ -453,7 +419,6 @@ Event {
   "edApp": "https://hostnameReq/api/system",
   "eventTime": "2016-09-22T16:57:14.500Z",
   "extensions": Object {
-    "previewMode": false,
     "relatedEventId": "testRelatedEventIdreq",
     "type": "return",
   },
@@ -475,7 +440,6 @@ Event {
   "extensions": Object {
     "inactiveDuration": "testInactiveDurationReq",
     "lastActiveTime": "testLastActiveTimeReq",
-    "previewMode": false,
     "relatedEventId": "testRelatedEventIdreq",
     "type": "returnFromInactive",
   },
