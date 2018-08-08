@@ -1,5 +1,5 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 
 jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/viewer/stores/question-store')
@@ -406,12 +406,12 @@ describe('ViewerApp', () => {
 
 			component.instance().onVisibilityChange()
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith(
-				component.instance().state.model,
-				'viewer:leave',
-				'1.0.0',
-				{}
-			)
+			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:leave',
+				draftId: undefined,
+				eventVersion: '1.0.0',
+				visitId: undefined
+			})
 
 			component.unmount()
 			document.hidden = originalHidden
@@ -431,12 +431,13 @@ describe('ViewerApp', () => {
 
 			component.instance().onVisibilityChange()
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith(
-				component.instance().state.model,
-				'viewer:return',
-				'1.0.0',
-				{ relatedEventId: 'mockId' }
-			)
+			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:return',
+				draftId: undefined,
+				eventVersion: '1.0.0',
+				payload: { relatedEventId: 'mockId' },
+				visitId: undefined
+			})
 
 			component.unmount()
 			done()

@@ -428,7 +428,9 @@ const originalError = describe('AssessmentStore', () => {
 	test('tryEndAttempt catches unexpected errors', () => {
 		OboModel.create(getExampleAssessment())
 
-		AssessmentStore.setState({ assessments: { assessmentId: {} } })
+		AssessmentStore.setState({
+			assessments: { assessmentId: { current: { attemptId: 'mockAttemptId' } } }
+		})
 
 		APIUtil.endAttempt.mockResolvedValueOnce({
 			status: 'error',

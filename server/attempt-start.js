@@ -1,9 +1,8 @@
 const Assessment = require('./assessment')
-const DraftModel = oboRequire('models/draft')
+const VisitModel = oboRequire('models/visit')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
-const logger = oboRequire('logger')
-const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
+const { getRandom, logAndRespondToUnexpected } = require('./util')
 const _ = require('underscore')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
@@ -14,16 +13,16 @@ const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 const startAttempt = (req, res) => {
-	let assessmentProperties = {
+	const assessmentProperties = {
 		user: null,
-		isPreviewing: null,
+		isPreview: null,
 		draftTree: null,
 		id: null,
 		node: null,
 		nodeChildrenIds: null,
 		assessmentQBTree: null,
 		attemptHistory: null,
-		numAttemptsaken: null,
+		numAttemptsTaken: null,
 		questionUsesMap: null
 	}
 	let attemptState
@@ -35,7 +34,10 @@ const startAttempt = (req, res) => {
 		.then(user => {
 			currentUser = user
 			assessmentProperties.user = user
-			assessmentProperties.isPreviewing = user.canViewEditor
+			return VisitModel.fetchById(req.body.visitId)
+		})
+		.then(visit => {
+			assessmentProperties.isPreview = visit.is_preview
 
 			return req.requireCurrentDocument()
 		})
@@ -52,28 +54,22 @@ const startAttempt = (req, res) => {
 			return Assessment.getCompletedAssessmentAttemptHistory(
 				assessmentProperties.user.id,
 				currentDocument.draftId,
-				req.body.assessmentId
+				req.body.assessmentId,
+				assessmentProperties.isPreview
 			)
 		})
 		.then(attemptHistory => {
 			assessmentProperties.attemptHistory = attemptHistory
-
-			return Assessment.getNumberAttemptsTaken(
-				assessmentProperties.user.id,
-				currentDocument.draftId,
-				req.body.assessmentId
-			)
-		})
-		.then(numAttemptsTaken => {
-			assessmentProperties.numAttemptsTaken = numAttemptsTaken
+			assessmentProperties.numAttemptsTaken = attemptHistory.length
 
 			// If we're in preview mode, allow unlimited attempts, else throw an error
 			// when trying to start an assessment with no attempts left.
 			if (
 				assessmentProperties.oboNode.node.content.attempts &&
 				assessmentProperties.numAttemptsTaken >= assessmentProperties.oboNode.node.content.attempts
-			)
+			) {
 				throw new Error(ERROR_ATTEMPT_LIMIT_REACHED)
+			}
 
 			attemptState = getState(assessmentProperties)
 
@@ -81,7 +77,6 @@ const startAttempt = (req, res) => {
 		})
 		.then(() => {
 			const questionObjects = attemptState.questions.map(q => q.toObject())
-
 			return Assessment.insertNewAttempt(
 				assessmentProperties.user.id,
 				currentDocument.draftId,
@@ -92,19 +87,18 @@ const startAttempt = (req, res) => {
 					data: attemptState.data,
 					qb: assessmentProperties.assessmentQBTree
 				},
-				assessmentProperties.isPreviewing
+				assessmentProperties.isPreview
 			)
 		})
 		.then(result => {
 			res.success(result)
-
 			return insertAttemptStartCaliperEvent(
 				result.attemptId,
 				assessmentProperties.numAttemptsTaken,
 				assessmentProperties.user.id,
 				currentDocument,
 				req.body.assessmentId,
-				assessmentProperties.isPreviewing,
+				assessmentProperties.isPreview,
 				req.hostname,
 				req.connection.remoteAddress
 			)
@@ -139,7 +133,7 @@ const getState = assessmentProperties => {
 const loadChildren = assessmentProperties => {
 	const childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
-	for (let attempt of assessmentProperties.attemptHistory) {
+	for (const attempt of assessmentProperties.attemptHistory) {
 		if (attempt.state.qb) {
 			initAssessmentUsedQuestions(attempt.state.qb, childrenMap)
 		}
@@ -159,8 +153,9 @@ const createAssessmentUsedQuestionMap = assessmentProperties => {
 	const assessmentquestionUsesMap = new Map()
 	assessmentProperties.nodeChildrenIds.forEach(id => {
 		const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
-		if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE)
+		if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE) {
 			assessmentquestionUsesMap.set(id, 0)
+		}
 	})
 
 	return assessmentquestionUsesMap
@@ -171,7 +166,7 @@ const createAssessmentUsedQuestionMap = assessmentProperties => {
 const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	if (usedQuestionMap.has(node.id)) usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
 
-	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
+	for (const child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
 // Choose questions in order, Prioritizing less used questions first
@@ -224,10 +219,10 @@ const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestion
 		[...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
 			// sort, prioritizing unseen questions
 			.sort((id1, id2) => {
-				// these questsions have been seen the same number of times
-				// randomize their order reletive to each other [a, b] or [b, a]
+				// these questions have been seen the same number of times
+				// randomize their order relative to each other [a, b] or [b, a]
 				if (questionUsesMap.get(id1) === questionUsesMap.get(id2)) {
-					return Math.random() - 0.5
+					return getRandom() - 0.5
 				}
 				// these questions have not been seen the same number of times
 				// place the lesser seen one first
@@ -280,7 +275,7 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 	}
 
 	// Continue recursively through children
-	for (let child of node.children) createChosenQuestionTree(child, assessmentProperties)
+	for (const child of node.children) createChosenQuestionTree(child, assessmentProperties)
 }
 
 // Return an array of question type nodes from a node tree.
@@ -291,7 +286,7 @@ const getNodeQuestions = (node, assessmentNode, questions = []) => {
 	}
 
 	// recurse through this node's children
-	for (let child of node.children) {
+	for (const child of node.children) {
 		questions.concat(getNodeQuestions(child, assessmentNode, questions))
 	}
 
@@ -302,7 +297,7 @@ const getNodeQuestions = (node, assessmentNode, questions = []) => {
 // assessment:sendToAssessment event.
 const getSendToClientPromises = (attemptState, req, res) => {
 	let promises = []
-	for (let q of attemptState.questions) {
+	for (const q of attemptState.questions) {
 		promises = promises.concat(q.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res))
 	}
 
@@ -315,7 +310,7 @@ const insertAttemptStartCaliperEvent = (
 	userId,
 	draftDocument,
 	assessmentId,
-	isPreviewing,
+	isPreview,
 	hostname,
 	remoteAddress
 ) => {
@@ -323,6 +318,7 @@ const insertAttemptStartCaliperEvent = (
 	return insertEvent({
 		action: ACTION_ASSESSMENT_ATTEMPT_START,
 		actorTime: new Date().toISOString(),
+		isPreview: isPreview,
 		payload: {
 			attemptId: attemptId,
 			attemptCount: numAttemptsTaken
@@ -339,7 +335,6 @@ const insertAttemptStartCaliperEvent = (
 			contentId: draftDocument.contentId,
 			assessmentId: assessmentId,
 			attemptId: attemptId,
-			isPreviewMode: isPreviewing,
 			extensions: {
 				count: numAttemptsTaken
 			}

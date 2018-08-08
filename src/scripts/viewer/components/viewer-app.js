@@ -227,12 +227,23 @@ export default class ViewerApp extends React.Component {
 
 	onVisibilityChange() {
 		if (document.hidden) {
-			APIUtil.postEvent(this.state.model, 'viewer:leave', '1.0.0', {}).then(res => {
+			APIUtil.postEvent({
+				draftId: this.state.model.get('draftId'),
+				action: 'viewer:leave',
+				eventVersion: '1.0.0',
+				visitId: this.state.navState.visitId
+			}).then(res => {
 				this.leaveEvent = res.value
 			})
 		} else {
-			APIUtil.postEvent(this.state.model, 'viewer:return', '1.0.0', {
-				relatedEventId: this.leaveEvent.id
+			APIUtil.postEvent({
+				draftId: this.state.model.get('draftId'),
+				action: 'viewer:return',
+				eventVersion: '1.0.0',
+				visitId: this.state.navState.visitId,
+				payload: {
+					relatedEventId: this.leaveEvent.id
+				}
 			})
 			delete this.leaveEvent
 		}
@@ -300,19 +311,30 @@ export default class ViewerApp extends React.Component {
 	onIdle() {
 		this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
 
-		APIUtil.postEvent(this.state.model, 'viewer:inactive', '2.0.0', {
-			lastActiveTime: this.lastActiveEpoch,
-			inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+		APIUtil.postEvent({
+			draftId: this.state.model.get('draftId'),
+			action: 'viewer:inactive',
+			eventVersion: '3.0.0',
+			payload: {
+				lastActiveTime: this.lastActiveEpoch,
+				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
+			}
 		}).then(res => {
 			this.inactiveEvent = res.value
 		})
 	}
 
 	onReturnFromIdle() {
-		APIUtil.postEvent(this.state.model, 'viewer:returnFromInactive', '2.0.0', {
-			lastActiveTime: this.lastActiveEpoch,
-			inactiveDuration: Date.now() - this.lastActiveEpoch,
-			relatedEventId: this.inactiveEvent.id
+		APIUtil.postEvent({
+			draftId: this.state.model.get('draftId'),
+			action: 'viewer:returnFromInactive',
+			eventVersion: '2.0.0',
+			visitId: this.state.navState.visitId,
+			payload: {
+				lastActiveTime: this.lastActiveEpoch,
+				inactiveDuration: Date.now() - this.lastActiveEpoch,
+				relatedEventId: this.inactiveEvent.id
+			}
 		})
 
 		delete this.lastActiveEpoch
@@ -336,11 +358,19 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onWindowClose() {
-		APIUtil.postEvent(this.state.model, 'viewer:close', '1.0.0', {})
+		APIUtil.postEvent({
+			draftId: this.state.model.get('draftId'),
+			action: 'viewer:close',
+			eventVersion: '1.0.0',
+			visitId: this.state.navState.visitId
+		})
 	}
 
 	clearPreviewScores() {
-		APIUtil.clearPreviewScores(this.state.model.get('draftId')).then(res => {
+		APIUtil.clearPreviewScores({
+			draftId: this.state.model.get('draftId'),
+			visitId: this.state.navState.visitId
+		}).then(res => {
 			if (res.status === 'error' || res.error) {
 				return ModalUtil.show(
 					<SimpleDialog ok width="15em">
