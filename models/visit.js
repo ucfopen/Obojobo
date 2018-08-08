@@ -69,14 +69,14 @@ class Visit {
 		}
 	}
 
-	static fetchById(visitId, onlyFetchIfActive = true) {
+	static fetchById(visitId, requireIsActive = true) {
 		return db
 			.one(
 				`
 			SELECT is_active, is_preview, draft_content_id
 			FROM visits
 			WHERE id = $[visitId]
-			${onlyFetchIfActive ? 'AND is_active = true' : ''}
+			${requireIsActive ? 'AND is_active = true' : ''}
 			ORDER BY created_at DESC
 			LIMIT 1
 		`,

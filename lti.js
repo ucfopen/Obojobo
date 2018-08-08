@@ -57,7 +57,7 @@ const SCORE_TYPE_DIFFERENT = 'differentScore'
 const isScoreValid = score => Number.isFinite(score) && score >= 0 && score <= 1
 
 const isLaunchExpired = launchDate => {
-	let minsSinceLaunch = moment.duration(moment().diff(moment(launchDate))).asMinutes()
+	const minsSinceLaunch = moment.duration(moment().diff(moment(launchDate))).asMinutes()
 	return minsSinceLaunch > MINUTES_EXPIRED_LAUNCH
 }
 
@@ -115,8 +115,13 @@ const getGradebookStatus = (
 //
 // Fetch methods
 //
-let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId, preview = false) => {
-	let result = {
+const getLatestHighestAssessmentScoreRecord = (
+	userId,
+	draftId,
+	assessmentId,
+	isPreview = false
+) => {
+	const result = {
 		id: null,
 		userId: null,
 		draftId: null,
@@ -125,7 +130,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId, prev
 		attemptId: null,
 		score: null,
 		scoreDetails: null,
-		preview: null,
+		isPreview: null,
 		error: null
 	}
 
@@ -151,7 +156,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId, prev
 						user_id = $[userId]
 						AND draft_id = $[draftId]
 						AND assessment_id = $[assessmentId]
-						AND is_preview = $[preview]
+						AND is_preview = $[isPreview]
 				) T1
 				ORDER BY
 					T1.coalesced_score DESC,
@@ -162,7 +167,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId, prev
 				userId,
 				draftId,
 				assessmentId,
-				preview
+				isPreview
 			}
 		)
 		.then(dbResult => {
@@ -178,7 +183,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId, prev
 			result.attemptId = dbResult.attempt_id
 			result.score = dbResult.score
 			result.scoreDetails = dbResult.score_details
-			result.preview = dbResult.is_preview
+			result.isPreview = dbResult.is_preview
 
 			return result
 		})
@@ -189,7 +194,7 @@ let getLatestHighestAssessmentScoreRecord = (userId, draftId, assessmentId, prev
 		})
 }
 
-let getLatestSuccessfulLTIAssessmentScoreRecord = assessmentScoreId => {
+const getLatestSuccessfulLTIAssessmentScoreRecord = assessmentScoreId => {
 	return db.oneOrNone(
 		`
 			SELECT *
@@ -206,7 +211,7 @@ let getLatestSuccessfulLTIAssessmentScoreRecord = assessmentScoreId => {
 	)
 }
 
-let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssessmentId) => {
+const getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssessmentId) => {
 	return db
 		.manyOrNone(
 			`
@@ -242,7 +247,7 @@ let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssess
 			}
 		)
 		.then(result => {
-			let ltiStatesByAssessmentId = {}
+			const ltiStatesByAssessmentId = {}
 
 			if (!result || !result.length || result.length === 0) {
 				return ltiStatesByAssessmentId
@@ -274,12 +279,12 @@ let getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssess
 //	* ERROR_FATAL_SCORE_IS_INVALID
 //	* ERROR_FATAL_LAUNCH_EXPIRED
 //	* (Or some unexpected error)
-let getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, logId) {
+const getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, logId) {
 	// get assess score
 	// get last success
 	// get launch
 
-	let result = {
+	const result = {
 		error: null,
 		assessmentScoreRecord: null,
 		lastSuccessfulSentScore: -1,
@@ -303,14 +308,14 @@ let getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, lo
 					result.assessmentScoreRecord.score
 				}", assessmentScoreId:"${assessmentScoreResult.id}", attemptId:"${
 					result.assessmentScoreRecord.attemptId
-				}", preview:"${result.assessmentScoreRecord.preview}"`,
+				}", preview:"${result.assessmentScoreRecord.isPreview}"`,
 				logId
 			)
 
 			return getLatestSuccessfulLTIAssessmentScoreRecord(assessmentScoreResult.id)
 		})
 		.then(latest => {
-			let scoreRecord = result.assessmentScoreRecord
+			const scoreRecord = result.assessmentScoreRecord
 
 			result.lastSuccessfulSentScore = latest ? latest.score_sent : null
 			result.ltiScoreToSend = scoreRecord.score === null ? null : scoreRecord.score / 100
@@ -354,8 +359,8 @@ let getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, lo
 //	* ERROR_FATAL_NO_LAUNCH_FOUND
 //	* ERROR_FATAL_NO_SECRET_FOR_KEY
 //	* Or some other unexpected error
-let getOutcomeServiceForLaunch = function(launch) {
-	let result = {
+const getOutcomeServiceForLaunch = function(launch) {
+	const result = {
 		error: null,
 		outcomeService: null,
 		serviceURL: null,
@@ -378,7 +383,7 @@ let getOutcomeServiceForLaunch = function(launch) {
 		result.type = OUTCOME_TYPE_HAS_OUTCOME
 		result.serviceURL = launch.reqVars.lis_outcome_service_url
 
-		let secret = findSecretForKey(launch.key)
+		const secret = findSecretForKey(launch.key)
 		if (!secret) {
 			result.error = ERROR_FATAL_NO_SECRET_FOR_KEY
 			return result
@@ -398,8 +403,8 @@ let getOutcomeServiceForLaunch = function(launch) {
 	}
 }
 
-let retrieveLtiLaunch = function(userId, draftId, logId) {
-	let result = {
+const retrieveLtiLaunch = function(userId, draftId, logId) {
+	const result = {
 		id: null,
 		reqVars: null,
 		key: null,
@@ -449,10 +454,10 @@ let retrieveLtiLaunch = function(userId, draftId, logId) {
 		})
 }
 
-let findSecretForKey = key => {
+const findSecretForKey = key => {
 	// locate a matching key/secret pair
-	let keys = Object.keys(config.lti.keys)
-	for (var i = keys.length - 1; i >= 0; i--) {
+	const keys = Object.keys(config.lti.keys)
+	for (let i = keys.length - 1; i >= 0; i--) {
 		if (keys[i] == key) {
 			return config.lti.keys[keys[i]]
 		}
@@ -467,7 +472,7 @@ let findSecretForKey = key => {
 // LTI communication methods
 //
 
-let sendReplaceResultRequest = (outcomeService, score) => {
+const sendReplaceResultRequest = (outcomeService, score) => {
 	logger.info(`LTI sendReplaceResult to "${outcomeService.service_url}" with "${score}"`)
 
 	return new Promise((resolve, reject) => {
@@ -485,17 +490,11 @@ let sendReplaceResultRequest = (outcomeService, score) => {
 // DB write methods
 //
 
-let insertReplaceResultEvent = (
-	userId,
-	draftDocument,
-	launch,
-	outcomeData,
-	ltiResult
-) => {
+const insertReplaceResultEvent = (userId, draftDocument, launch, outcomeData, ltiResult) => {
 	return insertEvent({
 		action: 'lti:replaceResult',
 		actorTime: new Date().toISOString(),
-		preview: false,
+		isPreview: false,
 		payload: {
 			launchId: launch ? launch.id : null,
 			launchKey: launch ? launch.key : null,
@@ -516,7 +515,7 @@ let insertReplaceResultEvent = (
 	})
 }
 
-let insertLTIAssessmentScore = (
+const insertLTIAssessmentScore = (
 	assessmentScoreId,
 	launchId,
 	scoreSent,
@@ -552,15 +551,15 @@ let insertLTIAssessmentScore = (
 // Error handling methods
 //
 
-let logAndGetStatusForError = function(error, requiredData, logId) {
-	let scoreRecord = requiredData.assessmentScoreRecord
-	let userId = scoreRecord ? scoreRecord.userId : null
-	let draftId = scoreRecord ? scoreRecord.draftId : null
-	let ltiScoreToSend = requiredData.ltiScoreToSend
-	let launchId = requiredData.launch ? requiredData.launch.id : null
-	let launchKey = requiredData.launch ? requiredData.launch.key : null
+const logAndGetStatusForError = function(error, requiredData, logId) {
+	const scoreRecord = requiredData.assessmentScoreRecord
+	const userId = scoreRecord ? scoreRecord.userId : null
+	const draftId = scoreRecord ? scoreRecord.draftId : null
+	const ltiScoreToSend = requiredData.ltiScoreToSend
+	const launchId = requiredData.launch ? requiredData.launch.id : null
+	const launchKey = requiredData.launch ? requiredData.launch.key : null
 
-	let result = {
+	const result = {
 		status: null,
 		statusDetails: null
 	}
@@ -636,10 +635,10 @@ let logAndGetStatusForError = function(error, requiredData, logId) {
 // MAIN METHOD:
 //
 const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
-	let logId = uuid()
+	const logId = uuid()
 	let requiredData = null
 	let outcomeData = null
-	let result = Object.seal({
+	const result = Object.seal({
 		launchId: null,
 		scoreSent: null,
 		status: null,
@@ -651,7 +650,9 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 	})
 
 	logger.info(
-		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${draftDocument.draftId}", assessmentId:"${assessmentId}"`,
+		`LTI begin sendHighestAssessmentScore for userId:"${userId}", draftId:"${
+			draftDocument.draftId
+		}", assessmentId:"${assessmentId}"`,
 		logId
 	)
 
@@ -664,7 +665,7 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 
 			result.outcomeServiceURL = outcomeData.serviceURL
 
-			if (requiredData.assessmentScoreRecord.preview) {
+			if (requiredData.assessmentScoreRecord.isPreview) {
 				throw ERROR_PREVIEW_MODE
 			}
 
@@ -709,7 +710,7 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 			result.status = STATUS_SUCCESS
 		})
 		.catch(error => {
-			let errorResult = logAndGetStatusForError(error, requiredData, logId)
+			const errorResult = logAndGetStatusForError(error, requiredData, logId)
 
 			result.status = errorResult.status
 			result.statusDetails = errorResult.statusDetails
@@ -719,7 +720,7 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 				outcomeData.type,
 				requiredData.scoreType,
 				result.status === STATUS_SUCCESS,
-				requiredData.assessmentScoreRecord.preview
+				requiredData.assessmentScoreRecord.isPreview
 			)
 
 			logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
@@ -746,13 +747,7 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 			result.dbStatus = DB_STATUS_ERROR
 		})
 		.then(scoreId => {
-			insertReplaceResultEvent(
-				userId,
-				draftDocument,
-				requiredData.launch,
-				outcomeData,
-				result
-			)
+			insertReplaceResultEvent(userId, draftDocument, requiredData.launch, outcomeData, result)
 		})
 		.catch(error => {
 			logger.error(`LTI error with insertReplaceResultEvent`, error.message, logId)

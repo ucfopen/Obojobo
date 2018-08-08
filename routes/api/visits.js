@@ -86,7 +86,7 @@ router.post('/start', (req, res, next) => {
 				ip: req.connection.remoteAddress,
 				metadata: {},
 				draftId: currentDocument.draftId,
-				preview: visit.is_preview,
+				isPreview: visit.is_preview,
 				contentId: currentDocument.contentId,
 				payload: { visitId },
 				eventVersion: '1.0.0',

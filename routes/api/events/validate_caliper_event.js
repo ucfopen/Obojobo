@@ -50,14 +50,14 @@ const validateArguments = (
 }
 
 const assignOptions = obj => {
-	if (obj.sessionIds) {
-		const required = ['sessionId', 'launchId']
-		validateArguments({ required }, obj.sessionIds, null, null)
-		return {
-			sessionId: obj.sessionIds.sessionId,
-			launchId: obj.sessionIds.launchId
-		}
-	} else return {}
+	if (!obj.sessionIds) return {}
+
+	const required = ['sessionId', 'launchId']
+	validateArguments({ required }, obj.sessionIds, null, null)
+	return {
+		sessionId: obj.sessionIds.sessionId,
+		launchId: obj.sessionIds.launchId
+	}
 }
 
 module.exports = { validateArguments, assignOptions }

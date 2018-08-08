@@ -30,7 +30,7 @@ const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 			return insertEvent({
 				action: 'lti:launch',
 				actorTime: new Date().toISOString(),
-				preview: false,
+				isPreview: false,
 				payload: { launchId: insertLaunchResult.id },
 				userId: user.id,
 				ip,
@@ -51,7 +51,7 @@ const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) 
 	return insertEvent({
 		action: 'lti:pickerLaunch',
 		actorTime: new Date().toISOString(),
-		preview: false,
+		isPreview: false,
 		payload: {
 			ltiBody,
 			ltiConsumerKey

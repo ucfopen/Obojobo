@@ -375,7 +375,7 @@ describe('lti', () => {
 				assessmentId: 'assessment_id',
 				attemptId: 'attempt_id',
 				score: 'score',
-				preview: 'preview',
+				isPreview: 'preview',
 				error: null,
 				scoreDetails: 'details'
 			})
@@ -476,7 +476,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -560,7 +560,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -644,7 +644,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -724,7 +724,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -804,7 +804,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -892,7 +892,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -980,7 +980,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1058,7 +1058,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1138,7 +1138,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1211,7 +1211,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1285,7 +1285,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1359,7 +1359,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1437,7 +1437,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1522,7 +1522,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1607,7 +1607,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1696,7 +1696,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1796,7 +1796,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1874,7 +1874,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1955,7 +1955,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -2037,7 +2037,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -2117,7 +2117,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2191,7 +2191,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2268,7 +2268,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2345,7 +2345,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2424,7 +2424,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2624,7 +2624,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -2703,7 +2703,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
-				preview: false,
+				isPreview: false,
 				contentId: 'content-id'
 			})
 

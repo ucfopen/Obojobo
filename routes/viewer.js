@@ -41,7 +41,7 @@ router.post('/:draftId/:page?', [ltiLaunch.assignment], (req, res, next) => {
 				metadata: {},
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				preview: false,
+				isPreview: false,
 				payload: {
 					visitId,
 					deactivatedVisitId
@@ -106,7 +106,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 				contentId: currentDocument.contentId,
 				payload: { visitId: req.params.visitId },
 				eventVersion: '1.1.0',
-				preview: visit.is_preview,
+				isPreview: visit.is_preview,
 				caliperPayload: createViewerOpenEvent({
 					actor: { type: ACTOR_USER, id: currentUser.id },
 					sessionIds: getSessionIds(req.session),

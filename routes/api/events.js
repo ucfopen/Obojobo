@@ -38,7 +38,7 @@ router.post('/', (req, res, next) => {
 				eventVersion: event.event_version,
 				ip: req.connection.remoteAddress,
 				metadata: {},
-				preview: currentVisit.is_preview,
+				isPreview: currentVisit.is_preview,
 				payload: event.payload,
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,

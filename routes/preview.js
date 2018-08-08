@@ -34,7 +34,7 @@ router.get('/:draftId', (req, res, next) => {
 				metadata: {},
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				preview: true,
+				isPreview: true,
 				payload: {
 					visitId,
 					deactivatedVisitId

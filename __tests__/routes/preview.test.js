@@ -70,8 +70,8 @@ describe('preview route', () => {
 	test('GET preview/:draftId redirects to a visit (if user can view preview)', () => {
 		expect.assertions(2)
 
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let user = new User()
+		const routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		const user = new User()
 		user.canPreview = true
 
 		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
@@ -85,9 +85,9 @@ describe('preview route', () => {
 	test('GET preview/:draftId fails if user cannot view preview', () => {
 		expect.assertions(2)
 
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let user = new User()
-		let error = new Error('Not authorized to preview')
+		const routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		const user = new User()
+		const error = new Error('Not authorized to preview')
 
 		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 
@@ -100,8 +100,8 @@ describe('preview route', () => {
 	test('GET preview/:draftId logs error and calls next if error thrown', () => {
 		expect.assertions(2)
 
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let mockedError = new Error('mocked-error')
+		const routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		const mockedError = new Error('mocked-error')
 
 		mockReq.requireCurrentUser.mockRejectedValueOnce(mockedError)
 
@@ -114,7 +114,7 @@ describe('preview route', () => {
 	test('GET preview/:draftId logs error and calls next if error thrown', () => {
 		expect.assertions(2)
 
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		const routeFunction = mockRouterMethods.get.mock.calls[0][1]
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		mockReq.session.save = jest.fn().mockImplementationOnce(funct => {
 			funct({})
@@ -128,8 +128,8 @@ describe('preview route', () => {
 
 	test('GET preview/:draftId calls visit:create insertEvent and createVisitEvent', () => {
 		expect.assertions(2)
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-		let user = new User()
+		const routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		const user = new User()
 		user.canPreview = true
 		mockReq.requireCurrentUser.mockResolvedValueOnce(user)
 
@@ -145,7 +145,7 @@ describe('preview route', () => {
 				metadata: {},
 				payload: { visitId: 'mocked-visit-id', deactivatedVisitId: 'mocked-deactivated-visit-id' },
 				userId: 1,
-				preview: true
+				isPreview: true
 			})
 			expect(mockCreateVisitCreateEvent).toBeCalledWith({
 				actor: { id: 1, type: 'user' },
