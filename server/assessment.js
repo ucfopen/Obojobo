@@ -335,7 +335,7 @@ class Assessment extends DraftNode {
 		contentId,
 		attemptScoreResult,
 		assessmentScoreDetails,
-		preview
+		isPreview
 	) {
 		return db
 			.tx(dbTransaction => {
@@ -360,7 +360,7 @@ class Assessment extends DraftNode {
 				const q2 = dbTransaction.one(
 					`
 					INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview)
-					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[preview])
+					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview])
 					RETURNING id
 				`,
 					{
@@ -371,7 +371,7 @@ class Assessment extends DraftNode {
 						attemptId,
 						score: assessmentScoreDetails.assessmentModdedScore,
 						scoreDetails: assessmentScoreDetails,
-						preview
+						isPreview
 					}
 				)
 

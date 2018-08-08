@@ -75,7 +75,7 @@ app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
-	let isPreviewing
+	let isPreview
 
 	return req
 		.requireCurrentUser()
@@ -84,12 +84,12 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 			return VisitModel.fetchById(req.body.visitId)
 		})
 		.then(visit => {
-			isPreviewing = visit.is_preview
+			isPreview = visit.is_preview
 			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			return endAttempt(req, res, currentUser, currentDocument, req.params.attemptId, isPreviewing)
+			return endAttempt(req, res, currentUser, currentDocument, req.params.attemptId, isPreview)
 		})
 		.then(resp => {
 			res.success(resp)
@@ -104,7 +104,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 	let attemptIds
 	let currentUser = null
 	let currentDocument = null
-	let isPreviewing
+	let isPreview
 
 	return req
 		.requireCurrentUser()
@@ -113,12 +113,12 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 			return VisitModel.fetchById(req.body.visitId)
 		})
 		.then(visit => {
-			isPreviewing = visit.is_preview
+			isPreview = visit.is_preview
 			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			if (!isPreviewing) throw 'Not in preview mode'
+			if (!isPreview) throw 'Not in preview mode'
 
 			return db.manyOrNone(
 				`
@@ -222,7 +222,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 })
 
 // @TODO NOT USED
-// update getAttempt to take isPreviewing
+// update getAttempt to take isPreview
 app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
@@ -249,7 +249,7 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 })
 
 // @TODO NOT USED
-// update getAttempts to take isPreviewing
+// update getAttempts to take isPreview
 app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null
@@ -277,7 +277,7 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 })
 
 // @TODO NOT USED
-// update getAttempts to take isPreviewing
+// update getAttempts to take isPreview
 app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 	let currentUser = null
 	let currentDocument = null

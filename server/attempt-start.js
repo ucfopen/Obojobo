@@ -13,9 +13,9 @@ const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 const startAttempt = (req, res) => {
-	let assessmentProperties = {
+	const assessmentProperties = {
 		user: null,
-		isPreviewing: null,
+		isPreview: null,
 		draftTree: null,
 		id: null,
 		node: null,
@@ -37,7 +37,7 @@ const startAttempt = (req, res) => {
 			return VisitModel.fetchById(req.body.visitId)
 		})
 		.then(visit => {
-			assessmentProperties.isPreviewing = visit.is_preview
+			assessmentProperties.isPreview = visit.is_preview
 
 			return req.requireCurrentDocument()
 		})
@@ -55,7 +55,7 @@ const startAttempt = (req, res) => {
 				assessmentProperties.user.id,
 				currentDocument.draftId,
 				req.body.assessmentId,
-				assessmentProperties.isPreviewing
+				assessmentProperties.isPreview
 			)
 		})
 		.then(attemptHistory => {
@@ -87,7 +87,7 @@ const startAttempt = (req, res) => {
 					data: attemptState.data,
 					qb: assessmentProperties.assessmentQBTree
 				},
-				assessmentProperties.isPreviewing
+				assessmentProperties.isPreview
 			)
 		})
 		.then(result => {
@@ -98,7 +98,7 @@ const startAttempt = (req, res) => {
 				assessmentProperties.user.id,
 				currentDocument,
 				req.body.assessmentId,
-				assessmentProperties.isPreviewing,
+				assessmentProperties.isPreview,
 				req.hostname,
 				req.connection.remoteAddress
 			)
@@ -133,7 +133,7 @@ const getState = assessmentProperties => {
 const loadChildren = assessmentProperties => {
 	const childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
-	for (let attempt of assessmentProperties.attemptHistory) {
+	for (const attempt of assessmentProperties.attemptHistory) {
 		if (attempt.state.qb) {
 			initAssessmentUsedQuestions(attempt.state.qb, childrenMap)
 		}
@@ -153,8 +153,9 @@ const createAssessmentUsedQuestionMap = assessmentProperties => {
 	const assessmentquestionUsesMap = new Map()
 	assessmentProperties.nodeChildrenIds.forEach(id => {
 		const type = assessmentProperties.draftTree.getChildNodeById(id).node.type
-		if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE)
+		if (type === QUESTION_BANK_NODE_TYPE || type === QUESTION_NODE_TYPE) {
 			assessmentquestionUsesMap.set(id, 0)
+		}
 	})
 
 	return assessmentquestionUsesMap
@@ -165,7 +166,7 @@ const createAssessmentUsedQuestionMap = assessmentProperties => {
 const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	if (usedQuestionMap.has(node.id)) usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
 
-	for (let child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
+	for (const child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
 }
 
 // Choose questions in order, Prioritizing less used questions first
@@ -274,7 +275,7 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 	}
 
 	// Continue recursively through children
-	for (let child of node.children) createChosenQuestionTree(child, assessmentProperties)
+	for (const child of node.children) createChosenQuestionTree(child, assessmentProperties)
 }
 
 // Return an array of question type nodes from a node tree.
@@ -285,7 +286,7 @@ const getNodeQuestions = (node, assessmentNode, questions = []) => {
 	}
 
 	// recurse through this node's children
-	for (let child of node.children) {
+	for (const child of node.children) {
 		questions.concat(getNodeQuestions(child, assessmentNode, questions))
 	}
 
@@ -296,7 +297,7 @@ const getNodeQuestions = (node, assessmentNode, questions = []) => {
 // assessment:sendToAssessment event.
 const getSendToClientPromises = (attemptState, req, res) => {
 	let promises = []
-	for (let q of attemptState.questions) {
+	for (const q of attemptState.questions) {
 		promises = promises.concat(q.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res))
 	}
 
@@ -309,7 +310,7 @@ const insertAttemptStartCaliperEvent = (
 	userId,
 	draftDocument,
 	assessmentId,
-	isPreviewing,
+	isPreview,
 	hostname,
 	remoteAddress
 ) => {
@@ -317,7 +318,7 @@ const insertAttemptStartCaliperEvent = (
 	return insertEvent({
 		action: ACTION_ASSESSMENT_ATTEMPT_START,
 		actorTime: new Date().toISOString(),
-		preview: isPreviewing,
+		isPreview: isPreview,
 		payload: {
 			attemptId: attemptId,
 			attemptCount: numAttemptsTaken

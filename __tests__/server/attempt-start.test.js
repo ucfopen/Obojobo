@@ -59,24 +59,24 @@ describe('start attempt route', () => {
 	let mockReq
 	let mockRes
 
-	let mockGetChildNodeByIdForRootNode = () => {
+	const mockGetChildNodeByIdForRootNode = () => {
 		// mock the initial request to get the root node
 		mockDraft.getChildNodeById.mockReturnValueOnce({
 			immediateChildrenSet: mockUsedQuestionMap.keys()
 		})
 	}
 
-	let convertChosenTreeToIdArray = (tree, assessmentNode) => {
+	const convertChosenTreeToIdArray = (tree, assessmentNode) => {
 		// pluck out questions into an array
-		let chosenQuestions = getNodeQuestions(tree, assessmentNode)
+		const chosenQuestions = getNodeQuestions(tree, assessmentNode)
 
 		// convert to array of ids for simplicity
 		return chosenQuestions.map(q => q.id)
 	}
 
-	let runAttemptThroughCreateChosenQuestionTree = useageMap => {
+	const runAttemptThroughCreateChosenQuestionTree = useageMap => {
 		// mock the structure
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 
 		// override the usage map
 		assessmentProperties.questionUsesMap = useageMap
@@ -103,14 +103,14 @@ describe('start attempt route', () => {
 	|-qG
 	|-qH
    */
-	let buildTreeForTest = () => {
-		let draftTree = {
+	const buildTreeForTest = () => {
+		const draftTree = {
 			getChildNodeById: jest.fn(id => nodes.find(c => c.id == id))
 		}
-		let nodes = []
-		let usesMap = new Map()
+		const nodes = []
+		const usesMap = new Map()
 		const newQ = id => {
-			let q = new DraftNode(draftTree)
+			const q = new DraftNode(draftTree)
 			q.id = id
 			q.type = 'ObojoboDraft.Chunks.Question'
 			usesMap.set(q.id, 0)
@@ -118,7 +118,7 @@ describe('start attempt route', () => {
 			return q
 		}
 		const newQb = (id, choose, children = []) => {
-			let qb = new DraftNode(draftTree)
+			const qb = new DraftNode(draftTree)
 			qb.id = id
 			qb.type = 'ObojoboDraft.Chunks.QuestionBank'
 			qb.children = children
@@ -620,7 +620,7 @@ describe('start attempt route', () => {
 
 		// preserve indentation structure
 		// prettier-ignore
-		let usageMap = new Map()
+		const usageMap = new Map()
 			.set('QB1',         0)
 				.set('qA',      0)
 				.set('qB',      0)
@@ -633,7 +633,7 @@ describe('start attempt route', () => {
 			.set('qG',          0)
 			.set('qH',          0)
 
-		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+		const ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
 
 		// test the ids and order of the results
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
@@ -658,7 +658,7 @@ describe('start attempt route', () => {
 
 		// preserve indentation structure
 		// prettier-ignore
-		let usageMap = new Map()
+		const usageMap = new Map()
 			.set('QB1',         1)
 				.set('qA',      1)
 				.set('qB',      0)
@@ -671,7 +671,7 @@ describe('start attempt route', () => {
 			.set('qG',          1)
 			.set('qH',          1)
 
-		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+		const ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
 
 		expect(ids).toEqual(['qB', 'qE', 'qC', 'qG', 'qH'])
 	})
@@ -695,7 +695,7 @@ describe('start attempt route', () => {
 
 		// preserve indentation structure
 		// prettier-ignore
-		let usageMap = new Map()
+		const usageMap = new Map()
 			.set('QB1',         2)
 				.set('qA',      1)
 				.set('qB',      1)
@@ -708,7 +708,7 @@ describe('start attempt route', () => {
 			.set('qG',          2)
 			.set('qH',          2)
 
-		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+		const ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
 
 		// test the ids and order of the results
 		expect(ids).toEqual(['qA', 'qD', 'qF', 'qG', 'qH'])
@@ -733,7 +733,7 @@ describe('start attempt route', () => {
 
 		// preserve indentation structure
 		// prettier-ignore
-		let usageMap = new Map()
+		const usageMap = new Map()
 			.set('QB1',         3)
 				.set('qA',      2)
 				.set('qB',      1)
@@ -746,24 +746,24 @@ describe('start attempt route', () => {
 			.set('qG',          3)
 			.set('qH',          3)
 
-		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+		const ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
 
 		// test the ids and order of the results
 		expect(ids).toEqual(['qB', 'qC', 'qD', 'qG', 'qH'])
 	})
 
 	test('createChosenQuestionTree creates a sequential group with no limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'sequential'
 		QB.content.choose = Infinity
 		createChosenQuestionTree(QB, assessmentProperties)
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
 	test('createChosenQuestionTree creates a random-all group with no limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'random-all'
 		QB.content.choose = Infinity
 		expect(_.shuffle).not.toHaveBeenCalled()
@@ -772,7 +772,7 @@ describe('start attempt route', () => {
 		// make sure shuffle's called on the top level children
 		expect(_.shuffle).toHaveBeenCalledTimes(1)
 		expect(_.shuffle).toHaveBeenCalledWith(['QB1', 'QB2', 'qG', 'qH'])
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		// mock _.shuffle doesn't alter the order, expect the same as sequential
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
@@ -793,47 +793,47 @@ describe('start attempt route', () => {
 		//|
 		//|-qG
 		//|-qH
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'sequential'
 		QB.content.choose = 2
 		createChosenQuestionTree(QB, assessmentProperties)
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
 
 	test('createChosenQuestionTree creates a random-all group with a limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'random-all'
 		QB.content.choose = 2
 		expect(_.shuffle).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
 		expect(_.shuffle).toHaveBeenCalled()
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
 
 	test('createChosenQuestionTree creates a random-unseen group with no limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'random-unseen'
 		QB.content.choose = Infinity
 		expect(getRandom).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
 		expect(getRandom).toHaveBeenCalled()
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
 	test('createChosenQuestionTree creates a random-unseen group with a limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'random-unseen'
 		QB.content.choose = 2
 		expect(getRandom).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
 		expect(getRandom).toHaveBeenCalled()
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
@@ -841,7 +841,7 @@ describe('start attempt route', () => {
 	test('can retrieve an array of question type nodes from a node tree', () => {
 		let n = 0
 		const newQ = () => {
-			let q = new DraftNode()
+			const q = new DraftNode()
 			q.id = n++
 			q.type = 'ObojoboDraft.Chunks.Question'
 			return q
@@ -870,10 +870,10 @@ describe('start attempt route', () => {
 		expect(getSendToClientPromises(attemptState, {}, {})).toEqual([])
 
 		let n = 0
-		let mockYell = jest.fn(() => n++)
+		const mockYell = jest.fn(() => n++)
 		attemptState.questions = [{ yell: mockYell }, { yell: mockYell }]
 
-		let result = getSendToClientPromises(attemptState, 'mockReq', 'mockRes')
+		const result = getSendToClientPromises(attemptState, 'mockReq', 'mockRes')
 		// yell is called?
 		expect(mockYell).toHaveBeenCalledTimes(2)
 		expect(mockYell).toHaveBeenCalledWith(
@@ -894,12 +894,12 @@ describe('start attempt route', () => {
 		})
 		Date.prototype.toISOString = () => 'date'
 
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId'
 		}
 
-		let r = insertAttemptStartCaliperEvent(
+		const r = insertAttemptStartCaliperEvent(
 			'mockAttemptId',
 			1,
 			'mockUserId',
@@ -938,7 +938,7 @@ describe('start attempt route', () => {
 			eventVersion: '1.1.0',
 			ip: 'mockRemoteAddress',
 			metadata: {},
-			preview: true,
+			isPreview: true,
 			payload: {
 				attemptCount: 1,
 				attemptId: 'mockAttemptId'
