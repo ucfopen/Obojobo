@@ -18,7 +18,8 @@ describe('api response middleware', () => {
 			let res = {
 				json: mockJson,
 				status: mockStatus,
-				send: jest.fn()
+				send: jest.fn(),
+				render: jest.fn()
 			}
 
 			let req = {
@@ -129,7 +130,13 @@ describe('api response middleware', () => {
 			res.json.mockReset()
 
 			res[method]() // execute the method
-			expect(res.send).toHaveBeenCalled()
+
+			// missing calls render, all others call send
+			if (method === 'missing') {
+				expect(res.render).toHaveBeenCalled()
+			} else {
+				expect(res.send).toHaveBeenCalled()
+			}
 			expect(res.json).not.toHaveBeenCalled()
 		})
 	})

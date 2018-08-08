@@ -250,7 +250,7 @@ describe('lti route', () => {
 	})
 	//=========================
 
-	test('canvas editior_botton requires a user', () => {
+	test('canvas editor_botton requires a user', () => {
 		expect.assertions(3)
 		mockCurrentUser = null
 
@@ -264,7 +264,7 @@ describe('lti route', () => {
 			})
 	})
 
-	test('canvas editior_botton renders module selector when user canViewEditor', () => {
+	test('canvas editor_botton renders module selector when user canViewEditor', () => {
 		expect.assertions(3)
 		mockCurrentUser = { id: 99, canViewEditor: true }
 		mockReqProps = {
@@ -284,7 +284,7 @@ describe('lti route', () => {
 			})
 	})
 
-	test('canvas editior_botton sets vars when NOT an assignment', () => {
+	test('canvas editor_botton sets vars when NOT an assignment', () => {
 		expect.assertions(4)
 		mockCurrentUser = { id: 99, canViewEditor: true }
 		mockReqProps = {
@@ -305,7 +305,7 @@ describe('lti route', () => {
 			})
 	})
 
-	test('canvas editior_botton sets vars when IS an assignment', () => {
+	test('canvas editor_botton sets vars when IS an assignment', () => {
 		expect.assertions(4)
 		mockCurrentUser = { id: 99, canViewEditor: true }
 		mockReqProps = {
@@ -327,7 +327,7 @@ describe('lti route', () => {
 			})
 	})
 
-	test('canvas editior_botton errors with no content_item_return_url', () => {
+	test('canvas editor_botton errors with no content_item_return_url', () => {
 		expect.assertions(3)
 		mockCurrentUser = { id: 99, canViewEditor: true }
 		mockReqProps = {
@@ -347,7 +347,7 @@ describe('lti route', () => {
 			})
 	})
 
-	test('canvas editior_botton overrides with ext_content_return_url', () => {
+	test('canvas editor_botton overrides with ext_content_return_url', () => {
 		expect.assertions(3)
 		mockCurrentUser = { id: 99, canViewEditor: true }
 		mockReqProps = {
@@ -368,7 +368,7 @@ describe('lti route', () => {
 			})
 	})
 
-	test('canvas editior_botton errors with no lti body', () => {
+	test('canvas editor_botton errors with no lti body', () => {
 		expect.assertions(3)
 		mockCurrentUser = { id: 99, canViewEditor: true }
 		mockReqProps = {

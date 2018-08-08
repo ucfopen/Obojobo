@@ -23,13 +23,14 @@ jest.mock('../middleware.default.js', () => {
 
 const env_node = process.env.NODE_ENV
 process.env.NODE_ENV = 'production'
-// Prevent webpack from printing to console
-const originalLog = console.log
-console.log = jest.fn()
 const webpack = require('../webpack.config.js')
-console.log = originalLog
 
 describe('Webpack', () => {
+	beforeAll(() => {
+		// disable/capture console.log output for this test
+		jest.spyOn(global.console, 'log')
+		console.log.mockImplementation(() => {})
+	})
 	afterAll(() => {
 		process.env.NODE_ENV = env_node
 	})

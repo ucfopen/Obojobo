@@ -39,10 +39,7 @@ router
 				oboEvents.emit(`client:${event.action}`, insertObject, req)
 				res.success(caliperEvent)
 			})
-			.catch(err => {
-				logger.error('Insert Event Failure:', err)
-				res.unexpected(err)
-			})
+			.catch(res.unexpected)
 	})
 
 module.exports = router

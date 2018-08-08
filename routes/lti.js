@@ -66,7 +66,7 @@ const showModuleSelector = (req, res, next) => {
 
 		res.render('lti_picker', { returnUrl, isAssignment })
 	} catch (error) {
-		next(error)
+		res.unexpected(error)
 	}
 }
 

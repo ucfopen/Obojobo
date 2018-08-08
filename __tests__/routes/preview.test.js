@@ -1,13 +1,11 @@
 jest.mock('../../models/visit')
-
 jest.mock('../../insert_event')
-
+jest.mock('../../db')
 // make sure all Date objects use a static date
 mockStaticDate()
 
-jest.mock('../../db')
-
-jest.unmock('express') // we'll use supertest + express for this
+// we'll use supertest + express for this
+jest.unmock('express')
 
 // override requireCurrentUser to provide our own
 let mockCurrentUser
@@ -25,7 +23,7 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 	next()
 })
 
-// ovveride requireCurrentDocument to provide our own
+// override requireCurrentDocument to provide our own
 let mockCurrentDocument
 jest.mock('../../express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
@@ -46,7 +44,6 @@ app.use('/', oboRequire('express_response_decorator'))
 app.use('/', oboRequire('routes/preview'))
 
 describe('preview route', () => {
-	// const logger = oboRequire('logger')
 	const Visit = oboRequire('models/visit')
 	const insertEvent = oboRequire('insert_event')
 

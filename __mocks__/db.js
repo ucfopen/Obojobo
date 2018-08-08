@@ -30,4 +30,17 @@ db.tx.mockImplementation(
 db.batch = jest.fn()
 db.batch.mockImplementation(queries => Promise.all(queries))
 
+class MockQueryResultError {
+	constructor(code) {
+		this.code = code
+	}
+}
+
+db.errors = {
+	queryResultErrorCode: {
+		noData: 'noData'
+	},
+	QueryResultError: MockQueryResultError
+}
+
 module.exports = db

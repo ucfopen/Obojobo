@@ -76,6 +76,7 @@ describe('viewer route', () => {
 		currentReq = null
 		mockCurrentUser = { id: 4 }
 		insertEvent.mockReset()
+		Visit.createVisit.mockReset()
 	})
 	afterEach(() => {})
 
@@ -181,8 +182,8 @@ describe('viewer route', () => {
 			.post(`/${validUUID()}/`)
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(404)
-				expect(insertEvent).toHaveBeenCalledTimes(1)
+				expect(Visit.createVisit).toHaveBeenCalledTimes(1)
+				expect(response.statusCode).toBe(500)
 			})
 	})
 

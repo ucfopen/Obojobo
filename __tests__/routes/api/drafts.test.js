@@ -7,7 +7,6 @@ jest.mock('obojobo-draft-xml-parser/xml-to-draft-object')
 import DraftModel from '../../../models/draft'
 import User from '../../../models/user'
 import logger from '../../../logger'
-// import mockXMLParser from 'obojobo-draft-xml-parser/xml-to-draft-object'
 let xml = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
 // don't use our existing express mock, we're using supertest
@@ -85,7 +84,8 @@ describe('api draft route', () => {
 	test('get draft returns 404 when no items found', () => {
 		expect.assertions(5)
 		// mock a failure to find the draft
-		DraftModel.fetchById.mockRejectedValueOnce(5)
+		const mockError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
+		DraftModel.fetchById.mockRejectedValueOnce(mockError)
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.then(response => {
@@ -94,6 +94,21 @@ describe('api draft route', () => {
 				expect(response.body).toHaveProperty('status', 'error')
 				expect(response.body.value).toHaveProperty('type', 'missing')
 				expect(response.body.value).toHaveProperty('message', 'Draft not found')
+			})
+	})
+
+	test('get draft returns 500 when an unkown error occurs', () => {
+		expect.assertions(5)
+		// mock a failure to find the draft
+		DraftModel.fetchById.mockRejectedValueOnce('mock-other-error')
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body.value).toHaveProperty('message', 'mock-other-error')
 			})
 	})
 

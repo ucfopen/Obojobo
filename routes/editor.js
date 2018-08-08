@@ -30,13 +30,7 @@ let displayEditor = (req, res, next) => {
 		.then(drafts => {
 			res.render('editor', { drafts: drafts })
 		})
-		.catch(error => {
-			// if the error is empty for some reason -
-			// make sure we have a value so next() will cause a 500
-			if (!error) error = 'Server Error'
-			logger.error(error)
-			next(error)
-		})
+		.catch(res.unexpected)
 }
 
 // Display the Document Editor

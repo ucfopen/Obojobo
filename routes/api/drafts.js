@@ -31,9 +31,13 @@ router
 			.then(draftTree => {
 				res.success(draftTree.document)
 			})
-			.catch(err => {
-				logger.error(err)
-				res.missing('Draft not found')
+			.catch(error => {
+				const QueryResultError = db.errors.QueryResultError
+				const qrec = db.errors.queryResultErrorCode
+				if (error instanceof QueryResultError && error.code === qrec.noData) {
+					return res.missing('Draft not found')
+				}
+				res.unexpected(error)
 			})
 	})
 
@@ -47,9 +51,7 @@ router
 			.then(newDraft => {
 				res.success(newDraft)
 			})
-			.catch(err => {
-				res.unexpected(err)
-			})
+			.catch(res.unexpected)
 	})
 
 // Update a Draft
@@ -100,10 +102,7 @@ router
 					res.success({ id })
 				})
 			})
-			.catch(error => {
-				logger.error(error)
-				res.unexpected(error)
-			})
+			.catch(res.unexpected)
 	})
 
 // Delete a Draft
@@ -125,12 +124,8 @@ router
 					userId: req.currentUser.id
 				}
 			)
-			.then(id => {
-				res.success(id)
-			})
-			.catch(err => {
-				res.unexpected(err)
-			})
+			.then(res.success)
+			.catch(res.unexpected)
 	})
 
 // List drafts
@@ -158,13 +153,8 @@ router
 		`,
 				{ userId: req.currentUser.id }
 			)
-			.then(result => {
-				res.success(result)
-			})
-			.catch(err => {
-				logger.error(err)
-				res.unexpected(err)
-			})
+			.then(res.success)
+			.catch(res.unexpected)
 	})
 
 module.exports = router

@@ -78,6 +78,7 @@ const reject = (req, res, next, message) => {
 
 const missing = (req, res, next, message) => {
 	res.status(404)
+
 	if(shouldRespondWithJson(req)){
 		return res.json(
 			camelize({
@@ -90,9 +91,7 @@ const missing = (req, res, next, message) => {
 		)
 	}
 
-	res.send(`Page Not Found: ${message}`)
-	next(message)
-
+	res.render('404')
 }
 
 const unexpected = (req, res, next, message) => {
@@ -102,6 +101,10 @@ const unexpected = (req, res, next, message) => {
 		message = message.toString()
 	} else {
 		logger.error('error message', message)
+	}
+
+	if(!message){
+		message = 'Unexpected Error'
 	}
 
 	if(shouldRespondWithJson(req)){
@@ -116,7 +119,7 @@ const unexpected = (req, res, next, message) => {
 		)
 	}
 
-	res.send(`Unexpected Error: ${message}`)
+	res.send(`Server Error: ${message}`)
 }
 
 module.exports = (req, res, next) => {
