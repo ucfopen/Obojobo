@@ -109,7 +109,7 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				questionId: clientEvent.payload.questionId,
+				itemId: clientEvent.payload.questionId,
 				sessionIds
 			})
 
@@ -137,7 +137,7 @@ module.exports = req => {
 				actor: actorFromType(clientEvent.payload.actor),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				questionId: clientEvent.payload.questionId,
+				itemId: clientEvent.payload.questionId,
 				frameName: 'explanation',
 				sessionIds
 			})
@@ -184,6 +184,51 @@ module.exports = req => {
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
 				sessionIds
+			})
+
+		case 'media:show':
+			return caliperEvents.createViewEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				itemId: clientEvent.payload.id,
+				sessionIds
+			})
+
+		case 'media:hide':
+			return caliperEvents.createHideEvent({
+				actor: actorFromType(clientEvent.payload.actor),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				itemId: clientEvent.payload.id,
+				sessionIds
+			})
+
+		case 'media:setZoom':
+			return caliperEvents.createMediaChangedSizeEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				mediaId: clientEvent.payload.id,
+				sessionIds,
+				extensions: {
+					type: 'setZoom',
+					zoom: clientEvent.payload.zoom,
+					previousZoom: clientEvent.payload.previousZoom
+				}
+			})
+
+		case 'media:resetZoom':
+			return caliperEvents.createMediaChangedSizeEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				mediaId: clientEvent.payload.id,
+				sessionIds,
+				extensions: {
+					type: 'resetZoom',
+					previousZoom: clientEvent.payload.previousZoom
+				}
 			})
 
 		case 'viewer:inactive':

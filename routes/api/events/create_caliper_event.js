@@ -14,7 +14,7 @@ const NavigationActions = require('caliper-js-public/src/actions/navigationActio
 const NavigationEvent = require('caliper-js-public/src/events/navigationEvent')
 const SessionEvent = require('caliper-js-public/src/events/sessionEvent')
 const ViewEvent = require('caliper-js-public/src/events/viewEvent')
-
+const MediaEvent = require('caliper-js-public/src/events/mediaEvent')
 // This version doesn't have grade event or ToolUse event:
 // let GradeEvent = require('caliper-js-public/src/events/gradeEvent')
 // let ToolUseEvent = require('caliper-js-public/src/events/toolUseEvent')
@@ -162,19 +162,19 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 		// object: (type: Entity, REQUIRED) View IRI of the item being hidden
 		// target: (type: Entity, Optional) A more specific IRI of which part of the object is being hidden
 		createHideEvent: obj => {
-			const required = ['draftId', 'contentId', 'questionId']
+			const required = ['draftId', 'contentId', 'itemId']
 			const optional = ['frameName']
 			validateCaliperEvent({ required, optional }, obj)
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, frameName, questionId, extensions } = obj
+			const { actor, draftId, contentId, frameName, itemId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Hid')
-			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, questionId))
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, itemId))
 			if (frameName) {
-				caliperEvent.setTarget(IRI.getDraftContentIRI(contentId, questionId, frameName))
+				caliperEvent.setTarget(IRI.getDraftContentIRI(contentId, itemId, frameName))
 			}
 			Object.assign(caliperEvent.extensions, extensions)
 
@@ -365,6 +365,27 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 			caliperEvent.setAction('Reset')
 			caliperEvent.setObject(getUrnFromUuid(scoreId))
 			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(contentId, questionId))
+
+			Object.assign(caliperEvent.extensions, extensions)
+
+			return updateEventToVersion1_1(caliperEvent)
+		},
+
+		// Caliper-Spec Properties
+		// type: (type: Term, REQUIRED) MediaEvent
+		// action: (type: Term, REQUIRED) ChangedSize
+		// object: (type: MediaObject, REQUIRED) Draft IRI
+		createMediaChangedSizeEvent: obj => {
+			const required = ['draftId', 'contentId', 'mediaId']
+			validateCaliperEvent({ required }, obj, ACTOR_USER)
+
+			const options = assignCaliperOptions(obj)
+
+			const { actor, draftId, contentId, mediaId, extensions } = obj
+			const caliperEvent = createEvent(MediaEvent, actor, IRI, options)
+
+			caliperEvent.setAction('ChangedSize')
+			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, mediaId))
 
 			Object.assign(caliperEvent.extensions, extensions)
 
