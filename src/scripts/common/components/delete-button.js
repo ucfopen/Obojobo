@@ -18,7 +18,7 @@ export default class DeleteButton extends React.Component {
 					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
 					disabled={this.props.shouldPreventTab}
 				>
-					Delete
+					{this.props.label || 'Delete'}
 				</button>
 			</div>
 		)

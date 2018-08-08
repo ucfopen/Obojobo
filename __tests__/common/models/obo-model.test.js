@@ -914,6 +914,37 @@ describe('OboModel', () => {
 		expect(OboModel.getRoot()).toEqual(null)
 	})
 
+	test('setStateProp returns false if `content` does not exist on model', () => {
+		const model = new OboModel({})
+		model.unset('content')
+		expect(model.setStateProp('prop-name')).toBe(false)
+	})
+
+	test('setStateProp sets properties on modelState from content and returns true', () => {
+		let model
+
+		model = new OboModel({
+			content: {
+				a: 1,
+				b: 2
+			}
+		})
+		expect(model.modelState).toEqual({
+			dirty: false,
+			editing: false,
+			needsUpdate: false
+		})
+		expect(model.setStateProp('a', 111)).toBe(true)
+		expect(model.setStateProp('c', 333)).toBe(true)
+		expect(model.modelState).toEqual({
+			dirty: false,
+			editing: false,
+			needsUpdate: false,
+			a: 1,
+			c: 333
+		})
+	})
+
 	test('Obomodel.create builds default chunks', () => {
 		const model = OboModel.create('chunk')
 

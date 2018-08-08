@@ -40,13 +40,13 @@ class NavStore extends Store {
 					}
 				},
 				'nav:setFlag': payload => {
-					let navItem = this.state.itemsById[payload.value.id]
+					const navItem = this.state.itemsById[payload.value.id]
 					navItem.flags[payload.value.flagName] = payload.value.flagValue
 					this.triggerChange()
 				},
 				'nav:prev': () => {
 					oldNavTargetId = this.state.navTargetId
-					let prev = NavUtil.getPrev(this.state)
+					const prev = NavUtil.getPrev(this.state)
 					if (this.gotoItem(prev)) {
 						APIUtil.postEvent({
 							draftId: OboModel.getRoot().get('draftId'),
@@ -62,7 +62,7 @@ class NavStore extends Store {
 				},
 				'nav:next': () => {
 					oldNavTargetId = this.state.navTargetId
-					let next = NavUtil.getNext(this.state)
+					const next = NavUtil.getNext(this.state)
 					if (this.gotoItem(next)) {
 						APIUtil.postEvent({
 							draftId: OboModel.getRoot().get('draftId'),
@@ -128,7 +128,7 @@ class NavStore extends Store {
 					this.setAndTrigger({ open: true })
 				},
 				'nav:toggle': () => {
-					let updatedState = { open: !this.state.open }
+					const updatedState = { open: !this.state.open }
 					APIUtil.postEvent({
 						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:toggle',
@@ -153,7 +153,7 @@ class NavStore extends Store {
 					this.triggerChange()
 				},
 				'question:scoreSet': payload => {
-					let navItem = this.state.itemsById[payload.value.id]
+					const navItem = this.state.itemsById[payload.value.id]
 					if (navItem) {
 						NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
 					}
@@ -183,7 +183,7 @@ class NavStore extends Store {
 		if (startingId != null) {
 			NavUtil.goto(startingId)
 		} else {
-			let first = NavUtil.getFirst(this.state)
+			const first = NavUtil.getFirst(this.state)
 
 			if (first && first.id) NavUtil.goto(first.id)
 		}
@@ -206,7 +206,7 @@ class NavStore extends Store {
 				return
 			}
 
-			let navTargetModel = NavUtil.getNavTargetModel(this.state)
+			const navTargetModel = NavUtil.getNavTargetModel(this.state)
 			if (navTargetModel && navTargetModel.processTrigger) {
 				navTargetModel.processTrigger('onNavExit')
 			}
@@ -232,7 +232,7 @@ class NavStore extends Store {
 		if (indent == null) {
 			indent = ''
 		}
-		let item = Common.Store.getItemForType(model.get('type'))
+		const item = Common.Store.getItemForType(model.get('type'))
 
 		let navItem = null
 		if (item.getNavItem != null) {
@@ -264,15 +264,15 @@ class NavStore extends Store {
 			correct: false
 		}
 
-		for (let child of Array.from(model.children.models)) {
-			let childNavItem = this.generateNav(child, indent + '_')
+		for (const child of Array.from(model.children.models)) {
+			const childNavItem = this.generateNav(child, indent + '_')
 			navItem.children.push(childNavItem)
 			childNavItem.fullPath = navItem.fullPath
 				.concat(childNavItem.fullPath)
 				.filter(item => item !== '')
 
 			// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
-			let flatPath = childNavItem.fullPath.join('/')
+			const flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
 			childNavItem.fullFlatPath = [
 				'/view',
@@ -291,6 +291,6 @@ class NavStore extends Store {
 	}
 }
 
-let navStore = new NavStore()
+const navStore = new NavStore()
 window.__ns = navStore
 export default navStore

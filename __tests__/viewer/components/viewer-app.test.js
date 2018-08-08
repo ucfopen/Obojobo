@@ -6,6 +6,7 @@ jest.mock('../../../src/scripts/viewer/stores/question-store')
 jest.mock('../../../src/scripts/common/stores/modal-store')
 jest.mock('../../../src/scripts/common/util/modal-util')
 jest.mock('../../../src/scripts/common/stores/focus-store')
+jest.mock('../../../src/scripts/viewer/stores/media-store')
 jest.mock('../../../src/scripts/common/util/focus-util')
 jest.mock('../../../src/scripts/viewer/stores/nav-store')
 jest.mock('../../../src/scripts/viewer/util/nav-util')
@@ -24,6 +25,7 @@ import ModalStore from '../../../src/scripts/common/stores/modal-store'
 import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import FocusStore from '../../../src/scripts/common/stores/focus-store'
 import FocusUtil from '../../../src/scripts/common/util/focus-util'
+import MediaStore from '../../../src/scripts/viewer/stores/media-store'
 import NavStore from '../../../src/scripts/viewer/stores/nav-store'
 import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
@@ -365,6 +367,25 @@ describe('ViewerApp', () => {
 			component.instance().onFocusStoreChange()
 
 			expect(component.instance().setState).toHaveBeenCalledWith({ focusState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onMediaStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			MediaStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onMediaStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ mediaState: {} })
 
 			component.unmount()
 			done()
@@ -813,6 +834,79 @@ describe('ViewerApp', () => {
 			const close = component.instance().unlockNavigation()
 
 			expect(NavUtil.unlock).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onResize dispatches viewer:contentAreaResized', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		Dispatcher.trigger = jest.fn()
+		jest.spyOn(ReactDOM, 'findDOMNode')
+		ReactDOM.findDOMNode.mockReturnValueOnce({
+			getBoundingClientRect: () => ({ width: 'mocked-width' })
+		})
+
+		setTimeout(() => {
+			component.update()
+			component.instance().onResize()
+
+			expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:contentAreaResized', 'mocked-width')
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onDelayResize calls onResize', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+		component.instance().onResize = jest.fn()
+
+		setTimeout(() => {
+			jest.useFakeTimers()
+
+			component.update()
+			component.instance().onDelayResize()
+
+			jest.runAllTimers()
+
+			expect(component.instance().onResize).toHaveBeenCalledTimes(1)
+
+			jest.useRealTimers()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('nav:open, nav:close and nav:toggle call onDelayResize', done => {
+		Dispatcher.on = jest.fn()
+
+		expect.assertions(3)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			expect(Dispatcher.on).toHaveBeenCalledWith(
+				'nav:open',
+				component.instance().boundOnDelayResize
+			)
+			expect(Dispatcher.on).toHaveBeenCalledWith(
+				'nav:close',
+				component.instance().boundOnDelayResize
+			)
+			expect(Dispatcher.on).toHaveBeenCalledWith(
+				'nav:toggle',
+				component.instance().boundOnDelayResize
+			)
 
 			component.unmount()
 			done()

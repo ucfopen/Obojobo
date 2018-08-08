@@ -70,6 +70,9 @@ import FocusUtil from './util/focus-util'
 import ErrorUtil from './util/error-util'
 import UUID from './util/uuid'
 import RangeParsing from './util/range-parsing'
+import setProp from './util/set-prop'
+import cloneProps from './util/clone-props'
+import isOrNot from './isornot'
 
 export default {
 	Store,
@@ -188,6 +191,9 @@ export default {
 		FocusUtil,
 		ErrorUtil,
 		UUID,
-		RangeParsing
+		RangeParsing,
+		setProp,
+		cloneProps,
+		isOrNot
 	}
 }

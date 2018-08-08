@@ -1,6 +1,8 @@
 import createUUID from '../../common/util/uuid'
 import Dispatcher from '../../common/flux/dispatcher'
 import { Store } from '../../common/store'
+import DOMUtil from '../../common/page/dom-util'
+import setProp from '../../common/util/set-prop'
 
 const DefaultAdapter = {
 	construct(attrs) {
@@ -66,6 +68,15 @@ class OboModel extends Backbone.Model {
 		this.children.on('reset', this.onChildrenReset, this)
 
 		OboModel.models[this.get('id')] = this
+	}
+
+	setStateProp(propName, defaultValue, transformValueFn, allowedValues) {
+		const content = this.get('content')
+		if (!content) return false
+
+		setProp(this.modelState, content, propName, defaultValue, transformValueFn, allowedValues)
+
+		return true
 	}
 
 	getRoot() {
@@ -229,7 +240,7 @@ class OboModel extends Backbone.Model {
 	}
 
 	getDomEl() {
-		return document.body.querySelector(`.component[data-id='${this.get('id')}']`)
+		return DOMUtil.getComponentElementById(this.get('id'))
 	}
 
 	getComponentClass() {
