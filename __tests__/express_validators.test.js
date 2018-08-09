@@ -167,10 +167,10 @@ describe('current user middleware', () => {
 			expect(mockReq).toHaveProperty('_validationErrors')
 			expect(mockReq._validationErrors).toHaveLength(1)
 			expect(mockReq._validationErrors).toContainEqual({
-				location: 'session',
-				param: 'Session',
+				location: 'request',
+				param: 'currentDocument',
 				value: undefined,
-				msg: 'DraftDocument Required'
+				msg: 'missing from request'
 			})
 		})
 	})
@@ -184,10 +184,10 @@ describe('current user middleware', () => {
 			expect(mockReq._validationErrors).toHaveLength(2)
 			expect(mockReq._validationErrors).toContainEqual('test')
 			expect(mockReq._validationErrors).toContainEqual({
-				location: 'session',
-				param: 'Session',
+				location: 'request',
+				param: 'currentDocument',
 				value: undefined,
-				msg: 'DraftDocument Required'
+				msg: 'missing from request'
 			})
 		})
 	})

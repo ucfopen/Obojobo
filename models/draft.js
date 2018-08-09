@@ -1,6 +1,6 @@
-let db = require('../db')
-let draftNodeStore = oboRequire('draft_node_store')
-let logger = require('../logger.js')
+const db = require('../db')
+const draftNodeStore = oboRequire('draft_node_store')
+const logger = require('../logger.js')
 
 // Recurses through a draft tree
 // to find duplicate ids
@@ -20,7 +20,7 @@ const findDuplicateIdsRecursive = (jsonTreeNode, idSet = new Set()) => {
 
 	// Check all children nodes
 	let duplicateId = null
-	for (let child of jsonTreeNode.children) {
+	for (const child of jsonTreeNode.children) {
 		duplicateId = findDuplicateIdsRecursive(child, idSet)
 		if (duplicateId) {
 			// return as soon as a duplicate is found
@@ -47,11 +47,11 @@ class Draft {
 	}
 
 	processRawNode(rawNode) {
-		let initFn = () => {}
+		const initFn = () => {}
 
-		let draftClass = draftNodeStore.get(rawNode.type)
+		const draftClass = draftNodeStore.get(rawNode.type)
 
-		let draftNode = new draftClass(this, rawNode, initFn)
+		const draftNode = new draftClass(this, rawNode, initFn)
 
 		draftNode.init()
 
@@ -62,8 +62,8 @@ class Draft {
 		nodesByType.push(draftNode)
 		this.nodesByType.set(rawNode.type, nodesByType)
 
-		for (let i in rawNode.children) {
-			let childNode = this.processRawNode(rawNode.children[i])
+		for (const i in rawNode.children) {
+			const childNode = this.processRawNode(rawNode.children[i])
 			draftNode.children.push(childNode)
 		}
 
@@ -88,7 +88,7 @@ class Draft {
 			ORDER BY content_created_at DESC
 			LIMIT 1
 			`,
-				{ id: id }
+				{ id }
 			)
 			.then(result => {
 				result.content.draftId = result.id

@@ -97,7 +97,7 @@ let mockSendAssessScoreDBCalls = (
 				assessmentScore: assessmentScore,
 				assessmentModdedScore: assessmentScore
 			},
-			preview: true
+			is_preview: true
 		})
 	} else {
 		db.oneOrNone.mockResolvedValueOnce({
@@ -117,7 +117,7 @@ let mockSendAssessScoreDBCalls = (
 				assessmentScore: assessmentScore,
 				assessmentModdedScore: assessmentScore
 			},
-			preview: false
+			is_preview: false
 		})
 	}
 
@@ -135,7 +135,8 @@ let mockSendAssessScoreDBCalls = (
 				status_details: null,
 				log_id: logId,
 				status: 'success',
-				gradebook_status: 'ok_gradebook_matches_assessment_score'
+				gradebook_status: 'ok_gradebook_matches_assessment_score',
+				is_preview: false
 			})
 		}
 
@@ -361,7 +362,8 @@ describe('lti', () => {
 			assessment_id: 'assessment_id',
 			attempt_id: 'attempt_id',
 			score: 'score',
-			preview: 'preview'
+			is_preview: 'preview',
+			score_details: 'details'
 		})
 
 		getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id').then(result => {
@@ -373,8 +375,9 @@ describe('lti', () => {
 				assessmentId: 'assessment_id',
 				attemptId: 'attempt_id',
 				score: 'score',
-				preview: 'preview',
-				error: null
+				isPreview: 'preview',
+				error: null,
+				scoreDetails: 'details'
 			})
 
 			done()
@@ -473,6 +476,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -556,6 +560,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -639,6 +644,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -718,6 +724,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -797,6 +804,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -884,6 +892,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -971,6 +980,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1048,6 +1058,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1127,6 +1138,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1199,6 +1211,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1272,6 +1285,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1345,6 +1359,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1422,6 +1437,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1506,6 +1522,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1590,6 +1607,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1678,6 +1696,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1777,6 +1796,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1854,6 +1874,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1934,6 +1955,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -2015,6 +2037,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -2094,6 +2117,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2167,6 +2191,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2243,6 +2268,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2319,6 +2345,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2397,6 +2424,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2596,6 +2624,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -2674,6 +2703,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 

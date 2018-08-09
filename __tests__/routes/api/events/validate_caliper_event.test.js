@@ -71,7 +71,7 @@ describe('Validate Caliper Events', () => {
 
 	test('assignOptions builds additional parameters', () => {
 		let object = {
-			isPreviewMode: true,
+			peppers: ['ghost', 'jalapeno'],
 			sessionIds: {
 				sessionId: 'mockSessionId',
 				launchId: 'mockLaunchId'
@@ -81,7 +81,6 @@ describe('Validate Caliper Events', () => {
 		let options = ValidateCaliper.assignOptions(object)
 
 		expect(options).toEqual({
-			isPreviewMode: true,
 			sessionId: 'mockSessionId',
 			launchId: 'mockLaunchId'
 		})
@@ -92,8 +91,6 @@ describe('Validate Caliper Events', () => {
 
 		let options = ValidateCaliper.assignOptions(object)
 
-		expect(options).toEqual({
-			isPreviewMode: false
-		})
+		expect(options).toEqual({})
 	})
 })

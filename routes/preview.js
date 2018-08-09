@@ -33,6 +33,7 @@ router
 					metadata: {},
 					draftId: req.currentDocument.draftId,
 					contentId: req.currentDocument.contentId,
+					isPreview: true,
 					payload: {
 						visitId,
 						deactivatedVisitId
@@ -40,7 +41,6 @@ router
 					eventVersion: '1.0.0',
 					caliperPayload: createVisitCreateEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
-						isPreviewMode: req.currentUser.canViewEditor,
 						sessionIds: getSessionIds(req.session),
 						visitId,
 						extensions: { deactivatedVisitId }

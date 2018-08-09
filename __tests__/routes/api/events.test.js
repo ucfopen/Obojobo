@@ -5,10 +5,15 @@ jest.unmock('express') // we'll use supertest + express for this
 
 // override requireCurrentUser to provide our own
 let mockCurrentUser
+let mockCurrentVisit
 jest.mock('../../../express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
+	}
+	req.getCurrentVisitFromRequest = () => {
+		req.currentVisit = mockCurrentVisit
+		return Promise.resolve()
 	}
 	next()
 })
@@ -53,6 +58,7 @@ describe('api draft events route', () => {
 		db.one.mockReset()
 		db.none.mockReset()
 		mockCurrentUser = { id: 99 }
+		mockCurrentVisit = { is_preview: false }
 		mockCurrentDocument = { draftId: 'mock-id', contentId: 'mock-content-id' }
 	})
 	afterEach(() => {})

@@ -6,13 +6,14 @@ const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
-let ltiLaunch = oboRequire('express_lti_launch')
+const ltiLaunch = oboRequire('express_lti_launch')
 const db = oboRequire('db')
 const {
 	checkValidationRules,
 	requireCurrentDocument,
 	requireVisitId,
-	requireCurrentUser
+	requireCurrentUser,
+	requireCurrentVisit
 } = oboRequire('express_validators')
 
 // launch lti view of draft - redirects to visit route
@@ -26,7 +27,7 @@ router
 		return Visit.createVisit(
 			req.currentUser.id,
 			req.currentDocument.draftId,
-			req.lti.body.resource_link_id,
+			req.oboLti.body.resource_link_id,
 			req.oboLti.launchId
 		)
 			.then(({ visitId, deactivatedVisitId }) => {
@@ -40,6 +41,7 @@ router
 					metadata: {},
 					draftId: req.currentDocument.draftId,
 					contentId: req.currentDocument.contentId,
+					isPreview: false,
 					payload: {
 						visitId,
 						deactivatedVisitId
@@ -47,7 +49,6 @@ router
 					eventVersion: '1.0.0',
 					caliperPayload: createVisitCreateEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
-						isPreviewMode: req.currentUser.canViewEditor,
 						sessionIds: getSessionIds(req.session),
 						visitId,
 						extensions: { deactivatedVisitId }
@@ -65,7 +66,13 @@ router
 // mounted as /visit/:draftId/visit/:visitId
 router
 	.route('/:draftId/visit/:visitId*')
-	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
+	.get([
+		requireCurrentUser,
+		requireCurrentVisit,
+		requireCurrentDocument,
+		requireVisitId,
+		checkValidationRules
+	])
 	.get((req, res, next) => {
 		return req.currentDocument
 			.yell('internal:sendToClient', req, res)
@@ -81,9 +88,9 @@ router
 					contentId: req.currentDocument.contentId,
 					payload: { visitId: req.params.visitId },
 					eventVersion: '1.1.0',
+					isPreview: req.currentVisit.is_preview,
 					caliperPayload: createViewerOpenEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
-						isPreviewMode: req.currentUser.canViewEditor,
 						sessionIds: getSessionIds(req.session),
 						visitId: req.params.visitId
 					})

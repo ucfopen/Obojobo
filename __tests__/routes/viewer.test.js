@@ -11,6 +11,7 @@ jest.unmock('express') // we'll use supertest + express for this
 
 // override requireCurrentUser to provide our own
 let mockCurrentUser
+let mockCurrentVisit
 let mockSaveSessionSuccess = true
 jest.mock('../../express_current_user', () => (req, res, next) => {
 	currentReq = req
@@ -21,6 +22,10 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 	req.saveSessionPromise = () => {
 		if (mockSaveSessionSuccess) return Promise.resolve()
 		return Promise.reject()
+	}
+	req.getCurrentVisitFromRequest = () => {
+		req.currentVisit = mockCurrentVisit
+		return Promise.resolve()
 	}
 	next()
 })
@@ -74,6 +79,7 @@ describe('viewer route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		currentReq = null
+		mockCurrentVisit = { is_preview: false }
 		mockCurrentUser = { id: 4 }
 		insertEvent.mockReset()
 		Visit.createVisit.mockReset()
@@ -118,7 +124,7 @@ describe('viewer route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got undefined')
+				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
 			})
 	})
 
@@ -209,7 +215,7 @@ describe('viewer route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(422)
-				expect(response.text).toBe('Bad Input: Session DraftDocument Required, got undefined')
+				expect(response.text).toBe('Bad Input: currentDocument missing from request, got undefined')
 			})
 	})
 

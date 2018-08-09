@@ -359,7 +359,6 @@ describe('api draft route', () => {
 	})
 
 	// list drafts
-
 	test('list drafts exits when user cant view drafts', () => {
 		expect.assertions(4)
 		db.any.mockResolvedValueOnce('mock-db-result')
