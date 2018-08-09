@@ -56,6 +56,7 @@ app.use('/api/', oboRequire('routes/api/visits'))
 mockStaticDate()
 
 describe('api visits route', () => {
+	const VisitModel = oboRequire('models/visit')
 	const insertEvent = oboRequire('insert_event')
 	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
 	const Draft = oboRequire('models/draft')
@@ -73,6 +74,7 @@ describe('api visits route', () => {
 		ltiUtil.retrieveLtiLaunch = jest.fn()
 		viewerState.get = jest.fn()
 		mockCurrentVisit = { id: validUUID(), is_preview: false, draft_content_id: validUUID() }
+		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
 	})
 	afterEach(() => {})
 
@@ -132,28 +134,24 @@ describe('api visits route', () => {
 			yell: jest.fn().mockResolvedValueOnce(),
 			contentId: validUUID()
 		}
-		mockCurrentVisit = null
+		// mockCurrentVisit = null
+		VisitModel.fetchById.mockRejectedValueOnce('mock-fetch-reject')
 		return request(app)
 			.post('/api/start')
 			.send({ visitId: validUUID() })
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(422)
+				expect(response.statusCode).toBe(403)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body.value).toHaveProperty('type', 'badInput')
-				expect(response.body.value).toHaveProperty(
-					'message',
-					'currentVisit missing from request, got undefined'
-				)
+				expect(response.body.value).toHaveProperty('type', 'reject')
+				expect(response.body.value).toHaveProperty('message', 'mock-fetch-reject')
 			})
 	})
 
 	test('/start fails when theres no linked lti launch (when not in preview mode)', () => {
 		expect.assertions(5)
-
 		// reject launch lookup
 		ltiUtil.retrieveLtiLaunch.mockRejectedValueOnce('lti launch lookup rejection error')
-
 		mockCurrentUser = { id: 99 }
 		mockCurrentDocument = {
 			draftId: validUUID(),
@@ -174,7 +172,6 @@ describe('api visits route', () => {
 
 	test('/start fails when draft_content_ids do not match', () => {
 		expect.assertions(5)
-
 		mockCurrentUser = { id: 99 }
 		mockCurrentDocument = {
 			draftId: validUUID(),
@@ -195,14 +192,13 @@ describe('api visits route', () => {
 
 	test('/start in preview works and doesnt care about matching draft_content_ids', () => {
 		expect.assertions(4)
-
+		mockCurrentVisit.is_preview = true
 		mockCurrentUser = { id: 99, canViewEditor: true }
 		mockCurrentDocument = {
 			draftId: validUUID(),
 			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
 			contentId: validUUID()
 		}
-		mockCurrentVisit.is_preview = true
 		return request(app)
 			.post('/api/start')
 			.send({ visitId: validUUID() })
@@ -241,7 +237,6 @@ describe('api visits route', () => {
 
 	test('/start yells internal:startVisit and respond with success', () => {
 		expect.assertions(4)
-
 		// resolve ltiLaunch lookup
 		const launch = {
 			reqVars: {
@@ -272,7 +267,6 @@ describe('api visits route', () => {
 
 	test('visit:start event and createViewerSessionLoggedInEvent created', () => {
 		expect.assertions(4)
-
 		// resolve ltiLaunch lookup
 		let launch = {
 			reqVars: {

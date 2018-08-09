@@ -66,16 +66,24 @@ describe('api draft route', () => {
 	// get draft
 
 	test('get draft returns success', () => {
-		expect.assertions(4)
+		expect.assertions(5)
 		// mock a yell function that returns a document
-		let mockYell = jest.fn().mockResolvedValueOnce({ document: 'mock-document' })
+		let mockYell = jest.fn()
 		// mock the document returned by fetchById
-		DraftModel.fetchById.mockResolvedValueOnce({ root: { yell: mockYell } })
+		DraftModel.fetchById.mockResolvedValueOnce({
+			root: { yell: mockYell },
+			document: 'mock-document'
+		})
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
+				expect(mockYell).toHaveBeenCalledWith(
+					'internal:sendToClient',
+					expect.anything(),
+					expect.anything()
+				)
 				expect(response.body).toHaveProperty('status', 'ok')
 				expect(response.body).toHaveProperty('value', 'mock-document')
 			})

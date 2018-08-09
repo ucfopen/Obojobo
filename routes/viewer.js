@@ -12,8 +12,7 @@ const {
 	checkValidationRules,
 	requireCurrentDocument,
 	requireVisitId,
-	requireCurrentUser,
-	requireCurrentVisit
+	requireCurrentUser
 } = oboRequire('express_validators')
 
 // launch lti view of draft - redirects to visit route
@@ -66,16 +65,14 @@ router
 // mounted as /visit/:draftId/visit/:visitId
 router
 	.route('/:draftId/visit/:visitId*')
-	.get([
-		requireCurrentUser,
-		requireCurrentVisit,
-		requireCurrentDocument,
-		requireVisitId,
-		checkValidationRules
-	])
+	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
 	.get((req, res, next) => {
-		return req.currentDocument
-			.yell('internal:sendToClient', req, res)
+		let currentVisit
+		return Visit.fetchById(req.params.visitId, false)
+			.then(visit => {
+				currentVisit = visit
+				return req.currentDocument.yell('internal:sendToClient', req, res)
+			})
 			.then(() => {
 				const { createViewerOpenEvent } = createCaliperEvent(null, req.hostname)
 				return insertEvent({
@@ -88,7 +85,7 @@ router
 					contentId: req.currentDocument.contentId,
 					payload: { visitId: req.params.visitId },
 					eventVersion: '1.1.0',
-					isPreview: req.currentVisit.is_preview,
+					isPreview: currentVisit.is_preview,
 					caliperPayload: createViewerOpenEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
 						sessionIds: getSessionIds(req.session),

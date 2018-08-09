@@ -69,7 +69,7 @@ app.use('/', oboRequire('routes/viewer'))
 
 describe('viewer route', () => {
 	const insertEvent = oboRequire('insert_event')
-	const Visit = oboRequire('models/visit')
+	const VisitModel = oboRequire('models/visit')
 	const mockYell = jest.fn().mockResolvedValue({
 		draftId: 555,
 		contentId: 12
@@ -82,7 +82,8 @@ describe('viewer route', () => {
 		mockCurrentVisit = { is_preview: false }
 		mockCurrentUser = { id: 4 }
 		insertEvent.mockReset()
-		Visit.createVisit.mockReset()
+		VisitModel.createVisit.mockReset()
+		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
 	})
 	afterEach(() => {})
 
@@ -131,7 +132,7 @@ describe('viewer route', () => {
 	test('launch visit redirects', () => {
 		expect.assertions(3)
 
-		Visit.createVisit.mockResolvedValueOnce({
+		VisitModel.createVisit.mockResolvedValueOnce({
 			visitId: 'mocked-visit-id',
 			deactivatedVisitId: 'mocked-deactivated-visit-id'
 		})
@@ -153,7 +154,7 @@ describe('viewer route', () => {
 
 	test('launch visit inserts event `visit:create`', () => {
 		expect.assertions(4)
-		Visit.createVisit.mockResolvedValueOnce({
+		VisitModel.createVisit.mockResolvedValueOnce({
 			visitId: 'mocked-visit-id',
 			deactivatedVisitId: 'mocked-deactivated-visit-id'
 		})
@@ -176,7 +177,7 @@ describe('viewer route', () => {
 
 		mockSaveSessionSuccess = false
 
-		Visit.createVisit.mockResolvedValueOnce({
+		VisitModel.createVisit.mockResolvedValueOnce({
 			visitId: 'mocked-visit-id',
 			deactivatedVisitId: 'mocked-deactivated-visit-id'
 		})
@@ -188,7 +189,7 @@ describe('viewer route', () => {
 			.post(`/${validUUID()}/`)
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
-				expect(Visit.createVisit).toHaveBeenCalledTimes(1)
+				expect(VisitModel.createVisit).toHaveBeenCalledTimes(1)
 				expect(response.statusCode).toBe(500)
 			})
 	})
@@ -234,6 +235,7 @@ describe('viewer route', () => {
 
 	test('view visit inserts viewer:open event', () => {
 		expect.assertions(4)
+
 		mockCurrentDocument = {
 			draftId: validUUID(),
 			yell: jest.fn().mockResolvedValueOnce()

@@ -27,8 +27,8 @@ router
 		const draftId = req.params.draftId
 
 		return DraftModel.fetchById(draftId)
-			.then(draftTree => draftTree.root.yell('internal:sendToClient', req, res))
 			.then(draftTree => {
+				draftTree.root.yell('internal:sendToClient', req, res)
 				res.success(draftTree.document)
 			})
 			.catch(error => {

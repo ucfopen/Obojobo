@@ -13,11 +13,10 @@ const {
 	requireDraftId,
 	requireVisitId,
 	requireCurrentUser,
-	requireCurrentDocument,
-	requireCurrentVisit
+	requireCurrentDocument
 } = oboRequire('express_validators')
 
-const getDraftAndStartVisitProps = (req, res, draftDocument, visit) => {
+const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 	const visitStartReturnExtensionsProps = {}
 
 	return draftDocument
@@ -26,7 +25,7 @@ const getDraftAndStartVisitProps = (req, res, draftDocument, visit) => {
 			req,
 			res,
 			draftDocument.draftId,
-			visit.id,
+			visitId,
 			visitStartReturnExtensionsProps
 		)
 		.then(() => {
@@ -38,35 +37,30 @@ const getDraftAndStartVisitProps = (req, res, draftDocument, visit) => {
 // mounted as /api/visit/start
 router
 	.route('/start')
-	.post([
-		requireCurrentUser,
-		requireCurrentVisit,
-		requireCurrentDocument,
-		requireVisitId,
-		checkValidationRules
-	])
+	.post([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
 	.post((req, res, next) => {
 		let draft
 		let viewState
 		let visitStartReturnExtensionsProps
 		let launch
+		let visit
 
 		const draftId = req.currentDocument.draftId
+		const visitId = req.body.visitId
 
-		logger.log(
-			`VISIT: Begin start visit for visitId="${req.currentVisit.id}", draftId="${draftId}"`
-		)
+		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
 
 		return Promise.all([
-			viewerState.get(req.currentUser.id, draftId),
-			getDraftAndStartVisitProps(req, res, req.currentDocument, req.currentVisit)
+			VisitModel.fetchById(visitId),
+			viewerState.get(req.currentUser.id, req.currentDocument.contentId),
+			getDraftAndStartVisitProps(req, res, req.currentDocument, visitId)
 		])
 			.then(results => {
 				// expand results
-				;[viewState, { draft, visitStartReturnExtensionsProps }] = results
+				;[visit, viewState, visitStartReturnExtensionsProps] = results
 
-				if (req.currentVisit.is_preview === false) {
-					if (req.currentVisit.draft_content_id !== req.currentDocument.contentId) {
+				if (visit.is_preview === false) {
+					if (visit.draft_content_id !== req.currentDocument.contentId) {
 						// error so the student starts a new view w/ newer version
 						// this check doesn't happen in preview mode so authors
 						// can reload the page to see changes easier
@@ -87,35 +81,34 @@ router
 					ip: req.connection.remoteAddress,
 					metadata: {},
 					draftId,
-					isPreview: req.currentVisit.is_preview,
+					isPreview: visit.is_preview,
 					contentId: req.currentDocument.contentId,
-					payload: { visitId: req.currentVisit.id },
+					payload: { visitId },
 					eventVersion: '1.0.0',
 					caliperPayload: createViewerSessionLoggedInEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
 						draftId,
 						contentId: req.currentDocument.contentId,
-						isPreviewMode: req.currentUser.canViewEditor,
 						sessionIds: getSessionIds(req.session)
 					})
 				})
 			})
 			.then(() => {
 				logger.log(
-					`VISIT: Start visit success for visitId="${
-						req.currentVisit.id
-					}", draftId="${draftId}", userId="${req.currentUser.id}"`
+					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
+						req.currentUser.id
+					}"`
 				)
 
 				// Build lti data for return
 				const lti = { lis_outcome_service_url: null }
-				if (req.currentVisit.is_preview === false) {
+				if (visit.is_preview === false) {
 					lti.lis_outcome_service_url = launch.reqVars.lis_outcome_service_url
 				}
 
 				res.success({
-					visitId: req.currentVisit.id,
-					isPreviewing: req.currentVisit.is_preview,
+					visitId,
+					isPreviewing: visit.is_preview,
 					lti,
 					viewState,
 					extensions: visitStartReturnExtensionsProps

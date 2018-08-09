@@ -2,6 +2,7 @@
 
 exports[`api visits route /start in preview works and doesnt care about matching draft_content_ids 1`] = `
 Object {
+  "extensions": Object {},
   "isPreviewing": true,
   "lti": Object {
     "lisOutcomeServiceUrl": null,
