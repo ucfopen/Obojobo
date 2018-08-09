@@ -30,7 +30,7 @@ const originalWEBPACK = process.env.IS_WEBPACK
 let mockRes
 let mockError
 
-// adds `times` number of mockImplemenationOnce calls to a mock funckin
+// adds `times` number of mockImplemenationOnce calls to a mock function
 const mockImplementationTimes = (mock, times, implementation) => {
 	let n = times
 	while (n--) {

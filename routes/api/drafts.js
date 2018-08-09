@@ -70,7 +70,7 @@ router
 					try {
 						xml = req.body
 						const convertedXml = xmlToDraftObject(req.body, true)
-						if (typeof convertedXml === 'object') {
+						if (convertedXml && typeof convertedXml === 'object') {
 							documentInput = convertedXml
 						} else {
 							logger.error('Parse XML non-error?', convertedXml)
@@ -83,7 +83,7 @@ router
 					documentInput = req.body
 				}
 
-				if (typeof documentInput !== 'object') {
+				if (!documentInput || typeof documentInput !== 'object') {
 					logger.error('Posting draft failed - format unexpected:', req.body)
 					res.badInput('Posting draft failed - format unexpected')
 					return
