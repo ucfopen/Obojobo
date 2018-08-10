@@ -1,9 +1,6 @@
 import './viewer-component.scss'
 
-// import parseURL from 'url-parse'
-
 import React from 'react'
-import ReactDOM from 'react-dom'
 
 import Common from 'Common'
 import Viewer from 'Viewer'
@@ -36,10 +33,10 @@ export default class IFrame extends React.Component {
 	}
 
 	getMeasuredDimensions() {
-		const cs = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.main), null)
+		const cs = window.getComputedStyle(this.mainEl, null)
 
 		return {
-			width: ReactDOM.findDOMNode(this).getBoundingClientRect().width,
+			width: this.selfEl.getBoundingClientRect().width,
 			padding:
 				parseFloat(cs.getPropertyValue('padding-left')) +
 				parseFloat(cs.getPropertyValue('padding-right'))
@@ -68,7 +65,7 @@ export default class IFrame extends React.Component {
 	}
 
 	onClickReload() {
-		this.refs.iframe.src = this.createSrc(this.props.model.modelState.src)
+		this.iframeEl.src = this.createSrc(this.props.model.modelState.src)
 	}
 
 	componentDidMount() {
@@ -86,7 +83,7 @@ export default class IFrame extends React.Component {
 			window.ResizeObserver.prototype.disconnect
 		) {
 			this.resizeObserver = new ResizeObserver(this.boundOnViewerContentAreaResized)
-			this.resizeObserver.observe(ReactDOM.findDOMNode(this))
+			this.resizeObserver.observe(this.selfEl)
 		} else {
 			Dispatcher.on('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
 		}
@@ -152,7 +149,11 @@ export default class IFrame extends React.Component {
 		const src = this.createSrc(ms.src)
 
 		return (
-			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
+			<OboComponent
+				model={this.props.model}
+				moduleData={this.props.moduleData}
+				ref={node => (this.selfEl = node)}
+			>
 				<div
 					className={
 						'obojobo-draft--chunks--iframe viewer pad' +
@@ -163,20 +164,19 @@ export default class IFrame extends React.Component {
 						isOrNot(ms.src === null, 'missing-src') +
 						isOrNot(scaleDimensions.scale > 1, 'scaled-up')
 					}
-					ref="main"
+					ref={node => (this.mainEl = node)}
 				>
 					<div
 						className="container"
-						ref="container"
 						onClick={!isShowing && ms.src !== null ? this.boundOnClickContainer : null}
 						style={scaleDimensions.containerStyle}
 					>
-						<div className="iframe-container" ref="iframeContainer">
+						<div className="iframe-container">
 							{!isShowing ? (
 								<div className="blocker" style={iframeStyle} />
 							) : (
 								<iframe
-									ref="iframe"
+									ref={node => (this.iframeEl = node)}
 									title={ms.title}
 									src={src}
 									is

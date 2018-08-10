@@ -24,7 +24,7 @@
 		&.is-prev {
 			border-bottom: 1px solid $color-action;
 
-			&:before {
+			&::before {
 				content: '➜';
 				transform: rotate(-90deg) translate(0, -0.5rem);
 				display: inline-block;
@@ -35,7 +35,7 @@
 		&.is-next {
 			border-top: 1px solid $color-action;
 
-			&:before {
+			&::before {
 				content: '➜';
 				transform: rotate(90deg) translate(0, 0.5rem);
 				display: inline-block;

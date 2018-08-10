@@ -1,13 +1,15 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 import Viewer from 'Viewer'
 
-let { OboComponent } = Common.components
-let { NavUtil } = Viewer.util
+const { OboComponent } = Common.components
+const { NavUtil } = Viewer.util
 
 export default class Page extends React.Component {
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.moduleData.navState.navTargetId !== this.props.moduleData.navState.navTargetId) {
 			return NavUtil.setFlag(this.props.moduleData.navState.navTargetId, 'visited', true)
 		}
@@ -21,7 +23,7 @@ export default class Page extends React.Component {
 				className="obojobo-draft--pages--page"
 			>
 				{this.props.model.children.models.map((child, index) => {
-					let Component = child.getComponentClass()
+					const Component = child.getComponentClass()
 
 					return <Component key={index} model={child} moduleData={this.props.moduleData} />
 				})}

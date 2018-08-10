@@ -11,12 +11,12 @@ jest.mock('../../../../ObojoboDraft/Chunks/Figure/selection-handler', () => jest
 const Common = require('../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
-import Figure from '../../../../ObojoboDraft/Chunks/Figure/viewer'
+import '../../../../ObojoboDraft/Chunks/Figure/viewer'
 import ViewerComponent from '../../../../ObojoboDraft/Chunks/Figure/viewer-component'
 
 describe('ObojoboDraft.Chunks.Figure registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.Figure')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})

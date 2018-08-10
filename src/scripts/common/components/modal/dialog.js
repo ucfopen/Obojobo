@@ -1,7 +1,8 @@
 import './dialog.scss'
 
+import React from 'react'
+
 import Button from '../../../common/components/button'
-import DeleteButton from '../../../common/components/delete-button'
 import Modal from './modal'
 
 export default class Dialog extends React.Component {
@@ -10,22 +11,16 @@ export default class Dialog extends React.Component {
 	}
 
 	componentDidMount() {
-		return (() => {
-			let result = []
-			for (let index = 0; index < this.props.buttons.length; index++) {
-				let button = this.props.buttons[index]
-				let item
-				if (button.default) {
-					item = this.refs[`button${index}`].focus()
-				}
-				result.push(item)
+		for (let index = 0; index < this.props.buttons.length; index++) {
+			const button = this.props.buttons[index]
+			if (button.default) {
+				button.focus()
 			}
-			return result
-		})()
+		}
 	}
 
 	focusOnFirstElement() {
-		return this.refs.button0.focus()
+		if (this.buttons && this.buttons[0]) this.buttons[0].focus()
 	}
 
 	render() {
@@ -33,6 +28,8 @@ export default class Dialog extends React.Component {
 		if (this.props.width) {
 			styles = { width: this.props.width }
 		}
+
+		this.buttons = []
 
 		return (
 			<div className="obojobo-draft--components--modal--dialog" style={styles}>
@@ -42,13 +39,20 @@ export default class Dialog extends React.Component {
 					className={this.props.modalClassName}
 				>
 					{this.props.title ? (
-						<h1 className="heading" style={{ textAlign: this.props.centered ? 'center' : null }}>
+						<h1
+							className="heading"
+							style={{
+								textAlign: this.props.centered ? 'center' : null
+							}}
+						>
 							{this.props.title}
 						</h1>
 					) : null}
 					<div
 						className="dialog-content"
-						style={{ textAlign: this.props.centered ? 'center' : null }}
+						style={{
+							textAlign: this.props.centered ? 'center' : null
+						}}
 					>
 						{this.props.children}
 					</div>
@@ -62,7 +66,13 @@ export default class Dialog extends React.Component {
 								)
 							}
 							buttonPropsOrText.key = index
-							return <Button ref={`button${index}`} {...buttonPropsOrText} />
+							return (
+								<Button
+									key={index}
+									ref={component => (this.buttons[index] = component)}
+									{...buttonPropsOrText}
+								/>
+							)
 						})}
 					</div>
 				</Modal>

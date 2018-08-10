@@ -1,17 +1,17 @@
 import Common from 'Common'
 
-let getParsedRange = Common.util.RangeParsing.getParsedRange
-let isValueInRange = Common.util.RangeParsing.isValueInRange
+const getParsedRange = Common.util.RangeParsing.getParsedRange
+const isValueInRange = Common.util.RangeParsing.isValueInRange
 
-let replaceDict = {
+const replaceDict = {
 	'no-score': null
 }
 
 class ScoreActions {
-	constructor(actions) {
+	constructor(actions = []) {
 		this.originalActions = actions
 
-		this.actions = (actions == null ? [] : actions).map(action => {
+		this.actions = actions.map(action => {
 			let forAttr = action.for
 
 			// Transform legacy to/from to newer "for"
@@ -31,7 +31,7 @@ class ScoreActions {
 	}
 
 	getActionForScore(score) {
-		for (let action of this.actions) {
+		for (const action of this.actions) {
 			if (isValueInRange(score, action.range, replaceDict)) return action
 		}
 

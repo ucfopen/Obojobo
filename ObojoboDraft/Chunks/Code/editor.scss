@@ -1,5 +1,11 @@
 @import '../../../../../../../scss/includes';
 
+.obojobo-draft--chunks--code {
+	pre {
+		position: relative;
+	}
+}
+
 .component[data-component-type='ObojoboDraft.Chunks.Code'] {
 	&.selection-contains,
 	&.selection-inside,
@@ -17,11 +23,5 @@
 				position: absolute;
 			}
 		}
-	}
-}
-
-.obojobo-draft--chunks--code {
-	pre {
-		position: relative;
 	}
 }

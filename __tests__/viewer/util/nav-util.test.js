@@ -1,3 +1,5 @@
+/* eslint no-undefined: 0 */
+
 // Common
 jest.mock('../../../src/scripts/common/index', () => ({
 	models: {
@@ -16,24 +18,24 @@ const Common = require('../../../src/scripts/common/index')
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util').default
 
 const buildComplexNestedState = () => {
-	let mockItem4 = {
+	const mockItem4 = {
 		id: 4,
 		type: 'link'
 	}
 
-	let mockItem3 = {
+	const mockItem3 = {
 		id: 3,
 		type: 'notHidden'
 	}
 
-	let mockItem2 = {
+	const mockItem2 = {
 		id: 2,
 		type: 'hidden',
 		showChildren: true,
 		children: [mockItem3]
 	}
 
-	let mockItem1 = {
+	const mockItem1 = {
 		id: 1,
 		type: 'link',
 		showChildren: true,
@@ -61,7 +63,7 @@ describe('NavUtil', () => {
 
 	test('rebuildMenu', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.rebuildMenu('mockModel')
+		const x = NavUtil.rebuildMenu('mockModel')
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:rebuildMenu', {
 			value: { model: 'mockModel' }
 		})
@@ -70,16 +72,16 @@ describe('NavUtil', () => {
 
 	test('gotoPath', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.gotoPath('mockPath')
-		let expectedValue = { value: { path: 'mockPath' } }
+		const x = NavUtil.gotoPath('mockPath')
+		const expectedValue = { value: { path: 'mockPath' } }
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:gotoPath', expectedValue)
 		expect(x).toBe('mockTriggerReturn')
 	})
 
 	test('setFlag', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.setFlag('mockId', 'mockFlagName', 'mockFlagValue')
-		let expectedValue = {
+		const x = NavUtil.setFlag('mockId', 'mockFlagName', 'mockFlagValue')
+		const expectedValue = {
 			value: {
 				id: 'mockId',
 				flagName: 'mockFlagName',
@@ -92,22 +94,22 @@ describe('NavUtil', () => {
 
 	test('goPrev', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.goPrev()
+		const x = NavUtil.goPrev()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:prev')
 		expect(x).toBe('mockTriggerReturn')
 	})
 
 	test('goNext', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.goNext()
+		const x = NavUtil.goNext()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:next')
 		expect(x).toBe('mockTriggerReturn')
 	})
 
 	test('goto', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.goto('mockId')
-		let expectedValue = {
+		const x = NavUtil.goto('mockId')
+		const expectedValue = {
 			value: {
 				id: 'mockId'
 			}
@@ -118,43 +120,43 @@ describe('NavUtil', () => {
 
 	test('lock', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.lock()
+		const x = NavUtil.lock()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:lock')
 		expect(x).toBe('mockTriggerReturn')
 	})
 
 	test('unlock', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.unlock()
+		const x = NavUtil.unlock()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:unlock')
 		expect(x).toBe('mockTriggerReturn')
 	})
 
 	test('close', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.close()
+		const x = NavUtil.close()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:close')
 		expect(x).toBe('mockTriggerReturn')
 	})
 
 	test('open', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.open()
+		const x = NavUtil.open()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:open')
 		expect(x).toBe('mockTriggerReturn')
 	})
 
 	test('toggle', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.toggle()
+		const x = NavUtil.toggle()
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:toggle')
 		expect(x).toBe('mockTriggerReturn')
 	})
 
 	test('openExternalLink', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.openExternalLink('mockUrl')
-		let expectedValue = {
+		const x = NavUtil.openExternalLink('mockUrl')
+		const expectedValue = {
 			value: {
 				url: 'mockUrl'
 			}
@@ -168,8 +170,8 @@ describe('NavUtil', () => {
 
 	test('showChildren', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.showChildren('mockId')
-		let expectedValue = {
+		const x = NavUtil.showChildren('mockId')
+		const expectedValue = {
 			value: {
 				id: 'mockId'
 			}
@@ -180,8 +182,8 @@ describe('NavUtil', () => {
 
 	test('hideChildren', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-		let x = NavUtil.hideChildren('mockId')
-		let expectedValue = {
+		const x = NavUtil.hideChildren('mockId')
+		const expectedValue = {
 			value: {
 				id: 'mockId'
 			}
@@ -191,19 +193,19 @@ describe('NavUtil', () => {
 	})
 
 	test('getNavTarget', () => {
-		let mockState = {
+		const mockState = {
 			navTargetId: 'mockId',
 			itemsById: {
 				mockId: 'mockItem'
 			}
 		}
-		let x = NavUtil.getNavTarget(mockState)
+		const x = NavUtil.getNavTarget(mockState)
 		expect(x).toBe('mockItem')
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getNavTargetModel returns OboModel reference', () => {
-		let mockState = {
+		const mockState = {
 			navTargetId: 'mockId',
 			itemsById: {
 				mockId: {
@@ -213,13 +215,13 @@ describe('NavUtil', () => {
 		}
 
 		Common.models.OboModel.models.mockItemId = 'mockModel'
-		let x = NavUtil.getNavTargetModel(mockState)
+		const x = NavUtil.getNavTargetModel(mockState)
 		expect(x).toBe('mockModel')
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getNavTargetModel returns undefined when navTarget has no OboModel', () => {
-		let mockState = {
+		const mockState = {
 			navTargetId: 'mockId',
 			itemsById: {
 				mockId: {
@@ -228,190 +230,190 @@ describe('NavUtil', () => {
 			}
 		}
 
-		let x = NavUtil.getNavTargetModel(mockState)
+		const x = NavUtil.getNavTargetModel(mockState)
 		expect(x).toBe(undefined)
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getNavTargetModel returns null with no navTarget', () => {
-		let mockState = {
+		const mockState = {
 			navTargetId: 'mockId',
 			itemsById: {}
 		}
 
 		Common.models.OboModel.models.mockItemId = 'mockModel'
-		let x = NavUtil.getNavTargetModel(mockState)
+		const x = NavUtil.getNavTargetModel(mockState)
 		expect(x).toBe(null)
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getFirst finds the first link in items', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 
-		let x = NavUtil.getFirst(mockState)
+		const x = NavUtil.getFirst(mockState)
 		expect(x).toBe(mockState.itemsById[1])
 
 		// change the first item to make it not a link, we should find the next link item
 		mockState.itemsById[1].type = 'not-a-link'
-		let y = NavUtil.getFirst(mockState)
+		const y = NavUtil.getFirst(mockState)
 		expect(y).toBe(mockState.itemsById[4])
 
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getFirst returns null with no links', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 		mockState.itemsById[1].type = 'not-a-link'
 		mockState.itemsById[4].type = 'not-a-link'
 
-		let x = NavUtil.getFirst(mockState)
+		const x = NavUtil.getFirst(mockState)
 		expect(x).toBeNull()
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getPrev', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 
 		// current navtarget is 4
 		// the next link that is 'previous' is mockItem1
-		let x = NavUtil.getPrev(mockState)
+		const x = NavUtil.getPrev(mockState)
 		expect(x).toBe(mockState.itemsById[1])
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getPrev returns null when theres no previous link', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 		mockState.itemsById[1].type = 'not-a-link'
 		// current navtarget is 4
 		// the next link that is 'previous' is mockItem1
-		let x = NavUtil.getPrev(mockState)
+		const x = NavUtil.getPrev(mockState)
 		expect(x).toBeNull()
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getPrev returns null when the current target isnt valid', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 		mockState.navTargetId = 99
 		// current navtarget is 4
 		// the next link that is 'previous' is mockItem1
-		let x = NavUtil.getPrev(mockState)
+		const x = NavUtil.getPrev(mockState)
 		expect(x).toBeNull()
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getNext', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 		mockState.navTargetId = 1
 
-		let x = NavUtil.getNext(mockState)
+		const x = NavUtil.getNext(mockState)
 		expect(x).toBe(mockState.itemsById[4])
 
 		mockState.navTargetId = 4
-		let y = NavUtil.getNext(mockState)
+		const y = NavUtil.getNext(mockState)
 		expect(y).toBeNull()
 
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getNext returns null when the current target isnt valid', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 		mockState.navTargetId = 99
 		// current navtarget is 4
 		// the next link that is 'previous' is mockItem1
-		let x = NavUtil.getNext(mockState)
+		const x = NavUtil.getNext(mockState)
 		expect(x).toBeNull()
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getPrevModel', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 
-		let x = NavUtil.getPrevModel(mockState)
+		const x = NavUtil.getPrevModel(mockState)
 		expect(x).toBe(undefined)
 	})
 
 	test('getPrevModel returns null when not found', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 		mockState.navTargetId = 99
 
-		let x = NavUtil.getPrevModel(mockState)
+		const x = NavUtil.getPrevModel(mockState)
 		expect(x).toBe(null)
 	})
 
 	test('getNextModel', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 		mockState.navTargetId = 1
 
-		let x = NavUtil.getNextModel(mockState)
+		const x = NavUtil.getNextModel(mockState)
 		expect(x).toBe(undefined)
 	})
 
 	test('getNextModel returns null when not found', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 		mockState.navTargetId = 99
 
-		let x = NavUtil.getNextModel(mockState)
+		const x = NavUtil.getNextModel(mockState)
 		expect(x).toBe(null)
 	})
 
 	test('getNavItemForModel', () => {
-		let state = {
+		const state = {
 			itemsById: {
 				testId: 'mockItem'
 			}
 		}
-		let model = {
+		const model = {
 			get: jest.fn().mockReturnValueOnce('testId')
 		}
 
-		let item = NavUtil.getNavItemForModel(state, model)
+		const item = NavUtil.getNavItemForModel(state, model)
 
 		expect(item).toEqual('mockItem')
 	})
 
 	test('getNavItemForModel returns null', () => {
-		let state = {
+		const state = {
 			itemsById: {}
 		}
-		let model = {
+		const model = {
 			get: jest.fn()
 		}
 
-		let item = NavUtil.getNavItemForModel(state, model)
+		const item = NavUtil.getNavItemForModel(state, model)
 
 		expect(item).toEqual(null)
 	})
 
 	test('getNavLabelForModel', () => {
-		let state = {
+		const state = {
 			itemsById: {
 				testId: { label: 'mockLabel' }
 			}
 		}
-		let model = {
+		const model = {
 			get: jest.fn().mockReturnValueOnce('testId')
 		}
 
-		let item = NavUtil.getNavLabelForModel(state, model)
+		const item = NavUtil.getNavLabelForModel(state, model)
 
 		expect(item).toEqual('mockLabel')
 	})
 
 	test('getNavLabelForModel returns null', () => {
-		let state = {
+		const state = {
 			itemsById: jest.fn().mockReturnValueOnce(undefined)
 		}
-		let model = {
+		const model = {
 			get: jest.fn()
 		}
 
-		let item = NavUtil.getNavLabelForModel(state, model)
+		const item = NavUtil.getNavLabelForModel(state, model)
 
 		expect(item).toEqual(null)
 	})
 
 	test('canNavigate', () => {
-		let mockState = {
+		const mockState = {
 			locked: true
 		}
 		expect(NavUtil.canNavigate(mockState)).toBe(false)
@@ -424,36 +426,36 @@ describe('NavUtil', () => {
 	})
 
 	test('getOrderedList returns item when not hidden', () => {
-		let mockState = {
+		const mockState = {
 			items: {
 				type: 'notHidden'
 			}
 		}
 
 		Common.models.OboModel.models.mockItemId = 'mockModel'
-		let x = NavUtil.getOrderedList(mockState)
+		const x = NavUtil.getOrderedList(mockState)
 		expect(x).toEqual([{ type: 'notHidden' }])
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getOrderedList returns empty array when hidden', () => {
-		let mockState = {
+		const mockState = {
 			items: {
 				type: 'hidden'
 			}
 		}
 
 		Common.models.OboModel.models.mockItemId = 'mockModel'
-		let x = NavUtil.getOrderedList(mockState)
+		const x = NavUtil.getOrderedList(mockState)
 		expect(x).toEqual([])
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
 	test('getOrderedList returns nested children in order and obeys hidden flags', () => {
-		let mockState = buildComplexNestedState()
+		const mockState = buildComplexNestedState()
 
 		Common.models.OboModel.models.mockItemId = 'mockModel'
-		let x = NavUtil.getOrderedList(mockState)
+		const x = NavUtil.getOrderedList(mockState)
 
 		// returns expected objects in a depth first order
 		expect(x).toHaveLength(3)
@@ -465,10 +467,10 @@ describe('NavUtil', () => {
 	})
 
 	test('getOrderedList returns assessment item', () => {
-		let assessmentModel = {
+		const assessmentModel = {
 			get: jest.fn().mockReturnValueOnce('ObojoboDraft.Sections.Assessment')
 		}
-		let assessmentItem = {
+		const assessmentItem = {
 			id: 'mockAssessment',
 			flags: {},
 			type: 'none',
@@ -476,7 +478,7 @@ describe('NavUtil', () => {
 		}
 
 		Common.models.OboModel.models.mockAssessment = assessmentModel
-		let list = NavUtil.getOrderedList({ items: assessmentItem })
+		const list = NavUtil.getOrderedList({ items: assessmentItem })
 
 		expect(list).toHaveLength(1)
 		expect(list[0]).toHaveProperty('id', 'mockAssessment')

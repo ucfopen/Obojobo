@@ -1,5 +1,7 @@
 import './inline-nav-button.scss'
 
+import React from 'react'
+
 import NavUtil from '../../viewer/util/nav-util'
 
 export default class InlineNavButton extends React.Component {
@@ -20,6 +22,7 @@ export default class InlineNavButton extends React.Component {
 	render() {
 		return (
 			<div
+				ref={this.props.ref}
 				className={`viewer--components--inline-nav-button is-${this.props.type}${
 					this.props.disabled ? ' is-not-enabled' : ' is-enabled'
 				}`}

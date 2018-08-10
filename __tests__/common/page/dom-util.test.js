@@ -108,8 +108,6 @@ describe('DOMUtil', () => {
 	})
 
 	test('finds parent component elements ids', () => {
-		const a = document.getElementById('obo-a')
-		const d = document.getElementById('obo-d')
 		const g = document.getElementById('obo-g')
 		const ids = DOMUtil.findParentComponentIds(g)
 
@@ -125,7 +123,6 @@ describe('DOMUtil', () => {
 	})
 
 	test('gets the first text node of an element', () => {
-		const c = document.getElementById('obo-c')
 		const g = document.getElementById('obo-g')
 
 		expect(DOMUtil.getFirstTextNodeOfElement(g).textContent).toBe(
@@ -135,7 +132,6 @@ describe('DOMUtil', () => {
 
 	test('gets the text nodes of a document in order', () => {
 		const a = document.getElementById('obo-a')
-		const g = document.getElementById('obo-g')
 		const textNodeContents = DOMUtil.getTextNodesInOrder(a).map(t => t.textContent)
 
 		expect(textNodeContents).toEqual([

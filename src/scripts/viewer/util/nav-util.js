@@ -5,7 +5,7 @@ const { OboModel } = Common.models
 
 const getFlatList = function(item) {
 	let list = []
-	let model = OboModel.models[item.id]
+	const model = OboModel.models[item.id]
 	if (model && model.get('type') === 'ObojoboDraft.Sections.Assessment') {
 		item.flags.assessment = true
 	}
@@ -14,7 +14,7 @@ const getFlatList = function(item) {
 	}
 
 	if (item.showChildren) {
-		for (let child of Array.from(item.children)) {
+		for (const child of Array.from(item.children)) {
 			list = list.concat(getFlatList(child))
 		}
 	}
@@ -116,18 +116,18 @@ const NavUtil = {
 	},
 
 	getNavTargetModel(state) {
-		let navTarget = NavUtil.getNavTarget(state)
+		const navTarget = NavUtil.getNavTarget(state)
 		if (!navTarget) {
 			return null
 		}
 
-		return OboModel.models[navTarget.id]
+		return OboModel.models[navTarget.id] || null
 	},
 
 	getFirst(state) {
-		let list = NavUtil.getOrderedList(state)
+		const list = NavUtil.getOrderedList(state)
 
-		for (let item of Array.from(list)) {
+		for (const item of Array.from(list)) {
 			if (item.type === 'link') {
 				return item
 			}
@@ -138,8 +138,8 @@ const NavUtil = {
 
 	getPrev(state) {
 		// state.items[NavUtil.getPrevIndex(state)]
-		let list = NavUtil.getOrderedList(state)
-		let navTarget = NavUtil.getNavTarget(state)
+		const list = NavUtil.getOrderedList(state)
+		const navTarget = NavUtil.getNavTarget(state)
 		let index = list.indexOf(navTarget)
 
 		if (index === -1) {
@@ -148,7 +148,7 @@ const NavUtil = {
 
 		index--
 		while (index >= 0) {
-			let item = list[index]
+			const item = list[index]
 			if (item.type === 'link') {
 				return item
 			}
@@ -161,8 +161,8 @@ const NavUtil = {
 
 	getNext(state) {
 		// state.items[NavUtil.getPrevIndex(state)]
-		let list = NavUtil.getOrderedList(state)
-		let navTarget = NavUtil.getNavTarget(state)
+		const list = NavUtil.getOrderedList(state)
+		const navTarget = NavUtil.getNavTarget(state)
 		let index = list.indexOf(navTarget)
 
 		if (index === -1) {
@@ -170,9 +170,9 @@ const NavUtil = {
 		}
 
 		index++
-		let len = list.length
+		const len = list.length
 		while (index < len) {
-			let item = list[index]
+			const item = list[index]
 			if (item.type === 'link') {
 				return item
 			}
@@ -184,7 +184,7 @@ const NavUtil = {
 	},
 
 	getPrevModel(state) {
-		let prevItem = NavUtil.getPrev(state)
+		const prevItem = NavUtil.getPrev(state)
 		if (!prevItem) {
 			return null
 		}
@@ -193,7 +193,7 @@ const NavUtil = {
 	},
 
 	getNextModel(state) {
-		let nextItem = NavUtil.getNext(state)
+		const nextItem = NavUtil.getNext(state)
 		if (!nextItem) {
 			return null
 		}
@@ -202,7 +202,7 @@ const NavUtil = {
 	},
 
 	getNavItemForModel(state, model) {
-		let item = state.itemsById[model.get('id')]
+		const item = state.itemsById[model.get('id')]
 		if (!item) {
 			return null
 		}
@@ -211,7 +211,7 @@ const NavUtil = {
 	},
 
 	getNavLabelForModel(state, model) {
-		let item = NavUtil.getNavItemForModel(state, model)
+		const item = NavUtil.getNavItemForModel(state, model)
 		if (!item) {
 			return null
 		}

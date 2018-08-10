@@ -37,5 +37,5 @@ class ModalStore extends Store {
 	}
 }
 
-let modalStore = new ModalStore()
+const modalStore = new ModalStore()
 export default modalStore

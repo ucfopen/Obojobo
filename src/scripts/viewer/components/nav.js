@@ -1,12 +1,15 @@
 import './nav.scss'
+
+import React from 'react'
+
 import NavUtil from '../../viewer/util/nav-util'
 import Logo from '../../viewer/components/logo'
 import isOrNot from '../../common/isornot'
 import Common from 'Common'
 
-let { OboModel } = Common.models
-let { StyleableText } = Common.text
-let { StyleableTextComponent } = Common.text
+const { OboModel } = Common.models
+const { StyleableText } = Common.text
+const { StyleableTextComponent } = Common.text
 
 export default class Nav extends React.Component {
 	onClick(item) {
@@ -17,8 +20,7 @@ export default class Nav extends React.Component {
 				break
 
 			case 'sub-link':
-				let el = OboModel.models[item.id].getDomEl()
-				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				OboModel.models[item.id].getDomEl().scrollIntoView({ behavior: 'smooth', block: 'start' })
 				break
 		}
 	}
@@ -32,11 +34,11 @@ export default class Nav extends React.Component {
 	}
 
 	renderLink(index, isSelected, list, lockEl) {
-		let item = list[index]
-		let isFirstInList = !list[index - 1]
-		let isLastInList = !list[index + 1]
+		const item = list[index]
+		const isFirstInList = !list[index - 1]
+		const isLastInList = !list[index + 1]
 
-		let className =
+		const className =
 			'link' +
 			isOrNot(isSelected, 'selected') +
 			isOrNot(item.flags.visited, 'visited') +
@@ -55,10 +57,10 @@ export default class Nav extends React.Component {
 	}
 
 	renderSubLink(index, isSelected, list, lockEl) {
-		let item = list[index]
-		let isLastInList = !list[index + 1]
+		const item = list[index]
+		const isLastInList = !list[index + 1]
 
-		let className =
+		const className =
 			'sub-link' +
 			isOrNot(isSelected, 'selected') +
 			isOrNot(item.flags.correct, 'correct') +
@@ -80,14 +82,6 @@ export default class Nav extends React.Component {
 		)
 	}
 
-	// renderSep(index) {
-	// 	return (
-	// 		<li key={index} className="seperator">
-	// 			<hr />
-	// 		</li>
-	// 	)
-	// }
-
 	getLockEl(isLocked) {
 		if (isLocked) {
 			return <div className="lock-icon" />
@@ -95,12 +89,12 @@ export default class Nav extends React.Component {
 	}
 
 	render() {
-		let navState = this.props.navState
-		let lockEl = this.getLockEl(navState.locked)
+		const navState = this.props.navState
+		const lockEl = this.getLockEl(navState.locked)
 
-		let list = NavUtil.getOrderedList(navState)
+		const list = NavUtil.getOrderedList(navState)
 
-		let className =
+		const className =
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
@@ -122,10 +116,9 @@ export default class Nav extends React.Component {
 
 							case 'sub-link':
 								return this.renderSubLink(index, navState.navTargetIndex === index, list, lockEl)
-
-							// case 'seperator':
-							// 	return this.renderSep(index)
 						}
+
+						return null
 					})}
 				</ul>
 				<Logo />

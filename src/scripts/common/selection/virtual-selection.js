@@ -1,3 +1,4 @@
+/* eslint-disable */
 import VirtualCursor from './virtual-cursor'
 
 import DOMUtil from '../../common/page/dom-util'
@@ -15,7 +16,7 @@ class VirtualSelection {
 	}
 
 	clone() {
-		let virtSel = new VirtualSelection(this.page)
+		const virtSel = new VirtualSelection(this.page)
 		virtSel.start = this.start.clone()
 		virtSel.end = this.end.clone()
 
@@ -30,9 +31,9 @@ class VirtualSelection {
 			return 'unknown'
 		}
 
-		let chunkIndex = chunk.get('index')
-		let startIndex = this.start.chunk.get('index')
-		let endIndex = this.end.chunk.get('index')
+		const chunkIndex = chunk.get('index')
+		const startIndex = this.start.chunk.get('index')
+		const endIndex = this.end.chunk.get('index')
 
 		if (chunkIndex < startIndex) {
 			return 'before'
@@ -127,11 +128,11 @@ class VirtualSelection {
 
 		// console.log('page be all', @page)
 
-		let startChunkIndex = DOMUtil.findParentAttr(
+		const startChunkIndex = DOMUtil.findParentAttr(
 			domSelection.startContainer,
 			'data-component-index'
 		)
-		let endChunkIndex = DOMUtil.findParentAttr(domSelection.endContainer, 'data-component-index')
+		const endChunkIndex = DOMUtil.findParentAttr(domSelection.endContainer, 'data-component-index')
 
 		if (!startChunkIndex || !endChunkIndex) {
 			return
@@ -139,8 +140,8 @@ class VirtualSelection {
 
 		// console.log 'VS page', @page
 
-		let startChunk = this.page.chunks.at(startChunkIndex)
-		let endChunk = this.page.chunks.at(endChunkIndex)
+		const startChunk = this.page.chunks.at(startChunkIndex)
+		const endChunk = this.page.chunks.at(endChunkIndex)
 
 		if (!startChunk || !endChunk) {
 			return
@@ -205,7 +206,7 @@ Object.defineProperties(VirtualSelection.prototype, {
 				return []
 			}
 
-			let result = this.all
+			const result = this.all
 			result.pop()
 			result.shift()
 
@@ -215,14 +216,14 @@ Object.defineProperties(VirtualSelection.prototype, {
 })
 
 VirtualSelection.fromObject = function(page, o) {
-	let vs = new VirtualSelection(page)
+	const vs = new VirtualSelection(page)
 	vs.fromObject(page, o)
 
 	return vs
 }
 
 VirtualSelection.fromDOMSelection = function(page, domSelection) {
-	let vs = new VirtualSelection(page)
+	const vs = new VirtualSelection(page)
 	vs.fromDOMSelection(domSelection)
 
 	return vs

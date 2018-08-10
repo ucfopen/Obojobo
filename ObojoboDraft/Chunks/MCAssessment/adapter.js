@@ -1,6 +1,6 @@
-let Adapter = {
+const Adapter = {
 	construct(model, attrs) {
-		let content = attrs && attrs.content ? attrs.content : {}
+		const content = attrs && attrs.content ? attrs.content : {}
 
 		model.modelState.responseType = content.responseType || 'pick-one'
 		model.modelState.correctLabels = content.correctLabels ? content.correctLabels.split('|') : null

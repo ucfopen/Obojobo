@@ -1,7 +1,11 @@
 import './modal-container.scss'
 
-export default props => (
+import React from 'react'
+
+const ModalContainer = props => (
 	<div className="obojobo-draft--components--modal-container">
 		<div className="content">{props.children}</div>
 	</div>
 )
+
+export default ModalContainer

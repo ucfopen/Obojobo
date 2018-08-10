@@ -1,4 +1,4 @@
-let getDisplayFriendlyScore = n => {
+const getDisplayFriendlyScore = n => {
 	if (n === null) return '--'
 	return Math.round(n).toString()
 }

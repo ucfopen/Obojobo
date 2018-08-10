@@ -18,7 +18,7 @@ describe('Question', () => {
 				Content
 			</Question>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -39,13 +39,13 @@ describe('Question', () => {
 				Content
 			</Question>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question confirm click', () => {
-		let onClick = jest.fn()
+		const onClick = jest.fn()
 
 		const component = shallow(
 			<Question
@@ -63,8 +63,7 @@ describe('Question', () => {
 			</Question>
 		)
 
-		let rejectButton = component.find('button').at(0)
-		let confirmButton = component.find('button').at(1)
+		const confirmButton = component.find('button').at(1)
 
 		confirmButton.simulate('click')
 
@@ -72,7 +71,7 @@ describe('Question', () => {
 	})
 
 	test('Question cancel click', () => {
-		let onClick = jest.fn()
+		const onClick = jest.fn()
 
 		const component = shallow(
 			<Question
@@ -90,8 +89,7 @@ describe('Question', () => {
 			</Question>
 		)
 
-		let rejectButton = component.find('button').at(0)
-		let confirmButton = component.find('button').at(1)
+		const rejectButton = component.find('button').at(0)
 
 		rejectButton.simulate('click')
 
@@ -99,7 +97,7 @@ describe('Question', () => {
 	})
 
 	test('Question reject click', () => {
-		let onClick = jest.fn()
+		const onClick = jest.fn()
 
 		const component = shallow(
 			<Question
@@ -117,8 +115,7 @@ describe('Question', () => {
 			</Question>
 		)
 
-		let rejectButton = component.find('button').at(0)
-		let confirmButton = component.find('button').at(1)
+		const rejectButton = component.find('button').at(0)
 
 		rejectButton.simulate('click')
 

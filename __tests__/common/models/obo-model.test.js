@@ -1,6 +1,7 @@
+import React from 'react'
+
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import createUUID from '../../../src/scripts/common/util/uuid'
 import { Store } from '../../../src/scripts/common/store'
 
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
@@ -76,7 +77,7 @@ describe('OboModel', () => {
 					json.isToJSONTest = true
 					return json
 				},
-				toText: model => {
+				toText: () => {
 					return 'toTextTestResult'
 				}
 			}
@@ -165,7 +166,7 @@ describe('OboModel', () => {
 
 	test('removing children sets their parent to null, marks them dirty and removes them from the model db', () => {
 		expect.assertions(4)
-		Store.getItems(items => {
+		Store.getItems(() => {
 			const o = OboModel.create({
 				id: 'root',
 				type: 'ObojoboDraft.Modules.Module',
@@ -329,7 +330,7 @@ describe('OboModel', () => {
 					type: 'ObojoboDraft.Sections.Content'
 				}
 			],
-			content: { start: undefined },
+			content: { start: undefined }, //eslint-disable-line
 			id: 'root',
 			index: 0,
 			metadata: {},
@@ -361,7 +362,7 @@ describe('OboModel', () => {
 				type: 'parentType'
 			},
 			{
-				toText(model) {
+				toText() {
 					return 'parent text'
 				}
 			}
@@ -373,7 +374,7 @@ describe('OboModel', () => {
 				type: 'childType'
 			},
 			{
-				toText(model) {
+				toText() {
 					return 'child text'
 				}
 			}
@@ -385,11 +386,12 @@ describe('OboModel', () => {
 	})
 
 	test('toText will output the model into a text format', () => {
-		const parent = new OboModel({
+		const m = new OboModel({
 			id: 'parentId',
 			type: 'parentType'
 		})
 
+		expect(m).toBeInstanceOf(OboModel)
 		expect(OboModel.models['parentId'].toText()).toBe('')
 	})
 
@@ -603,7 +605,6 @@ describe('OboModel', () => {
 		const root = new OboModel({})
 		const childA = new OboModel({})
 		const childB = new OboModel({})
-		const newChild = new OboModel({})
 
 		root.children.add(childA)
 		root.children.add(childB)
@@ -921,9 +922,7 @@ describe('OboModel', () => {
 	})
 
 	test('setStateProp sets properties on modelState from content and returns true', () => {
-		let model
-
-		model = new OboModel({
+		const model = new OboModel({
 			content: {
 				a: 1,
 				b: 2

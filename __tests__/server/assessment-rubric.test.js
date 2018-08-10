@@ -6,13 +6,13 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('Default case with no scores returns null', () => {
-		let ar = new AssessmentRubric()
+		const ar = new AssessmentRubric()
 
 		expect(ar.getAssessmentScoreInfoForAttempt(10, [])).toEqual(null)
 	})
 
 	test('Default case with scores returns highest score', () => {
-		let ar = new AssessmentRubric()
+		const ar = new AssessmentRubric()
 
 		expect(ar.getAssessmentScoreInfoForAttempt(10, [0])).toEqual({
 			attemptNumber: 1,
@@ -44,8 +44,8 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('type attempt works like default case', () => {
-		let ar1 = new AssessmentRubric()
-		let ar2 = new AssessmentRubric({ type: 'attempt' })
+		const ar1 = new AssessmentRubric()
+		const ar2 = new AssessmentRubric({ type: 'attempt' })
 
 		expect(ar1.getAssessmentScoreInfoForAttempt(10, [0])).toEqual(
 			ar2.getAssessmentScoreInfoForAttempt(10, [0])
@@ -59,7 +59,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('pass-fail rewards the passing score when passing and the failing score when failing', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'pass-fail',
 			passingAttemptScore: 80,
 			passedResult: 100,
@@ -123,7 +123,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('pass-fail rewards null when using no-score', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'pass-fail',
 			passingAttemptScore: 80,
 			passedResult: 100,
@@ -144,7 +144,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('pass-fail rewards attempt score when using $attempt_score variable', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'pass-fail',
 			passingAttemptScore: 80,
 			passedResult: '$attempt_score',
@@ -181,7 +181,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('pass-fail rewards different failing result for final attempt with unableToPassResult', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'pass-fail',
 			passingAttemptScore: 80,
 			passedResult: '$attempt_score',
@@ -248,14 +248,14 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('type attempt ignores additional options', () => {
-		let ar1 = new AssessmentRubric({
+		const ar1 = new AssessmentRubric({
 			type: 'attempt',
 			passingAttemptScore: 80,
 			passedResult: 100,
 			failedResult: 0,
 			unableToPassResult: '$highest_attempt_score'
 		})
-		let ar2 = new AssessmentRubric({
+		const ar2 = new AssessmentRubric({
 			type: 'attempt'
 		})
 
@@ -271,10 +271,10 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('unsupported type defaults to "attempt" type', () => {
-		let ar1 = new AssessmentRubric({
+		const ar1 = new AssessmentRubric({
 			type: 'fake-type'
 		})
-		let ar2 = new AssessmentRubric({
+		const ar2 = new AssessmentRubric({
 			type: 'attempt'
 		})
 
@@ -290,7 +290,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('mods apply correctly', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
 				{
@@ -347,7 +347,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('mods support ( and [ syntax', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
 				{
@@ -400,7 +400,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('overlapping mods support', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
 				{
@@ -462,7 +462,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('$last_attempt support', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
 				{
@@ -498,7 +498,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('assessment score ceiling at 100', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
 				{
@@ -520,7 +520,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('mods with no condition are not applied', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
 				{
@@ -541,7 +541,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('assessment score floor at 0', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
 				{
@@ -563,7 +563,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('Stores original passed in rubric', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'pass-fail',
 			ignorableValue: 1234
 		})
@@ -653,7 +653,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('pass-fail rewards different failing result for final attempt with unableToPassResult', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'pass-fail',
 			passingAttemptScore: 80,
 			passedResult: '$attempt_score',
@@ -673,7 +673,7 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('handles $last_attempt when there is no last attempt (unlimited attempts)', () => {
-		let ar = new AssessmentRubric({
+		const ar = new AssessmentRubric({
 			type: 'attempt',
 			mods: [
 				{
@@ -745,9 +745,9 @@ describe('AssessmentRubric', () => {
 	})
 
 	test('getAssessmentScoreInfoForAttempt throws error for invalid numbers of attempts', () => {
-		let ar = new AssessmentRubric()
+		const ar = new AssessmentRubric()
 
-		let e = 'totalNumberOfAttemptsAvailable must be 1 to Infinity!'
+		const e = 'totalNumberOfAttemptsAvailable must be 1 to Infinity!'
 
 		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, 'unlimited', [100])).toThrow(e)
 		expect(ar.getAssessmentScoreInfoForAttempt.bind(ar, '', [100])).toThrow(e)

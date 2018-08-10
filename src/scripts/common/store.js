@@ -1,58 +1,46 @@
-let items,
-	itemsLoaded,
-	getItemsCallbacks,
-	defaults,
-	insertItems,
-	registeredToolbarItems,
-	toolbarItems,
-	textListeners,
-	variableHandlers
+let items
+let defaults
+let registeredToolbarItems
+let toolbarItems
+let variableHandlers
 
 class _Store {
 	init() {
 		items = new Map()
-		itemsLoaded = 0
-		getItemsCallbacks = []
 		defaults = new Map()
-		insertItems = new Map()
 		toolbarItems = []
-		textListeners = []
 		variableHandlers = new Map()
 		registeredToolbarItems = {
 			separator: { id: 'separator', type: 'separator' }
 		}
 	}
 
-	loadDependency(url, onLoadCallback) {
-		if (onLoadCallback == null) {
-			onLoadCallback = function() {}
-		}
+	loadDependency(url, onLoadCallback = () => {}) {
 		const type = url.substr(url.lastIndexOf('.') + 1)
 
 		switch (type) {
-			case 'js':
-				let el = document.createElement('script')
+			case 'js': {
+				const el = document.createElement('script')
 				el.setAttribute('src', url)
 				el.onload = onLoadCallback
 				document.head.appendChild(el)
 				break
+			}
 
-			case 'css':
-				el = document.createElement('link')
+			case 'css': {
+				const el = document.createElement('link')
 				el.setAttribute('rel', 'stylesheet')
 				el.setAttribute('href', url)
 				document.head.appendChild(el)
 				onLoadCallback()
 				break
+			}
 		}
 
 		return this
 	}
 
-	registerModel(className, opts) {
-		if (opts == null) {
-			opts = {}
-		}
+	registerModel(className, opts = {}) {
 		items.set(className, opts)
 
 		opts = Object.assign(
@@ -107,14 +95,6 @@ class _Store {
 	}
 
 	getItems(callback) {
-		// if (itemsLoaded === items.size) {
-		// 	callback(items)
-		// } else {
-		// 	getItemsCallbacks.push(callback)
-		// }
-
-		// return null
-
 		callback(items)
 	}
 
@@ -127,10 +107,6 @@ class _Store {
 		return cb.call(null, model, viewerState)
 	}
 
-	// get insertItems() {
-	// 	return insertItems
-	// }
-
 	get registeredToolbarItems() {
 		return registeredToolbarItems
 	}
@@ -138,10 +114,6 @@ class _Store {
 	get toolbarItems() {
 		return toolbarItems
 	}
-
-	// get textListeners() {
-	// 	return textListeners
-	// }
 }
 
 const Store = new _Store()

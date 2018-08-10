@@ -1,28 +1,28 @@
 import AssessmentScoreReporter from '../../../src/scripts/viewer/assessment/assessment-score-reporter'
 
-let getTextItems = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-text-items')
+const getTextItems = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-text-items')
 	.default
 jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-text-items')
 
-let getReportDetailsForAttempt = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-report-details-for-attempt')
+const getReportDetailsForAttempt = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-report-details-for-attempt')
 	.default
 jest.mock(
 	'../../../src/scripts/viewer/assessment/assessment-score-reporter/get-report-details-for-attempt'
 )
 
-let getReportDisplayValuesForAttempt = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-report-display-values-for-attempt')
+const getReportDisplayValuesForAttempt = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-report-display-values-for-attempt')
 	.default
 jest.mock(
 	'../../../src/scripts/viewer/assessment/assessment-score-reporter/get-report-display-values-for-attempt'
 )
 
-let getScoreChangeDescription = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-score-change-description')
+const getScoreChangeDescription = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-score-change-description')
 	.default
 jest.mock(
 	'../../../src/scripts/viewer/assessment/assessment-score-reporter/get-score-change-description'
 )
 
-let getScoreComparisionData = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-score-comparision-data')
+const getScoreComparisionData = require('../../../src/scripts/viewer/assessment/assessment-score-reporter/get-score-comparision-data')
 	.default
 jest.mock(
 	'../../../src/scripts/viewer/assessment/assessment-score-reporter/get-score-comparision-data'

@@ -1,4 +1,4 @@
-let DraftNode = oboRequire('models/draft_node')
+const DraftNode = oboRequire('models/draft_node')
 
 class MCAssessment extends DraftNode {
 	constructor(draftTree, node, initFn) {
@@ -12,14 +12,14 @@ class MCAssessment extends DraftNode {
 		if (!question.contains(this.node)) return
 
 		switch (this.node.content.responseType) {
-			case 'pick-all':
-				let correctIds = new Set(
+			case 'pick-all': {
+				const correctIds = new Set(
 					[...this.immediateChildrenSet].filter(id => {
 						return this.draftTree.getChildNodeById(id).node.content.score === 100
 					})
 				)
 
-				let responseIds = new Set(responseRecord.response.ids)
+				const responseIds = new Set(responseRecord.response.ids)
 
 				if (correctIds.size !== responseIds.size) return setScore(0)
 
@@ -29,6 +29,7 @@ class MCAssessment extends DraftNode {
 				})
 				setScore(score)
 				break
+			}
 
 			default:
 				//'pick-one' and 'pick-one-multiple-correct'

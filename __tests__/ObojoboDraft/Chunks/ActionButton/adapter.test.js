@@ -5,16 +5,16 @@ const TextGroup = Common.textGroup.TextGroup
 
 describe('ActionButton adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
-		let expected = { modelState: { align: 'center', label: '' } }
+		const model = { modelState: {} }
+		const expected = { modelState: { align: 'center', label: '' } }
 		ActionButtonAdapter.construct(model)
 
 		expect(model).toEqual(expected)
 	})
 
 	test('construct builds with label attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				label: 'Start Assessment',
 				triggers: [
@@ -32,15 +32,15 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
-		let expected = { modelState: { label: 'Start Assessment', align: 'center' } }
+		const expected = { modelState: { label: 'Start Assessment', align: 'center' } }
 		ActionButtonAdapter.construct(model, attrs)
 
 		expect(model).toEqual(expected)
 	})
 
 	test('construct builds with textGroup attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				textGroup: 'mockText',
 				triggers: [
@@ -58,7 +58,7 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
-		let expected = {
+		const expected = {
 			modelState: {
 				textGroup: 'mockTextGroup',
 				align: 'center'
@@ -72,8 +72,8 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('construct builds with align attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				label: 'Start Assessment',
 				align: 'right',
@@ -92,15 +92,15 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
-		let expected = { modelState: { label: 'Start Assessment', align: 'right' } }
+		const expected = { modelState: { label: 'Start Assessment', align: 'right' } }
 		ActionButtonAdapter.construct(model, attrs)
 
 		expect(model).toEqual(expected)
 	})
 
 	test('clone creates a copy without a textGroup', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = { modelState: {} }
+		const b = { modelState: {} }
 
 		ActionButtonAdapter.construct(a)
 		ActionButtonAdapter.clone(a, b)
@@ -110,14 +110,14 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('clone creates a copy with a textGroup', () => {
-		let a = {
+		const a = {
 			modelState: {
 				textGroup: {
 					clone: jest.fn().mockReturnValueOnce('mockClone')
 				}
 			}
 		}
-		let b = {
+		const b = {
 			modelState: {
 				textGroup: {}
 			}
@@ -142,8 +142,8 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation with a label', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				label: 'Start Assessment',
 				triggers: [
@@ -162,7 +162,7 @@ describe('ActionButton adapter', () => {
 			}
 		}
 
-		let expected = {
+		const expected = {
 			content: {
 				align: 'center',
 				label: 'Start Assessment',
@@ -188,8 +188,8 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation with a textGroup', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				textGroup: 'mockText',
 				triggers: [
@@ -208,7 +208,7 @@ describe('ActionButton adapter', () => {
 			}
 		}
 
-		let expected = {
+		const expected = {
 			content: {
 				align: 'center',
 				textGroup: 'mockTextGroup',
@@ -239,7 +239,7 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('toText creates a text representation', () => {
-		let a = {
+		const a = {
 			modelState: {
 				textGroup: {
 					first: {
@@ -251,7 +251,7 @@ describe('ActionButton adapter', () => {
 			}
 		}
 
-		let text = ActionButtonAdapter.toText(a)
+		const text = ActionButtonAdapter.toText(a)
 
 		expect(text).toEqual('mockText')
 	})

@@ -2,10 +2,7 @@
 
 import katex from 'katex'
 
-import StyleableText from '../../common/text/styleable-text'
-import StyleRange from '../../common/text/style-range'
 import StyleType from '../../common/text/style-type'
-
 import MockElement from '../../common/mockdom/mock-element'
 import MockTextNode from '../../common/mockdom/mock-text-node'
 
@@ -21,7 +18,11 @@ const ORDER = [
 	StyleType.ITALIC
 ]
 
-var getTextNodeFragmentDescriptorsAtHelper = function(stateObj, targetStartIndex, targetEndIndex) {
+const getTextNodeFragmentDescriptorsAtHelper = function(
+	stateObj,
+	targetStartIndex,
+	targetEndIndex
+) {
 	if (stateObj.curNode.nodeType === 'element') {
 		return Array.from(stateObj.curNode.children).map(
 			child => (
@@ -30,7 +31,7 @@ var getTextNodeFragmentDescriptorsAtHelper = function(stateObj, targetStartIndex
 			)
 		)
 	} else {
-		let charsRead = stateObj.charsRead + stateObj.curNode.text.length
+		const charsRead = stateObj.charsRead + stateObj.curNode.text.length
 
 		if (charsRead >= targetEndIndex && stateObj.end === null) {
 			stateObj.end = {
@@ -64,8 +65,8 @@ var getTextNodeFragmentDescriptorsAtHelper = function(stateObj, targetStartIndex
 	}
 }
 
-let getTextNodeFragmentDescriptorsAt = function(rootNode, startIndex, endIndex) {
-	let stateObj = {
+const getTextNodeFragmentDescriptorsAt = function(rootNode, startIndex, endIndex) {
+	const stateObj = {
 		charsRead: 0,
 		start: null,
 		inbetween: [],
@@ -84,7 +85,7 @@ let getTextNodeFragmentDescriptorsAt = function(rootNode, startIndex, endIndex) 
 		stateObj.end = null
 	}
 
-	let fragmentDescriptors = stateObj.inbetween
+	const fragmentDescriptors = stateObj.inbetween
 
 	fragmentDescriptors.unshift(stateObj.start)
 
@@ -95,10 +96,10 @@ let getTextNodeFragmentDescriptorsAt = function(rootNode, startIndex, endIndex) 
 	return fragmentDescriptors
 }
 
-let wrapElement = function(styleRange, nodeToWrap, text) {
+const wrapElement = function(styleRange, nodeToWrap, text) {
 	let newChild, node, root
 	switch (styleRange.type) {
-		case 'sup':
+		case 'sup': {
 			let level = styleRange.data
 			if (level > 0) {
 				node = root = new MockElement('sup')
@@ -123,6 +124,7 @@ let wrapElement = function(styleRange, nodeToWrap, text) {
 			node.addChild(nodeToWrap)
 			nodeToWrap.text = text
 			return root
+		}
 
 		case '_comment':
 			newChild = new MockElement('span', Object.assign({ class: 'comment' }, styleRange.data))
@@ -131,14 +133,15 @@ let wrapElement = function(styleRange, nodeToWrap, text) {
 			nodeToWrap.text = text
 			return newChild
 
-		case '_latex':
+		case '_latex': {
 			newChild = new MockElement('span', Object.assign({ class: 'latex' }, styleRange.data))
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)
-			let html = katex.renderToString(text)
+			const html = katex.renderToString(text)
 			nodeToWrap.html = html
 			nodeToWrap.text = text
 			return newChild
+		}
 
 		case StyleType.MONOSPACE:
 			styleRange.type = 'code'
@@ -153,16 +156,16 @@ let wrapElement = function(styleRange, nodeToWrap, text) {
 	}
 }
 
-let wrap = function(styleRange, nodeFragmentDescriptor) {
+const wrap = function(styleRange, nodeFragmentDescriptor) {
 	let newChild
 	let nodeToWrap = nodeFragmentDescriptor.node
-	let { text } = nodeToWrap
-	let fromPosition = nodeFragmentDescriptor.startIndex
-	let toPosition = nodeFragmentDescriptor.endIndex
+	const { text } = nodeToWrap
+	const fromPosition = nodeFragmentDescriptor.startIndex
+	const toPosition = nodeFragmentDescriptor.endIndex
 
-	let leftText = text.substring(0, fromPosition)
-	let wrappedText = text.substring(fromPosition, toPosition)
-	let rightText = text.substring(toPosition)
+	const leftText = text.substring(0, fromPosition)
+	const wrappedText = text.substring(fromPosition, toPosition)
+	const rightText = text.substring(toPosition)
 
 	if (wrappedText.length === 0) {
 		return
@@ -184,24 +187,24 @@ let wrap = function(styleRange, nodeFragmentDescriptor) {
 	}
 }
 
-let applyStyle = function(el, styleRange) {
-	let fragmentDescriptors = getTextNodeFragmentDescriptorsAt(el, styleRange.start, styleRange.end)
+const applyStyle = function(el, styleRange) {
+	const fragmentDescriptors = getTextNodeFragmentDescriptorsAt(el, styleRange.start, styleRange.end)
 	return (() => {
-		let result = []
+		const result = []
 		for (let i = fragmentDescriptors.length - 1; i >= 0; i--) {
-			let fragmentDescriptor = fragmentDescriptors[i]
+			const fragmentDescriptor = fragmentDescriptors[i]
 			result.push(wrap(styleRange, fragmentDescriptor))
 		}
 		return result
 	})()
 }
 
-let getMockElement = function(styleableText) {
-	let root = new MockElement('span')
+const getMockElement = function(styleableText) {
+	const root = new MockElement('span')
 	root.addChild(new MockTextNode(styleableText.value))
 
-	for (let styleType of Array.from(ORDER)) {
-		for (let styleRange of Array.from(styleableText.styleList.styles)) {
+	for (const styleType of Array.from(ORDER)) {
+		for (const styleRange of Array.from(styleableText.styleList.styles)) {
 			if (styleRange.type === styleType) {
 				applyStyle(root, styleRange)
 			}

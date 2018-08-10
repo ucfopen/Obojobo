@@ -3,20 +3,14 @@ import TextGroupSelection from '../../../common/text-group/text-group-selection'
 import { getDomPosition } from './text-group-el-util'
 
 export default class TextGroupSelectionHandler extends BaseSelectionHandler {
-	selectStart(selection, chunk, asRange) {
-		if (asRange == null) {
-			asRange = false
-		}
+	selectStart(selection, chunk, asRange = false) {
 		selection.virtual.start = TextGroupSelection.getGroupStartCursor(chunk).virtualCursor
 		if (!asRange) {
 			return selection.virtual.collapse()
 		}
 	}
 
-	selectEnd(selection, chunk, asRange) {
-		if (asRange == null) {
-			asRange = false
-		}
+	selectEnd(selection, chunk, asRange = false) {
 		selection.virtual.end = TextGroupSelection.getGroupEndCursor(chunk).virtualCursor
 		if (!asRange) {
 			return selection.virtual.collapseToEnd()
@@ -27,18 +21,15 @@ export default class TextGroupSelectionHandler extends BaseSelectionHandler {
 		return TextGroupSelection.selectGroup(chunk, selection.virtual)
 	}
 
-	getCopyOfSelection(selection, chunk, cloneId) {
-		if (cloneId == null) {
-			cloneId = false
-		}
-		let clone = chunk.clone(cloneId)
+	getCopyOfSelection(selection, chunk, cloneId = false) {
+		const clone = chunk.clone(cloneId)
 
-		let position = selection.virtual.getPosition(chunk)
+		const position = selection.virtual.getPosition(chunk)
 		if (position === 'contains' || position === 'start' || position === 'end') {
-			let sel = new TextGroupSelection(chunk, selection.virtual)
+			const sel = new TextGroupSelection(chunk, selection.virtual)
 
-			let chunkStart = TextGroupSelection.getGroupStartCursor(chunk)
-			let chunkEnd = TextGroupSelection.getGroupEndCursor(chunk)
+			const chunkStart = TextGroupSelection.getGroupStartCursor(chunk)
+			const chunkEnd = TextGroupSelection.getGroupEndCursor(chunk)
 
 			clone.modelState.textGroup.deleteSpan(
 				sel.end.groupIndex,
@@ -61,29 +52,26 @@ export default class TextGroupSelectionHandler extends BaseSelectionHandler {
 		return clone
 	}
 
-	getVirtualSelectionStartData(selection, chunk) {
-		// console.log('selection.dom', selection)
-		if ((selection.dom != null ? selection.dom.startText : undefined) == null) {
-			return null
-		}
+	getVirtualSelectionStartData(selection) {
+		if (!selection.dom || !selection.dom.startText) return null
+
 		return TextGroupSelection.getCursorDataFromDOM(
 			selection.dom.startText,
 			selection.dom.startOffset
 		)
 	}
 
-	getVirtualSelectionEndData(selection, chunk) {
-		if ((selection.dom != null ? selection.dom.startText : undefined) == null) {
-			return null
-		}
+	getVirtualSelectionEndData(selection) {
+		if (!selection.dom || !selection.dom.startText) return null
+
 		return TextGroupSelection.getCursorDataFromDOM(selection.dom.endText, selection.dom.endOffset)
 	}
 
-	getDOMSelectionStart(selection, chunk) {
+	getDOMSelectionStart(selection) {
 		return getDomPosition(selection.virtual.start)
 	}
 
-	getDOMSelectionEnd(selection, chunk) {
+	getDOMSelectionEnd(selection) {
 		return getDomPosition(selection.virtual.end)
 	}
 
@@ -98,7 +86,7 @@ export default class TextGroupSelectionHandler extends BaseSelectionHandler {
 	highlightSelection(selection, chunk) {
 		chunk.markDirty()
 
-		let sel = new TextGroupSelection(chunk, selection.virtual)
+		const sel = new TextGroupSelection(chunk, selection.virtual)
 
 		return chunk.modelState.textGroup.styleText(
 			sel.start.groupIndex,

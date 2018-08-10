@@ -1,21 +1,18 @@
-import Common from 'Common'
 import FigureAdapter from '../../../../ObojoboDraft/Chunks/Figure/adapter'
 import TextGroup from '../../../../src/scripts/common/text-group/text-group'
 import StylableText from '../../../../src/scripts/common/text/styleable-text'
 
-const { TextGroupAdapter } = Common.chunk.textChunk
-
 describe('Figure adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		FigureAdapter.construct(model)
 
 		expect(model).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				url: 'http://website.com/image.jpg',
 				size: 'custom',
@@ -30,8 +27,8 @@ describe('Figure adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = { modelState: {} }
+		const b = { modelState: {} }
 
 		FigureAdapter.construct(a)
 		FigureAdapter.clone(a, b)
@@ -41,14 +38,14 @@ describe('Figure adapter', () => {
 	})
 
 	test('toJSON creates a JSON representation', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				url: 'http://website.com/image.jpg',
 				alt: 'An image'
 			}
 		}
-		let expected = {
+		const expected = {
 			content: {
 				alt: 'An image',
 				height: null,
@@ -77,20 +74,20 @@ describe('Figure adapter', () => {
 	})
 
 	test('toText creates a text representation', () => {
-		let modelAlt = { modelState: {} }
-		let modelTextGroup = { modelState: {} }
-		let tg = TextGroup.create()
+		const modelAlt = { modelState: {} }
+		const modelTextGroup = { modelState: {} }
+		const tg = TextGroup.create()
 
 		tg.addAt(0, new StylableText('TextGroup text'))
 
-		let attrsAlt = {
+		const attrsAlt = {
 			content: {
 				url: 'http://website.com/image.jpg',
 				alt: 'Alt text'
 			}
 		}
 
-		let attrsTextGroup = {
+		const attrsTextGroup = {
 			content: {
 				url: 'http://website.com/image.jpg',
 				textGroup: tg.items

@@ -75,13 +75,19 @@ const getIFrameStyle = scale => ({
 })
 
 const getAfterStyle = (setWidth, setHeight, fit) => {
-	return fit === IFrameFitTypes.SCALE
-		? {
-				paddingTop: setHeight / setWidth * 100 + '%'
-		  }
-		: {
-				height: setHeight
-		  }
+	let afterStyle
+
+	if (fit === IFrameFitTypes.SCALE) {
+		afterStyle = {
+			paddingTop: setHeight / setWidth * 100 + '%'
+		}
+	} else {
+		afterStyle = {
+			height: setHeight
+		}
+	}
+
+	return afterStyle
 }
 
 const getZoomValues = (mediaState, model) => {

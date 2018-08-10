@@ -1,4 +1,6 @@
-let {
+/* eslint no-undefined: 0 */
+
+const {
 	getParsedRange,
 	getParsedRangeFromSingleValue,
 	tryGetParsedFloat,

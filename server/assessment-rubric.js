@@ -76,8 +76,6 @@ const createWhitelistedRubric = rubric => {
 }
 
 const createWhitelistedMod = mod => {
-	let parsedReward
-
 	// Ensure at least one condition exists:
 	if (!mod.attemptCondition) {
 		return null

@@ -6,7 +6,7 @@ import ModalContainer from '../../../src/scripts/common/components/modal-contain
 describe('ModalContainer', () => {
 	test('ModalContainer component', () => {
 		const component = renderer.create(<ModalContainer />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

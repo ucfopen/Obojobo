@@ -1,24 +1,23 @@
 import './viewer-component.scss'
 
-let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
+import React from 'react'
 
 import Common from 'Common'
 import Viewer from 'Viewer'
 import isOrNot from '../../../src/scripts/common/isornot'
 
-let { OboComponent } = Common.components
-let { Dispatcher } = Common.flux
-let { FocusUtil } = Common.util
-let { Button } = Common.components
+const { OboComponent } = Common.components
+const { FocusUtil } = Common.util
+const { Button } = Common.components
 
-let { QuestionUtil } = Viewer.util
+const { QuestionUtil } = Viewer.util
 
 import QuestionContent from './Content/viewer-component'
 
 export default class Question extends React.Component {
 	onClickBlocker() {
 		QuestionUtil.viewQuestion(this.props.model.get('id'))
-		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
 		if (mode === 'practice') {
 			return FocusUtil.focusComponent(this.props.model.get('id'))
@@ -30,22 +29,39 @@ export default class Question extends React.Component {
 			return this.renderContentOnly()
 		}
 
-		let score = QuestionUtil.getScoreForModel(
+		const score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-		let viewState = QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
+		const viewState = QuestionUtil.getViewState(
+			this.props.moduleData.questionState,
+			this.props.model
+		)
 
-		let assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
-		let AssessmentComponent = assessment.getComponentClass()
+		const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
+		const AssessmentComponent = assessment.getComponentClass()
 
-		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		let classNames =
-			'flip-container' +
-			' obojobo-draft--chunks--question' +
-			(score === null ? ' ' : score === 100 ? ' is-correct' : ' is-not-correct') +
+		let scoreClassName
+		switch (score) {
+			case null:
+				scoreClassName = ' '
+				break
+
+			case 100:
+				scoreClassName = ' is-correct'
+				break
+
+			default:
+				scoreClassName = ' is-not-correct'
+				break
+		}
+
+		const classNames =
+			'obojobo-draft--chunks--question' +
+			scoreClassName +
 			(mode === 'review' ? ' is-active' : ` is-${viewState}`) +
 			` is-mode-${mode}`
 
@@ -56,7 +72,7 @@ export default class Question extends React.Component {
 				className={classNames}
 			>
 				<div className="flipper">
-					<div className="content back">
+					<div className="content-back">
 						<QuestionContent model={this.props.model} moduleData={this.props.moduleData} />
 						<AssessmentComponent
 							key={assessment.get('id')}
@@ -65,7 +81,7 @@ export default class Question extends React.Component {
 							mode={mode}
 						/>
 					</div>
-					<div className="blocker front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
+					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
 						<Button value={mode === 'practice' ? 'Try Question' : 'View Question'} />
 					</div>
 				</div>
@@ -73,16 +89,16 @@ export default class Question extends React.Component {
 		)
 	}
 
-	renderContentOnly(context) {
-		let score = QuestionUtil.getScoreForModel(
+	renderContentOnly() {
+		const score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
 
-		let mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		let className =
+		const className =
 			'flip-container' +
 			' obojobo-draft--chunks--question' +
 			isOrNot(score === 100, 'correct') +

@@ -1,4 +1,4 @@
-let StyleType = {
+const StyleType = {
 	BOLD: 'b',
 	ITALIC: 'i',
 	STRIKETHROUGH: 'del',

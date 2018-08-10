@@ -1,3 +1,4 @@
+/* stylelint-disable */
 @import '../../../../../../../scss/includes';
 
 .obojobo-draft--chunks--table--table-menu {
@@ -21,7 +22,7 @@
 	}
 
 	&.col,
-	&.row{
+	&.row {
 		background-image: url('./table-menu-icon.svg');
 	}
 
@@ -117,3 +118,4 @@
 		}
 	}
 }
+/* stylelint-enable */

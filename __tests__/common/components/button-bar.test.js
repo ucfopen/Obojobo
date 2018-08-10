@@ -5,37 +5,39 @@ import { mount } from 'enzyme'
 
 describe('ButtonBar', () => {
 	test('ButtonBar component', () => {
-		let children = []
-		const component = renderer.create(<ButtonBar children={children} />)
-		let tree = component.toJSON()
+		const children = []
+		const component = renderer.create(<ButtonBar>{children}</ButtonBar>)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('ButtonBar component with attributes', () => {
-		let children = [
+		const children = [
 			{
 				props: { id: 'mockChild' }
 			}
 		]
 		const component = renderer.create(
-			<ButtonBar children={children} altAction={jest.fn()} isDangerous={true} disabled={true} />
+			<ButtonBar altAction={jest.fn()} isDangerous={true} disabled={true}>
+				{children}
+			</ButtonBar>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('ButtonBar component clicks button', () => {
-		let children = [
+		const children = [
 			{
 				props: { id: 'mockChild' }
 			}
 		]
-		let mockClick = jest.fn()
-		const component = mount(<ButtonBar children={children} onClick={mockClick} />)
+		const mockClick = jest.fn()
+		const component = mount(<ButtonBar onClick={mockClick}>{children}</ButtonBar>)
 
-		let click = component
+		component
 			.childAt(0)
 			.find('button')
 			.simulate('click')
@@ -44,15 +46,15 @@ describe('ButtonBar', () => {
 	})
 
 	test('ButtonBar component clicks button but does not fire', () => {
-		let children = [
+		const children = [
 			{
 				props: { id: 'mockChild', onClick: true }
 			}
 		]
-		let mockClick = jest.fn()
-		const component = mount(<ButtonBar children={children} onClick={mockClick} />)
+		const mockClick = jest.fn()
+		const component = mount(<ButtonBar onClick={mockClick}>{children}</ButtonBar>)
 
-		let click = component
+		component
 			.childAt(0)
 			.find('button')
 			.simulate('click')

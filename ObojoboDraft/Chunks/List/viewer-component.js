@@ -1,19 +1,14 @@
 import './viewer-component.scss'
 
-import ListStyles from './list-styles'
+import React from 'react'
 
 import Common from 'Common'
 
-const { TextGroup } = Common.textGroup
 const { TextGroupEl } = Common.chunk.textChunk
-const { Chunk } = Common.models
 const { MockElement } = Common.mockDOM
 const { MockTextNode } = Common.mockDOM
 const { TextChunk } = Common.chunk
-const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
 const { OboComponent } = Common.components
-
-const selectionHandler = new SelectionHandler()
 
 const createMockListElement = (data, indentLevel) => {
 	const style = data.listStyles.get(indentLevel)
@@ -45,13 +40,14 @@ const renderEl = (props, node, index, indent) => {
 					groupIndex={node.index}
 				/>
 			)
-		case 'element':
+		case 'element': {
 			const ElType = node.type
 			return (
 				<ElType key={key} start={node.start} style={{ listStyleType: node.listStyleType }}>
 					{renderChildren(props, node.children, indent + 1)}
 				</ElType>
 			)
+		}
 	}
 }
 
@@ -65,11 +61,7 @@ const renderChildren = (props, children, indent) => {
 	return els
 }
 
-const __guard__ = (value, transform) => {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}
-
-export default props => {
+const List = props => {
 	let curUl
 
 	const data = props.model.modelState
@@ -111,7 +103,10 @@ export default props => {
 
 		// if the lastChild is not an LI or it is an LI that already has text inside
 		// lastChild is always defined because of the cals to addItemToList
-		if (!(curUl.lastChild.type === 'li') || curUl.lastChild.lastChild != null) {
+		if (
+			curUl.lastChild.type !== 'li' ||
+			(curUl.lastChild.lastChild !== null && typeof curUl.lastChild.lastChild !== 'undefined')
+		) {
 			li = new MockElement('li')
 			addItemToList(curUl, li, lis)
 		}
@@ -126,7 +121,7 @@ export default props => {
 	// Remove bullets from nested LIs
 	for (li of Array.from(lis)) {
 		// li will always have .children because MockListElement creates it as an empty array
-		if (__guard__(li.children[0], x => x.nodeType) !== 'text') {
+		if (li.children[0] && li.children[0].nodeType !== 'text') {
 			li.listStyleType = 'none'
 		}
 	}
@@ -139,3 +134,5 @@ export default props => {
 		</OboComponent>
 	)
 }
+
+export default List

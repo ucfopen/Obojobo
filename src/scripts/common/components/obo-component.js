@@ -1,3 +1,5 @@
+import React from 'react'
+
 import FocusUtil from '../../common/util/focus-util'
 
 export default class OboComponent extends React.Component {
@@ -14,19 +16,18 @@ export default class OboComponent extends React.Component {
 	}
 
 	render() {
-		let Component = this.props.model.getComponentClass()
-		let Tag = this.props.tag
+		const Tag = this.props.tag
 
 		let className = 'component'
-		if (this.props.className != null) {
+		if (this.props.className) {
 			className += ` ${this.props.className}`
 		}
 
-		let isFocussed =
+		const isFocussed =
 			FocusUtil.getFocussedComponent(this.props.moduleData.focusState) === this.props.model
 
-		let otherProps = {}
-		for (let propKey in this.props) {
+		const otherProps = {}
+		for (const propKey in this.props) {
 			switch (propKey) {
 				case 'model':
 				case 'moduleData':
@@ -51,6 +52,7 @@ export default class OboComponent extends React.Component {
 				data-id={this.props.model.get('id')}
 				data-type={this.props.model.get('type')}
 				data-focussed={isFocussed}
+				ref={node => (this.ref = node)}
 			>
 				{this.props.children}
 			</Tag>

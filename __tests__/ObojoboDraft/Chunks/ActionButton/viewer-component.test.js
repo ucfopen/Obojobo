@@ -6,10 +6,10 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('ActionButton', () => {
 	test('ActionButton component with textGroup', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.ActionButton',
 			content: {
@@ -24,16 +24,16 @@ describe('ActionButton', () => {
 		})
 
 		const component = renderer.create(<ActionButton model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('ActionButton component with label', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.ActionButton',
 			content: {
@@ -42,7 +42,7 @@ describe('ActionButton', () => {
 		})
 
 		const component = renderer.create(<ActionButton model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

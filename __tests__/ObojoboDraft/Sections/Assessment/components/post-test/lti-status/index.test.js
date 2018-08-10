@@ -87,6 +87,17 @@ describe('LTIStatus', () => {
 		).toMatchSnapshot()
 	})
 
+	test('LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN returns renderError', () => {
+		expect(
+			renderer.create(
+				<LTIStatus
+					ltiState={getLtiState(GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN)}
+					externalSystemLabel={mockSymbol}
+				/>
+			)
+		).toMatchSnapshot()
+	})
+
 	test('LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_INVALID returns renderError', () => {
 		expect(
 			renderer.create(

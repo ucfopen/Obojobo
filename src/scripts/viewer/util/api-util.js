@@ -1,11 +1,14 @@
 const processJsonResults = res => {
 	return Promise.resolve(res.json()).then(json => {
-		if (json.status === 'error') console.log(json.value)
+		if (json.status === 'error') {
+			console.error(json.value) //eslint-disable-line no-console
+		}
+
 		return json
 	})
 }
 
-var APIUtil = {
+const APIUtil = {
 	get(endpoint) {
 		return fetch(endpoint, {
 			method: 'GET',
@@ -18,9 +21,8 @@ var APIUtil = {
 	},
 
 	post(endpoint, body) {
-		if (body == null) {
-			body = {}
-		}
+		if (!body) body = {}
+
 		return fetch(endpoint, {
 			method: 'POST',
 			credentials: 'include',

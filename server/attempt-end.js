@@ -1,4 +1,3 @@
-const db = oboRequire('db')
 const DraftDocument = oboRequire('models/draft')
 const Assessment = require('./assessment')
 const AssessmentRubric = require('./assessment-rubric')
@@ -347,15 +346,15 @@ const reloadAttemptStateIfReviewing = (
 	const assessmentNode = attempt.assessmentModel
 
 	// Do not reload the state if reviews are never allowed
-	if (assessmentNode.node.content.review == 'never') {
+	if (assessmentNode.node.content.review === 'never') {
 		return null
 	}
 
-	const isLastAttempt = attempt.number == assessmentNode.node.content.attempts
+	const isLastAttempt = attempt.number === assessmentNode.node.content.attempts
 
 	// Do not reload the state if reviews are only allowed after the last
 	// attempt and this is not the last attempt
-	if (assessmentNode.node.content.review == 'no-attempts-remaining' && !isLastAttempt) {
+	if (assessmentNode.node.content.review === 'no-attempts-remaining' && !isLastAttempt) {
 		return null
 	}
 
@@ -374,13 +373,13 @@ const reloadAttemptStateIfReviewing = (
 
 	// If reviews are always allowed, reload the state for this attempt
 	// Each attempt's state will be reloaded as it finishes
-	if (assessmentNode.node.content.review == 'always') {
+	if (assessmentNode.node.content.review === 'always') {
 		return Assessment.updateAttemptState(attemptId, state)
 	}
 
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
-	if (assessmentNode.node.content.review == 'no-attempts-remaining' && isLastAttempt) {
+	if (assessmentNode.node.content.review === 'no-attempts-remaining' && isLastAttempt) {
 		// Reload state for all previous attempts
 		return Assessment.getAttempts(
 			assessmentProperties.user.id,
@@ -396,7 +395,7 @@ const reloadAttemptStateIfReviewing = (
 
 				const newQuestions = []
 
-				attempt.state.questions.map(question => {
+				attempt.state.questions.forEach(question => {
 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
 				})
 

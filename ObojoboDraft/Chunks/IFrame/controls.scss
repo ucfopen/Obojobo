@@ -6,7 +6,6 @@
 		position: absolute;
 		border: 2px solid $color-bg;
 		white-space: nowrap;
-		font-size: 0.8em;
 		color: $color-bg;
 		background: $color-action;
 		border-radius: 3em;
@@ -18,7 +17,7 @@
 		font-family: $font-default;
 	}
 
-	.control-button-container {
+	> .control-button-container {
 		display: inline-block;
 		font-size: 1.1em;
 		height: 1em;
@@ -48,10 +47,6 @@
 			}
 		}
 
-		&:hover > button {
-			background-color: $color-action;
-		}
-
 		> .tool-tip {
 			@include tool-tip();
 
@@ -59,12 +54,6 @@
 			right: 0.5em;
 			bottom: 3.2em;
 			font-size: 0.65em;
-		}
-
-		&:hover {
-			> .tool-tip {
-				display: inline-block;
-			}
 		}
 	}
 
@@ -92,7 +81,7 @@
 	> .size-controls {
 		position: absolute;
 		right: 0;
-		top: 0em;
+		top: 0;
 	}
 
 	> .size-controls > .zoom-controls {
@@ -101,7 +90,9 @@
 
 	> .size-controls > .zoom-controls > .zoom-reset {
 		> .zoom-reset-button {
-			color: #b497d3;
+			$color-zoom-reset-button: #b497d3;
+
+			color: $color-zoom-reset-button;
 			overflow: visible;
 			font-size: 0.5em;
 			width: inherit;
@@ -113,8 +104,9 @@
 			vertical-align: top;
 			border-radius: $dimension-rounded-radius;
 		}
+
 		&:hover > .zoom-reset-button {
-			color: white;
+			color: $color-bg;
 		}
 	}
 
@@ -175,6 +167,16 @@
 			> .tool-tip {
 				display: block;
 			}
+		}
+	}
+
+	> .control-button-container &:hover {
+		> button {
+			background-color: $color-action;
+		}
+
+		> .tool-tip {
+			display: inline-block;
 		}
 	}
 }

@@ -9,12 +9,11 @@ jest.mock('../../../../ObojoboDraft/Sections/Content/viewer-component', () => ({
 const Common = require('../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
-import Content from '../../../../ObojoboDraft/Sections/Content/viewer'
 import ViewerComponent from '../../../../ObojoboDraft/Sections/Content/viewer-component'
 
 describe('ObojoboDraft.Sections.Content registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Sections.Content')
 		expect(register[1]).toHaveProperty('getNavItem')
 		expect(register[1]).toHaveProperty('type', 'section')
@@ -25,13 +24,13 @@ describe('ObojoboDraft.Sections.Content registration', () => {
 	})
 
 	test('getNavItem returns expected object', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			children: {
 				models: []
 			}
 		}
-		let navItem = register[1].getNavItem(model)
+		const navItem = register[1].getNavItem(model)
 		expect(navItem).toEqual({
 			type: 'hidden',
 			showChildren: true

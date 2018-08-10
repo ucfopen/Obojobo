@@ -9,15 +9,11 @@ jest.mock('../../../../../../ObojoboDraft/Sections/Assessment/components/full-re
 
 import PostTest from '../../../../../../ObojoboDraft/Sections/Assessment/components/post-test/index'
 import AssessmentUtil from '../../../../../../src/scripts/viewer/util/assessment-util'
-import NavUtil from '../../../../../../src/scripts/viewer/util/nav-util'
 import OboModel from '../../../../../../__mocks__/_obo-model-with-chunks'
 
 const FULL_REVIEW_ALWAYS = 'always'
 const FULL_REVIEW_NEVER = 'never'
 const FULL_REVIEW_AFTER_ALL = 'no-attempts-remaining'
-const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE = 'ok_no_outcome_service'
-const GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT = 'ok_null_score_not_sent'
-const GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE = 'ok_gradebook_matches_assessment_score'
 
 const assessmentJSON = {
 	id: 'assessment',
@@ -354,6 +350,38 @@ describe('PostTest', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('PostTest component with no review', () => {
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			navState: {
+				context: 'mockContext'
+			},
+			lti: {
+				outcomeServiceHostname: 'mockLTIHost'
+			},
+			focusState: {}
+		}
+		const model = OboModel.create(assessmentJSON)
+		model.modelState.review = FULL_REVIEW_NEVER
+		const scoreAction = {
+			page: scoreActionJSON
+		}
+
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+			{
+				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
+			}
+		])
+
+		const component = renderer.create(
+			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('PostTest component with review after all attempts - attempts remaining', () => {
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -454,7 +482,7 @@ describe('PostTest', () => {
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
 
-		const button = component
+		component
 			.childAt(0)
 			.childAt(0)
 			.childAt(2)

@@ -6,34 +6,19 @@ html {
 	width: 100%;
 	overflow: hidden;
 	background: $color-bg2;
-	// -webkit-overflow-scrolling: touch;
 }
 
 a {
-	color: inherit;
 	text-decoration-skip-ink: auto;
 }
 
 body {
 	height: 100%;
 	padding: 0;
-
 	margin: 0;
 	-webkit-overflow-scrolling: touch;
 	font-size: $font-size;
 }
-
-// .component-container > .component:first-child
-// {
-// 	padding-top: 2em;
-// 	border: 1px solid red;
-// }
-
-// .component-container > .component:last-child
-// {
-// 	padding-bottom: 2em;
-// 	border: 1px solid green;
-// }
 
 #viewer-app {
 	opacity: 0;
@@ -71,7 +56,6 @@ body {
 	> svg {
 		width: 100%;
 		height: 0.7em;
-		opacity: 0.5;
 		position: absolute;
 		bottom: 0.5em;
 		left: 50%;
@@ -94,10 +78,11 @@ body {
 	}
 
 	> .throbber {
-		@keyframes rotating {
+		@keyframes main-throbber-rotating {
 			from {
 				transform: translate(-50%, 0) rotate(0deg);
 			}
+
 			to {
 				transform: translate(-50%, 0) rotate(360deg);
 			}
@@ -110,7 +95,7 @@ body {
 		left: 50%;
 		top: 1.25em;
 		opacity: 0.3;
-		animation: rotating 1.5s linear infinite;
+		animation: main-throbber-rotating 1.5s linear infinite;
 
 		> svg {
 			width: 1em;
@@ -119,32 +104,11 @@ body {
 	}
 }
 
-// .component:first-of-type
-// {
-// 	padding-top: 0;
-// 	// border: 2px solid red;
-// }
-// .component:last-of-type
-// {
-// 	padding-bottom: 0;
-// 	// border: 2px solid blue;
-// }
-// .component:first-of-type:last-of-type
-// {
-// 	padding-top: 0;
-// 	padding-bottom: 0;
-// 	// border: 2px solid green;
-// }
-
-.component {
-	// border: 2px solid gray;
-}
-
 .component {
 	box-sizing: border-box;
-	color: black;
+	color: $color-text;
 	display: block;
-	font-family: 'Noto Serif';
+	font-family: $font-text;
 	line-height: 1.5em;
 	overflow-wrap: break-word;
 	position: relative;
@@ -164,9 +128,6 @@ body {
 	}
 
 	.pad {
-		// max-width: $dimension-column-width;
-		// margin-left: auto;
-		// margin-right: auto;
 		padding-left: $dimension-padding;
 		padding-right: $dimension-padding;
 	}
@@ -177,11 +138,11 @@ body {
 	h4,
 	h5,
 	h6 {
-		/*font-family: 'Open Sans';*/
 		font-family: $font-default;
 		font-weight: normal;
 		margin: 0;
 	}
+
 	h1 {
 		line-height: 1em;
 		font-weight: 700;
@@ -194,9 +155,8 @@ body {
 
 	h2 {
 		line-height: 1em;
-		color: #a20e83;
+		color: $color-text-subheading;
 		font-size: 1.5em;
-		// margin-bottom: 0;
 	}
 
 	pre,
@@ -204,13 +164,12 @@ body {
 	pre code,
 	textarea {
 		font-family: $font-monospace;
-		// tab-size: 8;
 		font-size: 1em;
 		letter-spacing: -0.01em;
 	}
 
 	a {
-		color: #bd1438;
+		color: $color-action;
 	}
 
 	.obojobo-draft--chunks--question .question {
@@ -235,7 +194,4 @@ body {
 			text-align: center;
 		}
 	}
-}
-
-.document {
 }

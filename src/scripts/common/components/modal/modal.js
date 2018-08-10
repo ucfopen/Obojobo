@@ -1,5 +1,7 @@
 import './modal.scss'
 
+import React from 'react'
+
 import DeleteButton from '../../../common/components/delete-button'
 
 export default class Modal extends React.Component {
@@ -29,7 +31,7 @@ export default class Modal extends React.Component {
 
 	onTabTrapFocus() {
 		if (this.props.onClose) {
-			return this.refs.closeButton.focus()
+			return this.closeButton.focus()
 		} else if (this.props.focusOnFirstElement) {
 			return this.props.focusOnFirstElement()
 		}
@@ -45,17 +47,20 @@ export default class Modal extends React.Component {
 			>
 				<input
 					className="first-tab"
-					ref="firstTab"
+					ref={node => (this.firstTab = node)}
 					type="text"
 					onFocus={this.onTabTrapFocus.bind(this)}
 				/>
 				{this.props.onClose ? (
-					<DeleteButton ref="closeButton" onClick={this.props.onClose} />
+					<DeleteButton
+						ref={component => (this.closeButton = component)}
+						onClick={this.props.onClose}
+					/>
 				) : null}
 				<div className="content">{this.props.children}</div>
 				<input
 					className="last-tab"
-					ref="lastTab"
+					ref={node => (this.lastTab = node)}
 					type="text"
 					onFocus={this.onTabTrapFocus.bind(this)}
 				/>

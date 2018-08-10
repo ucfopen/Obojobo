@@ -2,37 +2,37 @@ import AssessmentAdapter from 'ObojoboDraft/Sections/Assessment/adapter'
 
 describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		AssessmentAdapter.construct(model)
 		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with N attempts', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 6 } })
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(6)
 	})
 
 	test('construct builds with unlimited attempts', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 'unlimited' } })
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(Infinity)
 	})
 
 	test('construct floors decimal attempt integers', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		AssessmentAdapter.construct(model, { content: { attempts: 6.9 } })
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(6)
 	})
 
 	test('construct builds with legacy score actions', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 
 		// use the legacy action syntax
-		let action = {
+		const action = {
 			from: 2,
 			to: 4,
 			page: 5
@@ -58,8 +58,8 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	})
 
 	test('construct builds with score actions', () => {
-		let model = { modelState: {} }
-		let action = {
+		const model = { modelState: {} }
+		const action = {
 			for: '[2,4]',
 			page: 5
 		}
@@ -84,9 +84,9 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let model = { modelState: {} }
-		let model2 = { modelState: {} }
-		let action = {
+		const model = { modelState: {} }
+		const model2 = { modelState: {} }
+		const action = {
 			for: '[2,4]',
 			page: 5
 		}
@@ -117,8 +117,8 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = { modelState: {} }
-		let action = {
+		const model = { modelState: {} }
+		const action = {
 			for: '[2,4]',
 			page: 5
 		}
@@ -141,7 +141,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 			}
 		})
 
-		let json = { content: {} }
+		const json = { content: {} }
 		AssessmentAdapter.toJSON(model, json)
 
 		expect(json).toMatchObject({

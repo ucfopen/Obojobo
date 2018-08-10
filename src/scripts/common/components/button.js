@@ -1,6 +1,8 @@
 import './button.scss'
 import isOrNot from '../isornot'
 
+import React from 'react'
+
 export default class Button extends React.Component {
 	static get defaultProps() {
 		return {
@@ -11,7 +13,7 @@ export default class Button extends React.Component {
 	}
 
 	focus() {
-		let el = ReactDOM.findDOMNode(this.refs.button)
+		const el = this.button
 		if (el) el.focus()
 	}
 
@@ -20,10 +22,10 @@ export default class Button extends React.Component {
 		if (this.props.value) {
 			children = this.props.value
 		} else {
-			;({ children } = this.props)
+			({ children } = this.props)
 		}
 
-		let className =
+		const className =
 			'obojobo-draft--components--button' +
 			(this.props.altAction ? ' alt-action' : '') +
 			isOrNot(this.props.isDangerous, 'dangerous') +
@@ -33,7 +35,7 @@ export default class Button extends React.Component {
 		return (
 			<div className={className}>
 				<button
-					ref="button"
+					ref={node => (this.button = node)}
 					onClick={this.props.onClick}
 					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
 					disabled={this.props.disabled || this.props.shouldPreventTab}

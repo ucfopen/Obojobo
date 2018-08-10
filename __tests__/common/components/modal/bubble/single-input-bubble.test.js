@@ -1,6 +1,5 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
-import { mount, unmount } from 'enzyme'
+import { mount } from 'enzyme'
 
 import SingleInputBubble from '../../../../../src/scripts/common/components/modal/bubble/single-input-bubble'
 jest.useFakeTimers()
@@ -39,7 +38,7 @@ describe('SingleInputBubble', () => {
 			/>
 		)
 
-		let spy = jest.spyOn(el.instance().refs.input, 'select')
+		const spy = jest.spyOn(el.instance().refs.input, 'select')
 
 		jest.runAllTimers()
 
@@ -57,7 +56,7 @@ describe('SingleInputBubble', () => {
 			/>
 		)
 
-		let input = el.find('input')
+		const input = el.find('input')
 
 		input.simulate('keyup', {
 			keyCode: 13
@@ -83,7 +82,7 @@ describe('SingleInputBubble', () => {
 			/>
 		)
 
-		let input = el.find('input')
+		const input = el.find('input')
 
 		expect(onChange).not.toHaveBeenCalled()
 
@@ -107,7 +106,7 @@ describe('SingleInputBubble', () => {
 			/>
 		)
 
-		let form = el.find('form')
+		const form = el.find('form')
 
 		expect(onClose).not.toHaveBeenCalled()
 

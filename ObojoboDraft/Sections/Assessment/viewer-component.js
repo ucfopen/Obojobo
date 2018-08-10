@@ -1,11 +1,11 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 import Viewer from 'Viewer'
 
 const { OboComponent } = Common.components
-const { OboModel } = Common.models
-const { Button } = Common.components
 const { Dispatcher } = Common.flux
 const { ModalUtil } = Common.util
 
@@ -14,11 +14,11 @@ const { NavUtil } = Viewer.util
 
 import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
 
-import PreTest from './components/pre-test'
-import Test from './components/test'
-import PostTest from './components/post-test'
+import preTest from './components/pre-test'
+import test from './components/test'
+import postTest from './components/post-test'
 
-export default class Assessment extends React.Component {
+class Assessment extends React.Component {
 	constructor() {
 		super()
 		this.state = {
@@ -26,11 +26,13 @@ export default class Assessment extends React.Component {
 			step: null
 		}
 
-		// pre-bind scopes to this object once
 		this.onEndAttempt = this.onEndAttempt.bind(this)
 		this.onAttemptEnded = this.onAttemptEnded.bind(this)
 		this.endAttempt = this.endAttempt.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
+
+		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
+		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
 	getCurrentStep() {
@@ -52,7 +54,7 @@ export default class Assessment extends React.Component {
 		return 'pre-test'
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps() {
 		const curStep = this.getCurrentStep()
 		if (curStep !== this.state.step) {
 			this.needsScroll = true
@@ -61,10 +63,6 @@ export default class Assessment extends React.Component {
 		this.setState({
 			step: curStep
 		})
-	}
-	componentWillMount() {
-		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
-		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
 	componentWillUnmount() {
@@ -161,25 +159,16 @@ export default class Assessment extends React.Component {
 	}
 
 	render() {
-		const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-		const ltiState = AssessmentUtil.getLTIStateForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-
 		const childEl = (() => {
 			switch (this.getCurrentStep()) {
 				case 'pre-test':
-					return PreTest({
+					return preTest({
 						model: this.props.model.children.at(0),
 						moduleData: this.props.moduleData
 					})
 
 				case 'test':
-					return Test({
+					return test({
 						model: this.props.model.children.at(1),
 						moduleData: this.props.moduleData,
 						onClickSubmit: this.onClickSubmit,
@@ -188,7 +177,7 @@ export default class Assessment extends React.Component {
 					})
 
 				case 'post-test':
-					return PostTest({
+					return postTest({
 						model: this.props.model,
 						moduleData: this.props.moduleData,
 						scoreAction: this.getScoreAction()
@@ -207,3 +196,5 @@ export default class Assessment extends React.Component {
 		)
 	}
 }
+
+export default Assessment

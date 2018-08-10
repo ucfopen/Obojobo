@@ -1,4 +1,6 @@
-export default props => (
+import React from 'react'
+
+const QuestionModal = props => (
 	<div>
 		<p>{props.children}</p>
 		<button
@@ -14,3 +16,5 @@ export default props => (
 		</button>
 	</div>
 )
+
+export default QuestionModal

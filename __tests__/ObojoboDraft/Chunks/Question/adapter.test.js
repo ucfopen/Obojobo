@@ -1,17 +1,15 @@
-import Common from 'Common'
 import QuestionAdapter from '../../../../ObojoboDraft/Chunks/Question/adapter'
-import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Question adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		QuestionAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				mode: 'review',
 				practice: false,
@@ -46,9 +44,9 @@ describe('Question adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
-		let attrs = {
+		const a = { modelState: {} }
+		const b = { modelState: {} }
+		const attrs = {
 			content: {
 				practice: false
 			}
@@ -62,9 +60,9 @@ describe('Question adapter', () => {
 	})
 
 	test('clone creates a copy with solution', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
-		let attrs = {
+		const a = { modelState: {} }
+		const b = { modelState: {} }
+		const attrs = {
 			content: {
 				practice: false,
 				solution: {
@@ -101,9 +99,9 @@ describe('Question adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = { modelState: {} }
-		let json = { content: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const json = { content: {} }
+		const attrs = {
 			content: {
 				practice: false
 			}
@@ -115,9 +113,9 @@ describe('Question adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation with solution', () => {
-		let model = { modelState: {} }
-		let json = { content: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const json = { content: {} }
+		const attrs = {
 			content: {
 				practice: false,
 				solution: {

@@ -1,10 +1,12 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 
-let { OboComponent } = Common.components
+const { OboComponent } = Common.components
 
-export default props => (
+const MCFeedback = props => (
 	<OboComponent
 		model={props.model}
 		moduleData={props.moduleData}
@@ -15,9 +17,11 @@ export default props => (
 		}`}
 		data-choice-label={props.label}
 	>
-		{props.model.children.models.map((child, index) => {
-			let Component = child.getComponentClass()
+		{props.model.children.models.map(child => {
+			const Component = child.getComponentClass()
 			return <Component key={child.get('id')} model={child} moduleData={props.moduleData} />
 		})}
 	</OboComponent>
 )
+
+export default MCFeedback

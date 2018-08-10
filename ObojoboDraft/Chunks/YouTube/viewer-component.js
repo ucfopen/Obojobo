@@ -1,9 +1,11 @@
 import './viewer-component.scss'
 
-import Common from 'Common'
-let { OboComponent } = Common.components
+import React from 'react'
 
-export default props => (
+import Common from 'Common'
+const { OboComponent } = Common.components
+
+const YouTube = props => (
 	<OboComponent model={props.model} moduleData={props.moduleData}>
 		<div className="obojobo-draft--chunks--you-tube viewer">
 			<iframe
@@ -14,3 +16,5 @@ export default props => (
 		</div>
 	</OboComponent>
 )
+
+export default YouTube

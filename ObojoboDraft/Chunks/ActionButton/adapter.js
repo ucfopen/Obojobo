@@ -1,23 +1,19 @@
 import Common from 'Common'
 
-let TextGroup = Common.textGroup.TextGroup
+const TextGroup = Common.textGroup.TextGroup
 
-let TextGroupAdapter = {
+const TextGroupAdapter = {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.textGroup) != null) {
+		model.setStateProp('align', 'center', p => p.toLowerCase(), ['left', 'center', 'right'])
+
+		if (attrs && attrs.content && attrs.content.textGroup) {
 			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
 				indent: 0
 			})
-		} else if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.label)) {
+		} else if (attrs && attrs.content && attrs.content.label) {
 			model.modelState.label = attrs.content.label
 		} else {
 			model.modelState.label = ''
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x2 => x2.align)) {
-			return (model.modelState.align = attrs.content.align)
-		} else {
-			return (model.modelState.align = 'center')
 		}
 	},
 
@@ -39,6 +35,3 @@ let TextGroupAdapter = {
 }
 
 export default TextGroupAdapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

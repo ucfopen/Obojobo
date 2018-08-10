@@ -1,3 +1,4 @@
+/* eslint-disable */
 import './table-controls.scss'
 import TableMenu from './table-menu'
 
@@ -17,17 +18,15 @@ export default class TableControls extends React.Component {
 	}
 
 	getCellPosition(type, position) {
-		let el = this.props.chunk.getDomEl()
-		let bbox = this.refs.self.getBoundingClientRect()
+		const el = this.props.chunk.getDomEl()
+		const bbox = this.refs.self.getBoundingClientRect()
 
-		let cellBbox = (() => {
+		const cellBbox = (() => {
 			switch (type) {
 				case 'row':
-					let cell = el.querySelector(`.row-${position}.col-0`)
-					return cell.getBoundingClientRect()
+					return el.querySelector(`.row-${position}.col-0`).getBoundingClientRect()
 				case 'col':
-					cell = el.querySelector(`.row-0.col-${position}`)
-					return cell.getBoundingClientRect()
+					return el.querySelector(`.row-0.col-${position}`).getBoundingClientRect()
 			}
 		})()
 
@@ -50,20 +49,20 @@ export default class TableControls extends React.Component {
 	}
 
 	positionMenus() {
-		let { refs } = this
-		let { getCellPosition } = this
+		const { refs } = this
+		const { getCellPosition } = this
 
 		__range__(0, this.props.chunk.modelState.textGroup.numRows, false).map(function(index) {
-			let el = ReactDOM.findDOMNode(refs[`menu_row_${index}`])
-			let pos = getCellPosition('row', index)
+			const el = ReactDOM.findDOMNode(refs[`menu_row_${index}`])
+			const pos = getCellPosition('row', index)
 
 			el.style.left = `${pos.left}px`
 			return (el.style.top = `${pos.top}px`)
 		})
 
 		return __range__(0, this.props.chunk.modelState.textGroup.numCols, false).map(function(index) {
-			let el = ReactDOM.findDOMNode(refs[`menu_col_${index}`])
-			let pos = getCellPosition('col', index)
+			const el = ReactDOM.findDOMNode(refs[`menu_col_${index}`])
+			const pos = getCellPosition('col', index)
 
 			el.style.left = `${pos.left}px`
 			return (el.style.top = `${pos.top}px`)
@@ -71,10 +70,10 @@ export default class TableControls extends React.Component {
 	}
 
 	render() {
-		let { onTableMenuCommand } = this.props
-		let { getCellPosition } = this
+		const { onTableMenuCommand } = this.props
+		const { getCellPosition } = this
 
-		let rows = __range__(0, this.props.chunk.modelState.textGroup.numRows, false).map(index => (
+		const rows = __range__(0, this.props.chunk.modelState.textGroup.numRows, false).map(index => (
 			<TableMenu
 				onMenuCommand={onTableMenuCommand}
 				type="row"
@@ -83,7 +82,7 @@ export default class TableControls extends React.Component {
 			/>
 		))
 
-		let cols = __range__(0, this.props.chunk.modelState.textGroup.numCols, false).map(index => (
+		const cols = __range__(0, this.props.chunk.modelState.textGroup.numCols, false).map(index => (
 			<TableMenu
 				onMenuCommand={onTableMenuCommand}
 				type="col"
@@ -108,9 +107,9 @@ export default class TableControls extends React.Component {
 }
 
 function __range__(left, right, inclusive) {
-	let range = []
-	let ascending = left < right
-	let end = !inclusive ? right : ascending ? right + 1 : right - 1
+	const range = []
+	const ascending = left < right
+	const end = !inclusive ? right : ascending ? right + 1 : right - 1
 	for (let i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
 		range.push(i)
 	}

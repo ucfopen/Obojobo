@@ -1,6 +1,6 @@
 import AssessmentUtil from '../../util/assessment-util'
 
-let getScoreComparisionData = (allAttempts, attemptNumberToGenerateReportFor) => {
+const getScoreComparisionData = (allAttempts, attemptNumberToGenerateReportFor) => {
 	if (allAttempts.length === 0) {
 		return {
 			prevHighestInfo: null,
@@ -8,9 +8,9 @@ let getScoreComparisionData = (allAttempts, attemptNumberToGenerateReportFor) =>
 		}
 	}
 
-	let prevAttempts = allAttempts.slice(0, attemptNumberToGenerateReportFor - 1)
-	let highestAttempts = AssessmentUtil.findHighestAttempts(prevAttempts, 'assessmentScore')
-	let prevHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0]
+	const prevAttempts = allAttempts.slice(0, attemptNumberToGenerateReportFor - 1)
+	const highestAttempts = AssessmentUtil.findHighestAttempts(prevAttempts, 'assessmentScore')
+	const prevHighestAttempt = highestAttempts.length === 0 ? null : highestAttempts[0]
 
 	return {
 		prevHighestInfo: prevHighestAttempt ? prevHighestAttempt.assessmentScoreDetails : null,

@@ -1,7 +1,6 @@
 import ChunkStyleList from './chunk-style-list'
 import StyleRange from './style-range'
 import StyleType from './style-type'
-import { isElementInline } from '../../common/util/html-util'
 
 // ceiling Infinity end values to the length
 const trimStyleRange = function(styleRange, maxLength) {
@@ -10,10 +9,71 @@ const trimStyleRange = function(styleRange, maxLength) {
 }
 
 class StyleableText {
-	constructor(text) {
-		if (text == null) {
-			text = ''
+	static createFromObject(o) {
+		const st = new StyleableText()
+		st.styleList = ChunkStyleList.createFromObject(o.styleList)
+		st.value = o.value
+
+		return st
+	}
+
+	static getStylesOfElement(el) {
+		if (el.nodeType !== Node.ELEMENT_NODE) {
+			return []
 		}
+
+		const styles = []
+		const computedStyle = window.getComputedStyle(el)
+
+		switch (computedStyle.getPropertyValue('font-weight')) {
+			case 'bold':
+			case 'bolder':
+			case '700':
+			case '800':
+			case '900':
+				styles.push({ type: StyleType.BOLD })
+				break
+		}
+
+		switch (computedStyle.getPropertyValue('text-decoration')) {
+			case 'line-through':
+				styles.push({ type: StyleType.STRIKETHROUGH })
+				break
+		}
+
+		switch (computedStyle.getPropertyValue('font-style')) {
+			case 'italic':
+				styles.push({ type: StyleType.ITALIC })
+				break
+		}
+
+		switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
+			case 'monospace':
+				styles.push({ type: StyleType.MONOSPACE })
+				break
+		}
+
+		switch (el.tagName.toLowerCase()) {
+			case 'a':
+				if (el.getAttribute('href')) {
+					styles.push({ type: StyleType.LINK, data: { href: el.getAttribute('href') } })
+				}
+				break
+			case 'q':
+				styles.push({ type: StyleType.QUOTE, data: el.getAttribute('cite') })
+				break
+			case 'sup':
+				styles.push({ type: StyleType.SUPERSCRIPT, data: 1 })
+				break
+			case 'sub':
+				styles.push({ type: StyleType.SUPERSCRIPT, data: -1 })
+				break
+		}
+
+		return styles
+	}
+
+	constructor(text = '') {
 		this.init()
 		this.insertText(0, text)
 	}
@@ -43,8 +103,8 @@ class StyleableText {
 		return this.insertText(0, text)
 	}
 
-	replaceText(from, to, text) {
-		if (text == null || text.length === 0) {
+	replaceText(from, to, text = '') {
+		if (text === '') {
 			return this.deleteText(from, to)
 		}
 
@@ -83,13 +143,7 @@ class StyleableText {
 		return this.normalizeStyles()
 	}
 
-	deleteText(from, to) {
-		if (from == null) {
-			from = -1
-		}
-		if (to == null) {
-			to = Infinity
-		}
+	deleteText(from = -1, to = Infinity) {
 		if (from > to) {
 			return
 		}
@@ -130,13 +184,9 @@ class StyleableText {
 		return this.normalizeStyles()
 	}
 
-	toggleStyleText(styleType, from, to, styleData) {
-		if (from == null) {
-			from = 0
-		}
-		if (to == null) {
-			to = this.length
-		}
+	toggleStyleText(styleType, from = 0, to = Infinity, styleData = {}) {
+		to = Math.min(to, this.length)
+
 		const styleRange = trimStyleRange(
 			new StyleRange(from, to, styleType, styleData),
 			this.value.length
@@ -150,13 +200,9 @@ class StyleableText {
 		return this.normalizeStyles()
 	}
 
-	styleText(styleType, from, to, styleData) {
-		if (from == null) {
-			from = 0
-		}
-		if (to == null) {
-			to = this.length
-		}
+	styleText(styleType, from = 0, to = Infinity, styleData = {}) {
+		to = Math.min(to, this.length)
+
 		const range = new StyleRange(from, to, styleType, styleData)
 
 		const styleRange = trimStyleRange(range, this.value.length)
@@ -165,13 +211,9 @@ class StyleableText {
 		return this.normalizeStyles()
 	}
 
-	unstyleText(styleType, from, to) {
-		if (from == null) {
-			from = 0
-		}
-		if (to == null) {
-			to = this.length
-		}
+	unstyleText(styleType, from = 0, to = Infinity) {
+		to = Math.min(to, this.length)
+
 		const styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.value.length)
 		this.styleList.remove(styleRange)
 		return this.normalizeStyles()
@@ -214,17 +256,14 @@ class StyleableText {
 		return this.styleList.normalize()
 	}
 
-	merge(otherText, atIndex) {
-		if (atIndex == null) {
-			atIndex = null
-		}
-		if (atIndex == null) {
+	merge(otherText, atIndex = null) {
+		if (atIndex === null) {
 			atIndex = this.value.length
 		}
 
 		const insertLength = otherText.value.length
 
-		for (var range of Array.from(this.styleList.styles)) {
+		for (const range of Array.from(this.styleList.styles)) {
 			switch (range.compareToRange(atIndex)) {
 				case StyleRange.AFTER:
 					range.start += insertLength
@@ -237,7 +276,7 @@ class StyleableText {
 
 		this.styleList.normalize()
 
-		for (range of Array.from(otherText.styleList.styles)) {
+		for (const range of Array.from(otherText.styleList.styles)) {
 			const curRange = range.clone()
 			curRange.start += atIndex
 			curRange.end += atIndex
@@ -247,90 +286,10 @@ class StyleableText {
 
 		return this.styleList.normalize()
 	}
-}
 
-Object.defineProperties(StyleableText.prototype, {
-	length: {
-		get() {
-			return this.value.length
-		}
+	get length() {
+		return this.value.length
 	}
-})
-
-StyleableText.createFromObject = function(o) {
-	const st = new StyleableText()
-	st.styleList = ChunkStyleList.createFromObject(o.styleList)
-	st.value = o.value
-
-	return st
-}
-
-StyleableText.getStylesOfElement = function(el) {
-	// console.warn 'MOVE THIS SOMEWHERE ELSE!!!!'
-
-	if (el.nodeType !== Node.ELEMENT_NODE) {
-		return []
-	}
-
-	const styles = []
-
-	const computedStyle = window.getComputedStyle(el)
-
-	// debugger;
-
-	// console.log '___________', el, computedStyle, computedStyle.getPropertyValue('font-weight')
-
-	switch (computedStyle.getPropertyValue('font-weight')) {
-		case 'bold':
-		case 'bolder':
-		case '700':
-		case '800':
-		case '900':
-			styles.push({ type: StyleType.BOLD })
-			break
-	}
-
-	switch (computedStyle.getPropertyValue('text-decoration')) {
-		case 'line-through':
-			styles.push({ type: StyleType.STRIKETHROUGH })
-			break
-	}
-
-	switch (computedStyle.getPropertyValue('font-style')) {
-		case 'italic':
-			styles.push({ type: StyleType.ITALIC })
-			break
-	}
-
-	switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
-		case 'monospace':
-			styles.push({ type: StyleType.MONOSPACE })
-			break
-	}
-
-	// switch computedStyle.getPropertyValue('vertical-align') + "|" + computedStyle.getPropertyValue('font-size')
-	// 	when "super|smaller" then styles.push { type:StyleType.SUPERSCRIPT }
-	// 	when "sub|smaller"   then styles.push { type:StyleType.SUBSCRIPT }
-
-	switch (el.tagName.toLowerCase()) {
-		//when 'b'               then styles.push { type:StyleType.BOLD }
-		case 'a':
-			if (el.getAttribute('href') != null) {
-				styles.push({ type: StyleType.LINK, data: { href: el.getAttribute('href') } })
-			}
-			break
-		case 'q':
-			styles.push({ type: StyleType.QUOTE, data: el.getAttribute('cite') })
-			break
-		case 'sup':
-			styles.push({ type: StyleType.SUPERSCRIPT, data: 1 })
-			break
-		case 'sub':
-			styles.push({ type: StyleType.SUPERSCRIPT, data: -1 })
-			break
-	}
-
-	return styles
 }
 
 export default StyleableText

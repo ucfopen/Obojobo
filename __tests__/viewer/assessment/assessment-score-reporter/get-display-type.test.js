@@ -28,11 +28,11 @@ describe('getDisplayType', () => {
 	}
 
 	test('returns expected display types from inputs', () => {
-		let p = 'passed'
-		let f = 'failed'
-		let u = 'unableToPass'
-		let attScore = '$attempt_score'
-		let highest = '$highest_attempt_score'
+		const p = 'passed'
+		const f = 'failed'
+		const u = 'unableToPass'
+		const attScore = '$attempt_score'
+		const highest = '$highest_attempt_score'
 
 		//
 		// Attempt type where score < 100 and no mods rewarded

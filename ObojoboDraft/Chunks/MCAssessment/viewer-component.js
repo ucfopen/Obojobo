@@ -1,5 +1,8 @@
 import './viewer-component.scss'
 
+import React from 'react'
+import _ from 'underscore'
+
 const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
 import Common from 'Common'
@@ -14,7 +17,6 @@ const { DOMUtil } = Common.page
 // FocusUtil = Common.util.FocusUtil
 
 const { QuestionUtil } = Viewer.util
-const { NavUtil } = Viewer.util
 
 const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
 const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
@@ -33,11 +35,14 @@ export default class MCAssessment extends React.Component {
 		this.onClick = this.onClick.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
-		this.correctLabels = correctLabels
-			? correctLabels
-			: this.props.mode === 'review'
-				? DEFAULT_CORRECT_REVIEW_LABELS
-				: DEFAULT_CORRECT_PRACTICE_LABELS
+		if (correctLabels) {
+			this.correctLabels = correctLabels
+		} else {
+			this.correctLabels =
+				this.props.mode === 'review'
+					? DEFAULT_CORRECT_REVIEW_LABELS
+					: DEFAULT_CORRECT_PRACTICE_LABELS
+		}
 		this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS
 		this.updateFeedbackLabels()
 	}
@@ -81,7 +86,7 @@ export default class MCAssessment extends React.Component {
 		const { responses } = responseData
 
 		switch (this.props.model.modelState.responseType) {
-			case 'pick-all':
+			case 'pick-all': {
 				if (correct.size !== responses.size) {
 					return 0
 				}
@@ -92,6 +97,7 @@ export default class MCAssessment extends React.Component {
 					}
 				})
 				return score
+			}
 
 			default:
 				// pick-one | pick-one-multiple-correct
@@ -176,7 +182,7 @@ export default class MCAssessment extends React.Component {
 		}
 
 		switch (this.props.model.modelState.responseType) {
-			case 'pick-all':
+			case 'pick-all': {
 				response = QuestionUtil.getResponse(
 					this.props.moduleData.questionState,
 					questionModel,
@@ -192,6 +198,7 @@ export default class MCAssessment extends React.Component {
 					response.ids.splice(responseIndex, 1)
 				}
 				break
+			}
 
 			default:
 				response = {
@@ -218,7 +225,7 @@ export default class MCAssessment extends React.Component {
 		)
 	}
 
-	componentWillReceiveProps() {
+	UNSAFE_componentWillReceiveProps() {
 		this.sortIds()
 	}
 
@@ -242,7 +249,7 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.sortIds()
 	}
 
@@ -336,7 +343,7 @@ export default class MCAssessment extends React.Component {
 			.map(mcChoiceId => OboModel.models[mcChoiceId].children.at(1))
 
 		const { solution } = this.props.model.parent.modelState
-		if (solution != null) {
+		if (solution !== null && typeof solution !== 'undefined') {
 			SolutionComponent = solution.getComponentClass()
 		}
 

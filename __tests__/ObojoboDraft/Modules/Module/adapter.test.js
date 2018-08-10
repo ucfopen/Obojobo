@@ -6,15 +6,15 @@ describe('Module adapter', () => {
 	})
 
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 
 		ModuleAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				start: 'mockStart'
 			}
@@ -25,8 +25,8 @@ describe('Module adapter', () => {
 	})
 
 	test('construct builds with attributes and unlimited ', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				start: 'unlimited'
 			}
@@ -37,12 +37,12 @@ describe('Module adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let a = {
+		const a = {
 			modelState: {
 				start: 'mockStart'
 			}
 		}
-		let b = { modelState: {} }
+		const b = { modelState: {} }
 
 		ModuleAdapter.clone(a, b)
 
@@ -51,12 +51,12 @@ describe('Module adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let a = {
+		const a = {
 			modelState: {
 				start: 'mockStart'
 			}
 		}
-		let b = { content: {} }
+		const b = { content: {} }
 
 		ModuleAdapter.toJSON(a, b)
 

@@ -1,6 +1,5 @@
 import IFrameAdapter from '../../../../ObojoboDraft/Chunks/IFrame/adapter'
 import setProp from '../../../../src/scripts/common/util/set-prop'
-import OboModel from '../../../../src/scripts/common/models/obo-model'
 
 describe('IFrame adapter', () => {
 	let model

@@ -3,7 +3,7 @@ jest.mock('react-dom')
 import React from 'react'
 import ReactDOM from 'react-dom'
 import renderer from 'react-test-renderer'
-import { shallow, mount, unmount } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 
 import IFrame from '../../../../ObojoboDraft/Chunks/IFrame/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
@@ -372,7 +372,7 @@ describe('IFrame', () => {
 			actualWidth: 'mock-width',
 			padding: 'mock-padding'
 		})
-		expect(component.instance().resizeObserver).toBe(undefined)
+		expect(component.instance().resizeObserver).toBe(undefined) //eslint-disable-line
 		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.on).toHaveBeenCalledWith(
 			'viewer:contentAreaResized',

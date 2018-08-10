@@ -1,4 +1,6 @@
-export default props => {
+import React from 'react'
+
+const ReviewIcon = () => {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.33 114.33">
 			<defs>
@@ -39,3 +41,5 @@ export default props => {
 		</svg>
 	)
 }
+
+export default ReviewIcon

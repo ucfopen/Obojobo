@@ -36,7 +36,6 @@ import MockElement from './mockdom/mock-element'
 import MockTextNode from './mockdom/mock-text-node'
 import OboModel from './models/obo-model'
 import Legacy from './models/legacy'
-import API from './net/api'
 import ChunkSelection from './selection/chunk-selection'
 import Cursor from './selection/cursor'
 import DOMSelection from './selection/dom-selection'
@@ -68,7 +67,7 @@ import HtmlUtil from './util/html-util'
 import ModalUtil from './util/modal-util'
 import FocusUtil from './util/focus-util'
 import ErrorUtil from './util/error-util'
-import UUID from './util/uuid'
+import uuid from './util/uuid'
 import RangeParsing from './util/range-parsing'
 import setProp from './util/set-prop'
 import cloneProps from './util/clone-props'
@@ -139,10 +138,6 @@ export default {
 		Legacy
 	},
 
-	net: {
-		API
-	},
-
 	selection: {
 		ChunkSelection,
 		Cursor,
@@ -190,7 +185,7 @@ export default {
 		ModalUtil,
 		FocusUtil,
 		ErrorUtil,
-		UUID,
+		uuid,
 		RangeParsing,
 		setProp,
 		cloneProps,

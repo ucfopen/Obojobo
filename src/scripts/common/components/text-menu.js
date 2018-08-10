@@ -1,8 +1,10 @@
 import './text-menu.scss'
 
+import React from 'react'
+
 export default class TextMenu extends React.Component {
 	renderImg(command) {
-		if (command.image == null) {
+		if (command.image === null || typeof command.image === 'undefined') {
 			return (
 				<div>
 					<span>{command.label}</span>
@@ -33,9 +35,9 @@ export default class TextMenu extends React.Component {
 			return null
 		}
 
-		let ctrlRect = this.props.relativeToElement.getBoundingClientRect()
-		let selRect = this.props.selectionRect
-		let { renderImg } = this
+		const ctrlRect = this.props.relativeToElement.getBoundingClientRect()
+		const selRect = this.props.selectionRect
+		const { renderImg } = this
 
 		if (!selRect || !this.props.commands || this.props.commands.length === 0) {
 			return null
