@@ -1,19 +1,25 @@
-import ActionButtonAdapter from '../../../../ObojoboDraft/Chunks/ActionButton/adapter'
-import Common from 'Common'
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
 
-const TextGroup = Common.textGroup.TextGroup
+jest.mock('../../../../src/scripts/common/text-group/text-group', () => {
+	return require('../../../../__mocks__/text-group-adapter-mock').default
+})
+import TextGroup from '../../../../src/scripts/common/text-group/text-group'
+
+import ActionButtonAdapter from '../../../../ObojoboDraft/Chunks/ActionButton/adapter'
 
 describe('ActionButton adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
-		const expected = { modelState: { align: 'center', label: '' } }
+		const model = new OboModel({})
+		const expected = { align: 'center', label: '' }
 		ActionButtonAdapter.construct(model)
 
-		expect(model).toEqual(expected)
+		expect(model.modelState).toEqual(expected)
 	})
 
 	test('construct builds with label attributes', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				label: 'Start Assessment',
@@ -32,14 +38,14 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
-		const expected = { modelState: { label: 'Start Assessment', align: 'center' } }
+		const model = new OboModel(attrs)
+		const expected = { label: 'Start Assessment', align: 'center' }
 		ActionButtonAdapter.construct(model, attrs)
 
-		expect(model).toEqual(expected)
+		expect(model.modelState).toEqual(expected)
 	})
 
 	test('construct builds with textGroup attributes', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				textGroup: 'mockText',
@@ -59,20 +65,18 @@ describe('ActionButton adapter', () => {
 			}
 		}
 		const expected = {
-			modelState: {
-				textGroup: 'mockTextGroup',
-				align: 'center'
-			}
+			textGroup: {
+				mockTextGroupValue: 'mockText'
+			},
+			align: 'center'
 		}
 
-		TextGroup.fromDescriptor = jest.fn().mockReturnValueOnce('mockTextGroup')
+		const model = new OboModel(attrs)
 		ActionButtonAdapter.construct(model, attrs)
-
-		expect(model).toEqual(expected)
+		expect(model.modelState).toEqual(expected)
 	})
 
 	test('construct builds with align attributes', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				label: 'Start Assessment',
@@ -92,15 +96,16 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
-		const expected = { modelState: { label: 'Start Assessment', align: 'right' } }
+		const model = new OboModel(attrs)
+		const expected = { label: 'Start Assessment', align: 'right' }
 		ActionButtonAdapter.construct(model, attrs)
 
-		expect(model).toEqual(expected)
+		expect(model.modelState).toEqual(expected)
 	})
 
 	test('clone creates a copy without a textGroup', () => {
-		const a = { modelState: {} }
-		const b = { modelState: {} }
+		const a = new OboModel({})
+		const b = new OboModel({})
 
 		ActionButtonAdapter.construct(a)
 		ActionButtonAdapter.clone(a, b)
@@ -111,38 +116,39 @@ describe('ActionButton adapter', () => {
 
 	test('clone creates a copy with a textGroup', () => {
 		const a = {
-			modelState: {
-				textGroup: {
-					clone: jest.fn().mockReturnValueOnce('mockClone')
-				}
+			content: {
+				textGroup: 'mock-textgroup-data'
 			}
 		}
 		const b = {
-			modelState: {
-				textGroup: {}
-			}
+			content: {}
 		}
 
-		ActionButtonAdapter.construct(a)
-		ActionButtonAdapter.clone(a, b)
+		const modelA = new OboModel(a)
+		const modelB = new OboModel(b)
 
-		expect(a).not.toBe(b)
-		// Does not produce identical modelStates due to mocking of recursive clone()
-		// Would produce identical clone in code
-		expect(a.modelState).toEqual({
+		ActionButtonAdapter.construct(modelA, a)
+		ActionButtonAdapter.clone(modelA, modelB)
+
+		expect(modelA).not.toBe(modelB)
+		expect(modelA.modelState).toEqual({
 			align: 'center',
-			label: '',
-			textGroup: { clone: expect.any(Function) }
+			textGroup: {
+				mockTextGroupValue: 'mock-textgroup-data'
+			}
 		})
-		expect(b.modelState).toEqual({
+		expect(modelB.modelState).toEqual({
 			align: 'center',
-			label: '',
-			textGroup: 'mockClone'
+			textGroup: {
+				mockTextGroupValue: 'mock-textgroup-data:cloned'
+			}
 		})
+		expect(modelA.modelState.textGroup).not.toBe(modelB.modelState.textGroup)
+		expect(modelA.modelState.textGroup).toBeInstanceOf(TextGroup)
+		expect(modelB.modelState.textGroup).toBeInstanceOf(TextGroup)
 	})
 
 	test('toJSON builds a JSON representation with a label', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				label: 'Start Assessment',
@@ -161,6 +167,7 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
+		const model = new OboModel(attrs)
 
 		const expected = {
 			content: {
@@ -181,6 +188,7 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
+
 		ActionButtonAdapter.construct(model, attrs)
 		ActionButtonAdapter.toJSON(model, attrs)
 
@@ -188,7 +196,6 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation with a textGroup', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				textGroup: 'mockText',
@@ -207,11 +214,14 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
+		const model = new OboModel(attrs)
 
 		const expected = {
 			content: {
 				align: 'center',
-				textGroup: 'mockTextGroup',
+				textGroup: {
+					textGroupMockJSON: 'mockText'
+				},
 				triggers: [
 					{
 						actions: [
@@ -227,10 +237,6 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
-
-		TextGroup.fromDescriptor = jest.fn().mockReturnValueOnce({
-			toDescriptor: jest.fn().mockReturnValueOnce('mockTextGroup')
-		})
 
 		ActionButtonAdapter.construct(model, attrs)
 		ActionButtonAdapter.toJSON(model, attrs)

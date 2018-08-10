@@ -1,24 +1,29 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import HtmlAdapter from '../../../../ObojoboDraft/Chunks/HTML/adapter'
 
 describe('HTML adapter', () => {
 	test('can be constructed WITHOUT attributes', () => {
-		const model = { modelState: {} }
+		const model = new OboModel({})
 		HtmlAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		const model = { modelState: {} }
 		const attrs = { content: { html: 'html', align: 'center' } }
+		const model = new OboModel(attrs)
 		HtmlAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		const a = { modelState: {} }
-		const b = { modelState: {} }
+		const a = new OboModel({})
+		const b = new OboModel({})
 
-		HtmlAdapter.construct(a)
+		HtmlAdapter.construct(a, {})
 		HtmlAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)

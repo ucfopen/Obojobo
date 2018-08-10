@@ -18,14 +18,18 @@ const TextGroupAdapter = {
 	},
 
 	clone(model, clone) {
-		if (clone.modelState.textGroup) clone.modelState.textGroup = model.modelState.textGroup.clone()
-		clone.modelState.label = model.modelState.label
+		if (model.modelState.textGroup) clone.modelState.textGroup = model.modelState.textGroup.clone()
+		if (typeof model.modelState.label !== 'undefined') {
+			clone.modelState.label = model.modelState.label
+		}
 		clone.modelState.align = model.modelState.align
 	},
 
 	toJSON(model, json) {
-		if (json.content.textGroup) json.content.textGroup = model.modelState.textGroup.toDescriptor()
-		json.content.label = model.modelState.label
+		if (model.modelState.textGroup) {
+			json.content.textGroup = model.modelState.textGroup.toDescriptor()
+		}
+		if (typeof model.modelState.label !== 'undefined') json.content.label = model.modelState.label
 		json.content.align = model.modelState.align
 	},
 

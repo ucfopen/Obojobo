@@ -52,10 +52,13 @@ const getCursors = function(chunk, virtualSelection) {
 }
 
 class TextGroupSelection {
-	static getGroupStartCursor = chunk => TextGroupSelection.getTextStartCursor(chunk, 0)
+	static getGroupStartCursor(chunk) {
+		TextGroupSelection.getTextStartCursor(chunk, 0)
+	}
 
-	static getGroupEndCursor = chunk =>
+	static getGroupEndCursor(chunk) {
 		TextGroupSelection.getTextEndCursor(chunk, chunk.modelState.textGroup.length - 1)
+	}
 
 	static getTextStartCursor(chunk, groupIndex) {
 		const virtCur = new VirtualCursor(chunk, { groupIndex, offset: 0 })

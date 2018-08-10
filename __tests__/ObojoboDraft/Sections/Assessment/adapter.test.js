@@ -1,49 +1,67 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import AssessmentAdapter from 'ObojoboDraft/Sections/Assessment/adapter'
 
 describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
+		const model = new OboModel({})
 		AssessmentAdapter.construct(model)
 		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with N attempts', () => {
-		const model = { modelState: {} }
-		AssessmentAdapter.construct(model, { content: { attempts: 6 } })
+		const attrs = {
+			content: { attempts: 6 }
+		}
+		const model = new OboModel(attrs)
+		AssessmentAdapter.construct(model, attrs)
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(6)
 	})
 
 	test('construct builds with unlimited attempts', () => {
-		const model = { modelState: {} }
-		AssessmentAdapter.construct(model, { content: { attempts: 'unlimited' } })
+		const attrs = {
+			content: { attempts: 'unlimited' }
+		}
+		const model = new OboModel(attrs)
+		AssessmentAdapter.construct(model, attrs)
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(Infinity)
 	})
 
 	test('construct floors decimal attempt integers', () => {
-		const model = { modelState: {} }
-		AssessmentAdapter.construct(model, { content: { attempts: 6.9 } })
+		const attrs = {
+			content: { attempts: 6.9 }
+		}
+		const model = new OboModel(attrs)
+		AssessmentAdapter.construct(model, attrs)
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(6)
 	})
 
 	test('construct builds with legacy score actions', () => {
-		const model = { modelState: {} }
-
 		// use the legacy action syntax
 		const action = {
 			from: 2,
 			to: 4,
-			page: 5
+			page: 'mock-page'
 		}
-		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
+
+		const attrs = {
+			content: { scoreActions: [action] }
+		}
+		const model = new OboModel(attrs)
+
+		AssessmentAdapter.construct(model, attrs)
 		expect(model.modelState).toMatchObject({
 			attempts: Infinity,
 			scoreActions: {
 				actions: [
 					{
-						page: 5,
+						page: 'mock-page',
 						range: {
 							isMaxInclusive: true,
 							isMinInclusive: true,
@@ -58,18 +76,23 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	})
 
 	test('construct builds with score actions', () => {
-		const model = { modelState: {} }
 		const action = {
 			for: '[2,4]',
-			page: 5
+			page: 'mock-page'
 		}
-		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
+
+		const attrs = {
+			content: { scoreActions: [action] }
+		}
+		const model = new OboModel(attrs)
+
+		AssessmentAdapter.construct(model, attrs)
 		expect(model.modelState).toMatchObject({
 			attempts: Infinity,
 			scoreActions: {
 				actions: [
 					{
-						page: 5,
+						page: 'mock-page',
 						range: {
 							isMaxInclusive: true,
 							isMinInclusive: true,
@@ -84,30 +107,17 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		const model = { modelState: {} }
-		const model2 = { modelState: {} }
 		const action = {
 			for: '[2,4]',
-			page: 5
+			page: 'mock-page'
 		}
-		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
-		expect(model.modelState).toMatchObject({
-			attempts: Infinity,
-			scoreActions: {
-				actions: [
-					{
-						page: 5,
-						range: {
-							isMaxInclusive: true,
-							isMinInclusive: true,
-							max: '4',
-							min: '2'
-						}
-					}
-				],
-				originalActions: [action]
-			}
-		})
+		const attrs = {
+			content: { scoreActions: [action] }
+		}
+		const model = new OboModel(attrs)
+		const model2 = new OboModel({})
+		AssessmentAdapter.construct(model, attrs)
+		AssessmentAdapter.construct(model2, {})
 
 		AssessmentAdapter.clone(model, model2)
 
@@ -117,29 +127,15 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		const model = { modelState: {} }
 		const action = {
 			for: '[2,4]',
-			page: 5
+			page: 'mock-page'
 		}
-		AssessmentAdapter.construct(model, { content: { scoreActions: [action] } })
-		expect(model.modelState).toMatchObject({
-			attempts: Infinity,
-			scoreActions: {
-				actions: [
-					{
-						page: 5,
-						range: {
-							isMaxInclusive: true,
-							isMinInclusive: true,
-							max: '4',
-							min: '2'
-						}
-					}
-				],
-				originalActions: [action]
-			}
-		})
+		const attrs = {
+			content: { scoreActions: [action] }
+		}
+		const model = new OboModel(attrs)
+		AssessmentAdapter.construct(model, attrs)
 
 		const json = { content: {} }
 		AssessmentAdapter.toJSON(model, json)
@@ -150,7 +146,7 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 				scoreActions: [
 					{
 						for: '[2,4]',
-						page: 5
+						page: 'mock-page'
 					}
 				]
 			}

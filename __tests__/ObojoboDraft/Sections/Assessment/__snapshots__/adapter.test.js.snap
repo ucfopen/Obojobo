@@ -17,7 +17,7 @@ Object {
   },
   "scoreActions": ScoreActions {
     "actions": Array [],
-    "originalActions": null,
+    "originalActions": Array [],
   },
 }
 `;
@@ -39,7 +39,7 @@ Object {
   },
   "scoreActions": ScoreActions {
     "actions": Array [],
-    "originalActions": null,
+    "originalActions": Array [],
   },
 }
 `;
@@ -61,7 +61,7 @@ Object {
   },
   "scoreActions": ScoreActions {
     "actions": Array [],
-    "originalActions": undefined,
+    "originalActions": Array [],
   },
 }
 `;
@@ -83,7 +83,7 @@ Object {
   },
   "scoreActions": ScoreActions {
     "actions": Array [],
-    "originalActions": null,
+    "originalActions": Array [],
   },
 }
 `;

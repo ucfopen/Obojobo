@@ -1,57 +1,56 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import QuestionBankAdapter from '../../../../ObojoboDraft/Chunks/QuestionBank/adapter'
 
 describe('QuestionBank adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
+		const model = new OboModel({})
 		QuestionBankAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				choose: 2,
-				select: 'random-all',
-				shuffleGroup: true,
-				groupSize: 2
+				select: 'random-all'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		QuestionBankAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		const a = { modelState: {} }
-		const b = { modelState: {} }
 		const attrs = {
 			content: {
 				choose: 2,
-				select: 'random-all',
-				shuffleGroup: true,
-				groupSize: 2
+				select: 'random-all'
 			}
 		}
+		const modelA = new OboModel(attrs)
+		const modelB = new OboModel({})
 
-		QuestionBankAdapter.construct(a, attrs)
-		QuestionBankAdapter.clone(a, b)
+		QuestionBankAdapter.construct(modelA, attrs)
+		QuestionBankAdapter.clone(modelA, modelB)
 
-		expect(a).not.toBe(b)
-		expect(a).toEqual(b)
+		expect(modelA.modelState).not.toBe(modelB.modelState)
+		expect(modelA.modelState).toEqual(modelB.modelState)
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		const model = { modelState: {} }
 		const json = { content: {} }
 		const attrs = {
 			content: {
 				choose: 2,
-				select: 'random-all',
-				shuffleGroup: true,
-				groupSize: 2
+				select: 'random-all'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		QuestionBankAdapter.construct(model, attrs)
 		QuestionBankAdapter.toJSON(model, json)

@@ -30,7 +30,7 @@
 			"docker run -i -w -v $(pwd):/project/ -w /project docengine:latest yarn build",
 		"ci:isolated:test":
 			"docker run -i -e GIT_USER -e GIT_PASSWORD -e GIT_BRANCH docengine:latest /bin/docker_clone_and_test.sh",
-		"lint": "yarn lint:js",
+		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss"
 	},

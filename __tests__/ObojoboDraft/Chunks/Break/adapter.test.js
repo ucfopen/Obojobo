@@ -1,21 +1,27 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import BreakAdapter from '../../../../ObojoboDraft/Chunks/Break/adapter'
 
-describe('ActionButton adapter', () => {
+describe('Break adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
-		const expected = { modelState: { width: 'normal' } }
+		const model = new OboModel({})
+		const expected = { width: 'normal' }
 		BreakAdapter.construct(model)
 
-		expect(model).toEqual(expected)
+		expect(model.modelState).toEqual(expected)
 	})
 
 	test('construct builds with attributes', () => {
-		const model = { modelState: {} }
 		const attrs = { content: { width: 'large' } }
-		const expected = { modelState: { width: 'large' } }
+		const model = new OboModel(attrs)
+
+		const expected = { width: 'large' }
 		BreakAdapter.construct(model, attrs)
 
-		expect(model).toEqual(expected)
+		expect(model.modelState).toEqual(expected)
 	})
 
 	test('toText creates a text representation', () => {
