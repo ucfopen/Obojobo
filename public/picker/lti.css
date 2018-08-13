@@ -392,6 +392,10 @@ header {
 	background: white url('/picker/throbber.gif') center center no-repeat;
 }
 
+.section.my-modules {
+	overflow: scroll;
+}
+
 
 
 

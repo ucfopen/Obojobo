@@ -50,25 +50,40 @@ describe('api draft insert helper', () => {
 		})
 	})
 
-	test('fails when begin tranaction fails', () => {
+	test('fails when begin tranaction fails', done => {
 		expect.assertions(1)
 
 		// reject transaction
-		db.tx.mockRejectedValueOnce('error')
+		db.tx.mockRejectedValueOnce('an error')
 
-		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('error')
+		DraftModel.createWithContent(0, 'whatever')
+			.then(r => {
+				expect('this').not.toBe('called')
+			})
+			.catch(e => {
+				expect(e).toBe('an error')
+				done()
+			})
 	})
 
-	test('fails when insert draft fails', () => {
+	test('fails when insert draft fails', done => {
 		expect.assertions(1)
 
 		// reject insert draft query
 		db.one.mockRejectedValueOnce('an error')
 
-		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('an error')
+		// return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('an error')
+		DraftModel.createWithContent(0, 'whatever')
+			.then(r => {
+				expect('this').not.toBe('called')
+			})
+			.catch(e => {
+				expect(e).toBe('an error')
+				done()
+			})
 	})
 
-	test('fails when insert content fails', () => {
+	test('fails when insert content fails', done => {
 		expect.assertions(1)
 
 		// respond to insert draft
@@ -76,6 +91,13 @@ describe('api draft insert helper', () => {
 		// reject insert content query
 		db.one.mockRejectedValueOnce('arrrg!')
 
-		return expect(DraftModel.createWithContent(0, 'whatever')).rejects.toThrow('arrrg!')
+		DraftModel.createWithContent(0, 'whatever')
+			.then(r => {
+				expect('this').not.toBe('called')
+			})
+			.catch(e => {
+				expect(e).toBe('arrrg!')
+				done()
+			})
 	})
 })
