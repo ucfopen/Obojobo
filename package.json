@@ -20,7 +20,7 @@
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier:run": "prettier --write '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{src,server,__{tests,mocks}__,ObojoboDraft}/**/*.{js,scss}'",
-		"precommit": "yarn test:ci && lint-staged",
+		"precommit": "yarn lint && yarn test:ci && lint-staged",
 		"ci:prepare": "docker build -t docengine:latest .",
 		"ci:mounted:install":
 			"docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn install --force",
