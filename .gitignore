@@ -40,3 +40,4 @@ public/compiled
 
 # Editor specific
 .idea
+.vscode/launch.json

@@ -17,7 +17,7 @@ router.post('/', (req, res, next) => {
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-			return VisitModel.fetchById(req.body.event.visitId)
+			return VisitModel.fetchById(req.body.visitId)
 		})
 		.then(visit => {
 			currentVisit = visit

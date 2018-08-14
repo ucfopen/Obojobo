@@ -19,7 +19,7 @@ router.post('/:draftId/:page?', [ltiLaunch.assignment], (req, res, next) => {
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
-			return req.requireCurrentDocument()
+			return req.requireCurrentDocument(req.params.draftId)
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
@@ -84,7 +84,7 @@ router.get('/:draftId/visit/:visitId*', (req, res, next) => {
 		.then(user => {
 			currentUser = user
 			if (currentUser.isGuest()) throw new Error('Login Required')
-			return req.requireCurrentDocument()
+			return req.requireCurrentDocument(req.params.draftId)
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument

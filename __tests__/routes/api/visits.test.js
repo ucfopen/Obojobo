@@ -100,7 +100,7 @@ describe('api visits route', () => {
 		mockReq.requireCurrentUser.mockResolvedValueOnce(new User())
 		return startVisitRoute(mockReq, mockRes, mockNext).then(result => {
 			expect(logger.error).toBeCalledWith(expect.any(Error))
-			expect(mockRes.reject).toBeCalledWith('Missing visit and/or draft id!')
+			expect(mockRes.reject).toBeCalledWith('Missing visit id!')
 			expect(mockNext).not.toBeCalled()
 		})
 	})

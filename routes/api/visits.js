@@ -37,9 +37,8 @@ router.post('/start', (req, res, next) => {
 	let launch
 
 	const visitId = req.body.visitId
-	const draftId = req.body.draftId
 
-	logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
+	logger.log(`VISIT: Begin start visit for visitId="${visitId}"`)
 
 	return req
 		.requireCurrentUser()
@@ -47,7 +46,7 @@ router.post('/start', (req, res, next) => {
 			currentUser = user
 
 			// validate input
-			if (visitId == null || draftId == null) throw new Error('Missing visit and/or draft id!')
+			if (visitId == null) throw new Error('Missing visit id!')
 
 			return req.requireCurrentDocument()
 		})
@@ -72,7 +71,7 @@ router.post('/start', (req, res, next) => {
 					throw new Error('Visit for older draft version!')
 				}
 				// load lti launch data
-				return ltiUtil.retrieveLtiLaunch(currentUser.id, draftId, 'START_VISIT_API')
+				return ltiUtil.retrieveLtiLaunch(currentUser.id, currentDocument.draftId, 'START_VISIT_API')
 			}
 		})
 		.then(launchResult => {
@@ -99,11 +98,7 @@ router.post('/start', (req, res, next) => {
 			})
 		})
 		.then(() => {
-			logger.log(
-				`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
-					currentUser.id
-				}"`
-			)
+			logger.log(`VISIT: Start visit success for visitId="${visitId}", userId="${currentUser.id}"`)
 
 			// Build lti data for return
 			const lti = { lis_outcome_service_url: null }

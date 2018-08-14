@@ -73,7 +73,7 @@ class Visit {
 		return db
 			.one(
 				`
-			SELECT is_active, is_preview, draft_content_id
+			SELECT is_active, is_preview, draft_content_id, draft_id
 			FROM visits
 			WHERE id = $[visitId]
 			${requireIsActive ? 'AND is_active = true' : ''}

@@ -99,6 +99,8 @@ exports.assignment = (req, res, next) => {
 
 	// allows launches to redirect /view/example to /view/00000000-0000-0000-0000-000000000000
 	// the actual redirect happens in the route, this just handles the lti launch
+	const draftId =
+		req.params.draftId === 'example' ? '00000000-0000-0000-0000-000000000000' : req.params.draftId
 	let currentUser = null
 	let currentDocument = null
 
@@ -106,7 +108,7 @@ exports.assignment = (req, res, next) => {
 		.then(lti => userFromLaunch(req, lti.body))
 		.then(launchUser => {
 			currentUser = launchUser
-			return req.requireCurrentDocument()
+			return req.requireCurrentDocument(draftId)
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument

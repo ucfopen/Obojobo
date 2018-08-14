@@ -18,7 +18,7 @@ router.get('/:draftId', (req, res, next) => {
 		.then(user => {
 			if (!user.canPreview) throw new Error('Not authorized to preview')
 			currentUser = user
-			return req.requireCurrentDocument()
+			return req.requireCurrentDocument(req.params.draftId)
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
