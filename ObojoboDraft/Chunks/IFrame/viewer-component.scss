@@ -1,6 +1,9 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--iframe {
+	$color-container: #fdfdfd;
+	$color-container-hover: #f9f4ff;
+
 	display: block;
 	font-size: 1em;
 	margin: 0 auto;
@@ -123,9 +126,6 @@
 		}
 
 		> .container {
-			$color-container: #fdfdfd;
-			$color-container-hover: #f9f4ff;
-
 			border: 1px solid transparentize($color-action, 0.8);
 			max-height: 15em;
 			border-radius: $dimension-rounded-radius;
