@@ -47,8 +47,6 @@ export default class IFrame extends React.Component {
 	onViewerContentAreaResized() {
 		const dims = this.getMeasuredDimensions()
 
-		if (!dims) return
-
 		this.setState({
 			actualWidth: dims.width,
 			padding: dims.padding

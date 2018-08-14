@@ -11,16 +11,22 @@ export default class Dialog extends React.Component {
 	}
 
 	componentDidMount() {
-		for (let index = 0; index < this.props.buttons.length; index++) {
-			const button = this.props.buttons[index]
-			if (button.default) {
-				this.buttonEls[index].focus()
+		return (() => {
+			const result = []
+			for (let index = 0; index < this.props.buttons.length; index++) {
+				const button = this.props.buttons[index]
+				let item
+				if (button.default) {
+					item = this.refs[`button${index}`].focus()
+				}
+				result.push(item)
 			}
-		}
+			return result
+		})()
 	}
 
 	focusOnFirstElement() {
-		if (this.buttonEls && this.buttonEls[0]) this.buttonEls[0].focus()
+		return this.refs.button0.focus()
 	}
 
 	render() {
@@ -28,8 +34,6 @@ export default class Dialog extends React.Component {
 		if (this.props.width) {
 			styles = { width: this.props.width }
 		}
-
-		this.buttonEls = []
 
 		return (
 			<div className="obojobo-draft--components--modal--dialog" style={styles}>
@@ -39,20 +43,13 @@ export default class Dialog extends React.Component {
 					className={this.props.modalClassName}
 				>
 					{this.props.title ? (
-						<h1
-							className="heading"
-							style={{
-								textAlign: this.props.centered ? 'center' : null
-							}}
-						>
+						<h1 className="heading" style={{ textAlign: this.props.centered ? 'center' : null }}>
 							{this.props.title}
 						</h1>
 					) : null}
 					<div
 						className="dialog-content"
-						style={{
-							textAlign: this.props.centered ? 'center' : null
-						}}
+						style={{ textAlign: this.props.centered ? 'center' : null }}
 					>
 						{this.props.children}
 					</div>
@@ -66,13 +63,7 @@ export default class Dialog extends React.Component {
 								)
 							}
 							buttonPropsOrText.key = index
-							return (
-								<Button
-									key={index}
-									ref={component => (this.buttonEls[index] = component)}
-									{...buttonPropsOrText}
-								/>
-							)
+							return <Button key={index} ref={`button${index}`} {...buttonPropsOrText} />
 						})}
 					</div>
 				</Modal>

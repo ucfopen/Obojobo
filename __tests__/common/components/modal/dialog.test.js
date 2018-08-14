@@ -32,7 +32,7 @@ describe('Dialog', () => {
 			</Dialog>
 		)
 
-		const spy = jest.spyOn(component.instance().buttonEls[0], 'focus')
+		const spy = jest.spyOn(component.instance().refs.button0, 'focus')
 
 		component
 			.find('input')

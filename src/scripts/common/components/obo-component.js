@@ -7,10 +7,6 @@ export default class OboComponent extends React.Component {
 		return { tag: 'div' }
 	}
 
-	getEl() {
-		return this.el
-	}
-
 	componentDidMount() {
 		return this.props.model.processTrigger('onMount')
 	}

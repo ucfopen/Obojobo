@@ -27,6 +27,18 @@ describe('MathEquation adapter', () => {
 		expect(model.modelState).toMatchSnapshot()
 	})
 
+	test('construct sets size to 1 if given invalid value', () => {
+		const attrs = {
+			content: {
+				size: 'tiny'
+			}
+		}
+		const model = new OboModel(attrs)
+
+		MathEquationAdapter.construct(model, attrs)
+		expect(model.modelState.size).toBe('1em')
+	})
+
 	test('clone creates a copy', () => {
 		const a = new OboModel({})
 		const b = new OboModel({})

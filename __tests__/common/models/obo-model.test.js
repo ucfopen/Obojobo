@@ -307,7 +307,7 @@ describe('OboModel', () => {
 		})
 	})
 
-	test.only('toJSON will output a model with children to an object', () => {
+	test('toJSON will output a model with children to an object', () => {
 		const root = OboModel.create({
 			id: 'root',
 			type: 'ObojoboDraft.Modules.Module',

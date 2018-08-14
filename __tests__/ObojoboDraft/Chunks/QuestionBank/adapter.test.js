@@ -25,6 +25,20 @@ describe('QuestionBank adapter', () => {
 		expect(model.modelState).toMatchSnapshot()
 	})
 
+	test('construct allows choose to be Infinity', () => {
+		const attrs = {
+			content: {
+				choose: Infinity,
+				select: 'random-all'
+			}
+		}
+		const model = new OboModel(attrs)
+
+		QuestionBankAdapter.construct(model, attrs)
+		expect(model.modelState.choose).toBe(Infinity)
+		expect(model.modelState).toMatchSnapshot()
+	})
+
 	test('clone creates a copy', () => {
 		const attrs = {
 			content: {

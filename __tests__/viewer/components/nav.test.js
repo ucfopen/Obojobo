@@ -129,6 +129,14 @@ describe('Nav', () => {
 				}
 			},
 			{
+				id: 678,
+				type: 'non-existant-type',
+				label: 'label678',
+				flags: {
+					correct: false
+				}
+			},
+			{
 				id: 6,
 				type: 'sub-link',
 				label: 'label6',

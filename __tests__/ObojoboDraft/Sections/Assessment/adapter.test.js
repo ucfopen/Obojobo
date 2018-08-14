@@ -106,6 +106,25 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		})
 	})
 
+	test('construct builds with rubric', () => {
+		const attrs = {
+			content: {
+				rubric: {
+					type: 'pass-fail'
+				}
+			}
+		}
+		const model = new OboModel(attrs)
+
+		AssessmentAdapter.construct(model, attrs)
+		expect(model.modelState).toMatchObject({
+			attempts: Infinity,
+			rubric: {
+				type: 'pass-fail'
+			}
+		})
+	})
+
 	test('clone creates a copy', () => {
 		const action = {
 			for: '[2,4]',
