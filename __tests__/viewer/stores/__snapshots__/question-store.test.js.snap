@@ -4,8 +4,7 @@ exports[`QuestionStore question:hideExplanation calls triggerChange and updates 
 Array [
   Object {
     "action": "question:hideExplanation",
-    "draftId": undefined,
-    "eventVersion": "1.1.0",
+    "eventVersion": "2.1.0",
     "payload": Object {
       "actor": "testActor",
       "questionId": "questionId",
@@ -19,8 +18,7 @@ exports[`QuestionStore question:scoreClear posts an event 1`] = `
 Array [
   Object {
     "action": "question:scoreClear",
-    "draftId": undefined,
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "payload": Object {
       "itemId": "questionId",
     },
@@ -33,8 +31,7 @@ exports[`QuestionStore question:scoreSet posts an event 1`] = `
 Array [
   Object {
     "action": "question:scoreSet",
-    "draftId": undefined,
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "payload": Object {
       "context": "mockContext",
       "id": "mock-uuid",
@@ -78,8 +75,7 @@ exports[`QuestionStore question:showExplanation calls postEvent and sets questio
 Array [
   Object {
     "action": "question:showExplanation",
-    "draftId": undefined,
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "payload": Object {
       "questionId": "questionId",
     },

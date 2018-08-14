@@ -32,17 +32,16 @@ var APIUtil = {
 		})
 	},
 
-	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
+	postEvent({ action, eventVersion, payload = {}, visitId }) {
 		return (
 			APIUtil.post('/api/events', {
 				event: {
 					action,
-					draft_id: draftId,
 					actor_time: new Date().toISOString(),
 					event_version: eventVersion,
-					visitId,
 					payload
-				}
+				},
+				visitId
 			})
 				.then(processJsonResults)
 				// TODO: Send Caliper event to client host.
@@ -60,37 +59,34 @@ var APIUtil = {
 		return fetch(`/api/drafts/${id}`).then(processJsonResults)
 	},
 
-	requestStart(visitId, draftId) {
+	requestStart({ visitId }) {
 		return APIUtil.post('/api/visits/start', {
-			visitId,
-			draftId
+			visitId
 		}).then(processJsonResults)
 	},
 
-	startAttempt({ draftId, assessmentId, visitId }) {
+	startAttempt({ visitId, assessmentId }) {
 		return APIUtil.post('/api/assessments/attempt/start', {
-			draftId,
-			assessmentId,
+			visitId,
+			assessmentId
+		}).then(processJsonResults)
+	},
+
+	endAttempt({ visitId, attemptId }) {
+		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, {
 			visitId
 		}).then(processJsonResults)
 	},
 
-	endAttempt({ attemptId, draftId, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
-			processJsonResults
-		)
-	},
-
-	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
+	resendLTIAssessmentScore({ visitId, assessmentId }) {
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
-			draftId,
-			assessmentId,
-			visitId
+			visitId,
+			assessmentId
 		}).then(processJsonResults)
 	},
 
-	clearPreviewScores({ draftId, visitId }) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId, visitId }).then(
+	clearPreviewScores(visitId) {
+		return APIUtil.post('/api/assessments/clear-preview-scores', { visitId }).then(
 			processJsonResults
 		)
 	}

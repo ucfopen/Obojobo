@@ -645,11 +645,7 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('startAttempt calls assessment:startAttempt', () => {
-		const model = {
-			get: jest.fn().mockReturnValueOnce('testId')
-		}
-
-		AssessmentUtil.startAttempt(model)
+		AssessmentUtil.startAttempt('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:startAttempt', {
@@ -658,27 +654,18 @@ describe('AssessmentUtil', () => {
 	})
 
 	test('endAttempt calls assessment:endAttempt', () => {
-		const model = {
-			get: jest.fn().mockReturnValueOnce('testId')
-		}
-
 		AssessmentUtil.endAttempt({
-			model,
-			context: 'mockContext',
-			visitId: 'mockVisitId'
+			attemptId: 'testId',
+			context: 'mockContext'
 		}),
 			expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:endAttempt', {
-			value: { id: 'testId', context: 'mockContext', visitId: 'mockVisitId' }
+			value: { attemptId: 'testId', context: 'mockContext' }
 		})
 	})
 
 	test('resendLTIScore calls assessment:resendLTIScore', () => {
-		const model = {
-			get: jest.fn().mockReturnValueOnce('testId')
-		}
-
-		AssessmentUtil.resendLTIScore(model)
+		AssessmentUtil.resendLTIScore('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:resendLTIScore', {

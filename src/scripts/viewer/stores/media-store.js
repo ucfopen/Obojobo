@@ -30,13 +30,16 @@ class MediaStore extends Store {
 
 	show(payload) {
 		const id = payload.value.id
-		const model = OboModel.models[id]
 
 		this.state.shown[id] = true
 		this.triggerChange()
 
-		APIUtil.postEvent(model.getRoot(), 'media:show', '1.0.0', {
-			id
+		APIUtil.postEvent({
+			action: 'media:show',
+			eventVersion: '2.0.0',
+			payload: {
+				id
+			}
 		})
 
 		Dispatcher.trigger('media:shown', { id })
@@ -44,16 +47,19 @@ class MediaStore extends Store {
 
 	hide(payload) {
 		const id = payload.value.id
-		const model = OboModel.models[id]
 		const actor = payload.value.actor || 'user'
 
 		delete this.state.shown[id]
 		delete this.state.zoomById[id]
 		this.triggerChange()
 
-		APIUtil.postEvent(model.getRoot(), 'media:hide', '1.0.0', {
-			id,
-			actor
+		APIUtil.postEvent({
+			action: 'media:hide',
+			eventVersion: '2.0.0',
+			payload: {
+				id,
+				actor
+			}
 		})
 
 		Dispatcher.trigger('media:hidden', { id, actor })
@@ -79,10 +85,14 @@ class MediaStore extends Store {
 
 		const newZoom = zoom === null ? MediaStore.ZOOM_DEFAULT : zoom
 
-		APIUtil.postEvent(model.getRoot(), 'media:setZoom', '1.0.0', {
-			id,
-			previousZoom,
-			zoom: newZoom
+		APIUtil.postEvent({
+			action: 'media:setZoom',
+			eventVersion: '2.0.0',
+			payload: {
+				id,
+				previousZoom,
+				zoom: newZoom
+			}
 		})
 
 		Dispatcher.trigger('media:zoomChanged', { id, zoom: newZoom, previousZoom })
@@ -99,9 +109,13 @@ class MediaStore extends Store {
 
 		this.triggerChange()
 
-		APIUtil.postEvent(model.getRoot(), 'media:resetZoom', '1.0.0', {
-			id,
-			previousZoom
+		APIUtil.postEvent({
+			action: 'media:resetZoom',
+			eventVersion: '2.0.0',
+			payload: {
+				id,
+				previousZoom
+			}
 		})
 
 		Dispatcher.trigger('media:zoomReset', { id, previousZoom })

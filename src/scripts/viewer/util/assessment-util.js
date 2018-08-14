@@ -207,28 +207,28 @@ const AssessmentUtil = {
 		return attemptsByScore[highestScore]
 	},
 
-	startAttempt(model) {
+	// Not used
+	startAttempt(id) {
 		return Dispatcher.trigger('assessment:startAttempt', {
 			value: {
-				id: model.get('id')
+				id
 			}
 		})
 	},
 
-	endAttempt({ model, context, visitId }) {
+	endAttempt({ attemptId, context }) {
 		return Dispatcher.trigger('assessment:endAttempt', {
 			value: {
-				id: model.get('id'),
-				context,
-				visitId
+				attemptId,
+				context
 			}
 		})
 	},
 
-	resendLTIScore(model) {
+	resendLTIScore(id) {
 		return Dispatcher.trigger('assessment:resendLTIScore', {
 			value: {
-				id: model.get('id')
+				id
 			}
 		})
 	}

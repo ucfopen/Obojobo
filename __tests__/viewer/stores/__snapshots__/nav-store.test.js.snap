@@ -264,8 +264,7 @@ exports[`NavStore nav:close event fires and updates state 2`] = `
 Array [
   Object {
     "action": "nav:close",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "visitId": undefined,
   },
 ]
@@ -288,8 +287,7 @@ exports[`NavStore nav:close event fires and updates state 5`] = `
 Array [
   Object {
     "action": "nav:close",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "visitId": undefined,
   },
 ]
@@ -306,8 +304,7 @@ exports[`NavStore nav:goto changes page and posts event 1`] = `
 Array [
   Object {
     "action": "nav:goto",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "payload": Object {
       "from": 7,
       "to": "mock",
@@ -323,8 +320,7 @@ exports[`NavStore nav:gotoPath event calls gotoItem and postEvent 1`] = `
 Array [
   Object {
     "action": "nav:gotoPath",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "payload": Object {
       "from": 7,
       "to": "mock",
@@ -356,8 +352,7 @@ exports[`NavStore nav:lock event fires and updates state 1`] = `
 Array [
   Object {
     "action": "nav:lock",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "visitId": undefined,
   },
 ]
@@ -374,8 +369,7 @@ exports[`NavStore nav:next changes page and posts event 1`] = `
 Array [
   Object {
     "action": "nav:next",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "payload": Object {
       "from": 7,
       "to": "mockNext",
@@ -397,8 +391,7 @@ exports[`NavStore nav:open event fires and updates state 2`] = `
 Array [
   Object {
     "action": "nav:open",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "visitId": undefined,
   },
 ]
@@ -421,8 +414,7 @@ exports[`NavStore nav:prev changes page and posts event 1`] = `
 Array [
   Object {
     "action": "nav:prev",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "payload": Object {
       "from": 7,
       "to": "mockPrev",
@@ -474,8 +466,7 @@ exports[`NavStore nav:toggle event fires and updates state 2`] = `
 Array [
   Object {
     "action": "nav:toggle",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "payload": Object {
       "open": true,
     },
@@ -501,8 +492,7 @@ exports[`NavStore nav:unlock event fires and updates state 2`] = `
 Array [
   Object {
     "action": "nav:unlock",
-    "draftId": "mockDraftId",
-    "eventVersion": "1.0.0",
+    "eventVersion": "2.0.0",
     "visitId": undefined,
   },
 ]

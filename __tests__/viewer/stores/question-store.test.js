@@ -134,8 +134,7 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0][0]).toEqual({
 			action: 'question:setResponse',
-			draftId: 'mockDraftId',
-			eventVersion: '2.1.0',
+			eventVersion: '3.1.0',
 			payload: {
 				assessmentId: undefined,
 				attemptId: undefined,
@@ -166,8 +165,7 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
 		expect(APIUtil.postEvent.mock.calls[0][0]).toEqual({
 			action: 'question:setResponse',
-			draftId: 'mockDraftId',
-			eventVersion: '2.1.0',
+			eventVersion: '3.1.0',
 			payload: {
 				assessmentId: undefined,
 				attemptId: undefined,

@@ -49,7 +49,7 @@ const AssessmentPostTest = props => {
 	}
 
 	const onClickResendScore = () => {
-		AssessmentUtil.resendLTIScore(props.model)
+		AssessmentUtil.resendLTIScore(props.model.get('id'))
 	}
 
 	const ltiState = AssessmentUtil.getLTIStateForModel(props.moduleData.assessmentState, props.model)

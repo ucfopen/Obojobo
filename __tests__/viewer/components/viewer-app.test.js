@@ -393,12 +393,13 @@ describe('ViewerApp', () => {
 	})
 
 	test('onVisibilityChange calls APIUtil when leaving', done => {
+		document.hidden = true
+
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
-		const originalHidden = document.hidden
-		document.hidden = true
+		NavStore.getState.mockReturnValueOnce({ visitId: 'mockVisitId' })
 
 		setTimeout(() => {
 			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
@@ -408,21 +409,24 @@ describe('ViewerApp', () => {
 
 			expect(APIUtil.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:leave',
-				draftId: undefined,
-				eventVersion: '1.0.0',
-				visitId: undefined
+				eventVersion: '2.0.0',
+				payload: {},
+				visitId: 'mockVisitId'
 			})
 
 			component.unmount()
-			document.hidden = originalHidden
 			done()
 		})
 	})
 
 	test('onVisibilityChange calls APIUtil when returning', done => {
+		document.hidden = false
+
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
+
+		NavStore.getState.mockReturnValueOnce({ visitId: 'mockVisitId' })
 
 		setTimeout(() => {
 			component.instance().leaveEvent = { id: 'mockId' }
@@ -433,10 +437,9 @@ describe('ViewerApp', () => {
 
 			expect(APIUtil.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:return',
-				draftId: undefined,
-				eventVersion: '1.0.0',
+				eventVersion: '2.0.0',
 				payload: { relatedEventId: 'mockId' },
-				visitId: undefined
+				visitId: 'mockVisitId'
 			})
 
 			component.unmount()
@@ -667,6 +670,8 @@ describe('ViewerApp', () => {
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
+		NavStore.getState.mockReturnValueOnce({ visitId: 'mockVisitId' })
+
 		setTimeout(() => {
 			component.update()
 			APIUtil.postEvent.mockResolvedValueOnce({ value: {} })
@@ -684,6 +689,8 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
+
+		NavStore.getState.mockReturnValueOnce({ visitId: 'mockVisitId' })
 
 		setTimeout(() => {
 			component.update()
@@ -746,6 +753,8 @@ describe('ViewerApp', () => {
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
+		NavStore.getState.mockReturnValueOnce({ visitId: 'mockVisitId' })
+
 		setTimeout(() => {
 			component.update()
 
@@ -762,6 +771,8 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
+
+		NavStore.getState.mockReturnValueOnce({ visitId: 'mockVisitId' })
 
 		setTimeout(() => {
 			component.update()
@@ -783,6 +794,8 @@ describe('ViewerApp', () => {
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
+		NavStore.getState.mockReturnValueOnce({ visitId: 'mockVisitId' })
+
 		setTimeout(() => {
 			component.update()
 			APIUtil.clearPreviewScores.mockResolvedValueOnce({
@@ -803,6 +816,8 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
+
+		NavStore.getState.mockReturnValueOnce({ visitId: 'mockVisitId' })
 
 		setTimeout(() => {
 			component.update()

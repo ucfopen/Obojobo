@@ -28,9 +28,8 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsByPath[payload.value.path])) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
 							action: 'nav:gotoPath',
-							eventVersion: '1.0.0',
+							eventVersion: '2.0.0',
 							visitId: this.state.visitId,
 							payload: {
 								from: oldNavTargetId,
@@ -49,9 +48,8 @@ class NavStore extends Store {
 					const prev = NavUtil.getPrev(this.state)
 					if (this.gotoItem(prev)) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
 							action: 'nav:prev',
-							eventVersion: '1.0.0',
+							eventVersion: '2.0.0',
 							visitId: this.state.visitId,
 							payload: {
 								from: oldNavTargetId,
@@ -65,9 +63,8 @@ class NavStore extends Store {
 					const next = NavUtil.getNext(this.state)
 					if (this.gotoItem(next)) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
 							action: 'nav:next',
-							eventVersion: '1.0.0',
+							eventVersion: '2.0.0',
 							visitId: this.state.visitId,
 							payload: {
 								from: oldNavTargetId,
@@ -80,9 +77,8 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
 							action: 'nav:goto',
-							eventVersion: '1.0.0',
+							eventVersion: '2.0.0',
 							visitId: this.state.visitId,
 							payload: {
 								from: oldNavTargetId,
@@ -93,36 +89,32 @@ class NavStore extends Store {
 				},
 				'nav:lock': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:lock',
-						eventVersion: '1.0.0',
+						eventVersion: '2.0.0',
 						visitId: this.state.visitId
 					})
 					this.setAndTrigger({ locked: true })
 				},
 				'nav:unlock': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:unlock',
-						eventVersion: '1.0.0',
+						eventVersion: '2.0.0',
 						visitId: this.state.visitId
 					})
 					this.setAndTrigger({ locked: false })
 				},
 				'nav:close': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:close',
-						eventVersion: '1.0.0',
+						eventVersion: '2.0.0',
 						visitId: this.state.visitId
 					})
 					this.setAndTrigger({ open: false })
 				},
 				'nav:open': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:open',
-						eventVersion: '1.0.0',
+						eventVersion: '2.0.0',
 						visitId: this.state.visitId
 					})
 					this.setAndTrigger({ open: true })
@@ -130,9 +122,8 @@ class NavStore extends Store {
 				'nav:toggle': () => {
 					const updatedState = { open: !this.state.open }
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:toggle',
-						eventVersion: '1.0.0',
+						eventVersion: '2.0.0',
 						visitId: this.state.visitId,
 						payload: updatedState
 					})

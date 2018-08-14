@@ -19,7 +19,6 @@ import Header from '../../viewer/components/header'
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
-const { Legacy } = Common.models
 const { DOMUtil } = Common.page
 const { Screen } = Common.page
 const { OboModel } = Common.models
@@ -102,7 +101,7 @@ export default class ViewerApp extends React.Component {
 
 		Dispatcher.trigger('viewer:loading')
 
-		APIUtil.requestStart(visitIdFromUrl, draftIdFromUrl)
+		APIUtil.requestStart({ visitId: visitIdFromUrl })
 			.then(visit => {
 				QuestionStore.init()
 				ModalStore.init()
@@ -228,19 +227,18 @@ export default class ViewerApp extends React.Component {
 	onVisibilityChange() {
 		if (document.hidden) {
 			APIUtil.postEvent({
-				draftId: this.state.model.get('draftId'),
 				action: 'viewer:leave',
-				eventVersion: '1.0.0',
-				visitId: this.state.navState.visitId
+				eventVersion: '2.0.0',
+				visitId: NavStore.getState().visitId,
+				payload: {}
 			}).then(res => {
 				this.leaveEvent = res.value
 			})
 		} else {
 			APIUtil.postEvent({
-				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
-				eventVersion: '1.0.0',
-				visitId: this.state.navState.visitId,
+				eventVersion: '2.0.0',
+				visitId: NavStore.getState().visitId,
 				payload: {
 					relatedEventId: this.leaveEvent.id
 				}
@@ -312,9 +310,9 @@ export default class ViewerApp extends React.Component {
 		this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
 
 		APIUtil.postEvent({
-			draftId: this.state.model.get('draftId'),
 			action: 'viewer:inactive',
 			eventVersion: '3.0.0',
+			visitId: NavStore.getState().visitId,
 			payload: {
 				lastActiveTime: this.lastActiveEpoch,
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
@@ -326,10 +324,9 @@ export default class ViewerApp extends React.Component {
 
 	onReturnFromIdle() {
 		APIUtil.postEvent({
-			draftId: this.state.model.get('draftId'),
 			action: 'viewer:returnFromInactive',
-			eventVersion: '2.0.0',
-			visitId: this.state.navState.visitId,
+			eventVersion: '3.0.0',
+			visitId: NavStore.getState().visitId,
 			payload: {
 				lastActiveTime: this.lastActiveEpoch,
 				inactiveDuration: Date.now() - this.lastActiveEpoch,
@@ -359,18 +356,15 @@ export default class ViewerApp extends React.Component {
 
 	onWindowClose() {
 		APIUtil.postEvent({
-			draftId: this.state.model.get('draftId'),
 			action: 'viewer:close',
-			eventVersion: '1.0.0',
-			visitId: this.state.navState.visitId
+			eventVersion: '2.0.0',
+			visitId: NavStore.getState().visitId,
+			payload: {}
 		})
 	}
 
 	clearPreviewScores() {
-		APIUtil.clearPreviewScores({
-			draftId: this.state.model.get('draftId'),
-			visitId: this.state.navState.visitId
-		}).then(res => {
+		APIUtil.clearPreviewScores(NavStore.getState().visitId).then(res => {
 			if (res.status === 'error' || res.error) {
 				return ModalUtil.show(
 					<SimpleDialog ok width="15em">

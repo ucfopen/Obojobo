@@ -117,7 +117,7 @@ export default class Assessment extends React.Component {
 
 	endAttempt() {
 		return AssessmentUtil.endAttempt({
-			model: this.props.model,
+			attemptId: this.props.model.get('id'),
 			context: this.props.moduleData.navState.context,
 			visitId: this.props.moduleData.navState.visitId
 		})

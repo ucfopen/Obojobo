@@ -33,7 +33,6 @@ const getNewAssessmentObject = assessmentId => ({
 
 class AssessmentStore extends Store {
 	constructor() {
-		let assessment, id, model
 		super('assessmentstore')
 
 		Dispatcher.on('assessment:startAttempt', payload => {
@@ -41,7 +40,7 @@ class AssessmentStore extends Store {
 		})
 
 		Dispatcher.on('assessment:endAttempt', payload => {
-			this.tryEndAttempt(payload.value.id, payload.value.context)
+			this.tryEndAttempt(payload.value.attemptId, payload.value.context)
 		})
 
 		Dispatcher.on('assessment:resendLTIScore', payload => {
@@ -71,7 +70,6 @@ class AssessmentStore extends Store {
 
 	updateAttempts(attemptsByAssessment) {
 		let unfinishedAttempt = null
-		const nonExistantQuestions = []
 		const assessments = this.state.assessments
 		let assessment
 
@@ -151,9 +149,8 @@ class AssessmentStore extends Store {
 		const model = OboModel.models[id]
 
 		return APIUtil.startAttempt({
-			draftId: model.getRoot().get('draftId'),
-			assessmentId: model.get('id'),
-			visitId: NavStore.getState().visitId
+			visitId: NavStore.getState().visitId,
+			assessmentId: model.get('id')
 		})
 			.then(res => {
 				if (res.status === 'error') {
@@ -204,12 +201,10 @@ class AssessmentStore extends Store {
 	}
 
 	tryEndAttempt(id, context) {
-		const model = OboModel.models[id]
-		let assessment = this.state.assessments[id]
+		const assessment = this.state.assessments[id]
 		return APIUtil.endAttempt({
-			attemptId: assessment.current.attemptId,
-			draftId: model.getRoot().get('draftId'),
-			visitId: NavStore.getState().visitId
+			visitId: NavStore.getState().visitId,
+			attemptId: assessment.current.attemptId
 		})
 			.then(res => {
 				if (res.status === 'error') {
@@ -276,9 +271,8 @@ class AssessmentStore extends Store {
 		this.triggerChange()
 
 		return APIUtil.resendLTIAssessmentScore({
-			draftId: assessmentModel.getRoot().get('draftId'),
-			assessmentId: assessmentModel.get('id'),
-			visitId: NavStore.getState().visitId
+			visitId: NavStore.getState().visitId,
+			assessmentId
 		})
 			.then(res => {
 				assessment.ltiNetworkState = LTINetworkStates.IDLE
