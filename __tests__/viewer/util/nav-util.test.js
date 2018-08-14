@@ -220,7 +220,7 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
-	test('getNavTargetModel returns undefined when navTarget has no OboModel', () => {
+	test('getNavTargetModel returns null when navTarget has no OboModel', () => {
 		const mockState = {
 			navTargetId: 'mockId',
 			itemsById: {
@@ -231,7 +231,7 @@ describe('NavUtil', () => {
 		}
 
 		const x = NavUtil.getNavTargetModel(mockState)
-		expect(x).toBe(undefined)
+		expect(x).toBe(null)
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 

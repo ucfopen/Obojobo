@@ -269,7 +269,7 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
           Question 1: Incorrect
         </p>
         <div
-          className="component flip-container obojobo-draft--chunks--question is-not-correct is-active is-mode-practice"
+          className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice"
           data-focussed={false}
           data-id="question"
           data-obo-component={true}

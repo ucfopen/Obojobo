@@ -1,25 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`QuestionBank adapter construct builds with attributes 1`] = `
-OboModel {
-  "content": Object {
-    "choose": 2,
-    "select": "random-all",
-  },
-  "modelState": Object {
-    "choose": 2,
-    "select": "random-all",
-  },
+Object {
+  "choose": 2,
+  "select": "random-all",
 }
 `;
 
 exports[`QuestionBank adapter construct builds without attributes 1`] = `
-OboModel {
-  "content": Object {},
-  "modelState": Object {
-    "choose": Infinity,
-    "select": "sequential",
-  },
+Object {
+  "choose": Infinity,
+  "select": "sequential",
 }
 `;
 

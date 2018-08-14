@@ -31,7 +31,7 @@ export default class Modal extends React.Component {
 
 	onTabTrapFocus() {
 		if (this.props.onClose) {
-			return this.closeButton.focus()
+			return this.refs.closeButton.focus()
 		} else if (this.props.focusOnFirstElement) {
 			return this.props.focusOnFirstElement()
 		}
@@ -47,20 +47,17 @@ export default class Modal extends React.Component {
 			>
 				<input
 					className="first-tab"
-					ref={node => (this.firstTab = node)}
+					ref="firstTab"
 					type="text"
 					onFocus={this.onTabTrapFocus.bind(this)}
 				/>
 				{this.props.onClose ? (
-					<DeleteButton
-						ref={component => (this.closeButton = component)}
-						onClick={this.props.onClose}
-					/>
+					<DeleteButton ref="closeButton" onClick={this.props.onClose} />
 				) : null}
 				<div className="content">{this.props.children}</div>
 				<input
 					className="last-tab"
-					ref={node => (this.lastTab = node)}
+					ref="lastTab"
 					type="text"
 					onFocus={this.onTabTrapFocus.bind(this)}
 				/>

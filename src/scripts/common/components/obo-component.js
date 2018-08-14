@@ -7,6 +7,10 @@ export default class OboComponent extends React.Component {
 		return { tag: 'div' }
 	}
 
+	getEl() {
+		return this.el
+	}
+
 	componentDidMount() {
 		return this.props.model.processTrigger('onMount')
 	}
@@ -52,7 +56,7 @@ export default class OboComponent extends React.Component {
 				data-id={this.props.model.get('id')}
 				data-type={this.props.model.get('type')}
 				data-focussed={isFocussed}
-				ref={node => (this.ref = node)}
+				ref="el"
 			>
 				{this.props.children}
 			</Tag>

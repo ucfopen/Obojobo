@@ -2,23 +2,19 @@
 
 exports[`MathEquation adapter construct builds with attributes 1`] = `
 Object {
-  "modelState": Object {
-    "align": "left",
-    "label": "mockLabel",
-    "latex": "mockEquations",
-    "size": "3em",
-  },
+  "align": "left",
+  "label": "mockLabel",
+  "latex": "mockEquations",
+  "size": "3em",
 }
 `;
 
 exports[`MathEquation adapter construct builds without attributes 1`] = `
 Object {
-  "modelState": Object {
-    "align": "center",
-    "label": "",
-    "latex": "",
-    "size": "1em",
-  },
+  "align": "center",
+  "label": "",
+  "latex": "",
+  "size": "1em",
 }
 `;
 

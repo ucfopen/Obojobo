@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+
 import StyleableText from '../../../src/scripts/common/text/styleable-text'
 import StyleRange from '../../../src/scripts/common/text/style-range'
 
@@ -224,7 +226,9 @@ describe('StyleableText', () => {
 
 	test('toggleStyleText uses the start and end of the text if none given', () => {
 		expect(st.clone().toggleStyleText('b', 2)).toEqual(st.clone().toggleStyleText('b', 2, 15))
-		expect(st.clone().toggleStyleText('b', null, 4)).toEqual(st.clone().toggleStyleText('b', 0, 4))
+		expect(st.clone().toggleStyleText('b', undefined, 4)).toEqual(
+			st.clone().toggleStyleText('b', 0, 4)
+		)
 		expect(st.clone().toggleStyleText('b')).toEqual(st.clone().toggleStyleText('b', 0, 15))
 	})
 
@@ -237,7 +241,7 @@ describe('StyleableText', () => {
 
 	test('styleText uses the start and end of the text if none given', () => {
 		expect(st.clone().styleText('b', 2)).toEqual(st.clone().styleText('b', 2, 15))
-		expect(st.clone().styleText('b', null, 4)).toEqual(st.clone().styleText('b', 0, 4))
+		expect(st.clone().styleText('b', undefined, 4)).toEqual(st.clone().styleText('b', 0, 4))
 		expect(st.clone().styleText('b')).toEqual(st.clone().styleText('b', 0, 15))
 	})
 

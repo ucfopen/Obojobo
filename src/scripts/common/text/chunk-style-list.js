@@ -104,8 +104,9 @@ class ChunkStyleList {
 		return this.normalize()
 	}
 
-	getStyleComparisonsForRange(from, to = null, type = null) {
-		if (to === null) to = from
+	getStyleComparisonsForRange(from, to, type) {
+		type = type || null
+		to = to || from
 
 		const comparisons = {
 			after: [],

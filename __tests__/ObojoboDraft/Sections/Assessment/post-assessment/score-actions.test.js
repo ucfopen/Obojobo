@@ -2,7 +2,7 @@ import ScoreAction from '../../../../../ObojoboDraft/Sections/Assessment/post-as
 
 describe('score-actions', () => {
 	test('constructor builds with no attributes', () => {
-		const action = new ScoreAction(null)
+		const action = new ScoreAction()
 
 		expect(action).toEqual({
 			actions: [],

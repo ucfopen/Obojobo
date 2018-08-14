@@ -2,6 +2,7 @@ import '../../../scss/main.scss'
 import './viewer-app.scss'
 
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 import Common from 'Common'
 import IdleTimer from 'react-idle-timer'
@@ -49,7 +50,7 @@ export default class ViewerApp extends React.Component {
 		super(props)
 
 		Dispatcher.on('viewer:scrollTo', payload => {
-			this.containerEl.scrollTop = payload.value
+			ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value
 		})
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
@@ -128,9 +129,13 @@ export default class ViewerApp extends React.Component {
 				return APIUtil.getDraft(draftIdFromUrl)
 			})
 			.then(({ value: draftModel }) => {
+				const model = OboModel.create(draftModel)
+
+				// console.log('model', draftModel, model)
+
 				NavStore.init(
-					draftModel,
-					draftModel.modelState.start,
+					model,
+					model.modelState.start,
 					window.location.pathname,
 					visitIdFromApi,
 					viewState
@@ -138,7 +143,7 @@ export default class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				this.setState({
-					model: OboModel.create(draftModel),
+					model,
 					navState: NavStore.getState(),
 					mediaState: MediaStore.getState(),
 					questionState: QuestionStore.getState(),
@@ -186,7 +191,7 @@ export default class ViewerApp extends React.Component {
 		return !nextState.loading
 	}
 
-	UNSAFE_componentWillUpdate(nextProps, nextState) {
+	componentWillUpdate(nextProps, nextState) {
 		if (this.state.requestStatus === 'ok') {
 			const navTargetId = this.state.navTargetId
 			const nextNavTargetId = this.state.navState.navTargetId
@@ -255,12 +260,13 @@ export default class ViewerApp extends React.Component {
 	}
 
 	scrollToTop() {
-		const container = this.containerEl
+		const el = ReactDOM.findDOMNode(this.refs.prev)
+		const container = ReactDOM.findDOMNode(this.refs.container)
 
 		if (!container) return
 
-		if (this.prevEl) {
-			return (container.scrollTop = this.prevEl.getBoundingClientRect().height)
+		if (el) {
+			return (container.scrollTop = el.getBoundingClientRect().height)
 		}
 
 		return (container.scrollTop = 0)
@@ -282,12 +288,12 @@ export default class ViewerApp extends React.Component {
 	onScroll() {
 		const focusState = this.state.focusState
 
-		if (focusState.focussedId === null || typeof focusState.focussedId === 'undefined') {
+		if (!focusState.focussedId) {
 			return
 		}
 
 		const component = FocusUtil.getFocussedComponent(focusState)
-		if (component === null) {
+		if (!component) {
 			return
 		}
 
@@ -302,7 +308,10 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onResize() {
-		Dispatcher.trigger('viewer:contentAreaResized', this.containerEl.getBoundingClientRect().width)
+		Dispatcher.trigger(
+			'viewer:contentAreaResized',
+			ReactDOM.findDOMNode(this.refs.container).getBoundingClientRect().width
+		)
 	}
 
 	onDelayResize() {
@@ -310,7 +319,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onIdle() {
-		this.lastActiveEpoch = new Date(this.idleTimer.getLastActiveTime())
+		this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
 
 		APIUtil.postEvent({
 			draftId: this.state.model.get('draftId'),
@@ -424,7 +433,7 @@ export default class ViewerApp extends React.Component {
 
 		const navTargetModel = NavUtil.getNavTargetModel(this.state.navState)
 		let navTargetTitle = '?'
-		if (navTargetModel !== null) {
+		if (navTargetModel && navTargetModel.title) {
 			navTargetTitle = navTargetModel.title
 		}
 
@@ -436,13 +445,11 @@ export default class ViewerApp extends React.Component {
 					typeof prevModel.title !== 'undefined' && prevModel.title !== null
 						? 'Back: ' + prevModel.title
 						: 'Back'
-				prevComp = (
-					<InlineNavButton ref={node => (this.prevEl = node)} type="prev" title={`${navText}`} />
-				)
+				prevComp = <InlineNavButton ref="prev" type="prev" title={`${navText}`} />
 			} else {
 				prevComp = (
 					<InlineNavButton
-						ref={node => (this.prevEl = node)}
+						ref="prev"
 						type="prev"
 						title={`Start of ${this.state.model.title}`}
 						disabled
@@ -456,13 +463,11 @@ export default class ViewerApp extends React.Component {
 					typeof nextModel.title !== 'undefined' && nextModel.title !== null
 						? 'Next: ' + nextModel.title
 						: 'Next'
-				nextComp = (
-					<InlineNavButton ref={node => (this.nextEl = node)} type="next" title={`${navText}`} />
-				)
+				nextComp = <InlineNavButton ref="next" type="next" title={`${navText}`} />
 			} else {
 				nextComp = (
 					<InlineNavButton
-						ref={node => (this.nextEl = node)}
+						ref="next"
 						type="next"
 						title={`End of ${this.state.model.title}`}
 						disabled
@@ -486,14 +491,14 @@ export default class ViewerApp extends React.Component {
 
 		return (
 			<IdleTimer
-				ref={component => (this.idleTimer = component)}
+				ref="idleTimer"
 				element={window}
 				timeout={IDLE_TIMEOUT_DURATION_MS}
 				idleAction={this.onIdle}
 				activeAction={this.onReturnFromIdle}
 			>
 				<div
-					ref={node => (this.containerEl = node)}
+					ref="container"
 					onMouseDown={this.onMouseDown.bind(this)}
 					onScroll={this.onScroll.bind(this)}
 					className={classNames}

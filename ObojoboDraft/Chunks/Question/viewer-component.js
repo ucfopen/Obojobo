@@ -47,7 +47,7 @@ export default class Question extends React.Component {
 		let scoreClassName
 		switch (score) {
 			case null:
-				scoreClassName = ' '
+				scoreClassName = ''
 				break
 
 			case 100:
@@ -99,8 +99,7 @@ export default class Question extends React.Component {
 		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
 		const className =
-			'flip-container' +
-			' obojobo-draft--chunks--question' +
+			'obojobo-draft--chunks--question' +
 			isOrNot(score === 100, 'correct') +
 			' is-active' +
 			` is-mode-${mode}`

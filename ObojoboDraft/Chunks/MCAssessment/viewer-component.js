@@ -225,7 +225,7 @@ export default class MCAssessment extends React.Component {
 		)
 	}
 
-	UNSAFE_componentWillReceiveProps() {
+	componentWillReceiveProps() {
 		this.sortIds()
 	}
 
@@ -249,7 +249,7 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	UNSAFE_componentWillMount() {
+	componentWillMount() {
 		this.sortIds()
 	}
 

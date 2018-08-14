@@ -3,10 +3,8 @@ jest.mock('../../../../src/scripts/common/models/obo-model', () => {
 })
 import OboModel from '../../../../src/scripts/common/models/obo-model'
 
-jest.mock('../../../../src/scripts/common/text-group/text-group', () => {
-	return require('../../../../__mocks__/text-group-adapter-mock').default
-})
 import TextGroup from '../../../../src/scripts/common/text-group/text-group'
+import StyleableText from '../../../../src/scripts/common/text/styleable-text'
 
 import ActionButtonAdapter from '../../../../ObojoboDraft/Chunks/ActionButton/adapter'
 
@@ -48,7 +46,13 @@ describe('ActionButton adapter', () => {
 	test('construct builds with textGroup attributes', () => {
 		const attrs = {
 			content: {
-				textGroup: 'mockText',
+				textGroup: [
+					{
+						text: {
+							value: 'mock-tg'
+						}
+					}
+				],
 				triggers: [
 					{
 						type: 'onClick',
@@ -64,10 +68,9 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
+		const tg = new TextGroup(Infinity, { indent: 0 }, [{ text: new StyleableText('mock-tg') }])
 		const expected = {
-			textGroup: {
-				mockTextGroupValue: 'mockText'
-			},
+			textGroup: tg,
 			align: 'center'
 		}
 
@@ -117,7 +120,13 @@ describe('ActionButton adapter', () => {
 	test('clone creates a copy with a textGroup', () => {
 		const a = {
 			content: {
-				textGroup: 'mock-textgroup-data'
+				textGroup: [
+					{
+						text: {
+							value: 'mock-tg'
+						}
+					}
+				]
 			}
 		}
 		const b = {
@@ -130,22 +139,19 @@ describe('ActionButton adapter', () => {
 		ActionButtonAdapter.construct(modelA, a)
 		ActionButtonAdapter.clone(modelA, modelB)
 
+		const tgA = new TextGroup(Infinity, { indent: 0 }, [{ text: new StyleableText('mock-tg') }])
+		const tgB = new TextGroup(Infinity, { indent: 0 }, [{ text: new StyleableText('mock-tg') }])
+
 		expect(modelA).not.toBe(modelB)
 		expect(modelA.modelState).toEqual({
 			align: 'center',
-			textGroup: {
-				mockTextGroupValue: 'mock-textgroup-data'
-			}
+			textGroup: tgA
 		})
 		expect(modelB.modelState).toEqual({
 			align: 'center',
-			textGroup: {
-				mockTextGroupValue: 'mock-textgroup-data:cloned'
-			}
+			textGroup: tgB
 		})
 		expect(modelA.modelState.textGroup).not.toBe(modelB.modelState.textGroup)
-		expect(modelA.modelState.textGroup).toBeInstanceOf(TextGroup)
-		expect(modelB.modelState.textGroup).toBeInstanceOf(TextGroup)
 	})
 
 	test('toJSON builds a JSON representation with a label', () => {
@@ -198,7 +204,13 @@ describe('ActionButton adapter', () => {
 	test('toJSON builds a JSON representation with a textGroup', () => {
 		const attrs = {
 			content: {
-				textGroup: 'mockText',
+				textGroup: [
+					{
+						text: {
+							value: 'mock-tg'
+						}
+					}
+				],
 				triggers: [
 					{
 						type: 'onClick',
@@ -219,9 +231,17 @@ describe('ActionButton adapter', () => {
 		const expected = {
 			content: {
 				align: 'center',
-				textGroup: {
-					textGroupMockJSON: 'mockText'
-				},
+				textGroup: [
+					{
+						text: {
+							value: 'mock-tg',
+							styleList: null
+						},
+						data: {
+							indent: 0
+						}
+					}
+				],
 				triggers: [
 					{
 						actions: [

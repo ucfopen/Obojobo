@@ -121,7 +121,7 @@ const List = props => {
 	// Remove bullets from nested LIs
 	for (li of Array.from(lis)) {
 		// li will always have .children because MockListElement creates it as an empty array
-		if (li.children[0] && li.children[0].nodeType !== 'text') {
+		if (!li.children[0] || li.children[0].nodeType !== 'text') {
 			li.listStyleType = 'none'
 		}
 	}

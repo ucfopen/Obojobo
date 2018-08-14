@@ -1,6 +1,7 @@
 import './viewer-component.scss'
 
 import React from 'react'
+import ReactDOM from 'react-dom'
 
 import Common from 'Common'
 import Viewer from 'Viewer'
@@ -33,10 +34,10 @@ export default class IFrame extends React.Component {
 	}
 
 	getMeasuredDimensions() {
-		const cs = window.getComputedStyle(this.mainEl, null)
+		const cs = window.getComputedStyle(this.refs.main, null)
 
 		return {
-			width: this.selfEl.getBoundingClientRect().width,
+			width: ReactDOM.findDOMNode(this.refs.self).getBoundingClientRect().width,
 			padding:
 				parseFloat(cs.getPropertyValue('padding-left')) +
 				parseFloat(cs.getPropertyValue('padding-right'))
@@ -45,6 +46,8 @@ export default class IFrame extends React.Component {
 
 	onViewerContentAreaResized() {
 		const dims = this.getMeasuredDimensions()
+
+		if (!dims) return
 
 		this.setState({
 			actualWidth: dims.width,
@@ -65,7 +68,7 @@ export default class IFrame extends React.Component {
 	}
 
 	onClickReload() {
-		this.iframeEl.src = this.createSrc(this.props.model.modelState.src)
+		this.refs.iframe.src = this.createSrc(this.props.model.modelState.src)
 	}
 
 	componentDidMount() {
@@ -83,7 +86,7 @@ export default class IFrame extends React.Component {
 			window.ResizeObserver.prototype.disconnect
 		) {
 			this.resizeObserver = new ResizeObserver(this.boundOnViewerContentAreaResized)
-			this.resizeObserver.observe(this.selfEl)
+			this.resizeObserver.observe(ReactDOM.findDOMNode(this.refs.self))
 		} else {
 			Dispatcher.on('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
 		}
@@ -149,11 +152,7 @@ export default class IFrame extends React.Component {
 		const src = this.createSrc(ms.src)
 
 		return (
-			<OboComponent
-				model={this.props.model}
-				moduleData={this.props.moduleData}
-				ref={node => (this.selfEl = node)}
-			>
+			<OboComponent model={this.props.model} moduleData={this.props.moduleData} ref="self">
 				<div
 					className={
 						'obojobo-draft--chunks--iframe viewer pad' +
@@ -164,7 +163,7 @@ export default class IFrame extends React.Component {
 						isOrNot(ms.src === null, 'missing-src') +
 						isOrNot(scaleDimensions.scale > 1, 'scaled-up')
 					}
-					ref={node => (this.mainEl = node)}
+					ref="main"
 				>
 					<div
 						className="container"
@@ -176,7 +175,7 @@ export default class IFrame extends React.Component {
 								<div className="blocker" style={iframeStyle} />
 							) : (
 								<iframe
-									ref={node => (this.iframeEl = node)}
+									ref="iframe"
 									title={ms.title}
 									src={src}
 									is

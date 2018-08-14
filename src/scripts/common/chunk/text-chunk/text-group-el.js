@@ -25,6 +25,8 @@ const getText = props => {
 			text.replaceText(startIndex, startIndex + match[0].length, event.text)
 		}
 	}
+
+	return text
 }
 
 const TextGroupEl = props => (

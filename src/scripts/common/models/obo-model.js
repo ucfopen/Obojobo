@@ -36,6 +36,7 @@ class OboModel extends Backbone.Model {
 	// OboModel.create('ObojoboDraft.Chunks.List') = new list
 	// OboModel.create({type:'ObojoboDraft.Chunks.Table', content:{}, children:[]}) = new Table with children
 	static create(typeOrNameOrJson, attrs = {}) {
+		// console.log('oboModel.create', typeOrNameOrJson, attrs)
 		// try json
 		if (typeof typeOrNameOrJson === 'object') {
 			const oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
@@ -56,6 +57,8 @@ class OboModel extends Backbone.Model {
 		if (!item) {
 			item = Store.getItemForType(typeOrNameOrJson)
 		}
+
+		// console.log('item be all', item)
 
 		if (!item) {
 			return null

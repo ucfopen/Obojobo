@@ -8,8 +8,10 @@ const replaceDict = {
 }
 
 class ScoreActions {
-	constructor(actions = []) {
+	constructor(actions = null) {
 		this.originalActions = actions
+
+		if (!actions) actions = []
 
 		this.actions = actions.map(action => {
 			let forAttr = action.for

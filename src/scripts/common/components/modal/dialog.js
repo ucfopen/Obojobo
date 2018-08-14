@@ -14,13 +14,13 @@ export default class Dialog extends React.Component {
 		for (let index = 0; index < this.props.buttons.length; index++) {
 			const button = this.props.buttons[index]
 			if (button.default) {
-				button.focus()
+				this.buttonEls[index].focus()
 			}
 		}
 	}
 
 	focusOnFirstElement() {
-		if (this.buttons && this.buttons[0]) this.buttons[0].focus()
+		if (this.buttonEls && this.buttonEls[0]) this.buttonEls[0].focus()
 	}
 
 	render() {
@@ -29,7 +29,7 @@ export default class Dialog extends React.Component {
 			styles = { width: this.props.width }
 		}
 
-		this.buttons = []
+		this.buttonEls = []
 
 		return (
 			<div className="obojobo-draft--components--modal--dialog" style={styles}>
@@ -69,7 +69,7 @@ export default class Dialog extends React.Component {
 							return (
 								<Button
 									key={index}
-									ref={component => (this.buttons[index] = component)}
+									ref={component => (this.buttonEls[index] = component)}
 									{...buttonPropsOrText}
 								/>
 							)

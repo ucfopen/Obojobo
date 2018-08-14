@@ -23,7 +23,7 @@ export default class SingleInputBubble extends React.Component {
 
 	componentDidMount() {
 		return setTimeout(() => {
-			return this.input.select()
+			return this.refs.input.select()
 		})
 	}
 
@@ -33,7 +33,7 @@ export default class SingleInputBubble extends React.Component {
 				<label className="single-input-bubble">
 					<form className="interactable" onSubmit={this.onSubmit.bind(this)}>
 						<input
-							ref={node => (this.input = node)}
+							ref="input"
 							type="text"
 							value={this.props.value}
 							onChange={this.onChange.bind(this)}

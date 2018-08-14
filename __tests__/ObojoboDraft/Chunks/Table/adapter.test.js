@@ -1,18 +1,22 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import TableAdapter from '../../../../ObojoboDraft/Chunks/Table/adapter'
 import GridTextGroup from '../../../../ObojoboDraft/Chunks/Table/grid-text-group'
 import StylableText from '../../../../src/scripts/common/text/styleable-text'
 
 describe('Table adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
+		const model = new OboModel({})
 		TableAdapter.construct(model)
 
 		expect(model.modelState.textGroup).toEqual(GridTextGroup.create(3, 2, null))
 	})
 
 	test('construct builds with attributes', () => {
-		const model = { modelState: {} }
-		TableAdapter.construct(model, {
+		const attrs = {
 			content: {
 				header: true,
 				textGroup: {
@@ -42,21 +46,22 @@ describe('Table adapter', () => {
 					]
 				}
 			}
-		})
-		const tempGridTextGroup = GridTextGroup.create(2, 2, { indent: 0, value: true })
+		}
+		const model = new OboModel(attrs)
+
+		TableAdapter.construct(model, attrs)
+		const tempGridTextGroup = GridTextGroup.create(2, 2, { indent: 0 })
 		tempGridTextGroup.set(0, new StylableText('First column heading'))
 		tempGridTextGroup.set(1, new StylableText('Second column heading'))
 		tempGridTextGroup.set(2, new StylableText('First column second row'))
 		tempGridTextGroup.set(3, new StylableText('Second column second row'))
 
-		expect(model.modelState.textGroup).toEqual(
-			GridTextGroup.fromDescriptor(tempGridTextGroup.toDescriptor(), 4, { indent: 0 }, null)
-		)
+		expect(model.modelState.textGroup).toEqual(tempGridTextGroup)
 	})
 
 	test('clone creates a copy', () => {
-		const a = { modelState: { header: 'mockHeader' } }
-		const b = { modelState: {} }
+		const a = new OboModel({ header: 'mockHeader' })
+		const b = new OboModel({})
 
 		TableAdapter.construct(a)
 		TableAdapter.clone(a, b)
@@ -66,7 +71,7 @@ describe('Table adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		const a = { modelState: { header: 'mockHeader' } }
+		const a = new OboModel({ modelState: { header: 'mockHeader' } })
 		const b = { content: {} }
 
 		TableAdapter.construct(a)
@@ -77,14 +82,7 @@ describe('Table adapter', () => {
 	})
 
 	test('toText creates a text representation', () => {
-		const model = { modelState: {} }
-		const expectedResult = `------------------------
-| First column heading     | Second column heading    |
-------------------------
-| First column second row  | Second column second row |
-------------------------`
-
-		TableAdapter.construct(model, {
+		const attrs = {
 			content: {
 				header: true,
 				textGroup: {
@@ -114,7 +112,16 @@ describe('Table adapter', () => {
 					]
 				}
 			}
-		})
+		}
+		const model = new OboModel(attrs)
+
+		const expectedResult = `------------------------
+| First column heading     | Second column heading    |
+------------------------
+| First column second row  | Second column second row |
+------------------------`
+
+		TableAdapter.construct(model, attrs)
 		expect(TableAdapter.toText(model)).toMatch(expectedResult)
 	})
 })

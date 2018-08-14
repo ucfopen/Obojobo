@@ -12,7 +12,6 @@ import AssessmentUtil from '../../../../../../src/scripts/viewer/util/assessment
 import OboModel from '../../../../../../__mocks__/_obo-model-with-chunks'
 
 const FULL_REVIEW_ALWAYS = 'always'
-const FULL_REVIEW_NEVER = 'never'
 const FULL_REVIEW_AFTER_ALL = 'no-attempts-remaining'
 
 const assessmentJSON = {
@@ -331,38 +330,6 @@ describe('PostTest', () => {
 		}
 		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_ALWAYS
-		const scoreAction = {
-			page: scoreActionJSON
-		}
-
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
-		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
-			{
-				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
-			}
-		])
-
-		const component = renderer.create(
-			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('PostTest component with no review', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			lti: {
-				outcomeServiceHostname: 'mockLTIHost'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
-		model.modelState.review = FULL_REVIEW_NEVER
 		const scoreAction = {
 			page: scoreActionJSON
 		}

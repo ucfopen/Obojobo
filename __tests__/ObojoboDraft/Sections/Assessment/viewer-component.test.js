@@ -68,18 +68,11 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
-		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
 
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
 
-		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
-			'mockAssessmentState',
-			model
-		)
-		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(tree).toMatchSnapshot()
 	})
@@ -91,8 +84,6 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
-		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
 			current: null,
 			attempts: []
@@ -101,11 +92,6 @@ describe('Assessment', () => {
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
 
-		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
-			'mockAssessmentState',
-			model
-		)
-		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(tree).toMatchSnapshot()
 	})
@@ -121,19 +107,12 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
-		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({ current: true })
 		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(false)
 
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
 
-		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
-			'mockAssessmentState',
-			model
-		)
-		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(AssessmentUtil.isCurrentAttemptComplete).toHaveBeenCalledWith(
 			'mockAssessmentState',
@@ -151,8 +130,6 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
-		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
 			current: null,
 			attempts: [{}]
@@ -161,11 +138,6 @@ describe('Assessment', () => {
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
 
-		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
-			'mockAssessmentState',
-			model
-		)
-		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(tree).toMatchSnapshot()
 	})
@@ -180,8 +152,6 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
-		AssessmentUtil.getLTIStateForModel.mockReturnValueOnce(null)
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
 			current: null,
 			attempts: [{}]
@@ -190,11 +160,6 @@ describe('Assessment', () => {
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
 
-		expect(AssessmentUtil.getAssessmentScoreForModel).toHaveBeenCalledWith(
-			'mockAssessmentState',
-			model
-		)
-		expect(AssessmentUtil.getLTIStateForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(tree).toMatchSnapshot()
 	})

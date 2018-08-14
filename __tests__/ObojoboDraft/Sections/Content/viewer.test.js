@@ -9,6 +9,7 @@ jest.mock('../../../../ObojoboDraft/Sections/Content/viewer-component', () => ({
 const Common = require('../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
+import '../../../../ObojoboDraft/Sections/Content/viewer'
 import ViewerComponent from '../../../../ObojoboDraft/Sections/Content/viewer-component'
 
 describe('ObojoboDraft.Sections.Content registration', () => {

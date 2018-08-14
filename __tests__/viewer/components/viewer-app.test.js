@@ -1,9 +1,8 @@
-/* eslint no-undefined: 0 */
-/* eslint no-console: 0 */
+/* eslint-disable no-undefined */
+/* eslint-disable no-console */
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-
 import { mount } from 'enzyme'
 
 jest.mock('../../../src/scripts/viewer/util/api-util')
@@ -20,8 +19,10 @@ jest.mock('../../../src/scripts/viewer/components/nav')
 jest.mock('../../../src/scripts/common/page/dom-util')
 jest.mock('../../../src/scripts/common/page/screen')
 
+import '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
+
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
 import ModalStore from '../../../src/scripts/common/stores/modal-store'

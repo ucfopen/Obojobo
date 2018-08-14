@@ -1,14 +1,18 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import MathEquationAdapter from '../../../../ObojoboDraft/Chunks/MathEquation/adapter'
 
 describe('MathEquation adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
+		const model = new OboModel({})
 		MathEquationAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				latex: 'mockEquations',
@@ -17,14 +21,15 @@ describe('MathEquation adapter', () => {
 				size: '3'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		MathEquationAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		const a = { modelState: {} }
-		const b = { modelState: {} }
+		const a = new OboModel({})
+		const b = new OboModel({})
 
 		MathEquationAdapter.construct(a)
 		MathEquationAdapter.clone(a, b)
@@ -34,13 +39,13 @@ describe('MathEquation adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				latex: 'test',
 				align: 'left'
 			}
 		}
+		const model = new OboModel(attrs)
 		const json = { content: {} }
 
 		MathEquationAdapter.construct(model, attrs)
@@ -50,13 +55,13 @@ describe('MathEquation adapter', () => {
 	})
 
 	test('can be converted to text', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				latex: 'latex goes here',
 				align: 'left'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		MathEquationAdapter.construct(model, attrs)
 		expect(MathEquationAdapter.toText(model)).toMatch('latex goes here')

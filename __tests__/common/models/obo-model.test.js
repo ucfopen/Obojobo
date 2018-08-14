@@ -307,7 +307,7 @@ describe('OboModel', () => {
 		})
 	})
 
-	test('toJSON will output a model with children to an object', () => {
+	test.only('toJSON will output a model with children to an object', () => {
 		const root = OboModel.create({
 			id: 'root',
 			type: 'ObojoboDraft.Modules.Module',
@@ -330,7 +330,7 @@ describe('OboModel', () => {
 					type: 'ObojoboDraft.Sections.Content'
 				}
 			],
-			content: { start: undefined }, //eslint-disable-line
+			content: { start: null },
 			id: 'root',
 			index: 0,
 			metadata: {},

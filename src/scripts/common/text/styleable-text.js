@@ -103,8 +103,8 @@ class StyleableText {
 		return this.insertText(0, text)
 	}
 
-	replaceText(from, to, text = '') {
-		if (text === '') {
+	replaceText(from, to, text) {
+		if (!text) {
 			return this.deleteText(from, to)
 		}
 

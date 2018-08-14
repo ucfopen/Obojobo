@@ -17,6 +17,8 @@ jest.mock('../../../../src/scripts/viewer', () => ({
 const Common = require('../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
+import '../../../../ObojoboDraft/Sections/Assessment/viewer'
+
 import ViewerComponent from '../../../../ObojoboDraft/Sections/Assessment/viewer-component'
 import Viewer from '../../../../src/scripts/viewer'
 

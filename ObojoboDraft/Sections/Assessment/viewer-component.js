@@ -44,6 +44,7 @@ class Assessment extends React.Component {
 		if (assessment === null) {
 			return 'pre-test'
 		}
+
 		if (assessment.current !== null) {
 			return 'test'
 		}
@@ -51,10 +52,11 @@ class Assessment extends React.Component {
 		if (assessment.attempts.length > 0) {
 			return 'post-test'
 		}
+
 		return 'pre-test'
 	}
 
-	UNSAFE_componentWillReceiveProps() {
+	componentWillReceiveProps() {
 		const curStep = this.getCurrentStep()
 		if (curStep !== this.state.step) {
 			this.needsScroll = true

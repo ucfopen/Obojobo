@@ -51,7 +51,7 @@ const AssessmentPostTest = props => {
 
 	let scoreActionsPage
 
-	if (!props.scoreAction.page) {
+	if (props.scoreAction.page) {
 		const pageModel = OboModel.create(props.scoreAction.page)
 		pageModel.parent = props.model
 		const PageComponent = pageModel.getComponentClass()

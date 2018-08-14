@@ -1,14 +1,18 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import HeadingAdapter from '../../../../ObojoboDraft/Chunks/Heading/adapter'
 
 describe('Heading adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
+		const model = new OboModel({})
 		HeadingAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
@@ -16,14 +20,15 @@ describe('Heading adapter', () => {
 				align: 'right'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		HeadingAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone produces a copy', () => {
-		const a = { modelState: {} }
-		const b = { modelState: {} }
+		const a = new OboModel({})
+		const b = new OboModel({})
 
 		HeadingAdapter.construct(a)
 		HeadingAdapter.clone(a, b)
@@ -33,7 +38,6 @@ describe('Heading adapter', () => {
 	})
 
 	test('toJSON creates a JSON representation', () => {
-		const model = { modelState: {} }
 		const json = { content: {} }
 		const attrs = {
 			content: {
@@ -41,6 +45,7 @@ describe('Heading adapter', () => {
 				headingLevel: '2'
 			}
 		}
+		const model = new OboModel(attrs)
 		HeadingAdapter.construct(model, attrs)
 		HeadingAdapter.toJSON(model, json)
 
@@ -48,13 +53,14 @@ describe('Heading adapter', () => {
 	})
 
 	test('toText ', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
 				headingLevel: '2'
 			}
 		}
+		const model = new OboModel(attrs)
+
 		HeadingAdapter.construct(model, attrs)
 		expect(HeadingAdapter.toText(model)).toMatch('example text')
 	})

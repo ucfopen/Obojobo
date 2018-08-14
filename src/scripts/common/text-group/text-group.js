@@ -387,7 +387,7 @@ class TextGroup {
 			}
 
 			for (style in styles) {
-				if (typeof allStyles[style] === 'undefined') {
+				if (typeof allStyles[style] !== 'undefined') {
 					allStyles[style]++
 				} else {
 					allStyles[style] = 1

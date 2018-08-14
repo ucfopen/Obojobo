@@ -13,7 +13,7 @@ export default class Button extends React.Component {
 	}
 
 	focus() {
-		const el = this.button
+		const el = this.refs.button
 		if (el) el.focus()
 	}
 
@@ -35,7 +35,7 @@ export default class Button extends React.Component {
 		return (
 			<div className={className}>
 				<button
-					ref={node => (this.button = node)}
+					ref="button"
 					onClick={this.props.onClick}
 					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
 					disabled={this.props.disabled || this.props.shouldPreventTab}

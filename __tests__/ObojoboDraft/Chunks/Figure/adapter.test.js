@@ -1,17 +1,19 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import FigureAdapter from '../../../../ObojoboDraft/Chunks/Figure/adapter'
-import TextGroup from '../../../../src/scripts/common/text-group/text-group'
-import StylableText from '../../../../src/scripts/common/text/styleable-text'
 
 describe('Figure adapter', () => {
 	test('construct builds without attributes', () => {
-		const model = { modelState: {} }
+		const model = new OboModel({})
 		FigureAdapter.construct(model)
 
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				url: 'http://website.com/image.jpg',
@@ -21,30 +23,32 @@ describe('Figure adapter', () => {
 				alt: 'An image'
 			}
 		}
+		const model = new OboModel(attrs)
 		FigureAdapter.construct(model, attrs)
 
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		const a = { modelState: {} }
-		const b = { modelState: {} }
+		const a = new OboModel({})
+		const b = new OboModel({})
 
 		FigureAdapter.construct(a)
 		FigureAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)
-		expect(a.modelState).toEqual(b.modelState)
+		expect(a).toEqual(b)
 	})
 
 	test('toJSON creates a JSON representation', () => {
-		const model = { modelState: {} }
 		const attrs = {
 			content: {
 				url: 'http://website.com/image.jpg',
-				alt: 'An image'
+				alt: 'An image',
+				textGroup: [{ text: { value: 'mock-tg' } }]
 			}
 		}
+		const model = new OboModel(attrs)
 		const expected = {
 			content: {
 				alt: 'An image',
@@ -52,13 +56,13 @@ describe('Figure adapter', () => {
 				size: 'small',
 				textGroup: [
 					{
+						text: {
+							value: 'mock-tg',
+							styleList: null
+						},
 						data: {
 							align: 'left',
 							indent: 0
-						},
-						text: {
-							styleList: null,
-							value: ''
 						}
 					}
 				],
@@ -73,32 +77,34 @@ describe('Figure adapter', () => {
 		expect(attrs).toEqual(expected)
 	})
 
-	test('toText creates a text representation', () => {
-		const modelAlt = { modelState: {} }
-		const modelTextGroup = { modelState: {} }
-		const tg = TextGroup.create()
-
-		tg.addAt(0, new StylableText('TextGroup text'))
-
-		const attrsAlt = {
+	test('toText creates a text representation (With caption)', () => {
+		const attrs = {
 			content: {
+				textGroup: [{ text: { value: 'mock-tg' } }],
 				url: 'http://website.com/image.jpg',
-				alt: 'Alt text'
+				alt: 'An image'
 			}
 		}
+		const model = new OboModel(attrs)
 
-		const attrsTextGroup = {
-			content: {
-				url: 'http://website.com/image.jpg',
-				textGroup: tg.items
-			}
-		}
-
-		FigureAdapter.construct(modelAlt, attrsAlt)
-		FigureAdapter.construct(modelTextGroup, attrsTextGroup)
-		expect(FigureAdapter.toText(modelAlt, attrsAlt)).toMatch(
-			'Image: http://website.com/image.jpg\n Caption: Alt text'
+		FigureAdapter.construct(model, attrs)
+		expect(FigureAdapter.toText(model, attrs)).toMatch(
+			'Image: http://website.com/image.jpg\n Caption: mock-tg'
 		)
-		expect(FigureAdapter.toText(modelTextGroup, attrsTextGroup)).toMatch('TextGroup text')
+	})
+
+	test('toText creates a text representation (Without caption)', () => {
+		const attrs = {
+			content: {
+				url: 'http://website.com/image.jpg',
+				alt: 'An image'
+			}
+		}
+		const model = new OboModel(attrs)
+
+		FigureAdapter.construct(model, attrs)
+		expect(FigureAdapter.toText(model, attrs)).toMatch(
+			'Image: http://website.com/image.jpg\n Caption: An image'
+		)
 	})
 })

@@ -6,11 +6,10 @@ const getDefaultBulletStyle = function(indent, type) {
 const getStyleWithDefaults = function(indent, defaultType, style = null) {
 	const styleWithDefaults = new ListStyle()
 
-	styleWithDefaults.type =
-		style !== null && typeof style.type !== 'undefined' ? style.type : defaultType
-	styleWithDefaults.start = style !== null && typeof style.start !== 'undefined' ? style.start : 1
+	styleWithDefaults.type = style && style.type ? style.type : defaultType
+	styleWithDefaults.start = style && style.start !== null ? style.start : 1
 	styleWithDefaults.bulletStyle =
-		style !== null && typeof style.bulletStyle !== 'undefined'
+		style && style.bulletStyle
 			? style.bulletStyle
 			: getDefaultBulletStyle(indent, styleWithDefaults.type)
 
@@ -45,11 +44,11 @@ class ListStyles {
 
 	init() {
 		this.type = ListStyles.TYPE_UNORDERED
-		return (this.styles = {})
+		this.styles = {}
 	}
 
 	set(indent, opts) {
-		return (this.styles[indent] = new ListStyle(opts))
+		this.styles[indent] = new ListStyle(opts)
 	}
 
 	get(indent) {

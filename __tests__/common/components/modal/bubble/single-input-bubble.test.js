@@ -27,7 +27,7 @@ describe('SingleInputBubble', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('SingleInputBubble times out', () => {
+	test.only('SingleInputBubble times out', () => {
 		const el = mount(
 			<SingleInputBubble
 				label="Timed"
