@@ -40,7 +40,7 @@
 			#button-create-new-draft { width: 100%; border-radius: 0; }
 			#editor-container { position: absolute; top: 40px; bottom: 0; left: 300px; right: 0; }
 			#editor { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
-			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; }
+			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; font-size: 11pt; }
 			#sidebar { overflow: scroll; position: absolute; left: 0; top: 40px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
 			#sidebar ul { padding: 0; margin: 0; }
 			#sidebar li { list-style-type: none; border-bottom: 1px solid #e6e6e6; padding: 10px; box-sizing: border-box; position: relative; }
@@ -133,7 +133,7 @@
 			var domParser = new DOMParser()
 
 			// Setup unload
-			window.onbeforeunload = (event) => {
+			window.onbeforeunload = function(event) {
 				let unsavedEls = document.getElementsByClassName('unsaved')
 				if(unsavedEls.length > 0) {
 					return true // Returning true will cause browser to ask user to confirm leaving page
@@ -149,11 +149,11 @@
 			}
 
 			// Setup search
-			document.getElementById('remove-search').addEventListener('click', (event) => {
+			document.getElementById('remove-search').addEventListener('click', function(event) {
 				document.getElementById('search-input').value = ''
 				search('')
 			})
-			document.getElementById('search').addEventListener('keyup', (event) => {
+			document.getElementById('search').addEventListener('keyup', function(event) {
 				search(event.target.value)
 			})
 			var draftSearchStrings = [];
@@ -180,7 +180,7 @@
 			var isCtrlPressed = false;
 
 			document.addEventListener('keydown', function(event) {
-				if(event.keyCode === 91) {
+				if(event.key === "Meta") {
 					isCtrlPressed = true;
 					return;
 				}
@@ -195,6 +195,7 @@
 			document.addEventListener('keyup', function(event) {
 				if(event.keyCode === 83 && event.ctrlKey)
 				{
+					event.preventDefault();
 					saveDraft();
 				}
 			})
@@ -388,7 +389,7 @@
 				let linkURLEl = document.getElementById(draftId).getElementsByClassName('link-url')[0]
 				linkURLEl.innerText = 'Copied to the clipboard!'
 				linkURLEl.classList.add('copied')
-				setTimeout(() => {
+				setTimeout(function () {
 					linkURLEl.innerText = 'Get URL'
 					linkURLEl.classList.remove('copied')
 				}, 1000)
@@ -426,12 +427,12 @@
 									document.body.classList.add('saved')
 									document.getElementById('button-save-draft').innerText = 'Saved!'
 									document.getElementById('button-save-draft').disabled = true
-									setTimeout(() => {
+									setTimeout(function() {
 										document.body.classList.remove('saved')
 										document.getElementById('button-save-draft').innerText = 'Save Draft'
 										document.getElementById('button-save-draft').disabled = false
 									}, 1000)
-									if(childWindow) childWindow.location.reload()
+									if(childWindow && childWindow.location && childWindow.location.reload) childWindow.location.reload()
 									updateTitleFromEditor(editingDraftId)
 									moveToTopOfList(editingDraftId)
 									document.getElementById(editingDraftId).classList.remove('unsaved')
