@@ -7,19 +7,32 @@ describe('api response middleware', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockArgs = (() => {
-			let res = {}
-			let req = {}
 			let mockJson = jest.fn().mockImplementation(obj => {
 				return true
 			})
+
 			let mockStatus = jest.fn().mockImplementation(code => {
 				return { json: mockJson }
 			})
+
+			let res = {
+				json: mockJson,
+				status: mockStatus,
+				send: jest.fn(),
+				render: jest.fn()
+			}
+
+			let req = {
+				originalUrl: '/api/mock-url-endpoint',
+				is: jest.fn().mockReturnValue(true),
+				accepts: jest.fn().mockReturnValue(true)
+			}
+
 			let mockNext = jest.fn()
 			res.status = mockStatus
 
-			let apiResponseDecorator = oboRequire('api_response_decorator')
-			apiResponseDecorator(req, res, mockNext)
+			let responseDecorator = oboRequire('express_response_decorator')
+			responseDecorator(req, res, mockNext)
 			return [res, req, mockJson, mockStatus, mockNext]
 		})()
 	})
@@ -34,9 +47,9 @@ describe('api response middleware', () => {
 		expect.assertions(apiFunctions.length * 2)
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
-		apiFunctions.forEach(func => {
-			expect(res).toHaveProperty(func)
-			expect(res[func]).toBeInstanceOf(Function)
+		apiFunctions.forEach(method => {
+			expect(res).toHaveProperty(method)
+			expect(res[method]).toBeInstanceOf(Function)
 		})
 	})
 
@@ -48,8 +61,8 @@ describe('api response middleware', () => {
 	test('functions set status codes as expected', () => {
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
-		apiFunctions.forEach((prop, index) => {
-			res[prop]()
+		apiFunctions.forEach((method, index) => {
+			res[method]()
 		})
 		expect(mockStatus.mock.calls).toEqual([[200], [404], [422], [500], [403], [401]])
 	})
@@ -69,9 +82,9 @@ describe('api response middleware', () => {
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
-		functionsWithMessages.forEach(prop => {
+		functionsWithMessages.forEach(method => {
 			mockJson.mockReset()
-			res[prop]('message text')
+			res[method]('message text')
 			expect(mockJson).toBeCalled()
 			expect(mockJson.mock.calls[0][0].value.message).toBe('message text')
 		})
@@ -82,10 +95,85 @@ describe('api response middleware', () => {
 
 		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 
-		functionsWithMessages.forEach(prop => {
+		functionsWithMessages.forEach(method => {
 			mockJson.mockReset()
-			res[prop]()
+			res[method]()
 			expect(mockJson.mock.calls[0][0].status).toBe('error')
+		})
+	})
+
+	test('responds with json if url starts with /api/ on all endpoints', () => {
+		expect.assertions(apiFunctions.length * 2)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+
+		apiFunctions.forEach(method => {
+			res.send.mockReset()
+			res.json.mockReset()
+
+			res[method]() // execute the method
+			expect(res.send).not.toHaveBeenCalled()
+			expect(res.json).toHaveBeenCalled()
+		})
+	})
+
+	test('responds with TEXT when url is not in api and request IS NOT json', () => {
+		expect.assertions(apiFunctions.length * 2)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		req.originalUrl = '/mock-non-api-url-endpoint'
+		req.is.mockReturnValue(false)
+		req.accepts.mockReturnValue(false)
+
+		apiFunctions.forEach(method => {
+			res.send.mockReset()
+			res.json.mockReset()
+
+			res[method]() // execute the method
+
+			// missing calls render, all others call send
+			if (method === 'missing') {
+				expect(res.render).toHaveBeenCalled()
+			} else {
+				expect(res.send).toHaveBeenCalled()
+			}
+			expect(res.json).not.toHaveBeenCalled()
+		})
+	})
+
+	test('responds with JSON when url is not in api and request IS json', () => {
+		expect.assertions(apiFunctions.length * 2)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		req.originalUrl = '/mock-non-api-url-endpoint'
+		req.is.mockReturnValue(true)
+		req.accepts.mockReturnValue(true)
+
+		apiFunctions.forEach(method => {
+			res.send.mockReset()
+			res.json.mockReset()
+
+			res[method]() // execute the method
+			expect(res.send).not.toHaveBeenCalled()
+			expect(res.json).toHaveBeenCalled()
+		})
+	})
+
+	test('responds with JSON when url is n api and request IS NOT json', () => {
+		expect.assertions(apiFunctions.length * 2)
+
+		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		req.originalUrl = '/api/mock-url-endpoint'
+		req.is.mockReturnValue(false)
+		req.accepts.mockReturnValue(false)
+
+		apiFunctions.forEach(method => {
+			res.send.mockReset()
+			res.json.mockReset()
+
+			res[method]() // execute the method
+			expect(res.send).not.toHaveBeenCalled()
+			expect(res.json).toHaveBeenCalled()
 		})
 	})
 
@@ -107,12 +195,12 @@ describe('api response middleware', () => {
 
 	test('functions return expected values', () => {
 		expect.assertions(apiFunctions.length)
-		apiFunctions.forEach(func => {
+		apiFunctions.forEach(method => {
 			let [res, req, mockJson, mockStatus, mockNext] = mockArgs
 			mockJson.mockImplementationOnce(input => {
 				return 'output'
 			})
-			expect(res[func]('input')).toBe('output')
+			expect(res[method]('input')).toBe('output')
 		})
 	})
 })

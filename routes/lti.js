@@ -2,10 +2,11 @@ const express = require('express')
 const router = express.Router()
 const config = oboRequire('config')
 const ltiLaunch = oboRequire('express_lti_launch')
+const { requireCanViewEditor } = oboRequire('express_validators')
 
 // LTI Instructions
 // mounted as /lti/
-router.get('/', (req, res, next) => {
+router.route('/').get((req, res, next) => {
 	const hostname = config.general.hostname
 	res.render('lti_launch_static', {
 		title: 'Obojobo LTI Launch',
@@ -19,7 +20,7 @@ router.get('/', (req, res, next) => {
 
 // LTI Configuration
 // mounted as /lti/config.xml
-router.get('/config.xml', (req, res, next) => {
+router.route('/config.xml').get((req, res, next) => {
 	res.type('xml')
 
 	const hostname = config.general.hostname
@@ -38,66 +39,47 @@ router.get('/config.xml', (req, res, next) => {
 
 // Canvas LMS Course Navigation launch
 // mounted as /lti/canvas/course_navigation
-router.post('/canvas/course_navigation', [ltiLaunch.courseNavlaunch], (req, res, next) => {
-	return req
-		.getCurrentUser(true)
-		.then(user => {
-			if (!user.canViewEditor) {
-				res.status(403).send('Unauthorized')
-				return
+router
+	.route('/canvas/course_navigation')
+	.post([ltiLaunch.courseNavlaunch, requireCanViewEditor])
+	.post((req, res, next) => res.redirect('/editor'))
+
+const showModuleSelector = (req, res, next) => {
+	try {
+		let returnUrl = null
+		let isAssignment = false
+		if (req.lti && req.lti.body) {
+			returnUrl = req.lti.body.content_item_return_url ? req.lti.body.content_item_return_url : null
+
+			returnUrl = req.lti.body.ext_content_return_url
+				? req.lti.body.ext_content_return_url
+				: returnUrl
+
+			if (req.lti.body.ext_lti_assignment_id) {
+				isAssignment = true
 			}
+		}
 
-			res.redirect('/editor')
-		})
-		.catch(error => {
-			next(error)
-		})
-})
+		if (returnUrl === null) {
+			throw 'Unknown return url for assignment selection'
+		}
 
-// this is an array because we want to add
-// the lit launch assignmentSelection middleware
-// to all times this is executed
-const showModuleSelector = [
-	ltiLaunch.assignmentSelection,
-	(req, res, next) => {
-		return req
-			.getCurrentUser(true)
-			.then(user => {
-				if (!user.canViewEditor) {
-					res.status(403).send('Unauthorized')
-					return
-				}
-
-				let returnUrl = null
-				let isAssignment = false
-				if (req.lti && req.lti.body) {
-					returnUrl = req.lti.body.content_item_return_url
-						? req.lti.body.content_item_return_url
-						: null
-					returnUrl = req.lti.body.ext_content_return_url
-						? req.lti.body.ext_content_return_url
-						: returnUrl
-
-					if (req.lti.body.ext_lti_assignment_id) {
-						isAssignment = true
-					}
-				}
-
-				if (returnUrl === null) {
-					throw 'Unknown return url for assignment selection'
-				}
-
-				res.render('lti_picker', { returnUrl, isAssignment })
-			})
-			.catch(error => {
-				next(error)
-			})
+		res.render('lti_picker', { returnUrl, isAssignment })
+	} catch (error) {
+		res.unexpected(error)
 	}
-]
+}
 
 // mounted as /lti/canvas/resource_selection
-router.post('/canvas/resource_selection', showModuleSelector)
+router
+	.route('/canvas/resource_selection')
+	.post([ltiLaunch.assignmentSelection, requireCanViewEditor])
+	.post(showModuleSelector)
+
 // mounted as /lti/canvas/editor_button
-router.post('/canvas/editor_button', showModuleSelector)
+router
+	.route('/canvas/editor_button')
+	.post([ltiLaunch.assignmentSelection, requireCanViewEditor])
+	.post(showModuleSelector)
 
 module.exports = router

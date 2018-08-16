@@ -3,9 +3,9 @@ var router = express.Router()
 
 // Current User's Profile
 // mounted as /profile
-router.get('/', (req, res, next) => {
-	return req.getCurrentUser().then(currentuser => {
-		let msg = `Hello ${currentuser.username}!`
+router.route('/').get((req, res, next) => {
+	return req.getCurrentUser().then(() => {
+		let msg = `Hello ${req.currentUser.username}!`
 		res.send(msg)
 	})
 })

@@ -8,8 +8,15 @@ const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
+const {
+	checkValidationRules,
+	requireDraftId,
+	requireVisitId,
+	requireCurrentUser,
+	requireCurrentDocument
+} = oboRequire('express_validators')
 
-const getDraftAndStartVisitProps = (req, res, draftDocument) => {
+const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 	const visitStartReturnExtensionsProps = {}
 
 	return draftDocument
@@ -18,7 +25,7 @@ const getDraftAndStartVisitProps = (req, res, draftDocument) => {
 			req,
 			res,
 			draftDocument.draftId,
-			req.body.visitId,
+			visitId,
 			visitStartReturnExtensionsProps
 		)
 		.then(() => {
@@ -28,104 +35,92 @@ const getDraftAndStartVisitProps = (req, res, draftDocument) => {
 
 // Start a new visit
 // mounted as /api/visit/start
-router.post('/start', (req, res, next) => {
-	let currentUser = null
-	let currentDocument = null
-	let visit
-	let viewState
-	let visitStartReturnExtensionsProps
-	let launch
+router
+	.route('/start')
+	.post([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
+	.post((req, res, next) => {
+		let draft
+		let viewState
+		let visitStartReturnExtensionsProps
+		let launch
+		let visit
 
-	const visitId = req.body.visitId
-	const draftId = req.body.draftId
+		const draftId = req.currentDocument.draftId
+		const visitId = req.body.visitId
 
-	logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
+		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
 
-	return req
-		.requireCurrentUser()
-		.then(user => {
-			currentUser = user
+		return Promise.all([
+			VisitModel.fetchById(visitId),
+			viewerState.get(req.currentUser.id, req.currentDocument.contentId),
+			getDraftAndStartVisitProps(req, res, req.currentDocument, visitId)
+		])
+			.then(results => {
+				// expand results
+				;[visit, viewState, visitStartReturnExtensionsProps] = results
 
-			// validate input
-			if (visitId == null || draftId == null) throw new Error('Missing visit and/or draft id!')
-
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
-
-			return Promise.all([
-				VisitModel.fetchById(visitId),
-				viewerState.get(currentUser.id, currentDocument.contentId),
-				getDraftAndStartVisitProps(req, res, currentDocument)
-			])
-		})
-		.then(results => {
-			// expand results
-			;[visit, viewState, visitStartReturnExtensionsProps] = results
-
-			if (visit.is_preview === false) {
-				if (visit.draft_content_id !== currentDocument.contentId) {
-					// error so the student starts a new view w/ newer version
-					// this check doesn't happen in preview mode so authors
-					// can reload the page to see changes easier
-					throw new Error('Visit for older draft version!')
+				if (visit.is_preview === false) {
+					if (visit.draft_content_id !== req.currentDocument.contentId) {
+						// error so the student starts a new view w/ newer version
+						// this check doesn't happen in preview mode so authors
+						// can reload the page to see changes easier
+						throw new Error('Visit for older draft version!')
+					}
+					// load lti launch data
+					return ltiUtil.retrieveLtiLaunch(req.currentUser.id, draftId, 'START_VISIT_API')
 				}
-				// load lti launch data
-				return ltiUtil.retrieveLtiLaunch(currentUser.id, draftId, 'START_VISIT_API')
-			}
-		})
-		.then(launchResult => {
-			launch = launchResult
-			const { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
+			})
+			.then(launchResult => {
+				launch = launchResult
+				const { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
 
-			return insertEvent({
-				action: 'visit:start',
-				actorTime: new Date().toISOString(),
-				userId: currentUser.id,
-				ip: req.connection.remoteAddress,
-				metadata: {},
-				draftId: currentDocument.draftId,
-				isPreview: visit.is_preview,
-				contentId: currentDocument.contentId,
-				payload: { visitId },
-				eventVersion: '1.0.0',
-				caliperPayload: createViewerSessionLoggedInEvent({
-					actor: { type: ACTOR_USER, id: currentUser.id },
-					draftId: currentDocument.draftId,
-					contentId: currentDocument.contentId,
-					sessionIds: getSessionIds(req.session)
+				return insertEvent({
+					action: 'visit:start',
+					actorTime: new Date().toISOString(),
+					userId: req.currentUser.id,
+					ip: req.connection.remoteAddress,
+					metadata: {},
+					draftId,
+					isPreview: visit.is_preview,
+					contentId: req.currentDocument.contentId,
+					payload: { visitId },
+					eventVersion: '1.0.0',
+					caliperPayload: createViewerSessionLoggedInEvent({
+						actor: { type: ACTOR_USER, id: req.currentUser.id },
+						draftId,
+						contentId: req.currentDocument.contentId,
+						sessionIds: getSessionIds(req.session)
+					})
 				})
 			})
-		})
-		.then(() => {
-			logger.log(
-				`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
-					currentUser.id
-				}"`
-			)
+			.then(() => {
+				logger.log(
+					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
+						req.currentUser.id
+					}"`
+				)
 
-			// Build lti data for return
-			const lti = { lis_outcome_service_url: null }
-			if (visit.is_preview === false) {
-				lti.lis_outcome_service_url = launch.reqVars.lis_outcome_service_url
-			}
+				// Build lti data for return
+				const lti = { lis_outcome_service_url: null }
+				if (visit.is_preview === false) {
+					lti.lis_outcome_service_url = launch.reqVars.lis_outcome_service_url
+				}
 
-			res.success({
-				visitId,
-				isPreviewing: visit.is_preview,
-				lti,
-				viewState,
-				extensions: visitStartReturnExtensionsProps
+				res.success({
+					visitId,
+					isPreviewing: visit.is_preview,
+					lti,
+					viewState,
+					extensions: visitStartReturnExtensionsProps
+				})
 			})
-		})
-		.catch(err => {
-			logger.error(err)
-			if (err instanceof Error) {
-				err = err.message
-			}
-			res.reject(err)
-		})
-})
+			.catch(err => {
+				logger.error(err)
+				if (err instanceof Error) {
+					err = err.message
+				}
+				res.reject(err)
+			})
+	})
 
 module.exports = router

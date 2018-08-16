@@ -27,11 +27,35 @@ jest.mock('connect-pg-simple', () => {
 jest.mock('express-session')
 
 const originalWEBPACK = process.env.IS_WEBPACK
+let mockRes
+let mockError
+
+// adds `times` number of mockImplemenationOnce calls to a mock function
+const mockImplementationTimes = (mock, times, implementation) => {
+	let n = times
+	while (n--) {
+		mock.mockImplementationOnce(implementation)
+	}
+
+	return mock
+}
 
 describe('middleware', () => {
 	beforeEach(() => {
 		jest.resetModules()
 		delete process.env.IS_WEBPACK
+		mockRes = {
+			status: jest.fn(),
+			render: jest.fn(),
+			json: jest.fn(),
+			send: jest.fn(),
+			missing: jest.fn(),
+			unexpected: jest.fn(),
+			locals: {}
+		}
+		mockError = {
+			message: 'mockMessage'
+		}
 	})
 	afterAll(() => {
 		process.env.IS_WEBPACK = originalWEBPACK
@@ -48,36 +72,16 @@ describe('middleware', () => {
 				get: jest.fn().mockReturnValueOnce('production')
 			}
 		}
-		let res = {
-			status: jest.fn(),
-			render: jest.fn(),
-			json: jest.fn(),
-			send: jest.fn(),
-			locals: {}
-		}
-		let error = {
-			message: 'mockMessage'
-		}
+
 		let mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
-			use: jest
-				.fn()
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {}) // 10 uses before 404 handler
+			use: mockImplementationTimes(jest.fn(), 10, () => {})
 				.mockImplementationOnce(funct => {
-					funct(req, res, jest.fn())
+					funct(req, mockRes, jest.fn())
 				})
 				.mockImplementationOnce(funct => {
-					funct(error, req, res, jest.fn())
+					funct(mockError, req, mockRes, jest.fn())
 				}),
 			locals: {}
 		}
@@ -98,36 +102,16 @@ describe('middleware', () => {
 				get: jest.fn().mockReturnValueOnce('development')
 			}
 		}
-		let res = {
-			status: jest.fn(),
-			render: jest.fn(),
-			json: jest.fn(),
-			send: jest.fn(),
-			locals: {}
-		}
-		let error = {
-			message: 'mockMessage'
-		}
+
 		let mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
-			use: jest
-				.fn()
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {}) // 10 uses before 404 handler
+			use: mockImplementationTimes(jest.fn(), 10, () => {})
 				.mockImplementationOnce(funct => {
-					funct(req, res, jest.fn())
+					funct(req, mockRes, jest.fn())
 				})
 				.mockImplementationOnce(funct => {
-					funct(error, req, res, jest.fn())
+					funct(mockError, req, mockRes, jest.fn())
 				}),
 			locals: {}
 		}
@@ -151,36 +135,16 @@ describe('middleware', () => {
 				get: jest.fn().mockReturnValueOnce('development')
 			}
 		}
-		let res = {
-			status: jest.fn(),
-			render: jest.fn(),
-			json: jest.fn(),
-			send: jest.fn(),
-			locals: {}
-		}
-		let error = {
-			message: 'mockMessage'
-		}
+
 		let mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
-			use: jest
-				.fn()
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {}) // 10 uses before 404 handler
+			use: mockImplementationTimes(jest.fn(), 10, () => {})
 				.mockImplementationOnce(funct => {
-					funct(req, res, jest.fn())
+					funct(req, mockRes, jest.fn())
 				})
 				.mockImplementationOnce(funct => {
-					funct(error, req, res, jest.fn())
+					funct(mockError, req, mockRes, jest.fn())
 				}),
 			locals: {}
 		}
@@ -202,36 +166,16 @@ describe('middleware', () => {
 				get: jest.fn().mockReturnValueOnce('development')
 			}
 		}
-		let res = {
-			status: jest.fn(),
-			render: jest.fn(),
-			json: jest.fn(),
-			send: jest.fn(),
-			locals: {}
-		}
-		let error = {
-			message: 'mockMessage'
-		}
+
 		let mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
-			use: jest
-				.fn()
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {}) // 10 uses before 404 handler
+			use: mockImplementationTimes(jest.fn(), 10, () => {})
 				.mockImplementationOnce(funct => {
-					funct(req, res, jest.fn())
+					funct(req, mockRes, jest.fn())
 				})
 				.mockImplementationOnce(funct => {
-					funct(error, req, res, jest.fn())
+					funct(mockError, req, mockRes, jest.fn())
 				}),
 			locals: {}
 		}
@@ -253,36 +197,16 @@ describe('middleware', () => {
 				get: jest.fn().mockReturnValueOnce('development')
 			}
 		}
-		let res = {
-			status: jest.fn(),
-			render: jest.fn(),
-			json: jest.fn(),
-			send: jest.fn(),
-			locals: {}
-		}
-		let error = {
-			message: 'mockMessage'
-		}
+
 		let mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
-			use: jest
-				.fn()
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {})
-				.mockImplementationOnce(() => {}) // 10 uses before 404 handler
+			use: mockImplementationTimes(jest.fn(), 10, () => {})
 				.mockImplementationOnce(funct => {
-					funct(req, res, jest.fn())
+					funct(req, mockRes, jest.fn())
 				})
 				.mockImplementationOnce(funct => {
-					funct(error, req, res, jest.fn())
+					funct(mockError, req, mockRes, jest.fn())
 				}),
 			locals: {}
 		}

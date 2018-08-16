@@ -18,12 +18,20 @@ let mockExpress = () => {
 			}
 
 			module.Router = () => {
-				let methods = ['all', 'get', 'post', 'delete', 'put']
-				let obj = {}
-				methods.forEach(m => {
-					obj[m] = mockRouterMethods[m] = jest.fn()
+				// create all the router verbs as jest functions
+				let theVerbs = ['all', 'get', 'post', 'delete', 'put']
+				let mockVerbs = {}
+				theVerbs.forEach(m => {
+					mockVerbs[m] = mockRouterMethods[m] = jest.fn().mockReturnValue(mockVerbs)
 				})
-				return obj
+				mockRouterMethods.route = mockVerbs.route = jest.fn().mockReturnValue(mockVerbs)
+
+				// When route('/website').post() is called
+				// we're going to want to know the context for the post
+				// so we'll keep the main argument for route in scope
+				// obj.route = jest.fn().mockImpleme(theRoute => {
+
+				return mockVerbs
 			}
 
 			return module

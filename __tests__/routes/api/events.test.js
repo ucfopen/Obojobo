@@ -1,125 +1,252 @@
 jest.mock('../../../models/draft')
 jest.mock('../../../db')
-jest.mock('../../../models/visit')
 
-const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
+jest.unmock('express') // we'll use supertest + express for this
 
-let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
+// override requireCurrentUser to provide our own
+let mockCurrentUser
+let mockCurrentVisit
+jest.mock('../../../express_current_user', () => (req, res, next) => {
+	req.requireCurrentUser = () => {
+		req.currentUser = mockCurrentUser
+		return Promise.resolve(mockCurrentUser)
+	}
+	req.getCurrentVisitFromRequest = () => {
+		req.currentVisit = mockCurrentVisit
+		return Promise.resolve()
+	}
+	next()
+})
+
+// ovveride requireCurrentDocument to provide our own
+let mockCurrentDocument
+jest.mock('../../../express_current_document', () => (req, res, next) => {
+	req.requireCurrentDocument = () => {
+		req.currentDocument = mockCurrentDocument
+		return Promise.resolve(mockCurrentDocument)
+	}
+	next()
+})
+
+const validEvent = {
+	event: {
+		actor_time: '2016-09-22T16:57:14.500Z',
+		payload: 'none',
+		action: 'none',
+		draft_id: validUUID(),
+		event_version: '1.0.0'
+	},
+	draftId: validUUID()
+}
+// setup express server
+const db = oboRequire('db')
+const request = require('supertest')
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+
+app.use(bodyParser.json())
+app.use(oboRequire('express_current_user'))
+app.use(oboRequire('express_current_document'))
+app.use('', oboRequire('express_response_decorator'))
+app.use('/api/events', oboRequire('routes/api/events')) // mounting under api so response_decorator assumes json content type
 
 describe('api draft events route', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
-	beforeEach(() => {})
+	beforeEach(() => {
+		db.one.mockReset()
+		db.none.mockReset()
+		mockCurrentUser = { id: 99 }
+		mockCurrentVisit = { is_preview: false }
+		mockCurrentDocument = { draftId: 'mock-id', contentId: 'mock-content-id' }
+	})
 	afterEach(() => {})
 
-	test('registers the expected routes ', () => {
-		oboRequire('routes/api/events')
-		expect(mockRouterMethods.post).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.post).toBeCalledWith('/', expect.any(Function))
-	})
-
 	test('requires current user', () => {
-		expect.assertions(1)
+		expect.assertions(5)
+		mockCurrentUser = null // shouldn't meet auth requirements
 
-		oboRequire('routes/api/events')
-		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
-
-		let mockReq = {
-			requireCurrentUser: () => Promise.reject('no current user')
-		}
-
-		let mockRes = {
-			unexpected: jest.fn(),
-			notAuthorized: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.notAuthorized).toBeCalledWith('no current user')
-			})
-			.catch(err => {
-				expect(true).toBe(false) // shouldn't get here
+		return request(app)
+			.post('/api/events')
+			.send(validEvent)
+			.then(response => {
+				expect(response.statusCode).toBe(401)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
 	test('inserts event', () => {
-		expect.assertions(1)
+		expect.assertions(4)
+		db.one.mockResolvedValueOnce('inserted created_at') // mocks insertEvent
 
-		let db = oboRequire('db')
-		db.one.mockResolvedValueOnce({ created_at: 1 })
-
-		oboRequire('routes/api/events')
-		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
-
-		let mockReq = {
-			connection: { remoteAddress: 5 },
-			body: {
-				event: {
-					actor_time: 1,
-					action: 'none',
-					payload: 'none',
-					draft_id: 88
-				},
-				draftId: 88
-			},
-			requireCurrentUser: () => Promise.resolve({ id: 5 }),
-			requireCurrentDocument: () => Promise.resolve({ draftId: 88, contentId: 12 }),
-			currentDocument: { draftId: 88, contentId: 12 }
-		}
-
-		let mockRes = {
-			success: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.success).toBeCalledWith(null)
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+		return request(app)
+			.post('/api/events')
+			.send(validEvent)
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', null)
 			})
 	})
 
-	test('calls res.unexpected when insert fails', () => {
-		expect.assertions(1)
+	test('new event when insert fails as with unexpected type', () => {
+		expect.assertions(6)
 
-		let db = oboRequire('db')
-		db.one.mockRejectedValueOnce('db fail')
+		db.one.mockRejectedValueOnce('rejected') // mocks insertEvent
 
-		oboRequire('routes/api/events')
-		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
+		return request(app)
+			.post('/api/events')
+			.send(validEvent)
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('message', 'rejected')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+			})
+	})
 
-		let mockReq = {
-			connection: { remoteAddress: 5 },
-			body: {
+	test('new event requires actor_time iso string', () => {
+		expect.assertions(7)
+
+		return request(app)
+			.post('/api/events')
+			.send({
 				event: {
-					actor_time: 1,
+					actor_time: 'some-bad-date-format',
 					action: 'none',
 					payload: 'none',
-					draft_id: 88
+					draft_id: validUUID(),
+					event_version: '1.0.0'
 				},
-				draftId: 88
-			},
-			requireCurrentUser: () => Promise.resolve({ id: 5 }),
-			requireCurrentDocument: () => Promise.resolve({ draftId: 88, contentId: 12 })
-		}
-
-		let mockRes = {
-			unexpected: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('db fail')
+				draftId: validUUID()
 			})
-			.catch(err => {
-				expect(err).toBe('never called')
+			.then(response => {
+				expect(response.statusCode).toBe(422)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('message')
+				expect(response.body.value.message).toContain(
+					'event.actor_time must be a valid ISO8601 date string, got '
+				)
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+			})
+	})
+
+	test('new event requires action not be empty', () => {
+		expect.assertions(6)
+
+		return request(app)
+			.post('/api/events')
+			.send({
+				event: {
+					actor_time: '2016-09-22T16:57:14.500Z',
+					action: '',
+					payload: 'none',
+					draft_id: validUUID(),
+					event_version: '1.0.0'
+				},
+				draftId: validUUID()
+			})
+			.then(response => {
+				expect(response.statusCode).toBe(422)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'event.action must not be empty, got '
+				)
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+			})
+	})
+
+	test('new event requires action exists', () => {
+		expect.assertions(6)
+		return request(app)
+			.post('/api/events')
+			.send({
+				event: {
+					actor_time: '2016-09-22T16:57:14.500Z',
+					payload: 'none',
+					draft_id: validUUID(),
+					event_version: '1.0.0'
+				},
+				draftId: validUUID()
+			})
+			.then(response => {
+				expect(response.statusCode).toBe(422)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'event.action must not be empty, got undefined'
+				)
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+			})
+	})
+
+	test('new event requires valid draft id', () => {
+		expect.assertions(6)
+
+		return request(app)
+			.post('/api/events')
+			.send({
+				event: {
+					actor_time: '2016-09-22T16:57:14.500Z',
+					payload: 'none',
+					action: 'none',
+					draft_id: '55',
+					event_version: '1.0.0'
+				},
+				draftId: '55'
+			})
+			.then(response => {
+				expect(response.statusCode).toBe(422)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'event.draft_id must be a valid UUID, got 55'
+				)
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+			})
+	})
+
+	test('new event requires semver event_version', () => {
+		expect.assertions(6)
+
+		return request(app)
+			.post('/api/events')
+			.send({
+				event: {
+					actor_time: '2016-09-22T16:57:14.500Z',
+					payload: 'none',
+					action: 'none',
+					draft_id: validUUID(),
+					event_version: '1'
+				},
+				draftId: validUUID()
+			})
+			.then(response => {
+				expect(response.statusCode).toBe(422)
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'event.event_version must match a valid semVer string, got 1'
+				)
+				expect(response.body.value).toHaveProperty('type', 'badInput')
 			})
 	})
 })

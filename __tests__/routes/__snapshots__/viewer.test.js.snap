@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`viewer route launch visit inserts event \`visit:create\` 1`] = `
+Array [
+  Object {
+    "action": "visit:create",
+    "actorTime": "2016-09-22T16:57:14.500Z",
+    "caliperPayload": Event {
+      "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+      "action": "Created",
+      "actor": "https://127.0.0.1/api/user/4",
+      "edApp": "https://127.0.0.1/api/system",
+      "eventTime": "2016-09-22T16:57:14.500Z",
+      "extensions": Object {
+        "deactivatedVisitId": "mocked-deactivated-visit-id",
+      },
+      "generated": "https://127.0.0.1/api/visit/mocked-visit-id",
+      "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+      "object": "https://127.0.0.1/api/system",
+      "type": "Event",
+    },
+    "contentId": undefined,
+    "draftId": "00000000-0000-0000-0000-000000000000",
+    "eventVersion": "1.0.0",
+    "ip": "::ffff:127.0.0.1",
+    "isPreview": false,
+    "metadata": Object {},
+    "payload": Object {
+      "deactivatedVisitId": "mocked-deactivated-visit-id",
+      "visitId": "mocked-visit-id",
+    },
+    "userId": 4,
+  },
+]
+`;
+
+exports[`viewer route view visit inserts viewer:open event 1`] = `
+Array [
+  Object {
+    "action": "viewer:open",
+    "actorTime": "2016-09-22T16:57:14.500Z",
+    "caliperPayload": Event {
+      "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+      "action": "Used",
+      "actor": "https://127.0.0.1/api/user/4",
+      "edApp": "https://127.0.0.1/api/system",
+      "eventTime": "2016-09-22T16:57:14.500Z",
+      "extensions": Object {},
+      "generated": "https://127.0.0.1/api/visit/00000000-0000-0000-0000-000000000000",
+      "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+      "object": "https://127.0.0.1/api/system",
+      "type": "ToolUseEvent",
+    },
+    "contentId": undefined,
+    "draftId": "00000000-0000-0000-0000-000000000000",
+    "eventVersion": "1.1.0",
+    "ip": "::ffff:127.0.0.1",
+    "isPreview": false,
+    "metadata": Object {},
+    "payload": Object {
+      "visitId": "00000000-0000-0000-0000-000000000000",
+    },
+    "userId": 4,
+  },
+]
+`;

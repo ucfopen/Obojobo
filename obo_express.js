@@ -14,10 +14,11 @@ global.oboRequire = name => {
 }
 let express = require('express')
 let app = express()
-let apiResponseDecorator = oboRequire('api_response_decorator')
+let responseDecorator = oboRequire('express_response_decorator')
 let loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
 let currentUserMiddleware = oboRequire('express_current_user')
 let currentDocumentMiddleware = oboRequire('express_current_document')
+let currentVisitMiddleware = oboRequire('express_current_visit')
 let ltiLaunch = oboRequire('express_lti_launch')
 let registerChunks = oboRequire('express_register_chunks')
 let oboLtiMiddleware = oboRequire('obo_ims_lti')
@@ -28,9 +29,10 @@ app.on('mount', app => {
 	// =========== MIDDLEWARE ===========
 	app.use(loadBalancerHelperMiddleware)
 	app.use(currentUserMiddleware)
+	app.use(currentVisitMiddleware)
 	app.use(currentDocumentMiddleware)
 	app.use(oboLtiMiddleware)
-	app.use('/api', apiResponseDecorator)
+	app.use('/', responseDecorator)
 
 	// =========== ROUTING & CONTROLERS ===========
 	app.use('/preview', oboRequire('routes/preview'))

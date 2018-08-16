@@ -1,4 +1,4 @@
-mockVirtual('./api_response_decorator')
+mockVirtual('./express_response_decorator')
 mockVirtual('./dev_nonce_store')
 mockVirtual('./express_current_user')
 mockVirtual('./express_current_document')
@@ -11,6 +11,16 @@ jest.mock('db')
 
 let mockOn = jest.fn().mockImplementation((event, func) => {})
 let mockOnCallback
+
+// make circular references in router to support method chaining
+// like router.route('/').get().get()
+const mockRouter = {}
+mockRouter.route = jest.fn().mockReturnValue(mockRouter)
+mockRouter.all = jest.fn().mockReturnValue(mockRouter)
+mockRouter.get = jest.fn().mockReturnValue(mockRouter)
+mockRouter.post = jest.fn().mockReturnValue(mockRouter)
+mockRouter.delete = jest.fn().mockReturnValue(mockRouter)
+
 let mockExpress = (mockOn = false, mockStatic = false) => {
 	jest.mock(
 		'express',
@@ -18,17 +28,12 @@ let mockExpress = (mockOn = false, mockStatic = false) => {
 			let module = () => ({
 				on: mockOn ? mockOn : jest.fn(),
 				use: jest.fn(),
-				get: jest.fn(),
-				post: jest.fn(),
-				delete: jest.fn(),
+				get: mockRouter.get,
+				post: mockRouter.post,
+				delete: mockRouter.delete,
 				static: mockStatic ? mockStatic : jest.fn()
 			})
-			module.Router = () => ({
-				all: jest.fn(),
-				get: jest.fn(),
-				post: jest.fn(),
-				delete: jest.fn()
-			})
+			module.Router = () => mockRouter
 
 			return module
 		},
@@ -63,10 +68,7 @@ describe('obo express', () => {
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_load_balancer_helper'))
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
-		expect(mockApp.use).toHaveBeenCalledWith(
-			expect.any(String),
-			oboRequire('api_response_decorator')
-		)
+		expect(mockApp.use).toHaveBeenCalledWith('/', oboRequire('express_response_decorator'))
 	})
 
 	test('returns an express application', () => {

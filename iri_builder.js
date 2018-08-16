@@ -12,7 +12,7 @@ const createIRI = (host, path, hash, query) => {
 
 const iriFactory = (req, providedHost) => {
 	if (!req && !providedHost)
-		throw Error('Must provide a request object with hostname or provide a host')
+		throw Error('IRI - Must provide a request object with hostname or provide a host')
 
 	let host = providedHost ? providedHost : req.hostname
 

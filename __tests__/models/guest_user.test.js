@@ -36,4 +36,21 @@ describe('guest user model', () => {
 			GuestUser.fetchById(44)
 		}).toThrowError('Cannot fetch Guest User')
 	})
+
+	test('all permissions are falsy', () => {
+		let GuestUser = oboRequire('models/guest_user')
+		let g = new GuestUser()
+
+		expect(g.canViewEditor).toBe(undefined)
+		expect(g.canEditDrafts).toBe(undefined)
+		expect(g.canDeleteDrafts).toBe(undefined)
+		expect(g.canCreateDrafts).toBe(undefined)
+		expect(g.canViewDrafts).toBe(undefined)
+
+		expect(g.hasPermission('canViewEditor')).toBe(false)
+		expect(g.hasPermission('canEditDrafts')).toBe(false)
+		expect(g.hasPermission('canDeleteDrafts')).toBe(false)
+		expect(g.hasPermission('canCreateDrafts')).toBe(false)
+		expect(g.hasPermission('canViewDrafts')).toBe(false)
+	})
 })

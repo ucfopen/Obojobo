@@ -1,9 +1,6 @@
 import BaseCaliper from '../../../../routes/api/events/create_base_caliper_event'
 jest.spyOn(BaseCaliper, 'createEvent')
-const caliperEvents = require('../../../../routes/api/events/create_caliper_event')(
-	null,
-	'testHost'
-)
+const caliperEvents = oboRequire('routes/api/events/create_caliper_event')(null, 'testHost')
 
 const actor = { type: 'user', id: 'testUserId' }
 const assessmentId = 'testAssessment'
