@@ -1,5 +1,5 @@
-let db = oboRequire('db')
-let permissions = oboRequire('config').permissions
+const db = oboRequire('db')
+const permissions = oboRequire('config').permissions
 
 class User {
 	constructor({
@@ -24,7 +24,7 @@ class User {
 		this.roles = roles
 
 		// creates 'canEditDrafts' getter if 'canEditDrafts' is set in config/role_groups.json
-		for (let permName in permissions) {
+		for (const permName in permissions) {
 			Object.defineProperty(this, permName, {
 				get: this.hasPermission.bind(this, permName)
 			})

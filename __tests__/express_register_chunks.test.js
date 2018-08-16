@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 jest.mock('fs', () =>
 	// Node 10 and Jest 23 and fs (used by 'mini-css-extract-plugin')
 	// die when running tests for mysterious reasons.
@@ -23,7 +25,7 @@ mockVirtual('/file/path/express.js', () => ({ expressApp: true }))
 // Prevent webpack from printing to console
 const originalLog = console.log
 console.log = jest.fn()
-const webpack = require('../webpack.config.js')
+require('../webpack.config.js')
 console.log = originalLog
 
 describe('register chunks middleware', () => {
@@ -46,7 +48,7 @@ describe('register chunks middleware', () => {
 	})
 
 	test('registers all nodes as expected', () => {
-		oboRequire('obo_get_installed_modules').mockImplementationOnce(env => {
+		oboRequire('obo_get_installed_modules').mockImplementationOnce(() => {
 			return {
 				express: [],
 				assets: [],
@@ -91,7 +93,7 @@ describe('register chunks middleware', () => {
 	})
 
 	test('adds any express applications', () => {
-		oboRequire('obo_get_installed_modules').mockImplementationOnce(env => {
+		oboRequire('obo_get_installed_modules').mockImplementationOnce(() => {
 			return {
 				express: ['/file/path/express.js'],
 				assets: [],

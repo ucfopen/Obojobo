@@ -1,26 +1,26 @@
 // array of mocked express middleware request arguments
-let mockArgs = (headers = {}) => {
-	let mergedHeaders = Object.assign({ host: 'im_the_host' }, headers)
-	let res = {}
-	let req = {
+const mockArgs = (headers = {}) => {
+	const mergedHeaders = Object.assign({ host: 'im_the_host' }, headers)
+	const res = {}
+	const req = {
 		headers: mergedHeaders,
 		connection: {
 			remoteAddress: '5.5.5.5',
 			encrypted: false
 		}
 	}
-	let mockJson = jest.fn().mockImplementation(obj => {
+	const mockJson = jest.fn().mockImplementation(() => {
 		return true
 	})
-	let mockStatus = jest.fn().mockImplementation(code => {
+	const mockStatus = jest.fn().mockImplementation(() => {
 		return { json: mockJson }
 	})
-	let mockNext = jest.fn()
+	const mockNext = jest.fn()
 	res.status = mockStatus
 
-	let middleware = oboRequire('express_load_balancer_helper')
+	const middleware = oboRequire('express_load_balancer_helper')
 	middleware(req, res, mockNext)
-	return [res, req, mockJson, mockStatus, mockNext]
+	return { res, req, mockJson, mockStatus, mockNext }
 }
 
 describe('load balancer helper middleware', () => {
@@ -30,29 +30,29 @@ describe('load balancer helper middleware', () => {
 	afterEach(() => {})
 
 	test('calls next', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
+		const { mockNext } = mockArgs()
 		expect(mockNext).toBeCalledWith()
 	})
 
 	test('default test params are found', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs()
+		const { req } = mockArgs()
 		expect(req.connection.remoteAddress).toBe('5.5.5.5')
 		expect(req.connection.encrypted).toBe(false)
 		expect(req.headers.host).toBe('im_the_host')
 	})
 
 	test('remoteAddress is updated by x-forwarded-for header', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs({ 'x-forwarded-for': '1.1.1.1' })
+		const { req } = mockArgs({ 'x-forwarded-for': '1.1.1.1' })
 		expect(req.connection.encrypted).toBe(false)
 	})
 
 	test('encrypted is updated by x-forwarded-proto header', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs({ 'x-forwarded-proto': 'https' })
+		const { req } = mockArgs({ 'x-forwarded-proto': 'https' })
 		expect(req.connection.encrypted).toBe(true)
 	})
 
 	test('host is updated by x-host header', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs({ 'x-host': 'crazy_other_host' })
+		const { req } = mockArgs({ 'x-host': 'crazy_other_host' })
 		expect(req.headers.host).toBe('crazy_other_host')
 	})
 })

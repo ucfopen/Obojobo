@@ -458,7 +458,7 @@ const findSecretForKey = key => {
 	// locate a matching key/secret pair
 	const keys = Object.keys(config.lti.keys)
 	for (let i = keys.length - 1; i >= 0; i--) {
-		if (keys[i] == key) {
+		if (keys[i] === key) {
 			return config.lti.keys[keys[i]]
 		}
 	}
@@ -511,7 +511,7 @@ const insertReplaceResultEvent = (userId, draftDocument, launch, outcomeData, lt
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId
 	}).catch(err => {
-		logger.error('There was an error inserting the lti event')
+		logger.error('There was an error inserting the lti event:', err)
 	})
 }
 
@@ -746,7 +746,7 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 
 			result.dbStatus = DB_STATUS_ERROR
 		})
-		.then(scoreId => {
+		.then(() => {
 			insertReplaceResultEvent(userId, draftDocument, requiredData.launch, outcomeData, result)
 		})
 		.catch(error => {

@@ -1,12 +1,12 @@
-let DraftNode = global.oboRequire('models/draft_node')
-let draftNodeStorage = new Map()
+const DraftNode = global.oboRequire('models/draft_node')
+const draftNodeStorage = new Map()
 
-let add = (nodeName, nodeFile) => {
+const add = (nodeName, nodeFile) => {
 	if (draftNodeStorage.has(nodeName)) return
 	draftNodeStorage.set(nodeName, require(nodeFile))
 }
 
-let get = nodeName => {
+const get = nodeName => {
 	if (draftNodeStorage.has(nodeName)) {
 		return draftNodeStorage.get(nodeName)
 	}

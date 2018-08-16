@@ -1,18 +1,21 @@
 #!/usr/bin/env node
+
+/* eslint-disable no-console */
+
 global.oboRequire = name => {
 	return require(`${__dirname}/../${name}`)
 }
-let fs = require('fs')
-let exec = require('child_process').exec
+const fs = require('fs')
+const exec = require('child_process').exec
 
-let usageError = new Error(`Usage:
+const usageError = new Error(`Usage:
 	node sample_draft.js seed
 	node sample_draft.js watch`)
-let defaultId = '00000000-0000-0000-0000-000000000000'
-let oboPath = oboRequire('obo_path')
-let sampleJsonPath = oboPath.expandDraftPath('test-object.json')
-let writeJsonDraftToDbPath = `${__dirname}/write_json_draft_to_db`
-let db = oboRequire('db')
+const defaultId = '00000000-0000-0000-0000-000000000000'
+const oboPath = oboRequire('obo_path')
+const sampleJsonPath = oboPath.expandDraftPath('test-object.json')
+const writeJsonDraftToDbPath = `${__dirname}/write_json_draft_to_db`
+const db = oboRequire('db')
 
 try {
 	if (process.argv.length <= 2) throw usageError
@@ -52,7 +55,7 @@ try {
 			break
 
 		case 'watch':
-			fs.watch(sampleJsonPath, { encoding: 'buffer' }, (eventType, filename) => {
+			fs.watch(sampleJsonPath, { encoding: 'buffer' }, () => {
 				exec(
 					`node ${writeJsonDraftToDbPath} update ${sampleJsonPath} ${defaultId}`,
 					{},
@@ -73,7 +76,6 @@ try {
 
 		default:
 			throw usageError
-			break
 	}
 } catch (e) {
 	console.error(e.message)

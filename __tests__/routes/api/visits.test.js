@@ -10,9 +10,11 @@ jest.mock('../../../db')
 jest.unmock('express') // we'll use supertest + express for this
 
 // override requireCurrentUser to provide our own
+/* eslint-disable no-undefined */
+
 let mockCurrentUser
 let mockCurrentVisit
-let mockSaveSessionSuccess = true
+const mockSaveSessionSuccess = true
 jest.mock('../../../express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
@@ -41,7 +43,6 @@ jest.mock('../../../express_current_document', () => (req, res, next) => {
 })
 
 // setup express server
-const db = oboRequire('db')
 const request = require('supertest')
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -59,10 +60,8 @@ describe('api visits route', () => {
 	const VisitModel = oboRequire('models/visit')
 	const insertEvent = oboRequire('insert_event')
 	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
-	const Draft = oboRequire('models/draft')
 	const viewerState = oboRequire('viewer/viewer_state')
 	const db = oboRequire('db')
-	const User = oboRequire('models/user')
 	const ltiUtil = oboRequire('lti')
 
 	beforeAll(() => {})
@@ -268,7 +267,7 @@ describe('api visits route', () => {
 	test('visit:start event and createViewerSessionLoggedInEvent created', () => {
 		expect.assertions(4)
 		// resolve ltiLaunch lookup
-		let launch = {
+		const launch = {
 			reqVars: {
 				lis_outcome_service_url: 'howtune.com'
 			}

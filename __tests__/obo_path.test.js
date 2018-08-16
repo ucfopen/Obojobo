@@ -1,11 +1,11 @@
 jest.mock('fs')
-let fs = require('fs')
+const fs = require('fs')
 fs.__setMockFileContents(
 	'./config/draft.json',
 	'{"test":{"paths":["./__tests__/test_draft_path/"]}}'
 )
 fs.__setMockFileContents('./__tests__/test_draft_path/', '{}')
-let oboPath = oboRequire('obo_path')
+const oboPath = oboRequire('obo_path')
 
 describe('obo path', () => {
 	beforeAll(() => {})

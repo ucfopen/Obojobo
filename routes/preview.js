@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const logger = oboRequire('logger')
 const Visit = oboRequire('models/visit')
 const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
@@ -18,7 +17,7 @@ const {
 router
 	.route('/:draftId')
 	.get([requireCanViewDrafts, requireCurrentDocument, requireDraftId, checkValidationRules])
-	.get((req, res, next) => {
+	.get((req, res) => {
 		let visitId
 		return Visit.createPreviewVisit(req.currentUser.id, req.currentDocument.draftId)
 			.then(({ visitId: newVisitId, deactivatedVisitId }) => {

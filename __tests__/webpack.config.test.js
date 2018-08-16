@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import lti from '../lti'
 import middleware from '../middleware.default.js'
 

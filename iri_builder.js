@@ -1,4 +1,4 @@
-let url = require('url')
+const url = require('url')
 
 const createIRI = (host, path, hash, query) => {
 	return url.format({
@@ -11,10 +11,9 @@ const createIRI = (host, path, hash, query) => {
 }
 
 const iriFactory = (req, providedHost) => {
-	if (!req && !providedHost)
-		throw Error('IRI - Must provide a request object with hostname or provide a host')
+	if (!req && !providedHost) {throw Error('IRI - Must provide a request object with hostname or provide a host')}
 
-	let host = providedHost ? providedHost : req.hostname
+	const host = providedHost ? providedHost : req.hostname
 
 	return {
 		getIRI: path => createIRI(host, `${path}`),
@@ -22,8 +21,7 @@ const iriFactory = (req, providedHost) => {
 		getEdAppIRI: () => createIRI(host, '/api/system'),
 
 		getViewerClientIRI: (draftId, contentId, element) => {
-			if (element && draftId && contentId)
-				return createIRI(host, `/api/viewer/client/${element}?draftId=${draftId}&contentId=${contentId}`)
+			if (element && draftId && contentId) {return createIRI(host, `/api/viewer/client/${element}?draftId=${draftId}&contentId=${contentId}`)}
 			if (draftId && contentId) return createIRI(host, `/api/viewer/client?draftId=${draftId}&contentId=${contentId}`)
 			if (draftId) return createIRI(host, `/api/viewer/client?draftId=${draftId}`)
 			else return createIRI(host, '/api/viewer/client')

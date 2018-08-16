@@ -5,7 +5,6 @@ const caliperEvents = oboRequire('routes/api/events/create_caliper_event')(null,
 const actor = { type: 'user', id: 'testUserId' }
 const assessmentId = 'testAssessment'
 const attemptId = 'testAttemptId'
-const attemptIRI = 'testAttemptIRI'
 const draftId = 'testDraftId'
 const contentId = 'testContentId'
 const extensions = { foo: 'bar' }
@@ -25,10 +24,10 @@ let originaltoISOString
 describe('Caliper event creator', () => {
 	beforeAll(() => {
 		originaltoISOString = Date.prototype.toISOString
-		Date.prototype.toISOString = () => 'mockDate'
+		Date.prototype.toISOString = () => 'mockDate' //eslint-disable-line no-extend-native
 	})
 	afterAll(() => {
-		Date.prototype.toISOString = originaltoISOString
+		Date.prototype.toISOString = originaltoISOString //eslint-disable-line no-extend-native
 	})
 
 	test('createNavigationEvent', () => {

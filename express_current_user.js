@@ -1,19 +1,19 @@
-let User = oboRequire('models/user')
-let GuestUser = oboRequire('models/guest_user')
-let logger = oboRequire('logger')
+const User = oboRequire('models/user')
+const GuestUser = oboRequire('models/guest_user')
+const logger = oboRequire('logger')
 
-let setCurrentUser = (req, user) => {
+const setCurrentUser = (req, user) => {
 	if (!(user instanceof User)) throw new Error('Invalid User for Current user')
 	req.session.currentUserId = user.id
 }
 
-let resetCurrentUser = req => {
+const resetCurrentUser = req => {
 	req.session.currentUserId = null
 	req.currentUser = null
 }
 
 // returns a Promise!!!
-let getCurrentUser = (req, isRequired = false) => {
+const getCurrentUser = (req, isRequired = false) => {
 	// return early if already verified
 	if (req.currentUser) return Promise.resolve(req.currentUser)
 
@@ -46,9 +46,9 @@ let getCurrentUser = (req, isRequired = false) => {
 }
 
 // sugar for getCurrentUser(true)
-let requireCurrentUser = req => req.getCurrentUser(true)
+const requireCurrentUser = req => req.getCurrentUser(true)
 
-let saveSessionPromise = req => {
+const saveSessionPromise = req => {
 	return new Promise((resolve, reject) => {
 		req.session.save(err => {
 			if (err) return reject(err)

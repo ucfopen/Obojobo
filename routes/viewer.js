@@ -1,13 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const Visit = oboRequire('models/visit')
-const logger = oboRequire('logger')
 const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
 const ltiLaunch = oboRequire('express_lti_launch')
-const db = oboRequire('db')
 const {
 	checkValidationRules,
 	requireCurrentDocument,
@@ -20,7 +18,7 @@ const {
 router
 	.route('/:draftId/:page?')
 	.post([ltiLaunch.assignment, requireCurrentUser, requireCurrentDocument, checkValidationRules])
-	.post((req, res, next) => {
+	.post((req, res) => {
 		let createdVisitId
 
 		return Visit.createVisit(
@@ -66,7 +64,7 @@ router
 router
 	.route('/:draftId/visit/:visitId*')
 	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
-	.get((req, res, next) => {
+	.get((req, res) => {
 		let currentVisit
 		return Visit.fetchById(req.params.visitId, false)
 			.then(visit => {

@@ -1,4 +1,4 @@
-let DraftNode = require('../models/draft_node')
+const DraftNode = require('../models/draft_node')
 
 class TestNode extends DraftNode {}
 

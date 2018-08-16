@@ -1,7 +1,7 @@
 // Collects all children DraftNodes into a Set() object
 // optionally recursive
 const collectChildrenNodes = (draftNode, set, recurse) => {
-	for (let i of draftNode.children) {
+	for (const i of draftNode.children) {
 		if (!i.node.id) {
 			throw new Error('Unable to add child node with missing id')
 		}
@@ -32,10 +32,8 @@ class DraftNode {
 	registerEvents(events) {
 		if (!this._listeners) this._listeners = new Map()
 
-		let i = 0
-		for (let event in events) {
+		for (const event in events) {
 			this._listeners.set(event, events[event].bind(this))
-			i++
 		}
 	}
 
@@ -47,14 +45,14 @@ class DraftNode {
 		let promises = []
 
 		if (this._listeners) {
-			let eventListener = this._listeners.get(event)
+			const eventListener = this._listeners.get(event)
 			if (eventListener) {
-				let rtn = eventListener.apply(this, Array.prototype.slice.call(arguments, 1))
+				const rtn = eventListener.apply(this, Array.prototype.slice.call(arguments, 1))
 				if (rtn) promises.push(rtn)
 			}
 		}
 
-		for (let i in this.children) {
+		for (const i in this.children) {
 			promises = promises.concat(this.children[i].yell.apply(this.children[i], arguments))
 		}
 
@@ -62,10 +60,10 @@ class DraftNode {
 	}
 
 	toObject() {
-		let o = Object.assign({}, this.node)
+		const o = Object.assign({}, this.node)
 		o.children = []
 
-		for (let i in this.children) {
+		for (const i in this.children) {
 			o.children.push(this.children[i].toObject())
 		}
 

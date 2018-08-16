@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const logger = oboRequire('logger')
 const db = oboRequire('db')
 const { requireCanViewEditor } = oboRequire('express_validators')
 
-let displayEditor = (req, res, next) => {
+const displayEditor = (req, res) => {
 	return db
 		.any(
 			`

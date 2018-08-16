@@ -1,18 +1,17 @@
-let db = jest.fn()
 let send_replace_resultCallback
 
-let __resetCallbackForSend_replace_result = () => {
+const __resetCallbackForSend_replace_result = () => {
 	send_replace_resultCallback = jest.fn().mockImplementationOnce((score, callback) => {
 		callback(null, true)
 	})
 }
 
-let __registerCallbackForSend_replace_result = callback => {
+const __registerCallbackForSend_replace_result = callback => {
 	send_replace_resultCallback = callback
 }
 
 class OutcomeService {
-	constructor(object) {
+	constructor() {
 		this.send_replace_result = send_replace_resultCallback
 	}
 }

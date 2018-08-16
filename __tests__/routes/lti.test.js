@@ -9,7 +9,6 @@ jest.mock('../../config', () => ({
 }))
 
 // ovveride requireCurrentDocument to provide our own
-let mockLtiLaunch
 jest.mock('../../express_lti_launch', () => ({
 	assignmentSelection: (req, res, next) => {
 		next()
@@ -39,18 +38,7 @@ const addMockPropsToReq = (req, res, next) => {
 	next()
 }
 
-const validEvent = {
-	event: {
-		actor_time: '2016-09-22T16:57:14.500Z',
-		payload: 'none',
-		action: 'none',
-		draft_id: validUUID(),
-		event_version: '1.0.0'
-	},
-	draftId: validUUID()
-}
 // setup express server
-const db = oboRequire('db')
 const request = require('supertest')
 const express = require('express')
 const bodyParser = require('body-parser')

@@ -1,8 +1,8 @@
 'use strict'
 
-var dbm
-var type
-var seed
+let dbm
+let type
+let seed
 
 /**
  * We receive the dbmigrate dependency from dbmigrate initially.
@@ -35,9 +35,9 @@ exports.up = function(db) {
 			.then(result => {
 				let updates = []
 				result.rows.forEach(row => {
-					let draftId = row.draft_id
-					let created = row.created_at
-					let rowId = row.id
+					const draftId = row.draft_id
+					const created = row.created_at
+					const rowId = row.id
 
 					// latest
 					updates.push(`

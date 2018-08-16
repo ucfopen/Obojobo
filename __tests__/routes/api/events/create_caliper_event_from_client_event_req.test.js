@@ -89,13 +89,13 @@ describe('Caliper event from req', () => {
 	})
 
 	test('uses throws error when currentUser is missing', () => {
-		let mockReq = buildMockReq('nav:goto', eventsToTest['nav:goto'])
+		const mockReq = buildMockReq('nav:goto', eventsToTest['nav:goto'])
 		mockReq.currentUser = null
 		expect(() => caliperEvent(mockReq)).toThrowError('Missing required arguments: actor.id')
 	})
 
 	test('uses handles when currentDocument is missing', () => {
-		let mockReq = buildMockReq('nav:goto', eventsToTest['nav:goto'])
+		const mockReq = buildMockReq('nav:goto', eventsToTest['nav:goto'])
 		mockReq.currentDocument = null
 		const result = caliperEvent(mockReq)
 		expect(result).toHaveProperty('object', 'https://hostnameReq/api/draft-content/null#toReq')

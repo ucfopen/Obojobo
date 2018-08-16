@@ -14,7 +14,6 @@ let mockCurrentUser
 let mockCurrentVisit
 let mockSaveSessionSuccess = true
 jest.mock('../../express_current_user', () => (req, res, next) => {
-	currentReq = req
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
@@ -30,7 +29,6 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 	next()
 })
 
-let currentReq
 // ovveride requireCurrentDocument to provide our own
 let mockCurrentDocument
 jest.mock('../../express_current_document', () => (req, res, next) => {
@@ -56,7 +54,6 @@ jest.mock('../../express_lti_launch', () => ({
 }))
 
 // setup express server
-const db = oboRequire('db')
 const request = require('supertest')
 const express = require('express')
 const app = express()
@@ -70,15 +67,10 @@ app.use('/', oboRequire('routes/viewer'))
 describe('viewer route', () => {
 	const insertEvent = oboRequire('insert_event')
 	const VisitModel = oboRequire('models/visit')
-	const mockYell = jest.fn().mockResolvedValue({
-		draftId: 555,
-		contentId: 12
-	})
 
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
-		currentReq = null
 		mockCurrentVisit = { is_preview: false }
 		mockCurrentUser = { id: 4 }
 		insertEvent.mockReset()

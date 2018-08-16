@@ -6,7 +6,6 @@ module.exports = req => {
 	const currentUser = req.currentUser || { id: null }
 	const currentDocument = req.currentDocument || { draftId: null, contentId: null }
 	const clientEvent = req.body.event
-	let sessionId, launchId
 	const sessionIds = getSessionIds(req.session)
 
 	const actorFromType = type => {

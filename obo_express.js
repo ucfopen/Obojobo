@@ -12,18 +12,17 @@
 global.oboRequire = name => {
 	return require(`${__dirname}/${name}`)
 }
-let express = require('express')
-let app = express()
-let responseDecorator = oboRequire('express_response_decorator')
-let loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
-let currentUserMiddleware = oboRequire('express_current_user')
-let currentDocumentMiddleware = oboRequire('express_current_document')
-let currentVisitMiddleware = oboRequire('express_current_visit')
-let ltiLaunch = oboRequire('express_lti_launch')
-let registerChunks = oboRequire('express_register_chunks')
-let oboLtiMiddleware = oboRequire('obo_ims_lti')
-let viewerMiddleware = oboRequire('viewer_events')
-
+const express = require('express')
+const app = express()
+const responseDecorator = oboRequire('express_response_decorator')
+const loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
+const currentUserMiddleware = oboRequire('express_current_user')
+const currentDocumentMiddleware = oboRequire('express_current_document')
+const currentVisitMiddleware = oboRequire('express_current_visit')
+const registerChunks = oboRequire('express_register_chunks')
+const oboLtiMiddleware = oboRequire('obo_ims_lti')
+oboRequire('viewer_events')
+oboRequire('express_lti_launch')
 // when the parent app is mounted
 app.on('mount', app => {
 	// =========== MIDDLEWARE ===========

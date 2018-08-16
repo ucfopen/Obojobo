@@ -23,7 +23,7 @@ const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 router
 	.route('/:draftId')
 	.get([requireDraftId, checkValidationRules])
-	.get((req, res, next) => {
+	.get((req, res) => {
 		const draftId = req.params.draftId
 
 		return DraftModel.fetchById(draftId)
@@ -46,7 +46,7 @@ router
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post((req, res, next) => {
+	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
 			.then(newDraft => {
 				res.success(newDraft)
@@ -59,7 +59,7 @@ router
 router
 	.route('/:draftId')
 	.post([requireCanCreateDrafts, requireDraftId, checkValidationRules])
-	.post((req, res, next) => {
+	.post((req, res) => {
 		return Promise.resolve()
 			.then(() => {
 				let xml
@@ -110,7 +110,7 @@ router
 router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
-	.delete((req, res, next) => {
+	.delete((req, res) => {
 		return db
 			.none(
 				`
@@ -133,7 +133,7 @@ router
 router
 	.route('/')
 	.get(requireCanViewDrafts)
-	.get((req, res, next) => {
+	.get((req, res) => {
 		return db
 			.any(
 				`

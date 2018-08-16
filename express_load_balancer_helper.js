@@ -1,18 +1,18 @@
-let resolveIP = req => {
+const resolveIP = req => {
 	// make sure the remoteAddress is set behind a load balancer
 	if (req.headers['x-forwarded-for']) {
 		req.connection.remoteAddress = req.headers['x-forwarded-for']
 	}
 }
 
-let resolveSecure = req => {
+const resolveSecure = req => {
 	// if we're behind a load balancer or something
 	if (req.headers['x-forwarded-proto'] === 'https') {
 		req.connection.encrypted = true
 	}
 }
 
-let resovleHost = req => {
+const resovleHost = req => {
 	// if we're behind a load balancer or something
 	if (req.headers['x-host']) {
 		req.headers.host = req.headers['x-host']

@@ -63,7 +63,7 @@ describe('middleware', () => {
 
 	test('calls with no errors', () => {
 		const middleware = require('../middleware.default')
-		let req = {
+		const req = {
 			path: {
 				startsWith: jest.fn()
 			},
@@ -73,7 +73,7 @@ describe('middleware', () => {
 			}
 		}
 
-		let mockApp = {
+		const mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
 			use: mockImplementationTimes(jest.fn(), 10, () => {})
@@ -93,7 +93,7 @@ describe('middleware', () => {
 
 	test('calls with html allowed', () => {
 		const middleware = require('../middleware.default')
-		let req = {
+		const req = {
 			path: {
 				startsWith: jest.fn()
 			},
@@ -103,7 +103,7 @@ describe('middleware', () => {
 			}
 		}
 
-		let mockApp = {
+		const mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
 			use: mockImplementationTimes(jest.fn(), 10, () => {})
@@ -123,7 +123,7 @@ describe('middleware', () => {
 
 	test('calls with json allowed', () => {
 		const middleware = require('../middleware.default')
-		let req = {
+		const req = {
 			path: {
 				startsWith: jest.fn()
 			},
@@ -136,7 +136,7 @@ describe('middleware', () => {
 			}
 		}
 
-		let mockApp = {
+		const mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
 			use: mockImplementationTimes(jest.fn(), 10, () => {})
@@ -157,7 +157,7 @@ describe('middleware', () => {
 	test('calls with WEBPACK', () => {
 		process.env.IS_WEBPACK = true
 		const middleware = require('../middleware.default')
-		let req = {
+		const req = {
 			path: {
 				startsWith: jest.fn()
 			},
@@ -167,7 +167,7 @@ describe('middleware', () => {
 			}
 		}
 
-		let mockApp = {
+		const mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
 			use: mockImplementationTimes(jest.fn(), 10, () => {})
@@ -188,7 +188,7 @@ describe('middleware', () => {
 	test('calls with WEBPACK and falls to /static/', () => {
 		process.env.IS_WEBPACK = true
 		const middleware = require('../middleware.default')
-		let req = {
+		const req = {
 			path: {
 				startsWith: jest.fn().mockReturnValueOnce(true)
 			},
@@ -198,7 +198,7 @@ describe('middleware', () => {
 			}
 		}
 
-		let mockApp = {
+		const mockApp = {
 			get: jest.fn().mockReturnValueOnce('production'),
 			set: jest.fn(),
 			use: mockImplementationTimes(jest.fn(), 10, () => {})

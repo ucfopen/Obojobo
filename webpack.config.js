@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 global.oboRequire = name => {
 	return require(`${__dirname}/${name}`)
 }
@@ -52,6 +54,6 @@ module.exports = (env, argv) => {
 			path: path.join(__dirname, 'public', 'compiled'),
 			filename: `${filename_with_min}.js`
 		},
-		plugins: [new MiniCssExtractPlugin({filename: `${filename_with_min}.css`})]
+		plugins: [new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` })]
 	}
 }

@@ -2,7 +2,10 @@
 	"extends": ["eslint:recommended"],
 	"parser": "babel-eslint",
 	"globals": {
-		"oboRequire": false
+		"oboRequire": false,
+		"validUUID": false,
+		"mockVirtual": false,
+		"mockStaticDate": false
 	},
 	"env": {
 		"amd": true,
@@ -11,35 +14,36 @@
 		"es6": true
 	},
 	"rules": {
-		"no-var": "warn",
-		"prefer-const": "warn",
+		"no-var": "error",
+		"prefer-const": "error",
 		"curly": ["error", "multi-line"],
 		"brace-style": ["error", "1tbs", { "allowSingleLine": true }],
 		"no-undefined": "error",
-		"new-cap": "warn",
+		"new-cap": ["error", { "capIsNewExceptions": ["express.Router"] }],
 		"no-lonely-if": "error",
 		"no-nested-ternary": "error",
 		"no-unneeded-ternary": "error",
-		"no-alert": "warn",
-		"no-console": "warn",
-		"no-debugger": "warn",
-		"no-duplicate-imports": "warn",
+		"no-alert": "error",
+		"no-console": "error",
+		"no-debugger": "error",
+		"no-duplicate-imports": "error",
 		"radix": "error",
 		"array-callback-return": "error",
-		"eqeqeq": "warn",
+		"eqeqeq": "error",
 		"no-eval": "error",
 		"no-implied-eval": "error",
 		"no-labels": "error",
 		"no-extend-native": "error",
 		"no-floating-decimal": "error",
-		"no-loop-func": "warn",
+		"no-loop-func": "error",
 		"no-new": "error",
-		"no-new-func": "warn",
-		"no-new-wrappers": "warn",
+		"no-new-func": "error",
+		"no-new-wrappers": "error",
 		"no-self-compare": "error",
-		"no-return-assign": "warn",
-		"no-useless-return": "warn",
+		"no-return-assign": "error",
+		"no-useless-return": "error",
 		"no-with": "error",
-		"yoda": "warn"
+		"yoda": "error",
+		"no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
 	}
 }

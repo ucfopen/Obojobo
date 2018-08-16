@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+
 jest.mock('test_node')
 jest.mock('../models/user')
 
@@ -286,7 +288,7 @@ describe('current user middleware', () => {
 			event_version: '1.0.0'
 		}
 
-		let allChecks = []
+		const allChecks = []
 
 		Validators.requireEvent.forEach(f => {
 			allChecks.push(f(mockReq, mockRes, mockNext))
@@ -307,7 +309,7 @@ describe('current user middleware', () => {
 			event_version: '1'
 		}
 
-		let allChecks = []
+		const allChecks = []
 
 		Validators.requireEvent.forEach(f => {
 			allChecks.push(f(mockReq, mockRes, mockNext))

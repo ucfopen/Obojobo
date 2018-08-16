@@ -49,9 +49,9 @@ class Draft {
 	processRawNode(rawNode) {
 		const initFn = () => {}
 
-		const draftClass = draftNodeStore.get(rawNode.type)
+		const DraftClass = draftNodeStore.get(rawNode.type)
 
-		const draftNode = new draftClass(this, rawNode, initFn)
+		const draftNode = new DraftClass(this, rawNode, initFn)
 
 		draftNode.init()
 

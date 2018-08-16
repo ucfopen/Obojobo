@@ -10,7 +10,7 @@ describe('config', () => {
 	})
 
 	test('db to have expected props and vals', () => {
-		let config = oboRequire('config')
+		const config = oboRequire('config')
 		expect(config).toHaveProperty('db.host')
 		expect(config).toHaveProperty('db.port')
 		expect(config).toHaveProperty('db.database')
@@ -19,7 +19,7 @@ describe('config', () => {
 	})
 
 	test('expects config to have loaded all files', () => {
-		let config = oboRequire('config')
+		const config = oboRequire('config')
 		expect(config).toHaveProperty('db')
 		expect(config).toHaveProperty('lti')
 		expect(config).toHaveProperty('permissions')
@@ -27,7 +27,7 @@ describe('config', () => {
 	})
 
 	test('selects the environment based on env', () => {
-		let config = oboRequire('config')
+		const config = oboRequire('config')
 		expect(config).toHaveProperty('db')
 		expect(config.db.host).toBe('itsdev!')
 	})
