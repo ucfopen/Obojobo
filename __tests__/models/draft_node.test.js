@@ -161,6 +161,7 @@ describe('models draft', () => {
 		})
 		const d = new DraftNode(draftTree, mockRawDraft.content)
 		d.registerEvents({ test: eventFn })
+		d.yell('test')
 		expect(eventFn).toHaveBeenCalled()
 	})
 
@@ -171,6 +172,7 @@ describe('models draft', () => {
 		})
 		const d = new DraftNode(draftTree, mockRawDraft.content)
 		d.registerEvents({ test: eventFn })
+		d.yell('mocktest')
 		expect(eventFn).not.toHaveBeenCalled()
 	})
 
@@ -179,6 +181,7 @@ describe('models draft', () => {
 		const eventFn = jest.fn().mockReturnValueOnce(false)
 		const d = new DraftNode(draftTree, mockRawDraft.content)
 		d.registerEvents({ test: eventFn })
+		d.yell('test')
 		expect(eventFn).toHaveBeenCalled()
 	})
 
