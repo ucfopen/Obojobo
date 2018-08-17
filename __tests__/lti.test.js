@@ -2545,7 +2545,10 @@ describe('lti', () => {
 		insertEvent.mockRejectedValueOnce(new Error('mock Error'))
 
 		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
-			expect(logger.error).toHaveBeenCalledWith('There was an error inserting the lti event:', new Error('mock Error'))
+			expect(logger.error).toHaveBeenCalledWith(
+				'There was an error inserting the lti event:',
+				new Error('mock Error')
+			)
 			done()
 		})
 	})

@@ -55,7 +55,7 @@ router
 		])
 			.then(results => {
 				// expand results
-				[visit, viewState, visitStartReturnExtensionsProps] = results
+				;[visit, viewState, visitStartReturnExtensionsProps] = results
 
 				if (visit.is_preview === false) {
 					if (visit.draft_content_id !== req.currentDocument.contentId) {

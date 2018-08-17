@@ -50,7 +50,11 @@ describe('IRI Builder', () => {
 	})
 
 	test('getViewerClientIRI returns with expected path when given draftId, contentId, and client', () => {
-		const path = iri(null, 'testHost').getViewerClientIRI('testDraft', 'testContentId', 'testClient')
+		const path = iri(null, 'testHost').getViewerClientIRI(
+			'testDraft',
+			'testContentId',
+			'testClient'
+		)
 		expect(path).toBe(
 			'https://testHost/api/viewer/client/testClient%3FdraftId=testDraft&contentId=testContentId'
 		)
