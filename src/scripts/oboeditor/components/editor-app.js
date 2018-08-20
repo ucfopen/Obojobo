@@ -13,8 +13,6 @@ import EditorStore from '../stores/editor-store'
 import generateId from '../generate-ids'
 import defaultPage from '../documents/default-page.json'
 
-import Store from '../store'
-
 import './editor-app.scss'
 
 const { ModalContainer } = Common.components
