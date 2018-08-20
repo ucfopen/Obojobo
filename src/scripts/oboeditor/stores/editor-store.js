@@ -36,6 +36,9 @@ class EditorStore extends Store {
 				'editor:addPage': payload => {
 					this.addPage(payload.value.newPage)
 				},
+				'editor:addAssessment': payload => {
+					this.addAssessment(payload.value.newAssessment)
+				},
 				'editor:deletePage': payload => {
 					this.deletePage(payload.value.pageId)
 				},
@@ -182,6 +185,17 @@ class EditorStore extends Store {
 
 		EditorUtil.rebuildMenu(model)
 		EditorUtil.goto(pageModel.id)
+	}
+
+	addAssessment(newAssessment) {
+		const model = OboModel.getRoot()
+
+		// Add the newPage to the content
+		const assessmentModel = OboModel.create(newAssessment)
+		model.children.add(assessmentModel)
+
+		EditorUtil.rebuildMenu(model)
+		EditorUtil.goto(assessmentModel.id)
 	}
 
 	deletePage(pageId) {

@@ -7,6 +7,9 @@ import generateId from '../generate-ids'
 
 import './editor-nav.scss'
 
+import pageTemplate from '../documents/new-page.json'
+import assessmentTemplate from '../documents/new-assessment.json'
+
 const { OboModel } = Common.models
 
 class EditorNav extends React.Component {
@@ -20,47 +23,25 @@ class EditorNav extends React.Component {
 		this.setState({ navTargetId: item.id })
 	}
 
+	addAssessment() {
+		const label = window.prompt('Enter the title for the new Assessment:')
+			|| ('Assessment')
+
+		const newAssessment = Object.assign({}, assessmentTemplate)
+		newAssessment.id = generateId()
+		newAssessment.content.title = label
+
+		EditorUtil.addAssessment(newAssessment)
+		this.setState({ navTargetId: newAssessment.id })
+	}
+
 	addPage() {
 		const label = window.prompt('Enter the title for the new page:')
 			|| ('Default Page')
 
-		const newPage = {
-			id: generateId(),
-			type: "ObojoboDraft.Pages.Page",
-			content: {
-				title: label
-			},
-			children: [
-				{
-					type: "ObojoboDraft.Chunks.Heading",
-					content: {
-						headingLevel: 1,
-						textGroup: [
-							{
-								text: {
-									value: "Add a Title Here"
-								}
-							}
-						]
-					},
-					"children": []
-				},
-				{
-					type: "ObojoboDraft.Chunks.Text",
-					content: {
-						textGroup: [
-							{
-								text: {
-									value:
-										"Add some content here"
-								},
-							}
-						]
-					},
-					"children": []
-				}
-			]
-		}
+		const newPage = Object.assign({}, pageTemplate)
+		newPage.id = generateId()
+		newPage.content.title = label
 
 		EditorUtil.addPage(newPage)
 		this.setState({ navTargetId: newPage.id })
@@ -118,6 +99,7 @@ class EditorNav extends React.Component {
 		let className =
 			'link' +
 			isOrNot(isSelected, 'selected') +
+			isOrNot(item.flags.assessment, 'assessment') +
 			isOrNot(isFirstInList, 'first-in-list') +
 			isOrNot(isLastInList, 'last-in-list')
 
@@ -145,6 +127,7 @@ class EditorNav extends React.Component {
 			isOrNot(!this.state.disabled, 'enabled')
 
 		let list = EditorUtil.getOrderedList(this.props.navState)
+		console.log(list)
 
 		return (
 			<div className={className}>
@@ -162,6 +145,7 @@ class EditorNav extends React.Component {
 					})}
 				</ul>
 				<button onClick={() => this.addPage()}>{'Add Page'}</button>
+				<button onClick={() => this.addAssessment()}>{'Add Assessment'}</button>
 			</div>
 		)
 	}

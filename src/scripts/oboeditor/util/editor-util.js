@@ -44,6 +44,13 @@ const EditorUtil = {
 			}
 		})
 	},
+	addAssessment(newAssessment) {
+		return Dispatcher.trigger('editor:addAssessment', {
+			value: {
+				newAssessment
+			}
+		})
+	},
 	deletePage(pageId) {
 		return Dispatcher.trigger('editor:deletePage', {
 			value: {
