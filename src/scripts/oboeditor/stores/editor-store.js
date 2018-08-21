@@ -1,13 +1,13 @@
 import Common from 'Common'
 
 import EditorUtil from '../util/editor-util'
-import APIUtil from '../../viewer/util/api-util'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
 const MODULE_NODE = 'ObojoboDraft.Modules.Module'
+const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 
 class EditorStore extends Store {
 	constructor() {
@@ -181,7 +181,11 @@ class EditorStore extends Store {
 
 		// Add the newPage to the content
 		const pageModel = OboModel.create(newPage)
-		model.children.at(0).children.add(pageModel)
+		model.children.forEach(child => {
+			if(child.get('type') === CONTENT_NODE){
+				child.children.add(pageModel)
+			}
+		})
 
 		EditorUtil.rebuildMenu(model)
 		EditorUtil.goto(pageModel.id)

@@ -3,7 +3,7 @@ function MarkHotkey(options) {
 
 	return {
 		onKeyDown(event, change) {
-			if (!event.ctrlKey || event.key !== key) return
+			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return
 
 			event.preventDefault()
 
