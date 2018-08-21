@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorApp EditorApp component 1`] = `"<div class=\\"viewer--viewer-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive\\"><!-- react-empty: 3 --><div class=\\"component obojobo-draft--modules--module\\"><!-- react-empty: 5 --></div></div>"`;
+
+exports[`EditorApp EditorApp component with no draft 1`] = `"<div class=\\"viewer--viewer-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive\\"><!-- react-empty: 3 --><div class=\\"component obojobo-draft--modules--module\\"><!-- react-empty: 5 --></div></div>"`;
