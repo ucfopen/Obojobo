@@ -307,8 +307,6 @@ describe('PageEditor', () => {
 					]
 				}
 			})})
-
-		console.log(component.html())
 		expect(tree).toMatchSnapshot()
 	})
 })

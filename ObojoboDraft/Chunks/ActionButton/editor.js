@@ -36,7 +36,7 @@ const requiresValue = {
 		return json.id !== null && json.id !== undefined
 	},
 	'js': value => {
-		return typeof value === String
+		return typeof value === typeof ''
 	},
 	'viewer:alert': value => {
 		const json = JSON.parse(value)
@@ -311,7 +311,8 @@ const ActionButton = {
 	helpers: {
 		insertNode,
 		slateToObo,
-		oboToSlate
+		oboToSlate,
+		requiresValue
 	},
 	plugins
 }
