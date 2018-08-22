@@ -127,7 +127,6 @@ class EditorNav extends React.Component {
 			isOrNot(!this.state.disabled, 'enabled')
 
 		let list = EditorUtil.getOrderedList(this.props.navState)
-		console.log(list)
 
 		return (
 			<div className={className}>

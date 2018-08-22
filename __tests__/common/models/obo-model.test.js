@@ -362,6 +362,23 @@ describe('OboModel', () => {
 		expect(root.toJSON().toJSONWasCalled).toBe(true)
 	})
 
+	test('flatJSON outputs the model to an object without its children', () => {
+		let root = new OboModel(
+			{
+				type: 'nodeType',
+				content: { a: 1 }
+			},
+			{
+				toJSON: (model, json) => {
+					json.toJSONWasCalled = true
+					return json
+				}
+			}
+		)
+
+		expect(root.flatJSON().toJSONWasCalled).toBe(true)
+	})
+
 	test('toText will output the model into a text format', () => {
 		let parent = new OboModel(
 			{

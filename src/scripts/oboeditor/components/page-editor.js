@@ -184,7 +184,7 @@ class PageEditor extends React.Component {
 			case STRIKE_MARK:
 				return <del>{props.children}</del>
 			case QUOTE_MARK:
-				return <blockquote>{props.children}</blockquote>
+				return <q>{props.children}</q>
 			case LINK_MARK:
 				return <a href="www.myucf.edu">{props.children}</a>
 		}
