@@ -5,6 +5,9 @@ const logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	res.unexpected(errorMessage)
 }
 
+const getRandom = () => Math.random()
+
 module.exports = {
+	getRandom,
 	logAndRespondToUnexpected
 }

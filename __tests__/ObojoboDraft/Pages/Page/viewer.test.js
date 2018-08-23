@@ -14,7 +14,7 @@ import ViewerComponent from '../../../../ObojoboDraft/Pages/Page/viewer-componen
 
 describe('ObojoboDraft.Pages.Page registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Pages.Page')
 		expect(register[1]).toHaveProperty('type', 'page')
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
@@ -22,27 +22,41 @@ describe('ObojoboDraft.Pages.Page registration', () => {
 	})
 
 	test('getNavItem returns link with no title', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
-			title: null
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
+			title: null,
+			get: () => 'ObojoboDraft.Pages.Page',
+			parent: {
+				children: {
+					models: [
+						{
+							get: () => 'not a page'
+						},
+						{
+							get: () => 'ObojoboDraft.Pages.Page'
+						}
+					]
+				}
+			}
 		}
+		model.parent.children.models.push(model)
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toEqual({
 			type: 'link',
-			label: null,
-			path: [''],
+			label: 'Page 2',
+			path: ['page-2'],
 			showChildren: false
 		})
 	})
 
 	test('getNavItem returns link with title', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			title: 'mock Title'
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'mock Title',

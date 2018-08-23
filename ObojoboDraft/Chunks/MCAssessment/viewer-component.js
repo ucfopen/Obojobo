@@ -1,26 +1,24 @@
 import './viewer-component.scss'
 
-let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
+const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
 import Common from 'Common'
 import Viewer from 'Viewer'
 import isOrNot from '../../../src/scripts/common/isornot'
 
-let { OboComponent } = Common.components
-let { Button } = Common.components
-let { OboModel } = Common.models
-let { Dispatcher } = Common.flux
-let { DOMUtil } = Common.page
+const { OboComponent } = Common.components
+const { Button } = Common.components
+const { OboModel } = Common.models
+const { Dispatcher } = Common.flux
+const { DOMUtil } = Common.page
 // FocusUtil = Common.util.FocusUtil
 
-let { QuestionUtil } = Viewer.util
-let { NavUtil } = Viewer.util
+const { QuestionUtil } = Viewer.util
+const { NavUtil } = Viewer.util
 
 const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
 const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
 const DEFAULT_INCORRECT_LABELS = ['Incorrect']
-
-// @TODO - This wont update if new children are passed in via props
 
 export default class MCAssessment extends React.Component {
 	constructor(props) {
@@ -49,17 +47,17 @@ export default class MCAssessment extends React.Component {
 	}
 
 	getResponseData() {
-		let questionResponse = QuestionUtil.getResponse(
+		const questionResponse = QuestionUtil.getResponse(
 			this.props.moduleData.questionState,
 			this.getQuestionModel(),
 			this.props.moduleData.navState.context
 		) || { ids: [] }
 
-		let correct = new Set()
-		let responses = new Set()
+		const correct = new Set()
+		const responses = new Set()
 		let childId
 
-		for (let child of Array.from(this.props.model.children.models)) {
+		for (const child of Array.from(this.props.model.children.models)) {
 			childId = child.get('id')
 
 			if (child.modelState.score === 100) {
@@ -78,9 +76,9 @@ export default class MCAssessment extends React.Component {
 	}
 
 	calculateScore() {
-		let responseData = this.getResponseData()
-		let { correct } = responseData
-		let { responses } = responseData
+		const responseData = this.getResponseData()
+		const { correct } = responseData
+		const { responses } = responseData
 
 		switch (this.props.model.modelState.responseType) {
 			case 'pick-all':
@@ -97,7 +95,7 @@ export default class MCAssessment extends React.Component {
 
 			default:
 				// pick-one | pick-one-multiple-correct
-				for (let id of Array.from(Array.from(correct))) {
+				for (const id of Array.from(Array.from(correct))) {
 					if (responses.has(id)) {
 						return 100
 					}
@@ -158,8 +156,8 @@ export default class MCAssessment extends React.Component {
 
 	onClick(event) {
 		let response
-		let questionModel = this.getQuestionModel()
-		let mcChoiceEl = DOMUtil.findParentWithAttr(
+		const questionModel = this.getQuestionModel()
+		const mcChoiceEl = DOMUtil.findParentWithAttr(
 			event.target,
 			'data-type',
 			'ObojoboDraft.Chunks.MCAssessment.MCChoice'
@@ -168,7 +166,7 @@ export default class MCAssessment extends React.Component {
 			return
 		}
 
-		let mcChoiceId = mcChoiceEl.getAttribute('data-id')
+		const mcChoiceId = mcChoiceEl.getAttribute('data-id')
 		if (!mcChoiceId) {
 			return
 		}
@@ -186,7 +184,7 @@ export default class MCAssessment extends React.Component {
 				) || {
 					ids: []
 				}
-				let responseIndex = response.ids.indexOf(mcChoiceId)
+				const responseIndex = response.ids.indexOf(mcChoiceId)
 
 				if (responseIndex === -1) {
 					response.ids.push(mcChoiceId)
@@ -233,7 +231,7 @@ export default class MCAssessment extends React.Component {
 	}
 
 	onCheckAnswer(payload) {
-		let questionId = this.getQuestionModel().get('id')
+		const questionId = this.getQuestionModel().get('id')
 
 		if (payload.value.id === questionId) {
 			QuestionUtil.setScore(
@@ -318,27 +316,28 @@ export default class MCAssessment extends React.Component {
 	}
 
 	render() {
-		let sortedIds = QuestionUtil.getData(
+		let SolutionComponent = null
+		const sortedIds = QuestionUtil.getData(
 			this.props.moduleData.questionState,
 			this.props.model,
 			'sortedIds'
 		)
 		if (!sortedIds) return null
 
-		let responseType = this.props.model.modelState.responseType
-		let isShowingExplanation = this.isShowingExplanation()
-		let score = this.getScore()
-		let isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
-		let isAnswerSelected = this.getResponseData().responses.size >= 1 // An answer choice was selected
+		const responseType = this.props.model.modelState.responseType
+		const isShowingExplanation = this.isShowingExplanation()
+		const score = this.getScore()
+		const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
+		const isAnswerSelected = this.getResponseData().responses.size >= 1 // An answer choice was selected
 
-		let feedbacks = Array.from(this.getResponseData().responses)
+		const feedbacks = Array.from(this.getResponseData().responses)
 			.filter(mcChoiceId => OboModel.models[mcChoiceId].children.length > 1)
 			.sort((id1, id2) => sortedIds.indexOf(id1) - sortedIds.indexOf(id2))
 			.map(mcChoiceId => OboModel.models[mcChoiceId].children.at(1))
 
-		let { solution } = this.props.model.parent.modelState
+		const { solution } = this.props.model.parent.modelState
 		if (solution != null) {
-			var SolutionComponent = solution.getComponentClass()
+			SolutionComponent = solution.getComponentClass()
 		}
 
 		let explanationFooter = null
@@ -367,7 +366,7 @@ export default class MCAssessment extends React.Component {
 								className={`feedback${isOrNot(responseType === 'pick-all', 'pick-all-feedback')}`}
 							>
 								{feedbacks.map(model => {
-									let Component = model.getComponentClass()
+									const Component = model.getComponentClass()
 									return (
 										<Component
 											key={model.get('id')}
@@ -400,7 +399,7 @@ export default class MCAssessment extends React.Component {
 			)
 		}
 
-		let className =
+		const className =
 			'obojobo-draft--chunks--mc-assessment' +
 			` is-response-type-${this.props.model.modelState.responseType}` +
 			` is-mode-${this.props.mode}` +
@@ -417,12 +416,12 @@ export default class MCAssessment extends React.Component {
 			>
 				<span className="instructions">{this.createInstructions(responseType)}</span>
 				{sortedIds.map((id, index) => {
-					let child = OboModel.models[id]
+					const child = OboModel.models[id]
 					if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
 						return null
 					}
 
-					let Component = child.getComponentClass()
+					const Component = child.getComponentClass()
 					return (
 						<Component
 							key={child.get('id')}

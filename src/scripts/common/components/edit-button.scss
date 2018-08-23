@@ -4,8 +4,7 @@
 	display: inline-block;
 
 	button {
-		@include user-select(none);
-		// background-image: url("./edit-button.svg");
+		user-select: none;
 		background-color: $color-bg;
 		background-position: 0.3rem center;
 		background-repeat: no-repeat;

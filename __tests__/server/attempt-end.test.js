@@ -13,13 +13,21 @@ jest.mock('../../server/assessment', () => ({
 	completeAttempt: jest.fn().mockReturnValue('mockCompleteAttemptResult')
 }))
 
+jest.mock(
+	'../../__mocks__/models/visit',
+	() => ({
+		fetchById: jest.fn().mockReturnValue({ is_preview: false })
+	}),
+	{ virtual: true }
+)
+
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const DraftDocument = oboRequire('models/draft')
 const DraftNode = oboRequire('models/draft_node')
 const lti = oboRequire('lti')
 const insertEvent = oboRequire('insert_event')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const originalToISOString = Date.prototype.toISOString
 const AssessmentRubric = require('../../server/assessment-rubric')
 const attemptStart = require('../../server/attempt-start.js')
@@ -29,8 +37,6 @@ import testJson from '../../test-object.json'
 import {
 	endAttempt,
 	getAttempt,
-	getAttemptHistory,
-	getResponsesForAttempt,
 	getCalculatedScores,
 	calculateScores,
 	completeAttempt,
@@ -39,8 +45,7 @@ import {
 	insertAttemptScoredEvents,
 	reloadAttemptStateIfReviewing,
 	recreateChosenQuestionTree,
-	getNodeQuestion,
-	loadAssessmentProperties
+	getNodeQuestion
 } from '../../server/attempt-end'
 
 describe('Attempt End', () => {
@@ -63,7 +68,7 @@ describe('Attempt End', () => {
 	test('endAttempt returns Assessment.getAttempts, sends lti highest score, and inserts 2 events', () => {
 		lti.getLatestHighestAssessmentScoreRecord.mockResolvedValueOnce({ score: 75 })
 		// provide a draft model mock
-		let mockDraftDocument = new DraftDocument({
+		const mockDraftDocument = new DraftDocument({
 			content: {
 				rubric: 1,
 				review: 'never'
@@ -93,8 +98,8 @@ describe('Attempt End', () => {
 		})
 
 		// mock the caliperEvent methods
-		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
-		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		const createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		const createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
 		insertEvent.mockReturnValueOnce('mockInsertResult')
 		createCaliperEvent
 			.mockReturnValueOnce({ createAssessmentAttemptSubmittedEvent })
@@ -110,13 +115,13 @@ describe('Attempt End', () => {
 		})
 
 		// mock score reload
-		let loadAssessmentProperties = jest.fn().mockReturnValueOnce('mockProperties')
-		let reloadAttemptStateIfReviewing = jest.fn().mockReturnValueOnce('mockReload')
+		const loadAssessmentProperties = jest.fn().mockReturnValueOnce('mockProperties')
+		const reloadAttemptStateIfReviewing = jest.fn().mockReturnValueOnce('mockReload')
 
-		let req = {
+		const req = {
 			connection: { remoteAddress: 'mockRemoteAddress' }
 		}
-		let user = { id: 'mockUserId' }
+		const user = { id: 'mockUserId' }
 		expect(insertEvent).toHaveBeenCalledTimes(0)
 
 		return endAttempt(req, {}, user, mockDraftDocument, 'mockAttemptId', true).then(results => {
@@ -162,7 +167,8 @@ describe('Attempt End', () => {
 					ltiScoreStatus: 'mockStatus',
 					scoreDetails: { assessmentScore: 'mockScoreForAttempt' }
 				},
-				userId: 'mockUserId'
+				userId: 'mockUserId',
+				isPreview: true
 			})
 
 			expect(insertEvent).toHaveBeenCalledWith({
@@ -178,7 +184,8 @@ describe('Attempt End', () => {
 					attemptCount: 6,
 					attemptId: 'mockAttemptId'
 				},
-				userId: 'mockUserId'
+				userId: 'mockUserId',
+				isPreview: true
 			})
 		})
 	})
@@ -196,16 +203,6 @@ describe('Attempt End', () => {
 		})
 	})
 
-	test('getAttemptHistory calls Assessment method', () => {
-		let result = getAttemptHistory('userId', 'draftId', 'assessmentId')
-		expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenLastCalledWith(
-			'userId',
-			'draftId',
-			'assessmentId'
-		)
-		expect(result).toBe('super bat dad')
-	})
-
 	test('getCalculatedScores', () => {
 		expect.assertions(4)
 		// Setup: Assessment with two questions (q1 and q2)
@@ -214,9 +211,9 @@ describe('Attempt End', () => {
 		// Result should be an assessment score of 80% (highest)
 		// but this attempt should be a 50%
 
-		let req = jest.fn()
-		let res = jest.fn()
-		let assessmentModel = {
+		const req = jest.fn()
+		const res = jest.fn()
+		const assessmentModel = {
 			yell: (eventType, req, res, assessmentModel, responseHistory, event) => {
 				expect(event).toHaveProperty('getQuestions', expect.any(Function))
 				expect(event).toHaveProperty('addScore', expect.any(Function))
@@ -231,7 +228,7 @@ describe('Attempt End', () => {
 			},
 			node: { content: {} }
 		}
-		let attemptState = {
+		const attemptState = {
 			questions: [
 				{
 					id: 'q1'
@@ -241,8 +238,8 @@ describe('Attempt End', () => {
 				}
 			]
 		}
-		let attemptHistory = []
-		let responseHistory = jest.fn()
+		const attemptHistory = []
+		const responseHistory = jest.fn()
 
 		return getCalculatedScores(
 			req,
@@ -275,18 +272,18 @@ describe('Attempt End', () => {
 
 	test('insertAttemptEndEvents calls insertEvent with expected params (preview mode = true)', () => {
 		// mock the caliperEvent method
-		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		const createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
 		insertEvent.mockReturnValueOnce('mockInsertResult')
 		createCaliperEvent.mockReturnValueOnce({
 			createAssessmentAttemptSubmittedEvent
 		})
 
-		let mockDraftDocument = {
+		const mockDraftDocument = {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId'
 		}
 
-		let r = insertAttemptEndEvents(
+		const r = insertAttemptEndEvents(
 			{ id: 'mockUserId' },
 			mockDraftDocument,
 			'mockAssessmentId',
@@ -317,7 +314,8 @@ describe('Attempt End', () => {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId',
 			eventVersion: '1.1.0',
-			caliperPayload: 'mockCaliperPayload'
+			caliperPayload: 'mockCaliperPayload',
+			isPreview: 'mockIsPreviewing'
 		})
 
 		// make sure the caliper payload gets the expected inputs
@@ -329,8 +327,7 @@ describe('Attempt End', () => {
 			assessmentId: 'mockAssessmentId',
 			attemptId: 'mockAttemptId',
 			draftId: 'mockDraftId',
-			contentId: 'mockContentId',
-			isPreviewMode: 'mockIsPreviewing'
+			contentId: 'mockContentId'
 		})
 	})
 
@@ -339,12 +336,12 @@ describe('Attempt End', () => {
 			score: 'mockHighestAssessmentScore'
 		})
 		// mock the caliperEvent method
-		let createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		const createAssessmentAttemptScoredEvent = jest.fn().mockReturnValue('mockCaliperPayload')
 		insertEvent.mockReturnValueOnce('mockInsertResult')
 		createCaliperEvent.mockReturnValueOnce({
 			createAssessmentAttemptScoredEvent
 		})
-		let mockDraftDocument = {
+		const mockDraftDocument = {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId'
 		}
@@ -396,7 +393,8 @@ describe('Attempt End', () => {
 					ltiScoreSent: 'mockLtiScoreSent',
 					ltiScoreStatus: 'mockLtiScoreStatus'
 				},
-				userId: 'userId'
+				userId: 'userId',
+				isPreview: 'mockIsPreviewing'
 			})
 
 			// make sure the caliper payload gets the expected inputs
@@ -415,8 +413,7 @@ describe('Attempt End', () => {
 					attemptCount: 'mockAttemptNumber',
 					attemptScore: 'mockAttemptScore',
 					ltiScoreSent: 'mockLtiScoreSent'
-				},
-				isPreviewMode: 'mockIsPreviewing'
+				}
 			})
 		})
 	})
@@ -428,9 +425,9 @@ describe('Attempt End', () => {
 	})
 
 	test('calculateScores keeps all scores in order', () => {
-		let assessmentModel = { node: { content: {} } }
+		const assessmentModel = { node: { content: {} } }
 
-		let attemptHistory = [
+		const attemptHistory = [
 			{
 				result: {
 					attemptScore: 25
@@ -438,13 +435,13 @@ describe('Attempt End', () => {
 			}
 		]
 
-		let scoreInfo = {
+		const scoreInfo = {
 			questions: [{ id: 4 }, { id: 5 }, { id: 6 }],
 			scoresByQuestionId: { 4: 50, 5: 75, 6: 27 },
 			scores: [50, 75, 27]
 		}
 
-		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+		const result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
 
 		// make sure the questionScores are in the same order
 		expect(result.attempt.questionScores).toEqual([
@@ -455,9 +452,9 @@ describe('Attempt End', () => {
 	})
 
 	test('calculateScores calculates expected attemptScore', () => {
-		let assessmentModel = { node: { content: {} } }
+		const assessmentModel = { node: { content: {} } }
 
-		let attemptHistory = [
+		const attemptHistory = [
 			{
 				result: {
 					attemptScore: 25
@@ -465,29 +462,29 @@ describe('Attempt End', () => {
 			}
 		]
 
-		let scoreInfo = {
+		const scoreInfo = {
 			questions: [{ id: 4 }, { id: 5 }, { id: 6 }],
 			scoresByQuestionId: { 4: 50, 5: 75, 6: 27 },
 			scores: [50, 75, 27]
 		}
 
-		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+		const result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
 		expect(result.attempt.attemptScore).toBe(50.666666666666664)
 	})
 
 	test('calculateScores calls AssessmentRubric.getAssessmentScoreInfoForAttempt with expected values', () => {
 		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(0)
-		let assessmentModel = { node: { content: { attempts: '2' } } }
+		const assessmentModel = { node: { content: { attempts: '2' } } }
 
-		let attemptHistory = [{ result: { attemptScore: 25 } }]
+		const attemptHistory = [{ result: { attemptScore: 25 } }]
 
-		let scoreInfo = {
+		const scoreInfo = {
 			questions: [{ id: 4 }, { id: 5 }],
 			scoresByQuestionId: { 4: 50, 5: 75 },
 			scores: [50, 75]
 		}
 
-		let result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+		const result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
 
 		expect(result).toHaveProperty('assessmentScoreDetails', {
 			assessmentScore: 'mockScoreForAttempt'
@@ -500,7 +497,7 @@ describe('Attempt End', () => {
 	})
 
 	test('getCalculatedScores calls calculateScores with expected values', () => {
-		let attemptHistory = [
+		const attemptHistory = [
 			{
 				result: {
 					attemptScore: 25
@@ -508,11 +505,11 @@ describe('Attempt End', () => {
 			}
 		]
 
-		let attemptState = {
+		const attemptState = {
 			questions: [{ id: 4 }, { id: 5 }, { id: 6 }]
 		}
 
-		let x = new DraftDocument({ content: { rubric: 1 } })
+		const x = new DraftDocument({ content: { rubric: 1 } })
 
 		// now we have to mock yell so that we can call addScore()
 		x.yell.mockImplementationOnce((event, req, res, model, history, funcs) => {
@@ -551,7 +548,7 @@ describe('Attempt End', () => {
 	})
 
 	test('completeAttempt calls Assessment.completeAttempt with expected values', () => {
-		let r = completeAttempt(
+		const r = completeAttempt(
 			'mockAssessmentId',
 			'mockAttemptId',
 			'mockUserId',
@@ -579,18 +576,18 @@ describe('Attempt End', () => {
 
 	test('insertAttemptEndEvents creates a correct caliper event and internal event', () => {
 		// mock the caliperEvent method
-		let createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
+		const createAssessmentAttemptSubmittedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
 		insertEvent.mockReturnValueOnce('mockInsertResult')
 		createCaliperEvent.mockReturnValueOnce({
 			createAssessmentAttemptSubmittedEvent
 		})
 
-		let mockDraftDocument = {
+		const mockDraftDocument = {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId'
 		}
 
-		let r = insertAttemptEndEvents(
+		const r = insertAttemptEndEvents(
 			{ id: 1 },
 			mockDraftDocument,
 			'mockAssessmentId',
@@ -621,7 +618,8 @@ describe('Attempt End', () => {
 				attemptCount: 'mockAttemptNumber',
 				attemptId: 'mockAttemptId'
 			},
-			userId: 1
+			userId: 1,
+			isPreview: 'mockIsPreviewing'
 		})
 	})
 	test('getNodeQuestion reloads score', () => {
@@ -684,7 +682,7 @@ describe('Attempt End', () => {
 		expect(mockQuestion.id).toBe('qb1.q1')
 		expect(mockQuestion.children[1].children[0].content.score).toBe(0)
 
-		let reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraftDocument)
+		const reloadedQuestion = getNodeQuestion(mockQuestion.id, mockDraftDocument)
 
 		expect(reloadedQuestion.id).toBe(mockQuestion.id)
 		expect(reloadedQuestion.children[1].children[0].content.score).toBe(100)
@@ -716,7 +714,7 @@ describe('Attempt End', () => {
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).toBe(0)
 
-		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
+		const traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
 
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).not.toBe(0)
@@ -762,7 +760,7 @@ describe('Attempt End', () => {
 		expect(mockQB.children[0].children[0].children.length).toBe(1)
 		expect(mockQB.children[0].children[0].children[0].children.length).toBe(0)
 
-		let traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
+		const traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
 
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).toBe(1)
@@ -781,7 +779,7 @@ describe('Attempt End', () => {
 			}
 		}
 
-		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, null, null, false, null)
+		const response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, null, null, false, null)
 
 		expect(response).toBe(null)
 	})
@@ -799,7 +797,7 @@ describe('Attempt End', () => {
 			}
 		}
 
-		let response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, null, null, false, null)
+		const response = reloadAttemptStateIfReviewing(0, 0, mockAttempt, null, null, false, null)
 
 		expect(response).toBe(null)
 	})
@@ -839,7 +837,7 @@ describe('Attempt End', () => {
 		})
 		Assessment.updateAttemptState = jest.fn()
 
-		let response = reloadAttemptStateIfReviewing(
+		const response = reloadAttemptStateIfReviewing(
 			0,
 			0,
 			mockAttempt,
@@ -996,7 +994,7 @@ describe('Attempt End', () => {
 			data: {}
 		})
 
-		let result = reloadAttemptStateIfReviewing(
+		const result = reloadAttemptStateIfReviewing(
 			0,
 			0,
 			mockAttempt,

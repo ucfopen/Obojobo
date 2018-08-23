@@ -6,12 +6,18 @@ describe('Util', () => {
 		jest.resetAllMocks()
 	})
 
+	test('getRandom calls Math.random', () => {
+		jest.spyOn(Math, 'random')
+		Util.getRandom()
+		expect(Math.random).toHaveBeenCalled()
+	})
+
 	test('logAndRespondToUnexpected calls res.unexpected and logs error', () => {
-		let res = {
+		const res = {
 			unexpected: jest.fn()
 		}
-		let req = {}
-		let mockError = new Error('mockUnexpectedError')
+		const req = {}
+		const mockError = new Error('mockUnexpectedError')
 
 		Util.logAndRespondToUnexpected(mockError.message, res, req, mockError)
 		expect(res.unexpected).toHaveBeenCalledWith('mockUnexpectedError')

@@ -13,8 +13,6 @@
 }
 
 .viewer--viewer-app {
-	$header-padding: 1rem;
-
 	height: 100%;
 	transition: padding-left $duration-animation-default $duration-animation-default,
 		padding-top $duration-animation-default;
@@ -33,7 +31,6 @@
 
 		> header {
 			top: -2.5rem;
-			border-bottom: 1px solid $color-transparent;
 
 			.viewer--components--logo,
 			.location {
@@ -44,51 +41,21 @@
 		}
 	}
 
-	> header {
-		background: $color-bg;
+	> .viewer--components--header {
 		position: absolute;
 		left: 0;
 		width: 100%;
 		top: 0;
-		height: 2.5rem;
 		z-index: $z-index-above-content;
 		border-bottom: 1px solid transparentize($color-shadow, 0.2);
-		font-size: 0.7rem;
-		font-family: Libre Franklin;
-		color: $color-text;
-		padding: 0.8rem $header-padding;
-		padding-left: 4rem;
-		box-sizing: border-box;
 		transition: top $duration-animation-default;
 		opacity: 0.95;
-
-		> div {
-			position: relative;
-		}
-
-		.module-title {
-			text-transform: uppercase;
-			display: inline-block;
-			cursor: default;
-		}
-
-		.location {
-			margin-left: 1rem;
-			font-weight: bold;
-			transition: opacity $duration-animation-default;
-			transition-delay: $duration-animation-default * 2;
-			cursor: default;
-		}
+		transition: opacity $duration-animation-default;
+		transition-delay: $duration-animation-default * 2;
 
 		.viewer--components--logo {
-			color: $color-text-minor;
-			position: fixed;
-			right: $header-padding;
-			top: 0.8rem;
 			transition: opacity $duration-animation-default;
 			transition-delay: $duration-animation-default * 3;
-			opacity: 0.2;
-			cursor: default;
 		}
 	}
 
@@ -100,7 +67,7 @@
 		font-size: 0.7em;
 		font-weight: bold;
 		line-height: 0;
-		height: 3rem;
+		height: $dimension-preview-banner;
 		left: 0;
 		padding: 0.5em 1em;
 		padding-top: 1.5rem;
@@ -117,9 +84,8 @@
 			transform: translate(0, -50%) translate(0, 0.5px);
 
 			button {
-				@include appearance(none);
-				@include user-select(none);
-
+				appearance: none;
+				user-select: none;
 				margin-left: 1em;
 				font-family: $font-default;
 				font-size: 0.75em;

@@ -35,7 +35,7 @@
 /* hide back of pane during swap */
 .front,
 .back {
-	@include backface-visibility(hidden);
+	backface-visibility: hidden;
 	-ms-backface-visibility: visible;
 }
 

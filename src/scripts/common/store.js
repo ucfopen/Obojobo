@@ -27,7 +27,7 @@ class _Store {
 		if (onLoadCallback == null) {
 			onLoadCallback = function() {}
 		}
-		let type = url.substr(url.lastIndexOf('.') + 1)
+		const type = url.substr(url.lastIndexOf('.') + 1)
 
 		switch (type) {
 			case 'js':
@@ -72,15 +72,11 @@ class _Store {
 		if (opts.default) {
 			defaults.set(opts.type, className)
 		}
-		// @TODO: Editor
-		// if (opts.insertItem) {
-		// 	insertItems.set(chunkClass.type, opts.insertItem)
-		// }
 
 		opts.init()
 
-		for (let variable in opts.variables) {
-			let cb = opts.variables[variable]
+		for (const variable in opts.variables) {
+			const cb = opts.variables[variable]
 			variableHandlers.set(variable, cb)
 		}
 
@@ -88,7 +84,7 @@ class _Store {
 	}
 
 	getDefaultItemForModelType(modelType) {
-		let type = defaults.get(modelType)
+		const type = defaults.get(modelType)
 		if (!type) {
 			return null
 		}
@@ -110,20 +106,6 @@ class _Store {
 		return this
 	}
 
-	//@TODO: Editor?
-	// registerTextListener(opts, position) {
-	// 	if (position == null) {
-	// 		position = -1
-	// 	}
-	// 	if (position > -1) {
-	// 		textListeners.splice(position, 0, opts)
-	// 	} else {
-	// 		textListeners.push(opts)
-	// 	}
-
-	// 	return this
-	// }
-
 	getItems(callback) {
 		// if (itemsLoaded === items.size) {
 		// 	callback(items)
@@ -137,7 +119,7 @@ class _Store {
 	}
 
 	getTextForVariable(variable, model, viewerState) {
-		let cb = variableHandlers.get(variable)
+		const cb = variableHandlers.get(variable)
 		if (!cb) {
 			return null
 		}
@@ -162,7 +144,7 @@ class _Store {
 	// }
 }
 
-let Store = new _Store()
+const Store = new _Store()
 
 Store.init()
 export { Store }

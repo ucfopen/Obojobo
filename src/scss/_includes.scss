@@ -1,5 +1,3 @@
-@import '_bourbon';
-
 $color-action: #6714bd;
 $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
 $color-error: #990000;
@@ -34,7 +32,7 @@ $font-default: 'Libre Franklin', Arial, sans-serif;
 $font-text: 'Noto Serif', serif;
 $font-monospace: 'Roboto Mono', monospace;
 
-$font-size: 14pt;
+$font-size: 14.25pt;
 
 $dimension-column-width: 44em;
 $dimension-padding: 3em;
@@ -43,6 +41,8 @@ $dimension-toolbar-height: 2.7em;
 $dimension-nav-menu: 18rem;
 $dimension-nav-menu-small: 14rem;
 $dimension-rounded-radius: 0.25em;
+$dimension-header-padding: 1rem;
+$dimension-preview-banner: 3rem;
 
 $breakpoint-nav-small: 1000px;
 
