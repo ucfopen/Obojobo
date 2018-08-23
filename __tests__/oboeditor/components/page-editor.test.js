@@ -11,6 +11,15 @@ import newPage from '../../../src/scripts/oboeditor/documents/new-page.json'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import Common from '../../../src/scripts/common'
 
+const BOLD_MARK = 'b'
+const ITALIC_MARK = 'i'
+const STRIKE_MARK = 'del'
+const QUOTE_MARK = 'q'
+
+const SUPERSCRIPT_MARK = 'sup'
+const LATEX_MARK = '_latex'
+const LINK_MARK = 'a'
+
 describe('PageEditor', () => {
 	test('EditorNav component', () => {
 		const props = {
@@ -238,6 +247,7 @@ describe('PageEditor', () => {
 
 	test('EditorNav component renders marks', () => {
 		jest.spyOn(Break.helpers, 'insertNode')
+		window.getSelection = jest.fn().mockReturnValueOnce({rangeCount: 0})
 		Break.helpers.insertNode.mockReturnValueOnce(null)
 		const props = {
 			page: {attributes: {
@@ -247,66 +257,25 @@ describe('PageEditor', () => {
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
 
-		const click = component
+		const editorProps = component
 			.find('.obojobo-draft--pages--page')
-			.simulate('change', { value: Value.fromJSON({
-				document: {
-					nodes: [
-						{
-							"object": "block",
-							"type": "ObojoboDraft.Chunks.Text",
-							"data": { "content": { "indent": 0 }},
-							"nodes": [
-								{
-									"object": "text",
-									"leaves": [
-										{
-											"text": "Bold",
-											marks: [
-												{
-													type: 'b'
-												}
-											]
-										},
-										{
-											"text": "Italic",
-											marks: [
-												{
-													type: 'i'
-												}
-											]
-										},
-										{
-											"text": "Strike",
-											marks: [
-												{
-													type: 'del'
-												}
-											]
-										},
-										{
-											"text": "quote",
-											marks: [
-												{
-													type: 'q'
-												}
-											]
-										},
-										{
-											"text": "Link",
-											marks: [
-												{
-													type: 'a'
-												}
-											]
-										}
-									]
-								}
-							]
-						}
-					]
-				}
-			})})
+			.props()
+
+		const mark = {
+			children: 'mockChild',
+			mark: { type: BOLD_MARK }
+		}
+
+		expect(editorProps.renderMark(mark)).toMatchSnapshot()
+		mark.mark.type = ITALIC_MARK
+		expect(editorProps.renderMark(mark)).toMatchSnapshot()
+		mark.mark.type = STRIKE_MARK
+		expect(editorProps.renderMark(mark)).toMatchSnapshot()
+		mark.mark.type = QUOTE_MARK
+		expect(editorProps.renderMark(mark)).toMatchSnapshot()
+		mark.mark.type = LINK_MARK
+		expect(editorProps.renderMark(mark)).toMatchSnapshot()
+
 		expect(tree).toMatchSnapshot()
 	})
 })

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -41,21 +42,6 @@ const isType = change => {
 	})
 }
 
-const toggleNode = change => {
-	// See if any of the selected nodes have a CODE_NODE parent
-	const isCode = isType(change)
-
-	if (isCode){
-		change
-			.unwrapBlock(CODE_NODE)
-			.setBlocks(TEXT_NODE)
-	} else {
-		change
-			.setBlocks(CODE_LINE_NODE)
-			.wrapBlock(CODE_NODE)
-	}
-}
-
 const insertNode = change => {
 	change
 		.insertBlock(CODE_NODE)
@@ -64,8 +50,6 @@ const insertNode = change => {
 }
 
 const slateToObo = node => {
-	if (node.type !== CODE_NODE) return null
-
 	const json = {}
 	json.id = node.key
 	json.type = node.type
@@ -216,8 +200,6 @@ const Code = {
 		Line
 	},
 	helpers: {
-		isType,
-		toggleNode,
 		insertNode,
 		slateToObo,
 		oboToSlate,

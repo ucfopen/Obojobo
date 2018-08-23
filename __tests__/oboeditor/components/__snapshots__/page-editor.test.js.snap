@@ -6,7 +6,39 @@ exports[`PageEditor EditorNav component changes value 1`] = `"<div class=\\"edit
 
 exports[`PageEditor EditorNav component inserts item 1`] = `"<div class=\\"editor\\"><div class=\\"dropdown\\"><button>+ Insert Node</button><div class=\\"drop-content\\"><button>ObojoboDraft.Chunks.ActionButton</button><button>ObojoboDraft.Chunks.Break</button><button>ObojoboDraft.Chunks.Code</button><button>ObojoboDraft.Chunks.Figure</button><button>ObojoboDraft.Chunks.Heading</button><button>ObojoboDraft.Chunks.IFrame</button><button>ObojoboDraft.Chunks.List</button><button>ObojoboDraft.Chunks.MathEquation</button><button>ObojoboDraft.Chunks.Table</button><button>ObojoboDraft.Chunks.Text</button><button>ObojoboDraft.Chunks.YouTube</button><button>ObojoboDraft.Chunks.QuestionBank</button><button>ObojoboDraft.Chunks.Question</button></div></div><div data-slate-editor=\\"true\\" data-key=\\"22\\" contenteditable=\\"true\\" class=\\"component obojobo-draft--pages--page\\" autocorrect=\\"on\\" spellcheck=\\"true\\" style=\\"outline:none;white-space:pre-wrap;word-wrap:break-word;-webkit-user-modify:read-write-plaintext-only;\\" role=\\"textbox\\" data-gramm=\\"false\\"></div><button class=\\"exporter\\">Save Document</button></div>"`;
 
-exports[`PageEditor EditorNav component renders marks 1`] = `"<div class=\\"editor\\"><div class=\\"dropdown\\"><button>+ Insert Node</button><div class=\\"drop-content\\"><button>ObojoboDraft.Chunks.ActionButton</button><button>ObojoboDraft.Chunks.Break</button><button>ObojoboDraft.Chunks.Code</button><button>ObojoboDraft.Chunks.Figure</button><button>ObojoboDraft.Chunks.Heading</button><button>ObojoboDraft.Chunks.IFrame</button><button>ObojoboDraft.Chunks.List</button><button>ObojoboDraft.Chunks.MathEquation</button><button>ObojoboDraft.Chunks.Table</button><button>ObojoboDraft.Chunks.Text</button><button>ObojoboDraft.Chunks.YouTube</button><button>ObojoboDraft.Chunks.QuestionBank</button><button>ObojoboDraft.Chunks.Question</button></div></div><div data-slate-editor=\\"true\\" data-key=\\"25\\" contenteditable=\\"true\\" class=\\"component obojobo-draft--pages--page\\" autocorrect=\\"on\\" spellcheck=\\"true\\" style=\\"outline:none;white-space:pre-wrap;word-wrap:break-word;-webkit-user-modify:read-write-plaintext-only;\\" role=\\"textbox\\" data-gramm=\\"false\\"></div><button class=\\"exporter\\">Save Document</button></div>"`;
+exports[`PageEditor EditorNav component renders marks 1`] = `
+<strong>
+  mockChild
+</strong>
+`;
+
+exports[`PageEditor EditorNav component renders marks 2`] = `
+<em>
+  mockChild
+</em>
+`;
+
+exports[`PageEditor EditorNav component renders marks 3`] = `
+<del>
+  mockChild
+</del>
+`;
+
+exports[`PageEditor EditorNav component renders marks 4`] = `
+<q>
+  mockChild
+</q>
+`;
+
+exports[`PageEditor EditorNav component renders marks 5`] = `
+<a
+  href="www.myucf.edu"
+>
+  mockChild
+</a>
+`;
+
+exports[`PageEditor EditorNav component renders marks 6`] = `"<div class=\\"editor\\"><div class=\\"dropdown\\"><button>+ Insert Node</button><div class=\\"drop-content\\"><button>ObojoboDraft.Chunks.ActionButton</button><button>ObojoboDraft.Chunks.Break</button><button>ObojoboDraft.Chunks.Code</button><button>ObojoboDraft.Chunks.Figure</button><button>ObojoboDraft.Chunks.Heading</button><button>ObojoboDraft.Chunks.IFrame</button><button>ObojoboDraft.Chunks.List</button><button>ObojoboDraft.Chunks.MathEquation</button><button>ObojoboDraft.Chunks.Table</button><button>ObojoboDraft.Chunks.Text</button><button>ObojoboDraft.Chunks.YouTube</button><button>ObojoboDraft.Chunks.QuestionBank</button><button>ObojoboDraft.Chunks.Question</button></div></div><div data-slate-editor=\\"true\\" data-key=\\"25\\" contenteditable=\\"true\\" class=\\"component obojobo-draft--pages--page\\" autocorrect=\\"on\\" spellcheck=\\"true\\" style=\\"outline:none;white-space:pre-wrap;word-wrap:break-word;-webkit-user-modify:read-write-plaintext-only;\\" role=\\"textbox\\" data-gramm=\\"false\\"></div><button class=\\"exporter\\">Save Document</button></div>"`;
 
 exports[`PageEditor EditorNav component with content 1`] = `"<div class=\\"editor\\"><div class=\\"dropdown\\"><button>+ Insert Node</button><div class=\\"drop-content\\"><button>ObojoboDraft.Chunks.ActionButton</button><button>ObojoboDraft.Chunks.Break</button><button>ObojoboDraft.Chunks.Code</button><button>ObojoboDraft.Chunks.Figure</button><button>ObojoboDraft.Chunks.Heading</button><button>ObojoboDraft.Chunks.IFrame</button><button>ObojoboDraft.Chunks.List</button><button>ObojoboDraft.Chunks.MathEquation</button><button>ObojoboDraft.Chunks.Table</button><button>ObojoboDraft.Chunks.Text</button><button>ObojoboDraft.Chunks.YouTube</button><button>ObojoboDraft.Chunks.QuestionBank</button><button>ObojoboDraft.Chunks.Question</button></div></div><div data-slate-editor=\\"true\\" data-key=\\"7\\" contenteditable=\\"true\\" class=\\"component obojobo-draft--pages--page\\" autocorrect=\\"on\\" spellcheck=\\"true\\" style=\\"outline:none;white-space:pre-wrap;word-wrap:break-word;-webkit-user-modify:read-write-plaintext-only;\\" role=\\"textbox\\" data-gramm=\\"false\\"><div data-slate-void=\\"true\\" data-key=\\"8\\"><div data-slate-spacer=\\"true\\" style=\\"height:0px;color:transparent;outline:none;position:absolute;\\"><span data-key=\\"10\\"><span data-offset-key=\\"10:0\\"><span data-slate-zero-width=\\"z\\">​</span></span></span></div><div contenteditable=\\"false\\"><div class=\\"component\\"><div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-normal\\" data-key=\\"8\\"><hr/></div></div></div></div><div data-key=\\"9\\" style=\\"position:relative;\\"><span data-key=\\"11\\"><span data-offset-key=\\"11:0\\"><span data-slate-zero-width=\\"n\\">​</span></span></span></div></div><button class=\\"exporter\\">Save Document</button></div>"`;
 

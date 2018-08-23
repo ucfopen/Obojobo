@@ -155,8 +155,6 @@ const insertNode = change => {
 }
 
 const slateToObo = node => {
-	if (node.type !== FIGURE_NODE) return null
-
 	const json = {}
 	json.id = node.key
 	json.type = node.type
