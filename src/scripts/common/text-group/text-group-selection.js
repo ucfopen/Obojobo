@@ -6,7 +6,7 @@ import VirtualCursor from '../../common/selection/virtual-cursor'
 import DOMUtil from '../../common/page/dom-util'
 import { EMPTY_CHAR as emptyChar } from '../../common/text/text-constants'
 
-let getCursors = function(chunk, virtualSelection) {
+const getCursors = function(chunk, virtualSelection) {
 	if (!virtualSelection) {
 		return {
 			start: null,
@@ -14,9 +14,9 @@ let getCursors = function(chunk, virtualSelection) {
 		}
 	}
 
-	let chunkStart = TextGroupSelection.getGroupStartCursor(chunk)
-	let chunkEnd = TextGroupSelection.getGroupEndCursor(chunk)
-	let position = virtualSelection.getPosition(chunk)
+	const chunkStart = TextGroupSelection.getGroupStartCursor(chunk)
+	const chunkEnd = TextGroupSelection.getGroupEndCursor(chunk)
+	const position = virtualSelection.getPosition(chunk)
 
 	switch (position) {
 		case 'start':
@@ -52,20 +52,118 @@ let getCursors = function(chunk, virtualSelection) {
 }
 
 class TextGroupSelection {
+	static getGroupStartCursor(chunk) {
+		TextGroupSelection.getTextStartCursor(chunk, 0)
+	}
+
+	static getGroupEndCursor(chunk) {
+		TextGroupSelection.getTextEndCursor(chunk, chunk.modelState.textGroup.length - 1)
+	}
+
+	static getTextStartCursor(chunk, groupIndex) {
+		const virtCur = new VirtualCursor(chunk, { groupIndex, offset: 0 })
+		return new TextGroupCursor(virtCur)
+	}
+
+	static getTextEndCursor(chunk, groupIndex) {
+		const virtCur = new VirtualCursor(chunk, {
+			groupIndex,
+			offset: chunk.modelState.textGroup.get(groupIndex).text.length
+		})
+		return new TextGroupCursor(virtCur)
+	}
+
+	static selectGroup(chunk, virtualSelection) {
+		const start = TextGroupSelection.getGroupStartCursor(chunk)
+		const end = TextGroupSelection.getGroupEndCursor(chunk)
+
+		virtualSelection.setStart(start.virtualCursor.chunk, start.virtualCursor.data)
+		return virtualSelection.setEnd(end.virtualCursor.chunk, end.virtualCursor.data)
+	}
+
+	static selectText(chunk, groupIndex, virtualSelection) {
+		const start = TextGroupSelection.getTextStartCursor(chunk, groupIndex)
+		const end = TextGroupSelection.getTextEndCursor(chunk, groupIndex)
+
+		virtualSelection.setStart(start.virtualCursor.chunk, start.virtualCursor.data)
+		return virtualSelection.setEnd(end.virtualCursor.chunk, end.virtualCursor.data)
+	}
+
+	static setCaretToGroupStart(chunk, virtualSelection) {
+		TextGroupSelection.selectGroup(chunk, virtualSelection)
+		return virtualSelection.collapse()
+	}
+
+	static setCaretToTextStart(chunk, groupIndex, virtualSelection) {
+		TextGroupSelection.selectText(chunk, groupIndex, virtualSelection)
+		return virtualSelection.collapse()
+	}
+
+	static setCaretToGroupEnd(chunk, virtualSelection) {
+		TextGroupSelection.selectGroup(chunk, virtualSelection)
+		return virtualSelection.collapseToEnd()
+	}
+
+	static setCaretToTextEnd(chunk, groupIndex, virtualSelection) {
+		TextGroupSelection.selectText(chunk, groupIndex, virtualSelection)
+		return virtualSelection.collapseToEnd()
+	}
+
+	static getCursorDataFromDOM(targetTextNode, offset) {
+		let groupIndex, groupIndexAttr
+		let totalCharactersFromStart = 0
+
+		const oboTextNode = DOMUtil.findParentWithAttr(targetTextNode, 'data-group-index')
+
+		if (oboTextNode) {
+			groupIndexAttr = oboTextNode.getAttribute('data-group-index')
+			groupIndex = parseInt(groupIndexAttr, 10)
+			if (isNaN(groupIndex)) {
+				groupIndex = groupIndexAttr
+			}
+		}
+
+		if (oboTextNode === null || oboTextNode.textContent === emptyChar) {
+			return {
+				offset: 0,
+				groupIndex
+			}
+		}
+
+		for (const textNode of Array.from(DOMUtil.getTextNodesInOrder(oboTextNode))) {
+			if (textNode === targetTextNode) {
+				break
+			}
+			totalCharactersFromStart += textNode.nodeValue.length
+		}
+
+		let anchor = false
+		if (groupIndexAttr.indexOf('anchor:') === 0) {
+			anchor = groupIndexAttr.substr(groupIndexAttr.indexOf(':') + 1)
+		}
+
+		offset += totalCharactersFromStart
+		if (anchor) {
+			offset = 0
+		}
+
+		return {
+			offset,
+			groupIndex
+		}
+	}
+
 	constructor(chunk, virtualSelection) {
 		this.chunk = chunk
 		this.virtualSelection = virtualSelection
 	}
-
-	// getFrozenSelection: ->
-	// 	new TextGroupSelection(chunk, virtualSelection.clone());
 
 	includes(item) {
 		if (this.type === 'none') {
 			return false
 		}
 
-		let groupIndex = item.index
+		const groupIndex = item.index
 		return this.start.groupIndex === groupIndex || this.end.groupIndex === groupIndex
 	}
 
@@ -107,13 +205,15 @@ class TextGroupSelection {
 
 	getAllSelectedTexts() {
 		if (
-			(this.start != null ? this.start.text : undefined) == null ||
-			(this.end != null ? this.end.text : undefined) == null
+			this.start === null ||
+			typeof this.start === 'undefined' ||
+			this.end === null ||
+			typeof this.end === 'undefined'
 		) {
 			return []
 		}
 
-		let all = []
+		const all = []
 		for (
 			let i = this.start.groupIndex, end = this.end.groupIndex, asc = this.start.groupIndex <= end;
 			asc ? i <= end : i >= end;
@@ -124,144 +224,35 @@ class TextGroupSelection {
 
 		return all
 	}
-}
 
-Object.defineProperties(TextGroupSelection.prototype, {
-	type: {
-		get() {
-			let cursors = getCursors(this.chunk, this.virtualSelection)
-			let { position } = this
+	get type() {
+		const cursors = getCursors(this.chunk, this.virtualSelection)
+		const { position } = this
 
-			switch (false) {
-				case cursors.start !== null && cursors.end !== null:
-					return 'none'
-				case position !== 'contains' ||
-					cursors.start.groupIndex !== cursors.end.groupIndex ||
-					cursors.start.offset !== cursors.end.offset:
-					return 'caret'
-				case cursors.start.groupIndex !== cursors.end.groupIndex:
-					return 'TextSpan'
-				default:
-					return 'multipleTextSpan'
-			}
-		}
-	},
-
-	start: {
-		get() {
-			return getCursors(this.chunk, this.virtualSelection).start
-		}
-	},
-	end: {
-		get() {
-			return getCursors(this.chunk, this.virtualSelection).end
-		}
-	},
-	position: {
-		get() {
-			return this.virtualSelection.getPosition(this.chunk)
-		}
-	}
-})
-
-TextGroupSelection.getGroupStartCursor = chunk => TextGroupSelection.getTextStartCursor(chunk, 0)
-
-TextGroupSelection.getGroupEndCursor = chunk =>
-	TextGroupSelection.getTextEndCursor(chunk, chunk.modelState.textGroup.length - 1)
-
-TextGroupSelection.getTextStartCursor = function(chunk, groupIndex) {
-	let virtCur = new VirtualCursor(chunk, { groupIndex, offset: 0 })
-	return new TextGroupCursor(virtCur)
-}
-
-TextGroupSelection.getTextEndCursor = function(chunk, groupIndex) {
-	let virtCur = new VirtualCursor(chunk, {
-		groupIndex,
-		offset: chunk.modelState.textGroup.get(groupIndex).text.length
-	})
-	return new TextGroupCursor(virtCur)
-}
-
-TextGroupSelection.selectGroup = function(chunk, virtualSelection) {
-	let start = TextGroupSelection.getGroupStartCursor(chunk)
-	let end = TextGroupSelection.getGroupEndCursor(chunk)
-
-	virtualSelection.setStart(start.virtualCursor.chunk, start.virtualCursor.data)
-	return virtualSelection.setEnd(end.virtualCursor.chunk, end.virtualCursor.data)
-}
-
-TextGroupSelection.selectText = function(chunk, groupIndex, virtualSelection) {
-	let start = TextGroupSelection.getTextStartCursor(chunk, groupIndex)
-	let end = TextGroupSelection.getTextEndCursor(chunk, groupIndex)
-
-	virtualSelection.setStart(start.virtualCursor.chunk, start.virtualCursor.data)
-	return virtualSelection.setEnd(end.virtualCursor.chunk, end.virtualCursor.data)
-}
-
-TextGroupSelection.setCaretToGroupStart = function(chunk, virtualSelection) {
-	TextGroupSelection.selectGroup(chunk, virtualSelection)
-	return virtualSelection.collapse()
-}
-
-TextGroupSelection.setCaretToTextStart = function(chunk, groupIndex, virtualSelection) {
-	TextGroupSelection.selectText(chunk, groupIndex, virtualSelection)
-	return virtualSelection.collapse()
-}
-
-TextGroupSelection.setCaretToGroupEnd = function(chunk, virtualSelection) {
-	TextGroupSelection.selectGroup(chunk, virtualSelection)
-	return virtualSelection.collapseToEnd()
-}
-
-TextGroupSelection.setCaretToTextEnd = function(chunk, groupIndex, virtualSelection) {
-	TextGroupSelection.selectText(chunk, groupIndex, virtualSelection)
-	return virtualSelection.collapseToEnd()
-}
-
-TextGroupSelection.getCursorDataFromDOM = function(targetTextNode, offset) {
-	// console.log 'getOboTextInfo', targetTextNode, offset
-
-	let groupIndex, groupIndexAttr
-	let totalCharactersFromStart = 0
-	// element ?= DOMUtil.getOboElementFromChild targetTextNode.parentElement, 'chunk'
-
-	let oboTextNode = DOMUtil.findParentWithAttr(targetTextNode, 'data-group-index')
-
-	if (oboTextNode) {
-		groupIndexAttr = oboTextNode.getAttribute('data-group-index')
-		groupIndex = parseInt(groupIndexAttr, 10)
-		if (isNaN(groupIndex)) {
-			groupIndex = groupIndexAttr
+		switch (false) {
+			case cursors.start !== null && cursors.end !== null:
+				return 'none'
+			case position !== 'contains' ||
+				cursors.start.groupIndex !== cursors.end.groupIndex ||
+				cursors.start.offset !== cursors.end.offset:
+				return 'caret'
+			case cursors.start.groupIndex !== cursors.end.groupIndex:
+				return 'TextSpan'
+			default:
+				return 'multipleTextSpan'
 		}
 	}
 
-	if (oboTextNode == null || oboTextNode.textContent === emptyChar) {
-		return {
-			offset: 0,
-			groupIndex
-		}
+	get start() {
+		return getCursors(this.chunk, this.virtualSelection).start
 	}
 
-	for (let textNode of Array.from(DOMUtil.getTextNodesInOrder(oboTextNode))) {
-		if (textNode === targetTextNode) {
-			break
-		}
-		totalCharactersFromStart += textNode.nodeValue.length
+	get end() {
+		return getCursors(this.chunk, this.virtualSelection).end
 	}
 
-	let anchor = false
-	if (groupIndexAttr.indexOf('anchor:') === 0) {
-		anchor = groupIndexAttr.substr(groupIndexAttr.indexOf(':') + 1)
-	}
-
-	offset += totalCharactersFromStart
-	if (anchor) {
-		offset = 0
-	}
-
-	return {
-		offset,
-		groupIndex
+	get position() {
+		return this.virtualSelection.getPosition(this.chunk)
 	}
 }
 

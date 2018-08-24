@@ -13,31 +13,31 @@ const VAL_DID_NOT_PASS = 'Did Not Pass'
 
 describe('AssessmentScoreReportView', () => {
 	test('AssessmentScoreReportView component', () => {
-		let report = {
+		const report = {
 			textItems: [],
 			scoreChangeDescription: null
 		}
 
-		let component = renderer.create(<ReportView report={report} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<ReportView report={report} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('AssessmentScoreReportView component with scoreChangeDescription', () => {
-		let report = {
+		const report = {
 			textItems: [],
 			scoreChangeDescription: 'mockDescription'
 		}
 
-		let component = renderer.create(<ReportView report={report} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<ReportView report={report} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('AssessmentScoreReportView component with textItems', () => {
-		let report = {
+		const report = {
 			textItems: [
 				{
 					type: TYPE_TEXT,
@@ -66,14 +66,14 @@ describe('AssessmentScoreReportView', () => {
 			scoreChangeDescription: 'mockDescription'
 		}
 
-		let component = renderer.create(<ReportView report={report} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<ReportView report={report} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('AssessmentScoreReportView component did not pass', () => {
-		let report = {
+		const report = {
 			textItems: [
 				{
 					type: TYPE_VAL,
@@ -83,8 +83,8 @@ describe('AssessmentScoreReportView', () => {
 			scoreChangeDescription: 'mockDescription'
 		}
 
-		let component = renderer.create(<ReportView report={report} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<ReportView report={report} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

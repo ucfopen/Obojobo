@@ -28,7 +28,7 @@ const controls = props => {
 			) : null}
 			{controlsOpts.newWindow ? (
 				<div className="new-window-link">
-					<a target="_blank" href={props.newWindowSrc}>
+					<a target="_blank" rel="noopener noreferrer" href={props.newWindowSrc}>
 						View in a new window
 					</a>
 

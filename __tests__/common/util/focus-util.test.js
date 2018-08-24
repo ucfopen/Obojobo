@@ -28,7 +28,7 @@ describe('FocusUtil', () => {
 	})
 
 	test('getFocussedComponent returns an OboModel of the focussed component id', () => {
-		let root = new OboModel({ id: 'rootId', type: 'test' })
+		const root = new OboModel({ id: 'rootId', type: 'test' })
 
 		expect(
 			FocusUtil.getFocussedComponent({

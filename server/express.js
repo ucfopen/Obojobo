@@ -10,7 +10,7 @@ const startAttempt = require('./attempt-start').startAttempt
 const endAttempt = require('./attempt-end').endAttempt
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
 
-app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
+app.get('/api/lti/state/draft/:draftId', (req, res) => {
 	let currentUser
 	let currentDocument
 
@@ -29,13 +29,12 @@ app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
 		})
 })
 
-app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
+app.post('/api/lti/sendAssessmentScore', (req, res) => {
 	logger.info('API sendAssessmentScore', req.body)
 
 	let currentUser = null
 	let currentDocument = null
 	let ltiScoreResult
-	const draftId = req.body.draftId
 	const assessmentId = req.body.assessmentId
 
 	return req
@@ -72,7 +71,7 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 
-app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
+app.post('/api/assessments/attempt/:attemptId/end', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
 	let isPreview
@@ -99,7 +98,7 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		})
 })
 
-app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
+app.post('/api/assessments/clear-preview-scores', (req, res) => {
 	let assessmentScoreIds
 	let attemptIds
 	let currentUser = null
@@ -223,7 +222,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 
 // @TODO NOT USED
 // update getAttempt to take isPreview
-app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
+app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
 
@@ -250,7 +249,7 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 
 // @TODO NOT USED
 // update getAttempts to take isPreview
-app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
+app.get('/api/assessments/:draftId/attempts', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
 
@@ -268,7 +267,7 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 			res.success(result)
 		})
 		.catch(error => {
-			if (error.message == 'Login Required') {
+			if (error.message === 'Login Required') {
 				return res.notAuthorized(error.message)
 			}
 
@@ -278,7 +277,7 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 
 // @TODO NOT USED
 // update getAttempts to take isPreview
-app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
+app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
 
@@ -298,7 +297,7 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 		})
 		.then(result => res.success(result))
 		.catch(error => {
-			if (error.message == 'Login Required') {
+			if (error.message === 'Login Required') {
 				return res.notAuthorized(error.message)
 			}
 

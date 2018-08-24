@@ -1,3 +1,5 @@
+/* eslint no-extend-native: 0 */
+
 global.fetch = jest.fn()
 
 const originalToISOString = Date.prototype.toISOString
@@ -21,8 +23,8 @@ describe('apiutil', () => {
 		APIUtil.get('mockEndpoint')
 
 		expect(fetch).toHaveBeenCalled()
-		let calledEndpoint = fetch.mock.calls[0][0]
-		let calledOptions = fetch.mock.calls[0][1]
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
 			credentials: 'include',
@@ -37,8 +39,8 @@ describe('apiutil', () => {
 	test('post fetches with the correct args', () => {
 		APIUtil.post('mockEndpoint', { arg: 'value' })
 		expect(fetch).toHaveBeenCalled()
-		let calledEndpoint = fetch.mock.calls[0][0]
-		let calledOptions = fetch.mock.calls[0][1]
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
 			body: JSON.stringify({ arg: 'value' }),
@@ -54,8 +56,8 @@ describe('apiutil', () => {
 	test('post fetches with blank body', () => {
 		APIUtil.post('mockEndpoint')
 		expect(fetch).toHaveBeenCalled()
-		let calledEndpoint = fetch.mock.calls[0][0]
-		let calledOptions = fetch.mock.calls[0][1]
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
 			body: JSON.stringify({}),
@@ -69,7 +71,7 @@ describe('apiutil', () => {
 	})
 
 	test('postEvent fetches with the correct args', () => {
-		let obj = {
+		const obj = {
 			draftId: 'mockDraftId',
 			action: 'mockAction',
 			eventVersion: 'mockEventVersion',
@@ -83,10 +85,10 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.postEvent(obj).then(res => {
+		return APIUtil.postEvent(obj).then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 
 			expect(calledEndpoint).toBe('/api/events')
 
@@ -165,10 +167,10 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.getDraft('mockId').then(res => {
+		return APIUtil.getDraft('mockId').then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/drafts/mockId')
 			expect(calledOptions).toBe()
 		})
@@ -186,8 +188,8 @@ describe('apiutil', () => {
 
 		return APIUtil.requestStart('mockVisitId', 'mockDraftId').then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/visits/start')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
@@ -220,10 +222,10 @@ describe('apiutil', () => {
 			draftId: 'mockDraftId',
 			assessmentId: 'mockAssessmentId',
 			visitId: 'mockVisitId'
-		}).then(res => {
+		}).then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/assessments/attempt/start')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
@@ -255,8 +257,8 @@ describe('apiutil', () => {
 
 		return APIUtil.endAttempt({ attemptId: 999, visitId: 'mockVisitId' }).then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/assessments/attempt/999/end')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
@@ -289,8 +291,8 @@ describe('apiutil', () => {
 			visitId: 'mockVisitId'
 		}).then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/lti/sendAssessmentScore')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
@@ -322,8 +324,8 @@ describe('apiutil', () => {
 		return APIUtil.clearPreviewScores({ draftId: 'mockDraftId', visitId: 'mockVisitId' }).then(
 			() => {
 				expect(fetch).toHaveBeenCalled()
-				let calledEndpoint = fetch.mock.calls[0][0]
-				let calledOptions = fetch.mock.calls[0][1]
+				const calledEndpoint = fetch.mock.calls[0][0]
+				const calledOptions = fetch.mock.calls[0][1]
 				expect(calledEndpoint).toBe('/api/assessments/clear-preview-scores')
 				expect(calledOptions).toEqual({
 					body: expect.anything(),

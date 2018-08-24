@@ -9,7 +9,7 @@ const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 const { FocusUtil } = Common.util
-const { UUID } = Common.util
+const { uuid } = Common.util
 
 class QuestionStore extends Store {
 	constructor() {
@@ -176,7 +176,7 @@ class QuestionStore extends Store {
 			},
 
 			'question:scoreSet': payload => {
-				const scoreId = UUID()
+				const scoreId = uuid()
 
 				if (!this.state.scores[payload.value.context]) this.state.scores[payload.value.context] = {}
 

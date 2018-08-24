@@ -1,15 +1,19 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import MathEquationAdapter from '../../../../ObojoboDraft/Chunks/MathEquation/adapter'
 
 describe('MathEquation adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = new OboModel({})
 		MathEquationAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				latex: 'mockEquations',
 				align: 'left',
@@ -17,14 +21,27 @@ describe('MathEquation adapter', () => {
 				size: '3'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		MathEquationAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
+	})
+
+	test('construct sets size to 1 if given invalid value', () => {
+		const attrs = {
+			content: {
+				size: 'tiny'
+			}
+		}
+		const model = new OboModel(attrs)
+
+		MathEquationAdapter.construct(model, attrs)
+		expect(model.modelState.size).toBe('1em')
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = new OboModel({})
+		const b = new OboModel({})
 
 		MathEquationAdapter.construct(a)
 		MathEquationAdapter.clone(a, b)
@@ -34,14 +51,14 @@ describe('MathEquation adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				latex: 'test',
 				align: 'left'
 			}
 		}
-		let json = { content: {} }
+		const model = new OboModel(attrs)
+		const json = { content: {} }
 
 		MathEquationAdapter.construct(model, attrs)
 		MathEquationAdapter.toJSON(model, json)
@@ -50,13 +67,13 @@ describe('MathEquation adapter', () => {
 	})
 
 	test('can be converted to text', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				latex: 'latex goes here',
 				align: 'left'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		MathEquationAdapter.construct(model, attrs)
 		expect(MathEquationAdapter.toText(model)).toMatch('latex goes here')

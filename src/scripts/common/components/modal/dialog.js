@@ -1,7 +1,8 @@
 import './dialog.scss'
 
+import React from 'react'
+
 import Button from '../../../common/components/button'
-import DeleteButton from '../../../common/components/delete-button'
 import Modal from './modal'
 
 export default class Dialog extends React.Component {
@@ -11,9 +12,9 @@ export default class Dialog extends React.Component {
 
 	componentDidMount() {
 		return (() => {
-			let result = []
+			const result = []
 			for (let index = 0; index < this.props.buttons.length; index++) {
-				let button = this.props.buttons[index]
+				const button = this.props.buttons[index]
 				let item
 				if (button.default) {
 					item = this.refs[`button${index}`].focus()
@@ -62,7 +63,7 @@ export default class Dialog extends React.Component {
 								)
 							}
 							buttonPropsOrText.key = index
-							return <Button ref={`button${index}`} {...buttonPropsOrText} />
+							return <Button key={index} ref={`button${index}`} {...buttonPropsOrText} />
 						})}
 					</div>
 				</Modal>

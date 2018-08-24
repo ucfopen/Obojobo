@@ -1,5 +1,7 @@
 import './edit-button.scss'
 
+import React from 'react'
+
 const EditButton = props => (
 	<div className="obojobo-draft--components--edit-button">
 		<button

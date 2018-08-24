@@ -36,7 +36,7 @@ describe('ModalStore', () => {
 	})
 
 	test('setState saves the provided state', () => {
-		let state = { a: 1, b: 2 }
+		const state = { a: 1, b: 2 }
 		ModalStore.setState(state)
 
 		expect(ModalStore.getState()).toEqual(state)

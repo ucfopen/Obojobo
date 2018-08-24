@@ -1,10 +1,10 @@
-let getParsedRange = range => {
+const getParsedRange = range => {
 	if (typeof range === 'undefined' || range === null) return null
 
 	if (range.indexOf(',') === -1) return getParsedRangeFromSingleValue(range)
 
-	let ints = range.replace(/[\(\[\)\] ]+/g, '')
-	let rangeValues = ints.split(',')
+	const ints = range.replace(/[([)\] ]+/g, '')
+	const rangeValues = ints.split(',')
 
 	return {
 		min: rangeValues[0],
@@ -14,7 +14,7 @@ let getParsedRange = range => {
 	}
 }
 
-let getParsedRangeFromSingleValue = value => {
+const getParsedRangeFromSingleValue = value => {
 	if (typeof value === 'undefined' || value === null) return null
 
 	return {
@@ -32,8 +32,7 @@ let getParsedRangeFromSingleValue = value => {
 // If `value` is one of these values then `value` is not parsed and simply returned.
 // For example, if nonParsedValueOrValues is `[null, undefined]` and `value` is null
 // then null is returned.
-let tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = []) => {
-	let replaceDictValue
+const tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = []) => {
 	let nonParsedValues
 
 	if (!(nonParsedValueOrValues instanceof Array)) {
@@ -42,7 +41,7 @@ let tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = []) =
 		nonParsedValues = nonParsedValueOrValues
 	}
 
-	for (let placeholder in replaceDict) {
+	for (const placeholder in replaceDict) {
 		if (value === placeholder) {
 			value = replaceDict[placeholder]
 			break
@@ -53,7 +52,7 @@ let tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = []) =
 	// and simply return it as is
 	if (nonParsedValues.indexOf(value) > -1) return value
 
-	let parsedValue = parseFloat(value)
+	const parsedValue = parseFloat(value)
 
 	if (!Number.isFinite(parsedValue) && parsedValue !== Infinity && parsedValue !== -Infinity) {
 		throw new Error(`Unable to parse "${value}": Got "${parsedValue}" - Unsure how to proceed`)
@@ -62,14 +61,14 @@ let tryGetParsedFloat = (value, replaceDict = {}, nonParsedValueOrValues = []) =
 	return parsedValue
 }
 
-let isValueInRange = (value, range, replaceDict) => {
+const isValueInRange = (value, range, replaceDict) => {
 	// By definition a value is not inside a null range
 	if (range === null) return false
 
 	let isMinRequirementMet, isMaxRequirementMet
 
-	let min = tryGetParsedFloat(range.min, replaceDict)
-	let max = tryGetParsedFloat(range.max, replaceDict)
+	const min = tryGetParsedFloat(range.min, replaceDict)
+	const max = tryGetParsedFloat(range.max, replaceDict)
 
 	if (range.isMinInclusive) {
 		isMinRequirementMet = value >= min

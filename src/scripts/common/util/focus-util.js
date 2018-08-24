@@ -1,7 +1,7 @@
 import Dispatcher from '../../common/flux/dispatcher'
 import OboModel from '../../common/models/obo-model'
 
-let FocusUtil = {
+const FocusUtil = {
 	focusComponent(id) {
 		Dispatcher.trigger('focus:component', {
 			value: { id }
@@ -13,7 +13,7 @@ let FocusUtil = {
 	},
 
 	getFocussedComponent(state) {
-		return OboModel.models[state.focussedId]
+		return OboModel.models[state.focussedId] || null
 	}
 }
 

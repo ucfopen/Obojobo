@@ -1,9 +1,9 @@
 import Common from 'Common'
 
-let { TextGroup } = Common.textGroup
-let { TextGroupItem } = Common.textGroup
-let Util = Common.textGroup.TextGroupUtil
-let { StyleableText } = Common.text
+const { TextGroup } = Common.textGroup
+const { TextGroupItem } = Common.textGroup
+const Util = Common.textGroup.TextGroupUtil
+const { StyleableText } = Common.text
 
 class GridTextGroup extends TextGroup {
 	constructor(numRows, numCols, dataTemplate, initialItems) {
@@ -14,12 +14,14 @@ class GridTextGroup extends TextGroup {
 		this.fill()
 	}
 
-	static fromDescriptor(descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
-		if (restoreDataDescriptorFn == null) {
-			restoreDataDescriptorFn = Util.defaultCloneFn
-		}
-		let items = []
-		for (let item of Array.from(descriptor.textGroup)) {
+	static fromDescriptor(
+		descriptor,
+		maxItems,
+		dataTemplate,
+		restoreDataDescriptorFn = Util.defaultCloneFn
+	) {
+		const items = []
+		for (const item of Array.from(descriptor.textGroup)) {
 			items.push(
 				new TextGroupItem(
 					StyleableText.createFromObject(item.text),
@@ -31,33 +33,25 @@ class GridTextGroup extends TextGroup {
 		return new GridTextGroup(descriptor.numRows, descriptor.numCols, dataTemplate, items)
 	}
 
-	static create(numRows, numCols, dataTemplate) {
-		if (dataTemplate == null) {
-			dataTemplate = {}
-		}
-		let group = new GridTextGroup(numRows, numCols, dataTemplate)
+	static create(numRows, numCols, dataTemplate = {}) {
+		const group = new GridTextGroup(numRows, numCols, dataTemplate)
 		group.init(group.maxItems)
 
 		return group
 	}
 
-	addRow(rowIndex, text, data) {
-		if (rowIndex == null) {
+	addRow(rowIndex = Infinity, text = null, data = null) {
+		if (rowIndex === Infinity) {
 			rowIndex = this.numRows
 		}
-		if (text == null) {
-			text = null
-		}
-		if (data == null) {
-			data = null
-		}
+
 		// 0 | 1 | 2
 		// 3 | 4 | 5
 		// 6 | 7 | 8
 
 		this.maxItems += this.numCols
 
-		let firstInRowIndex = rowIndex * this.numCols
+		const firstInRowIndex = rowIndex * this.numCols
 		for (
 			let i = firstInRowIndex,
 				end = firstInRowIndex + this.numCols - 1,
@@ -74,16 +68,11 @@ class GridTextGroup extends TextGroup {
 		return this
 	}
 
-	addCol(colIndex, text, data) {
-		if (colIndex == null) {
+	addCol(colIndex = Infinity, text = null, data = null) {
+		if (colIndex === Infinity) {
 			colIndex = this.numCols
 		}
-		if (text == null) {
-			text = null
-		}
-		if (data == null) {
-			data = null
-		}
+
 		this.maxItems += this.numRows
 
 		for (let i = this.numRows - 1; i >= 0; i--) {
@@ -96,16 +85,16 @@ class GridTextGroup extends TextGroup {
 		return this
 	}
 
-	removeRow(rowIndex) {
+	removeRow(rowIndex = Infinity) {
 		// If there are no rows, or no columns, removing a row is meaningless
 		if (this.numRows <= 0 || this.numCols <= 0) return this
 
-		if (rowIndex == null) {
+		if (rowIndex === Infinity) {
 			rowIndex = this.numRows - 1
 		}
 		this.maxItems -= this.numCols
 
-		let firstInRowIndex = rowIndex * this.numCols
+		const firstInRowIndex = rowIndex * this.numCols
 		for (let i = firstInRowIndex, end = firstInRowIndex + this.numCols - 1; i <= end; i++) {
 			this.remove(firstInRowIndex)
 		}
@@ -115,11 +104,11 @@ class GridTextGroup extends TextGroup {
 		return this
 	}
 
-	removeCol(colIndex) {
+	removeCol(colIndex = Infinity) {
 		// If there are no rows, or no columns, removing a column is meaningless
 		if (this.numRows <= 0 || this.numCols <= 0) return this
 
-		if (colIndex == null) {
+		if (colIndex === Infinity) {
 			colIndex = this.numCols - 1
 		}
 		this.maxItems -= this.numRows
@@ -133,26 +122,20 @@ class GridTextGroup extends TextGroup {
 		return this
 	}
 
-	clone(cloneDataFn) {
-		if (cloneDataFn == null) {
-			cloneDataFn = Util.defaultCloneFn
-		}
-		let clonedItems = []
+	clone(cloneDataFn = Util.defaultCloneFn) {
+		const clonedItems = []
 
-		for (let item of this.items) {
+		for (const item of this.items) {
 			clonedItems.push(item.clone(cloneDataFn))
 		}
 
 		return new GridTextGroup(this.numRows, this.numCols, this.dataTemplate, clonedItems)
 	}
 
-	toDescriptor(dataToDescriptorFn) {
-		if (dataToDescriptorFn == null) {
-			dataToDescriptorFn = Util.defaultCloneFn
-		}
-		let desc = []
+	toDescriptor(dataToDescriptorFn = Util.defaultCloneFn) {
+		const desc = []
 
-		for (let item of this.items) {
+		for (const item of this.items) {
 			desc.push({ text: item.text.getExportedObject(), data: dataToDescriptorFn(item.data) })
 		}
 

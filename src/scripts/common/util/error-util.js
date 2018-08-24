@@ -1,7 +1,9 @@
+import React from 'react'
+
 import Dispatcher from '../../common/flux/dispatcher'
 import ErrorDialog from '../../common/components/modal/error-dialog'
 
-var ErrorUtil = {
+const ErrorUtil = {
 	show(title, errorMessage) {
 		return Dispatcher.trigger('modal:show', {
 			value: {
@@ -11,7 +13,7 @@ var ErrorUtil = {
 	},
 
 	errorResponse(res) {
-		let title = (() => {
+		const title = (() => {
 			switch (res.value.type) {
 				case 'input':
 					return 'Bad Input'

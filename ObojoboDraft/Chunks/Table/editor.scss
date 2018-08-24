@@ -36,6 +36,7 @@
 		z-index: 2;
 	}
 
+	// stylelint-disable-next-line no-descending-specificity
 	.obojobo-draft--components--delete-button {
 		display: none;
 		position: absolute;
@@ -68,22 +69,25 @@
 			line-height: inherit;
 		}
 
-		th,
-		td {
-			border: 1px solid $color-shadow;
-			padding: 0.2em 0.5em;
-			text-align: left;
-
-			&:first-child {
-				width: auto;
-			}
-		}
-
 		th {
 			background: $color-bg2;
 			font-family: $font-default;
 			font-size: 0.9em;
 			text-align: center;
+		}
+
+		td {
+			text-align: left;
+		}
+
+		th,
+		td {
+			border: 1px solid $color-shadow;
+			padding: 0.2em 0.5em;
+
+			&:first-child {
+				width: auto;
+			}
 		}
 	}
 

@@ -1,8 +1,10 @@
 import '../../../scss/main.scss'
 import './viewer-app.scss'
 
-import Common from 'Common'
 import React from 'react'
+import ReactDOM from 'react-dom'
+
+import Common from 'Common'
 import IdleTimer from 'react-idle-timer'
 
 import InlineNavButton from '../../viewer/components/inline-nav-button'
@@ -19,7 +21,6 @@ import Header from '../../viewer/components/header'
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
-const { Legacy } = Common.models
 const { DOMUtil } = Common.page
 const { Screen } = Common.page
 const { OboModel } = Common.models
@@ -49,7 +50,7 @@ export default class ViewerApp extends React.Component {
 		super(props)
 
 		Dispatcher.on('viewer:scrollTo', payload => {
-			return (ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value)
+			ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value
 		})
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
@@ -85,6 +86,14 @@ export default class ViewerApp extends React.Component {
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 
 		this.state = state
+
+		// === SET UP DATA STORES ===
+		NavStore.onChange(this.onNavStoreChange)
+		QuestionStore.onChange(this.onQuestionStoreChange)
+		AssessmentStore.onChange(this.onAssessmentStoreChange)
+		ModalStore.onChange(this.onModalStoreChange)
+		FocusStore.onChange(this.onFocusStoreChange)
+		MediaStore.onChange(this.onMediaStoreChange)
 	}
 
 	componentDidMount() {
@@ -120,24 +129,31 @@ export default class ViewerApp extends React.Component {
 				return APIUtil.getDraft(draftIdFromUrl)
 			})
 			.then(({ value: draftModel }) => {
-				this.state.model = OboModel.create(draftModel)
+				const model = OboModel.create(draftModel)
+
+				// console.log('model', draftModel, model)
 
 				NavStore.init(
-					this.state.model,
-					this.state.model.modelState.start,
+					model,
+					model.modelState.start,
 					window.location.pathname,
 					visitIdFromApi,
 					viewState
 				)
 				AssessmentStore.init(attemptHistory)
 
-				this.state.navState = NavStore.getState()
-				this.state.mediaState = MediaStore.getState()
-				this.state.questionState = QuestionStore.getState()
-				this.state.assessmentState = AssessmentStore.getState()
-				this.state.modalState = ModalStore.getState()
-				this.state.focusState = FocusStore.getState()
-				this.state.lti.outcomeServiceHostname = getLTIOutcomeServiceHostname(outcomeServiceURL)
+				this.setState({
+					model,
+					navState: NavStore.getState(),
+					mediaState: MediaStore.getState(),
+					questionState: QuestionStore.getState(),
+					assessmentState: AssessmentStore.getState(),
+					modalState: ModalStore.getState(),
+					focusState: FocusStore.getState(),
+					lti: Object.assign(this.state.lti, {
+						outcomeServiceHostname: getLTIOutcomeServiceHostname(outcomeServiceURL)
+					})
+				})
 
 				window.onbeforeunload = this.onBeforeWindowClose
 				window.onunload = this.onWindowClose
@@ -153,21 +169,11 @@ export default class ViewerApp extends React.Component {
 				})
 			})
 			.catch(err => {
-				console.error(err)
+				console.error(err) /* eslint-disable-line no-console */
 				this.setState({ loading: false, requestStatus: 'invalid' }, () =>
 					Dispatcher.trigger('viewer:loaded', false)
 				)
 			})
-	}
-
-	componentWillMount() {
-		// === SET UP DATA STORES ===
-		NavStore.onChange(this.onNavStoreChange)
-		QuestionStore.onChange(this.onQuestionStoreChange)
-		AssessmentStore.onChange(this.onAssessmentStoreChange)
-		ModalStore.onChange(this.onModalStoreChange)
-		FocusStore.onChange(this.onFocusStoreChange)
-		MediaStore.onChange(this.onMediaStoreChange)
 	}
 
 	componentWillUnmount() {
@@ -196,7 +202,7 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 
-		if (this.state.loading === true && nextState.loading === false) {
+		if (this.state.loading && !nextState.loading) {
 			this.needsRemoveLoadingElement = true
 		}
 	}
@@ -207,7 +213,7 @@ export default class ViewerApp extends React.Component {
 				this.needsScroll = true
 			}
 			this.lastCanNavigate = NavUtil.canNavigate(this.state.navState)
-			if (this.needsScroll != null) {
+			if (this.needsScroll) {
 				this.scrollToTop()
 
 				delete this.needsScroll
@@ -260,7 +266,7 @@ export default class ViewerApp extends React.Component {
 		if (!container) return
 
 		if (el) {
-			return (container.scrollTop = ReactDOM.findDOMNode(el).getBoundingClientRect().height)
+			return (container.scrollTop = el.getBoundingClientRect().height)
 		}
 
 		return (container.scrollTop = 0)
@@ -269,21 +275,25 @@ export default class ViewerApp extends React.Component {
 	// === NON REACT LIFECYCLE METHODS ===
 
 	onMouseDown(event) {
-		if (this.state.focusState.focussedId == null) {
+		const focusState = this.state.focusState
+
+		if (focusState.focussedId === null || typeof focusState.focussedId === 'undefined') {
 			return
 		}
-		if (!DOMUtil.findParentComponentIds(event.target).has(this.state.focusState.focussedId)) {
+		if (!DOMUtil.findParentComponentIds(event.target).has(focusState.focussedId)) {
 			return FocusUtil.unfocus()
 		}
 	}
 
-	onScroll(event) {
-		if (this.state.focusState.focussedId == null) {
+	onScroll() {
+		const focusState = this.state.focusState
+
+		if (!focusState.focussedId) {
 			return
 		}
 
-		const component = FocusUtil.getFocussedComponent(this.state.focusState)
-		if (component == null) {
+		const component = FocusUtil.getFocussedComponent(focusState)
+		if (!component) {
 			return
 		}
 
@@ -297,7 +307,7 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
-	onResize(event) {
+	onResize() {
 		Dispatcher.trigger(
 			'viewer:contentAreaResized',
 			ReactDOM.findDOMNode(this.refs.container).getBoundingClientRect().width
@@ -354,6 +364,7 @@ export default class ViewerApp extends React.Component {
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
 
+		/* eslint-disable-next-line */
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
@@ -400,7 +411,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	render() {
-		if (this.state.loading == true) return null
+		if (this.state.loading) return null
 
 		if (this.state.requestStatus === 'invalid') {
 			return (
@@ -414,7 +425,7 @@ export default class ViewerApp extends React.Component {
 			) //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
 		}
 
-		let nextEl, nextModel, prevEl
+		let nextComp, nextModel, prevComp
 		window.__lo = this.state.model
 		window.__s = this.state
 
@@ -422,7 +433,7 @@ export default class ViewerApp extends React.Component {
 
 		const navTargetModel = NavUtil.getNavTargetModel(this.state.navState)
 		let navTargetTitle = '?'
-		if (navTargetModel != null) {
+		if (navTargetModel && navTargetModel.title) {
 			navTargetTitle = navTargetModel.title
 		}
 
@@ -434,9 +445,9 @@ export default class ViewerApp extends React.Component {
 					typeof prevModel.title !== 'undefined' && prevModel.title !== null
 						? 'Back: ' + prevModel.title
 						: 'Back'
-				prevEl = <InlineNavButton ref="prev" type="prev" title={`${navText}`} />
+				prevComp = <InlineNavButton ref="prev" type="prev" title={`${navText}`} />
 			} else {
-				prevEl = (
+				prevComp = (
 					<InlineNavButton
 						ref="prev"
 						type="prev"
@@ -452,9 +463,9 @@ export default class ViewerApp extends React.Component {
 					typeof nextModel.title !== 'undefined' && nextModel.title !== null
 						? 'Next: ' + nextModel.title
 						: 'Next'
-				nextEl = <InlineNavButton ref="next" type="next" title={`${navText}`} />
+				nextComp = <InlineNavButton ref="next" type="next" title={`${navText}`} />
 			} else {
-				nextEl = (
+				nextComp = (
 					<InlineNavButton
 						ref="next"
 						type="next"
@@ -496,9 +507,9 @@ export default class ViewerApp extends React.Component {
 						<Header moduleTitle={this.state.model.title} location={navTargetTitle} />
 					)}
 					{hideViewer ? null : <Nav navState={this.state.navState} />}
-					{hideViewer ? null : prevEl}
+					{hideViewer ? null : prevComp}
 					{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
-					{hideViewer ? null : nextEl}
+					{hideViewer ? null : nextComp}
 					{this.state.isPreviewing ? (
 						<div className="preview-banner">
 							<span>You are previewing this module</span>

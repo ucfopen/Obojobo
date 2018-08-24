@@ -1,5 +1,7 @@
 import Anchor from '../../../common/components/anchor'
 
+import React from 'react'
+
 const FocusableChunk = props => (
 	<div
 		className={`focusable-chunk anchor-container${props.className ? ` ${props.className}` : ''}`}

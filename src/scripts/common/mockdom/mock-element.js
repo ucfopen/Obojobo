@@ -1,9 +1,6 @@
 class MockElement {
-	constructor(type, attrs) {
+	constructor(type, attrs = {}) {
 		this.type = type
-		if (attrs == null) {
-			attrs = {}
-		}
 		this.attrs = attrs
 		this.nodeType = 'element'
 		this.children = []
@@ -21,17 +18,17 @@ class MockElement {
 	}
 
 	addBefore(childToAdd, targetChild) {
-		let index = this.children.indexOf(targetChild)
+		const index = this.children.indexOf(targetChild)
 		return this.addChildAt(childToAdd, index)
 	}
 
 	addAfter(childToAdd, targetChild) {
-		let index = this.children.indexOf(targetChild)
+		const index = this.children.indexOf(targetChild)
 		return this.addChildAt(childToAdd, index + 1)
 	}
 
 	replaceChild(childToReplace, newChild) {
-		let index = this.children.indexOf(childToReplace)
+		const index = this.children.indexOf(childToReplace)
 		this.children[index] = newChild
 		newChild.parent = this
 		return (childToReplace.parent = null)

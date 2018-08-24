@@ -19,7 +19,7 @@ const propsList = [
 ]
 
 export default {
-	construct(model, attrs) {
+	construct(model) {
 		model.setStateProp('type', IFrameMediaTypes.MEDIA, p => p.toLowerCase(), [
 			IFrameMediaTypes.WEBPAGE,
 			IFrameMediaTypes.MEDIA

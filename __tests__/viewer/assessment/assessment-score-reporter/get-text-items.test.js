@@ -15,9 +15,8 @@ import {
 	TYPE_PASSFAIL_UNABLE_TO_PASS_GIVEN_SCORE,
 	ERROR_UNKNOWN_DISPLAY_TYPE
 } from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/display-types'
-import getDisplayFriendlyScore from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-friendly-score.js'
 
-let getDisplayType = require('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')
+const getDisplayType = require('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')
 	.default
 
 jest.mock('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')

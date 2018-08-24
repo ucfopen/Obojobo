@@ -1,7 +1,7 @@
 import Chunk from '../../../common/models/obo-model'
 
 export default function(componentClass, position, referenceChunk, selection, callback) {
-	let newChunk = Chunk.create(componentClass)
+	const newChunk = Chunk.create(componentClass)
 
 	switch (position) {
 		case 'before':

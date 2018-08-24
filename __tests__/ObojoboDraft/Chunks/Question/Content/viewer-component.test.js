@@ -7,7 +7,7 @@ const mockComponent = props => <div {...props} />
 
 describe('QuestionContent', () => {
 	test('QuestionContent component with no children', () => {
-		let props = {
+		const props = {
 			model: {
 				children: {
 					models: []
@@ -17,19 +17,19 @@ describe('QuestionContent', () => {
 		}
 
 		const component = renderer.create(<QuestionContent {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('QuestionContent component with multiple children', () => {
 		let key = 0
-		let mockChild = {
+		const mockChild = {
 			getComponentClass: () => mockComponent,
 			get: () => key++
 		}
 
-		let props = {
+		const props = {
 			model: {
 				children: {
 					models: [mockChild, mockChild, mockChild]
@@ -43,7 +43,7 @@ describe('QuestionContent', () => {
 		// this incrementing key indicates how many children were added
 		expect(key).toBe(2)
 
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 })

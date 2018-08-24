@@ -1,16 +1,15 @@
-let CommandHandler
-let { Editor } = window
+const { Editor } = window
 import Common from 'Common'
 
-let { TextGroupCommandHandler } = Editor.chunk.textChunk
-let { TextGroupSelection } = Common.textGroup
+const { TextGroupCommandHandler } = Editor.chunk.textChunk
+const { TextGroupSelection } = Common.textGroup
 
-export default (CommandHandler = class CommandHandler extends TextGroupCommandHandler {
-	onEnter(selection, chunk, shiftKey) {
+export default class CommandHandler extends TextGroupCommandHandler {
+	onEnter(selection, chunk) {
 		chunk.markDirty()
 
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
-		let { textGroup } = chunk.modelState
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
+		const { textGroup } = chunk.modelState
 
 		if (tgs.start.text.length !== 0) {
 			chunk.splitText()
@@ -19,7 +18,7 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 
 		// If splitting an empty one item paragraph create a new paragraph below
 		if (textGroup.length === 1) {
-			let sibChunk = chunk.clone()
+			const sibChunk = chunk.clone()
 			sibChunk.modelState.textGroup.init(1)
 
 			chunk.addChildAfter(sibChunk)
@@ -30,8 +29,7 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 			// If splitting an empty textGroup item that's not a one item paragraph
 			// then split into three paragraphs:
 		} else {
-			let splitChildren
-			return (splitChildren = chunk.split())
+			return chunk.split()
 		}
 	}
-})
+}

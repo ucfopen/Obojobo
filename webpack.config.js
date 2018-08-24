@@ -49,7 +49,8 @@ const obojoboDraftConfig = {
 		react: 'React',
 		'react-dom': 'ReactDOM',
 		backbone: 'Backbone',
-		katex: 'katex'
+		katex: 'katex',
+		underscore: '_'
 	},
 	plugins: [new MiniCssExtractPlugin()]
 }
@@ -102,6 +103,7 @@ const viewerConfig = {
 		'react-dom': 'ReactDOM',
 		backbone: 'Backbone',
 		katex: 'katex',
+		underscore: '_',
 		Common: 'Common'
 	},
 	plugins: [new MiniCssExtractPlugin()]
@@ -213,6 +215,7 @@ const mainConfig = {
 		'react-dom': 'ReactDOM',
 		backbone: 'Backbone',
 		katex: 'katex',
+		underscore: '_',
 		Common: 'Common',
 		Viewer: 'Viewer'
 	},

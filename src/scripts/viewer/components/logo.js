@@ -1,4 +1,7 @@
 import './logo.scss'
+
+import React from 'react'
+
 import isOrNot from '../../common/isornot'
 
 const Logo = props => (

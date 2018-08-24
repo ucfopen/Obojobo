@@ -1,5 +1,7 @@
 import './button-bar.scss'
 
+import React from 'react'
+
 import Button from './button'
 
 const onClickButton = (index, isSelected, originalOnClick, buttonBarOnClick = () => {}) => {
@@ -10,11 +12,11 @@ const onClickButton = (index, isSelected, originalOnClick, buttonBarOnClick = ()
 	buttonBarOnClick(index, isSelected)
 }
 
-export default props => (
+const ButtonBar = props => (
 	<div className={`obojobo-draft--components--button-bar`}>
 		{props.children.map((child, i) => {
-			let isSelected = i === props.selectedIndex
-			let childProps = Object.assign({}, child.props)
+			const isSelected = i === props.selectedIndex
+			const childProps = Object.assign({}, child.props)
 
 			if (props.altAction) {
 				childProps.altAction = props.altAction
@@ -44,3 +46,5 @@ export default props => (
 		})}
 	</div>
 )
+
+export default ButtonBar

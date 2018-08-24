@@ -1,3 +1,6 @@
+/* eslint no-undefined: 0 */
+/* eslint no-extend-native: 0 */
+
 jest.mock('../../server/assessment-rubric')
 jest.mock('../../server/assessment', () => ({
 	getAttempt: jest.fn().mockResolvedValue({
@@ -22,9 +25,7 @@ jest.mock(
 )
 
 const logger = oboRequire('logger')
-const db = oboRequire('db')
 const DraftDocument = oboRequire('models/draft')
-const DraftNode = oboRequire('models/draft_node')
 const lti = oboRequire('lti')
 const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
@@ -115,8 +116,8 @@ describe('Attempt End', () => {
 		})
 
 		// mock score reload
-		const loadAssessmentProperties = jest.fn().mockReturnValueOnce('mockProperties')
-		const reloadAttemptStateIfReviewing = jest.fn().mockReturnValueOnce('mockReload')
+		jest.fn().mockReturnValueOnce('mockProperties')
+		jest.fn().mockReturnValueOnce('mockReload')
 
 		const req = {
 			connection: { remoteAddress: 'mockRemoteAddress' }
@@ -624,7 +625,7 @@ describe('Attempt End', () => {
 	})
 	test('getNodeQuestion reloads score', () => {
 		const mockDraftDocument = new DraftDocument(testJson)
-		const assessmentNode = mockDraftDocument.getChildNodeById('assessment')
+		mockDraftDocument.getChildNodeById('assessment')
 		mockDraftDocument.getChildNodeById.mockReturnValueOnce({
 			toObject: () => {
 				return {
@@ -714,7 +715,7 @@ describe('Attempt End', () => {
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).toBe(0)
 
-		const traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
+		recreateChosenQuestionTree(mockQB, mockDraftDocument)
 
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).not.toBe(0)
@@ -760,7 +761,7 @@ describe('Attempt End', () => {
 		expect(mockQB.children[0].children[0].children.length).toBe(1)
 		expect(mockQB.children[0].children[0].children[0].children.length).toBe(0)
 
-		const traversedQB = recreateChosenQuestionTree(mockQB, mockDraftDocument)
+		recreateChosenQuestionTree(mockQB, mockDraftDocument)
 
 		expect(mockQB.children.length).toBe(1)
 		expect(mockQB.children[0].children.length).toBe(1)
@@ -837,15 +838,7 @@ describe('Attempt End', () => {
 		})
 		Assessment.updateAttemptState = jest.fn()
 
-		const response = reloadAttemptStateIfReviewing(
-			0,
-			0,
-			mockAttempt,
-			mockDraftDocument,
-			null,
-			false,
-			null
-		)
+		reloadAttemptStateIfReviewing(0, 0, mockAttempt, mockDraftDocument, null, false, null)
 
 		expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
 	})
@@ -947,7 +940,7 @@ describe('Attempt End', () => {
 			{ id: 1 },
 			false,
 			null
-		).then(result => {
+		).then(() => {
 			expect(Assessment.getAttempts).toHaveBeenCalled()
 			expect(Assessment.updateAttemptState).toHaveBeenCalledTimes(1)
 			return done()

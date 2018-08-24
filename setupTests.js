@@ -1,3 +1,4 @@
+const React = require('react')
 const path = require('path')
 const Enzyme = require('enzyme')
 const EnzymeAdapter = require('enzyme-adapter-react-15')
@@ -23,8 +24,8 @@ React.addons = {
 }
 
 jest.mock('fs')
-let fs = require('fs')
-let dbJson = {
+const fs = require('fs')
+const dbJson = {
 	test: {
 		host: 'hostVal',
 		port: 'portVal',
@@ -50,9 +51,6 @@ global.mockStaticDate = () => {
 		}
 	}
 }
-
-// get the actual empty.xml
-let realFs = require.requireActual('fs')
 
 fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
 fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')

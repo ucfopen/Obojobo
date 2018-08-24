@@ -4,7 +4,7 @@ import StyleableText from '../../../../src/scripts/common/text/styleable-text'
 
 describe('TextGroupAdapter', () => {
 	test('construct with no attributes', () => {
-		let model = {
+		const model = {
 			modelState: {}
 		}
 
@@ -16,7 +16,7 @@ describe('TextGroupAdapter', () => {
 	})
 
 	test('construct with attributes', () => {
-		let model = {
+		const model = {
 			modelState: {}
 		}
 
@@ -32,7 +32,7 @@ describe('TextGroupAdapter', () => {
 			}
 		})
 
-		let compareTo = TextGroup.create(Infinity, { indent: 0, align: 'left' })
+		const compareTo = TextGroup.create(Infinity, { indent: 0, align: 'left' })
 
 		compareTo.set(0, new StyleableText('Text goes here'))
 
@@ -40,10 +40,10 @@ describe('TextGroupAdapter', () => {
 	})
 
 	test('clone', () => {
-		let a = {
+		const a = {
 			modelState: {}
 		}
-		let b = {
+		const b = {
 			modelState: {}
 		}
 
@@ -54,10 +54,10 @@ describe('TextGroupAdapter', () => {
 	})
 
 	test('toJSON', () => {
-		let model = {
+		const model = {
 			modelState: {}
 		}
-		let json = {
+		const json = {
 			content: {}
 		}
 

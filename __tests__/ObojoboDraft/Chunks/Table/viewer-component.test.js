@@ -6,7 +6,7 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Table', () => {
 	test('Table component', () => {
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Table',
 			content: {
@@ -39,18 +39,18 @@ describe('Table', () => {
 				}
 			}
 		})
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
 		const component = renderer.create(<Table model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Table component without header', () => {
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Table',
 			content: {
@@ -83,12 +83,12 @@ describe('Table', () => {
 				}
 			}
 		})
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
 		const component = renderer.create(<Table model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

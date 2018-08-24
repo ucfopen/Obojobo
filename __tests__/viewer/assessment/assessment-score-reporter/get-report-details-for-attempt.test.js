@@ -1,5 +1,4 @@
 import getReportDetailsForAttempt from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-report-details-for-attempt.js'
-import getStatusResult from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-status-result.js'
 
 jest.mock(
 	'../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-status-result.js',

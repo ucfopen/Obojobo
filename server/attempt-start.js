@@ -26,13 +26,11 @@ const startAttempt = (req, res) => {
 		questionUsesMap: null
 	}
 	let attemptState
-	let currentUser = null
 	let currentDocument = null
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
-			currentUser = user
 			assessmentProperties.user = user
 			return VisitModel.fetchById(req.body.visitId)
 		})

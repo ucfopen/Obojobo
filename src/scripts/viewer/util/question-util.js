@@ -1,9 +1,8 @@
 import Common from 'Common'
 
-let { Dispatcher } = Common.flux
-let { OboModel } = Common.models
+const { Dispatcher } = Common.flux
 
-let QuestionUtil = {
+const QuestionUtil = {
 	setResponse(id, response, targetId, context, assessmentId, attemptId) {
 		return Dispatcher.trigger('question:setResponse', {
 			value: {
@@ -89,7 +88,7 @@ let QuestionUtil = {
 	},
 
 	getViewState(state, model) {
-		let modelId = model.get('id')
+		const modelId = model.get('id')
 
 		if (state.viewing === modelId) {
 			return 'active'
@@ -115,11 +114,16 @@ let QuestionUtil = {
 
 	getScoreForModel(state, model, context) {
 		let scoreItem
-		if (state.scores[context] != null) {
+		if (state.scores[context] !== null && typeof state.scores[context] !== 'undefined') {
 			scoreItem = state.scores[context][model.get('id')]
 		}
 
-		return scoreItem == null || scoreItem.score == null ? null : scoreItem.score
+		return scoreItem === null ||
+			typeof scoreItem === 'undefined' ||
+			scoreItem.score === null ||
+			typeof scoreItem.score === 'undefined'
+			? null
+			: scoreItem.score
 	},
 
 	setScore(itemId, score, context) {

@@ -20,12 +20,12 @@ const chunkJSON = {
 
 describe('Code', () => {
 	test('Code component', () => {
-		let model = OboModel.create(chunkJSON)
-		let moduleData = {
+		const model = OboModel.create(chunkJSON)
+		const moduleData = {
 			focusState: {}
 		}
 		const component = renderer.create(<Code model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

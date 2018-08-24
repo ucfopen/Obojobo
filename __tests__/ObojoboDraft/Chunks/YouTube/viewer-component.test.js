@@ -6,19 +6,19 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('YouTube', () => {
 	test('YouTube component', () => {
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.YouTube',
 			content: {
 				videoId: 'dQw4w9WgXcQ'
 			}
 		})
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
 		const component = renderer.create(<YouTube model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

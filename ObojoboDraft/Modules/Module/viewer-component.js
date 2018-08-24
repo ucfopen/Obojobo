@@ -1,20 +1,19 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 import Viewer from 'Viewer'
 
-let { navStore } = Viewer.stores
-let { OboComponent } = Common.components
-let { OboModel } = Common.models
-let { Dispatcher } = Common.flux
-let { NavUtil } = Viewer.util
+const { OboComponent } = Common.components
+const { NavUtil } = Viewer.util
 
-export default props => {
+const Module = props => {
 	let childEl = null
-	let navTargetModel = NavUtil.getNavTargetModel(props.moduleData.navState)
+	const navTargetModel = NavUtil.getNavTargetModel(props.moduleData.navState)
 
 	if (navTargetModel) {
-		let ChildComponent = navTargetModel.getComponentClass()
+		const ChildComponent = navTargetModel.getComponentClass()
 		childEl = <ChildComponent model={navTargetModel} moduleData={props.moduleData} />
 	}
 
@@ -28,3 +27,5 @@ export default props => {
 		</OboComponent>
 	)
 }
+
+export default Module

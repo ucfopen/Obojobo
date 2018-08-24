@@ -1,24 +1,24 @@
 import './viewer-component.scss'
 
-// katex = null #dynamically load
+import React from 'react'
 import katex from 'katex'
 
 import Common from 'Common'
-let { OboComponent } = Common.components
-let { NonEditableChunk } = Common.chunk
+const { OboComponent } = Common.components
+const { NonEditableChunk } = Common.chunk
 
-let getLatexHtml = function(latex) {
+const getLatexHtml = function(latex) {
 	try {
-		let html = katex.renderToString(latex, { displayMode: true })
+		const html = katex.renderToString(latex, { displayMode: true })
 		return { html }
 	} catch (e) {
 		return { error: e }
 	}
 }
 
-export default props => {
+const MathEquation = props => {
 	let katexHtml = getLatexHtml(props.model.modelState.latex)
-	if (katexHtml.error != null) {
+	if (katexHtml.error) {
 		katexHtml = ''
 	} else {
 		katexHtml = katexHtml.html
@@ -47,3 +47,5 @@ export default props => {
 		</OboComponent>
 	)
 }
+
+export default MathEquation

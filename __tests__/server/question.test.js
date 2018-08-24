@@ -1,22 +1,14 @@
+/* eslint no-undefined: 0 */
+
 import Question from '../../server/question'
 
-const testJson = require('../../test-object.json')
-const Draft = oboRequire('models/draft')
-const DraftNode = oboRequire('models/draft_node')
-
 describe('Question', () => {
-	const rootNode = new Draft(testJson)
 	const question = new Question({}, { id: 'mockQuestion' }, {})
-	const testChild = new DraftNode({}, { id: 'mockNode' }, {})
-	const events = {
-		sendToAssessment: 'ObojoboDraft.Sections.Assessment:sendToAssessment',
-		attemptEnd: 'ObojoboDraft.Sections.Assessment:attemptEnd'
-	}
 	const currentAttempt = { addScore: jest.fn() }
 
 	test('registers expected events', () => {
 		expect(question.registerEvents).toHaveBeenCalledTimes(1)
-		let events = question.registerEvents.mock.calls[0][0]
+		const events = question.registerEvents.mock.calls[0][0]
 		expect(question.registerEvents.mock.calls[0]).toMatchSnapshot()
 		expect(events['ObojoboDraft.Sections.Assessment:sendToAssessment']).toBe(
 			question.onSendToAssessment
@@ -25,53 +17,52 @@ describe('Question', () => {
 	})
 
 	test('disables practice on send to assessment', () => {
-		let responseHistory = []
 		question.node.content = { mode: 'practice' }
 		question.onSendToAssessment()
 		expect(question.node.content.mode).toBe('assessment')
 	})
 
 	test("returns if assessment doesn't contain 'this' node on attempt end", () => {
-		let mockAssessment = { contains: () => false }
-		let res = question.onAttemptEnd({}, {}, mockAssessment, {}, currentAttempt)
+		const mockAssessment = { contains: () => false }
+		const res = question.onAttemptEnd({}, {}, mockAssessment, {}, currentAttempt)
 		expect(res).toBe(undefined)
 		expect(question.yell).not.toHaveBeenCalled()
 	})
 
 	test('returns if there are no question responses', () => {
-		let mockAssessment = { contains: () => true }
+		const mockAssessment = { contains: () => true }
 
-		let res = question.onAttemptEnd({}, {}, mockAssessment, [], currentAttempt)
+		const res = question.onAttemptEnd({}, {}, mockAssessment, [], currentAttempt)
 		expect(res).toEqual(undefined)
 		expect(question.yell).not.toHaveBeenCalled()
 	})
 
 	test('emits calculate score event when necessary', () => {
-		let mockAssessment = { contains: () => true }
-		let responseHistory = [{ question_id: question.node.id }]
+		const mockAssessment = { contains: () => true }
+		const responseHistory = [{ question_id: question.node.id }]
 
-		let res = {
+		const res = {
 			app: {}
 		}
 
 		expect(question.yell).not.toHaveBeenCalled()
 		expect(currentAttempt.addScore).not.toHaveBeenCalled()
-		let result = question.onAttemptEnd(res, {}, mockAssessment, responseHistory, currentAttempt)
+		question.onAttemptEnd(res, {}, mockAssessment, responseHistory, currentAttempt)
 		expect(question.yell).toHaveBeenCalled()
 		expect(question.yell.mock.calls[0]).toMatchSnapshot()
 
 		// now let's test the yell function
-		let scoreYellFunc = question.yell.mock.calls[0][4]
+		const scoreYellFunc = question.yell.mock.calls[0][4]
 		scoreYellFunc(50)
 		expect(currentAttempt.addScore).toHaveBeenCalledWith('mockQuestion', 50)
 	})
 
 	test('throws error if given non-unique question response rows', () => {
-		let mockAssessment = { contains: () => true }
+		const mockAssessment = { contains: () => true }
 
-		let responseRecord = { question_id: question.node.id }
-		let responseRecord2 = { question_id: question.node.id }
-		let responseHistory = [responseRecord, responseRecord2]
+		const responseRecord = { question_id: question.node.id }
+		const responseRecord2 = { question_id: question.node.id }
+		const responseHistory = [responseRecord, responseRecord2]
 
 		expect(() => {
 			question.onAttemptEnd({}, {}, mockAssessment, responseHistory, currentAttempt)

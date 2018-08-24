@@ -6,16 +6,16 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Break', () => {
 	test('Break component with textGroup', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Break'
 		})
 
 		const component = renderer.create(<Break model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

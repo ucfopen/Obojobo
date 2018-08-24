@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+
 import StyleableText from '../../../src/scripts/common/text/styleable-text'
 import StyleRange from '../../../src/scripts/common/text/style-range'
 
@@ -10,7 +12,7 @@ describe('StyleableText', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let clone = st.clone()
+		const clone = st.clone()
 
 		expect(clone).not.toBe(st)
 		expect(clone).toEqual(st)
@@ -57,7 +59,7 @@ describe('StyleableText', () => {
 		st.appendText('xyz')
 
 		expect(st.value).toEqual('123456789ABCDEFxyz')
-		st.styleList.styles.map(range => {
+		st.styleList.styles.forEach(range => {
 			if (range.type === 'b') {
 				expect(range).toEqual(new StyleRange(5, 18, 'b'))
 			}
@@ -224,7 +226,9 @@ describe('StyleableText', () => {
 
 	test('toggleStyleText uses the start and end of the text if none given', () => {
 		expect(st.clone().toggleStyleText('b', 2)).toEqual(st.clone().toggleStyleText('b', 2, 15))
-		expect(st.clone().toggleStyleText('b', null, 4)).toEqual(st.clone().toggleStyleText('b', 0, 4))
+		expect(st.clone().toggleStyleText('b', undefined, 4)).toEqual(
+			st.clone().toggleStyleText('b', 0, 4)
+		)
 		expect(st.clone().toggleStyleText('b')).toEqual(st.clone().toggleStyleText('b', 0, 15))
 	})
 
@@ -237,7 +241,7 @@ describe('StyleableText', () => {
 
 	test('styleText uses the start and end of the text if none given', () => {
 		expect(st.clone().styleText('b', 2)).toEqual(st.clone().styleText('b', 2, 15))
-		expect(st.clone().styleText('b', null, 4)).toEqual(st.clone().styleText('b', 0, 4))
+		expect(st.clone().styleText('b', undefined, 4)).toEqual(st.clone().styleText('b', 0, 4))
 		expect(st.clone().styleText('b')).toEqual(st.clone().styleText('b', 0, 15))
 	})
 
@@ -272,13 +276,13 @@ describe('StyleableText', () => {
 	})
 
 	test('getStyles returns all styles in range', () => {
-		let styles = st.getStyles(5, 10)
+		const styles = st.getStyles(5, 10)
 
 		expect(styles).toEqual({ a: 'a' })
 	})
 
 	test('split breaks a styleable text', () => {
-		let sibling = st.split(6)
+		const sibling = st.split(6)
 
 		expect(st.value).toEqual('123456')
 		expect(st.styleList.length()).toEqual(1)
@@ -292,7 +296,7 @@ describe('StyleableText', () => {
 	test('split at the end will preserve styles for the newly created text', () => {
 		st.styleText('b')
 
-		let sibling = st.split(15)
+		const sibling = st.split(15)
 
 		sibling.insertText(0, 'X')
 
@@ -312,7 +316,7 @@ describe('StyleableText', () => {
 	test('split at non-index does nothing', () => {
 		st.styleText('b')
 
-		let sibling = st.split(NaN)
+		const sibling = st.split(NaN)
 
 		expect(sibling).toEqual(null)
 	})
@@ -329,7 +333,7 @@ describe('StyleableText', () => {
 
 		//ab<a>c</a> + <a>1</a>2<a>3</a> = ab<a>c1</a>2<a>3</a>
 
-		let similar = new StyleableText('abc123')
+		const similar = new StyleableText('abc123')
 		similar.styleText('a', 2, 4, { href: 'website.com' })
 		similar.styleText('a', 5, 6, { href: 'website.com' })
 
@@ -348,7 +352,7 @@ describe('StyleableText', () => {
 
 		//<a>1</a>2<a>3</a> + ab<a>c</a> = <a>1</a>2<a>3</a>ab<a>c</a>
 
-		let similar = new StyleableText('123abc')
+		const similar = new StyleableText('123abc')
 		similar.styleText('a', 0, 1, { href: 'website.com' })
 		similar.styleText('a', 2, 3, { href: 'website.com' })
 		similar.styleText('a', 5, 6, { href: 'website.com' })
@@ -357,7 +361,7 @@ describe('StyleableText', () => {
 	})
 
 	test('createFromObject builds from object representation', () => {
-		let item = StyleableText.createFromObject({
+		const item = StyleableText.createFromObject({
 			value: '123456789ABCDEF',
 			styleList: null
 		})

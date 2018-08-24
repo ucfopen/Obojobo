@@ -1,4 +1,4 @@
-let getStatusResult = (rubric, status) => {
+const getStatusResult = (rubric, status) => {
 	switch (status) {
 		case 'passed':
 			return typeof rubric.passedResult !== 'undefined' ? rubric.passedResult : 100

@@ -11,7 +11,7 @@ describe('StyleableText Component', () => {
 		StyleRenderer.mockReturnValueOnce({ type: 'b', children: [] })
 
 		const component = renderer.create(<StyleableText />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -24,7 +24,7 @@ describe('StyleableText Component', () => {
 		})
 
 		const component = renderer.create(<StyleableText />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -36,7 +36,7 @@ describe('StyleableText Component', () => {
 		})
 
 		const component = renderer.create(<StyleableText />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -49,7 +49,7 @@ describe('StyleableText Component', () => {
 		})
 
 		const component = renderer.create(<StyleableText />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -61,7 +61,7 @@ describe('StyleableText Component', () => {
 		})
 
 		const component = renderer.create(<StyleableText />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -95,7 +95,7 @@ describe('StyleableText Component', () => {
 		})
 
 		const component = renderer.create(<StyleableText />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

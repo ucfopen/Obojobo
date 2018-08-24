@@ -12,14 +12,6 @@ import {
 } from '../../../../ObojoboDraft/Chunks/IFrame/render-settings'
 
 describe('render-settings', () => {
-	let model
-
-	beforeEach(() => {
-		model = {
-			modelState: {}
-		}
-	})
-
 	test('getIsShowing', () => {
 		expect(
 			getIsShowing(
@@ -353,9 +345,7 @@ describe('render-settings', () => {
 
 	test('getZoomValues', () => {
 		const z = getZoomValues
-		let model
-
-		model = {
+		const model = {
 			get: () => 'id',
 			modelState: { initialZoom: 'model-zoom' }
 		}

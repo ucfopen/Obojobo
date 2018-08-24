@@ -1,11 +1,13 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 
-let { OboComponent } = Common.components
-let { NonEditableChunk } = Common.chunk
+const { OboComponent } = Common.components
+const { NonEditableChunk } = Common.chunk
 
-export default props => (
+const Break = props => (
 	<OboComponent model={props.model} moduleData={props.moduleData}>
 		<NonEditableChunk
 			className={`obojobo-draft--chunks--break viewer width-${props.model.modelState.width}`}
@@ -14,3 +16,5 @@ export default props => (
 		</NonEditableChunk>
 	</OboComponent>
 )
+
+export default Break

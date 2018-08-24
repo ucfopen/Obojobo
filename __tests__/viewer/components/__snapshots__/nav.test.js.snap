@@ -36,7 +36,7 @@ exports[`Nav renders all list item types 1`] = `
       <div
         className="mockStylableText"
         text={
-          mockStylableText {
+          MockStylableText {
             "value": "mockMe",
           }
         }

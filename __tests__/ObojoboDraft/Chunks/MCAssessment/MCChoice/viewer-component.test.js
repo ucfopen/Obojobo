@@ -1,12 +1,10 @@
 import React from 'react'
-import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 jest.mock('../../../../../src/scripts/viewer/util/question-util')
 
 import MCChoice from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/viewer-component'
 import OboModel from '../../../../../__mocks__/_obo-model-with-chunks.js'
-import { moduleData, initModuleData } from '../../../../../__mocks__/viewer-state.mock'
 import QuestionUtil from '../../../../../src/scripts/viewer/util/question-util'
 
 const TYPE_PICK_ONE = 'pick-one'
@@ -145,10 +143,10 @@ const questionJSON = {
 
 describe('MCChoice viewer-component', () => {
 	test('MCChoice component', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
@@ -156,7 +154,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: 'mockMode',
@@ -173,10 +171,10 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component in review mode with no score data', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: {
 				// review mode has no score data for the current context
 				scores: {}
@@ -187,7 +185,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -204,10 +202,10 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component type pick-one-multiple-correct', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
@@ -215,7 +213,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			key: 'mockKey',
@@ -231,10 +229,10 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component type pick-all', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
@@ -242,7 +240,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			key: 'mockKey',
@@ -258,11 +256,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component in review mode - could have chosen', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// A correct choice
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -275,7 +273,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -297,11 +295,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component in review mode - should have chosen', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// A correct choice
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -314,7 +312,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -336,11 +334,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component in review mode - chosen correctly', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// A correct choice
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -353,7 +351,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -375,11 +373,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component in review mode - unchosen correctly', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// An incorrect choice
-		let model = mcassessment.children.models[1]
-		let moduleData = {
+		const model = mcassessment.children.models[1]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -392,7 +390,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -414,11 +412,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component in review mode - should not have chosen', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// An incorrect choice
-		let model = mcassessment.children.models[1]
-		let moduleData = {
+		const model = mcassessment.children.models[1]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -431,7 +429,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -453,11 +451,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component pick-all in review mode - chosen correctly', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// A correct choice
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -470,7 +468,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -492,11 +490,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component pick-all in review mode - should have chosen', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// A correct choice
-		let model = mcassessment.children.models[0]
-		let moduleData = {
+		const model = mcassessment.children.models[0]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -509,7 +507,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -531,11 +529,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component pick-all in review mode - unchosen correctly', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// An incorrect choice
-		let model = mcassessment.children.models[1]
-		let moduleData = {
+		const model = mcassessment.children.models[1]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -548,7 +546,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,
@@ -570,11 +568,11 @@ describe('MCChoice viewer-component', () => {
 	})
 
 	test('MCChoice component pick-all in review mode - should not have chosen', () => {
-		let question = OboModel.create(questionJSON)
-		let mcassessment = question.children.models[0]
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
 		// An incorrect choice
-		let model = mcassessment.children.models[1]
-		let moduleData = {
+		const model = mcassessment.children.models[1]
+		const moduleData = {
 			questionState: {
 				scores: {
 					// review mode needs score data for the current context
@@ -587,7 +585,7 @@ describe('MCChoice viewer-component', () => {
 			focusState: 'mockFocus'
 		}
 
-		let props = {
+		const props = {
 			model,
 			moduleData,
 			mode: MODE_REVIEW,

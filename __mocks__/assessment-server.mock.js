@@ -1,6 +1,6 @@
 // to generate this, start a fresh attempt on the test object
 // grab the api results from the attempt start and paste here
-let getAttemptStartServerResponse = () => {
+const getAttemptStartServerResponse = () => {
 	return {
 		status: 'ok',
 		value: {
@@ -1054,7 +1054,7 @@ let getAttemptStartServerResponse = () => {
 // to generate this, start a fresh attempt on the test object
 // select the first answer of each qestion and submit
 // copyt the api results from the attempt end and paste here
-let getAttemptEndServerResponse = (questionScore, assessmentScore) => {
+const getAttemptEndServerResponse = () => {
 	// res.success always renders { status: ..., value: {} }
 	return {
 		status: 'ok',

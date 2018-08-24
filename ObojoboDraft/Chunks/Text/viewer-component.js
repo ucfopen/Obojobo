@@ -1,13 +1,14 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 
-let { OboComponent } = Common.components
-let { TextGroupEl } = Common.chunk.textChunk
-let { TextChunk } = Common.chunk
-let { Dispatcher } = Common.flux
+const { OboComponent } = Common.components
+const { TextGroupEl } = Common.chunk.textChunk
+const { TextChunk } = Common.chunk
 
-export default props => (
+const Text = props => (
 	<OboComponent model={props.model} moduleData={props.moduleData}>
 		<TextChunk className="obojobo-draft--chunks--single-text pad">
 			{props.model.modelState.textGroup.items.map((textItem, index) => (
@@ -16,3 +17,5 @@ export default props => (
 		</TextChunk>
 	</OboComponent>
 )
+
+export default Text

@@ -14,12 +14,12 @@ jest.mock('../../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/viewer-compo
 const Common = require('../../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
-import MCAnswer from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/viewer'
+import '../../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/viewer'
 import ViewerComponent from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/viewer-component'
 
 describe('ObojoboDraft.Chunks.MCAssessment.MCAnswer registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.MCAssessment.MCAnswer')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', null)

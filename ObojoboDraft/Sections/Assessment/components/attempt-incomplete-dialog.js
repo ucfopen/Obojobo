@@ -1,7 +1,9 @@
+import React from 'react'
+
 import Common from 'Common'
 
-let { Dialog } = Common.components.modal
-let { ModalUtil } = Common.util
+const { Dialog } = Common.components.modal
+const { ModalUtil } = Common.util
 
 const onCancel = () => {
 	ModalUtil.hide()
@@ -12,7 +14,7 @@ const onSubmit = submitProp => {
 	submitProp()
 }
 
-export default props => (
+const AttemptIncompleteDialog = props => (
 	<Dialog
 		buttons={[
 			{
@@ -34,3 +36,5 @@ export default props => (
 		Finish answering all questions and submit again.
 	</Dialog>
 )
+
+export default AttemptIncompleteDialog

@@ -2,17 +2,14 @@ import BaseSelectionHandler from '../../../common/chunk/base-selection-handler'
 import FocusableSelectionHandler from './focusable-selection-handler'
 
 class ToggleSelectionHandler extends BaseSelectionHandler {
-	constructor(textSelectionHandler, focusSelectionHandler) {
-		if (focusSelectionHandler == null) {
-			focusSelectionHandler = new FocusableSelectionHandler()
-		}
+	constructor(textSelectionHandler, focusSelectionHandler = new FocusableSelectionHandler()) {
 		super()
 
 		this.textSelectionHandler = textSelectionHandler
 		this.focusSelectionHandler = focusSelectionHandler
 	}
 
-	getCopyOfSelection(selection, chunk, cloneId) {
+	getCopyOfSelection(selection, chunk) {
 		if (chunk.isEditing()) {
 			return this.textSelectionHandler.getCopyOfSelection.apply(this, arguments)
 		} else {
@@ -28,10 +25,7 @@ class ToggleSelectionHandler extends BaseSelectionHandler {
 		}
 	}
 
-	selectStart(selection, chunk, asRange) {
-		if (asRange == null) {
-			asRange = false
-		}
+	selectStart(selection, chunk) {
 		if (chunk.isEditing()) {
 			return this.textSelectionHandler.selectStart.apply(this, arguments)
 		} else {
@@ -39,10 +33,7 @@ class ToggleSelectionHandler extends BaseSelectionHandler {
 		}
 	}
 
-	selectEnd(selection, chunk, asRange) {
-		if (asRange == null) {
-			asRange = false
-		}
+	selectEnd(selection, chunk) {
 		if (chunk.isEditing()) {
 			return this.textSelectionHandler.selectEnd.apply(this, arguments)
 		} else {
@@ -50,7 +41,7 @@ class ToggleSelectionHandler extends BaseSelectionHandler {
 		}
 	}
 
-	getVirtualSelectionStartData(selection, chunk, text, html) {
+	getVirtualSelectionStartData(selection, chunk) {
 		if (chunk.isEditing()) {
 			return this.textSelectionHandler.getVirtualSelectionStartData.apply(this, arguments)
 		} else {
@@ -58,7 +49,7 @@ class ToggleSelectionHandler extends BaseSelectionHandler {
 		}
 	}
 
-	getVirtualSelectionEndData(selection, chunk, text, html) {
+	getVirtualSelectionEndData(selection, chunk) {
 		if (chunk.isEditing()) {
 			return this.textSelectionHandler.getVirtualSelectionEndData.apply(this, arguments)
 		} else {
@@ -66,7 +57,7 @@ class ToggleSelectionHandler extends BaseSelectionHandler {
 		}
 	}
 
-	getDOMSelectionStart(selection, chunk, text, html) {
+	getDOMSelectionStart(selection, chunk) {
 		if (chunk.isEditing()) {
 			return this.textSelectionHandler.getDOMSelectionStart.apply(this, arguments)
 		} else {
@@ -74,7 +65,7 @@ class ToggleSelectionHandler extends BaseSelectionHandler {
 		}
 	}
 
-	getDOMSelectionEnd(selection, chunk, text, html) {
+	getDOMSelectionEnd(selection, chunk) {
 		if (chunk.isEditing()) {
 			return this.textSelectionHandler.getDOMSelectionEnd.apply(this, arguments)
 		} else {
@@ -82,7 +73,7 @@ class ToggleSelectionHandler extends BaseSelectionHandler {
 		}
 	}
 
-	areCursorsEquivalent(selection, chunk, text, html) {
+	areCursorsEquivalent(selection, chunk) {
 		if (chunk.isEditing()) {
 			return this.textSelectionHandler.areCursorsEquivalent.apply(this, arguments)
 		} else {

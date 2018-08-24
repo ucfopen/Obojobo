@@ -442,7 +442,7 @@ describe('NavStore', () => {
 	})
 
 	test('init builds with no first', () => {
-		NavUtil.getFirst.mockReturnValueOnce(undefined)
+		NavUtil.getFirst.mockReturnValueOnce(undefined) //eslint-disable-line
 		NavStore.init(null, null, 'startingpath', 11)
 		expect(NavUtil.goto).not.toHaveBeenCalledWith()
 	})
@@ -527,7 +527,6 @@ describe('NavStore', () => {
 				}
 			}
 		})
-		const oldNavItem = { processTrigger: jest.fn() }
 		const newNavItem = {
 			id: 'newItem',
 			showChildrenOnNavigation: true,

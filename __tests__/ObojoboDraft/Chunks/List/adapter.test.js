@@ -9,7 +9,7 @@ const TextGroupAdapter = Common.chunk.textChunk.TextGroupAdapter
 
 describe('ActionButton adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 
 		TextGroupAdapter.construct = jest.fn()
 
@@ -19,8 +19,8 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				listStyles: 'mockStyle'
 			}
@@ -35,14 +35,14 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let a = {
+		const a = {
 			modelState: {
 				listStyles: {
 					clone: jest.fn().mockReturnValueOnce('mockClone')
 				}
 			}
 		}
-		let b = {
+		const b = {
 			modelState: {
 				listStyles: null
 			}
@@ -70,7 +70,7 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = {
+		const model = {
 			modelState: {
 				listStyles: {
 					toDescriptor: jest.fn().mockReturnValueOnce('mockDescriptor')
@@ -78,7 +78,7 @@ describe('ActionButton adapter', () => {
 			}
 		}
 
-		let json = {
+		const json = {
 			content: {
 				listStyles: null
 			}
@@ -96,7 +96,7 @@ describe('ActionButton adapter', () => {
 	})
 
 	test('toText creates a text representation', () => {
-		let model = {
+		const model = {
 			modelState: {
 				textGroup: {
 					items: [
@@ -110,7 +110,7 @@ describe('ActionButton adapter', () => {
 			}
 		}
 
-		let text = ListAdapter.toText(model)
+		const text = ListAdapter.toText(model)
 
 		expect(text).toEqual('  * mockItem\n')
 	})

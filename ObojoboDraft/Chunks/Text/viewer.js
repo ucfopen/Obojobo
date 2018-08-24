@@ -1,8 +1,8 @@
 import Common from 'Common'
 import ViewerComponent from './viewer-component'
 
-let SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
-let Adapter = Common.chunk.textChunk.TextGroupAdapter
+const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
+const Adapter = Common.chunk.textChunk.TextGroupAdapter
 
 Common.Store.registerModel('ObojoboDraft.Chunks.Text', {
 	type: 'chunk',

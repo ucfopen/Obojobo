@@ -17,15 +17,15 @@ describe('AttemptIncompleteDialog', () => {
 	})
 
 	test('AttemptIncompleteDialog component', () => {
-		let onSubmit = jest.fn()
+		const onSubmit = jest.fn()
 		const component = renderer.create(<AttemptIncompleteDialog onSubmit={onSubmit} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('AttemptIncompleteDialog component cancels', () => {
-		let onSubmit = jest.fn()
+		const onSubmit = jest.fn()
 		const component = mount(<AttemptIncompleteDialog onSubmit={onSubmit} />)
 
 		expect(ModalUtil.hide).not.toHaveBeenCalled()
@@ -41,7 +41,7 @@ describe('AttemptIncompleteDialog', () => {
 	})
 
 	test('AttemptIncompleteDialog component submits', () => {
-		let onSubmit = jest.fn()
+		const onSubmit = jest.fn()
 		const component = mount(<AttemptIncompleteDialog onSubmit={onSubmit} />)
 
 		expect(ModalUtil.hide).not.toHaveBeenCalled()

@@ -1,22 +1,24 @@
-let patternAddUL = /<LI>([\s\S]*?)<\/LI>/gi
-let patternRemoveExtraUL = /<\/ul><ul>/gi
-let patternTF = /<\/?textformat\s?[\s\S]*?>/gi
+/* eslint-disable */
+
+const patternAddUL = /<LI>([\s\S]*?)<\/LI>/gi
+const patternRemoveExtraUL = /<\/ul><ul>/gi
+const patternTF = /<\/?textformat\s?[\s\S]*?>/gi
 
 import OboModel from '../../common/models/obo-model'
 import StyleableText from '../../common/text/styleable-text'
 
 var Legacy = {
 	createModuleFromObo2ModuleJSON(json) {
-		let oboModule = OboModel.create('ObojoboDraft.Modules.Module')
+		const oboModule = OboModel.create('ObojoboDraft.Modules.Module')
 
-		let objective = OboModel.create('ObojoboDraft.Sections.Content')
+		const objective = OboModel.create('ObojoboDraft.Sections.Content')
 		// oboModule.children.add objective
-		let objectivePage = OboModel.create('ObojoboDraft.Pages.Page')
+		const objectivePage = OboModel.create('ObojoboDraft.Pages.Page')
 		objective.children.add(objectivePage)
 		objectivePage.children.add(Legacy.createChunksFromObo2HTML(json.objective))
 
-		let content = OboModel.create('ObojoboDraft.Sections.Content')
-		for (let page of Array.from(json.pages)) {
+		const content = OboModel.create('ObojoboDraft.Sections.Content')
+		for (const page of Array.from(json.pages)) {
 			content.children.add(Legacy.createPageFromObo2ModuleJSON(page))
 		}
 
@@ -27,13 +29,13 @@ var Legacy = {
 	},
 
 	createPageFromObo2ModuleJSON(json) {
-		let page = OboModel.create('ObojoboDraft.Pages.Page')
+		const page = OboModel.create('ObojoboDraft.Pages.Page')
 
-		let header = OboModel.create('ObojoboDraft.Chunks.Heading')
+		const header = OboModel.create('ObojoboDraft.Chunks.Heading')
 		header.modelState.textGroup.first.text.value = json.title
 		page.children.add(header)
 
-		for (let item of Array.from(json.items)) {
+		for (const item of Array.from(json.items)) {
 			switch (item.component) {
 				case 'TextArea':
 					page.children.add(Legacy.createChunksFromObo2HTML(item.data))
@@ -49,7 +51,7 @@ var Legacy = {
 	},
 
 	createChunksFromObo2HTML(html) {
-		let chunks = []
+		const chunks = []
 
 		// get rid of all the textformat tags
 		html = html.replace(patternTF, '')
@@ -60,12 +62,12 @@ var Legacy = {
 		//kill extra </ul><ul> that are back to back - this will make proper lists
 		html = html.replace(patternRemoveExtraUL, '')
 
-		let el = document.createElement('div')
+		const el = document.createElement('div')
 		document.body.appendChild(el)
 		el.innerHTML = html
 
 		let sts = null
-		for (let child of Array.from(el.children)) {
+		for (const child of Array.from(el.children)) {
 			var chunk
 			switch (child.tagName.toLowerCase()) {
 				case 'ul':
@@ -76,10 +78,10 @@ var Legacy = {
 					chunk = OboModel.create('ObojoboDraft.Chunks.Text')
 			}
 
-			let tg = chunk.modelState.textGroup
+			const tg = chunk.modelState.textGroup
 			tg.clear()
 			sts = StyleableText.createFromElement(child)
-			for (let st of Array.from(sts)) {
+			for (const st of Array.from(sts)) {
 				tg.add(st)
 			}
 

@@ -1,32 +1,34 @@
-import Common from 'Common'
-import HeadingAdapter from '../../../../ObojoboDraft/Chunks/Heading/adapter'
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
 
-const { TextGroupAdapter } = Common.chunk.textChunk
+import HeadingAdapter from '../../../../ObojoboDraft/Chunks/Heading/adapter'
 
 describe('Heading adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = new OboModel({})
 		HeadingAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
 				headingLevel: '2',
 				align: 'right'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		HeadingAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone produces a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = new OboModel({})
+		const b = new OboModel({})
 
 		HeadingAdapter.construct(a)
 		HeadingAdapter.clone(a, b)
@@ -36,14 +38,14 @@ describe('Heading adapter', () => {
 	})
 
 	test('toJSON creates a JSON representation', () => {
-		let model = { modelState: {} }
-		let json = { content: {} }
-		let attrs = {
+		const json = { content: {} }
+		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
 				headingLevel: '2'
 			}
 		}
+		const model = new OboModel(attrs)
 		HeadingAdapter.construct(model, attrs)
 		HeadingAdapter.toJSON(model, json)
 
@@ -51,13 +53,14 @@ describe('Heading adapter', () => {
 	})
 
 	test('toText ', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
 				headingLevel: '2'
 			}
 		}
+		const model = new OboModel(attrs)
+
 		HeadingAdapter.construct(model, attrs)
 		expect(HeadingAdapter.toText(model)).toMatch('example text')
 	})
