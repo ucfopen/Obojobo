@@ -235,7 +235,7 @@ class NavStore extends Store {
 	generateNav(model, indent) {
 		if (!model) return {}
 
-		if (indent === null || typeof indent === "undefined") {
+		if (indent === null || typeof indent === 'undefined') {
 			indent = ''
 		}
 		const item = Common.Store.getItemForType(model.get('type'))

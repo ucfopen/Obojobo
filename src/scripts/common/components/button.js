@@ -22,7 +22,8 @@ export default class Button extends React.Component {
 		if (this.props.value) {
 			children = this.props.value
 		} else {
-			({ children } = this.props)
+			// eslint-disable-next-line no-extra-semi
+			;({ children } = this.props)
 		}
 
 		const className =
