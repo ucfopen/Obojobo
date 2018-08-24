@@ -2,7 +2,7 @@ import './image.scss'
 
 import React from 'react'
 
-export default props => {
+const Image = props => {
 	let imgStyles
 	const data = props.chunk.modelState
 
@@ -29,3 +29,5 @@ export default props => {
 			return <img src={data.url} unselectable="on" alt={data.alt} style={imgStyles} />
 	}
 }
+
+export default Image

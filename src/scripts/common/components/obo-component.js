@@ -2,7 +2,7 @@ import React from 'react'
 
 import FocusUtil from '../../common/util/focus-util'
 
-export default class OboComponent extends React.Component {
+class OboComponent extends React.Component {
 	static get defaultProps() {
 		return { tag: 'div' }
 	}
@@ -59,3 +59,5 @@ export default class OboComponent extends React.Component {
 		)
 	}
 }
+
+export default OboComponent

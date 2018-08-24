@@ -4,7 +4,7 @@ import React from 'react'
 
 import Bubble from './bubble'
 
-export default class SingleInputBubble extends React.Component {
+class SingleInputBubble extends React.Component {
 	onChange(event) {
 		return this.props.onChange(event.target.value)
 	}
@@ -47,3 +47,5 @@ export default class SingleInputBubble extends React.Component {
 		)
 	}
 }
+
+export default SingleInputBubble

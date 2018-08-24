@@ -4,7 +4,7 @@ import React from 'react'
 
 const DEFAULT_LABEL = '?'
 
-export default class MoreInfoButton extends React.Component {
+class MoreInfoButton extends React.Component {
 	static get defaultProps() {
 		return {
 			label: DEFAULT_LABEL
@@ -68,3 +68,5 @@ export default class MoreInfoButton extends React.Component {
 		)
 	}
 }
+
+export default MoreInfoButton

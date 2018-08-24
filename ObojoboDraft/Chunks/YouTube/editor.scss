@@ -1,4 +1,3 @@
-/* stylelint-disable */
 @import '../../../../../../../scss/includes';
 
 .component[data-component-type='ObojoboDraft.Chunks.YouTube'] {
@@ -45,6 +44,7 @@
 		z-index: 3;
 	}
 
+	// stylelint-disable-next-line no-descending-specificity
 	.obojobo-draft--components--delete-button {
 		display: none;
 		position: absolute;
@@ -61,4 +61,3 @@
 		z-index: 3;
 	}
 }
-/* stylelint-enable */

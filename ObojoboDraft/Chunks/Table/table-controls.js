@@ -1,8 +1,11 @@
-/* eslint-disable */
 import './table-controls.scss'
+
+import React from 'react'
+import ReactDOM from 'react-dom'
+
 import TableMenu from './table-menu'
 
-export default class TableControls extends React.Component {
+class TableControls extends React.Component {
 	addRow(event) {
 		event.preventDefault()
 		event.stopPropagation()
@@ -71,10 +74,10 @@ export default class TableControls extends React.Component {
 
 	render() {
 		const { onTableMenuCommand } = this.props
-		const { getCellPosition } = this
 
 		const rows = __range__(0, this.props.chunk.modelState.textGroup.numRows, false).map(index => (
 			<TableMenu
+				key={index}
 				onMenuCommand={onTableMenuCommand}
 				type="row"
 				row={index}
@@ -84,6 +87,7 @@ export default class TableControls extends React.Component {
 
 		const cols = __range__(0, this.props.chunk.modelState.textGroup.numCols, false).map(index => (
 			<TableMenu
+				key={index}
 				onMenuCommand={onTableMenuCommand}
 				type="col"
 				col={index}
@@ -109,9 +113,12 @@ export default class TableControls extends React.Component {
 function __range__(left, right, inclusive) {
 	const range = []
 	const ascending = left < right
+	// eslint-disable-next-line no-nested-ternary
 	const end = !inclusive ? right : ascending ? right + 1 : right - 1
 	for (let i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
 		range.push(i)
 	}
 	return range
 }
+
+export default TableControls

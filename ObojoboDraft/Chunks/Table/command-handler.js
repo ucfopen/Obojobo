@@ -4,7 +4,7 @@ import Common from 'Common'
 const { TextGroupCommandHandler } = Editor.chunk.textChunk
 const { TextGroupSelection } = Common.textGroup
 
-export default class CommandHandler extends TextGroupCommandHandler {
+class CommandHandler extends TextGroupCommandHandler {
 	deleteSelection(selection, chunk) {
 		chunk.markDirty()
 
@@ -48,3 +48,5 @@ export default class CommandHandler extends TextGroupCommandHandler {
 		return false
 	}
 }
+
+export default CommandHandler

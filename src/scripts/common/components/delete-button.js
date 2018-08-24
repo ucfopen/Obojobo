@@ -2,7 +2,7 @@ import './delete-button.scss'
 
 import React from 'react'
 
-export default class DeleteButton extends React.Component {
+class DeleteButton extends React.Component {
 	static get defaultProps() {
 		return { indent: 0 }
 	}
@@ -26,3 +26,5 @@ export default class DeleteButton extends React.Component {
 		)
 	}
 }
+
+export default DeleteButton

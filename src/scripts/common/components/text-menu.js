@@ -2,7 +2,7 @@ import './text-menu.scss'
 
 import React from 'react'
 
-export default class TextMenu extends React.Component {
+class TextMenu extends React.Component {
 	renderImg(command) {
 		if (command.image === null || typeof command.image === 'undefined') {
 			return (
@@ -66,3 +66,5 @@ export default class TextMenu extends React.Component {
 		)
 	}
 }
+
+export default TextMenu

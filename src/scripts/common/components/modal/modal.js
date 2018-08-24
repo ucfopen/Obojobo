@@ -4,7 +4,7 @@ import React from 'react'
 
 import DeleteButton from '../../../common/components/delete-button'
 
-export default class Modal extends React.Component {
+class Modal extends React.Component {
 	constructor() {
 		super()
 		this.boundKeyUp = this.onKeyUp.bind(this)
@@ -65,3 +65,5 @@ export default class Modal extends React.Component {
 		)
 	}
 }
+
+export default Modal

@@ -1,11 +1,9 @@
-/* stylelint-disable */
 @import '../../../../../../../scss/includes';
 
 .obojobo-draft--chunks--table--table-menu {
 	position: absolute;
 	width: 1em;
 	height: 1em;
-	// background: red;
 	cursor: default;
 	z-index: 1;
 	text-align: center;
@@ -14,6 +12,7 @@
 
 	&:hover {
 		z-index: 2;
+		// stylelint-disable-next-line sh-waqar/declaration-use-variable
 		background-color: white; //$color-action;
 
 		ul {
@@ -49,6 +48,7 @@
 		}
 	}
 
+	// stylelint-disable-next-line no-descending-specificity
 	ul {
 		display: none;
 		position: absolute;
@@ -58,6 +58,7 @@
 		font-size: 0.9em;
 		height: auto;
 		background: white;
+		// stylelint-disable-next-line sh-waqar/declaration-use-variable, font-family-no-missing-generic-family-keyword
 		font-family: 'Noto Sans';
 		font-weight: normal;
 		list-style-type: none;
@@ -77,6 +78,7 @@
 
 			&:hover {
 				background: $color-action;
+				// stylelint-disable-next-line sh-waqar/declaration-use-variable
 				color: white;
 			}
 
@@ -84,7 +86,7 @@
 				border-bottom: none;
 			}
 
-			&.insert-left:after {
+			&.insert-left::after {
 				content: '\2190';
 				position: absolute;
 				top: 0.5em;
@@ -92,7 +94,7 @@
 				left: 0.6em;
 			}
 
-			&.insert-right:after {
+			&.insert-right::after {
 				content: '\2192';
 				position: absolute;
 				top: 0.5em;
@@ -100,7 +102,7 @@
 				right: 0.6em;
 			}
 
-			&.insert-above:after {
+			&.insert-above::after {
 				content: '\2191';
 				position: absolute;
 				top: 0.8em;
@@ -108,7 +110,7 @@
 				left: 1em;
 			}
 
-			&.insert-below:after {
+			&.insert-below::after {
 				content: '\2193';
 				position: absolute;
 				top: 0.8em;
@@ -118,4 +120,3 @@
 		}
 	}
 }
-/* stylelint-enable */
