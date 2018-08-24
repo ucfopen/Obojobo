@@ -41,7 +41,7 @@ function get(userId, contentId) {
 			}
 		)
 		.then(result => {
-			// return payload or empty object if undefined from query
+			// return payload or empty object when result is null
 			return result !== null ? result.payload : {}
 		})
 		.catch(error => {

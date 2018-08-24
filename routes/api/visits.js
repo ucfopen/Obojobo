@@ -55,6 +55,7 @@ router
 		])
 			.then(results => {
 				// expand results
+				// eslint-disable-next-line no-extra-semi
 				;[visit, viewState, visitStartReturnExtensionsProps] = results
 
 				if (visit.is_preview === false) {
