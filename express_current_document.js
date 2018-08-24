@@ -1,16 +1,16 @@
-let DraftDocument = oboRequire('models/draft')
-let logger = oboRequire('logger')
+const DraftDocument = oboRequire('models/draft')
+const logger = oboRequire('logger')
 
-let setCurrentDocument = (req, draftDocument) => {
+const setCurrentDocument = (req, draftDocument) => {
 	if (!(draftDocument instanceof DraftDocument)) throw new Error('Invalid DraftDocument for Current draftDocument')
 	req.currentDocument = draftDocument
 }
 
-let resetCurrentDocument = req => {
+const resetCurrentDocument = req => {
 	req.currentDocument = null
 }
 
-let requireCurrentDocument = (req) => {
+const requireCurrentDocument = (req) => {
 	if(req.currentDocument){
 		return Promise.resolve(req.currentDocument)
 	}

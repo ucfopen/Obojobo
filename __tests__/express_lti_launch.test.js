@@ -12,10 +12,10 @@ const db = oboRequire('db')
 const ltiLaunch = oboRequire('express_lti_launch')
 
 // array of mocked express middleware request arguments
-let mockExpressArgs = withLtiData => {
-	let res = {}
+const mockExpressArgs = withLtiData => {
+	const res = {}
 
-	let req = {
+	const req = {
 		session: {},
 		connection: { remoteAddress: '1.1.1.1' },
 		params: {
@@ -30,12 +30,11 @@ let mockExpressArgs = withLtiData => {
 		hostname: 'dummyhost'
 	}
 
-	let mockNext = jest.fn()
+	const mockNext = jest.fn()
 
 	if (withLtiData) {
 		req.lti = {
 			body: {
-				lis_person_sourcedid: '555',
 				lis_person_sourcedid: '2020',
 				lis_person_contact_email_primary: 'mann@internet.com',
 				lis_person_name_given: 'Hugh',
@@ -68,7 +67,7 @@ describe('lti launch middleware', () => {
 
 	test('assignment returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
 		expect.assertions(2)
-		let [req, res, mockNext] = mockExpressArgs(false)
+		const [req, res, mockNext] = mockExpressArgs(false)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
 			// next can be called in several places
@@ -81,7 +80,7 @@ describe('lti launch middleware', () => {
 	test('assignment inserts data correctly with lti data', () => {
 		expect.assertions(2)
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			// tests to see if the launch is being stored
@@ -123,7 +122,7 @@ describe('lti launch middleware', () => {
 	test('assignment inserts data correctly with example draft', () => {
 		expect.assertions(2)
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 
 		// because of the call to requireCurrentDocument, draft ids in
 		// method aclls do not match the example draft
@@ -144,7 +143,7 @@ describe('lti launch middleware', () => {
 						roles: ['saviour', 'explorer', 'doctor']
 					},
 					draftId: '999',
-					lti_key: undefined,
+					lti_key: undefined, //eslint-disable-line no-undefined
 					userId: 1
 				})
 			)
@@ -170,7 +169,7 @@ describe('lti launch middleware', () => {
 	test('assignment returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
 		expect.assertions(2)
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
 			// next can be called in several places
@@ -186,7 +185,7 @@ describe('lti launch middleware', () => {
 		// mock insert launch fail
 		db.one.mockRejectedValueOnce('launch insert error')
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
 		})
@@ -198,7 +197,7 @@ describe('lti launch middleware', () => {
 		// mock insert event failure
 		insertEvent.mockRejectedValueOnce('launch insert error')
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
 		})
@@ -210,7 +209,7 @@ describe('lti launch middleware', () => {
 		// mock insert event failure
 		insertEvent.mockRejectedValueOnce('launch insert error')
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 		req.lti.body = null
 
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
@@ -221,7 +220,7 @@ describe('lti launch middleware', () => {
 	test('assignment sets the current user', () => {
 		expect.assertions(2)
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
 			expect(req.setCurrentUser).toBeCalledWith(
@@ -239,7 +238,7 @@ describe('lti launch middleware', () => {
 	test('assignment sets the current draft', () => {
 		expect.assertions(1)
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(req.requireCurrentDocument).toHaveBeenCalledTimes(1)
 			//expect(req.setCurrentDocument).toBeCalledWith(
@@ -251,7 +250,7 @@ describe('lti launch middleware', () => {
 	test('courseNavlaunch returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
 		expect.assertions(2)
 
-		let [req, res, mockNext] = mockExpressArgs(false)
+		const [req, res, mockNext] = mockExpressArgs(false)
 		return ltiLaunch.courseNavlaunch(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
 			// next can be called in several places
@@ -264,14 +263,14 @@ describe('lti launch middleware', () => {
 	test('courseNavlaunch creates a new user and calls req.setCurrentUser', () => {
 		expect.assertions(4)
 
-		let User = oboRequire('models/user')
+		const User = oboRequire('models/user')
 		let createdUser
 
 		User.saveOrCreateCallback.mockImplementationOnce(user => {
 			createdUser = user
 		})
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 
 		return ltiLaunch.courseNavlaunch(req, res, mockNext).then(() => {
 			// has saved that user
@@ -287,10 +286,10 @@ describe('lti launch middleware', () => {
 	test('courseNavlaunch logs an error if no user', () => {
 		expect.assertions(4)
 
-		User.saveOrCreateCallback.mockImplementationOnce(user => {
+		User.saveOrCreateCallback.mockImplementationOnce(() => {
 			throw 'this error'
 		})
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 
 		return ltiLaunch.courseNavlaunch(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
@@ -304,8 +303,8 @@ describe('lti launch middleware', () => {
 	test('courseNavlaunch logs an error with no LTI body', () => {
 		expect.assertions(4)
 
-		let [req, res, mockNext] = mockExpressArgs(true)
-		User.saveOrCreateCallback.mockImplementationOnce(user => {
+		const [req, res, mockNext] = mockExpressArgs(true)
+		User.saveOrCreateCallback.mockImplementationOnce(() => {
 			req.lti.body = null
 			throw 'this error'
 		})
@@ -322,7 +321,7 @@ describe('lti launch middleware', () => {
 	test('assignmentSelection returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
 		expect.assertions(2)
 
-		let [req, res, mockNext] = mockExpressArgs(false)
+		const [req, res, mockNext] = mockExpressArgs(false)
 
 		return ltiLaunch.assignmentSelection(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith()
@@ -339,7 +338,7 @@ describe('lti launch middleware', () => {
 		User.saveOrCreateCallback.mockImplementationOnce(user => {
 			createdUser = user
 		})
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 
 		return ltiLaunch.assignmentSelection(req, res, mockNext).then(() => {
 			// has saved that user
@@ -356,11 +355,11 @@ describe('lti launch middleware', () => {
 	test('assignmentSelection logs an error if user creation fails and calls next with an error', () => {
 		expect.assertions(4)
 
-		User.saveOrCreateCallback.mockImplementationOnce(user => {
+		User.saveOrCreateCallback.mockImplementationOnce(() => {
 			throw 'this error'
 		})
 
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 
 		return ltiLaunch.assignmentSelection(req, res, mockNext).then(() => {
 			expect(mockNext).toBeCalledWith(expect.any(Error))
@@ -374,7 +373,7 @@ describe('lti launch middleware', () => {
 		expect.assertions(5)
 
 		insertEvent.mockRejectedValueOnce('event insert error')
-		let [req, res, mockNext] = mockExpressArgs(true)
+		const [req, res, mockNext] = mockExpressArgs(true)
 
 		return ltiLaunch.assignmentSelection(req, res, mockNext).then(() => {
 			expect(User.saveOrCreateCallback).toHaveBeenCalled()
@@ -388,8 +387,8 @@ describe('lti launch middleware', () => {
 	test('assignmentSelection logs an error with no lti body', () => {
 		expect.assertions(5)
 
-		let [req, res, mockNext] = mockExpressArgs(true)
-		User.saveOrCreateCallback.mockImplementationOnce(user => {
+		const [req, res, mockNext] = mockExpressArgs(true)
+		User.saveOrCreateCallback.mockImplementationOnce(() => {
 			req.lti.body = null
 			throw 'this error'
 		})

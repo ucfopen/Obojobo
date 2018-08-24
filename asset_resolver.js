@@ -1,5 +1,3 @@
-let fs = require('fs')
-let path = require('path')
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
 // Feed assetForEnv() asset urls with our special dev/prod markup
@@ -22,7 +20,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development'
 // $2 = ".${somevar}"
 // $3 = '.${somevar}.min'
 //
-const patternRegex = new RegExp(/\$\[(([^\|]+)\|)?(.+?)\]/)
+const patternRegex = new RegExp(/\$\[(([^|]+)\|)?(.+?)\]/)
 const assetForEnv = (assetPath, forceEnvTo = null) => {
 	let result
 	switch (getEnv(forceEnvTo)) {
@@ -41,7 +39,7 @@ const assetForEnv = (assetPath, forceEnvTo = null) => {
 	return result
 }
 
-const getEnv = (forceEnvTo) => {
+const getEnv = forceEnvTo => {
 	return (forceEnvTo ? forceEnvTo : NODE_ENV).toLowerCase()
 }
 

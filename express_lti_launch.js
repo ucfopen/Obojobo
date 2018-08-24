@@ -142,7 +142,7 @@ exports.courseNavlaunch = (req, res, next) => {
 
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
-		.then(user => next())
+		.then(() => next())
 		.catch(error => {
 			logger.error('LTI Nav Launch Error', error)
 			logger.error('LTI Body', req.lti && req.lti.body ? req.lti.body : 'No LTI Body')
@@ -170,7 +170,7 @@ exports.assignmentSelection = (req, res, next) => {
 				req.hostname
 			)
 		})
-		.then(launchResult => next())
+		.then(() => next())
 		.catch(error => {
 			logger.error('LTI Picker Launch Error', error)
 			logger.error('LTI Body', req.lti && req.lti.body ? req.lti.body : 'No LTI Body')

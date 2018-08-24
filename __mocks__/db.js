@@ -2,7 +2,7 @@
 // because mockReset() will clear
 // jest.fn().mockImplementation()
 
-let db = jest.fn()
+const db = jest.fn()
 
 db.one = jest.fn()
 db.one.mockResolvedValue()
@@ -22,7 +22,7 @@ db.none.mockResolvedValue()
 db.tx = jest.fn()
 db.tx.mockImplementation(
 	cb =>
-		new Promise((resolve, reject) => {
+		new Promise(resolve => {
 			resolve(cb(db))
 		})
 )

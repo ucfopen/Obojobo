@@ -34,7 +34,6 @@ jest.mock('../../express_current_document', () => (req, res, next) => {
 })
 
 // setup express server
-const db = oboRequire('db')
 const request = require('supertest')
 const express = require('express')
 const app = express()
@@ -45,7 +44,6 @@ app.use('/', oboRequire('routes/preview'))
 
 describe('preview route', () => {
 	const Visit = oboRequire('models/visit')
-	const insertEvent = oboRequire('insert_event')
 
 	beforeAll(() => {})
 	afterAll(() => {})

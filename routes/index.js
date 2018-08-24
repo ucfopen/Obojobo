@@ -1,9 +1,9 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 
 // Home page
 // mounted as /
-router.get('/', (req, res, next) => {
+router.get('/', (req, res) => {
 	res.render('index', {
 		title: 'Obojobo Next',
 		modules: req.app.locals.modules

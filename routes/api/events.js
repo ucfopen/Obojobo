@@ -2,9 +2,7 @@ const express = require('express')
 const router = express.Router()
 const oboEvents = oboRequire('obo_events')
 const insertEvent = oboRequire('insert_event')
-const VisitModel = oboRequire('models/visit')
 const createCaliperEvent = require('./events/create_caliper_event')
-const logger = oboRequire('logger')
 const {
 	checkValidationRules,
 	requireCurrentDocument,
@@ -24,7 +22,7 @@ router
 		requireEvent,
 		checkValidationRules
 	])
-	.post((req, res, next) => {
+	.post((req, res) => {
 		const event = req.body.event
 		const caliperEvent = createCaliperEvent(req)
 		const insertObject = {

@@ -10,7 +10,6 @@ const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 const { getSessionIds } = oboRequire('routes/api/events/caliper_utils')
 const {
 	checkValidationRules,
-	requireDraftId,
 	requireVisitId,
 	requireCurrentUser,
 	requireCurrentDocument
@@ -38,8 +37,7 @@ const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 router
 	.route('/start')
 	.post([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
-	.post((req, res, next) => {
-		let draft
+	.post((req, res) => {
 		let viewState
 		let visitStartReturnExtensionsProps
 		let launch
@@ -57,6 +55,7 @@ router
 		])
 			.then(results => {
 				// expand results
+				// eslint-disable-next-line no-extra-semi
 				;[visit, viewState, visitStartReturnExtensionsProps] = results
 
 				if (visit.is_preview === false) {

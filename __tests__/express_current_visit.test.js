@@ -11,37 +11,37 @@ describe('current user middleware', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockArgs = (() => {
-			let res = {}
-			let req = { session: {} }
-			let mockJson = jest.fn().mockImplementation(obj => {
+			const res = {}
+			const req = { session: {} }
+			const mockJson = jest.fn().mockImplementation(() => {
 				return true
 			})
-			let mockStatus = jest.fn().mockImplementation(code => {
+			const mockStatus = jest.fn().mockImplementation(() => {
 				return { json: mockJson }
 			})
-			let mockNext = jest.fn()
+			const mockNext = jest.fn()
 			res.status = mockStatus
 
 			oboRequire('express_current_visit')(req, res, mockNext)
-			return [res, req, mockJson, mockStatus, mockNext]
+			return { res, req, mockJson, mockStatus, mockNext }
 		})()
 	})
 	afterEach(() => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		const { mockJson, mockStatus, mockNext } = mockArgs
 		mockNext.mockClear()
 		mockStatus.mockClear()
 		mockJson.mockClear()
 	})
 
 	test('calls next', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		const { mockNext } = mockArgs
 		expect(mockNext).toBeCalledWith()
 	})
 
 	test('sets the expected properties on req', () => {
 		expect.assertions(userFunctions.length * 2)
 
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		const { req } = mockArgs
 
 		userFunctions.forEach(func => {
 			expect(req).toHaveProperty(func)
@@ -50,7 +50,7 @@ describe('current user middleware', () => {
 	})
 
 	test('getCurrentVisitFromRequest resolves if already loaded', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		const { req } = mockArgs
 		req.currentVisit = {}
 		return req.getCurrentVisitFromRequest().then(result => {
 			expect(result).toBeUndefined()
@@ -59,7 +59,7 @@ describe('current user middleware', () => {
 	})
 
 	test('getCurrentVisitFromRequest finds visitId in body, loads from db, and resolves', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		const { req } = mockArgs
 		req.body = {
 			visitId: 'mock-visit-id-8'
 		}
@@ -71,7 +71,7 @@ describe('current user middleware', () => {
 	})
 
 	test('getCurrentVisitFromRequest finds visitId in body event, loads from db, and resolves', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		const { req } = mockArgs
 		req.body = {
 			event: {
 				visitId: 'mock-visit-id-9'
@@ -85,7 +85,7 @@ describe('current user middleware', () => {
 	})
 
 	test('getCurrentVisitFromRequest rejects when visitId isnt in req', () => {
-		let [res, req, mockJson, mockStatus, mockNext] = mockArgs
+		const { req } = mockArgs
 		return req.getCurrentVisitFromRequest().catch(error => {
 			expect(error).toBeInstanceOf(Error)
 			expect(error.message).toContain('Missing required Visit Id')

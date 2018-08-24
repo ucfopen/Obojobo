@@ -6,7 +6,7 @@ const { requireCanViewEditor } = oboRequire('express_validators')
 
 // LTI Instructions
 // mounted as /lti/
-router.route('/').get((req, res, next) => {
+router.route('/').get((req, res) => {
 	const hostname = config.general.hostname
 	res.render('lti_launch_static', {
 		title: 'Obojobo LTI Launch',
@@ -20,7 +20,7 @@ router.route('/').get((req, res, next) => {
 
 // LTI Configuration
 // mounted as /lti/config.xml
-router.route('/config.xml').get((req, res, next) => {
+router.route('/config.xml').get((req, res) => {
 	res.type('xml')
 
 	const hostname = config.general.hostname
@@ -42,9 +42,9 @@ router.route('/config.xml').get((req, res, next) => {
 router
 	.route('/canvas/course_navigation')
 	.post([ltiLaunch.courseNavlaunch, requireCanViewEditor])
-	.post((req, res, next) => res.redirect('/editor'))
+	.post((req, res) => res.redirect('/editor'))
 
-const showModuleSelector = (req, res, next) => {
+const showModuleSelector = (req, res) => {
 	try {
 		let returnUrl = null
 		let isAssignment = false

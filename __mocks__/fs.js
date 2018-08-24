@@ -20,7 +20,7 @@ function __setMockFiles(newMockFiles) {
 	}
 }
 
-let mockFileContents = new Map()
+const mockFileContents = new Map()
 function __setMockFileContents(filePath, contents) {
 	mockFileContents.set(filePath, contents)
 }

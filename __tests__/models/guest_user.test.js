@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+
 jest.mock('../../db')
 
 describe('guest user model', () => {
@@ -7,22 +9,22 @@ describe('guest user model', () => {
 	afterEach(() => {})
 
 	test('extends user', () => {
-		let GuestUser = oboRequire('models/guest_user')
-		let User = oboRequire('models/user')
-		let g = new GuestUser()
+		const GuestUser = oboRequire('models/guest_user')
+		const User = oboRequire('models/user')
+		const g = new GuestUser()
 		expect(g).toBeInstanceOf(GuestUser)
 		expect(g).toBeInstanceOf(User)
 	})
 
 	test('responds to isGuest', () => {
-		let GuestUser = oboRequire('models/guest_user')
-		let g = new GuestUser()
+		const GuestUser = oboRequire('models/guest_user')
+		const g = new GuestUser()
 		expect(g.isGuest()).toBe(true)
 	})
 
 	test('throws error using saveOrCreate', () => {
-		let GuestUser = oboRequire('models/guest_user')
-		let g = new GuestUser()
+		const GuestUser = oboRequire('models/guest_user')
+		const g = new GuestUser()
 
 		expect(() => {
 			g.saveOrCreate()
@@ -30,7 +32,7 @@ describe('guest user model', () => {
 	})
 
 	test('throws error using fetchById', () => {
-		let GuestUser = oboRequire('models/guest_user')
+		const GuestUser = oboRequire('models/guest_user')
 
 		expect(() => {
 			GuestUser.fetchById(44)
@@ -38,8 +40,8 @@ describe('guest user model', () => {
 	})
 
 	test('all permissions are falsy', () => {
-		let GuestUser = oboRequire('models/guest_user')
-		let g = new GuestUser()
+		const GuestUser = oboRequire('models/guest_user')
+		const g = new GuestUser()
 
 		expect(g.canViewEditor).toBe(undefined)
 		expect(g.canEditDrafts).toBe(undefined)

@@ -1,7 +1,7 @@
 jest.unmock('express') // we'll use supertest + express for this
 
 // override requireCurrentUser to provide our own
-let mockCurrentUser = { username: 'GUEST' }
+const mockCurrentUser = { username: 'GUEST' }
 const mockResetCurrentUser = jest.fn()
 jest.mock('../../express_current_user', () => (req, res, next) => {
 	req.getCurrentUser = () => {

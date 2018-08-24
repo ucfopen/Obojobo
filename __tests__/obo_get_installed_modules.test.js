@@ -1,7 +1,6 @@
 import getInstalledModules from '../obo_get_installed_modules'
 import fs from 'fs'
 import glob from 'glob'
-import json from '../config/draft.json'
 import logger from '../logger'
 
 jest.mock('glob')
@@ -26,7 +25,7 @@ describe('Get Installed Modules', () => {
 		fs.readFileSync.mockReturnValueOnce('{"test1":{}}')
 		glob.sync.mockReturnValueOnce([])
 
-		let memo = getInstalledModules('test1')
+		const memo = getInstalledModules('test1')
 
 		expect(memo).toEqual({ assets: [], draftNodes: expect.any(Map), express: [] })
 	})
@@ -35,11 +34,11 @@ describe('Get Installed Modules', () => {
 		fs.readFileSync.mockReturnValueOnce('{"test2":{}}')
 		glob.sync.mockReturnValueOnce([])
 
-		let memo = getInstalledModules('test2')
+		const memo = getInstalledModules('test2')
 
 		expect(memo).toEqual({ assets: [], draftNodes: expect.any(Map), express: [] })
 
-		let memo2 = getInstalledModules('test2')
+		const memo2 = getInstalledModules('test2')
 
 		expect(memo2).toBe(memo)
 	})
@@ -58,7 +57,7 @@ describe('Get Installed Modules', () => {
 		}`) // file data for mockFile.js
 		fs.readFileSync.mockReturnValueOnce('{}') // file data for mockFile.jpg
 
-		let memo = getInstalledModules()
+		const memo = getInstalledModules()
 
 		expect(memo).toEqual({
 			assets: [],
@@ -89,7 +88,7 @@ describe('Get Installed Modules', () => {
 		fs.existsSync.mockReturnValueOnce(true) // draftNode file exists
 		fs.readFileSync.mockReturnValueOnce('{}') // file data for mockFile.jpg
 
-		let memo = getInstalledModules('test3')
+		const memo = getInstalledModules('test3')
 
 		expect(memo).toEqual({
 			assets: [

@@ -1,13 +1,13 @@
-let express = require('express')
-let path = require('path')
-let favicon = require('serve-favicon')
-let bodyParser = require('body-parser')
-let session = require('express-session')
-let pgSession = require('connect-pg-simple')
-let config = require('./config')
-let compression = require('compression')
-let logger = require('./logger')
-let ObojoboDocumentServer = require('./obo_express')
+const express = require('express')
+const path = require('path')
+const favicon = require('serve-favicon')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const pgSession = require('connect-pg-simple')
+const config = require('./config')
+const compression = require('compression')
+const logger = require('./logger')
+const ObojoboDocumentServer = require('./obo_express')
 const IS_WEBPACK = process.env.IS_WEBPACK || false
 
 module.exports = app => {
@@ -62,8 +62,9 @@ module.exports = app => {
 		res.missing()
 	})
 
-	// unkown error handler
+	// unknown error handler
 	app.use((err, req, res, next) => {
+		logger.error('Unknown error', err)
 		res.unexpected(err)
 	})
 }

@@ -5,9 +5,7 @@ jest.mock('../../../logger')
 jest.mock('obojobo-draft-xml-parser/xml-to-draft-object')
 
 import DraftModel from '../../../models/draft'
-import User from '../../../models/user'
-import logger from '../../../logger'
-let xml = require('obojobo-draft-xml-parser/xml-to-draft-object')
+const xml = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
 // don't use our existing express mock, we're using supertest
 jest.unmock('express')
@@ -26,7 +24,7 @@ const basicXML = `<ObojoboDraftDoc>
 	  </Module>
 	</ObojoboDraftDoc>`
 
-let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
+const mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
 const db = oboRequire('db')
 const drafts = oboRequire('routes/api/drafts')
 
@@ -43,7 +41,6 @@ jest.mock('../../../express_current_user', () => (req, res, next) => {
 	next()
 })
 
-const config = oboRequire('config')
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.text())
@@ -68,7 +65,7 @@ describe('api draft route', () => {
 	test('get draft returns success', () => {
 		expect.assertions(5)
 		// mock a yell function that returns a document
-		let mockYell = jest.fn()
+		const mockYell = jest.fn()
 		// mock the document returned by fetchById
 		DraftModel.fetchById.mockResolvedValueOnce({
 			root: { yell: mockYell },

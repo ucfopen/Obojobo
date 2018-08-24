@@ -66,7 +66,7 @@ const createAssessmentEvent = (obj, IRI) => {
 
 	const options = assignCaliperOptions(obj)
 
-	const { actor, assessmentId, draftId, contentId, action, attemptId, extensions } = obj
+	const { actor, assessmentId, contentId, action, attemptId, extensions } = obj
 	const caliperEvent = createEvent(AssessmentEvent, actor, IRI, options)
 
 	caliperEvent.setAction(action)
@@ -100,9 +100,9 @@ const createNavMenuEvent = (obj, IRI) => {
 
 // Must provide a request object or a host
 // isFromReq is used internally for create_caliper_event_from_req
-const caliperEventFactory = (req, host = null, isFromReq = false) => {
-	if (isFromReq == false) {
-		if (req) return createCaliperEventFromReq(req)
+const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFromReq = false) => {
+	if (!isCalledFromCreateCaliperEventFromReq && req) {
+		return createCaliperEventFromReq(req)
 	}
 	const IRI = iriFactory(req, host)
 
@@ -119,7 +119,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, from, to, extensions } = obj
+			const { actor, contentId, from, to, extensions } = obj
 			const caliperEvent = createEvent(NavigationEvent, actor, IRI, options)
 
 			caliperEvent.referrer = IRI.getDraftContentIRI(contentId, from)
@@ -143,7 +143,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, frameName, itemId, extensions } = obj
+			const { actor, contentId, frameName, itemId, extensions } = obj
 			const caliperEvent = createEvent(ViewEvent, actor, IRI, options)
 
 			caliperEvent.setAction('Viewed')
@@ -168,7 +168,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, frameName, itemId, extensions } = obj
+			const { actor, contentId, frameName, itemId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Hid')
@@ -227,7 +227,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, assessmentId, attemptId, attemptScore, draftId, contentId, extensions } = obj
+			const { actor, assessmentId, attemptId, attemptScore, contentId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options) //@TODO: Should be GradeEvent
 
 			caliperEvent.setType('GradeEvent')
@@ -256,7 +256,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, questionId, score, scoreId, extensions } = obj
+			const { actor, contentId, questionId, score, scoreId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options) //@TODO: Should be GradeEvent
 
 			caliperEvent.setType('GradeEvent')
@@ -293,7 +293,6 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 				actor,
 				assessmentId,
 				attemptId,
-				draftId,
 				contentId,
 				questionId,
 				targetId,
@@ -336,7 +335,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, questionId, extensions } = obj
+			const { actor, contentId, questionId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Submitted')
@@ -359,7 +358,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, questionId, scoreId, extensions } = obj
+			const { actor, contentId, questionId, scoreId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Reset')
@@ -381,7 +380,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, mediaId, extensions } = obj
+			const { actor, contentId, mediaId, extensions } = obj
 			const caliperEvent = createEvent(MediaEvent, actor, IRI, options)
 
 			caliperEvent.setAction('ChangedSize')
@@ -402,7 +401,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, extensions } = obj
+			const { actor, contentId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Abandoned')
@@ -423,7 +422,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, extensions } = obj
+			const { actor, contentId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Resumed')
@@ -446,7 +445,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, extensions } = obj
+			const { actor, contentId, extensions } = obj
 			const caliperEvent = createEvent(SessionEvent, actor, IRI, options)
 
 			caliperEvent.setAction('LoggedIn')
@@ -470,7 +469,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, extensions } = obj
+			const { actor, contentId, extensions } = obj
 			const caliperEvent = createEvent(SessionEvent, actor, IRI, options)
 
 			caliperEvent.setAction('LoggedOut')
@@ -493,7 +492,7 @@ const caliperEventFactory = (req, host = null, isFromReq = false) => {
 
 			const options = assignCaliperOptions(obj)
 
-			const { actor, draftId, contentId, questionId, extensions } = obj
+			const { actor, contentId, questionId, extensions } = obj
 			const caliperEvent = createEvent(Event, actor, IRI, options)
 
 			caliperEvent.setAction('Reset')
