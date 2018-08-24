@@ -35,7 +35,7 @@
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
-		"precommit": "lint-staged && yarn lint && yarn test:ci",
+		"precommit": "lint-staged && yarn test:ci",
 		"prettier:run": "prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,viewer,views}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{__{tests,mocks}__,bin,config,migrations,models,routes,viewer,views}/**/*.{js,scss}'"
 	},
@@ -46,6 +46,8 @@
 	"lint-staged": {
 		"{__{tests,mocks}__,bin,config,migrations,models,routes,viewer,views}/**/*.{js,scss}": [
 			"yarn prettier:run",
+			"eslint",
+			"stylelint",
 			"git add"
 		]
 	},
