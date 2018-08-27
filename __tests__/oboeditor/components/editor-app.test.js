@@ -24,13 +24,13 @@ describe('EditorApp', () => {
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart'}
+			modelState: { start: 'mockStart' }
 		})
 
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -49,13 +49,13 @@ describe('EditorApp', () => {
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart'}
+			modelState: { start: 'mockStart' }
 		})
 
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -71,13 +71,13 @@ describe('EditorApp', () => {
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart'}
+			modelState: { start: 'mockStart' }
 		})
 
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 

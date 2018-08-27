@@ -6,18 +6,60 @@ import IFrame from '../../../../ObojoboDraft/Chunks/IFrame/editor'
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
 describe('IFrame editor', () => {
-	test('Node builds the expected component', () => {
+	test('Node component', () => {
 		const Node = IFrame.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component changes input', () => {
+		const Node = IFrame.components.Node
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				isFocused={true}
+				isSelected={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component.find('input').simulate('click', {
+			stopPropagation: () => true
+		})
+
+		const click2 = component.find('input').simulate('change', {
+			target: { value: 'mockInput' }
+		})
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -40,7 +82,9 @@ describe('IFrame editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return {} }
+				get: type => {
+					return null
+				}
 			},
 			text: 'mockText'
 		}
@@ -76,7 +120,9 @@ describe('IFrame editor', () => {
 			node: {
 				type: IFRAME_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}

@@ -42,14 +42,14 @@ describe('ActionButton editor', () => {
 		const nodeData = {
 			type: BUTTON_NODE,
 			data: {
-				get: () => { return {} }
+				get: () => {
+					return {}
+				}
 			}
 		}
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={nodeData}
-		/>)
+		const component = renderer.create(
+			<Node attributes={{ dummy: 'dummyData' }} children={'mockChildren'} node={nodeData} />
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -59,21 +59,27 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={nodeData}
-			isSelected={true}
-			isFocused={true}
-		/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={nodeData}
+				isSelected={true}
+				isFocused={true}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -83,34 +89,40 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(<Node
-			children={'mockChildren'}
-			node={nodeData}
-			isSelected={true}
-			isFocused={true}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-		/>)
+		const component = shallow(
+			<Node
+				children={'mockChildren'}
+				node={nodeData}
+				isSelected={true}
+				isFocused={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
 		const click = component
 			.find('input')
 			.at(0)
-			.simulate('click', {stopPropagation: () => true})
+			.simulate('click', { stopPropagation: () => true })
 
 		const click2 = component
 			.find('input')
@@ -124,16 +136,16 @@ describe('ActionButton editor', () => {
 
 		expect(tree).toMatchSnapshot()
 		expect(change.setNodeByKey).toHaveBeenCalledWith(undefined, {
-			"data": {
-				"content": {
-					"actions": [
+			data: {
+				content: {
+					actions: [
 						{
-							"type": "mockType",
-							"value": "mockValue"
+							type: 'mockType',
+							value: 'mockValue'
 						}
 					],
-					"label": "mockLabel",
-					"newTrigger": {"type": "nav:goto", "value": ""}
+					label: 'mockLabel',
+					newTrigger: { type: 'nav:goto', value: '' }
 				}
 			}
 		})
@@ -143,34 +155,40 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(<Node
-			children={'mockChildren'}
-			node={nodeData}
-			isSelected={true}
-			isFocused={true}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-		/>)
+		const component = shallow(
+			<Node
+				children={'mockChildren'}
+				node={nodeData}
+				isSelected={true}
+				isFocused={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
 		const click = component
 			.find('select')
 			.at(0)
-			.simulate('click', {stopPropagation: () => true})
+			.simulate('click', { stopPropagation: () => true })
 
 		const click2 = component
 			.find('select')
@@ -189,34 +207,40 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(<Node
-			children={'mockChildren'}
-			node={nodeData}
-			isSelected={true}
-			isFocused={true}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-		/>)
+		const component = shallow(
+			<Node
+				children={'mockChildren'}
+				node={nodeData}
+				isSelected={true}
+				isFocused={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
 		const click = component
 			.find('textarea')
 			.at(0)
-			.simulate('click', {stopPropagation: () => true})
+			.simulate('click', { stopPropagation: () => true })
 
 		const click2 = component
 			.find('textarea')
@@ -235,29 +259,34 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {
-					actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(<Node
-			children={'mockChildren'}
-			node={nodeData}
-			isSelected={true}
-			isFocused={true}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-		/>)
+		const component = shallow(
+			<Node
+				children={'mockChildren'}
+				node={nodeData}
+				isSelected={true}
+				isFocused={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
 		const click = component
@@ -282,29 +311,34 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {
-					actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = mount(<Node
-			children={'mockChildren'}
-			node={nodeData}
-			isSelected={true}
-			isFocused={true}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-		/>)
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={nodeData}
+				isSelected={true}
+				isFocused={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
 		const click = component
@@ -319,28 +353,34 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(<Node
-			children={'mockChildren'}
-			node={nodeData}
-			isSelected={true}
-			isFocused={true}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-		/>)
+		const component = shallow(
+			<Node
+				children={'mockChildren'}
+				node={nodeData}
+				isSelected={true}
+				isFocused={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
 		const click = component
@@ -379,16 +419,20 @@ describe('ActionButton editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: () => { return { actions: [
-					{
-						type: 'mockType',
-						value: ''
-					},
-					{
-						type: 'mockOtherType',
-						value: "{\"id\": \"mockId\"}"
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: ''
+							},
+							{
+								type: 'mockOtherType',
+								value: '{"id": "mockId"}'
+							}
+						]
 					}
-				]}}
+				}
 			}
 		}
 		const oboNode = ActionButton.helpers.slateToObo(slateNode)
@@ -400,7 +444,7 @@ describe('ActionButton editor', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { label: 'mockLabel'}
+			content: { label: 'mockLabel' }
 		}
 		const slateNode = ActionButton.helpers.oboToSlate(oboNode)
 
@@ -411,7 +455,7 @@ describe('ActionButton editor', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { textGroup: [{text: {value: 'mockLabel'}}]}
+			content: { textGroup: [{ text: { value: 'mockLabel' } }] }
 		}
 		const slateNode = ActionButton.helpers.oboToSlate(oboNode)
 
@@ -426,10 +470,7 @@ describe('ActionButton editor', () => {
 				label: 'mockLabel',
 				triggers: [
 					{
-						actions: [
-							{ type: 'mockType'},
-							{ type: 'mockOtherType', value: {id: 'mockId'}}
-						]
+						actions: [{ type: 'mockType' }, { type: 'mockOtherType', value: { id: 'mockId' } }]
 					}
 				]
 			}
@@ -444,7 +485,9 @@ describe('ActionButton editor', () => {
 			node: {
 				type: BUTTON_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}

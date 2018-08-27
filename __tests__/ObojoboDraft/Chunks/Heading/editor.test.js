@@ -8,15 +8,19 @@ const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 describe('Heading editor', () => {
 	test('Node builds the expected component', () => {
 		const Node = Heading.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -40,31 +44,43 @@ describe('Heading editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return {} }
+				get: type => {
+					return {}
+				}
 			},
-			text: 'mockText'
+			text: 'mockText',
+			nodes: [
+				{
+					leaves: [
+						{
+							text: 'mockText',
+							marks: [
+								{
+									type: 'b',
+									data: {}
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 		const oboNode = Heading.helpers.slateToObo(slateNode)
 
 		expect(oboNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const oboNode = {
-			id: 'mockKey',
-			type: 'mockType',
-			content: { width: 'large' }
-		}
-		const slateNode = Heading.helpers.oboToSlate(oboNode)
-
-		expect(slateNode).toMatchSnapshot()
-	})
-
 	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: {}
+			content: {
+				textGroup: [
+					{
+						text: { value: 'mockText' }
+					}
+				]
+			}
 		}
 		const slateNode = Heading.helpers.oboToSlate(oboNode)
 
@@ -76,7 +92,9 @@ describe('Heading editor', () => {
 			node: {
 				type: HEADING_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}

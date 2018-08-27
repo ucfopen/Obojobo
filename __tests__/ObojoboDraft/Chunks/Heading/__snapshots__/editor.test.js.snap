@@ -14,6 +14,29 @@ exports[`Heading editor Node builds the expected component 1`] = `
 </div>
 `;
 
+exports[`Heading editor oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "level": undefined,
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "mockText",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
 exports[`Heading editor plugins.renderNode renders a button when passed 1`] = `
 <Node
   node={
@@ -25,4 +48,30 @@ exports[`Heading editor plugins.renderNode renders a button when passed 1`] = `
     }
   }
 />
+`;
+
+exports[`Heading editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "headingLevel": undefined,
+    "textGroup": Array [
+      Object {
+        "text": Object {
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
+          "value": "mockText",
+        },
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
 `;

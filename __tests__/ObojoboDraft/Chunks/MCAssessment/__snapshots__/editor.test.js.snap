@@ -56,6 +56,28 @@ exports[`MCAssessment editor Node builds the expected component 1`] = `
 </div>
 `;
 
+exports[`MCAssessment editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": undefined,
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    undefined,
+    Object {
+      "data": Object {
+        "content": undefined,
+      },
+      "key": undefined,
+      "object": "block",
+      "type": "NotADefinedNode",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
 exports[`MCAssessment editor plugins.renderNode renders a button when passed 1`] = `
 <Node
   node={
@@ -67,4 +89,52 @@ exports[`MCAssessment editor plugins.renderNode renders a button when passed 1`]
     }
   }
 />
+`;
+
+exports[`MCAssessment editor slateToObo converts a Slate node to an OboNode 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    Object {
+      "children": Array [],
+      "id": undefined,
+      "type": "NotADefinedNode",
+    },
+  ],
+  "content": Object {
+    "responseType": "pick-one",
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`MCAssessment editor slateToObo converts a Slate node to an OboNode with no content 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "id": undefined,
+      "type": "NotADefinedNode",
+    },
+  ],
+  "content": Object {},
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`MCAssessment editor slateToObo converts a Slate node to an OboNode with two correct 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+    undefined,
+  ],
+  "content": Object {
+    "responseType": "pick-one-multiple-correct",
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
 `;

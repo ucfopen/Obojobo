@@ -360,7 +360,7 @@ describe('apiutil', () => {
 
 	test('postDraft calls fetch', () => {
 		expect.assertions(4)
-		let assessment = {
+		const assessment = {
 			get: prop => prop
 		}
 		fetch.mockResolvedValueOnce({
@@ -372,8 +372,8 @@ describe('apiutil', () => {
 
 		return APIUtil.postDraft('mockDraftId', {}).then(res => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/drafts/mockDraftId')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),

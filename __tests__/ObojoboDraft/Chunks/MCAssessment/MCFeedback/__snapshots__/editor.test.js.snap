@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCFeedback editor Node builds the expected component 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback"
+  dummy="dummyData"
+>
+  <button
+    className="delete"
+    onClick={[Function]}
+  >
+    X
+  </button>
+  <span
+    className="label"
+    contentEditable={false}
+  >
+    Feedback
+  </span>
+  mockChildren
+</div>
+`;
+
+exports[`MCFeedback editor plugins.renderNode renders a button when passed 1`] = `undefined`;

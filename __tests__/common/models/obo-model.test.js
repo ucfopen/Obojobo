@@ -356,7 +356,7 @@ describe('OboModel', () => {
 	})
 
 	test('flatJSON outputs the model to an object without its children', () => {
-		let root = new OboModel(
+		const root = new OboModel(
 			{
 				type: 'nodeType',
 				content: { a: 1 }
