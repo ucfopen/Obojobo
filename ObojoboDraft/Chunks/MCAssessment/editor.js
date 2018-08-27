@@ -13,13 +13,6 @@ class Node extends React.Component {
 		super(props);
 		this.state = props.node.data.get('content')
 	}
-	delete() {
-		const editor = this.props.editor
-		const change = editor.value.change()
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
-	}
 	handleTypeChange(event){
 		const editor = this.props.editor
 		const change = editor.value.change()
