@@ -4,14 +4,14 @@ import StylableText from '../../../../src/scripts/common/text/styleable-text'
 
 describe('Table adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		TableAdapter.construct(model)
 
 		expect(model.modelState.textGroup).toEqual(GridTextGroup.create(3, 2, null))
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		TableAdapter.construct(model, {
 			content: {
 				header: true,
@@ -43,7 +43,7 @@ describe('Table adapter', () => {
 				}
 			}
 		})
-		let tempGridTextGroup = GridTextGroup.create(2, 2, { indent: 0, value: true })
+		const tempGridTextGroup = GridTextGroup.create(2, 2, { indent: 0, value: true })
 		tempGridTextGroup.set(0, new StylableText('First column heading'))
 		tempGridTextGroup.set(1, new StylableText('Second column heading'))
 		tempGridTextGroup.set(2, new StylableText('First column second row'))
@@ -55,8 +55,8 @@ describe('Table adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: { header: 'mockHeader' } }
-		let b = { modelState: {} }
+		const a = { modelState: { header: 'mockHeader' } }
+		const b = { modelState: {} }
 
 		TableAdapter.construct(a)
 		TableAdapter.clone(a, b)
@@ -66,8 +66,8 @@ describe('Table adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let a = { modelState: { header: 'mockHeader' } }
-		let b = { content: {} }
+		const a = { modelState: { header: 'mockHeader' } }
+		const b = { content: {} }
 
 		TableAdapter.construct(a)
 		TableAdapter.toJSON(a, b)
@@ -77,8 +77,8 @@ describe('Table adapter', () => {
 	})
 
 	test('toText creates a text representation', () => {
-		let model = { modelState: {} }
-		let expectedResult = `------------------------
+		const model = { modelState: {} }
+		const expectedResult = `------------------------
 | First column heading     | Second column heading    |
 ------------------------
 | First column second row  | Second column second row |

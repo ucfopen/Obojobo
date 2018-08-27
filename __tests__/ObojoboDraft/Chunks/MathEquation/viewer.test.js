@@ -20,7 +20,7 @@ import ViewerComponent from '../../../../ObojoboDraft/Chunks/MathEquation/viewer
 
 describe('ObojoboDraft.Chunks.MathEquation registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.MathEquation')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})

@@ -5,10 +5,10 @@ import OboModel from '../../../../../__mocks__/_obo-model-with-chunks'
 
 describe('MCFeedback', () => {
 	test('MCFeedback component for a correct item', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'parent',
 			type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
 			content: {
@@ -39,16 +39,16 @@ describe('MCFeedback', () => {
 		const component = renderer.create(
 			<MCFeedback moduleData={moduleData} model={OboModel.models.feedback} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('MCFeedback component for an incorrect item', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'parent',
 			type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
 			content: {
@@ -79,7 +79,7 @@ describe('MCFeedback', () => {
 		const component = renderer.create(
 			<MCFeedback moduleData={moduleData} model={OboModel.models.feedback} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

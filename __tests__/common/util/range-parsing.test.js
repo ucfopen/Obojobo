@@ -1,4 +1,4 @@
-let {
+const {
 	getParsedRange,
 	getParsedRangeFromSingleValue,
 	tryGetParsedFloat,

@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text editor Node builds the expected component 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--single-text pad"
+  >
+    <span
+      className="text align-left"
+      data-indent={undefined}
+    >
+      mockChildren
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Text editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Text",
+    }
+  }
+/>
+`;

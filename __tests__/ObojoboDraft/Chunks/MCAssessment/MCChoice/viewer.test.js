@@ -20,7 +20,7 @@ import ViewerComponent from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCC
 
 describe('ObojoboDraft.Chunks.MCAssessment.MCChoice registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.MCAssessment.MCChoice')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})

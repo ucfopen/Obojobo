@@ -130,7 +130,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test('getViewState returns view states', () => {
-		let active = QuestionUtil.getViewState(
+		const active = QuestionUtil.getViewState(
 			{
 				viewing: 'testId',
 				viewedQuestions: {
@@ -139,7 +139,7 @@ describe('QuestionUtil', () => {
 			},
 			testModel
 		)
-		let viewed = QuestionUtil.getViewState(
+		const viewed = QuestionUtil.getViewState(
 			{
 				viewing: 'anotherId',
 				viewedQuestions: {
@@ -149,7 +149,7 @@ describe('QuestionUtil', () => {
 			},
 			testModel
 		)
-		let hidden = QuestionUtil.getViewState(
+		const hidden = QuestionUtil.getViewState(
 			{
 				viewing: 'notTestId',
 				viewedQuestions: {
@@ -165,7 +165,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test('getResponse gets a response from state with no matching context', () => {
-		let res = QuestionUtil.getResponse(
+		const res = QuestionUtil.getResponse(
 			{
 				responses: {
 					mockContext: {
@@ -181,7 +181,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test('getResponse gets a response from state with no matching id', () => {
-		let res = QuestionUtil.getResponse(
+		const res = QuestionUtil.getResponse(
 			{
 				responses: {
 					mockContext: {}
@@ -195,7 +195,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test('getResponse gets a response from state', () => {
-		let res = QuestionUtil.getResponse(
+		const res = QuestionUtil.getResponse(
 			{
 				responses: {
 					mockContext: {
@@ -211,7 +211,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test('getData gets data from state with no id match', () => {
-		let data = QuestionUtil.getData(
+		const data = QuestionUtil.getData(
 			{
 				data: {}
 			},
@@ -223,7 +223,7 @@ describe('QuestionUtil', () => {
 	})
 
 	test('getData gets data from state for a given model and key', () => {
-		let data = QuestionUtil.getData(
+		const data = QuestionUtil.getData(
 			{
 				data: {
 					'testId:theKey': { someData: true }
@@ -272,18 +272,18 @@ describe('QuestionUtil', () => {
 	})
 
 	test('getScoreForModel returns the score', () => {
-		let state = {
+		const state = {
 			scores: {
 				mockContext: {
 					testId: { score: 100 }
 				}
 			}
 		}
-		let model = {
+		const model = {
 			get: jest.fn().mockReturnValueOnce('testId')
 		}
 
-		let score = QuestionUtil.getScoreForModel(state, model, 'mockContext')
+		const score = QuestionUtil.getScoreForModel(state, model, 'mockContext')
 
 		expect(score).toEqual(100)
 	})

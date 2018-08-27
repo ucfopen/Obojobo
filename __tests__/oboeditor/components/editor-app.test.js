@@ -30,7 +30,7 @@ describe('EditorApp', () => {
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -55,7 +55,7 @@ describe('EditorApp', () => {
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -77,7 +77,7 @@ describe('EditorApp', () => {
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 

@@ -20,7 +20,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('constructor builds a GridTextGroup', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },
@@ -53,7 +53,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('fromDescriptor builds a GridTextGroup from a descriptor with default method', () => {
-		let descriptor = {
+		const descriptor = {
 			numRows: 2,
 			numCols: 2,
 			textGroup: [
@@ -80,7 +80,7 @@ describe('GridTextGroup', () => {
 			]
 		}
 
-		let grid = GridTextGroup.fromDescriptor(descriptor)
+		const grid = GridTextGroup.fromDescriptor(descriptor)
 
 		/*
 		Expected Grid:
@@ -108,7 +108,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('fromDescriptor builds a GridTextGroup from a descriptor with custom method', () => {
-		let descriptor = {
+		const descriptor = {
 			numRows: 2,
 			numCols: 2,
 			textGroup: [
@@ -134,9 +134,9 @@ describe('GridTextGroup', () => {
 				}
 			]
 		}
-		let customMethod = jest.fn()
+		const customMethod = jest.fn()
 
-		let grid = GridTextGroup.fromDescriptor(descriptor, 4, {}, customMethod)
+		const grid = GridTextGroup.fromDescriptor(descriptor, 4, {}, customMethod)
 
 		/*
 		Expected Grid:
@@ -165,7 +165,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('create builds without data template', () => {
-		let grid = GridTextGroup.create(2, 2)
+		const grid = GridTextGroup.create(2, 2)
 
 		/*
 		Expected Grid:
@@ -193,7 +193,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('create builds with data template', () => {
-		let grid = GridTextGroup.create(2, 2, {})
+		const grid = GridTextGroup.create(2, 2, {})
 
 		/*
 		Expected Grid:
@@ -221,7 +221,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('addRow does not add to an empty grid', () => {
-		let gridTextGroup = new GridTextGroup(0, 0, {})
+		const gridTextGroup = new GridTextGroup(0, 0, {})
 
 		/*
 		Expected Grid:
@@ -241,7 +241,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('addRow adds with no values', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },
@@ -279,7 +279,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('addRow adds with given values', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },
@@ -317,7 +317,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('addCol does not add to an empty grid', () => {
-		let gridTextGroup = new GridTextGroup(0, 0, {})
+		const gridTextGroup = new GridTextGroup(0, 0, {})
 
 		/*
 		Expected Grid:
@@ -337,7 +337,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('addCol adds with no values', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },
@@ -373,7 +373,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('addCol adds with given values', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },
@@ -409,7 +409,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('removeRow does nothing to an empty grid', () => {
-		let gridTextGroup = new GridTextGroup(0, 0, {})
+		const gridTextGroup = new GridTextGroup(0, 0, {})
 
 		gridTextGroup.removeRow()
 		expect(gridTextGroup.numRows).toEqual(0)
@@ -424,7 +424,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('removeRow removes the last row by default', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },
@@ -454,7 +454,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('removeRow removes a specified row', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },
@@ -484,7 +484,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('removeCol does nothing to an empty grid', () => {
-		let gridTextGroup = new GridTextGroup(0, 0, {})
+		const gridTextGroup = new GridTextGroup(0, 0, {})
 
 		gridTextGroup.removeCol()
 		expect(gridTextGroup.numRows).toEqual(0)
@@ -499,7 +499,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('removeCol removes the last row by default', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },
@@ -531,7 +531,7 @@ describe('GridTextGroup', () => {
 	})
 
 	test('removeCol removes a specified row', () => {
-		let gridTextGroup = new GridTextGroup(2, 2, {}, [
+		const gridTextGroup = new GridTextGroup(2, 2, {}, [
 			{ text: new StylableText('first cell') },
 			{ text: new StylableText('second cell') },
 			{ text: new StylableText('third cell') },

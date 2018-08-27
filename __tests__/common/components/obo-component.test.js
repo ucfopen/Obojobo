@@ -19,7 +19,7 @@ test('OboComponent', () => {
 			Test
 		</OboComponent>
 	)
-	let tree = component.toJSON()
+	const tree = component.toJSON()
 
 	expect(tree).toMatchSnapshot()
 })
@@ -32,7 +32,7 @@ test('OboComponent tag', () => {
 			Test
 		</OboComponent>
 	)
-	let tree = component.toJSON()
+	const tree = component.toJSON()
 
 	expect(tree).toMatchSnapshot()
 })

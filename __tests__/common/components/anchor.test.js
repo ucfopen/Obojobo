@@ -5,14 +5,14 @@ import renderer from 'react-test-renderer'
 describe('Anchor', () => {
 	test('Anchor component', () => {
 		const component = renderer.create(<Anchor />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Anchor shouldPreventTab', () => {
 		const component = renderer.create(<Anchor shouldPreventTab={true} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

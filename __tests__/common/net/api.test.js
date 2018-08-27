@@ -30,14 +30,14 @@ describe('Net API', () => {
 	})
 
 	test('APIModule get makes expected request and executes callback', () => {
-		let callback = jest.fn()
+		const callback = jest.fn()
 		API.module.get('mockId', callback)
 
 		expect(mockAddEventListener).toHaveBeenCalledWith('load', expect.any(Function))
 		expect(mockOpen).toHaveBeenCalledWith('GET', '/api/draft/mockId/chunks', true)
 		expect(mockSend).toHaveBeenCalledWith(null)
 
-		let internalCallback = mockAddEventListener.mock.calls[0][1]
+		const internalCallback = mockAddEventListener.mock.calls[0][1]
 		internalCallback({
 			target: {
 				responseText: '{"mock":"mockResponseText"}'
@@ -53,11 +53,11 @@ describe('Net API', () => {
 	})
 
 	test('APIChunk move makes expected request and executes callback', () => {
-		let callback = jest.fn()
-		let chunkMoved = {
+		const callback = jest.fn()
+		const chunkMoved = {
 			get: jest.fn(() => 'movedId')
 		}
-		let chunkBefore = {
+		const chunkBefore = {
 			get: jest.fn(() => 'beforeId')
 		}
 		API.chunk.move(chunkMoved, chunkBefore, callback)
@@ -66,17 +66,17 @@ describe('Net API', () => {
 		expect(mockOpen).toHaveBeenCalledWith('POST', '/api/chunk/movedId/move_before', true)
 		expect(mockSend).toHaveBeenCalledWith('before_chunk_id=beforeId')
 
-		let internalCallback = mockAddEventListener.mock.calls[0][1]
+		const internalCallback = mockAddEventListener.mock.calls[0][1]
 		internalCallback('callbackArg')
 
 		expect(callback).toHaveBeenCalledWith('callbackArg')
 	})
 
 	test('APIChunk with null values', () => {
-		let chunkMoved = {
+		const chunkMoved = {
 			get: jest.fn(() => 'movedId')
 		}
-		let chunkBefore = {
+		const chunkBefore = {
 			get: jest.fn(() => 'beforeId')
 		}
 

@@ -19,21 +19,21 @@ describe('TextGroupEl', () => {
 		tg.add(new StyleableText('First line'))
 
 		// second item, some formatting and a variable:
-		let st = new StyleableText('Some BOLD text with a {{variable}} included')
+		const st = new StyleableText('Some BOLD text with a {{variable}} included')
 		st.styleText('b', 5, 9)
 		tg.add(st)
 	})
 
 	test('TextGroupEl unformatted', () => {
 		const component = renderer.create(<TextGroupEl groupIndex={0} textItem={tg.get(0)} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('TextGroupEl formatted', () => {
 		const component = renderer.create(<TextGroupEl groupIndex={1} textItem={tg.get(1)} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

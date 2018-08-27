@@ -2,14 +2,14 @@ import QuestionBankAdapter from '../../../../ObojoboDraft/Chunks/QuestionBank/ad
 
 describe('QuestionBank adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		QuestionBankAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				choose: 2,
 				select: 'random-all',
@@ -23,9 +23,9 @@ describe('QuestionBank adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
-		let attrs = {
+		const a = { modelState: {} }
+		const b = { modelState: {} }
+		const attrs = {
 			content: {
 				choose: 2,
 				select: 'random-all',
@@ -42,9 +42,9 @@ describe('QuestionBank adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = { modelState: {} }
-		let json = { content: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const json = { content: {} }
+		const attrs = {
 			content: {
 				choose: 2,
 				select: 'random-all',

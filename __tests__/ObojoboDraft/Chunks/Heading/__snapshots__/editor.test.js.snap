@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading editor Node builds the expected component 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--heading pad"
+  >
+    <h1>
+      mockChildren
+    </h1>
+  </div>
+</div>
+`;
+
+exports[`Heading editor oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "level": undefined,
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "mockText",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Heading editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Heading",
+    }
+  }
+/>
+`;
+
+exports[`Heading editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "headingLevel": undefined,
+    "textGroup": Array [
+      Object {
+        "text": Object {
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
+          "value": "mockText",
+        },
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

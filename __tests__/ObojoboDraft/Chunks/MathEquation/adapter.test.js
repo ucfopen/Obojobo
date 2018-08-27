@@ -2,14 +2,14 @@ import MathEquationAdapter from '../../../../ObojoboDraft/Chunks/MathEquation/ad
 
 describe('MathEquation adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		MathEquationAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				latex: 'mockEquations',
 				align: 'left',
@@ -23,8 +23,8 @@ describe('MathEquation adapter', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = { modelState: {} }
+		const b = { modelState: {} }
 
 		MathEquationAdapter.construct(a)
 		MathEquationAdapter.clone(a, b)
@@ -34,14 +34,14 @@ describe('MathEquation adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				latex: 'test',
 				align: 'left'
 			}
 		}
-		let json = { content: {} }
+		const json = { content: {} }
 
 		MathEquationAdapter.construct(model, attrs)
 		MathEquationAdapter.toJSON(model, json)
@@ -50,8 +50,8 @@ describe('MathEquation adapter', () => {
 	})
 
 	test('can be converted to text', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				latex: 'latex goes here',
 				align: 'left'

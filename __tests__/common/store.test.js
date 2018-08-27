@@ -17,7 +17,7 @@ describe('Store', () => {
 
 	test('registers calls init', () => {
 		expect.assertions(1)
-		let init = jest.fn()
+		const init = jest.fn()
 		Store.registerModel('type', { init: init })
 
 		Store.getItems(items => {
@@ -27,7 +27,7 @@ describe('Store', () => {
 
 	test('registers default', () => {
 		expect.assertions(2)
-		let init = jest.fn()
+		const init = jest.fn()
 		Store.registerModel('chunk', { type: 'chunk', default: false, __testValue: 1 })
 		Store.registerModel('chunk-default', { type: 'chunk', default: true, __testValue: 2 })
 		Store.registerModel('page', { type: 'page', default: false, __testValue: 3 })
@@ -41,7 +41,7 @@ describe('Store', () => {
 
 	test('gets item by type', () => {
 		expect.assertions(4)
-		let init = jest.fn()
+		const init = jest.fn()
 		Store.registerModel('chunk', { type: 'chunk', default: false, __testValue: 1 })
 		Store.registerModel('chunk-default', { type: 'chunk', default: true, __testValue: 2 })
 		Store.registerModel('page', { type: 'page', default: false, __testValue: 3 })
@@ -57,8 +57,8 @@ describe('Store', () => {
 
 	test('sets variables and calls variable callback', () => {
 		expect.assertions(3)
-		let var1cb = jest.fn()
-		let var2cb = jest.fn()
+		const var1cb = jest.fn()
+		const var2cb = jest.fn()
 
 		var2cb.mockImplementation((model, viewerState) => {
 			return model + viewerState
@@ -72,7 +72,7 @@ describe('Store', () => {
 		})
 
 		Store.getItems(items => {
-			let result = Store.getTextForVariable('var2', '__model', '__viewerState')
+			const result = Store.getTextForVariable('var2', '__model', '__viewerState')
 			expect(var1cb).toHaveBeenCalledTimes(0)
 			expect(var2cb).toHaveBeenCalledTimes(1)
 			expect(result).toBe('__model__viewerState')
@@ -84,7 +84,7 @@ describe('Store', () => {
 		Store.registerModel('type')
 
 		Store.getItems(items => {
-			let result = Store.getTextForVariable('someVar', '__model', '__viewerState')
+			const result = Store.getTextForVariable('someVar', '__model', '__viewerState')
 			expect(result).toBe(null)
 		})
 	})
@@ -141,7 +141,7 @@ describe('Store', () => {
 	test('loads dependencies registered onload callback for javascript', () => {
 		expect.assertions(2)
 		document.head.appendChild = jest.fn()
-		let callback = {}
+		const callback = {}
 
 		Store.loadDependency('example.js', callback)
 		expect(document.head.appendChild).toHaveBeenCalledTimes(1)

@@ -135,11 +135,11 @@ const questionJSON = {
 
 describe('BasicReview', () => {
 	test('Basic component correct', () => {
-		let question = OboModel.create(questionJSON)
-		let moduleData = {
+		const question = OboModel.create(questionJSON)
+		const moduleData = {
 			focusState: {}
 		}
-		let questionScore = {
+		const questionScore = {
 			id: 'parent',
 			score: 100 // Question was answered correctly
 		}
@@ -149,11 +149,11 @@ describe('BasicReview', () => {
 	})
 
 	test('Basic component incorrect', () => {
-		let question = OboModel.create(questionJSON)
-		let moduleData = {
+		const question = OboModel.create(questionJSON)
+		const moduleData = {
 			focusState: {}
 		}
-		let questionScore = {
+		const questionScore = {
 			id: 'parent',
 			score: 0 // Question was answered incorrectly
 		}

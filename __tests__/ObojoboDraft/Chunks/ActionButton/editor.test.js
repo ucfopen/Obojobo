@@ -59,12 +59,16 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+ 					return {
+ 						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const component = renderer.create(<Node
@@ -83,12 +87,16 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
@@ -143,12 +151,16 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
@@ -189,12 +201,16 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
@@ -235,13 +251,16 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {
-					actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
@@ -282,13 +301,16 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {
-					actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
@@ -319,12 +341,16 @@ describe('ActionButton editor', () => {
 		const Node = ActionButton.components.Node
 		const nodeData = {
 			data: {
-				get: () => { return {actions: [
-					{
-						type: 'mockType',
-						value: 'mockValue'
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
 					}
-				]} }
+				}
 			}
 		}
 		const change = {
@@ -379,16 +405,20 @@ describe('ActionButton editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: () => { return { actions: [
-					{
-						type: 'mockType',
-						value: ''
-					},
-					{
-						type: 'mockOtherType',
-						value: "{\"id\": \"mockId\"}"
+				get: () => {
+ 					return {
+ 						actions: [
+							{
+								type: 'mockType',
+								value: ''
+							},
+							{
+								type: 'mockOtherType',
+								value: "{\"id\": \"mockId\"}"
+							}
+						]
 					}
-				]}}
+				}
 			}
 		}
 		const oboNode = ActionButton.helpers.slateToObo(slateNode)

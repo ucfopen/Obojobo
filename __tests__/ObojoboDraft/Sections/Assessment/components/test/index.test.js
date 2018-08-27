@@ -6,47 +6,47 @@ import Test from '../../../../../../ObojoboDraft/Sections/Assessment/components/
 
 describe('Test', () => {
 	test('Test component', () => {
-		let model = {
+		const model = {
 			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent')
 		}
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
-		let component = renderer.create(<Test model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<Test model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Test component with completeAttempt', () => {
-		let model = {
+		const model = {
 			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent')
 		}
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<Test model={model} moduleData={moduleData} isAttemptComplete={true} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Test component fetching score', () => {
-		let model = {
+		const model = {
 			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent')
 		}
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<Test model={model} moduleData={moduleData} isAttemptComplete={true} isFetching={true} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

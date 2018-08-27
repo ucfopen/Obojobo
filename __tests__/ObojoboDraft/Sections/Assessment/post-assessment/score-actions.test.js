@@ -5,7 +5,7 @@ import ScoreAction from '../../../../../ObojoboDraft/Sections/Assessment/post-as
 
 describe('score-actions', () => {
 	test('constructor builds with no attributes', () => {
-		let action = new ScoreAction(null)
+		const action = new ScoreAction(null)
 
 		expect(action).toEqual({
 			actions: [],
@@ -14,7 +14,7 @@ describe('score-actions', () => {
 	})
 
 	test('constructor builds with legacy attributes', () => {
-		let action = new ScoreAction([
+		const action = new ScoreAction([
 			{
 				from: '0',
 				to: '100',
@@ -39,7 +39,7 @@ describe('score-actions', () => {
 	})
 
 	test('constructor builds with current attributes', () => {
-		let action = new ScoreAction([
+		const action = new ScoreAction([
 			{
 				for: '[0,100]',
 				page: 'mockPage'
@@ -63,7 +63,7 @@ describe('score-actions', () => {
 	})
 
 	test('getActionForScore returns action that matches the score', () => {
-		let action = new ScoreAction([
+		const action = new ScoreAction([
 			{
 				for: '[90,100]',
 				page: 'mockPage'
@@ -74,7 +74,7 @@ describe('score-actions', () => {
 			}
 		])
 
-		let foundAction = action.getActionForScore(80)
+		const foundAction = action.getActionForScore(80)
 
 		expect(foundAction).toEqual({
 			page: 'mockPage',
@@ -88,40 +88,40 @@ describe('score-actions', () => {
 	})
 
 	test('getActionForScore returns null when no action matches the score', () => {
-		let action = new ScoreAction([
+		const action = new ScoreAction([
 			{
 				for: '[0,90)',
 				page: 'mockPage'
 			}
 		])
 
-		let foundAction = action.getActionForScore(91)
+		const foundAction = action.getActionForScore(91)
 
 		expect(foundAction).toEqual(null)
 	})
 
 	test('toObject builds an object representation', () => {
-		let action = new ScoreAction([
+		const action = new ScoreAction([
 			{
 				for: '[0,90)',
 				page: 'mockPage'
 			}
 		])
 
-		let obj = action.toObject()
+		const obj = action.toObject()
 
 		expect(obj).toEqual([{ for: '[0,90)', page: 'mockPage' }])
 	})
 
 	test('clone creates a copy', () => {
-		let action = new ScoreAction([
+		const action = new ScoreAction([
 			{
 				for: '[0,90)',
 				page: 'mockPage'
 			}
 		])
 
-		let clone = action.clone()
+		const clone = action.clone()
 
 		expect(clone).not.toBe(action)
 		expect(clone).toEqual(action)

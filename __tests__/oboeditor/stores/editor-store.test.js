@@ -161,9 +161,9 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'generateNav')
 		EditorStore.generateNav.mockImplementationOnce(model => model)
 
-		let before = EditorStore.getState()
+		const before = EditorStore.getState()
 		EditorStore.buildMenu('mockModel')
-		let after = EditorStore.getState()
+		const after = EditorStore.getState()
 
 		expect(after).toMatchSnapshot()
 
@@ -205,8 +205,8 @@ describe('EditorStore', () => {
 				}
 			}
 		})
-		let oldNavItem = { processTrigger: jest.fn() }
-		let newNavItem = {
+		const oldNavItem = { processTrigger: jest.fn() }
+		const newNavItem = {
 			id: 'newItem',
 			showChildrenOnNavigation: true,
 			processTrigger: jest.fn()
@@ -215,7 +215,7 @@ describe('EditorStore', () => {
 		EditorUtil.getNavTargetModel.mockReturnValueOnce(newNavItem)
 
 		expect(EditorStore.gotoItem(newNavItem)).toBe(true)
-		let after = EditorStore.getState()
+		const after = EditorStore.getState()
 		expect(after).toMatchSnapshot()
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 	})
@@ -233,8 +233,8 @@ describe('EditorStore', () => {
 				}
 			}
 		})
-		let oldNavItem = { processTrigger: jest.fn() }
-		let newNavItem = {
+		const oldNavItem = { processTrigger: jest.fn() }
+		const newNavItem = {
 			id: 'newItem',
 			showChildrenOnNavigation: true,
 			processTrigger: jest.fn()
@@ -243,7 +243,7 @@ describe('EditorStore', () => {
 		EditorUtil.getNavTargetModel.mockReturnValueOnce(newNavItem)
 
 		expect(EditorStore.gotoItem(newNavItem)).toBe(true)
-		let after = EditorStore.getState()
+		const after = EditorStore.getState()
 		expect(after).toMatchSnapshot()
 	})
 
@@ -254,7 +254,7 @@ describe('EditorStore', () => {
 	test('generateNav with no navItem returns default object', () => {
 		EditorStore.setState({ itemsById: {} })
 
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce('testId')
@@ -282,13 +282,13 @@ describe('EditorStore', () => {
 	})
 
 	test('generateNav builds a navItem', () => {
-		let item = {
+		const item = {
 			getNavItem: jest.fn().mockReturnValueOnce({
 				id: 'mockItem',
 				path: 'whatever'
 			})
 		}
-		let childItem = {
+		const childItem = {
 			get: () => 9,
 			children: {
 				models: []
@@ -298,7 +298,7 @@ describe('EditorStore', () => {
 				path: 'whatever2'
 			})
 		}
-		let model = {
+		const model = {
 			get: () => 11,
 			getRoot: () => ({ get: () => 66 }),
 			children: {

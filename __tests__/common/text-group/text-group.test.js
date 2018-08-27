@@ -227,18 +227,18 @@ describe('TextGroup', () => {
 	})
 
 	test('remove sets item index to -1', () => {
-		let firstItem = tgWithItems.get(0)
+		const firstItem = tgWithItems.get(0)
 
 		expect(firstItem.index).toBe(0)
 
-		let removed = tgWithItems.remove(0)
+		const removed = tgWithItems.remove(0)
 
 		expect(firstItem).toBe(removed)
 		expect(firstItem.index).toBe(-1)
 	})
 
 	test('clone creates a copy', () => {
-		let clone = tgWithItems.clone()
+		const clone = tgWithItems.clone()
 
 		expect(clone).not.toBe(tgWithItems)
 		expect(clone.items.length).toBe(tgWithItems.items.length)
@@ -256,7 +256,7 @@ describe('TextGroup', () => {
 		tgDataTemplate.add(new StyleableText('new1'), { a: 100 })
 		tgDataTemplate.add(new StyleableText('new2'), { b: 100 })
 
-		let clone = tgDataTemplate.clone(function(data) {
+		const clone = tgDataTemplate.clone(function(data) {
 			data.b = 5
 			return data
 		})
@@ -306,7 +306,7 @@ describe('TextGroup', () => {
 		tg.add(new StyleableText('B'))
 		tg.add(new StyleableText('C'))
 
-		let a = tg.clone()
+		const a = tg.clone()
 		let sibling = a.splitBefore(1)
 
 		expect(a.items.length).toBe(1)
@@ -315,7 +315,7 @@ describe('TextGroup', () => {
 		expect(sibling.items[0].text).toEqual(new StyleableText('B'))
 		expect(sibling.items[1].text).toEqual(new StyleableText('C'))
 
-		let b = tg.clone()
+		const b = tg.clone()
 		sibling = b.splitBefore(0)
 		expect(b.items.length).toBe(0)
 		expect(sibling.items.length).toBe(3)
@@ -323,7 +323,7 @@ describe('TextGroup', () => {
 		expect(sibling.items[1].text).toEqual(new StyleableText('B'))
 		expect(sibling.items[2].text).toEqual(new StyleableText('C'))
 
-		let c = tg.clone()
+		const c = tg.clone()
 		sibling = c.splitBefore(3)
 		expect(c.items.length).toBe(3)
 		expect(sibling.items.length).toBe(0)
@@ -647,9 +647,9 @@ describe('TextGroup', () => {
 
 	test('styleText styles text at the beginning of the group', () => {
 		tgWith3Items.styleText(0, 0, 0, 1, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(1)
 		expect(styles2.length).toBe(0)
@@ -659,9 +659,9 @@ describe('TextGroup', () => {
 
 	test('styleText styles text at the end of the group', () => {
 		tgWith3Items.styleText(2, 4, 2, 5, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(0)
 		expect(styles2.length).toBe(0)
@@ -671,9 +671,9 @@ describe('TextGroup', () => {
 
 	test('styleText styles text spanning two text items', () => {
 		tgWith3Items.styleText(0, 1, 1, 1, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(1)
 		expect(styles2.length).toBe(1)
@@ -684,9 +684,9 @@ describe('TextGroup', () => {
 
 	test('styleText styles all text', () => {
 		tgWith3Items.styleText(0, 0, 2, 5, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(1)
 		expect(styles2.length).toBe(1)
@@ -698,9 +698,9 @@ describe('TextGroup', () => {
 
 	test('styleText does not style if range is backwards', () => {
 		tgWith3Items.styleText(2, 1, 1, 1, 'i')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(0)
 		expect(styles2.length).toBe(1)
@@ -710,9 +710,9 @@ describe('TextGroup', () => {
 	test('unstyleText unstyles a span of text', () => {
 		tgWith3Items.styleText(0, 0, 2, 5, 'b')
 		tgWith3Items.unstyleText(0, 0, 0, 1, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(1)
 		expect(styles2.length).toBe(1)
@@ -724,9 +724,9 @@ describe('TextGroup', () => {
 
 	test('toggleStyleText will style a portion of un-styled text', () => {
 		tgWith3Items.toggleStyleText(1, 1, 1, 5, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(0)
 		expect(styles2.length).toBe(1)
@@ -737,9 +737,9 @@ describe('TextGroup', () => {
 	test('toggleStyleText will style a portion of partially styled text', () => {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b')
 		tgWith3Items.toggleStyleText(1, 0, 1, 6, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(0)
 		expect(styles2.length).toBe(1)
@@ -750,9 +750,9 @@ describe('TextGroup', () => {
 	test('toggleStyleText will un-style a portion of styled text', () => {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b')
 		tgWith3Items.toggleStyleText(1, 2, 1, 5, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(0)
 		expect(styles2.length).toBe(1)
@@ -763,9 +763,9 @@ describe('TextGroup', () => {
 	test('toggleStyleText will un-style the portion of styled text', () => {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b')
 		tgWith3Items.toggleStyleText(1, 1, 1, 5, 'b')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		expect(styles1.length).toBe(0)
 		expect(styles2.length).toBe(0)
@@ -775,9 +775,9 @@ describe('TextGroup', () => {
 	test('getStyles will return only the styles covered by the span', () => {
 		tgWith3Items.styleText(1, 1, 1, 5, 'b')
 		tgWith3Items.styleText(1, 0, 1, 6, 'i')
-		let styles1 = tgWith3Items.items[0].text.styleList.styles
-		let styles2 = tgWith3Items.items[1].text.styleList.styles
-		let styles3 = tgWith3Items.items[2].text.styleList.styles
+		const styles1 = tgWith3Items.items[0].text.styleList.styles
+		const styles2 = tgWith3Items.items[1].text.styleList.styles
+		const styles3 = tgWith3Items.items[2].text.styleList.styles
 
 		let styles = tgWith3Items.getStyles(1, 1, 1, 5)
 		expect(styles.i).toBe('i')
@@ -801,7 +801,7 @@ describe('TextGroup', () => {
 	test('getStyles returns empty if given incorrect params', () => {
 		tgWith3Items.styleText(0, 1, 2, 1, 'b')
 
-		let styles = tgWith3Items.getStyles(72, 83, 2, 1)
+		const styles = tgWith3Items.getStyles(72, 83, 2, 1)
 		expect(styles).toEqual({})
 	})
 
@@ -809,7 +809,7 @@ describe('TextGroup', () => {
 		tgWith3Items.styleText(0, 1, 2, 1, 'b')
 		tgWith3Items.items[3] = {}
 
-		let styles = tgWith3Items.getStyles(3, 0, 2, 1)
+		const styles = tgWith3Items.getStyles(3, 0, 2, 1)
 		expect(styles).toEqual({})
 	})
 
@@ -817,7 +817,7 @@ describe('TextGroup', () => {
 		tgWith3Items.styleText(0, 1, 2, 1, 'b')
 		tgWith3Items.add({})
 
-		let styles = tgWith3Items.getStyles(3, 0, 2, 1)
+		const styles = tgWith3Items.getStyles(3, 0, 2, 1)
 		expect(styles).toEqual({ b: 'b' })
 	})
 
@@ -879,8 +879,8 @@ describe('TextGroup', () => {
 		tgDataTemplate.add('first', { a: 1, c: 1 })
 		tgDataTemplate.add('second', { a: 2, c: 2 })
 
-		let o = tgWithItems.toDescriptor()
-		let newTg = TextGroup.fromDescriptor(o, 10, { b: 2 })
+		const o = tgWithItems.toDescriptor()
+		const newTg = TextGroup.fromDescriptor(o, 10, { b: 2 })
 
 		expect(newTg.maxItems).toBe(10)
 		expect(newTg.items.length).toBe(2)
@@ -891,12 +891,12 @@ describe('TextGroup', () => {
 	})
 
 	test('fromDescriptor can create an instance from an object with a custom function', () => {
-		let mockMethod = jest.fn()
+		const mockMethod = jest.fn()
 		tgDataTemplate.add('first', { a: 1, c: 1 })
 		tgDataTemplate.add('second', { a: 2, c: 2 })
 
-		let o = tgWithItems.toDescriptor()
-		let newTg = TextGroup.fromDescriptor(o, 10, { b: 2 }, mockMethod)
+		const o = tgWithItems.toDescriptor()
+		const newTg = TextGroup.fromDescriptor(o, 10, { b: 2 }, mockMethod)
 
 		expect(newTg.maxItems).toBe(10)
 		expect(newTg.items.length).toBe(2)
@@ -907,7 +907,7 @@ describe('TextGroup', () => {
 	})
 
 	test('create builds an instance', () => {
-		let newTg = TextGroup.create(10, { x: 1 }, 4)
+		const newTg = TextGroup.create(10, { x: 1 }, 4)
 		newTg.addAt(0, new StyleableText('first'), { x: 2, y: 1 })
 
 		expect(newTg.maxItems).toBe(10)
@@ -925,7 +925,7 @@ describe('TextGroup', () => {
 	})
 
 	test('create builds an instance without attributes', () => {
-		let newTg = TextGroup.create()
+		const newTg = TextGroup.create()
 
 		expect(newTg.maxItems).toBe(Infinity)
 		expect(newTg.items.length).toBe(1)

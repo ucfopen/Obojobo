@@ -15,7 +15,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('clear empties an object', () => {
-		let actual = new ChunkStyleList()
+		const actual = new ChunkStyleList()
 		actual.add(styleRangeLink)
 		actual.add(styleRangeBold)
 
@@ -27,9 +27,9 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getExportedObject builds and returns an object', () => {
-		let actual = styleList.getExportedObject()
+		const actual = styleList.getExportedObject()
 
-		let expected = [
+		const expected = [
 			{
 				start: 5,
 				end: 15,
@@ -50,15 +50,15 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getExportedObject returns null on empty object', () => {
-		let actual = new ChunkStyleList()
+		const actual = new ChunkStyleList()
 
-		let expected = null
+		const expected = null
 
 		expect(actual.getExportedObject()).toEqual(expected)
 	})
 
 	test('clone builds a copy', () => {
-		let clone = styleList.clone()
+		const clone = styleList.clone()
 
 		expect(clone).not.toBe(styleList)
 		expect(clone.getExportedObject()).toEqual(styleList.getExportedObject())
@@ -69,13 +69,13 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('get returns the specified object', () => {
-		let item = styleList.get(0)
+		const item = styleList.get(0)
 
 		expect(item).toBe(styleRangeLink)
 	})
 
 	test('add inserts the given object', () => {
-		let actual = new ChunkStyleList()
+		const actual = new ChunkStyleList()
 
 		expect(actual.length()).toEqual(0)
 
@@ -145,7 +145,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStyleComparisonsForRange returns styles ranges after a given range', () => {
-		let comparisons = styleList.getStyleComparisonsForRange(0, 1, 'b')
+		const comparisons = styleList.getStyleComparisonsForRange(0, 1, 'b')
 
 		expect(comparisons.after.length).toBe(1)
 		expect(comparisons.before.length).toBe(0)
@@ -158,7 +158,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStyleComparisonsForRange returns styles ranges before a given range', () => {
-		let comparisons = styleList.getStyleComparisonsForRange(21, 22, 'b')
+		const comparisons = styleList.getStyleComparisonsForRange(21, 22, 'b')
 
 		expect(comparisons.after.length).toBe(0)
 		expect(comparisons.before.length).toBe(1)
@@ -171,7 +171,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStyleComparisonsForRange returns styles ranges enscapsulated by a given range', () => {
-		let comparisons = styleList.getStyleComparisonsForRange(0, 20, 'b')
+		const comparisons = styleList.getStyleComparisonsForRange(0, 20, 'b')
 
 		expect(comparisons.after.length).toBe(0)
 		expect(comparisons.before.length).toBe(0)
@@ -184,7 +184,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStyleComparisonsForRange returns styles ranges containing a given range', () => {
-		let comparisons = styleList.getStyleComparisonsForRange(11, 20, 'b')
+		const comparisons = styleList.getStyleComparisonsForRange(11, 20, 'b')
 
 		expect(comparisons.after.length).toBe(0)
 		expect(comparisons.before.length).toBe(0)
@@ -197,7 +197,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStyleComparisonsForRange returns styles ranges within the left side of a given range', () => {
-		let comparisons = styleList.getStyleComparisonsForRange(20, 21, 'b')
+		const comparisons = styleList.getStyleComparisonsForRange(20, 21, 'b')
 
 		expect(comparisons.after.length).toBe(0)
 		expect(comparisons.before.length).toBe(0)
@@ -210,7 +210,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStyleComparisonsForRange returns styles ranges within the right side of a given range', () => {
-		let comparisons = styleList.getStyleComparisonsForRange(0, 11, 'b')
+		const comparisons = styleList.getStyleComparisonsForRange(0, 11, 'b')
 
 		expect(comparisons.after.length).toBe(0)
 		expect(comparisons.before.length).toBe(0)
@@ -223,7 +223,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStyleComparisonsForRange returns all styles range comparisons when no type is specified', () => {
-		let comparisons = styleList.getStyleComparisonsForRange(0, 15)
+		const comparisons = styleList.getStyleComparisonsForRange(0, 15)
 
 		expect(comparisons.after.length).toBe(0)
 		expect(comparisons.before.length).toBe(0)
@@ -237,7 +237,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStyleComparisonsForRange returns only styles at from when to is not specified', () => {
-		let comparisons = styleList.getStyleComparisonsForRange(0)
+		const comparisons = styleList.getStyleComparisonsForRange(0)
 
 		expect(comparisons.after.length).toBe(2)
 		expect(comparisons.before.length).toBe(0)
@@ -248,13 +248,13 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('rangeHasStyle returns if range is specified style', () => {
-		let hasStyle = styleList.rangeHasStyle(6, 11, 'a')
+		const hasStyle = styleList.rangeHasStyle(6, 11, 'a')
 
 		expect(hasStyle).toEqual(true)
 	})
 
 	test('normalizes similar ranges', function() {
-		let newStyleRange = new StyleRange(5, 15, 'b')
+		const newStyleRange = new StyleRange(5, 15, 'b')
 		styleList.add(newStyleRange)
 		styleList.normalize()
 
@@ -268,7 +268,7 @@ describe('ChunkStyleList', function() {
 	})
 
 	test("doesn't normalize dis-similar ranges", function() {
-		let newStyleRange = new StyleRange(0, 20, 'a', { href: 'new-website.com' })
+		const newStyleRange = new StyleRange(0, 20, 'a', { href: 'new-website.com' })
 		styleList.add(newStyleRange)
 		styleList.normalize()
 
@@ -301,20 +301,20 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('getStylesInRange returns styles completely within a given range', () => {
-		let styles = styleList.getStylesInRange(5, 15)
+		const styles = styleList.getStylesInRange(5, 15)
 
 		expect(Object.keys(styles).length).toBe(1)
 		expect(styles['a']).toBe('a')
 	})
 
 	test("getStylesInRange doesn't return styles that don't fill a given range", () => {
-		let styles = styleList.getStylesInRange(0, 15)
+		const styles = styleList.getStylesInRange(0, 15)
 
 		expect(styles).toEqual({})
 	})
 
 	test('getStyles returns all styles', () => {
-		let styles = styleList.getStyles()
+		const styles = styleList.getStyles()
 
 		expect(Object.keys(styles).length).toBe(2)
 		expect(styles['a']).toBe('a')
@@ -322,11 +322,11 @@ describe('ChunkStyleList', function() {
 	})
 
 	test('cleanupSuperscripts cleans up superscripts', () => {
-		let styleList2 = new ChunkStyleList()
-		let sub1 = new StyleRange(5, 10, 'sup', 3)
-		let sub2 = new StyleRange(5, 10, 'sup', -3)
-		let sub3 = new StyleRange(15, 20, 'sup', 3)
-		let sub4 = new StyleRange(15, 20, 'sup', -2)
+		const styleList2 = new ChunkStyleList()
+		const sub1 = new StyleRange(5, 10, 'sup', 3)
+		const sub2 = new StyleRange(5, 10, 'sup', -3)
+		const sub3 = new StyleRange(15, 20, 'sup', 3)
+		const sub4 = new StyleRange(15, 20, 'sup', -2)
 
 		styleList2.add(sub1)
 		styleList2.add(sub2)

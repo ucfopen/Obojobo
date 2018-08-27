@@ -17,7 +17,7 @@ import {
 } from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/display-types'
 import getDisplayFriendlyScore from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-friendly-score.js'
 
-let getDisplayType = require('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')
+const getDisplayType = require('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')
 	.default
 
 jest.mock('../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-display-type')

@@ -1,6 +1,6 @@
 import getScoreComparisionData from '../../../../src/scripts/viewer/assessment/assessment-score-reporter/get-score-comparision-data.js'
 
-let AssessmentUtil = require('../../../../src/scripts/viewer/util/assessment-util')
+const AssessmentUtil = require('../../../../src/scripts/viewer/util/assessment-util')
 
 jest.mock('../../../../src/scripts/viewer/util/assessment-util', () => ({
 	findHighestAttempt: jest.fn()

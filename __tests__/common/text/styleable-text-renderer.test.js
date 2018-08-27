@@ -3,14 +3,14 @@ import StyleableText from '../../../src/scripts/common/text/styleable-text'
 import StyleRange from '../../../src/scripts/common/text/style-range'
 
 // convience function to easily compare a MockElement
-let mockElToHTMLString = el => {
+const mockElToHTMLString = el => {
 	if (el.nodeType === 'text') {
 		if (el.html) return el.html
 		return el.text
 	}
 
 	let attrs = []
-	for (let attrName in el.attrs) {
+	for (const attrName in el.attrs) {
 		attrs.push(`${attrName}="${el.attrs[attrName]}"`)
 	}
 	if (attrs.length > 0) {
@@ -26,8 +26,8 @@ let mockElToHTMLString = el => {
 
 describe('styleableTextRenderer', () => {
 	test('Non-styled text', () => {
-		let st = new StyleableText('Test')
-		let mockEl = styleableTextRenderer(st)
+		const st = new StyleableText('Test')
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -37,8 +37,8 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Empty string', () => {
-		let st = new StyleableText()
-		let mockEl = styleableTextRenderer(st)
+		const st = new StyleableText()
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -48,9 +48,9 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Styled text', () => {
-		let st = new StyleableText('dog fox cat')
+		const st = new StyleableText('dog fox cat')
 		st.styleText('b', 4, 7)
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -60,10 +60,10 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Styled text beyond end', () => {
-		let st = new StyleableText('dog fox cat')
-		let style = new StyleRange(4, 23, 'b')
+		const st = new StyleableText('dog fox cat')
+		const style = new StyleRange(4, 23, 'b')
 		st.styleList.styles[0] = style
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -73,9 +73,9 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Styled text with attributes', () => {
-		let st = new StyleableText('dog fox cat')
+		const st = new StyleableText('dog fox cat')
 		st.styleText('a', 4, 7, { href: 'www.site.com' })
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -85,11 +85,11 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Nested styles', () => {
-		let st = new StyleableText('dog fox cat')
+		const st = new StyleableText('dog fox cat')
 		st.styleText('b', 4, 7)
 		st.styleText('i', 0, 9)
 		st.styleText('del', 5, 6)
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		// Style order, as defined by the ORDER constant in styleable-text-renderer
 		// is b, then del, the i.
@@ -113,9 +113,9 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Comment', () => {
-		let st = new StyleableText('dog fox cat')
+		const st = new StyleableText('dog fox cat')
 		st.styleText('_comment', 4, 7, { a: 1 })
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -125,9 +125,9 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Latex', () => {
-		let st = new StyleableText('dog fox cat')
+		const st = new StyleableText('dog fox cat')
 		st.styleText('_latex', 4, 7, { a: 1 })
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -137,9 +137,9 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Monospace', () => {
-		let st = new StyleableText('dog fox cat')
+		const st = new StyleableText('dog fox cat')
 		st.styleText('monospace', 4, 7, { a: 1 })
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -149,10 +149,10 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Super/Subscripts', () => {
-		let st = new StyleableText('dog-fox-cat')
+		const st = new StyleableText('dog-fox-cat')
 		st.styleText('sup', 4, 7, 1)
 		st.styleText('sup', 8, 11, -2)
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
@@ -171,12 +171,12 @@ describe('styleableTextRenderer', () => {
 	})
 
 	test('Nested Super/Subscripts', () => {
-		let st = new StyleableText('dog-fox-cat')
+		const st = new StyleableText('dog-fox-cat')
 		st.styleText('sup', 0, 11, 3)
 		st.styleText('sup', 4, 7, -2)
 		st.styleText('sup', 5, 6, -2)
 
-		let mockEl = styleableTextRenderer(st)
+		const mockEl = styleableTextRenderer(st)
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`

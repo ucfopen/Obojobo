@@ -181,35 +181,35 @@ describe('FullReview', () => {
 	})
 
 	test('FullReview component', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttempt' })
 		// mock attempts taken
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
 
-		let component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FullReview component with attempt', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
@@ -230,14 +230,14 @@ describe('FullReview', () => {
 			}
 		])
 
-		let component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FullReview component with last taken attempt', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'assessmentReview:mockAssessmentState',
 			navState: {
 				context: 'assessmentReview:mockAttemptId'
@@ -245,7 +245,7 @@ describe('FullReview', () => {
 			questionState: { scores: [] },
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
@@ -266,21 +266,21 @@ describe('FullReview', () => {
 			}
 		])
 
-		let component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FullReview component with fully displayed attempt', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
@@ -301,23 +301,23 @@ describe('FullReview', () => {
 			}
 		])
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<FullReview model={model} moduleData={moduleData} showFullReview={true} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FullReview component with non-passing attempt', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
@@ -334,22 +334,22 @@ describe('FullReview', () => {
 			}
 		])
 
-		let component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FullReview component with highest attempt', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
-		let mockAttempt = {
+		const model = OboModel.create(assessmentJSON)
+		const mockAttempt = {
 			attemptId: 'mockAttemptId',
 			assessmentScore: 80.34,
 			attemptScore: 80.34,
@@ -364,14 +364,14 @@ describe('FullReview', () => {
 		// mock attempt taken
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([mockAttempt])
 
-		let component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FullReview component with two attempts', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -379,7 +379,7 @@ describe('FullReview', () => {
 			questionState: { scores: {} },
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
@@ -411,14 +411,14 @@ describe('FullReview', () => {
 			}
 		])
 
-		let component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('FullReview component with two attempts swaps view when clicked', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'assessmentReview:mockAttemptId'
@@ -426,7 +426,7 @@ describe('FullReview', () => {
 			questionState: { scores: {} },
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
@@ -460,12 +460,12 @@ describe('FullReview', () => {
 			}
 		])
 
-		let component = mount(<FullReview model={model} moduleData={moduleData} />)
+		const component = mount(<FullReview model={model} moduleData={moduleData} />)
 		expect(NavUtil.setContext).toHaveBeenCalledTimes(1)
 		expect(NavUtil.setContext).toHaveBeenCalledWith('assessmentReview:mockAttemptId')
 
 		// simulate clicking the button for the second attempt
-		let thing = component
+		const thing = component
 			.find('.attempt-button-container')
 			.childAt(0)
 			.childAt(0)

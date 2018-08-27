@@ -2,21 +2,21 @@ import HtmlAdapter from '../../../../ObojoboDraft/Chunks/HTML/adapter'
 
 describe('HTML adapter', () => {
 	test('can be constructed WITHOUT attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		HtmlAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = { content: { html: 'html', align: 'center' } }
+		const model = { modelState: {} }
+		const attrs = { content: { html: 'html', align: 'center' } }
 		HtmlAdapter.construct(model, attrs)
 		expect(model).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = { modelState: {} }
+		const b = { modelState: {} }
 
 		HtmlAdapter.construct(a)
 		HtmlAdapter.clone(a, b)
@@ -26,20 +26,20 @@ describe('HTML adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = {
+		const model = {
 			modelState: {
 				html: 'html',
 				align: 'center'
 			}
 		}
-		let json = { content: {} }
+		const json = { content: {} }
 
 		HtmlAdapter.toJSON(model, json)
 		expect(json).toMatchSnapshot()
 	})
 
 	test('toText creates a text representation', () => {
-		let model = { modelState: { html: 'expected text to be returned' } }
+		const model = { modelState: { html: 'expected text to be returned' } }
 		expect(HtmlAdapter.toText(model)).toMatch('expected text to be returned')
 	})
 })

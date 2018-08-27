@@ -14,7 +14,7 @@ describe('SimpleDialog', () => {
 				Content
 			</SimpleDialog>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -25,7 +25,7 @@ describe('SimpleDialog', () => {
 				Content
 			</SimpleDialog>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -36,7 +36,7 @@ describe('SimpleDialog', () => {
 				Content
 			</SimpleDialog>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -47,7 +47,7 @@ describe('SimpleDialog', () => {
 				Content
 			</SimpleDialog>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -58,14 +58,14 @@ describe('SimpleDialog', () => {
 				Content
 			</SimpleDialog>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('SimpleDialog ok click', () => {
-		let onCancel = jest.fn()
-		let onConfirm = jest.fn()
+		const onCancel = jest.fn()
+		const onConfirm = jest.fn()
 
 		const component = mount(
 			<SimpleDialog ok onCancel={onCancel} onConfirm={onConfirm}>
@@ -73,8 +73,8 @@ describe('SimpleDialog', () => {
 			</SimpleDialog>
 		)
 
-		let leftButton = component.find('button').at(0)
-		let rightButton = component.find('button').at(1)
+		const leftButton = component.find('button').at(0)
+		const rightButton = component.find('button').at(1)
 
 		leftButton.simulate('click')
 
@@ -83,8 +83,8 @@ describe('SimpleDialog', () => {
 	})
 
 	test('SimpleDialog noOrYes click', () => {
-		let onCancel = jest.fn()
-		let onConfirm = jest.fn()
+		const onCancel = jest.fn()
+		const onConfirm = jest.fn()
 
 		const component = mount(
 			<SimpleDialog noOrYes onCancel={onCancel} onConfirm={onConfirm}>
@@ -92,8 +92,8 @@ describe('SimpleDialog', () => {
 			</SimpleDialog>
 		)
 
-		let leftButton = component.find('button').at(0)
-		let rightButton = component.find('button').at(1)
+		const leftButton = component.find('button').at(0)
+		const rightButton = component.find('button').at(1)
 
 		leftButton.simulate('click')
 
@@ -107,8 +107,8 @@ describe('SimpleDialog', () => {
 	})
 
 	test('SimpleDialog yesOrNo click', () => {
-		let onCancel = jest.fn()
-		let onConfirm = jest.fn()
+		const onCancel = jest.fn()
+		const onConfirm = jest.fn()
 
 		const component = mount(
 			<SimpleDialog yesOrNo onCancel={onCancel} onConfirm={onConfirm}>
@@ -116,8 +116,8 @@ describe('SimpleDialog', () => {
 			</SimpleDialog>
 		)
 
-		let leftButton = component.find('button').at(0)
-		let rightButton = component.find('button').at(1)
+		const leftButton = component.find('button').at(0)
+		const rightButton = component.find('button').at(1)
 
 		leftButton.simulate('click')
 
@@ -131,8 +131,8 @@ describe('SimpleDialog', () => {
 	})
 
 	test('SimpleDialog cancelOk click', () => {
-		let onCancel = jest.fn()
-		let onConfirm = jest.fn()
+		const onCancel = jest.fn()
+		const onConfirm = jest.fn()
 
 		const component = mount(
 			<SimpleDialog cancelOk onCancel={onCancel} onConfirm={onConfirm}>
@@ -140,8 +140,8 @@ describe('SimpleDialog', () => {
 			</SimpleDialog>
 		)
 
-		let leftButton = component.find('button').at(0)
-		let rightButton = component.find('button').at(1)
+		const leftButton = component.find('button').at(0)
+		const rightButton = component.find('button').at(1)
 
 		leftButton.simulate('click')
 
@@ -155,13 +155,13 @@ describe('SimpleDialog', () => {
 	})
 
 	test('SimpleDialog cancelOk click defults', () => {
-		let onCancel = jest.fn()
-		let onConfirm = jest.fn()
+		const onCancel = jest.fn()
+		const onConfirm = jest.fn()
 
 		const component = mount(<SimpleDialog cancelOk>Content</SimpleDialog>)
 
-		let leftButton = component.find('button').at(0)
-		let rightButton = component.find('button').at(1)
+		const leftButton = component.find('button').at(0)
+		const rightButton = component.find('button').at(1)
 
 		leftButton.simulate('click')
 

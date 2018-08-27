@@ -20,7 +20,7 @@ import ViewerComponent from '../../../../ObojoboDraft/Chunks/Heading/viewer-comp
 
 describe('ObojoboDraft.Chunks.Heading registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.Heading')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})
@@ -30,8 +30,8 @@ describe('ObojoboDraft.Chunks.Heading registration', () => {
 	})
 
 	test('getNavItem returns link for level 1 headings', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			modelState: {
 				headingLevel: 1,
 				textGroup: {
@@ -44,26 +44,26 @@ describe('ObojoboDraft.Chunks.Heading registration', () => {
 			toText: jest.fn().mockReturnValueOnce('mockText')
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toMatchSnapshot()
 	})
 
 	test('getNavItem returns nothing for level 1 headings with a zero index', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			modelState: {
 				headingLevel: 1
 			},
 			getIndex: jest.fn().mockReturnValueOnce(0)
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toMatchSnapshot()
 	})
 
 	test('getNavItem returns link for level 2 headings', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			modelState: {
 				headingLevel: 2,
 				textGroup: {
@@ -75,19 +75,19 @@ describe('ObojoboDraft.Chunks.Heading registration', () => {
 			toText: jest.fn().mockReturnValueOnce('mockText')
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toMatchSnapshot()
 	})
 
 	test('getNavItem returns nothing for level 3 headings', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			modelState: {
 				headingLevel: 3
 			}
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toMatchSnapshot()
 	})
 })

@@ -2,14 +2,14 @@ import ListStyles from '../../../../ObojoboDraft/Chunks/List/list-styles'
 
 describe('List Styles', () => {
 	test('List Styles creates an instance with expected values', () => {
-		let ls = new ListStyles('type')
+		const ls = new ListStyles('type')
 
 		expect(ls.type).toBe('type')
 		expect(ls.styles).toEqual({})
 	})
 
 	test('init builds expected style', () => {
-		let ls = new ListStyles('type')
+		const ls = new ListStyles('type')
 		ls.init()
 
 		expect(ls.type).toBe('unordered')
@@ -17,7 +17,7 @@ describe('List Styles', () => {
 	})
 
 	test('set places a style into the order', () => {
-		let ls = new ListStyles()
+		const ls = new ListStyles()
 		ls.init()
 
 		ls.set(5, {
@@ -39,7 +39,7 @@ describe('List Styles', () => {
 	})
 
 	test('get retrives default values', () => {
-		let ls = new ListStyles()
+		const ls = new ListStyles()
 		ls.init()
 
 		expect(ls.get(0).toDescriptor()).toEqual({
@@ -50,7 +50,7 @@ describe('List Styles', () => {
 	})
 
 	test('get retrieves set values', () => {
-		let ls = new ListStyles()
+		const ls = new ListStyles()
 		ls.init()
 
 		ls.set(5, {
@@ -77,7 +77,7 @@ describe('List Styles', () => {
 	})
 
 	test('getSetStyles retrives no defaults', () => {
-		let ls = new ListStyles()
+		const ls = new ListStyles()
 		ls.init()
 
 		expect(ls.getSetStyles(0).toDescriptor()).toEqual({
@@ -88,7 +88,7 @@ describe('List Styles', () => {
 	})
 
 	test('getSetStyles retrives set values', () => {
-		let ls = new ListStyles()
+		const ls = new ListStyles()
 		ls.init()
 
 		ls.set(5, {
@@ -115,7 +115,7 @@ describe('List Styles', () => {
 	})
 
 	test('toDescriptor returns unordered styles', () => {
-		let ls = new ListStyles('unordered')
+		const ls = new ListStyles('unordered')
 
 		expect(ls.get(0).toDescriptor()).toEqual({
 			type: 'unordered',
@@ -161,7 +161,7 @@ describe('List Styles', () => {
 	})
 
 	test('toDescriptor returns ordered styles', () => {
-		let ls = new ListStyles('ordered')
+		const ls = new ListStyles('ordered')
 
 		expect(ls.get(0).toDescriptor()).toEqual({
 			type: 'ordered',
@@ -225,7 +225,7 @@ describe('List Styles', () => {
 	})
 
 	test('clone creates a shallow copy', () => {
-		let orig = new ListStyles()
+		const orig = new ListStyles()
 		orig.init()
 
 		orig.set(5, {
@@ -234,14 +234,14 @@ describe('List Styles', () => {
 			bulletStyle: 'style'
 		})
 
-		let clone = orig.clone()
+		const clone = orig.clone()
 
 		expect(orig).not.toBe(clone)
 		expect(orig.toDescriptor()).toEqual(clone.toDescriptor())
 	})
 
 	test('clone creates a deep copy', () => {
-		let ls = new ListStyles()
+		const ls = new ListStyles()
 		ls.init()
 
 		ls.set(5, {
@@ -250,15 +250,15 @@ describe('List Styles', () => {
 			bulletStyle: 'style'
 		})
 
-		let orig = ls.get(5)
-		let clone = orig.clone()
+		const orig = ls.get(5)
+		const clone = orig.clone()
 
 		expect(orig).not.toBe(clone)
 		expect(orig.toDescriptor()).toEqual(clone.toDescriptor())
 	})
 
 	test('map will map over all set indent styles', () => {
-		let ls = new ListStyles()
+		const ls = new ListStyles()
 		ls.init()
 
 		ls.set(5, {
@@ -267,7 +267,7 @@ describe('List Styles', () => {
 			bulletStyle: 'style'
 		})
 
-		let result = ls.map((style, indent) => {
+		const result = ls.map((style, indent) => {
 			style.start *= 2
 			return style.toDescriptor()
 		})
@@ -282,7 +282,7 @@ describe('List Styles', () => {
 	})
 
 	test('fromDescriptor will create an object from a descriptor', () => {
-		let ls = new ListStyles()
+		const ls = new ListStyles()
 		ls.init()
 
 		ls.set(5, {
@@ -291,8 +291,8 @@ describe('List Styles', () => {
 			bulletStyle: 'style'
 		})
 
-		let descr = ls.toDescriptor()
-		let other = ListStyles.fromDescriptor(descr)
+		const descr = ls.toDescriptor()
+		const other = ListStyles.fromDescriptor(descr)
 
 		expect(other).toBeInstanceOf(ListStyles)
 		expect(ls).not.toBe(other)

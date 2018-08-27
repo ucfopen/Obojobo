@@ -15,13 +15,13 @@ describe('SimpleMessage', () => {
 				Content
 			</SimpleMessage>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question confirm click', () => {
-		let onClick = jest.fn()
+		const onClick = jest.fn()
 
 		const component = shallow(
 			<SimpleMessage
@@ -35,7 +35,7 @@ describe('SimpleMessage', () => {
 			</SimpleMessage>
 		)
 
-		let button = component.find('button')
+		const button = component.find('button')
 
 		button.simulate('click')
 

@@ -23,7 +23,7 @@ import Viewer from '../../../../src/scripts/viewer'
 
 describe('ObojoboDraft.Sections.Assessment registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Sections.Assessment')
 		expect(register[1]).toHaveProperty('type', 'section')
 		expect(register[1]).toHaveProperty('adapter', {})
@@ -37,12 +37,12 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('getNavItem returns link without title', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			title: null
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'Assessment',
@@ -53,12 +53,12 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('getNavItem returns link with title', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			title: 'mock Title'
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'mock Title',
@@ -69,8 +69,8 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('assessment:attemptsRemaining returns unlimited with Infinity attempts', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce({
 				modelState: {
 					attempts: Infinity
@@ -79,34 +79,34 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		}
 
 		// retrieve the method from variables
-		let funct = register[1].variables['assessment:attemptsRemaining']
+		const funct = register[1].variables['assessment:attemptsRemaining']
 		expect(funct).toEqual(expect.any(Function))
 
-		let vari = funct(model)
+		const vari = funct(model)
 		expect(vari).toEqual('unlimited')
 	})
 
 	test('assessment:attemptsRemaining calls AssessmentUtil', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce({
 				modelState: {
 					attempts: 17
 				}
 			})
 		}
-		let viewerProps = {
+		const viewerProps = {
 			assessmentState: 'mockAssessmentState'
 		}
-		let AssessmentUtil = Viewer.util.AssessmentUtil
+		const AssessmentUtil = Viewer.util.AssessmentUtil
 
 		AssessmentUtil.getAttemptsRemaining.mockReturnValueOnce('mockRemaining')
 
 		// retrieve the method from variables
-		let funct = register[1].variables['assessment:attemptsRemaining']
+		const funct = register[1].variables['assessment:attemptsRemaining']
 		expect(funct).toEqual(expect.any(Function))
 
-		let vari = funct(model, viewerProps)
+		const vari = funct(model, viewerProps)
 		expect(AssessmentUtil.getAttemptsRemaining).toHaveBeenCalledWith('mockAssessmentState', {
 			modelState: { attempts: 17 }
 		})
@@ -114,8 +114,8 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('assessment:attemptsAmount returns unlimited with Infinity attempts', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce({
 				modelState: {
 					attempts: Infinity
@@ -124,16 +124,16 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		}
 
 		// retrieve the method from variables
-		let funct = register[1].variables['assessment:attemptsAmount']
+		const funct = register[1].variables['assessment:attemptsAmount']
 		expect(funct).toEqual(expect.any(Function))
 
-		let vari = funct(model)
+		const vari = funct(model)
 		expect(vari).toEqual('unlimited')
 	})
 
 	test('assessment:attemptsAmount returns number of attempts', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce({
 				modelState: {
 					attempts: 17
@@ -142,10 +142,10 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		}
 
 		// retrieve the method from variables
-		let funct = register[1].variables['assessment:attemptsAmount']
+		const funct = register[1].variables['assessment:attemptsAmount']
 		expect(funct).toEqual(expect.any(Function))
 
-		let vari = funct(model)
+		const vari = funct(model)
 		expect(vari).toEqual(17)
 	})
 })

@@ -42,29 +42,39 @@ describe('Heading editor', () => {
 			data: {
 				get: type => { return {} }
 			},
-			text: 'mockText'
+			text: 'mockText',
+			nodes: [
+				{
+					leaves: [
+						{
+							text: 'mockText',
+							marks: [
+								{
+									type: 'b',
+									data: {}
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 		const oboNode = Heading.helpers.slateToObo(slateNode)
 
 		expect(oboNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const oboNode = {
-			id: 'mockKey',
-			type: 'mockType',
-			content: { width: 'large' }
-		}
-		const slateNode = Heading.helpers.oboToSlate(oboNode)
-
-		expect(slateNode).toMatchSnapshot()
-	})
-
 	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: {}
+			content: {
+				textGroup: [
+					{
+						text: { value: 'mockText'}
+					}
+				]
+			}
 		}
 		const slateNode = Heading.helpers.oboToSlate(oboNode)
 

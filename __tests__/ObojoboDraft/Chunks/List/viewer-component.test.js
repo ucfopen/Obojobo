@@ -6,10 +6,10 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('List', () => {
 	test('List component', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
 			content: {
@@ -32,16 +32,16 @@ describe('List', () => {
 		})
 
 		const component = renderer.create(<List model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('List component with ascending indents', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
 			content: {
@@ -119,16 +119,16 @@ describe('List', () => {
 		})
 
 		const component = renderer.create(<List model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('List component with inverse indentation', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
 			content: {
@@ -177,16 +177,16 @@ describe('List', () => {
 		})
 
 		const component = renderer.create(<List model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('List component with irregular indentation', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.List',
 			content: {
@@ -262,7 +262,7 @@ describe('List', () => {
 		})
 
 		const component = renderer.create(<List model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

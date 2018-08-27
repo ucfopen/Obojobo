@@ -5,7 +5,7 @@ import renderer from 'react-test-renderer'
 describe('FocusableChunk', () => {
 	test('Renders as expected', () => {
 		const component = renderer.create(<FocusableChunk />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -14,7 +14,7 @@ describe('FocusableChunk', () => {
 		const component = renderer.create(
 			<FocusableChunk indent={2} spellcheck={false} className="test-123" />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

@@ -53,40 +53,40 @@ describe('Nav', () => {
 
 	test('renders opened', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: true
 			}
 		}
 		const component = renderer.create(<Nav {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('renders closed', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		let props = {
+		const props = {
 			navState: {
 				open: true,
 				locked: true
 			}
 		}
 		const component = renderer.create(<Nav {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('renders unlocked', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: false
 			}
 		}
 		const component = renderer.create(<Nav {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -138,7 +138,7 @@ describe('Nav', () => {
 				}
 			}
 		])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: true,
@@ -146,7 +146,7 @@ describe('Nav', () => {
 			}
 		}
 		const component = renderer.create(<Nav {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -164,7 +164,7 @@ describe('Nav', () => {
 				}
 			}
 		])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: true,
@@ -198,7 +198,7 @@ describe('Nav', () => {
 				}
 			}
 		])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: true,

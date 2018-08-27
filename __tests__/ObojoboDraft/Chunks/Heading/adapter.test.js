@@ -5,14 +5,14 @@ const { TextGroupAdapter } = Common.chunk.textChunk
 
 describe('Heading adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = { modelState: {} }
 		HeadingAdapter.construct(model)
 		expect(model).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
 				headingLevel: '2',
@@ -25,8 +25,8 @@ describe('Heading adapter', () => {
 	})
 
 	test('clone produces a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = { modelState: {} }
+		const b = { modelState: {} }
 
 		HeadingAdapter.construct(a)
 		HeadingAdapter.clone(a, b)
@@ -36,9 +36,9 @@ describe('Heading adapter', () => {
 	})
 
 	test('toJSON creates a JSON representation', () => {
-		let model = { modelState: {} }
-		let json = { content: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const json = { content: {} }
+		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
 				headingLevel: '2'
@@ -51,8 +51,8 @@ describe('Heading adapter', () => {
 	})
 
 	test('toText ', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const model = { modelState: {} }
+		const attrs = {
 			content: {
 				textGroup: [{ text: { value: 'example text' } }],
 				headingLevel: '2'
