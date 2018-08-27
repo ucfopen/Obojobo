@@ -49,7 +49,7 @@ class Node extends React.Component {
 	}
 	render(){
 		const hasFeedback = this.props.node.nodes.size === 2
-		let className =
+		const className =
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
 			isOrNot(this.state.score === 100, 'correct')
 		return (

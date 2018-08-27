@@ -118,20 +118,6 @@ const isType = change => {
 	})
 }
 
-const toggleNode = change => {
-	// See if any of the selected nodes have a LIST_NODE parent
-	const isList = isType(change)
-
-	if (isList){
-		return change.unwrapBlock(LIST_NODE)
-	} else {
-		return change
-			.wrapBlock({
-				type: LIST_NODE,
-				data: { content: { listStyles: { type: 'unordered' }}}
-			})
-	}
-}
 const insertNode = change => {
 	change
 		.insertBlock({
@@ -140,8 +126,6 @@ const insertNode = change => {
 		})
 		.collapseToStartOfNextText()
 		.focus()
-
-	console.log('here')
 }
 
 const flattenLevels = (node, currLevel, textGroup, indents) => {
@@ -321,10 +305,13 @@ const plugins = {
 			.map((child, i) => {
 				const next = node.nodes.get(i + 1)
 				if (child.type !== LIST_LEVEL_NODE) return false
+				console.log(next)
 				if (!next || next.type !== LIST_LEVEL_NODE) return false
 				return next
 			})
 			.filter(Boolean)
+
+		console.log(invalids)
 
 		if (!invalids.size) return
 
@@ -425,7 +412,6 @@ const List = {
 	},
 	helpers: {
 		isType,
-		toggleNode,
 		insertNode,
 		slateToObo,
 		oboToSlate,

@@ -8,7 +8,7 @@ class Node extends React.Component {
 		this.state = this.props.node.data.get('content')
 	}
 
-	handleTypeChange(event){
+	handleSourceChange(event){
 		const editor = this.props.editor
 		const change = editor.value.change()
 
