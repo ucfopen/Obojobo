@@ -24,10 +24,12 @@
 		background: $color-bg2;
 		box-sizing: border-box;
 		color: $color-text-minor;
+		// stylelint-disable-next-line sh-waqar/declaration-use-variable, font-family-no-missing-generic-family-keyword
 		font-family: 'Source Sans Pro';
 		font-size: 0.9em;
 		font-weight: bold;
 		line-height: 0;
+		// stylelint-disable-next-line unit-blacklist
 		padding-top: 200px;
 		text-align: center;
 	}
@@ -35,6 +37,7 @@
 	textarea {
 		box-sizing: border-box;
 		font-size: 0.9em;
+		// stylelint-disable-next-line unit-blacklist
 		height: 400px;
 		padding: 1em;
 		width: 100%;

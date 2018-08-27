@@ -1,4 +1,8 @@
+/* eslint-disable no-undefined */
+/* eslint-disable no-console */
+
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { mount } from 'enzyme'
 
 jest.mock('../../../src/scripts/viewer/util/api-util')
@@ -15,7 +19,7 @@ jest.mock('../../../src/scripts/viewer/components/nav')
 jest.mock('../../../src/scripts/common/page/dom-util')
 jest.mock('../../../src/scripts/common/page/screen')
 
-import OboModel from '../../../__mocks__/_obo-model-with-chunks'
+import '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
 
@@ -749,7 +753,7 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			const close = component.instance().onWindowClose()
+			component.instance().onWindowClose()
 
 			expect(APIUtil.postEvent).toHaveBeenCalled()
 
@@ -831,7 +835,7 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			const close = component.instance().unlockNavigation()
+			component.instance().unlockNavigation()
 
 			expect(NavUtil.unlock).toHaveBeenCalled()
 

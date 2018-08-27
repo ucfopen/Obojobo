@@ -1,3 +1,8 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import ModuleAdapter from '../../../../ObojoboDraft/Modules/Module/adapter'
 
 describe('Module adapter', () => {
@@ -6,43 +11,31 @@ describe('Module adapter', () => {
 	})
 
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = new OboModel({})
 
 		ModuleAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				start: 'mockStart'
 			}
 		}
+		const model = new OboModel(attrs)
 
 		ModuleAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
-	})
-
-	test('construct builds with attributes and unlimited ', () => {
-		let model = { modelState: {} }
-		let attrs = {
-			content: {
-				start: 'unlimited'
-			}
-		}
-
-		ModuleAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		let a = {
+		const a = {
 			modelState: {
 				start: 'mockStart'
 			}
 		}
-		let b = { modelState: {} }
+		const b = { modelState: {} }
 
 		ModuleAdapter.clone(a, b)
 
@@ -51,12 +44,12 @@ describe('Module adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let a = {
+		const a = {
 			modelState: {
 				start: 'mockStart'
 			}
 		}
-		let b = { content: {} }
+		const b = { content: {} }
 
 		ModuleAdapter.toJSON(a, b)
 

@@ -2,7 +2,7 @@ import TextGroupItem from '../../../src/scripts/common/text-group/text-group-ite
 
 describe('TextGroupItem', () => {
 	test('constructor builds with default values', () => {
-		let item = new TextGroupItem()
+		const item = new TextGroupItem()
 
 		expect(item).toEqual({
 			data: {},
@@ -12,7 +12,7 @@ describe('TextGroupItem', () => {
 	})
 
 	test('constructor builds with given values', () => {
-		let item = new TextGroupItem('mockText', 'mockData', 'mockParent')
+		const item = new TextGroupItem('mockText', 'mockData', 'mockParent')
 
 		expect(item).toEqual({
 			data: 'mockData',
@@ -22,19 +22,19 @@ describe('TextGroupItem', () => {
 	})
 
 	test('clone creates a copy', () => {
-		let item = new TextGroupItem()
+		const item = new TextGroupItem()
 
-		let clone = item.clone()
+		const clone = item.clone()
 
 		expect(clone).not.toBe(item)
 		expect(clone).toEqual(item)
 	})
 
 	test('clone creates a copy with a custom function', () => {
-		let item = new TextGroupItem()
-		let mockFunction = jest.fn()
+		const item = new TextGroupItem()
+		const mockFunction = jest.fn()
 
-		let clone = item.clone(mockFunction)
+		const clone = item.clone(mockFunction)
 
 		expect(mockFunction).toHaveBeenCalled()
 		expect(clone).not.toBe(item)
@@ -42,16 +42,16 @@ describe('TextGroupItem', () => {
 	})
 
 	test('index returns -1 with no parent', () => {
-		let item = new TextGroupItem()
+		const item = new TextGroupItem()
 
 		expect(item.index).toEqual(-1)
 	})
 
 	test('index returns parent.indexOf(item)', () => {
-		let parent = {
+		const parent = {
 			indexOf: jest.fn().mockReturnValueOnce('mockIndex')
 		}
-		let item = new TextGroupItem('mockText', 'mockData', parent)
+		const item = new TextGroupItem('mockText', 'mockData', parent)
 
 		expect(item.index).toEqual('mockIndex')
 	})

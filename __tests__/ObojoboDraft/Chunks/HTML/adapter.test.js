@@ -1,24 +1,29 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import HtmlAdapter from '../../../../ObojoboDraft/Chunks/HTML/adapter'
 
 describe('HTML adapter', () => {
 	test('can be constructed WITHOUT attributes', () => {
-		let model = { modelState: {} }
+		const model = new OboModel({})
 		HtmlAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = { content: { html: 'html', align: 'center' } }
+		const attrs = { content: { html: 'html', align: 'center' } }
+		const model = new OboModel(attrs)
 		HtmlAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
+		const a = new OboModel({})
+		const b = new OboModel({})
 
-		HtmlAdapter.construct(a)
+		HtmlAdapter.construct(a, {})
 		HtmlAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)
@@ -26,20 +31,20 @@ describe('HTML adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = {
+		const model = {
 			modelState: {
 				html: 'html',
 				align: 'center'
 			}
 		}
-		let json = { content: {} }
+		const json = { content: {} }
 
 		HtmlAdapter.toJSON(model, json)
 		expect(json).toMatchSnapshot()
 	})
 
 	test('toText creates a text representation', () => {
-		let model = { modelState: { html: 'expected text to be returned' } }
+		const model = { modelState: { html: 'expected text to be returned' } }
 		expect(HtmlAdapter.toText(model)).toMatch('expected text to be returned')
 	})
 })

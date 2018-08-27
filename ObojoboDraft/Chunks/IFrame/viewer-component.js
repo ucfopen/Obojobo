@@ -1,7 +1,5 @@
 import './viewer-component.scss'
 
-// import parseURL from 'url-parse'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -36,10 +34,10 @@ export default class IFrame extends React.Component {
 	}
 
 	getMeasuredDimensions() {
-		const cs = window.getComputedStyle(ReactDOM.findDOMNode(this.refs.main), null)
+		const cs = window.getComputedStyle(this.refs.main, null)
 
 		return {
-			width: ReactDOM.findDOMNode(this).getBoundingClientRect().width,
+			width: ReactDOM.findDOMNode(this.refs.self).getBoundingClientRect().width,
 			padding:
 				parseFloat(cs.getPropertyValue('padding-left')) +
 				parseFloat(cs.getPropertyValue('padding-right'))
@@ -86,7 +84,7 @@ export default class IFrame extends React.Component {
 			window.ResizeObserver.prototype.disconnect
 		) {
 			this.resizeObserver = new ResizeObserver(this.boundOnViewerContentAreaResized)
-			this.resizeObserver.observe(ReactDOM.findDOMNode(this))
+			this.resizeObserver.observe(ReactDOM.findDOMNode(this.refs.self))
 		} else {
 			Dispatcher.on('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
 		}
@@ -152,7 +150,7 @@ export default class IFrame extends React.Component {
 		const src = this.createSrc(ms.src)
 
 		return (
-			<OboComponent model={this.props.model} moduleData={this.props.moduleData}>
+			<OboComponent model={this.props.model} moduleData={this.props.moduleData} ref="self">
 				<div
 					className={
 						'obojobo-draft--chunks--iframe viewer pad' +
@@ -167,11 +165,10 @@ export default class IFrame extends React.Component {
 				>
 					<div
 						className="container"
-						ref="container"
 						onClick={!isShowing && ms.src !== null ? this.boundOnClickContainer : null}
 						style={scaleDimensions.containerStyle}
 					>
-						<div className="iframe-container" ref="iframeContainer">
+						<div className="iframe-container">
 							{!isShowing ? (
 								<div className="blocker" style={iframeStyle} />
 							) : (

@@ -4,7 +4,7 @@ exports[`Image Image component with a custom url of a custom size 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Unknown
+  Symbol(enzyme.__unrendered__): <Image
     chunk={
       Object {
         "modelState": Object {
@@ -73,7 +73,7 @@ exports[`Image Image component with a custom url of a preset size 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Unknown
+  Symbol(enzyme.__unrendered__): <Image
     chunk={
       Object {
         "modelState": Object {
@@ -133,7 +133,7 @@ exports[`Image Image component with height only 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Unknown
+  Symbol(enzyme.__unrendered__): <Image
     chunk={
       Object {
         "modelState": Object {
@@ -199,7 +199,7 @@ exports[`Image Image component with width only 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Unknown
+  Symbol(enzyme.__unrendered__): <Image
     chunk={
       Object {
         "modelState": Object {
@@ -265,7 +265,7 @@ exports[`Image Image component without error 1`] = `
 ShallowWrapper {
   "length": 1,
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Unknown
+  Symbol(enzyme.__unrendered__): <Image
     chunk={
       Object {
         "modelState": Object {

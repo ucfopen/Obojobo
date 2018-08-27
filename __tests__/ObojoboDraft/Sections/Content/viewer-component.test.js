@@ -9,7 +9,7 @@ import NavUtil from '../../../../src/scripts/viewer/util/nav-util'
 
 describe('Content', () => {
 	test('Content component', () => {
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Sections.Content',
 			children: [
@@ -26,7 +26,7 @@ describe('Content', () => {
 			]
 		})
 
-		let moduleData = {
+		const moduleData = {
 			focusState: {},
 			navState: {
 				itemsById: {}
@@ -34,13 +34,13 @@ describe('Content', () => {
 		}
 
 		const component = renderer.create(<Content model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Content component with nav model', () => {
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Sections.Content',
 			children: [
@@ -57,7 +57,7 @@ describe('Content', () => {
 			]
 		})
 
-		let moduleData = {
+		const moduleData = {
 			focusState: {},
 			navState: {
 				itemsById: {}
@@ -69,7 +69,7 @@ describe('Content', () => {
 		})
 
 		const component = renderer.create(<Content model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

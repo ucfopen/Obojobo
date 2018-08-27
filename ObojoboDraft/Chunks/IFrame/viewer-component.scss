@@ -1,95 +1,16 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--iframe {
+	$color-container: #fdfdfd;
+	$color-container-hover: #f9f4ff;
+
 	display: block;
 	font-size: 1em;
 	margin: 0 auto;
 	text-align: center;
 
-	&.is-not-showing {
-		> .container {
-			border: 1px solid transparentize($color-action, 0.8);
-			max-height: 15em;
-		}
-	}
-
-	&.is-not-showing {
-		> .new-window-link {
-			visibility: hidden;
-		}
-	}
-
 	&.is-controls-enabled {
 		margin-bottom: 1.5em;
-	}
-
-	&.is-showing {
-		> .container {
-			border: 1px solid $color-transparent;
-		}
-	}
-
-	&.is-bordered.is-showing {
-		> .container > .iframe-container {
-			// This gets an outline with rounded corners (border messes up our calculations)
-			$b: darken($color-bg2, 20%);
-			box-shadow: 0 1px 0 $b, 0 -1px 0 $b, 1px 0 0 $b, -1px 0 0 $b, 1px 1px 0 $b, -1px -1px 0 $b,
-				-1px 1px $b, 1px -1px $b;
-		}
-	}
-
-	&.is-scaled-up {
-		> .container > .iframe-container > iframe {
-			transform-origin: top center;
-		}
-	}
-
-	&.is-not-showing {
-		> .container {
-			border-radius: $dimension-rounded-radius;
-			background-color: #fdfdfd;
-			overflow: hidden;
-			cursor: pointer;
-
-			&::before {
-				content: ' ';
-				display: block;
-				background-image: url('./bg.svg');
-				background-size: 38.16px 38.16px;
-				position: absolute;
-				left: 0;
-				top: 0;
-				right: 0;
-				bottom: 0;
-				transition: transform $duration-animation-default, opacity $duration-animation-default;
-			}
-
-			&:hover {
-				background-color: #f9f4ff;
-
-				> .click-to-load {
-					transform: translate(-50%, -50%) scale(1.05);
-					transform-origin: center center;
-				}
-
-				&::before {
-					transform: scale(1.2);
-					opacity: 0.4;
-				}
-			}
-		}
-	}
-
-	&.is-missing-src {
-		> .container {
-			border: 1px solid $color-error;
-			background-color: lighten($color-error, 65%);
-			pointer-events: none;
-
-			> .click-to-load > span {
-				color: $color-error;
-			}
-		}
 	}
 
 	> .container {
@@ -115,7 +36,6 @@
 			top: 0;
 			bottom: 0;
 			right: 0;
-
 			overflow: hidden;
 			border-radius: $dimension-rounded-radius;
 
@@ -137,7 +57,6 @@
 			top: 50%;
 			transform: translate(-50%, -50%);
 			font-family: $font-default;
-			font-size: 0.8em;
 			line-height: 1.3em;
 			box-sizing: border-box;
 			font-size: 1em;
@@ -168,6 +87,92 @@
 			left: 0;
 			right: 0;
 			transform: translate(0, 0.3em);
+		}
+	}
+
+	&.is-showing {
+		> .container {
+			border: 1px solid $color-transparent;
+		}
+	}
+
+	&.is-bordered.is-showing {
+		> .container > .iframe-container {
+			// This gets an outline with rounded corners (border messes up our calculations)
+			$b: darken($color-bg2, 20%);
+
+			/* prettier-ignore */
+			box-shadow:
+				0 1px 0 $b,
+				0 -1px 0 $b,
+				1px 0 0 $b,
+				-1px 0 0 $b,
+				1px 1px 0 $b,
+				-1px -1px 0 $b,
+				-1px 1px $b,
+				1px -1px $b;
+		}
+	}
+
+	&.is-scaled-up {
+		> .container > .iframe-container > iframe {
+			transform-origin: top center;
+		}
+	}
+
+	&.is-not-showing {
+		> .new-window-link {
+			visibility: hidden;
+		}
+
+		> .container {
+			border: 1px solid transparentize($color-action, 0.8);
+			max-height: 15em;
+			border-radius: $dimension-rounded-radius;
+			background-color: $color-container;
+			overflow: hidden;
+			cursor: pointer;
+
+			&::before {
+				content: ' ';
+				display: block;
+				background-image: url('./bg.svg');
+				background-size: 38.16px 38.16px; /* stylelint-disable-line unit-blacklist */
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				transition: transform $duration-animation-default, opacity $duration-animation-default;
+			}
+		}
+	}
+
+	&.is-missing-src {
+		> .container {
+			$color-missing-src-error: lighten($color-error, 65%);
+
+			border: 1px solid $color-error;
+			background-color: $color-missing-src-error;
+			pointer-events: none;
+
+			> .click-to-load > span {
+				color: $color-error;
+			}
+		}
+	}
+
+	&.is-not-showing > .container:hover {
+		background-color: $color-container-hover;
+
+		> .click-to-load {
+			transform: translate(-50%, -50%) scale(1.05);
+			transform-origin: center center;
+		}
+
+		&::before {
+			transform: scale(1.2);
+			opacity: 0.4;
 		}
 	}
 }

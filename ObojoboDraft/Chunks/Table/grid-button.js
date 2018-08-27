@@ -1,14 +1,16 @@
-import './gridbutton.scss'
+import './grid-button.scss'
 
-let MOUSE_OUT_DELAY_MS = 500
-let NUM_ROWS = 6
-let NUM_COLS = 6
-let DEFAULT_NUM_ROWS = 3
-let DEFAULT_NUM_COLS = 2
+import React from 'react'
+
+const MOUSE_OUT_DELAY_MS = 500
+const NUM_ROWS = 6
+const NUM_COLS = 6
+const DEFAULT_NUM_ROWS = 3
+const DEFAULT_NUM_COLS = 2
 
 export default class GridButton extends React.Component {
 	constructor(props) {
-		super()
+		super(props)
 
 		this.state = {
 			open: false,
@@ -52,17 +54,16 @@ export default class GridButton extends React.Component {
 	}
 
 	createRow(rowIndex) {
-		let { state } = this
-		let { setDimensions } = this
-		let { onMouseDown } = this
+		const { state } = this
+		const { setDimensions } = this
+		const { onMouseDown } = this
 
-		let self = this
+		const self = this
 
 		return React.createElement(
 			'tr',
 			{ key: rowIndex },
 			__range__(0, NUM_COLS, false).map(colIndex =>
-				// console.log 'gridkey', rowIndex + '-' + colIndex
 				React.createElement('td', {
 					className:
 						(rowIndex <= state.desiredRows - 1 && colIndex <= state.desiredCols - 1
@@ -79,10 +80,10 @@ export default class GridButton extends React.Component {
 
 	render() {
 		let grid, tooltip
-		let { createRow } = this
+		const { createRow } = this
 
 		if (this.state.open) {
-			let rows = __range__(0, NUM_ROWS, false).map(index => createRow(index))
+			const rows = __range__(0, NUM_ROWS, false).map(index => createRow(index))
 
 			grid = (
 				<table
@@ -128,9 +129,10 @@ export default class GridButton extends React.Component {
 }
 
 function __range__(left, right, inclusive) {
-	let range = []
-	let ascending = left < right
-	let end = !inclusive ? right : ascending ? right + 1 : right - 1
+	const range = []
+	const ascending = left < right
+	/* eslint-disable-next-line */
+	const end = !inclusive ? right : ascending ? right + 1 : right - 1
 	for (let i = left; ascending ? i < end : i > end; ascending ? i++ : i--) {
 		range.push(i)
 	}

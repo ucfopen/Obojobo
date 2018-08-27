@@ -15,7 +15,7 @@ describe('Page', () => {
 	})
 
 	test('Page component', () => {
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Pages.Page',
 			children: [
@@ -26,28 +26,28 @@ describe('Page', () => {
 			]
 		})
 
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
 		const component = renderer.create(<Page model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('componentWillRecieveProps does nothing when target ids are the same', () => {
-		let moduleData = {
+		const moduleData = {
 			navState: {
 				navTargetId: 'mockId'
 			}
 		}
-		let newModuleData = {
+		const newModuleData = {
 			navState: {
 				navTargetId: 'mockId'
 			}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Pages.Page',
 			children: [
@@ -67,17 +67,17 @@ describe('Page', () => {
 	})
 
 	test('componentWillRecieveProps calls NavUtil when ids are different', () => {
-		let moduleData = {
+		const moduleData = {
 			navState: {
 				navTargetId: 'mockId'
 			}
 		}
-		let newModuleData = {
+		const newModuleData = {
 			navState: {
 				navTargetId: 'mockDifferentId'
 			}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Pages.Page',
 			children: [

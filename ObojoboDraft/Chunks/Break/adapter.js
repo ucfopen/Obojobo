@@ -1,22 +1,11 @@
-import Common from 'Common'
-
-let { OboModel } = Common.models
-
-let Adapter = {
-	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.width) == 'large') {
-			model.modelState.width = attrs.content.width
-		} else {
-			model.modelState.width = 'normal'
-		}
+const Adapter = {
+	construct(model) {
+		model.setStateProp('width', 'normal', p => p.toLowerCase(), ['normal', 'large'])
 	},
 
-	toText(model) {
+	toText() {
 		return '---'
 	}
 }
 
 export default Adapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

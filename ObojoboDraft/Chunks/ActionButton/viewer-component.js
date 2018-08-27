@@ -1,15 +1,17 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 
-let OboComponent = Common.components.OboComponent
-let Button = Common.components.Button
-let TextGroupEl = Common.chunk.textChunk.TextGroupEl
-let TextChunk = Common.chunk.TextChunk
+const OboComponent = Common.components.OboComponent
+const Button = Common.components.Button
+const TextGroupEl = Common.chunk.textChunk.TextGroupEl
+const TextChunk = Common.chunk.TextChunk
 
-export default props => {
-	let model = props.model
-	let textItem = model.modelState.textGroup ? model.modelState.textGroup.first : ''
+const ActionButton = props => {
+	const model = props.model
+	const textItem = model.modelState.textGroup ? model.modelState.textGroup.first : ''
 
 	return (
 		<OboComponent model={model} moduleData={props.moduleData}>
@@ -25,3 +27,5 @@ export default props => {
 		</OboComponent>
 	)
 }
+
+export default ActionButton

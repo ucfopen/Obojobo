@@ -609,6 +609,7 @@ exports[`IFrame controls IFrame controls component renders 17`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -646,6 +647,7 @@ exports[`IFrame controls IFrame controls component renders 18`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -668,6 +670,7 @@ exports[`IFrame controls IFrame controls component renders 19`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -744,6 +747,7 @@ exports[`IFrame controls IFrame controls component renders 20`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -805,6 +809,7 @@ exports[`IFrame controls IFrame controls component renders 21`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -842,6 +847,7 @@ exports[`IFrame controls IFrame controls component renders 22`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -864,6 +870,7 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -940,6 +947,7 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -1001,6 +1009,7 @@ exports[`IFrame controls IFrame controls component renders 25`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -1038,6 +1047,7 @@ exports[`IFrame controls IFrame controls component renders 26`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -1060,6 +1070,7 @@ exports[`IFrame controls IFrame controls component renders 27`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -1151,6 +1162,7 @@ exports[`IFrame controls IFrame controls component renders 28`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -1227,6 +1239,7 @@ exports[`IFrame controls IFrame controls component renders 29`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -1264,6 +1277,7 @@ exports[`IFrame controls IFrame controls component renders 30`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -1286,6 +1300,7 @@ exports[`IFrame controls IFrame controls component renders 31`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window
@@ -1377,6 +1392,7 @@ exports[`IFrame controls IFrame controls component renders 32`] = `
   >
     <a
       href={undefined}
+      rel="noopener noreferrer"
       target="_blank"
     >
       View in a new window

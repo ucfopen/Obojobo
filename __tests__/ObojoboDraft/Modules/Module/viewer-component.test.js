@@ -15,31 +15,31 @@ describe('Module', () => {
 	})
 
 	test('Module component', () => {
-		let model = OboModel.create(json)
-		let moduleData = {
+		const model = OboModel.create(json)
+		const moduleData = {
 			focusState: {},
 			navState: {}
 		}
 		const component = renderer.create(<Module model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Module component with child', () => {
-		let model = OboModel.create(json)
-		let moduleData = {
+		const model = OboModel.create(json)
+		const moduleData = {
 			focusState: {},
 			navState: {}
 		}
-		let mockGetComponentClass = jest.fn().mockReturnValueOnce('MockComponent')
+		const mockGetComponentClass = jest.fn().mockReturnValueOnce('MockComponent')
 
 		NavUtil.getNavTargetModel.mockReturnValueOnce({
 			getComponentClass: mockGetComponentClass
 		})
 
 		const component = renderer.create(<Module model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

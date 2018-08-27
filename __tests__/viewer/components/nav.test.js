@@ -2,7 +2,7 @@ import { shallow } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-class mockStylableText {
+class MockStylableText {
 	constructor(text) {
 		this.value = text
 	}
@@ -26,7 +26,7 @@ jest.mock('../../../src/scripts/common/index', () => ({
 		getBackgroundImage: jest.fn()
 	},
 	text: {
-		StyleableText: mockStylableText,
+		StyleableText: MockStylableText,
 		StyleableTextComponent: mockStylableComponent
 	}
 }))
@@ -42,7 +42,6 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 // NavStore
 jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({}))
 
-const Common = require('../../../src/scripts/common/index')
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
 const Nav = require('../../../src/scripts/viewer/components/nav').default
 
@@ -53,40 +52,40 @@ describe('Nav', () => {
 
 	test('renders opened', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: true
 			}
 		}
 		const component = renderer.create(<Nav {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('renders closed', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		let props = {
+		const props = {
 			navState: {
 				open: true,
 				locked: true
 			}
 		}
 		const component = renderer.create(<Nav {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('renders unlocked', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: false
 			}
 		}
 		const component = renderer.create(<Nav {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -111,7 +110,7 @@ describe('Nav', () => {
 			{
 				id: 5,
 				type: 'link',
-				label: new mockStylableText('mockMe'),
+				label: new MockStylableText('mockMe'),
 				flags: {
 					visited: false,
 					complete: false,
@@ -130,6 +129,14 @@ describe('Nav', () => {
 				}
 			},
 			{
+				id: 678,
+				type: 'non-existant-type',
+				label: 'label678',
+				flags: {
+					correct: false
+				}
+			},
+			{
 				id: 6,
 				type: 'sub-link',
 				label: 'label6',
@@ -138,7 +145,7 @@ describe('Nav', () => {
 				}
 			}
 		])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: true,
@@ -146,7 +153,7 @@ describe('Nav', () => {
 			}
 		}
 		const component = renderer.create(<Nav {...props} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -164,7 +171,7 @@ describe('Nav', () => {
 				}
 			}
 		])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: true,
@@ -198,7 +205,7 @@ describe('Nav', () => {
 				}
 			}
 		])
-		let props = {
+		const props = {
 			navState: {
 				open: false,
 				locked: true,

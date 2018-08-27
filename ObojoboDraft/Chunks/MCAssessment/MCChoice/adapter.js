@@ -1,11 +1,6 @@
-let Adapter = {
-	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.score) != null) {
-			model.modelState.score = attrs.content.score
-			model.modelState._score = attrs.content.score
-		} else {
-			model.modelState.score = ''
-		}
+const Adapter = {
+	construct(model) {
+		model.setStateProp('score', '')
 	},
 
 	clone(model, clone) {
@@ -18,6 +13,3 @@ let Adapter = {
 }
 
 export default Adapter
-let __guard__ = (value, transform) => {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

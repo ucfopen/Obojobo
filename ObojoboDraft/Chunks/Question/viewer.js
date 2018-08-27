@@ -2,7 +2,7 @@ import Common from 'Common'
 import adapter from './adapter'
 import ViewerComponent from './viewer-component'
 
-let SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
+const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
 
 Common.Store.registerModel('ObojoboDraft.Chunks.Question', {
 	type: 'chunk',
@@ -11,7 +11,7 @@ Common.Store.registerModel('ObojoboDraft.Chunks.Question', {
 	selectionHandler: new SelectionHandler(),
 	getNavItem(model) {
 		let label
-		let questions = model.parent.children.models.filter(
+		const questions = model.parent.children.models.filter(
 			child => child.get('type') === 'ObojoboDraft.Chunks.Question'
 		)
 

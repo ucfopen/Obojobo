@@ -1,17 +1,14 @@
-let CommandHandler
-let { Editor } = window
+const { Editor } = window
 import Common from 'Common'
 
-let { TextGroupCommandHandler } = Editor.chunk.textChunk
-let { TextGroupSelection } = Common.textGroup
+const { TextGroupCommandHandler } = Editor.chunk.textChunk
+const { TextGroupSelection } = Common.textGroup
 
-export default (CommandHandler = class CommandHandler extends TextGroupCommandHandler {
-	// splitText: (sel, chunk, shiftKey) -> false
-
+class CommandHandler extends TextGroupCommandHandler {
 	deleteSelection(selection, chunk) {
 		chunk.markDirty()
 
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
 
 		chunk.modelState.textGroup.clearSpan(
 			tgs.start.groupIndex,
@@ -21,7 +18,6 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 		)
 
 		if (tgs.position === 'start' || tgs.position === 'contains') {
-			// selection.setFutureCaret chunk, { offset: tgs.start.offset, groupIndex: tgs.start.groupIndex }
 			return selection.virtual.setCaret(chunk, {
 				offset: tgs.start.offset,
 				groupIndex: tgs.start.groupIndex
@@ -30,11 +26,8 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 	}
 
 	deleteText(selection, chunk, deleteForwards) {
-		// chunk.markDirty()
-		// console.clear()
-
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
-		let caret = tgs.start
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
+		const caret = tgs.start
 		if ((caret.isTextStart && !deleteForwards) || (caret.isTextEnd && deleteForwards)) {
 			return false
 		}
@@ -47,11 +40,13 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 		return true
 	}
 
-	paste(selection, chunk, text, html) {
+	paste(selection, chunk, text) {
 		return this.insertText(selection, chunk, text)
 	}
 
-	canRemoveSibling(selection, sibling) {
+	canRemoveSibling() {
 		return false
 	}
-})
+}
+
+export default CommandHandler

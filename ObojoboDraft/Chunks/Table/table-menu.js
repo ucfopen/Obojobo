@@ -1,5 +1,7 @@
 import './table-menu.scss'
 
+import React from 'react'
+
 export default class TableMenu extends React.Component {
 	static get defaultProps() {
 		return {

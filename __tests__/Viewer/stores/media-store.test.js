@@ -47,7 +47,7 @@ describe('Media Store', () => {
 	})
 
 	test('Dispatcher listening for the right events', () => {
-		const newMediaStore = new MediaStore.constructor()
+		MediaStore.constructor()
 		expect(Dispatcher.on).toHaveBeenCalledWith({
 			'media:show': expect.any(Function),
 			'media:hide': expect.any(Function),

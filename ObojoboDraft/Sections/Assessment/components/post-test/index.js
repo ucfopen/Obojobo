@@ -1,20 +1,16 @@
+import React from 'react'
+
 import Common from 'Common'
 import Viewer from 'Viewer'
 
 const { OboModel } = Common.models
 const { AssessmentUtil } = Viewer.util
-const Launch = Common.Launch
 const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
 import FullReview from '../full-review'
 
 const AssessmentPostTest = props => {
-	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
-		props.moduleData.assessmentState,
-		props.model
-	)
-
 	const isFullReviewAvailable = reviewType => {
 		switch (reviewType) {
 			case 'always':
@@ -29,9 +25,6 @@ const AssessmentPostTest = props => {
 	const isAssessmentComplete = () => {
 		return !AssessmentUtil.hasAttemptsRemaining(props.moduleData.assessmentState, props.model)
 	}
-
-	// const scoreAction = assessment.getScoreAction()
-	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
 
 	const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 		props.moduleData.assessmentState,
@@ -58,7 +51,7 @@ const AssessmentPostTest = props => {
 
 	let scoreActionsPage
 
-	if (props.scoreAction.page != null) {
+	if (props.scoreAction.page) {
 		const pageModel = OboModel.create(props.scoreAction.page)
 		pageModel.parent = props.model
 		const PageComponent = pageModel.getComponentClass()

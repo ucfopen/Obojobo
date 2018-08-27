@@ -21,7 +21,6 @@ jest.mock(
 
 const { getRandom, logAndRespondToUnexpected } = require('../../server/util')
 
-const AS = require('../../server/attempt-start.js')
 const {
 	startAttempt,
 	getQuestionBankProperties,
@@ -41,19 +40,16 @@ const _ = require('underscore')
 const testJson = require('../../test-object.json')
 const Assessment = require('../../server/assessment')
 const insertEvent = oboRequire('insert_event')
-const db = oboRequire('db')
 const Draft = oboRequire('models/draft')
 const DraftNode = oboRequire('models/draft_node')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const Visit = oboRequire('models/visit')
 
-const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 describe('start attempt route', () => {
-	let originalRandom
 	let mockDraft
 	let mockUsedQuestionMap
 	let mockReq
@@ -105,7 +101,7 @@ describe('start attempt route', () => {
    */
 	const buildTreeForTest = () => {
 		const draftTree = {
-			getChildNodeById: jest.fn(id => nodes.find(c => c.id == id))
+			getChildNodeById: jest.fn(id => nodes.find(c => c.id === id))
 		}
 		const nodes = []
 		const usesMap = new Map()
@@ -319,18 +315,6 @@ describe('start attempt route', () => {
 	})
 
 	test('getState calls qb.buildAssessment and returns the expected state', () => {
-		const fakeChildNodes = [
-			{
-				id: 'qb1.q1',
-				type: 'ObojoboDraft.Chunks.Question',
-				children: []
-			},
-			{
-				id: 'qb1.q2',
-				type: 'ObojoboDraft.Chunks.Question',
-				children: []
-			}
-		]
 		const mockQbTree = { id: 'qb1', children: [], type: 'no-type' }
 		const mockAssessmentProperties = {
 			nodeChildrenIds: [],
@@ -892,7 +876,7 @@ describe('start attempt route', () => {
 		createCaliperEvent.mockReturnValueOnce({
 			createAssessmentAttemptStartedEvent
 		})
-		Date.prototype.toISOString = () => 'date'
+		Date.prototype.toISOString = () => 'date' //eslint-disable-line
 
 		const mockDraft = {
 			draftId: 'mockDraftId',

@@ -8,7 +8,7 @@ Common.Store.registerModel('ObojoboDraft.Sections.Content', {
 	adapter: null,
 	componentClass: ViewerComponent,
 	selectionHandler: null,
-	getNavItem: model => ({
+	getNavItem: () => ({
 		type: 'hidden',
 		showChildren: true
 	})

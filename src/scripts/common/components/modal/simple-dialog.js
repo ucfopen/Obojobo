@@ -1,12 +1,12 @@
 import './simple-dialog.scss'
 
+import React from 'react'
+
 import ModalUtil from '../../../common/util/modal-util'
 import Dialog from '../../../common/components/modal/dialog'
 
 const SimpleDialog = props => {
 	let buttons
-	let cancelButton = null
-	let confirmButton = null
 	if (props.ok) {
 		buttons = [
 			{

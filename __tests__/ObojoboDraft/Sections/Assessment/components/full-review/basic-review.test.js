@@ -1,7 +1,4 @@
-import React from 'react'
-import renderer from 'react-test-renderer'
-
-import BasicReview from '../../../../../../ObojoboDraft/Sections/Assessment/components/full-review/basic-review'
+import basicReview from '../../../../../../ObojoboDraft/Sections/Assessment/components/full-review/basic-review'
 import OboModel from '../../../../../../__mocks__/_obo-model-with-chunks'
 
 const questionJSON = {
@@ -135,29 +132,29 @@ const questionJSON = {
 
 describe('BasicReview', () => {
 	test('Basic component correct', () => {
-		let question = OboModel.create(questionJSON)
-		let moduleData = {
+		OboModel.create(questionJSON)
+		const moduleData = {
 			focusState: {}
 		}
-		let questionScore = {
+		const questionScore = {
 			id: 'parent',
 			score: 100 // Question was answered correctly
 		}
-		const component = BasicReview(moduleData, questionScore, 0)
+		const component = basicReview(moduleData, questionScore, 0)
 
 		expect(component).toMatchSnapshot()
 	})
 
 	test('Basic component incorrect', () => {
-		let question = OboModel.create(questionJSON)
-		let moduleData = {
+		OboModel.create(questionJSON)
+		const moduleData = {
 			focusState: {}
 		}
-		let questionScore = {
+		const questionScore = {
 			id: 'parent',
 			score: 0 // Question was answered incorrectly
 		}
-		const component = BasicReview(moduleData, questionScore, 0)
+		const component = basicReview(moduleData, questionScore, 0)
 
 		expect(component).toMatchSnapshot()
 	})

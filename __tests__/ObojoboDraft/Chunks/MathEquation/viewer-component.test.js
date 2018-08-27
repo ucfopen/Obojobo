@@ -9,10 +9,10 @@ import Katex from 'katex'
 
 describe('MathEquation', () => {
 	test('MathEquation component', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.MathEquation',
 			content: {
@@ -23,16 +23,16 @@ describe('MathEquation', () => {
 		Katex.renderToString.mockReturnValueOnce('mockLatexEquation')
 
 		const component = renderer.create(<MathEquation model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('MathEquation component with label', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.MathEquation',
 			content: {
@@ -44,15 +44,15 @@ describe('MathEquation', () => {
 		Katex.renderToString.mockReturnValueOnce('mockLatexEquation')
 
 		const component = renderer.create(<MathEquation model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 	test('MathEquation component with error', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.MathEquation',
 			label: 'mockLabel',
@@ -66,7 +66,7 @@ describe('MathEquation', () => {
 		})
 
 		const component = renderer.create(<MathEquation model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

@@ -1,12 +1,11 @@
-let CommandHandler
-let { Editor } = window
+const { Editor } = window
 import Common from 'Common'
 
-let { TextGroupCommandHandler } = Editor.chunk.textChunk
-let { Chunk } = Common.models
-let { TextGroupSelection } = Common.textGroup
+const { TextGroupCommandHandler } = Editor.chunk.textChunk
+const { Chunk } = Common.models
+const { TextGroupSelection } = Common.textGroup
 
-export default (CommandHandler = class CommandHandler extends TextGroupCommandHandler {
+export default class CommandHandler extends TextGroupCommandHandler {
 	onEnter(selection, chunk, shiftKey) {
 		chunk.markDirty()
 
@@ -15,7 +14,7 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 			return
 		}
 
-		let newChunk = Chunk.create()
+		const newChunk = Chunk.create()
 		chunk.addChildAfter(newChunk)
 		return newChunk.selectStart()
 	}
@@ -28,16 +27,19 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 	indent(selection, chunk, decreaseIndent) {
 		chunk.markDirty()
 
-		let data = chunk.modelState
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
 
-		let all = tgs.getAllSelectedTexts()
+		const all = tgs.getAllSelectedTexts()
 
 		return (() => {
-			let result = []
-			for (let textItem of Array.from(all)) {
+			const result = []
+			for (const textItem of Array.from(all)) {
 				let item
-				if (textItem.data.indent != null && !isNaN(textItem.data.indent)) {
+				if (
+					textItem.data.indent !== null &&
+					typeof textItem.data.indent !== 'undefined' &&
+					!isNaN(textItem.data.indent)
+				) {
 					if (!decreaseIndent) {
 						item = textItem.data.indent++
 					} else if (textItem.data.indent > 0) {
@@ -49,4 +51,4 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 			return result
 		})()
 	}
-})
+}

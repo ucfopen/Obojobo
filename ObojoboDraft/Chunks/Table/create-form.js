@@ -1,3 +1,5 @@
+import React from 'react'
+
 export default class CreateForm {
 	constructor() {
 		this.state = {

@@ -1,24 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`QuestionBank adapter construct allows choose to be Infinity 1`] = `
+Object {
+  "choose": Infinity,
+  "select": "random-all",
+}
+`;
+
 exports[`QuestionBank adapter construct builds with attributes 1`] = `
 Object {
-  "modelState": Object {
-    "choose": 2,
-    "groupSize": 2,
-    "select": "random-all",
-    "shuffleGroup": true,
-  },
+  "choose": 2,
+  "select": "random-all",
 }
 `;
 
 exports[`QuestionBank adapter construct builds without attributes 1`] = `
 Object {
-  "modelState": Object {
-    "choose": Infinity,
-    "groupSize": 1,
-    "select": "sequential",
-    "shuffleGroup": false,
-  },
+  "choose": Infinity,
+  "select": "sequential",
 }
 `;
 
@@ -26,7 +25,6 @@ exports[`QuestionBank adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
     "choose": 2,
-    "groupSize": 2,
     "select": "random-all",
   },
 }

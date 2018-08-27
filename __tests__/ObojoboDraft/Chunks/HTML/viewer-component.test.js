@@ -6,10 +6,10 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('HTML', () => {
 	test('HTML component', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.HTML',
 			content: {
@@ -18,16 +18,16 @@ describe('HTML', () => {
 		})
 
 		const component = renderer.create(<HTML model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('HTML component with equation', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.HTML',
 			content: {
@@ -36,7 +36,7 @@ describe('HTML', () => {
 		})
 
 		const component = renderer.create(<HTML model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

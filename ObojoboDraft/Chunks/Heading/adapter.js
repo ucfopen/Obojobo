@@ -1,23 +1,14 @@
 import Common from 'Common'
 
-let { TextGroupAdapter } = Common.chunk.textChunk
+const { TextGroupAdapter } = Common.chunk.textChunk
 
-let Adapter = {
+const Adapter = {
 	construct(model, attrs) {
 		TextGroupAdapter.construct(model, attrs)
 		model.modelState.textGroup.maxItems = 1
 
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.headingLevel)) {
-			model.modelState.headingLevel = attrs.content.headingLevel
-		} else {
-			model.modelState.headingLevel = 1
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.align)) {
-			model.modelState.align = attrs.content.align
-		} else {
-			model.modelState.align = 'left'
-		}
+		model.setStateProp('headingLevel', 1)
+		model.setStateProp('align', 'left', p => p.toLowerCase(), ['left', 'center', 'right'])
 	},
 
 	clone(model, clone) {
@@ -38,6 +29,3 @@ let Adapter = {
 }
 
 export default Adapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

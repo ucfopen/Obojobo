@@ -1,3 +1,6 @@
+/* eslint no-undefined: 0 */
+/* eslint no-console: 0 */
+
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import { Store } from '../../../src/scripts/common/store'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
@@ -26,7 +29,7 @@ jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/viewer/util/assessment-util.js')
 jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
 
-const originalError = describe('AssessmentStore', () => {
+describe('AssessmentStore', () => {
 	const getExampleAssessment = () => ({
 		id: 'rootId',
 		type: 'ObojoboDraft.Modules.Module',
@@ -93,7 +96,7 @@ const originalError = describe('AssessmentStore', () => {
 		NavStore.init()
 
 		// Need to make sure all the Obo components are loaded
-		Store.getItems(items => {
+		Store.getItems(() => {
 			done()
 		})
 	})
@@ -107,11 +110,11 @@ const originalError = describe('AssessmentStore', () => {
 	})
 
 	test('init builds with history (populates models and state, shows dialog for unfinished attempt', () => {
-		const q1 = OboModel.create({
+		OboModel.create({
 			id: 'question1',
 			type: 'ObojoboDraft.Chunks.Question'
 		})
-		const q2 = OboModel.create({
+		OboModel.create({
 			id: 'question2',
 			type: 'ObojoboDraft.Chunks.Question'
 		})
@@ -220,7 +223,7 @@ const originalError = describe('AssessmentStore', () => {
 			}
 		})
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
 			expect(ErrorUtil.show).toHaveBeenCalledTimes(1)
 			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 		})
@@ -236,7 +239,7 @@ const originalError = describe('AssessmentStore', () => {
 			}
 		})
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
 			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 		})
@@ -257,7 +260,7 @@ const originalError = describe('AssessmentStore', () => {
 		const originalError = console.error
 		console.error = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
 			const errorMock = console.error
 			console.error = originalError
 			expect(ErrorUtil.show).toHaveBeenCalledTimes(1)
@@ -277,7 +280,7 @@ const originalError = describe('AssessmentStore', () => {
 
 		assessmentModel.processTrigger = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
 			expect(assessmentModel.children.length).toBe(2)
 			expect(qBank.children.length).toBe(2)
 			expect(qBank.children.at(0).id).toBe('q1')
@@ -304,7 +307,7 @@ const originalError = describe('AssessmentStore', () => {
 
 		assessmentModel.processTrigger = jest.fn()
 
-		return AssessmentStore.tryStartAttempt('assessmentId').then(res => {
+		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
 			expect(assessmentModel.children.length).toBe(2)
 			expect(qBank.children.length).toBe(2)
 			expect(qBank.children.at(0).id).toBe('q1')
@@ -335,7 +338,7 @@ const originalError = describe('AssessmentStore', () => {
 		const originalError = console.error
 		console.error = jest.fn()
 
-		return AssessmentStore.tryResendLTIScore('assessmentId').then(res => {
+		return AssessmentStore.tryResendLTIScore('assessmentId').then(() => {
 			const errorMock = console.error
 			console.error = originalError
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
@@ -364,7 +367,7 @@ const originalError = describe('AssessmentStore', () => {
 			}
 		})
 
-		return AssessmentStore.tryResendLTIScore('assessmentId').then(res => {
+		return AssessmentStore.tryResendLTIScore('assessmentId').then(() => {
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
 			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 		})
@@ -393,7 +396,7 @@ const originalError = describe('AssessmentStore', () => {
 			value: {}
 		})
 
-		return AssessmentStore.tryResendLTIScore('assessmentId').then(res => {
+		return AssessmentStore.tryResendLTIScore('assessmentId').then(() => {
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
 			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(3)
 		})
@@ -444,7 +447,7 @@ const originalError = describe('AssessmentStore', () => {
 		const originalError = console.error
 		console.error = jest.fn()
 
-		return AssessmentStore.tryEndAttempt('assessmentId').then(res => {
+		return AssessmentStore.tryEndAttempt('assessmentId').then(() => {
 			const errorMock = console.error
 			console.error = originalError
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
@@ -466,7 +469,7 @@ const originalError = describe('AssessmentStore', () => {
 
 		return AssessmentStore.tryStartAttempt('assessmentId')
 			.then(() => AssessmentStore.tryEndAttempt('assessmentId'))
-			.then(res => {
+			.then(() => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
 				expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
 			})
@@ -513,8 +516,8 @@ const originalError = describe('AssessmentStore', () => {
 
 		return AssessmentStore.tryStartAttempt('assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }))
-			.then(res => AssessmentStore.tryEndAttempt('assessmentId'))
-			.then(res => {
+			.then(() => AssessmentStore.tryEndAttempt('assessmentId'))
+			.then(() => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
 				expect(QuestionUtil.hideQuestion).toHaveBeenCalledTimes(2)
 				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1')
@@ -529,7 +532,7 @@ const originalError = describe('AssessmentStore', () => {
 
 		return AssessmentStore.tryStartAttempt('assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', ['some response']))
-			.then(res => {
+			.then(() => {
 				expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalled()
 			})
 	})
@@ -545,7 +548,7 @@ const originalError = describe('AssessmentStore', () => {
 
 		return AssessmentStore.tryStartAttempt('assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', ['some response']))
-			.then(res => {
+			.then(() => {
 				expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalled()
 				expect(AssessmentStore.triggerChange).toHaveBeenCalled()
 			})

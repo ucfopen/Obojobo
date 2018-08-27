@@ -1,5 +1,7 @@
 import './focus-blocker.scss'
 
-import FocusUtil from '../../common/util/focus-util'
+import React from 'react'
 
-export default props => <div className="viewer--components--focus-blocker" />
+const FocusBlocker = () => <div className="viewer--components--focus-blocker" />
+
+export default FocusBlocker

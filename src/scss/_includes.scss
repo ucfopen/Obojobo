@@ -4,6 +4,7 @@ $color-error: #990000;
 $color-dangerous: #d40000;
 $color-text: #000000;
 $color-text-minor: lighten($color-text, 40%);
+$color-text-subheading: #a20e83;
 $color-bg: #ffffff;
 $color-shadow: rgba(0, 0, 0, 0.3);
 $color-highlight: #93c6ff;
@@ -41,8 +42,10 @@ $dimension-toolbar-height: 2.7em;
 $dimension-nav-menu: 18rem;
 $dimension-nav-menu-small: 14rem;
 $dimension-rounded-radius: 0.25em;
+$dimension-header-padding: 1rem;
+$dimension-preview-banner: 3rem;
 
-$breakpoint-nav-small: 1000px;
+$breakpoint-nav-small: 1000px; /* stylelint-disable-line unit-blacklist */
 
 $z-index-above-content: 999;
 $z-index-above-most: 9999;
@@ -55,9 +58,11 @@ $z-index-preview: 999999;
 }
 
 @mixin placeholder($height) {
+	$color-placeholder-text: transparentize($color-text, 0.5);
+
 	background: $color-bg2;
 	box-sizing: border-box;
-	color: transparentize($color-text, 0.5);
+	color: $color-placeholder-text;
 	font-family: $font-default;
 	font-size: 1rem;
 	font-weight: bold;

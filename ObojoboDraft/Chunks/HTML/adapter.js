@@ -1,16 +1,7 @@
-let Adapter = {
-	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.html) != null) {
-			model.modelState.html = attrs.content.html
-		} else {
-			model.modelState.html = null
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.align) != null) {
-			return (model.modelState.align = attrs.content.align)
-		} else {
-			return (model.modelState.align = 'left')
-		}
+const Adapter = {
+	construct(model) {
+		model.setStateProp('html', null)
+		model.setStateProp('align', 'left', p => p.toLowerCase(), ['left', 'center', 'right'])
 	},
 
 	clone(model, clone) {
@@ -24,7 +15,7 @@ let Adapter = {
 	},
 
 	toText(model) {
-		let node = document.createElement('p')
+		const node = document.createElement('p')
 		node.innerHTML = model.modelState.html
 
 		return node.textContent
@@ -32,6 +23,3 @@ let Adapter = {
 }
 
 export default Adapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

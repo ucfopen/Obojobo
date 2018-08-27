@@ -4,7 +4,7 @@ import { mount } from 'enzyme'
 
 import TextMenu from '../../../src/scripts/common/components/text-menu'
 
-let createRect = () => {
+const createRect = () => {
 	return {
 		left: 0,
 		top: 0,
@@ -14,14 +14,14 @@ let createRect = () => {
 describe('TextMenu', () => {
 	test('TextMenu', () => {
 		const component = renderer.create(<TextMenu />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('TextMenu disabled', () => {
 		const component = renderer.create(<TextMenu relativeToElement={true} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -36,7 +36,7 @@ describe('TextMenu', () => {
 				selectionRect={createRect()}
 			/>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -52,13 +52,13 @@ describe('TextMenu', () => {
 				commands={[{ label: 'Label' }, { label: 'imageCommand', image: 'mockImage' }]}
 			/>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('TextMenu calls mouseDown', () => {
-		let mockCommandHandler = jest.fn()
+		const mockCommandHandler = jest.fn()
 
 		const component = mount(
 			<TextMenu
@@ -72,7 +72,7 @@ describe('TextMenu', () => {
 			/>
 		)
 
-		let link = component.find('a').simulate('mouseDown')
+		component.find('a').simulate('mouseDown')
 
 		expect(mockCommandHandler).toHaveBeenCalledWith('Label')
 	})

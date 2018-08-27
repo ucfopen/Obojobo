@@ -11,10 +11,10 @@ const getTextNodesInOrderRecur = (element, textNodes) => {
 
 const DOMUtil = {
 	findParentWithAttr(node, targetAttribute, targetValue = null, rootParent = document.body) {
-		while (node != null && node !== rootParent) {
-			if (node.getAttribute != null) {
+		while (node !== null && typeof node !== 'undefined' && node !== rootParent) {
+			if (node.getAttribute) {
 				const attr = node.getAttribute(targetAttribute)
-				if (attr != null && (targetValue === null || attr === targetValue)) {
+				if (attr !== null && (targetValue === null || attr === targetValue)) {
 					return node
 				}
 			}
@@ -26,7 +26,7 @@ const DOMUtil = {
 
 	findParentAttr(node, targetAttribute) {
 		node = DOMUtil.findParentWithAttr(node, targetAttribute)
-		if (node == null) {
+		if (!node) {
 			return null
 		}
 
@@ -41,7 +41,7 @@ const DOMUtil = {
 		while (cur !== null) {
 			cur = DOMUtil.findParentWithAttr(cur, 'data-obo-component')
 
-			if (cur == null) {
+			if (!cur) {
 				break
 			}
 
@@ -72,13 +72,15 @@ const DOMUtil = {
 		return (
 			node.hasAttribute('data-obo-component') &&
 			node.classList.contains('component') &&
-			node.getAttribute('data-id') != null &&
-			node.getAttribute('data-type') != null
+			node.getAttribute('data-id') !== null &&
+			node.getAttribute('data-id') !== '' &&
+			node.getAttribute('data-type') !== null &&
+			node.getAttribute('data-type') !== ''
 		)
 	},
 
 	getFirstTextNodeOfElement(node) {
-		while (node != null && node.nodeType !== Node.TEXT_NODE) {
+		while (node !== null && typeof node !== 'undefined' && node.nodeType !== Node.TEXT_NODE) {
 			node = node.childNodes[0]
 		}
 

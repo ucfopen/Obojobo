@@ -1,8 +1,8 @@
-let getScoreChangeDescription = ({ prevHighestInfo, newInfo }) => {
+const getScoreChangeDescription = ({ prevHighestInfo, newInfo }) => {
 	if (prevHighestInfo === null || newInfo === null) return null
 
-	let prevHighestScore = prevHighestInfo.assessmentModdedScore
-	let newScore = newInfo.assessmentModdedScore
+	const prevHighestScore = prevHighestInfo.assessmentModdedScore
+	const newScore = newInfo.assessmentModdedScore
 
 	if (newScore === null && prevHighestScore === null) {
 		return 'This did not change your recorded score'

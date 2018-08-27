@@ -1,12 +1,14 @@
 import './delete-button.scss'
 
-export default class DeleteButton extends React.Component {
+import React from 'react'
+
+class DeleteButton extends React.Component {
 	static get defaultProps() {
 		return { indent: 0 }
 	}
 
 	focus() {
-		return ReactDOM.findDOMNode(this.refs.button).focus()
+		this.refs.button.focus()
 	}
 
 	render() {
@@ -24,3 +26,5 @@ export default class DeleteButton extends React.Component {
 		)
 	}
 }
+
+export default DeleteButton

@@ -1,14 +1,14 @@
 import BaseSelectionHandler from '../../../common/chunk/base-selection-handler'
 
 class FocusableSelectionHandler extends BaseSelectionHandler {
-	getVirtualSelectionStartData(selection, chunk) {
+	getVirtualSelectionStartData() {
 		return {
 			groupIndex: 'anchor:main',
 			offset: 0
 		}
 	}
 
-	getVirtualSelectionEndData(selection, chunk) {
+	getVirtualSelectionEndData() {
 		return {
 			groupIndex: 'anchor:main',
 			offset: 0

@@ -1,5 +1,7 @@
 require('./assessment-score-report-view.scss')
 
+import React from 'react'
+
 const GREAT_JOB_YOU_ROCK_EMOJI = '😎'
 
 const scoreReportView = props => (

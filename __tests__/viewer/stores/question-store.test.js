@@ -1,3 +1,5 @@
+/* eslint no-undefined: 0 */
+
 jest.mock('../../../src/scripts/common/util/uuid', () => jest.fn())
 
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => ({
@@ -23,7 +25,7 @@ jest.mock('../../../src/scripts/common/util/focus-util', () => ({
 }))
 
 const Common = require('../../../src/scripts/common/index').default
-const UUID = require('../../../src/scripts/common/util/uuid')
+const uuid = require('../../../src/scripts/common/util/uuid')
 const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
 const QuestionUtil = require('../../../src/scripts/viewer/util/question-util')
 const OboModel = require('../../../__mocks__/_obo-model-with-chunks').default
@@ -93,7 +95,7 @@ describe('QuestionStore', () => {
 		jest.resetAllMocks()
 		QuestionStore.init()
 		QuestionStore.triggerChange = jest.fn()
-		UUID.mockReturnValue('mock-uuid')
+		uuid.mockReturnValue('mock-uuid')
 	})
 
 	test('init builds state with a specific structure and return it', () => {

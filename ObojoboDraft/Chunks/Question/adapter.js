@@ -1,20 +1,11 @@
 import Common from 'Common'
 
-let { OboModel } = Common.models
+const { OboModel } = Common.models
 
-let Adapter = {
-	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x2 => x2.mode) != null) {
-			model.modelState.mode = attrs.content.mode
-		} else {
-			model.modelState.mode = 'practice'
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x3 => x3.solution) != null) {
-			model.modelState.solution = OboModel.create(attrs.content.solution)
-		} else {
-			model.modelState.solution = null
-		}
+const Adapter = {
+	construct(model) {
+		model.setStateProp('mode', 'practice')
+		model.setStateProp('solution', null, p => OboModel.create(p))
 	},
 
 	clone(model, clone) {
@@ -22,7 +13,7 @@ let Adapter = {
 		clone.modelState.mode = model.modelState.mode
 		clone.modelState.solution = null
 
-		if (model.modelState.solution != null) {
+		if (model.modelState.solution) {
 			clone.modelState.solution = Object.assign({}, model.modelState.solution)
 		}
 	},
@@ -32,14 +23,10 @@ let Adapter = {
 		json.content.mode = model.modelState.mode
 		json.content.solution = null
 
-		if (model.modelState.solution != null) {
+		if (model.modelState.solution) {
 			json.content.solution = model.modelState.solution.toJSON()
 		}
 	}
 }
 
 export default Adapter
-
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

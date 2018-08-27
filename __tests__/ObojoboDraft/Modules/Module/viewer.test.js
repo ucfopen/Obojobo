@@ -10,12 +10,12 @@ jest.mock('../../../../ObojoboDraft/Modules/Module/adapter', () => ({}))
 const Common = require('../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
-import Module from '../../../../ObojoboDraft/Modules/Module/viewer'
+import '../../../../ObojoboDraft/Modules/Module/viewer'
 import ViewerComponent from '../../../../ObojoboDraft/Modules/Module/viewer-component'
 
 describe('ObojoboDraft.Modules.Module registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Modules.Module')
 		expect(register[1]).toHaveProperty('type', 'module')
 		expect(register[1]).toHaveProperty('adapter', {})
@@ -24,12 +24,12 @@ describe('ObojoboDraft.Modules.Module registration', () => {
 	})
 
 	test('getNavItem returns heading', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			title: 'mockTitle'
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toEqual({
 			type: 'heading',
 			label: 'mockTitle',

@@ -15,12 +15,12 @@ jest.mock('../../../../ObojoboDraft/Chunks/Text/viewer-component', () => ({}))
 const Common = require('../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
-import Text from '../../../../ObojoboDraft/Chunks/Text/viewer'
+import '../../../../ObojoboDraft/Chunks/Text/viewer'
 import ViewerComponent from '../../../../ObojoboDraft/Chunks/Text/viewer-component'
 
 describe('ObojoboDraft.Chunks.Text registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.Text')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', expect.any(Function))

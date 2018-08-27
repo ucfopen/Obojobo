@@ -9,9 +9,6 @@ const { OboModel } = Common.models
 
 class MediaStore extends Store {
 	constructor() {
-		let id
-		let model
-
 		super('mediaStore')
 
 		Dispatcher.on({

@@ -1,29 +1,32 @@
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import BreakAdapter from '../../../../ObojoboDraft/Chunks/Break/adapter'
-import Common from 'Common'
 
-const TextGroup = Common.textGroup.TextGroup
-
-describe('ActionButton adapter', () => {
+describe('Break adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
-		let expected = { modelState: { width: 'normal' } }
+		const model = new OboModel({})
+		const expected = { width: 'normal' }
 		BreakAdapter.construct(model)
 
-		expect(model).toEqual(expected)
+		expect(model.modelState).toEqual(expected)
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = { content: { width: 'large' } }
-		let expected = { modelState: { width: 'large' } }
+		const attrs = { content: { width: 'large' } }
+		const model = new OboModel(attrs)
+
+		const expected = { width: 'large' }
 		BreakAdapter.construct(model, attrs)
 
-		expect(model).toEqual(expected)
+		expect(model.modelState).toEqual(expected)
 	})
 
 	test('toText creates a text representation', () => {
-		let model = { modelState: { width: 'large' } }
-		let text = BreakAdapter.toText(model)
+		const model = { modelState: { width: 'large' } }
+		const text = BreakAdapter.toText(model)
 
 		expect(text).toEqual('---')
 	})
