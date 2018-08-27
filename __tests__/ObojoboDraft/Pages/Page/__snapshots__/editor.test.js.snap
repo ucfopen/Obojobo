@@ -56,3 +56,18 @@ Object {
   "type": "mockType",
 }
 `;
+
+exports[`Page slateToObo converts a Slate node to an OboNode with no content 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    Object {
+      "children": Array [],
+      "id": undefined,
+      "type": "NotADefinedNode",
+    },
+  ],
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

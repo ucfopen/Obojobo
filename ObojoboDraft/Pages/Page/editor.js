@@ -101,7 +101,8 @@ const PageNode = {
 	helpers: {
 		slateToObo,
 		oboToSlate,
-	}
+	},
+	plugins
 }
 
 export default PageNode

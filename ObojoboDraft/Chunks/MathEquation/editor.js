@@ -101,7 +101,7 @@ class Node extends React.Component {
 
 const getLatexHtml = latex => {
 	try {
-		let html = katex.renderToString(latex, { displayMode: true })
+		const html = katex.renderToString(latex, { displayMode: true })
 		return { html }
 	} catch (e) {
 		return { error: e }
