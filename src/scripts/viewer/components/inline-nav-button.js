@@ -5,10 +5,12 @@ import React from 'react'
 import NavUtil from '../../viewer/util/nav-util'
 
 export default class InlineNavButton extends React.Component {
-	onClick() {
+	onClick(event) {
 		if (this.props.disabled) {
 			return
 		}
+
+		event.target.blur()
 
 		switch (this.props.type) {
 			case 'prev':
@@ -21,14 +23,15 @@ export default class InlineNavButton extends React.Component {
 
 	render() {
 		return (
-			<div
+			<button
 				className={`viewer--components--inline-nav-button is-${this.props.type}${
 					this.props.disabled ? ' is-not-enabled' : ' is-enabled'
 				}`}
 				onClick={this.onClick.bind(this)}
+				disabled={this.props.disabled}
 			>
 				{this.props.title}
-			</div>
+			</button>
 		)
 	}
 }

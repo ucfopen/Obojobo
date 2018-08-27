@@ -30,10 +30,14 @@ export default class Nav extends React.Component {
 			return <StyleableTextComponent text={label} />
 		}
 
-		return <a>{label}</a>
+		return label
 	}
 
-	renderLink(index, isSelected, list, lockEl) {
+	renderLinkButton(label, isDisabled) {
+		return <button tabIndex={isDisabled ? -1 : null}>{this.renderLabel(label)}</button>
+	}
+
+	renderLink(index, isSelected, list, lockEl = null) {
 		const item = list[index]
 		const isFirstInList = !list[index - 1]
 		const isLastInList = !list[index + 1]
@@ -50,7 +54,7 @@ export default class Nav extends React.Component {
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLabel(item.label)}
+				{this.renderLinkButton(item.label, lockEl !== null)}
 				{lockEl}
 			</li>
 		)
@@ -83,9 +87,8 @@ export default class Nav extends React.Component {
 	}
 
 	getLockEl(isLocked) {
-		if (isLocked) {
-			return <div className="lock-icon" />
-		}
+		if (!isLocked) return null
+		return <div className="lock-icon" />
 	}
 
 	render() {

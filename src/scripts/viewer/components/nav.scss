@@ -164,6 +164,18 @@
 				background: $color-nav-bg;
 			}
 		}
+
+		> button {
+			border: none;
+			font-size: 1em;
+			background: transparent;
+			font-family: $font-default;
+			cursor: pointer;
+			padding: 0;
+			margin: 0;
+			color: inherit;
+			font-weight: inherit;
+		}
 	}
 
 	.link,

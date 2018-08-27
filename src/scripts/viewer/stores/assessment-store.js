@@ -132,8 +132,7 @@ class AssessmentStore extends Store {
 					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
 				>
 					<p>
-						It looks like you were in the middle of an attempt. We&amp;ll resume you where you left
-						off.
+						It looks like you were in the middle of an attempt. We{"'"}ll resume where you left off.
 					</p>
 				</SimpleDialog>,
 				true

@@ -20,7 +20,7 @@ export default class Question extends React.Component {
 		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
 		if (mode === 'practice') {
-			return FocusUtil.focusComponent(this.props.model.get('id'))
+			FocusUtil.focusComponent(this.props.model.get('id'))
 		}
 	}
 
