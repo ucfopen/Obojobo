@@ -30,7 +30,8 @@ class DevNonceStore extends NonceStore {
 			return next(null, true)
 		}
 
-		this.setUsed(nonce, timestamp => {
+		// eslint-disable-next-line no-unused-vars
+		this.setUsed(nonce, timestamp, err => {
 			if (typeof timestamp !== 'undefined' && timestamp !== null) {
 				timestamp = parseInt(timestamp, 10)
 				const currentTime = Math.round(Date.now() / 1000)
