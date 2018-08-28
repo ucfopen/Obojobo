@@ -557,7 +557,7 @@ describe('List editor', () => {
 		const call = List.plugins.validateNode(node)
 		call(change)
 
-		expect(change.mergeNodesByKey).toHaveBeenCalled()
+		expect(change.mergeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {

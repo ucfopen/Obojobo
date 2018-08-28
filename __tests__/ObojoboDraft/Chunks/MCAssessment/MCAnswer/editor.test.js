@@ -1,9 +1,13 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+jest.mock('../../../../../ObojoboDraft/Chunks/Break/editor')
 
 import MCAnswer from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
-const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAnswer'
+const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 describe('MCAnswer editor', () => {
 	test('Node builds the expected component', () => {
@@ -26,29 +30,21 @@ describe('MCAnswer editor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('insertNode calls change methods', () => {
-		const change = {}
-		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.collapseToStartOfNextText = jest.fn().mockReturnValueOnce(change)
-		change.focus = jest.fn().mockReturnValueOnce(change)
-
-		MCAnswer.helpers.insertNode(change)
-
-		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.collapseToStartOfNextText).toHaveBeenCalled()
-		expect(change.focus).toHaveBeenCalled()
-	})
-
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => {
-					return {}
-				}
+				get: type => null
 			},
-			text: 'mockText'
+			nodes: [
+				{
+					type: BREAK_NODE
+				},
+				{
+					type: 'notADefinedNode'
+				}
+			]
 		}
 		const oboNode = MCAnswer.helpers.slateToObo(slateNode)
 
@@ -59,25 +55,21 @@ describe('MCAnswer editor', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { width: 'large' }
+			children: [
+				{
+					type: BREAK_NODE
+				},
+				{
+					type: 'notADefinedNode'
+				}
+			]
 		}
 		const slateNode = MCAnswer.helpers.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
-		const oboNode = {
-			id: 'mockKey',
-			type: 'mockType',
-			content: {}
-		}
-		const slateNode = MCAnswer.helpers.oboToSlate(oboNode)
-
-		expect(slateNode).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode renders a button when passed', () => {
+	test('plugins.renderNode renders a node', () => {
 		const props = {
 			node: {
 				type: MCANSWER_NODE,
@@ -90,5 +82,47 @@ describe('MCAnswer editor', () => {
 		}
 
 		expect(MCAnswer.plugins.renderNode(props)).toMatchSnapshot()
+	})
+
+	test('plugins.schema.normalize fixes invalid children', () => {
+		const change = {
+			wrapBlockByKey: jest.fn()
+		}
+
+		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {},
+			child: { key: 'mockKey', object: 'text' },
+			index: null
+		})
+
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes non-text invalid children', () => {
+		const change = {
+			wrapBlockByKey: jest.fn()
+		}
+
+		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {},
+			child: { key: 'mockKey' },
+			index: null
+		})
+
+		expect(change.wrapBlockByKey).not.toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds missing children', () => {
+		const change = {
+			insertNodeByKey: jest.fn()
+		}
+
+		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, CHILD_REQUIRED, {
+			node: {},
+			child: null,
+			index: 0
+		})
+
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 })

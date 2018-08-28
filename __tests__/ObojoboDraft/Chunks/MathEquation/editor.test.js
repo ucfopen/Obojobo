@@ -6,18 +6,153 @@ import MathEquation from '../../../../ObojoboDraft/Chunks/MathEquation/editor'
 const MATHEQUATION_NODE = 'ObojoboDraft.Chunks.MathEquation'
 
 describe('MathEquation editor', () => {
-	test('Node builds the expected component', () => {
+	test('Node component', () => {
 		const Node = MathEquation.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		//katex.renderToString.mockReturnValueOnce('<b></b>')
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return { latex: '1' }
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component with error', () => {
+		const Node = MathEquation.components.Node
+		//katex.renderToString.mockReturnValueOnce('<b></b>')
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return { latex: null }
+						}
+					}
+				}}
+			/>
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component with label', () => {
+		const Node = MathEquation.components.Node
+		//katex.renderToString.mockReturnValueOnce('<b></b>')
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return { latex: '1', label: '' }
+						}
+					}
+				}}
+			/>
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component changes input', () => {
+		const Node = MathEquation.components.Node
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				isFocused={true}
+				isSelected={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component
+			.find('input')
+			.at(0)
+			.simulate('click', {
+				stopPropagation: () => true
+			})
+
+		const click2 = component
+			.find('input')
+			.at(0)
+			.simulate('change', {
+				target: { value: 'mockInput' }
+			})
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component changes label', () => {
+		const Node = MathEquation.components.Node
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				isFocused={true}
+				isSelected={true}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component
+			.find('input')
+			.at(1)
+			.simulate('click', {
+				stopPropagation: () => true
+			})
+
+		const click2 = component
+			.find('input')
+			.at(1)
+			.simulate('change', {
+				target: { value: 'mockInput' }
+			})
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -40,7 +175,7 @@ describe('MathEquation editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return {} }
+				get: () => null
 			},
 			text: 'mockText'
 		}
@@ -76,7 +211,9 @@ describe('MathEquation editor', () => {
 			node: {
 				type: MATHEQUATION_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}

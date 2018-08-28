@@ -1,6 +1,61 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MathEquation editor Node builds the expected component 1`] = `
+exports[`MathEquation editor Node component 1`] = `
+<div
+  className="component obojobo-draft--chunks--math-equation pad align-center"
+  dummy="dummyData"
+>
+  <div
+    className="non-editable-chunk"
+  >
+    <div
+      className="katex-container"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.64444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"base displaystyle textstyle uncramped\\"><span class=\\"mord mathrm\\">1</span></span></span></span></span>",
+        }
+      }
+    />
+    <div
+      className="equation-label"
+    />
+  </div>
+  <div
+    className="equation-editor"
+  >
+    <div>
+      <p>
+        Latex Equation
+      </p>
+      <input
+        frameBorder="0"
+        name="Latex Equation"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1"
+      />
+    </div>
+    <div>
+      <p>
+        Equation Label
+      </p>
+      <input
+        frameBorder="0"
+        name="Equation Label"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={undefined}
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MathEquation editor Node component changes input 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-center\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
+
+exports[`MathEquation editor Node component changes label 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-center\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
+
+exports[`MathEquation editor Node component with error 1`] = `
 <div
   className="component obojobo-draft--chunks--math-equation pad align-center"
   dummy="dummyData"
@@ -9,7 +64,7 @@ exports[`MathEquation editor Node builds the expected component 1`] = `
     className="katex-container katex-error"
   >
     <p>
-      Cannot read property 'length' of undefined
+      Cannot read property 'length' of null
     </p>
   </div>
   <div
@@ -24,7 +79,7 @@ exports[`MathEquation editor Node builds the expected component 1`] = `
         name="Latex Equation"
         onChange={[Function]}
         onClick={[Function]}
-        value={undefined}
+        value={null}
       />
     </div>
     <div>
@@ -37,6 +92,54 @@ exports[`MathEquation editor Node builds the expected component 1`] = `
         onChange={[Function]}
         onClick={[Function]}
         value={undefined}
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MathEquation editor Node component with label 1`] = `
+<div
+  className="component obojobo-draft--chunks--math-equation pad align-center"
+  dummy="dummyData"
+>
+  <div
+    className="non-editable-chunk"
+  >
+    <div
+      className="katex-container"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.64444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"base displaystyle textstyle uncramped\\"><span class=\\"mord mathrm\\">1</span></span></span></span></span>",
+        }
+      }
+    />
+  </div>
+  <div
+    className="equation-editor"
+  >
+    <div>
+      <p>
+        Latex Equation
+      </p>
+      <input
+        frameBorder="0"
+        name="Latex Equation"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="1"
+      />
+    </div>
+    <div>
+      <p>
+        Equation Label
+      </p>
+      <input
+        frameBorder="0"
+        name="Equation Label"
+        onChange={[Function]}
+        onClick={[Function]}
+        value=""
       />
     </div>
   </div>

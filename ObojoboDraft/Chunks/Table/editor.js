@@ -9,14 +9,14 @@ const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 const Cell = props => {
-	if(props.node.data.get('content').header){
+	if (props.node.data.get('content').header) {
 		return <th {...props.attributes}>{props.children}</th>
 	}
 	return <td {...props.attributes}>{props.children}</td>
 }
 
 class Row extends React.Component {
-	deleteRow(){
+	deleteRow() {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
@@ -24,20 +24,20 @@ class Row extends React.Component {
 		const content = parent.data.get('content')
 		content.textGroup.numRows--
 
-		if(parent.nodes.get(0).key === this.props.node.key){
+		if (parent.nodes.get(0).key === this.props.node.key) {
 			const sibling = parent.nodes.get(1)
 
 			// If this is the only row in the table, delete the table
-			if(!sibling){
+			if (!sibling) {
 				change.removeNodeByKey(parent.key)
 				editor.onChange(change)
 				return
 			}
 
 			sibling.nodes.forEach(cell => {
-				change.setNodeByKey(cell.key, { data: { content: { header: content.header }}})
+				change.setNodeByKey(cell.key, { data: { content: { header: content.header } } })
 			})
-			change.setNodeByKey(sibling.key, { data: { content: { header: content.header }}})
+			change.setNodeByKey(sibling.key, { data: { content: { header: content.header } } })
 		}
 
 		change.removeNodeByKey(this.props.node.key)
@@ -45,11 +45,13 @@ class Row extends React.Component {
 		editor.onChange(change)
 	}
 
-	render(){
+	render() {
 		return (
 			<tr {...this.props.attributes}>
 				{this.props.children}
-				<td className={'delete-cell'}><button onClick={() => this.deleteRow()}>{'X'}</button></td>
+				<td className={'delete-cell'}>
+					<button onClick={() => this.deleteRow()}>{'X'}</button>
+				</td>
 			</tr>
 		)
 	}
@@ -57,7 +59,7 @@ class Row extends React.Component {
 
 class Node extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = props.node.data.get('content')
 	}
 
@@ -68,17 +70,21 @@ class Node extends React.Component {
 
 		const newRow = Block.create({
 			type: TABLE_ROW_NODE,
-			data: { content: { header: false }}
+			data: { content: { header: false } }
 		})
 
-		change.insertNodeByKey(this.props.node.key, this.state.textGroup.numRows-1, newRow)
+		change.insertNodeByKey(this.props.node.key, this.state.textGroup.numRows - 1, newRow)
 
 		// Insert the cells for the new row, minus the cell that was inserted by normalization
-		for(let i = 0; i < this.state.textGroup.numCols-1; i++){
-			change.insertNodeByKey(newRow.key, i, Block.create({
-				type: TABLE_CELL_NODE,
-				data: { content: { header: false }}
-			}))
+		for (let i = 0; i < this.state.textGroup.numCols - 1; i++) {
+			change.insertNodeByKey(
+				newRow.key,
+				i,
+				Block.create({
+					type: TABLE_CELL_NODE,
+					data: { content: { header: false } }
+				})
+			)
 		}
 
 		editor.onChange(change)
@@ -93,10 +99,10 @@ class Node extends React.Component {
 			const header = row.data.get('content').header
 			change.insertNodeByKey(
 				row.key,
-				this.state.textGroup.numCols-1,
+				this.state.textGroup.numCols - 1,
 				Block.create({
 					type: TABLE_CELL_NODE,
-					data: { content: { header }}
+					data: { content: { header } }
 				})
 			)
 		})
@@ -123,14 +129,12 @@ class Node extends React.Component {
 		const buttons = new Array(this.state.textGroup.numCols)
 		buttons.fill('X')
 
-		return(
+		return (
 			<tr>
 				{buttons.map((col, index) => {
 					return (
 						<td key={index} className={'delete-cell'}>
-							<button onClick={() => this.deleteCol(index)}>
-								{col}
-							</button>
+							<button onClick={() => this.deleteCol(index)}>{col}</button>
 						</td>
 					)
 				})}
@@ -148,17 +152,17 @@ class Node extends React.Component {
 		const topRow = this.props.node.nodes.get(0)
 
 		// change the header flag on the top row
-		change.setNodeByKey(topRow.key, { data: { content: { header: this.state.header }}})
+		change.setNodeByKey(topRow.key, { data: { content: { header: this.state.header } } })
 
 		// change the header flag on each cell of the top row
 		topRow.nodes.forEach(cell => {
-			change.setNodeByKey(cell.key, { data: { content: { header: this.state.header }}})
+			change.setNodeByKey(cell.key, { data: { content: { header: this.state.header } } })
 		})
 
 		editor.onChange(change)
 	}
 
-	render(){
+	render() {
 		return (
 			<div className={'component'} {...this.props.attributes}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
@@ -195,7 +199,7 @@ const slateToObo = node => {
 	const json = {}
 	json.id = node.key
 	json.type = node.type
-	json.content = node.data.get('content') || {}
+	json.content = node.data.get('content') || { textGroup: {} }
 	json.content.textGroup.textGroup = []
 
 	node.nodes.forEach(row => {
@@ -242,11 +246,11 @@ const oboToSlate = node => {
 	let currRow
 
 	node.content.textGroup.textGroup.forEach((line, index) => {
-		if((index % cols) === 0){
+		if (index % cols === 0) {
 			currRow = {
 				object: 'block',
 				type: TABLE_ROW_NODE,
-				data: { content: { header: hasHeader && cols === 0 }},
+				data: { content: { header: hasHeader && json.nodes.length === 0 } },
 				nodes: []
 			}
 			json.nodes.push(currRow)
@@ -255,7 +259,7 @@ const oboToSlate = node => {
 		const tableCell = {
 			object: 'block',
 			type: TABLE_CELL_NODE,
-			data: { content: { header: hasHeader && index < cols }},
+			data: { content: { header: hasHeader && index < cols } },
 			nodes: [
 				{
 					object: 'text',
@@ -293,18 +297,15 @@ const plugins = {
 					const header = index === 0 && node.data.get('content').header
 					switch (violation) {
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(
-								child.key,
-								{
-									type: TABLE_ROW_NODE,
-									data: { content: { header }}
-								}
-							)
+							return change.wrapBlockByKey(child.key, {
+								type: TABLE_ROW_NODE,
+								data: { content: { header } }
+							})
 						}
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: TABLE_ROW_NODE,
-								data: { content: { header }}
+								data: { content: { header } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
@@ -317,25 +318,21 @@ const plugins = {
 					const header = node.data.get('content').header
 					switch (violation) {
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(
-								child.key,
-								{
-									type: TABLE_CELL_NODE,
-									data: { content: { header }}
-								}
-							)
+							return change.wrapBlockByKey(child.key, {
+								type: TABLE_CELL_NODE,
+								data: { content: { header } }
+							})
 						}
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: TABLE_CELL_NODE,
-								data: { content: { header }}
+								data: { content: { header } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 					}
 				}
-			},
-
+			}
 		}
 	}
 }

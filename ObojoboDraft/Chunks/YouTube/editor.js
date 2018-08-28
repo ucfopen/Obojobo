@@ -4,29 +4,24 @@ const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
 class Node extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = this.props.node.data.get('content')
 	}
 
-	handleSourceChange(event){
+	handleSourceChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
 		this.setState({ videoId: event.target.value })
 
-		change.setNodeByKey(this.props.node.key, { data: { content: {
-			videoId: event.target.value
-		}}})
+		change.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					videoId: event.target.value
+				}
+			}
+		})
 		editor.onChange(change)
-	}
-
-	renderInput() {
-		return (
-			<input
-				value={this.state.videoId}
-				onChange={event => this.handleSourceChange(event)}
-				onClick={event => event.stopPropagation()} />
-		)
 	}
 
 	renderFrame() {
@@ -34,7 +29,7 @@ class Node extends React.Component {
 
 		const wrapperStyle = {
 			position: 'relative',
-			outline: isFocused ? '2px solid blue' : 'none',
+			outline: isFocused ? '2px solid blue' : 'none'
 		}
 
 		const maskStyle = {
@@ -45,11 +40,11 @@ class Node extends React.Component {
 			height: '100%',
 			width: '100%',
 			cursor: 'cell',
-			zIndex: 1,
+			zIndex: 1
 		}
 
 		const iframeStyle = {
-			display: 'block',
+			display: 'block'
 		}
 
 		return (
@@ -63,13 +58,13 @@ class Node extends React.Component {
 				<input
 					value={this.state.videoId}
 					onChange={event => this.handleSourceChange(event)}
-					onClick={event => event.stopPropagation()} />
+					onClick={event => event.stopPropagation()}
+				/>
 			</div>
 		)
 	}
 
 	render() {
-
 		return (
 			<div className={'component'} {...this.props.attributes}>
 				{this.renderFrame()}
@@ -121,7 +116,7 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.YouTube': {
-				isVoid: true,
+				isVoid: true
 			}
 		}
 	}
@@ -129,7 +124,7 @@ const plugins = {
 
 const YouTube = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		insertNode,
