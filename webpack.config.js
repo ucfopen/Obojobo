@@ -107,6 +107,59 @@ const viewerConfig = {
 	plugins: [new MiniCssExtractPlugin()]
 }
 
+const editorConfig = {
+	entry: {
+		editor: ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'oboeditor', 'app.js')]
+	},
+	output: {
+		// must match config.webpack.output_dir
+		path: path.join(__dirname, 'build'),
+		publicPath: 'build/',
+		filename: '[name].js'
+	},
+	module: {
+		rules: [
+			{
+				test: /\.svg/,
+				use: {
+					loader: 'svg-url-loader',
+					options: {
+						stripdeclarations: true,
+						iesafe: true
+					}
+				}
+			},
+			{
+				test: /\.js?$/,
+				exclude: '/node_modules',
+				loaders: ['babel-loader?presets[]=react&presets[]=env']
+			},
+			{
+				test: /\.s?css$/,
+				use: [
+					MiniCssExtractPlugin.loader,
+					'css-loader',
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: () => [autoprefixer]
+						}
+					},
+					'sass-loader'
+				]
+			}
+		]
+	},
+	externals: {
+		react: 'React',
+		'react-dom': 'ReactDOM',
+		backbone: 'Backbone',
+		katex: 'katex',
+		Common: 'Common'
+	},
+	plugins: [new MiniCssExtractPlugin()]
+}
+
 const mainConfig = {
 	entry: {
 		'viewer-app': ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'viewer', 'app.js')],

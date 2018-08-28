@@ -50,7 +50,6 @@ class EditorStore extends Store {
 	}
 
 	init(model, startingId, startingPath, viewState = {}) {
-		console.log('initing')
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -63,8 +62,6 @@ class EditorStore extends Store {
 			context: 'editor',
 			currentModel: null
 		}
-
-		console.log(this.state)
 
 		this.buildMenu(model)
 		EditorUtil.gotoPath(startingPath)
