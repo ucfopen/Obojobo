@@ -543,7 +543,6 @@ describe('List editor', () => {
 					}
 				},
 				get: i => {
-					console.log(i)
 					return i === 2 ? { type: 'notALevel' } : { type: LIST_LEVEL_NODE }
 				}
 			}
