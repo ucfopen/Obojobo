@@ -11,15 +11,19 @@ const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 describe('List editor', () => {
 	test('Node component', () => {
 		const Node = List.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return { listStyles: {}}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return { listStyles: {} }
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -32,29 +36,37 @@ describe('List editor', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = mount(<Node
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return { listStyles: { type: 'ordered'}}}
-				},
-				filterDescendants: funct => {
-					funct({type: 'mockType'})
-					return [{
-						data: { get: () => { return {}}}
-					}]
-				}
-			}}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-			/>)
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return { listStyles: { type: 'ordered' } }
+						}
+					},
+					filterDescendants: funct => {
+						funct({ type: 'mockType' })
+						return [
+							{
+								data: {
+									get: () => {
+										return {}
+									}
+								}
+							}
+						]
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
-		const click = component
-			.find('button')
-			.simulate('click')
+		const click = component.find('button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -66,44 +78,56 @@ describe('List editor', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = mount(<Node
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return { listStyles: { type: 'unordered'}}}
-				},
-				filterDescendants: funct => {
-					funct({type: 'mockType'})
-					return [{
-						data: { get: () => { return {}}}
-					}]
-				}
-			}}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-			/>)
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return { listStyles: { type: 'unordered' } }
+						}
+					},
+					filterDescendants: funct => {
+						funct({ type: 'mockType' })
+						return [
+							{
+								data: {
+									get: () => {
+										return {}
+									}
+								}
+							}
+						]
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
-		const click = component
-			.find('button')
-			.simulate('click')
+		const click = component.find('button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Level component', () => {
 		const Node = List.components.Level
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return { bulletStyle: 'square', type: 'unordered'}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return { bulletStyle: 'square', type: 'unordered' }
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -111,15 +135,19 @@ describe('List editor', () => {
 
 	test('Level component ordered', () => {
 		const Node = List.components.Level
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return { bulletStyle: 'alpha', type: 'ordered'}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return { bulletStyle: 'alpha', type: 'ordered' }
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -127,15 +155,19 @@ describe('List editor', () => {
 
 	test('Line component', () => {
 		const Node = List.components.Line
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -159,14 +191,18 @@ describe('List editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return { listStyles: {}} }
+				get: type => {
+					return { listStyles: {} }
+				}
 			},
 			text: 'mockText',
 			nodes: [
 				{
 					type: LIST_LEVEL_NODE,
 					data: {
-						get: type => { return {} }
+						get: type => {
+							return {}
+						}
 					},
 					nodes: [
 						{
@@ -190,7 +226,9 @@ describe('List editor', () => {
 						{
 							type: LIST_LEVEL_NODE,
 							data: {
-								get: type => { return {} }
+								get: type => {
+									return {}
+								}
 							},
 							nodes: [
 								{
@@ -216,10 +254,10 @@ describe('List editor', () => {
 				listStyles: {},
 				textGroup: [
 					{
-						text: { value: 'mockLine1'}
+						text: { value: 'mockLine1' }
 					},
 					{
-						text: { value: 'mockLine1'},
+						text: { value: 'mockLine1' },
 						data: { indent: 5 }
 					}
 				]
@@ -241,10 +279,10 @@ describe('List editor', () => {
 				},
 				textGroup: [
 					{
-						text: { value: 'mockLine1'}
+						text: { value: 'mockLine1' }
 					},
 					{
-						text: { value: 'mockLine1'},
+						text: { value: 'mockLine1' },
 						data: { indent: 5 }
 					}
 				]
@@ -260,7 +298,9 @@ describe('List editor', () => {
 			node: {
 				type: LIST_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}
@@ -273,7 +313,9 @@ describe('List editor', () => {
 			node: {
 				type: LIST_LEVEL_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}
@@ -286,7 +328,9 @@ describe('List editor', () => {
 			node: {
 				type: LIST_LINE_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}
@@ -297,7 +341,7 @@ describe('List editor', () => {
 	test('plugins.onKeyDown deals with [Enter]', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey'
 					}
@@ -323,10 +367,14 @@ describe('List editor', () => {
 	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey',
-						data: { get: () => { return { indent: 0}}}
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
 					}
 				],
 				document: {
@@ -351,19 +399,29 @@ describe('List editor', () => {
 	test('plugins.onKeyDown deals with [Tab]', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey',
-						data: { get: () => { return { indent: 0}}}
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
 					}
 				],
 				document: {
 					getClosest: (key, funct) => {
-						funct({type: 'mockType'})
-						return { data: { get: () => { return {
-							bulletStyle: 'square',
-							type: 'unordered'
-						}}}}
+						funct({ type: 'mockType' })
+						return {
+							data: {
+								get: () => {
+									return {
+										bulletStyle: 'square',
+										type: 'unordered'
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -384,19 +442,29 @@ describe('List editor', () => {
 	test('plugins.onKeyDown deals with [Tab] on ordered lists', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey',
-						data: { get: () => { return { indent: 0}}}
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
 					}
 				],
 				document: {
 					getClosest: (key, funct) => {
-						funct({type: 'mockType'})
-						return { data: { get: () => { return {
-							bulletStyle: 'square',
-							type: 'ordered'
-						}}}}
+						funct({ type: 'mockType' })
+						return {
+							data: {
+								get: () => {
+									return {
+										bulletStyle: 'square',
+										type: 'ordered'
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -417,15 +485,19 @@ describe('List editor', () => {
 	test('plugins.onKeyDown deals with random keys', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey',
-						data: { get: () => { return { indent: 0}}}
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
 					}
 				],
 				document: {
 					getClosest: (key, funct) => {
-						funct({type: 'mockType'})
+						funct({ type: 'mockType' })
 						return true
 					}
 				}
@@ -480,14 +552,12 @@ describe('List editor', () => {
 		const change = {
 			mergeNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = jest.fn().mockImplementationOnce(
-			funct => funct(change)
-		)
+		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => funct(change))
 
 		const call = List.plugins.validateNode(node)
 		call(change)
 
-		expect(change.mergeNodesByKey).toHaveBeenCalled()
+		expect(change.mergeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
@@ -496,11 +566,17 @@ describe('List editor', () => {
 		}
 
 		List.plugins.schema.blocks[LIST_NODE].normalize(change, CHILD_TYPE_INVALID, {
-			node: { data: { get: () => { return {
-				listStyles: {
-					type: 'unordered'
+			node: {
+				data: {
+					get: () => {
+						return {
+							listStyles: {
+								type: 'unordered'
+							}
+						}
+					}
 				}
-			}}}},
+			},
 			child: { key: 'mockKey' },
 			index: null
 		})
@@ -514,11 +590,17 @@ describe('List editor', () => {
 		}
 
 		List.plugins.schema.blocks[LIST_NODE].normalize(change, CHILD_REQUIRED, {
-			node: { data: { get: () => { return {
-				listStyles: {
-					type: 'ordered'
+			node: {
+				data: {
+					get: () => {
+						return {
+							listStyles: {
+								type: 'ordered'
+							}
+						}
+					}
 				}
-			}}}},
+			},
 			child: null,
 			index: 0
 		})
@@ -539,10 +621,10 @@ describe('List editor', () => {
 			node: {
 				nodes: [
 					{
-						type: LIST_LINE_NODE,
+						type: LIST_LINE_NODE
 					},
 					{
-						type: 'mockNode',
+						type: 'mockNode'
 					}
 				]
 			},
@@ -567,7 +649,7 @@ describe('List editor', () => {
 
 		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_TYPE_INVALID, {
 			node: {},
-			child: { object: 'block'},
+			child: { object: 'block' },
 			index: 0
 		})
 
@@ -582,7 +664,7 @@ describe('List editor', () => {
 
 		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_TYPE_INVALID, {
 			node: {},
-			child: { object: 'text'},
+			child: { object: 'text' },
 			index: 0
 		})
 
@@ -597,7 +679,7 @@ describe('List editor', () => {
 
 		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_REQUIRED, {
 			node: {},
-			child: { object: 'block'},
+			child: { object: 'block' },
 			index: 0
 		})
 
