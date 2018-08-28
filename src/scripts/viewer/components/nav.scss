@@ -176,6 +176,15 @@
 			color: inherit;
 			font-weight: inherit;
 		}
+
+		&::after {
+			top: 0;
+			left: -0.55em;
+			width: 0.8em;
+			height: 0.8em;
+			background: $color-bg;
+			border: solid 2px $color-text-minor;
+		}
 	}
 
 	.link,
@@ -194,13 +203,7 @@
 			content: '';
 			position: absolute;
 			display: inline-block;
-			top: 0;
-			left: -0.55em;
-			width: 0.8em;
-			height: 0.8em;
-			border: solid 2px $color-text-minor;
 			border-radius: 0.8em;
-			background: $color-bg;
 		}
 
 		&:hover {

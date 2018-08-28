@@ -46,6 +46,62 @@ const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
 const Nav = require('../../../src/scripts/viewer/components/nav').default
 
 describe('Nav', () => {
+	const navItems = [
+		{
+			id: 4,
+			type: 'heading',
+			label: 'label4'
+		},
+		{
+			id: 5,
+			type: 'link',
+			label: 'label5',
+			flags: {
+				visited: false,
+				complete: false,
+				correct: false
+			}
+		},
+		// test StyleableText
+		{
+			id: 5,
+			type: 'link',
+			label: new MockStylableText('mockMe'),
+			flags: {
+				visited: false,
+				complete: false,
+				correct: false
+			}
+		},
+		// flip the flags
+		{
+			id: 56,
+			type: 'link',
+			label: 'label56',
+			flags: {
+				visited: true,
+				complete: true,
+				correct: true
+			}
+		},
+		{
+			id: 678,
+			type: 'non-existant-type',
+			label: 'label678',
+			flags: {
+				correct: false
+			}
+		},
+		{
+			id: 6,
+			type: 'sub-link',
+			label: 'label6',
+			flags: {
+				correct: false
+			}
+		}
+	]
+
 	beforeEach(() => {
 		jest.clearAllMocks()
 	})
@@ -89,66 +145,26 @@ describe('Nav', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('renders all list item types', () => {
-		NavUtil.getOrderedList.mockReturnValueOnce([
-			{
-				id: 4,
-				type: 'heading',
-				label: 'label4'
-			},
-			{
-				id: 5,
-				type: 'link',
-				label: 'label5',
-				flags: {
-					visited: false,
-					complete: false,
-					correct: false
-				}
-			},
-			// test StyleableText
-			{
-				id: 5,
-				type: 'link',
-				label: new MockStylableText('mockMe'),
-				flags: {
-					visited: false,
-					complete: false,
-					correct: false
-				}
-			},
-			// flip the flags
-			{
-				id: 56,
-				type: 'link',
-				label: 'label56',
-				flags: {
-					visited: true,
-					complete: true,
-					correct: true
-				}
-			},
-			{
-				id: 678,
-				type: 'non-existant-type',
-				label: 'label678',
-				flags: {
-					correct: false
-				}
-			},
-			{
-				id: 6,
-				type: 'sub-link',
-				label: 'label6',
-				flags: {
-					correct: false
-				}
-			}
-		])
+	test('renders all list item types (locked=true)', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce(navItems)
 		const props = {
 			navState: {
 				open: false,
 				locked: true,
+				navTargetId: 56 // select this item
+			}
+		}
+		const component = renderer.create(<Nav {...props} />)
+		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('renders all list item types (locked=false)', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce(navItems)
+		const props = {
+			navState: {
+				open: false,
+				locked: false,
 				navTargetId: 56 // select this item
 			}
 		}

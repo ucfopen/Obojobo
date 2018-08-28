@@ -52,4 +52,15 @@ describe('Inline Nav Button', () => {
 		const component = renderer.create(<NavButton {...getProps('goNext', true)} />)
 		expect(component).toMatchSnapshot()
 	})
+
+	test('onClick calls blur on event.target', () => {
+		const blurFn = jest.fn()
+		const el = shallow(<NavButton {...getProps('goNext')} />)
+		el.find('.viewer--components--inline-nav-button').simulate('click', {
+			target: {
+				blur: blurFn
+			}
+		})
+		expect(blurFn).toHaveBeenCalled()
+	})
 })

@@ -1,6 +1,74 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Nav renders all list item types 1`] = `
+exports[`Nav renders all list item types (locked=false) 1`] = `
+<div
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul>
+    <li
+      className="heading is-not-selected"
+    >
+      label4
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        tabIndex={null}
+      >
+        label5
+      </button>
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        tabIndex={null}
+      >
+        <div
+          className="mockStylableText"
+          text={
+            MockStylableText {
+              "value": "mockMe",
+            }
+          }
+        />
+      </button>
+    </li>
+    <li
+      className="link is-selected is-visited is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        tabIndex={null}
+      >
+        label56
+      </button>
+    </li>
+    <li
+      className="sub-link is-not-selected is-not-correct is-last-in-list"
+      onClick={[Function]}
+    >
+      label6
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+  >
+    Obojobo
+  </div>
+</div>
+`;
+
+exports[`Nav renders all list item types (locked=true) 1`] = `
 <div
   className="viewer--components--nav is-locked is-not-open is-enabled"
 >
@@ -14,17 +82,17 @@ exports[`Nav renders all list item types 1`] = `
     <li
       className="heading is-not-selected"
     >
-      <a>
-        label4
-      </a>
+      label4
     </li>
     <li
       className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
-      <a>
+      <button
+        tabIndex={-1}
+      >
         label5
-      </a>
+      </button>
       <div
         className="lock-icon"
       />
@@ -33,14 +101,18 @@ exports[`Nav renders all list item types 1`] = `
       className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
-      <div
-        className="mockStylableText"
-        text={
-          MockStylableText {
-            "value": "mockMe",
+      <button
+        tabIndex={-1}
+      >
+        <div
+          className="mockStylableText"
+          text={
+            MockStylableText {
+              "value": "mockMe",
+            }
           }
-        }
-      />
+        />
+      </button>
       <div
         className="lock-icon"
       />
@@ -49,9 +121,11 @@ exports[`Nav renders all list item types 1`] = `
       className="link is-selected is-visited is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
-      <a>
+      <button
+        tabIndex={-1}
+      >
         label56
-      </a>
+      </button>
       <div
         className="lock-icon"
       />
@@ -60,9 +134,7 @@ exports[`Nav renders all list item types 1`] = `
       className="sub-link is-not-selected is-not-correct is-last-in-list"
       onClick={[Function]}
     >
-      <a>
-        label6
-      </a>
+      label6
       <div
         className="lock-icon"
       />

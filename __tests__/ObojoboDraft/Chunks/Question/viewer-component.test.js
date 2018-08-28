@@ -316,7 +316,7 @@ describe('MCAssessment', () => {
 		expect(value).toEqual(undefined) //eslint-disable-line
 	})
 
-	test('onClickBlocker returns FocusUtil.focusComponent in practice mode', () => {
+	test('onClickBlocker calls FocusUtil.focusComponent in practice mode', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
@@ -326,16 +326,13 @@ describe('MCAssessment', () => {
 		}
 		const model = OboModel.create(questionJSON)
 
-		FocusUtil.focusComponent.mockReturnValueOnce('mockFocusCall')
-
 		const component = shallow(
 			<Question model={model} moduleData={moduleData} showContentOnly={true} />
 		)
 
-		const value = component.instance().onClickBlocker()
+		component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
 		expect(FocusUtil.focusComponent).toHaveBeenCalled()
-		expect(value).toEqual('mockFocusCall')
 	})
 })

@@ -10,7 +10,7 @@ export default class InlineNavButton extends React.Component {
 			return
 		}
 
-		event.target.blur()
+		if (event && event.target) event.target.blur()
 
 		switch (this.props.type) {
 			case 'prev':

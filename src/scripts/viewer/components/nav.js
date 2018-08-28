@@ -37,7 +37,7 @@ export default class Nav extends React.Component {
 		return <button tabIndex={isDisabled ? -1 : null}>{this.renderLabel(label)}</button>
 	}
 
-	renderLink(index, isSelected, list, lockEl = null) {
+	renderLink(index, isSelected, list, lockEl) {
 		const item = list[index]
 		const isFirstInList = !list[index - 1]
 		const isLastInList = !list[index + 1]

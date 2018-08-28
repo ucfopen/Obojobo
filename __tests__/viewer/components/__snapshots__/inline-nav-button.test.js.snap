@@ -1,28 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Inline Nav Button correctly renders when disabled prop is true 1`] = `
-<div
+<button
   className="viewer--components--inline-nav-button is-goNext is-not-enabled"
+  disabled={true}
   onClick={[Function]}
 >
   testTitle
-</div>
+</button>
 `;
 
 exports[`Inline Nav Button correctly renders when type prop is goNext 1`] = `
-<div
+<button
   className="viewer--components--inline-nav-button is-goNext is-enabled"
+  disabled={false}
   onClick={[Function]}
 >
   testTitle
-</div>
+</button>
 `;
 
 exports[`Inline Nav Button correctly renders when type prop is goPrev 1`] = `
-<div
+<button
   className="viewer--components--inline-nav-button is-goPrev is-enabled"
+  disabled={false}
   onClick={[Function]}
 >
   testTitle
-</div>
+</button>
 `;
