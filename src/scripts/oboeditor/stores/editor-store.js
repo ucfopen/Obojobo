@@ -11,8 +11,6 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 
 class EditorStore extends Store {
 	constructor() {
-		let item
-		let oldNavTargetId
 		super('editorstore')
 
 		Dispatcher.on(
@@ -26,11 +24,9 @@ class EditorStore extends Store {
 					this.triggerChange()
 				},
 				'editor:goto': payload => {
-					oldNavTargetId = this.state.navTargetId
 					this.gotoItem(this.state.itemsById[payload.value.id])
 				},
 				'editor:gotoPath': payload => {
-					oldNavTargetId = this.state.navTargetId
 					this.gotoItem(this.state.itemsByPath[payload.value.path])
 				},
 				'editor:addPage': payload => {
@@ -54,6 +50,7 @@ class EditorStore extends Store {
 	}
 
 	init(model, startingId, startingPath, viewState = {}) {
+		console.log('initing')
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -66,6 +63,8 @@ class EditorStore extends Store {
 			context: 'editor',
 			currentModel: null
 		}
+
+		console.log(this.state)
 
 		this.buildMenu(model)
 		EditorUtil.gotoPath(startingPath)
@@ -162,11 +161,7 @@ class EditorStore extends Store {
 
 			let flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
-			childNavItem.fullFlatPath = [
-				'/editor',
-				model.getRoot().get('draftId'),
-				flatPath
-			].join('/')
+			childNavItem.fullFlatPath = ['/editor', model.getRoot().get('draftId'), flatPath].join('/')
 			this.state.itemsByPath[flatPath] = childNavItem
 			this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem
 		}
@@ -182,7 +177,7 @@ class EditorStore extends Store {
 		// Add the newPage to the content
 		const pageModel = OboModel.create(newPage)
 		model.children.forEach(child => {
-			if(child.get('type') === CONTENT_NODE){
+			if (child.get('type') === CONTENT_NODE) {
 				child.children.add(pageModel)
 			}
 		})

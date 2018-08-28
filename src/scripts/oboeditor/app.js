@@ -3,8 +3,6 @@ import Viewer from 'Viewer'
 
 import Editor from '../oboeditor'
 
-import './polyfills'
-
 let { APIUtil } = Viewer.util
 
 var debounce = function(ms, cb) {
