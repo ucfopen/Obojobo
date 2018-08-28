@@ -3,6 +3,7 @@ import Common from 'Common'
 
 import EditorUtil from '../util/editor-util'
 import APIUtil from '../../viewer/util/api-util'
+import NavItem from './nav-item'
 import generateId from '../generate-ids'
 
 import './editor-nav.scss'
@@ -62,53 +63,7 @@ class EditorNav extends React.Component {
 	}
 
 	renderLabel(label) {
-		return <a>{label}</a>
-	}
-
-	renderDropDown(item) {
-		const model = OboModel.models[item.id]
-		return (
-			<div className={'dropdown'}>
-				<span className={'drop-arrow'}>▼</span>
-				<div className={'drop-content'}>
-					{ model.isFirst() ? null :
-						<button
-							onClick={() => this.movePage(item.id, model.getIndex()-1)}>
-							Move Up
-						</button>
-					}
-					{ model.isLast() ? null :
-						<button
-							onClick={() => this.movePage(item.id, model.getIndex()+1)}>
-							Move Down
-						</button>
-					}
-					<button onClick={() => this.renamePage(item.id)}>Edit Name</button>
-					<button onClick={() => this.deletePage(item.id)}>Delete</button>
-					<button>{'Id: '+ item.id}</button>
-				</div>
-			</div>
-		)
-	}
-
-	renderLink(index, isSelected, list) {
-		let item = list[index]
-		let isFirstInList = !list[index - 1]
-		let isLastInList = !list[index + 1]
-
-		let className =
-			'link' +
-			isOrNot(isSelected, 'selected') +
-			isOrNot(item.flags.assessment, 'assessment') +
-			isOrNot(isFirstInList, 'first-in-list') +
-			isOrNot(isLastInList, 'last-in-list')
-
-		return (
-			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLabel(item.label)}
-				{this.renderDropDown(item)}
-			</li>
-		)
+		return label
 	}
 
 	renderHeading(index, item) {
@@ -139,12 +94,19 @@ class EditorNav extends React.Component {
 							case 'heading':
 								return this.renderHeading(index, item)
 							case 'link':
-								return this.renderLink(index, this.state.navTargetId === item.id, list)
+								return (
+									<NavItem
+										key={item.id}
+										index={index}
+										isSelected={this.state.navTargetId === item.id}
+										list={list}
+										onClick={this.onClick}
+								/>)
 						}
 					})}
 				</ul>
-				<button onClick={() => this.addPage()}>{'Add Page'}</button>
-				<button onClick={() => this.addAssessment()}>{'Add Assessment'}</button>
+				<button className={'nav-modify'} onClick={() => this.addPage()}>{'+ Add Page'}</button>
+				<button className={'nav-modify'} onClick={() => this.addAssessment()}>{'+ Add Assessment'}</button>
 			</div>
 		)
 	}

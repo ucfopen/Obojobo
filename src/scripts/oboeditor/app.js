@@ -1,9 +1,6 @@
 import Common from 'Common'
-import Viewer from 'Viewer'
 
 import Editor from '../oboeditor'
-
-let { APIUtil } = Viewer.util
 
 var debounce = function(ms, cb) {
 	clearTimeout(debounce.id)
