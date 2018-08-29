@@ -11,7 +11,7 @@ const { NavUtil } = Viewer.util
 export default class Page extends React.Component {
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.moduleData.navState.navTargetId !== this.props.moduleData.navState.navTargetId) {
-			return NavUtil.setFlag(this.props.moduleData.navState.navTargetId, 'visited', true)
+			NavUtil.setFlag(this.props.moduleData.navState.navTargetId, 'visited', true)
 		}
 	}
 

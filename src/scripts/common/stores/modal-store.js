@@ -19,6 +19,7 @@ class ModalStore extends Store {
 	}
 
 	_show(modalItem) {
+		this.lastActiveElement = document.activeElement
 		this.state.modals.push(modalItem)
 		this.triggerChange()
 	}
@@ -26,6 +27,12 @@ class ModalStore extends Store {
 	_hide() {
 		this.state.modals.shift()
 		this.triggerChange()
+
+		if (this.lastActiveElement && document.body.contains(this.lastActiveElement)) {
+			this.lastActiveElement.focus()
+		}
+
+		delete this.lastActiveElement
 	}
 
 	getState() {

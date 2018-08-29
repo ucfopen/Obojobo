@@ -1,4 +1,4 @@
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
@@ -28,6 +28,14 @@ jest.mock('../../../src/scripts/common/index', () => ({
 	text: {
 		StyleableText: MockStylableText,
 		StyleableTextComponent: mockStylableComponent
+	},
+	components: {
+		Button: require('../../../src/scripts/common/components/button').default
+	},
+	flux: {
+		Dispatcher: {
+			trigger: jest.fn()
+		}
 	}
 }))
 
@@ -44,6 +52,7 @@ jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({}))
 
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
 const Nav = require('../../../src/scripts/viewer/components/nav').default
+const Common = require('../../../src/scripts/common/index')
 
 describe('Nav', () => {
 	const navItems = [
@@ -233,5 +242,70 @@ describe('Nav', () => {
 
 		el.find('li').simulate('click')
 		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+	})
+
+	test('onClickSkipNavigation fires event', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 5,
+				type: 'sub-link',
+				label: 'label',
+				flags: {
+					correct: false
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 5 // select this item
+			}
+		}
+		const el = shallow(<Nav {...props} />)
+
+		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+		el.find('.skip-nav-button').simulate('click')
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('viewer:focusOnContent')
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+	})
+
+	test('Clicking on a link calls viewer:focusOnContent', () => {
+		NavUtil.getOrderedList.mockReturnValue([
+			{
+				id: 'mock-id',
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					visited: false,
+					complete: false,
+					correct: false
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: false,
+				locked: false,
+				navTargetId: 'mock-id' // select this item
+			}
+		}
+		const el = mount(<Nav {...props} />)
+
+		NavUtil.canNavigate.mockReturnValueOnce(true)
+		const li = el.find('li')
+
+		li.simulate('click')
+
+		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+
+		// Force a re-render and a call to componentDidUpdate:
+		el.setProps({ className: 'new-class-name' })
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('viewer:focusOnContent')
+
+		el.setProps({ className: 'new-class-name-2' })
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
 	})
 })

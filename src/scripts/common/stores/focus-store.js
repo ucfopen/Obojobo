@@ -1,5 +1,6 @@
 import Store from '../../common/flux/store'
 import Dispatcher from '../../common/flux/dispatcher'
+import OboModel from '../../common/models/obo-model'
 
 const TRANSITION_TIME_MS = 800
 let timeoutId = null
@@ -7,6 +8,8 @@ let timeoutId = null
 class FocusStore extends Store {
 	constructor() {
 		super('focusStore')
+
+		this.boundOnDocumentFocusIn = this.onDocumentFocusIn.bind(this)
 
 		Dispatcher.on('focus:component', payload => {
 			this._focus(payload.value.id)
@@ -22,10 +25,30 @@ class FocusStore extends Store {
 		}
 	}
 
+	onDocumentFocusIn(event) {
+		// When focusing on another element we want to remove
+		// the focus effect if the element is not part of the focused element
+		let focussedElement
+		const focussedModel = OboModel.models[this.state.focussedId]
+		if (focussedModel) focussedElement = focussedModel.getDomEl()
+
+		if (!focussedElement || !focussedElement.contains(event.target)) {
+			this._unfocus()
+		}
+	}
+
 	_focus(id) {
+		document.addEventListener('focusin', this.boundOnDocumentFocusIn)
+
 		this.state.viewState = 'enter'
 		this.state.focussedId = id
+
 		this.triggerChange()
+
+		if (OboModel.models[this.state.focussedId]) {
+			const domEl = OboModel.models[this.state.focussedId].getDomEl()
+			if (domEl && domEl.focus) domEl.focus()
+		}
 
 		window.clearTimeout(timeoutId)
 		timeoutId = window.setTimeout(() => {
@@ -35,6 +58,8 @@ class FocusStore extends Store {
 	}
 
 	_unfocus() {
+		document.removeEventListener('focusin', this.boundOnDocumentFocusIn)
+
 		this.state.viewState = 'leave'
 		this.triggerChange()
 

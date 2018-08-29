@@ -8,6 +8,7 @@ exports[`MCAssessment Question component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  tabIndex="-1"
 >
   <div
     className="flipper"
@@ -47,6 +48,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  tabIndex="-1"
 >
   <div
     className="flipper"
@@ -86,6 +88,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  tabIndex="-1"
 >
   <div
     className="flipper"
@@ -125,6 +128,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  tabIndex="-1"
 >
   <div
     className="flipper"
@@ -164,6 +168,7 @@ exports[`MCAssessment Question component in review mode 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  tabIndex="-1"
 >
   <div
     className="flipper"
@@ -203,6 +208,7 @@ exports[`MCAssessment Question component with content only 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  tabIndex="-1"
 >
   <div
     className="flipper"
@@ -231,6 +237,7 @@ exports[`MCAssessment Question component with content only in review mode 1`] = 
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Question"
   id="obo-id"
+  tabIndex="-1"
 >
   <div
     className="flipper"

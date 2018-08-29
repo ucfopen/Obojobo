@@ -70,6 +70,7 @@ export default class Question extends React.Component {
 				model={this.props.model}
 				moduleData={this.props.moduleData}
 				className={classNames}
+				tabIndex="-1"
 			>
 				<div className="flipper">
 					<div className="content-back">
@@ -109,6 +110,7 @@ export default class Question extends React.Component {
 				model={this.props.model}
 				moduleData={this.props.moduleData}
 				className={className}
+				tabIndex="-1"
 			>
 				<div className="flipper">
 					<div className="content back">

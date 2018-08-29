@@ -275,6 +275,7 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Question"
           id="obo-question"
+          tabIndex="-1"
         >
           <div
             className="flipper"

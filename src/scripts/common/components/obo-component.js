@@ -47,7 +47,7 @@ class OboComponent extends React.Component {
 			<Tag
 				{...otherProps}
 				className={className}
-				id={`obo-${this.props.model.get('id')}`}
+				id={this.props.model.getDomId()}
 				data-obo-component
 				data-id={this.props.model.get('id')}
 				data-type={this.props.model.get('type')}

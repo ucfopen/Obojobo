@@ -165,18 +165,6 @@
 			}
 		}
 
-		> button {
-			border: none;
-			font-size: 1em;
-			background: transparent;
-			font-family: $font-default;
-			cursor: pointer;
-			padding: 0;
-			margin: 0;
-			color: inherit;
-			font-weight: inherit;
-		}
-
 		&::after {
 			top: 0;
 			left: -0.55em;
@@ -230,6 +218,19 @@
 					height: 2em;
 				}
 			}
+		}
+
+		> button {
+			border: none;
+			font-size: 1em;
+			background: transparent;
+			font-family: $font-default;
+			cursor: pointer;
+			padding: 0;
+			margin: 0;
+			color: inherit;
+			font-weight: inherit;
+			text-align: left;
 		}
 	}
 
@@ -294,9 +295,25 @@
 		width: 1.5rem;
 		z-index: 6;
 		transform: none;
+	}
 
-		&:focus {
-			outline: none;
+	.skip-nav-button {
+		position: absolute;
+		z-index: 6;
+		left: 2.6em;
+		top: 0.55em;
+		font-size: 0.8em;
+
+		> button {
+			position: absolute;
+			left: -20em;
+			top: 0;
+			padding: 0.5em 1em;
+			white-space: nowrap;
+
+			&:focus {
+				left: 0;
+			}
 		}
 	}
 

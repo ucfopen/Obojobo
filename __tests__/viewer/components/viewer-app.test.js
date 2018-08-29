@@ -93,6 +93,54 @@ describe('ViewerApp', () => {
 		})
 	})
 
+	test('focusOnContent focuses on the Module element', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const mockFocus = jest.fn()
+			const origGetElementById = document.getElementById
+			document.getElementById = jest.fn()
+			document.getElementById.mockReturnValueOnce({
+				focus: mockFocus
+			})
+
+			component.instance().focusOnContent()
+
+			expect(mockFocus).toHaveBeenCalledTimes(1)
+
+			component.unmount()
+			document.getElementById = origGetElementById
+			done()
+		})
+	})
+
+	test('focusOnContent does not call focus if element cannot be found', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const mockFocus = jest.fn()
+			const origGetElementById = document.getElementById
+			document.getElementById = jest.fn()
+			document.getElementById.mockReturnValueOnce(null)
+
+			component.instance().focusOnContent()
+
+			expect(mockFocus).not.toHaveBeenCalled()
+
+			component.unmount()
+			document.getElementById = origGetElementById
+			done()
+		})
+	})
+
 	test('ViewerApp component', done => {
 		expect.assertions(1)
 		mocksForMount()
@@ -179,7 +227,7 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
-		NavUtil.getNavTargetModel.mockReturnValueOnce({ title: 'mockTarget' })
+		NavUtil.getNavTarget.mockReturnValueOnce({ label: 'mockTarget' })
 		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()

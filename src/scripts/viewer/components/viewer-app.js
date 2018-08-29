@@ -53,6 +53,7 @@ export default class ViewerApp extends React.Component {
 			ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value
 		})
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
+		Dispatcher.on('viewer:focusOnContent', this.focusOnContent.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
 
 		const state = {
@@ -377,6 +378,13 @@ export default class ViewerApp extends React.Component {
 		})
 	}
 
+	focusOnContent() {
+		const id = OboModel.getRoot().getDomId()
+		const el = document.getElementById(id)
+
+		if (el) el.focus()
+	}
+
 	clearPreviewScores() {
 		APIUtil.clearPreviewScores({
 			draftId: this.state.model.get('draftId'),
@@ -431,10 +439,10 @@ export default class ViewerApp extends React.Component {
 
 		const ModuleComponent = this.state.model.getComponentClass()
 
-		const navTargetModel = NavUtil.getNavTargetModel(this.state.navState)
-		let navTargetTitle = '?'
-		if (navTargetModel && navTargetModel.title) {
-			navTargetTitle = navTargetModel.title
+		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
+		let navTargetLabel = ''
+		if (navTargetItem && navTargetItem.label) {
+			navTargetLabel = navTargetItem.label
 		}
 
 		let prevModel = (nextModel = null)
@@ -504,7 +512,7 @@ export default class ViewerApp extends React.Component {
 					className={classNames}
 				>
 					{hideViewer ? null : (
-						<Header moduleTitle={this.state.model.title} location={navTargetTitle} />
+						<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
 					)}
 					{hideViewer ? null : <Nav navState={this.state.navState} />}
 					{hideViewer ? null : prevComp}
