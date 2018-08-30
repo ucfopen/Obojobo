@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`YouTube editor Node builds the expected component 1`] = `
+<div
+  className="component"
+  dummy="dummyData"
+>
+  <div
+    className="obojobo-draft--chunks--you-tube viewer"
+    style={
+      Object {
+        "outline": "none",
+        "position": "relative",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "cursor": "cell",
+          "display": "block",
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+          "zIndex": 1,
+        }
+      }
+    />
+    <iframe
+      allowFullScreen="true"
+      frameBorder="0"
+      src="https://www.youtube.com/embed/undefined"
+    />
+    <input
+      onChange={[Function]}
+      onClick={[Function]}
+      value={undefined}
+    />
+  </div>
+</div>
+`;
+
+exports[`YouTube editor Node component changes input 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--you-tube viewer\\" style=\\"position: relative; outline: 2px solid blue;\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe src=\\"https://www.youtube.com/embed/undefined\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><input></div></div>"`;
+
+exports[`YouTube editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "width": "large",
+    },
+  },
+  "isVoid": true,
+  "key": "mockKey",
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`YouTube editor oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
+Object {
+  "data": Object {
+    "content": Object {},
+  },
+  "isVoid": true,
+  "key": "mockKey",
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`YouTube editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.YouTube",
+    }
+  }
+/>
+`;
+
+exports[`YouTube editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {},
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

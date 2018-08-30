@@ -15,10 +15,14 @@ class Node extends React.Component {
 
 		this.setState({ latex: event.target.value })
 
-		change.setNodeByKey(this.props.node.key, { data: { content: {
-			latex: event.target.value,
-			label: this.state.latex
-		}}})
+		change.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					latex: event.target.value,
+					label: this.state.latex
+				}
+			}
+		})
 		editor.onChange(change)
 	}
 
@@ -28,17 +32,20 @@ class Node extends React.Component {
 
 		this.setState({ label: event.target.value })
 
-		change.setNodeByKey(this.props.node.key, { data: { content: {
-			label: event.target.value,
-			latex: this.state.latex
-		}}})
+		change.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					label: event.target.value,
+					latex: this.state.latex
+				}
+			}
+		})
 		editor.onChange(change)
 	}
 
 	renderLatex() {
 		let katexHtml = getLatexHtml(this.state.latex)
 		if (katexHtml.error) {
-			console.log(katexHtml)
 			return (
 				<div className={'katex-container katex-error'}>
 					<p>{katexHtml.error.message}</p>
@@ -47,17 +54,11 @@ class Node extends React.Component {
 		}
 
 		katexHtml = katexHtml.html
-		if (katexHtml.length === 0) {
-			return null
-		}
 
 		return (
 			<div className={'non-editable-chunk'}>
-				<div
-					className="katex-container"
-					dangerouslySetInnerHTML={{ __html: katexHtml }}
-				/>
-				{this.state.label === '' ? null : (<div className="equation-label">{this.state.label}</div>)}
+				<div className="katex-container" dangerouslySetInnerHTML={{ __html: katexHtml }} />
+				{this.state.label === '' ? null : <div className="equation-label">{this.state.label}</div>}
 			</div>
 		)
 	}
@@ -74,7 +75,8 @@ class Node extends React.Component {
 						value={this.state.latex}
 						onChange={event => this.handleLatexChange(event)}
 						onClick={event => event.stopPropagation()}
-						frameBorder="0"/>
+						frameBorder="0"
+					/>
 				</div>
 				<div>
 					<p>Equation Label</p>
@@ -83,7 +85,8 @@ class Node extends React.Component {
 						value={this.state.label}
 						onChange={event => this.handleLabelChange(event)}
 						onClick={event => event.stopPropagation()}
-						frameBorder="0"/>
+						frameBorder="0"
+					/>
 				</div>
 			</div>
 		)
@@ -91,7 +94,10 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div className={'component obojobo-draft--chunks--math-equation pad align-center'} {...this.props.attributes} >
+			<div
+				className={'component obojobo-draft--chunks--math-equation pad align-center'}
+				{...this.props.attributes}
+			>
 				{this.renderLatex()}
 				{this.renderEquationEditor()}
 			</div>
@@ -101,7 +107,7 @@ class Node extends React.Component {
 
 const getLatexHtml = latex => {
 	try {
-		let html = katex.renderToString(latex, { displayMode: true })
+		const html = katex.renderToString(latex, { displayMode: true })
 		return { html }
 	} catch (e) {
 		return { error: e }
@@ -112,7 +118,7 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: MATH_NODE,
-			data: { content: { latex: '', label: ''} },
+			data: { content: { latex: '', label: '' } },
 			isVoid: true
 		})
 		.collapseToStartOfNextText()
@@ -158,12 +164,12 @@ const plugins = {
 
 const MathEquation = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		insertNode,
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }

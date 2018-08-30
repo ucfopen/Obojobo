@@ -8,15 +8,19 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 describe('Text editor', () => {
 	test('Node builds the expected component', () => {
 		const Node = Text.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -40,9 +44,26 @@ describe('Text editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return {} }
+				get: type => {
+					return {}
+				}
 			},
-			text: 'mockText'
+			text: 'mockText',
+			nodes: [
+				{
+					leaves: [
+						{
+							text: 'mockText',
+							marks: [
+								{
+									type: 'b',
+									data: {}
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 		const oboNode = Text.helpers.slateToObo(slateNode)
 
@@ -53,18 +74,31 @@ describe('Text editor', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { width: 'large' }
+			content: {
+				textGroup: [
+					{
+						text: { value: 'mockText' }
+					}
+				]
+			}
 		}
 		const slateNode = Text.helpers.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
+	test('oboToSlate converts an OboNode to a Slate node with an indent', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: {}
+			content: {
+				textGroup: [
+					{
+						data: { indent: 1 },
+						text: { value: 'mockText' }
+					}
+				]
+			}
 		}
 		const slateNode = Text.helpers.oboToSlate(oboNode)
 
@@ -76,11 +110,137 @@ describe('Text editor', () => {
 			node: {
 				type: TEXT_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}
 
 		expect(Text.plugins.renderNode(props)).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						type: TEXT_NODE,
+						key: 'mockBlockKey',
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			}
+		}
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Tab',
+			shiftKey: true,
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Shift]+[Tab] with indented text', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						type: TEXT_NODE,
+						key: 'mockBlockKey',
+						data: {
+							get: () => {
+								return { indent: 6 }
+							}
+						}
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			}
+		}
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Tab',
+			shiftKey: true,
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Tab]', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						type: TEXT_NODE,
+						key: 'mockBlockKey',
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
+					}
+				]
+			}
+		}
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with unregistered key', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						type: TEXT_NODE,
+						key: 'mockBlockKey',
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
+					}
+				]
+			}
+		}
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'k',
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(change.setNodeByKey).not.toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 })

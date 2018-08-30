@@ -6,18 +6,234 @@ import Figure from '../../../../ObojoboDraft/Chunks/Figure/editor'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
 describe('Figure editor', () => {
+	beforeEach(() => {
+		jest.restoreAllMocks()
+		jest.resetAllMocks()
+	})
 	test('Node builds the expected component', () => {
 		const Node = Figure.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component edits alt text', () => {
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce(null)
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component edits url', () => {
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce(null)
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component deletes self', () => {
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce(null)
+
+		const change = {
+			removeNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component changes size', () => {
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce(100).mockReturnValueOnce(100)
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component.find('select').simulate('change', {
+			target: { value: 'custom' }
+		})
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component changes size with no width or height', () => {
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce(null).mockReturnValueOnce(null)
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component.find('select').simulate('change', {
+			target: { value: 'custom' }
+		})
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component changes size to small', () => {
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		const click = component.find('select').simulate('click', {
+			stopPropagation: () => true
+		})
+
+		const click2 = component.find('select').simulate('change', {
+			target: { value: 'small' }
+		})
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -40,7 +256,9 @@ describe('Figure editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return {} }
+				get: type => {
+					return {}
+				}
 			},
 			text: 'mockText',
 			nodes: [
@@ -82,7 +300,7 @@ describe('Figure editor', () => {
 			content: {
 				textGroup: [
 					{
-						text: {value: 'mockCaption'}
+						text: { value: 'mockCaption' }
 					}
 				]
 			}
@@ -97,7 +315,9 @@ describe('Figure editor', () => {
 			node: {
 				type: FIGURE_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}

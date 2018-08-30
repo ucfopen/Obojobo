@@ -14,26 +14,14 @@ const Node = props => {
 	)
 }
 
-const toggleNode = change => {
-	// Find the current deepest heading level
-	let deepest = 0
-
-	change.value.blocks.forEach(block => {
-		if (block.data.get('content')
-			&& block.data.get('content').level
-			&& block.data.get('content').level > 0) {
-			deepest = block.data.get('content').level
-		}
-	})
-
-	// Increment to the next heading level, or text if h6
-	deepest = (deepest + 1) % 7
-
-	change.setBlocks(
-		deepest === 0
-			? { type: TEXT_NODE, data: { content: { indent: 0 }}}
-			: { type: HEADING_NODE, data: { content: { level: deepest }}}
-	)
+const insertNode = change => {
+	change
+		.insertBlock({
+			type: HEADING_NODE,
+			data: { content: { level: 2 } }
+		})
+		.collapseToStartOfNextText()
+		.focus()
 }
 
 const slateToObo = node => {
@@ -69,16 +57,6 @@ const slateToObo = node => {
 	json.children = []
 
 	return json
-}
-
-const insertNode = change => {
-	change
-		.insertBlock({
-			type: HEADING_NODE,
-			data: { content: { level: 2 }}
-		})
-		.collapseToStartOfNextText()
-		.focus()
 }
 
 const oboToSlate = node => {
@@ -124,13 +102,12 @@ const plugins = {
 
 const Heading = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
-		toggleNode,
 		insertNode,
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }

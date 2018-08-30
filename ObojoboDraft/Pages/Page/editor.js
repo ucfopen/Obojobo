@@ -38,13 +38,11 @@ const nodes = {
 	'ObojoboDraft.Chunks.MCAssessment': MCAssessment,
 	'ObojoboDraft.Chunks.MCAssessment.MCChoice': MCChoice,
 	'ObojoboDraft.Chunks.MCAssessment.MCAnswer': MCAnswer,
-	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': MCFeedback,
+	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': MCFeedback
 }
 
 const Node = props => {
-	return (
-		<div {...props.attributes}>{props.childen}</div>
-	)
+	return <div {...props.attributes}>{props.childen}</div>
 }
 
 const slateToObo = node => {
@@ -55,7 +53,7 @@ const slateToObo = node => {
 	json.children = []
 
 	node.nodes.forEach(child => {
-		if(nodes.hasOwnProperty(child.type)){
+		if (nodes.hasOwnProperty(child.type)) {
 			json.children.push(nodes[child.type].helpers.slateToObo(child))
 		} else {
 			json.children.push(DefaultNode.helpers.slateToObo(child))
@@ -75,7 +73,7 @@ const oboToSlate = node => {
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		if(nodes.hasOwnProperty(child.type)){
+		if (nodes.hasOwnProperty(child.type)) {
 			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
 		} else {
 			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
@@ -100,8 +98,9 @@ const PageNode = {
 	},
 	helpers: {
 		slateToObo,
-		oboToSlate,
-	}
+		oboToSlate
+	},
+	plugins
 }
 
 export default PageNode

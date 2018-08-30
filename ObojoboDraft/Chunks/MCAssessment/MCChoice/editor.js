@@ -12,7 +12,7 @@ import DefaultNode from '../../../../src/scripts/oboeditor/components/default-no
 
 class Node extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = props.node.data.get('content')
 	}
 	delete(event) {
@@ -23,17 +23,21 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
-	handleScoreChange(event){
+	handleScoreChange(event) {
 		event.stopPropagation()
 		const editor = this.props.editor
 		const change = editor.value.change()
 		const newScore = this.state.score === 100 ? 0 : 100
 
-		this.setState({score: newScore})
+		this.setState({ score: newScore })
 
-		change.setNodeByKey(this.props.node.key, { data: { content: {
-			score: newScore
-		}}})
+		change.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					score: newScore
+				}
+			}
+		})
 		editor.onChange(change)
 	}
 	addFeedback() {
@@ -47,21 +51,21 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
-	render(){
+	render() {
 		const hasFeedback = this.props.node.nodes.size === 2
-		let className =
+		const className =
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
 			isOrNot(this.state.score === 100, 'correct')
 		return (
-			<div
-				className={className}
-				{...this.props.attributes}>
-				<button className={'delete'} onClick={event => this.delete(event)}>X</button>
-				<button className={'correct-button'} onClick={event => this.handleScoreChange(event)}>{this.state.score === 100 ? '✔' : '✖' }</button>
+			<div className={className} {...this.props.attributes}>
+				<button className={'delete'} onClick={event => this.delete(event)}>
+					X
+				</button>
+				<button className={'correct-button'} onClick={event => this.handleScoreChange(event)}>
+					{this.state.score === 100 ? '✔' : '✖'}
+				</button>
 				<div className={'children'}>
-					<div>
-						{this.props.children}
-					</div>
+					<div>{this.props.children}</div>
 				</div>
 				{!hasFeedback ? <button onClick={() => this.addFeedback()}>{'Add Feedback'}</button> : null}
 			</div>
@@ -78,7 +82,7 @@ const slateToObo = node => {
 
 	node.nodes.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		switch(child.type) {
+		switch (child.type) {
 			case MCANSWER_NODE:
 				json.children.push(MCAnswer.helpers.slateToObo(child))
 				break
@@ -103,7 +107,7 @@ const oboToSlate = node => {
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		switch(child.type) {
+		switch (child.type) {
 			case MCANSWER_NODE:
 				json.nodes.push(MCAnswer.helpers.oboToSlate(child))
 				break
@@ -128,10 +132,7 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.MCAssessment.MCChoice': {
-				nodes: [
-					{ types: [MCANSWER_NODE], min: 1, max: 1 },
-					{ types: [MCFEEDBACK_NODE], max: 1}
-				],
+				nodes: [{ types: [MCANSWER_NODE], min: 1, max: 1 }, { types: [MCFEEDBACK_NODE], max: 1 }],
 				normalize: (change, violation, { node, child, index }) => {
 					switch (violation) {
 						case CHILD_REQUIRED: {
@@ -143,14 +144,11 @@ const plugins = {
 						case CHILD_TYPE_INVALID: {
 							// extra children will be deleted by slate defaults
 							if (index >= 2) return
-							// multiple answers will be deleted by slate defaults
+							// multiple answers and feedbacks will be deleted by slate defaults
 							if (index === 1 && child.type !== MCFEEDBACK_NODE) return
-							return change.wrapBlockByKey(
-								child.key,
-								{
-									type: MCANSWER_NODE
-								}
-							)
+							return change.wrapBlockByKey(child.key, {
+								type: MCANSWER_NODE
+							})
 						}
 					}
 				}
@@ -161,18 +159,18 @@ const plugins = {
 
 const MCChoice = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }
 
 const isOrNot = (item, text) => {
-	if(item) return ' is-'+text
-	return ' is-not-'+text
+	if (item) return ' is-' + text
+	return ' is-not-' + text
 }
 
 export default MCChoice
