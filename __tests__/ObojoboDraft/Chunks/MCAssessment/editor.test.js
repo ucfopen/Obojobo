@@ -27,6 +27,7 @@ describe('MCAssessment editor', () => {
 		)
 		const tree = component.toJSON()
 
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -37,20 +38,24 @@ describe('MCAssessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		const component = mount(<Node
-			children={'mockChildren'}
-			node={{
-				key: 'mockKey',
-				nodes: [],
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-			/>)
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					key: 'mockKey',
+					nodes: [],
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
 		const click = component.find('button').simulate('click')
@@ -66,27 +71,29 @@ describe('MCAssessment editor', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = mount(<Node
-			children={'mockChildren'}
-			node={{
-				key: 'mockKey',
-				nodes: [],
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-			/>)
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					key: 'mockKey',
+					nodes: [],
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
-		const click = component
-			.find('input')
-			.simulate('change', {
-				target: { checked: true}
-			})
+		const click = component.find('input').simulate('change', {
+			target: { checked: true }
+		})
 
 		expect(change.setNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
@@ -99,35 +106,35 @@ describe('MCAssessment editor', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = mount(<Node
-			children={'mockChildren'}
-			node={{
-				key: 'mockKey',
-				nodes: [],
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			editor={{
-				value: { change: () => change },
-				onChange: jest.fn()
-			}}
-			/>)
+		const component = mount(
+			<Node
+				children={'mockChildren'}
+				node={{
+					key: 'mockKey',
+					nodes: [],
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
 		const tree = component.html()
 
-		const click = component
-			.find('select')
-			.simulate('change', {
-				target: { value: 'mockValue'},
-				stopPropagation: jest.fn()
-			})
+		const click = component.find('select').simulate('change', {
+			target: { value: 'mockValue' },
+			stopPropagation: jest.fn()
+		})
 
-		const click2 = component
-			.find('select')
-			.simulate('click', {
-				target: { value: 'mockValue'},
-				stopPropagation: jest.fn()
-			})
+		const click2 = component.find('select').simulate('click', {
+			target: { value: 'mockValue' },
+			stopPropagation: jest.fn()
+		})
 
 		expect(change.setNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()

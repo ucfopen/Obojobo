@@ -18,7 +18,7 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: HEADING_NODE,
-			data: { content: { level: 2 }}
+			data: { content: { level: 2 } }
 		})
 		.collapseToStartOfNextText()
 		.focus()
@@ -102,12 +102,12 @@ const plugins = {
 
 const Heading = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		insertNode,
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }
