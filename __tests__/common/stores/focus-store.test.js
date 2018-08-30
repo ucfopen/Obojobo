@@ -6,9 +6,6 @@ import OboModel from '../../../src/scripts/common/models/obo-model'
 
 describe('FocusStore', () => {
 	beforeEach(() => {
-		jest.resetAllMocks()
-		jest.useFakeTimers()
-
 		FocusStore.init()
 		FocusStore.triggerChange = jest.fn()
 	})
@@ -131,20 +128,33 @@ describe('FocusStore', () => {
 		}
 		FocusStore._focus('testId')
 
-		expect(FocusStore.getState()).toEqual({
-			focussedId: 'testId',
-			viewState: 'enter'
-		})
-		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(mockFocus).toHaveBeenCalledTimes(1)
-
-		jest.runAllTimers()
-
 		expect(FocusStore.getState()).toEqual({
 			focussedId: 'testId',
 			viewState: 'active'
 		})
-		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(2)
+		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(1)
+	})
+
+	test('focus with isVisuallyFocused = false will NOT update state, call focus on element, trigger change', () => {
+		const mockFocus = jest.fn()
+		OboModel.models = {
+			testId: {
+				getDomEl: () => {
+					return {
+						focus: mockFocus
+					}
+				}
+			}
+		}
+		FocusStore._focus('testId', false)
+
+		expect(mockFocus).toHaveBeenCalledTimes(1)
+		expect(FocusStore.getState()).toEqual({
+			focussedId: 'testId',
+			viewState: 'inactive'
+		})
+		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(1)
 	})
 
 	test('unfocus will update state, trigger change', () => {
@@ -156,26 +166,18 @@ describe('FocusStore', () => {
 		FocusStore._unfocus()
 
 		expect(FocusStore.getState()).toEqual({
-			focussedId: 'testId',
-			viewState: 'leave'
-		})
-		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(1)
-
-		jest.runAllTimers()
-
-		expect(FocusStore.getState()).toEqual({
 			focussedId: null,
 			viewState: 'inactive'
 		})
-		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(2)
+		expect(FocusStore.triggerChange).toHaveBeenCalledTimes(1)
 	})
 
 	test('focus:component calls FocusStore._focus', () => {
 		const spy = jest.spyOn(FocusStore, '_focus')
 
-		Dispatcher.trigger('focus:component', { value: { id: 'mockId' } })
+		Dispatcher.trigger('focus:component', { value: { id: 'mockId', isVisuallyFocused: true } })
 
-		expect(FocusStore._focus).toHaveBeenCalledWith('mockId')
+		expect(FocusStore._focus).toHaveBeenCalledWith('mockId', true)
 
 		spy.mockRestore()
 	})

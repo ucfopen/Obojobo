@@ -8,6 +8,7 @@ exports[`ActionButton ActionButton component with label 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.ActionButton"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -35,6 +36,7 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.ActionButton"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--action-button pad"

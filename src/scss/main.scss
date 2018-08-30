@@ -127,6 +127,10 @@ body {
 		padding-bottom: 0;
 	}
 
+	&[tabIndex='-1']:focus {
+		outline: none;
+	}
+
 	.pad {
 		padding-left: $dimension-padding;
 		padding-right: $dimension-padding;

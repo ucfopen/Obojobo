@@ -8,6 +8,7 @@ exports[`Content Content component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Sections.Content"
   id="obo-id"
+  tabIndex={-1}
 >
   <div />
 </div>
@@ -21,6 +22,7 @@ exports[`Content Content component with nav model 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Sections.Content"
   id="obo-id"
+  tabIndex={-1}
 >
   <div>
     <MockComponent

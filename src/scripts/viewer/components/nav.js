@@ -112,9 +112,8 @@ export default class Nav extends React.Component {
 	render() {
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
-
 		const lockEl = this.getLockEl(navState.locked)
-
+		const isNavInaccessible = navState.disabled || !navState.open
 		const className =
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
@@ -122,19 +121,20 @@ export default class Nav extends React.Component {
 			isOrNot(!navState.disabled, 'enabled')
 
 		return (
-			<div className={className}>
+			<nav className={className}>
 				<Button
 					altAction
 					className="skip-nav-button"
-					disabled={navState.disabled || !navState.open}
+					disabled={isNavInaccessible}
 					onClick={this.onClickSkipNavigation}
+					aria-hidden={isNavInaccessible}
 				>
 					Skip Navigation
 				</Button>
 				<button className="toggle-button" onClick={NavUtil.toggle}>
 					Toggle Navigation Menu
 				</button>
-				<ul>
+				<ul aria-hidden={isNavInaccessible}>
 					{list.map((item, index) => {
 						switch (item.type) {
 							case 'heading':
@@ -145,7 +145,7 @@ export default class Nav extends React.Component {
 									index,
 									navState.navTargetId === item.id,
 									list,
-									navState.locked || navState.disabled || !navState.open,
+									navState.locked || isNavInaccessible,
 									lockEl
 								)
 
@@ -154,7 +154,7 @@ export default class Nav extends React.Component {
 									index,
 									navState.navTargetIndex === index,
 									list,
-									navState.disabled || !navState.open,
+									isNavInaccessible,
 									lockEl
 								)
 						}
@@ -163,7 +163,7 @@ export default class Nav extends React.Component {
 					})}
 				</ul>
 				<Logo />
-			</div>
+			</nav>
 		)
 	}
 }

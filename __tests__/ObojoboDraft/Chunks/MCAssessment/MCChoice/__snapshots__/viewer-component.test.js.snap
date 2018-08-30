@@ -9,6 +9,7 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice1"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -27,6 +28,7 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice1-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -35,6 +37,7 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -69,6 +72,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice1"
+  tabIndex={-1}
 >
   <input
     checked={true}
@@ -94,6 +98,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice1-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -102,6 +107,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -136,6 +142,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice1"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -161,6 +168,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice1-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -169,6 +177,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -203,6 +212,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice1"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -228,6 +238,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice1-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -236,6 +247,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -270,6 +282,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice2"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -289,6 +302,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice2-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -297,6 +311,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -331,6 +346,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice2"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -350,6 +366,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice2-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -358,6 +375,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -394,6 +412,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice1"
+  tabIndex={-1}
 >
   <input
     checked={true}
@@ -419,6 +438,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice1-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -427,6 +447,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -461,6 +482,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice1"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -486,6 +508,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice1-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -494,6 +517,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -528,6 +552,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice2"
+  tabIndex={-1}
 >
   <input
     checked={true}
@@ -553,6 +578,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice2-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -561,6 +587,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -595,6 +622,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice2"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -614,6 +642,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice2-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -622,6 +651,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -656,6 +686,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice1"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -674,6 +705,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice1-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -682,6 +714,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -716,6 +749,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
   id="obo-choice1"
+  tabIndex={-1}
 >
   <input
     checked={false}
@@ -734,6 +768,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
         data-obo-component={true}
         data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
         id="obo-choice1-answer"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -742,6 +777,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Text"
           id="obo-choice1-answer-text"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--single-text pad"

@@ -135,6 +135,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -143,6 +144,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -171,6 +173,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -279,6 +282,7 @@ exports[`PostTest PostTest component with review 1`] = `
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -287,6 +291,7 @@ exports[`PostTest PostTest component with review 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -315,6 +320,7 @@ exports[`PostTest PostTest component with review 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -423,6 +429,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -431,6 +438,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -459,6 +467,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -567,6 +576,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -575,6 +585,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -603,6 +614,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -706,6 +718,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -714,6 +727,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -742,6 +756,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"

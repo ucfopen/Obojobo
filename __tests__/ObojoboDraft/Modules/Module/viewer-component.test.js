@@ -83,4 +83,198 @@ describe('Module', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:focusOnContent')
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 	})
+
+	test('Component calls focus in componentDidUpdate on component with focus', () => {
+		const mockPage1Element = {
+			focus: jest.fn(),
+			contains: jest.fn()
+		}
+		mockPage1Element.contains.mockReturnValueOnce(false)
+
+		const model = OboModel.create(json)
+		const moduleData = {
+			focusState: {
+				focussedId: 'page-1'
+			},
+			navState: {
+				navTargetId: 'mock-nav-target-id'
+			}
+		}
+		OboModel.prototype.getDomEl = jest.fn()
+		OboModel.prototype.getDomEl.mockReturnValueOnce(mockPage1Element)
+
+		// Mock document.getElementById:
+		const origGetElementById = document.getElementById
+		document.getElementById = jest.fn()
+		document.getElementById.mockReturnValueOnce(mockPage1Element)
+
+		// Mock document.activeElement:
+		const origActiveElement = document.activeElement
+		Object.defineProperty(document, 'activeElement', {
+			value: null,
+			enumerable: true,
+			configurable: true
+		})
+
+		// Mock body.contains
+		const origBodyContains = document.body.contains
+		document.body.contains = jest.fn()
+		document.body.contains.mockReturnValueOnce(true)
+
+		const component = shallow(<Module model={model} moduleData={moduleData} />)
+		component.instance().forceUpdate()
+
+		expect(mockPage1Element.focus).toHaveBeenCalledTimes(1)
+
+		// Restore overrides:
+		Object.defineProperty(document, 'activeElement', {
+			value: origActiveElement
+		})
+		document.body.contains = origBodyContains
+		document.getElementById = origGetElementById
+	})
+
+	test('Component does not call focus in componentDidUpdate if no component has focus', () => {
+		const mockPage1Element = {
+			focus: jest.fn()
+		}
+
+		const model = OboModel.create(json)
+		const moduleData = {
+			focusState: {},
+			navState: {
+				navTargetId: 'mock-nav-target-id'
+			}
+		}
+		OboModel.prototype.getDomEl = jest.fn()
+		OboModel.prototype.getDomEl.mockReturnValueOnce(mockPage1Element)
+
+		// Mock document.getElementById:
+		const origGetElementById = document.getElementById
+		document.getElementById = jest.fn()
+		document.getElementById.mockReturnValueOnce(mockPage1Element)
+
+		// Mock document.activeElement:
+		const origActiveElement = document.activeElement
+		Object.defineProperty(document, 'activeElement', {
+			value: null,
+			enumerable: true,
+			configurable: true
+		})
+
+		// Mock body.contains
+		const origBodyContains = document.body.contains
+		document.body.contains = jest.fn()
+		document.body.contains.mockReturnValueOnce(true)
+
+		const component = shallow(<Module model={model} moduleData={moduleData} />)
+		component.instance().forceUpdate()
+
+		expect(mockPage1Element.focus).not.toHaveBeenCalled()
+
+		// Restore overrides:
+		Object.defineProperty(document, 'activeElement', {
+			value: origActiveElement
+		})
+		document.body.contains = origBodyContains
+		document.getElementById = origGetElementById
+	})
+
+	test('Component does not call focus in componentDidUpdate if body does not contain the element', () => {
+		const mockPage1Element = {
+			focus: jest.fn()
+		}
+
+		const model = OboModel.create(json)
+		const moduleData = {
+			focusState: {
+				focussedId: 'page-1'
+			},
+			navState: {
+				navTargetId: 'mock-nav-target-id'
+			}
+		}
+		OboModel.prototype.getDomEl = jest.fn()
+		OboModel.prototype.getDomEl.mockReturnValueOnce(mockPage1Element)
+
+		// Mock document.getElementById:
+		const origGetElementById = document.getElementById
+		document.getElementById = jest.fn()
+		document.getElementById.mockReturnValueOnce(mockPage1Element)
+
+		// Mock document.activeElement:
+		const origActiveElement = document.activeElement
+		Object.defineProperty(document, 'activeElement', {
+			value: null,
+			enumerable: true,
+			configurable: true
+		})
+
+		// Mock body.contains
+		const origBodyContains = document.body.contains
+		document.body.contains = jest.fn()
+		document.body.contains.mockReturnValueOnce(false)
+
+		const component = shallow(<Module model={model} moduleData={moduleData} />)
+		component.instance().forceUpdate()
+
+		expect(mockPage1Element.focus).not.toHaveBeenCalled()
+
+		// Restore overrides:
+		Object.defineProperty(document, 'activeElement', {
+			value: origActiveElement
+		})
+		document.body.contains = origBodyContains
+		document.getElementById = origGetElementById
+	})
+
+	test('Component does not call focus in componentDidUpdate if element already has focus', () => {
+		const mockPage1Element = {
+			focus: jest.fn(),
+			contains: jest.fn()
+		}
+		mockPage1Element.contains.mockReturnValueOnce(true)
+
+		const model = OboModel.create(json)
+		const moduleData = {
+			focusState: {
+				focussedId: 'page-1'
+			},
+			navState: {
+				navTargetId: 'mock-nav-target-id'
+			}
+		}
+		OboModel.prototype.getDomEl = jest.fn()
+		OboModel.prototype.getDomEl.mockReturnValueOnce(mockPage1Element)
+
+		// Mock document.getElementById:
+		const origGetElementById = document.getElementById
+		document.getElementById = jest.fn()
+		document.getElementById.mockReturnValueOnce(mockPage1Element)
+
+		// Mock document.activeElement:
+		const origActiveElement = document.activeElement
+		Object.defineProperty(document, 'activeElement', {
+			value: mockPage1Element,
+			enumerable: true,
+			configurable: true
+		})
+
+		// Mock body.contains
+		const origBodyContains = document.body.contains
+		document.body.contains = jest.fn()
+		document.body.contains.mockReturnValueOnce(true)
+
+		const component = shallow(<Module model={model} moduleData={moduleData} />)
+		component.instance().forceUpdate()
+
+		expect(mockPage1Element.focus).not.toHaveBeenCalled()
+
+		// Restore overrides:
+		Object.defineProperty(document, 'activeElement', {
+			value: origActiveElement
+		})
+		document.body.contains = origBodyContains
+		document.getElementById = origGetElementById
+	})
 })

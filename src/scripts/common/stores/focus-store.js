@@ -2,9 +2,6 @@ import Store from '../../common/flux/store'
 import Dispatcher from '../../common/flux/dispatcher'
 import OboModel from '../../common/models/obo-model'
 
-const TRANSITION_TIME_MS = 800
-let timeoutId = null
-
 class FocusStore extends Store {
 	constructor() {
 		super('focusStore')
@@ -12,7 +9,7 @@ class FocusStore extends Store {
 		this.boundOnDocumentFocusIn = this.onDocumentFocusIn.bind(this)
 
 		Dispatcher.on('focus:component', payload => {
-			this._focus(payload.value.id)
+			this._focus(payload.value.id, payload.value.isVisuallyFocused)
 		})
 
 		Dispatcher.on('focus:unfocus', this._unfocus.bind(this))
@@ -21,7 +18,7 @@ class FocusStore extends Store {
 	init() {
 		this.state = {
 			focussedId: null,
-			viewState: 'inactive'
+			viewState: FocusStore.VIEW_STATE_INACTIVE
 		}
 	}
 
@@ -37,38 +34,28 @@ class FocusStore extends Store {
 		}
 	}
 
-	_focus(id) {
-		document.addEventListener('focusin', this.boundOnDocumentFocusIn)
-
-		this.state.viewState = 'enter'
-		this.state.focussedId = id
-
-		this.triggerChange()
-
-		if (OboModel.models[this.state.focussedId]) {
-			const domEl = OboModel.models[this.state.focussedId].getDomEl()
+	_focus(id, isVisuallyFocused = true) {
+		if (OboModel.models[id]) {
+			const domEl = OboModel.models[id].getDomEl()
 			if (domEl && domEl.focus) domEl.focus()
 		}
+		this.state.focussedId = id
 
-		window.clearTimeout(timeoutId)
-		timeoutId = window.setTimeout(() => {
-			this.state.viewState = 'active'
-			this.triggerChange()
-		}, TRANSITION_TIME_MS)
+		document.addEventListener('focusin', this.boundOnDocumentFocusIn)
+
+		if (isVisuallyFocused) {
+			this.state.viewState = FocusStore.VIEW_STATE_ACTIVE
+		}
+
+		this.triggerChange()
 	}
 
 	_unfocus() {
 		document.removeEventListener('focusin', this.boundOnDocumentFocusIn)
 
-		this.state.viewState = 'leave'
+		this.state.viewState = FocusStore.VIEW_STATE_INACTIVE
+		this.state.focussedId = null
 		this.triggerChange()
-
-		window.clearTimeout(timeoutId)
-		timeoutId = window.setTimeout(() => {
-			this.state.viewState = 'inactive'
-			this.state.focussedId = null
-			this.triggerChange()
-		}, TRANSITION_TIME_MS)
 	}
 
 	getState() {
@@ -79,6 +66,9 @@ class FocusStore extends Store {
 		return (this.state = newState)
 	}
 }
+
+FocusStore.VIEW_STATE_INACTIVE = 'inactive'
+FocusStore.VIEW_STATE_ACTIVE = 'active'
 
 const focusStore = new FocusStore()
 export default focusStore

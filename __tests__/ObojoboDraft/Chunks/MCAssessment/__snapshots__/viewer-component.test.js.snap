@@ -13,6 +13,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -34,6 +35,7 @@ exports[`MCAssessment MCAssessment component question with visible explanation 1
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -71,6 +73,7 @@ exports[`MCAssessment MCAssessment component question with visible explanation 1
             data-obo-component={true}
             data-type="ObojoboDraft.Pages.Page"
             id="obo-page-id"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -79,6 +82,7 @@ exports[`MCAssessment MCAssessment component question with visible explanation 1
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-text-id"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -117,6 +121,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={null}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -156,6 +161,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
             id="obo-choice1-feedback"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -164,6 +170,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-choice1-feedback-text"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -212,6 +219,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={null}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -251,6 +259,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
             id="obo-choice1-feedback"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -259,6 +268,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-choice1-feedback-text"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -307,6 +317,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -323,6 +334,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
     id="obo-choice2"
+    tabIndex={-1}
   >
     <input
       checked={false}
@@ -341,6 +353,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
           id="obo-choice2-answer"
+          tabIndex={-1}
         >
           <div
             className="component"
@@ -349,6 +362,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.Text"
             id="obo-choice1-answer-text"
+            tabIndex={-1}
           >
             <div
               className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -380,6 +394,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
     id="obo-choice1"
+    tabIndex={-1}
   >
     <input
       checked={false}
@@ -398,6 +413,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
           id="obo-choice1-answer"
+          tabIndex={-1}
         >
           <div
             className="component"
@@ -406,6 +422,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.Text"
             id="obo-choice1-answer-text"
+            tabIndex={-1}
           >
             <div
               className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -462,6 +479,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -516,6 +534,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
             id="obo-choice1-feedback"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -524,6 +543,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-choice1-feedback-text"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -572,6 +592,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={null}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -620,6 +641,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
             id="obo-choice1-feedback"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -628,6 +650,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-choice1-feedback-text"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -676,6 +699,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={null}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -715,6 +739,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
             id="obo-choice1-feedback"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -723,6 +748,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-choice1-feedback-text"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -771,6 +797,7 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -787,6 +814,7 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
     id="obo-choice2"
+    tabIndex={-1}
   >
     <input
       checked={false}
@@ -805,6 +833,7 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
           id="obo-choice2-answer"
+          tabIndex={-1}
         >
           <div
             className="component"
@@ -813,6 +842,7 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.Text"
             id="obo-choice1-answer-text"
+            tabIndex={-1}
           >
             <div
               className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -844,6 +874,7 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
     id="obo-choice1"
+    tabIndex={-1}
   >
     <input
       checked={false}
@@ -862,6 +893,7 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
           id="obo-choice1-answer"
+          tabIndex={-1}
         >
           <div
             className="component"
@@ -870,6 +902,7 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.Text"
             id="obo-choice1-answer-text"
+            tabIndex={-1}
           >
             <div
               className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -928,6 +961,7 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -954,6 +988,7 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
             id="obo-choice1-feedback"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -962,6 +997,7 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-choice1-feedback-text"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -990,6 +1026,7 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
             id="obo-choice2-feedback"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -998,6 +1035,7 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-choice1-feedback-text"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -1046,6 +1084,7 @@ exports[`MCAssessment MCAssessment component with one response 1`] = `
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -1072,6 +1111,7 @@ exports[`MCAssessment MCAssessment component with one response 1`] = `
             data-obo-component={true}
             data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
             id="obo-choice1-feedback"
+            tabIndex={-1}
           >
             <div
               className="component"
@@ -1080,6 +1120,7 @@ exports[`MCAssessment MCAssessment component with one response 1`] = `
               data-obo-component={true}
               data-type="ObojoboDraft.Chunks.Text"
               id="obo-choice1-feedback-text"
+              tabIndex={-1}
             >
               <div
                 className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -1128,6 +1169,7 @@ exports[`MCAssessment MCAssessment component with one response in practice mode 
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"
@@ -1168,6 +1210,7 @@ exports[`MCAssessment MCAssessment component with sortedIds 1`] = `
   data-type="ObojoboDraft.Chunks.MCAssessment"
   id="obo-id"
   onClick={[Function]}
+  tabIndex={-1}
 >
   <span
     className="instructions"

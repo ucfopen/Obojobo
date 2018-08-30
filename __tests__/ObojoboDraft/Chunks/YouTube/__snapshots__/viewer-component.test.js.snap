@@ -8,6 +8,7 @@ exports[`YouTube YouTube component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.YouTube"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--you-tube viewer"
