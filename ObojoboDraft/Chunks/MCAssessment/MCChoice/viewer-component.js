@@ -27,7 +27,7 @@ const getInputType = responseType => {
 	}
 }
 
-const questionIsSelected = (questionState, model, navStateContext) => {
+const choiceIsSelected = (questionState, model, navStateContext) => {
 	const response = QuestionUtil.getResponse(
 		questionState,
 		model.getParentOfType(QUESTION_TYPE),
@@ -115,13 +115,14 @@ const MCChoice = props => {
 		return <div />
 	}
 
-	const isSelected = questionIsSelected(
+	const isSelected = choiceIsSelected(
 		props.moduleData.questionState,
 		props.model,
 		props.moduleData.navState.context
 	)
 
 	const ansType = getAnsType(props.model, isCorrect, isSelected)
+	const inputType = getInputType(props.responseType)
 
 	let flag
 	if (props.mode === 'review') {
@@ -141,12 +142,15 @@ const MCChoice = props => {
 			moduleData={props.moduleData}
 			className={className}
 			data-choice-label={props.label}
+			tag="label"
 		>
 			<input
-				type={getInputType(props.responseType)}
+				type={inputType}
 				value={props.model.get('id')}
 				checked={isSelected}
 				name={props.model.parent.get('id')}
+				role={inputType}
+				aria-checked={isSelected}
 			/>
 			<div className="children">
 				{props.model.children.map(child => {

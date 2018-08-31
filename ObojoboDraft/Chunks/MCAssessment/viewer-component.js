@@ -21,6 +21,8 @@ const { QuestionUtil } = Viewer.util
 const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
 const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
 const DEFAULT_INCORRECT_LABELS = ['Incorrect']
+const PICK_ALL_INCORRECT_MESSAGE =
+	'You have either missed some correct answers or selected some incorrect answers'
 
 export default class MCAssessment extends React.Component {
 	constructor(props) {
@@ -32,7 +34,7 @@ export default class MCAssessment extends React.Component {
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
 		this.onClickReset = this.onClickReset.bind(this)
-		this.onClick = this.onClick.bind(this)
+		this.onFormChange = this.onFormChange.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 		if (correctLabels) {
@@ -160,7 +162,11 @@ export default class MCAssessment extends React.Component {
 		this.hideExplanation()
 	}
 
-	onClick(event) {
+	onFormChange(event) {
+		// Prevent default here stops both the label click and input click
+		// from firing. We only one want to fire.
+		//event.preventDefault()
+
 		let response
 		const questionModel = this.getQuestionModel()
 		const mcChoiceEl = DOMUtil.findParentWithAttr(
@@ -197,6 +203,7 @@ export default class MCAssessment extends React.Component {
 				} else {
 					response.ids.splice(responseIndex, 1)
 				}
+
 				break
 			}
 
@@ -285,11 +292,20 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	renderSubmitFooter(isAnswerSelected, isAnswerScored) {
+	renderSubmitFooter(isAnswerSelected, isAnswerScored, isCorrect, isPickAllType) {
+		let ariaLabel
+		if (isCorrect) {
+			ariaLabel = this.correctLabelToShow + '. You answered correctly. Try again?'
+		} else if (isPickAllType) {
+			ariaLabel = this.incorrectLabelToShow + '. ' + PICK_ALL_INCORRECT_MESSAGE + '. Try again?'
+		} else {
+			ariaLabel = this.incorrectLabelToShow + '. You did not answer correctly. Try again?'
+		}
+
 		return (
 			<div className="submit">
 				{isAnswerScored ? (
-					<Button altAction onClick={this.onClickReset} value="Try Again" />
+					<Button altAction ariaLabel={ariaLabel} onClick={this.onClickReset} value="Try Again" />
 				) : (
 					<Button
 						onClick={this.onClickSubmit}
@@ -314,9 +330,7 @@ export default class MCAssessment extends React.Component {
 			<div className="result-container">
 				<p className="result incorrect">{this.incorrectLabelToShow}</p>
 				{isPickAll ? (
-					<span className="pick-all-instructions">
-						You have either missed some correct answers or selected some incorrect answers
-					</span>
+					<span className="pick-all-instructions">{PICK_ALL_INCORRECT_MESSAGE}</span>
 				) : null}
 			</div>
 		)
@@ -417,35 +431,42 @@ export default class MCAssessment extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				onClick={this.props.mode !== 'review' ? this.onClick : null}
+				onChange={this.props.mode !== 'review' ? this.onFormChange : null}
 				tag="form"
 				className={className}
 			>
 				<span className="instructions">{this.createInstructions(responseType)}</span>
-				{sortedIds.map((id, index) => {
-					const child = OboModel.models[id]
-					if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
-						return null
-					}
+				<div role={this.props.model.modelState.responseType === 'pick-all' ? null : 'radiogroup'}>
+					{sortedIds.map((id, index) => {
+						const child = OboModel.models[id]
+						if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
+							return null
+						}
 
-					const Component = child.getComponentClass()
-					return (
-						<Component
-							key={child.get('id')}
-							model={child}
-							moduleData={this.props.moduleData}
-							responseType={responseType}
-							isShowingExplanation
-							mode={this.props.mode}
-							questionSubmitted={isAnswerScored}
-							label={String.fromCharCode(index + 65)}
-						/>
-					)
-				})}
+						const Component = child.getComponentClass()
+						return (
+							<Component
+								key={child.get('id')}
+								model={child}
+								moduleData={this.props.moduleData}
+								responseType={responseType}
+								isShowingExplanation
+								mode={this.props.mode}
+								questionSubmitted={isAnswerScored}
+								label={String.fromCharCode(index + 65)}
+							/>
+						)
+					})}
+				</div>
 				{this.props.mode === 'practice' || this.props.mode === 'review' ? (
 					<div className="submit-and-result-container">
 						{this.props.mode === 'practice'
-							? this.renderSubmitFooter(isAnswerSelected, isAnswerScored)
+							? this.renderSubmitFooter(
+									isAnswerSelected,
+									isAnswerScored,
+									score === 100,
+									this.props.model.modelState.responseType === 'pick-all'
+							  )
 							: null}
 						{isAnswerScored
 							? this.renderSubmittedResultsFooter(score === 100, responseType === 'pick-all')
