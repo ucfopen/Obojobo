@@ -88,4 +88,28 @@ describe('EditorApp', () => {
 			done()
 		})
 	})
+
+	test('EditorApp component renders error messsage', done => {
+		expect.assertions(1)
+
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getDraft.mockResolvedValueOnce({
+			status: 'error',
+			value: { type: 'someType', message: 'someMessage' }
+		})
+
+		const component = mount(<EditorApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
 })
