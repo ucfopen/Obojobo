@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTML HTML component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.HTML"
+  id="obo-id"
+>
+  <div
+    className="obojobo-draft--chunks--html viewer pad align-left"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<marquee>Example text</marquee>",
+      }
+    }
+  />
+</div>
+`;

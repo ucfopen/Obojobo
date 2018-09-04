@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DeleteButton 1`] = `
+<div
+  className="obojobo-draft--components--delete-button"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={undefined}
+  >
+    Delete
+  </button>
+</div>
+`;
+
+exports[`DeleteButton disabled 1`] = `
+<div
+  className="obojobo-draft--components--delete-button"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={undefined}
+  >
+    Delete
+  </button>
+</div>
+`;
+
+exports[`DeleteButton onClick 1`] = `
+<div
+  className="obojobo-draft--components--delete-button"
+>
+  <button
+    disabled={undefined}
+    onClick={[Function]}
+    tabIndex={undefined}
+  >
+    Delete
+  </button>
+</div>
+`;
+
+exports[`DeleteButton shouldPreventTab 1`] = `
+<div
+  className="obojobo-draft--components--delete-button"
+>
+  <button
+    disabled={true}
+    onClick={undefined}
+    tabIndex="-1"
+  >
+    Delete
+  </button>
+</div>
+`;
+
+exports[`DeleteButton tabIndex 1`] = `
+<div
+  className="obojobo-draft--components--delete-button"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={50}
+  >
+    Delete
+  </button>
+</div>
+`;

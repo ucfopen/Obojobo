@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionBank QuestionBank component 1`] = `
+<div
+  className="component obojobo-draft--chunks--question-bank"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.QuestionBank"
+  id="obo-id"
+/>
+`;

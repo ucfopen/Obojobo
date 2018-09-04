@@ -1,0 +1,79 @@
+@import '../../../../../../../scss/includes';
+
+.obojobo-draft--chunks--figure {
+	text-align: center;
+
+	figure {
+		margin: 0;
+		padding: 0;
+		border: 1px solid red;
+	}
+
+	.container {
+		display: inline-block;
+		height: auto;
+		position: relative;
+		// width: 18em;
+
+		img {
+			background: $color-bg;
+			border: none;
+			display: block;
+			width: 100%;
+		}
+
+		.img-placeholder {
+			border: 1px solid $color-shadow;
+		}
+	}
+
+	figcaption {
+		color: $color-text-minor;
+		font-size: 0.9em;
+	}
+
+	&.small {
+		figure {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			width: 100%;
+		}
+
+		.container {
+			width: 18em;
+		}
+	}
+
+	&.medium {
+		figure {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			width: 100%;
+		}
+
+		.container {
+			width: $dimension-column-width;
+		}
+	}
+
+	&.large {
+		figure {
+			padding-top: 0;
+
+			img {
+				display: block;
+			}
+
+			.img-placeholder {
+				border-left: none;
+				border-right: none;
+			}
+		}
+
+		.container {
+			width: 100%;
+		}
+	}
+}

@@ -1,0 +1,11 @@
+window.OBO
+	.addToolbarItem 'boldText'
+	.addToolbarItem 'italicText'
+	.addToolbarItem 'separator'
+	.addToolbarItem 'unindent'
+	.addToolbarItem 'indent'
+	.addToolbarItem 'separator'
+	.addToolbarItem 'link'
+	.addToolbarItem 'separator'
+	.addToolbarItem 'subscriptText'
+	.addToolbarItem 'superscriptText'
