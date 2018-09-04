@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="">
+<head>
+	<meta charset="utf-8" />
+	<title>Pick a Learning Object</title>
+	<link rel="stylesheet" type="text/css" href="/picker/lti.css">
+	<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="/picker/jquery-ui-1.10.3.custom.js"></script>
+</head>
+<body>
+
+	<section id="wizard">
+		<header>
+			<div class="heading-container">
+				<h1>
+					<span class="remaining-tagline">Embed an Obojobo&reg; Next Learning Module</span>
+				</h1>
+			</div>
+			<div class="blue-flourish"></div>
+		</header>
+
+		<p>Choose a collection:</p>
+
+		<a role="button" class="wizard-button-container personal-library-button-container">
+			<div href="#" class="personal-library-button wizard-button">
+				Personal<br /> Collection
+			</div>
+			<p>
+				Modules you've created.
+			</p>
+		</a>
+
+		<a role="button" class="disabled wizard-button-container community-library-button-container">
+			<div href="#" class="community-library-button wizard-button">
+				Community<br /> Collection
+			</div>
+			<p>
+				<strong>In the future</strong>, you'll be able to choose modules built by other instructors and organizations.
+			</p>
+		</div>
+
+	</section>
+
+	<section id="select-object">
+		<div id="list-overlay">
+			<a href="#" role="button" class="back-button">Back</a>
+			<a href="/editor" role="button" class="button" target="_blank" id="new-module">Create a new module</a>
+			<a id="refresh" role="button" href="#">Refresh</a>
+			<input type="text" id="search"></div>
+			<div class="blue-flourish"></div>
+		</div>
+
+		<div id="list-container">
+
+			<ul class="template">
+				<li class="template obo-item">
+					<div class="description">
+						<h2><span class="title"></span></h2>
+						<div class="draft-id"></div>
+					</div>
+					<div class="buttons">
+						<a class="preview external" target="_blank" href="#">Preview</a>
+						<a role="button" class="button embed-button" href="#">Embed this Module</a>
+					</div>
+				</li>
+			</ul>
+
+			<div class="section community-library">
+				<ul></ul>
+			</div>
+
+			<div class="section my-modules">
+				<ul></ul>
+				<div class="no-items no-objects">
+					<p>You don't have any objects. Click the button below to create an object at Obojobo, then return to this page and select your newly created instance.</p>
+					<a class="button" role="button" target="_blank" href="/editor">Create a new Obojobo Next module</a>
+				</div>
+			</div>
+
+		</div>
+
+	</section>
+
+	<section id="progress">
+		<header>
+			<div class="heading-container">
+				<h1>
+					<span class="remaining-tagline">Obojobo&reg; Next Learning Module Selection</span>
+				</h1>
+			</div>
+			<div class="blue-flourish"></div>
+		</header>
+
+		<div class="progress-container">
+			<span>Embedding Module...</span>
+			<div class="progressbar"></div>
+		</div>
+	</section>
+
+	<section id="success">
+		<header>
+			<span class="logo-text">Obojobo&reg;</span>
+			<div class="blue-flourish"></div>
+		</header>
+		<div class="grey-box">
+			<h1>Obojobo Instance Connected:</h1>
+			<h2 class="selected-instance-title"></h2>
+			<span class="note">Scores for this Obojobo assignment will sync with your Canvas gradebook</span>
+		</div>
+		<a href="#" class="preview-link" target="_blank">Preview this instance in a new window...</a>
+	</section>
+
+	<section id="loading"></section>
+	<section id="dead"></section>
+
+	<div id="error-window" title="Error">
+		<p>
+			Sorry, something went wrong. Please try again.
+		</p>
+	</div>
+	<div id="confirm-window" title="Are you sure?">
+		<p>
+			Scores will no longer sync to Canvas and you will need to connect to another object.
+		</p>
+	</div>
+
+	<form id="submit-form" action="" method="post" encType="application/x-www-form-urlencoded">
+		<input type="hidden" name="lti_message_type" value="ContentItemSelection" />
+		<input type="hidden" name="lti_version" value="LTI-1p0" />
+		<input type="hidden" name="content_items" value="" />
+	</form>
+
+	<script type="text/javascript">
+		window.__returnUrl = '<%= returnUrl %>';
+		window.__isAssignment = <%= isAssignment ? 'true' : 'false' %>
+	</script>
+	<script type="text/javascript" src="/picker/lti.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<title>
+	<%= title %>
+</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta id="meta-viewport" name="viewport" content="width=device-width initial-scale=1 minimum-scale=1 user-scalable=yes" />
+<%
+	if (typeof css !== 'undefined'){
+		css.forEach(function(href){ -%>
+	<link rel="stylesheet" media="screen" href="<%= href %>" />
+	<% })
+	}
+
+	if (typeof fonts !== 'undefined'){
+		fonts.forEach(function(font){ -%>
+		<link rel="stylesheet" media="screen" href="<%= font %>" />
+		<% })
+	}
+
+	if (typeof headerJs !== 'undefined'){
+		headerJs.forEach(function(href){ -%>
+			<script src="<%= href %>"></script>
+			<% })
+	}
+-%>
