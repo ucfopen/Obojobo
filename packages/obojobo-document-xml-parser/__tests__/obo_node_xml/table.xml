@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+    <Module>
+        <Table numRows="1" numCols="1" header="false">
+            <textGroup>
+                <t>test</t>
+            </textGroup>
+        </Table>
+        <Table numRows="2" numCols="1" header="true">
+            <textGroup>
+                <t>This is a test</t>
+                <t>test</t>
+            </textGroup>
+        </Table>
+    </Module>
+</ObojoboDraftDoc>

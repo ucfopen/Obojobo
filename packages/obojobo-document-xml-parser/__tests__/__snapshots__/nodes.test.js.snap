@@ -1,0 +1,1692 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`XML to Draft Object Tranformation Converts actionbutton xml to actionbutton node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "label": "test",
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "viewer:alert",
+            "value": Object {
+              "message": "test",
+              "title": "test",
+            },
+          },
+        ],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.ActionButton",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts assessment xml to assessment node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Pages.Page",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.QuestionBank",
+    },
+  ],
+  "content": Object {
+    "rubric": Object {
+      "failedResult": "0",
+      "mods": Array [
+        Object {
+          "attemptCondition": "1",
+          "reward": "5",
+        },
+        Object {
+          "attemptCondition": "(1,$last_attempt]",
+          "reward": "2",
+        },
+      ],
+      "passedResult": "100",
+      "passingAttemptScore": "80",
+      "type": "pass-fail",
+      "unableToPassResult": "$highest_attempt_score",
+    },
+    "scoreActions": Array [
+      Object {
+        "for": undefined,
+        "from": "0",
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
+        "to": "99",
+      },
+      Object {
+        "for": "(99,100]",
+        "from": undefined,
+        "page": Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Pages.Page",
+        },
+        "to": undefined,
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Sections.Assessment",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts break xml to break node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "headingLevel": 1,
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "A break:",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Heading",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts code xml to code node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "test",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Code",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts content xml to content node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Pages.Page",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Sections.Content",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts figure xml to figure node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "alt": "A city",
+        "size": "small",
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a small image",
+            },
+          },
+        ],
+        "url": "http://lorempixel.com/640/480/city",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Figure",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "alt": "A city",
+        "size": "custom",
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a small image",
+            },
+          },
+        ],
+        "url": "http://lorempixel.com/640/480/city",
+        "width": 400,
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Figure",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "alt": "A city",
+        "height": 400,
+        "size": "custom",
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a small image",
+            },
+          },
+        ],
+        "url": "http://lorempixel.com/640/480/city",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Figure",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts heading xml to heading node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 1,
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 2,
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 2,
+        "textGroup": Array [
+          Object {
+            "data": Object {
+              "align": "center",
+            },
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts html xml to html node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "html": "<marquee><font color='red'>Hello, I am rendered HTML</font></marquee>",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.HTML",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts list xml to list node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "listStyles": Object {
+          "type": "ordered",
+        },
+        "textGroup": Array [
+          Object {
+            "data": Object {
+              "indent": "4",
+              "start": "1",
+            },
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.List",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "listStyles": Object {
+          "type": "unordered",
+        },
+        "textGroup": Array [
+          Object {
+            "data": Object {
+              "indent": "2",
+            },
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.List",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts mathequation xml to mathequation node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "align": "left",
+    "latex": "x=v_xt",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MathEquation",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts mcanswer xml to mcanswer node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test answer.",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "align": "left",
+        "latex": "x=v_xt",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MathEquation",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts mcassessment xml to mcassessment node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "align": "left",
+                    "latex": "x=v_xt",
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MathEquation",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "This is a test question.",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+      ],
+      "content": Object {
+        "responseType": "pick-one",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "align": "right",
+                    "latex": "x=v_xt",
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MathEquation",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "This is a test question.",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "This is a test question.",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 0,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "This is a test question.",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 0,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+      ],
+      "content": Object {
+        "responseType": "pick-one-multiple-correct",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "align": "right",
+                    "latex": "x=v_xt",
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MathEquation",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "This is a test question.",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "This is a test question.",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 0,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "This is a test question.",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 0,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+      ],
+      "content": Object {
+        "responseType": "pick-all",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts mcchoice xml to mcchoice node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "align": "left",
+            "latex": "x=v_xt",
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MathEquation",
+        },
+      ],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "textGroup": Array [
+              Object {
+                "data": null,
+                "text": Object {
+                  "styleList": Array [],
+                  "value": "Good job!",
+                },
+              },
+            ],
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.Text",
+        },
+      ],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+    },
+  ],
+  "content": Object {
+    "score": 100,
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts mcfeedback xml to mcfeedback node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is test feedback.",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "align": "left",
+        "latex": "x=v_xt",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MathEquation",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts module xml to module node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Sections.Content",
+        },
+      ],
+      "content": Object {
+        "title": "test",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Modules.Module",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Pages.Page",
+            },
+            Object {
+              "children": Array [],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.QuestionBank",
+            },
+          ],
+          "content": Object {
+            "scoreActions": Array [
+              Object {
+                "for": undefined,
+                "from": "0",
+                "page": Object {
+                  "children": Array [],
+                  "content": Object {},
+                  "id": null,
+                  "type": "ObojoboDraft.Pages.Page",
+                },
+                "to": "99",
+              },
+            ],
+          },
+          "id": null,
+          "type": "ObojoboDraft.Sections.Assessment",
+        },
+      ],
+      "content": Object {
+        "title": "test",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Modules.Module",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts native-type xml to native-type node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "33333333333333333333333333333333333333",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "True",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "0.33333333333333333333333",
+        },
+      },
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "0.3",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Text",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts page xml to page node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+  ],
+  "content": Object {
+    "title": "test",
+  },
+  "id": null,
+  "type": "ObojoboDraft.Pages.Page",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts question xml to question node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Correct",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Correct",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+            },
+          ],
+          "content": Object {
+            "score": 100,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Incorrect",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+            },
+          ],
+          "content": Object {
+            "score": 0,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+        },
+      ],
+      "content": Object {
+        "responseType": "pick-one",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.MCAssessment",
+    },
+  ],
+  "content": Object {
+    "solution": Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "textGroup": Array [
+              Object {
+                "data": null,
+                "text": Object {
+                  "styleList": Array [],
+                  "value": "This is a description of the solution to the problem.",
+                },
+              },
+            ],
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.Text",
+        },
+      ],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Pages.Page",
+    },
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Question",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts questionbank xml to questionbank node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [],
+                          "content": Object {
+                            "textGroup": Array [
+                              Object {
+                                "data": null,
+                                "text": Object {
+                                  "styleList": Array [],
+                                  "value": "Correct",
+                                },
+                              },
+                            ],
+                          },
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.Text",
+                        },
+                      ],
+                      "content": Object {},
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                    },
+                  ],
+                  "content": Object {
+                    "score": 100,
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [],
+                          "content": Object {
+                            "textGroup": Array [
+                              Object {
+                                "data": null,
+                                "text": Object {
+                                  "styleList": Array [],
+                                  "value": "Incorrect",
+                                },
+                              },
+                            ],
+                          },
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.Text",
+                        },
+                      ],
+                      "content": Object {},
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                    },
+                  ],
+                  "content": Object {
+                    "score": 0,
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                },
+              ],
+              "content": Object {
+                "responseType": "pick-one",
+              },
+              "id": null,
+              "type": "ObojoboDraft.Chunks.MCAssessment",
+            },
+          ],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Chunks.Question",
+        },
+      ],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.QuestionBank",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Question Bank 1 Question 1 - This is the first question you'll see",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [
+                            Object {
+                              "children": Array [],
+                              "content": Object {
+                                "textGroup": Array [
+                                  Object {
+                                    "data": null,
+                                    "text": Object {
+                                      "styleList": Array [],
+                                      "value": "Correct",
+                                    },
+                                  },
+                                ],
+                              },
+                              "id": null,
+                              "type": "ObojoboDraft.Chunks.Text",
+                            },
+                          ],
+                          "content": Object {},
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                        },
+                      ],
+                      "content": Object {
+                        "score": 100,
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                    },
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [
+                            Object {
+                              "children": Array [],
+                              "content": Object {
+                                "textGroup": Array [
+                                  Object {
+                                    "data": null,
+                                    "text": Object {
+                                      "styleList": Array [],
+                                      "value": "Incorrect",
+                                    },
+                                  },
+                                ],
+                              },
+                              "id": null,
+                              "type": "ObojoboDraft.Chunks.Text",
+                            },
+                          ],
+                          "content": Object {},
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                        },
+                      ],
+                      "content": Object {
+                        "score": 0,
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                    },
+                  ],
+                  "content": Object {
+                    "responseType": "pick-one",
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MCAssessment",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.Question",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Question Bank 1 Question 2 - This is the fourth question you'll see",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [
+                            Object {
+                              "children": Array [],
+                              "content": Object {
+                                "textGroup": Array [
+                                  Object {
+                                    "data": null,
+                                    "text": Object {
+                                      "styleList": Array [],
+                                      "value": "Correct",
+                                    },
+                                  },
+                                ],
+                              },
+                              "id": null,
+                              "type": "ObojoboDraft.Chunks.Text",
+                            },
+                          ],
+                          "content": Object {},
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                        },
+                      ],
+                      "content": Object {
+                        "score": 100,
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                    },
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [
+                            Object {
+                              "children": Array [],
+                              "content": Object {
+                                "textGroup": Array [
+                                  Object {
+                                    "data": null,
+                                    "text": Object {
+                                      "styleList": Array [],
+                                      "value": "Incorrect",
+                                    },
+                                  },
+                                ],
+                              },
+                              "id": null,
+                              "type": "ObojoboDraft.Chunks.Text",
+                            },
+                          ],
+                          "content": Object {},
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                        },
+                      ],
+                      "content": Object {
+                        "score": 0,
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                    },
+                  ],
+                  "content": Object {
+                    "responseType": "pick-one",
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MCAssessment",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.Question",
+            },
+          ],
+          "content": Object {
+            "choose": 1,
+            "select": "sequential",
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.QuestionBank",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Question Bank 2 Question 1 - This is the second question you'll see",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [
+                            Object {
+                              "children": Array [],
+                              "content": Object {
+                                "textGroup": Array [
+                                  Object {
+                                    "data": null,
+                                    "text": Object {
+                                      "styleList": Array [],
+                                      "value": "Correct",
+                                    },
+                                  },
+                                ],
+                              },
+                              "id": null,
+                              "type": "ObojoboDraft.Chunks.Text",
+                            },
+                          ],
+                          "content": Object {},
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                        },
+                      ],
+                      "content": Object {
+                        "score": 100,
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                    },
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [
+                            Object {
+                              "children": Array [],
+                              "content": Object {
+                                "textGroup": Array [
+                                  Object {
+                                    "data": null,
+                                    "text": Object {
+                                      "styleList": Array [],
+                                      "value": "Incorrect",
+                                    },
+                                  },
+                                ],
+                              },
+                              "id": null,
+                              "type": "ObojoboDraft.Chunks.Text",
+                            },
+                          ],
+                          "content": Object {},
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                        },
+                      ],
+                      "content": Object {
+                        "score": 0,
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                    },
+                  ],
+                  "content": Object {
+                    "responseType": "pick-one",
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MCAssessment",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.Question",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [],
+                  "content": Object {
+                    "textGroup": Array [
+                      Object {
+                        "data": null,
+                        "text": Object {
+                          "styleList": Array [],
+                          "value": "Question Bank 2 Question 2 - This is the third question you'll see",
+                        },
+                      },
+                    ],
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.Text",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [
+                            Object {
+                              "children": Array [],
+                              "content": Object {
+                                "textGroup": Array [
+                                  Object {
+                                    "data": null,
+                                    "text": Object {
+                                      "styleList": Array [],
+                                      "value": "Correct",
+                                    },
+                                  },
+                                ],
+                              },
+                              "id": null,
+                              "type": "ObojoboDraft.Chunks.Text",
+                            },
+                          ],
+                          "content": Object {},
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                        },
+                      ],
+                      "content": Object {
+                        "score": 100,
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                    },
+                    Object {
+                      "children": Array [
+                        Object {
+                          "children": Array [
+                            Object {
+                              "children": Array [],
+                              "content": Object {
+                                "textGroup": Array [
+                                  Object {
+                                    "data": null,
+                                    "text": Object {
+                                      "styleList": Array [],
+                                      "value": "Incorrect",
+                                    },
+                                  },
+                                ],
+                              },
+                              "id": null,
+                              "type": "ObojoboDraft.Chunks.Text",
+                            },
+                          ],
+                          "content": Object {},
+                          "id": null,
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                        },
+                      ],
+                      "content": Object {
+                        "score": 0,
+                      },
+                      "id": null,
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                    },
+                  ],
+                  "content": Object {
+                    "responseType": "pick-one",
+                  },
+                  "id": null,
+                  "type": "ObojoboDraft.Chunks.MCAssessment",
+                },
+              ],
+              "content": Object {},
+              "id": null,
+              "type": "ObojoboDraft.Chunks.Question",
+            },
+          ],
+          "content": Object {},
+          "id": null,
+          "type": "ObojoboDraft.Chunks.QuestionBank",
+        },
+      ],
+      "content": Object {
+        "choose": 1,
+        "select": "sequential",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.QuestionBank",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts table xml to table node 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "content": Object {
+        "header": false,
+        "textGroup": Object {
+          "numCols": 1,
+          "numRows": 1,
+          "textGroup": Array [
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "test",
+              },
+            },
+          ],
+        },
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Table",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "header": true,
+        "textGroup": Object {
+          "numCols": 1,
+          "numRows": 2,
+          "textGroup": Array [
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "This is a test",
+              },
+            },
+            Object {
+              "data": null,
+              "text": Object {
+                "styleList": Array [],
+                "value": "test",
+              },
+            },
+          ],
+        },
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Table",
+    },
+  ],
+  "content": Object {},
+  "id": null,
+  "type": "ObojoboDraft.Modules.Module",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts text xml to text node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "This is a test",
+        },
+      },
+    ],
+  },
+  "id": null,
+  "type": "ObojoboDraft.Chunks.Text",
+}
+`;
+
+exports[`XML to Draft Object Tranformation Converts youtube xml to youtube node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "videoId": "test",
+  },
+  "id": null,
+  "type": "Youtube",
+}
+`;

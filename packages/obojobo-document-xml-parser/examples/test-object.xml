@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+	<!-- Since this document is XML comments are allowed - Any comments are not included in the produced JSON. This OboXML document contains most of the available features of Obojobo and should be used as a quick reference / example. -->
+	<Module title="Obojobo Example Document"> <!-- Specify a start attribute to start the module on a different page (for example 'my-assessment') -->
+		<Content>
+			<Page id="page-1" title="Example content page">
+				<h1>2D Motion</h1>
+				<h2>Projectile motion</h2>
+				<p>Let the projectile be launched with an initial velocity <latex>v_0</latex> which can be expressed as the sum of horizontal and vertical components as follows:</p>
+				<MathEquation id="my-math-equation" latex="v_0=v_{0_x}i+v_{0_y}j" />
+				<p>The components <latex>x_{0_x}</latex> and <latex>v_{0_y}</latex> can be found if the initial launch angle, <latex>\theta</latex>, is known:</p>
+				<ul>
+					<li><latex>v_{0_x} = v_0 \cos \theta</latex></li>
+					<li><latex>v_{0_t} = v_0 \sin \theta</latex></li>
+				</ul>
+				<p>See also the section Parabolic equation for information on finding the initial velocity.</p>
+				<h2>Kinematic quantities of projectile motion</h2>
+				<p>In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.</p>
+			</Page>
+			<Page title="Image examples">
+				<h1>Images</h1>
+				<h2>Default size options</h2>
+				<p>Small image (<code>size="small"</code>):</p>
+				<figure>
+					<img src="https://via.placeholder.com/336x252" size="small" alt="Alt text here" />
+					<figcaption>This is a small image</figcaption>
+				</figure>
+				<p>Medium image (<code>size="medium"</code>):</p>
+				<img src="https://via.placeholder.com/709x532" size="medium" alt="Alt text here" />
+				<p>Large image (<code>size="large"</code>):</p>
+				<img src="https://via.placeholder.com/821x616" size="large" alt="Alt text here" />
+				<h2>Custom size options</h2>
+				<p>Image with an explicit width (<code>width="200"</code>):</p>
+				<img src="https://via.placeholder.com/640x480" width="200" alt="Alt text here" />
+				<p>Image with an explicit height (<code>height="200"</code>):</p>
+				<img src="https://via.placeholder.com/640x480" height="200" alt="Alt text here" />
+				<p>Image with width and height - not recommended as image will not respect aspect ratio (<code>width="400" height="100"</code>):</p>
+				<img src="https://via.placeholder.com/640x480" width="400" height="100" alt="Alt text here" />
+				<p>No size or width or height results in images at their native size:</p>
+				<img src="https://via.placeholder.com/100x100" />
+				<img src="https://via.placeholder.com/400x300" />
+				<p>Native size images are still restricted to the width of the page (at native size this image would be 1080x720 pixels)</p>
+				<img src="https://via.placeholder.com/1080x720" />
+				<h2>Other features</h2>
+				<p>Image with caption:</p>
+				<figure>
+					<img src="https://via.placeholder.com/336x252" size="small" alt="Alt text here" />
+					<figcaption>This is a small image</figcaption>
+				</figure>
+				<p>Base 64 encoded image:</p>
+				<img src="data:image/gif;base64,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" />
+				<p>An image with no source:</p>
+				<img />
+			</Page>
+			<Page id="questions-page" title="Practice Questions">
+				<h2>Practice question:</h2>
+				<p>This question is a <b>pick-one-multiple-correct</b> type question with feedback and an included <b>solution</b>:</p>
+				<Question id="practice-question-1" title="A custom question title">
+					<h1>Which equation describes horizontal displacement of projectile motion?</h1>
+					<MCAssessment responseType="pick-one-multiple-correct">
+						<MCChoice id="pq1-answer-1" score="100">
+							<MCAnswer>
+								<MathEquation latex="x=v_xt" align="left" />
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice id="pq1-answer-2" score="100">
+							<MCAnswer>
+								<MathEquation latex="x=v_{ix}t + \frac{1}{2} a_x t^2" align="left" />
+							</MCAnswer>
+							<MCFeedback>
+								<p>Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:</p>
+								<MathEquation latex="x=v_xt" align="left" />
+							</MCFeedback>
+						</MCChoice>
+						<MCChoice id="pq1-answer-3" score="0">
+							<MCAnswer>
+								<MathEquation latex="x=\frac{1}{2} a_x t^2" align="left" />
+							</MCAnswer>
+							<MCFeedback>
+								<p>The <latex>a_x</latex> term representing horizontal acceleration is always 0 so this equation is simply <latex>x = 0</latex>.</p>
+							</MCFeedback>
+						</MCChoice>
+					</MCAssessment>
+					<solution>
+						<Page>
+							<p>Here you could provide a long-form solution which would provide a detailed answer to the question.</p>
+							<p>You can also include a button that would link back to the page containing more relevant information. In this example this button will take you back to page 1:</p>
+							<ActionButton label="Refer back to page 1">
+								<triggers>
+									<trigger type="onClick">
+										<actions>
+											<action type="nav:goto">
+												<value id="page-1" />
+											</action>
+										</actions>
+									</trigger>
+								</triggers>
+							</ActionButton>
+						</Page>
+					</solution>
+				</Question>
+				<p>Questions can also contain other content such as video or lists. This question is an example of a <b>pick-all</b> type question:</p>
+				<Question>
+					<YouTube videoId="gJ390e5sjHk" />
+					<ol>
+						<li>Here is a list</li>
+						<li>With two items</li>
+					</ol>
+					<MCAssessment responseType="pick-all">
+						<MCChoice score="100">
+							<MCAnswer>
+								<p>This is a correct answer choice</p>
+							</MCAnswer>
+							<MCFeedback>
+								<p>Good job!</p>
+							</MCFeedback>
+						</MCChoice>
+						<MCChoice score="100">
+							<MCAnswer>
+								<p>This is another correct answer choice</p>
+							</MCAnswer>
+							<MCFeedback>
+								<p>Fantastic!</p>
+							</MCFeedback>
+						</MCChoice>
+						<MCChoice score="0">
+							<MCAnswer>
+								<p>This is an incorrect answer choice</p>
+							</MCAnswer>
+							<MCFeedback>
+								<p>Nope!</p>
+							</MCFeedback>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<p>Here is a <b>pick-one</b> type question. This question has <code>shuffle="false"</code> meaning that the order of the answer choices will never change.</p>
+				<Question>
+					<p>What is 2+2 = ?</p>
+					<MCAssessment responseType="pick-one" shuffle="false">
+						<MCChoice score="0">
+							<MCAnswer>
+								<p>2</p>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score="100">
+							<MCAnswer>
+								<p>4</p>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<p>This question is using custom correct or incorrect labels. Try answering this question to see the different labels.</p>
+				<Question>
+					<p>What is 2+2 = ?</p>
+					<MCAssessment responseType="pick-one" correctLabels="Exactly!|Yup!" incorrectLabels="Nope|No - Don't Give Up!">
+						<MCChoice score="0">
+							<MCAnswer>
+								<p>2</p>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice score="100">
+							<MCAnswer>
+								<p>4</p>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+			</Page>
+			<Page title="Other content types">
+				<h1>Other content types</h1>
+				<h2>Code</h2>
+				<pre>// Computers code example:
+int Fibonacci(int n)
+	if( n == 0 || n == 1) return n
+	return Fibonacci(n - 1) + Fibonacci(n - 2)</pre>
+				<Code>
+					<textGroup>
+						<t>// Computer code example:</t>
+						<t>int Fibonacci(int n)</t>
+						<t indent="1">if( n == 0 || n == 1) return n</t>
+						<t indent="1">return Fibonacci(n - 1) + Fibonacci(n - 2)</t>
+					</textGroup>
+				</Code>
+				<h2>Table with table headers:</h2>
+				<table>
+					<tr>
+						<th>Heading 1</th>
+						<th>Heading 2</th>
+					</tr>
+					<tr>
+						<td>Cell 1</td>
+						<td>Cell 2</td>
+					</tr>
+				</table>
+				<h2>Table without table headers:</h2>
+				<table>
+					<tr>
+						<td>Cell 1</td>
+						<td>Cell 2</td>
+					</tr>
+					<tr>
+						<td>Cell 3</td>
+						<td>Cell 4</td>
+					</tr>
+				</table>
+				<h2>A break:</h2>
+				<hr />
+				<p>A wider break:</p>
+				<hr width="large" />
+				<h2>YouTube video:</h2>
+				<YouTube videoId="gJ390e5sjHk" />
+				<h2>Math Equations</h2>
+				<p>Math equations can be specified with LaTeX:</p>
+				<MathEquation latex="x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+				<p>Using the label option you can label your equation:</p>
+				<MathEquation latex="\Delta x=\int_{t_0}^{t_1} v(t)dt" label="(1.1)" />
+				<p>You can also include math inline with other text, such as <latex>\alpha = \omega t</latex>.</p>
+				<h2>HTML</h2>
+				<p>In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.</p>
+				<HTML html="<div style='background:#f1f1f1;padding:2em;'><h1>Custom HTML</h1><p>Plain HTML code is supported.</p></div>" />
+				<h2>Buttons</h2>
+				<ActionButton label="Click me to see a message">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="viewer:alert">
+									<value title="I have a message for you:" message="Thanks for clicking the button" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<p>Button using a text group rather than a label:</p>
+				<ActionButton>
+					<textGroup><t>Click me to jump to <b>page 1</b>!</t></textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:goto">
+									<value id="page-1" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+			</Page>
+			<Page title="Formatting">
+				<h1>Formatting</h1>
+				<h2>Aligning headings:</h2>
+				<h2 align="right">Align right</h2>
+				<h2 align="center">Align center</h2>
+				<h2>Aligning equations:</h2>
+				<MathEquation latex="y=\sin(x)" align="right" />
+				<h2>Aligning text items:</h2>
+				<Text>
+					<textGroup>
+						<t align="left">Left</t>
+						<t align="center">Center</t>
+						<t align="right">Right</t>
+					</textGroup>
+				</Text>
+				<h2>Aligning buttons:</h2>
+				<ActionButton align="right" label="I am right aligned" />
+				<h2>Styling</h2>
+				<p><b>Bold</b>, <i>Italic</i>, Superscript<sup>2</sup>, Subscript<sub>2</sub>, <a href="http://www.google.com/">Links</a>, <del>Strikethrough content</del>, a <q>quotation</q>, <code>monospaced text</code> and in-line math equations: <latex>\frac{dy}{dx}</latex></p>
+				<h2>Advanced lists:</h2>
+				<p>This is an ordered list however the second indent-level is unordered (using square) bullets and the forth indent level is using uppercase letters starting at the 10th letter (J)</p>
+				<List>
+					<listStyles>
+						<type>ordered</type>
+						<indents>
+							<indent level="2" type="unordered" bulletStyle="square" />
+							<indent level="4" type="ordered" start="10" bulletStyle="upper-alpha" />
+						</indents>
+					</listStyles>
+					<textGroup>
+						<t>One (<code>indent="1"</code>)</t>
+						<t indent="2">Two (<code>indent="2"</code>)</t>
+						<t indent="6">Three (<code>indent="6"</code>)</t>
+						<t indent="2">Four (<code>indent="2"</code>)</t>
+						<t indent="4">Five (<code>indent="4"</code>)</t>
+						<t indent="3">Six (<code>indent="3"</code>)</t>
+					</textGroup>
+				</List>
+				<h2>Whitespace</h2>
+				<p>
+
+					Unlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.
+
+				</p>
+			</Page>
+			<Page title="Triggers &amp; Actions">
+				<h1>Actions</h1>
+
+				<h2>Button onClick examples</h2>
+
+				<p>Each of these buttons contain an example action that are triggered when the button is clicked. Take a look at the document source to see how they are implemented.</p>
+
+				<ActionButton label="Lock navigation (nav:lock)">
+					<textGroup>
+						<t>Lock navigation (<code>nav:lock</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:lock" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Unlock navigation (<code>nav:unlock</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:unlock" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Open navigation (<code>nav:open</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:open" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Close navigation (<code>nav:close</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:close" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Toggle navigation (<code>nav:toggle</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:toggle" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Go to page 1 (<code>nav:goto</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:goto">
+									<value id="page-1" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Go back (<code>nav:prev</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:prev" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Go forward (<code>nav:next</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:next" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Start an attempt (<code>assessment:startAttempt</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="assessment:startAttempt">
+									<value id="my-assessment" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton>
+					<textGroup>
+						<t>Dialog messages (<code>viewer:alert</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="viewer:alert">
+									<value title="I have a message for you:" message="Thanks for clicking the button" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<p id="focus-on-me" align="center">Click the button below to focus in on this text. Clicking away from this text will remove the focus.</p>
+				<ActionButton>
+					<textGroup>
+						<t>Focus (<code>focus:component</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="focus:component">
+									<value id="focus-on-me" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<h2>Multiple actions</h2>
+				<p>In the above examples each button performs one action, however you can specify more than one. The button below will perform the following actions:</p>
+				<ol>
+					<li>Toggle the navigation (<code>nav:toggle</code>)</li>
+					<li>Go to page 1 (<code>nav:goto</code>)</li>
+					<li>Focus on a math equation (<code>focus:component</code>)</li>
+				</ol>
+
+				<ActionButton label="Try me!">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:toggle" />
+								<action type="nav:goto">
+									<value id="page-1" />
+								</action>
+								<action type="focus:component">
+									<value id="my-math-equation" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+
+				<h2>Navigation Triggers</h2>
+				<p>This page has a few triggers that are commented out. Uncomment them to see them working. <b><code>onNavEnter</code></b> trigger will trigger an alert action. When leaving the page a <b><code>onNavExit</code></b> trigger will trigger another alert action.</p>
+
+				<!-- Uncomment the <triggers> code to view an example of onNavEnter and onNavExit triggers -->
+				<!--<triggers>
+					<trigger type="onNavEnter">
+						<actions>
+							<action type="viewer:alert">
+								<value message="onNavEnter trigger resulted in a viewer:alert action" />
+							</action>
+						</actions>
+					</trigger>
+					<trigger type="onNavExit">
+						<actions>
+							<action type="viewer:alert">
+								<value message="Goodbye!" />
+							</action>
+						</actions>
+					</trigger>
+				</triggers>-->
+			</Page>
+			<Page title="Extensions">
+				<h1>Extensions</h1>
+				<p>Here is an <a href="http://edx.readthedocs.io/projects/edx-open-learning-xml/en/latest/problem-xml/multiple_choice.html">edX multiple choice question</a> which is converted to an Obojobo question. Note that hints are not supported and are ignored. With this extension whitespace is not preserved.</p>
+				<extension type="edX:multipleChoiceQuestion">
+					<problem>
+						<multiplechoiceresponse>
+							<label>Question or prompt text</label>
+							<description>Optional information about how to answer the question</description>
+							<choicegroup type="MultipleChoice">
+								<choice correct="false" name="a">
+									Incorrect choice
+									<choicehint label="Nope">Hint for incorrect choice.</choicehint>
+								</choice>
+								<choice correct="true" name="b">
+									Correct choice
+									<choicehint label="Yup">Hint for correct choice.</choicehint>
+								</choice>
+							</choicegroup>
+							<solution>
+								<div class="detailed-solution">
+									<p>Optional header for the explanation or solution</p>
+									<p>Optional explanation or solution text</p>
+								</div>
+							</solution>
+						</multiplechoiceresponse>
+						<demandhint>
+							<hint>Hint 1</hint>
+							<hint>Hint 2</hint>
+						</demandhint>
+					</problem>
+				</extension>
+			</Page>
+		</Content>
+
+		<!-- This assessment has a limit of 3 attempts. -->
+		<!-- Full review is also turned on, which allows students -->
+		<!-- to see their responses and the correct answers after attempts. -->
+		<!-- It also allows students to see question feedback and solutions. -->
+		<!-- Set review to "never" to disable this. -->
+		<Assessment id="my-assessment" attempts="3" review="always">
+			<!-- This first page is the Assessment intro page. -->
+			<!-- It should explain the assessment and provide a button to start it. -->
+			<Page>
+				<h1>Assessment</h1>
+				<p>This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt</p>
+				<p>(This paragraph uses variables - view the XML source for formatting details). You have <b>{{assessment:attemptsRemaining}}</b> of <b>{{assessment:attemptsAmount}}</b> attempts remaining - You need a 100% to complete this assignment. Click Review Content to study the content and return to this assessment to retake it.</p>
+				<ActionButton label="Start an assessment attempt">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="assessment:startAttempt">
+									<value id="my-assessment" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+			</Page>
+
+			<!-- This QuestionBank holds all our assessment questions. -->
+			<!-- QuestionBanks can contain other QuestionBanks. -->
+
+			<!-- With this setup we define two child QuestionBanks to use. -->
+			<!-- On the first attempt the first question bank will be used, -->
+			<!-- Then the second question bank on the second attempt. -->
+			<!-- The third attempt will repeat the first question bank. -->
+			<!-- Refer to the QuestionBank and Assessment documentation -->
+			<!-- for more possibilities with constructing assessment attempts. -->
+			<QuestionBank choose="1" select="sequential">
+
+				<!-- Question bank for attempts 1, 3, 5 and so on: -->
+				<QuestionBank select="random">
+					<Question>
+						<h1>What is 2+2?</h1>
+						<MCAssessment responseType="pick-one" shuffle="true">
+							<MCChoice score="100">
+								<MCAnswer>
+									<p>4</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+							<MCChoice score="0">
+								<MCAnswer>
+									<p>2</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+						</MCAssessment>
+						<!-- Optional solution: -->
+						<solution>
+							<Page>
+								<p>Add additional information here</p>
+							</Page>
+						</solution>
+					</Question>
+
+					<!-- Question bank for attempts 2, 4, 6 and so on: -->
+					<Question>
+						<h1>What is 3-0?</h1>
+						<MCAssessment responseType="pick-one" shuffle="true">
+							<MCChoice score="100">
+								<MCAnswer>
+									<p>3</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+							<MCChoice score="0">
+								<MCAnswer>
+									<p>0</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+						</MCAssessment>
+						<!-- Optional solution: -->
+						<solution>
+							<Page>
+								<p>Add additional information here</p>
+							</Page>
+						</solution>
+					</Question>
+
+					<Question>
+						<h1>What is 9-4?</h1>
+						<MCAssessment responseType="pick-one" shuffle="true">
+							<MCChoice score="100">
+								<MCAnswer>
+									<p>5</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+							<MCChoice score="0">
+								<MCAnswer>
+									<p>3</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+						</MCAssessment>
+						<!-- Optional solution: -->
+						<solution>
+							<Page>
+								<p>Add additional information here</p>
+							</Page>
+						</solution>
+					</Question>
+
+				</QuestionBank>
+
+				<QuestionBank select="random">
+					<Question>
+						<h1>Apple is a type of</h1>
+						<MCAssessment responseType="pick-one" shuffle="true">
+							<MCChoice score="100">
+								<MCAnswer>
+									<p>Fruit</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+							<MCChoice score="0">
+								<MCAnswer>
+									<p>Vegetable</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+						</MCAssessment>
+						<!-- Optional solution: -->
+						<solution>
+							<Page>
+								<p>Add additional information here</p>
+							</Page>
+						</solution>
+					</Question>
+
+					<Question>
+						<h1>Which of the following is a US State?</h1>
+						<MCAssessment responseType="pick-one" shuffle="true">
+							<MCChoice score="100">
+								<MCAnswer>
+									<p>Florida</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+							<MCChoice score="0">
+								<MCAnswer>
+									<p>Quebec</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+						</MCAssessment>
+						<!-- Optional solution: -->
+						<solution>
+							<Page>
+								<p>Add additional information here</p>
+							</Page>
+						</solution>
+					</Question>
+
+					<Question>
+						<h1>Evaluate this statement:</h1>
+						<p>Pablo Picasso was a painter</p>
+						<MCAssessment responseType="pick-one" shuffle="true">
+							<MCChoice score="100">
+								<MCAnswer>
+									<p>True</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+							<MCChoice score="0">
+								<MCAnswer>
+									<p>False</p>
+								</MCAnswer>
+								<MCFeedback>
+									<p>Optional answer feedback</p>
+								</MCFeedback>
+							</MCChoice>
+						</MCAssessment>
+						<!-- Optional solution: -->
+						<solution>
+							<Page>
+								<p>Add additional information here</p>
+							</Page>
+						</solution>
+					</Question>
+
+				</QuestionBank>
+			</QuestionBank>
+
+			<!-- scoreActions are the post-attempt landing pages. -->
+			<!-- You can define multiple pages for different scores. -->
+			<!-- Here we have two pages: -->
+			<scoreActions>
+				<!-- This page is for a perfect 100% assessment score: -->
+				<scoreAction for="100">
+					<Page>
+						<h1 align="center">Great job!</h1>
+						<p>Here is where you can congratulate the student for a job well done. If you have other modules or content that you'd like them to look at after having passed this module you can provide links here.</p>
+						<ActionButton>
+							<triggers>
+								<trigger type="onClick">
+									<actions>
+										<action type="assessment:startAttempt">
+											<value id="my-assessment" />
+										</action>
+									</actions>
+								</trigger>
+							</triggers>
+							<textGroup>
+								<t>Try again ({{assessment:attemptsRemaining}} attempts left)</t>
+							</textGroup>
+						</ActionButton>
+					</Page>
+				</scoreAction>
+
+				<!-- This page is for any score that isn't 100%: -->
+				<scoreAction for="[0,100)">
+					<Page>
+						<h1 align="center">Not quite!</h1>
+						<p>Here you could direct students back to the content or provide links to additional information.</p>
+						<ActionButton>
+							<triggers>
+								<trigger type="onClick">
+									<actions>
+										<action type="assessment:startAttempt">
+											<value id="my-assessment" />
+										</action>
+									</actions>
+								</trigger>
+							</triggers>
+							<textGroup>
+								<t>Try again ({{assessment:attemptsRemaining}} attempts left)</t>
+							</textGroup>
+						</ActionButton>
+					</Page>
+				</scoreAction>
+
+				<!-- If you don't want different landing pages you can use `for="[0,100]"` -->
+			</scoreActions>
+
+			<!-- Here is a pass/fail scoring rubric, -->
+			<!-- uncomment the rubric below to enable it: -->
+			<!--<rubric
+				type="pass-fail"
+				passingAttemptScore="100"
+				passedResult="100"
+				failedResult="no-score"
+				unableToPassResult="$highest_attempt_score"
+			>
+				<mods>
+					<mod attemptCondition="$last_attempt" reward="-5" />
+				</mods>
+			</rubric>-->
+
+			<!-- These triggers lock and unlock navigation during an attempt. -->
+			<!-- Remove them to allow students to exit and enter the assessment freely. -->
+			<triggers>
+				<trigger type="onStartAttempt">
+					<actions>
+						<action type="nav:lock" />
+					</actions>
+				</trigger>
+				<trigger type="onEndAttempt">
+					<actions>
+						<action type="nav:unlock" />
+					</actions>
+				</trigger>
+			</triggers>
+		</Assessment>
+	</Module>
+</ObojoboDraftDoc>
