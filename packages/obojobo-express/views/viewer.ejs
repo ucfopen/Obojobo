@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%
+			let assetForEnv = oboRequire('asset_resolver').assetForEnv
+			let title = 'Obojobo Next Document Viewer'
+			let css = [
+				assetForEnv('/static/viewer$[.min].css'),
+				'https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css'
+			]
+			let headerJs = [
+				assetForEnv('//fb.me/react-with-addons-15.0.2$[.min].js'),
+				assetForEnv('//fb.me/react-dom-15.0.2$[.min].js'),
+				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore$[-min].js'),
+				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
+				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.js')
+			]
+			let footerJs = [
+				assetForEnv('/static/viewer$[.min].js')
+			]
+			let fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i']
+		%>
+		<%- include ./partials/head %>
+	</head>
+	<body>
+		<div id="viewer-app">LOADING...</div>
+		<script><%- oboGlobals.renderScriptContent() %></script>
+		<%
+			if (typeof inlines !== 'undefined') {
+				inlines.forEach(function(inline) { %>
+					<script><%- js %></script>
+				<% })
+			}
+
+			if (typeof footerJs !== 'undefined') {
+				footerJs.forEach(function(href) { %>
+					<script src="<%= href %>"></script>
+				<% })
+			}
+		%>
+		<script>window.__oboViewerRender()</script>
+
+	</body>
+</html>

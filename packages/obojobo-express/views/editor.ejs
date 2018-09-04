@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<%
+			let title = 'Obojobo Editor'
+
+			let headerJs = [
+				"//fb.me/react-with-addons-15.0.2.js",
+				"//fb.me/react-dom-15.0.2.js",
+				"//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js",
+				"//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.min.js",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/mode/xml/xml.min.js",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/edit/matchtags.min.js",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/xml-fold.js",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/foldgutter.js",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/foldcode.js",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/brace-fold.js",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/indent-fold.js"
+			]
+
+			let css = [
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.css",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/foldgutter.css",
+			]
+
+		%>
+		<%- include ./partials/head %>
+
+		<style type="text/css">
+			body { font-family:Arial; padding:0; margin:0; margin-top: 40px; }
+			ul > li > p, ul > li > a { display:inline-block; margin-right: 1em; }
+			button { font-size: 16pt; background-color: purple; color: white; font-weight: bold; border:none; }
+			#button-create-new-draft { width: 100%; }
+			#editor-container { position: absolute; top: 40px; bottom: 0; left: 300px; right: 0; }
+			#editor { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
+			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; }
+			#sidebar { overflow: scroll; position: absolute; left: 0; top: 40px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
+			#sidebar ul { padding: 0; margin: 0; }
+			#sidebar li { list-style-type: none; border-bottom: 1px solid #e6e6e6; padding: 10px; box-sizing: border-box; cursor: pointer; position: relative; }
+			#sidebar li:hover { background:#f3faff; }
+			#sidebar li p { margin: 0; pointer-events: none; }
+			.CodeMirror { border-left: 1px solid black; border-bottom: 1px solid black; height: 100%; }
+			h1 { position: absolute; left: 0; top: 0; right: 0; border-bottom: 1px solid black; font-size: 10pt; height: 40px; margin: 0; padding: 12px; box-sizing: border-box; }
+			.selected { background: #d7efff !important; }
+			#button-save-draft { position: absolute; left:50%; bottom: 5px; transform: translate(-50%);}
+			.draft-id { display: block; font-size: 8pt; opacity: 0.5; margin-bottom: 15px; pointer-events: none;  }
+			.link-preview { font-size: 9pt; }
+			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
+			.link-delete:hover { color:red; }
+		</style>
+	</head>
+	<body>
+		<% drafts.sort(function(a, b) {
+			if (
+				a.content
+				&& b.content
+				&& a.content.content 
+				&& b.content.content
+				&& a.content.content.title
+				&& b.content.content.title
+			) {
+				const aTitle = a.content.content.title.toString().toLowerCase()
+				const bTitle = b.content.content.title.toString().toLowerCase()
+				return aTitle > bTitle
+			}
+ 		}) %>
+		<div>
+			<h1>Obojobo Draft Manager</h1>
+			<div id="sidebar">
+				<button id="button-create-new-draft">+ Create new draft</button>
+				<ul>
+					<% drafts.forEach(function(draft){ %>
+						<li
+							id="<%= draft.draftId %>"
+							class="link-edit"
+							data-id="<%= draft.draftId %>"
+							data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content) %>">
+								<% if(draft.content && draft.content.content && draft.content.content.title){ %>
+									<p><%= draft.content.content.title %></p>
+									<span class="draft-id"><%= draft.draftId %></span>
+								<% } else { %>
+									<p><%= draft.draftId %></p>
+									<span class="draft-id"><%= draft.draftId %></span>
+								<% } %>
+								<a target="_blank" class="link-preview" href="/view/<%= draft.draftId %>">Preview</a>
+								<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
+						</li>
+					<% }) %>
+				</ul>
+			</div>
+			<div id="editor-container">
+				<div id="editor">
+					<div id="edit"></div>
+					<button id="button-save-draft">Save Draft</button>
+				</div>
+			</div>
+		</div>
+		<script>
+			document.addEventListener('keyup', function(event) {
+				if(event.keyCode === 83 && event.ctrlKey)
+				{
+					saveDraft();
+				}
+			})
+
+			var editor = CodeMirror(document.getElementById('edit'), {
+				lineNumbers: true,
+				mode: 'text/xml',
+				matchTags: true,
+				foldGutter: true,
+				lineWrapping: true,
+				indentWithTabs: true,
+				tabSize: 4,
+				indentUnit: 4,
+				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+			})
+
+			var editingDraftId = null
+
+			// wire up (edit) buttons:
+			var editLinks = document.getElementsByClassName('link-edit')
+			for(var i = 0; i < editLinks.length; i++)
+			{
+				editLinks[i].addEventListener('click', function(event) {
+					edit(event.target.getAttribute('data-id'))
+				})
+			}
+
+			var delLinks = document.getElementsByClassName('link-delete')
+			for(var i = 0; i < delLinks.length; i++)
+			{
+				delLinks[i].addEventListener('click', function(event) {
+					del(event.target.getAttribute('data-id'))
+				})
+			}
+
+			document.getElementById('button-create-new-draft').addEventListener('click', function(event) {
+				fetch('/api/drafts/new', {
+					method: 'POST',
+					credentials: 'include',
+					body: '',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(function(resp) {
+					resp.json().then(function(json) {
+						if(json.value.id)
+						{
+							alert('New draft created, reloading...')
+							location.reload()
+						}
+						else
+						{
+							alert('Error: ' + error)
+							console.error(error)
+						}
+					})
+				})
+				.catch(function(error) {
+					alert('Error: ' + error)
+					console.error(error)
+				})
+			})
+
+			document.getElementById('button-save-draft').addEventListener('click', saveDraft)
+
+			function saveDraft() {
+				if(!editingDraftId) return
+
+				var draftContent = editor.getValue()
+
+				document.getElementById(editingDraftId).setAttribute('data-content', draftContent)
+
+				postCurrentlyEditingDraft(draftContent)
+			}
+
+			function edit(draftId) {
+				if(!draftId) return
+
+				document.getElementById('editor').style.display = 'block';
+				editingDraftId = draftId
+
+				content = document.getElementById(draftId).getAttribute('data-content')
+
+				//- document.getElementById('edit').value = content;
+				let selected = document.getElementsByClassName('selected')
+				if(selected[0]) selected[0].classList.remove('selected');
+				document.getElementById(draftId).classList.add('selected');
+				if(content.charAt(0) === '<')
+				{
+					editor.setOption('mode', 'text/xml')
+				}
+				else
+				{
+					editor.setOption('mode', 'application/json')
+				}
+
+				editor.setValue(content);
+
+				location.hash = 'id:' + draftId;
+			}
+
+			function del(draftId) {
+				let response = confirm('Are you sure you want to delete ' + draftId + '?')
+
+				if(!response) return;
+
+				fetch('/api/drafts/' + draftId, {
+					method: 'DELETE',
+					credentials: 'include',
+					body: '',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(function(resp) {
+					resp.json().then(function(json) {
+						if(json.status.toLowerCase() === 'ok')
+						{
+							alert('Draft deleted, reloading...')
+							location.reload()
+						}
+						else
+						{
+							alert('Error')
+						}
+					})
+				})
+				.catch(function(error) {
+					alert('Error: ' + error.toString())
+					console.error(error)
+				})
+			}
+
+			function postCurrentlyEditingDraft(draftContent) {
+				let mime
+
+				// try to parse JSON, if it works we assume we're sending JSON.
+				// otherwise send as plain text in the hopes that it's XML
+				try
+				{
+					JSON.parse(draftContent)
+					mime = 'application/json'
+				}
+				catch(e)
+				{
+					mime = 'text/plain'
+				}
+
+				fetch('/api/drafts/' + editingDraftId, {
+					method: 'POST',
+					credentials: 'include',
+					body: draftContent,
+					headers: {
+						'Accept': mime,
+						'Content-Type': mime
+					}
+				})
+				.then(function(res) {
+					switch (res.status) {
+						case 200:
+							res.json().then(function(json) {
+								if (json.value.id) alert('Saved! (' + json.value.id + ')')
+								else {
+									alert('Error: ' + error)
+									console.error(error)
+								}
+							})
+							break
+
+						default:
+							res.json().then(function(json) {
+								alert('Error: ' + json.value.message + ' (' + res.status + ')')
+							})
+							.catch(function(e) {
+								alert('Error: ' + res.statusText + ' (' + res.status + ')')
+							})
+							break
+					}
+				})
+				.catch(function(error) {
+					alert('Error: ' + error)
+					console.error(error)
+				})
+			}
+
+			if(location.hash.indexOf('#id:') === 0)
+			{
+				edit(location.hash.substr(4))
+			}
+		</script>
+	</body>
+</html>
