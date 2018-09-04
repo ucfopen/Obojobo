@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading adapter construct builds with attributes 1`] = `
+Object {
+  "modelState": Object {
+    "align": "right",
+    "headingLevel": "2",
+    "textGroup": TextGroup {
+      "dataTemplate": Object {
+        "align": "left",
+        "indent": 0,
+      },
+      "items": Array [
+        TextGroupItem {
+          "data": Object {
+            "align": "left",
+            "indent": 0,
+          },
+          "parent": [Circular],
+          "text": StyleableText {
+            "styleList": ChunkStyleList {
+              "styles": Array [],
+            },
+            "value": "example text",
+          },
+        },
+      ],
+      "maxItems": 1,
+    },
+  },
+}
+`;
+
+exports[`Heading adapter construct builds without attributes 1`] = `
+Object {
+  "modelState": Object {
+    "align": "left",
+    "headingLevel": 1,
+    "textGroup": TextGroup {
+      "dataTemplate": Object {
+        "align": "left",
+        "indent": 0,
+      },
+      "items": Array [
+        TextGroupItem {
+          "data": Object {
+            "align": "left",
+            "indent": 0,
+          },
+          "parent": [Circular],
+          "text": StyleableText {
+            "styleList": ChunkStyleList {
+              "styles": Array [],
+            },
+            "value": "",
+          },
+        },
+      ],
+      "maxItems": 1,
+    },
+  },
+}
+`;
+
+exports[`Heading adapter toJSON creates a JSON representation 1`] = `
+Object {
+  "content": Object {
+    "align": "left",
+    "headingLevel": "2",
+    "textGroup": Array [
+      Object {
+        "data": Object {
+          "align": "left",
+          "indent": 0,
+        },
+        "text": Object {
+          "styleList": null,
+          "value": "example text",
+        },
+      },
+    ],
+  },
+}
+`;

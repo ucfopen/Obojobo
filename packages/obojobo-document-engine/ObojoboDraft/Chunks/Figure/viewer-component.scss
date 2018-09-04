@@ -1,0 +1,83 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--figure {
+	text-align: center;
+
+	figure {
+		margin: 0;
+		padding: 0;
+	}
+
+	.container {
+		display: inline-block;
+		height: auto;
+		position: relative;
+
+		img {
+			background: $color-bg;
+			border: none;
+			display: block;
+			border: 0.3em solid $color-bg;
+			border-radius: $dimension-rounded-radius;
+			box-sizing: border-box;
+		}
+
+		.img-placeholder {
+			border: 1px solid $color-shadow;
+		}
+	}
+
+	figcaption {
+		font-family: $font-default;
+		font-size: 0.8em;
+		color: lighten($color-text, 40%);
+	}
+
+	&.custom {
+		@include pad();
+
+		.container {
+			width: 100%;
+
+			img {
+				margin: 0 auto;
+				max-width: 100%;
+			}
+		}
+	}
+
+	&.small {
+		@include pad();
+
+		.container {
+			width: 18em;
+
+			img {
+				width: 100%;
+			}
+		}
+	}
+
+	&.medium {
+		@include pad();
+
+		.container {
+			width: 100%;
+
+			img {
+				width: 100%;
+			}
+		}
+	}
+
+	&.large {
+		.container {
+			width: 100%;
+
+			img {
+				width: 100%;
+				border-radius: 0;
+			}
+		}
+	}
+}

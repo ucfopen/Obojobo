@@ -1,0 +1,233 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assessment getAttempts returns attempts object with response history 1`] = `
+Object {
+  "assessmentId": "mockAssessmentId",
+  "attempts": Array [
+    Object {
+      "assessmentId": "mockAssessmentId",
+      "assessmentScore": 15,
+      "assessmentScoreDetails": "mockScoreDetails",
+      "assessmentScoreId": "scoreId",
+      "attemptId": "mockAttemptId",
+      "attemptNumber": 12,
+      "attemptScore": "mockResult",
+      "contentId": "mockContentId",
+      "draftId": "mockDraftId",
+      "finishTime": "mockCompletedAt",
+      "isFinished": true,
+      "questionScores": Array [
+        "mockScore",
+      ],
+      "responses": Object {
+        "mockQuestionId": "mockResponse",
+      },
+      "startTime": "mockCreatedAt",
+      "state": "mockState",
+      "userId": "mockUserId",
+    },
+  ],
+  "ltiState": Object {
+    "gradebookStatus": "mockGradeBookStatus",
+    "scoreSent": 0,
+    "sentDate": "mockSentDate",
+    "status": "mockStatus",
+    "statusDetails": "mockStatusDetails",
+  },
+}
+`;
+
+exports[`Assessment getAttempts returns attempts object without assessmentId 1`] = `
+Array [
+  Object {
+    "assessmentId": "mockAssessmentId",
+    "attempts": Array [
+      Object {
+        "assessmentId": "mockAssessmentId",
+        "assessmentScore": 15,
+        "assessmentScoreDetails": "mockScoreDetails",
+        "assessmentScoreId": "scoreId",
+        "attemptId": "mockAttemptId",
+        "attemptNumber": 12,
+        "attemptScore": "mockResult",
+        "contentId": "mockContentId",
+        "draftId": "mockDraftId",
+        "finishTime": "mockCompletedAt",
+        "isFinished": true,
+        "questionScores": Array [
+          "mockScore",
+        ],
+        "responses": Object {},
+        "startTime": "mockCreatedAt",
+        "state": "mockState",
+        "userId": "mockUserId",
+      },
+    ],
+    "ltiState": null,
+  },
+]
+`;
+
+exports[`Assessment getAttempts returns attempts object without response history 1`] = `
+Object {
+  "assessmentId": "mockAssessmentId",
+  "attempts": Array [
+    Object {
+      "assessmentId": "mockAssessmentId",
+      "assessmentScore": 15,
+      "assessmentScoreDetails": "mockScoreDetails",
+      "assessmentScoreId": "scoreId",
+      "attemptId": "mockAttemptId",
+      "attemptNumber": 12,
+      "attemptScore": "mockResult",
+      "contentId": "mockContentId",
+      "draftId": "mockDraftId",
+      "finishTime": "mockCompletedAt",
+      "isFinished": true,
+      "questionScores": Array [
+        "mockScore",
+      ],
+      "responses": Object {},
+      "startTime": "mockCreatedAt",
+      "state": "mockState",
+      "userId": "mockUserId",
+    },
+  ],
+  "ltiState": null,
+}
+`;
+
+exports[`Assessment getAttempts returns empty object if assessment isnt found 1`] = `
+Object {
+  "assessmentId": "badAssessmentId",
+  "attempts": Array [],
+  "ltiState": null,
+}
+`;
+
+exports[`Assessment getAttempts returns multiple attempts with same assessment 1`] = `
+Object {
+  "assessmentId": "mockAssessmentId",
+  "attempts": Array [
+    Object {
+      "assessmentId": "mockAssessmentId",
+      "assessmentScore": 15,
+      "assessmentScoreDetails": "mockScoreDetails",
+      "assessmentScoreId": "scoreId",
+      "attemptId": "mockFirst",
+      "attemptNumber": 12,
+      "attemptScore": "mockResult",
+      "contentId": "mockContentId",
+      "draftId": "mockDraftId",
+      "finishTime": "mockCompletedAt",
+      "isFinished": true,
+      "questionScores": Array [
+        "mockScore",
+      ],
+      "responses": Object {},
+      "startTime": "mockCreatedAt",
+      "state": "mockState",
+      "userId": "mockUserId",
+    },
+    Object {
+      "assessmentId": "mockAssessmentId",
+      "assessmentScore": 15,
+      "assessmentScoreDetails": "mockScoreDetails",
+      "assessmentScoreId": "scoreId",
+      "attemptId": "mockSecond",
+      "attemptNumber": 12,
+      "attemptScore": "mockResult",
+      "contentId": "mockContentId",
+      "draftId": "mockDraftId",
+      "finishTime": "mockCompletedAt",
+      "isFinished": true,
+      "questionScores": Array [
+        "mockScore",
+      ],
+      "responses": Object {},
+      "startTime": "mockCreatedAt",
+      "state": "mockState",
+      "userId": "mockUserId",
+    },
+  ],
+  "ltiState": Object {
+    "gradebookStatus": "mockGradeBookStatus",
+    "scoreSent": 0,
+    "sentDate": "mockSentDate",
+    "status": "mockStatus",
+    "statusDetails": "mockStatusDetails",
+  },
+}
+`;
+
+exports[`Assessment getAttempts returns no history when assessmentIds for attempt and history dont match 1`] = `
+Array [
+  Object {
+    "assessmentId": "mockAssessmentId",
+    "attempts": Array [
+      Object {
+        "assessmentId": "mockAssessmentId",
+        "assessmentScore": 15,
+        "assessmentScoreDetails": "mockScoreDetails",
+        "assessmentScoreId": "scoreId",
+        "attemptId": "mockAttemptId",
+        "attemptNumber": 12,
+        "attemptScore": "mockResult",
+        "contentId": "mockContentId",
+        "draftId": "mockDraftId",
+        "finishTime": "mockCompletedAt",
+        "isFinished": true,
+        "questionScores": Array [
+          "mockScore",
+        ],
+        "responses": Object {},
+        "startTime": "mockCreatedAt",
+        "state": "mockState",
+        "userId": "mockUserId",
+      },
+    ],
+    "ltiState": Object {
+      "gradebookStatus": "mockGradeBookStatus",
+      "scoreSent": 0,
+      "sentDate": "mockSentDate",
+      "status": "mockStatus",
+      "statusDetails": "mockStatusDetails",
+    },
+  },
+]
+`;
+
+exports[`Assessment getAttempts throws error if attempt is not found 1`] = `
+Object {
+  "assessmentId": "mockAssessmentId",
+  "attempts": Array [
+    Object {
+      "assessmentId": "mockAssessmentId",
+      "assessmentScore": 15,
+      "assessmentScoreDetails": "mockScoreDetails",
+      "assessmentScoreId": "scoreId",
+      "attemptId": "mockAttemptId",
+      "attemptNumber": 12,
+      "attemptScore": "mockResult",
+      "contentId": "mockContentId",
+      "draftId": "mockDraftId",
+      "finishTime": "mockCompletedAt",
+      "isFinished": true,
+      "questionScores": Array [
+        "mockScore",
+      ],
+      "responses": Object {},
+      "startTime": "mockCreatedAt",
+      "state": "mockState",
+      "userId": "mockUserId",
+    },
+  ],
+  "ltiState": Object {
+    "gradebookStatus": "mockGradeBookStatus",
+    "scoreSent": 0,
+    "sentDate": "mockSentDate",
+    "status": "mockStatus",
+    "statusDetails": "mockStatusDetails",
+  },
+}
+`;

@@ -1,0 +1,173 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--iframe {
+	display: block;
+	font-size: 1em;
+	margin: 0 auto;
+	text-align: center;
+
+	&.is-not-showing {
+		> .container {
+			border: 1px solid transparentize($color-action, 0.8);
+			max-height: 15em;
+		}
+	}
+
+	&.is-not-showing {
+		> .new-window-link {
+			visibility: hidden;
+		}
+	}
+
+	&.is-controls-enabled {
+		margin-bottom: 1.5em;
+	}
+
+	&.is-showing {
+		> .container {
+			border: 1px solid $color-transparent;
+		}
+	}
+
+	&.is-bordered.is-showing {
+		> .container > .iframe-container {
+			// This gets an outline with rounded corners (border messes up our calculations)
+			$b: darken($color-bg2, 20%);
+			box-shadow: 0 1px 0 $b, 0 -1px 0 $b, 1px 0 0 $b, -1px 0 0 $b, 1px 1px 0 $b, -1px -1px 0 $b,
+				-1px 1px $b, 1px -1px $b;
+		}
+	}
+
+	&.is-scaled-up {
+		> .container > .iframe-container > iframe {
+			transform-origin: top center;
+		}
+	}
+
+	&.is-not-showing {
+		> .container {
+			border-radius: $dimension-rounded-radius;
+			background-color: #fdfdfd;
+			overflow: hidden;
+			cursor: pointer;
+
+			&::before {
+				content: ' ';
+				display: block;
+				background-image: url('./bg.svg');
+				background-size: 38.16px 38.16px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				transition: transform $duration-animation-default, opacity $duration-animation-default;
+			}
+
+			&:hover {
+				background-color: #f9f4ff;
+
+				> .click-to-load {
+					transform: translate(-50%, -50%) scale(1.05);
+					transform-origin: center center;
+				}
+
+				&::before {
+					transform: scale(1.2);
+					opacity: 0.4;
+				}
+			}
+		}
+	}
+
+	&.is-missing-src {
+		> .container {
+			border: 1px solid $color-error;
+			background-color: lighten($color-error, 65%);
+			pointer-events: none;
+
+			> .click-to-load > span {
+				color: $color-error;
+			}
+		}
+	}
+
+	> .container {
+		// @HACK: Enforce pixel perfect children.
+		// Used to make the "Click to load this content" element non-blurry in CHROME
+		transform-style: preserve-3d;
+	}
+
+	> .container,
+	> .container-placeholder {
+		width: 100%;
+		margin: 0 auto;
+		max-width: 100%;
+		position: relative;
+
+		.after {
+			display: block;
+		}
+
+		> .iframe-container {
+			position: absolute;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			right: 0;
+
+			overflow: hidden;
+			border-radius: $dimension-rounded-radius;
+
+			> iframe {
+				background: $color-bg2;
+			}
+
+			> iframe,
+			> .blocker {
+				width: 100%;
+				height: 100%;
+				transform-origin: top left;
+			}
+		}
+
+		> .click-to-load {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			font-family: $font-default;
+			font-size: 0.8em;
+			line-height: 1.3em;
+			box-sizing: border-box;
+			font-size: 1em;
+			border-radius: $dimension-rounded-radius;
+			color: $color-text;
+			font-weight: bold;
+			transition: transform 0.2s;
+			max-width: calc(100% - 3em);
+			overflow: hidden;
+			width: 100%;
+
+			> .title {
+				display: inline-block;
+				margin-bottom: 1em;
+				font-size: 0.8em;
+				opacity: 0.8;
+				width: 100%;
+			}
+
+			> .obojobo-draft--components--button {
+				display: block;
+			}
+		}
+
+		> .obojobo-draft--chunks--iframe--controls {
+			position: absolute;
+			top: 100%;
+			left: 0;
+			right: 0;
+			transform: translate(0, 0.3em);
+		}
+	}
+}

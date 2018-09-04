@@ -1,0 +1,439 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BasicReview Basic component correct 1`] = `
+<div
+  className="is-correct"
+>
+  <p>
+    Question 1: Correct
+  </p>
+  <Question
+    model={
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": null,
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": Object {
+                                "align": "left",
+                                "indent": 0,
+                              },
+                              "text": Object {
+                                "styleList": null,
+                                "value": "Example Text",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "choice1-answer-text",
+                        "index": 0,
+                        "metadata": Object {},
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "choice1-answer",
+                    "index": 0,
+                    "metadata": Object {},
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": null,
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": Object {
+                                "align": "left",
+                                "indent": 0,
+                              },
+                              "text": Object {
+                                "styleList": null,
+                                "value": "Example Text 2",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "choice1-feedback-text",
+                        "index": 0,
+                        "metadata": Object {},
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "choice1-feedback",
+                    "index": 0,
+                    "metadata": Object {},
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                  },
+                ],
+                "content": Object {
+                  "score": 100,
+                },
+                "id": "choice1",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": null,
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": Object {
+                                "align": "left",
+                                "indent": 0,
+                              },
+                              "text": Object {
+                                "styleList": null,
+                                "value": "Example Text 3",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "choice1-answer-text",
+                        "index": 0,
+                        "metadata": Object {},
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "choice2-answer",
+                    "index": 0,
+                    "metadata": Object {},
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": null,
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": Object {
+                                "align": "left",
+                                "indent": 0,
+                              },
+                              "text": Object {
+                                "styleList": null,
+                                "value": "Example Text 4",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "choice1-feedback-text",
+                        "index": 0,
+                        "metadata": Object {},
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "choice2-feedback",
+                    "index": 0,
+                    "metadata": Object {},
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                  },
+                ],
+                "content": Object {
+                  "score": 0,
+                },
+                "id": "choice2",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+            ],
+            "content": Object {
+              "correctLabels": null,
+              "incorrectLabels": null,
+              "responseType": "pick-one",
+              "shuffle": true,
+            },
+            "id": "id",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Chunks.MCAssessment",
+          },
+        ],
+        "content": Object {
+          "mode": "practice",
+          "solution": Object {
+            "children": Array [
+              Object {
+                "children": null,
+                "content": Object {
+                  "textGroup": Array [
+                    Object {
+                      "data": Object {
+                        "align": "left",
+                        "indent": 0,
+                      },
+                      "text": Object {
+                        "styleList": null,
+                        "value": "Example text",
+                      },
+                    },
+                  ],
+                },
+                "id": "text-id",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.Text",
+              },
+            ],
+            "content": Object {},
+            "id": "page-id",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Pages.Page",
+          },
+          "title": "Title",
+          "type": undefined,
+        },
+        "id": "parent",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.Question",
+      }
+    }
+    moduleData={
+      Object {
+        "focusState": Object {},
+      }
+    }
+    showContentOnly={true}
+  />
+</div>
+`;
+
+exports[`BasicReview Basic component incorrect 1`] = `
+<div
+  className="is-not-correct"
+>
+  <p>
+    Question 1: Incorrect
+  </p>
+  <Question
+    model={
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": null,
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": Object {
+                                "align": "left",
+                                "indent": 0,
+                              },
+                              "text": Object {
+                                "styleList": null,
+                                "value": "Example Text",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "choice1-answer-text",
+                        "index": 0,
+                        "metadata": Object {},
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "choice1-answer",
+                    "index": 0,
+                    "metadata": Object {},
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": null,
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": Object {
+                                "align": "left",
+                                "indent": 0,
+                              },
+                              "text": Object {
+                                "styleList": null,
+                                "value": "Example Text 2",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "choice1-feedback-text",
+                        "index": 0,
+                        "metadata": Object {},
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "choice1-feedback",
+                    "index": 0,
+                    "metadata": Object {},
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                  },
+                ],
+                "content": Object {
+                  "score": 100,
+                },
+                "id": "choice1",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+              Object {
+                "children": Array [
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": null,
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": Object {
+                                "align": "left",
+                                "indent": 0,
+                              },
+                              "text": Object {
+                                "styleList": null,
+                                "value": "Example Text 3",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "choice1-answer-text",
+                        "index": 0,
+                        "metadata": Object {},
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "choice2-answer",
+                    "index": 0,
+                    "metadata": Object {},
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                  },
+                  Object {
+                    "children": Array [
+                      Object {
+                        "children": null,
+                        "content": Object {
+                          "textGroup": Array [
+                            Object {
+                              "data": Object {
+                                "align": "left",
+                                "indent": 0,
+                              },
+                              "text": Object {
+                                "styleList": null,
+                                "value": "Example Text 4",
+                              },
+                            },
+                          ],
+                        },
+                        "id": "choice1-feedback-text",
+                        "index": 0,
+                        "metadata": Object {},
+                        "type": "ObojoboDraft.Chunks.Text",
+                      },
+                    ],
+                    "content": Object {},
+                    "id": "choice2-feedback",
+                    "index": 0,
+                    "metadata": Object {},
+                    "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                  },
+                ],
+                "content": Object {
+                  "score": 0,
+                },
+                "id": "choice2",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+              },
+            ],
+            "content": Object {
+              "correctLabels": null,
+              "incorrectLabels": null,
+              "responseType": "pick-one",
+              "shuffle": true,
+            },
+            "id": "id",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Chunks.MCAssessment",
+          },
+        ],
+        "content": Object {
+          "mode": "practice",
+          "solution": Object {
+            "children": Array [
+              Object {
+                "children": null,
+                "content": Object {
+                  "textGroup": Array [
+                    Object {
+                      "data": Object {
+                        "align": "left",
+                        "indent": 0,
+                      },
+                      "text": Object {
+                        "styleList": null,
+                        "value": "Example text",
+                      },
+                    },
+                  ],
+                },
+                "id": "text-id",
+                "index": 0,
+                "metadata": Object {},
+                "type": "ObojoboDraft.Chunks.Text",
+              },
+            ],
+            "content": Object {},
+            "id": "page-id",
+            "index": 0,
+            "metadata": Object {},
+            "type": "ObojoboDraft.Pages.Page",
+          },
+          "title": "Title",
+          "type": undefined,
+        },
+        "id": "parent",
+        "index": 0,
+        "metadata": Object {},
+        "type": "ObojoboDraft.Chunks.Question",
+      }
+    }
+    moduleData={
+      Object {
+        "focusState": Object {},
+      }
+    }
+    showContentOnly={true}
+  />
+</div>
+`;

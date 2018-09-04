@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTML HTML component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.HTML"
+  id="obo-id"
+>
+  <div
+    className="obojobo-draft--chunks--html viewer pad align-left"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<marquee>Example text</marquee>",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`HTML HTML component with equation 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.HTML"
+  id="obo-id"
+>
+  <div
+    className="obojobo-draft--chunks--html viewer pad align-left"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<div class=\\"latex\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mo>(</mo><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup><mo>)</mo></mrow><annotation encoding=\\"application/x-tex\\">(x^2 + y^2 = z^2)</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.8141079999999999em;\\"></span><span class=\\"strut bottom\\" style=\\"height:1.064108em;vertical-align:-0.25em;\\"></span><span class=\\"base\\"><span class=\\"mopen\\">(</span><span class=\\"mord\\"><span class=\\"mord mathit\\">x</span><span class=\\"msupsub\\"><span class=\\"vlist-t\\"><span class=\\"vlist-r\\"><span class=\\"vlist\\" style=\\"height:0.8141079999999999em;\\"><span style=\\"top:-3.063em;margin-right:0.05em;\\"><span class=\\"pstrut\\" style=\\"height:2.7em;\\"></span><span class=\\"sizing reset-size6 size3 mtight\\"><span class=\\"mord mtight\\">2</span></span></span></span></span></span></span></span><span class=\\"mord rule\\" style=\\"margin-right:0.2222222222222222em;\\"></span><span class=\\"mbin\\">+</span><span class=\\"mord rule\\" style=\\"margin-right:0.2222222222222222em;\\"></span><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">y</span><span class=\\"msupsub\\"><span class=\\"vlist-t\\"><span class=\\"vlist-r\\"><span class=\\"vlist\\" style=\\"height:0.8141079999999999em;\\"><span style=\\"top:-3.063em;margin-right:0.05em;\\"><span class=\\"pstrut\\" style=\\"height:2.7em;\\"></span><span class=\\"sizing reset-size6 size3 mtight\\"><span class=\\"mord mtight\\">2</span></span></span></span></span></span></span></span><span class=\\"mord rule\\" style=\\"margin-right:0.2777777777777778em;\\"></span><span class=\\"mrel\\">=</span><span class=\\"mord rule\\" style=\\"margin-right:0.2777777777777778em;\\"></span><span class=\\"mord\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.04398em;\\">z</span><span class=\\"msupsub\\"><span class=\\"vlist-t\\"><span class=\\"vlist-r\\"><span class=\\"vlist\\" style=\\"height:0.8141079999999999em;\\"><span style=\\"top:-3.063em;margin-right:0.05em;\\"><span class=\\"pstrut\\" style=\\"height:2.7em;\\"></span><span class=\\"sizing reset-size6 size3 mtight\\"><span class=\\"mord mtight\\">2</span></span></span></span></span></span></span></span><span class=\\"mclose\\">)</span></span></span></span></div>",
+      }
+    }
+  />
+</div>
+`;

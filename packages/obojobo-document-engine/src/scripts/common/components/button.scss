@@ -1,0 +1,93 @@
+@import '../../../scss/includes';
+
+.obojobo-draft--components--button {
+	@mixin disabled() {
+		background-color: $color-bg2;
+		cursor: default;
+		color: $color-text-minor;
+		border: 1px solid $color-transparent;
+		border-bottom: 1px solid $color-transparent;
+		opacity: 1;
+	}
+
+	display: inline-block;
+
+	button {
+		user-select: none;
+		cursor: pointer;
+		font-family: $font-default;
+		font-size: 0.85em;
+		position: relative;
+		min-width: 3.25em;
+		border-radius: 0.2em;
+		padding: 0.6rem 1em;
+		// button lightened to be close to $color-action with opacity 0.8
+		background-color: lighten($color-action, 9%);
+		color: $color-bg;
+		border: 1px solid $color-transparent;
+		border-bottom: 1px solid darken($color-action, 20%);
+
+		&:hover {
+			background-color: $color-action;
+		}
+
+		&:disabled {
+			@include disabled();
+		}
+	}
+
+	&.is-dangerous {
+		button {
+			background-color: $color-dangerous;
+			border-bottom: 1px solid darken($color-action, 20%);
+		}
+	}
+
+	&.alt-action {
+		button {
+			border: 1px solid $color-action;
+			border-bottom: 1px solid $color-action;
+			background-color: $color-bg;
+			color: $color-action;
+
+			&:hover {
+				background-color: $color-action;
+				color: $color-bg;
+			}
+
+			&:disabled {
+				@include disabled();
+			}
+		}
+	}
+
+	&.alt-action.is-dangerous {
+		button {
+			border: 1px solid $color-dangerous;
+			border-bottom: 1px solid $color-dangerous;
+			background-color: $color-bg;
+			color: $color-dangerous;
+
+			&:hover {
+				background-color: $color-dangerous;
+				color: $color-bg;
+			}
+
+			&:disabled {
+				@include disabled();
+			}
+		}
+	}
+
+	&.align-left {
+		text-align: left;
+	}
+
+	&.align-right {
+		text-align: right;
+	}
+
+	&.align-center {
+		text-align: center;
+	}
+}
