@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Figure adapter construct builds with attributes 1`] = `
+Object {
+  "alt": "An image",
+  "height": 100,
+  "size": "custom",
+  "textGroup": TextGroup {
+    "dataTemplate": Object {
+      "align": "left",
+      "indent": 0,
+    },
+    "items": Array [
+      TextGroupItem {
+        "data": Object {
+          "align": "left",
+          "indent": 0,
+        },
+        "parent": [Circular],
+        "text": StyleableText {
+          "styleList": ChunkStyleList {
+            "styles": Array [],
+          },
+          "value": "",
+        },
+      },
+    ],
+    "maxItems": 1,
+  },
+  "url": "http://website.com/image.jpg",
+  "width": 100,
+}
+`;
+
+exports[`Figure adapter construct builds without attributes 1`] = `
+Object {
+  "alt": null,
+  "height": null,
+  "size": "small",
+  "textGroup": TextGroup {
+    "dataTemplate": Object {
+      "align": "left",
+      "indent": 0,
+    },
+    "items": Array [
+      TextGroupItem {
+        "data": Object {
+          "align": "left",
+          "indent": 0,
+        },
+        "parent": [Circular],
+        "text": StyleableText {
+          "styleList": ChunkStyleList {
+            "styles": Array [],
+          },
+          "value": "",
+        },
+      },
+    ],
+    "maxItems": 1,
+  },
+  "url": null,
+  "width": null,
+}
+`;

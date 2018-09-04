@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Question adapter construct builds with attributes 1`] = `
+Object {
+  "mode": "review",
+  "solution": OboModel {
+    "_isMocked": true,
+    "content": Object {},
+    "modelState": Object {},
+  },
+}
+`;
+
+exports[`Question adapter construct builds without attributes 1`] = `
+Object {
+  "mode": "practice",
+  "solution": null,
+}
+`;
+
+exports[`Question adapter toJSON builds a JSON representation 1`] = `
+Object {
+  "content": Object {
+    "mode": "practice",
+    "solution": null,
+    "type": undefined,
+  },
+}
+`;
+
+exports[`Question adapter toJSON builds a JSON representation with solution 1`] = `
+Object {
+  "content": Object {
+    "mode": "practice",
+    "solution": Object {
+      "mockedToJSON": true,
+    },
+    "type": undefined,
+  },
+}
+`;

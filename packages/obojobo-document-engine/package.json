@@ -1,0 +1,147 @@
+{
+	"name": "obojobo-draft-document-engine",
+	"version": "1.0.2",
+	"description": "",
+	"engines": {
+		"yarn": "^1.0",
+		"node": "^10.4.1"
+	},
+	"main": "index.js",
+	"scripts": {
+		"test": "TZ='America/New_York' jest --verbose",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"start": "webpack --watch",
+		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
+		"build": "webpack --mode production --optimize-minimize",
+		"build:dev": "webpack --mode development",
+		"build:minifysvg": "find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
+		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
+		"prettier:run": "prettier --write '{__{tests,mocks}__,ObojoboDraft,server,src}/**/*.{js,scss}'",
+		"prettier:debug": "prettier -l '{__{tests,mocks}__,ObojoboDraft,server,src}/**/*.{js,scss}'",
+		"precommit": "lint-staged && yarn lint:js && yarn test:ci",
+		"ci:prepare": "docker build -t docengine:latest .",
+		"ci:mounted:install": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn install --force",
+		"ci:mounted:test": "docker run -i -v $(pwd):/project/ -w /project docengine:latest yarn test --coverage",
+		"ci:mounted:build": "docker run -i -w -v $(pwd):/project/ -w /project docengine:latest yarn build",
+		"ci:isolated:test": "docker run -i -e GIT_USER -e GIT_PASSWORD -e GIT_BRANCH docengine:latest /bin/docker_clone_and_test.sh",
+		"lint": "yarn lint:js && yarn lint:css",
+		"lint:js": "eslint .",
+		"lint:css": "stylelint **/*.scss"
+	},
+	"prettier": {
+		"printWidth": 100,
+		"semi": false,
+		"useTabs": true,
+		"singleQuote": true
+	},
+	"browserslist": ["> 1%", "last 2 versions", "not dead"],
+	"lint-staged": {
+		"{__{tests,mocks}__,ObojoboDraft,src,server}/**/*.{js,scss}": [
+			"yarn prettier --write",
+			"stylelint",
+			"git add"
+		]
+	},
+	"postcss": {
+		"parser": "postcss-scss",
+		"plugins": {}
+	},
+	"author": "",
+	"dependencies": {
+		"underscore": "1.5.1"
+	},
+	"devDependencies": {
+		"babel-core": "^6.26.3",
+		"babel-eslint": "^8.2.3",
+		"babel-jest": "^23.2.0",
+		"babel-loader": "^7.0.0",
+		"babel-polyfill": "^6.26.0",
+		"babel-preset-env": "^1.7.0",
+		"babel-preset-react": "^6.5.0",
+		"backbone": "^1.3.3",
+		"css-loader": "^1.0.0",
+		"date-fns": "^1.29.0",
+		"dragula": "^3.7.1",
+		"enzyme": "^3.3.0",
+		"enzyme-adapter-react-15": "^1.0.5",
+		"eslint": "^4.19.1",
+		"eslint-plugin-react": "^7.7.0",
+		"husky": "^0.14.3",
+		"jest": "^22.4.3",
+		"json-loader": "^0.5.4",
+		"katex": "^0.9.0",
+		"lint-staged": "^6.1.1",
+		"mini-css-extract-plugin": "^0.4.0",
+		"node-sass": "^4.9.0",
+		"postcss-loader": "^2.1.5",
+		"prettier": "1.11.1",
+		"react": "15.6.2",
+		"react-dom": "15.6.2",
+		"react-idle-timer": "1.3.3",
+		"react-test-renderer": "^15.5.4",
+		"react-transition-group": "^1.1.3",
+		"sass-loader": "^7.0.3",
+		"smoothscroll-polyfill": "^0.3.4",
+		"style-loader": "^0.21.0",
+		"stylelint": "^9.2.0",
+		"stylelint-config-standard": "^18.2.0",
+		"stylelint-declaration-use-variable": "^1.6.1",
+		"svg-url-loader": "^2.3.2",
+		"svgo": "^1.0.5",
+		"url-parse": "^1.4.1",
+		"webpack": "^4.12.0",
+		"webpack-cli": "^3.0.8",
+		"webpack-dev-server": "^3.1.4"
+	},
+	"jest": {
+		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
+		"testMatch": ["**/__tests__/**/*.js?(x)"],
+		"setupTestFrameworkScriptFile": "./setupTests.js",
+		"verbose": false,
+		"moduleNameMapper": {
+			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
+			"^Viewer(.*)$": "<rootDir>/src/scripts/viewer$1",
+			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
+			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
+		},
+		"moduleDirectories": ["<rootDir>", "node_modules"],
+		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
+		"coverageReporters": ["text", "lcov"],
+		"coveragePathIgnorePatterns": [
+			"====THESE DONT NEED TESTS====",
+			"<rootDir>/src/scripts/viewer/index.js",
+			"<rootDir>/src/scripts/viewer/app.js",
+			"<rootDir>/src/scripts/viewer/dist.js",
+			"<rootDir>/src/scripts/viewer/polyfills.js",
+			"====THESE ARE NOT USED RIGHT NOW====",
+			"selection-handler.js",
+			"<rootDir>/src/scripts/common/util/console.js",
+			"====THESE ARE FOR THE EDITOR====",
+			"command-handler.js",
+			"<rootDir>/ObojoboDraft/Chunks/Table/create-form.js",
+			"<rootDir>/ObojoboDraft/Chunks/Table/grid-button.js",
+			"<rootDir>/ObojoboDraft/Chunks/Table/table-controls.js",
+			"<rootDir>/ObojoboDraft/Chunks/Table/table-menu.js",
+			"<rootDir>/ObojoboDraft/Chunks/Error",
+			"<rootDir>/src/scripts/common/dist.js",
+			"<rootDir>/src/scripts/common/chunk/util",
+			"<rootDir>/src/scripts/common/models/chunk.js",
+			"<rootDir>/src/scripts/common/models/legacy.js",
+			"<rootDir>/src/scripts/common/selection",
+			"<rootDir>/src/scripts/common/chunk/text-chunk/linkify.js",
+			"<rootDir>/src/scripts/common/chunk/text-chunk/text-group-el-util.js",
+			"<rootDir>/src/scripts/common/text-group/text-group-cursor.js",
+			"<rootDir>/src/scripts/common/text-group/text-group-selection.js",
+			"<rootDir>/src/scripts/common/page/screen.js",
+			"<rootDir>/src/scripts/common/page/head.js"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
+	}
+}

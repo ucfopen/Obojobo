@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FocusBlocker FocusBlocker component 1`] = `
+<div
+  className="viewer--components--focus-blocker"
+/>
+`;

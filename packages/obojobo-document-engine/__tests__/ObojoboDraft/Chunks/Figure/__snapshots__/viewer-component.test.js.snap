@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Figure Figure component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Figure"
+  id="obo-id"
+>
+  <div
+    className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
+    contentEditable={false}
+    data-indent={0}
+  >
+    <div
+      className="container"
+    >
+      <figure
+        unselectable="on"
+      >
+        <img
+          alt="Alt Text"
+          src="www.example.com/img.jpg"
+          style={
+            Object {
+              "height": "400px",
+              "width": "500px",
+            }
+          }
+          unselectable="on"
+        />
+        <figcaption>
+          <span
+            className="text align-left"
+            data-group-index="0"
+            data-indent={0}
+          >
+            <span>
+              <span>
+                <span>
+                  Example Text
+                </span>
+              </span>
+            </span>
+          </span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Figure Figure component with no textGroup 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Figure"
+  id="obo-id"
+>
+  <div
+    className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
+    contentEditable={false}
+    data-indent={0}
+  >
+    <div
+      className="container"
+    >
+      <figure
+        unselectable="on"
+      >
+        <img
+          alt="Alt Text"
+          src="www.example.com/img.jpg"
+          style={
+            Object {
+              "height": "400px",
+              "width": "500px",
+            }
+          }
+          unselectable="on"
+        />
+      </figure>
+    </div>
+  </div>
+</div>
+`;

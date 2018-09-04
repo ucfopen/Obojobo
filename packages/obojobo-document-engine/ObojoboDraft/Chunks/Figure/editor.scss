@@ -1,0 +1,89 @@
+@import '../../../../../../../scss/includes';
+
+.obojobo-draft--chunks--figure {
+	.anchor {
+		z-index: 1;
+	}
+
+	figcaption {
+		position: relative;
+		z-index: 2;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.container {
+		&.outline-on-selection {
+			$color-container-selected-bg: transparentize($color-action, 0.7);
+
+			background: $color-container-selected-bg;
+		}
+
+		.size-controls {
+			display: none;
+			left: 50%;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 3;
+		}
+
+		.img-controls {
+			bottom: 20%;
+			display: none;
+			left: 50%;
+			position: absolute;
+			transform: translate(-50%, -50%);
+			z-index: 3;
+		}
+	}
+
+	.obojobo-draft--components--delete-button {
+		display: none;
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+	}
+
+	figure {
+		&::after {
+			bottom: 0;
+			color: $color-text-minor;
+			content: 'Click here to specify a caption';
+			display: none;
+			font-size: 0.9em;
+			font-style: italic;
+			left: 0;
+			pointer-events: none;
+			position: absolute;
+			text-align: center;
+			width: 100%;
+		}
+
+		&.empty-caption::after {
+			display: block;
+		}
+
+		&.focus-anchor {
+			.size-controls,
+			.img-controls {
+				display: block;
+			}
+		}
+	}
+}
+
+.component[data-component-type='ObojoboDraft.Chunks.Figure'] {
+	&.selection-contains,
+	&.selection-inside,
+	&.selection-start,
+	&.selection-end {
+		.obojobo-draft--components--delete-button {
+			display: block;
+		}
+	}
+}

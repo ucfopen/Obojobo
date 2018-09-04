@@ -1,0 +1,70 @@
+@import '../../../../../../../scss/includes';
+
+.component[data-component-type='ObojoboDraft.Chunks.MathEquation'] {
+	&.selection-contains,
+	&.selection-inside,
+	&.selection-start,
+	&.selection-end {
+		.obojobo-draft--components--delete-button {
+			display: block;
+		}
+	}
+}
+
+.editing-chunk .obojobo-draft--chunks--math-equation {
+	.katex-container {
+		background: $color-bg;
+		border: 2px solid $color-action;
+		border-radius: 0.5em;
+		margin-left: 0;
+		padding-left: 1em;
+		padding-right: 1em;
+		transform: translateY(-2px);
+	}
+
+	.anchor {
+		pointer-events: none;
+	}
+}
+
+// stylelint-disable-next-line no-descending-specificity
+.obojobo-draft--chunks--math-equation {
+	text-align: center;
+
+	// stylelint-disable-next-line no-descending-specificity
+	.katex-container {
+		display: inline-block;
+		margin-left: 4em;
+	}
+
+	// stylelint-disable-next-line no-descending-specificity
+	.error-msg {
+		background: lighten($color-error, 65%);
+		border: 2px solid lighten($color-error, 40%);
+		border-radius: 4px;
+		color: $color-text;
+		font-family: $font-monospace;
+		font-size: 0.7em;
+		left: 50%;
+		line-height: 1em;
+		padding: 0.5em;
+		position: absolute;
+		top: 0;
+		transform: translate(-50%, -120%);
+		width: 50%;
+	}
+
+	// stylelint-disable-next-line no-descending-specificity
+	.obojobo-draft--components--delete-button {
+		display: none;
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+	}
+
+	.empty {
+		color: $color-shadow;
+	}
+}

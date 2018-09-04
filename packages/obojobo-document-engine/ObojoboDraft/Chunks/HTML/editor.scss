@@ -1,0 +1,60 @@
+@import '../../../../../../../scss/includes';
+
+.obojobo-draft--chunks--html {
+	.anchor {
+		z-index: 2;
+	}
+
+	> .container {
+		margin: 0 auto;
+		position: relative;
+		z-index: 3;
+	}
+
+	.placeholder,
+	.edit,
+	img,
+	iframe {
+		height: 100%;
+		margin: 0 auto;
+		width: 100%;
+	}
+
+	.placeholder {
+		background: $color-bg2;
+		box-sizing: border-box;
+		color: $color-text-minor;
+		// stylelint-disable-next-line sh-waqar/declaration-use-variable, font-family-no-missing-generic-family-keyword
+		font-family: 'Source Sans Pro';
+		font-size: 0.9em;
+		font-weight: bold;
+		line-height: 0;
+		// stylelint-disable-next-line unit-blacklist
+		padding-top: 200px;
+		text-align: center;
+	}
+
+	textarea {
+		box-sizing: border-box;
+		font-size: 0.9em;
+		// stylelint-disable-next-line unit-blacklist
+		height: 400px;
+		padding: 1em;
+		width: 100%;
+	}
+
+	.obojobo-draft--components--delete-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+	}
+
+	.obojobo-draft--components--edit-button {
+		position: absolute;
+		right: 1em;
+		top: 1em;
+		z-index: 3;
+	}
+}

@@ -1,0 +1,15 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--question-bank {
+	.reshuffle {
+		margin: 1rem auto;
+		text-align: center;
+		display: block;
+		font-size: 1.2em;
+	}
+
+	.obojobo-draft--chunks--question:first-child:last-child {
+		padding-top: 2em;
+		padding-bottom: 2em;
+	}
+}

@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionStore question:hideExplanation calls triggerChange and updates state 1`] = `
+Array [
+  Object {
+    "action": "question:hideExplanation",
+    "draftId": undefined,
+    "eventVersion": "1.1.0",
+    "payload": Object {
+      "actor": "testActor",
+      "questionId": "questionId",
+    },
+    "visitId": undefined,
+  },
+]
+`;
+
+exports[`QuestionStore question:scoreClear posts an event 1`] = `
+Array [
+  Object {
+    "action": "question:scoreClear",
+    "draftId": undefined,
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "itemId": "questionId",
+    },
+    "visitId": undefined,
+  },
+]
+`;
+
+exports[`QuestionStore question:scoreSet posts an event 1`] = `
+Array [
+  Object {
+    "action": "question:scoreSet",
+    "draftId": undefined,
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "context": "mockContext",
+      "id": "mock-uuid",
+      "itemId": "questionId",
+      "score": 100,
+    },
+    "visitId": undefined,
+  },
+]
+`;
+
+exports[`QuestionStore question:scoreSet updates the state 1`] = `
+Object {
+  "data": Object {},
+  "responses": Object {},
+  "scores": Object {},
+  "viewedQuestions": Object {},
+  "viewing": null,
+}
+`;
+
+exports[`QuestionStore question:scoreSet updates the state 2`] = `
+Object {
+  "data": Object {},
+  "responses": Object {},
+  "scores": Object {
+    "mockContext": Object {
+      "questionId": Object {
+        "id": "mock-uuid",
+        "itemId": "questionId",
+        "score": 100,
+      },
+    },
+  },
+  "viewedQuestions": Object {},
+  "viewing": null,
+}
+`;
+
+exports[`QuestionStore question:showExplanation calls postEvent and sets question data 1`] = `
+Array [
+  Object {
+    "action": "question:showExplanation",
+    "draftId": undefined,
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "questionId": "questionId",
+    },
+    "visitId": undefined,
+  },
+]
+`;
+
+exports[`QuestionStore registers the expected dispatch listeners 1`] = `
+Object {
+  "assessment:endAttempt": [Function],
+  "question:checkAnswer": [Function],
+  "question:clearData": [Function],
+  "question:clearResponse": [Function],
+  "question:hide": [Function],
+  "question:hideExplanation": [Function],
+  "question:retry": [Function],
+  "question:scoreClear": [Function],
+  "question:scoreSet": [Function],
+  "question:setData": [Function],
+  "question:setResponse": [Function],
+  "question:showExplanation": [Function],
+  "question:view": [Function],
+}
+`;

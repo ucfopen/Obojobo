@@ -1,0 +1,37 @@
+@import '../../../../scss/includes';
+
+.obojobo-draft--components--modal--modal {
+	background: $color-bg;
+	padding: 1.5rem 3em;
+	min-width: 15em;
+	box-shadow: 0 1px 1px $color-shadow;
+	border-radius: 2px;
+	max-height: 70vh;
+	overflow: auto;
+
+	.obojobo-draft--components--delete-button {
+		top: 0.5em;
+		right: 0.5em;
+		position: absolute;
+	}
+
+	.first-tab {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 0;
+		height: 0;
+		border: none;
+		background: transparent;
+	}
+
+	.last-tab {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 0;
+		height: 0;
+		border: none;
+		background: transparent;
+	}
+}

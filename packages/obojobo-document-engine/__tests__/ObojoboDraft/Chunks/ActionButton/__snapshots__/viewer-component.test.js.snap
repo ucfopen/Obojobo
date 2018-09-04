@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionButton ActionButton component with label 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.ActionButton"
+  id="obo-id"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--action-button pad"
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+    >
+      <button
+        disabled={undefined}
+        onClick={[Function]}
+        tabIndex={undefined}
+      >
+        Example Label
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButton ActionButton component with textGroup 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.ActionButton"
+  id="obo-id"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--action-button pad"
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+    >
+      <button
+        disabled={undefined}
+        onClick={[Function]}
+        tabIndex={undefined}
+      >
+        <span
+          className="text align-undefined"
+          data-group-index="0"
+          data-indent={0}
+        >
+          <span>
+            <span>
+              <span>
+                Example Text
+              </span>
+            </span>
+          </span>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+`;

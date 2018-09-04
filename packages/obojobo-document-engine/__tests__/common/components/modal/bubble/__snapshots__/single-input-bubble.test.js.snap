@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SingleInputBubble SingleInputBubble Snapshot 1`] = `"<div class=\\"obojobo-draft--components--modal--bubble\\"><div class=\\"container\\"><label class=\\"single-input-bubble\\"><form class=\\"interactable\\"><input type=\\"text\\" value=\\"Value\\"><button>Ok</button></form><span class=\\"label\\">Label</span></label></div></div>"`;

@@ -1,0 +1,51 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--mc-assessment--mc-choice {
+	list-style-type: none;
+	min-height: 3.5em;
+	position: relative;
+	transition: background 0.1s ease;
+	font-family: $font-default;
+	padding-bottom: 1em;
+	cursor: pointer;
+
+	> input {
+		font-size: inherit;
+		position: absolute;
+		top: 1.7em;
+		left: 3em;
+		transform: translate(0, -50%) translate(0, 0.5px);
+		margin: 0;
+	}
+
+	> .children {
+		margin-left: 2em;
+		margin-right: 0;
+		pointer-events: none;
+	}
+
+	&.is-selected {
+		background: transparentize($color-highlight, 0.75);
+	}
+
+	&.is-mode-review {
+		cursor: default;
+
+		> input {
+			display: none;
+		}
+
+		> .children {
+			margin-left: 0;
+		}
+
+		&:hover {
+			cursor: default;
+			background: inherit;
+		}
+	}
+
+	&:hover {
+		background: transparentize($color-highlight, 0.85);
+	}
+}

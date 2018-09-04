@@ -1,0 +1,70 @@
+@import '~styles/includes';
+
+.obojobo-draft--sections--assessment--lti-status {
+	width: 100%;
+	border-radius: 0.25em;
+	font-family: $font-default;
+	box-sizing: border-box;
+
+	&.is-synced,
+	&.is-not-lti {
+		font-size: 0.7em;
+		color: $color-text-minor;
+		padding-bottom: 2em;
+	}
+
+	&.is-resynced,
+	&.is-not-synced {
+		padding: 2em;
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+
+		> h2 {
+			color: $color-text;
+			font-size: 1em;
+			font-weight: bold;
+		}
+
+		> p {
+			font-size: 0.9em;
+			line-height: 1.4em;
+		}
+	}
+
+	&.is-resynced {
+		$color-resync: #156d06;
+		$color-resync-bg: transparentize($color-correct, 0.9);
+
+		background-color: $color-resync-bg;
+
+		> h2,
+		> p {
+			color: $color-resync;
+		}
+	}
+
+	&.is-not-synced {
+		$color-not-synced-bg: #ffe9c3;
+
+		background-color: $color-not-synced-bg;
+
+		.is-shown {
+			max-height: 6.5em;
+			transition: max-height $duration-animation-default ease-out;
+			overflow: hidden;
+			margin-bottom: 1em;
+		}
+
+		.is-not-shown {
+			max-height: 0;
+			transition: max-height $duration-animation-default ease-out;
+			overflow: hidden;
+		}
+	}
+
+	&.is-resynced > div > p,
+	&.is-not-synced > div > p {
+		font-size: 0.9em;
+		line-height: 1.4em;
+	}
+}

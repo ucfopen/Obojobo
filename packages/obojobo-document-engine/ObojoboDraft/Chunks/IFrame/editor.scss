@@ -1,0 +1,59 @@
+@import '../../../../../../../scss/includes';
+
+.component[data-component-type='ObojoboDraft.Chunks.IFrame'] {
+	&.selection-contains,
+	&.selection-inside,
+	&.selection-start,
+	&.selection-end {
+		.obojobo-draft--components--delete-button {
+			display: block;
+		}
+	}
+}
+
+.obojobo-draft--chunks--iframe {
+	min-height: 1em;
+
+	.anchor {
+		z-index: 2;
+	}
+
+	> .container {
+		position: relative;
+	}
+
+	.placeholder,
+	.edit,
+	img,
+	iframe {
+		height: 100%;
+		margin: 0 auto;
+		width: 100%;
+	}
+
+	.placeholder {
+		@include placeholder(20rem);
+	}
+
+	.edit {
+		position: relative;
+		z-index: 3;
+	}
+
+	// stylelint-disable-next-line no-descending-specificity
+	.obojobo-draft--components--delete-button {
+		display: none;
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+	}
+
+	.obojobo-draft--components--edit-button {
+		position: absolute;
+		right: 1em;
+		top: 1em;
+		z-index: 3;
+	}
+}

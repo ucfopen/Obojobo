@@ -1,0 +1,13 @@
+@import '../../../../../scss/includes';
+
+.obojobo-draft--chunks--error {
+	$color-error-bg: lighten($color-error, 45%);
+
+	background: $color-error-bg;
+	border: 1px solid $color-error;
+	color: $color-error;
+	font-family: $font-default;
+	font-size: 0.8em;
+	padding: 1em;
+	text-align: center;
+}

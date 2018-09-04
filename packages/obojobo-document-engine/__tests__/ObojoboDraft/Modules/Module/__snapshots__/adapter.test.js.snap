@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Module adapter construct builds with attributes 1`] = `
+Object {
+  "start": "mockStart",
+}
+`;
+
+exports[`Module adapter construct builds without attributes 1`] = `
+Object {
+  "start": null,
+}
+`;

@@ -1,0 +1,6 @@
+node_modules
+coverage/
+build/
+__snapshots__
+*.js
+*.jsx

@@ -1,0 +1,90 @@
+@import '../../../scss/includes';
+
+.obojobo-draft--components--more-info-button {
+	@keyframes obojobo-draft--components--more-info-button--slidein {
+		0% {
+			transform: translate(100%, -50%) translate(-1em, 0);
+		}
+
+		100% {
+			transform: translate(100%, -50%);
+		}
+	}
+
+	@keyframes obojobo-draft--components--more-info-button--fadein {
+		0% {
+			opacity: 0;
+		}
+
+		100% {
+			opacity: 1;
+		}
+	}
+
+	position: relative;
+	display: inline-block;
+
+	> button {
+		background: $color-bg2;
+		height: 2em;
+		border-radius: 1.5em;
+		color: $color-action;
+		border: none;
+		cursor: help;
+	}
+
+	> .info {
+		pointer-events: none;
+		position: absolute;
+		right: -1em;
+		top: 50%;
+		transform: translate(100%, -50%);
+		background: $color-bg2;
+		box-shadow: $box-shadow-overlay;
+		z-index: $z-index-above-content;
+
+		/* prettier-ignore */
+		animation:
+			obojobo-draft--components--more-info-button--fadein $duration-animation-default,
+			obojobo-draft--components--more-info-button--slidein $duration-animation-default;
+
+		&::before {
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translate(-50%, -50%) rotate(45deg);
+			content: ' ';
+			width: 1em;
+			height: 1em;
+			// background: $color-shadow;
+			background: $color-bg2;
+			box-shadow: $box-shadow-overlay;
+		}
+
+		> .container {
+			background: $color-bg2;
+			position: relative;
+		}
+	}
+
+	&.is-default-label {
+		> button {
+			width: 2em;
+		}
+	}
+
+	&.is-mode-hover {
+		> button {
+			background: transparentize($color-action, 0.3);
+			color: $color-bg;
+		}
+	}
+
+	&.is-mode-clicked {
+		> button {
+			background: $color-action;
+			color: $color-bg;
+			cursor: pointer;
+		}
+	}
+}

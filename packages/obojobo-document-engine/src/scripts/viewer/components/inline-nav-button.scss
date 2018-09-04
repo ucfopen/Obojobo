@@ -1,0 +1,64 @@
+@import '../../../scss/includes';
+
+.viewer--components--inline-nav-button {
+	background: transparentize($color-action, 0.95);
+	width: 100%;
+	border: none;
+	font-family: $font-default;
+	font-size: 0.9em;
+	padding: 1em;
+	box-sizing: border-box;
+	color: $color-action;
+	transition: color $duration-animation-default, background $duration-animation-default;
+	cursor: pointer;
+	text-align: center;
+	height: 6em;
+	line-height: 3.5em;
+	transform: translate(0, -1px);
+
+	&:focus {
+		outline: none;
+	}
+
+	&.is-enabled {
+		&.is-prev {
+			border-bottom: 1px solid $color-action;
+
+			&::before {
+				content: '➜';
+				transform: rotate(-90deg) translate(0, -0.5rem);
+				display: inline-block;
+				opacity: 0.5;
+			}
+		}
+
+		&.is-next {
+			border-top: 1px solid $color-action;
+
+			&::before {
+				content: '➜';
+				transform: rotate(90deg) translate(0, 0.5rem);
+				display: inline-block;
+				opacity: 0.5;
+			}
+		}
+
+		&:hover {
+			color: $color-bg;
+			background: $color-action;
+		}
+	}
+
+	&.is-not-enabled {
+		background: $color-bg2;
+		color: $color-shadow;
+
+		&.is-prev {
+			border-bottom: 1px solid $color-shadow;
+		}
+
+		&.is-next {
+			border-top: 1px solid $color-shadow;
+		}
+	}
+}

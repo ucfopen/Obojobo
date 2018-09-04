@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCFeedback MCFeedback component for a correct item 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
+  data-choice-label={undefined}
+  data-focussed={false}
+  data-id="feedback"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
+  id="obo-feedback"
+>
+  <div
+    className="component"
+    data-focussed={false}
+    data-id="choice1-feedback-text"
+    data-obo-component={true}
+    data-type="ObojoboDraft.Chunks.Text"
+    id="obo-choice1-feedback-text"
+  >
+    <div
+      className="text-chunk obojobo-draft--chunks--single-text pad"
+    >
+      <span
+        className="text align-left"
+        data-group-index={0}
+        data-indent={0}
+      >
+        <span>
+          <span>
+            <span>
+              Example Text 2
+            </span>
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCFeedback MCFeedback component for an incorrect item 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
+  data-choice-label={undefined}
+  data-focussed={false}
+  data-id="feedback"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
+  id="obo-feedback"
+>
+  <div
+    className="component"
+    data-focussed={false}
+    data-id="choice1-feedback-text"
+    data-obo-component={true}
+    data-type="ObojoboDraft.Chunks.Text"
+    id="obo-choice1-feedback-text"
+  >
+    <div
+      className="text-chunk obojobo-draft--chunks--single-text pad"
+    >
+      <span
+        className="text align-left"
+        data-group-index={0}
+        data-indent={0}
+      >
+        <span>
+          <span>
+            <span>
+              Example Text 2
+            </span>
+          </span>
+        </span>
+      </span>
+    </div>
+  </div>
+</div>
+`;

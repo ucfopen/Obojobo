@@ -1,0 +1,118 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--question {
+	perspective: 1000px;
+	margin: 0 auto;
+
+	> .flipper {
+		$color-sep: rgba(0, 0, 0, 0.1);
+
+		transition: 0.4s;
+		-ms-transition: none;
+		transform-style: preserve-3d;
+		position: relative;
+		border-radius: $dimension-rounded-radius;
+		padding: 0;
+		padding-top: 1em;
+		margin-bottom: 1em;
+		border: 1px solid transparentize($color-shadow, 0.2);
+		max-width: $dimension-column-width;
+
+		> .blocker-front,
+		> .content-back {
+			width: 100%;
+			backface-visibility: hidden;
+			-ms-backface-visibility: visible;
+		}
+
+		> .blocker-front {
+			z-index: 2;
+			transform: rotateY(0deg);
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			opacity: 1;
+			background: $color-bg;
+			cursor: pointer;
+			border-radius: $dimension-rounded-radius;
+
+			> .obojobo-draft--components--button {
+				transition: transform $duration-animation-default;
+				font-family: $font-default;
+				color: $color-action;
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				pointer-events: none;
+			}
+
+			&:hover {
+				background: $color-action-bg;
+
+				.obojobo-draft--components--button {
+					transform: translate(-50%, -50%) scale(1.1, 1.1);
+				}
+			}
+
+			&.is-not-practice {
+				.submit {
+					display: none;
+				}
+			}
+		}
+
+		> .content-back {
+			transform: rotateY(180deg);
+
+			> .responses-hidden {
+				font-family: $font-default;
+				font-size: 0.9em;
+				text-align: center;
+				margin-bottom: 1em;
+			}
+		}
+	}
+
+	&.is-hidden > .flipper {
+		border: 1px solid $color-action;
+		max-height: 15em;
+		overflow: hidden;
+	}
+
+	&.is-active,
+	&.is-viewed {
+		> .flipper {
+			transform: rotateY(-180deg);
+
+			> .blocker-front {
+				opacity: 0;
+				pointer-events: none;
+			}
+		}
+	}
+
+	&.is-mode-practice {
+		> .flipper > .content-back::before {
+			color: $color-text-minor;
+			content: 'Practice';
+			display: block;
+			font-family: $font-default;
+			position: absolute;
+			left: 3.15em;
+			top: -0.5em;
+			transform: scale(0.7);
+			transform-origin: top left;
+		}
+
+		&.is-correct .flipper {
+			border: 1.25px solid $color-correct;
+		}
+
+		&.is-not-correct .flipper {
+			border: 1.25px solid $color-incorrect;
+		}
+	}
+}

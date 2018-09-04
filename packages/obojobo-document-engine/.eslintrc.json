@@ -1,0 +1,56 @@
+{
+	"extends": ["eslint:recommended", "plugin:react/recommended"],
+	"parser": "babel-eslint",
+	"globals": {
+		"oboRequire": false
+	},
+	"env": {
+		"amd": true,
+		"node": true,
+		"browser": true,
+		"jest": true,
+		"es6": true
+	},
+	"settings": {
+		"react": {
+			"version": "15.6.2",
+			"pragma": "React"
+		}
+	},
+	"rules": {
+		"no-var": "error",
+		"prefer-const": "error",
+		"curly": ["error", "multi-line"],
+		"brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+		"no-undefined": "error",
+		"new-cap": "error",
+		"no-lonely-if": "error",
+		"no-nested-ternary": "error",
+		"no-unneeded-ternary": "error",
+		"no-alert": "error",
+		"no-console": "error",
+		"no-debugger": "error",
+		"no-duplicate-imports": "error",
+		"radix": "error",
+		"array-callback-return": "error",
+		"eqeqeq": "error",
+		"no-eval": "error",
+		"no-implied-eval": "error",
+		"no-labels": "error",
+		"no-extend-native": "error",
+		"no-floating-decimal": "error",
+		"no-loop-func": "error",
+		"no-new": "error",
+		"no-new-func": "error",
+		"no-new-wrappers": "error",
+		"no-self-compare": "error",
+		"no-return-assign": "error",
+		"no-useless-return": "error",
+		"no-with": "error",
+		"yoda": "error",
+		"react/prop-types": 0,
+		"react/prefer-stateless-function": 2,
+		"react/no-find-dom-node": 0,
+		"react/no-string-refs": 0
+	}
+}

@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObojoboDraft.Sections.Assessment adapter construct builds with N attempts 1`] = `
+Object {
+  "attempts": 6,
+  "review": "never",
+  "rubric": AssessmentRubric {
+    "mods": Array [],
+    "originalRubric": Object {},
+    "rubric": Object {
+      "failedResult": 0,
+      "passedResult": "$attempt_score",
+      "passingAttemptScore": 0,
+      "unableToPassResult": null,
+    },
+    "type": "attempt",
+  },
+  "scoreActions": ScoreActions {
+    "actions": Array [],
+    "originalActions": null,
+  },
+}
+`;
+
+exports[`ObojoboDraft.Sections.Assessment adapter construct builds with unlimited attempts 1`] = `
+Object {
+  "attempts": Infinity,
+  "review": "never",
+  "rubric": AssessmentRubric {
+    "mods": Array [],
+    "originalRubric": Object {},
+    "rubric": Object {
+      "failedResult": 0,
+      "passedResult": "$attempt_score",
+      "passingAttemptScore": 0,
+      "unableToPassResult": null,
+    },
+    "type": "attempt",
+  },
+  "scoreActions": ScoreActions {
+    "actions": Array [],
+    "originalActions": null,
+  },
+}
+`;
+
+exports[`ObojoboDraft.Sections.Assessment adapter construct builds without attributes 1`] = `
+Object {
+  "attempts": Infinity,
+  "review": "never",
+  "rubric": AssessmentRubric {
+    "mods": Array [],
+    "originalRubric": Object {},
+    "rubric": Object {
+      "failedResult": 0,
+      "passedResult": "$attempt_score",
+      "passingAttemptScore": 0,
+      "unableToPassResult": null,
+    },
+    "type": "attempt",
+  },
+  "scoreActions": ScoreActions {
+    "actions": Array [],
+    "originalActions": null,
+  },
+}
+`;
+
+exports[`ObojoboDraft.Sections.Assessment adapter construct floors decimal attempt integers 1`] = `
+Object {
+  "attempts": 6,
+  "review": "never",
+  "rubric": AssessmentRubric {
+    "mods": Array [],
+    "originalRubric": Object {},
+    "rubric": Object {
+      "failedResult": 0,
+      "passedResult": "$attempt_score",
+      "passingAttemptScore": 0,
+      "unableToPassResult": null,
+    },
+    "type": "attempt",
+  },
+  "scoreActions": ScoreActions {
+    "actions": Array [],
+    "originalActions": null,
+  },
+}
+`;

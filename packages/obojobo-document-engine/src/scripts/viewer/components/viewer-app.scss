@@ -1,0 +1,124 @@
+@import '../../../scss/includes';
+
+.viewer--viewer-app--visit-error {
+	width: 100%;
+	max-width: 36rem;
+	text-align: center;
+	position: absolute;
+	left: 50%;
+	top: 20%;
+	transform: translate(-50%, -50%);
+	color: $color-text;
+	font-family: $font-default;
+}
+
+.viewer--viewer-app {
+	height: 100%;
+	overflow: auto;
+	padding-top: 2.5rem;
+	box-sizing: border-box;
+	background: $color-bg;
+
+	/* prettier-ignore */
+	transition:
+		padding-left $duration-animation-default $duration-animation-default,
+		padding-top $duration-animation-default;
+
+	> .viewer--components--header {
+		position: absolute;
+		left: 0;
+		width: 100%;
+		top: 0;
+		z-index: $z-index-above-content;
+		border-bottom: 1px solid transparentize($color-shadow, 0.2);
+		opacity: 0.95;
+
+		/* prettier-ignore */
+		transition:
+			top $duration-animation-default,
+			opacity $duration-animation-default;
+		transition-delay: $duration-animation-default * 2;
+
+		.viewer--components--logo {
+			transition: opacity $duration-animation-default;
+			transition-delay: $duration-animation-default * 3;
+		}
+	}
+
+	> .preview-banner {
+		font-family: $font-default;
+		background: $color-preview;
+		box-sizing: border-box;
+		color: $color-bg;
+		font-size: 0.7em;
+		font-weight: bold;
+		line-height: 0;
+		height: $dimension-preview-banner;
+		left: 0;
+		padding: 0.5em 1em;
+		padding-top: 1.5rem;
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		z-index: $z-index-preview;
+		border-top: 2px solid $color-bg;
+
+		> .controls {
+			position: absolute;
+			right: 1em;
+			top: 50%;
+			transform: translate(0, -50%) translate(0, 0.5px);
+
+			button {
+				appearance: none;
+				user-select: none;
+				margin-left: 1em;
+				font-family: $font-default;
+				line-height: 1em;
+				cursor: pointer;
+				font-size: 1em;
+				position: relative;
+				text-align: center;
+				min-width: 3.25em;
+				border-radius: 0.2em;
+				padding: 0.4em;
+				background-color: $color-bg;
+				color: $color-preview;
+			}
+		}
+
+		> .border {
+			position: fixed;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			border: 3px solid $color-preview;
+			pointer-events: none;
+		}
+	}
+
+	&.is-open-nav.is-enabled-nav {
+		padding-left: $dimension-nav-menu;
+		padding-top: 0;
+
+		@media screen and (max-width: $breakpoint-nav-small) {
+			padding-left: $dimension-nav-menu-small;
+		}
+
+		> header {
+			top: -2.5rem;
+
+			.viewer--components--logo,
+			.location {
+				opacity: 0;
+				transition: $duration-animation-default/2 opacity;
+				transition-delay: 0s;
+			}
+		}
+	}
+
+	&.is-previewing {
+		height: calc(100% - 3rem);
+	}
+}

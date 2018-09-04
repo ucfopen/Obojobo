@@ -1,0 +1,122 @@
+@import '../../../../../../../scss/includes';
+
+.obojobo-draft--chunks--table--table-menu {
+	position: absolute;
+	width: 1em;
+	height: 1em;
+	cursor: default;
+	z-index: 1;
+	text-align: center;
+	background-repeat: no-repeat;
+	display: inline-block;
+
+	&:hover {
+		z-index: 2;
+		// stylelint-disable-next-line sh-waqar/declaration-use-variable
+		background-color: white; //$color-action;
+
+		ul {
+			display: block;
+		}
+	}
+
+	&.col,
+	&.row {
+		background-image: url('./table-menu-icon.svg');
+	}
+
+	&.col {
+		transform: translate(0, -1.2rem);
+
+		&:hover {
+			transform: translate(0, -1.2rem) scale(1.5, 1.5);
+		}
+	}
+
+	&.row {
+		transform: rotate(-90deg) translate(0, -1.2rem);
+
+		&:hover {
+			transform: rotate(-90deg) translate(0, -1.2rem) scale(1.5, 1.5);
+		}
+
+		ul {
+			transform: rotate(90deg) scale(0.75, 0.75);
+			transform-origin: top left;
+			top: 1em;
+			left: 1em;
+		}
+	}
+
+	// stylelint-disable-next-line no-descending-specificity
+	ul {
+		display: none;
+		position: absolute;
+		left: 0;
+		top: 1em;
+		width: 15em;
+		font-size: 0.9em;
+		height: auto;
+		background: white;
+		// stylelint-disable-next-line sh-waqar/declaration-use-variable, font-family-no-missing-generic-family-keyword
+		font-family: 'Noto Sans';
+		font-weight: normal;
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		line-height: 1em;
+		border: 1px solid gray;
+		transform: scale(0.75, 0.75);
+		transform-origin: top left;
+
+		li {
+			padding: 1em;
+			border-bottom: 1px solid gray;
+			cursor: pointer;
+			position: relative;
+			vertical-align: middle;
+
+			&:hover {
+				background: $color-action;
+				// stylelint-disable-next-line sh-waqar/declaration-use-variable
+				color: white;
+			}
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			&.insert-left::after {
+				content: '\2190';
+				position: absolute;
+				top: 0.5em;
+				font-size: 2em;
+				left: 0.6em;
+			}
+
+			&.insert-right::after {
+				content: '\2192';
+				position: absolute;
+				top: 0.5em;
+				font-size: 2em;
+				right: 0.6em;
+			}
+
+			&.insert-above::after {
+				content: '\2191';
+				position: absolute;
+				top: 0.8em;
+				font-size: 2em;
+				left: 1em;
+			}
+
+			&.insert-below::after {
+				content: '\2193';
+				position: absolute;
+				top: 0.8em;
+				font-size: 2em;
+				left: 1em;
+			}
+		}
+	}
+}

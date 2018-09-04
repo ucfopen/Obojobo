@@ -1,0 +1,32 @@
+@import '../../../scss/includes';
+
+.obojobo-draft--components--edit-button {
+	display: inline-block;
+
+	button {
+		user-select: none;
+		background-color: $color-bg;
+		background-position: 0.3rem center;
+		background-repeat: no-repeat;
+		background-size: 30%;
+		border: 1px solid $color-action;
+		box-shadow: 0 1px 1px $color-shadow;
+		color: $color-action;
+		cursor: pointer;
+		font-family: $font-default;
+		font-size: 0.7em;
+		height: 2em;
+		margin-left: 1em;
+		opacity: 0.8;
+		position: relative;
+		text-align: right;
+		min-width: 3.25em;
+
+		&:hover {
+			background-color: $color-action;
+			color: $color-bg;
+			opacity: 1;
+			text-align: center;
+		}
+	}
+}
