@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessment adapter can convert to JSON 1`] = `
+Object {
+  "content": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter can convert to JSON WITH attributes 1`] = `
+Object {
+  "content": Object {
+    "correctLabels": "Correct!|Great job!",
+    "incorrectLabels": "Incorrect|wrong",
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter construct builds with attributes 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": Array [
+      "Correct!",
+      "Great job!",
+    ],
+    "incorrectLabels": Array [
+      "Incorrect",
+      "wrong",
+    ],
+    "responseType": "pick-one",
+    "shuffle": false,
+  },
+}
+`;
+
+exports[`MCAssessment adapter construct builds with correctLabels 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": Array [
+      "Correct!",
+      "Great job!",
+    ],
+    "incorrectLabels": null,
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter construct builds with incorrectLabels 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": null,
+    "incorrectLabels": Array [
+      "Incorrect",
+      "wrong",
+    ],
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter construct builds with responseType 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter construct builds with shuffle 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;
+
+exports[`MCAssessment adapter construct builds without attributes 1`] = `
+Object {
+  "modelState": Object {
+    "correctLabels": null,
+    "incorrectLabels": null,
+    "responseType": "pick-one",
+    "shuffle": true,
+  },
+}
+`;

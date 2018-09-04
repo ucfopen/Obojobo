@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Nav renders all list item types 1`] = `
+<div
+  className="viewer--components--nav is-locked is-not-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul>
+    <li
+      className="heading is-not-selected"
+    >
+      <a>
+        label4
+      </a>
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <a>
+        label5
+      </a>
+      <div
+        className="lock-icon"
+      />
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <div
+        className="mockStylableText"
+        text={
+          mockStylableText {
+            "value": "mockMe",
+          }
+        }
+      />
+      <div
+        className="lock-icon"
+      />
+    </li>
+    <li
+      className="link is-selected is-visited is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <a>
+        label56
+      </a>
+      <div
+        className="lock-icon"
+      />
+    </li>
+    <li
+      className="sub-link is-not-selected is-not-correct is-last-in-list"
+      onClick={[Function]}
+    >
+      <a>
+        label6
+      </a>
+      <div
+        className="lock-icon"
+      />
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+  >
+    Obojobo
+  </div>
+</div>
+`;
+
+exports[`Nav renders closed 1`] = `
+<div
+  className="viewer--components--nav is-locked is-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul />
+  <div
+    className="viewer--components--logo is-not-inverted"
+  >
+    Obojobo
+  </div>
+</div>
+`;
+
+exports[`Nav renders opened 1`] = `
+<div
+  className="viewer--components--nav is-locked is-not-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul />
+  <div
+    className="viewer--components--logo is-not-inverted"
+  >
+    Obojobo
+  </div>
+</div>
+`;
+
+exports[`Nav renders unlocked 1`] = `
+<div
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul />
+  <div
+    className="viewer--components--logo is-not-inverted"
+  >
+    Obojobo
+  </div>
+</div>
+`;

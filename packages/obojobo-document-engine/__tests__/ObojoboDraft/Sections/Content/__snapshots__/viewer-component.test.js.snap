@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content Content component 1`] = `
+<div
+  className="component obojobo-draft--sections--content"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Content"
+  id="obo-id"
+>
+  <div />
+</div>
+`;
+
+exports[`Content Content component with nav model 1`] = `
+<div
+  className="component obojobo-draft--sections--content"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Content"
+  id="obo-id"
+>
+  <div>
+    <MockComponent
+      model={
+        Object {
+          "getComponentClass": [MockFunction] {
+            "calls": Array [
+              Array [],
+            ],
+          },
+        }
+      }
+      moduleData={
+        Object {
+          "focusState": Object {},
+          "navState": Object {
+            "itemsById": Object {},
+          },
+        }
+      }
+    />
+  </div>
+</div>
+`;

@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading Heading component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Heading"
+  id="obo-id"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--heading pad"
+  >
+    <h1>
+      <span
+        className="text align-left"
+        data-group-index="0"
+        data-indent={0}
+      >
+        <span>
+          <span>
+            <span>
+              Example Text
+            </span>
+          </span>
+        </span>
+      </span>
+    </h1>
+  </div>
+</div>
+`;
+
+exports[`Heading Heading component level 2 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Heading"
+  id="obo-id"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--heading pad"
+  >
+    <h2>
+      <span
+        className="text align-left"
+        data-group-index="0"
+        data-indent={0}
+      >
+        <span>
+          <span>
+            <span>
+              Example Text
+            </span>
+          </span>
+        </span>
+      </span>
+    </h2>
+  </div>
+</div>
+`;
+
+exports[`Heading Heading component level 3 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Heading"
+  id="obo-id"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--heading pad"
+  >
+    <h3>
+      <span
+        className="text align-left"
+        data-group-index="0"
+        data-indent={0}
+      >
+        <span>
+          <span>
+            <span>
+              Example Text
+            </span>
+          </span>
+        </span>
+      </span>
+    </h3>
+  </div>
+</div>
+`;

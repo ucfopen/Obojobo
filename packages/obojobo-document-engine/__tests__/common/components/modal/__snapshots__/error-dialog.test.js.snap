@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorDialog ErrorDialog component 1`] = `
+<div
+  className="obojobo-draft--components--modal--error-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--simple-dialog"
+  >
+    <div
+      className="obojobo-draft--components--modal--dialog"
+      style={null}
+    >
+      <div
+        className="obojobo-draft--components--modal--modal"
+      >
+        <input
+          className="first-tab"
+          onFocus={[Function]}
+          type="text"
+        />
+        <div
+          className="content"
+        >
+          <h1
+            className="heading"
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Title
+          </h1>
+          <div
+            className="dialog-content"
+            style={
+              Object {
+                "textAlign": "center",
+              }
+            }
+          >
+            Content
+          </div>
+          <div
+            className="controls"
+          >
+            <div
+              className="obojobo-draft--components--button is-not-dangerous align-center"
+            >
+              <button
+                disabled={undefined}
+                onClick={[Function]}
+                tabIndex={undefined}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+        <input
+          className="last-tab"
+          onFocus={[Function]}
+          type="text"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

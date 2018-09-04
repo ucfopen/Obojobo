@@ -1,0 +1,26 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--math-equation {
+	.katex-display {
+		margin: 0;
+	}
+
+	&.align-left .katex-display {
+		text-align: left;
+	}
+
+	&.align-right .katex-display {
+		text-align: right;
+	}
+
+	&.align-center .katex-display {
+		text-align: center;
+	}
+
+	.equation-label {
+		position: absolute;
+		top: 50%;
+		right: 3em;
+		transform: translate(0, -50%);
+	}
+}

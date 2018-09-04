@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assessment Assessment component 1`] = `
+<div
+  className="component obojobo-draft--sections--assessment"
+  data-focussed={false}
+  data-id="assessment"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Assessment"
+  id="obo-assessment"
+/>
+`;
+
+exports[`Assessment Assessment component in post-test stage 1`] = `
+<div
+  className="component obojobo-draft--sections--assessment"
+  data-focussed={false}
+  data-id="assessment"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Assessment"
+  id="obo-assessment"
+/>
+`;
+
+exports[`Assessment Assessment component in post-test stage with score actions 1`] = `
+<div
+  className="component obojobo-draft--sections--assessment"
+  data-focussed={false}
+  data-id="assessment"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Assessment"
+  id="obo-assessment"
+/>
+`;
+
+exports[`Assessment Assessment component in pre-test stage 1`] = `
+<div
+  className="component obojobo-draft--sections--assessment"
+  data-focussed={false}
+  data-id="assessment"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Assessment"
+  id="obo-assessment"
+/>
+`;
+
+exports[`Assessment Assessment component in test stage 1`] = `
+<div
+  className="component obojobo-draft--sections--assessment"
+  data-focussed={false}
+  data-id="assessment"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Assessment"
+  id="obo-assessment"
+/>
+`;

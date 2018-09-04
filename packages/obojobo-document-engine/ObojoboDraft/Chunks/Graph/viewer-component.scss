@@ -1,0 +1,47 @@
+@import '~styles/includes';
+
+div.non-editable-chunk.obojobo-draft--chunks--graph.viewer {
+	.caption {
+		text-align: center;
+		// margin-bottom: $dimension-padding / 2;
+
+		font-family: $font-default;
+		font-size: 0.8em;
+		color: lighten($color-text, 40%);
+	}
+
+	.container {
+		background: $color-bg;
+		border-radius: $dimension-rounded-radius;
+
+		box-sizing: border-box;
+
+		.graph {
+			width: 100%;
+			height: 21em;
+		}
+	}
+
+	&.is-bordered {
+		.container {
+			border: 1px solid $color-shadow;
+		}
+	}
+
+	&.is-size-standard {
+		@include pad();
+
+		.container {
+		}
+	}
+
+	&.is-size-small {
+		width: 18em;
+		margin-left: auto;
+		margin-right: auto;
+
+		.graph {
+			height: 10.125em;
+		}
+	}
+}

@@ -1,0 +1,252 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessment Question component 1`] = `
+<div
+  className="component flip-container obojobo-draft--chunks--question  is-mockViewState is-mode-practice"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Question"
+  id="obo-id"
+>
+  <div
+    className="flipper"
+  >
+    <div
+      className="content back"
+    >
+      <div
+        className="obojobo-draft--chunks--mc-question--content"
+      />
+    </div>
+    <div
+      className="blocker front"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center"
+      >
+        <button
+          disabled={undefined}
+          onClick={undefined}
+          tabIndex={undefined}
+        >
+          Try Question
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCAssessment Question component answered correctly 1`] = `
+<div
+  className="component flip-container obojobo-draft--chunks--question is-correct is-mockViewState is-mode-practice"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Question"
+  id="obo-id"
+>
+  <div
+    className="flipper"
+  >
+    <div
+      className="content back"
+    >
+      <div
+        className="obojobo-draft--chunks--mc-question--content"
+      />
+    </div>
+    <div
+      className="blocker front"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center"
+      >
+        <button
+          disabled={undefined}
+          onClick={undefined}
+          tabIndex={undefined}
+        >
+          Try Question
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCAssessment Question component answered incorrectly 1`] = `
+<div
+  className="component flip-container obojobo-draft--chunks--question is-not-correct is-mockViewState is-mode-practice"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Question"
+  id="obo-id"
+>
+  <div
+    className="flipper"
+  >
+    <div
+      className="content back"
+    >
+      <div
+        className="obojobo-draft--chunks--mc-question--content"
+      />
+    </div>
+    <div
+      className="blocker front"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center"
+      >
+        <button
+          disabled={undefined}
+          onClick={undefined}
+          tabIndex={undefined}
+        >
+          Try Question
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCAssessment Question component in practice mode 1`] = `
+<div
+  className="component flip-container obojobo-draft--chunks--question  is-mockViewState is-mode-practice"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Question"
+  id="obo-id"
+>
+  <div
+    className="flipper"
+  >
+    <div
+      className="content back"
+    >
+      <div
+        className="obojobo-draft--chunks--mc-question--content"
+      />
+    </div>
+    <div
+      className="blocker front"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center"
+      >
+        <button
+          disabled={undefined}
+          onClick={undefined}
+          tabIndex={undefined}
+        >
+          Try Question
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCAssessment Question component in review mode 1`] = `
+<div
+  className="component flip-container obojobo-draft--chunks--question  is-active is-mode-review"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Question"
+  id="obo-id"
+>
+  <div
+    className="flipper"
+  >
+    <div
+      className="content back"
+    >
+      <div
+        className="obojobo-draft--chunks--mc-question--content"
+      />
+    </div>
+    <div
+      className="blocker front"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center"
+      >
+        <button
+          disabled={undefined}
+          onClick={undefined}
+          tabIndex={undefined}
+        >
+          View Question
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCAssessment Question component with content only 1`] = `
+<div
+  className="component flip-container obojobo-draft--chunks--question is-not-correct is-active is-mode-practice"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Question"
+  id="obo-id"
+>
+  <div
+    className="flipper"
+  >
+    <div
+      className="content back"
+    >
+      <div
+        className="obojobo-draft--chunks--mc-question--content"
+      />
+      <div
+        className="pad responses-hidden"
+      >
+        (Responses Hidden)
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MCAssessment Question component with content only in review mode 1`] = `
+<div
+  className="component flip-container obojobo-draft--chunks--question is-not-correct is-active is-mode-review"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Question"
+  id="obo-id"
+>
+  <div
+    className="flipper"
+  >
+    <div
+      className="content back"
+    >
+      <div
+        className="obojobo-draft--chunks--mc-question--content"
+      />
+      <div
+        className="pad responses-hidden"
+      >
+        (Responses Hidden)
+      </div>
+    </div>
+  </div>
+</div>
+`;

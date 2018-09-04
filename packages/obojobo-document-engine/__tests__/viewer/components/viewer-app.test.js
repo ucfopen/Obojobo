@@ -1,0 +1,820 @@
+import React from 'react'
+import { mount, shallow } from 'enzyme'
+
+jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../src/scripts/viewer/stores/question-store')
+jest.mock('../../../src/scripts/common/stores/modal-store')
+jest.mock('../../../src/scripts/common/util/modal-util')
+jest.mock('../../../src/scripts/common/stores/focus-store')
+jest.mock('../../../src/scripts/common/util/focus-util')
+jest.mock('../../../src/scripts/viewer/stores/nav-store')
+jest.mock('../../../src/scripts/viewer/util/nav-util')
+jest.mock('../../../src/scripts/viewer/stores/assessment-store')
+jest.mock('../../../src/scripts/viewer/components/nav')
+jest.mock('../../../src/scripts/common/page/dom-util')
+jest.mock('../../../src/scripts/common/page/screen')
+
+import OboModel from '../../../__mocks__/_obo-model-with-chunks'
+import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
+import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
+
+import APIUtil from '../../../src/scripts/viewer/util/api-util'
+import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
+import ModalStore from '../../../src/scripts/common/stores/modal-store'
+import ModalUtil from '../../../src/scripts/common/util/modal-util'
+import FocusStore from '../../../src/scripts/common/stores/focus-store'
+import FocusUtil from '../../../src/scripts/common/util/focus-util'
+import NavStore from '../../../src/scripts/viewer/stores/nav-store'
+import NavUtil from '../../../src/scripts/viewer/util/nav-util'
+import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
+import DOMUtil from '../../../src/scripts/common/page/dom-util'
+import Screen from '../../../src/scripts/common/page/screen'
+import Common from '../../../src/scripts/common'
+
+import testObject from '../../../test-object.json'
+
+describe('ViewerApp', () => {
+	let mocksForMount = (status = 'ok') => {
+		APIUtil.requestStart.mockResolvedValueOnce({
+			status: status,
+			value: {
+				visitId: 123,
+				lti: {
+					lisOutcomeServiceUrl: 'http://lis-outcome-service-url.test/example.php'
+				},
+				isPreviewing: true,
+				extensions: {
+					':ObojoboDraft.Sections.Assessment:attemptHistory': []
+				}
+			}
+		})
+		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
+		NavStore.getState.mockReturnValueOnce({})
+		FocusStore.getState.mockReturnValueOnce({})
+	}
+
+	beforeEach(() => {
+		jest.resetAllMocks()
+		jest.restoreAllMocks()
+	})
+
+	test('viewer:alert calls ModalUtil', () => {
+		Dispatcher.trigger('viewer:alert', {
+			value: {
+				title: 'mockTitle',
+				message: 'mockMessage'
+			}
+		})
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('viewer:scrollTo calls ModalUtil', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			jest.spyOn(ReactDOM, 'findDOMNode')
+			ReactDOM.findDOMNode.mockReturnValueOnce({ scrollTop: null })
+
+			Dispatcher.trigger('viewer:scrollTo', { value: null })
+
+			expect(ReactDOM.findDOMNode).toHaveBeenCalled()
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with invalid status', done => {
+		expect.assertions(2)
+		mocksForMount('not ok')
+
+		// No visit or draft id
+		jest.spyOn(String.prototype, 'split').mockReturnValueOnce([])
+
+		// temporarily mock and unmock console.error to prevent logging to screen
+		let originalError = console.error
+		console.error = jest.fn()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			// restore important globals
+			let errorMock = console.error
+			console.error = originalError
+
+			expect(component.html()).toMatchSnapshot()
+			expect(errorMock).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with no update removal', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		let component = mount(<ViewerApp />)
+
+		// This will be reset by jestReset, and is called multiple times
+		NavUtil.canNavigate.mockImplementation(() => {
+			// keeps loading element
+			component.instance().needsRemoveLoadingElement = false
+			// Sets up scrolling
+			return 'mockNav'
+		})
+
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with lti service', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+			component.instance().setState({ requestStatus: 'invalid' })
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with navTarget', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		NavUtil.getNavTargetModel.mockReturnValueOnce({ title: 'mockTarget' })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with nav models and titles', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		NavUtil.canNavigate.mockReturnValueOnce(true)
+		NavUtil.getPrevModel.mockReturnValueOnce({ title: 'mockPrevTitle' })
+		NavUtil.getNextModel.mockReturnValueOnce({ title: 'mockNextTitle' })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with nav models', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		NavUtil.canNavigate.mockReturnValueOnce(true)
+		NavUtil.getPrevModel.mockReturnValueOnce({ title: null })
+		NavUtil.getNextModel.mockReturnValueOnce({ title: null })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component hidden', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		ModalUtil.getCurrentModal.mockReturnValueOnce({ hideViewer: true })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with states', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+			component.setState({
+				navState: {
+					locked: true,
+					open: true,
+					disabled: true
+				},
+				isPreviewing: false
+			})
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component with ModalContainer', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		ModalUtil.getCurrentModal.mockReturnValueOnce({ component: [] })
+		let component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onNavStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		jest.spyOn(component.instance(), 'setState')
+		NavStore.getState.mockReturnValueOnce({})
+
+		setTimeout(() => {
+			component.update()
+			component.instance().onNavStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ navState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onQuestionStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			QuestionStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onQuestionStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ questionState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onAssessmentStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			AssessmentStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onAssessmentStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ assessmentState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onModalStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			ModalStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onModalStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ modalState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onFocusStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			FocusStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onFocusStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ focusState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onVisibilityChange calls APIUtil when leaving', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		let originalHidden = document.hidden
+		document.hidden = true
+
+		setTimeout(() => {
+			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+			component.update()
+
+			component.instance().onVisibilityChange()
+
+			expect(APIUtil.postEvent).toHaveBeenCalledWith(
+				component.instance().state.model,
+				'viewer:leave',
+				'1.0.0',
+				{}
+			)
+
+			component.unmount()
+			document.hidden = originalHidden
+			done()
+		})
+	})
+
+	test('onVisibilityChange calls APIUtil when returning', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.instance().leaveEvent = { id: 'mockId' }
+			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
+			component.update()
+
+			component.instance().onVisibilityChange()
+
+			expect(APIUtil.postEvent).toHaveBeenCalledWith(
+				component.instance().state.model,
+				'viewer:return',
+				'1.0.0',
+				{ relatedEventId: 'mockId' }
+			)
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('getTextForVariable calls Common.Store', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(Common.Store, 'getTextForVariable')
+			component.update()
+
+			component.instance().getTextForVariable({})
+
+			expect(Common.Store.getTextForVariable).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('scrollToTop returns with no container', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(ReactDOM, 'findDOMNode')
+			ReactDOM.findDOMNode.mockReturnValueOnce(null)
+			ReactDOM.findDOMNode.mockReturnValueOnce(null)
+
+			component.update()
+
+			component.instance().scrollToTop()
+
+			expect(ReactDOM.findDOMNode).toHaveBeenCalledTimes(2)
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onMouseDown returns with no focus', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			component.instance().onMouseDown()
+
+			expect(DOMUtil.findParentComponentIds).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onMouseDown returns when clicking on focus', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			DOMUtil.findParentComponentIds.mockReturnValueOnce({
+				has: jest.fn().mockReturnValueOnce(true)
+			})
+
+			component.instance().onMouseDown({ target: 'mockFocused' })
+
+			expect(DOMUtil.findParentComponentIds).toHaveBeenCalled()
+			expect(FocusUtil.unfocus).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onMouseDown calls FocusUtil when not clicking on focus', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			DOMUtil.findParentComponentIds.mockReturnValueOnce({
+				has: jest.fn().mockReturnValueOnce(false)
+			})
+
+			component.instance().onMouseDown({ target: 'mockClicked' })
+
+			expect(DOMUtil.findParentComponentIds).toHaveBeenCalled()
+			expect(FocusUtil.unfocus).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onScroll returns with no focus', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			component.instance().onScroll()
+
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(1)
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onScroll returns with no component', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+
+			component.instance().onScroll()
+
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(Screen.isElementVisible).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onScroll returns with no element', done => {
+		expect.assertions(3)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+		let mockFocused = {
+			getDomEl: jest.fn()
+		}
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			FocusUtil.getFocussedComponent
+				.mockReturnValueOnce(mockFocused)
+				.mockReturnValueOnce(mockFocused)
+
+			component.instance().onScroll()
+
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(mockFocused.getDomEl).toHaveBeenCalled()
+			expect(Screen.isElementVisible).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onScroll returns with visible Element', done => {
+		expect.assertions(4)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+		let mockFocused = {
+			getDomEl: jest.fn().mockReturnValueOnce(true)
+		}
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			FocusUtil.getFocussedComponent
+				.mockReturnValueOnce(mockFocused)
+				.mockReturnValueOnce(mockFocused)
+			Screen.isElementVisible.mockReturnValueOnce(true)
+
+			component.instance().onScroll()
+
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(mockFocused.getDomEl).toHaveBeenCalled()
+			expect(Screen.isElementVisible).toHaveBeenCalled()
+			expect(FocusUtil.unfocus).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onScroll unfocuses with non-visible Element', done => {
+		expect.assertions(4)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+		let mockFocused = {
+			getDomEl: jest.fn().mockReturnValueOnce(true)
+		}
+
+		setTimeout(() => {
+			component.update()
+			component.instance().state.focusState = { focussedId: 'mockFocused' }
+			FocusUtil.getFocussedComponent
+				.mockReturnValueOnce(mockFocused)
+				.mockReturnValueOnce(mockFocused)
+			Screen.isElementVisible.mockReturnValueOnce(false)
+
+			component.instance().onScroll()
+
+			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(mockFocused.getDomEl).toHaveBeenCalled()
+			expect(Screen.isElementVisible).toHaveBeenCalled()
+			expect(FocusUtil.unfocus).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onIdle posts an Event', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			APIUtil.postEvent.mockResolvedValueOnce({ value: {} })
+
+			component.instance().onIdle()
+
+			expect(APIUtil.postEvent).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onReturnFromIdle posts an Event', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			component.instance().inactiveEvent = { id: 'mockEventId' }
+
+			component.instance().onReturnFromIdle()
+
+			expect(APIUtil.postEvent).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onBeforeWindowClose returns undefined', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			jest.spyOn(Dispatcher, 'trigger')
+
+			let close = component.instance().onBeforeWindowClose()
+
+			expect(Dispatcher.trigger).toHaveBeenCalled()
+			expect(close).toEqual(undefined)
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onBeforeWindowClose calls closePrevented', done => {
+		expect.assertions(2)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+		let originalTrigger = Dispatcher.trigger
+		Dispatcher.trigger = jest.fn()
+
+		setTimeout(() => {
+			component.update()
+			Dispatcher.trigger.mockImplementationOnce((type, funct) => {
+				funct()
+			})
+
+			let close = component.instance().onBeforeWindowClose()
+
+			expect(Dispatcher.trigger).toHaveBeenCalled()
+			expect(close).toEqual(true)
+
+			component.unmount()
+			Dispatcher.trigger = originalTrigger
+			done()
+		})
+	})
+
+	test('onWindowClose calls APIUtil', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			let close = component.instance().onWindowClose()
+
+			expect(APIUtil.postEvent).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('clearPreviewScores resets assessments and calls Modal.show', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+				status: 'ok'
+			})
+
+			component.instance().clearPreviewScores()
+
+			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('clearPreviewScores Modal.show with error', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+				status: 'not ok',
+				error: 'Not Authorized'
+			})
+
+			component.instance().clearPreviewScores()
+
+			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('clearPreviewScores Modal.show with detailed error', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+			APIUtil.clearPreviewScores.mockResolvedValueOnce({
+				status: 'not ok',
+				error: 'Not Authorized',
+				value: {
+					message: 'mockMessage'
+				}
+			})
+
+			component.instance().clearPreviewScores()
+
+			expect(APIUtil.clearPreviewScores).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('unlockNavigation calls NavUtil', done => {
+		expect.assertions(1)
+		mocksForMount()
+		let component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			let close = component.instance().unlockNavigation()
+
+			expect(NavUtil.unlock).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+})

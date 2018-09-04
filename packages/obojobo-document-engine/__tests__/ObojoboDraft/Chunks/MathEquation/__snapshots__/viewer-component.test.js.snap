@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MathEquation MathEquation component 1`] = `
+<div
+  className="component obojobo-draft--chunks--math-equation pad align-center"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MathEquation"
+  id="obo-id"
+>
+  <div
+    className="non-editable-chunk"
+    contentEditable={false}
+    data-indent={0}
+  >
+    <div
+      className="katex-container"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mi>y</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>x</mi></mrow></mfrac></mrow><annotation encoding=\\"application/x-tex\\">y=\\\\frac{1}{x}</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:1.32144em;\\"></span><span class=\\"strut bottom\\" style=\\"height:2.00744em;vertical-align:-0.686em;\\"></span><span class=\\"base displaystyle textstyle uncramped\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">y</span><span class=\\"mrel\\">=</span><span class=\\"mord reset-textstyle displaystyle textstyle uncramped\\"><span class=\\"sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter\\"></span><span class=\\"mfrac\\"><span class=\\"vlist\\"><span style=\\"top:0.686em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle textstyle cramped\\"><span class=\\"mord textstyle cramped\\"><span class=\\"mord mathit\\">x</span></span></span></span><span style=\\"top:-0.22999999999999998em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle textstyle uncramped frac-line\\"></span></span><span style=\\"top:-0.677em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle textstyle uncramped\\"><span class=\\"mord textstyle uncramped\\"><span class=\\"mord mathrm\\">1</span></span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter\\"></span></span></span></span></span></span>",
+        }
+      }
+      style={
+        Object {
+          "fontSize": "1em",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`MathEquation MathEquation component with error 1`] = `null`;
+
+exports[`MathEquation MathEquation component with label 1`] = `
+<div
+  className="component obojobo-draft--chunks--math-equation pad align-center"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MathEquation"
+  id="obo-id"
+>
+  <div
+    className="non-editable-chunk"
+    contentEditable={false}
+    data-indent={0}
+  >
+    <div
+      className="katex-container"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mi>y</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mi>x</mi></mrow></mfrac></mrow><annotation encoding=\\"application/x-tex\\">y=\\\\frac{1}{x}</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:1.32144em;\\"></span><span class=\\"strut bottom\\" style=\\"height:2.00744em;vertical-align:-0.686em;\\"></span><span class=\\"base displaystyle textstyle uncramped\\"><span class=\\"mord mathit\\" style=\\"margin-right:0.03588em;\\">y</span><span class=\\"mrel\\">=</span><span class=\\"mord reset-textstyle displaystyle textstyle uncramped\\"><span class=\\"sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter\\"></span><span class=\\"mfrac\\"><span class=\\"vlist\\"><span style=\\"top:0.686em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle textstyle cramped\\"><span class=\\"mord textstyle cramped\\"><span class=\\"mord mathit\\">x</span></span></span></span><span style=\\"top:-0.22999999999999998em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle textstyle uncramped frac-line\\"></span></span><span style=\\"top:-0.677em;\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span><span class=\\"reset-textstyle textstyle uncramped\\"><span class=\\"mord textstyle uncramped\\"><span class=\\"mord mathrm\\">1</span></span></span></span><span class=\\"baseline-fix\\"><span class=\\"fontsize-ensurer reset-size5 size5\\"><span style=\\"font-size:0em;\\">​</span></span>​</span></span></span><span class=\\"sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter\\"></span></span></span></span></span></span>",
+        }
+      }
+      style={
+        Object {
+          "fontSize": "1em",
+        }
+      }
+    />
+    <div
+      className="equation-label"
+    >
+      mockLabel
+    </div>
+  </div>
+</div>
+`;

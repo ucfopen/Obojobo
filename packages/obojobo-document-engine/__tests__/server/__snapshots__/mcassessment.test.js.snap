@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessment constructor registers the expected events 1`] = `
+Array [
+  Object {
+    "ObojoboDraft.Chunks.Question:calculateScore": [Function],
+  },
+]
+`;
