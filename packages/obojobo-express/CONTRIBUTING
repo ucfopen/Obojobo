@@ -1,0 +1,48 @@
+# Contribution Guide
+
+
+## Branches, Tags, and Merging
+
+```
+  ┌───────────┐    ┌───────────┐    ┌───────────┐
+  |           |    |           |    |           |
+  |  Master   |    |  Develop  |    |   Issue   |
+  |           |    |           |    |           |
+  └───────────┘    └───────────┘    └───────────┘
+
+    release        ◄── merge         ◄── merge
+
+    tags:          branches:        branches:
+    v0.0.3   ◄──   dev/v0.0.3  ◄──  issue/123-fix-broken-links + issue/211-blah-blah
+    v0.0.2   ◄──   dev/v0.0.2  ◄──  issue/251-rename-all-the-files + issue/222-boom + issue/12221-bang
+    v0.0.1   ◄──   dev/v0.0.1  ◄──  issue/121-get-logins-working-again
+
+```
+
+### Master Branch
+
+* Represents the default branch.
+* Always points at the latest release (thus always production ready)
+
+### Dev Branches
+
+* Naming Convention: `dev/v0.2.10` - a new one for every upcoming release version
+* issue branches merge into this branch (never master)
+* deleted after merged into master
+* multiple can exist to work on multiple future releases if desired
+
+### Issue Branches
+
+* Naming Convention: `issue/3432-add-package-json-dependency` - number is an issue number
+* Rarely, lazyness can skip the issue number (if no issue exists), `issue/add-package-json-dependency`
+* all work and commits happen here
+* deleted after merged into dev branch
+* merges into dev branch only, never master
+
+### Releases
+
+* Naming convention: `v0.1.2` using [SEMVER](http://semver.org/)
+* Each release gets a tag after it's merged into master
+* If it's open source, make sure to compile a fully fledged [release doc for Github](https://help.github.com/articles/creating-releases/)
+* It is suggested that you sign release tags for extra trust ([git tag](https://git-scm.com/book/tr/v2/Git-Tools-Signing-Your-Work))
+
