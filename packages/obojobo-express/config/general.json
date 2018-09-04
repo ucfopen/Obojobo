@@ -1,0 +1,19 @@
+{
+	"development": {
+		"hostname": "127.0.0.1:8080",
+		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET",
+		"cookieName": "obo_next",
+		"secureCookie": false,
+		"bodyParser": {
+			"jsonOptions": {
+				"limit": "1mb"
+			},
+			"textOptions": {
+				"limit": "1mb"
+			},
+			"urlencodedOptions": {
+				"extended": false
+			}
+		}
+	}
+}
