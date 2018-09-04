@@ -4,6 +4,8 @@ import { Value, Schema } from 'slate'
 import { Editor } from 'slate-react'
 import initialValue from '../documents/value.json'
 import APIUtil from '../../viewer/util/api-util'
+import Common from 'Common'
+const { OboModel } = Common.models
 
 import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
 import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
@@ -24,6 +26,7 @@ import MCChoice from '../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/edit
 import MCAnswer from '../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
 import MCFeedback from '../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
 import Page from '../../../../ObojoboDraft/Pages/Page/editor'
+import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
 import DefaultNode from './default-node'
 import BasicMark from '../marks/basic-mark'
 
@@ -46,6 +49,12 @@ const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+
+const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+
+const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
+const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
@@ -75,7 +84,7 @@ const nodes = {
 	'ObojoboDraft.Chunks.MCAssessment.MCChoice': MCChoice,
 	'ObojoboDraft.Chunks.MCAssessment.MCAnswer': MCAnswer,
 	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': MCFeedback,
-	'ObojoboDraft.Pages.Page': Page,
+	'ObojoboDraft.Pages.Page': Page
 }
 
 const dontInsert = [
@@ -84,7 +93,7 @@ const dontInsert = [
 	'ObojoboDraft.Chunks.MCAssessment.MCChoice',
 	'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
 	'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-	'ObojoboDraft.Pages.Page',
+	'ObojoboDraft.Pages.Page'
 ]
 
 const plugins = [
@@ -112,31 +121,33 @@ const plugins = [
 	MCChoice.plugins,
 	MCAnswer.plugins,
 	MCFeedback.plugins,
-	HTML.plugins
+	HTML.plugins,
+	ScoreActions.plugins,
+	Page.plugins
 ]
 
 class PageEditor extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			value: Value.fromJSON(this.importFromJSON()),
+			value: Value.fromJSON(this.importFromJSON())
 		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
 		// Deal with deleted page
-		if(!this.props.page){
+		if (!this.props.page) {
 			return
 		}
-		if(!prevProps.page){
-			this.setState({value: Value.fromJSON(this.importFromJSON())})
+		if (!prevProps.page) {
+			this.setState({ value: Value.fromJSON(this.importFromJSON()) })
 			return
 		}
 
 		// Save changes when switching pages
-		if(prevProps.page.id !== this.props.page.id){
+		if (prevProps.page.id !== this.props.page.id) {
 			this.exportToJSON(prevProps.page, prevState.value)
-			this.setState({value: Value.fromJSON(this.importFromJSON())})
+			this.setState({ value: Value.fromJSON(this.importFromJSON()) })
 			return
 		}
 	}
@@ -146,10 +157,10 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
-		if(this.props.page === null) return this.renderEmpty()
+		if (this.props.page === null) return this.renderEmpty()
 
 		return (
-			<div className={'editor'} >
+			<div className={'editor'}>
 				<div className={'dropdown'}>
 					<button>+ Insert Node</button>
 					<div className={'drop-content'}>
@@ -175,8 +186,8 @@ class PageEditor extends React.Component {
 		this.setState({ value })
 	}
 
-	renderMark(props){
-		switch (props.mark.type){
+	renderMark(props) {
+		switch (props.mark.type) {
 			case BOLD_MARK:
 				return <strong>{props.children}</strong>
 			case ITALIC_MARK:
@@ -200,11 +211,9 @@ class PageEditor extends React.Component {
 	}
 
 	buildButton(item) {
-		if(dontInsert.includes(item[0])) return null
+		if (dontInsert.includes(item[0])) return null
 		return (
-			<button
-				key={item[0]}
-				onClick={() => this.insertBlock(item)}>
+			<button key={item[0]} onClick={() => this.insertBlock(item)}>
 				{item[0]}
 			</button>
 		)
@@ -215,9 +224,13 @@ class PageEditor extends React.Component {
 		const json = {}
 		json.children = []
 
+		json.content = page.get('content')
+
 		value.document.nodes.forEach(child => {
-			// If the current Node is a registered OboNode, use its custom converter
-			if(nodes.hasOwnProperty(child.type)){
+			if (child.type === ACTIONS_NODE) {
+				json.content.scoreActions = ScoreActions.helpers.slateToObo(child)
+			} else if (nodes.hasOwnProperty(child.type)) {
+				// If the current Node is a registered OboNode, use its custom converter
 				json.children.push(nodes[child.type].helpers.slateToObo(child))
 			} else {
 				json.children.push(DefaultNode.helpers.slateToObo(child))
@@ -225,22 +238,29 @@ class PageEditor extends React.Component {
 		})
 
 		page.set('children', json.children)
+		page.set('content', json.content)
 		return json
 	}
 
 	importFromJSON() {
 		const { page } = this.props
 
-		const json = { document: { nodes: [] }}
+		const json = { document: { nodes: [] } }
 
 		page.attributes.children.forEach(child => {
 			// If the current Node is a registered OboNode, use its custom converter
-			if(nodes.hasOwnProperty(child.type)){
+			if (nodes.hasOwnProperty(child.type)) {
 				json.document.nodes.push(nodes[child.type].helpers.oboToSlate(child))
 			} else {
 				json.document.nodes.push(DefaultNode.helpers.oboToSlate(child))
 			}
 		})
+
+		const content = page.get('content')
+		if (page.get('type') === ASSESSMENT_NODE) {
+			json.document.nodes.push(ScoreActions.helpers.oboToSlate(content.scoreActions))
+		}
+
 		return json
 	}
 
@@ -253,31 +273,36 @@ class PageEditor extends React.Component {
 	}
 
 	saveDraft() {
-		this.exportToJSON(this.props.page, this.state.value)
+		const value = this.exportToJSON(this.props.page, this.state.value)
 		const json = this.props.model.flatJSON()
 
 		// deal with content
-		const content = this.props.model.children.at(0)
-		const contentJSON = content.flatJSON()
-		for(let child of Array.from(content.children.models)){
-			contentJSON.children.push({
-				id: child.get('id'),
-				type: child.get('type'),
-				content: child.get('content'),
-				children: child.get('children')
-			})
-		}
+		this.props.model.children.forEach(child => {
+			let contentJSON = {}
 
-		json.children.push(contentJSON)
+			if (child.get('type') === CONTENT_NODE) {
+				contentJSON = child.flatJSON()
 
-		const assessment = this.props.model.children.at(1) // deal with assessment
-		const assessmentJSON = assessment.flatJSON()
-		assessmentJSON.children =  assessment.get('children')
+				for (let item of Array.from(child.children.models)) {
+					contentJSON.children.push({
+						id: item.get('id'),
+						type: item.get('type'),
+						content: item.get('content'),
+						children: item.get('children')
+					})
+				}
+			} else if (child.get('type') === ASSESSMENT_NODE) {
+				;(contentJSON.id = child.get('id')),
+					(contentJSON.type = child.get('type')),
+					(contentJSON.children = child.get('children'))
+				contentJSON.content = child.get('content')
+			}
 
-		json.children.push(assessmentJSON)
+			json.children.push(contentJSON)
+		})
 
 		APIUtil.postDraft(this.props.draftId, json).then(result => {
-			if(result.status === 'ok'){
+			if (result.status === 'ok') {
 				window.alert('Successfully saved draft')
 			}
 		})

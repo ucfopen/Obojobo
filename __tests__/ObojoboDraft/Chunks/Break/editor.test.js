@@ -8,15 +8,19 @@ const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 describe('Break editor', () => {
 	test('Node builds the expected component', () => {
 		const Node = Break.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -24,38 +28,42 @@ describe('Break editor', () => {
 
 	test('Node component toggles size to large', () => {
 		const Node = Break.components.Node
-		const component = mount(<Node
-			isSelected={true}
-			node={{
-				data: {
-					get: () => { return { width: 'normal'}}
-				}
-			}}
-			/>)
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => {
+							return { width: 'normal' }
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.html()
 
-		const click = component
-			.find('button')
-			.simulate('click') // toggle to large
+		const click = component.find('button').simulate('click') // toggle to large
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Node component toggles size to large', () => {
 		const Node = Break.components.Node
-		const component = mount(<Node
-			isSelected={true}
-			node={{
-				data: {
-					get: () => { return { width: 'large'}}
-				}
-			}}
-			/>)
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => {
+							return { width: 'large' }
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.html()
 
-		const click = component
-			.find('button')
-			.simulate('click') // toggle to large
+		const click = component.find('button').simulate('click') // toggle to large
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -78,7 +86,9 @@ describe('Break editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return {} }
+				get: type => {
+					return {}
+				}
 			}
 		}
 		const oboNode = Break.helpers.slateToObo(slateNode)
@@ -95,5 +105,20 @@ describe('Break editor', () => {
 		const slateNode = Break.helpers.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode renders a break when passed', () => {
+		const props = {
+			node: {
+				type: BREAK_NODE,
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		expect(Break.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })

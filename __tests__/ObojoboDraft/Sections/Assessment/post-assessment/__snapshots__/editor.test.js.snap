@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Actions editor Node component 1`] = `
+<div
+  className="scoreactions"
+>
+  <h1
+    contentEditable={false}
+  >
+    Score Actions
+  </h1>
+  mockChildren
+  <button
+    onClick={[Function]}
+  >
+    Add Action
+  </button>
+</div>
+`;
+
+exports[`Actions editor Node component adds child 1`] = `"<div class=\\"scoreactions\\"><h1 contenteditable=\\"false\\">Score Actions</h1>mockChildren<button>Add Action</button></div>"`;
+
+exports[`Actions editor Score component 1`] = `
+<div
+  className="score-actions-page pad"
+>
+  mockChildren
+  <div
+    className="action-data"
+  >
+    Score Range: [object Object] 
+    <button
+      onClick={[Function]}
+    >
+      Edit Range
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Actions editor Score component changes range 1`] = `"<div class=\\"score-actions-page pad\\">mockChildren<div class=\\"action-data\\">Score Range: [object Object] <button>Edit Range</button></div></div>"`;
+
+exports[`Actions editor oboToSlate converts an OboComponent to a Slate node 1`] = `
+Object {
+  "nodes": Array [
+    Object {
+      "data": Object {
+        "for": "dummyRange",
+      },
+      "nodes": Array [
+        undefined,
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+    },
+  ],
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+}
+`;
+
+exports[`Actions editor plugins.renderNode renders a score action when passed 1`] = `
+<Score
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.ScoreAction",
+    }
+  }
+/>
+`;
+
+exports[`Actions editor plugins.renderNode renders all actions when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.ScoreActions",
+    }
+  }
+/>
+`;
+
+exports[`Actions editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Array [
+  Object {
+    "for": Object {},
+    "page": undefined,
+  },
+]
+`;

@@ -1,4 +1,6 @@
 import React from 'react'
+import { Data, Block } from 'slate'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ActionButton from '../../Chunks/ActionButton/editor'
 import Break from '../../Chunks/Break/editor'
@@ -20,6 +22,7 @@ import MCFeedback from '../../Chunks/MCAssessment/MCFeedback/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const nodes = {
 	'ObojoboDraft.Chunks.ActionButton': ActionButton,
@@ -84,10 +87,51 @@ const oboToSlate = node => {
 }
 
 const plugins = {
-	renderNode(props) {
-		switch (props.node.type) {
-			case PAGE_NODE:
-				return <Node {...props} />
+	schema: {
+		blocks: {
+			'ObojoboDraft.Pages.Page': {
+				nodes: [
+					{
+						types: [
+							'ObojoboDraft.Chunks.ActionButton',
+							'ObojoboDraft.Chunks.Break',
+							'ObojoboDraft.Chunks.Code',
+							'ObojoboDraft.Chunks.Figure',
+							'ObojoboDraft.Chunks.Heading',
+							'ObojoboDraft.Chunks.IFrame',
+							'ObojoboDraft.Chunks.List',
+							'ObojoboDraft.Chunks.MathEquation',
+							'ObojoboDraft.Chunks.Table',
+							'ObojoboDraft.Chunks.Text',
+							'ObojoboDraft.Chunks.YouTube',
+							'ObojoboDraft.Chunks.QuestionBank',
+							'ObojoboDraft.Chunks.Question',
+							'ObojoboDraft.Chunks.MCAssessment',
+							'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+							'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
+							'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+						],
+						min: 1
+					}
+				],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_REQUIRED: {
+							const block = Block.create({
+								type: TEXT_NODE,
+								data: { content: { indent: 0 } }
+							})
+							return change.insertNodeByKey(node.key, index, block)
+						}
+						case CHILD_TYPE_INVALID: {
+							return change.wrapBlockByKey(child.key, {
+								type: TEXT_NODE,
+								data: { content: { indent: 0 } }
+							})
+						}
+					}
+				}
+			}
 		}
 	}
 }

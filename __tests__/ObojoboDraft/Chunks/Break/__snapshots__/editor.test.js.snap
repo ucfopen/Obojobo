@@ -31,6 +31,19 @@ Object {
 }
 `;
 
+exports[`Break editor plugins.renderNode renders a break when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Break",
+    }
+  }
+/>
+`;
+
 exports[`Break editor slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [],

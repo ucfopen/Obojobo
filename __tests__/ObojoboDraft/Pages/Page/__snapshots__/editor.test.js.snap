@@ -28,19 +28,6 @@ Object {
 }
 `;
 
-exports[`Page plugins.renderNode renders a button when passed 1`] = `
-<Node
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Pages.Page",
-    }
-  }
-/>
-`;
-
 exports[`Page slateToObo converts a Slate node to an OboNode 1`] = `
 Object {
   "children": Array [

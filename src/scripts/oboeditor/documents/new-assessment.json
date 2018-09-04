@@ -1,5 +1,4 @@
 {
-	"id":"my-assessment",
 	"type":"ObojoboDraft.Sections.Assessment",
 	"content": {
 		"review":"never",
@@ -90,7 +89,6 @@
 	},
 	"children":[
 		{
-			"id":"28897a2c-ade3-42e1-bde7-5ef2c553f3f3",
 			"type":"ObojoboDraft.Pages.Page",
 			"content":{},
 			"children":[
@@ -188,7 +186,6 @@
 					"content":{},
 					"children":[
 						{
-							"id":"0fcbcc60-0556-4361-a368-24eb40488521",
 							"type":"ObojoboDraft.Chunks.Heading",
 							"content":{
 								"textGroup":[

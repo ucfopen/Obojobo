@@ -1,5 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import Page from '../../../../ObojoboDraft/Pages/Page/editor'
 jest.mock('../../../../ObojoboDraft/Chunks/ActionButton/editor')
@@ -88,18 +89,31 @@ describe('Page', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('plugins.renderNode renders a button when passed', () => {
-		const props = {
-			node: {
-				type: PAGE_NODE,
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
+	test('plugins.schema.normalize fixes invalid children', () => {
+		const change = {
+			wrapBlockByKey: jest.fn()
 		}
 
-		expect(Page.plugins.renderNode(props)).toMatchSnapshot()
+		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: null,
+			child: { key: 'mockKey' },
+			index: null
+		})
+
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds required children', () => {
+		const change = {
+			insertNodeByKey: jest.fn()
+		}
+
+		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, CHILD_REQUIRED, {
+			node: { key: 'mockKey' },
+			child: null,
+			index: 0
+		})
+
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 })

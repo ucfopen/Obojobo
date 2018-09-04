@@ -20,12 +20,16 @@ const SUPERSCRIPT_MARK = 'sup'
 const LATEX_MARK = '_latex'
 const LINK_MARK = 'a'
 
+const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+
 describe('PageEditor', () => {
 	test('EditorNav component', () => {
 		const props = {
-			page: {attributes: {
-				children: []
-			}}
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
 		}
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
@@ -34,24 +38,26 @@ describe('PageEditor', () => {
 
 	test('EditorNav component with no page', () => {
 		const props = {
-			page: {attributes: {
-				children: []
-			}}
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
 		}
 		const component = shallow(<PageEditor {...props} />)
-		component.setProps({page: null})
+		component.setProps({ page: null })
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('EditorNav component with no page updating to a page', () => {
 		const props = {
-			page: {attributes: {
-				children: []
-			}}
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
 		}
 		const component = shallow(<PageEditor {...props} />)
-		component.setProps({page: null})
+		component.setProps({ page: null })
 		component.setProps(props)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
@@ -64,7 +70,8 @@ describe('PageEditor', () => {
 				set: jest.fn(),
 				attributes: {
 					children: []
-				}
+				},
+				get: jest.fn()
 			}
 		}
 		const component = shallow(<PageEditor {...props} />)
@@ -74,7 +81,8 @@ describe('PageEditor', () => {
 				set: jest.fn(),
 				attributes: {
 					children: []
-				}
+				},
+				get: jest.fn()
 			}
 		})
 		const tree = component.html()
@@ -96,7 +104,8 @@ describe('PageEditor', () => {
 							type: 'NonsenseNode'
 						}
 					]
-				}
+				},
+				get: jest.fn()
 			}
 		}
 		const component = shallow(<PageEditor {...props} />)
@@ -107,7 +116,7 @@ describe('PageEditor', () => {
 	test('EditorNav component with content exports to database', () => {
 		jest.spyOn(window, 'alert')
 		window.alert.mockReturnValueOnce(null)
-		APIUtil.postDraft.mockResolvedValueOnce({status: 'ok'})
+		APIUtil.postDraft.mockResolvedValueOnce({ status: 'ok' })
 
 		const props = {
 			page: {
@@ -123,25 +132,49 @@ describe('PageEditor', () => {
 							type: 'NonsenseNode'
 						}
 					]
-				}
-			},
-			model : {
-				children: {
-					at: index => {
-						return {
-							children: {
-								models: [
-									{
-										get: () => 'mockValue'
-									}
-								]
-							},
-							get: () => [],
-							flatJSON: () => { return { children: [] } }
-						}
-					}
 				},
-				flatJSON: () => { return { children: [] } }
+				get: jest
+					.fn()
+					.mockReturnValueOnce({
+						// get('content') in
+						scoreActions: [
+							{
+								for: '[0,100]',
+								page: {
+									type: 'ObojoboDraft.Pages.Page',
+									children: []
+								}
+							}
+						]
+					})
+					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
+					.mockReturnValueOnce({}) // get('content') in export
+			},
+			model: {
+				children: [
+					{
+						get: () => ASSESSMENT_NODE
+					},
+					{
+						get: () => CONTENT_NODE,
+						flatJSON: () => {
+							return { children: [] }
+						},
+						children: {
+							models: [
+								{
+									get: () => null
+								}
+							]
+						}
+					},
+					{
+						get: () => 'mockNode'
+					}
+				],
+				flatJSON: () => {
+					return { children: [] }
+				}
 			}
 		}
 		const component = shallow(<PageEditor {...props} />)
@@ -159,7 +192,7 @@ describe('PageEditor', () => {
 	test('EditorNav component with content fails to export to database', () => {
 		jest.spyOn(window, 'alert')
 		window.alert.mockReturnValueOnce(null)
-		APIUtil.postDraft.mockResolvedValueOnce({status: 'not ok'})
+		APIUtil.postDraft.mockResolvedValueOnce({ status: 'not ok' })
 
 		const props = {
 			page: {
@@ -175,25 +208,14 @@ describe('PageEditor', () => {
 							type: 'NonsenseNode'
 						}
 					]
-				}
-			},
-			model : {
-				children: {
-					at: index => {
-						return {
-							children: {
-								models: [
-									{
-										get: () => 'mockValue'
-									}
-								]
-							},
-							get: () => [],
-							flatJSON: () => { return { children: [] } }
-						}
-					}
 				},
-				flatJSON: () => { return { children: [] } }
+				get: jest.fn()
+			},
+			model: {
+				children: [],
+				flatJSON: () => {
+					return { children: [] }
+				}
 			}
 		}
 		const component = shallow(<PageEditor {...props} />)
@@ -212,9 +234,10 @@ describe('PageEditor', () => {
 		jest.spyOn(Break.helpers, 'insertNode')
 		Break.helpers.insertNode.mockReturnValueOnce(null)
 		const props = {
-			page: {attributes: {
-				children: []
-			}}
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
 		}
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
@@ -231,9 +254,10 @@ describe('PageEditor', () => {
 		jest.spyOn(Break.helpers, 'insertNode')
 		Break.helpers.insertNode.mockReturnValueOnce(null)
 		const props = {
-			page: {attributes: {
-				children: []
-			}}
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
 		}
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
@@ -247,19 +271,18 @@ describe('PageEditor', () => {
 
 	test('EditorNav component renders marks', () => {
 		jest.spyOn(Break.helpers, 'insertNode')
-		window.getSelection = jest.fn().mockReturnValueOnce({rangeCount: 0})
+		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		Break.helpers.insertNode.mockReturnValueOnce(null)
 		const props = {
-			page: {attributes: {
-				children: []
-			}}
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
 		}
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
 
-		const editorProps = component
-			.find('.obojobo-draft--pages--page')
-			.props()
+		const editorProps = component.find('.obojobo-draft--pages--page').props()
 
 		const mark = {
 			children: 'mockChild',
