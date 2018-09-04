@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <ActionButton label="test">
+        <triggers>
+            <trigger type="onClick">
+                <actions>
+                    <action type="viewer:alert">
+                        <value title="test" message="test" />
+                    </action>
+                </actions>
+            </trigger>
+        </triggers>
+    </ActionButton>
+</ObjoboDraftDoc>

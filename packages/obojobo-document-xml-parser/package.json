@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "xml-js": "^1.0.2"
+  },
+  "name": "obojobo-draft-xml-parser",
+  "version": "0.1.1",
+  "main": "xml2draft.js",
+  "devDependencies": {
+    "jest": "^20.0.4"
+  },
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:updateSnapshot": "jest --updateSnapshot"
+  },
+  "author": "",
+  "description": ""
+}

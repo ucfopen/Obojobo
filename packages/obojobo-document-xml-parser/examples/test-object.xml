@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+	<!-- Since this document is XML comments are allowed - Any comments are not included in the produced JSON. This OboXML document contains most of the avaliable features of Obojobo and should be used as a quick reference / example. -->
+	<Module title="Obojobo Example Document"> <!-- Specify a start attribute to start the module on a different page (for example 'page-2') -->
+		<Content>
+			<Page id="page-1" title="Example content page">
+				<h1>2D Motion</h1>
+				<h2>Projectile motion</h2>
+				<p>Let the projectile be launched with an initial velocity <latex>v_0</latex> which can be expressed as the sum of horizontal and vertical components as follows:</p>
+				<MathEquation latex="v_0=v_{0_x}i+v_{0_y}j" />
+				<p>The components <latex>x_{0_x}</latex> and <latex>v_{0_y}</latex> can be found if the initial launch angle, <latex>\theta</latex>, is known:</p>
+				<ul>
+					<li><latex>v_{0_x} = v_0 \cos \theta</latex></li>
+					<li><latex>v_{0_t} = v_0 \sin \theta</latex></li>
+				</ul>
+				<p>See also the section Parabolic equation for information on finding the initial velocity.</p>
+				<h2>Kinematic quantities of projectile motion</h2>
+				<p>In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.</p>
+			</Page>
+			<Page id="page-2" title="Image examples">
+				<h1>Images</h1>
+				<p>A small image with a caption (size = small):</p>
+				<figure>
+					<img src="http://lorempixel.com/640/480/city" size="small" alt="A city" />
+					<figcaption>This is a small image</figcaption>
+				</figure>
+				<p>Medium image, no caption (size = medium):</p>
+				<img src="http://lorempixel.com/640/480/city" size="medium" alt="A city" />
+				<p>Large image (size = large):</p>
+				<img src="http://lorempixel.com/640/480/city" size="large" alt="A city" />
+				<p>Image with an explict width (width = 200):</p>
+				<img src="http://lorempixel.com/640/480/city" width="200" alt="A city" />
+				<p>Image with an explict height (height = 200):</p>
+				<img src="http://lorempixel.com/640/480/city" height="200" alt="A city" />
+				<p>Image with width and height - not recommended as image will not respect aspect ratio ( width = 400, height = 100):</p>
+				<img src="http://lorempixel.com/640/480/city" width="400" height="100" alt="A city" />
+				<p>No size or width or height results in images at their native size:</p>
+				<img src="http://lorempixel.com/100/100/city" />
+				<p>Native size images are still restricted to the width of the page (at native size this image would be 1080x720 pixels)</p>
+				<img src="http://lorempixel.com/1080/720/city" />
+				<p>Base 64 encoded image:</p>
+				<img src="data:image/gif;base64,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" />
+			</Page>
+			<Page id="page-3" title="Other content types">
+				<h1>Other content types</h1>
+				<h2>Code</h2>
+				<pre>// Computers code example:
+int Fibonacci(int n)
+	if( n == 0 || n == 1) return n
+	return Fibonacci(n - 1) + Fibonacci(n - 2)</pre>
+				<Code>
+					<textGroup>
+						<t>// Computer code example:</t>
+						<t>int Fibonacci(int n)</t>
+						<t indent="1">if( n == 0 || n == 1) return n</t>
+						<t indent="1">return Fibonacci(n - 1) + Fibonacci(n - 2)</t>
+					</textGroup>
+				</Code>
+				<h2>Table with table headers:</h2>
+				<table>
+					<tr>
+						<th>Heading 1</th>
+						<th>Heading 2</th>
+					</tr>
+					<tr>
+						<td>Cell 1</td>
+						<td>Cell 2</td>
+					</tr>
+				</table>
+				<h2>Table without table headers:</h2>
+				<table>
+					<tr>
+						<td>Cell 1</td>
+						<td>Cell 2</td>
+					</tr>
+					<tr>
+						<td>Cell 3</td>
+						<td>Cell 4</td>
+					</tr>
+				</table>
+				<h2>A break:</h2>
+				<hr />
+				<h2>YouTube video:</h2>
+				<YouTube videoId="dQw4w9WgXcQ" />
+				<h2>Practice question:</h2>
+				<p>This question is a <b>pick-one-multiple-correct</b> type question with feedback and an included <b>solution</b>:</p>
+				<Question id="pq1" title="A custom question title">
+					<h1>Which equation describes horizontal displacement of projectile motion?</h1>
+					<MCAssessment id="pq1.mca" responseType="pick-one-multiple-correct">
+						<MCChoice id="pq1-mca-mc1" score="100">
+							<MCAnswer id="pq1-mca-mc1-ans">
+								<MathEquation latex="x=v_xt" align="left" />
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice id="pq1-mca-mc2" score="100">
+							<MCAnswer id="pq1-mca-mc2-ans">
+								<MathEquation latex="x=v_{ix}t + \frac{1}{2} a_x t^2" align="left" />
+							</MCAnswer>
+							<MCFeedback id="pq1-mca-mc2-fb">
+								<p>Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:</p>
+								<MathEquation latex="x=v_xt" align="left" />
+							</MCFeedback>
+						</MCChoice>
+						<MCChoice id="pq1-mca-mc3" score="0">
+							<MCAnswer id="pq1-mca-mc3-ans">
+								<MathEquation latex="x=\frac{1}{2} a_x t^2" align="left" />
+							</MCAnswer>
+							<MCFeedback id="pq1-mca-mc3-fb">
+								<p>The <latex>a_x</latex> term representing horizontal acceleration is always 0 so this equation is simply <latex>x = 0</latex>.</p>
+							</MCFeedback>
+						</MCChoice>
+					</MCAssessment>
+					<solution>
+						<Page>
+							<p>Here is an example explanation. Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:</p>
+							<MathEquation latex="v_0=v_{0_x}i+v_{0_y}j" />
+							<p>The components <latex>x_{0_x}</latex> and <latex>v_{0_y}</latex> can be found if the initial launch angle, <latex>\theta</latex>, is known:</p>
+							<ul>
+								<li><latex>v_{0_x} = v_0 \cos \theta</latex></li>
+								<li><latex>v_{0_t} = v_0 \sin \theta</latex></li>
+							</ul>
+							<p>See also the section Parabolic equation for information on finding the initial velocity.</p>
+						</Page>
+					</solution>
+				</Question>
+				<p>Questions can also contain other content such as video or lists. This question is an example of a <b>pick-all</b> type question:</p>
+				<Question id="pq2">
+					<YouTube videoId="dQw4w9WgXcQ" />
+					<ol>
+						<li>Here is a list</li>
+						<li>With two items</li>
+					</ol>
+					<MCAssessment id="pq2-mca" responseType="pick-all">
+						<MCChoice id="pq2-mca-mc1" score="100">
+							<MCAnswer id="pq2-mca-mc1-ans">
+								<p>This is a correct answer choice</p>
+							</MCAnswer>
+							<MCFeedback id="pq2-mca-mc1-fb">
+								<p>Good job!</p>
+							</MCFeedback>
+						</MCChoice>
+						<MCChoice id="pq2-mca-mc2" score="100">
+							<MCAnswer id="pq2-mca-mc2-ans">
+								<p>This is another correct answer choice</p>
+							</MCAnswer>
+							<MCFeedback id="pq2-mca-mc2-fb">
+								<p>Fantastic!</p>
+							</MCFeedback>
+						</MCChoice>
+						<MCChoice id="pq2-mca-mc3" score="0">
+							<MCAnswer id="pq2-mca-mc3-ans">
+								<p>This is an incorrect answer choice</p>
+							</MCAnswer>
+							<MCFeedback id="pq2-mca-mc3-fb">
+								<p>Nope!</p>
+							</MCFeedback>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<p>Finally here is a <b>pick-one</b> type question:</p>
+				<Question id="pq3">
+					<p>What is 2+2 = ?</p>
+					<MCAssessment id="pq3-mca" responseType="pick-one">
+						<MCChoice id="pq3-mca-mc1" score="0">
+							<MCAnswer id="pq3-mca-mc1-ans">
+								<p>2</p>
+							</MCAnswer>
+						</MCChoice>
+						<MCChoice id="pq3-mca-mc2" score="100">
+							<MCAnswer id="pq3-mca-mc2-ans">
+								<p>4</p>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+				</Question>
+				<h2>HTML</h2>
+				<p>In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.</p>
+				<HTML html="<marquee><font color='red'>Hello, I am rendered HTML</font></marquee>" />
+				<h2>Buttons</h2>
+				<ActionButton label="Click me to see a message">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="viewer:alert">
+									<value title="I have a message for you:" message="Thanks for clicking the button" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<p>Button using a text group rather than a label:</p>
+				<ActionButton>
+					<textGroup><t>Click me to jump to <b>page 1</b>!</t></textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:goto">
+									<value id="page-1" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+			</Page>
+			<Page id="page-4" title="Formatting">
+				<h1>Formatting</h1>
+				<h2>Aligning headings:</h2>
+				<h2 align="right">Align right</h2>
+				<h2 align="center">Align center</h2>
+				<h2>Aligning equations:</h2>
+				<MathEquation latex="y=\sin(x)" align="right" />
+				<h2>Aligning text items:</h2>
+				<Text>
+					<textGroup>
+						<t align="left">Left</t>
+						<t align="center">Center</t>
+						<t align="right">Right</t>
+					</textGroup>
+				</Text>
+				<h2>Aligning buttons:</h2>
+				<ActionButton align="right" label="I am right aligned" />
+				<h2>Styling</h2>
+				<p><b>Bold</b>, <i>Italic</i>, Superscript<sup>2</sup>, Subscript<sub>2</sub>, <a href="http://www.google.com/">Links</a>, <del>Strikethrough content</del>, a <q>quotation</q> and in-line math equations: <latex>\frac{dy}{dx}</latex></p>
+				<h2>Advanced lists:</h2>
+				<p>This is an ordered list however the second indent-level is unordered (using square) bullets and the forth indent level is using uppercase letters starting at the 10th letter (J)</p>
+				<List>
+					<listStyles>
+						<type>ordered</type>
+						<indents>
+							<indent level="2" type="unordered" bulletStyle="square" />
+							<indent level="4" type="ordered" start="10" bulletStyle="upper-alpha" />
+						</indents>
+					</listStyles>
+					<textGroup>
+						<t>One(indent=1)</t>
+						<t indent="2">Two(indent=2)</t>
+						<t indent="6">Three(indent=6)</t>
+						<t indent="2">Four(indent=2)</t>
+						<t indent="4">Five(indent=4)</t>
+						<t indent="3">Six(indent=3)</t>
+					</textGroup>
+				</List>
+				<h2>Whitespace</h2>
+				<p>
+
+					Unlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.
+
+				</p>
+			</Page>
+			<Page id="page-5" title="Triggers &amp; Actions">
+				<triggers>
+					<trigger type="onNavEnter">
+						<actions>
+							<action type="viewer:alert">
+								<value message="onNavEnter trigger resulted in a viewer:alert action" />
+							</action>
+						</actions>
+					</trigger>
+					<trigger type="onNavExit">
+						<actions>
+							<action type="viewer:alert">
+								<value message="Goodbye!" />
+							</action>
+						</actions>
+					</trigger>
+				</triggers>
+				<h1>Actions</h1>
+				<p>When navigating to this page a <b>onNavEnter</b> trigger will trigger an alert action. When leaving the page a <b>onNavExit</b> trigger will trigger another alert action.</p>
+				<h2>Some button onClick examples</h2>
+				<ActionButton label="Lock navigation">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:lock" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton label="Unlock navigation">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:unlock" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton label="Open navigation">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:open" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton label="Close navigation">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:close" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton label="Goto page">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:goto">
+									<value id="page-1" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton label="Go back">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:prev" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton label="Go forward">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="nav:next" />
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<ActionButton label="Start an assessment attempt">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="assessment:startAttempt">
+									<value id="assessment" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+			</Page>
+			<Page title="Extensions">
+				<h1>Extensions</h1>
+				<p>Here is an <a href="http://edx.readthedocs.io/projects/edx-open-learning-xml/en/latest/problem-xml/multiple_choice.html">edX multiple choice question</a> which is converted to an Obojobo question. Note that hints are not supported and are ignored. With this extension whitespace is not preserved.</p>
+				<extension type="edX:multipleChoiceQuestion">
+					<problem>
+						<multiplechoiceresponse>
+							<label>Question or prompt text</label>
+							<description>Optional information about how to answer the question</description>
+							<choicegroup type="MultipleChoice">
+								<choice correct="false" name="a">
+									Incorrect choice
+									<choicehint label="Nope">Hint for incorrect choice.</choicehint>
+								</choice>
+								<choice correct="true" name="b">
+									Correct choice
+									<choicehint label="Yup">Hint for correct choice.</choicehint>
+								</choice>
+							</choicegroup>
+							<solution>
+								<div class="detailed-solution">
+									<p>Optional header for the explanation or solution</p>
+									<p>Optional explanation or solution text</p>
+								</div>
+							</solution>
+						</multiplechoiceresponse>
+						<demandhint>
+							<hint>Hint 1</hint>
+							<hint>Hint 2</hint>
+						</demandhint>
+					</problem>
+				</extension>
+			</Page>
+		</Content>
+		<Assessment id="assessment" attempts="3">
+			<Page>
+				<h1>Assessment</h1>
+				<p>This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt</p>
+				<p>(This paragraph uses variables - view the XML source for formatting details). You have <b>{{assessment:attemptsRemaining}}</b> of <b>{{assessment:attemptsAmount}}</b> attempts remaining - You need a 100% to complete this assignment. Click Review Content to study the content and return to this assessment to retake it.</p>
+				<ActionButton id="start-assessment-button" label="Start an assessment attempt">
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="assessment:startAttempt">
+									<value id="assessment" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+			</Page>
+			<QuestionBank id="qb" choose="1" select="sequential">
+				<QuestionBank id="qb1" choose="1" select="sequential">
+					<Question id="qb1.q1">
+						<p>Question Bank 1 Question 1 - This is the first question you'll see</p>
+						<MCAssessment id="qb1-q1-mca" responseType="pick-one">
+							<MCChoice id="qb1-q1-mca-mc1" score="100">
+								<MCAnswer id="qb1-q1-mca-mc1-ans">
+									<p>Correct</p>
+								</MCAnswer>
+							</MCChoice>
+							<MCChoice id="qb1-q1-mca-mc2" score="0">
+								<MCAnswer id="qb1-q1-mca-mc2-ans">
+									<p>Incorrect</p>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+					<Question id="qb1.q2">
+						<p>Question Bank 1 Question 2 - This is the fourth question you'll see</p>
+						<MCAssessment id="qb1.q2.mca" responseType="pick-one">
+							<MCChoice id="qb1.q2-mca-mc1" score="100">
+								<MCAnswer id="qb1.q2-mca-mc1-ans">
+									<p>Correct</p>
+								</MCAnswer>
+							</MCChoice>
+							<MCChoice id="qb1.q2-mca-mc2" score="0">
+								<MCAnswer id="qb1.q2-mca-mc2-ans">
+									<p>Incorrect</p>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+				</QuestionBank>
+				<QuestionBank id="qb2">
+					<Question id="qb2.q1">
+						<p>Question Bank 2 Question 1 - This is the second question you'll see</p>
+						<MCAssessment id="qb2-q1-mca" responseType="pick-one">
+							<MCChoice id="qb2-q1-mca-mc1" score="100">
+								<MCAnswer id="qb2-q1-mca-mc1-ans">
+									<p>Correct</p>
+								</MCAnswer>
+							</MCChoice>
+							<MCChoice id="qb2-q1-mca-mc2" score="0">
+								<MCAnswer id="qb2-q1-mca-mc2-ans">
+									<p>Incorrect</p>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+					<Question id="qb2.q2">
+						<p>Question Bank 2 Question 2 - This is the third question you'll see</p>
+						<MCAssessment id="qb2.q2.mca" responseType="pick-one">
+							<MCChoice id="qb2.q2-mca-mc1" score="100">
+								<MCAnswer id="qb2.q2-mca-mc1-ans">
+									<p>Correct</p>
+								</MCAnswer>
+							</MCChoice>
+							<MCChoice id="qb2.q2-mca-mc2" score="0">
+								<MCAnswer id="qb2.q2-mca-mc2-ans">
+									<p>Incorrect</p>
+								</MCAnswer>
+							</MCChoice>
+						</MCAssessment>
+					</Question>
+				</QuestionBank>
+			</QuestionBank>
+			<scoreActions>
+				<scoreAction from="0" to="99">
+					<Page>
+						<h1 align="center">Not quite!</h1>
+						<ActionButton>
+							<triggers>
+								<trigger type="onClick">
+									<actions>
+										<action type="assessment:startAttempt">
+											<value id="assessment" />
+										</action>
+									</actions>
+								</trigger>
+							</triggers>
+							<textGroup>
+								<t>Try again ({{assessment:attemptsRemaining}} attempts left)</t>
+							</textGroup>
+						</ActionButton>
+					</Page>
+				</scoreAction>
+				<scoreAction from="100" to="100">
+					<Page>
+						<h1 align="center">Great job!</h1>
+						<ActionButton>
+							<triggers>
+								<trigger type="onClick">
+									<actions>
+										<action type="assessment:startAttempt">
+											<value id="assessment" />
+										</action>
+									</actions>
+								</trigger>
+							</triggers>
+							<textGroup>
+								<t>Try again ({{assessment:attemptsRemaining}} attempts left)</t>
+							</textGroup>
+						</ActionButton>
+					</Page>
+				</scoreAction>
+			</scoreActions>
+			<rubric type="pass-fail" passingAttemptScore="80" passingResult="100" failingResult="0" failingLastAttemptResult="$highest_attempt_score">
+				<mods>
+					<mod attemptCondition="1" passCondition="true" reward="5" />
+					<mod attemptCondition="2" passCondition="true" reward="2" />
+				</mods>
+			</rubric>
+			<triggers>
+				<trigger type="onStartAttempt">
+					<actions>
+						<action type="nav:lock" />
+					</actions>
+				</trigger>
+				<trigger type="onEndAttempt">
+					<actions>
+						<action type="nav:unlock" />
+					</actions>
+				</trigger>
+			</triggers>
+		</Assessment>
+	</Module>
+</ObojoboDraftDoc>

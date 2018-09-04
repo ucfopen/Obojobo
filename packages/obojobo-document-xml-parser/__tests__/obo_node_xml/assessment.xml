@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <Assessment>
+        <Page>
+        </Page>
+        <QuestionBank>
+        </QuestionBank>
+        <scoreActions>
+            <scoreAction from="0" to="99">
+                <Page>
+                </Page>
+            </scoreAction>
+        </scoreActions>
+        <rubric type="pass-fail" passingAttemptScore="80" passedResult="100" failedResult="0" unableToPassResult="$highest_attempt_score">
+            <mods>
+                <mod attemptCondition="1" passCondition="true" reward="5" />
+                <mod scoreCondition="[80,100]" reward="2" />
+            </mods>
+        </rubric>
+    </Assessment>
+</ObjoboDraftDoc>
