@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+	<Module title="edX Multiple Choice Question Example">
+		<Content>
+			<Page>
+				<extension type="edX:multipleChoiceQuestion">
+					<problem>
+						<multiplechoiceresponse>
+							<label>Question or prompt text</label>
+							<description>Optional information about how to answer the question</description>
+							<choicegroup type="MultipleChoice">
+								<choice correct="false" name="a">
+									Incorrect choice
+									<choicehint label="Nope">Hint for incorrect choice.</choicehint>
+								</choice>
+								<choice correct="true" name="b">
+									Correct choice
+									<choicehint label="Yup">Hint for correct choice.</choicehint>
+								</choice>
+							</choicegroup>
+							<solution>
+								<div class="detailed-solution">
+									<p>Optional header for the explanation or solution</p>
+									<p>Optional explanation or solution text</p>
+								</div>
+							</solution>
+						</multiplechoiceresponse>
+						<demandhint>
+							<hint>Hint 1</hint>
+							<hint>Hint 2</hint>
+						</demandhint>
+					</problem>
+				</extension>
+			</Page>
+		</Content>
+	</Module>
+</ObojoboDraftDoc>

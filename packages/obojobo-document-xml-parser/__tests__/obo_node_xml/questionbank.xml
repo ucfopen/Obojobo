@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+    <Module>
+        <!-- Option where question is child -->
+        <QuestionBank>
+            <Question>
+                <MCAssessment responseType="pick-one">
+                    <MCChoice score="100">
+                        <MCAnswer>
+                            <p>Correct</p>
+                        </MCAnswer>
+                    </MCChoice>
+                    <MCChoice score="0">
+                        <MCAnswer>
+                            <p>Incorrect</p>
+                        </MCAnswer>
+                    </MCChoice>
+                </MCAssessment>
+            </Question>
+        </QuestionBank>
+        <!-- Option where questionbank is child -->
+        <QuestionBank choose="1" select="sequential">
+            <QuestionBank choose="1" select="sequential">
+                <Question>
+                    <p>Question Bank 1 Question 1 - This is the first question you'll see</p>
+                    <MCAssessment responseType="pick-one">
+                        <MCChoice score="100">
+                            <MCAnswer>
+                                <p>Correct</p>
+                            </MCAnswer>
+                        </MCChoice>
+                        <MCChoice score="0">
+                            <MCAnswer>
+                                <p>Incorrect</p>
+                            </MCAnswer>
+                        </MCChoice>
+                    </MCAssessment>
+                </Question>
+                <Question>
+                    <p>Question Bank 1 Question 2 - This is the fourth question you'll see</p>
+                    <MCAssessment responseType="pick-one">
+                        <MCChoice score="100">
+                            <MCAnswer>
+                                <p>Correct</p>
+                            </MCAnswer>
+                        </MCChoice>
+                        <MCChoice score="0">
+                            <MCAnswer>
+                                <p>Incorrect</p>
+                            </MCAnswer>
+                        </MCChoice>
+                    </MCAssessment>
+                </Question>
+            </QuestionBank>
+            <QuestionBank>
+                <Question>
+                    <p>Question Bank 2 Question 1 - This is the second question you'll see</p>
+                    <MCAssessment responseType="pick-one">
+                        <MCChoice score="100">
+                            <MCAnswer>
+                                <p>Correct</p>
+                            </MCAnswer>
+                        </MCChoice>
+                        <MCChoice score="0">
+                            <MCAnswer>
+                                <p>Incorrect</p>
+                            </MCAnswer>
+                        </MCChoice>
+                    </MCAssessment>
+                </Question>
+                <Question>
+                    <p>Question Bank 2 Question 2 - This is the third question you'll see</p>
+                    <MCAssessment responseType="pick-one">
+                        <MCChoice score="100">
+                            <MCAnswer>
+                                <p>Correct</p>
+                            </MCAnswer>
+                        </MCChoice>
+                        <MCChoice score="0">
+                            <MCAnswer>
+                                <p>Incorrect</p>
+                            </MCAnswer>
+                        </MCChoice>
+                    </MCAssessment>
+                </Question>
+            </QuestionBank>
+        </QuestionBank>
+    </Module>
+</ObojoboDraftDoc>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <Module>
+        <Heading headingLevel="1">
+            <textGroup>
+                <t>This is a test</t>
+            </textGroup>
+        </Heading>
+        <Heading headingLevel="2">
+            <textGroup>
+                <t>This is a test</t>
+            </textGroup>
+        </Heading>
+        <Heading headingLevel="2">
+            <textGroup>
+                <t align="center">This is a test</t>
+            </textGroup>
+        </Heading>
+    </Module>
+</ObjoboDraftDoc>

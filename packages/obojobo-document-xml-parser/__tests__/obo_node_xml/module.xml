@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+    <Module>
+        <Module title="test">
+            <Content>
+            </Content>
+        </Module>
+        <Module title="test">
+            <Assessment>
+                <Page>
+                </Page>
+                <QuestionBank>
+                </QuestionBank>
+                <scoreActions>
+                    <scoreAction from="0" to="99">
+                        <Page>
+                        </Page>
+                    </scoreAction>
+                </scoreActions>
+            </Assessment>
+        </Module>
+    </Module>
+</ObojoboDraftDoc>
