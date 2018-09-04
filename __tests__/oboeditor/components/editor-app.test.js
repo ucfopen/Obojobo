@@ -24,13 +24,13 @@ describe('EditorApp', () => {
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart'}
+			modelState: { start: 'mockStart' }
 		})
 
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -49,13 +49,13 @@ describe('EditorApp', () => {
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart'}
+			modelState: { start: 'mockStart' }
 		})
 
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -71,18 +71,42 @@ describe('EditorApp', () => {
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
-			modelState: { start: 'mockStart'}
+			modelState: { start: 'mockStart' }
 		})
 
 		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
-		let component = mount(<EditorApp />)
+		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
 
 			component.instance().onEditorStoreChange()
 			expect(EditorStore.getState).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('EditorApp component renders error messsage', done => {
+		expect.assertions(1)
+
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getDraft.mockResolvedValueOnce({
+			status: 'error',
+			value: { type: 'someType', message: 'someMessage' }
+		})
+
+		const component = mount(<EditorApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
 
 			component.unmount()
 			done()
