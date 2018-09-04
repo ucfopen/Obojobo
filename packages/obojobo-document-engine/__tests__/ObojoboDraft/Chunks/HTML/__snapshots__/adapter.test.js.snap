@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTML adapter can be constructed WITH attributes 1`] = `
+Object {
+  "modelState": Object {
+    "align": "center",
+    "html": "html",
+  },
+}
+`;
+
+exports[`HTML adapter can be constructed WITHOUT attributes 1`] = `
+Object {
+  "modelState": Object {
+    "align": "left",
+    "html": null,
+  },
+}
+`;
+
+exports[`HTML adapter can be converted to JSON 1`] = `
+Object {
+  "content": Object {
+    "align": "center",
+    "html": "html",
+  },
+}
+`;

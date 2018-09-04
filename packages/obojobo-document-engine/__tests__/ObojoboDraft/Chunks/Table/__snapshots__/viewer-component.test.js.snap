@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table Table component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.Table"
+  id="obo-id"
+>
+  <div
+    className="obojobo-draft--chunks--table viewer pad"
+  >
+    <div
+      className="container"
+    >
+      <table
+        className="view"
+      >
+        <thead>
+          <tr>
+            <th
+              className="cell row-0 col-0"
+              data-table-position="id,0,0"
+            >
+              <span
+                className="text align-undefined"
+                data-group-index={0}
+                data-indent={0}
+              >
+                <span>
+                  <span>
+                    <span>
+                      1
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </th>
+            <th
+              className="cell row-0 col-1"
+              data-table-position="id,0,1"
+            >
+              <span
+                className="text align-undefined"
+                data-group-index={1}
+                data-indent={0}
+              >
+                <span>
+                  <span>
+                    <span>
+                      2
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td
+              className="cell row-1 col-0"
+              data-table-position="id,1,0"
+            >
+              <span
+                className="text align-undefined"
+                data-group-index={2}
+                data-indent={0}
+              >
+                <span>
+                  <span>
+                    <span>
+                      3
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </td>
+            <td
+              className="cell row-1 col-1"
+              data-table-position="id,1,1"
+            >
+              <span
+                className="text align-undefined"
+                data-group-index={3}
+                data-indent={0}
+              >
+                <span>
+                  <span>
+                    <span>
+                      4
+                    </span>
+                  </span>
+                </span>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+`;

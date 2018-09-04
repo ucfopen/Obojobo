@@ -1,0 +1,279 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List List component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.List"
+  id="obo-id"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--list pad"
+  >
+    <div
+      data-indent={undefined}
+    >
+      <ol
+        start={1}
+        style={
+          Object {
+            "listStyleType": undefined,
+          }
+        }
+      >
+        <li
+          start={undefined}
+          style={
+            Object {
+              "listStyleType": "decimal",
+            }
+          }
+        >
+          <span
+            className="text align-undefined"
+            data-group-index={0}
+            data-indent={undefined}
+          >
+            <span>
+              <span>
+                <span>
+                  One(indent=1)
+                </span>
+              </span>
+            </span>
+          </span>
+          <ol
+            start={1}
+            style={
+              Object {
+                "listStyleType": undefined,
+              }
+            }
+          >
+            <li
+              start={undefined}
+              style={
+                Object {
+                  "listStyleType": "none",
+                }
+              }
+            >
+              <ul
+                start={1}
+                style={
+                  Object {
+                    "listStyleType": undefined,
+                  }
+                }
+              >
+                <li
+                  start={undefined}
+                  style={
+                    Object {
+                      "listStyleType": "square",
+                    }
+                  }
+                >
+                  <span
+                    className="text align-undefined"
+                    data-group-index={1}
+                    data-indent={undefined}
+                  >
+                    <span>
+                      <span>
+                        <span>
+                          Two(indent=2)
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                  <ol
+                    start={1}
+                    style={
+                      Object {
+                        "listStyleType": undefined,
+                      }
+                    }
+                  >
+                    <li
+                      start={undefined}
+                      style={
+                        Object {
+                          "listStyleType": "none",
+                        }
+                      }
+                    >
+                      <ol
+                        start="10"
+                        style={
+                          Object {
+                            "listStyleType": undefined,
+                          }
+                        }
+                      >
+                        <li
+                          start={undefined}
+                          style={
+                            Object {
+                              "listStyleType": "none",
+                            }
+                          }
+                        >
+                          <ol
+                            start={1}
+                            style={
+                              Object {
+                                "listStyleType": undefined,
+                              }
+                            }
+                          >
+                            <li
+                              start={undefined}
+                              style={
+                                Object {
+                                  "listStyleType": "none",
+                                }
+                              }
+                            >
+                              <ol
+                                start={1}
+                                style={
+                                  Object {
+                                    "listStyleType": undefined,
+                                  }
+                                }
+                              >
+                                <li
+                                  start={undefined}
+                                  style={
+                                    Object {
+                                      "listStyleType": "upper-alpha",
+                                    }
+                                  }
+                                >
+                                  <span
+                                    className="text align-undefined"
+                                    data-group-index={2}
+                                    data-indent={undefined}
+                                  >
+                                    <span>
+                                      <span>
+                                        <span>
+                                          Three(indent=6)
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </li>
+                              </ol>
+                            </li>
+                          </ol>
+                        </li>
+                      </ol>
+                    </li>
+                  </ol>
+                </li>
+                <li
+                  start={undefined}
+                  style={
+                    Object {
+                      "listStyleType": "square",
+                    }
+                  }
+                >
+                  <span
+                    className="text align-undefined"
+                    data-group-index={3}
+                    data-indent={undefined}
+                  >
+                    <span>
+                      <span>
+                        <span>
+                          Four(indent=2)
+                        </span>
+                      </span>
+                    </span>
+                  </span>
+                  <ol
+                    start={1}
+                    style={
+                      Object {
+                        "listStyleType": undefined,
+                      }
+                    }
+                  >
+                    <li
+                      start={undefined}
+                      style={
+                        Object {
+                          "listStyleType": "none",
+                        }
+                      }
+                    >
+                      <ol
+                        start="10"
+                        style={
+                          Object {
+                            "listStyleType": undefined,
+                          }
+                        }
+                      >
+                        <li
+                          start={undefined}
+                          style={
+                            Object {
+                              "listStyleType": "upper-alpha",
+                            }
+                          }
+                        >
+                          <span
+                            className="text align-undefined"
+                            data-group-index={4}
+                            data-indent={undefined}
+                          >
+                            <span>
+                              <span>
+                                <span>
+                                  Five(indent=4)
+                                </span>
+                              </span>
+                            </span>
+                          </span>
+                        </li>
+                      </ol>
+                    </li>
+                    <li
+                      start={undefined}
+                      style={
+                        Object {
+                          "listStyleType": "lower-alpha",
+                        }
+                      }
+                    >
+                      <span
+                        className="text align-undefined"
+                        data-group-index={5}
+                        data-indent={undefined}
+                      >
+                        <span>
+                          <span>
+                            <span>
+                              Six(indent=3)
+                            </span>
+                          </span>
+                        </span>
+                      </span>
+                    </li>
+                  </ol>
+                </li>
+              </ul>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+`;
