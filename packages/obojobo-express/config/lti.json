@@ -1,0 +1,8 @@
+{
+	"development":{
+		"keys":{
+			"testkey": "testsecret",
+			"key2": "secret2"
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"development":{
+		"driver": "postgres",
+		"user": "postgres",
+		"password": "mysecretpassword",
+		"host": "127.0.0.1",
+		"database": "postgres",
+		"port": 5432,
+		"schema": ""
+	}
+}
