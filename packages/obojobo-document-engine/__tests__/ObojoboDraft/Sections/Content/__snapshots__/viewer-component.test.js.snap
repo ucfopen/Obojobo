@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Content Content component 1`] = `
+<div
+  className="component obojobo-draft--sections--content"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Sections.Content"
+  id="obo-id"
+>
+  <div />
+</div>
+`;

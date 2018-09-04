@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Bubble Bubble 1`] = `
+<div
+  className="obojobo-draft--components--modal--bubble"
+>
+  <div
+    className="container"
+  >
+    contents
+  </div>
+</div>
+`;

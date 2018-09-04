@@ -1,0 +1,17 @@
+.obojobo-draft--chunks--math-equation .katex-display {
+  margin: 0; }
+
+.obojobo-draft--chunks--math-equation.align-left .katex-display {
+  text-align: left; }
+
+.obojobo-draft--chunks--math-equation.align-right .katex-display {
+  text-align: right; }
+
+.obojobo-draft--chunks--math-equation.align-center .katex-display {
+  text-align: center; }
+
+.obojobo-draft--chunks--math-equation .equation-label {
+  position: absolute;
+  top: 50%;
+  right: 3em;
+  transform: translate(0, -50%); }

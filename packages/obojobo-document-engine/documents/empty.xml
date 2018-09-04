@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+	<!-- Sample Obojobo Draft Document -->
+	<!-- https://github.com/ucfcdl/Obojobo-Next/wiki/Obojobo-Document-XML-Format -->
+	<Module title="My Obojobo Module Title">
+
+		<Content>
+			<Page title="Example content page">
+				<h1>Your Title Here</h1>
+				<p>Your content here</p>
+			</Page>
+		</Content>
+
+		<Assessment id="my-assessment" attempts="3" title="Assessment" review="never">
+			<!-- Assessment intro landing page: -->
+			<Page>
+				<h1 align="center">Assessment Intro Title</h1>
+				<p align="center">Some overview before starting the Assessment.</p>
+				<p align="center">You have {{assessment:attemptsRemaining}} attemps remaining.</p>
+
+				<!-- This button will start an assessment attempt: -->
+				<ActionButton>
+					<textGroup>
+						<t>Start Assessment</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="assessment:startAttempt">
+									<value id="my-assessment" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+			</Page>
+
+			<!-- Assessment Question Bank: -->
+			<QuestionBank choose="Infinity" select="sequential">
+				<!-- Inside this QuestionBank is where you'll put all your questions. -->
+				<!-- One is provided as an example: -->
+
+				<Question>
+					<!-- Question content: -->
+					<h1>Your Question Here</h1>
+					<p>More question text here.</p>
+
+					<!-- Multiple choice options: -->
+					<MCAssessment shuffle="false" responseType="pick-one">
+						<MCChoice score="100">
+							<MCAnswer>
+								<p>Correct answer</p>
+							</MCAnswer>
+						</MCChoice>
+
+						<MCChoice score="0">
+							<MCAnswer>
+								<p>Incorrect answer</p>
+							</MCAnswer>
+						</MCChoice>
+					</MCAssessment>
+
+				</Question>
+			</QuestionBank>
+
+			<!-- Post-assessment attempt page: -->
+			<scoreActions>
+				<!-- You can specify mutliple pages depending on the student's highest Assessment Score. -->
+				<!-- Only one is included here: -->
+				<scoreAction for="[0,100]">
+					<Page>
+						<h1 align="center">How did you do?</h1>
+						<p align="center">You have {{assessment:attemptsRemaining}} attemps remaining.</p>
+
+						<!-- This button will start another assessment attempt: -->
+						<ActionButton align="center">
+							<textGroup>
+								<t>Retry Assessment</t>
+							</textGroup>
+							<triggers>
+								<trigger type="onClick">
+									<actions>
+										<action type="assessment:startAttempt">
+											<value id="my-assessment" />
+										</action>
+									</actions>
+								</trigger>
+							</triggers>
+						</ActionButton>
+					</Page>
+				</scoreAction>
+			</scoreActions>
+		</Assessment>
+
+	</Module>
+</ObojoboDraftDoc>

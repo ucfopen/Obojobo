@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditButton 1`] = `
+<div
+  className="obojobo-draft--components--edit-button"
+>
+  <button
+    disabled={undefined}
+    onClick={undefined}
+    tabIndex={1}
+  >
+    Edit
+  </button>
+</div>
+`;
+
+exports[`EditButton onClick 1`] = `
+<div
+  className="obojobo-draft--components--edit-button"
+>
+  <button
+    disabled={undefined}
+    onClick={[Function]}
+    tabIndex={1}
+  >
+    Edit
+  </button>
+</div>
+`;
+
+exports[`EditButton shouldPreventTab 1`] = `
+<div
+  className="obojobo-draft--components--edit-button"
+>
+  <button
+    disabled={true}
+    onClick={undefined}
+    tabIndex="-1"
+  >
+    Edit
+  </button>
+</div>
+`;

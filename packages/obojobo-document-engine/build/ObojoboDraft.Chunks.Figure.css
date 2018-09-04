@@ -1,0 +1,49 @@
+.obojobo-draft--chunks--figure {
+  text-align: center; }
+  .obojobo-draft--chunks--figure figure {
+    margin: 0;
+    padding: 0; }
+  .obojobo-draft--chunks--figure .container {
+    display: inline-block;
+    height: auto;
+    position: relative; }
+    .obojobo-draft--chunks--figure .container img {
+      background: #ffffff;
+      border: none;
+      display: block; }
+    .obojobo-draft--chunks--figure .container .img-placeholder {
+      border: 1px solid rgba(0, 0, 0, 0.3); }
+  .obojobo-draft--chunks--figure figcaption {
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.8em;
+    color: #666666; }
+  .obojobo-draft--chunks--figure.custom {
+    padding-left: 3em;
+    padding-right: 3em; }
+    .obojobo-draft--chunks--figure.custom .container {
+      width: 100%; }
+      .obojobo-draft--chunks--figure.custom .container img {
+        margin: 0 auto;
+        max-width: 100%; }
+  .obojobo-draft--chunks--figure.small {
+    padding-left: 3em;
+    padding-right: 3em; }
+    .obojobo-draft--chunks--figure.small .container {
+      width: 18em; }
+      .obojobo-draft--chunks--figure.small .container img {
+        width: 100%; }
+  .obojobo-draft--chunks--figure.medium {
+    padding-left: 3em;
+    padding-right: 3em; }
+    .obojobo-draft--chunks--figure.medium .container {
+      width: 100%; }
+      .obojobo-draft--chunks--figure.medium .container img {
+        width: 100%; }
+  .obojobo-draft--chunks--figure.large .container {
+    width: 100%; }
+    .obojobo-draft--chunks--figure.large .container img {
+      width: 100%; }
+.img-placeholder {
+  background-image: url("data:image/svg+xml,%3Csvg data-name='Layer 1' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E %3Cpath d='M0 0h6v6H0zm6 6h6v6H6z' opacity='.03'/%3E %3C/svg%3E");
+  background-size: 16px;
+  height: 300px; }

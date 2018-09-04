@@ -1,0 +1,144 @@
+@import '~styles/includes';
+
+// .component[data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"]
+// {
+
+// }
+
+.obojobo-draft--chunks--mc-assessment--mc-choice {
+	list-style-type: none;
+	min-height: 3.5em;
+	position: relative;
+	transition: background 0.1s ease;
+	font-family: $font-default;
+	padding-bottom: 1em;
+	cursor: pointer;
+
+	input {
+		font-size: inherit;
+		position: absolute;
+		top: 1.7em;
+		left: 3em;
+		transform: translate(0, -50%) translate(0, 0.5px);
+		margin: 0;
+	}
+
+	.children {
+		margin-left: 2em;
+		margin-right: 0;
+		// border: 1px solid red;
+		pointer-events: none;
+
+		// .obojobo-draft--chunks--mc-assessment--mc-feedback
+		// {
+		// 	padding: 0 2em;
+		// 	box-sizing: border-box;
+		// 	margin-bottom: 1em;
+		// 	background: lighten($color-bg2, 30%);
+		// 	border: 1px solid transparentize($color-shadow, 0.2);
+		// 	border-radius: .3em;
+		// 	font-size: 75%;
+		// 	position: relative;
+
+		// 	&:before
+		// 	{
+		// 		content: "More on this answer:";
+		// 		font-family: $font-default;
+		// 		font-size: .7em;
+		// 		font-weight: bold;
+		// 		color: transparentize($color-text, 0.25);
+		// 		margin-top: 1em;
+		// 		display: block;
+		// 	}
+		// }
+
+		.feedback-icon {
+			position: absolute;
+			opacity: 0.4;
+			width: 1em;
+			right: 0.5em;
+			top: 50%;
+			transform: translate(0, -50%);
+		}
+	}
+
+	// &.blank:hover
+	// {
+	// 	background: transparent;
+	// }
+
+	label,
+	.label {
+		cursor: pointer;
+		display: table;
+		min-height: 2em;
+		padding: 0.5em 0;
+		position: relative;
+		width: 100%;
+	}
+
+	// .radio,
+	// .checkbox
+	// {
+	// 	display: inline-block;
+	// 	height: 2em;
+	// 	left: 0;
+	// 	margin: 0;
+	// 	position: absolute;
+	// 	top: 50%;
+	// 	transform: translate(0, -50%);
+	// 	width: 2em;
+	// }
+
+	.input {
+		display: table-cell;
+		padding-left: 2em;
+		vertical-align: middle;
+		width: 100%;
+
+		&:focus {
+			box-shadow: none;
+			outline: none;
+
+			.text {
+				box-shadow: $box-shadow-focus;
+			}
+		}
+	}
+
+	.feedback {
+		box-sizing: border-box;
+		color: transparentize($color-text, 0.3);
+		font-size: 0.7em;
+		margin-top: -0.5em;
+		padding: 0.1rem 2em;
+		padding-bottom: 0.5em;
+		position: relative;
+
+		.placeholder {
+			left: 0.5em;
+		}
+	}
+
+	&.is-selected {
+		background: transparentize($color-highlight, 0.75);
+	}
+
+	&.is-mode-review {
+		input {
+			display: none;
+		}
+		.children {
+			margin-left: 0;
+		}
+		&:hover {
+			cursor: default;
+			background: inherit;
+		}
+		cursor: default;
+	}
+
+	&:hover {
+		background: transparentize($color-highlight, 0.85);
+	}
+}

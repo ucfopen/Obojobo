@@ -1,0 +1,26 @@
+@import '~styles/includes';
+
+.obojobo-draft--sections--assessment {
+	@import './components/test/index';
+	@import './components/post-test/index';
+	@import './components/full-review/index';
+
+	.pre-test {
+		padding-top: 1em;
+
+		> h1 {
+			margin-bottom: 0.2em;
+			text-align: center;
+		}
+
+		> h2 {
+			margin-bottom: 0;
+			text-align: center;
+			font-size: 1em;
+		}
+	}
+}
+
+.obojobo-draft--sections--assessment--results-modal {
+	background: $color-bg2;
+}

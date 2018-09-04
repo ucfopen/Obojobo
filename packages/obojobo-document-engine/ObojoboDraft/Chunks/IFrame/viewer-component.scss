@@ -1,0 +1,16 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--iframe {
+	display: block;
+	font-size: 0.8em;
+	margin: 0 auto;
+	max-width: $dimension-editor;
+	text-align: left;
+	width: 100%;
+
+	iframe {
+		height: 20em;
+		margin: 0 auto;
+		width: 100%;
+	}
+}

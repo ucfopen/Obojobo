@@ -1,0 +1,60 @@
+# @TODO - I don't allow vendor prefixes, so need to require AutoPrefixer or some other library
+
+scss_files: './app/assets/stylesheets/**/*.scss'
+
+# exclude: 'app/assets/stylesheets/plugins/**'
+
+linters:
+  BorderZero:
+    convention: none
+
+  NestingDepth:
+    enabled: true
+    max_depth: 8
+    ignore_parent_selectors: false
+
+  SelectorDepth:
+    enabled: true
+    max_depth: 8
+
+  DeclarationOrder:
+    enabled: false
+
+  SpaceBeforeBrace:
+    enabled: true
+    style: new_line
+
+  Indentation:
+    width: 1
+    character: tab
+
+  LeadingZero:
+    style: include_zero
+
+  HexNotation:
+    style: uppercase
+
+  HexLength:
+    style: long
+
+  VariableForProperty:
+    enabled: true
+    properties:
+      - font-family
+
+  PropertyUnits:
+    global: ['em', 'rem', '%', 'vh', 'vh', 'vmin', 'ex', 's'] #vmax not supported by IE http://caniuse.com/#feat=viewport-units
+    properties:
+      border: ['px', 'rem', 'em']
+      border-radius: ['px', 'rem', 'em']
+      border-top-right-radius: ['px', 'rem', 'em']
+      border-bottom-right-radius: ['px', 'rem', 'em']
+      border-bottom-left-radius: ['px', 'rem', 'em']
+      border-top-left-radius: ['px', 'rem', 'em']
+      border-radius-topright: ['px', 'rem', 'em']
+      border-radius-bottomright: ['px', 'rem', 'em']
+      border-radius-bottomleft: ['px', 'rem', 'em']
+      border-radius-topleft: ['px', 'rem', 'em']
+      outline: ['px', 'rem', 'em']
+      outline-width: ['px', 'rem', 'em']
+      line-height: ['em', 'rem']

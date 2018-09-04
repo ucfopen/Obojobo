@@ -1,0 +1,106 @@
+/* entire container, keeps perspective */
+.flip-container {
+  perspective: 1000px;
+  margin: 0 auto; }
+
+/* flip the pane when hovered */
+.front,
+.back {
+  width: 100%; }
+
+/* flip speed goes here */
+.flipper {
+  transition: 0.4s;
+  -ms-transition: none;
+  transform-style: preserve-3d;
+  position: relative; }
+
+/* hide back of pane during swap */
+.front,
+.back {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -ms-backface-visibility: visible; }
+
+/* front pane, placed above back */
+.front {
+  z-index: 2;
+  /* for firefox 31 */
+  transform: rotateY(0deg);
+  position: absolute;
+  top: 0;
+  left: 0; }
+
+/* back, initially hidden pane */
+.back {
+  transform: rotateY(180deg); }
+
+.obojobo-draft--chunks--question .flipper {
+  border-radius: 0.25em;
+  padding: 0;
+  position: relative;
+  padding-top: 1em;
+  margin-bottom: 1em;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  max-width: 44em; }
+
+.obojobo-draft--chunks--question.is-hidden .flipper {
+  border: 1px solid #6714bd;
+  max-height: 15em;
+  overflow: hidden; }
+
+.obojobo-draft--chunks--question.is-mode-practice .back::before {
+  color: #666666;
+  content: 'Practice';
+  display: block;
+  font-family: "Libre Franklin", Arial, sans-serif;
+  position: absolute;
+  left: 3.15em;
+  top: -0.5em;
+  transform: scale(0.7);
+  transform-origin: top left; }
+
+.obojobo-draft--chunks--question.is-mode-practice.is-correct .flipper {
+  border: 1.25px solid #38ae24; }
+
+.obojobo-draft--chunks--question.is-mode-practice.is-not-correct .flipper {
+  border: 1.25px solid #c21f00; }
+
+.obojobo-draft--chunks--question .blocker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 1;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 0.25em; }
+  .obojobo-draft--chunks--question .blocker:hover {
+    background: #f9f4ff; }
+    .obojobo-draft--chunks--question .blocker:hover .obojobo-draft--components--button {
+      transform: translate(-50%, -50%) scale(1.1, 1.1); }
+  .obojobo-draft--chunks--question .blocker.is-not-practice .submit {
+    display: none; }
+  .obojobo-draft--chunks--question .blocker .obojobo-draft--components--button {
+    transition: transform 0.2s;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    color: #6714bd;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none; }
+
+.obojobo-draft--chunks--question.is-active .blocker, .obojobo-draft--chunks--question.is-viewed .blocker {
+  opacity: 0;
+  pointer-events: none; }
+
+.obojobo-draft--chunks--question.is-active .flipper, .obojobo-draft--chunks--question.is-viewed .flipper {
+  transform: rotateY(-180deg); }
+
+.obojobo-draft--chunks--question .responses-hidden {
+  font-family: "Libre Franklin", Arial, sans-serif;
+  font-size: 0.9em;
+  text-align: center;
+  margin-bottom: 1em; }

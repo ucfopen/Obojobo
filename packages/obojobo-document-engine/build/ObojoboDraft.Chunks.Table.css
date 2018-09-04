@@ -1,0 +1,21 @@
+.obojobo-draft--chunks--table.viewer .view {
+  border-collapse: collapse;
+  table-layout: fixed;
+  user-select: none;
+  width: 100%; }
+  .obojobo-draft--chunks--table.viewer .view th,
+  .obojobo-draft--chunks--table.viewer .view td {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    font-size: 1em;
+    height: auto;
+    line-height: 1.5em;
+    margin: 0;
+    padding: 0.2em 0.5em;
+    text-align: left;
+    width: auto; }
+  .obojobo-draft--chunks--table.viewer .view th {
+    background: #f4f4f4;
+    font-family: "Libre Franklin", Arial, sans-serif;
+    font-size: 0.9em;
+    text-align: center; }
