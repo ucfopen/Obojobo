@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`YouTube YouTube component 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.YouTube"
+  id="obo-id"
+>
+  <div
+    className="obojobo-draft--chunks--you-tube viewer"
+  >
+    <iframe
+      allowFullScreen="true"
+      frameBorder="0"
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+    />
+  </div>
+</div>
+`;

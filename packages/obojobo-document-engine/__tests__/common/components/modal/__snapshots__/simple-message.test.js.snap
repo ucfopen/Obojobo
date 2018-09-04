@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SimpleMessage 1`] = `
+<div>
+  <p>
+    Content
+  </p>
+  <button
+    onClick={[Function]}
+  >
+    OK
+  </button>
+</div>
+`;

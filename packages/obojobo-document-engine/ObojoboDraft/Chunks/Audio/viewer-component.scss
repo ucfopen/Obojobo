@@ -1,0 +1,157 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--audio
+{
+	// text-align: center;
+
+	margin: 0 $dimension-padding;
+	border: 2px solid $color-bg2;
+	background: $color-bg2;
+	border-radius: 0.25em;
+
+	> .container {
+		// border: 1px solid $color-action;
+		border-top-left-radius: 0.25em;
+		border-top-right-radius: 0.25em;
+		background: $color-bg;
+	}
+
+	> .controls {
+		text-align: right;
+		padding: 0 0.5em;
+		position: relative;
+
+		> .obojobo-draft--components--button {
+			font-size: 0.7em;
+			position: absolute;
+			left: 0;
+			top: 50%;
+			transform: translate(1px, -50%);
+
+			> button {
+				padding: 0.4rem 1rem;
+			}
+		}
+
+		> .speed-label {
+			font-family: $font-default;
+			font-size: 0.6em;
+			color: $color-text-minor;
+			user-select: none;
+			vertical-align: middle;
+		}
+
+		> .select {
+			border-radius: 0.25em;
+			overflow: hidden;
+			display: inline-block;
+			padding: 0 0.5em;
+			cursor: pointer;
+			vertical-align: middle;
+
+			> select {
+				@include appearance(none);
+
+				font-family: $font-default;
+				color: $color-text;
+				border: none;
+				box-shadow: none;
+				background: transparent;
+				background-image: none;
+				width: 4em;
+				height: 2em;
+				display: inline-block;
+				vertical-align: top;
+				margin-top: 0.2em;
+			}
+		}
+
+		> .volume {
+			position: relative;
+			width: 2em;
+			height: 1em;
+			display: inline-block;
+			vertical-align: middle;
+			margin-left: 1em;
+			// opacity: 0.5;
+
+			> .volume-icon {
+				width: 0.8em;
+				height: 0.8em;
+				background-repeat: no-repeat;
+				position: absolute;
+				left: 0;
+				top: 50%;
+				transform: translate(-100%,-50%);
+				opacity: 0.2;
+			}
+
+			> input {
+				opacity: 0;
+				width: 100%;
+				height: 1em;
+				font-size: 1em;
+				margin: 0;
+				cursor: pointer;
+
+				&::-webkit-slider-thumb {
+					@include appearance(none);
+					width: 0;
+				}
+			}
+
+			> .current-level-container {
+				pointer-events: none;
+				height: 1em;
+				// width: 2em;
+				// opacity: 0.3;
+				// background-size: cover;
+				position: absolute;
+				left: 0;
+				top: 0;
+				overflow: hidden;
+
+				> .current-level {
+					height: 1em;
+					width: 2em;
+				}
+			}
+
+		}
+
+		// > input[type=range] {
+		// 	@include appearance(none)
+
+		// 	background-color: red;
+		// 	width: 200px;
+		// 	height: 20px;
+
+		// 	&::-webkit-slider-thumb {
+		// 		@include appearance(none)
+
+		// 		background-color: green;
+		// 		width: 20px;
+		// 		height: 26px;
+		// 	}
+		// }
+	}
+
+	&.is-not-loaded
+	{
+		> .container {
+			position: relative;
+
+			&:after {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+				content: "Loading...";
+				display: block;
+				font-family: $font-default;
+				font-size: 0.8em;
+				color: $color-text-minor;
+			}
+		}
+	}
+}

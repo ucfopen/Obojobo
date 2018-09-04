@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page Page component 1`] = `
+<div
+  className="component obojobo-draft--pages--page"
+  data-focussed={false}
+  data-id="id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Pages.Page"
+  id="obo-id"
+>
+  <div
+    className="component"
+    data-focussed={false}
+    data-id="child"
+    data-obo-component={true}
+    data-type="ObojoboDraft.Chunks.Break"
+    id="obo-child"
+  >
+    <div
+      className="non-editable-chunk obojobo-draft--chunks--break viewer width-normal"
+      contentEditable={false}
+      data-indent={0}
+    >
+      <hr />
+    </div>
+  </div>
+</div>
+`;

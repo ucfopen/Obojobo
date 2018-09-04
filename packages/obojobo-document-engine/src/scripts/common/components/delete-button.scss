@@ -1,0 +1,46 @@
+@import '../../../scss/includes';
+
+.obojobo-draft--components--delete-button
+{
+	$default-size: 1.5em;
+
+	button
+	{
+		background: $color-bg2;
+		border: none;
+		border-radius: $default-size;
+		box-sizing: border-box;
+		cursor: pointer;
+		display: block;
+		font-family: $font-default;
+		font-size: inherit;
+		height: $default-size;
+		overflow: hidden;
+		position: relative;
+		text-indent: -9999px;
+		transition: background $duration-animation-default ease, color $duration-animation-default ease;
+		width: $default-size;
+
+		&::after
+		{
+			color: $color-action-minor;
+			content: '+';
+			font-size: $default-size;
+			left: 50%;
+			position: absolute;
+			text-indent: 0;
+			top: 50%;
+			transform: translate(-50%, -50%) rotate(45deg);
+		}
+
+		&:hover
+		{
+			background: $color-action;
+
+			&::after
+			{
+				color: $color-bg;
+			}
+		}
+	}
+}

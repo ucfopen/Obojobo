@@ -1,0 +1,3090 @@
+{
+  "id": "df9d08bb-6f91-4034-84e1-24fcc6072e47",
+  "type": "ObojoboDraft.Modules.Module",
+  "content": {
+    "title": "Obojobo Example Document"
+  },
+  "children": [
+    {
+      "id": "37aba523-242d-437b-8372-a8abc9d22be9",
+      "type": "ObojoboDraft.Sections.Content",
+      "content": {},
+      "children": [
+        {
+          "id": "page-1",
+          "type": "ObojoboDraft.Pages.Page",
+          "content": {
+            "title": "Example content page"
+          },
+          "children": [
+            {
+              "id": "9022b75d-9b43-42aa-aba6-64321d6894f6",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 1,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "2D Motion",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "60dbff03-323c-4598-8f76-e204d036bc22",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Projectile motion",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "a981c5a9-fe7a-4143-9e44-8da8936648e3",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
+                      "styleList": [
+                        {
+                          "type": "_latex",
+                          "data": {},
+                          "start": 56,
+                          "end": 59
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "9f015bee-0455-4369-bb06-e8ab63941e70",
+              "type": "ObojoboDraft.Chunks.MathEquation",
+              "content": {
+                "latex": "v_0=v_{0_x}i+v_{0_y}j"
+              },
+              "children": []
+            },
+            {
+              "id": "243a4713-2668-4e25-8483-21588c4b2706",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
+                      "styleList": [
+                        {
+                          "type": "_latex",
+                          "data": {},
+                          "start": 15,
+                          "end": 22
+                        },
+                        {
+                          "type": "_latex",
+                          "data": {},
+                          "start": 27,
+                          "end": 34
+                        },
+                        {
+                          "type": "_latex",
+                          "data": {},
+                          "start": 77,
+                          "end": 83
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "caf0052d-9dd8-47c4-b42a-ce43c46ecb1c",
+              "type": "ObojoboDraft.Chunks.List",
+              "content": {
+                "listStyles": {
+                  "type": "unordered"
+                },
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "v_{0_x} = v_0 \\cos \\theta",
+                      "styleList": [
+                        {
+                          "type": "_latex",
+                          "data": {},
+                          "start": 0,
+                          "end": 25
+                        }
+                      ]
+                    },
+                    "data": null
+                  },
+                  {
+                    "text": {
+                      "value": "v_{0_t} = v_0 \\sin \\theta",
+                      "styleList": [
+                        {
+                          "type": "_latex",
+                          "data": {},
+                          "start": 0,
+                          "end": 25
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "f58c38c8-2de4-4a63-8633-32dbf9d61397",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "See also the section Parabolic equation for information on finding the initial velocity.",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "f530a522-ddfb-40fb-9736-dbd9870d4989",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Kinematic quantities of projectile motion",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "bf4fd224-de8e-4991-bc3f-1f4bdf979879",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "page-2",
+          "type": "ObojoboDraft.Pages.Page",
+          "content": {
+            "title": "Image examples"
+          },
+          "children": [
+            {
+              "id": "8f898c90-c360-46cf-b19f-709721ef5164",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 1,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Images",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "11b3b474-7d63-4519-b733-512d48787cef",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "A small image with a caption (size = small):",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "95f896e7-a143-439c-bef2-c1eeae918eb3",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "size": "small",
+                "alt": "A city",
+                "url": "http://lorempixel.com/640/480/city",
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "This is a small image",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "f206495d-e555-4d32-8cda-e9c93d538c3c",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Medium image, no caption (size = medium):",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "49fbe9aa-94dc-444e-a239-79459f39bf65",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "size": "medium",
+                "alt": "A city",
+                "url": "http://lorempixel.com/640/480/city"
+              },
+              "children": []
+            },
+            {
+              "id": "60dd7862-b078-4219-8ab5-d1d60abdb241",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Large image (size = large):",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "b95329a9-96b0-4b5f-bab7-382da70b85c0",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "size": "large",
+                "alt": "A city",
+                "url": "http://lorempixel.com/640/480/city"
+              },
+              "children": []
+            },
+            {
+              "id": "d6b5eff5-cd95-46b8-9074-5642aebde6c6",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Image with an explict width (width = 200):",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "312e69d5-f4dc-4c57-9b55-4cace964e61d",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "width": 200,
+                "alt": "A city",
+                "size": "custom",
+                "url": "http://lorempixel.com/640/480/city"
+              },
+              "children": []
+            },
+            {
+              "id": "11372ae3-2325-440a-aa08-d4c66e54a3a1",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Image with an explict height (height = 200):",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "8270d5cd-42ed-42bc-8b18-48f89adc1074",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "height": 200,
+                "alt": "A city",
+                "size": "custom",
+                "url": "http://lorempixel.com/640/480/city"
+              },
+              "children": []
+            },
+            {
+              "id": "fcf56d4d-794e-42b2-91ee-a99c5bba2cd7",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Image with width and height - not recommended as image will not respect aspect ratio ( width = 400, height = 100):",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "cb6c7e3e-d3b8-4b37-aff3-6e0364091e48",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "width": 400,
+                "height": 100,
+                "alt": "A city",
+                "size": "custom",
+                "url": "http://lorempixel.com/640/480/city"
+              },
+              "children": []
+            },
+            {
+              "id": "e49c550e-5e82-422b-9cb1-eba07426c429",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "No size or width or height results in images at their native size:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "32f6a9e2-9cf7-420a-aaa0-ca62b23ce2c2",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "size": "custom",
+                "url": "http://lorempixel.com/100/100/city"
+              },
+              "children": []
+            },
+            {
+              "id": "eb1e46fa-c6af-401e-be95-5d7b14fceb77",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Native size images are still restricted to the width of the page (at native size this image would be 1080x720 pixels)",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "9dff41f6-5097-4dfe-b275-1bea20135497",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "size": "custom",
+                "url": "http://lorempixel.com/1080/720/city"
+              },
+              "children": []
+            },
+            {
+              "id": "39fa0325-d1d8-413e-a397-27d7b70eb209",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Base 64 encoded image:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "77208fc1-ef18-47e4-b7b1-ed862e9da322",
+              "type": "ObojoboDraft.Chunks.Figure",
+              "content": {
+                "size": "custom",
+                "url": "data:image/gif;base64,R0lGODlhPQBEAPeoAJosM//AwO/AwHVYZ/z595kzAP/s7P+goOXMv8+fhw/v739/f+8PD98fH/8mJl+fn/9ZWb8/PzWlwv///6wWGbImAPgTEMImIN9gUFCEm/gDALULDN8PAD6atYdCTX9gUNKlj8wZAKUsAOzZz+UMAOsJAP/Z2ccMDA8PD/95eX5NWvsJCOVNQPtfX/8zM8+QePLl38MGBr8JCP+zs9myn/8GBqwpAP/GxgwJCPny78lzYLgjAJ8vAP9fX/+MjMUcAN8zM/9wcM8ZGcATEL+QePdZWf/29uc/P9cmJu9MTDImIN+/r7+/vz8/P8VNQGNugV8AAF9fX8swMNgTAFlDOICAgPNSUnNWSMQ5MBAQEJE3QPIGAM9AQMqGcG9vb6MhJsEdGM8vLx8fH98AANIWAMuQeL8fABkTEPPQ0OM5OSYdGFl5jo+Pj/+pqcsTE78wMFNGQLYmID4dGPvd3UBAQJmTkP+8vH9QUK+vr8ZWSHpzcJMmILdwcLOGcHRQUHxwcK9PT9DQ0O/v70w5MLypoG8wKOuwsP/g4P/Q0IcwKEswKMl8aJ9fX2xjdOtGRs/Pz+Dg4GImIP8gIH0sKEAwKKmTiKZ8aB/f39Wsl+LFt8dgUE9PT5x5aHBwcP+AgP+WltdgYMyZfyywz78AAAAAAAD///8AAP9mZv///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAKgALAAAAAA9AEQAAAj/AFEJHEiwoMGDCBMqXMiwocAbBww4nEhxoYkUpzJGrMixogkfGUNqlNixJEIDB0SqHGmyJSojM1bKZOmyop0gM3Oe2liTISKMOoPy7GnwY9CjIYcSRYm0aVKSLmE6nfq05QycVLPuhDrxBlCtYJUqNAq2bNWEBj6ZXRuyxZyDRtqwnXvkhACDV+euTeJm1Ki7A73qNWtFiF+/gA95Gly2CJLDhwEHMOUAAuOpLYDEgBxZ4GRTlC1fDnpkM+fOqD6DDj1aZpITp0dtGCDhr+fVuCu3zlg49ijaokTZTo27uG7Gjn2P+hI8+PDPERoUB318bWbfAJ5sUNFcuGRTYUqV/3ogfXp1rWlMc6awJjiAAd2fm4ogXjz56aypOoIde4OE5u/F9x199dlXnnGiHZWEYbGpsAEA3QXYnHwEFliKAgswgJ8LPeiUXGwedCAKABACCN+EA1pYIIYaFlcDhytd51sGAJbo3onOpajiihlO92KHGaUXGwWjUBChjSPiWJuOO/LYIm4v1tXfE6J4gCSJEZ7YgRYUNrkji9P55sF/ogxw5ZkSqIDaZBV6aSGYq/lGZplndkckZ98xoICbTcIJGQAZcNmdmUc210hs35nCyJ58fgmIKX5RQGOZowxaZwYA+JaoKQwswGijBV4C6SiTUmpphMspJx9unX4KaimjDv9aaXOEBteBqmuuxgEHoLX6Kqx+yXqqBANsgCtit4FWQAEkrNbpq7HSOmtwag5w57GrmlJBASEU18ADjUYb3ADTinIttsgSB1oJFfA63bduimuqKB1keqwUhoCSK374wbujvOSu4QG6UvxBRydcpKsav++Ca6G8A6Pr1x2kVMyHwsVxUALDq/krnrhPSOzXG1lUTIoffqGR7Goi2MAxbv6O2kEG56I7CSlRsEFKFVyovDJoIRTg7sugNRDGqCJzJgcKE0ywc0ELm6KBCCJo8DIPFeCWNGcyqNFE06ToAfV0HBRgxsvLThHn1oddQMrXj5DyAQgjEHSAJMWZwS3HPxT/QMbabI/iBCliMLEJKX2EEkomBAUCxRi42VDADxyTYDVogV+wSChqmKxEKCDAYFDFj4OmwbY7bDGdBhtrnTQYOigeChUmc1K3QTnAUfEgGFgAWt88hKA6aCRIXhxnQ1yg3BCayK44EWdkUQcBByEQChFXfCB776aQsG0BIlQgQgE8qO26X1h8cEUep8ngRBnOy74E9QgRgEAC8SvOfQkh7FDBDmS43PmGoIiKUUEGkMEC/PJHgxw0xH74yx/3XnaYRJgMB8obxQW6kL9QYEJ0FIFgByfIL7/IQAlvQwEpnAC7DtLNJCKUoO/w45c44GwCXiAFB/OXAATQryUxdN4LfFiwgjCNYg+kYMIEFkCKDs6PKAIJouyGWMS1FSKJOMRB/BoIxYJIUXFUxNwoIkEKPAgCBZSQHQ1A2EWDfDEUVLyADj5AChSIQW6gu10bE/JG2VnCZGfo4R4d0sdQoBAHhPjhIB94v/wRoRKQWGRHgrhGSQJxCS+0pCZbEhAAOw=="
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "page-3",
+          "type": "ObojoboDraft.Pages.Page",
+          "content": {
+            "title": "Other content types"
+          },
+          "children": [
+            {
+              "id": "228c8075-4867-4485-a225-70008ca5dbb5",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 1,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Other content types",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "f2fd2cd0-6936-49a8-8c4d-6ccdc8923c40",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Code",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "f00107f3-f665-4d3c-b7e1-8f6150bfca91",
+              "type": "ObojoboDraft.Chunks.Code",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "// Computers code example:",
+                      "styleList": []
+                    },
+                    "data": null
+                  },
+                  {
+                    "text": {
+                      "value": "int Fibonacci(int n)",
+                      "styleList": []
+                    },
+                    "data": null
+                  },
+                  {
+                    "text": {
+                      "value": "if( n == 0 || n == 1) return n",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": 1
+                    }
+                  },
+                  {
+                    "text": {
+                      "value": "return Fibonacci(n - 1) + Fibonacci(n - 2)",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": 1
+                    }
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "ed2e7984-7dec-4ab1-a2db-56f5a1171083",
+              "type": "ObojoboDraft.Chunks.Code",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "// Computer code example:",
+                      "styleList": []
+                    },
+                    "data": null
+                  },
+                  {
+                    "text": {
+                      "value": "int Fibonacci(int n)",
+                      "styleList": []
+                    },
+                    "data": null
+                  },
+                  {
+                    "text": {
+                      "value": "if( n == 0 || n == 1) return n",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": "1"
+                    }
+                  },
+                  {
+                    "text": {
+                      "value": "return Fibonacci(n - 1) + Fibonacci(n - 2)",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": "1"
+                    }
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "5a145c5f-706e-4de1-b34e-e1fa7cfd8e2a",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Table with table headers:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "1b6f619e-1708-4c9c-8282-e912c8b7d0ce",
+              "type": "ObojoboDraft.Chunks.Table",
+              "content": {
+                "header": true,
+                "textGroup": {
+                  "textGroup": [
+                    {
+                      "text": {
+                        "value": "Heading 1",
+                        "styleList": []
+                      },
+                      "data": null
+                    },
+                    {
+                      "text": {
+                        "value": "Heading 2",
+                        "styleList": []
+                      },
+                      "data": null
+                    },
+                    {
+                      "text": {
+                        "value": "Cell 1",
+                        "styleList": []
+                      },
+                      "data": null
+                    },
+                    {
+                      "text": {
+                        "value": "Cell 2",
+                        "styleList": []
+                      },
+                      "data": null
+                    }
+                  ],
+                  "numRows": 2,
+                  "numCols": 2
+                }
+              },
+              "children": []
+            },
+            {
+              "id": "52adf08f-d965-4415-bf17-3d76910b60db",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Table without table headers:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "61d9904d-8aaf-4fb1-b501-2d12acc7f006",
+              "type": "ObojoboDraft.Chunks.Table",
+              "content": {
+                "header": false,
+                "textGroup": {
+                  "textGroup": [
+                    {
+                      "text": {
+                        "value": "Cell 1",
+                        "styleList": []
+                      },
+                      "data": null
+                    },
+                    {
+                      "text": {
+                        "value": "Cell 2",
+                        "styleList": []
+                      },
+                      "data": null
+                    },
+                    {
+                      "text": {
+                        "value": "Cell 3",
+                        "styleList": []
+                      },
+                      "data": null
+                    },
+                    {
+                      "text": {
+                        "value": "Cell 4",
+                        "styleList": []
+                      },
+                      "data": null
+                    }
+                  ],
+                  "numRows": 2,
+                  "numCols": 2
+                }
+              },
+              "children": []
+            },
+            {
+              "id": "40e9fcc4-5f45-478d-b86e-42a8f75274ab",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "A break:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "a6cda74e-6b3c-4186-be52-eb098788ff48",
+              "type": "ObojoboDraft.Chunks.Break",
+              "content": {},
+              "children": []
+            },
+            {
+              "id": "7043d841-36d5-4dfb-af16-bffbb98b1baa",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "YouTube video:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "b5b3203e-acb0-4cc7-8698-22bcb9336eab",
+              "type": "ObojoboDraft.Chunks.YouTube",
+              "content": {
+                "videoId": "dQw4w9WgXcQ"
+              },
+              "children": []
+            },
+            {
+              "id": "c8cb858e-d4f8-4e82-97ac-5bf4847dd891",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Practice question:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "26935549-9679-4ff1-aac9-48ce225b1236",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "This question is a pick-one-multiple-correct type question with feedback and an included solution:",
+                      "styleList": [
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 19,
+                          "end": 44
+                        },
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 89,
+                          "end": 97
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "pq1",
+              "type": "ObojoboDraft.Chunks.Question",
+              "content": {
+                "title": "A custom question title",
+                "solution": {
+                  "id": "249138ca-be09-4ab5-b015-3a8107b4c79e",
+                  "type": "ObojoboDraft.Pages.Page",
+                  "content": {},
+                  "children": [
+                    {
+                      "id": "7fa8ecca-cdd2-4cb8-ae55-5435db9fb05e",
+                      "type": "ObojoboDraft.Chunks.Text",
+                      "content": {
+                        "textGroup": [
+                          {
+                            "text": {
+                              "value": "Here is an example explanation. Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
+                              "styleList": []
+                            },
+                            "data": null
+                          }
+                        ]
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "0b8aaa38-85f0-4693-ab31-238607e2c83a",
+                      "type": "ObojoboDraft.Chunks.MathEquation",
+                      "content": {
+                        "latex": "v_0=v_{0_x}i+v_{0_y}j"
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "e3f11281-34e8-413a-85c3-4c058ca133e9",
+                      "type": "ObojoboDraft.Chunks.Text",
+                      "content": {
+                        "textGroup": [
+                          {
+                            "text": {
+                              "value": "The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
+                              "styleList": [
+                                {
+                                  "type": "_latex",
+                                  "data": {},
+                                  "start": 15,
+                                  "end": 22
+                                },
+                                {
+                                  "type": "_latex",
+                                  "data": {},
+                                  "start": 27,
+                                  "end": 34
+                                },
+                                {
+                                  "type": "_latex",
+                                  "data": {},
+                                  "start": 77,
+                                  "end": 83
+                                }
+                              ]
+                            },
+                            "data": null
+                          }
+                        ]
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "80389371-7314-4468-8ae8-7241d560c83e",
+                      "type": "ObojoboDraft.Chunks.List",
+                      "content": {
+                        "listStyles": {
+                          "type": "unordered"
+                        },
+                        "textGroup": [
+                          {
+                            "text": {
+                              "value": "v_{0_x} = v_0 \\cos \\theta",
+                              "styleList": [
+                                {
+                                  "type": "_latex",
+                                  "data": {},
+                                  "start": 0,
+                                  "end": 25
+                                }
+                              ]
+                            },
+                            "data": null
+                          },
+                          {
+                            "text": {
+                              "value": "v_{0_t} = v_0 \\sin \\theta",
+                              "styleList": [
+                                {
+                                  "type": "_latex",
+                                  "data": {},
+                                  "start": 0,
+                                  "end": 25
+                                }
+                              ]
+                            },
+                            "data": null
+                          }
+                        ]
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "7301ee87-a461-4992-b1ba-20b453e2c07c",
+                      "type": "ObojoboDraft.Chunks.Text",
+                      "content": {
+                        "textGroup": [
+                          {
+                            "text": {
+                              "value": "See also the section Parabolic equation for information on finding the initial velocity.",
+                              "styleList": []
+                            },
+                            "data": null
+                          }
+                        ]
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              },
+              "children": [
+                {
+                  "id": "b10ef416-0908-4b4f-91dd-83b9841e7e27",
+                  "type": "ObojoboDraft.Chunks.Heading",
+                  "content": {
+                    "headingLevel": 1,
+                    "textGroup": [
+                      {
+                        "text": {
+                          "value": "Which equation describes horizontal displacement of projectile motion?",
+                          "styleList": []
+                        },
+                        "data": null
+                      }
+                    ]
+                  },
+                  "children": []
+                },
+                {
+                  "id": "pq1.mca",
+                  "type": "ObojoboDraft.Chunks.MCAssessment",
+                  "content": {
+                    "responseType": "pick-one-multiple-correct"
+                  },
+                  "children": [
+                    {
+                      "id": "pq1-mca-mc1",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 100
+                      },
+                      "children": [
+                        {
+                          "id": "pq1-mca-mc1-ans",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "9785941f-ae81-47b0-b878-c57d35c617a1",
+                              "type": "ObojoboDraft.Chunks.MathEquation",
+                              "content": {
+                                "latex": "x=v_xt",
+                                "align": "left"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "pq1-mca-mc2",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 100
+                      },
+                      "children": [
+                        {
+                          "id": "pq1-mca-mc2-ans",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "0d64f6e7-27de-493c-a196-5b2baf293ff0",
+                              "type": "ObojoboDraft.Chunks.MathEquation",
+                              "content": {
+                                "latex": "x=v_{ix}t + \\frac{1}{2} a_x t^2",
+                                "align": "left"
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "pq1-mca-mc2-fb",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "21853c91-3d1a-4b36-acee-75fb764b74ca",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            },
+                            {
+                              "id": "1a294383-5d4a-4ff1-bdd1-5bbf09771ae5",
+                              "type": "ObojoboDraft.Chunks.MathEquation",
+                              "content": {
+                                "latex": "x=v_xt",
+                                "align": "left"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "pq1-mca-mc3",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 0
+                      },
+                      "children": [
+                        {
+                          "id": "pq1-mca-mc3-ans",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "0e91632b-86ae-4c02-8587-b0fc4f2b6fa6",
+                              "type": "ObojoboDraft.Chunks.MathEquation",
+                              "content": {
+                                "latex": "x=\\frac{1}{2} a_x t^2",
+                                "align": "left"
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "pq1-mca-mc3-fb",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "3187e6db-435c-4ba6-bc8a-cfa689d0c5e6",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "The a_x term representing horizontal acceleration is always 0 so this equation is simply x = 0.",
+                                      "styleList": [
+                                        {
+                                          "type": "_latex",
+                                          "data": {},
+                                          "start": 4,
+                                          "end": 7
+                                        },
+                                        {
+                                          "type": "_latex",
+                                          "data": {},
+                                          "start": 89,
+                                          "end": 94
+                                        }
+                                      ]
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "088ac067-ecce-4f08-8af6-db94b16206c2",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Questions can also contain other content such as video or lists. This question is an example of a pick-all type question:",
+                      "styleList": [
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 98,
+                          "end": 106
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "pq2",
+              "type": "ObojoboDraft.Chunks.Question",
+              "content": {},
+              "children": [
+                {
+                  "id": "5b8a941f-da94-4712-843e-ddc5d91eaf26",
+                  "type": "ObojoboDraft.Chunks.YouTube",
+                  "content": {
+                    "videoId": "dQw4w9WgXcQ"
+                  },
+                  "children": []
+                },
+                {
+                  "id": "cb120ce8-44d5-4b1e-b274-5a1bf9a05731",
+                  "type": "ObojoboDraft.Chunks.List",
+                  "content": {
+                    "listStyles": {
+                      "type": "ordered"
+                    },
+                    "textGroup": [
+                      {
+                        "text": {
+                          "value": "Here is a list",
+                          "styleList": []
+                        },
+                        "data": null
+                      },
+                      {
+                        "text": {
+                          "value": "With two items",
+                          "styleList": []
+                        },
+                        "data": null
+                      }
+                    ]
+                  },
+                  "children": []
+                },
+                {
+                  "id": "pq2-mca",
+                  "type": "ObojoboDraft.Chunks.MCAssessment",
+                  "content": {
+                    "responseType": "pick-all"
+                  },
+                  "children": [
+                    {
+                      "id": "pq2-mca-mc1",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 100
+                      },
+                      "children": [
+                        {
+                          "id": "pq2-mca-mc1-ans",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "c9047af1-bfa9-4c04-9975-9f8c223f3b1f",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "This is a correct answer choice",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "pq2-mca-mc1-fb",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "67314413-3a28-4fb3-9419-d6f36509375d",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "Good job!",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "pq2-mca-mc2",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 100
+                      },
+                      "children": [
+                        {
+                          "id": "pq2-mca-mc2-ans",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "3f6e1fa0-cbea-447c-b826-52eb5ed6cd1f",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "This is another correct answer choice",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "pq2-mca-mc2-fb",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "27cbf12d-474d-4d56-9f1a-103cfaa16cc5",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "Fantastic!",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "pq2-mca-mc3",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 0
+                      },
+                      "children": [
+                        {
+                          "id": "pq2-mca-mc3-ans",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "6b2bf76e-0ee6-42ce-bd73-296f73523bb6",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "This is an incorrect answer choice",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "pq2-mca-mc3-fb",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "7d0bfceb-d9fb-47fa-bb22-012c2bace79c",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "Nope!",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "678aa623-8dba-4117-a5fd-16250f30f597",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Finally here is a pick-one type question:",
+                      "styleList": [
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 18,
+                          "end": 26
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "pq3",
+              "type": "ObojoboDraft.Chunks.Question",
+              "content": {},
+              "children": [
+                {
+                  "id": "9e39e519-73f6-4428-b641-c9be4ef95f90",
+                  "type": "ObojoboDraft.Chunks.Text",
+                  "content": {
+                    "textGroup": [
+                      {
+                        "text": {
+                          "value": "What is 2+2 = ?",
+                          "styleList": []
+                        },
+                        "data": null
+                      }
+                    ]
+                  },
+                  "children": []
+                },
+                {
+                  "id": "pq3-mca",
+                  "type": "ObojoboDraft.Chunks.MCAssessment",
+                  "content": {
+                    "responseType": "pick-one"
+                  },
+                  "children": [
+                    {
+                      "id": "pq3-mca-mc1",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 0
+                      },
+                      "children": [
+                        {
+                          "id": "pq3-mca-mc1-ans",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "b3407cd7-fd8c-40b1-99a4-afef67b1875d",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "2",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "pq3-mca-mc2",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 100
+                      },
+                      "children": [
+                        {
+                          "id": "pq3-mca-mc2-ans",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "a710f549-abcd-4334-b2d8-8c715c1bb0cb",
+                              "type": "ObojoboDraft.Chunks.Text",
+                              "content": {
+                                "textGroup": [
+                                  {
+                                    "text": {
+                                      "value": "4",
+                                      "styleList": []
+                                    },
+                                    "data": null
+                                  }
+                                ]
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "c3acecaa-15ca-4eab-852a-3b83e6350365",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "HTML",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "40be6cbd-20e9-43f5-aa61-044b46f2cbf3",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "679a7d27-f6a7-45b1-ba3c-b5066292a096",
+              "type": "ObojoboDraft.Chunks.HTML",
+              "content": {
+                "html": "<marquee><font color='red'>Hello, I am rendered HTML</font></marquee>"
+              },
+              "children": []
+            },
+            {
+              "id": "56bf4c3a-c0d9-4359-83fd-cac261b9576b",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Buttons",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "738db929-d008-404c-a3be-a8f38cf5255b",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Click me to see a message",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "viewer:alert",
+                        "value": {
+                          "title": "I have a message for you:",
+                          "message": "Thanks for clicking the button"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "10728393-3db0-4cd1-be0a-40886d8481f8",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Button using a text group rather than a label:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "b67ac2bf-d26b-4df0-86a7-07931ec474a9",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "nav:goto",
+                        "value": {
+                          "id": "page-1"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Click me to jump to page 1!",
+                      "styleList": [
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 20,
+                          "end": 26
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "page-4",
+          "type": "ObojoboDraft.Pages.Page",
+          "content": {
+            "title": "Formatting"
+          },
+          "children": [
+            {
+              "id": "0bb347ce-3cd9-4e8c-b83a-04682c3e93ca",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 1,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Formatting",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "b1232b9f-b2bd-4d96-bf34-7ead5968dbc7",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Aligning headings:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "f95dd1d4-0733-49d7-ac70-889486beb9c5",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Align right",
+                      "styleList": []
+                    },
+                    "data": {
+                      "align": "right"
+                    }
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "badd6922-c490-43a5-892d-405eb0239ff3",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Align center",
+                      "styleList": []
+                    },
+                    "data": {
+                      "align": "center"
+                    }
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "10de4db2-72c3-4999-a52d-df4b8e97d01f",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Aligning equations:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "78280c26-ae42-4722-b200-c07a8dd093f7",
+              "type": "ObojoboDraft.Chunks.MathEquation",
+              "content": {
+                "latex": "y=\\sin(x)",
+                "align": "right"
+              },
+              "children": []
+            },
+            {
+              "id": "df1967f3-3386-4e9a-ab17-f0b6918e7c02",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Aligning text items:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "148d1657-9aa1-4292-a90e-ee3bef9fa901",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Left",
+                      "styleList": []
+                    },
+                    "data": {
+                      "align": "left"
+                    }
+                  },
+                  {
+                    "text": {
+                      "value": "Center",
+                      "styleList": []
+                    },
+                    "data": {
+                      "align": "center"
+                    }
+                  },
+                  {
+                    "text": {
+                      "value": "Right",
+                      "styleList": []
+                    },
+                    "data": {
+                      "align": "right"
+                    }
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "4f7f140b-8c61-470c-9fe9-edaf08a89f60",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Aligning buttons:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "c27e6a92-02d3-44ca-84bc-7aaccb247e7f",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "align": "right",
+                "label": "I am right aligned"
+              },
+              "children": []
+            },
+            {
+              "id": "2e538f7b-5e45-47ef-8d6d-b84ba2e658dd",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Styling",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "047b1ffb-8949-4a2b-b5fe-0a371ef195c5",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Bold, Italic, Superscript2, Subscript2, Links, Strikethrough content, a quotation and in-line math equations: \\frac{dy}{dx}",
+                      "styleList": [
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 0,
+                          "end": 4
+                        },
+                        {
+                          "type": "i",
+                          "data": {},
+                          "start": 6,
+                          "end": 12
+                        },
+                        {
+                          "type": "sup",
+                          "data": 1,
+                          "start": 25,
+                          "end": 26
+                        },
+                        {
+                          "type": "sup",
+                          "data": -1,
+                          "start": 37,
+                          "end": 38
+                        },
+                        {
+                          "type": "a",
+                          "data": {
+                            "href": "http://www.google.com/"
+                          },
+                          "start": 40,
+                          "end": 45
+                        },
+                        {
+                          "type": "del",
+                          "data": {},
+                          "start": 47,
+                          "end": 68
+                        },
+                        {
+                          "type": "q",
+                          "data": {},
+                          "start": 72,
+                          "end": 81
+                        },
+                        {
+                          "type": "_latex",
+                          "data": {},
+                          "start": 110,
+                          "end": 123
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "edab9500-2838-4729-8266-e9e25c902137",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Advanced lists:",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "da3b8047-54f7-4310-8d72-fd0e4936c943",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "This is an ordered list however the second indent-level is unordered (using square) bullets and the forth indent level is using uppercase letters starting at the 10th letter (J)",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "05586d00-301d-41a8-8350-54e1f68fa0fb",
+              "type": "ObojoboDraft.Chunks.List",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "One(indent=1)",
+                      "styleList": []
+                    },
+                    "data": null
+                  },
+                  {
+                    "text": {
+                      "value": "Two(indent=2)",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": "2"
+                    }
+                  },
+                  {
+                    "text": {
+                      "value": "Three(indent=6)",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": "6"
+                    }
+                  },
+                  {
+                    "text": {
+                      "value": "Four(indent=2)",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": "2"
+                    }
+                  },
+                  {
+                    "text": {
+                      "value": "Five(indent=4)",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": "4"
+                    }
+                  },
+                  {
+                    "text": {
+                      "value": "Six(indent=3)",
+                      "styleList": []
+                    },
+                    "data": {
+                      "indent": "3"
+                    }
+                  }
+                ],
+                "listStyles": {
+                  "type": "ordered",
+                  "indents": {
+                    "2": {
+                      "type": "unordered",
+                      "bulletStyle": "square"
+                    },
+                    "4": {
+                      "type": "ordered",
+                      "start": "10",
+                      "bulletStyle": "upper-alpha"
+                    }
+                  }
+                }
+              },
+              "children": []
+            },
+            {
+              "id": "d7b9f0ca-286e-4a22-ab99-d2a23d578435",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Whitespace",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "01ff589d-d63b-4940-8361-88e9988626cf",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "\n\n\t\t\t\t\tUnlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.\n\n\t\t\t\t",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "page-5",
+          "type": "ObojoboDraft.Pages.Page",
+          "content": {
+            "title": "Triggers & Actions",
+            "triggers": [
+              {
+                "type": "onNavEnter",
+                "actions": [
+                  {
+                    "type": "viewer:alert",
+                    "value": {
+                      "message": "onNavEnter trigger resulted in a viewer:alert action"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "onNavExit",
+                "actions": [
+                  {
+                    "type": "viewer:alert",
+                    "value": {
+                      "message": "Goodbye!"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "children": [
+            {
+              "id": "5be4df0b-42d8-46f8-8c45-1b9548c27960",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 1,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Actions",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "8baa1401-669a-4f20-b38d-7fc7b39ff24f",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "When navigating to this page a onNavEnter trigger will trigger an alert action. When leaving the page a onNavExit trigger will trigger another alert action.",
+                      "styleList": [
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 31,
+                          "end": 41
+                        },
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 104,
+                          "end": 113
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "f0d933e4-6232-45a5-b77c-b732815a0545",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 2,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Some button onClick examples",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "86bc45ee-9694-4c24-939a-afac4a6d713e",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Lock navigation",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "nav:lock"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "1019d272-dcdd-4e5b-82c5-699f52a75d30",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Unlock navigation",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "nav:unlock"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "0568ec91-c175-4290-ab3b-cd968ce2756c",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Open navigation",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "nav:open"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "2e94f9b6-d6bb-4064-8a61-19ab361ba889",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Close navigation",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "nav:close"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "a7e1136d-2974-4715-83c0-d92fcae3a70c",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Goto page",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "nav:goto",
+                        "value": {
+                          "id": "page-1"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "bfafd15a-9489-4dca-afde-e8e79976d02e",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Go back",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "nav:prev"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "906f90df-73c9-406b-a5db-700c75b866c8",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Go forward",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "nav:next"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "b6855d57-05d6-42e6-86e5-7b8927726b14",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Start an assessment attempt",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "assessment:startAttempt",
+                        "value": {
+                          "id": "assessment"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "fb666b5c-94b9-41be-93b6-438f6dca03ff",
+          "type": "ObojoboDraft.Pages.Page",
+          "content": {
+            "title": "Extensions"
+          },
+          "children": [
+            {
+              "id": "c3c75038-880e-480f-af53-3033b6808cb7",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 1,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Extensions",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "f0e02fb6-e0f7-4ebc-88a0-37968887aefd",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Here is an edX multiple choice question which is converted to an Obojobo question. Note that hints are not supported and are ignored. With this extension whitespace is not preserved.",
+                      "styleList": [
+                        {
+                          "type": "a",
+                          "data": {
+                            "href": "http://edx.readthedocs.io/projects/edx-open-learning-xml/en/latest/problem-xml/multiple_choice.html"
+                          },
+                          "start": 11,
+                          "end": 39
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "89d0508a-6a35-40bb-866b-77aa8b878d2d",
+              "type": "ObojoboDraft.Chunks.Question",
+              "content": {
+                "solution": {
+                  "id": "8a935929-fa7b-416d-b862-b9ba5d9823a7",
+                  "type": "ObojoboDraft.Pages.Page",
+                  "content": {},
+                  "children": [
+                    {
+                      "id": "40b5e5a5-57b3-4a61-96e7-d6e4d9855456",
+                      "type": "ObojoboDraft.Chunks.HTML",
+                      "content": {
+                        "html": "<div><p>Optional header for the explanation or solution</p><p>Optional explanation or solution text</p></div>"
+                      },
+                      "children": []
+                    }
+                  ]
+                }
+              },
+              "children": [
+                {
+                  "id": "5317f55c-3be1-4096-96b4-ceaf3611c64b",
+                  "type": "ObojoboDraft.Chunks.HTML",
+                  "content": {
+                    "html": "Question or prompt text"
+                  },
+                  "children": []
+                },
+                {
+                  "id": "c0113cbb-a1bc-4e2a-a446-fd93beba69b1",
+                  "type": "ObojoboDraft.Chunks.HTML",
+                  "content": {
+                    "html": "Optional information about how to answer the question"
+                  },
+                  "children": []
+                },
+                {
+                  "id": "907de6d7-1c93-4c35-b9a9-0ab2bb672389",
+                  "type": "ObojoboDraft.Chunks.MCAssessment",
+                  "content": {},
+                  "children": [
+                    {
+                      "id": "d1ea1431-039d-434d-90cd-7ca6b54dcef1",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 0
+                      },
+                      "children": [
+                        {
+                          "id": "b7e56450-4005-4ce4-be1c-7cfe29d51202",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "b9915ce5-3955-4e57-8f8f-22d3d32f9dc4",
+                              "type": "ObojoboDraft.Chunks.HTML",
+                              "content": {
+                                "html": "Incorrect choice"
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "73d7ecf3-40cc-4d4a-8fe6-454c6368205f",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "9188d3f0-412a-400c-8ca5-2834727e8283",
+                              "type": "ObojoboDraft.Chunks.HTML",
+                              "content": {
+                                "html": "Nope: Hint for incorrect choice."
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "id": "572a08e4-551d-49a6-a051-e6f124511a35",
+                      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                      "content": {
+                        "score": 100
+                      },
+                      "children": [
+                        {
+                          "id": "0150f757-36b2-4fb8-b6ca-7e29ef8f63c9",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "6cd5566c-cf3c-49c8-8f1c-40d74c5eadaf",
+                              "type": "ObojoboDraft.Chunks.HTML",
+                              "content": {
+                                "html": "Correct choice"
+                              },
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "id": "6ba58ff6-2893-42f4-a94d-c0553127d0fa",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+                          "content": {},
+                          "children": [
+                            {
+                              "id": "89c7d865-656b-4146-a051-b4dbf7204aee",
+                              "type": "ObojoboDraft.Chunks.HTML",
+                              "content": {
+                                "html": "Yup: Hint for correct choice."
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "assessment",
+      "type": "ObojoboDraft.Sections.Assessment",
+      "content": {
+        "attempts": 3,
+        "triggers": [
+          {
+            "type": "onStartAttempt",
+            "actions": [
+              {
+                "type": "nav:lock"
+              }
+            ]
+          },
+          {
+            "type": "onEndAttempt",
+            "actions": [
+              {
+                "type": "nav:unlock"
+              }
+            ]
+          }
+        ],
+        "scoreActions": [
+          {
+            "from": "0",
+            "to": "99",
+            "page": {
+              "id": "2692c3fa-2bd9-4f62-a83f-a173b4770017",
+              "type": "ObojoboDraft.Pages.Page",
+              "content": {},
+              "children": [
+                {
+                  "id": "084af3aa-18be-41d5-9938-1b4c311403fa",
+                  "type": "ObojoboDraft.Chunks.Heading",
+                  "content": {
+                    "headingLevel": 1,
+                    "textGroup": [
+                      {
+                        "text": {
+                          "value": "Not quite!",
+                          "styleList": []
+                        },
+                        "data": {
+                          "align": "center"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                },
+                {
+                  "id": "13b82592-8c45-4fe7-9d00-32a66f4d7418",
+                  "type": "ObojoboDraft.Chunks.ActionButton",
+                  "content": {
+                    "textGroup": [
+                      {
+                        "text": {
+                          "value": "Try again ({{assessment:attemptsRemaining}} attempts left)",
+                          "styleList": []
+                        },
+                        "data": null
+                      }
+                    ],
+                    "triggers": [
+                      {
+                        "type": "onClick",
+                        "actions": [
+                          {
+                            "type": "assessment:startAttempt",
+                            "value": {
+                              "id": "assessment"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              ]
+            }
+          },
+          {
+            "from": "100",
+            "to": "100",
+            "page": {
+              "id": "2b2836f0-17c9-4a2c-89e3-9185587bce29",
+              "type": "ObojoboDraft.Pages.Page",
+              "content": {},
+              "children": [
+                {
+                  "id": "b8a17835-4328-41b1-9ab4-095d84f8099d",
+                  "type": "ObojoboDraft.Chunks.Heading",
+                  "content": {
+                    "headingLevel": 1,
+                    "textGroup": [
+                      {
+                        "text": {
+                          "value": "Great job!",
+                          "styleList": []
+                        },
+                        "data": {
+                          "align": "center"
+                        }
+                      }
+                    ]
+                  },
+                  "children": []
+                },
+                {
+                  "id": "2a9b01ee-17ff-41fc-94b9-09113eab9084",
+                  "type": "ObojoboDraft.Chunks.ActionButton",
+                  "content": {
+                    "textGroup": [
+                      {
+                        "text": {
+                          "value": "Try again ({{assessment:attemptsRemaining}} attempts left)",
+                          "styleList": []
+                        },
+                        "data": null
+                      }
+                    ],
+                    "triggers": [
+                      {
+                        "type": "onClick",
+                        "actions": [
+                          {
+                            "type": "assessment:startAttempt",
+                            "value": {
+                              "id": "assessment"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "children": []
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "children": [
+        {
+          "id": "e79abf0f-e6c2-437c-8593-f7bb29ae92bd",
+          "type": "ObojoboDraft.Pages.Page",
+          "content": {},
+          "children": [
+            {
+              "id": "536e0f55-bebe-4193-9c05-c2803a31a426",
+              "type": "ObojoboDraft.Chunks.Heading",
+              "content": {
+                "headingLevel": 1,
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "Assessment",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "925cc2b0-ed63-4436-9905-603cf430a93c",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt",
+                      "styleList": []
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "b8cd309b-fcd6-4913-af2e-19a63c61b70d",
+              "type": "ObojoboDraft.Chunks.Text",
+              "content": {
+                "textGroup": [
+                  {
+                    "text": {
+                      "value": "(This paragraph uses variables - view the XML source for formatting details). You have {{assessment:attemptsRemaining}} of {{assessment:attemptsAmount}} attempts remaining - You need a 100% to complete this assignment. Click Review Content to study the content and return to this assessment to retake it.",
+                      "styleList": [
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 87,
+                          "end": 119
+                        },
+                        {
+                          "type": "b",
+                          "data": {},
+                          "start": 123,
+                          "end": 152
+                        }
+                      ]
+                    },
+                    "data": null
+                  }
+                ]
+              },
+              "children": []
+            },
+            {
+              "id": "start-assessment-button",
+              "type": "ObojoboDraft.Chunks.ActionButton",
+              "content": {
+                "label": "Start an assessment attempt",
+                "triggers": [
+                  {
+                    "type": "onClick",
+                    "actions": [
+                      {
+                        "type": "assessment:startAttempt",
+                        "value": {
+                          "id": "assessment"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "qb",
+          "type": "ObojoboDraft.Chunks.QuestionBank",
+          "content": {
+            "choose": 1,
+            "select": "sequential"
+          },
+          "children": [
+            {
+              "id": "qb1",
+              "type": "ObojoboDraft.Chunks.QuestionBank",
+              "content": {
+                "choose": 1,
+                "select": "sequential"
+              },
+              "children": [
+                {
+                  "id": "qb1.q1",
+                  "type": "ObojoboDraft.Chunks.Question",
+                  "content": {},
+                  "children": [
+                    {
+                      "id": "e3d455d5-80dd-4df8-87cf-594218016f44",
+                      "type": "ObojoboDraft.Chunks.Text",
+                      "content": {
+                        "textGroup": [
+                          {
+                            "text": {
+                              "value": "Question Bank 1 Question 1 - This is the first question you'll see",
+                              "styleList": []
+                            },
+                            "data": null
+                          }
+                        ]
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "qb1-q1-mca",
+                      "type": "ObojoboDraft.Chunks.MCAssessment",
+                      "content": {
+                        "responseType": "pick-one"
+                      },
+                      "children": [
+                        {
+                          "id": "qb1-q1-mca-mc1",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                          "content": {
+                            "score": 100
+                          },
+                          "children": [
+                            {
+                              "id": "qb1-q1-mca-mc1-ans",
+                              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                              "content": {},
+                              "children": [
+                                {
+                                  "id": "eb1df6ac-27e5-4b0c-865e-fea3ef790623",
+                                  "type": "ObojoboDraft.Chunks.Text",
+                                  "content": {
+                                    "textGroup": [
+                                      {
+                                        "text": {
+                                          "value": "Correct",
+                                          "styleList": []
+                                        },
+                                        "data": null
+                                      }
+                                    ]
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "qb1-q1-mca-mc2",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                          "content": {
+                            "score": 0
+                          },
+                          "children": [
+                            {
+                              "id": "qb1-q1-mca-mc2-ans",
+                              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                              "content": {},
+                              "children": [
+                                {
+                                  "id": "2e332c06-58d1-42f9-a8b5-64fc0b1825fc",
+                                  "type": "ObojoboDraft.Chunks.Text",
+                                  "content": {
+                                    "textGroup": [
+                                      {
+                                        "text": {
+                                          "value": "Incorrect",
+                                          "styleList": []
+                                        },
+                                        "data": null
+                                      }
+                                    ]
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "qb1.q2",
+                  "type": "ObojoboDraft.Chunks.Question",
+                  "content": {},
+                  "children": [
+                    {
+                      "id": "26ca5752-dff9-43d0-9486-259184707166",
+                      "type": "ObojoboDraft.Chunks.Text",
+                      "content": {
+                        "textGroup": [
+                          {
+                            "text": {
+                              "value": "Question Bank 1 Question 2 - This is the fourth question you'll see",
+                              "styleList": []
+                            },
+                            "data": null
+                          }
+                        ]
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "qb1.q2.mca",
+                      "type": "ObojoboDraft.Chunks.MCAssessment",
+                      "content": {
+                        "responseType": "pick-one"
+                      },
+                      "children": [
+                        {
+                          "id": "qb1.q2-mca-mc1",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                          "content": {
+                            "score": 100
+                          },
+                          "children": [
+                            {
+                              "id": "qb1.q2-mca-mc1-ans",
+                              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                              "content": {},
+                              "children": [
+                                {
+                                  "id": "268b6e2a-6a25-48a9-8101-65ad3ef0d3a7",
+                                  "type": "ObojoboDraft.Chunks.Text",
+                                  "content": {
+                                    "textGroup": [
+                                      {
+                                        "text": {
+                                          "value": "Correct",
+                                          "styleList": []
+                                        },
+                                        "data": null
+                                      }
+                                    ]
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "qb1.q2-mca-mc2",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                          "content": {
+                            "score": 0
+                          },
+                          "children": [
+                            {
+                              "id": "qb1.q2-mca-mc2-ans",
+                              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                              "content": {},
+                              "children": [
+                                {
+                                  "id": "1a474950-0bfb-4d22-acbd-f099f3b6d4ac",
+                                  "type": "ObojoboDraft.Chunks.Text",
+                                  "content": {
+                                    "textGroup": [
+                                      {
+                                        "text": {
+                                          "value": "Incorrect",
+                                          "styleList": []
+                                        },
+                                        "data": null
+                                      }
+                                    ]
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "id": "qb2",
+              "type": "ObojoboDraft.Chunks.QuestionBank",
+              "content": {},
+              "children": [
+                {
+                  "id": "qb2.q1",
+                  "type": "ObojoboDraft.Chunks.Question",
+                  "content": {},
+                  "children": [
+                    {
+                      "id": "dbb88a94-9218-4d49-882b-36a7cfc4d02a",
+                      "type": "ObojoboDraft.Chunks.Text",
+                      "content": {
+                        "textGroup": [
+                          {
+                            "text": {
+                              "value": "Question Bank 2 Question 1 - This is the second question you'll see",
+                              "styleList": []
+                            },
+                            "data": null
+                          }
+                        ]
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "qb2-q1-mca",
+                      "type": "ObojoboDraft.Chunks.MCAssessment",
+                      "content": {
+                        "responseType": "pick-one"
+                      },
+                      "children": [
+                        {
+                          "id": "qb2-q1-mca-mc1",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                          "content": {
+                            "score": 100
+                          },
+                          "children": [
+                            {
+                              "id": "qb2-q1-mca-mc1-ans",
+                              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                              "content": {},
+                              "children": [
+                                {
+                                  "id": "d4ab1542-b78c-47d3-8036-e9ec76428c31",
+                                  "type": "ObojoboDraft.Chunks.Text",
+                                  "content": {
+                                    "textGroup": [
+                                      {
+                                        "text": {
+                                          "value": "Correct",
+                                          "styleList": []
+                                        },
+                                        "data": null
+                                      }
+                                    ]
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "qb2-q1-mca-mc2",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                          "content": {
+                            "score": 0
+                          },
+                          "children": [
+                            {
+                              "id": "qb2-q1-mca-mc2-ans",
+                              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                              "content": {},
+                              "children": [
+                                {
+                                  "id": "3bcc0175-411f-4ce5-9006-bac9982950d7",
+                                  "type": "ObojoboDraft.Chunks.Text",
+                                  "content": {
+                                    "textGroup": [
+                                      {
+                                        "text": {
+                                          "value": "Incorrect",
+                                          "styleList": []
+                                        },
+                                        "data": null
+                                      }
+                                    ]
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "id": "qb2.q2",
+                  "type": "ObojoboDraft.Chunks.Question",
+                  "content": {},
+                  "children": [
+                    {
+                      "id": "70244544-e587-432c-bd70-0b084b2d858e",
+                      "type": "ObojoboDraft.Chunks.Text",
+                      "content": {
+                        "textGroup": [
+                          {
+                            "text": {
+                              "value": "Question Bank 2 Question 2 - This is the third question you'll see",
+                              "styleList": []
+                            },
+                            "data": null
+                          }
+                        ]
+                      },
+                      "children": []
+                    },
+                    {
+                      "id": "qb2.q2.mca",
+                      "type": "ObojoboDraft.Chunks.MCAssessment",
+                      "content": {
+                        "responseType": "pick-one"
+                      },
+                      "children": [
+                        {
+                          "id": "qb2.q2-mca-mc1",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                          "content": {
+                            "score": 100
+                          },
+                          "children": [
+                            {
+                              "id": "qb2.q2-mca-mc1-ans",
+                              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                              "content": {},
+                              "children": [
+                                {
+                                  "id": "657cd9da-ad77-4d82-8bff-7781022083fb",
+                                  "type": "ObojoboDraft.Chunks.Text",
+                                  "content": {
+                                    "textGroup": [
+                                      {
+                                        "text": {
+                                          "value": "Correct",
+                                          "styleList": []
+                                        },
+                                        "data": null
+                                      }
+                                    ]
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "id": "qb2.q2-mca-mc2",
+                          "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+                          "content": {
+                            "score": 0
+                          },
+                          "children": [
+                            {
+                              "id": "qb2.q2-mca-mc2-ans",
+                              "type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+                              "content": {},
+                              "children": [
+                                {
+                                  "id": "b6a88fad-5d1c-42a6-9114-f617ee8bf6ac",
+                                  "type": "ObojoboDraft.Chunks.Text",
+                                  "content": {
+                                    "textGroup": [
+                                      {
+                                        "text": {
+                                          "value": "Incorrect",
+                                          "styleList": []
+                                        },
+                                        "data": null
+                                      }
+                                    ]
+                                  },
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

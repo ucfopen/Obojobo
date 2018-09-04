@@ -1,0 +1,40 @@
+@import '../../../../../scss/includes';
+
+.obojobo-draft--components--modal--bubble
+{
+	$tip-size: 1em;
+	$border: 1px solid $color-shadow;
+
+	background: $color-bg;
+	border: $border;
+	border-radius: 0.3em;
+	bottom: 0;
+	box-shadow: $box-shadow-overlay;
+	box-sizing: border-box;
+	display: inline-block;
+	left: 50%;
+	margin-top: 0.75em;
+	padding: 0.5rem 2em;
+	position: absolute;
+	transform: translate(-50%, 120%);
+	z-index: 10;
+
+	&::before
+	{
+		background: $color-bg;
+		border-left: $border;
+		border-top: $border;
+		content: ' ';
+		height: $tip-size;
+		left: 50%;
+		position: absolute;
+		top: 0;
+		transform: translate(-50%, -50%) rotate(45deg);
+		width: $tip-size;
+	}
+
+	.container
+	{
+		position: relative;
+	}
+}

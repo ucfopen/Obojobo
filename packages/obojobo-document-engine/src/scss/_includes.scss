@@ -1,0 +1,60 @@
+@import 'bourbon';
+
+$color-action: #6714BD;
+$color-action-minor: desaturate(lighten($color-action, 30%), 40%);
+$color-error: #990000;
+$color-dangerous: #D40000;
+$color-text: #000000;
+$color-text-minor: lighten($color-text, 60%);
+$color-bg: #FFFFFF;
+$color-shadow: rgba(0, 0, 0, 0.3);
+$color-highlight: #93C6FF;
+$color-bg2: #F4F4F4;
+$color-bg3:  #131313;
+$color-correct: #38ae24;
+$color-incorrect: #c21f00;
+$color-transparent: rgba(0, 0, 0, 0);
+$color-browser-focus: #5991CA;
+$color-comment: #FFD400;
+
+$box-shadow-focus: 0 0 3px 3px $color-browser-focus;
+$box-shadow-overlay: 0 2px 2px $color-shadow;
+
+$duration-animation-default: 0.2s;
+// $duration-animation-default: 1s;
+
+$font-default: 'Libre Franklin', Arial, sans-serif;
+$font-text: 'Noto Serif', serif;
+$font-monospace: 'Roboto Mono', monospace;
+
+$font-size: 14pt;
+
+$dimension-column-width: 44em;
+$dimension-padding: 3em;
+$dimension-editor: $dimension-column-width + 3em + 3em;
+$dimension-toolbar-height: 2.7em;
+$dimension-nav-menu: 16rem;
+
+$z-index-above-content: 999;
+$z-index-above-most: 9999;
+$z-index-above-all: 99999;
+
+@mixin pad()
+{
+	padding-left: $dimension-padding;
+	padding-right: $dimension-padding;
+}
+
+@mixin placeholder($height)
+{
+	background: $color-bg2;
+	box-sizing: border-box;
+	color: transparentize($color-text, 0.5);
+	font-family: $font-default;
+	font-size: 1rem;
+	font-weight: bold;
+	height: $height;
+	line-height: 0;
+	padding-top: $height / 2;
+	text-align: center;
+}

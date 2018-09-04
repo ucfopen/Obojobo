@@ -1,0 +1,28 @@
+.obojobo-draft--chunks--passage {
+  margin-left: 6em;
+  margin-right: 6em;
+  text-align: center;
+  padding: 2em 3em; }
+  .obojobo-draft--chunks--passage.is-style-paper {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    background-color: #fdfcf7;
+    text-align: left; }
+    .obojobo-draft--chunks--passage.is-style-paper .text.align-left {
+      text-align: left !important; }
+  .obojobo-draft--chunks--passage p {
+    margin: 0; }
+  .obojobo-draft--chunks--passage .text {
+    display: block;
+    font-size: 0.85em;
+    font-family: Palatino, Garamond; }
+    .obojobo-draft--chunks--passage .text.align-left {
+      text-align: center; }
+  .obojobo-draft--chunks--passage > h1 {
+    font-size: 1.3em;
+    font-weight: normal;
+    margin-bottom: 0.3em;
+    font-style: italic; }
+  .obojobo-draft--chunks--passage > h2 {
+    color: #000000;
+    font-size: 0.8em;
+    margin-bottom: 2em; }

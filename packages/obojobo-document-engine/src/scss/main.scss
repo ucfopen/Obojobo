@@ -1,0 +1,185 @@
+@import '../scss/includes';
+@import '../scss/indents';
+
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  // -webkit-overflow-scrolling: touch;
+}
+
+a {
+  color: inherit;
+  text-decoration-skip-ink: auto;
+}
+
+body {
+  height: 100%;
+  padding: 0;
+
+  margin: 0;
+  -webkit-overflow-scrolling: touch;
+  font-size: $font-size;
+}
+
+// .component-container > .component:first-child
+// {
+// 	padding-top: 2em;
+// 	border: 1px solid red;
+// }
+
+// .component-container > .component:last-child
+// {
+// 	padding-bottom: 2em;
+// 	border: 1px solid green;
+// }
+
+#viewer-app
+{
+	height: 100%;
+	overflow: auto;
+
+	.root
+	{
+		height: 100%;
+	}
+}
+
+// .component:first-of-type
+// {
+// 	padding-top: 0;
+// 	// border: 2px solid red;
+// }
+// .component:last-of-type
+// {
+// 	padding-bottom: 0;
+// 	// border: 2px solid blue;
+// }
+// .component:first-of-type:last-of-type
+// {
+// 	padding-top: 0;
+// 	padding-bottom: 0;
+// 	// border: 2px solid green;
+// }
+
+.component
+{
+	// border: 2px solid gray;
+
+
+}
+
+.component
+{
+	box-sizing: border-box;
+	color: black;
+	display: block;
+	font-family: 'Noto Serif';
+	line-height: 1.5em;
+	overflow-wrap: break-word;
+	position: relative;
+	white-space: pre-wrap;
+	width: 100%;
+	word-wrap: break-word;
+	margin: 0 auto;
+	padding-top: 1em;
+	padding-bottom: 1em;
+
+
+	&.first
+	{
+		padding-top: 0;
+	}
+
+	&.last
+	{
+		padding-bottom: 0;
+	}
+
+	.pad
+	{
+		// max-width: $dimension-column-width;
+		// margin-left: auto;
+		// margin-right: auto;
+		padding-left: $dimension-padding;
+		padding-right: $dimension-padding;
+	}
+
+	h1, h2, h3, h4, h5, h6
+	{
+		/*font-family: 'Open Sans';*/
+		font-family: $font-default;
+		font-weight: normal;
+		margin: 0;
+
+	}
+	h1
+	{
+		line-height: 1em;
+		font-weight: 700;
+
+		b,
+		strong
+		{
+			font-weight: 900;
+		}
+	}
+
+	h2
+	{
+		line-height: 1em;
+		color: #A20E83;
+		font-size: 1.5em;
+		// margin-bottom: 0;
+	}
+
+	pre,
+	code,
+	pre code,
+	textarea
+	{
+		font-family: $font-monospace;
+		// tab-size: 8;
+		font-size: 1em;
+		letter-spacing: -0.01em;
+	}
+
+	a
+	{
+		color: #bd1438;
+	}
+
+	.obojobo-draft--chunks--question .question
+	{
+		font-weight: 700;
+
+		b,
+		strong
+		{
+			font-weight: 900;
+		}
+	}
+
+	.text
+	{
+		&.align-left
+		{
+			text-align: left;
+		}
+
+		&.align-right
+		{
+			text-align: right;
+		}
+
+		&.align-center
+		{
+			text-align: center;
+		}
+	}
+}
+
+.document
+{
+
+}

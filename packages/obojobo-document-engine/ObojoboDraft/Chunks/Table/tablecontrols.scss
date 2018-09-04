@@ -1,0 +1,55 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--table--table-controls
+{
+	position: absolute;
+	left: -1.3em;
+	top: -1.3em;
+	right: 0;
+	bottom: 0;
+	background: #e8e8e8;
+	border: 1px solid #b3b3b3;
+	outline: 2px solid $color-action;
+
+	button
+	{
+		position: absolute;
+
+		width: 17px;
+		height: 26px;
+
+		overflow: hidden;
+
+		text-indent: -9999px;
+
+		transition: transform 0.1s ease;
+		border: none;
+		background: transparent;
+		background-repeat: no-repeat;
+		background-position: center;
+		cursor: pointer;
+
+		&.add-col
+		{
+			right: -3em;
+			top: 50%;
+			transform: rotate(-90deg);
+
+			&:hover
+			{
+				transform: rotate(-90deg) scale(1.5);
+			}
+		}
+
+		&.add-row
+		{
+			left: 50%;
+			bottom: -4em;
+
+			&:hover
+			{
+				transform: scale(1.5);
+			}
+		}
+	}
+}

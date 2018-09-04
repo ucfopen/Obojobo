@@ -1,0 +1,99 @@
+@import '~styles/includes';
+
+.obojobo-draft--sections--assessment
+{
+	.untested,
+	.score
+	{
+		// text-align: center;
+		padding-top: 1em;
+
+		> h1
+		{
+			margin-bottom: 0.2em;
+			text-align: center;
+		}
+
+		> h2
+		{
+			margin-bottom: 0;
+			text-align: center;
+			font-size: 1em;
+		}
+
+		p
+		{
+			margin-bottom: 3em;
+		}
+	}
+
+	.review
+	{
+		text-align: left;
+		width: 70%;
+		margin: 0 auto;
+		border: 1px solid $color-shadow;
+		padding: 3em;
+		margin-top: 3em;
+		background: #fdfdfd;
+		border-radius: .2em;
+
+		.number-correct
+		{
+			font-family: $font-default;
+			margin-top: 0;
+			margin-bottom: 2em;
+		}
+
+		.is-correct > p,
+		.is-not-correct > p
+		{
+			margin-top: 0;
+			margin-bottom: 0;
+			font-family: $font-default;
+			font-weight: bold;
+		}
+
+		.obojobo-draft--chunks--question
+		{
+			font-size: 0.8em;
+		}
+
+		.is-not-correct .obojobo-draft--chunks--question .flipper
+		{
+			position: relative;
+			border: 1px solid $color-incorrect;
+			background: transparentize($color-incorrect, 0.9);
+
+			.responses-hidden
+			{
+				color: $color-incorrect;
+			}
+		}
+
+		.is-correct .obojobo-draft--chunks--question .flipper
+		{
+			position: relative;
+			border: 1px solid $color-correct;
+			background: transparentize($color-correct, 0.9);
+
+			.responses-hidden
+			{
+				color: $color-correct;
+			}
+		}
+	}
+
+	.submit-button
+	{
+		display: block;
+		margin: 0 auto;
+		// transform: scale(1.25, 1.25);
+		text-align: center;
+		width: $dimension-column-width;
+
+		button {
+			min-width: 9em;
+		}
+	}
+}
