@@ -1,0 +1,654 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Caliper event creator createAssessmentAttemptScoredEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Graded",
+  "actor": "https://testHost/api/server",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {},
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": Object {
+    "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+    "attempt": "https://testHost/api/attempt/testAttemptId",
+    "dateCreated": "mockDate",
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+    "maxScore": 100,
+    "scoreGiven": "50",
+    "scoredBy": "https://testHost/api/server",
+    "type": "Score",
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/attempt/testAttemptId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft-content/testContentId/assessment/testAssessment",
+  "type": "GradeEvent",
+}
+`;
+
+exports[`Caliper event creator createAssessmentAttemptStartedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Started",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": "https://testHost/api/attempt/testAttemptId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId/assessment/testAssessment",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "AssessmentEvent",
+}
+`;
+
+exports[`Caliper event creator createAssessmentAttemptSubmittedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Submitted",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": "https://testHost/api/attempt/testAttemptId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId/assessment/testAssessment",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "AssessmentEvent",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent - when assesmentId is null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {},
+  "generated": Object {
+    "attempt": "https://testHost/api/attempt/testAttemptId",
+    "extensions": Object {
+      "selectedTargets": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+    "type": "Response",
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
+  "type": "AssessmentItemEvent",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent - when assesmentId, attemptId arguments are not provided 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {},
+  "generated": Object {
+    "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+    "extensions": Object {
+      "selectedTargets": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+    "type": "Response",
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
+  "type": "AssessmentItemEvent",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent - when assessmentId and attemptId are null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {},
+  "generated": Object {
+    "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+    "extensions": Object {
+      "selectedTargets": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+    "type": "Response",
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
+  "type": "AssessmentItemEvent",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent - when attemptId is null 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {},
+  "generated": Object {
+    "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+    "extensions": Object {
+      "selectedTargets": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+    "type": "Response",
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
+  "type": "AssessmentItemEvent",
+}
+`;
+
+exports[`Caliper event creator createAssessmentItemEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Completed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "generated": Object {
+    "attempt": "https://testHost/api/attempt/testAttemptId",
+    "extensions": Object {
+      "selectedTargets": Object {
+        "ids": Array [
+          "testTargetId",
+        ],
+      },
+      "targetId": "testTargetId",
+    },
+    "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+    "type": "Response",
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId#testTargetId",
+  "type": "AssessmentItemEvent",
+}
+`;
+
+exports[`Caliper event creator createHideEvent - sets target of hide event when given framename arg 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Hid",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft-content/testContentId?context=testFramename#testItemId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createHideEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Hid",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createLTIPickerEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Used",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {},
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "target": "https://testHost/api/picker",
+  "type": "ToolUseEvent",
+}
+`;
+
+exports[`Caliper event creator createMediaChangedSizeEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "ChangedSize",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#mediaId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "MediaEvent",
+}
+`;
+
+exports[`Caliper event creator createNavMenuActivatedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Activated",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavMenuDectivatedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Deactivated",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavMenuHidEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Hid",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavMenuShowedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Showed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavMenuToggledEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Toggled",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/viewer/client/nav%3FdraftId=testDraftId&contentId=testContentId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createNavigationEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "NavigatedTo",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#navigation is going here",
+  "referrer": "https://testHost/api/draft-content/testContentId#navigation came from here",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "NavigationEvent",
+}
+`;
+
+exports[`Caliper event creator createNavigationEvent with no type or action 1`] = `
+Object {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "actor": "https://mockhost/api/server",
+  "edApp": "https://mockhost/api/system",
+  "eventTime": Any<String>,
+  "extensions": Object {
+    "foo": "bar",
+    "previewMode": false,
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "referrer": "https://testHost/api/draft-content/testContentId#navigation came from here",
+  "setAction": [MockFunction] {
+    "calls": Array [
+      Array [
+        "http://purl.imsglobal.org/vocab/caliper/v1/action#NavigatedTo",
+      ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
+    ],
+  },
+  "setObject": [MockFunction] {
+    "calls": Array [
+      Array [
+        "https://testHost/api/draft-content/testContentId#navigation is going here",
+      ],
+    ],
+    "results": Array [
+      Object {
+        "isThrow": false,
+        "value": undefined,
+      },
+    ],
+  },
+}
+`;
+
+exports[`Caliper event creator createPracticeGradeEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Graded",
+  "actor": "https://testHost/api/viewer/client",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": Object {
+    "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+    "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+    "dateCreated": "mockDate",
+    "id": "urn:uuid:123",
+    "maxScore": 100,
+    "scoreGiven": "50",
+    "scoredBy": "https://testHost/api/viewer/client",
+    "type": "Score",
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "GradeEvent",
+}
+`;
+
+exports[`Caliper event creator createPracticeQuestionResetEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Reset",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createPracticeQuestionSubmittedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Submitted",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createPracticeUngradeEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Reset",
+  "actor": "https://testHost/api/server",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "urn:uuid:123",
+  "target": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createViewEvent - sets target of view event when given framename arg 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Viewed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft-content/testContentId?context=testFramename#testItemId",
+  "type": "ViewEvent",
+}
+`;
+
+exports[`Caliper event creator createViewEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Viewed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "ViewEvent",
+}
+`;
+
+exports[`Caliper event creator createViewerAbandonedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Abandoned",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createViewerOpenEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Used",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {},
+  "generated": "https://testHost/api/visit/visitId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "type": "ToolUseEvent",
+}
+`;
+
+exports[`Caliper event creator createViewerResumedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Resumed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "Event",
+}
+`;
+
+exports[`Caliper event creator createViewerSessionLoggedInEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "LoggedIn",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft-content/testContentId",
+  "type": "SessionEvent",
+}
+`;
+
+exports[`Caliper event creator createViewerSessionLoggedOutEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "LoggedOut",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "session": "https://testHost/api/session/testSessionId",
+  "target": "https://testHost/api/draft-content/testContentId",
+  "type": "SessionEvent",
+}
+`;
+
+exports[`Caliper event creator createVisitCreateEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Created",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "deactivatedVisitId": "deactivatedVisitId",
+  },
+  "generated": "https://testHost/api/visit/visitId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/system",
+  "type": "Event",
+}
+`;

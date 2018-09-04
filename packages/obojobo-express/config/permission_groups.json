@@ -1,0 +1,10 @@
+{
+	"development": {
+		"canPreview": ["Instructor", "Administrator"],
+		"canViewEditor": ["Instructor", "Administrator"],
+		"canEditDrafts": ["Instructor", "Administrator"],
+		"canDeleteDrafts": ["Instructor", "Administrator"],
+		"canCreateDrafts": ["Instructor", "Administrator"],
+		"canViewDrafts": ["Instructor", "Administrator"]
+	}
+}

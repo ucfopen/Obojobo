@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cartridge_basiclti_link
+	xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0"
+	xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0"
+	xmlns:lticm="http://www.imsglobal.org/xsd/imslticm_v1p0"
+	xmlns:lticp="http://www.imsglobal.org/xsd/imslticp_v1p0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
+
+	<blti:title><%= title %></blti:title>
+	<blti:description><%= description %></blti:description>
+	<blti:launch_url><%= launch_url %></blti:launch_url>
+
+	<blti:extensions platform="canvas.instructure.com">
+		<lticm:property name="tool_id">edu.ucf.obojobo.next</lticm:property>
+		<lticm:property name="text">ObojoboNext Module (no gradebook sync)</lticm:property>
+		<lticm:property name="domain"><%= domain %></lticm:property>
+		<lticm:property name="privacy_level">public</lticm:property>
+		<lticm:property name="icon_url"><%= icon %></lticm:property>
+
+		<!-- Really useful custom variables -->
+		<lticm:options name="custom_fields">
+			<lticm:property name="canvas_api_domain">$Canvas.api.domain</lticm:property>
+			<lticm:property name="com_instructure_assignment_lti_id">$com.instructure.Assignment.lti.id</lticm:property>
+			<lticm:property name="canvas_course_previous_context_ids_recursive">$Canvas.course.previousContextIds.recursive</lticm:property>
+			<lticm:property name="canvas_user_prefers_high_contrast">$Canvas.user.prefersHighContrast</lticm:property>
+			<lticm:property name="canvas_assignment_id">$Canvas.assignment.id</lticm:property>
+			<lticm:property name="canvas_assignment_points_possible">$Canvas.assignment.pointsPossible</lticm:property>
+			<lticm:property name="canvas_assignment_unlock_at_iso8601">$Canvas.assignment.unlockAt.iso8601</lticm:property>
+			<lticm:property name="canvas_assignment_lock_at_iso8601">$Canvas.assignment.lockAt.iso8601</lticm:property>
+			<lticm:property name="canvas_assignment_due_at_iso8601">$Canvas.assignment.dueAt.iso8601</lticm:property>
+			<lticm:property name="canvas_term_name">$Canvas.term.name</lticm:property>
+			<lticm:property name="canvas_course_previous_course_ids">$Canvas.course.previousCourseIds</lticm:property>
+		</lticm:options>
+
+		<!-- Course Nav -->
+		<lticm:options name="course_navigation">
+			<lticm:property name="default">disabled</lticm:property>
+			<lticm:property name="enabled">true</lticm:property>
+			<lticm:property name="text">ObojoboNext</lticm:property>
+			<lticm:property name="url"><%= canvas_course_navigation_url %></lticm:property>
+			<lticm:property name="visibility">members</lticm:property>
+		</lticm:options>
+
+		<!-- Assignment Title -->
+		<!-- Canvas uses the url from resource_selection -->
+		<lticm:options name="assignment_selection">
+			<lticm:property name="text">ObojoboNext Module (gradebook synced)</lticm:property>
+		</lticm:options>
+
+		<!-- Ungraded Embedded Modules -->
+		<lticm:options name="resource_selection">
+			<lticm:property name="url"><%= canvas_resource_selection_url %></lticm:property>
+			<lticm:property name="message_type">ContentItemSelectionRequest</lticm:property>
+			<lticm:property name="selection_width">700</lticm:property>
+			<lticm:property name="selection_height">600</lticm:property>
+			<lticm:property name="enabled">true</lticm:property>
+		</lticm:options>
+
+		<!-- Page Editor Button -->
+		<!-- Disabled till we have direct login
+		<lticm:options name="editor_button">
+			<lticm:property name="url"><%= canvas_editor_button_url %></lticm:property>
+			<lticm:property name="text">ObojoboNext Module (no gradebook sync)</lticm:property>
+			<lticm:property name="selection_width">700</lticm:property>
+			<lticm:property name="selection_height">600</lticm:property>
+			<lticm:property name="enabled">true</lticm:property>
+		</lticm:options>
+		-->
+
+	</blti:extensions>
+
+</cartridge_basiclti_link>

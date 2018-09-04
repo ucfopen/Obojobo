@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`user model fetches one from the database 1`] = `
+User {
+  "createdAt": "mocked-date",
+  "email": "guest@obojobo.ucf.edu",
+  "firstName": "Guest",
+  "id": 5,
+  "lastName": "Guest",
+  "roles": Array [],
+  "username": "guest",
+}
+`;
+
+exports[`user model fetches one from the database 2`] = `
+Array [
+  "
+			SELECT *
+			FROM users
+			WHERE id = $1
+		",
+  5,
+]
+`;
+
+exports[`user model saves or creates correctly 1`] = `
+Array [
+  "
+			INSERT INTO users
+				(username, email, first_name, last_name, roles)
+				VALUES($[username], $[email], $[firstName], $[lastName], $[roles])
+			ON CONFLICT (username) DO UPDATE SET
+				email = $[email],
+				first_name = $[firstName],
+				last_name = $[lastName],
+				roles = $[roles]
+			RETURNING *
+			",
+  User {
+    "createdAt": "mockNowDate",
+    "email": "e@m.com",
+    "firstName": "Roger",
+    "id": 3,
+    "lastName": "Wilco",
+    "roles": Array [
+      "roleName",
+      "otherRoleName",
+    ],
+    "username": "someusername",
+  },
+]
+`;

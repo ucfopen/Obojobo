@@ -1,0 +1,13 @@
+apps:
+  - script: ./bin/www
+    name: obojobo
+    exec_mode: cluster
+    instances: 2
+    error_file: logs/error.log
+    out_file: logs/out.log
+    cwd: ../../current
+    max_memory_restart: 100M # I think 100 should be plenty
+    env:
+      NODE_ENV: production
+      NEW_RELIC_HOME: './config/'
+      DEBUG: obojobo_server:error,obojobo_server:warn
