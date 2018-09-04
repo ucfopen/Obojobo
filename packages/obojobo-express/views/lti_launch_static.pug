@@ -1,0 +1,19 @@
+extends layout
+
+block content
+	h1 LTI Launch Instructions
+	h2 Configuration XML
+
+	p View the LTI #[a(href=xml_url) configuration xml]
+	p This configuration is used to install your LTI tool into an LSM.  This xml can be referenced by url or copied and pasted durring the install process.
+
+	h2 LTI Launch
+	p View the LTI #[a(href=launch_url) launch endpoint]
+	p Note, this url is typically sent a POST request with all sorts of LTI data.  If you access it directly, it'll display an error page indicating your request did not validate.
+
+	h3 Testing LTI Launch
+	ol
+		li Visit the #[a(href="http://ltiapps.net/test/tc.php") IMS LTI Tool Consumer Emulator]
+		li Set #[b Launch URL] to #[span #{launch_url}]
+		li Set #[b Consmer key] to the value defined in #[span "config/settings.json"]
+		li Set #[b Shared secret] to the value defined in #[span "config/settings.json"]

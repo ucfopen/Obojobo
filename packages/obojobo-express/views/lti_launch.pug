@@ -1,0 +1,9 @@
+extends layout
+
+block head
+	script(src="//fb.me/react-with-addons-15.0.2.js")
+	script(src="//fb.me/react-dom-15.0.2.js")
+
+block content
+	h1= title
+	p Welcome #{user.firstName} #{user.lastName} (#{user.username})

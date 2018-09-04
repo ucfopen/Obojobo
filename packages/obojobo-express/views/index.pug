@@ -1,0 +1,15 @@
+extends layout
+
+block head
+	script(src="//fb.me/react-with-addons-15.0.2.js")
+	script(src="//fb.me/react-dom-15.0.2.js")
+
+block content
+	h1= title
+	p Welcome to this #{title}
+	p A thing #{basePath}
+	div(id='body')
+
+	script.
+		var elm = React.createElement('h1', {title: "#{title}"}, 'REACT IS WORKING!');
+		ReactDOM.render(elm, document.getElementById('body'));

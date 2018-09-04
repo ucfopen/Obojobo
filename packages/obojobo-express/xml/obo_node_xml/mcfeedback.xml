@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <MCFeedback>
+        <p>This is test feedback.</p>
+        <MathEquation latex="x=v_xt" align="left" />
+    </MCFeedback>
+</ObjoboDraftDoc>

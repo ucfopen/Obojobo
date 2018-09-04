@@ -1,0 +1,14 @@
+apps:
+  - script: ./bin/www
+    name: obojobo
+    exec_mode: cluster
+    instances: 1
+    combine_logs: true
+    ignore_watch:
+      - "config/installed_modules.json"
+      - "pm2_dev.yaml"
+      - "pm2_prod.yaml"
+    env:
+      NODE_ENV: development
+      DEBUG: obojobo_server:*
+      NEW_RELIC_HOME: './config/'

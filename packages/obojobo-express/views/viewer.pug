@@ -1,0 +1,37 @@
+doctype html
+html(lang="en")
+	head
+		title= title
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+		meta(id="meta-viewport", name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1 user-scalable=yes")
+
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel="stylesheet", media="screen", href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i")
+		link(rel="stylesheet", media="screen", href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css")
+
+		each href in css
+			link(rel="stylesheet", media="screen", href=href)
+
+		each src in headerJs
+			script(src=`${src}`)
+
+		block head
+
+	body
+		div(id="viewer-app")= 'LOADING...'
+		block content
+
+		//- if draftPath == 'http://localhost:8090/build/'
+		//- 	script(src="http://localhost:8090/webpack-dev-server.js")
+
+		script !{oboGlobals.renderScriptContent()}
+
+		if inlines
+			each js in inlines
+				script !{js}
+
+		each src in footerJs
+			script(src=src)
+
+		script window.__oboViewerRender()

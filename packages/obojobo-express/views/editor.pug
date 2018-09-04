@@ -1,0 +1,198 @@
+doctype html
+html(lang="en")
+	head
+		title= 'Obojobo Editor'
+		meta(charset='utf-8')
+		meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+		meta(id="meta-viewport", name="viewport", content="width=device-width, initial-scale=1, minimum-scale=1 user-scalable=yes")
+
+		script(src="//fb.me/react-with-addons-15.0.2.js")
+		script(src="//fb.me/react-dom-15.0.2.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js")
+		script(src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone-min.js")
+		style(type="text/css").
+			body { font-family:Arial; }
+			ul > li > p, ul > li > a { display:inline-block; margin-right: 1em; }
+			textarea { width:600px; height:400px; font-family:monospace; font-size: 12pt; display: block; }
+			button { font-size: 16pt; }
+			#editor { display: none; }
+		block head
+
+	body
+		div
+			h1 Obojobo Draft Manager
+			h2 Drafts:
+			ul
+				each draft in drafts
+					li
+						if draft.content && draft.content.content && draft.content.content.title
+							p= `${draft.content.content.title} (${draft.draftId})`
+						else
+							p= `(${draft.draftId})`
+						a(target="_blank" href=`/view/${draft.draftId}`).
+							(view)
+						a(
+							href="#"
+							class="link-edit"
+							id=`${draft.draftId}`
+							data-id=`${draft.draftId}`
+							data-content=`${draft.xml ? draft.xml : JSON.stringify(draft.content)}`
+							).
+								(edit)
+						a(href="#" class="link-delete" data-id=`${draft.draftId}`).
+							(delete)
+			button(id="button-create-new-draft").
+				Create new draft
+			hr
+			div(id="editor")
+				h2(id="editor-title")
+				textarea(id="edit")
+				button(id="button-save-draft").
+					Save draft
+
+		script.
+			var editingDraftId = null
+
+			// wire up (edit) buttons:
+			var editLinks = document.getElementsByClassName('link-edit')
+			for(var i = 0; i < editLinks.length; i++)
+			{
+				editLinks[i].addEventListener('click', function(event) {
+					edit(event.target.getAttribute('data-id'), event.target.getAttribute('data-content'))
+				})
+			}
+
+			var delLinks = document.getElementsByClassName('link-delete')
+			for(var i = 0; i < delLinks.length; i++)
+			{
+				delLinks[i].addEventListener('click', function(event) {
+					del(event.target.getAttribute('data-id'))
+				})
+			}
+
+			document.getElementById('button-create-new-draft').addEventListener('click', function(event) {
+				fetch('/api/drafts/new', {
+					method: 'POST',
+					credentials: 'include',
+					body: '',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(function(resp) {
+					resp.json().then(function(json) {
+						if(json.value.id)
+						{
+							alert('New draft created, reloading...')
+							location.reload()
+						}
+						else
+						{
+							alert('Error: ' + error)
+							console.error(error)
+						}
+					})
+				})
+				.catch(function(error) {
+					alert('Error: ' + error)
+					console.error(error)
+				})
+			})
+
+			document.getElementById('button-save-draft').addEventListener('click', function(event) {
+				var draftContent = document.getElementById('edit').value
+
+				document.getElementById(editingDraftId).setAttribute('data-content', draftContent)
+
+				postCurrentlyEditingDraft(draftContent)
+			})
+
+			function edit(draftId, content) {
+				document.getElementById('editor').style.display = 'block';
+				document.getElementById('editor-title').textContent = 'Editing draft #' + draftId + ':'
+				editingDraftId = draftId
+
+				document.getElementById('edit').value = content;
+			}
+
+			function del(draftId) {
+				fetch('/api/drafts/' + draftId, {
+					method: 'DELETE',
+					credentials: 'include',
+					body: '',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(function(resp) {
+					resp.json().then(function(json) {
+						if(json.status.toLowerCase() === 'ok')
+						{
+							alert('Draft deleted, reloading...')
+							location.reload()
+						}
+						else
+						{
+							alert('Error')
+						}
+					})
+				})
+				.catch(function(error) {
+					alert('Error: ' + error.toString())
+					console.error(error)
+				})
+			}
+
+			function postCurrentlyEditingDraft(draftContent) {
+				let mime
+
+				// try to parse JSON, if it works we assume we're sending JSON.
+				// otherwise send as plain text in the hopes that it's XML
+				try
+				{
+					JSON.parse(draftContent)
+					mime = 'application/json'
+				}
+				catch(e)
+				{
+					mime = 'text/plain'
+				}
+
+				fetch('/api/drafts/' + editingDraftId, {
+					method: 'POST',
+					credentials: 'include',
+					body: draftContent,
+					headers: {
+						'Accept': mime,
+						'Content-Type': mime
+					}
+				})
+				.then(function(res) {
+					switch (res.status) {
+						case 200:
+							res.json().then(function(json) {
+								if (json.value.id) alert('New Version: ' + json.value.id)
+								else {
+									alert('Error: ' + error)
+									console.error(error)
+								}
+							})
+							break
+
+						default:
+							res.json().then(function(json) {
+								alert('Error: ' + json.value.message + ' (' + res.status + ')')
+							})
+							.catch(function(e) {
+								alert('Error: ' + res.statusText + ' (' + res.status + ')')
+							})
+							break
+					}
+				})
+				.catch(function(error) {
+					alert('Error: ' + error)
+					console.error(error)
+				})
+			}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObjoboDraftDoc>
+    <Module>
+        <Figure size="small" alt="A city" url="http://lorempixel.com/640/480/city">
+            <textGroup>
+                <t>This is a small image</t>
+            </textGroup>
+        </Figure>
+        <Figure size="custom" width="400" alt="A city" url="http://lorempixel.com/640/480/city">
+            <textGroup>
+                <t>This is a small image</t>
+            </textGroup>
+        </Figure>
+        <Figure size="custom" height="400" alt="A city" url="http://lorempixel.com/640/480/city">
+            <textGroup>
+                <t>This is a small image</t>
+            </textGroup>
+        </Figure>
+    </Module>
+</ObjoboDraftDoc>
