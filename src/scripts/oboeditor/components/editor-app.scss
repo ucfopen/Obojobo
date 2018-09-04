@@ -1,6 +1,5 @@
 @import '../../../scss/includes';
 
-
 .editor {
 	margin-top: 1em;
 	.toolbar {
@@ -21,7 +20,7 @@
 
 	.dropdown {
 		position: fixed;
-		top: .5em;
+		top: 0.5em;
 		right: 2em;
 		z-index: 999;
 
@@ -29,7 +28,7 @@
 			display: block;
 			background-color: $color-obojobo-blue;
 			border-radius: $dimension-rounded-radius;
-			margin: .3em;
+			margin: 0.3em;
 			font-size: 1.3em;
 			color: $color-bg;
 		}
@@ -50,11 +49,23 @@
 				display: block;
 				background-color: $color-obojobo-blue;
 				border-radius: $dimension-rounded-radius;
-				margin: .3em;
+				margin: 0.3em;
 				font-size: 1.3em;
 				width: 100%;
 				color: $color-bg;
 			}
+		}
+	}
+
+	.scoreactions {
+		font-family: $font-default;
+		background-color: $color-bg2;
+		border-radius: $dimension-rounded-radius;
+		padding: 2em 3em;
+		margin-bottom: 3em;
+		.score-actions-page {
+			background-color: $color-bg;
+			margin: 2em;
 		}
 	}
 }

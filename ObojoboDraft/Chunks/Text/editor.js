@@ -7,7 +7,9 @@ const Node = props => {
 	return (
 		<div className={'component'}>
 			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>
-				<span className={`text align-left`} data-indent={props.node.data.get('content').indent}>{props.children}</span>
+				<span className={`text align-left`} data-indent={props.node.data.get('content').indent}>
+					{props.children}
+				</span>
 			</div>
 		</div>
 	)
@@ -17,7 +19,7 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: TEXT_NODE,
-			data: { content: { indent: 0 }}
+			data: { content: { indent: 0 } }
 		})
 		.collapseToStartOfNextText()
 		.focus()
@@ -92,10 +94,10 @@ const plugins = {
 			event.preventDefault()
 			change.value.blocks.forEach(block => {
 				let newIndent = block.data.get('content').indent - 1
-				if(newIndent < 1) newIndent = 0
+				if (newIndent < 1) newIndent = 0
 
 				return change.setNodeByKey(block.key, {
-					data: { content: { indent: newIndent }}
+					data: { content: { indent: newIndent } }
 				})
 			})
 			return true
@@ -104,9 +106,11 @@ const plugins = {
 		// Tab indent
 		if (isText && event.key === 'Tab') {
 			event.preventDefault()
-			change.value.blocks.forEach(block => change.setNodeByKey(block.key, {
-				data: { content: { indent: block.data.get('content').indent + 1 }}
-			}))
+			change.value.blocks.forEach(block =>
+				change.setNodeByKey(block.key, {
+					data: { content: { indent: block.data.get('content').indent + 1 } }
+				})
+			)
 			return true
 		}
 	},
@@ -118,7 +122,7 @@ const plugins = {
 	},
 	schema: {
 		blocks: {
-			'ObojoboDraft.Chunks.Heading': {
+			'ObojoboDraft.Chunks.Text': {
 				nodes: [{ objects: ['text'] }]
 			}
 		}
@@ -127,7 +131,7 @@ const plugins = {
 
 const Text = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		insertNode,
