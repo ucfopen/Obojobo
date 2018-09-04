@@ -1,9 +1,9 @@
-let uuid = require('uuid').v4
+const uuid = require('uuid').v4
 
-let getUrnFromUuid = uuid => 'urn:uuid:' + uuid
-let getNewGeneratedId = () => getUrnFromUuid(uuid())
+const getUrnFromUuid = uuid => 'urn:uuid:' + uuid
+const getNewGeneratedId = () => getUrnFromUuid(uuid())
 
-let getSessionIds = session => {
+const getSessionIds = session => {
 	let sessionId, launchId
 	if (session) {
 		if (session.id) sessionId = session.id

@@ -34,6 +34,19 @@ describe('Visit Model', () => {
 		})
 	})
 
+	test('fetchById allows you to return non active visits with argument', () => {
+		db.one.mockResolvedValue({})
+		Visit.fetchById('mockVisitId').then(() => {
+			expect(db.one.mock.calls[0][0]).toEqual(expect.stringContaining('is_active = true'))
+		})
+		Visit.fetchById('mockVisitId', true).then(() => {
+			expect(db.one.mock.calls[1][0]).toEqual(expect.stringContaining('is_active = true'))
+		})
+		Visit.fetchById('mockVisitId', false).then(() => {
+			expect(db.one.mock.calls[2][0]).not.toEqual(expect.stringContaining('is_active = true'))
+		})
+	})
+
 	test('fetchById logs errors', done => {
 		expect.assertions(2)
 		db.one.mockRejectedValueOnce(new Error('mockError'))
@@ -44,7 +57,11 @@ describe('Visit Model', () => {
 				done()
 			})
 			.catch(error => {
-				expect(logger.error).toHaveBeenCalledWith('Visit fetchById Error', 'mockError')
+				expect(logger.error).toHaveBeenCalledWith(
+					'Visit fetchById Error',
+					'mockVisitId',
+					'mockError'
+				)
 				expect(error.message).toEqual('mockError')
 				done()
 			})

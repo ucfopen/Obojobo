@@ -1,6 +1,6 @@
-let pgp = require('pg-promise')(/*options*/)
-let config = require('./config')
+const pgp = require('pg-promise')(/*options*/)
+const config = require('./config')
 
-let db = pgp(config.db)
+const db = pgp(config.db)
 
 module.exports = db

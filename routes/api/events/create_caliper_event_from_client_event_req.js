@@ -1,23 +1,15 @@
-//@TODO
-//Need a way to generate a Response from an assessment:setResponse but I don't know the ID of the insert on attempts_question_responses
-//don't like the fact that there's question:setResponse and assessment:setResponse
-//the setting of the actor seems very haphazard
-//should all of these be in one file?
-
-let { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
-let { getSessionIds } = require('./caliper_utils')
+const { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
+const { getSessionIds } = require('./caliper_utils')
 
 module.exports = req => {
-	let caliperEvents = require('./create_caliper_event')(req, null, true)
-	let currentUser = req.currentUser || { id: null }
-	let currentDocument = req.currentDocument || { draftId: null, contentId: null }
-	let clientEvent = req.body.event
-	let isPreviewMode = currentUser.canViewEditor
-	let sessionId, launchId
-	let sessionIds = getSessionIds(req.session)
+	const caliperEvents = require('./create_caliper_event')(req, null, true)
+	const currentUser = req.currentUser || { id: null }
+	const currentDocument = req.currentDocument || { draftId: null, contentId: null }
+	const clientEvent = req.body.event
+	const sessionIds = getSessionIds(req.session)
 
-	let actorFromType = type => {
-		let actor = { type }
+	const actorFromType = type => {
+		const actor = { type }
 		if (type === ACTOR_USER) actor.id = currentUser.id
 		return actor
 	}
@@ -33,7 +25,6 @@ module.exports = req => {
 				contentId: currentDocument.contentId,
 				from: clientEvent.payload.from,
 				to: clientEvent.payload.to,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -46,7 +37,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -59,7 +49,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -72,7 +61,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -86,7 +74,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -99,7 +86,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					navType: clientEvent.action.split(':')[1],
@@ -114,7 +100,6 @@ module.exports = req => {
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -123,8 +108,7 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
+				itemId: clientEvent.payload.questionId,
 				sessionIds
 			})
 
@@ -134,7 +118,6 @@ module.exports = req => {
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -145,7 +128,6 @@ module.exports = req => {
 				contentId: currentDocument.contentId,
 				itemId: clientEvent.payload.questionId,
 				frameName: 'explanation',
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -154,9 +136,8 @@ module.exports = req => {
 				actor: actorFromType(clientEvent.payload.actor),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				questionId: clientEvent.payload.questionId,
+				itemId: clientEvent.payload.questionId,
 				frameName: 'explanation',
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -171,7 +152,6 @@ module.exports = req => {
 				attemptId: clientEvent.payload.attemptId,
 				selectedTargets: clientEvent.payload.response,
 				targetId: clientEvent.payload.targetId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -183,7 +163,6 @@ module.exports = req => {
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
 				score: clientEvent.payload.score,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -194,7 +173,6 @@ module.exports = req => {
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.itemId,
 				scoreId: clientEvent.payload.id,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -204,8 +182,52 @@ module.exports = req => {
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
 				questionId: clientEvent.payload.questionId,
-				isPreviewMode,
 				sessionIds
+			})
+
+		case 'media:show':
+			return caliperEvents.createViewEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				itemId: clientEvent.payload.id,
+				sessionIds
+			})
+
+		case 'media:hide':
+			return caliperEvents.createHideEvent({
+				actor: actorFromType(clientEvent.payload.actor),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				itemId: clientEvent.payload.id,
+				sessionIds
+			})
+
+		case 'media:setZoom':
+			return caliperEvents.createMediaChangedSizeEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				mediaId: clientEvent.payload.id,
+				sessionIds,
+				extensions: {
+					type: 'setZoom',
+					zoom: clientEvent.payload.zoom,
+					previousZoom: clientEvent.payload.previousZoom
+				}
+			})
+
+		case 'media:resetZoom':
+			return caliperEvents.createMediaChangedSizeEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				mediaId: clientEvent.payload.id,
+				sessionIds,
+				extensions: {
+					type: 'resetZoom',
+					previousZoom: clientEvent.payload.previousZoom
+				}
 			})
 
 		case 'viewer:inactive':
@@ -213,7 +235,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'inactive',
@@ -227,7 +248,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'returnFromInactive',
@@ -242,7 +262,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds
 			})
 
@@ -251,7 +270,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'leave'
@@ -263,7 +281,6 @@ module.exports = req => {
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,
 				contentId: currentDocument.contentId,
-				isPreviewMode,
 				sessionIds,
 				extensions: {
 					type: 'return',

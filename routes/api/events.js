@@ -1,60 +1,51 @@
-var express = require('express')
-var router = express.Router()
-var oboEvents = oboRequire('obo_events')
-var insertEvent = oboRequire('insert_event')
-var createCaliperEvent = require('./events/create_caliper_event')
-let logger = oboRequire('logger')
+const express = require('express')
+const router = express.Router()
+const oboEvents = oboRequire('obo_events')
+const insertEvent = oboRequire('insert_event')
+const createCaliperEvent = require('./events/create_caliper_event')
+const {
+	checkValidationRules,
+	requireCurrentDocument,
+	requireEvent,
+	requireCurrentUser,
+	requireCurrentVisit
+} = oboRequire('express_validators')
 
 // Create A New Event
 // mounted as /api/events
-router.post('/', (req, res, next) => {
-	let currentUser = null
-	let currentDocument = null
+router
+	.route('/')
+	.post([
+		requireCurrentUser,
+		requireCurrentVisit,
+		requireCurrentDocument,
+		requireEvent,
+		checkValidationRules
+	])
+	.post((req, res) => {
+		const event = req.body.event
+		const caliperEvent = createCaliperEvent(req)
+		const insertObject = {
+			actorTime: event.actor_time,
+			action: event.action,
+			userId: req.currentUser.id,
+			eventVersion: event.event_version,
+			ip: req.connection.remoteAddress,
+			metadata: {},
+			isPreview: req.currentVisit.is_preview,
+			payload: event.payload,
+			draftId: req.currentDocument.draftId,
+			contentId: req.currentDocument.contentId,
+			caliperPayload: caliperEvent
+		}
 
-	return req
-		.requireCurrentUser()
-		.then(user => {
-			currentUser = user
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
-
-			// add data to the event
-			let event = req.body.event
-
-			let caliperEvent = createCaliperEvent(req)
-
-			let insertObject = {
-				actorTime: event.actor_time,
-				action: event.action,
-				userId: currentUser.id,
-				eventVersion: event.event_version,
-				ip: req.connection.remoteAddress,
-				metadata: {},
-				payload: event.payload,
-				draftId: currentDocument.draftId,
-				contentId: currentDocument.contentId,
-				caliperPayload: caliperEvent
-			}
-
-			return insertEvent(insertObject)
-				.then(result => {
-					insertObject.createdAt = result.created_at
-					oboEvents.emit(`client:${event.action}`, insertObject, req)
-					res.success(caliperEvent)
-				})
-				.catch(err => {
-					logger.error('Insert Event Failure:', err)
-					// @TODO change to call next(err)
-					res.unexpected(err)
-				})
-		})
-		.catch(err => {
-			logger.error(err)
-			// @TODO change to call next(err)
-			res.notAuthorized(err)
-		})
-})
+		return insertEvent(insertObject)
+			.then(result => {
+				insertObject.createdAt = result.created_at
+				oboEvents.emit(`client:${event.action}`, insertObject, req)
+				res.success(caliperEvent)
+			})
+			.catch(res.unexpected)
+	})
 
 module.exports = router

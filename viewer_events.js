@@ -1,5 +1,5 @@
-let oboEvents = oboRequire('obo_events')
-let viewerState = oboRequire('viewer/viewer_state')
+const oboEvents = oboRequire('obo_events')
+const viewerState = oboRequire('viewer/viewer_state')
 
 // @TODO: Enable this when we're able to restore the user to their last page
 // oboEvents.on('client:nav:lock', (event, req) => {
@@ -10,15 +10,15 @@ let viewerState = oboRequire('viewer/viewer_state')
 // 	setNavLocked(event.userId, event.draftId, false)
 // })
 
-oboEvents.on('client:nav:open', (event, req) => {
+oboEvents.on('client:nav:open', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, true)
 })
 
-oboEvents.on('client:nav:close', (event, req) => {
+oboEvents.on('client:nav:close', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, false)
 })
 
-oboEvents.on('client:nav:toggle', (event, req) => {
+oboEvents.on('client:nav:toggle', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, event.payload.open)
 })
 

@@ -1,18 +1,18 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const router = express.Router()
 
 // Current User's Profile
 // mounted as /profile
-router.get('/', (req, res, next) => {
-	return req.getCurrentUser().then(currentuser => {
-		let msg = `Hello ${currentuser.username}!`
+router.route('/').get((req, res) => {
+	return req.getCurrentUser().then(() => {
+		const msg = `Hello ${req.currentUser.username}!`
 		res.send(msg)
 	})
 })
 
 // Log current user out
 // mounted as /profile/logout
-router.get('/logout', (req, res, next) => {
+router.get('/logout', (req, res) => {
 	req.resetCurrentUser()
 	res.send('Logged out')
 })

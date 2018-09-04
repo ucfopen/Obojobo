@@ -1,4 +1,4 @@
-let User = require('./user')
+const User = require('./user')
 
 class GuestUser extends User {
 	constructor() {
@@ -21,7 +21,7 @@ class GuestUser extends User {
 		return true
 	}
 
-	static fetchById(id) {
+	static fetchById() {
 		throw new Error('Cannot fetch Guest User')
 	}
 }

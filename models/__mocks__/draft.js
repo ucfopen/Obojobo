@@ -1,5 +1,3 @@
-let permissions = oboRequire('config').permissions
-
 let mockYell = jest.fn()
 
 class MockDraft {

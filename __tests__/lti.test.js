@@ -1,18 +1,16 @@
 import lti from '../lti'
-import { debug } from 'util'
-import { TableName } from 'pg-promise'
 
 jest.mock('../db')
 jest.mock('uuid')
 jest.mock('../logger')
 jest.mock('../insert_event')
 
-let moment = require('moment')
-let db = require('../db')
-let logger = oboRequire('logger')
-let insertEvent = require('../insert_event')
+const moment = require('moment')
+const db = require('../db')
+const logger = oboRequire('logger')
+const insertEvent = require('../insert_event')
 
-let logId = 'DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF'
+const logId = 'DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF'
 let _DateToISOString
 
 jest.mock('../config', () => {
@@ -26,7 +24,7 @@ jest.mock('../config', () => {
 })
 
 jest.mock('ims-lti/src/extensions/outcomes', () => {
-	let OutcomeService = function() {
+	const OutcomeService = function() {
 		this.service_url = 'lis_outcome_service_url'
 	}
 	OutcomeService.__setNextSendReplaceResultReturn = function(rtnValue) {
@@ -49,9 +47,9 @@ jest.mock('ims-lti/src/extensions/outcomes', () => {
 		OutcomeService
 	}
 })
-let OutcomeService = require('ims-lti/src/extensions/outcomes').OutcomeService
+const OutcomeService = require('ims-lti/src/extensions/outcomes').OutcomeService
 
-let mockDate = () => {
+const mockDate = () => {
 	global.Date.prototype.toISOString = () => 'MOCKED-ISO-DATE-STRING'
 }
 
@@ -66,7 +64,7 @@ class MockedBadReqVars {
 }
 
 // Set assessmentScore to null to specify no assessment score record
-let mockSendAssessScoreDBCalls = (
+const mockSendAssessScoreDBCalls = (
 	assessmentScore, // Use 'missing' to indicate no assessment score record
 	ltiPrevRecordScoreSent,
 	creationDate,
@@ -97,7 +95,7 @@ let mockSendAssessScoreDBCalls = (
 				assessmentScore: assessmentScore,
 				assessmentModdedScore: assessmentScore
 			},
-			preview: true
+			is_preview: true
 		})
 	} else {
 		db.oneOrNone.mockResolvedValueOnce({
@@ -117,7 +115,7 @@ let mockSendAssessScoreDBCalls = (
 				assessmentScore: assessmentScore,
 				assessmentModdedScore: assessmentScore
 			},
-			preview: false
+			is_preview: false
 		})
 	}
 
@@ -135,7 +133,8 @@ let mockSendAssessScoreDBCalls = (
 				status_details: null,
 				log_id: logId,
 				status: 'success',
-				gradebook_status: 'ok_gradebook_matches_assessment_score'
+				gradebook_status: 'ok_gradebook_matches_assessment_score',
+				is_preview: false
 			})
 		}
 
@@ -196,7 +195,7 @@ describe('lti', () => {
 	})
 
 	test('findSecretForKey should find the appropriate secret for a given key', () => {
-		let secret = lti.findSecretForKey('testkey')
+		const secret = lti.findSecretForKey('testkey')
 		expect(secret).toBe('testsecret')
 	})
 
@@ -205,7 +204,7 @@ describe('lti', () => {
 	})
 
 	test('isScoreValid ensures scores are valid', () => {
-		let isScoreValid = lti.isScoreValid
+		const isScoreValid = lti.isScoreValid
 
 		expect(isScoreValid(0)).toBe(true)
 		expect(isScoreValid(0.1)).toBe(true)
@@ -215,7 +214,7 @@ describe('lti', () => {
 		expect(isScoreValid(-1)).toBe(false)
 		expect(isScoreValid(1.1)).toBe(false)
 		expect(isScoreValid(null)).toBe(false)
-		expect(isScoreValid(undefined)).toBe(false)
+		expect(isScoreValid(undefined)).toBe(false) //eslint-disable-line no-undefined
 		expect(isScoreValid(true)).toBe(false)
 		expect(isScoreValid(false)).toBe(false)
 		expect(isScoreValid(NaN)).toBe(false)
@@ -227,7 +226,7 @@ describe('lti', () => {
 	})
 
 	test('isLaunchExpired checks if a launch is expired after 5 hours', () => {
-		let isLaunchExpired = lti.isLaunchExpired
+		const isLaunchExpired = lti.isLaunchExpired
 
 		expect(isLaunchExpired(moment().toISOString())).toBe(false)
 		expect(
@@ -254,7 +253,7 @@ describe('lti', () => {
 	})
 
 	test('getGradebookStatus returns the proper status', () => {
-		let ggs = lti.getGradebookStatus
+		const ggs = lti.getGradebookStatus
 
 		// ARGUMENTS:
 		// outcomeType = 'unknownOutcome' || 'noOutcome' || 'hasOutcome'
@@ -271,13 +270,13 @@ describe('lti', () => {
 		//	* ok_no_outcome_service
 		//  * ok_preview_mode
 
-		let unsent = 'error_newer_assessment_score_unsent'
-		let unk = 'error_state_unknown'
-		let invalid = 'error_invalid'
-		let okNull = 'ok_null_score_not_sent'
-		let match = 'ok_gradebook_matches_assessment_score'
-		let noOutcome = 'ok_no_outcome_service'
-		let okPreview = 'ok_preview_mode'
+		const unsent = 'error_newer_assessment_score_unsent'
+		const unk = 'error_state_unknown'
+		const invalid = 'error_invalid'
+		const okNull = 'ok_null_score_not_sent'
+		const match = 'ok_gradebook_matches_assessment_score'
+		const noOutcome = 'ok_no_outcome_service'
+		const okPreview = 'ok_preview_mode'
 
 		expect(ggs('unknownOutcome', 'nullScore', false, false)).toBe(okNull)
 		expect(ggs('unknownOutcome', 'invalidScore', false, false)).toBe(unk)
@@ -351,7 +350,7 @@ describe('lti', () => {
 	})
 
 	test('getLatestHighestAssessmentScoreRecord returns an object with expected properties', done => {
-		let getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
 		db.oneOrNone.mockResolvedValueOnce({
 			id: 'id',
@@ -361,7 +360,8 @@ describe('lti', () => {
 			assessment_id: 'assessment_id',
 			attempt_id: 'attempt_id',
 			score: 'score',
-			preview: 'preview'
+			is_preview: 'preview',
+			score_details: 'details'
 		})
 
 		getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id').then(result => {
@@ -373,8 +373,9 @@ describe('lti', () => {
 				assessmentId: 'assessment_id',
 				attemptId: 'attempt_id',
 				score: 'score',
-				preview: 'preview',
-				error: null
+				isPreview: 'preview',
+				error: null,
+				scoreDetails: 'details'
 			})
 
 			done()
@@ -382,7 +383,7 @@ describe('lti', () => {
 	})
 
 	test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', done => {
-		let getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
 		db.oneOrNone.mockResolvedValueOnce(null)
 		getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id')
@@ -390,7 +391,7 @@ describe('lti', () => {
 				expect(result.error.message).toBe('No assessment score found')
 				done()
 			})
-			.catch(e => {
+			.catch(() => {
 				expect('this to never').toBe('called')
 				done()
 			})
@@ -411,7 +412,7 @@ describe('lti', () => {
 	test('send same assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -473,6 +474,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -494,7 +496,7 @@ describe('lti', () => {
 	test('send different assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), true, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -556,6 +558,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -577,7 +580,7 @@ describe('lti', () => {
 	test('send first assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
 		mockSendAssessScoreDBCalls(100, null, moment().toISOString(), true, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -639,6 +642,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -660,7 +664,7 @@ describe('lti', () => {
 	test('send null assessment score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
 		mockSendAssessScoreDBCalls(null, null, moment().toISOString(), true, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -718,6 +722,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -739,7 +744,7 @@ describe('lti', () => {
 	test('send assessment score with no outcome results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
 		mockSendAssessScoreDBCalls(null, null, moment().toISOString(), true, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -797,6 +802,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -818,7 +824,7 @@ describe('lti', () => {
 	test('replaceResult fail for same score results in "error_replace_result_failed" and "ok_gradebook_matches_assessment_score"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), false, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -884,6 +890,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -905,7 +912,7 @@ describe('lti', () => {
 	test('replaceResult fail for different score results in "error_replace_result_failed" and "error_newer_assessment_score_unsent"', done => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), false, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -971,6 +978,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -992,7 +1000,7 @@ describe('lti', () => {
 	test('missing key for newer assessment score results in "error_no_secret_for_key" and "error_newer_assessment_score_unsent"', done => {
 		mockSendAssessScoreDBCalls(100, null, moment().toISOString(), true, true, 'nokey')
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1048,6 +1056,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1069,7 +1078,7 @@ describe('lti', () => {
 	test('missing key for same assessment score results in "error_no_secret_for_key" and "ok_gradebook_matches_assessment_score"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'nokey')
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1127,6 +1136,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1145,11 +1155,10 @@ describe('lti', () => {
 		})
 	})
 
-	//@TODO
 	test('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', done => {
 		mockSendAssessScoreDBCalls('missing', 1, moment().toISOString(), true, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1200,6 +1209,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1221,7 +1231,7 @@ describe('lti', () => {
 	test('no launch for different score results in "error_no_launch_found" and "error_state_unknown"', done => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), false, 'missing')
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1273,6 +1283,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1294,7 +1305,7 @@ describe('lti', () => {
 	test('no launch for same score results in "error_no_launch_found" and "ok_gradebook_matches_assessment_score"', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), false, 'missing')
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1346,6 +1357,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1367,7 +1379,7 @@ describe('lti', () => {
 	test('no launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
 		mockSendAssessScoreDBCalls(null, 1, moment().toISOString(), false, 'missing')
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1423,6 +1435,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1452,7 +1465,7 @@ describe('lti', () => {
 			true
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1507,6 +1520,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1536,7 +1550,7 @@ describe('lti', () => {
 			true
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1591,6 +1605,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1620,7 +1635,7 @@ describe('lti', () => {
 			true
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1679,6 +1694,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1708,7 +1724,7 @@ describe('lti', () => {
 			true
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1778,6 +1794,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1796,7 +1813,7 @@ describe('lti', () => {
 			false
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1855,6 +1872,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1876,7 +1894,7 @@ describe('lti', () => {
 	test('invalid score results in "error_score_is_invalid" and "error_state_unknown"', done => {
 		mockSendAssessScoreDBCalls('doggo', 1, moment().toISOString(), true, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -1935,6 +1953,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -1956,7 +1975,7 @@ describe('lti', () => {
 	test('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
 		mockSendAssessScoreDBCalls('doggo', 1, moment().toISOString(), true, false)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -2016,6 +2035,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -2037,12 +2057,12 @@ describe('lti', () => {
 	test('preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', done => {
 		mockSendAssessScoreDBCalls(1, 1, moment().toISOString(), false, true, 'testkey', true, true)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2095,6 +2115,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2113,12 +2134,12 @@ describe('lti', () => {
 			true
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2168,6 +2189,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2186,12 +2208,12 @@ describe('lti', () => {
 			true
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2244,6 +2266,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2262,12 +2285,12 @@ describe('lti', () => {
 			true
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2320,6 +2343,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2340,12 +2364,12 @@ describe('lti', () => {
 			true
 		)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2398,6 +2422,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 			done()
@@ -2482,7 +2507,7 @@ describe('lti', () => {
 		// tries to get lis_outcome_service_url. I just need to get some error to be
 		// thrown in getOutcomeServiceForLaunch so that it can be caught.
 
-		let rtn = lti.getOutcomeServiceForLaunch({
+		const rtn = lti.getOutcomeServiceForLaunch({
 			key: 'testkey',
 			reqVars: new MockedBadReqVars()
 		})
@@ -2494,7 +2519,7 @@ describe('lti', () => {
 		OutcomeService.__setNextSendReplaceResultError(new Error('Internal Outcome Service Error'))
 		// OutcomeService.__setNextSendReplaceResultReturn('rv')
 
-		let os = new OutcomeService()
+		const os = new OutcomeService()
 		os.service_url = 'service-url'
 
 		lti.sendReplaceResultRequest(os, 1).then(result => {
@@ -2520,7 +2545,10 @@ describe('lti', () => {
 		insertEvent.mockRejectedValueOnce(new Error('mock Error'))
 
 		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
-			expect(logger.error).toHaveBeenCalledWith('There was an error inserting the lti event')
+			expect(logger.error).toHaveBeenCalledWith(
+				'There was an error inserting the lti event:',
+				new Error('mock Error')
+			)
 			done()
 		})
 	})
@@ -2528,7 +2556,7 @@ describe('lti', () => {
 	test('logAndGetStatusForError logs unexpected error', () => {
 		// All other errors are tested through other methods
 
-		let result = lti.logAndGetStatusForError(new Error('Mock Error'), {}, logId)
+		const result = lti.logAndGetStatusForError(new Error('Mock Error'), {}, logId)
 		expect(result).toEqual({
 			status: 'error_unexpected',
 			statusDetails: { message: 'Mock Error' }
@@ -2538,7 +2566,7 @@ describe('lti', () => {
 	test('sendHighestAssessmentScore fails and logs as expected', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'testkey', false)
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -2597,6 +2625,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 
@@ -2618,7 +2647,7 @@ describe('lti', () => {
 	test('unexpected error works as expected', done => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, 'error')
 		mockDate()
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'draft-id',
 			contentId: 'content-id'
 		}
@@ -2675,6 +2704,7 @@ describe('lti', () => {
 				eventVersion: '2.0.0',
 				metadata: {},
 				draftId: 'draft-id',
+				isPreview: false,
 				contentId: 'content-id'
 			})
 

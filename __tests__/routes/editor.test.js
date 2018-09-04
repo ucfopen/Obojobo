@@ -1,290 +1,228 @@
 jest.mock('../../db')
-jest.mock('../../models/user')
+jest.unmock('fs') // need fs working for view rendering
+jest.unmock('express') // we'll use supertest + express for this
 
-const { mockRouterMethods } = require('../../__mocks__/__mock_express')
+// override requireCurrentUser for tests to provide our own user
+let mockCurrentUser
+
+// override requireCurrentDocument for tests to provide our own document
+let mockCurrentDocument
+
+jest.mock('../../express_current_user', () => (req, res, next) => {
+	req.requireCurrentUser = () => {
+		req.currentUser = mockCurrentUser
+		return Promise.resolve(mockCurrentUser)
+	}
+	next()
+})
+
+jest.mock('../../express_current_document', () => (req, res, next) => {
+	req.requireCurrentDocument = () => {
+		req.currentDocument = mockCurrentDocument
+		return Promise.resolve(mockCurrentDocument)
+	}
+	next()
+})
+
+// setup express server
+const db = oboRequire('db')
+const request = require('supertest')
+const express = require('express')
+const app = express()
+app.set('view engine', 'ejs')
+app.set('views', __dirname + '/../../views/')
+app.use(oboRequire('express_current_user'))
+app.use(oboRequire('express_current_document'))
+app.use('/', oboRequire('express_response_decorator'))
+app.use('/', oboRequire('routes/editor'))
 
 describe('editor route', () => {
-	beforeAll(() => {})
-	afterAll(() => {})
-	beforeEach(() => {})
-	afterEach(() => {})
-
-	test('registers the expected routes ', () => {
-		const editor = oboRequire('routes/editor')
-		expect(mockRouterMethods.post).toBeCalledWith('/', expect.any(Function))
-		expect(mockRouterMethods.post).toBeCalledWith('/:draftId/:page?', expect.any(Function))
-		expect(mockRouterMethods.get).toBeCalledWith('/:draftId/:page?', expect.any(Function))
+	beforeEach(() => {
+		db.any.mockReset()
+		mockCurrentUser = { id: 99, canViewEditor: true } // should meet auth requirements
+		mockCurrentDocument = {}
 	})
 
-	test('POST / loads the draftList', () => {
-		expect.assertions(1)
+	test('get editor_picker rejects users without canViewEditor permission', () => {
+		expect.assertions(3)
+		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
 
-		const db = oboRequire('db')
-
-		// mock the launch insert
-		db.any.mockResolvedValueOnce({ draft: true })
-
-		const User = oboRequire('models/user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.post.mock.calls[1][1]
-
-		const mockReq = {
-			getCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new User()
-				u.canViewEditor = true
-				return Promise.resolve(u)
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.statusCode).toBe(401)
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.text).toBe('Not Authorized')
 			})
-		}
-
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockRes.render).toBeCalledWith(
-				expect.any(String),
-				expect.objectContaining({
-					draftTitle: 'Editor',
-					drafts: { draft: true }
-				})
-			)
-		})
 	})
 
-	test('POST / rejects for guests', () => {
-		expect.assertions(2)
+	test('get editor_picker returns the expected response', () => {
+		expect.assertions(3)
 
-		const GuestUser = oboRequire('models/guest_user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.post.mock.calls[1][1]
+		// mock the list of drafts
+		db.any.mockResolvedValueOnce([])
 
-		const mockReq = {
-			getCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new GuestUser()
-				return Promise.resolve(u)
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('Obojobo Editor')
 			})
-		}
-
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith(expect.any(Error))
-			expect(mockNext.mock.calls[0][0].message).toBe('Login Required')
-		})
 	})
 
-	test('POST / rejects for users without editor permissions', () => {
-		expect.assertions(1)
+	test('get editor_picker returns drafts sorted alphabetically', () => {
+		expect.assertions(7)
 
-		const User = oboRequire('models/user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.post.mock.calls[1][1]
+		// mock the list of drafts in backwards order
+		db.any.mockResolvedValueOnce([
+			{
+				draftId: 99,
+				xml: 'xml-1',
+				createdAt: new Date(2018, 11, 24, 10, 33, 30, 0),
+				content: { content: { title: 'b-mock-title' } }
+			},
+			{
+				draftId: 100,
+				xml: 'xml-2',
+				createdAt: new Date(2018, 11, 24, 10, 33, 30, 0),
+				content: { content: { title: 'a-mock-title' } }
+			}
+		])
 
-		const mockReq = {
-			getCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new User()
-				u.canViewEditor = false
-				return Promise.resolve(u)
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('a-mock-title')
+				expect(response.text).toContain('b-mock-title')
+				expect(response.text).toContain('data-id="99"')
+				expect(response.text).toContain('data-id="100"')
+				expect(response.text.indexOf('a-mock-title')).toBeLessThan(
+					response.text.indexOf('b-mock-title')
+				)
 			})
-		}
-
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith()
-		})
 	})
 
-	test('POST /:draftId/:page? loads the expected draft', () => {
-		expect.assertions(1)
+	test('get editor_picker sets data-content for drafts with xml as expected', () => {
+		expect.assertions(3)
 
-		const User = oboRequire('models/user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.post.mock.calls[0][1]
+		// mock the list of drafts with xml content
+		db.any.mockResolvedValueOnce([
+			{
+				draftId: 99,
+				xml: 'xml-1',
+				content: { content: { title: 'b-mock-title' } },
+				createdAt: new Date(2018, 11, 24, 10, 33, 30, 0)
+			}
+		])
 
-		const mockReq = {
-			requireCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new User()
-				u.canViewEditor = true
-				return Promise.resolve(u)
-			}),
-			requireCurrentDocument: jest.fn().mockReturnValueOnce('mockDraft')
-		}
-
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockRes.render).toBeCalledWith(
-				expect.any(String),
-				expect.objectContaining({
-					draftTitle: 'Editor',
-					drafts: 'mockDraft'
-				})
-			)
-		})
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('data-content="xml-1"')
+			})
 	})
 
-	test('POST /:draftId/:page? rejects for guests', () => {
-		expect.assertions(2)
+	test('get editor_picker sets data-content for drafts without xml as expected', () => {
+		expect.assertions(3)
 
-		const GuestUser = oboRequire('models/guest_user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.post.mock.calls[0][1]
+		// mock the list of drafts with no xml content
+		db.any.mockResolvedValueOnce([
+			{
+				draftId: 99,
+				xml: null,
+				content: { content: { title: 'b-mock-title' } },
+				createdAt: new Date(2018, 11, 24, 10, 33, 30, 0)
+			}
+		])
 
-		const mockReq = {
-			requireCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new GuestUser()
-				return Promise.resolve(u)
-			}),
-			requireCurrentDocument: jest.fn().mockReturnValueOnce('mockDraft')
-		}
-
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith(expect.any(Error))
-			expect(mockNext.mock.calls[0][0].message).toBe('Login Required')
-		})
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain(
+					'{&#34;content&#34;:{&#34;title&#34;:&#34;b-mock-title&#34;}}'
+				)
+			})
 	})
 
-	test('POST /:draftId/:page? rejects for users without editor permissions', () => {
-		expect.assertions(1)
+	test('get editor_picker handles db error with default error string', () => {
+		expect.assertions(3)
 
-		const User = oboRequire('models/user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.post.mock.calls[0][1]
+		// mock the list of drafts with no xml content
+		db.any.mockRejectedValueOnce(null)
 
-		const mockReq = {
-			requireCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new User()
-				u.canViewEditor = false
-				return Promise.resolve(u)
-			}),
-			requireCurrentDocument: jest.fn().mockReturnValueOnce('mockDraft')
-		}
-
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith()
-		})
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('Server Error')
+			})
 	})
 
-	test('GET /:draftId/:page? loads the expected draft', () => {
-		expect.assertions(1)
+	test('get editor_picker handles db error with rejected string ', () => {
+		expect.assertions(3)
 
-		const User = oboRequire('models/user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.get.mock.calls[0][1]
+		// mock the list of drafts with no xml content
+		db.any.mockRejectedValueOnce('rejected error')
 
-		const mockReq = {
-			requireCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new User()
-				u.canViewEditor = true
-				return Promise.resolve(u)
-			}),
-			requireCurrentDocument: jest.fn().mockReturnValueOnce('mockDraft')
-		}
-
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockRes.render).toBeCalledWith(
-				expect.any(String),
-				expect.objectContaining({
-					draftTitle: 'Editor',
-					drafts: 'mockDraft'
-				})
-			)
-		})
+		return request(app)
+			.get('/')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('rejected error')
+			})
 	})
 
-	test('GET /:draftId/:page? rejects for guests', () => {
-		expect.assertions(2)
+	test('get editor/draftId returns the expected response', () => {
+		expect.assertions(3)
+		mockCurrentUser.isGuest = () => false
 
-		const GuestUser = oboRequire('models/guest_user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.get.mock.calls[0][1]
+		// mock the list of drafts
+		db.any.mockResolvedValueOnce([])
 
-		const mockReq = {
-			requireCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new GuestUser()
-				return Promise.resolve(u)
-			}),
-			requireCurrentDocument: jest.fn().mockReturnValueOnce('mockDraft')
-		}
-
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith(expect.any(Error))
-			expect(mockNext.mock.calls[0][0].message).toBe('Login Required')
-		})
+		return request(app)
+			.get('/draft/mockId')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('Obojobo Visual Editor')
+			})
 	})
 
-	test('GET /:draftId/:page? rejects for users without editor permissions', () => {
-		expect.assertions(1)
+	test('get editor/draftId rejects users without canViewEditor permission', () => {
+		expect.assertions(3)
+		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
+		mockCurrentUser.isGuest = () => false
+		return request(app)
+			.get('/draft/mockId')
+			.then(response => {
+				expect(response.statusCode).toBe(401)
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.text).toBe('Not Authorized')
+			})
+	})
 
-		const User = oboRequire('models/user')
-		const editor = oboRequire('routes/editor')
-		const displayEditor = mockRouterMethods.get.mock.calls[0][1]
+	test('post editor/draftId returns the expected response', () => {
+		expect.assertions(3)
+		mockCurrentUser.isGuest = () => false
 
-		const mockReq = {
-			requireCurrentUser: jest.fn().mockImplementationOnce(() => {
-				const u = new User()
-				u.canViewEditor = false
-				return Promise.resolve(u)
-			}),
-			requireCurrentDocument: jest.fn().mockReturnValueOnce('mockDraft')
-		}
+		// mock the list of drafts
+		db.any.mockResolvedValueOnce([])
 
-		const mockRes = {
-			status: jest.fn(),
-			render: jest.fn()
-		}
-
-		const mockNext = jest.fn()
-
-		return displayEditor(mockReq, mockRes, mockNext).then(() => {
-			expect(mockNext).toBeCalledWith()
-		})
+		return request(app)
+			.post('/draft/mockId')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('Obojobo Visual Editor')
+			})
 	})
 })

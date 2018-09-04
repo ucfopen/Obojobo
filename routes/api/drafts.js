@@ -5,6 +5,14 @@ const DraftModel = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
+const {
+	checkValidationRules,
+	requireDraftId,
+	requireCanCreateDrafts,
+	requireCanDeleteDrafts,
+	requireCanViewDrafts
+} = oboRequire('express_validators')
+
 const draftTemplateXML = fs
 	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
 	.toString()
@@ -12,141 +20,122 @@ const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 
 // Get a Draft Document Tree
 // mounted as /api/drafts/:draftId
-router.get('/:draftId', (req, res, next) => {
-	const draftId = req.params.draftId
+router
+	.route('/:draftId')
+	.get([requireDraftId, checkValidationRules])
+	.get((req, res) => {
+		const draftId = req.params.draftId
 
-	return DraftModel.fetchById(draftId)
-		.then(draftTree => {
-			draftTree.root.yell('internal:sendToClient', req, res)
-			res.success(draftTree.document)
-		})
-		.catch(err => {
-			logger.error(err)
-			//@TODO call next with error
-			res.missing('Draft not found')
-		})
-})
+		return DraftModel.fetchById(draftId)
+			.then(draftTree => {
+				draftTree.root.yell('internal:sendToClient', req, res)
+				res.success(draftTree.document)
+			})
+			.catch(error => {
+				const QueryResultError = db.errors.QueryResultError
+				const qrec = db.errors.queryResultErrorCode
+				if (error instanceof QueryResultError && error.code === qrec.noData) {
+					return res.missing('Draft not found')
+				}
+				res.unexpected(error)
+			})
+	})
 
-//@TODO - Transactionify this
 // Create a Draft
 // mounted as /api/drafts/new
-router.post('/new', (req, res, next) => {
-	const newDraft = null
-	let user = null
+router
+	.route('/new')
+	.post(requireCanCreateDrafts)
+	.post((req, res) => {
+		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
+			.then(newDraft => {
+				res.success(newDraft)
+			})
+			.catch(res.unexpected)
+	})
 
-	return req
-		.requireCurrentUser()
-		.then(currentUser => {
-			user = currentUser
-			if (!currentUser.canCreateDrafts) throw 'Insufficent permissions'
-			return DraftModel.createWithContent(user.id, draftTemplate, draftTemplateXML)
-		})
-		.then(newDraft => {
-			res.success(newDraft)
-		})
-		.catch(err => {
-			//@TODO have this call next with error
-			res.unexpected(err)
-		})
-})
-
-//@TODO - Ensure that you can't post to a deleted draft, ensure you can only delete your own stuff
 // Update a Draft
 // mounted as /api/drafts/:draftid
-router.post('/:draftId', (req, res, next) => {
-	return req
-		.requireCurrentUser()
-		.then(currentUser => {
-			if (!currentUser.canEditDrafts) throw 'Insufficent permissions'
+router
+	.route('/:draftId')
+	.post([requireCanCreateDrafts, requireDraftId, checkValidationRules])
+	.post((req, res) => {
+		return Promise.resolve()
+			.then(() => {
+				let xml
+				let documentInput
 
-			let xml
-			let reqInput
-
-			// req.body will either be an object if sent via application/json or
-			// (hopefully) XML if sent as text
-			switch (typeof req.body) {
-				case 'object':
-					console.log('got here')
-					reqInput = req.body
-					break
-
-				case 'string':
+				if (typeof req.body === 'string') {
+					// req.body expected to be xml document
 					try {
 						xml = req.body
 						const convertedXml = xmlToDraftObject(req.body, true)
-						if (typeof convertedXml === 'object') {
-							reqInput = convertedXml
-							break
+						if (convertedXml && typeof convertedXml === 'object') {
+							documentInput = convertedXml
+						} else {
+							logger.error('Parse XML non-error?', convertedXml)
 						}
 					} catch (e) {
 						logger.error('Parse XML Failed:', e, req.body)
-						// continue to intentional fall through
 					}
+				} else {
+					// req.body expected to by json document
+					documentInput = req.body
+				}
 
-				// intentional fall through
-
-				default:
+				if (!documentInput || typeof documentInput !== 'object') {
 					logger.error('Posting draft failed - format unexpected:', req.body)
 					res.badInput('Posting draft failed - format unexpected')
-			}
+					return
+				}
 
-			// Scan through json for identical ids
-			const duplicateId = DraftModel.findDuplicateIds(reqInput)
-			if (duplicateId !== null) {
-				logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
-				res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
-				return
-			}
+				// Scan through json for identical ids
+				const duplicateId = DraftModel.findDuplicateIds(documentInput)
 
-			return DraftModel.updateContent(req.params.draftId, reqInput, xml || null).then(id => {
-				res.success({ id })
+				if (duplicateId !== null) {
+					logger.error('Posting draft failed - duplicate id "' + duplicateId + '"')
+					res.badInput('Posting draft failed - duplicate id "' + duplicateId + '"')
+					return
+				}
+
+				return DraftModel.updateContent(req.params.draftId, documentInput, xml || null).then(id => {
+					res.success({ id })
+				})
 			})
-		})
-		.catch(error => {
-			logger.error(error)
-			//@TODO call next with error
-			res.unexpected(error)
-		})
-})
+			.catch(res.unexpected)
+	})
 
 // Delete a Draft
 // mounted as /api/drafts/:draftId
-router.delete('/:draftId', (req, res, next) => {
-	return req
-		.requireCurrentUser()
-		.then(currentUser => {
-			if (!currentUser.canDeleteDrafts) throw 'Insufficent permissions'
-
-			return db.none(
+router
+	.route('/:draftId')
+	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
+	.delete((req, res) => {
+		return db
+			.none(
 				`
 			UPDATE drafts
 			SET deleted = TRUE
 			WHERE id = $[draftId]
 			AND user_id = $[userId]
-		`,
+			`,
 				{
 					draftId: req.params.draftId,
-					userId: currentUser.id
+					userId: req.currentUser.id
 				}
 			)
-		})
-		.then(id => {
-			res.success(id)
-		})
-		.catch(err => {
-			//@TODO call next with error
-			res.unexpected(err)
-		})
-})
+			.then(res.success)
+			.catch(res.unexpected)
+	})
 
 // List drafts
 // mounted as /api/drafts
-router.get('/', (req, res, next) => {
-	return req
-		.requireCurrentUser()
-		.then(currentUser => {
-			if (!currentUser.canViewDrafts) throw 'Insufficent permissions'
-			return db.any(
+router
+	.route('/')
+	.get(requireCanViewDrafts)
+	.get((req, res) => {
+		return db
+			.any(
 				`
 			SELECT DISTINCT ON (draft_id)
 				draft_id AS "draftId",
@@ -162,17 +151,10 @@ router.get('/', (req, res, next) => {
 			)
 			ORDER BY draft_id, id desc
 		`,
-				{ userId: currentUser.id }
+				{ userId: req.currentUser.id }
 			)
-		})
-		.then(result => {
-			res.success(result)
-		})
-		.catch(err => {
-			logger.error(err)
-			//@TODO call next with error
-			res.unexpected(err)
-		})
-})
+			.then(res.success)
+			.catch(res.unexpected)
+	})
 
 module.exports = router

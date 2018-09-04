@@ -1,14 +1,10 @@
 import BaseCaliper from '../../../../routes/api/events/create_base_caliper_event'
 jest.spyOn(BaseCaliper, 'createEvent')
-const caliperEvents = require('../../../../routes/api/events/create_caliper_event')(
-	null,
-	'testHost'
-)
+const caliperEvents = oboRequire('routes/api/events/create_caliper_event')(null, 'testHost')
 
 const actor = { type: 'user', id: 'testUserId' }
 const assessmentId = 'testAssessment'
 const attemptId = 'testAttemptId'
-const attemptIRI = 'testAttemptIRI'
 const draftId = 'testDraftId'
 const contentId = 'testContentId'
 const extensions = { foo: 'bar' }
@@ -20,6 +16,7 @@ const targetId = 'testTargetId'
 const selectedTargets = { ids: [targetId] }
 const score = '50'
 const scoreId = '123'
+const mediaId = 'mediaId'
 const sessionIds = { sessionId: 'testSessionId', launchId: 'testOboLaunchId' }
 const to = 'navigation is going here'
 let originaltoISOString
@@ -27,10 +24,10 @@ let originaltoISOString
 describe('Caliper event creator', () => {
 	beforeAll(() => {
 		originaltoISOString = Date.prototype.toISOString
-		Date.prototype.toISOString = () => 'mockDate'
+		Date.prototype.toISOString = () => 'mockDate' //eslint-disable-line no-extend-native
 	})
 	afterAll(() => {
-		Date.prototype.toISOString = originaltoISOString
+		Date.prototype.toISOString = originaltoISOString //eslint-disable-line no-extend-native
 	})
 
 	test('createNavigationEvent', () => {
@@ -90,7 +87,7 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createViewEvent', () => {
 		const viewEvent = caliperEvents.createViewEvent({
@@ -131,14 +128,14 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createHideEvent', () => {
 		const hideEvent = caliperEvents.createHideEvent({
 			actor,
 			draftId,
 			contentId,
-			questionId,
+			itemId,
 			sessionIds,
 			extensions
 		})
@@ -150,7 +147,7 @@ describe('Caliper event creator', () => {
 			actor,
 			draftId,
 			contentId,
-			questionId,
+			itemId,
 			frameName,
 			sessionIds,
 			extensions
@@ -164,7 +161,7 @@ describe('Caliper event creator', () => {
 				actor: { type: 'bad' },
 				draftId,
 				contentId,
-				questionId,
+				itemId,
 				frameName,
 				sessionIds,
 				extensions
@@ -174,7 +171,7 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createAssessmentAttemptStartedEvent', () => {
 		const attemptStarted = caliperEvents.createAssessmentAttemptStartedEvent({
@@ -203,7 +200,7 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createAssessmentAttemptSubmittedEvent', () => {
 		const attemptSubmitted = caliperEvents.createAssessmentAttemptSubmittedEvent({
@@ -231,7 +228,7 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createAssessmentAttemptScoredEvent', () => {
 		const attemptScored = caliperEvents.createAssessmentAttemptScoredEvent({
@@ -259,7 +256,7 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type serverApp`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createPracticeGradeEvent', () => {
 		const practiceGrade = caliperEvents.createPracticeGradeEvent({
@@ -290,7 +287,7 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type viewerClient`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createAssessmentItemEvent', () => {
 		const assessmentItem = caliperEvents.createAssessmentItemEvent({
@@ -377,7 +374,7 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createPracticeQuestionSubmittedEvent', () => {
 		const practiceQuestionSubmitted = caliperEvents.createPracticeQuestionSubmittedEvent({
@@ -404,7 +401,7 @@ describe('Caliper event creator', () => {
 		}).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createPracticeUngradeEvent', () => {
 		const practiceUngrade = caliperEvents.createPracticeUngradeEvent({
@@ -431,7 +428,22 @@ describe('Caliper event creator', () => {
 		}).toThrow('Invalid actor type. Must provide actor of type serverApp')
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
+	test('createMediaChangedSizeEvent', () => {
+		const mediaChanged = caliperEvents.createMediaChangedSizeEvent({
+			actor,
+			draftId,
+			contentId,
+			mediaId,
+			sessionIds,
+			extensions
+		})
+
+		expect(mediaChanged).toMatchSnapshot()
+	})
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createViewerAbandonedEvent', () => {
 		const viewerAbandoned = caliperEvents.createViewerAbandonedEvent({
@@ -456,7 +468,7 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createViewerResumedEvent', () => {
 		const viewerResumed = caliperEvents.createViewerResumedEvent({
@@ -481,7 +493,7 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createViewerSessionLoggedInEvent', () => {
 		const viewerSessionLoggedIn = caliperEvents.createViewerSessionLoggedInEvent({
@@ -506,7 +518,7 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createViewerSessionLoggedOutEvent', () => {
 		const viewerSessionLoggedOut = caliperEvents.createViewerSessionLoggedOutEvent({
@@ -531,7 +543,7 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createPracticeQuestionResetEvent', () => {
 		const practiceQuestionReset = caliperEvents.createPracticeQuestionResetEvent({
@@ -557,7 +569,7 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createNavMenuHidEvent', () => {
 		const createNavMenuHidEvent = caliperEvents.createNavMenuHidEvent({
@@ -584,7 +596,7 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createNavMenuShowedEvent', () => {
 		const createNavMenuShowedEvent = caliperEvents.createNavMenuShowedEvent({
@@ -611,7 +623,7 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createNavMenuToggledEvent', () => {
 		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
@@ -638,7 +650,7 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createNavMenuActivatedEvent', () => {
 		const createNavMenuActivatedEvent = caliperEvents.createNavMenuActivatedEvent({
@@ -665,7 +677,7 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createNavMenuDectivatedEvent', () => {
 		const createNavMenuDeactivatedEvent = caliperEvents.createNavMenuDeactivatedEvent({
@@ -692,7 +704,7 @@ describe('Caliper event creator', () => {
 		)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createLTIPickerEvent', () => {
 		const createLTIPickerEvent = caliperEvents.createLTIPickerEvent({
@@ -709,7 +721,7 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createViewerOpenEvent', () => {
 		const createViewerOpenEvent = caliperEvents.createViewerOpenEvent({
@@ -727,7 +739,7 @@ describe('Caliper event creator', () => {
 		).toThrow(`Invalid actor type. Must provide actor of type user`)
 	})
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////////////////////////
 
 	test('createVisitCreateEvent', () => {
 		const createVisitCreateEvent = caliperEvents.createVisitCreateEvent({

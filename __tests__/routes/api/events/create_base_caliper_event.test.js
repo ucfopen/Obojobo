@@ -2,11 +2,7 @@ import BaseEvent from '../../../../routes/api/events/create_base_caliper_event'
 import Event from 'caliper-js-public/src/events/event'
 import iriFactory from '../../../../iri_builder'
 
-const {
-	ACTOR_USER,
-	ACTOR_VIEWER_CLIENT,
-	ACTOR_SERVER_APP
-} = require('../../../../routes/api/events/caliper_constants')
+const { ACTOR_SERVER_APP } = oboRequire('routes/api/events/caliper_constants')
 
 describe('Base Caliper Event', () => {
 	test('createEvent builds basic Caliper Event', () => {
@@ -20,7 +16,7 @@ describe('Base Caliper Event', () => {
 			actor: 'https://mockhost/api/server',
 			edApp: 'https://mockhost/api/system',
 			eventTime: expect.any(String),
-			extensions: { previewMode: false },
+			extensions: {},
 			federatedSession: null,
 			generated: null,
 			group: null,

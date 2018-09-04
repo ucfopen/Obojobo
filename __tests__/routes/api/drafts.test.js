@@ -5,634 +5,405 @@ jest.mock('../../../logger')
 jest.mock('obojobo-draft-xml-parser/xml-to-draft-object')
 
 import DraftModel from '../../../models/draft'
-import User from '../../../models/user'
-import logger from '../../../logger'
-import mockXMLParser from 'obojobo-draft-xml-parser/xml-to-draft-object'
-let xml = require('obojobo-draft-xml-parser/xml-to-draft-object')
+const xml = require('obojobo-draft-xml-parser/xml-to-draft-object')
 
-const { mockExpressMethods, mockRouterMethods } = require('../../../__mocks__/__mock_express')
+// don't use our existing express mock, we're using supertest
+jest.unmock('express')
+// Load an example default Obojobo middleware
+const request = require('supertest')
+const express = require('express')
+const app = express()
 
-let mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
+const basicXML = `<ObojoboDraftDoc>
+	<Module title="My Module">
+	    <Content>
+	      <Page>
+	        <p>Hello World!</p>
+	      </Page>
+	    </Content>
+	  </Module>
+	</ObojoboDraftDoc>`
+
+const mockInsertNewDraft = mockVirtual('./routes/api/drafts/insert_new_draft')
 const db = oboRequire('db')
 const drafts = oboRequire('routes/api/drafts')
+
+let mockCurrentUser
+
+const mockGetCurrentUser = jest.fn().mockImplementation(req => {
+	req.currentUser = mockCurrentUser
+	return Promise.resolve(mockCurrentUser)
+})
+
+jest.mock('../../../express_current_user', () => (req, res, next) => {
+	req.getCurrentUser = mockGetCurrentUser.bind(this, req)
+	req.requireCurrentUser = mockGetCurrentUser.bind(this, req)
+	next()
+})
+
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
+app.use(bodyParser.text())
+app.use(oboRequire('express_current_user'))
+app.use('/', oboRequire('express_response_decorator'))
+app.use('/api/drafts', drafts)
 
 describe('api draft route', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
-		logger.error.mockReset()
 		mockInsertNewDraft.mockReset()
-		mockXMLParser.mockReset()
+		DraftModel.findDuplicateIds.mockReset()
+		db.none.mockReset()
+		db.any.mockReset()
+		xml.mockReset()
 	})
 	afterEach(() => {})
 
-	test('registers the expected routes ', () => {
-		oboRequire('routes/api/drafts')
-		expect(mockRouterMethods.get).toHaveBeenCalledTimes(2)
-		expect(mockRouterMethods.post).toHaveBeenCalledTimes(2)
-		expect(mockRouterMethods.delete).toHaveBeenCalledTimes(1)
-		expect(mockRouterMethods.get).toBeCalledWith('/', expect.any(Function))
-		expect(mockRouterMethods.get).toBeCalledWith('/:draftId', expect.any(Function))
-		expect(mockRouterMethods.post).toBeCalledWith('/new', expect.any(Function))
-		expect(mockRouterMethods.post).toBeCalledWith('/new', expect.any(Function))
-	})
+	// get draft
 
-	test('GET /:draftId handles missing drafts', () => {
-		expect.assertions(1)
-
-		DraftModel.fetchById.mockRejectedValueOnce('some error')
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() }
-		}
-
-		let mockRes = {
-			missing: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(err => {
-				expect(mockRes.missing).toBeCalledWith('Draft not found')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
-			})
-	})
-
-	test('GET /:draftId calls internal:sendToClient', () => {
-		expect.assertions(1)
-
+	test('get draft returns success', () => {
+		expect.assertions(5)
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+		// mock the document returned by fetchById
 		DraftModel.fetchById.mockResolvedValueOnce({
-			root: {
-				yell: jest.fn()
-			}
+			root: { yell: mockYell },
+			document: 'mock-document'
 		})
-
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() }
-		}
-
-		let mockRes = {
-			missing: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(err => {
-				expect(mockRes.missing).toBeCalledWith('Draft not found')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(mockYell).toHaveBeenCalledWith(
+					'internal:sendToClient',
+					expect.anything(),
+					expect.anything()
+				)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-document')
 			})
 	})
 
-	test('GET /new calls success', () => {
-		expect.assertions(1)
-
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockReturnValueOnce('fake draft')
-			}
-		})
-
-		DraftModel.__setMockYell(mockYell)
-
-		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() },
-			requireCurrentUser: () => {
-				let u = new User()
-				u.id = 111
-				u.canCreateDrafts = true
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			success: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		DraftModel.createWithContent.mockReturnValueOnce('test_result')
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.success).toBeCalledWith('test_result')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('get draft returns 404 when no items found', () => {
+		expect.assertions(5)
+		// mock a failure to find the draft
+		const mockError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
+		DraftModel.fetchById.mockRejectedValueOnce(mockError)
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(404)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'missing')
+				expect(response.body.value).toHaveProperty('message', 'Draft not found')
 			})
 	})
 
-	test('GET /new requires user', () => {
-		expect.assertions(1)
-
-		let routeFunction = mockRouterMethods.post.mock.calls[0][1]
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() },
-			requireCurrentUser: () => {
-				let u = new User()
-				u.id = 111
-				u.canCreateDrafts = false
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			unexpected: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-		DraftModel.createWithContent.mockReturnValueOnce('test_result')
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('get draft returns 500 when an unkown error occurs', () => {
+		expect.assertions(5)
+		// mock a failure to find the draft
+		DraftModel.fetchById.mockRejectedValueOnce('mock-other-error')
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body.value).toHaveProperty('message', 'mock-other-error')
 			})
 	})
 
-	test('POST /:draftId calls res.success', () => {
-		expect.assertions(1)
+	// new draft
 
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockReturnValueOnce('fake draft')
-			}
-		})
-
-		DraftModel.__setMockYell(mockYell)
-
-		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() },
-			body: { a: 1 },
-			requireCurrentUser: () => {
-				let u = new User()
-				u.id = 111
-				u.canEditDrafts = true
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			success: jest.fn(),
-			unexpected: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.success).toBeCalledWith({ id: 'mockUpdatedContentId' })
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('new draft returns success', () => {
+		expect.assertions(4)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/new')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
 			})
 	})
 
-	test('POST /:draftId parses bad xml', () => {
-		expect.assertions(2)
-
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
-		})
-
-		DraftModel.__setMockYell(mockYell)
-
-		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-		mockXMLParser.mockImplementationOnce(() => {
-			throw 'mockError'
-		})
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() },
-			body: 'mockXML',
-			requireCurrentUser: () => {
-				let u = new User()
-				u.id = 111
-				u.canEditDrafts = true
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			success: jest.fn(),
-			unexpected: jest.fn(),
-			badInput: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(logger.error).toBeCalledWith('Posting draft failed - format unexpected:', 'mockXML')
-				expect(mockRes.badInput).toBeCalledWith('Posting draft failed - format unexpected')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('new draft requires a login', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canCreateDrafts: false } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/new')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
-	test('POST /:draftId parses good xml', () => {
-		expect.assertions(1)
-
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
-		})
-
-		DraftModel.__setMockYell(mockYell)
-
-		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-		mockXMLParser.mockReturnValueOnce({})
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() },
-			body: `<ObojoboDraftDocument>
-				<Module title="My Module">
-					<Content>
-						<Page>
-					        <Text>
-								<textGroup>
-									<t>Hello World!</t>
-								</textGroup>
-							</Text>
-						</Page>
-					</Content>
-				</Module>
-			</ObojoboDraftDocument>`,
-			requireCurrentUser: () => {
-				let u = new User()
-				u.id = 111
-				u.canEditDrafts = true
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			success: jest.fn(),
-			unexpected: jest.fn(),
-			badInput: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.success).toBeCalledWith({ id: 'mockUpdatedContentId' })
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('new draft 500s when createWithContent fails', () => {
+		expect.assertions(5)
+		DraftModel.createWithContent.mockRejectedValueOnce()
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/new')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
 			})
 	})
 
-	test('POST /:draftId parses good xml but does not return object', () => {
-		expect.assertions(2)
+	// update draft
 
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
-		})
-
-		DraftModel.__setMockYell(mockYell)
-
-		mockXMLParser.mockReturnValueOnce('mockJSON')
-		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-		let testXML = `<ObojoboDraftDocument>
-			<Module title="My Module">
-				<Content>
-					<Page>
-				        <Text>
-							<textGroup>
-								<t>Hello World!</t>
-							</textGroup>
-						</Text>
-					</Page>
-				</Content>
-			</Module>
-		</ObojoboDraftDocument>`
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() },
-			body: testXML,
-			requireCurrentUser: () => {
-				let u = new User()
-				u.id = 111
-				u.canEditDrafts = true
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			success: jest.fn(),
-			unexpected: jest.fn(),
-			badInput: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(logger.error).toBeCalledWith('Posting draft failed - format unexpected:', testXML)
-				expect(mockRes.badInput).toBeCalledWith('Posting draft failed - format unexpected')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('updating a draft with xml returns successfully', () => {
+		expect.assertions(5)
+		xml.mockReturnValueOnce({})
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', { id: 'mockUpdatedContentId' })
+				expect(xml).toHaveBeenCalledWith(basicXML, true)
 			})
 	})
 
-	test('POST /:draftId requires perms', () => {
-		expect.assertions(1)
-
-		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() },
-			body: { a: 1 },
-			requireCurrentUser: () => {
-				let u = new User()
-				u.id = 111
-				u.canEditDrafts = false
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			unexpected: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('updating a draft with json returns successfully', () => {
+		expect.assertions(3)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce(null) // no errors
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('application/json')
+			.send('{"test":true}')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', { id: 'mockUpdatedContentId' })
 			})
 	})
 
-	test('POST /:draftId requires login', () => {
-		expect.assertions(1)
-
-		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-
-		let mockReq = {
-			requireCurrentUser: () => Promise.reject('error1')
-		}
-
-		let mockRes = {
-			unexpected: jest.fn(),
-			badInput: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('error1')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
-			})
-	})
-
-	test('POST /:draftId rejects duplicate ids', () => {
-		expect.assertions(2)
-
-		let mockYell = jest.fn().mockImplementationOnce(() => {
-			return {
-				document: `{"json":"value"}`,
-				yell: jest.fn().mockImplementationOnce(() => {
-					return 'fake draft'
-				})
-			}
-		})
-
-		DraftModel.__setMockYell(mockYell)
-
-		let routeFunction = mockRouterMethods.post.mock.calls[1][1]
-		DraftModel.findDuplicateIds.mockReturnValueOnce('mockDuplicateId')
-
-		let mockReq = {
-			params: { draftId: 555 },
-			app: { get: jest.fn() },
-			body: { a: 1 },
-			requireCurrentUser: () => {
-				let u = new User()
-				u.id = 111
-				u.canEditDrafts = true
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			success: jest.fn(),
-			unexpected: jest.fn(),
-			badInput: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(logger.error).toBeCalledWith('Posting draft failed - duplicate id "mockDuplicateId"')
-				expect(mockRes.badInput).toBeCalledWith(
-					'Posting draft failed - duplicate id "mockDuplicateId"'
+	test('updating a draft errors when xmlToDraftObject returns invalid object', () => {
+		expect.assertions(6)
+		xml.mockImplementationOnce(null)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(422)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Posting draft failed - format unexpected'
 				)
 			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	})
+
+	test('updating a draft errors when xmlToDraftObject throws error', () => {
+		expect.assertions(6)
+		xml.mockImplementationOnce(() => {
+			throw 'some-error'
+		})
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(422)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Posting draft failed - format unexpected'
+				)
 			})
 	})
 
-	test('DELETE /:draftId rejects guest', () => {
-		expect.assertions(1)
-
-		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
-
-		let mockReq = {
-			requireCurrentUser: () => Promise.reject('error1')
-		}
-
-		let mockRes = {
-			unexpected: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('error1')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('updating a draft requires canCreateDrafts', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canCreateDrafts: false } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
 			})
 	})
 
-	test('delete draft requires canDeleteDrafts', () => {
-		expect.assertions(1)
-
-		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
-
-		let mockReq = {
-			requireCurrentUser: () => {
-				let u = {}
-				u.canDeleteDrafts = false
-				return Promise.resolve(u)
-			}
-		}
-
-		let mockRes = {
-			unexpected: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('update draft detects duplicate ids', () => {
+		expect.assertions(5)
+		xml.mockReturnValueOnce({})
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		DraftModel.findDuplicateIds.mockReturnValueOnce('duplicate-id') // mock the findDuplicateIds method
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.statusCode).toBe(422)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Posting draft failed - duplicate id "duplicate-id"'
+				)
 			})
 	})
 
-	test('delete draft requires deletes', () => {
-		expect.assertions(1)
-
-		db.none.mockResolvedValueOnce(5)
-
-		let routeFunction = mockRouterMethods.delete.mock.calls[0][1]
-
-		let mockReq = {
-			params: { draftId: 555 },
-			requireCurrentUser: () => Promise.resolve({ canDeleteDrafts: true })
-		}
-
-		let mockRes = {
-			success: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.success).toBeCalledWith(5)
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('updating 500s when findDuplicateIds errors', () => {
+		expect.assertions(5)
+		xml.mockReturnValueOnce({})
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		DraftModel.findDuplicateIds.mockImplementationOnce(() => {
+			throw 'oh no'
+		}) // mock the findDuplicateIds method
+		return request(app)
+			.post('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.type('text/plain')
+			.accept('text/plain')
+			.send(basicXML)
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
 			})
 	})
 
-	test('list drafts rejects guest', () => {
-		expect.assertions(1)
+	// delete draft
 
-		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
-
-		let mockReq = {
-			requireCurrentUser: () => Promise.reject('error1')
-		}
-
-		let mockRes = {
-			unexpected: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('error1')
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	test('delete errors with permissions before draftID validation', () => {
+		expect.assertions(4)
+		mockCurrentUser = { id: 99, canDeleteDrafts: false }
+		return request(app)
+			.delete('/api/drafts/6')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value', { type: 'notAuthorized' })
 			})
 	})
 
-	test('list drafts requires canViewDrafts', () => {
-		expect.assertions(1)
-
-		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
-
-		let mockReq = {
-			requireCurrentUser: () => Promise.resolve({ canViewDrafts: false })
-		}
-
-		let mockRes = {
-			unexpected: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.unexpected).toBeCalledWith('Insufficent permissions')
+	test('delete rejects draft ids that arent UUIDs', () => {
+		expect.assertions(6)
+		mockCurrentUser = { id: 99, canDeleteDrafts: true }
+		return request(app)
+			.delete('/api/drafts/6')
+			.type('application/json')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(422)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'badInput')
+				expect(response.body.value).toHaveProperty('message', 'draftId must be a valid UUID, got 6')
 			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	})
+
+	test('delete draft returns successfully', () => {
+		expect.assertions(4)
+		db.none.mockResolvedValueOnce('mock-db-result')
+		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
+		return request(app)
+			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-db-result')
+			})
+	})
+
+	test('delete 500s when the database errors', () => {
+		expect.assertions(5)
+		db.none.mockRejectedValueOnce('oh no')
+		mockCurrentUser = { id: 99, canDeleteDrafts: true } // mock current logged in user
+		return request(app)
+			.delete('/api/drafts/00000000-0000-0000-0000-000000000000')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+			})
+	})
+
+	// list drafts
+	test('list drafts exits when user cant view drafts', () => {
+		expect.assertions(4)
+		db.any.mockResolvedValueOnce('mock-db-result')
+		mockCurrentUser = { id: 99, canViewDrafts: false } // mock current logged in user
+		return request(app)
+			.get('/api/drafts')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value', { type: 'notAuthorized' })
 			})
 	})
 
 	test('list drafts renders results', () => {
-		expect.assertions(1)
-
-		db.any.mockResolvedValueOnce(5)
-		let routeFunction = mockRouterMethods.get.mock.calls[1][1]
-
-		let mockReq = {
-			params: { draftId: 555 },
-			requireCurrentUser: () => Promise.resolve({ id: 5, canViewDrafts: true })
-		}
-
-		let mockRes = {
-			success: jest.fn()
-		}
-
-		let mockNext = jest.fn()
-
-		return routeFunction(mockReq, mockRes, mockNext)
-			.then(() => {
-				expect(mockRes.success).toBeCalledWith(5)
+		expect.assertions(4)
+		mockCurrentUser = { id: 99, canViewDrafts: true } // mock current logged in user
+		db.any.mockResolvedValueOnce('mock-db-result') // mock result of query to get all my drafts
+		return request(app)
+			.get('/api/drafts')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-db-result')
 			})
-			.catch(err => {
-				expect(err).toBe('never called')
+	})
+
+	test('delete 500s when the database errors', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canViewDrafts: true } // mock current logged in user
+		db.any.mockRejectedValueOnce('rejected value') // mock result of query to get all my drafts
+		return request(app)
+			.get('/api/drafts')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
 			})
 	})
 })

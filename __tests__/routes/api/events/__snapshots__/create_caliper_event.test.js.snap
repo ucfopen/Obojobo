@@ -7,9 +7,7 @@ Event {
   "actor": "https://testHost/api/server",
   "edApp": "https://testHost/api/system",
   "eventTime": "mockDate",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": Object {
     "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
@@ -38,7 +36,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": "https://testHost/api/attempt/testAttemptId",
@@ -58,7 +55,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": "https://testHost/api/attempt/testAttemptId",
@@ -76,9 +72,7 @@ Event {
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
   "eventTime": "mockDate",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "generated": Object {
     "attempt": "https://testHost/api/attempt/testAttemptId",
     "extensions": Object {
@@ -106,9 +100,7 @@ Event {
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
   "eventTime": "mockDate",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "generated": Object {
     "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
     "extensions": Object {
@@ -136,9 +128,7 @@ Event {
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
   "eventTime": "mockDate",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "generated": Object {
     "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
     "extensions": Object {
@@ -166,9 +156,7 @@ Event {
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
   "eventTime": "mockDate",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "generated": Object {
     "attempt": "https://testHost/api/draft-content/testContentId/practice/testQuestionId",
     "extensions": Object {
@@ -198,7 +186,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "generated": Object {
     "attempt": "https://testHost/api/attempt/testAttemptId",
@@ -229,13 +216,12 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
-  "target": "https://testHost/api/draft-content/testContentId?context=testFramename#testQuestionId",
+  "target": "https://testHost/api/draft-content/testContentId?context=testFramename#testItemId",
   "type": "Event",
 }
 `;
@@ -249,11 +235,10 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
-  "object": "https://testHost/api/draft-content/testContentId#testQuestionId",
+  "object": "https://testHost/api/draft-content/testContentId#testItemId",
   "session": "https://testHost/api/session/testSessionId",
   "type": "Event",
 }
@@ -266,13 +251,29 @@ Event {
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
   "eventTime": "mockDate",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
   "target": "https://testHost/api/picker",
   "type": "ToolUseEvent",
+}
+`;
+
+exports[`Caliper event creator createMediaChangedSizeEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "ChangedSize",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId#mediaId",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "MediaEvent",
 }
 `;
 
@@ -285,7 +286,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -304,7 +304,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -323,7 +322,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -342,7 +340,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -361,7 +358,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -380,7 +376,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -441,7 +436,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "generated": Object {
@@ -470,7 +464,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -490,7 +483,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -510,7 +502,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "urn:uuid:123",
@@ -528,7 +519,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -548,7 +538,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -567,7 +556,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -584,9 +572,7 @@ Event {
   "actor": "https://testHost/api/user/testUserId",
   "edApp": "https://testHost/api/system",
   "eventTime": "mockDate",
-  "extensions": Object {
-    "previewMode": false,
-  },
+  "extensions": Object {},
   "generated": "https://testHost/api/visit/visitId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
   "object": "https://testHost/api/system",
@@ -603,7 +589,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -622,7 +607,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -642,7 +626,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "foo": "bar",
-    "previewMode": false,
   },
   "federatedSession": "https://testHost/api/launch/testOboLaunchId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
@@ -662,7 +645,6 @@ Event {
   "eventTime": "mockDate",
   "extensions": Object {
     "deactivatedVisitId": "deactivatedVisitId",
-    "previewMode": false,
   },
   "generated": "https://testHost/api/visit/visitId",
   "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",

@@ -1,21 +1,12 @@
-var express = require('express')
-var router = express.Router()
-var db = require('../db')
+const express = require('express')
+const router = express.Router()
+const db = oboRequire('db')
+const { requireCanViewEditor, requireCurrentDocument } = oboRequire('express_validators')
 
-const displayEditor = (req, res, next) => {
-	return req
-		.getCurrentUser(true)
-		.then(user => {
-			if (user.isGuest()) {
-				return Promise.reject(new Error('Login Required'))
-			}
-			if (!user.canViewEditor) {
-				return next()
-			}
-
-			return db
-				.any(
-					`
+const displayEditorPicker = (req, res) => {
+	return db
+		.any(
+			`
 			SELECT DISTINCT ON (draft_id)
 				draft_id AS "draftId",
 				id AS "latestVersion",
@@ -30,67 +21,36 @@ const displayEditor = (req, res, next) => {
 				AND user_id = $[userId]
 			)
 			ORDER BY draft_id, created_at desc
-		`,
-					{
-						userId: user.id
-					}
-				)
-				.then(drafts => {
-					res.render('editor_picker', { drafts: drafts, draftTitle: 'Editor' })
-				})
+			`,
+			{
+				userId: req.currentUser.id
+			}
+		)
+		.then(drafts => {
+			res.render('editor_picker', { drafts, draftTitle: 'Editor' })
 		})
-		.catch(error => {
-			next(error)
-		})
+		.catch(res.unexpected)
 }
 
-router.post('/:draftId/:page?', (req, res, next) => {
-	return req
-		.requireCurrentUser()
-		.then(user => {
-			if (user.isGuest()) {
-				return Promise.reject(new Error('Login Required'))
-			}
-			if (!user.canViewEditor) {
-				return next()
-			}
-
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			res.render('editor', { drafts: draftDocument, draftTitle: 'Editor' })
-		})
-		.catch(error => {
-			console.log(error)
-			next(error)
-		})
-})
-
-router.get('/:draftId/:page?', (req, res, next) => {
-	return req
-		.requireCurrentUser()
-		.then(user => {
-			if (user.isGuest()) {
-				return Promise.reject(new Error('Login Required'))
-			}
-			if (!user.canViewEditor) {
-				return next()
-			}
-
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			res.render('editor', { drafts: draftDocument, draftTitle: 'Editor' })
-		})
-		.catch(error => {
-			console.log(error)
-			next(error)
-		})
-})
-
-// Display the Document Editor
+const displayVisualEditor = (req, res) => {
+	res.render('editor')
+}
+// Display the Editor Picker
+// and XML Document Editor
 // mounted as /editor
-router.post('/', displayEditor)
-router.get('/', displayEditor)
+router
+	.route('/')
+	.get(requireCanViewEditor)
+	.get(displayEditorPicker)
+
+// Display the visual editor
+// mounted as /editor/draftId/page
+router
+	.route('/:draftId/:page?')
+	.get([requireCanViewEditor, requireCurrentDocument])
+	.get(displayVisualEditor)
+	.post([requireCanViewEditor, requireCurrentDocument])
+	.post(displayVisualEditor)
+// .catch(e => console.log('what it ', e))
 
 module.exports = router

@@ -1,12 +1,11 @@
-let { ACTOR_USER } = require('./caliper_constants')
+const { ACTOR_USER } = require('./caliper_constants')
 
-let caliperEventRequirements = {
+const caliperEventRequirements = {
 	required: ['actor'],
-	optional: ['isPreviewMode', 'extensions', 'sessionIds']
+	optional: ['extensions', 'sessionIds']
 }
 
-// @TODO decouple caliper specifics
-let validateArguments = (
+const validateArguments = (
 	{ required, optional = [] },
 	params,
 	actorType,
@@ -16,9 +15,9 @@ let validateArguments = (
 		required = [...required, ...includedRequirements.required]
 		optional = [...optional, ...includedRequirements.optional]
 	}
-	let invalidKeys = []
-	let missingRequired = []
-	let invalidActor = []
+	const invalidKeys = []
+	const missingRequired = []
+	const invalidActor = []
 
 	Object.keys(params).forEach(key => {
 		if (!required.includes(key) && !optional.includes(key)) {
@@ -42,25 +41,23 @@ let validateArguments = (
 	})
 
 	let errorString = ''
-	if (invalidActor.length)
+	if (invalidActor.length) {
 		errorString += `Invalid actor type. Must provide actor of type ${invalidActor.join()}\n`
+	}
 	if (invalidKeys.length) errorString += `Invalid arguments: ${invalidKeys.join()}\n`
 	if (missingRequired.length) errorString += `Missing required arguments: ${missingRequired.join()}`
 	if (errorString) throw `${errorString}`
 }
 
-let assignOptions = obj => {
-	if (obj.isPreviewMode == null) obj.isPreviewMode = false
-	let options = { isPreviewMode: obj.isPreviewMode }
+const assignOptions = obj => {
+	if (!obj.sessionIds) return {}
 
-	if (obj.sessionIds) {
-		let required = ['sessionId', 'launchId']
-		validateArguments({ required }, obj.sessionIds, null, null)
-		return Object.assign(options, {
-			sessionId: obj.sessionIds.sessionId,
-			launchId: obj.sessionIds.launchId
-		})
-	} else return options
+	const required = ['sessionId', 'launchId']
+	validateArguments({ required }, obj.sessionIds, null, null)
+	return {
+		sessionId: obj.sessionIds.sessionId,
+		launchId: obj.sessionIds.launchId
+	}
 }
 
 module.exports = { validateArguments, assignOptions }

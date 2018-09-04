@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+
+/* eslint-disable no-console */
+
 global.oboRequire = name => require(`${__dirname}/../${name}`)
 const fs = require('fs')
 const db = oboRequire('db')
@@ -16,8 +19,8 @@ try {
 
 	const insertOrUpdate = process.argv[2]
 	const jsonFilePath = process.argv[3]
-	let contentFile = fs.readFileSync(jsonFilePath)
-	let jsonContent = JSON.parse(contentFile)
+	const contentFile = fs.readFileSync(jsonFilePath)
+	const jsonContent = JSON.parse(contentFile)
 
 	switch (insertOrUpdate) {
 		case 'insert':
@@ -51,34 +54,30 @@ try {
 				})
 				.then(() => {
 					process.exit()
-					return
 				})
 				.catch(err => {
 					console.error(err.message)
 					process.exit(1)
-					return
 				})
 			break
 
-		case 'update':
-			draftId = process.argv[4] || 0
+		case 'update': {
+			const draftId = process.argv[4] || 0
 
 			DraftModel.updateContent(draftId, jsonContent)
 				.then(id => {
 					console.info('OK. id=' + id)
 					process.exit()
-					return
 				})
 				.catch(err => {
 					console.error(err.message)
 					process.exit(1)
-					return
 				})
 			break
+		}
 
 		default:
 			throw usageError
-			break
 	}
 } catch (e) {
 	console.error(e.message)

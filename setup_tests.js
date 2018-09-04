@@ -4,9 +4,11 @@ global.oboRequire = name => {
 	return require(`${__dirname}/${name}`)
 }
 
+global.validUUID = () => '00000000-0000-0000-0000-000000000000'
+
 jest.mock('fs')
-let fs = require('fs')
-let dbJson = {
+const fs = require('fs')
+const dbJson = {
 	test: {
 		host: 'hostVal',
 		port: 'portVal',
@@ -20,9 +22,9 @@ let dbJson = {
 }
 
 // get the actual empty.xml
-let realFs = require.requireActual('fs')
-let emptyXmlPath = './node_modules/obojobo-draft-document-engine/documents/empty.xml'
-let emptyXmlStream = realFs.readFileSync(emptyXmlPath)
+const realFs = require.requireActual('fs')
+const emptyXmlPath = './node_modules/obojobo-draft-document-engine/documents/empty.xml'
+const emptyXmlStream = realFs.readFileSync(emptyXmlPath)
 
 fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
 fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')
@@ -40,7 +42,7 @@ fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
 // elbh.myFunc = jest.fn()
 // then when an include requires elbh, it'll get your mock
 global.mockVirtual = mock => {
-	let mockFunction = jest.fn()
+	const mockFunction = jest.fn()
 	jest.mock(
 		mock,
 		() => {
@@ -54,6 +56,7 @@ global.mockVirtual = mock => {
 // make sure all Date objects use a static date
 global.mockStaticDate = () => {
 	const testDate = new Date('2016-09-22T16:57:14.500Z')
+	//eslint-disable-next-line no-global-assign
 	Date = class extends Date {
 		constructor() {
 			super()

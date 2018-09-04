@@ -7,7 +7,7 @@ import DraftNode from '../../models/draft_node'
 const db = oboRequire('db')
 
 describe('Draft Model', () => {
-	let mockRawDraft = {
+	const mockRawDraft = {
 		id: 'whatever',
 		version: 9,
 		draft_created_at: new Date().toISOString(),
@@ -40,7 +40,7 @@ describe('Draft Model', () => {
 	afterEach(() => {})
 
 	test('constructor initializes expected properties', () => {
-		let d = new DraftModel({})
+		const d = new DraftModel({})
 		expect(d.nodesById).toBeInstanceOf(Map)
 		expect(d.nodesByType).toBeInstanceOf(Map)
 		expect(d.root).toBeInstanceOf(DraftNode)
@@ -55,12 +55,12 @@ describe('Draft Model', () => {
 		return DraftModel.fetchById('whatever')
 			.then(model => {
 				childNode = model.getChildNodesByType('DraftNode')[0]
-				childNode.yell = jest.fn().mockImplementationOnce(event => {
+				childNode.yell = jest.fn().mockImplementationOnce(() => {
 					return [Promise.resolve()]
 				})
 				return model.yell()
 			})
-			.then(model => {
+			.then(() => {
 				expect(childNode.yell).toHaveBeenCalledTimes(1)
 			})
 	})
@@ -85,7 +85,7 @@ describe('Draft Model', () => {
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
 		return DraftModel.fetchById('whatever')
-			.then(model => {
+			.then(() => {
 				expect(true).toBe('this should never be called')
 			})
 			.catch(err => {
@@ -200,28 +200,28 @@ describe('Draft Model', () => {
 	})
 
 	test('findDuplicateIds parses a single level draft with no duplications', () => {
-		let testTree = {
+		const testTree = {
 			id: 'test-id',
 			children: []
 		}
 
-		let duplicate = DraftModel.findDuplicateIds(testTree)
+		const duplicate = DraftModel.findDuplicateIds(testTree)
 
 		expect(duplicate).toBe(null)
 	})
 
 	test('findDuplicateIds parses a single level draft with no ids', () => {
-		let testTree = {
+		const testTree = {
 			children: []
 		}
 
-		let duplicate = DraftModel.findDuplicateIds(testTree)
+		const duplicate = DraftModel.findDuplicateIds(testTree)
 
 		expect(duplicate).toBe(null)
 	})
 
 	test('findDuplicateIds parses a multi level draft with no duplications', () => {
-		let testTree = {
+		const testTree = {
 			id: 'test-id',
 			children: [
 				{
@@ -240,13 +240,13 @@ describe('Draft Model', () => {
 			]
 		}
 
-		let duplicate = DraftModel.findDuplicateIds(testTree)
+		const duplicate = DraftModel.findDuplicateIds(testTree)
 
 		expect(duplicate).toBe(null)
 	})
 
 	test('findDuplicateIds parses a multi level draft with duplication', () => {
-		let testTree = {
+		const testTree = {
 			id: 'test-id',
 			children: [
 				{
@@ -265,7 +265,7 @@ describe('Draft Model', () => {
 			]
 		}
 
-		let duplicate = DraftModel.findDuplicateIds(testTree)
+		const duplicate = DraftModel.findDuplicateIds(testTree)
 
 		expect(duplicate).toBe('duplicate-id-test')
 	})
@@ -313,6 +313,7 @@ describe('Draft Model', () => {
 			expect(model.getChildNodesByType('Some.Node.Type')).toHaveLength(1)
 			expect(model.getChildNodesByType('Some.Node.Type')[0]).toBeInstanceOf(DraftNode)
 
+			//eslint-disable-next-line no-undefined
 			expect(model.getChildNodesByType('Some.Missing.Node')).toBe(undefined)
 		})
 	})

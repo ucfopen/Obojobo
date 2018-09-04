@@ -1,8 +1,8 @@
-let fs = require('fs')
-let path = require('path')
-let config = require('./config')
+const fs = require('fs')
+const path = require('path')
+const config = require('./config')
 
-let getDraftPath = () => {
+const getDraftPath = () => {
 	for (let i = 0, len = config.draft.paths.length; i < len; i++) {
 		if (fs.existsSync(config.draft.paths[i])) return config.draft.paths[i]
 	}
@@ -10,7 +10,7 @@ let getDraftPath = () => {
 	return null
 }
 
-let expandDraftPath = filePathStr => {
+const expandDraftPath = filePathStr => {
 	return path.join(__dirname, getDraftPath(), filePathStr)
 }
 

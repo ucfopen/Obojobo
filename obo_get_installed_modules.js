@@ -3,29 +3,29 @@ const path = require('path')
 const glob = require('glob')
 const logger = oboRequire('logger')
 
-let memoizedValues = {}
+const memoizedValues = {}
 
 // collect installed obojobo assets
-let getInstalledModules = (configEnv = 'production') => {
+const getInstalledModules = (configEnv = 'production') => {
 	if (memoizedValues.hasOwnProperty(configEnv)) return memoizedValues[configEnv]
 
 	// WHERE SHOULD WE LOOK FOR obojobo.json files
-	let searchPaths = ['./node_modules/*/obojobo.json']
-	let packageNameRegex = new RegExp(/node_modules[\\\/](.+?)[\\\/].*/i)
-	let assetFiles = new Set()
-	let expressFiles = new Set()
-	let draftNodes = new Map()
+	const searchPaths = ['./node_modules/*/obojobo.json']
+	const packageNameRegex = new RegExp(/node_modules[\\/](.+?)[\\/].*/i)
+	const assetFiles = new Set()
+	const expressFiles = new Set()
+	const draftNodes = new Map()
 
 	/*
 	  Find which modules to exclude
 	  Builds an excludeMap where the key is the node module and the value is an array of obojobo chunk names
 	  node_module or chunk name's value can be *, indicating all
 	*/
-	let excludeMap = new Map()
-	let excludeConfig = JSON.parse(fs.readFileSync('./config/draft.json'))[configEnv]
+	const excludeMap = new Map()
+	const excludeConfig = JSON.parse(fs.readFileSync('./config/draft.json'))[configEnv]
 	if (excludeConfig.hasOwnProperty('excludeModules')) {
 		excludeConfig.excludeModules.forEach(item => {
-			let [module, name] = item.split(':')
+			const [module, name] = item.split(':')
 			if (excludeMap.has(module)) {
 				excludeMap.get(module).push(name)
 			} else {
@@ -37,31 +37,31 @@ let getInstalledModules = (configEnv = 'production') => {
 	/*
 	  Loop through each obojobo.json in the search path, adding assets
 	*/
-	let allModuleExcludeRoles = excludeMap.has('*') ? excludeMap.get('*') : []
+	const allModuleExcludeRoles = excludeMap.has('*') ? excludeMap.get('*') : []
 
 	searchPaths.forEach(search => {
-		files = glob.sync(search)
+		const files = glob.sync(search)
 		files.forEach(file => {
 			let moduleExludeRules = [].concat(allModuleExcludeRoles) // add rules set for all modules
-			let match = file.match(packageNameRegex)
-			let moduleName = match ? match[1] : null
+			const match = file.match(packageNameRegex)
+			const moduleName = match ? match[1] : null
 
 			// add rules set for this module
 			if (moduleName && excludeMap.has(moduleName)) {
 				moduleExludeRules = moduleExludeRules.concat(excludeMap.get(moduleName))
 			}
 
-			let content = fs.readFileSync(file)
-			let json = JSON.parse(content)
+			const content = fs.readFileSync(file)
+			const json = JSON.parse(content)
 			if (json.hasOwnProperty('modules')) {
-				let libDir = path.dirname(file)
+				const libDir = path.dirname(file)
 
 				json['express'].forEach(express => {
 					expressFiles.add(path.resolve(libDir, express))
 				})
 
 				json['modules'].forEach(module => {
-					let name = module.name
+					const name = module.name
 					delete module.name
 
 					// Should we exclude this module?
@@ -73,7 +73,7 @@ let getInstalledModules = (configEnv = 'production') => {
 					}
 
 					// verify the files exist
-					for (let i in module) {
+					for (const i in module) {
 						module[i] = path.resolve(libDir, module[i])
 						if (!fs.existsSync(module[i])) {
 							throw new Error(

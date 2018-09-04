@@ -1,13 +1,8 @@
-let { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
-let { getNewGeneratedId } = require('./caliper_utils')
+const { ACTOR_USER, ACTOR_VIEWER_CLIENT, ACTOR_SERVER_APP } = require('./caliper_constants')
+const { getNewGeneratedId } = require('./caliper_utils')
 
-let createEvent = (
-	classRef,
-	actorObject,
-	IRI,
-	{ isPreviewMode = false, sessionId = null, launchId = null }
-) => {
-	let caliperEvent = new classRef()
+const createEvent = (ClassRef, actorObject, IRI, { sessionId = null, launchId = null }) => {
+	const caliperEvent = new ClassRef()
 
 	// Set @context manually to comply with Caliper 1.1 standard
 	caliperEvent['@context'] = 'http://purl.imsglobal.org/ctx/caliper/v1p1'
@@ -43,9 +38,7 @@ let createEvent = (
 	if (sessionId) caliperEvent.session = IRI.getSessionIRI(sessionId)
 	if (launchId) caliperEvent.setFederatedSession(IRI.getFederatedSessionIRI(launchId))
 
-	caliperEvent.extensions = {
-		previewMode: isPreviewMode
-	}
+	caliperEvent.extensions = {}
 
 	return caliperEvent
 }

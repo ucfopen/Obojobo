@@ -3,8 +3,8 @@ import CaliperConstants from '../../../../routes/api/events/caliper_constants'
 
 describe('Validate Caliper Events', () => {
 	test('validateArguments checks parameters for required arguments', () => {
-		let required = ['type', 'name']
-		let params = {
+		const required = ['type', 'name']
+		const params = {
 			type: 'mockCaliperEvent',
 			name: 'A Mock Event',
 			actor: { type: 'mockActor' }
@@ -16,8 +16,8 @@ describe('Validate Caliper Events', () => {
 	})
 
 	test('validateArguments throws error if required param is missing', () => {
-		let required = ['type', 'name']
-		let params = {
+		const required = ['type', 'name']
+		const params = {
 			type: 'mockCaliperEvent',
 			actor: { type: 'mockActor' }
 		}
@@ -28,8 +28,8 @@ describe('Validate Caliper Events', () => {
 	})
 
 	test('validateArguments throws error if param is not required or optional', () => {
-		let required = ['type', 'name']
-		let params = {
+		const required = ['type', 'name']
+		const params = {
 			type: 'mockCaliperEvent',
 			name: 'A Mock Event',
 			mockParam: 'Will throw an Error',
@@ -42,8 +42,8 @@ describe('Validate Caliper Events', () => {
 	})
 
 	test('validateArguments throws error if actor does not have type', () => {
-		let required = ['type', 'name']
-		let params = {
+		const required = ['type', 'name']
+		const params = {
 			type: 'mockCaliperEvent',
 			name: 'A Mock Event',
 			actor: {}
@@ -57,8 +57,8 @@ describe('Validate Caliper Events', () => {
 	})
 
 	test('validateArguments throws error if user actor does not have id', () => {
-		let required = ['type', 'name']
-		let params = {
+		const required = ['type', 'name']
+		const params = {
 			type: 'mockCaliperEvent',
 			name: 'A Mock Event',
 			actor: { type: CaliperConstants.ACTOR_USER }
@@ -70,30 +70,27 @@ describe('Validate Caliper Events', () => {
 	})
 
 	test('assignOptions builds additional parameters', () => {
-		let object = {
-			isPreviewMode: true,
+		const object = {
+			peppers: ['ghost', 'jalapeno'],
 			sessionIds: {
 				sessionId: 'mockSessionId',
 				launchId: 'mockLaunchId'
 			}
 		}
 
-		let options = ValidateCaliper.assignOptions(object)
+		const options = ValidateCaliper.assignOptions(object)
 
 		expect(options).toEqual({
-			isPreviewMode: true,
 			sessionId: 'mockSessionId',
 			launchId: 'mockLaunchId'
 		})
 	})
 
 	test('assignOptions builds additional parameters with nothing in object', () => {
-		let object = {}
+		const object = {}
 
-		let options = ValidateCaliper.assignOptions(object)
+		const options = ValidateCaliper.assignOptions(object)
 
-		expect(options).toEqual({
-			isPreviewMode: false
-		})
+		expect(options).toEqual({})
 	})
 })

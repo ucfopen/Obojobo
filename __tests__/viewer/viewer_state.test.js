@@ -1,9 +1,9 @@
 jest.mock('../../db')
 jest.mock('../../logger')
 
-let Viewer = oboRequire('viewer/viewer_state')
-let db = oboRequire('db')
-let logger = oboRequire('logger')
+const Viewer = oboRequire('viewer/viewer_state')
+const db = oboRequire('db')
+const logger = oboRequire('logger')
 
 describe('viewer state', () => {
 	beforeEach(() => {
@@ -111,7 +111,7 @@ describe('viewer state', () => {
 	test('get retrives values from view_state', done => {
 		db.oneOrNone.mockRejectedValueOnce('mockDBError')
 
-		Viewer.get('mockUserId', 'mockContentId').then(result => {
+		Viewer.get('mockUserId', 'mockContentId').then(() => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
 				expect.stringContaining('SELECT payload FROM view_state'),

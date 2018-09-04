@@ -11,8 +11,8 @@ describe('insert_event', () => {
 	test('inserts the expected values', () => {
 		expect.assertions(4)
 
-		let db = oboRequire('db')
-		let insertEvent = oboRequire('insert_event')
+		const db = oboRequire('db')
+		const insertEvent = oboRequire('insert_event')
 		const expectedCreatedAt = new Date().toISOString()
 		const insertObject = {
 			action: 'test::testAction',
@@ -45,8 +45,8 @@ describe('insert_event', () => {
 	test('inserts the expected values with a caliper event', () => {
 		expect.assertions(5)
 
-		let db = oboRequire('db')
-		let insertEvent = oboRequire('insert_event')
+		const db = oboRequire('db')
+		const insertEvent = oboRequire('insert_event')
 		const expectedCreatedAt = new Date().toISOString()
 		const insertObject = {
 			action: 'test::testAction',
@@ -80,8 +80,8 @@ describe('insert_event', () => {
 	test('Returns promise rejection', () => {
 		expect.assertions(1)
 
-		let db = oboRequire('db')
-		let insertEvent = oboRequire('insert_event')
+		const db = oboRequire('db')
+		const insertEvent = oboRequire('insert_event')
 		const err = new Error('const error')
 		// mock insert
 		db.one.mockRejectedValueOnce(err)

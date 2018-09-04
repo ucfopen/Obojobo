@@ -1,5 +1,5 @@
-let db = oboRequire('db')
-let logger = oboRequire('logger')
+const db = oboRequire('db')
+const logger = oboRequire('logger')
 
 function set(userId, draftId, contentId, key, version, value) {
 	return db
@@ -41,8 +41,8 @@ function get(userId, contentId) {
 			}
 		)
 		.then(result => {
-			// return payload or empty object if undefined from query
-			return result != null ? result.payload : {}
+			// return payload or empty object when result is null
+			return result !== null ? result.payload : {}
 		})
 		.catch(error => {
 			logger.error('DB UNEXPECTED on viewer_state.get', error, error.toString())

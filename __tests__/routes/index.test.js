@@ -1,4 +1,4 @@
-const { mockExpressMethods, mockRouterMethods } = require('../../__mocks__/__mock_express')
+const { mockRouterMethods } = require('../../__mocks__/__mock_express')
 
 describe('index route', () => {
 	beforeAll(() => {})
@@ -7,15 +7,15 @@ describe('index route', () => {
 	afterEach(() => {})
 
 	test('registers the expected routes ', () => {
-		let editor = oboRequire('routes/index')
+		oboRequire('routes/index')
 		expect(mockRouterMethods.get).toBeCalledWith('/', expect.any(Function))
 	})
 
 	test('renders the expected stuff', () => {
-		let editor = oboRequire('routes/index')
-		let routeFunction = mockRouterMethods.get.mock.calls[0][1]
+		oboRequire('routes/index')
+		const routeFunction = mockRouterMethods.get.mock.calls[0][1]
 
-		let mockReq = {
+		const mockReq = {
 			app: {
 				locals: {
 					paths: 'test1',
@@ -24,12 +24,12 @@ describe('index route', () => {
 			}
 		}
 
-		let mockRes = {
+		const mockRes = {
 			status: jest.fn(),
 			render: jest.fn()
 		}
 
-		let mockNext = jest.fn()
+		const mockNext = jest.fn()
 
 		routeFunction(mockReq, mockRes, mockNext)
 		expect(mockRes.render).toBeCalledWith(

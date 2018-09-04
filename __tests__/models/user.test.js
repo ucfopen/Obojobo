@@ -1,3 +1,6 @@
+/* eslint-disable no-undefined */
+/* eslint-disable no-new */
+
 jest.mock('../../db')
 const originalnow = Date.prototype.now
 const User = oboRequire('models/user')
@@ -8,7 +11,7 @@ describe('user model', () => {
 		Date.now = () => 'mockNowDate'
 	})
 	afterAll(() => {
-		Date.prototype.now = originalnow
+		Date.prototype.now = originalnow //eslint-disable-line no-extend-native
 	})
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -16,7 +19,7 @@ describe('user model', () => {
 	afterEach(() => {})
 
 	test('initializes expected properties', () => {
-		let u = new User({
+		const u = new User({
 			id: 5,
 			firstName: 'Roger',
 			lastName: 'Wilco',
@@ -63,7 +66,7 @@ describe('user model', () => {
 	})
 
 	test('hasPermission behaves', () => {
-		let u = new User({
+		const u = new User({
 			id: 5,
 			firstName: 'Roger',
 			lastName: 'Wilco',
@@ -77,7 +80,7 @@ describe('user model', () => {
 	})
 
 	test('hasRole and hasRoles work', () => {
-		let u = new User({
+		const u = new User({
 			id: 5,
 			firstName: 'Roger',
 			lastName: 'Wilco',
@@ -98,7 +101,7 @@ describe('user model', () => {
 	})
 
 	test('hasRole and hasOneOfRole work', () => {
-		let u = new User({
+		const u = new User({
 			id: 5,
 			firstName: 'Roger',
 			lastName: 'Wilco',
@@ -117,7 +120,7 @@ describe('user model', () => {
 	})
 
 	test('responds to isGuest correctly', () => {
-		let u = new User({
+		const u = new User({
 			id: 5,
 			firstName: 'Roger',
 			lastName: 'Wilco',
@@ -133,7 +136,7 @@ describe('user model', () => {
 
 		db.one.mockResolvedValueOnce({ id: 3 })
 
-		let u = new User({
+		const u = new User({
 			firstName: 'Roger',
 			lastName: 'Wilco',
 			email: 'e@m.com',

@@ -1,12 +1,11 @@
-let db = oboRequire('db')
-let insertEvent = oboRequire('insert_event')
-let User = oboRequire('models/user')
-let DraftDocument = oboRequire('models/draft')
-let logger = oboRequire('logger')
-let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-let { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
+const db = oboRequire('db')
+const insertEvent = oboRequire('insert_event')
+const User = oboRequire('models/user')
+const logger = oboRequire('logger')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 
-let storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
+const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 	let insertLaunchResult = null
 
 	return db
@@ -31,6 +30,7 @@ let storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 			return insertEvent({
 				action: 'lti:launch',
 				actorTime: new Date().toISOString(),
+				isPreview: false,
 				payload: { launchId: insertLaunchResult.id },
 				userId: user.id,
 				ip,
@@ -45,12 +45,13 @@ let storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 		})
 }
 
-let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) => {
-	let { createLTIPickerEvent } = createCaliperEvent(null, hostname)
+const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) => {
+	const { createLTIPickerEvent } = createCaliperEvent(null, hostname)
 
 	return insertEvent({
 		action: 'lti:pickerLaunch',
 		actorTime: new Date().toISOString(),
+		isPreview: false,
 		payload: {
 			ltiBody,
 			ltiConsumerKey
@@ -70,9 +71,9 @@ let storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) =>
 	})
 }
 
-let userFromLaunch = (req, ltiBody) => {
+const userFromLaunch = (req, ltiBody) => {
 	// Save/Create the user
-	let newUser = new User({
+	const newUser = new User({
 		username: ltiBody.lis_person_sourcedid,
 		email: ltiBody.lis_person_contact_email_primary,
 		firstName: ltiBody.lis_person_name_given,
@@ -98,8 +99,6 @@ exports.assignment = (req, res, next) => {
 
 	// allows launches to redirect /view/example to /view/00000000-0000-0000-0000-000000000000
 	// the actual redirect happens in the route, this just handles the lti launch
-	let draftId =
-		req.params.draftId === 'example' ? '00000000-0000-0000-0000-000000000000' : req.params.draftId
 	let currentUser = null
 	let currentDocument = null
 
@@ -143,7 +142,7 @@ exports.courseNavlaunch = (req, res, next) => {
 
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
-		.then(user => next())
+		.then(() => next())
 		.catch(error => {
 			logger.error('LTI Nav Launch Error', error)
 			logger.error('LTI Body', req.lti && req.lti.body ? req.lti.body : 'No LTI Body')
@@ -171,7 +170,7 @@ exports.assignmentSelection = (req, res, next) => {
 				req.hostname
 			)
 		})
-		.then(launchResult => next())
+		.then(() => next())
 		.catch(error => {
 			logger.error('LTI Picker Launch Error', error)
 			logger.error('LTI Body', req.lti && req.lti.body ? req.lti.body : 'No LTI Body')
