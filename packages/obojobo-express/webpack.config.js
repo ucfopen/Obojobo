@@ -9,8 +9,10 @@ let optimize = process.env.NODE_ENV === 'production'
 let filename = optimize ? '[name].min' : '[name]'
 let docEngineBasePath = path.join(
 	__dirname,
+	'..',
+	'..',
 	'node_modules',
-	'obojobo-draft-document-engine',
+	'obojobo-document-engine',
 	'build'
 )
 console.log(`Building assets for ${optimize ? 'production' : 'development'}`)

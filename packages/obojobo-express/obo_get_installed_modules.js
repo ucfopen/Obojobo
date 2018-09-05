@@ -8,9 +8,10 @@ let memoizedValues = {}
 // collect installed obojobo assets
 let getInstalledModules = (configEnv = 'production') => {
 	if (memoizedValues.hasOwnProperty(configEnv)) return memoizedValues[configEnv]
+	logger.info('Loading installed Obo Modules')
 
 	// WHERE SHOULD WE LOOK FOR obojobo.json files
-	let searchPaths = ['./node_modules/*/obojobo.json']
+	let searchPaths = ['../../node_modules/*/obojobo.json']
 	let packageNameRegex = new RegExp(/node_modules[\\\/](.+?)[\\\/].*/i)
 	let assetFiles = new Set()
 	let expressFiles = new Set()

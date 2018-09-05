@@ -3,7 +3,7 @@
     "minimist": "^1.2.0",
     "xml-js": "^1.0.2"
   },
-  "name": "obojobo-draft-xml-parser",
+  "name": "obojobo-document-xml-parser",
   "version": "0.3.0",
   "main": "xml2draft.js",
   "devDependencies": {

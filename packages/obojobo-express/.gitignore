@@ -32,8 +32,6 @@ npm-debug.log
 # dont include installed chunks
 config/installed_chunks.json
 
-devsrc
-
 public/compiled
 
 *.DS_Store

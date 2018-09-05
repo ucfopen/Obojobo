@@ -4,9 +4,9 @@ const router = express.Router()
 const DraftModel = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
-const xmlToDraftObject = require('obojobo-draft-xml-parser/xml-to-draft-object')
+const xmlToDraftObject = require('obojobo-document-xml-parser/xml-to-draft-object')
 const draftTemplateXML = fs
-	.readFileSync('./node_modules/obojobo-draft-document-engine/documents/empty.xml')
+	.readFileSync('../../node_modules/obojobo-document-engine/documents/empty.xml')
 	.toString()
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 

@@ -36,17 +36,6 @@ To create, edit and delete objects:
 1. Login as above
 2. Visit `https://127.0.0.1:8080/editor` - You should not see any objects. Click **+ Create New Draft** to get started.
 
-## Developing Obojobo Document Engine
-
-1. run `yarn devDocEngine:setup` to install a dev copy of doc engine
-2. run `yarn devDocEngine:link` to replace the node_modules version with your development Doc Engine located in /devsrc/
-3. run `yarn dev:docEngine` 
-
-## Developing Obojobo XML Parser
-
-1. run `yarn devXmlParser:setup` to install a dev copy of the parser
-2. run `yarn devXmlParser:link` to replace the node_modules version with your development parser located in /devsrc/
-
 ## Testing
 
 `yarn test` and `yarn test:ci`

@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "obojobo-next",
+  "scripts": {
+    "dev": "cd node_modules/obojobo-express && yarn express:dev",
+    "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\""
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0"
+  },
+  "workspaces": [
+    "packages/obojobo-document-engine",
+    "packages/obojobo-document-xml-parser",
+    "packages/obojobo-express"
+  ]
+}

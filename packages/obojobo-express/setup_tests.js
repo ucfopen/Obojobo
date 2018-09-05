@@ -21,7 +21,7 @@ let dbJson = {
 
 // get the actual empty.xml
 let realFs = require.requireActual('fs')
-let emptyXmlPath = './node_modules/obojobo-draft-document-engine/documents/empty.xml'
+let emptyXmlPath = './node_modules/obojobo-document-engine/documents/empty.xml'
 let emptyXmlStream = realFs.readFileSync(emptyXmlPath)
 
 fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))

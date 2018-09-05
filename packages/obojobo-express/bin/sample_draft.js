@@ -3,14 +3,14 @@ global.oboRequire = name => {
 	return require(`${__dirname}/../${name}`)
 }
 let fs = require('fs')
+let path = require('path')
 let exec = require('child_process').exec
 
 let usageError = new Error(`Usage:
 	node sample_draft.js seed
 	node sample_draft.js watch`)
 let defaultId = '00000000-0000-0000-0000-000000000000'
-let oboPath = oboRequire('obo_path')
-let sampleJsonPath = oboPath.expandDraftPath('test-object.json')
+let sampleJsonPath = path.join(__dirname, '..', '..', '..', 'node_modules', 'obojobo-document-engine', 'test-object.json')
 let writeJsonDraftToDbPath = `${__dirname}/write_json_draft_to_db`
 let db = oboRequire('db')
 
@@ -36,8 +36,7 @@ try {
 
 					exec(cmd, {}, (err, stdout, stderr) => {
 						if (err) {
-							console.error(err.message)
-							return
+							throw(err)
 						}
 
 						console.log(
@@ -58,8 +57,7 @@ try {
 					{},
 					(err, stdout, stderr) => {
 						if (err) {
-							console.error(err.message)
-							return
+							throw(err)
 						}
 
 						console.info('Sample JSON Draft changed, updating...')
