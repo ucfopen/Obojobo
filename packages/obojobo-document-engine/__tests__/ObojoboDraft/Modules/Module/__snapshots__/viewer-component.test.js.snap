@@ -30,6 +30,12 @@ exports[`Module Module component with child 1`] = `
             "calls": Array [
               Array [],
             ],
+            "results": Array [
+              Object {
+                "isThrow": false,
+                "value": "MockComponent",
+              },
+            ],
           },
         }
       }

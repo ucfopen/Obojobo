@@ -36,9 +36,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               Cancel
             </button>
@@ -47,9 +45,7 @@ exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
             className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               OK
             </button>
@@ -102,9 +98,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
             className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               Cancel
             </button>
@@ -113,9 +107,7 @@ exports[`SimpleDialog SimpleDialog no type 1`] = `
             className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               OK
             </button>
@@ -168,9 +160,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
             className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               No
             </button>
@@ -184,9 +174,7 @@ exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
             className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               Yes
             </button>
@@ -239,9 +227,7 @@ exports[`SimpleDialog SimpleDialog ok 1`] = `
             className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               OK
             </button>
@@ -294,9 +280,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
             className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               Yes
             </button>
@@ -310,9 +294,7 @@ exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
             className="obojobo-draft--components--button is-not-dangerous align-center"
           >
             <button
-              disabled={undefined}
               onClick={[MockFunction]}
-              tabIndex={undefined}
             >
               No
             </button>

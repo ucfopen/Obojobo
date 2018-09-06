@@ -286,11 +286,7 @@ exports[`IFrame IFrame component renders 7`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -343,11 +339,7 @@ exports[`IFrame IFrame component renders 8`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -400,11 +392,7 @@ exports[`IFrame IFrame component renders 9`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -457,11 +445,7 @@ exports[`IFrame IFrame component renders 10`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -514,11 +498,7 @@ exports[`IFrame IFrame component renders 11`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -571,11 +551,7 @@ exports[`IFrame IFrame component renders 12`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -874,11 +850,7 @@ exports[`IFrame IFrame component renders 19`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -931,11 +903,7 @@ exports[`IFrame IFrame component renders 20`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -988,11 +956,7 @@ exports[`IFrame IFrame component renders 21`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -1045,11 +1009,7 @@ exports[`IFrame IFrame component renders 22`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -1102,11 +1062,7 @@ exports[`IFrame IFrame component renders 23`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>
@@ -1159,11 +1115,7 @@ exports[`IFrame IFrame component renders 24`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button
-            disabled={undefined}
-            onClick={undefined}
-            tabIndex={undefined}
-          >
+          <button>
             View Content
           </button>
         </div>

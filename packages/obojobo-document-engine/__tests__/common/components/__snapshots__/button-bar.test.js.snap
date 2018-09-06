@@ -19,7 +19,6 @@ exports[`ButtonBar ButtonBar component with attributes 1`] = `
       <button
         disabled={true}
         onClick={[Function]}
-        tabIndex={undefined}
       />
     </div>
   </div>

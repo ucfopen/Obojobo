@@ -15,7 +15,6 @@ exports[`IFrame controls IFrame controls component renders 2`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -44,7 +43,6 @@ exports[`IFrame controls IFrame controls component renders 3`] = `
         <button
           className="zoom-out-button"
           disabled={false}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -59,7 +57,6 @@ exports[`IFrame controls IFrame controls component renders 3`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -83,7 +80,6 @@ exports[`IFrame controls IFrame controls component renders 4`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -105,7 +101,6 @@ exports[`IFrame controls IFrame controls component renders 4`] = `
         <button
           className="zoom-out-button"
           disabled={false}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -120,7 +115,6 @@ exports[`IFrame controls IFrame controls component renders 4`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -150,7 +144,6 @@ exports[`IFrame controls IFrame controls component renders 6`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -179,7 +172,6 @@ exports[`IFrame controls IFrame controls component renders 7`] = `
         <button
           className="zoom-out-button"
           disabled={true}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -194,7 +186,6 @@ exports[`IFrame controls IFrame controls component renders 7`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -218,7 +209,6 @@ exports[`IFrame controls IFrame controls component renders 8`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -240,7 +230,6 @@ exports[`IFrame controls IFrame controls component renders 8`] = `
         <button
           className="zoom-out-button"
           disabled={true}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -255,7 +244,6 @@ exports[`IFrame controls IFrame controls component renders 8`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -285,7 +273,6 @@ exports[`IFrame controls IFrame controls component renders 10`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -313,7 +300,6 @@ exports[`IFrame controls IFrame controls component renders 11`] = `
       >
         <button
           className="zoom-reset-button"
-          onClick={undefined}
         >
           Reset zoom
         </button>
@@ -329,7 +315,6 @@ exports[`IFrame controls IFrame controls component renders 11`] = `
         <button
           className="zoom-out-button"
           disabled={false}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -344,7 +329,6 @@ exports[`IFrame controls IFrame controls component renders 11`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -368,7 +352,6 @@ exports[`IFrame controls IFrame controls component renders 12`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -389,7 +372,6 @@ exports[`IFrame controls IFrame controls component renders 12`] = `
       >
         <button
           className="zoom-reset-button"
-          onClick={undefined}
         >
           Reset zoom
         </button>
@@ -405,7 +387,6 @@ exports[`IFrame controls IFrame controls component renders 12`] = `
         <button
           className="zoom-out-button"
           disabled={false}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -420,7 +401,6 @@ exports[`IFrame controls IFrame controls component renders 12`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -450,7 +430,6 @@ exports[`IFrame controls IFrame controls component renders 14`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -478,7 +457,6 @@ exports[`IFrame controls IFrame controls component renders 15`] = `
       >
         <button
           className="zoom-reset-button"
-          onClick={undefined}
         >
           Reset zoom
         </button>
@@ -494,7 +472,6 @@ exports[`IFrame controls IFrame controls component renders 15`] = `
         <button
           className="zoom-out-button"
           disabled={true}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -509,7 +486,6 @@ exports[`IFrame controls IFrame controls component renders 15`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -533,7 +509,6 @@ exports[`IFrame controls IFrame controls component renders 16`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -554,7 +529,6 @@ exports[`IFrame controls IFrame controls component renders 16`] = `
       >
         <button
           className="zoom-reset-button"
-          onClick={undefined}
         >
           Reset zoom
         </button>
@@ -570,7 +544,6 @@ exports[`IFrame controls IFrame controls component renders 16`] = `
         <button
           className="zoom-out-button"
           disabled={true}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -585,7 +558,6 @@ exports[`IFrame controls IFrame controls component renders 16`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -608,7 +580,6 @@ exports[`IFrame controls IFrame controls component renders 17`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -632,7 +603,6 @@ exports[`IFrame controls IFrame controls component renders 18`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -646,7 +616,6 @@ exports[`IFrame controls IFrame controls component renders 18`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -669,7 +638,6 @@ exports[`IFrame controls IFrame controls component renders 19`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -693,7 +661,6 @@ exports[`IFrame controls IFrame controls component renders 19`] = `
         <button
           className="zoom-out-button"
           disabled={false}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -708,7 +675,6 @@ exports[`IFrame controls IFrame controls component renders 19`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -732,7 +698,6 @@ exports[`IFrame controls IFrame controls component renders 20`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -746,7 +711,6 @@ exports[`IFrame controls IFrame controls component renders 20`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -770,7 +734,6 @@ exports[`IFrame controls IFrame controls component renders 20`] = `
         <button
           className="zoom-out-button"
           disabled={false}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -785,7 +748,6 @@ exports[`IFrame controls IFrame controls component renders 20`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -808,7 +770,6 @@ exports[`IFrame controls IFrame controls component renders 21`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -832,7 +793,6 @@ exports[`IFrame controls IFrame controls component renders 22`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -846,7 +806,6 @@ exports[`IFrame controls IFrame controls component renders 22`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -869,7 +828,6 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -893,7 +851,6 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
         <button
           className="zoom-out-button"
           disabled={true}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -908,7 +865,6 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -932,7 +888,6 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -946,7 +901,6 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -970,7 +924,6 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
         <button
           className="zoom-out-button"
           disabled={true}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -985,7 +938,6 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -1008,7 +960,6 @@ exports[`IFrame controls IFrame controls component renders 25`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -1032,7 +983,6 @@ exports[`IFrame controls IFrame controls component renders 26`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -1046,7 +996,6 @@ exports[`IFrame controls IFrame controls component renders 26`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -1069,7 +1018,6 @@ exports[`IFrame controls IFrame controls component renders 27`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -1092,7 +1040,6 @@ exports[`IFrame controls IFrame controls component renders 27`] = `
       >
         <button
           className="zoom-reset-button"
-          onClick={undefined}
         >
           Reset zoom
         </button>
@@ -1108,7 +1055,6 @@ exports[`IFrame controls IFrame controls component renders 27`] = `
         <button
           className="zoom-out-button"
           disabled={false}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -1123,7 +1069,6 @@ exports[`IFrame controls IFrame controls component renders 27`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -1147,7 +1092,6 @@ exports[`IFrame controls IFrame controls component renders 28`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -1161,7 +1105,6 @@ exports[`IFrame controls IFrame controls component renders 28`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -1184,7 +1127,6 @@ exports[`IFrame controls IFrame controls component renders 28`] = `
       >
         <button
           className="zoom-reset-button"
-          onClick={undefined}
         >
           Reset zoom
         </button>
@@ -1200,7 +1142,6 @@ exports[`IFrame controls IFrame controls component renders 28`] = `
         <button
           className="zoom-out-button"
           disabled={false}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -1215,7 +1156,6 @@ exports[`IFrame controls IFrame controls component renders 28`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -1238,7 +1178,6 @@ exports[`IFrame controls IFrame controls component renders 29`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -1262,7 +1201,6 @@ exports[`IFrame controls IFrame controls component renders 30`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -1276,7 +1214,6 @@ exports[`IFrame controls IFrame controls component renders 30`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -1299,7 +1236,6 @@ exports[`IFrame controls IFrame controls component renders 31`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -1322,7 +1258,6 @@ exports[`IFrame controls IFrame controls component renders 31`] = `
       >
         <button
           className="zoom-reset-button"
-          onClick={undefined}
         >
           Reset zoom
         </button>
@@ -1338,7 +1273,6 @@ exports[`IFrame controls IFrame controls component renders 31`] = `
         <button
           className="zoom-out-button"
           disabled={true}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -1353,7 +1287,6 @@ exports[`IFrame controls IFrame controls component renders 31`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>
@@ -1377,7 +1310,6 @@ exports[`IFrame controls IFrame controls component renders 32`] = `
   >
     <button
       className="reload-button"
-      onClick={undefined}
     >
       Reload
     </button>
@@ -1391,7 +1323,6 @@ exports[`IFrame controls IFrame controls component renders 32`] = `
     className="new-window-link"
   >
     <a
-      href={undefined}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -1414,7 +1345,6 @@ exports[`IFrame controls IFrame controls component renders 32`] = `
       >
         <button
           className="zoom-reset-button"
-          onClick={undefined}
         >
           Reset zoom
         </button>
@@ -1430,7 +1360,6 @@ exports[`IFrame controls IFrame controls component renders 32`] = `
         <button
           className="zoom-out-button"
           disabled={true}
-          onClick={undefined}
         >
           Zoom out
         </button>
@@ -1445,7 +1374,6 @@ exports[`IFrame controls IFrame controls component renders 32`] = `
       >
         <button
           className="zoom-in-button"
-          onClick={undefined}
         >
           Zoom in
         </button>

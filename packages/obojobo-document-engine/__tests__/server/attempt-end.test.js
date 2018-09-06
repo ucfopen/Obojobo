@@ -12,7 +12,7 @@ jest.mock('../../server/assessment', () => ({
 	getAttempts: jest.fn().mockResolvedValue('attempts'),
 	getAttemptNumber: jest.fn().mockResolvedValue(6),
 	getResponsesForAttempt: jest.fn().mockResolvedValue('mockResponsesForAttempt'),
-	getCompletedAssessmentAttemptHistory: jest.fn().mockReturnValue('super bat dad'),
+	getCompletedAssessmentAttemptHistory: jest.fn().mockResolvedValue('super bat dad'),
 	completeAttempt: jest.fn().mockReturnValue('mockCompleteAttemptResult')
 }))
 
@@ -67,6 +67,7 @@ describe('Attempt End', () => {
 	})
 
 	test('endAttempt returns Assessment.getAttempts, sends lti highest score, and inserts 2 events', () => {
+		expect.assertions(13)
 		lti.getLatestHighestAssessmentScoreRecord.mockResolvedValueOnce({ score: 75 })
 		// provide a draft model mock
 		const mockDraftDocument = new DraftDocument({

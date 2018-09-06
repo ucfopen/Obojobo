@@ -2,10 +2,10 @@ jest.mock('../../../models/draft')
 jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
-jest.mock('obojobo-draft-xml-parser/xml-to-draft-object')
+jest.mock('obojobo-document-xml-parser/xml-to-draft-object')
 
 import DraftModel from '../../../models/draft'
-const xml = require('obojobo-draft-xml-parser/xml-to-draft-object')
+const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
 
 // don't use our existing express mock, we're using supertest
 jest.unmock('express')

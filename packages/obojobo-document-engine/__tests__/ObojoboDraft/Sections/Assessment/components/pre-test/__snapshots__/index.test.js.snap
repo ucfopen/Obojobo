@@ -11,6 +11,12 @@ exports[`PreTest PreTest component 1`] = `
           "calls": Array [
             Array [],
           ],
+          "results": Array [
+            Object {
+              "isThrow": false,
+              "value": "MockComponent",
+            },
+          ],
         },
       }
     }

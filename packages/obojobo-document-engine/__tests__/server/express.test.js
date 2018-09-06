@@ -25,26 +25,8 @@ describe('server/express', () => {
 	const mockDocument = { draftId: 3, contentId: 12 }
 	const Assessment = require('../../server/assessment')
 	// build the req info
-	const req = {
-		requireCurrentUser: jest.fn().mockReturnValue(Promise.resolve(mockUser)),
-		requireCurrentDocument: jest.fn().mockReturnValue(Promise.resolve(mockDocument)),
-		params: {
-			draftId: 3,
-			attemptId: 5,
-			assessmentId: 999
-		},
-		body: {
-			draftId: 9,
-			assessmentId: 777,
-			visitId: 'mockVisitId'
-		}
-	}
-
-	const res = {
-		success: jest.fn(),
-		unexpected: jest.fn(),
-		notAuthorized: jest.fn()
-	}
+	let req
+	let res
 
 	const server = require('../../server/express')
 	const lti = oboRequire('lti')
@@ -57,11 +39,27 @@ describe('server/express', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
-		req.body.visitId = 'mockVisitId'
-		req.requireCurrentUser.mockRestore()
-		res.success.mockReset()
-		res.unexpected.mockReset()
-		res.notAuthorized.mockReset()
+		req = {
+			requireCurrentUser: jest.fn().mockResolvedValue(mockUser),
+			requireCurrentDocument: jest.fn().mockResolvedValue(mockDocument),
+			params: {
+				draftId: 3,
+				attemptId: 5,
+				assessmentId: 999
+			},
+			body: {
+				draftId: 9,
+				assessmentId: 777,
+				visitId: 'mockVisitId'
+			}
+		}
+
+		res = {
+			success: jest.fn(),
+			unexpected: jest.fn(),
+			notAuthorized: jest.fn()
+		}
+
 		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockReset()
 		lti.sendHighestAssessmentScore.mockReset()
 		db.manyOrNone.mockReset()
@@ -167,7 +165,7 @@ describe('server/express', () => {
 	})
 
 	test('/api/assessments/attempt/start calls startAttempt', () => {
-		expect.assertions(3)
+		expect.assertions(2)
 
 		// grab a ref to expected route & verify it's the route we want
 		const startAttemptRoute = server.post.mock.calls[1]
@@ -175,7 +173,6 @@ describe('server/express', () => {
 
 		// execute
 		startAttemptRoute[1](req, res, {})
-		expect(req.requireCurrentUser).toHaveBeenCalled()
 		expect(startAttempt).toHaveBeenCalledWith(req, res)
 	})
 
@@ -220,7 +217,7 @@ describe('server/express', () => {
 	})
 
 	test('/api/assessments/clear-preview-scores runs queries to empty preview score data', () => {
-		expect.assertions(11)
+		expect.assertions(10)
 
 		// visit is preview visit
 		req.body.visitId = 'mockPreviewVisitId'
@@ -238,7 +235,6 @@ describe('server/express', () => {
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDocument, 5, false)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith()
 
@@ -458,7 +454,7 @@ describe('server/express', () => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('attempts')
-			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3)
+			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3, 999)
 		})
 	})
 

@@ -49,9 +49,7 @@ exports[`ErrorDialog ErrorDialog component 1`] = `
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
-                disabled={undefined}
                 onClick={[Function]}
-                tabIndex={undefined}
               >
                 OK
               </button>

@@ -12,9 +12,7 @@ exports[`List List component 1`] = `
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
   >
-    <div
-      data-indent={undefined}
-    >
+    <div>
       <ol
         start={1}
         style={
@@ -24,7 +22,6 @@ exports[`List List component 1`] = `
         }
       >
         <li
-          start={undefined}
           style={
             Object {
               "listStyleType": "none",
@@ -49,9 +46,7 @@ exports[`List List component with ascending indents 1`] = `
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
   >
-    <div
-      data-indent={undefined}
-    >
+    <div>
       <ol
         start={1}
         style={
@@ -61,7 +56,6 @@ exports[`List List component with ascending indents 1`] = `
         }
       >
         <li
-          start={undefined}
           style={
             Object {
               "listStyleType": "none",
@@ -77,7 +71,6 @@ exports[`List List component with ascending indents 1`] = `
             }
           >
             <li
-              start={undefined}
               style={
                 Object {
                   "listStyleType": "upper-alpha",
@@ -87,7 +80,6 @@ exports[`List List component with ascending indents 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={0}
-                data-indent={undefined}
               >
                 <span>
                   <span>
@@ -106,7 +98,6 @@ exports[`List List component with ascending indents 1`] = `
                 }
               >
                 <li
-                  start={undefined}
                   style={
                     Object {
                       "listStyleType": "square",
@@ -116,7 +107,6 @@ exports[`List List component with ascending indents 1`] = `
                   <span
                     className="text align-undefined"
                     data-group-index={1}
-                    data-indent={undefined}
                   >
                     <span>
                       <span>
@@ -135,7 +125,6 @@ exports[`List List component with ascending indents 1`] = `
                     }
                   >
                     <li
-                      start={undefined}
                       style={
                         Object {
                           "listStyleType": "lower-alpha",
@@ -145,7 +134,6 @@ exports[`List List component with ascending indents 1`] = `
                       <span
                         className="text align-undefined"
                         data-group-index={2}
-                        data-indent={undefined}
                       >
                         <span>
                           <span>
@@ -164,7 +152,6 @@ exports[`List List component with ascending indents 1`] = `
                         }
                       >
                         <li
-                          start={undefined}
                           style={
                             Object {
                               "listStyleType": "upper-alpha",
@@ -174,7 +161,6 @@ exports[`List List component with ascending indents 1`] = `
                           <span
                             className="text align-undefined"
                             data-group-index={3}
-                            data-indent={undefined}
                           >
                             <span>
                               <span>
@@ -193,7 +179,6 @@ exports[`List List component with ascending indents 1`] = `
                             }
                           >
                             <li
-                              start={undefined}
                               style={
                                 Object {
                                   "listStyleType": "decimal",
@@ -203,7 +188,6 @@ exports[`List List component with ascending indents 1`] = `
                               <span
                                 className="text align-undefined"
                                 data-group-index={4}
-                                data-indent={undefined}
                               >
                                 <span>
                                   <span>
@@ -222,7 +206,6 @@ exports[`List List component with ascending indents 1`] = `
                                 }
                               >
                                 <li
-                                  start={undefined}
                                   style={
                                     Object {
                                       "listStyleType": "upper-alpha",
@@ -232,7 +215,6 @@ exports[`List List component with ascending indents 1`] = `
                                   <span
                                     className="text align-undefined"
                                     data-group-index={5}
-                                    data-indent={undefined}
                                   >
                                     <span>
                                       <span>
@@ -273,9 +255,7 @@ exports[`List List component with inverse indentation 1`] = `
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
   >
-    <div
-      data-indent={undefined}
-    >
+    <div>
       <ol
         start={1}
         style={
@@ -285,7 +265,6 @@ exports[`List List component with inverse indentation 1`] = `
         }
       >
         <li
-          start={undefined}
           style={
             Object {
               "listStyleType": "decimal",
@@ -295,7 +274,6 @@ exports[`List List component with inverse indentation 1`] = `
           <span
             className="text align-undefined"
             data-group-index={0}
-            data-indent={undefined}
           >
             <span>
               <span>
@@ -314,7 +292,6 @@ exports[`List List component with inverse indentation 1`] = `
             }
           >
             <li
-              start={undefined}
               style={
                 Object {
                   "listStyleType": "none",
@@ -330,7 +307,6 @@ exports[`List List component with inverse indentation 1`] = `
                 }
               >
                 <li
-                  start={undefined}
                   style={
                     Object {
                       "listStyleType": "square",
@@ -340,7 +316,6 @@ exports[`List List component with inverse indentation 1`] = `
                   <span
                     className="text align-undefined"
                     data-group-index={1}
-                    data-indent={undefined}
                   >
                     <span>
                       <span>
@@ -354,7 +329,6 @@ exports[`List List component with inverse indentation 1`] = `
               </ul>
             </li>
             <li
-              start={undefined}
               style={
                 Object {
                   "listStyleType": "upper-alpha",
@@ -364,7 +338,6 @@ exports[`List List component with inverse indentation 1`] = `
               <span
                 className="text align-undefined"
                 data-group-index={2}
-                data-indent={undefined}
               >
                 <span>
                   <span>
@@ -395,9 +368,7 @@ exports[`List List component with irregular indentation 1`] = `
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
   >
-    <div
-      data-indent={undefined}
-    >
+    <div>
       <ol
         start={1}
         style={
@@ -407,7 +378,6 @@ exports[`List List component with irregular indentation 1`] = `
         }
       >
         <li
-          start={undefined}
           style={
             Object {
               "listStyleType": "decimal",
@@ -417,7 +387,6 @@ exports[`List List component with irregular indentation 1`] = `
           <span
             className="text align-undefined"
             data-group-index={0}
-            data-indent={undefined}
           >
             <span>
               <span>
@@ -436,7 +405,6 @@ exports[`List List component with irregular indentation 1`] = `
             }
           >
             <li
-              start={undefined}
               style={
                 Object {
                   "listStyleType": "none",
@@ -452,7 +420,6 @@ exports[`List List component with irregular indentation 1`] = `
                 }
               >
                 <li
-                  start={undefined}
                   style={
                     Object {
                       "listStyleType": "square",
@@ -462,7 +429,6 @@ exports[`List List component with irregular indentation 1`] = `
                   <span
                     className="text align-undefined"
                     data-group-index={1}
-                    data-indent={undefined}
                   >
                     <span>
                       <span>
@@ -481,7 +447,6 @@ exports[`List List component with irregular indentation 1`] = `
                     }
                   >
                     <li
-                      start={undefined}
                       style={
                         Object {
                           "listStyleType": "none",
@@ -497,7 +462,6 @@ exports[`List List component with irregular indentation 1`] = `
                         }
                       >
                         <li
-                          start={undefined}
                           style={
                             Object {
                               "listStyleType": "none",
@@ -513,7 +477,6 @@ exports[`List List component with irregular indentation 1`] = `
                             }
                           >
                             <li
-                              start={undefined}
                               style={
                                 Object {
                                   "listStyleType": "none",
@@ -529,7 +492,6 @@ exports[`List List component with irregular indentation 1`] = `
                                 }
                               >
                                 <li
-                                  start={undefined}
                                   style={
                                     Object {
                                       "listStyleType": "upper-alpha",
@@ -539,7 +501,6 @@ exports[`List List component with irregular indentation 1`] = `
                                   <span
                                     className="text align-undefined"
                                     data-group-index={2}
-                                    data-indent={undefined}
                                   >
                                     <span>
                                       <span>
@@ -559,7 +520,6 @@ exports[`List List component with irregular indentation 1`] = `
                   </ol>
                 </li>
                 <li
-                  start={undefined}
                   style={
                     Object {
                       "listStyleType": "square",
@@ -569,7 +529,6 @@ exports[`List List component with irregular indentation 1`] = `
                   <span
                     className="text align-undefined"
                     data-group-index={3}
-                    data-indent={undefined}
                   >
                     <span>
                       <span>
@@ -588,7 +547,6 @@ exports[`List List component with irregular indentation 1`] = `
                     }
                   >
                     <li
-                      start={undefined}
                       style={
                         Object {
                           "listStyleType": "none",
@@ -604,7 +562,6 @@ exports[`List List component with irregular indentation 1`] = `
                         }
                       >
                         <li
-                          start={undefined}
                           style={
                             Object {
                               "listStyleType": "upper-alpha",
@@ -614,7 +571,6 @@ exports[`List List component with irregular indentation 1`] = `
                           <span
                             className="text align-undefined"
                             data-group-index={4}
-                            data-indent={undefined}
                           >
                             <span>
                               <span>
@@ -628,7 +584,6 @@ exports[`List List component with irregular indentation 1`] = `
                       </ol>
                     </li>
                     <li
-                      start={undefined}
                       style={
                         Object {
                           "listStyleType": "lower-alpha",
@@ -638,7 +593,6 @@ exports[`List List component with irregular indentation 1`] = `
                       <span
                         className="text align-undefined"
                         data-group-index={5}
-                        data-indent={undefined}
                       >
                         <span>
                           <span>

@@ -37,9 +37,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
           className="obojobo-draft--components--button alt-action is-dangerous align-center"
         >
           <button
-            disabled={undefined}
             onClick={[Function]}
-            tabIndex={undefined}
           >
             Submit as incomplete
           </button>
@@ -53,9 +51,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
-            disabled={undefined}
             onClick={[Function]}
-            tabIndex={undefined}
           >
             Resume assessment
           </button>

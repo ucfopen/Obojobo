@@ -13,9 +13,7 @@ exports[`Modal Modal 1`] = `
     className="obojobo-draft--components--delete-button"
   >
     <button
-      disabled={undefined}
       onClick={[MockFunction]}
-      tabIndex={undefined}
     >
       Delete
     </button>

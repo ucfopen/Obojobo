@@ -3,7 +3,6 @@
 exports[`MCFeedback MCFeedback component for a correct item 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-  data-choice-label={undefined}
   data-focussed={false}
   data-id="feedback"
   data-obo-component={true}
@@ -42,7 +41,6 @@ exports[`MCFeedback MCFeedback component for a correct item 1`] = `
 exports[`MCFeedback MCFeedback component for an incorrect item 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
-  data-choice-label={undefined}
   data-focussed={false}
   data-id="feedback"
   data-obo-component={true}

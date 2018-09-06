@@ -26,11 +26,7 @@ exports[`MCAssessment Question component 1`] = `
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center"
       >
-        <button
-          disabled={undefined}
-          onClick={undefined}
-          tabIndex={undefined}
-        >
+        <button>
           Try Question
         </button>
       </div>
@@ -65,11 +61,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center"
       >
-        <button
-          disabled={undefined}
-          onClick={undefined}
-          tabIndex={undefined}
-        >
+        <button>
           Try Question
         </button>
       </div>
@@ -104,11 +96,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center"
       >
-        <button
-          disabled={undefined}
-          onClick={undefined}
-          tabIndex={undefined}
-        >
+        <button>
           Try Question
         </button>
       </div>
@@ -143,11 +131,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center"
       >
-        <button
-          disabled={undefined}
-          onClick={undefined}
-          tabIndex={undefined}
-        >
+        <button>
           Try Question
         </button>
       </div>
@@ -182,11 +166,7 @@ exports[`MCAssessment Question component in review mode 1`] = `
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center"
       >
-        <button
-          disabled={undefined}
-          onClick={undefined}
-          tabIndex={undefined}
-        >
+        <button>
           View Question
         </button>
       </div>

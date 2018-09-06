@@ -26,10 +26,22 @@ Array [
           },
         ],
       ],
+      "results": Array [
+        Object {
+          "isThrow": false,
+          "value": undefined,
+        },
+      ],
     },
     "yell": [MockFunction] {
       "calls": Array [
         [Circular],
+      ],
+      "results": Array [
+        Object {
+          "isThrow": false,
+          "value": undefined,
+        },
       ],
     },
   },

@@ -16,9 +16,7 @@ exports[`ActionButton ActionButton component with label 1`] = `
       className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
-        disabled={undefined}
         onClick={[Function]}
-        tabIndex={undefined}
       >
         Example Label
       </button>
@@ -43,9 +41,7 @@ exports[`ActionButton ActionButton component with textGroup 1`] = `
       className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
-        disabled={undefined}
         onClick={[Function]}
-        tabIndex={undefined}
       >
         <span
           className="text align-undefined"

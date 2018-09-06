@@ -36,8 +36,6 @@ exports[`LTIStatus LTIStatus component shows loading state 1`] = `
   >
     <button
       disabled={true}
-      onClick={undefined}
-      tabIndex={undefined}
     >
       Re-sending score...
     </button>
@@ -66,11 +64,7 @@ exports[`LTIStatus LTIStatus component with an externalSystemLabel and no lti st
   <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >
-    <button
-      disabled={undefined}
-      onClick={undefined}
-      tabIndex={undefined}
-    >
+    <button>
       Try again anyway
     </button>
   </div>
@@ -98,11 +92,7 @@ exports[`LTIStatus LTIStatus component with error shows additional information i
   <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >
-    <button
-      disabled={undefined}
-      onClick={undefined}
-      tabIndex={undefined}
-    >
+    <button>
       Try again anyway
     </button>
   </div>
@@ -138,11 +128,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_INV
   <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >
-    <button
-      disabled={undefined}
-      onClick={undefined}
-      tabIndex={undefined}
-    >
+    <button>
       Resend score
     </button>
   </div>
@@ -170,11 +156,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_NEW
   <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >
-    <button
-      disabled={undefined}
-      onClick={undefined}
-      tabIndex={undefined}
-    >
+    <button>
       Resend score
     </button>
   </div>
@@ -202,11 +184,7 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_STA
   <div
     className="obojobo-draft--components--button is-dangerous align-center"
   >
-    <button
-      disabled={undefined}
-      onClick={undefined}
-      tabIndex={undefined}
-    >
+    <button>
       Resend score
     </button>
   </div>

@@ -4,11 +4,7 @@ exports[`DeleteButton DeleteButton component 1`] = `
 <div
   className="obojobo-draft--components--delete-button"
 >
-  <button
-    disabled={undefined}
-    onClick={undefined}
-    tabIndex={undefined}
-  >
+  <button>
     Delete
   </button>
 </div>
@@ -18,11 +14,7 @@ exports[`DeleteButton DeleteButton component disabled 1`] = `
 <div
   className="obojobo-draft--components--delete-button"
 >
-  <button
-    disabled={undefined}
-    onClick={undefined}
-    tabIndex={undefined}
-  >
+  <button>
     Delete
   </button>
 </div>
@@ -33,9 +25,7 @@ exports[`DeleteButton DeleteButton component with onClick 1`] = `
   className="obojobo-draft--components--delete-button"
 >
   <button
-    disabled={undefined}
     onClick={[Function]}
-    tabIndex={undefined}
   >
     Delete
   </button>
@@ -48,7 +38,6 @@ exports[`DeleteButton DeleteButton component with shouldPreventTab 1`] = `
 >
   <button
     disabled={true}
-    onClick={undefined}
     tabIndex="-1"
   >
     Delete
@@ -61,8 +50,6 @@ exports[`DeleteButton DeleteButton component with tabIndex 1`] = `
   className="obojobo-draft--components--delete-button"
 >
   <button
-    disabled={undefined}
-    onClick={undefined}
     tabIndex={50}
   >
     Delete

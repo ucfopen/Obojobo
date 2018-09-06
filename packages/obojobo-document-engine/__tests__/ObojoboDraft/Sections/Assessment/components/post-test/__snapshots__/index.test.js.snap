@@ -43,9 +43,7 @@ exports[`PostTest PostTest component 1`] = `
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
-          disabled={undefined}
           onClick={[Function]}
-          tabIndex={undefined}
         >
           Try again anyway
         </button>
@@ -117,9 +115,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
-          disabled={undefined}
           onClick={[Function]}
-          tabIndex={undefined}
         >
           Try again anyway
         </button>
@@ -179,9 +175,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
-                disabled={undefined}
                 onClick={[Function]}
-                tabIndex={undefined}
               >
                 <span
                   className="text align-undefined"
@@ -261,9 +255,7 @@ exports[`PostTest PostTest component with review 1`] = `
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
-          disabled={undefined}
           onClick={[Function]}
-          tabIndex={undefined}
         >
           Try again anyway
         </button>
@@ -323,9 +315,7 @@ exports[`PostTest PostTest component with review 1`] = `
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
-                disabled={undefined}
                 onClick={[Function]}
-                tabIndex={undefined}
               >
                 <span
                   className="text align-undefined"
@@ -405,9 +395,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
-          disabled={undefined}
           onClick={[Function]}
-          tabIndex={undefined}
         >
           Try again anyway
         </button>
@@ -467,9 +455,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
-                disabled={undefined}
                 onClick={[Function]}
-                tabIndex={undefined}
               >
                 <span
                   className="text align-undefined"
@@ -549,9 +535,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
-          disabled={undefined}
           onClick={[Function]}
-          tabIndex={undefined}
         >
           Try again anyway
         </button>
@@ -611,9 +595,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
-                disabled={undefined}
                 onClick={[Function]}
-                tabIndex={undefined}
               >
                 <span
                   className="text align-undefined"
@@ -688,9 +670,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
         className="obojobo-draft--components--button is-dangerous align-center"
       >
         <button
-          disabled={undefined}
           onClick={[Function]}
-          tabIndex={undefined}
         >
           Try again anyway
         </button>
@@ -750,9 +730,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
-                disabled={undefined}
                 onClick={[Function]}
-                tabIndex={undefined}
               >
                 <span
                   className="text align-undefined"
