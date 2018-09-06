@@ -10,7 +10,7 @@ const getInstalledModules = (configEnv = 'production') => {
 	if (memoizedValues.hasOwnProperty(configEnv)) return memoizedValues[configEnv]
 
 	// WHERE SHOULD WE LOOK FOR obojobo.json files
-	const searchPaths = ['./node_modules/*/obojobo.json']
+	const searchPaths = ['../../node_modules/*/obojobo.json']
 	const packageNameRegex = new RegExp(/node_modules[\\/](.+?)[\\/].*/i)
 	const assetFiles = new Set()
 	const expressFiles = new Set()
@@ -39,6 +39,8 @@ const getInstalledModules = (configEnv = 'production') => {
 	*/
 	const allModuleExcludeRoles = excludeMap.has('*') ? excludeMap.get('*') : []
 
+
+	logger.info('Loading installed Obojobo Modules...')
 	searchPaths.forEach(search => {
 		const files = glob.sync(search)
 		files.forEach(file => {

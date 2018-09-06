@@ -8,8 +8,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const getInstalledModules = require('./obo_get_installed_modules')
 const docEngineBasePath = path.join(
 	__dirname,
+	'..',
+	'..',
 	'node_modules',
-	'obojobo-draft-document-engine',
+	'obojobo-document-engine',
 	'build'
 )
 
