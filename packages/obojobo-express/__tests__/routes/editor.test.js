@@ -9,7 +9,22 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
 	}
+	req.getCurrentUser = () => {
+		req.currentUser = mockCurrentUser
+		return Promise.resolve(mockCurrentUser)
+	}
 	next()
+})
+
+const mockDbDraft = (id, name) => ({
+	draftId: id,
+	xml: `xml-${name}`,
+	content: {
+		content: {
+			title: `${name}-mock-title`
+		}
+	},
+	createdAt: new Date()
 })
 
 // setup express server
@@ -31,18 +46,21 @@ describe('editor route', () => {
 
 	test('get editor rejects users without canViewEditor permission', () => {
 		expect.assertions(3)
-		mockCurrentUser = { id: 99, canViewEditor: false } // shouldn't meet auth requirements
+
+		// mock the list of drafts
+		db.any.mockResolvedValueOnce([])
+		mockCurrentUser.canViewEditor = false
 
 		return request(app)
 			.get('/')
 			.then(response => {
-				expect(response.statusCode).toBe(401)
 				expect(response.header['content-type']).toContain('text/html')
-				expect(response.text).toBe('Not Authorized')
+				expect(response.statusCode).toBe(401)
+				expect(response.text).toContain('Not Authorized')
 			})
 	})
 
-	test('get returns the expected response', () => {
+	test('get returns the expected response when logged in', () => {
 		expect.assertions(3)
 
 		// mock the list of drafts
@@ -59,24 +77,20 @@ describe('editor route', () => {
 
 	test('get returns drafts sorted alphabetically', () => {
 		expect.assertions(7)
-
 		// mock the list of drafts in backwards order
-		db.any.mockResolvedValueOnce([
-			{ draftId: 99, xml: 'xml-1', content: { content: { title: 'b-mock-title' } } },
-			{ draftId: 100, xml: 'xml-2', content: { content: { title: 'a-mock-title' } } }
-		])
+		db.any.mockResolvedValueOnce([mockDbDraft(99, '1'), mockDbDraft(100, '2')])
 
 		return request(app)
 			.get('/')
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain('a-mock-title')
-				expect(response.text).toContain('b-mock-title')
+				expect(response.text).toContain('1-mock-title')
+				expect(response.text).toContain('2-mock-title')
 				expect(response.text).toContain('data-id="99"')
 				expect(response.text).toContain('data-id="100"')
-				expect(response.text.indexOf('a-mock-title')).toBeLessThan(
-					response.text.indexOf('b-mock-title')
+				expect(response.text.indexOf('1-mock-title')).toBeLessThan(
+					response.text.indexOf('2-mock-title')
 				)
 			})
 	})
@@ -85,9 +99,7 @@ describe('editor route', () => {
 		expect.assertions(3)
 
 		// mock the list of drafts with xml content
-		db.any.mockResolvedValueOnce([
-			{ draftId: 99, xml: 'xml-1', content: { content: { title: 'b-mock-title' } } }
-		])
+		db.any.mockResolvedValueOnce([mockDbDraft(99, '1')])
 
 		return request(app)
 			.get('/')
@@ -99,21 +111,18 @@ describe('editor route', () => {
 	})
 
 	test('get editor sets data-content for drafts without xml as expected', () => {
-		expect.assertions(3)
+		expect.assertions(4)
 
 		// mock the list of drafts with no xml content
-		db.any.mockResolvedValueOnce([
-			{ draftId: 99, xml: null, content: { content: { title: 'b-mock-title' } } }
-		])
+		db.any.mockResolvedValueOnce([mockDbDraft(99, '1')])
 
 		return request(app)
 			.get('/')
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain(
-					'{&#34;content&#34;:{&#34;title&#34;:&#34;b-mock-title&#34;}}'
-				)
+				expect(response.text).toContain('data-content="xml-1"')
+				expect(response.text).toContain('<p>1-mock-title</p>')
 			})
 	})
 

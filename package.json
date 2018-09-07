@@ -5,7 +5,7 @@
     "dev": "cd node_modules/obojobo-express && yarn dev",
     "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\"",
     "test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test",
-    "precommit": "cd node_modules/obojobo-document-xml-parser && yarn precommit && cd ../obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit"
+    "precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
