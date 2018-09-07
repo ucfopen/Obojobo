@@ -2,11 +2,14 @@
   "private": true,
   "name": "obojobo-next",
   "scripts": {
-    "dev": "cd node_modules/obojobo-express && yarn express:dev",
-    "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\""
+    "dev": "cd node_modules/obojobo-express && yarn dev",
+    "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\"",
+    "test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test",
+    "precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit"
   },
   "devDependencies": {
-    "concurrently": "^3.5.0"
+    "concurrently": "^3.5.0",
+    "husky": "^0.13.3"
   },
   "workspaces": [
     "packages/obojobo-document-engine",

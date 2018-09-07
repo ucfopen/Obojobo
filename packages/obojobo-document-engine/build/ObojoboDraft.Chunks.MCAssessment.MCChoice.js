@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 293);
+/******/ 	return __webpack_require__(__webpack_require__.s = 294);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 21:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -99,7 +99,7 @@ exports.default = isOrNot;
 
 /***/ }),
 
-/***/ 293:
+/***/ 294:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(40);
@@ -117,11 +117,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(41);
+var _adapter = __webpack_require__(62);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(42);
+var _viewerComponent = __webpack_require__(63);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -138,7 +138,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 /***/ }),
 
-/***/ 41:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -174,7 +174,7 @@ var __guard__ = function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 42:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -194,7 +194,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _isornot = __webpack_require__(21);
+var _isornot = __webpack_require__(22);
 
 var _isornot2 = _interopRequireDefault(_isornot);
 

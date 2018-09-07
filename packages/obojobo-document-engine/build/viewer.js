@@ -1537,9 +1537,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
             mom = createUTC([2000, 1]).day(i);
             if (strict && !this._fullWeekdaysParse[i]) {
-                this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\.?') + '$', 'i');
-                this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\.?') + '$', 'i');
-                this._minWeekdaysParse[i] = new RegExp('^' + this.weekdaysMin(mom, '').replace('.', '\.?') + '$', 'i');
+                this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\\.?') + '$', 'i');
+                this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\\.?') + '$', 'i');
+                this._minWeekdaysParse[i] = new RegExp('^' + this.weekdaysMin(mom, '').replace('.', '\\.?') + '$', 'i');
             }
             if (!this._weekdaysParse[i]) {
                 regex = '^' + this.weekdays(mom, '') + '|^' + this.weekdaysShort(mom, '') + '|^' + this.weekdaysMin(mom, '');
@@ -2313,7 +2313,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
     function preprocessRFC2822(s) {
         // Remove comments and folding whitespace and replace multiple-spaces with a single space
-        return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').trim();
+        return s.replace(/\([^)]*\)|[\n\t]/g, ' ').replace(/(\s\s+)/g, ' ').replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     }
 
     function checkWeekday(weekdayStr, parsedInput, config) {
@@ -4429,7 +4429,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     // Side effect imports
 
 
-    hooks.version = '2.22.1';
+    hooks.version = '2.22.2';
 
     setHookCallback(createLocal);
 
@@ -7037,7 +7037,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         relativeTime: {
             future: '%s sonra',
             past: '%s əvvəl',
-            s: 'birneçə saniyyə',
+            s: 'birneçə saniyə',
             ss: '%d saniyə',
             m: 'bir dəqiqə',
             mm: '%d dəqiqə',
@@ -7136,7 +7136,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         weekdays: {
             format: 'нядзелю_панядзелак_аўторак_сераду_чацвер_пятніцу_суботу'.split('_'),
             standalone: 'нядзеля_панядзелак_аўторак_серада_чацвер_пятніца_субота'.split('_'),
-            isFormat: /\[ ?[Вв] ?(?:мінулую|наступную)? ?\] ?dddd/
+            isFormat: /\[ ?[Ууў] ?(?:мінулую|наступную)? ?\] ?dddd/
         },
         weekdaysShort: 'нд_пн_ат_ср_чц_пт_сб'.split('_'),
         weekdaysMin: 'нд_пн_ат_ср_чц_пт_сб'.split('_'),
@@ -14647,7 +14647,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
         calendar: {
             sameDay: '[ਅਜ] LT',
             nextDay: '[ਕਲ] LT',
-            nextWeek: 'dddd, LT',
+            nextWeek: '[ਅਗਲਾ] dddd, LT',
             lastDay: '[ਕਲ] LT',
             lastWeek: '[ਪਿਛਲੇ] dddd, LT',
             sameElse: 'L'
@@ -21192,12 +21192,18 @@ function querystring(query) {
       result = {},
       part;
 
-  //
-  // Little nifty parsing hack, leverage the fact that RegExp.exec increments
-  // the lastIndex property so we can continue executing this loop until we've
-  // parsed all results.
-  //
-  for (; part = parser.exec(query); result[decode(part[1])] = decode(part[2])) {}
+  while (part = parser.exec(query)) {
+    var key = decode(part[1]),
+        value = decode(part[2]);
+
+    //
+    // Prevent overriding of existing properties. This ensures that build-in
+    // methods like `toString` or __proto__ are not overriden by malicious
+    // querystrings.
+    //
+    if (key in result) continue;
+    result[key] = value;
+  }
 
   return result;
 }
@@ -21650,7 +21656,10 @@ var required = __webpack_require__(158),
  */
 var rules = [['#', 'hash'], // Extract from the back.
 ['?', 'query'], // Extract from the back.
-['/', 'pathname'], // Extract from the back.
+function sanitize(address) {
+  // Sanitize what is left of the address
+  return address.replace('\\', '/');
+}, ['/', 'pathname'], // Extract from the back.
 ['@', 'auth', 1], // Extract from the front.
 [NaN, 'host', undefined, 1, 1], // Set left over value.
 [/:(\d+)$/, 'port', undefined, 1], // RegExp the back.
@@ -21677,19 +21686,20 @@ var ignore = { hash: 1, query: 1 };
  *
  * @param {Object|String} loc Optional default location object.
  * @returns {Object} lolcation object.
- * @api public
+ * @public
  */
 function lolcation(loc) {
-  loc = loc || global.location || {};
+  var location = global && global.location || {};
+  loc = loc || location;
 
   var finaldestination = {},
       type = typeof loc === 'undefined' ? 'undefined' : _typeof(loc),
       key;
 
   if ('blob:' === loc.protocol) {
-    finaldestination = new URL(unescape(loc.pathname), {});
+    finaldestination = new Url(unescape(loc.pathname), {});
   } else if ('string' === type) {
-    finaldestination = new URL(loc, {});
+    finaldestination = new Url(loc, {});
     for (key in ignore) {
       delete finaldestination[key];
     }
@@ -21720,7 +21730,7 @@ function lolcation(loc) {
  *
  * @param {String} address URL we want to extract from.
  * @return {ProtocolExtract} Extracted information.
- * @api private
+ * @private
  */
 function extractProtocol(address) {
   var match = protocolre.exec(address);
@@ -21738,7 +21748,7 @@ function extractProtocol(address) {
  * @param {String} relative Pathname of the relative URL.
  * @param {String} base Pathname of the base URL.
  * @return {String} Resolved pathname.
- * @api private
+ * @private
  */
 function resolve(relative, base) {
   var path = (base || '/').split('/').slice(0, -1).concat(relative.split('/')),
@@ -21771,15 +21781,18 @@ function resolve(relative, base) {
  * create an actual constructor as it's much more memory efficient and
  * faster and it pleases my OCD.
  *
+ * It is worth noting that we should not use `URL` as class name to prevent
+ * clashes with the global URL instance that got introduced in browsers.
+ *
  * @constructor
  * @param {String} address URL we want to parse.
  * @param {Object|String} location Location defaults for relative paths.
  * @param {Boolean|Function} parser Parser for the query string.
- * @api public
+ * @private
  */
-function URL(address, location, parser) {
-  if (!(this instanceof URL)) {
-    return new URL(address, location, parser);
+function Url(address, location, parser) {
+  if (!(this instanceof Url)) {
+    return new Url(address, location, parser);
   }
 
   var relative,
@@ -21826,10 +21839,16 @@ function URL(address, location, parser) {
   // When the authority component is absent the URL starts with a path
   // component.
   //
-  if (!extracted.slashes) instructions[2] = [/(.*)/, 'pathname'];
+  if (!extracted.slashes) instructions[3] = [/(.*)/, 'pathname'];
 
   for (; i < instructions.length; i++) {
     instruction = instructions[i];
+
+    if (typeof instruction === 'function') {
+      address = instruction(address);
+      continue;
+    }
+
     parse = instruction[0];
     key = instruction[1];
 
@@ -21911,8 +21930,8 @@ function URL(address, location, parser) {
  *                               used to parse the query.
  *                               When setting the protocol, double slash will be
  *                               removed from the final url if it is true.
- * @returns {URL}
- * @api public
+ * @returns {URL} URL instance for chaining.
+ * @public
  */
 function set(part, value, fn) {
   var url = this;
@@ -21995,8 +22014,8 @@ function set(part, value, fn) {
  * Transform the properties back in to a valid and full URL string.
  *
  * @param {Function} stringify Optional query stringify function.
- * @returns {String}
- * @api public
+ * @returns {String} Compiled version of the URL.
+ * @public
  */
 function toString(stringify) {
   if (!stringify || 'function' !== typeof stringify) stringify = qs.stringify;
@@ -22025,17 +22044,17 @@ function toString(stringify) {
   return result;
 }
 
-URL.prototype = { set: set, toString: toString };
+Url.prototype = { set: set, toString: toString };
 
 //
 // Expose the URL parser and some additional properties that might be useful for
 // others or testing.
 //
-URL.extractProtocol = extractProtocol;
-URL.location = lolcation;
-URL.qs = qs;
+Url.extractProtocol = extractProtocol;
+Url.location = lolcation;
+Url.qs = qs;
 
-module.exports = URL;
+module.exports = Url;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "build/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 294);
+/******/ 	return __webpack_require__(__webpack_require__.s = 295);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -82,7 +82,7 @@ module.exports = Viewer;
 
 /***/ }),
 
-/***/ 111:
+/***/ 113:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -94,15 +94,15 @@ var _Common2 = _interopRequireDefault(_Common);
 
 __webpack_require__(40);
 
-__webpack_require__(142);
+__webpack_require__(227);
 
-__webpack_require__(144);
+__webpack_require__(229);
 
-var _adapter = __webpack_require__(145);
+var _adapter = __webpack_require__(230);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(146);
+var _viewerComponent = __webpack_require__(231);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -119,7 +119,24 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment', {
 
 /***/ }),
 
-/***/ 141:
+/***/ 22:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+// used to apply ' is-label' or ' is-not-label' styles
+var isOrNot = function isOrNot(flag, label) {
+  return ' is-' + (flag ? '' : 'not-') + label;
+};
+exports.default = isOrNot;
+
+/***/ }),
+
+/***/ 226:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -129,7 +146,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(270);
+__webpack_require__(271);
 
 var _Common = __webpack_require__(0);
 
@@ -156,7 +173,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 142:
+/***/ 227:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -166,7 +183,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(141);
+var _viewerComponent = __webpack_require__(226);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -183,7 +200,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 
 /***/ }),
 
-/***/ 143:
+/***/ 228:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -193,7 +210,7 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-__webpack_require__(271);
+__webpack_require__(272);
 
 var _Common = __webpack_require__(0);
 
@@ -221,7 +238,7 @@ exports.default = function (props) {
 
 /***/ }),
 
-/***/ 144:
+/***/ 229:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -231,7 +248,7 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _viewerComponent = __webpack_require__(143);
+var _viewerComponent = __webpack_require__(228);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -248,7 +265,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCFeedbac
 
 /***/ }),
 
-/***/ 145:
+/***/ 230:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -284,7 +301,7 @@ exports.default = Adapter;
 
 /***/ }),
 
-/***/ 146:
+/***/ 231:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -296,7 +313,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(272);
+__webpack_require__(273);
 
 var _Common = __webpack_require__(0);
 
@@ -306,7 +323,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _isornot = __webpack_require__(21);
+var _isornot = __webpack_require__(22);
 
 var _isornot2 = _interopRequireDefault(_isornot);
 
@@ -836,30 +853,6 @@ function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 21:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-// used to apply ' is-label' or ' is-not-label' styles
-var isOrNot = function isOrNot(flag, label) {
-  return ' is-' + (flag ? '' : 'not-') + label;
-};
-exports.default = isOrNot;
-
-/***/ }),
-
-/***/ 270:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 271:
 /***/ (function(module, exports) {
 
@@ -874,10 +867,17 @@ exports.default = isOrNot;
 
 /***/ }),
 
-/***/ 294:
+/***/ 273:
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 295:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(111);
+module.exports = __webpack_require__(113);
 
 
 /***/ }),
@@ -892,11 +892,11 @@ var _Common = __webpack_require__(0);
 
 var _Common2 = _interopRequireDefault(_Common);
 
-var _adapter = __webpack_require__(41);
+var _adapter = __webpack_require__(62);
 
 var _adapter2 = _interopRequireDefault(_adapter);
 
-var _viewerComponent = __webpack_require__(42);
+var _viewerComponent = __webpack_require__(63);
 
 var _viewerComponent2 = _interopRequireDefault(_viewerComponent);
 
@@ -913,7 +913,7 @@ _Common2.default.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 /***/ }),
 
-/***/ 41:
+/***/ 62:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -949,7 +949,7 @@ var __guard__ = function __guard__(value, transform) {
 
 /***/ }),
 
-/***/ 42:
+/***/ 63:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -969,7 +969,7 @@ var _Viewer = __webpack_require__(1);
 
 var _Viewer2 = _interopRequireDefault(_Viewer);
 
-var _isornot = __webpack_require__(21);
+var _isornot = __webpack_require__(22);
 
 var _isornot2 = _interopRequireDefault(_isornot);
 

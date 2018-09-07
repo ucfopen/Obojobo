@@ -537,6 +537,8 @@ describe('ViewerApp', () => {
 			'visibilitychange',
 			ViewerApp.onVisibilityChange
 		)
+		// re-mount so the afterEach unmount doesn't error
+		viewerEl.mount()
 	})
 
 	test('onVisibilityChange post event when hidden', () => {
