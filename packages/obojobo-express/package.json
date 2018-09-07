@@ -10,7 +10,7 @@
 		"db:migrateup": "node_modules/.bin/db-migrate up --config config/db.json",
 		"db:migratedown": "node_modules/.bin/db-migrate down --config config/db.json",
 		"db:createmigration":"node_modules/.bin/db-migrate create --config config/db.json",
-		"db:remove": "docker kill db_postgres && docker rm db_postgres",
+		"db:remove": "(docker kill db_postgres || true) && (docker rm db_postgres || true)",
 		"db:rebuild":"yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
 		"sampleDraft:seed": "node ./bin/sample_draft.js seed",
 		"sampleDraft:watch": "node ./bin/sample_draft.js watch",
