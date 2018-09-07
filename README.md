@@ -25,11 +25,11 @@ To keep our collective efforts aimed in the same direction, we've outlined what 
 
 ## Development Setup
 
-1. clone this repo
-2. run `yarn install` to install dependencies
-3. run `yarn setup` runs a basic setup script to build assets and setup a docker database container
-4. run `yarn dev` to start the development express server
-7. visit [https://127.0.0.1:8080](https://127.0.0.1:8080) - You should see "Welcome to Obojobo Next"
+1. Clone this repo
+2. Run `yarn install` to install dependencies
+3. Run `yarn setup` runs a basic setup script to build assets and setup a docker database container
+4. Run `yarn dev` to start the development express server
+7. Visit [https://127.0.0.1:8080](https://127.0.0.1:8080) - You should see "Welcome to Obojobo Next"
 
 > Familiarize yourself with the **scripts** section of package.json.
 
