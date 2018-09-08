@@ -1,8 +1,5 @@
 {
-	"development": {
-		"excludeModules":[]
-	},
-	"production": {
+	"default": {
 		"excludeModules":[]
 	}
 }

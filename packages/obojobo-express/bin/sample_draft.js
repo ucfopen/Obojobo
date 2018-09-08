@@ -10,7 +10,15 @@ let usageError = new Error(`Usage:
 	node sample_draft.js seed
 	node sample_draft.js watch`)
 let defaultId = '00000000-0000-0000-0000-000000000000'
-let sampleJsonPath = path.join(__dirname, '..', '..', '..', 'node_modules', 'obojobo-document-engine', 'test-object.json')
+let sampleJsonPath = path.join(
+	__dirname,
+	'..',
+	'..',
+	'..',
+	'node_modules',
+	'obojobo-document-engine',
+	'test-object.json'
+)
 let writeJsonDraftToDbPath = `${__dirname}/write_json_draft_to_db`
 let db = oboRequire('db')
 
@@ -36,7 +44,7 @@ try {
 
 					exec(cmd, {}, (err, stdout, stderr) => {
 						if (err) {
-							throw(err)
+							throw err
 						}
 
 						console.log(
@@ -57,7 +65,7 @@ try {
 					{},
 					(err, stdout, stderr) => {
 						if (err) {
-							throw(err)
+							throw err
 						}
 
 						console.info('Sample JSON Draft changed, updating...')
