@@ -15,27 +15,23 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db
-		.removeColumn('attempts_question_responses', 'responder_id')
-		.then(result => {
-			return db.addIndex(
-				'attempts_question_responses',
-				'aqr_unique_responses',
-				['attempt_id', 'question_id'],
-				true
-			)
-		})
+	return db.removeColumn('attempts_question_responses', 'responder_id').then(result => {
+		return db.addIndex(
+			'attempts_question_responses',
+			'aqr_unique_responses',
+			['attempt_id', 'question_id'],
+			true
+		)
+	})
 }
 
 exports.down = function(db) {
-	return db
-		.removeIndex('attempts_question_responses', 'aqr_unique_responses')
-		.then(result => {
-			return db.addColumn('attempts_question_responses', 'responder_id', {
-				type: 'varchar',
-				length: 100
-			})
+	return db.removeIndex('attempts_question_responses', 'aqr_unique_responses').then(result => {
+		return db.addColumn('attempts_question_responses', 'responder_id', {
+			type: 'varchar',
+			length: 100
 		})
+	})
 }
 
 exports._meta = {

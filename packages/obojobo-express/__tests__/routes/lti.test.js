@@ -17,7 +17,8 @@ const mockReq = {
 		},
 		get: jest.fn()
 	},
-	getCurrentUser: jest.fn()
+	getCurrentUser: jest.fn(),
+	get: () => 'hostname' // used to mock req.get('host')
 }
 
 describe('lti route', () => {
