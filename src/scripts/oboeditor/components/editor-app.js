@@ -56,6 +56,7 @@ class EditorApp extends React.Component {
 				this.setState({ loading: false })
 			})
 			.catch(err => {
+				console.log(err)
 				this.setState({ requestStatus: 'invalid', requestError: err })
 			})
 	}

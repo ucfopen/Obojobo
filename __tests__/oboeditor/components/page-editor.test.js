@@ -1,23 +1,17 @@
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import React from 'react'
-import renderer from 'react-test-renderer'
 import { Value } from 'slate'
 
 jest.mock('../../../src/scripts/viewer/util/api-util')
 
 import PageEditor from '../../../src/scripts/oboeditor/components/page-editor'
 import Break from '../../../ObojoboDraft/Chunks/Break/editor'
-import newPage from '../../../src/scripts/oboeditor/documents/new-page.json'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
-import Common from '../../../src/scripts/common'
 
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
 const STRIKE_MARK = 'del'
 const QUOTE_MARK = 'q'
-
-const SUPERSCRIPT_MARK = 'sup'
-const LATEX_MARK = '_latex'
 const LINK_MARK = 'a'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
@@ -145,6 +139,83 @@ describe('PageEditor', () => {
 									children: []
 								}
 							}
+						],
+						rubric: {}
+					})
+					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
+					.mockReturnValueOnce({}) // get('content') in export
+			},
+			model: {
+				children: [
+					{
+						get: () => ASSESSMENT_NODE
+					},
+					{
+						get: () => CONTENT_NODE,
+						flatJSON: () => {
+							return { children: [] }
+						},
+						children: {
+							models: [
+								{
+									get: () => null
+								}
+							]
+						}
+					},
+					{
+						get: () => 'mockNode'
+					}
+				],
+				flatJSON: () => {
+					return { children: [] }
+				}
+			}
+		}
+		const component = shallow(<PageEditor {...props} />)
+		const tree = component.html()
+
+		component
+			.find('button')
+			.at(14)
+			.simulate('click')
+
+		expect(tree).toMatchSnapshot()
+		expect(APIUtil.postDraft).toHaveBeenCalle
+	})
+
+	test('EditorNav component with content exports to database with no rubric', () => {
+		jest.spyOn(window, 'alert')
+		window.alert.mockReturnValueOnce(null)
+		APIUtil.postDraft.mockResolvedValueOnce({ status: 'ok' })
+
+		const props = {
+			page: {
+				id: 2,
+				set: jest.fn(),
+				attributes: {
+					children: [
+						{
+							type: 'ObojoboDraft.Chunks.Break',
+							content: {}
+						},
+						{
+							type: 'NonsenseNode'
+						}
+					]
+				},
+				get: jest
+					.fn()
+					.mockReturnValueOnce({
+						// get('content') in
+						scoreActions: [
+							{
+								for: '[0,100]',
+								page: {
+									type: 'ObojoboDraft.Pages.Page',
+									children: []
+								}
+							}
 						]
 					})
 					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
@@ -180,7 +251,7 @@ describe('PageEditor', () => {
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(14)
 			.simulate('click')
@@ -221,7 +292,7 @@ describe('PageEditor', () => {
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(14)
 			.simulate('click')
@@ -242,7 +313,7 @@ describe('PageEditor', () => {
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(2)
 			.simulate('click')
@@ -262,9 +333,7 @@ describe('PageEditor', () => {
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
 
-		const click = component
-			.find('.obojobo-draft--pages--page')
-			.simulate('change', { value: Value.create({}) })
+		component.find('.obojobo-draft--pages--page').simulate('change', { value: Value.create({}) })
 
 		expect(tree).toMatchSnapshot()
 	})

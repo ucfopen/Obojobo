@@ -64,8 +64,6 @@ class Node extends React.Component {
 	}
 
 	renderEquationEditor() {
-		const { isFocused } = this.props
-
 		return (
 			<div className={'equation-editor'}>
 				<div>

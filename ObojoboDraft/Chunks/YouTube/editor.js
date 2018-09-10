@@ -43,10 +43,6 @@ class Node extends React.Component {
 			zIndex: 1
 		}
 
-		const iframeStyle = {
-			display: 'block'
-		}
-
 		return (
 			<div className={'obojobo-draft--chunks--you-tube viewer'} style={wrapperStyle}>
 				<div style={maskStyle} />
@@ -56,6 +52,7 @@ class Node extends React.Component {
 					allowFullScreen="true"
 				/>
 				<input
+					aria-label={'Youtube Video Id'}
 					value={this.state.videoId}
 					onChange={event => this.handleSourceChange(event)}
 					onClick={event => event.stopPropagation()}

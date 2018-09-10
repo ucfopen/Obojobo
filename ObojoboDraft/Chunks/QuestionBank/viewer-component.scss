@@ -3,10 +3,10 @@
 .obojobo-draft--chunks--question-bank {
 	position: relative;
 	width: auto;
-	margin: .3em;
+	margin: 0.3em;
 	min-width: 9em;
-	border: 1px solid #7e18e7;
-	border-radius: .5em;
+	border: 1px solid $color-action;
+	border-radius: $dimension-rounded-radius;
 	padding: 1em;
 	overflow: auto;
 	background: transparentize($color-action, 0.95);

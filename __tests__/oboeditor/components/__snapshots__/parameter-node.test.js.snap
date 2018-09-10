@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parameter Node Node builds the expected component 1`] = `
+<p
+  dummy="dummyData"
+>
+  <span
+    contentEditable={false}
+  >
+    item: 
+  </span>
+  <span />
+</p>
+`;
+
+exports[`Parameter Node oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "display": undefined,
+    "name": Object {
+      "id": "mockKey",
+      "type": "mockType",
+    },
+  },
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": undefined,
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "Parameter",
+}
+`;
+
+exports[`Parameter Node plugins.renderNode renders a Parameter when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "Parameter",
+    }
+  }
+/>
+`;
+
+exports[`Parameter Node slateToObo converts a Slate node to an OboNode 1`] = `
+Object {
+  "mockType": "mockValue",
+}
+`;

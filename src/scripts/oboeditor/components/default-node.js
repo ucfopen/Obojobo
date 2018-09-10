@@ -1,11 +1,7 @@
 import React from 'react'
 
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-
 const Node = props => {
-	return (
-		<p {...props.attributes}>{props.childen}</p>
-	)
+	return <p {...props.attributes}>{props.childen}</p>
 }
 
 const slateToObo = node => {
@@ -34,7 +30,7 @@ const DefaultNode = {
 	},
 	helpers: {
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	}
 }
 

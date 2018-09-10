@@ -15,7 +15,6 @@ describe('Actions editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -41,7 +40,6 @@ describe('Actions editor', () => {
 		const Node = Actions.components.Node
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -58,7 +56,7 @@ describe('Actions editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component.find('button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -68,7 +66,6 @@ describe('Actions editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -94,7 +91,6 @@ describe('Actions editor', () => {
 		const Node = Actions.components.Score
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -110,9 +106,44 @@ describe('Actions editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('Score component deletes self', () => {
+		const change = {
+			removeNodeByKey: jest.fn()
+		}
+
+		const Node = Actions.components.Score
+		const component = shallow(
+			<Node
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(tree).toMatchSnapshot()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
@@ -206,6 +237,34 @@ describe('Actions editor', () => {
 		}
 
 		Actions.plugins.schema.blocks[SCORE_NODE].normalize(change, CHILD_REQUIRED, {
+			node: { key: 'mockKey' },
+			child: null,
+			index: 0
+		})
+
+		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid children', () => {
+		const change = {
+			wrapBlockByKey: jest.fn()
+		}
+
+		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: null,
+			child: { key: 'mockKey' },
+			index: null
+		})
+
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds missing children', () => {
+		const change = {
+			insertNodeByKey: jest.fn()
+		}
+
+		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(change, CHILD_REQUIRED, {
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
