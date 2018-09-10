@@ -63,9 +63,27 @@
 		border-radius: $dimension-rounded-radius;
 		padding: 2em 3em;
 		margin-bottom: 3em;
+		margin-top: 3em;
 		.score-actions-page {
 			background-color: $color-bg;
 			margin: 2em;
+			position: relative;
+			width: auto;
+		}
+	}
+
+	.rubric {
+		position: relative;
+		width: auto;
+		border-radius: $dimension-rounded-radius;
+		border: 1px solid $color-preview;
+		padding: 2em 3em;
+		background: transparentize($color-preview, 0.95);
+		margin-bottom: 3em;
+
+		.mod {
+			position: relative;
+			width: auto;
 		}
 	}
 }

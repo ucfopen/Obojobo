@@ -34,6 +34,7 @@ exports[`YouTube editor Node builds the expected component 1`] = `
       src="https://www.youtube.com/embed/undefined"
     />
     <input
+      aria-label="Youtube Video Id"
       onChange={[Function]}
       onClick={[Function]}
       value={undefined}
@@ -42,7 +43,7 @@ exports[`YouTube editor Node builds the expected component 1`] = `
 </div>
 `;
 
-exports[`YouTube editor Node component changes input 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--you-tube viewer\\" style=\\"position: relative; outline: 2px solid blue;\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe src=\\"https://www.youtube.com/embed/undefined\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><input></div></div>"`;
+exports[`YouTube editor Node component changes input 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--you-tube viewer\\" style=\\"position: relative; outline: 2px solid blue;\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe src=\\"https://www.youtube.com/embed/undefined\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><input aria-label=\\"Youtube Video Id\\"></div></div>"`;
 
 exports[`YouTube editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

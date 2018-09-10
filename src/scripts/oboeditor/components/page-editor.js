@@ -26,13 +26,16 @@ import MCAnswer from '../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/edit
 import MCFeedback from '../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
 import Page from '../../../../ObojoboDraft/Pages/Page/editor'
 import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
+import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor'
 import DefaultNode from './default-node'
 import basicMark from '../marks/basic-mark'
+import ParameterNode from './parameter-node'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
+const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
@@ -101,7 +104,9 @@ const plugins = [
 	MCFeedback.plugins,
 	HTML.plugins,
 	ScoreActions.plugins,
-	Page.plugins
+	Page.plugins,
+	Rubric.plugins,
+	ParameterNode.plugins
 ]
 
 class PageEditor extends React.Component {
@@ -206,6 +211,8 @@ class PageEditor extends React.Component {
 		value.document.nodes.forEach(child => {
 			if (child.type === ACTIONS_NODE) {
 				json.content.scoreActions = ScoreActions.helpers.slateToObo(child)
+			} else if (child.type === RUBRIC_NODE) {
+				json.content.rubric = Rubric.helpers.slateToObo(child)
 			} else if (nodes.hasOwnProperty(child.type)) {
 				// If the current Node is a registered OboNode, use its custom converter
 				json.children.push(nodes[child.type].helpers.slateToObo(child))
@@ -236,6 +243,7 @@ class PageEditor extends React.Component {
 		const content = page.get('content')
 		if (page.get('type') === ASSESSMENT_NODE) {
 			json.document.nodes.push(ScoreActions.helpers.oboToSlate(content.scoreActions))
+			if (content.rubric) json.document.nodes.push(Rubric.helpers.oboToSlate(content.rubric))
 		}
 
 		return json

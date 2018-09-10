@@ -51,6 +51,7 @@ class Node extends React.Component {
 				/>
 				<input
 					value={content.videoId}
+					aria-label={'Youtube Video Id'}
 					onChange={event => this.handleSourceChange(event)}
 					onClick={event => event.stopPropagation()}
 				/>
