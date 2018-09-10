@@ -49,7 +49,7 @@ Object.defineProperties(TextGroupCursor.prototype, {
 
 	groupIndex: {
 		get() {
-			if (this.virtualCursor.data != null) {
+			if (this.virtualCursor.data !== null && typeof this.virtualCursor.data !== 'undefined') {
 				return this.virtualCursor.data.groupIndex
 			} else {
 				return -1
@@ -59,7 +59,7 @@ Object.defineProperties(TextGroupCursor.prototype, {
 
 	offset: {
 		get() {
-			if (this.virtualCursor.data != null) {
+			if (this.virtualCursor.data !== null && typeof this.virtualCursor.data !== 'undefined') {
 				return this.virtualCursor.data.offset
 			} else {
 				return 0

@@ -1,18 +1,9 @@
 import DOMUtil from '../../common/page/dom-util'
 
 class Cursor {
-	constructor(chunk, node, offset) {
-		if (chunk == null) {
-			chunk = null
-		}
+	constructor(chunk = null, node = null, offset = null) {
 		this.chunk = chunk
-		if (node == null) {
-			node = null
-		}
 		this.node = node
-		if (offset == null) {
-			offset = null
-		}
 		this.offset = offset
 		this.textNode = DOMUtil.getFirstTextNodeOfElement(this.node)
 		this.isValid = this.chunk !== null && this.offset !== null

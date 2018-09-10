@@ -1,3 +1,4 @@
+/* eslint-disable */
 import OboSelectionRect from '../../common/selection/obo-selection-rect'
 import DOMSelection from '../../common/selection/dom-selection'
 import VirtualSelection from '../../common/selection/virtual-selection'
@@ -47,27 +48,17 @@ class Selection {
 			return
 		}
 		console.log('startChunk', this.startChunk.cid)
-		// console.log @startChunk
-		// console.log 'endChunk', @endChunk
 
-		let s = this.startChunk.getDOMSelectionStart()
-		let e = this.endChunk.getDOMSelectionEnd()
+		const s = this.startChunk.getDOMSelectionStart()
+		const e = this.endChunk.getDOMSelectionEnd()
 
-		// console.log 's', s, 'e', e
 		return DOMSelection.set(s.textNode, s.offset, e.textNode, e.offset)
 	}
 
 	update() {
-		// return if not document.getElementById('editor').contains(document.activeElement)
-		// console.log 'UUUUUUUUUUPDATE!'
-
 		console.time('selection.update')
-		// @clear()
-
 		console.time('new oboSelection')
 		this.dom = new DOMSelection()
-		// @chunk.getFromDOMSelection @dom
-
 		this.virtual.fromDOMSelection(this.dom)
 		console.timeEnd('new oboSelection')
 
@@ -76,7 +67,7 @@ class Selection {
 		this.chunkRect = OboSelectionRect.createFromChunks(this.virtual.all)
 		console.timeEnd('OboSelectionRect.createFromSelection')
 
-		return console.timeEnd('selection.update')
+		console.timeEnd('selection.update')
 	}
 }
 

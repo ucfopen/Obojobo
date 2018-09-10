@@ -1,15 +1,15 @@
-let OboModel = require.requireActual('../src/scripts/common/models/obo-model').default
+const OboModel = require.requireActual('../src/scripts/common/models/obo-model').default
 
-var localId = null
+let localId = null
 
 OboModel.__setNextGeneratedLocalId = n => {
 	localId = n
 }
 
-var originalCreateNewLocalId = OboModel.prototype.createNewLocalId
+const originalCreateNewLocalId = OboModel.prototype.createNewLocalId
 OboModel.prototype.createNewLocalId = () => {
 	if (localId !== null) {
-		let id = localId
+		const id = localId
 		localId = null
 
 		return id

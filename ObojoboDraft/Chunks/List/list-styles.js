@@ -1,28 +1,23 @@
-let getDefaultBulletStyle = function(indent, type) {
-	let defaults = type === 'ordered' ? orderedDefaultBulletStyles : unorderedDefaultBulletStyles
+const getDefaultBulletStyle = function(indent, type) {
+	const defaults = type === 'ordered' ? orderedDefaultBulletStyles : unorderedDefaultBulletStyles
 	return defaults[indent % defaults.length]
 }
 
-let getStyleWithDefaults = function(indent, defaultType, style) {
-	if (style == null) {
-		style = null
-	}
-	let styleWithDefaults = new ListStyle()
+const getStyleWithDefaults = function(indent, defaultType, style = null) {
+	const styleWithDefaults = new ListStyle()
 
-	styleWithDefaults.type = (style != null ? style.type : undefined) ? style.type : defaultType
-	styleWithDefaults.start = (style != null ? style.start : undefined) ? style.start : 1
-	styleWithDefaults.bulletStyle = (style != null ? style.bulletStyle : undefined)
-		? style.bulletStyle
-		: getDefaultBulletStyle(indent, styleWithDefaults.type)
+	styleWithDefaults.type = style && style.type ? style.type : defaultType
+	styleWithDefaults.start = style && style.start !== null ? style.start : 1
+	styleWithDefaults.bulletStyle =
+		style && style.bulletStyle
+			? style.bulletStyle
+			: getDefaultBulletStyle(indent, styleWithDefaults.type)
 
 	return styleWithDefaults
 }
 
 class ListStyle {
-	constructor(opts) {
-		if (opts == null) {
-			opts = {}
-		}
+	constructor(opts = {}) {
 		this.type = opts.type || null
 		this.start = opts.start || null
 		this.bulletStyle = opts.bulletStyle || null
@@ -49,11 +44,11 @@ class ListStyles {
 
 	init() {
 		this.type = ListStyles.TYPE_UNORDERED
-		return (this.styles = {})
+		this.styles = {}
 	}
 
 	set(indent, opts) {
-		return (this.styles[indent] = new ListStyle(opts))
+		this.styles[indent] = new ListStyle(opts)
 	}
 
 	get(indent) {
@@ -61,7 +56,7 @@ class ListStyles {
 	}
 
 	getSetStyles(indent) {
-		let style = this.styles[indent]
+		const style = this.styles[indent]
 		if (!style) {
 			return new ListStyle()
 		}
@@ -70,13 +65,13 @@ class ListStyles {
 	}
 
 	toDescriptor() {
-		let desc = {
+		const desc = {
 			type: this.type,
 			indents: {}
 		}
 
-		for (let indent in this.styles) {
-			let style = this.styles[indent]
+		for (const indent in this.styles) {
+			const style = this.styles[indent]
 			desc.indents[indent] = style.toDescriptor()
 		}
 
@@ -84,10 +79,10 @@ class ListStyles {
 	}
 
 	clone() {
-		let clone = new ListStyles(this.type)
+		const clone = new ListStyles(this.type)
 
-		for (let indent in this.styles) {
-			let style = this.styles[indent]
+		for (const indent in this.styles) {
+			const style = this.styles[indent]
 			clone.styles[indent] = style.clone()
 		}
 
@@ -95,10 +90,10 @@ class ListStyles {
 	}
 
 	map(fn) {
-		let result = []
+		const result = []
 
-		for (let indent in this.styles) {
-			let style = this.styles[indent]
+		for (const indent in this.styles) {
+			const style = this.styles[indent]
 			result.push(fn(style, indent))
 		}
 
@@ -107,10 +102,10 @@ class ListStyles {
 }
 
 ListStyles.fromDescriptor = function(descriptor) {
-	let styles = new ListStyles(descriptor.type)
+	const styles = new ListStyles(descriptor.type)
 
-	for (let indent in descriptor.indents) {
-		let style = descriptor.indents[indent]
+	for (const indent in descriptor.indents) {
+		const style = descriptor.indents[indent]
 		styles.set(indent, style)
 	}
 
@@ -131,13 +126,13 @@ ListStyles.STYLE_UPPERCASE_LETTER = 'upper-alpha'
 ListStyles.STYLE_LOWERCASE_ROMAN = 'lower-roman'
 ListStyles.STYLE_UPPERCASE_ROMAN = 'upper-roman'
 
-var unorderedDefaultBulletStyles = [
+const unorderedDefaultBulletStyles = [
 	ListStyles.STYLE_FILLED_CIRCLE,
 	ListStyles.STYLE_HOLLOW_CIRCLE,
 	ListStyles.STYLE_SQUARE
 ]
 
-var orderedDefaultBulletStyles = [
+const orderedDefaultBulletStyles = [
 	ListStyles.STYLE_NUMERIC,
 	ListStyles.STYLE_UPPERCASE_LETTER,
 	ListStyles.STYLE_UPPERCASE_ROMAN,

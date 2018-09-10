@@ -15,19 +15,17 @@ import {
 	ERROR_UNKNOWN_DISPLAY_TYPE
 } from './display-types'
 
-let getDisplayType = ({ rubricType, mods, status, statusResult, isAttemptScore100 }) => {
-	let passed = status === 'passed'
-	let failed = status === 'failed'
-	let unableToPass = status === 'unableToPass'
-	let isAttemptRubric = rubricType === 'attempt'
-	let isPassFailRubric = rubricType === 'pass-fail'
-	let isRewardedMods = mods.length > 0
-	let isResultNumeric = Number.isFinite(parseFloat(statusResult))
-	let isResultNoScore = statusResult === 'no-score'
-	let isResultAttemptScore = statusResult === '$attempt_score'
-	let isResultHighestAttemptScore = statusResult === '$highest_attempt_score'
-
-	let items = []
+const getDisplayType = ({ rubricType, mods, status, statusResult, isAttemptScore100 }) => {
+	const passed = status === 'passed'
+	const failed = status === 'failed'
+	const unableToPass = status === 'unableToPass'
+	const isAttemptRubric = rubricType === 'attempt'
+	const isPassFailRubric = rubricType === 'pass-fail'
+	const isRewardedMods = mods.length > 0
+	const isResultNumeric = Number.isFinite(parseFloat(statusResult))
+	const isResultNoScore = statusResult === 'no-score'
+	const isResultAttemptScore = statusResult === '$attempt_score'
+	const isResultHighestAttemptScore = statusResult === '$highest_attempt_score'
 
 	if (isAttemptRubric && passed && isResultAttemptScore && !isRewardedMods) {
 		return TYPE_ATTEMPT_WITHOUT_MODS_REWARDED

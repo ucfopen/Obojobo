@@ -1,8 +1,5 @@
 class MockTextNode {
-	constructor(text) {
-		if (text == null) {
-			text = ''
-		}
+	constructor(text = '') {
 		this.text = text
 		this.html = null
 		this.nodeType = 'text'

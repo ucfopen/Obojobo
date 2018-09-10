@@ -1,6 +1,8 @@
+import React from 'react'
+
 import { EMPTY_CHAR } from '../../common/text/text-constants'
 
-export default props => (
+const Anchor = props => (
 	<span
 		{...props}
 		className="anchor"
@@ -12,3 +14,5 @@ export default props => (
 		{EMPTY_CHAR}
 	</span>
 )
+
+export default Anchor

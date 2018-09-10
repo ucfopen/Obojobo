@@ -8,7 +8,7 @@ describe('MockElement', () => {
 	})
 
 	test('creates new instance', () => {
-		let el = new MockElement('type', { a: 1 })
+		const el = new MockElement('type', { a: 1 })
 
 		expect(el.type).toBe('type')
 		expect(el.attrs).toEqual({ a: 1 })
@@ -18,8 +18,8 @@ describe('MockElement', () => {
 	})
 
 	test('adds child', () => {
-		let root = new MockElement('root')
-		let child = new MockElement('child')
+		const root = new MockElement('root')
+		const child = new MockElement('child')
 
 		root.addChild(child)
 
@@ -30,11 +30,11 @@ describe('MockElement', () => {
 	})
 
 	test('addChildAt adds child at index', () => {
-		let root = new MockElement('root')
-		let childA = new MockElement('child-a')
-		let childB = new MockElement('child-b')
-		let childC = new MockElement('child-c')
-		let childD = new MockElement('child-d')
+		const root = new MockElement('root')
+		const childA = new MockElement('child-a')
+		const childB = new MockElement('child-b')
+		const childC = new MockElement('child-c')
+		const childD = new MockElement('child-d')
 
 		root.addChildAt(childA, 0)
 
@@ -54,10 +54,10 @@ describe('MockElement', () => {
 	})
 
 	test('addBefore adds a child before another child', () => {
-		let root = new MockElement('root')
-		let childA = new MockElement('child-a')
-		let childB = new MockElement('child-b')
-		let childC = new MockElement('child-c')
+		const root = new MockElement('root')
+		const childA = new MockElement('child-a')
+		const childB = new MockElement('child-b')
+		const childC = new MockElement('child-c')
 
 		root.addChild(childA)
 		root.addBefore(childB, childA)
@@ -70,10 +70,10 @@ describe('MockElement', () => {
 	})
 
 	test('addAfter adds a child after another child', () => {
-		let root = new MockElement('root')
-		let childA = new MockElement('child-a')
-		let childB = new MockElement('child-b')
-		let childC = new MockElement('child-c')
+		const root = new MockElement('root')
+		const childA = new MockElement('child-a')
+		const childB = new MockElement('child-b')
+		const childC = new MockElement('child-c')
 
 		root.addChild(childA)
 		root.addAfter(childB, childA)
@@ -86,9 +86,9 @@ describe('MockElement', () => {
 	})
 
 	test('replaceChild will replace a child with another child', () => {
-		let root = new MockElement('root')
-		let childA = new MockElement('child-a')
-		let childB = new MockElement('child-b')
+		const root = new MockElement('root')
+		const childA = new MockElement('child-a')
+		const childB = new MockElement('child-b')
 
 		root.addChild(childA)
 		root.replaceChild(childA, childB)
@@ -97,10 +97,10 @@ describe('MockElement', () => {
 	})
 
 	test('firstChild and lastChild return the first and last children', () => {
-		let root = new MockElement('root')
-		let childA = new MockElement('child-a')
-		let childB = new MockElement('child-b')
-		let childC = new MockElement('child-c')
+		const root = new MockElement('root')
+		const childA = new MockElement('child-a')
+		const childB = new MockElement('child-b')
+		const childC = new MockElement('child-c')
 
 		root.addChild(childA)
 		root.addChild(childB)

@@ -26,16 +26,16 @@ OboSelectionRect.TYPE_SELECTION = 'selection'
 OboSelectionRect.TYPE_CHUNKS = 'chunks'
 
 OboSelectionRect.createFromSelection = function() {
-	let rect = new OboSelectionRect()
-	let sel = new DOMSelection()
+	const rect = new OboSelectionRect()
+	const sel = new DOMSelection()
 
-	let selType = sel.getType()
+	const selType = sel.getType()
 
 	if (selType === 'none') {
 		return rect
 	}
 
-	let clientRects = sel.getClientRects()
+	const clientRects = sel.getClientRects()
 
 	rect.type = selType === 'caret' ? OboSelectionRect.TYPE_CARET : OboSelectionRect.TYPE_SELECTION
 	rect.top = Infinity
@@ -43,7 +43,7 @@ OboSelectionRect.createFromSelection = function() {
 	rect.bottom = -Infinity
 	rect.left = Infinity
 
-	for (let clientRect of Array.from(clientRects)) {
+	for (const clientRect of Array.from(clientRects)) {
 		rect.top = Math.min(rect.top, clientRect.top)
 		rect.right = Math.max(rect.right, clientRect.right)
 		rect.bottom = Math.max(rect.bottom, clientRect.bottom)
@@ -59,23 +59,20 @@ OboSelectionRect.createFromSelection = function() {
 	return rect
 }
 
-OboSelectionRect.createFromChunks = function(chunks) {
-	if (chunks == null) {
-		chunks = []
-	}
-	let rect = new OboSelectionRect()
+OboSelectionRect.createFromChunks = function(chunks = []) {
+	const rect = new OboSelectionRect()
 	rect.type = OboSelectionRect.TYPE_CHUNKS
 	rect.top = Infinity
 	rect.right = -Infinity
 	rect.bottom = -Infinity
 	rect.left = Infinity
 
-	for (let chunk of Array.from(chunks)) {
-		if (chunk == null) {
+	for (const chunk of chunks) {
+		if (chunk === null) {
 			continue
 		}
 
-		let chunkRect = chunk.getDomEl().getBoundingClientRect()
+		const chunkRect = chunk.getDomEl().getBoundingClientRect()
 
 		rect.top = Math.min(rect.top, chunkRect.top)
 		rect.right = Math.max(rect.right, chunkRect.right)

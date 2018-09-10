@@ -1,13 +1,15 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Image from './image'
 
 import Common from 'Common'
-let { OboComponent } = Common.components
-let { TextGroupEl } = Common.chunk.textChunk
-let { NonEditableChunk } = Common.chunk
+const { OboComponent } = Common.components
+const { TextGroupEl } = Common.chunk.textChunk
+const { NonEditableChunk } = Common.chunk
 
-export default props => (
+const Figure = props => (
 	<OboComponent model={props.model} moduleData={props.moduleData}>
 		<NonEditableChunk
 			className={`obojobo-draft--chunks--figure viewer ${props.model.modelState.size}`}
@@ -29,3 +31,5 @@ export default props => (
 		</NonEditableChunk>
 	</OboComponent>
 )
+
+export default Figure

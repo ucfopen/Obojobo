@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading editor Node builds the expected component 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--heading pad"
+  >
+    <h1>
+      mockChildren
+    </h1>
+  </div>
+</div>
+`;
+
+exports[`Heading editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Heading",
+    }
+  }
+/>
+`;

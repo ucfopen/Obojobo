@@ -1,44 +1,29 @@
-import Chunk from '../../../common/models/obo-model'
-
 // Utility methods for dealing with chunks
 
-let send = function(fn, chunkOrChunks, selection, data) {
-	if (data == null) {
-		data = []
-	}
+const send = function(fn, chunkOrChunks, selection, data = []) {
 	if (!(chunkOrChunks instanceof Array)) {
 		return chunkOrChunks.callCommandFn(fn, data)
 	}
 
-	let chunks = chunkOrChunks
-	let results = []
-	for (let chunk of Array.from(chunks)) {
+	const chunks = chunkOrChunks
+	const results = []
+	for (const chunk of Array.from(chunks)) {
 		results.push(chunk.callCommandFn(fn, data))
 	}
 
 	return results
 }
 
-let deleteSelection = function(selection) {
-	// vs = selection.virtual
-	// type = vs.type
-
-	// console.clear()
-	// console.log 'deleteSelection'
-	// console.log type
-
+const deleteSelection = function(selection) {
 	if (selection.virtual.type === 'caret') {
 		return
 	}
-	// console.log JSON.stringify(selection.getSelectionDescriptor(), null, 2);
-	// console.log 'con', vs.inbetween
 
-	for (let node of Array.from(selection.virtual.inbetween)) {
+	for (const node of Array.from(selection.virtual.inbetween)) {
 		node.remove()
 	}
 
 	selection.saveVirtualSelection()
-
 	selection.startChunk.deleteSelection()
 	selection.restoreVirtualSelection()
 
@@ -52,33 +37,25 @@ let deleteSelection = function(selection) {
 	return selection.virtual.collapse()
 }
 
-let replaceTextsWithinSelection = function(selection, newChunk, expandSelection) {
-	if (expandSelection == null) {
-		expandSelection = true
-	}
+const replaceTextsWithinSelection = function(selection, newChunk, expandSelection = true) {
 	selection.virtual.start.chunk.addChildBefore(newChunk)
 
 	if (expandSelection) {
 		selection.virtual.start.data.offset = 0
-		let { end } = selection.virtual
+		const { end } = selection.virtual
 		end.data.offset = end.chunk.modelState.textGroup.get(end.data.groupIndex).text.length
 	}
 
 	return newChunk.replaceSelection()
 }
 
-let activateStyle = function(style, selection, styleBrush, data) {
-	if (data == null) {
-		data = null
-	}
+const activateStyle = function(style, selection, styleBrush, data = null) {
 	if (selection.virtual.type === 'caret') {
-		return styleBrush.add(style, selection.styles[style] != null)
+		return styleBrush.add(style, selection.styles[style])
+	} else if (selection.styles[style] !== null && typeof selection.styles[style] !== 'undefined') {
+		return send('unstyleSelection', selection.virtual.all, selection, [style, data])
 	} else {
-		if (selection.styles[style] != null) {
-			return send('unstyleSelection', selection.virtual.all, selection, [style, data])
-		} else {
-			return send('styleSelection', selection.virtual.all, selection, [style, data])
-		}
+		return send('styleSelection', selection.virtual.all, selection, [style, data])
 	}
 }
 

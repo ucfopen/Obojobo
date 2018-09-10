@@ -9,7 +9,7 @@ import QuestionUtil from '../src/scripts/viewer/util/question-util'
 import ModalUtil from '../src/scripts/common/util/modal-util'
 import FocusUtil from '../src/scripts/common/util/focus-util'
 
-let initModuleData = () => {
+const initModuleData = () => {
 	QuestionStore.init()
 	ModalStore.init()
 	FocusStore.init()
@@ -23,7 +23,7 @@ let initModuleData = () => {
 	moduleData.focusState = FocusStore.getState()
 }
 
-let moduleData = {
+const moduleData = {
 	lti: {
 		outcomeServiceHostname: 'http://outcome-service-hostname/test.php'
 	}

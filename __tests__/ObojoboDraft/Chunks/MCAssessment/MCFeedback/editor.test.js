@@ -1,22 +1,25 @@
 import React from 'react'
-import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import MCFeedback from '../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
+import MCFeedback from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCFeedback'
 
 describe('MCFeedback editor', () => {
 	test('Node builds the expected component', () => {
 		const Node = MCFeedback.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -40,7 +43,9 @@ describe('MCFeedback editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return {} }
+				get: type => {
+					return {}
+				}
 			},
 			text: 'mockText'
 		}
@@ -76,7 +81,9 @@ describe('MCFeedback editor', () => {
 			node: {
 				type: MCFEEDBACK_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}

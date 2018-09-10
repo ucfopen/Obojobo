@@ -1,3 +1,5 @@
+/* eslint no-extend-native: 0 */
+
 global.fetch = jest.fn()
 
 const originalToISOString = Date.prototype.toISOString
@@ -21,8 +23,8 @@ describe('apiutil', () => {
 		APIUtil.get('mockEndpoint')
 
 		expect(fetch).toHaveBeenCalled()
-		let calledEndpoint = fetch.mock.calls[0][0]
-		let calledOptions = fetch.mock.calls[0][1]
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
 			credentials: 'include',
@@ -37,8 +39,8 @@ describe('apiutil', () => {
 	test('post fetches with the correct args', () => {
 		APIUtil.post('mockEndpoint', { arg: 'value' })
 		expect(fetch).toHaveBeenCalled()
-		let calledEndpoint = fetch.mock.calls[0][0]
-		let calledOptions = fetch.mock.calls[0][1]
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
 			body: JSON.stringify({ arg: 'value' }),
@@ -54,8 +56,8 @@ describe('apiutil', () => {
 	test('post fetches with blank body', () => {
 		APIUtil.post('mockEndpoint')
 		expect(fetch).toHaveBeenCalled()
-		let calledEndpoint = fetch.mock.calls[0][0]
-		let calledOptions = fetch.mock.calls[0][1]
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
 		expect(calledEndpoint).toBe('mockEndpoint')
 		expect(calledOptions).toEqual({
 			body: JSON.stringify({}),
@@ -69,8 +71,11 @@ describe('apiutil', () => {
 	})
 
 	test('postEvent fetches with the correct args', () => {
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
+		const obj = {
+			draftId: 'mockDraftId',
+			action: 'mockAction',
+			eventVersion: 'mockEventVersion',
+			visitId: 'mockVisitId'
 		}
 
 		fetch.mockResolvedValueOnce({
@@ -80,10 +85,11 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.postEvent(lo, 'mockAction', 'eventVersion', 'mockPayload').then(res => {
+		return APIUtil.postEvent(obj).then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
+
 			expect(calledEndpoint).toBe('/api/events')
 
 			expect(calledOptions).toEqual({
@@ -100,20 +106,17 @@ describe('apiutil', () => {
 				event: {
 					action: 'mockAction',
 					actor_time: 'mockDate',
-					draft_id: 'draftId',
-					event_version: 'eventVersion',
-					payload: 'mockPayload'
-				},
-				draftId: 'draftId'
+					draft_id: 'mockDraftId',
+					event_version: 'mockEventVersion',
+					payload: {},
+					visitId: 'mockVisitId'
+				}
 			})
 		})
 	})
 
 	test('postEvent sends a postmessage when status is ok', () => {
 		expect.assertions(2)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
 
 		fetch.mockResolvedValueOnce({
 			json: () => ({
@@ -122,7 +125,12 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.postEvent(lo, 'mockAction', 'eventVersion', 'mockPayload').then(res => {
+		return APIUtil.postEvent({
+			draftId: 'mockDraftId',
+			action: 'mockAction',
+			eventVersion: 'eventVersion',
+			payload: 'mockPayload'
+		}).then(() => {
 			expect(fetch).toHaveBeenCalled()
 			expect(window.parent.postMessage).toHaveBeenCalledWith('mockValue', '*')
 		})
@@ -130,9 +138,6 @@ describe('apiutil', () => {
 
 	test('postEvent doesnt send a postmessage when status is error', () => {
 		expect.assertions(2)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
 
 		fetch.mockResolvedValueOnce({
 			json: () => ({
@@ -141,30 +146,15 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.postEvent(lo, 'mockAction', 'eventVersion', 'mockPayload').then(res => {
+		return APIUtil.postEvent({
+			draftId: 'mockDraftId',
+			action: 'mockAction',
+			eventVersion: 'eventVersion',
+			payload: 'mockPayload'
+		}).then(() => {
 			expect(fetch).toHaveBeenCalled()
 			expect(window.parent.postMessage).not.toHaveBeenCalled()
 		})
-	})
-
-	test('saveState calls postEvent', () => {
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
-
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'error',
-				value: 'mockValue'
-			})
-		})
-
-		// mock this result so we can assure that saveState returns it's value
-		jest.spyOn(APIUtil, 'postEvent').mockReturnValueOnce('postEventResult')
-
-		let res = APIUtil.saveState(lo, 'mockState')
-		expect(APIUtil.postEvent).toHaveBeenCalledWith(lo, 'saveState', 'mockState')
-		expect(res).toBe('postEventResult')
 	})
 
 	test('getDraft calls fetch', () => {
@@ -177,48 +167,18 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.getDraft('mockId').then(res => {
+		return APIUtil.getDraft('mockId').then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/drafts/mockId')
 			expect(calledOptions).toBe()
 		})
 	})
 
-	test('getAttempts calls fetch', () => {
-		expect.assertions(3)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
-		fetch.mockResolvedValueOnce({
-			json: () => ({
-				status: 'ok',
-				value: 'mockValue'
-			})
-		})
-
-		return APIUtil.getAttempts(lo).then(res => {
-			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/drafts/draftId/attempts')
-			expect(calledOptions).toEqual({
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'GET'
-			})
-		})
-	})
-
 	test('requestStart calls fetch', () => {
 		expect.assertions(4)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
+
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -226,10 +186,10 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.requestStart('mockVisitId', 'mockDraftId').then(res => {
+		return APIUtil.requestStart('mockVisitId', 'mockDraftId').then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/visits/start')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
@@ -250,12 +210,7 @@ describe('apiutil', () => {
 
 	test('startAttempt calls fetch', () => {
 		expect.assertions(4)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
-		let assessment = {
-			get: prop => prop
-		}
+
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -263,10 +218,14 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.startAttempt(lo, assessment).then(res => {
+		return APIUtil.startAttempt({
+			draftId: 'mockDraftId',
+			assessmentId: 'mockAssessmentId',
+			visitId: 'mockVisitId'
+		}).then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/assessments/attempt/start')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
@@ -279,17 +238,16 @@ describe('apiutil', () => {
 			})
 
 			expect(JSON.parse(calledOptions.body)).toEqual({
-				assessmentId: 'id',
-				draftId: 'draftId'
+				assessmentId: 'mockAssessmentId',
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId'
 			})
 		})
 	})
 
 	test('endAttempt calls fetch', () => {
-		expect.assertions(3)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
+		expect.assertions(4)
+
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -297,10 +255,10 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.endAttempt(lo, { attemptId: 999 }).then(res => {
+		return APIUtil.endAttempt({ attemptId: 999, visitId: 'mockVisitId' }).then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/assessments/attempt/999/end')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
@@ -311,17 +269,15 @@ describe('apiutil', () => {
 				},
 				method: 'POST'
 			})
+			expect(JSON.parse(calledOptions.body)).toEqual({
+				visitId: 'mockVisitId'
+			})
 		})
 	})
 
 	test('resendLTIAssessmentScore calls fetch', () => {
 		expect.assertions(4)
-		let lo = {
-			get: requestedProp => requestedProp // this will just return the prop as the value
-		}
-		let assessment = {
-			get: prop => prop
-		}
+
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -329,10 +285,14 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.resendLTIAssessmentScore(lo, assessment).then(res => {
+		return APIUtil.resendLTIAssessmentScore({
+			draftId: 'mockDraftId',
+			assessmentId: 'mockAssessmentId',
+			visitId: 'mockVisitId'
+		}).then(() => {
 			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/lti/sendAssessmentScore')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
@@ -344,17 +304,16 @@ describe('apiutil', () => {
 				method: 'POST'
 			})
 			expect(JSON.parse(calledOptions.body)).toEqual({
-				assessmentId: 'id',
-				draftId: 'draftId'
+				assessmentId: 'mockAssessmentId',
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId'
 			})
 		})
 	})
 
 	test('clearPreviewScores calls fetch', () => {
 		expect.assertions(4)
-		let assessment = {
-			get: prop => prop
-		}
+
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -362,28 +321,32 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.clearPreviewScores('mockDraftId').then(res => {
-			expect(fetch).toHaveBeenCalled()
-			let calledEndpoint = fetch.mock.calls[0][0]
-			let calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/assessments/clear-preview-scores')
-			expect(calledOptions).toEqual({
-				body: expect.anything(),
-				credentials: 'include',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				method: 'POST'
-			})
-			expect(JSON.parse(calledOptions.body)).toEqual({
-				draftId: 'mockDraftId'
-			})
-		})
+		return APIUtil.clearPreviewScores({ draftId: 'mockDraftId', visitId: 'mockVisitId' }).then(
+			() => {
+				expect(fetch).toHaveBeenCalled()
+				const calledEndpoint = fetch.mock.calls[0][0]
+				const calledOptions = fetch.mock.calls[0][1]
+				expect(calledEndpoint).toBe('/api/assessments/clear-preview-scores')
+				expect(calledOptions).toEqual({
+					body: expect.anything(),
+					credentials: 'include',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json'
+					},
+					method: 'POST'
+				})
+				expect(JSON.parse(calledOptions.body)).toEqual({
+					draftId: 'mockDraftId',
+					visitId: 'mockVisitId'
+				})
+			}
+		)
 	})
 
 	test('requestStart handles json parsing error', () => {
 		expect.assertions(1)
+
 		fetch.mockResolvedValueOnce({
 			json: () => {
 				throw 'json parsing error'

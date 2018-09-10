@@ -1,5 +1,3 @@
-import AssessmentUtil from '../util/assessment-util'
-
 import getScoreComparisionData from './assessment-score-reporter/get-score-comparision-data'
 import getReportDetailsForAttempt from './assessment-score-reporter/get-report-details-for-attempt'
 import getReportDisplayValuesForAttempt from './assessment-score-reporter/get-report-display-values-for-attempt'
@@ -20,7 +18,7 @@ class AssessmentScoreReporter {
 			)
 		}
 
-		let assessScoreInfoToReport = this.allAttempts[attemptNumberToGenerateReportFor - 1]
+		const assessScoreInfoToReport = this.allAttempts[attemptNumberToGenerateReportFor - 1]
 			.assessmentScoreDetails
 
 		return {

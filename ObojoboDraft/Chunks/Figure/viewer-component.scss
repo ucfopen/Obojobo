@@ -1,10 +1,5 @@
 @import '~styles/includes';
 
-// .component[data-type="ObojoboDraft.Chunks.Figure"] > .obojobo-draft--chunks--figure.large
-// {
-// 	width: 100%;
-// }
-
 .obojobo-draft--chunks--figure {
 	text-align: center;
 
@@ -20,8 +15,10 @@
 
 		img {
 			background: $color-bg;
-			border: none;
 			display: block;
+			border: 0.3em solid $color-bg;
+			border-radius: $dimension-rounded-radius;
+			box-sizing: border-box;
 		}
 
 		.img-placeholder {
@@ -32,7 +29,7 @@
 	figcaption {
 		font-family: $font-default;
 		font-size: 0.8em;
-		color: lighten($color-text, 40%);
+		color: $color-text-minor;
 	}
 
 	&.custom {
@@ -78,6 +75,7 @@
 
 			img {
 				width: 100%;
+				border-radius: 0;
 			}
 		}
 	}

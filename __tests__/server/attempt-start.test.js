@@ -2,7 +2,25 @@ jest.mock('../../server/assessment')
 jest.mock('underscore')
 jest.mock('../../server/util')
 
-const AS = require('../../server/attempt-start.js')
+jest.mock(
+	'../../__mocks__/models/visit',
+	() => ({
+		fetchById: jest.fn()
+	}),
+	{ virtual: true }
+)
+
+jest.mock(
+	'../../server/util',
+	() => ({
+		getRandom: jest.fn().mockReturnValue(0),
+		logAndRespondToUnexpected: jest.fn()
+	}),
+	{ virtual: false }
+)
+
+const { getRandom, logAndRespondToUnexpected } = require('../../server/util')
+
 const {
 	startAttempt,
 	getQuestionBankProperties,
@@ -22,42 +40,39 @@ const _ = require('underscore')
 const testJson = require('../../test-object.json')
 const Assessment = require('../../server/assessment')
 const insertEvent = oboRequire('insert_event')
-const db = oboRequire('db')
 const Draft = oboRequire('models/draft')
 const DraftNode = oboRequire('models/draft_node')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-const logAndRespondToUnexpected = require('../../server/util').logAndRespondToUnexpected
+const Visit = oboRequire('models/visit')
 
-const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
 describe('start attempt route', () => {
-	let originalRandom
 	let mockDraft
 	let mockUsedQuestionMap
 	let mockReq
 	let mockRes
 
-	let mockGetChildNodeByIdForRootNode = () => {
+	const mockGetChildNodeByIdForRootNode = () => {
 		// mock the initial request to get the root node
 		mockDraft.getChildNodeById.mockReturnValueOnce({
 			immediateChildrenSet: mockUsedQuestionMap.keys()
 		})
 	}
 
-	let convertChosenTreeToIdArray = (tree, assessmentNode) => {
+	const convertChosenTreeToIdArray = (tree, assessmentNode) => {
 		// pluck out questions into an array
-		let chosenQuestions = getNodeQuestions(tree, assessmentNode)
+		const chosenQuestions = getNodeQuestions(tree, assessmentNode)
 
 		// convert to array of ids for simplicity
 		return chosenQuestions.map(q => q.id)
 	}
 
-	let runAttemptThroughCreateChosenQuestionTree = useageMap => {
+	const runAttemptThroughCreateChosenQuestionTree = useageMap => {
 		// mock the structure
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 
 		// override the usage map
 		assessmentProperties.questionUsesMap = useageMap
@@ -84,14 +99,14 @@ describe('start attempt route', () => {
 	|-qG
 	|-qH
    */
-	let buildTreeForTest = () => {
-		let draftTree = {
-			getChildNodeById: jest.fn(id => nodes.find(c => c.id == id))
+	const buildTreeForTest = () => {
+		const draftTree = {
+			getChildNodeById: jest.fn(id => nodes.find(c => c.id === id))
 		}
-		let nodes = []
-		let usesMap = new Map()
+		const nodes = []
+		const usesMap = new Map()
 		const newQ = id => {
-			let q = new DraftNode(draftTree)
+			const q = new DraftNode(draftTree)
 			q.id = id
 			q.type = 'ObojoboDraft.Chunks.Question'
 			usesMap.set(q.id, 0)
@@ -99,7 +114,7 @@ describe('start attempt route', () => {
 			return q
 		}
 		const newQb = (id, choose, children = []) => {
-			let qb = new DraftNode(draftTree)
+			const qb = new DraftNode(draftTree)
 			qb.id = id
 			qb.type = 'ObojoboDraft.Chunks.QuestionBank'
 			qb.children = children
@@ -133,19 +148,12 @@ describe('start attempt route', () => {
 		}
 	}
 
-	beforeAll(() => {
-		originalRandom = Math.random
-		Math.random = jest.fn(() => 1)
-	})
-
-	afterAll(() => {
-		Math.random = originalRandom
-	})
-
 	beforeEach(() => {
 		jest.resetAllMocks()
+		getRandom.mockReturnValue(0)
+		Visit.fetchById.mockReturnValue({ is_preview: false })
 
-		// mock _.shuffle by allways returning the same array
+		// mock _.shuffle by always returning the same array
 		// just check to make sure shuffle.toHaveBeenCalled
 		_.shuffle.mockImplementation(arr => arr)
 		mockDraft = new Draft(testJson)
@@ -236,7 +244,6 @@ describe('start attempt route', () => {
 		return startAttempt(mockReq, mockRes).then(() => {
 			expect(mockReq.requireCurrentDocument).toHaveBeenCalled()
 			expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
-			expect(Assessment.getNumberAttemptsTaken).toHaveBeenCalled()
 			expect(Assessment.insertNewAttempt).toHaveBeenCalled()
 
 			return done()
@@ -268,9 +275,7 @@ describe('start attempt route', () => {
 			requireCurrentDocument: jest.fn(() => Promise.resolve(mockAssessmentNode)),
 			requireCurrentUser: jest.fn(() =>
 				Promise.resolve({
-					user: {
-						canViewEditor: true
-					}
+					user: {}
 				})
 			),
 			body: {
@@ -279,8 +284,9 @@ describe('start attempt route', () => {
 			}
 		}
 
-		Assessment.getCompletedAssessmentAttemptHistory = jest.fn().mockResolvedValueOnce([])
-		Assessment.getNumberAttemptsTaken = jest.fn(() => 1)
+		Assessment.getCompletedAssessmentAttemptHistory = jest
+			.fn()
+			.mockResolvedValueOnce(['oneAttempt'])
 
 		startAttempt(mockReq, mockRes).then(() => {
 			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
@@ -295,9 +301,7 @@ describe('start attempt route', () => {
 			}),
 			requireCurrentUser: jest.fn(() =>
 				Promise.resolve({
-					user: {
-						canViewEditor: true
-					}
+					user: {}
 				})
 			)
 		}
@@ -311,18 +315,6 @@ describe('start attempt route', () => {
 	})
 
 	test('getState calls qb.buildAssessment and returns the expected state', () => {
-		const fakeChildNodes = [
-			{
-				id: 'qb1.q1',
-				type: 'ObojoboDraft.Chunks.Question',
-				children: []
-			},
-			{
-				id: 'qb1.q2',
-				type: 'ObojoboDraft.Chunks.Question',
-				children: []
-			}
-		]
 		const mockQbTree = { id: 'qb1', children: [], type: 'no-type' }
 		const mockAssessmentProperties = {
 			nodeChildrenIds: [],
@@ -416,7 +408,7 @@ describe('start attempt route', () => {
 		expect(qbProperties.select).toBe('sequential')
 	})
 
-	test('createAssessmentUsedQuestionMap initalizes a map of questions', () => {
+	test('createAssessmentUsedQuestionMap initializes a map of questions', () => {
 		const mockAssessmentProperties = {
 			nodeChildrenIds: ['qb1', 'qb1.q1', 'qb1.q2', 'qb2', 'qb2.q1', 'qb2.q2'],
 			draftTree: mockDraft
@@ -571,7 +563,7 @@ describe('start attempt route', () => {
 	})
 
 	test('chooseAllQuestionsRandomly can choose to display unseen question banks and questions randomly', () => {
-		Math.random = jest.fn(() => 1)
+		getRandom.mockReturnValue(1)
 		// Unseen questions will come first, if we've seen an equal
 		// number of times, we use Math.random.
 		mockUsedQuestionMap.set('qb1', 1)
@@ -590,7 +582,7 @@ describe('start attempt route', () => {
 			'fakeObject-qb2.q2',
 			'fakeObject-qb2.q1'
 		])
-		expect(Math.random).toHaveBeenCalled()
+		expect(getRandom).toHaveBeenCalled()
 	})
 
 	test('createChosenQuestionTree picks expected questions in order for FIRST attempt in sequential mode', () => {
@@ -612,7 +604,7 @@ describe('start attempt route', () => {
 
 		// preserve indentation structure
 		// prettier-ignore
-		let usageMap = new Map()
+		const usageMap = new Map()
 			.set('QB1',         0)
 				.set('qA',      0)
 				.set('qB',      0)
@@ -625,7 +617,7 @@ describe('start attempt route', () => {
 			.set('qG',          0)
 			.set('qH',          0)
 
-		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+		const ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
 
 		// test the ids and order of the results
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
@@ -650,7 +642,7 @@ describe('start attempt route', () => {
 
 		// preserve indentation structure
 		// prettier-ignore
-		let usageMap = new Map()
+		const usageMap = new Map()
 			.set('QB1',         1)
 				.set('qA',      1)
 				.set('qB',      0)
@@ -663,7 +655,7 @@ describe('start attempt route', () => {
 			.set('qG',          1)
 			.set('qH',          1)
 
-		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+		const ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
 
 		expect(ids).toEqual(['qB', 'qE', 'qC', 'qG', 'qH'])
 	})
@@ -687,7 +679,7 @@ describe('start attempt route', () => {
 
 		// preserve indentation structure
 		// prettier-ignore
-		let usageMap = new Map()
+		const usageMap = new Map()
 			.set('QB1',         2)
 				.set('qA',      1)
 				.set('qB',      1)
@@ -700,7 +692,7 @@ describe('start attempt route', () => {
 			.set('qG',          2)
 			.set('qH',          2)
 
-		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+		const ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
 
 		// test the ids and order of the results
 		expect(ids).toEqual(['qA', 'qD', 'qF', 'qG', 'qH'])
@@ -725,7 +717,7 @@ describe('start attempt route', () => {
 
 		// preserve indentation structure
 		// prettier-ignore
-		let usageMap = new Map()
+		const usageMap = new Map()
 			.set('QB1',         3)
 				.set('qA',      2)
 				.set('qB',      1)
@@ -738,24 +730,24 @@ describe('start attempt route', () => {
 			.set('qG',          3)
 			.set('qH',          3)
 
-		let ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
+		const ids = runAttemptThroughCreateChosenQuestionTree(usageMap)
 
 		// test the ids and order of the results
 		expect(ids).toEqual(['qB', 'qC', 'qD', 'qG', 'qH'])
 	})
 
 	test('createChosenQuestionTree creates a sequential group with no limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'sequential'
 		QB.content.choose = Infinity
 		createChosenQuestionTree(QB, assessmentProperties)
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
 	test('createChosenQuestionTree creates a random-all group with no limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'random-all'
 		QB.content.choose = Infinity
 		expect(_.shuffle).not.toHaveBeenCalled()
@@ -764,7 +756,7 @@ describe('start attempt route', () => {
 		// make sure shuffle's called on the top level children
 		expect(_.shuffle).toHaveBeenCalledTimes(1)
 		expect(_.shuffle).toHaveBeenCalledWith(['QB1', 'QB2', 'qG', 'qH'])
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		// mock _.shuffle doesn't alter the order, expect the same as sequential
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
@@ -785,47 +777,47 @@ describe('start attempt route', () => {
 		//|
 		//|-qG
 		//|-qH
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'sequential'
 		QB.content.choose = 2
 		createChosenQuestionTree(QB, assessmentProperties)
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
 
 	test('createChosenQuestionTree creates a random-all group with a limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'random-all'
 		QB.content.choose = 2
 		expect(_.shuffle).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
 		expect(_.shuffle).toHaveBeenCalled()
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
 
 	test('createChosenQuestionTree creates a random-unseen group with no limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'random-unseen'
 		QB.content.choose = Infinity
-		expect(Math.random).not.toHaveBeenCalled()
+		expect(getRandom).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
-		expect(Math.random).toHaveBeenCalled()
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		expect(getRandom).toHaveBeenCalled()
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
 	test('createChosenQuestionTree creates a random-unseen group with a limit', () => {
-		let { QB, assessmentProperties } = buildTreeForTest()
+		const { QB, assessmentProperties } = buildTreeForTest()
 		QB.content.select = 'random-unseen'
 		QB.content.choose = 2
-		expect(Math.random).not.toHaveBeenCalled()
+		expect(getRandom).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
-		expect(Math.random).toHaveBeenCalled()
-		let ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
+		expect(getRandom).toHaveBeenCalled()
+		const ids = convertChosenTreeToIdArray(QB, assessmentProperties.oboNode)
 
 		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
@@ -833,7 +825,7 @@ describe('start attempt route', () => {
 	test('can retrieve an array of question type nodes from a node tree', () => {
 		let n = 0
 		const newQ = () => {
-			let q = new DraftNode()
+			const q = new DraftNode()
 			q.id = n++
 			q.type = 'ObojoboDraft.Chunks.Question'
 			return q
@@ -862,10 +854,10 @@ describe('start attempt route', () => {
 		expect(getSendToClientPromises(attemptState, {}, {})).toEqual([])
 
 		let n = 0
-		let mockYell = jest.fn(() => n++)
+		const mockYell = jest.fn(() => n++)
 		attemptState.questions = [{ yell: mockYell }, { yell: mockYell }]
 
-		let result = getSendToClientPromises(attemptState, 'mockReq', 'mockRes')
+		const result = getSendToClientPromises(attemptState, 'mockReq', 'mockRes')
 		// yell is called?
 		expect(mockYell).toHaveBeenCalledTimes(2)
 		expect(mockYell).toHaveBeenCalledWith(
@@ -884,14 +876,14 @@ describe('start attempt route', () => {
 		createCaliperEvent.mockReturnValueOnce({
 			createAssessmentAttemptStartedEvent
 		})
-		Date.prototype.toISOString = () => 'date'
+		Date.prototype.toISOString = () => 'date' //eslint-disable-line
 
-		let mockDraft = {
+		const mockDraft = {
 			draftId: 'mockDraftId',
 			contentId: 'mockContentId'
 		}
 
-		let r = insertAttemptStartCaliperEvent(
+		const r = insertAttemptStartCaliperEvent(
 			'mockAttemptId',
 			1,
 			'mockUserId',
@@ -918,8 +910,7 @@ describe('start attempt route', () => {
 			contentId: 'mockContentId',
 			extensions: {
 				count: 1
-			},
-			isPreviewMode: true
+			}
 		})
 
 		expect(insertEvent).toHaveBeenCalledWith({
@@ -931,6 +922,7 @@ describe('start attempt route', () => {
 			eventVersion: '1.1.0',
 			ip: 'mockRemoteAddress',
 			metadata: {},
+			isPreview: true,
 			payload: {
 				attemptCount: 1,
 				attemptId: 'mockAttemptId'
@@ -938,4 +930,66 @@ describe('start attempt route', () => {
 			userId: 'mockUserId'
 		})
 	})
+	// <<<<<<< HEAD
+
+	// 	test('calling startAttempt when no attempts remain rejects with an expected error', () => {
+	// 		mockReq = {
+	// 			requireCurrentUser: jest.fn(() =>
+	// 				Promise.resolve({
+	// 					user: {
+	// 						canViewEditor: true
+	// 					}
+	// 				})
+	// 			),
+	// 			body: {
+	// 				draftId: 'mockDraftId',
+	// 				assessmentId: 'mockAssessmentId'
+	// 			}
+	// 		}
+
+	// 		mockRes = { reject: jest.fn() }
+
+	// 		const mockAssessmentNode = {
+	// 			getChildNodeById: jest.fn(() => ({
+	// 				node: {
+	// 					content: {
+	// 						// Number of attempts the user is allowed (what we're testing here).
+	// 						attempts: 1
+	// 					}
+	// 				},
+	// 				children: [
+	// 					{},
+	// 					{
+	// 						childrenSet: ['test', 'test1'],
+	// 						toObject: jest.fn()
+	// 					}
+	// 				]
+	// 			}))
+	// 		}
+
+	// 		Assessment.getCompletedAssessmentAttemptHistory = jest.fn().mockResolvedValue(new Array(2))
+	// 		Draft.fetchById = jest.fn(() => Promise.resolve(mockAssessmentNode))
+
+	// 		return startAttempt(mockReq, mockRes).then(() => {
+	// 			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
+	// 		})
+	// 	})
+
+	// 	test('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', () => {
+	// 		mockReq = {
+	// 			requireCurrentUser: jest.fn().mockResolvedValue()
+	// 		}
+
+	// 		mockRes = { unexpected: jest.fn() }
+
+	// 		Draft.fetchById = jest.fn(() => {
+	// 			throw new Error(ERROR_UNEXPECTED_DB_ERROR)
+	// 		})
+
+	// 		return startAttempt(mockReq, mockRes).then(() => {
+	// 			expect(mockRes.unexpected).toHaveBeenCalledWith(ERROR_UNEXPECTED_DB_ERROR)
+	// 		})
+	// 	})
+	// =======
+	// >>>>>>> origin/dev/4-amethyst
 })

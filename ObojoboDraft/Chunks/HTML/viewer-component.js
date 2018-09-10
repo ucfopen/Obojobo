@@ -1,24 +1,25 @@
 import './viewer-component.scss'
 
+import React from 'react'
 import katex from 'katex'
 
 import Common from 'Common'
-let { OboComponent } = Common.components
+const { OboComponent } = Common.components
 
 const createMarkup = html => {
-	let div = document.createElement('div')
+	const div = document.createElement('div')
 	div.innerHTML = html
 
-	let latexes = div.querySelectorAll('.latex')
+	const latexes = div.querySelectorAll('.latex')
 
-	for (let el of Array.from(latexes)) {
+	for (const el of Array.from(latexes)) {
 		el.innerHTML = katex.renderToString(el.innerHTML)
 	}
 
 	return { __html: div.innerHTML }
 }
 
-export default props => (
+const HTML = props => (
 	<OboComponent model={props.model} moduleData={props.moduleData}>
 		<div
 			className={`obojobo-draft--chunks--html viewer pad align-${props.model.modelState.align}`}
@@ -26,3 +27,5 @@ export default props => (
 		/>
 	</OboComponent>
 )
+
+export default HTML

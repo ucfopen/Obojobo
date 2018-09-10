@@ -2,21 +2,26 @@ import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import MCChoice from '../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/editor'
+// import MCChoice from '../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/editor'
+import MCChoice from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/editor'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCChoice'
 
 describe('MCChoice editor', () => {
 	test('Node builds the expected component', () => {
 		const Node = MCChoice.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				children={'mockChildren'}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -40,7 +45,9 @@ describe('MCChoice editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return {} }
+				get: type => {
+					return {}
+				}
 			},
 			text: 'mockText'
 		}
@@ -76,7 +83,9 @@ describe('MCChoice editor', () => {
 			node: {
 				type: MCCHOICE_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}

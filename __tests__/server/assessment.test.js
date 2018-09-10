@@ -2,6 +2,13 @@ const db = oboRequire('db')
 const lti = oboRequire('lti')
 const Assessment = require('../../server/assessment')
 
+jest.mock(
+	'../../__mocks__/models/visit',
+	() => ({
+		fetchById: jest.fn().mockReturnValue({ is_preview: false })
+	}),
+	{ virtual: true }
+)
 const logger = oboRequire('logger')
 
 describe('Assessment', () => {
@@ -11,7 +18,7 @@ describe('Assessment', () => {
 		db.manyOrNone.mockReset()
 	})
 
-	let makeMockAttempt = () => ({
+	const makeMockAttempt = () => ({
 		attempt_id: 'mockAttemptId',
 		assessment_id: 'mockAssessmentId',
 		draft_content_id: 'mockContentId',
@@ -23,7 +30,7 @@ describe('Assessment', () => {
 			questionScores: ['mockScore']
 		},
 		assessment_score: '15',
-		score_details: 'mockScoreDeails',
+		score_details: 'mockScoreDetails',
 		assessment_score_id: 'scoreId',
 		attempt_number: '12'
 	})
@@ -39,23 +46,13 @@ describe('Assessment', () => {
 		})
 	})
 
-	test('getNumberAttemptsTaken calls db', done => {
-		expect.assertions(1)
-		db.one.mockResolvedValueOnce({ count: 123 })
-
-		return Assessment.getNumberAttemptsTaken(0, 1, 2).then(n => {
-			expect(n).toBe(123)
-			done()
-		})
-	})
-
 	test('createUserAttempt returns attempt object', () => {
-		let mockAttempt = makeMockAttempt()
-		let res = Assessment.createUserAttempt('mockUserId', 'mockDraftId', mockAttempt)
+		const mockAttempt = makeMockAttempt()
+		const res = Assessment.createUserAttempt('mockUserId', 'mockDraftId', mockAttempt)
 		expect(res).toEqual({
 			assessmentId: 'mockAssessmentId',
 			assessmentScore: 15,
-			assessmentScoreDetails: 'mockScoreDeails',
+			assessmentScoreDetails: 'mockScoreDetails',
 			assessmentScoreId: 'scoreId',
 			attemptId: 'mockAttemptId',
 			responses: {},
@@ -73,13 +70,13 @@ describe('Assessment', () => {
 	})
 
 	test('createUserAttempt returns attempt object with default values', () => {
-		let mockAttempt = makeMockAttempt()
+		const mockAttempt = makeMockAttempt()
 		mockAttempt.result = null
-		let res = Assessment.createUserAttempt('mockUserId', 'mockDraftId', mockAttempt)
+		const res = Assessment.createUserAttempt('mockUserId', 'mockDraftId', mockAttempt)
 		expect(res).toEqual({
 			assessmentId: 'mockAssessmentId',
 			assessmentScore: 15,
-			assessmentScoreDetails: 'mockScoreDeails',
+			assessmentScoreDetails: 'mockScoreDetails',
 			assessmentScoreId: 'scoreId',
 			attemptId: 'mockAttemptId',
 			responses: {},
@@ -106,9 +103,11 @@ describe('Assessment', () => {
 		// there's no lti state
 		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns attempts object without assessmentId', () => {
@@ -136,9 +135,11 @@ describe('Assessment', () => {
 		// there's no lti state
 		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'badAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'badAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns attempts object with response history', () => {
@@ -147,12 +148,11 @@ describe('Assessment', () => {
 
 		// create a mock history
 		jest.spyOn(Assessment, 'getResponseHistory')
-		let mockHistory = {
+		const mockHistory = {
 			mockAttemptId: [
 				{
 					id: 'mockResponseId',
 					assessment_id: 'mockAssessmentId',
-					repsonse: 'mockResponse',
 					attempt_id: 'mockAttemptId',
 					question_id: 'mockQuestionId',
 					response: 'mockResponse'
@@ -171,30 +171,31 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns multiple attempts with same assessment', () => {
 		// mock the results of the query to just return an object in an array
-		let first = makeMockAttempt()
+		const first = makeMockAttempt()
 		first.attempt_id = 'mockFirst'
-		let second = makeMockAttempt()
+		const second = makeMockAttempt()
 		second.attempt_id = 'mockSecond'
 		db.manyOrNone.mockResolvedValueOnce([first, second])
 
 		// create a mock history
 		jest.spyOn(Assessment, 'getResponseHistory')
-		let mockHistory = {
+		const mockHistory = {
 			mockAttemptId: [
 				{
 					id: 'mockResponseId',
 					assessment_id: 'mockAssessmentId',
-					repsonse: 'mockResponse',
+					response: 'mockResponse',
 					attempt_id: 'mockAttemptId',
-					question_id: 'mockQuestionId',
-					response: 'mockResponse'
+					question_id: 'mockQuestionId'
 				}
 			]
 		}
@@ -210,9 +211,11 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+			}
+		)
 	})
 
 	test('getAttempts returns no history when assessmentIds for attempt and history dont match', () => {
@@ -221,7 +224,7 @@ describe('Assessment', () => {
 
 		// create a mock history
 		jest.spyOn(Assessment, 'getResponseHistory')
-		let mockHistory = {
+		const mockHistory = {
 			mockAttemptId: [
 				{
 					id: 'mockResponseId',
@@ -256,7 +259,7 @@ describe('Assessment', () => {
 
 		// create a mock history
 		jest.spyOn(Assessment, 'getResponseHistory')
-		let mockHistory = {
+		const mockHistory = {
 			mockAttemptId: [
 				{
 					id: 'mockResponseId',
@@ -280,12 +283,14 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', 'mockAssessmentId').then(result => {
-			expect(result).toMatchSnapshot()
-			expect(logger.warn).toHaveBeenCalledWith(
-				"Couldn't find an attempt I was looking for ('mockUserId', 'mockDraftId', 'mockAttemptId', 'mockResponseId', 'mockAssessmentId') - Shouldn't get here!"
-			)
-		})
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+			result => {
+				expect(result).toMatchSnapshot()
+				expect(logger.warn).toHaveBeenCalledWith(
+					"Couldn't find an attempt I was looking for ('mockUserId', 'mockDraftId', 'mockAttemptId', 'mockResponseId', 'mockAssessmentId') - Shouldn't get here!"
+				)
+			}
+		)
 	})
 
 	test('getAttemptIdsForUserForDraft calls db with expected fields', () => {
@@ -295,6 +300,159 @@ describe('Assessment', () => {
 			userId: 'mockUserId',
 			draftId: 'mockDraftId'
 		})
+	})
+
+	test('filterIncompleteAttempts handles empty array', () => {
+		const attempts = []
+		const res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(0)
+	})
+
+	test('filterIncompleteAttempts returns all completed attempts', () => {
+		const attempts = [
+			{
+				isFinished: true,
+				finishTime: new Date(),
+				startTime: new Date()
+			}
+		]
+		const res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(1)
+		expect(res).toEqual(attempts)
+	})
+
+	test('filterIncompleteAttempts sorts completed attempts', () => {
+		const attempts = [
+			{
+				isFinished: true,
+				finishTime: new Date(301),
+				startTime: new Date(300)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(101),
+				startTime: new Date(100)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(201),
+				startTime: new Date(200)
+			}
+		]
+		const res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(3)
+		expect(res[0]).toBe(attempts[1])
+		expect(res[1]).toBe(attempts[2])
+		expect(res[2]).toBe(attempts[0])
+	})
+
+	test('filterIncompleteAttempts handles 1 incomplete attempt', () => {
+		const attempts = [
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(300)
+			}
+		]
+		const res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(1)
+		expect(res).toEqual(attempts)
+	})
+
+	test('filterIncompleteAttempts only returns the newest incomplete attempt', () => {
+		const attempts = [
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(300)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(600)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(200)
+			}
+		]
+		const res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(1)
+		expect(res[0]).toBe(attempts[1])
+	})
+
+	test('filterIncompleteAttempts removes incomplete attempts before the last completed attempt', () => {
+		const attempts = [
+			{
+				isFinished: true,
+				finishTime: new Date(302),
+				startTime: new Date(300)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(102),
+				startTime: new Date(100)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(202),
+				startTime: new Date(200)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(301) // this is just before the finishTime of the last attempt
+			}
+		]
+		const res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(3)
+		expect(res[0]).toBe(attempts[1])
+		expect(res[1]).toBe(attempts[2])
+		expect(res[2]).toBe(attempts[0])
+	})
+
+	test('filterIncompleteAttempts removes incomplete attempts before the last completed attempt but retains the most recent incompleted attempt if it has been started after the last completed attempt', () => {
+		const attempts = [
+			{
+				isFinished: true,
+				finishTime: new Date(302),
+				startTime: new Date(300)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(102),
+				startTime: new Date(100)
+			},
+			{
+				isFinished: true,
+				finishTime: new Date(202),
+				startTime: new Date(200)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(600)
+			},
+			{
+				isFinished: false,
+				finishTime: null,
+				startTime: new Date(301) // this is just before the finishTime of the last attempt
+			}
+		]
+		const res = Assessment.filterIncompleteAttempts(attempts)
+		expect(res).not.toBe(attempts) // must be a new array
+		expect(res).toHaveLength(4)
+		expect(res[0]).toBe(attempts[1])
+		expect(res[1]).toBe(attempts[2])
+		expect(res[2]).toBe(attempts[0])
+		expect(res[3]).toBe(attempts[3])
 	})
 
 	test('getAttemptNumber returns the attempt_number property', () => {
@@ -413,22 +571,26 @@ describe('Assessment', () => {
 			}
 		])
 
-		return Assessment.getResponseHistory('mockUserId', 'mockDraftId', 'mockAssessmentId').then(
-			result => {
-				expect(db.manyOrNone.mock.calls[0][1]).toEqual({
-					userId: 'mockUserId',
-					draftId: 'mockDraftId',
-					optionalAssessmentId: 'mockAssessmentId'
-				})
+		return Assessment.getResponseHistory(
+			'mockUserId',
+			'mockDraftId',
+			false,
+			'mockAssessmentId'
+		).then(result => {
+			expect(db.manyOrNone.mock.calls[0][1]).toEqual({
+				userId: 'mockUserId',
+				draftId: 'mockDraftId',
+				isPreview: false,
+				optionalAssessmentId: 'mockAssessmentId'
+			})
 
-				expect(result).toEqual({
-					mockAttemptId: [{ attempt_id: 'mockAttemptId' }],
-					secondMockAttemptId: [{ attempt_id: 'secondMockAttemptId' }]
-				})
+			expect(result).toEqual({
+				mockAttemptId: [{ attempt_id: 'mockAttemptId' }],
+				secondMockAttemptId: [{ attempt_id: 'secondMockAttemptId' }]
+			})
 
-				return done()
-			}
-		)
+			return done()
+		})
 	})
 
 	test('getResponsesForAttempt calls the database with the expected value', () => {
@@ -453,7 +615,7 @@ describe('Assessment', () => {
 			assessmentId: 'mockState',
 			contentId: 'mockAssessmentId',
 			draftId: 'mockDraftId',
-			isPreview: undefined,
+			isPreview: undefined, //eslint-disable-line
 			state: 'mockPreviewing',
 			userId: 'mockUserId'
 		})
@@ -488,7 +650,7 @@ describe('Assessment', () => {
 	test('creates its own instance correctly', () => {
 		Assessment.prototype.registerEvents = jest.fn()
 
-		let assessment = new Assessment(
+		const assessment = new Assessment(
 			{
 				draftTree: true
 			},
@@ -505,7 +667,7 @@ describe('Assessment', () => {
 	})
 
 	test('onSendToClient yells', () => {
-		let assessment = new Assessment(
+		const assessment = new Assessment(
 			{
 				draftTree: true
 			},
@@ -526,13 +688,13 @@ describe('Assessment', () => {
 	})
 
 	test('onStartVisit inserts value into extensionsProps', () => {
-		let req = {
+		const req = {
 			requireCurrentUser: jest.fn().mockResolvedValue({ id: 'mockUser' })
 		}
 		jest.spyOn(Assessment, 'getAttempts').mockResolvedValueOnce('mockAttempts')
-		let extensionsProps = {}
+		const extensionsProps = {}
 
-		let assessment = new Assessment(
+		const assessment = new Assessment(
 			{
 				draftTree: true
 			},
@@ -542,7 +704,7 @@ describe('Assessment', () => {
 			jest.fn()
 		)
 
-		return assessment.onStartVisit(req, {}, 'mockDraftId', '', extensionsProps).then(res => {
+		return assessment.onStartVisit(req, {}, 'mockDraftId', '', extensionsProps).then(() => {
 			expect(extensionsProps[':ObojoboDraft.Sections.Assessment:attemptHistory']).toEqual(
 				'mockAttempts'
 			)

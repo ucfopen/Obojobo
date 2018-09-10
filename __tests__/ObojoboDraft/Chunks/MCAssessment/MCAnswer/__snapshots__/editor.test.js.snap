@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAnswer editor Node builds the expected component 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+  dummy="dummyData"
+>
+  mockChildren
+</div>
+`;
+
+exports[`MCAnswer editor plugins.renderNode renders a button when passed 1`] = `undefined`;

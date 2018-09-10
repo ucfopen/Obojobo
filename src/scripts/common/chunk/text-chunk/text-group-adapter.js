@@ -1,15 +1,14 @@
 import TextGroup from '../../../common/text-group/text-group'
 
-let TextGroupAdapter = {
+const TextGroupAdapter = {
 	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.textGroup) != null) {
-			return (model.modelState.textGroup = TextGroup.fromDescriptor(
-				attrs.content.textGroup,
-				Infinity,
-				{ indent: 0, align: 'left' }
-			))
+		if (attrs && attrs.content && attrs.content.textGroup) {
+			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
+				indent: 0,
+				align: 'left'
+			})
 		} else {
-			return (model.modelState.textGroup = TextGroup.create(Infinity, { indent: 0, align: 'left' }))
+			model.modelState.textGroup = TextGroup.create(Infinity, { indent: 0, align: 'left' })
 		}
 	},
 
@@ -27,6 +26,3 @@ let TextGroupAdapter = {
 }
 
 export default TextGroupAdapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

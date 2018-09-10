@@ -101,7 +101,7 @@
 // 	# "$", "i"
 // )
 
-let regex = new RegExp(
+const regex = new RegExp(
 	// "^" +
 	// protocol identifier
 	'(?:(?:https?)://)?' +
@@ -141,13 +141,13 @@ let regex = new RegExp(
 
 export default function(chunk, targetTextGroupItem) {
 	let results
-	console.time('linkify')
+	// console.time('linkify')
 
 	let styleApplied = false
-	let links = []
+	const links = []
 
-	let { selection } = chunk.page.module.app
-	let styleableText = targetTextGroupItem.text
+	const { selection } = chunk.page.module.app
+	const styleableText = targetTextGroupItem.text
 
 	while ((results = regex.exec(styleableText.value)) !== null) {
 		links.unshift([
@@ -163,13 +163,13 @@ export default function(chunk, targetTextGroupItem) {
 
 	selection.saveVirtualSelection()
 
-	for (let link of Array.from(links)) {
+	for (const link of Array.from(links)) {
 		selection.virtual.start.data.groupIndex = targetTextGroupItem.index
 		selection.virtual.end.data.groupIndex = selection.virtual.start.data.groupIndex
 		selection.virtual.start.data.offset = link[0]
 		selection.virtual.end.data.offset = link[1]
 
-		if (chunk.getSelectionStyles().a == null) {
+		if (chunk.getSelectionStyles().a) {
 			if (link[2].indexOf('http') !== 0) {
 				link[2] = `http://${link[2]}`
 			}
@@ -181,7 +181,7 @@ export default function(chunk, targetTextGroupItem) {
 
 	selection.restoreVirtualSelection()
 
-	console.timeEnd('linkify')
+	// console.timeEnd('linkify')
 
 	return styleApplied
 }

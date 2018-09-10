@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionBank editor Node builds the expected component 1`] = `
+<div
+  className="obojobo-draft--chunks--question-bank"
+  dummy="dummyData"
+>
+  <button
+    className="delete"
+    onClick={[Function]}
+  >
+    X
+  </button>
+  <span
+    contentEditable={false}
+  >
+    Choose: 
+  </span>
+  <input
+    className="choose-input"
+    onChange={[Function]}
+    onClick={[Function]}
+    type="number"
+    value={undefined}
+  />
+  <span
+    contentEditable={false}
+  >
+    Select: 
+  </span>
+  <select
+    name="Select"
+    onChange={[Function]}
+    onClick={[Function]}
+    value={undefined}
+  >
+    <option
+      value="sequential"
+    >
+      Sequential
+    </option>
+    <option
+      value="random"
+    >
+      Random
+    </option>
+    <option
+      value="random-unseen"
+    >
+      Random Unseen
+    </option>
+  </select>
+  mockChildren
+  <button
+    onClick={[Function]}
+  >
+    Add Question
+  </button>
+  <button
+    onClick={[Function]}
+  >
+    Add QuestionBank
+  </button>
+</div>
+`;
+
+exports[`QuestionBank editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.QuestionBank",
+    }
+  }
+/>
+`;

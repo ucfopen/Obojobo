@@ -262,9 +262,12 @@ Array [
 
 exports[`NavStore nav:close event fires and updates state 2`] = `
 Array [
-  "root",
-  "nav:close",
-  "1.0.0",
+  Object {
+    "action": "nav:close",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "visitId": undefined,
+  },
 ]
 `;
 
@@ -283,9 +286,12 @@ Array [
 
 exports[`NavStore nav:close event fires and updates state 5`] = `
 Array [
-  "root",
-  "nav:close",
-  "1.0.0",
+  Object {
+    "action": "nav:close",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "visitId": undefined,
+  },
 ]
 `;
 
@@ -298,12 +304,15 @@ Object {
 
 exports[`NavStore nav:goto changes page and posts event 1`] = `
 Array [
-  "root",
-  "nav:goto",
-  "1.0.0",
   Object {
-    "from": 7,
-    "to": "mock",
+    "action": "nav:goto",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "from": 7,
+      "to": "mock",
+    },
+    "visitId": undefined,
   },
 ]
 `;
@@ -312,12 +321,15 @@ exports[`NavStore nav:goto does not go to a fake page 1`] = `undefined`;
 
 exports[`NavStore nav:gotoPath event calls gotoItem and postEvent 1`] = `
 Array [
-  "root",
-  "nav:gotoPath",
-  "1.0.0",
   Object {
-    "from": 7,
-    "to": "mock",
+    "action": "nav:gotoPath",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "from": 7,
+      "to": "mock",
+    },
+    "visitId": undefined,
   },
 ]
 `;
@@ -342,9 +354,12 @@ Object {
 
 exports[`NavStore nav:lock event fires and updates state 1`] = `
 Array [
-  "root",
-  "nav:lock",
-  "1.0.0",
+  Object {
+    "action": "nav:lock",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "visitId": undefined,
+  },
 ]
 `;
 
@@ -357,12 +372,15 @@ Object {
 
 exports[`NavStore nav:next changes page and posts event 1`] = `
 Array [
-  "root",
-  "nav:next",
-  "1.0.0",
   Object {
-    "from": 7,
-    "to": "mockNext",
+    "action": "nav:next",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "from": 7,
+      "to": "mockNext",
+    },
+    "visitId": undefined,
   },
 ]
 `;
@@ -377,9 +395,12 @@ Array [
 
 exports[`NavStore nav:open event fires and updates state 2`] = `
 Array [
-  "root",
-  "nav:open",
-  "1.0.0",
+  Object {
+    "action": "nav:open",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "visitId": undefined,
+  },
 ]
 `;
 
@@ -398,12 +419,15 @@ Array [
 
 exports[`NavStore nav:prev changes page and posts event 1`] = `
 Array [
-  "root",
-  "nav:prev",
-  "1.0.0",
   Object {
-    "from": 7,
-    "to": "mockPrev",
+    "action": "nav:prev",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "from": 7,
+      "to": "mockPrev",
+    },
+    "visitId": undefined,
   },
 ]
 `;
@@ -448,11 +472,14 @@ Array [
 
 exports[`NavStore nav:toggle event fires and updates state 2`] = `
 Array [
-  "root",
-  "nav:toggle",
-  "1.0.0",
   Object {
-    "open": true,
+    "action": "nav:toggle",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "open": true,
+    },
+    "visitId": undefined,
   },
 ]
 `;
@@ -472,9 +499,12 @@ Array [
 
 exports[`NavStore nav:unlock event fires and updates state 2`] = `
 Array [
-  "root",
-  "nav:unlock",
-  "1.0.0",
+  Object {
+    "action": "nav:unlock",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "visitId": undefined,
+  },
 ]
 `;
 

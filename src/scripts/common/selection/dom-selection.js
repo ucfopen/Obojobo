@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // Chrome sometimes has range startContainer / endContainer as an element node
 // so we need to dig down in this case to find the first text node
 
@@ -46,7 +48,7 @@ class DOMSelection {
 	set(startNode, startOffset, endNode, endOffset) {
 		// console.log 'DS.set', startNode, startOffset, endNode, endOffset
 
-		let r = document.createRange()
+		const r = document.createRange()
 
 		r.setStart(startNode, startOffset)
 		r.setEnd(endNode, endOffset)
@@ -142,8 +144,5 @@ Object.defineProperties(DOMSelection.prototype, {
 		}
 	}
 })
-
-//@TODO
-window.__ds = () => DOMSelection.get()
 
 export default DOMSelection

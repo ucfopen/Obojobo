@@ -1,4 +1,4 @@
-// @import '~styles/includes'; //@TODO - This is not importing
+// @import '~styles/includes';
 
 .obojobo-draft--sections--assessment--components--score-report {
 	$color-hr: transparentize(rgba(0, 0, 0, 0.3), 0.2);
@@ -30,7 +30,7 @@
 			}
 
 			&.divider {
-				height: 1px;
+				height: 1px; /* stylelint-disable-line unit-blacklist */
 				border: none;
 				background: $color-hr;
 			}

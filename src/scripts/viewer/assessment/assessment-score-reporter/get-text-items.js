@@ -19,12 +19,12 @@ import {
 	ERROR_UNKNOWN_DISPLAY_TYPE
 } from './display-types'
 
-let getPassingRange = passingNumber => {
+const getPassingRange = passingNumber => {
 	if (passingNumber === '100') return '100%'
 	return getDisplayFriendlyScore(passingNumber) + '% or higher'
 }
 
-let getTextItems = (
+const getTextItems = (
 	{
 		rubricType,
 		mods,

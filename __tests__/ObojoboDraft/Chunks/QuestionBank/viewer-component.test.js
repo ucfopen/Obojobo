@@ -6,7 +6,7 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('QuestionBank', () => {
 	test('QuestionBank component', () => {
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.QuestionBank',
 			children: [
@@ -17,12 +17,12 @@ describe('QuestionBank', () => {
 			]
 		})
 
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
 		const component = renderer.create(<QuestionBank model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

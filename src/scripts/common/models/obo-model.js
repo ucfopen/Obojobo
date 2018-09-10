@@ -1,9 +1,13 @@
-import createUUID from '../../common/util/uuid'
+import Backbone from 'backbone'
+
+import uuid from '../../common/util/uuid'
 import Dispatcher from '../../common/flux/dispatcher'
 import { Store } from '../../common/store'
+import DOMUtil from '../../common/page/dom-util'
+import setProp from '../../common/util/set-prop'
 
-let DefaultAdapter = {
-	construct(attrs) {
+const DefaultAdapter = {
+	construct() {
 		return null
 	},
 	clone(clone) {
@@ -12,7 +16,7 @@ let DefaultAdapter = {
 	toJSON(model, json) {
 		return json
 	},
-	toText(model) {
+	toText() {
 		return ''
 	}
 }
@@ -28,17 +32,50 @@ class OboModel extends Backbone.Model {
 		}
 	}
 
-	constructor(attrs, adapter) {
-		if (adapter == null) {
-			adapter = {}
+	// OboModel.create('chunk') = default chunk
+	// OboModel.create('ObojoboDraft.Chunks.List') = new list
+	// OboModel.create({type:'ObojoboDraft.Chunks.Table', content:{}, children:[]}) = new Table with children
+	static create(typeOrNameOrJson, attrs = {}) {
+		// console.log('oboModel.create', typeOrNameOrJson, attrs)
+		// try json
+		if (typeof typeOrNameOrJson === 'object') {
+			const oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
+
+			if (oboModel) {
+				const { children } = typeOrNameOrJson
+				if (children) {
+					for (const child of Array.from(children)) {
+						oboModel.children.add(OboModel.create(child))
+					}
+				}
+			}
+
+			return oboModel
 		}
 
+		let item = Store.getDefaultItemForModelType(typeOrNameOrJson)
+		if (!item) {
+			item = Store.getItemForType(typeOrNameOrJson)
+		}
+
+		// console.log('item be all', item)
+
+		if (!item) {
+			return null
+		}
+
+		attrs.type = typeOrNameOrJson
+
+		return new OboModel(attrs, item.adapter)
+	}
+
+	constructor(attrs, adapter = {}) {
 		super(attrs)
 
 		this.parent = null
 		this.children = new OboModelCollection()
-		this.triggers = []
-		this.title = null
+		this.triggers = attrs.content && attrs.content.triggers ? attrs.content.triggers : []
+		this.title = attrs.content && attrs.content.title ? attrs.content.title : null
 
 		this.modelState = {
 			dirty: false,
@@ -46,26 +83,27 @@ class OboModel extends Backbone.Model {
 			editing: false
 		}
 
-		if (attrs.id == null) {
+		if (attrs.id === null || typeof attrs.id === 'undefined') {
 			attrs.id = this.createNewLocalId()
 		}
 
 		this.adapter = Object.assign(Object.assign({}, DefaultAdapter), adapter)
 		this.adapter.construct(this, attrs)
 
-		if ((attrs.content != null ? attrs.content.triggers : undefined) != null) {
-			this.triggers = attrs.content.triggers
-		}
-
-		if ((attrs.content != null ? attrs.content.title : undefined) != null) {
-			this.title = attrs.content.title
-		}
-
 		this.children.on('remove', this.onChildRemove, this)
 		this.children.on('add', this.onChildAdd, this)
 		this.children.on('reset', this.onChildrenReset, this)
 
 		OboModel.models[this.get('id')] = this
+	}
+
+	setStateProp(propName, defaultValue, transformValueFn, allowedValues) {
+		const content = this.get('content')
+		if (!content) return false
+
+		setProp(this.modelState, content, propName, defaultValue, transformValueFn, allowedValues)
+
+		return true
 	}
 
 	getRoot() {
@@ -81,28 +119,24 @@ class OboModel extends Backbone.Model {
 
 	processTrigger(type) {
 		let index
-		let triggersToDelete = []
+		const triggersToDelete = []
 
 		for (let trigIndex = 0; trigIndex < this.triggers.length; trigIndex++) {
-			let trigger = this.triggers[trigIndex]
+			const trigger = this.triggers[trigIndex]
 			if (trigger.type === type) {
 				for (index = 0; index < trigger.actions.length; index++) {
-					let action = trigger.actions[index]
-					if (action.type === '_js') {
-						eval(action.value)
-					} else {
-						Dispatcher.trigger(action.type, action)
-					}
+					const action = trigger.actions[index]
+					Dispatcher.trigger(action.type, action)
 				}
 
-				if (trigger.run != null && trigger.run === 'once') {
+				if (trigger.run && trigger.run === 'once') {
 					triggersToDelete.unshift(trigIndex)
 				}
 			}
 		}
 
 		return (() => {
-			let result = []
+			const result = []
 			for (index of Array.from(triggersToDelete)) {
 				result.push(this.triggers.splice(index, 1))
 			}
@@ -110,15 +144,14 @@ class OboModel extends Backbone.Model {
 		})()
 	}
 
-	onChildRemove(model, collection, options) {
+	onChildRemove(model) {
 		model.parent = null
 		model.markDirty()
 
 		return delete OboModel.models[model.get('id')]
 	}
 
-	// @TODO Should this dirty model or parent?
-	onChildAdd(model, collection, options) {
+	onChildAdd(model) {
 		model.parent = this
 		OboModel.models[model.get('id')] = model
 		return model.markDirty()
@@ -129,7 +162,7 @@ class OboModel extends Backbone.Model {
 	}
 
 	createNewLocalId() {
-		return createUUID()
+		return uuid()
 	}
 
 	assignNewId() {
@@ -141,15 +174,12 @@ class OboModel extends Backbone.Model {
 	}
 
 	// should be overridden
-	clone(deep) {
-		if (deep == null) {
-			deep = false
-		}
-		let clone = new OboModel(this.attributes, this.adapter.constructor)
+	clone(deep = false) {
+		const clone = new OboModel(this.attributes, this.adapter.constructor)
 		this.adapter.clone(this, clone)
 
 		if (deep && this.hasChildren()) {
-			for (let child of Array.from(this.children.models)) {
+			for (const child of Array.from(this.children.models)) {
 				clone.children.add(child.clone(true))
 			}
 		}
@@ -158,14 +188,14 @@ class OboModel extends Backbone.Model {
 	}
 
 	toJSON() {
-		let json = super.toJSON()
+		const json = super.toJSON()
 		this.adapter.toJSON(this, json)
 
 		json.children = null
 
 		if (this.hasChildren()) {
 			json.children = []
-			for (let child of Array.from(this.children.models)) {
+			for (const child of Array.from(this.children.models)) {
 				json.children.push(child.toJSON())
 			}
 		}
@@ -185,7 +215,7 @@ class OboModel extends Backbone.Model {
 	toText() {
 		let text = this.adapter.toText(this)
 
-		for (let child of Array.from(this.children.models)) {
+		for (const child of Array.from(this.children.models)) {
 			text += `\n${child.toText()}`
 		}
 
@@ -193,12 +223,12 @@ class OboModel extends Backbone.Model {
 	}
 
 	revert() {
-		let index = this.get('index')
-		let id = this.get('id')
-		let newModel = new this.constructor({})
+		const index = this.get('index')
+		const id = this.get('id')
+		const newModel = new this.constructor({})
 
-		for (let attrName in newModel.attributes) {
-			let attr = newModel.attributes[attrName]
+		for (const attrName in newModel.attributes) {
+			const attr = newModel.attributes[attrName]
 			this.set(attrName, attr)
 		}
 
@@ -221,10 +251,7 @@ class OboModel extends Backbone.Model {
 		// }
 	}
 
-	markForUpdate(markChildren) {
-		if (markChildren == null) {
-			markChildren = false
-		}
+	markForUpdate(markChildren = false) {
 		this.modelState.needsUpdate = true
 
 		if (markChildren) {
@@ -232,10 +259,7 @@ class OboModel extends Backbone.Model {
 		}
 	}
 
-	markUpdated(markChildren) {
-		if (markChildren == null) {
-			markChildren = false
-		}
+	markUpdated(markChildren = false) {
 		this.modelState.needsUpdate = false
 
 		if (markChildren) {
@@ -244,10 +268,8 @@ class OboModel extends Backbone.Model {
 	}
 
 	getDomEl() {
-		// @TODO - This work?
-		return document.body.querySelector(`.component[data-id='${this.get('id')}']`)
+		return DOMUtil.getComponentElementById(this.get('id'))
 	}
-	// document.body.querySelector ".component[data-component-index='#{@getIndex()}']"
 
 	getComponentClass() {
 		return Store.getItemForType(this.get('type')).componentClass
@@ -258,7 +280,7 @@ class OboModel extends Backbone.Model {
 	}
 
 	isOrphan() {
-		return this.parent == null
+		return this.parent === null
 	}
 
 	addChildBefore(sibling) {
@@ -266,7 +288,7 @@ class OboModel extends Backbone.Model {
 			return
 		}
 
-		let children = this.parent.children
+		const children = this.parent.children
 
 		if (children.contains(sibling)) {
 			children.remove(sibling)
@@ -280,7 +302,7 @@ class OboModel extends Backbone.Model {
 			return
 		}
 
-		let children = this.parent.children
+		const children = this.parent.children
 
 		if (children.contains(sibling)) {
 			children.remove(sibling)
@@ -294,7 +316,7 @@ class OboModel extends Backbone.Model {
 			return
 		}
 
-		let refChunk = this.parent.children.at(index)
+		const refChunk = this.parent.children.at(index)
 
 		if (index < this.getIndex()) {
 			return refChunk.addChildBefore(this)
@@ -416,9 +438,8 @@ class OboModel extends Backbone.Model {
 
 OboModel.models = {}
 
-//@TODO @HACK:
 OboModel.getRoot = function() {
-	for (let id in OboModel.models) {
+	for (const id in OboModel.models) {
 		return OboModel.models[id].getRoot()
 	}
 
@@ -426,51 +447,5 @@ OboModel.getRoot = function() {
 }
 
 class OboModelCollection extends Backbone.Collection {}
-// model: OboModel
-
-// reset: (models) ->
-// 	if(typeof models is 'object')
-
-// OboModel.create('chunk') = default chunk
-// OboModel.create('ObojoboDraft.Chunks.List') = new list
-// OboModel.create({type:'ObojoboDraft.Chunks.Table', content:{}, children:[]}) = new Table with children
-OboModel.create = function(typeOrNameOrJson, attrs) {
-	// try json
-	if (attrs == null) {
-		attrs = {}
-	}
-	if (typeof typeOrNameOrJson === 'object') {
-		let oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
-
-		if (oboModel != null) {
-			let { children } = typeOrNameOrJson
-			if (children != null) {
-				// delete typeOrNameOrJson.children
-
-				for (let child of Array.from(children)) {
-					let c = OboModel.create(child)
-					// console.log 'c be', c, oboModel.children
-					oboModel.children.add(c)
-				}
-			}
-		}
-
-		return oboModel
-	}
-
-	let item = Store.getDefaultItemForModelType(typeOrNameOrJson)
-	if (!item) {
-		item = Store.getItemForType(typeOrNameOrJson)
-	}
-
-	if (!item) {
-		return null
-	}
-
-	attrs.type = typeOrNameOrJson
-
-	// console.log 'creating', typeOrNameOrJson, attrs, item
-	return new OboModel(attrs, item.adapter)
-}
 
 export default OboModel

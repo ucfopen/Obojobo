@@ -1,10 +1,6 @@
-let Adapter = {
-	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.videoId) != null) {
-			model.modelState.videoId = attrs.content.videoId
-		} else {
-			model.modelState.videoId = null
-		}
+const Adapter = {
+	construct(model) {
+		model.setStateProp('videoId', null)
 	},
 
 	clone(model, clone) {
@@ -21,6 +17,3 @@ let Adapter = {
 }
 
 export default Adapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

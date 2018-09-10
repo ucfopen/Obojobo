@@ -3,14 +3,14 @@ const app = express()
 const oboEvents = oboRequire('obo_events')
 const db = oboRequire('db')
 const Assessment = require('./assessment')
+const VisitModel = oboRequire('models/visit')
 const lti = oboRequire('lti')
 const logger = oboRequire('logger')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
 const startAttempt = require('./attempt-start').startAttempt
 const endAttempt = require('./attempt-end').endAttempt
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
 
-app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
+app.get('/api/lti/state/draft/:draftId', (req, res) => {
 	let currentUser
 	let currentDocument
 
@@ -29,15 +29,13 @@ app.get('/api/lti/state/draft/:draftId', (req, res, next) => {
 		})
 })
 
-app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
+app.post('/api/lti/sendAssessmentScore', (req, res) => {
 	logger.info('API sendAssessmentScore', req.body)
 
 	let currentUser = null
 	let currentDocument = null
 	let ltiScoreResult
-	let assessmentScoreId
-	let draftId = req.body.draftId
-	let assessmentId = req.body.assessmentId
+	const assessmentId = req.body.assessmentId
 
 	return req
 		.requireCurrentUser()
@@ -73,20 +71,24 @@ app.post('/api/lti/sendAssessmentScore', (req, res, next) => {
 
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 
-app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
+app.post('/api/assessments/attempt/:attemptId/end', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
+	let isPreview
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
+			return VisitModel.fetchById(req.body.visitId)
+		})
+		.then(visit => {
+			isPreview = visit.is_preview
 			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			let isPreviewing = currentUser.canViewEditor
-			return endAttempt(req, res, currentUser, currentDocument, req.params.attemptId, isPreviewing)
+			return endAttempt(req, res, currentUser, currentDocument, req.params.attemptId, isPreview)
 		})
 		.then(resp => {
 			res.success(resp)
@@ -96,23 +98,26 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res, next) => {
 		})
 })
 
-app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
+app.post('/api/assessments/clear-preview-scores', (req, res) => {
 	let assessmentScoreIds
 	let attemptIds
 	let currentUser = null
 	let currentDocument = null
+	let isPreview
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
+			return VisitModel.fetchById(req.body.visitId)
+		})
+		.then(visit => {
+			isPreview = visit.is_preview
 			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			let isPreviewing = currentUser.canViewEditor
-
-			if (!isPreviewing) throw 'Not in preview mode'
+			if (!isPreview) throw 'Not in preview mode'
 
 			return db.manyOrNone(
 				`
@@ -120,7 +125,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 						FROM assessment_scores
 						WHERE user_id = $[userId]
 						AND draft_id = $[draftId]
-						AND preview = true
+						AND is_preview = true
 					`,
 				{
 					userId: currentUser.id,
@@ -137,7 +142,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 					FROM attempts
 					WHERE user_id = $[userId]
 					AND draft_id = $[draftId]
-					AND preview = true
+					AND is_preview = true
 				`,
 				{
 					userId: currentUser.id,
@@ -149,7 +154,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 			attemptIds = attemptIdsResult
 
 			return db.tx(transaction => {
-				let queries = []
+				const queries = []
 
 				if (assessmentScoreIds.length > 0) {
 					queries.push(
@@ -181,7 +186,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 							DELETE FROM assessment_scores
 							WHERE user_id = $[userId]
 							AND draft_id = $[draftId]
-							AND preview = true
+							AND is_preview = true
 						`,
 						{
 							userId: currentUser.id,
@@ -193,7 +198,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 							DELETE FROM attempts
 							WHERE user_id = $[userId]
 							AND draft_id = $[draftId]
-							AND preview = true
+							AND is_preview = true
 						`,
 						{
 							userId: currentUser.id,
@@ -215,11 +220,12 @@ app.post('/api/assessments/clear-preview-scores', (req, res, next) => {
 		})
 })
 
-app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res, next) => {
+// @TODO NOT USED
+// update getAttempt to take isPreview
+app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -241,11 +247,12 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res,
 		})
 })
 
-app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
+// @TODO NOT USED
+// update getAttempts to take isPreview
+app.get('/api/assessments/:draftId/attempts', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -260,7 +267,7 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 			res.success(result)
 		})
 		.catch(error => {
-			if (error.message == 'Login Required') {
+			if (error.message === 'Login Required') {
 				return res.notAuthorized(error.message)
 			}
 
@@ -268,11 +275,12 @@ app.get('/api/assessments/:draftId/attempts', (req, res, next) => {
 		})
 })
 
-app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
+// @TODO NOT USED
+// update getAttempts to take isPreview
+app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
-	// @TODO:
-	// check input
+
 	return req
 		.requireCurrentUser()
 		.then(user => {
@@ -289,7 +297,7 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 		})
 		.then(result => res.success(result))
 		.catch(error => {
-			if (error.message == 'Login Required') {
+			if (error.message === 'Login Required') {
 				return res.notAuthorized(error.message)
 			}
 
@@ -299,8 +307,6 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res, next) => {
 
 oboEvents.on('client:question:setResponse', (event, req) => {
 	const eventRecordResponse = 'client:question:setResponse'
-	// @TODO: check perms
-	// @TODO: better input sanitizing
 
 	return Promise.resolve()
 		.then(() => {

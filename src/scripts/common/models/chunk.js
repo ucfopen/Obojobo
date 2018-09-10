@@ -1,7 +1,6 @@
-//"obojobo-draft-document-engine": "git+ssh://git@clu.cdl.ucf.edu:obojobo/obojobo-draft-document-engine.git"
-import OboModel from './obomodel'
+/* eslint-disable */
 
-import createUUID from '../../common/util/uuid'
+import OboModel from './obomodel'
 
 class Chunk extends OboModel {
 	static initClass() {
@@ -19,26 +18,6 @@ class Chunk extends OboModel {
 		return Backbone.sync(method, model, options)
 	}
 
-	// constructor: (attrs) ->
-	// 	if not attrs.id?
-	// @new = true
-	// attrs.id = @createNewLocalId()
-
-	// super attrs
-
-	// @dirty = false
-	// @needsUpdate = false
-	// @editing = false
-
-	// if attrs.content
-	// 	@modelState = @getComponent().createNodeDataFromDescriptor(attrs)
-	// else
-	// 	@modelState = {}
-
-	// @on "change", @onChange, @
-
-	// @page = null
-
 	url() {
 		if (this.new != null) {
 			return this.urlRoot
@@ -47,8 +26,6 @@ class Chunk extends OboModel {
 	}
 
 	save(attrs, options) {
-		// console.clear()
-		console.log('SAVE TIME')
 		if (this.new != null) {
 			this.assignNewId()
 			options.type = 'post'
@@ -64,12 +41,6 @@ class Chunk extends OboModel {
 
 		return super.save(attrs, options)
 	}
-
-	// assignNewId: ->
-	// 	@set 'id', @createNewLocalId()
-
-	// createNewLocalId: ->
-	// 	createUUID()
 
 	onChange(model, options) {
 		if (model.get('index') !== model.previous('index')) {
@@ -90,7 +61,7 @@ class Chunk extends OboModel {
 	}
 
 	callCommandFn(fn, content) {
-		let componentClass = this.getComponent()
+		const componentClass = this.getComponent()
 		let selection = null
 		if ((this.page != null ? this.page.module : undefined) != null) {
 			;({ selection } = this.page.module.app.state)
@@ -98,7 +69,7 @@ class Chunk extends OboModel {
 		if (componentClass.getCommandHandler == null) {
 			return null
 		}
-		let commandHandler = componentClass.getCommandHandler(this, selection)
+		const commandHandler = componentClass.getCommandHandler(this, selection)
 		if (!(commandHandler != null ? commandHandler[fn] : undefined)) {
 			return null
 		}
@@ -106,79 +77,21 @@ class Chunk extends OboModel {
 	}
 
 	callSelectionFn(fn, content) {
-		let componentClass = this.getComponent()
+		const componentClass = this.getComponent()
 		let selection = null
 		if ((this.page != null ? this.page.module : undefined) != null) {
 			;({ selection } = this.page.module.app.state)
 		}
-		let selectionHandler = this.selectionHandler(this, selection)
+		const selectionHandler = this.selectionHandler(this, selection)
 		if (!(selectionHandler != null ? selectionHandler[fn] : undefined)) {
 			return null
 		}
 		return selectionHandler[fn].apply(selectionHandler, [selection, this].concat(content))
 	}
 
-	// getDomEl: ->
-	// 	# @TODO - This work?
-	// 	document.body.querySelector ".component[data-id='#{@get('id')}']"
-	// 	# document.body.querySelector ".component[data-component-index='#{@get('index')}']"
-
-	// clone: (cloneId = false) ->
-	// 	clone = new @constructor {
-	// 		type: @get('type')
-	// 	}
-	// 	clone.modelState = @getComponent().cloneNodeData @modelState
-
-	// 	if cloneId
-	// 		clone.set 'id', @get('id')
-
-	// 	clone
-
-	// markDirty: ->
-	// 	@dirty = true
-	// 	@needsUpdate = true
-
-	// markForUpdate: ->
-	// 	@needsUpdate = true
-
-	// markUpdated: ->
-	// 	@needsUpdate = false
-
 	isEditing() {
 		return this.page.module.app.state.editingChunk === this
 	}
-
-	// toJSON: ->
-	// 	contentJSON = @getComponent().getDataDescriptor @
-
-	// 	json =
-	// 		type: @get 'type'
-	// 		content: contentJSON
-	// 		contentType: @get 'contentType'
-	// 		derivedFrom: @get 'derivedFrom'
-	// 		index: @get('index')
-	// 		id: @get 'id'
-	// 		draftId: @get 'draftId'
-
-	// 	json
-
-	// revert: ->
-	// 	newChunk = Chunk.create()
-
-	// 	index = @get('index')
-	// 	id = @get('id')
-
-	// 	@clear()
-
-	// 	for attrName, attr of newChunk.attributes
-	// 		@set attrName, attr
-
-	// 	@set 'index', index
-	// 	@set 'id', id
-
-	// 	@modelState = newChunk.modelState
-
-	// 	@
 
 	getCaretEdge() {
 		return this.callCommandFn('getCaretEdge')
@@ -255,7 +168,6 @@ class Chunk extends OboModel {
 	paste(text, html, chunks) {
 		return this.callCommandFn('paste', [text, html, chunks])
 	}
-
 	getCopyOfSelection(cloneId) {
 		return this.callSelectionFn('getCopyOfSelection', [cloneId])
 	}
@@ -323,7 +235,6 @@ Chunk.create = function(typeOrClass, content) {
 		componentClass = OBO.componentClassMap.errorClass
 		chunk = new Chunk(componentClass)
 	}
-	// type = ComponentClassMap.getTypeOfClass componentClass
 
 	return chunk
 }

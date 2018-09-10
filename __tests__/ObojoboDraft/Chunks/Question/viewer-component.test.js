@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'underscore'
 import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
 
@@ -150,74 +151,74 @@ describe('MCAssessment', () => {
 	})
 
 	test('Question component', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		// Question with no score data
 		QuestionUtil.getScoreForModel.mockReturnValueOnce(null)
 		QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
 
 		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component answered correctly', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		// Question answered correctly
 		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
 		QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
 
 		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component answered incorrectly', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		// Question answered incorrectly
 		QuestionUtil.getScoreForModel.mockReturnValueOnce(0)
 		QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
 
 		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component in review mode', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		// Question with no score data
 		QuestionUtil.getScoreForModel.mockReturnValueOnce(null)
@@ -226,20 +227,20 @@ describe('MCAssessment', () => {
 		const component = renderer.create(
 			<Question model={model} moduleData={moduleData} mode={MODE_REVIEW} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component in practice mode', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		// Question with no score data
 		QuestionUtil.getScoreForModel.mockReturnValueOnce(null)
@@ -248,20 +249,20 @@ describe('MCAssessment', () => {
 		const component = renderer.create(
 			<Question model={model} moduleData={moduleData} mode={MODE_PRACTICE} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component with content only', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		// Question answered incorrectly
 		QuestionUtil.getScoreForModel.mockReturnValueOnce(0)
@@ -269,20 +270,20 @@ describe('MCAssessment', () => {
 		const component = renderer.create(
 			<Question model={model} moduleData={moduleData} showContentOnly={true} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component with content only in review mode', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		// Question answered incorrectly
 		QuestionUtil.getScoreForModel.mockReturnValueOnce(0)
@@ -290,40 +291,40 @@ describe('MCAssessment', () => {
 		const component = renderer.create(
 			<Question model={model} moduleData={moduleData} showContentOnly={true} mode={MODE_REVIEW} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('onClickBlocker does not return anything when not in practice mode', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		const component = shallow(
 			<Question model={model} moduleData={moduleData} showContentOnly={true} mode={MODE_REVIEW} />
 		)
 
-		let value = component.instance().onClickBlocker()
+		const value = component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
-		expect(value).toEqual(undefined)
+		expect(value).toEqual(undefined) //eslint-disable-line
 	})
 
 	test('onClickBlocker returns FocusUtil.focusComponent in practice mode', () => {
-		let moduleData = {
+		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
 				context: 'mockContext'
 			},
 			focusState: 'mockFocus'
 		}
-		let model = OboModel.create(questionJSON)
+		const model = OboModel.create(questionJSON)
 
 		FocusUtil.focusComponent.mockReturnValueOnce('mockFocusCall')
 
@@ -331,7 +332,7 @@ describe('MCAssessment', () => {
 			<Question model={model} moduleData={moduleData} showContentOnly={true} />
 		)
 
-		let value = component.instance().onClickBlocker()
+		const value = component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
 		expect(FocusUtil.focusComponent).toHaveBeenCalled()

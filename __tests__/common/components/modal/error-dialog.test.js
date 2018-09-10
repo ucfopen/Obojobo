@@ -5,7 +5,7 @@ import renderer from 'react-test-renderer'
 describe('ErrorDialog', () => {
 	test('ErrorDialog component', () => {
 		const component = renderer.create(<ErrorDialog title="Title">Content</ErrorDialog>)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

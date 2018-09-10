@@ -27,14 +27,17 @@
 	}
 }
 
+// stylelint-disable-next-line no-descending-specificity
 .obojobo-draft--chunks--math-equation {
 	text-align: center;
 
+	// stylelint-disable-next-line no-descending-specificity
 	.katex-container {
 		display: inline-block;
 		margin-left: 4em;
 	}
 
+	// stylelint-disable-next-line no-descending-specificity
 	.error-msg {
 		background: lighten($color-error, 65%);
 		border: 2px solid lighten($color-error, 40%);
@@ -51,6 +54,7 @@
 		width: 50%;
 	}
 
+	// stylelint-disable-next-line no-descending-specificity
 	.obojobo-draft--components--delete-button {
 		display: none;
 		position: absolute;

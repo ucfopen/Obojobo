@@ -6,10 +6,10 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Figure', () => {
 	test('Figure component', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Figure',
 			content: {
@@ -29,16 +29,16 @@ describe('Figure', () => {
 		})
 
 		const component = renderer.create(<Figure model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Figure component with no textGroup', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Figure',
 			content: {
@@ -50,7 +50,7 @@ describe('Figure', () => {
 			}
 		})
 		const component = renderer.create(<Figure model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

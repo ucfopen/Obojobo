@@ -61,7 +61,7 @@ Object {
   },
   "scoreActions": ScoreActions {
     "actions": Array [],
-    "originalActions": undefined,
+    "originalActions": null,
   },
 }
 `;

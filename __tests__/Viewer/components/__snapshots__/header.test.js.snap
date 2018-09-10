@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header renders correctly with title, left position 1`] = `
+<header
+  className="viewer--components--header is-logo-left"
+>
+  <div
+    className="wrapper"
+  >
+    <span
+      className="module-title"
+    >
+      Title
+    </span>
+    <span
+      className="location"
+    />
+    <div
+      className="viewer--components--logo is-not-inverted"
+    >
+      Obojobo
+    </div>
+  </div>
+</header>
+`;
+
+exports[`Header renders correctly with title, no position 1`] = `
+<header
+  className="viewer--components--header is-logo-right"
+>
+  <div
+    className="wrapper"
+  >
+    <span
+      className="module-title"
+    >
+      Title
+    </span>
+    <span
+      className="location"
+    />
+    <div
+      className="viewer--components--logo is-not-inverted"
+    >
+      Obojobo
+    </div>
+  </div>
+</header>
+`;
+
+exports[`Header renders correctly with title, right position 1`] = `
+<header
+  className="viewer--components--header is-logo-right"
+>
+  <div
+    className="wrapper"
+  >
+    <span
+      className="module-title"
+    >
+      Title
+    </span>
+    <span
+      className="location"
+    />
+    <div
+      className="viewer--components--logo is-not-inverted"
+    >
+      Obojobo
+    </div>
+  </div>
+</header>
+`;
+
+exports[`Header renders correctly without title, left position 1`] = `
+<header
+  className="viewer--components--header is-logo-left"
+>
+  <div
+    className="wrapper"
+  >
+    <span
+      className="module-title"
+    />
+    <span
+      className="location"
+    />
+    <div
+      className="viewer--components--logo is-not-inverted"
+    >
+      Obojobo
+    </div>
+  </div>
+</header>
+`;
+
+exports[`Header renders correctly without title, no position 1`] = `
+<header
+  className="viewer--components--header is-logo-right"
+>
+  <div
+    className="wrapper"
+  >
+    <span
+      className="module-title"
+    />
+    <span
+      className="location"
+    />
+    <div
+      className="viewer--components--logo is-not-inverted"
+    >
+      Obojobo
+    </div>
+  </div>
+</header>
+`;
+
+exports[`Header renders correctly without title, right position 1`] = `
+<header
+  className="viewer--components--header is-logo-right"
+>
+  <div
+    className="wrapper"
+  >
+    <span
+      className="module-title"
+    />
+    <span
+      className="location"
+    />
+    <div
+      className="viewer--components--logo is-not-inverted"
+    >
+      Obojobo
+    </div>
+  </div>
+</header>
+`;

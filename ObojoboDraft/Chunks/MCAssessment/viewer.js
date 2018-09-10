@@ -7,7 +7,7 @@ import './MCFeedback/viewer'
 import adapter from './adapter'
 import ViewerComponent from './viewer-component'
 
-let SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
+const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
 
 Common.Store.registerModel('ObojoboDraft.Chunks.MCAssessment', {
 	type: 'chunk',

@@ -1,13 +1,11 @@
 import Common from 'Common'
 
-let SelectionHandler
+const { TextGroupSelectionHandler } = Common.chunk.textChunk
+const { TextGroupSelection } = Common.textGroup
 
-let { TextGroupSelectionHandler } = Common.chunk.textChunk
-let { TextGroupSelection } = Common.textGroup
-
-export default (SelectionHandler = class SelectionHandler extends TextGroupSelectionHandler {
+export default class SelectionHandler extends TextGroupSelectionHandler {
 	selectAll(selection, chunk) {
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
 
 		if (tgs.type !== 'multipleTextSpan') {
 			return tgs.selectText(tgs.start.groupIndex)
@@ -15,4 +13,4 @@ export default (SelectionHandler = class SelectionHandler extends TextGroupSelec
 			return tgs.selectGroup()
 		}
 	}
-})
+}

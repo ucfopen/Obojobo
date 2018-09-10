@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Cursor from './cursor'
 import DOMSelection from '../../common/selection/dom-selection'
 import DOMUtil from '../../common/page/dom-util'
@@ -43,7 +44,7 @@ class ChunkSelection {
 
 	getChunkForDomNode(domNode) {
 		// console.log 'getChunkForDomNode', domNode
-		let index = this.getIndex(domNode)
+		const index = this.getIndex(domNode)
 		return this.module.chunks.at(index)
 	}
 
@@ -56,9 +57,9 @@ class ChunkSelection {
 			return 'unknown'
 		}
 
-		let chunkIndex = chunk.get('index')
-		let startIndex = this.start.chunk.get('index')
-		let endIndex = this.end.chunk.get('index')
+		const chunkIndex = chunk.get('index')
+		const startIndex = this.start.chunk.get('index')
+		const endIndex = this.end.chunk.get('index')
 
 		if (chunkIndex < startIndex) {
 			return 'before'
@@ -104,7 +105,7 @@ class ChunkSelection {
 	}
 
 	getCursor(node, offset) {
-		let chunk = this.getChunkForDomNode(node)
+		const chunk = this.getChunkForDomNode(node)
 		return new Cursor(chunk, node, offset)
 	}
 

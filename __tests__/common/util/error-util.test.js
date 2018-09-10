@@ -1,3 +1,5 @@
+import React from 'react'
+
 import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ErrorDialog from '../../../src/scripts/common/components/modal/error-dialog'

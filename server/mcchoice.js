@@ -1,4 +1,4 @@
-let DraftNode = oboRequire('models/draft_node')
+const DraftNode = oboRequire('models/draft_node')
 
 class MCChoice extends DraftNode {
 	constructor(draftTree, node, initFn) {
@@ -8,7 +8,7 @@ class MCChoice extends DraftNode {
 		})
 	}
 
-	onSendToAssessment(req, res) {
+	onSendToAssessment() {
 		this.node.content.score = 0
 	}
 }

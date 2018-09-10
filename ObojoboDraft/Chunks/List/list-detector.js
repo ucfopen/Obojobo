@@ -1,8 +1,8 @@
 import ListStyles from './list-styles'
 
-let regexes = {
+const regexes = {
 	bulletListItem: /^[ \t]*(\*)[ \t]+([\s\S]*)/, // Interpert text such as ' * list item' as a bullet in a list
-	numericListItem: /^[ \t]*([0-9]+|[A-Za-z]|VIII|VII|VI|IV|IX|III|II|viii|vii|vi|iv|ix|iii|ii)\.[ \t]+$/, // Interpert text such as ' 1. list item' as a bullet in a list
+	numericListItem: /^[ \t]*([0-9]+|[A-Za-z]|VIII|VII|VI|IV|IX|III|II|viii|vii|vi|iv|ix|iii|ii)\.[ \t]+$/, // Interpret text such as ' 1. list item' as a bullet in a list
 
 	symbolUpperRoman: /VIII|VII|VI|IV|IX|V|III|II|I/,
 	symbolLowerRoman: /viii|vii|vi|iv|ix|v|iii|ii|i/,
@@ -12,12 +12,11 @@ let regexes = {
 	symbolNumber: /[0-9]+/
 }
 
-let looksLikeListItem = function(s) {
+const looksLikeListItem = function(s) {
 	let result = false
 
 	if (s.length === 2) {
-		let bullet = replace(s, 'bulletListItem')
-		if (bullet != null) {
+		if (replace(s, 'bulletListItem')) {
 			result = {
 				type: ListStyles.TYPE_UNORDERED,
 				symbol: '*',
@@ -27,10 +26,10 @@ let looksLikeListItem = function(s) {
 			}
 		}
 	} else if (s.length >= 3) {
-		let numericList = replace(s, 'numericListItem')
-		if (numericList != null) {
-			let symbolStyle = getSymbolStyle(numericList.symbol)
-			let symbolIndex = getSymbolIndex(numericList.symbol, symbolStyle)
+		const numericList = replace(s, 'numericListItem')
+		if (numericList) {
+			const symbolStyle = getSymbolStyle(numericList.symbol)
+			const symbolIndex = getSymbolIndex(numericList.symbol, symbolStyle)
 
 			result = {
 				type: ListStyles.TYPE_ORDERED,
@@ -45,9 +44,9 @@ let looksLikeListItem = function(s) {
 	return result
 }
 
-var replace = function(s, regexName) {
-	let matches = regexes[regexName].exec(s)
-	if (matches == null || matches.length <= 1) {
+const replace = function(s, regexName) {
+	const matches = regexes[regexName].exec(s)
+	if (!matches || matches.length <= 1) {
 		return null
 	}
 
@@ -57,38 +56,33 @@ var replace = function(s, regexName) {
 	}
 }
 
-var getSymbolStyle = function(symbol) {
-	let matches = regexes.symbolLeadingZeroNumber.exec(symbol)
-	if (matches) {
+const getSymbolStyle = function(symbol) {
+	if (regexes.symbolLeadingZeroNumber.exec(symbol)) {
 		return ListStyles.STYLE_LEAD_ZERO_NUMERIC
 	}
 
-	matches = regexes.symbolNumber.exec(symbol)
-	if (matches) {
+	if (regexes.symbolNumber.exec(symbol)) {
 		return ListStyles.STYLE_NUMERIC
 	}
 
-	matches = regexes.symbolUpperRoman.exec(symbol)
-	if (matches) {
+	if (regexes.symbolUpperRoman.exec(symbol)) {
 		return ListStyles.STYLE_UPPERCASE_ROMAN
 	}
 
-	matches = regexes.symbolLowerRoman.exec(symbol)
-	if (matches) {
+	if (regexes.symbolLowerRoman.exec(symbol)) {
 		return ListStyles.STYLE_LOWERCASE_ROMAN
 	}
 
-	matches = regexes.symbolUpperLetter.exec(symbol)
-	if (matches) {
+	if (regexes.symbolUpperLetter.exec(symbol)) {
 		return ListStyles.STYLE_UPPERCASE_LETTER
 	}
 
-	// Because of the numericListItem regex, symbol is garunteed to be one of the styles
+	// Because of the numericListItem regex, symbol is guaranteed to be one of the styles
 	// If we get here, it has to be lowercase by process of elimination
 	return ListStyles.STYLE_LOWERCASE_LETTER
 }
 
-var getSymbolIndex = function(symbol, symbolStyle) {
+const getSymbolIndex = function(symbol, symbolStyle) {
 	switch (symbolStyle) {
 		case ListStyles.STYLE_NUMERIC:
 		case ListStyles.STYLE_LEAD_ZERO_NUMERIC:

@@ -6,7 +6,7 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Text', () => {
 	test('Text component', () => {
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Text',
 			content: {
@@ -19,12 +19,12 @@ describe('Text', () => {
 				]
 			}
 		})
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
 		const component = renderer.create(<Text model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

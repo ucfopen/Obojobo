@@ -1,12 +1,14 @@
 import './delete-button.scss'
 
-export default class DeleteButton extends React.Component {
+import React from 'react'
+
+class DeleteButton extends React.Component {
 	static get defaultProps() {
 		return { indent: 0 }
 	}
 
 	focus() {
-		return ReactDOM.findDOMNode(this.refs.button).focus()
+		this.refs.button.focus()
 	}
 
 	render() {
@@ -18,9 +20,11 @@ export default class DeleteButton extends React.Component {
 					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
 					disabled={this.props.shouldPreventTab}
 				>
-					Delete
+					{this.props.label || 'Delete'}
 				</button>
 			</div>
 		)
 	}
 }
+
+export default DeleteButton

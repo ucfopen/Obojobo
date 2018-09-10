@@ -1,5 +1,7 @@
 import './inline-nav-button.scss'
 
+import React from 'react'
+
 import NavUtil from '../../viewer/util/nav-util'
 
 export default class InlineNavButton extends React.Component {

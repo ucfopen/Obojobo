@@ -1,19 +1,79 @@
 import ChunkStyleList from './chunk-style-list'
 import StyleRange from './style-range'
 import StyleType from './style-type'
-import { isElementInline } from '../../common/util/html-util'
 
 // ceiling Infinity end values to the length
-let trimStyleRange = function(styleRange, maxLength) {
+const trimStyleRange = function(styleRange, maxLength) {
 	styleRange.end = Math.min(styleRange.end, maxLength)
 	return styleRange
 }
 
 class StyleableText {
-	constructor(text) {
-		if (text == null) {
-			text = ''
+	static createFromObject(o) {
+		const st = new StyleableText()
+		st.styleList = ChunkStyleList.createFromObject(o.styleList)
+		st.value = o.value
+
+		return st
+	}
+
+	static getStylesOfElement(el) {
+		if (el.nodeType !== Node.ELEMENT_NODE) {
+			return []
 		}
+
+		const styles = []
+		const computedStyle = window.getComputedStyle(el)
+
+		switch (computedStyle.getPropertyValue('font-weight')) {
+			case 'bold':
+			case 'bolder':
+			case '700':
+			case '800':
+			case '900':
+				styles.push({ type: StyleType.BOLD })
+				break
+		}
+
+		switch (computedStyle.getPropertyValue('text-decoration')) {
+			case 'line-through':
+				styles.push({ type: StyleType.STRIKETHROUGH })
+				break
+		}
+
+		switch (computedStyle.getPropertyValue('font-style')) {
+			case 'italic':
+				styles.push({ type: StyleType.ITALIC })
+				break
+		}
+
+		switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
+			case 'monospace':
+				styles.push({ type: StyleType.MONOSPACE })
+				break
+		}
+
+		switch (el.tagName.toLowerCase()) {
+			case 'a':
+				if (el.getAttribute('href')) {
+					styles.push({ type: StyleType.LINK, data: { href: el.getAttribute('href') } })
+				}
+				break
+			case 'q':
+				styles.push({ type: StyleType.QUOTE, data: el.getAttribute('cite') })
+				break
+			case 'sup':
+				styles.push({ type: StyleType.SUPERSCRIPT, data: 1 })
+				break
+			case 'sub':
+				styles.push({ type: StyleType.SUPERSCRIPT, data: -1 })
+				break
+		}
+
+		return styles
+	}
+
+	constructor(text = '') {
 		this.init()
 		this.insertText(0, text)
 	}
@@ -24,7 +84,7 @@ class StyleableText {
 	}
 
 	clone() {
-		let clone = new StyleableText()
+		const clone = new StyleableText()
 		clone.value = this.value
 		clone.styleList = this.styleList.clone()
 
@@ -44,7 +104,7 @@ class StyleableText {
 	}
 
 	replaceText(from, to, text) {
-		if (text == null || text.length === 0) {
+		if (!text) {
 			return this.deleteText(from, to)
 		}
 
@@ -63,9 +123,9 @@ class StyleableText {
 	}
 
 	insertText(atIndex, text) {
-		let insertLength = text.length
+		const insertLength = text.length
 
-		for (let range of Array.from(this.styleList.styles)) {
+		for (const range of Array.from(this.styleList.styles)) {
 			switch (range.compareToRange(atIndex)) {
 				case StyleRange.CONTAINS:
 					range.end += insertLength
@@ -83,13 +143,7 @@ class StyleableText {
 		return this.normalizeStyles()
 	}
 
-	deleteText(from, to) {
-		if (from == null) {
-			from = -1
-		}
-		if (to == null) {
-			to = Infinity
-		}
+	deleteText(from = -1, to = Infinity) {
 		if (from > to) {
 			return
 		}
@@ -97,9 +151,9 @@ class StyleableText {
 		from = Math.max(0, from)
 		to = Math.min(to, this.value.length)
 
-		let deleteLength = to - from
+		const deleteLength = to - from
 
-		for (let range of Array.from(this.styleList.styles)) {
+		for (const range of Array.from(this.styleList.styles)) {
 			switch (range.compareToRange(from, to)) {
 				case StyleRange.CONTAINS:
 					range.end -= deleteLength
@@ -130,14 +184,10 @@ class StyleableText {
 		return this.normalizeStyles()
 	}
 
-	toggleStyleText(styleType, from, to, styleData) {
-		if (from == null) {
-			from = 0
-		}
-		if (to == null) {
-			to = this.length
-		}
-		let styleRange = trimStyleRange(
+	toggleStyleText(styleType, from = 0, to = Infinity, styleData = {}) {
+		to = Math.min(to, this.length)
+
+		const styleRange = trimStyleRange(
 			new StyleRange(from, to, styleType, styleData),
 			this.value.length
 		)
@@ -150,29 +200,21 @@ class StyleableText {
 		return this.normalizeStyles()
 	}
 
-	styleText(styleType, from, to, styleData) {
-		if (from == null) {
-			from = 0
-		}
-		if (to == null) {
-			to = this.length
-		}
-		let range = new StyleRange(from, to, styleType, styleData)
+	styleText(styleType, from = 0, to = Infinity, styleData = {}) {
+		to = Math.min(to, this.length)
 
-		let styleRange = trimStyleRange(range, this.value.length)
+		const range = new StyleRange(from, to, styleType, styleData)
+
+		const styleRange = trimStyleRange(range, this.value.length)
 		this.styleList.add(styleRange)
 
 		return this.normalizeStyles()
 	}
 
-	unstyleText(styleType, from, to) {
-		if (from == null) {
-			from = 0
-		}
-		if (to == null) {
-			to = this.length
-		}
-		let styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.value.length)
+	unstyleText(styleType, from = 0, to = Infinity) {
+		to = Math.min(to, this.length)
+
+		const styleRange = trimStyleRange(new StyleRange(from, to, styleType), this.value.length)
 		this.styleList.remove(styleRange)
 		return this.normalizeStyles()
 	}
@@ -186,9 +228,9 @@ class StyleableText {
 			return null
 		}
 
-		let splitAtEnd = atIndex === this.value.length
+		const splitAtEnd = atIndex === this.value.length
 
-		let sibling = this.clone()
+		const sibling = this.clone()
 
 		this.deleteText(atIndex, this.value.length)
 
@@ -198,10 +240,13 @@ class StyleableText {
 		// we want to shove the last character styles as
 		// initial styles into the new sibling.
 		if (splitAtEnd) {
-			let lastCharStyles = this.styleList.getStylesInRange(this.value.length - 1, this.value.length)
-			for (let style in lastCharStyles) {
+			const lastCharStyles = this.styleList.getStylesInRange(
+				this.value.length - 1,
+				this.value.length
+			)
+			for (const style in lastCharStyles) {
 				sibling.styleText(style, 0, 0)
-			} //@TODO - what about data?
+			}
 		}
 
 		return sibling
@@ -211,17 +256,14 @@ class StyleableText {
 		return this.styleList.normalize()
 	}
 
-	merge(otherText, atIndex) {
-		if (atIndex == null) {
-			atIndex = null
-		}
-		if (atIndex == null) {
+	merge(otherText, atIndex = null) {
+		if (atIndex === null) {
 			atIndex = this.value.length
 		}
 
-		let insertLength = otherText.value.length
+		const insertLength = otherText.value.length
 
-		for (var range of Array.from(this.styleList.styles)) {
+		for (const range of Array.from(this.styleList.styles)) {
 			switch (range.compareToRange(atIndex)) {
 				case StyleRange.AFTER:
 					range.start += insertLength
@@ -234,8 +276,8 @@ class StyleableText {
 
 		this.styleList.normalize()
 
-		for (range of Array.from(otherText.styleList.styles)) {
-			let curRange = range.clone()
+		for (const range of Array.from(otherText.styleList.styles)) {
+			const curRange = range.clone()
 			curRange.start += atIndex
 			curRange.end += atIndex
 
@@ -244,156 +286,10 @@ class StyleableText {
 
 		return this.styleList.normalize()
 	}
+
+	get length() {
+		return this.value.length
+	}
 }
-
-Object.defineProperties(StyleableText.prototype, {
-	length: {
-		get() {
-			return this.value.length
-		}
-	}
-})
-
-StyleableText.createFromObject = function(o) {
-	let st = new StyleableText()
-	st.styleList = ChunkStyleList.createFromObject(o.styleList)
-	st.value = o.value
-
-	return st
-}
-
-StyleableText.getStylesOfElement = function(el) {
-	// console.warn 'MOVE THIS SOMEWHERE ELSE!!!!'
-
-	if (el.nodeType !== Node.ELEMENT_NODE) {
-		return []
-	}
-
-	let styles = []
-
-	let computedStyle = window.getComputedStyle(el)
-
-	// debugger;
-
-	// console.log '___________', el, computedStyle, computedStyle.getPropertyValue('font-weight')
-
-	switch (computedStyle.getPropertyValue('font-weight')) {
-		case 'bold':
-		case 'bolder':
-		case '700':
-		case '800':
-		case '900':
-			styles.push({ type: StyleType.BOLD })
-			break
-	}
-
-	switch (computedStyle.getPropertyValue('text-decoration')) {
-		case 'line-through':
-			styles.push({ type: StyleType.STRIKETHROUGH })
-			break
-	}
-
-	switch (computedStyle.getPropertyValue('font-style')) {
-		case 'italic':
-			styles.push({ type: StyleType.ITALIC })
-			break
-	}
-
-	switch (computedStyle.getPropertyValue('font-family').toLowerCase()) {
-		case 'monospace':
-			styles.push({ type: StyleType.MONOSPACE })
-			break
-	}
-
-	// switch computedStyle.getPropertyValue('vertical-align') + "|" + computedStyle.getPropertyValue('font-size')
-	// 	when "super|smaller" then styles.push { type:StyleType.SUPERSCRIPT }
-	// 	when "sub|smaller"   then styles.push { type:StyleType.SUBSCRIPT }
-
-	switch (el.tagName.toLowerCase()) {
-		//when 'b'               then styles.push { type:StyleType.BOLD }
-		case 'a':
-			if (el.getAttribute('href') != null) {
-				styles.push({ type: StyleType.LINK, data: { href: el.getAttribute('href') } })
-			}
-			break
-		case 'q':
-			styles.push({ type: StyleType.QUOTE, data: el.getAttribute('cite') })
-			break
-		//@TODO:
-		// when 'abbr', 'acronym' then styles.push { type:StyleType.COMMENT, data:el.getAttribute('title') }
-		case 'sup':
-			styles.push({ type: StyleType.SUPERSCRIPT, data: 1 })
-			break
-		case 'sub':
-			styles.push({ type: StyleType.SUPERSCRIPT, data: -1 })
-			break
-	}
-	// @TODO:
-	// when 'span'
-	// 	if el.classList.contains('comment') and el.hasAttribute('data-additional')
-	// 		styles.push { type:StyleType.COMMENT, data:el.getAttribute('data-additional') }
-
-	return styles
-}
-
-// StyleableText.createFromElement = function(node) {
-// 	let state
-// 	console.log('ST.cFE', node.tagName, node.innerHTML, arguments[1])
-// 	if (node == null) {
-// 		return new StyleableText()
-// 	}
-
-// 	// console.warn '@TODO - MOVE THIS method somewhere else!'
-
-// 	if (arguments[1] == null) {
-// 		state = {
-// 			curText: new StyleableText(),
-// 			texts: []
-// 		}
-// 		StyleableText.createFromElement(node, state)
-
-// 		state.texts.push(state.curText)
-// 		state.curText.styleList.normalize()
-
-// 		return state.texts
-// 	}
-
-// 	state = arguments[1]
-
-// 	switch (node.nodeType) {
-// 		case Node.TEXT_NODE:
-// 			return (state.curText.value += node.nodeValue)
-// 		case Node.ELEMENT_NODE:
-// 			if (state.curText.length > 0 && !isElementInline(node)) {
-// 				state.texts.push(state.curText)
-// 				state.curText.styleList.normalize()
-
-// 				state.curText = new StyleableText()
-// 			}
-
-// 			let styles = StyleableText.getStylesOfElement(node)
-// 			let ranges = []
-// 			for (let style of Array.from(styles)) {
-// 				let styleRange = new StyleRange(
-// 					state.curText.value.length,
-// 					Infinity,
-// 					style.type,
-// 					style.data
-// 				)
-// 				ranges.push(styleRange)
-// 			}
-
-// 			for (let childNode of Array.from(node.childNodes)) {
-// 				StyleableText.createFromElement(childNode, state)
-// 			}
-
-// 			return Array.from(ranges).map(
-// 				range => ((range.end = state.curText.value.length), state.curText.styleList.add(range))
-// 			)
-// 	}
-// }
-
-// @TODO
-window.__st = StyleableText
 
 export default StyleableText

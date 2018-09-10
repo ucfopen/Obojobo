@@ -1,35 +1,22 @@
-let CommandHandler
-let { Editor } = window
+const { Editor } = window
 import Common from 'Common'
 
-let { TextGroupCommandHandler } = Editor.chunk.textChunk
-let { FocusableCommandHandler } = Editor.chunk.focusableChunk
+const { TextGroupCommandHandler } = Editor.chunk.textChunk
 
-let { TextGroupSelection } = Common.textGroup
-let { Chunk } = Common.models
+const { TextGroupSelection } = Common.textGroup
+const { Chunk } = Common.models
 
-// deleteSelection
+const _selectionInAnchor = function(selection, chunk) {
+	const tgs = new TextGroupSelection(chunk, selection.virtual)
+	const isInStart = tgs.start && tgs.start.groupIndex && tgs.start.groupIndex === 'anchor:main'
+	const isInEnd = tgs.end && tgs.end.groupIndex && tgs.end.groupIndex === 'anchor:main'
 
-// _revert = (chunk) ->
-// 	console.log 'revert'
-// 	newChunk = Chunk.create()
-// 	chunk.addChildAfter newChunk
-// 	newChunk.absorb chunk
-// 	newChunk
-// 	# chunk.replaceWith newChunk
-
-let _selectionInAnchor = function(selection, chunk) {
-	let tgs = new TextGroupSelection(chunk, selection.virtual)
-	return (
-		(tgs.start != null ? tgs.start.groupIndex : undefined) === 'anchor:main' ||
-		(tgs.end != null ? tgs.end.groupIndex : undefined) === 'anchor:main'
-	)
+	return isInStart || isInEnd
 }
 
-export default (CommandHandler = class CommandHandler extends TextGroupCommandHandler {
+export default class CommandHandler extends TextGroupCommandHandler {
 	_revert(chunk) {
-		console.log('revert')
-		let newChunk = Chunk.create()
+		const newChunk = Chunk.create()
 		chunk.addChildAfter(newChunk)
 		newChunk.absorb(chunk)
 		return newChunk
@@ -43,8 +30,8 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 	}
 
 	deleteText(selection, chunk, deleteForwards) {
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
-		let s = tgs.start
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
+		const s = tgs.start
 
 		if (s.groupIndex === 'anchor:main') {
 			chunk = this._revert(chunk)
@@ -110,33 +97,31 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 			return
 		}
 
-		return super.split(selection, chunk, shiftKey)
+		return super.split(selection, chunk)
 	}
 
-	splitText(selection, chunk, shiftKey) {
+	splitText(selection, chunk) {
 		if (_selectionInAnchor(selection, chunk)) {
 			return
 		}
 
 		chunk.markDirty()
 
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
 
-		let newText = tgs.start.text.split(tgs.start.offset)
+		const newText = tgs.start.text.split(tgs.start.offset)
 
-		let newNode = Chunk.create() //@TODO - assumes it has a textGroup
+		const newNode = Chunk.create()
 		newNode.modelState.textGroup.first.text = newText
 		chunk.addChildAfter(newNode)
 
-		// selection.setFutureCaret newNode, { offset: 0, groupIndex: 0 }
-		// TextGroupSelection.setCaretToGroupStart newNode, selection.virtual
 		return newNode.selectStart()
 	}
 
 	paste(selection, chunk, text, html, chunks) {
 		if (_selectionInAnchor(selection, chunk)) {
 			chunk = this._revert(chunk)
-			let pasteIntoChunk = Chunk.create()
+			const pasteIntoChunk = Chunk.create()
 			chunk.addChildBefore(pasteIntoChunk)
 			pasteIntoChunk.selectAll()
 
@@ -150,7 +135,7 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 		return super.canMergeWith(selection, chunk, otherChunk) && chunk.nextSibling() === otherChunk
 	}
 
-	canRemoveSibling(selection, sibling) {
+	canRemoveSibling() {
 		return false
 	}
 
@@ -158,4 +143,4 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 		TextGroupSelection.selectText(chunk, 0, selection.virtual)
 		return true
 	}
-})
+}

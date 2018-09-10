@@ -6,10 +6,10 @@ import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Heading', () => {
 	test('Heading component', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Heading',
 			content: {
@@ -26,15 +26,15 @@ describe('Heading', () => {
 
 		const component = renderer.create(<Heading model={model} moduleData={moduleData} />)
 
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Heading component level 2', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Heading',
 			content: {
@@ -51,15 +51,15 @@ describe('Heading', () => {
 
 		const component = renderer.create(<Heading model={model} moduleData={moduleData} />)
 
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Heading component level 3', () => {
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
-		let model = OboModel.create({
+		const model = OboModel.create({
 			id: 'id',
 			type: 'ObojoboDraft.Chunks.Heading',
 			content: {
@@ -76,7 +76,7 @@ describe('Heading', () => {
 
 		const component = renderer.create(<Heading model={model} moduleData={moduleData} />)
 
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
 })
