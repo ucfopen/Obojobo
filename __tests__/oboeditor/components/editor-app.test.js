@@ -1,5 +1,5 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 
 import EditorApp from '../../../src/scripts/oboeditor/components/editor-app'
 

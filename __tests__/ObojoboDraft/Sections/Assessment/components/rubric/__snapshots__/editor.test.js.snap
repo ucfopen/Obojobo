@@ -40,11 +40,12 @@ exports[`Rubric editor Node component 1`] = `
   >
     Rubric
   </h1>
-  <p
+  <div
+    className="parameter-node"
     contentEditable={false}
   >
     Type: undefined
-  </p>
+  </div>
   <button
     onClick={[Function]}
   >
@@ -59,11 +60,11 @@ exports[`Rubric editor Node component 1`] = `
 </div>
 `;
 
-exports[`Rubric editor Node component adds child 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><p contenteditable=\\"false\\">Type: undefined</p><button>Add Mod</button><button class=\\"delete-node\\">X</button></div>"`;
+exports[`Rubric editor Node component adds child 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button>Add Mod</button><button class=\\"delete-node\\">X</button></div>"`;
 
-exports[`Rubric editor Node component adds child to existing mod list 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><p contenteditable=\\"false\\">Type: undefined</p><button>Add Mod</button><button class=\\"delete-node\\">X</button></div>"`;
+exports[`Rubric editor Node component adds child to existing mod list 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button>Add Mod</button><button class=\\"delete-node\\">X</button></div>"`;
 
-exports[`Rubric editor Rubric component deletes self 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><p contenteditable=\\"false\\">Type: undefined</p><button>Add Mod</button><button class=\\"delete-node\\">X</button></div>"`;
+exports[`Rubric editor Rubric component deletes self 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button>Add Mod</button><button class=\\"delete-node\\">X</button></div>"`;
 
 exports[`Rubric editor oboToSlate converts an OboComponent to a Slate node 1`] = `
 Object {
@@ -85,7 +86,9 @@ Object {
     Object {
       "data": Object {
         "display": "Passing Score",
+        "isSelect": false,
         "name": "passingAttemptScore",
+        "options": undefined,
       },
       "nodes": Array [
         Object {
@@ -103,7 +106,9 @@ Object {
     Object {
       "data": Object {
         "display": "Passed Result",
+        "isSelect": false,
         "name": "passedResult",
+        "options": undefined,
       },
       "nodes": Array [
         Object {
@@ -121,7 +126,9 @@ Object {
     Object {
       "data": Object {
         "display": "Failed Result",
+        "isSelect": false,
         "name": "failedResult",
+        "options": undefined,
       },
       "nodes": Array [
         Object {
@@ -139,7 +146,9 @@ Object {
     Object {
       "data": Object {
         "display": "Unable to Pass Result",
+        "isSelect": false,
         "name": "unableToPassResult",
+        "options": undefined,
       },
       "nodes": Array [
         Object {
@@ -161,7 +170,9 @@ Object {
             Object {
               "data": Object {
                 "display": "Attempt Condition",
+                "isSelect": false,
                 "name": "attemptCondition",
+                "options": undefined,
               },
               "nodes": Array [
                 Object {
@@ -179,7 +190,9 @@ Object {
             Object {
               "data": Object {
                 "display": "Reward",
+                "isSelect": false,
                 "name": "reward",
+                "options": undefined,
               },
               "nodes": Array [
                 Object {
@@ -222,7 +235,9 @@ Object {
     Object {
       "data": Object {
         "display": "Passing Score",
+        "isSelect": false,
         "name": "passingAttemptScore",
+        "options": undefined,
       },
       "nodes": Array [
         Object {
@@ -240,7 +255,9 @@ Object {
     Object {
       "data": Object {
         "display": "Passed Result",
+        "isSelect": false,
         "name": "passedResult",
+        "options": undefined,
       },
       "nodes": Array [
         Object {
@@ -258,7 +275,9 @@ Object {
     Object {
       "data": Object {
         "display": "Failed Result",
+        "isSelect": false,
         "name": "failedResult",
+        "options": undefined,
       },
       "nodes": Array [
         Object {
@@ -276,7 +295,9 @@ Object {
     Object {
       "data": Object {
         "display": "Unable to Pass Result",
+        "isSelect": false,
         "name": "unableToPassResult",
+        "options": undefined,
       },
       "nodes": Array [
         Object {
@@ -358,6 +379,12 @@ Object {
       "reward": "mockParameter",
     },
   ],
+  "type": "pass-fail",
+}
+`;
+
+exports[`Rubric editor slateToObo converts a Slate node to an OboNode with no mods 1`] = `
+Object {
   "type": "pass-fail",
 }
 `;

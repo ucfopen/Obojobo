@@ -1,37 +1,88 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Parameter Node Node builds the expected component 1`] = `
-<p
+exports[`Parameter Node Node component 1`] = `
+<div
+  className="parameter-node"
   dummy="dummyData"
 >
   <span
     contentEditable={false}
   >
-    item: 
+    undefined: 
   </span>
   <span />
-</p>
+</div>
 `;
+
+exports[`Parameter Node Node component with select 1`] = `
+<div
+  className="parameter-node"
+  dummy="dummyData"
+>
+  <span
+    contentEditable={false}
+  >
+    mockType: 
+  </span>
+  <select
+    name="Select"
+    onChange={[Function]}
+    onClick={[Function]}
+    value="Option 1"
+  >
+    <option
+      value="Option 1"
+    >
+      Option 1
+    </option>
+    <option
+      value="Option 2"
+    >
+      Option 2
+    </option>
+  </select>
+</div>
+`;
+
+exports[`Parameter Node Node component with select changes value 1`] = `"<div class=\\"parameter-node\\"><span contenteditable=\\"false\\">mockType: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"Option 1\\">Option 1</option><option value=\\"Option 2\\">Option 2</option></select></div>"`;
 
 exports[`Parameter Node oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
-    "display": undefined,
-    "name": Object {
-      "id": "mockKey",
-      "type": "mockType",
-    },
+    "display": "Mock Display",
+    "isSelect": false,
+    "name": "mockKey",
+    "options": undefined,
   },
   "nodes": Array [
     Object {
       "leaves": Array [
         Object {
-          "text": undefined,
+          "text": "mockValue",
         },
       ],
       "object": "text",
     },
   ],
+  "object": "block",
+  "type": "Parameter",
+}
+`;
+
+exports[`Parameter Node oboToSlate converts an OboNode to a Slate node with options 1`] = `
+Object {
+  "data": Object {
+    "current": "mockValue",
+    "display": "Mock Display",
+    "isSelect": true,
+    "name": "mockKey",
+    "options": Array [
+      "Mock Option 1",
+      "Mock Option 2",
+      "Mock Option 3",
+    ],
+  },
+  "isVoid": true,
   "object": "block",
   "type": "Parameter",
 }
@@ -52,6 +103,12 @@ exports[`Parameter Node plugins.renderNode renders a Parameter when passed 1`] =
 
 exports[`Parameter Node slateToObo converts a Slate node to an OboNode 1`] = `
 Object {
-  "mockType": "mockValue",
+  "undefined": "mockValue",
+}
+`;
+
+exports[`Parameter Node slateToObo converts a Slate node to an OboNode with select 1`] = `
+Object {
+  "undefined": undefined,
 }
 `;

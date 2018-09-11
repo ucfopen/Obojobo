@@ -9,7 +9,7 @@ const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 class Node extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = props.node.data.get('content')
 	}
 	delete() {
@@ -24,7 +24,7 @@ class Node extends React.Component {
 		const change = editor.value.change()
 
 		const newQuestion = Block.create({
-			type: QUESTION_NODE,
+			type: QUESTION_NODE
 		})
 		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 
@@ -36,53 +36,68 @@ class Node extends React.Component {
 
 		const newQuestion = Block.create({
 			type: QUESTION_BANK_NODE,
-			data: { content: { choose: 1, select: 'sequential'}}
+			data: { content: { choose: 1, select: 'sequential' } }
 		})
 		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 
 		editor.onChange(change)
 	}
-	handleSelectChange(event){
+	handleSelectChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
 		this.setState({ select: event.target.value })
 
-		change.setNodeByKey(this.props.node.key, { data: { content: {
-			select: event.target.value,
-			choose: this.state.choose
-		}}})
+		change.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					select: event.target.value,
+					choose: this.state.choose
+				}
+			}
+		})
 		editor.onChange(change)
 	}
-	handleChooseChange(event){
+	handleChooseChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
 		this.setState({ choose: event.target.value })
 
-		change.setNodeByKey(this.props.node.key, { data: { content: {
-			choose: event.target.value,
-			select: this.state.select
-		}}})
+		change.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					choose: event.target.value,
+					select: this.state.select
+				}
+			}
+		})
 		editor.onChange(change)
 	}
 	render() {
 		return (
-			<div className={'obojobo-draft--chunks--question-bank'} {...this.props.attributes}>
-				<button className={'delete'} onClick={() => this.delete()}>X</button>
+			<div
+				className={'obojobo-draft--chunks--question-bank editor-bank'}
+				{...this.props.attributes}
+			>
+				<button className={'delete'} onClick={() => this.delete()}>
+					X
+				</button>
 				<span contentEditable={false}>{'Choose: '}</span>
 				<input
 					className={'choose-input'}
 					type={'number'}
 					value={this.state.choose}
 					onChange={event => this.handleChooseChange(event)}
-					onClick={event => event.stopPropagation()}/>
+					onClick={event => event.stopPropagation()}
+				/>
 				<span contentEditable={false}>{'Select: '}</span>
 				<select
 					name={'Select'}
 					value={this.state.select}
 					onChange={event => this.handleSelectChange(event)}
-					onClick={event => event.stopPropagation()}>
+					onClick={event => event.stopPropagation()}
+				>
 					<option value={'sequential'}>{'Sequential'}</option>
 					<option value={'random'}>{'Random'}</option>
 					<option value={'random-unseen'}>{'Random Unseen'}</option>
@@ -99,7 +114,7 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: QUESTION_BANK_NODE,
-			data: { content: { choose: 1, select: 'sequential'}}
+			data: { content: { choose: 1, select: 'sequential' } }
 		})
 		.collapseToStartOfNextText()
 		.focus()
@@ -113,9 +128,9 @@ const slateToObo = node => {
 	json.children = []
 
 	node.nodes.forEach(child => {
-		if(child.type === QUESTION_BANK_NODE) {
+		if (child.type === QUESTION_BANK_NODE) {
 			json.children.push(slateToObo(child))
-		}else {
+		} else {
 			json.children.push(Question.helpers.slateToObo(child))
 		}
 	})
@@ -129,18 +144,20 @@ const oboToSlate = node => {
 	json.key = node.id
 	json.type = node.type
 	json.data = { content: node.content }
-	if(!json.data.content.choose
-		|| json.data.content.choose === 'all'
-		|| json.data.content.choose === Infinity) {
+	if (
+		!json.data.content.choose ||
+		json.data.content.choose === 'all' ||
+		json.data.content.choose === Infinity
+	) {
 		json.data.content.choose = node.children.length
 	}
 	json.nodes = []
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		if(child.type === QUESTION_BANK_NODE) {
+		if (child.type === QUESTION_BANK_NODE) {
 			json.nodes.push(oboToSlate(child))
-		}else {
+		} else {
 			json.nodes.push(Question.helpers.oboToSlate(child))
 		}
 	})
@@ -163,17 +180,14 @@ const plugins = {
 					switch (violation) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
-								type: QUESTION_NODE,
+								type: QUESTION_NODE
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(
-								child.key,
-								{
-									type: QUESTION_NODE,
-								}
-							)
+							return change.wrapBlockByKey(child.key, {
+								type: QUESTION_NODE
+							})
 						}
 					}
 				}
@@ -184,7 +198,7 @@ const plugins = {
 
 const QuestionBank = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		insertNode,

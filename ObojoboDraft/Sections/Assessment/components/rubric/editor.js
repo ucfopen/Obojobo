@@ -90,7 +90,9 @@ class Node extends React.Component {
 		return (
 			<div {...this.props.attributes} className={'rubric pad'}>
 				<h1 contentEditable={false}>{'Rubric'}</h1>
-				<p contentEditable={false}>{'Type: ' + this.state.type}</p>
+				<div className={'parameter-node'} contentEditable={false}>
+					{'Type: ' + this.state.type}
+				</div>
 				{this.props.children}
 				<button onClick={() => this.addMod()}>{'Add Mod'}</button>
 				<button className={'delete-node'} onClick={() => this.deleteNode()}>
@@ -116,10 +118,12 @@ const slateToObo = node => {
 
 				json.mods.push(oboMod)
 			})
-		} else {
-			json[parameter.data.get('name')] = parameter.text === '' ? undefined : parameter.text
+		} else if (parameter.text !== '') {
+			json[parameter.data.get('name')] = parameter.text
 		}
 	})
+
+	if (json.mods.length === 0) delete json.mods
 
 	return json
 }
@@ -199,40 +203,34 @@ const validateMod = node => {
 	return change => change.insertNodeByKey(node.key, 0, block)
 }
 const validateRubric = node => {
-	if (node.nodes.size === 0 || node.nodes.size > 3) return
+	if (node.nodes.size === 0 || node.nodes.size >= 4) return
 	if (node.nodes.first().data.get('name') !== 'passingAttemptScore') {
-		const block = Block.create({
-			type: 'Parameter',
-			data: {
-				name: 'passingAttemptScore',
-				display: 'Passing Score'
-			}
-		})
+		const block = Block.create(
+			ParameterNode.helpers.oboToSlate('passingAttemptScore', 100 + '', 'Passing Score')
+		)
 
 		return change => change.insertNodeByKey(node.key, 0, block)
 	}
 
-	if (node.nodes.get(1).data.get('name') !== 'passedResult') {
-		const block = Block.create({
-			type: 'Parameter',
-			data: {
-				name: 'passedResult',
-				display: 'Passed Result'
-			}
-		})
+	if (node.nodes.size === 1 || node.nodes.get(1).data.get('name') !== 'passedResult') {
+		const block = Block.create(
+			ParameterNode.helpers.oboToSlate('passedResult', 100 + '', 'Passed Result')
+		)
 
 		return change => change.insertNodeByKey(node.key, 1, block)
 	}
 
-	const block = Block.create({
-		type: 'Parameter',
-		data: {
-			name: 'failedResult',
-			display: 'Failed Result'
-		}
-	})
+	if (node.nodes.size === 2 || node.nodes.get(2).data.get('name') !== 'failedResult') {
+		const block = Block.create(
+			ParameterNode.helpers.oboToSlate('failedResult', 0 + '', 'Failed Result')
+		)
+		return change => change.insertNodeByKey(node.key, 2, block)
+	}
 
-	return change => change.insertNodeByKey(node.key, 2, block)
+	const block = Block.create(
+		ParameterNode.helpers.oboToSlate('unableToPassResult', '', 'Unable to Pass Result')
+	)
+	return change => change.insertNodeByKey(node.key, 3, block)
 }
 
 const plugins = {
@@ -247,6 +245,7 @@ const plugins = {
 		}
 	},
 	validateNode(node) {
+		if (node.object !== 'block') return
 		if (node.type !== MOD_NODE && node.type !== RUBRIC_NODE) return
 		if (node.nodes.first().object === 'text') return
 
@@ -259,6 +258,83 @@ const plugins = {
 	},
 	schema: {
 		blocks: {
+			'ObojoboDraft.Sections.Assessment.Rubric': {
+				nodes: [{ types: ['Parameter'], min: 4, max: 4 }, { types: [MOD_LIST_NODE], max: 1 }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_REQUIRED: {
+							let block
+							switch (index) {
+								case 0:
+									block = Block.create(
+										ParameterNode.helpers.oboToSlate(
+											'passingAttemptScore',
+											100 + '',
+											'Passing Score'
+										)
+									)
+									break
+								case 1:
+									block = Block.create(
+										ParameterNode.helpers.oboToSlate('passedResult', 100 + '', 'Passed Result')
+									)
+									break
+								case 2:
+									block = Block.create(
+										ParameterNode.helpers.oboToSlate('failedResult', 0 + '', 'Failed Result')
+									)
+									break
+								case 3:
+									block = Block.create(
+										ParameterNode.helpers.oboToSlate(
+											'unableToPassResult',
+											'',
+											'Unable to Pass Result'
+										)
+									)
+									break
+							}
+							return change.insertNodeByKey(node.key, index, block)
+						}
+						case CHILD_TYPE_INVALID: {
+							return change.withoutNormalization(c => {
+								c.removeNodeByKey(child.key)
+								let block
+								switch (index) {
+									case 0:
+										block = Block.create(
+											ParameterNode.helpers.oboToSlate(
+												'passingAttemptScore',
+												100 + '',
+												'Passing Score'
+											)
+										)
+										return change.insertNodeByKey(node.key, index, block)
+									case 1:
+										block = Block.create(
+											ParameterNode.helpers.oboToSlate('passedResult', 100 + '', 'Passed Result')
+										)
+										return change.insertNodeByKey(node.key, index, block)
+									case 2:
+										block = Block.create(
+											ParameterNode.helpers.oboToSlate('failedResult', 0 + '', 'Failed Result')
+										)
+										return change.insertNodeByKey(node.key, index, block)
+									case 3:
+										block = Block.create(
+											ParameterNode.helpers.oboToSlate(
+												'unableToPassResult',
+												'',
+												'Unable to Pass Result'
+											)
+										)
+										return change.insertNodeByKey(node.key, index, block)
+								}
+							})
+						}
+					}
+				}
+			},
 			'ObojoboDraft.Sections.Assessment.Rubric.ModList': {
 				nodes: [{ types: [MOD_NODE], min: 1, max: 20 }],
 				normalize: (change, violation, { node, child, index }) => {
@@ -282,22 +358,38 @@ const plugins = {
 				normalize: (change, violation, { node, child, index }) => {
 					switch (violation) {
 						case CHILD_REQUIRED: {
-							const block = Block.create({
-								type: 'Parameter',
-								data: {
-									name: index === 0 ? 'attemptCondition' : 'reward',
-									display: index === 0 ? 'Attempt Condition' : 'Reward'
-								}
-							})
+							if (index === 0) {
+								const block = Block.create(
+									ParameterNode.helpers.oboToSlate(
+										'attemptCondition',
+										'[1,$last_attempt]',
+										'Attempt Condition'
+									)
+								)
+								return change.insertNodeByKey(node.key, index, block)
+							}
+							const block = Block.create(
+								ParameterNode.helpers.oboToSlate('reward', 0 + '', 'Reward')
+							)
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
-								type: 'Parameter',
-								data: {
-									name: index === 0 ? 'attemptCondition' : 'reward',
-									display: index === 0 ? 'Attempt Condition' : 'Reward'
+							return change.withoutNormalization(c => {
+								c.removeNodeByKey(child.key)
+								if (index === 0) {
+									const block = Block.create(
+										ParameterNode.helpers.oboToSlate(
+											'attemptCondition',
+											'[1,$last_attempt]',
+											'Attempt Condition'
+										)
+									)
+									return c.insertNodeByKey(node.key, index, block)
 								}
+								const block = Block.create(
+									ParameterNode.helpers.oboToSlate('reward', 0 + '', 'Reward')
+								)
+								return c.insertNodeByKey(node.key, index, block)
 							})
 						}
 					}

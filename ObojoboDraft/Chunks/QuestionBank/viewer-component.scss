@@ -9,7 +9,9 @@
 	border-radius: $dimension-rounded-radius;
 	padding: 1em;
 	overflow: auto;
-	background: transparentize($color-action, 0.95);
+	&.editor-bank {
+		background: transparentize($color-action, 0.95);
+	}
 
 	.reshuffle {
 		margin: 1rem auto;

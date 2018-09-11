@@ -1,11 +1,9 @@
 import React from 'react'
 
-import { Value, Schema } from 'slate'
+import { Value } from 'slate'
 import { Editor } from 'slate-react'
-import initialValue from '../documents/value.json'
 import APIUtil from '../../viewer/util/api-util'
 import Common from 'Common'
-const { OboModel } = Common.models
 
 import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
 import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
@@ -26,38 +24,15 @@ import MCChoice from '../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/edit
 import MCAnswer from '../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
 import MCFeedback from '../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
 import Page from '../../../../ObojoboDraft/Pages/Page/editor'
+import Assessment from '../../../../ObojoboDraft/Sections/Assessment/editor'
 import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
 import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor'
 import DefaultNode from './default-node'
 import ParameterNode from './parameter-node'
 import BasicMark from '../marks/basic-mark'
 
-const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
-const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
-const CODE_NODE = 'ObojoboDraft.Chunks.Code'
-const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
-const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
-const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
-const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
-const LIST_NODE = 'ObojoboDraft.Chunks.List'
-const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
-const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
-const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
-const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
-const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
-const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
-const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
-const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
-
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-
-const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
-const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
-const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
@@ -128,7 +103,8 @@ const plugins = [
 	ScoreActions.plugins,
 	Page.plugins,
 	Rubric.plugins,
-	ParameterNode.plugins
+	ParameterNode.plugins,
+	Assessment.plugins
 ]
 
 class PageEditor extends React.Component {
@@ -224,28 +200,28 @@ class PageEditor extends React.Component {
 	}
 
 	exportToJSON(page, value) {
-		// Build page wrapper
-		const json = {}
-		json.children = []
+		if (page.get('type') === ASSESSMENT_NODE) {
+			const json = Assessment.helpers.slateToObo(value.document.nodes.get(0))
+			page.set('children', json.children)
+			page.set('content', json.content)
+			return json
+		} else {
+			// Build page wrapper
+			const json = {}
+			json.children = []
 
-		json.content = page.get('content')
+			value.document.nodes.forEach(child => {
+				if (nodes.hasOwnProperty(child.type)) {
+					// If the current Node is a registered OboNode, use its custom converter
+					json.children.push(nodes[child.type].helpers.slateToObo(child))
+				} else {
+					json.children.push(DefaultNode.helpers.slateToObo(child))
+				}
+			})
 
-		value.document.nodes.forEach(child => {
-			if (child.type === ACTIONS_NODE) {
-				json.content.scoreActions = ScoreActions.helpers.slateToObo(child)
-			} else if (child.type === RUBRIC_NODE) {
-				json.content.rubric = Rubric.helpers.slateToObo(child)
-			} else if (nodes.hasOwnProperty(child.type)) {
-				// If the current Node is a registered OboNode, use its custom converter
-				json.children.push(nodes[child.type].helpers.slateToObo(child))
-			} else {
-				json.children.push(DefaultNode.helpers.slateToObo(child))
-			}
-		})
-
-		page.set('children', json.children)
-		page.set('content', json.content)
-		return json
+			page.set('children', json.children)
+			return json
+		}
 	}
 
 	importFromJSON() {
@@ -253,19 +229,17 @@ class PageEditor extends React.Component {
 
 		const json = { document: { nodes: [] } }
 
-		page.attributes.children.forEach(child => {
-			// If the current Node is a registered OboNode, use its custom converter
-			if (nodes.hasOwnProperty(child.type)) {
-				json.document.nodes.push(nodes[child.type].helpers.oboToSlate(child))
-			} else {
-				json.document.nodes.push(DefaultNode.helpers.oboToSlate(child))
-			}
-		})
-
-		const content = page.get('content')
 		if (page.get('type') === ASSESSMENT_NODE) {
-			json.document.nodes.push(ScoreActions.helpers.oboToSlate(content.scoreActions))
-			if (content.rubric) json.document.nodes.push(Rubric.helpers.oboToSlate(content.rubric))
+			json.document.nodes.push(Assessment.helpers.oboToSlate(page))
+		} else {
+			page.attributes.children.forEach(child => {
+				// If the current Node is a registered OboNode, use its custom converter
+				if (nodes.hasOwnProperty(child.type)) {
+					json.document.nodes.push(nodes[child.type].helpers.oboToSlate(child))
+				} else {
+					json.document.nodes.push(DefaultNode.helpers.oboToSlate(child))
+				}
+			})
 		}
 
 		return json
@@ -280,7 +254,7 @@ class PageEditor extends React.Component {
 	}
 
 	saveDraft() {
-		const value = this.exportToJSON(this.props.page, this.state.value)
+		this.exportToJSON(this.props.page, this.state.value)
 		const json = this.props.model.flatJSON()
 
 		// deal with content
@@ -299,9 +273,9 @@ class PageEditor extends React.Component {
 					})
 				}
 			} else if (child.get('type') === ASSESSMENT_NODE) {
-				;(contentJSON.id = child.get('id')),
-					(contentJSON.type = child.get('type')),
-					(contentJSON.children = child.get('children'))
+				contentJSON.id = child.get('id')
+				contentJSON.type = child.get('type')
+				contentJSON.children = child.get('children')
 				contentJSON.content = child.get('content')
 			}
 

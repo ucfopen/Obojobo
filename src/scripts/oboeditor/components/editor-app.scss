@@ -72,6 +72,11 @@
 		}
 	}
 
+	.parameter-node {
+		padding-right: 1em;
+		display: inline;
+	}
+
 	.rubric {
 		position: relative;
 		width: auto;
@@ -81,9 +86,37 @@
 		background: transparentize($color-preview, 0.95);
 		margin-bottom: 3em;
 
+		.parameter-node {
+			display: block;
+			padding-top: 0.5em;
+		}
+
 		.mod {
 			position: relative;
 			width: auto;
+			border-bottom: 1px solid $color-preview;
+		}
+	}
+
+	.settings {
+		font-size: 0.8em;
+		padding-left: $dimension-padding * 0.2333333333;
+		padding-right: $dimension-padding * 0.2333333333;
+		background: transparentize($color-preview, 0.95);
+		border-radius: $dimension-rounded-radius;
+		border: 1px solid $color-preview;
+
+		div {
+			div {
+				display: inline;
+			}
+		}
+
+		.label {
+			color: $color-text-minor;
+			transform: scale(0.7);
+			transform-origin: top left;
+			font-family: $font-default;
 		}
 	}
 }
