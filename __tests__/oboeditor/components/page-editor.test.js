@@ -3,6 +3,20 @@ import React from 'react'
 import { Value } from 'slate'
 
 jest.mock('../../../src/scripts/viewer/util/api-util')
+jest.mock('../../../ObojoboDraft/Sections/Assessment/editor', () => ({
+	helpers: {
+		slateToObo: () => ({
+			children: [],
+			content: {}
+		}),
+		oboToSlate: () => ({
+			object: 'block',
+			isVoid: true,
+			type: 'mockNode'
+		})
+	},
+	plugins: {}
+}))
 
 import PageEditor from '../../../src/scripts/oboeditor/components/page-editor'
 import Break from '../../../ObojoboDraft/Chunks/Break/editor'
@@ -130,97 +144,8 @@ describe('PageEditor', () => {
 				},
 				get: jest
 					.fn()
-					.mockReturnValueOnce({
-						// get('content') in
-						scoreActions: [
-							{
-								for: '[0,100]',
-								page: {
-									type: 'ObojoboDraft.Pages.Page',
-									children: []
-								}
-							}
-						],
-						rubric: {}
-					})
 					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
-					.mockReturnValueOnce({}) // get('content') in export
-			},
-			model: {
-				children: [
-					{
-						get: () => ASSESSMENT_NODE
-					},
-					{
-						get: () => CONTENT_NODE,
-						flatJSON: () => {
-							return { children: [] }
-						},
-						children: {
-							models: [
-								{
-									get: () => null
-								}
-							]
-						}
-					},
-					{
-						get: () => 'mockNode'
-					}
-				],
-				flatJSON: () => {
-					return { children: [] }
-				}
-			}
-		}
-		const component = shallow(<PageEditor {...props} />)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(14)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-		expect(APIUtil.postDraft).toHaveBeenCalle
-	})
-
-	test('EditorNav component with content exports to database with no rubric', () => {
-		jest.spyOn(window, 'alert')
-		window.alert.mockReturnValueOnce(null)
-		APIUtil.postDraft.mockResolvedValueOnce({ status: 'ok' })
-
-		const props = {
-			page: {
-				id: 2,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: 'ObojoboDraft.Chunks.Break',
-							content: {}
-						},
-						{
-							type: 'NonsenseNode'
-						}
-					]
-				},
-				get: jest
-					.fn()
-					.mockReturnValueOnce({
-						// get('content') in
-						scoreActions: [
-							{
-								for: '[0,100]',
-								page: {
-									type: 'ObojoboDraft.Pages.Page',
-									children: []
-								}
-							}
-						]
-					})
-					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
-					.mockReturnValueOnce({}) // get('content') in export
+					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in export
 			},
 			model: {
 				children: [
