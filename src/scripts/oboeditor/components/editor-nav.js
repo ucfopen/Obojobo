@@ -2,8 +2,6 @@ import React from 'react'
 import Common from 'Common'
 
 import EditorUtil from '../util/editor-util'
-import APIUtil from '../../viewer/util/api-util'
-import NavItem from './nav-item'
 import generateId from '../generate-ids'
 
 import './editor-nav.scss'
@@ -25,8 +23,7 @@ class EditorNav extends React.Component {
 	}
 
 	addAssessment() {
-		const label = window.prompt('Enter the title for the new Assessment:')
-			|| ('Assessment')
+		const label = window.prompt('Enter the title for the new Assessment:') || 'Assessment'
 
 		const newAssessment = Object.assign({}, assessmentTemplate)
 		newAssessment.id = generateId()
@@ -37,8 +34,7 @@ class EditorNav extends React.Component {
 	}
 
 	addPage() {
-		const label = window.prompt('Enter the title for the new page:')
-			|| ('Default Page')
+		const label = window.prompt('Enter the title for the new page:') || 'Default Page'
 
 		const newPage = Object.assign({}, pageTemplate)
 		newPage.id = generateId()
@@ -53,8 +49,7 @@ class EditorNav extends React.Component {
 	}
 
 	renamePage(pageId) {
-		const label = window.prompt('Enter the title for the new page:')
-			|| (pageId)
+		const label = window.prompt('Enter the title for the new page:') || pageId
 		EditorUtil.renamePage(pageId, label)
 	}
 
@@ -63,7 +58,47 @@ class EditorNav extends React.Component {
 	}
 
 	renderLabel(label) {
-		return label
+		return <a>{label}</a>
+	}
+
+	renderDropDown(item) {
+		const model = OboModel.models[item.id]
+		return (
+			<div className={'dropdown'}>
+				<span className={'drop-arrow'}>▼</span>
+				<div className={'drop-content'}>
+					{model.isFirst() ? null : (
+						<button onClick={() => this.movePage(item.id, model.getIndex() - 1)}>Move Up</button>
+					)}
+					{model.isLast() ? null : (
+						<button onClick={() => this.movePage(item.id, model.getIndex() + 1)}>Move Down</button>
+					)}
+					<button onClick={() => this.renamePage(item.id)}>Edit Name</button>
+					<button onClick={() => this.deletePage(item.id)}>Delete</button>
+					<button>{'Id: ' + item.id}</button>
+				</div>
+			</div>
+		)
+	}
+
+	renderLink(index, isSelected, list) {
+		const item = list[index]
+		const isFirstInList = !list[index - 1]
+		const isLastInList = !list[index + 1]
+
+		const className =
+			'link' +
+			isOrNot(isSelected, 'selected') +
+			isOrNot(item.flags.assessment, 'assessment') +
+			isOrNot(isFirstInList, 'first-in-list') +
+			isOrNot(isLastInList, 'last-in-list')
+
+		return (
+			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+				{this.renderLabel(item.label)}
+				{this.renderDropDown(item)}
+			</li>
+		)
 	}
 
 	renderHeading(index, item) {
@@ -75,46 +110,37 @@ class EditorNav extends React.Component {
 	}
 
 	render() {
-		let className =
+		const className =
 			'viewer--components--nav' +
 			isOrNot(this.state.locked, 'locked') +
 			isOrNot(this.state.open, 'open') +
 			isOrNot(!this.state.disabled, 'enabled')
 
-		let list = EditorUtil.getOrderedList(this.props.navState)
+		const list = EditorUtil.getOrderedList(this.props.navState)
 
 		return (
 			<div className={className}>
-				<button className="toggle-button" >
-					Toggle Navigation Menu
-				</button>
+				<button className="toggle-button">Toggle Navigation Menu</button>
 				<ul>
 					{list.map((item, index) => {
 						switch (item.type) {
 							case 'heading':
 								return this.renderHeading(index, item)
 							case 'link':
-								return (
-									<NavItem
-										key={item.id}
-										index={index}
-										isSelected={this.state.navTargetId === item.id}
-										list={list}
-										onClick={this.onClick}
-								/>)
+								return this.renderLink(index, this.state.navTargetId === item.id, list)
 						}
 					})}
 				</ul>
-				<button className={'nav-modify'} onClick={() => this.addPage()}>{'+ Add Page'}</button>
-				<button className={'nav-modify'} onClick={() => this.addAssessment()}>{'+ Add Assessment'}</button>
+				<button onClick={() => this.addPage()}>{'Add Page'}</button>
+				<button onClick={() => this.addAssessment()}>{'Add Assessment'}</button>
 			</div>
 		)
 	}
 }
 
 const isOrNot = (item, text) => {
-	if(item) return ' is-'+text
-	return ' is-not-'+text
+	if (item) return ' is-' + text
+	return ' is-not-' + text
 }
 
 export default EditorNav

@@ -27,7 +27,6 @@ describe('MCAssessment editor', () => {
 		)
 		const tree = component.toJSON()
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 

@@ -67,16 +67,15 @@
 		> .content-back {
 			transform: rotateY(180deg);
 
-	// transition: border $duration-animation-default;
-	max-width: $dimension-column-width;
-	background: $color-bg;
-}
-			> .responses-hidden {
-				font-family: $font-default;
-				font-size: 0.9em;
-				text-align: center;
-				margin-bottom: 1em;
-			}
+			// transition: border $duration-animation-default;
+			max-width: $dimension-column-width;
+			background: $color-bg;
+		}
+		> .responses-hidden {
+			font-family: $font-default;
+			font-size: 0.9em;
+			text-align: center;
+			margin-bottom: 1em;
 		}
 	}
 

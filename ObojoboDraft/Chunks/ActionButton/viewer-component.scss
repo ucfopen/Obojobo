@@ -15,8 +15,6 @@
 
 	// Editor Styles
 	.button {
-		@include user-select(none);
-
 		input {
 			font-family: $font-default;
 			// button lightened to be close to $color-action with opacity 0.8
@@ -24,7 +22,7 @@
 			font-size: 0.85em;
 			color: $color-bg;
 			border: none;
-			width: 100%
+			width: 100%;
 		}
 
 		cursor: pointer;
@@ -43,7 +41,7 @@
 
 	.trigger {
 		padding-left: 2em;
-		padding-bottom: .5em;
+		padding-bottom: 0.5em;
 		overflow: auto;
 		border: 1px solid #111111;
 		border-radius: 0.2em;
@@ -57,6 +55,6 @@
 	}
 
 	.is-type-invalid {
-		background-color: #FF000011
+		background-color: #ff000011;
 	}
 }

@@ -5,7 +5,7 @@ const { OboModel } = Common.models
 
 const getFlatList = function(item) {
 	let list = []
-	let model = OboModel.models[item.id]
+	const model = OboModel.models[item.id]
 	if (model && model.get('type') === 'ObojoboDraft.Sections.Assessment') {
 		item.flags.assessment = true
 	}
@@ -14,7 +14,7 @@ const getFlatList = function(item) {
 	}
 
 	if (item.showChildren) {
-		for (let child of Array.from(item.children)) {
+		for (const child of Array.from(item.children)) {
 			list = list.concat(getFlatList(child))
 		}
 	}
@@ -66,9 +66,9 @@ const EditorUtil = {
 		})
 	},
 	getFirst(state) {
-		let list = EditorUtil.getOrderedList(state)
+		const list = EditorUtil.getOrderedList(state)
 
-		for (let item of Array.from(list)) {
+		for (const item of Array.from(list)) {
 			if (item.type === 'link') {
 				return item
 			}
@@ -77,7 +77,7 @@ const EditorUtil = {
 		return null
 	},
 	getNavItemForModel(state, model) {
-		let item = state.itemsById[model.get('id')]
+		const item = state.itemsById[model.get('id')]
 		if (!item) {
 			return null
 		}
@@ -85,7 +85,7 @@ const EditorUtil = {
 		return item
 	},
 	getNavLabelForModel(state, model) {
-		let item = EditorUtil.getNavItemForModel(state, model)
+		const item = EditorUtil.getNavItemForModel(state, model)
 		if (!item) {
 			return null
 		}
@@ -99,14 +99,14 @@ const EditorUtil = {
 		return state.itemsById[state.navTargetId]
 	},
 	getNavTargetModel(state) {
-		let navTarget = EditorUtil.getNavTarget(state)
+		const navTarget = EditorUtil.getNavTarget(state)
 		if (!navTarget) {
 			return null
 		}
 
 		return OboModel.models[navTarget.id]
 	},
-	renamePage(pageId, name){
+	renamePage(pageId, name) {
 		return Dispatcher.trigger('editor:renamePage', {
 			value: {
 				pageId,
@@ -114,7 +114,7 @@ const EditorUtil = {
 			}
 		})
 	},
-	movePage(pageId, index){
+	movePage(pageId, index) {
 		return Dispatcher.trigger('editor:movePage', {
 			value: {
 				pageId,

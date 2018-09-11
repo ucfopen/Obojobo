@@ -3,6 +3,7 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 
 import EditorNav from '../../../src/scripts/oboeditor/components/editor-nav'
+
 import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 import Common from '../../../src/scripts/common'
 
@@ -11,7 +12,6 @@ jest.mock('../../../src/scripts/oboeditor/util/editor-util')
 describe('EditorNav', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
-
 
 		Common.models.OboModel.models = {
 			'5': {
@@ -79,7 +79,7 @@ describe('EditorNav', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 
-		const props = {navState: {}}
+		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
 		const click = component
@@ -95,7 +95,7 @@ describe('EditorNav', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 
-		const props = {navState: {}}
+		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
 		const click = component
@@ -107,18 +107,20 @@ describe('EditorNav', () => {
 	})
 
 	test('EditorNav component clicks Move Up button in item', () => {
-		EditorUtil.getOrderedList.mockReturnValueOnce([
-			{
-				id: 6,
-				type: 'link',
-				label: 'label6',
-				flags: {
-					assessment: true
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 6,
+					type: 'link',
+					label: 'label6',
+					flags: {
+						assessment: true
+					}
 				}
-			}
-		]).mockReturnValueOnce([])
+			])
+			.mockReturnValueOnce([])
 
-		const props = {navState: {}}
+		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
 		const click = component
@@ -131,18 +133,20 @@ describe('EditorNav', () => {
 	})
 
 	test('EditorNav component clicks Move Down button in item', () => {
-		EditorUtil.getOrderedList.mockReturnValueOnce([
-			{
-				id: 5,
-				type: 'link',
-				label: 'label5',
-				flags: {
-					assessment: true
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 5,
+					type: 'link',
+					label: 'label5',
+					flags: {
+						assessment: true
+					}
 				}
-			}
-		]).mockReturnValueOnce([])
+			])
+			.mockReturnValueOnce([])
 
-		const props = {navState: {}}
+		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
 		const click = component
@@ -155,20 +159,22 @@ describe('EditorNav', () => {
 	})
 
 	test('EditorNav component clicks Edit Name button in item', () => {
-		EditorUtil.getOrderedList.mockReturnValueOnce([
-			{
-				id: 5,
-				type: 'link',
-				label: 'label5',
-				flags: {
-					assessment: true
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 5,
+					type: 'link',
+					label: 'label5',
+					flags: {
+						assessment: true
+					}
 				}
-			}
-		]).mockReturnValueOnce([])
+			])
+			.mockReturnValueOnce([])
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 
-		const props = {navState: {}}
+		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
 		const click = component
@@ -181,20 +187,22 @@ describe('EditorNav', () => {
 	})
 
 	test('EditorNav component clicks Delete button in item', () => {
-		EditorUtil.getOrderedList.mockReturnValueOnce([
-			{
-				id: 5,
-				type: 'link',
-				label: 'label5',
-				flags: {
-					assessment: true
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 5,
+					type: 'link',
+					label: 'label5',
+					flags: {
+						assessment: true
+					}
 				}
-			}
-		]).mockReturnValueOnce([])
+			])
+			.mockReturnValueOnce([])
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 
-		const props = {navState: {}}
+		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
 		const click = component
