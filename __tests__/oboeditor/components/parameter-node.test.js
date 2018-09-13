@@ -31,7 +31,7 @@ describe('Parameter Node', () => {
 					data: {
 						get: jest
 							.fn()
-							.mockReturnValueOnce(true)
+							.mockReturnValueOnce('type-select')
 							.mockReturnValueOnce('mockType')
 							.mockReturnValueOnce('Option 1')
 							.mockReturnValueOnce(['Option 1', 'Option 2'])
@@ -58,7 +58,7 @@ describe('Parameter Node', () => {
 					data: {
 						get: jest
 							.fn()
-							.mockReturnValueOnce(true)
+							.mockReturnValueOnce('type-select')
 							.mockReturnValueOnce('mockType')
 							.mockReturnValueOnce('Option 1')
 							.mockReturnValueOnce(['Option 1', 'Option 2'])
@@ -74,6 +74,60 @@ describe('Parameter Node', () => {
 
 		component.find('select').simulate('click', { stopPropagation: jest.fn() })
 		component.find('select').simulate('change', { target: { value: 'Option 2' } })
+
+		expect(tree).toMatchSnapshot()
+		expect(change.setNodeByKey).toHaveBeenCalled()
+	})
+
+	test('Node component with checkbox', () => {
+		const Node = ParameterNode.components.Node
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: jest
+							.fn()
+							.mockReturnValueOnce('type-toggle')
+							.mockReturnValueOnce('mockType')
+							.mockReturnValueOnce(false)
+					}
+				}}
+			/>
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node component with select changes value', () => {
+		const Node = ParameterNode.components.Node
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = shallow(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: jest
+							.fn()
+							.mockReturnValueOnce('type-toggle')
+							.mockReturnValueOnce('mockType')
+							.mockReturnValueOnce(false)
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: () => false
+				}}
+			/>
+		)
+		const tree = component.html()
+
+		component.find('input').simulate('change', { target: { checked: true } })
 
 		expect(tree).toMatchSnapshot()
 		expect(change.setNodeByKey).toHaveBeenCalled()
@@ -98,7 +152,21 @@ describe('Parameter Node', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: jest.fn().mockReturnValueOnce(true)
+				get: jest.fn().mockReturnValueOnce('type-select')
+			},
+			text: 'mockValue'
+		}
+		const oboNode = ParameterNode.helpers.slateToObo(slateNode)
+
+		expect(oboNode).toMatchSnapshot()
+	})
+
+	test('slateToObo converts a Slate node to an OboNode with select', () => {
+		const slateNode = {
+			key: 'mockKey',
+			type: 'mockType',
+			data: {
+				get: jest.fn().mockReturnValueOnce('type-toggle')
 			},
 			text: 'mockValue'
 		}

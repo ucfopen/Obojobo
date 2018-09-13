@@ -1,16 +1,44 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('../../../../ObojoboDraft/Chunks/Question/editor')
+jest.mock('../../../../src/scripts/oboeditor/components/parameter-node', () => ({
+	helpers: {
+		oboToSlate: () => ({
+			type: 'mockNode'
+		})
+	}
+}))
 
 import QuestionBank from '../../../../ObojoboDraft/Chunks/QuestionBank/editor'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
+const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 describe('QuestionBank editor', () => {
 	test('Node builds the expected component', () => {
 		const Node = QuestionBank.components.Node
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('Node builds the expected component', () => {
+		const Node = QuestionBank.components.Settings
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
@@ -68,13 +96,11 @@ describe('QuestionBank editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
-						get: () => {
-							return { choose: 8, select: 'sequential' }
-						}
+						get: () => ({ content: {} })
 					},
 					nodes: []
 				}}
@@ -102,7 +128,7 @@ describe('QuestionBank editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -126,80 +152,6 @@ describe('QuestionBank editor', () => {
 			.simulate('click')
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Node component changes select number', () => {
-		const Node = QuestionBank.components.Node
-
-		const change = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return { choose: 8, select: 'sequential' }
-						}
-					},
-					nodes: []
-				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
-		)
-		const tree = component.html()
-
-		component.find('input').simulate('change', {
-			target: { value: 'mockValue' }
-		})
-
-		component.find('input').simulate('click', {
-			stopPropagation: jest.fn()
-		})
-
-		expect(change.setNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Node component changes choose type', () => {
-		const Node = QuestionBank.components.Node
-
-		const change = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return { choose: 8, select: 'sequential' }
-						}
-					},
-					nodes: []
-				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
-		)
-		const tree = component.html()
-
-		component.find('select').simulate('change', {
-			target: { value: 'mockValue' }
-		})
-
-		component.find('select').simulate('click', {
-			stopPropagation: jest.fn()
-		})
-
-		expect(change.setNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -233,7 +185,18 @@ describe('QuestionBank editor', () => {
 					nodes: []
 				},
 				{
-					type: 'mockQuestionNode'
+					type: QUESTION_NODE
+				},
+				{
+					type: SETTINGS_NODE,
+					nodes: {
+						first: () => ({ text: 'mockText' }),
+						last: () => ({
+							data: {
+								get: () => false
+							}
+						})
+					}
 				}
 			]
 		}
@@ -268,7 +231,7 @@ describe('QuestionBank editor', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('plugins.renderNode renders a button when passed', () => {
+	test('plugins.renderNode renders a question bank when passed', () => {
 		const props = {
 			node: {
 				type: QUESTION_BANK_NODE,
@@ -283,7 +246,22 @@ describe('QuestionBank editor', () => {
 		expect(QuestionBank.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
+	test('plugins.renderNode renders settings when passed', () => {
+		const props = {
+			node: {
+				type: SETTINGS_NODE,
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		expect(QuestionBank.plugins.renderNode(props)).toMatchSnapshot()
+	})
+
+	test('plugins.schema.normalize fixes first invalid child in bank', () => {
 		const change = {
 			wrapBlockByKey: jest.fn()
 		}
@@ -291,13 +269,27 @@ describe('QuestionBank editor', () => {
 		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, CHILD_TYPE_INVALID, {
 			node: {},
 			child: { key: 'mockKey' },
-			index: null
+			index: 0
 		})
 
 		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize adds missing children', () => {
+	test('plugins.schema.normalize fixes second invalid child in bank', () => {
+		const change = {
+			wrapBlockByKey: jest.fn()
+		}
+
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {},
+			child: { key: 'mockKey' },
+			index: 1
+		})
+
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds missing first child in bank', () => {
 		const change = {
 			insertNodeByKey: jest.fn()
 		}
@@ -306,6 +298,82 @@ describe('QuestionBank editor', () => {
 			node: {},
 			child: null,
 			index: 0
+		})
+
+		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds missing second child in bank', () => {
+		const change = {
+			insertNodeByKey: jest.fn()
+		}
+
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, CHILD_REQUIRED, {
+			node: {},
+			child: null,
+			index: 1
+		})
+
+		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds missing first child in setting', () => {
+		const change = {
+			insertNodeByKey: jest.fn()
+		}
+
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_REQUIRED, {
+			node: {},
+			child: null,
+			index: 0
+		})
+
+		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds missing second child in setting', () => {
+		const change = {
+			insertNodeByKey: jest.fn()
+		}
+
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_REQUIRED, {
+			node: {},
+			child: null,
+			index: 1
+		})
+
+		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes first invalid child in setting', () => {
+		const change = {
+			insertNodeByKey: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		change.withoutNormalization = funct => funct(change)
+
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {},
+			child: { key: 'mockKey' },
+			index: 0
+		})
+
+		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes second invalid child in setting', () => {
+		const change = {
+			insertNodeByKey: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		change.withoutNormalization = funct => funct(change)
+
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {},
+			child: { key: 'mockKey' },
+			index: 1
 		})
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()

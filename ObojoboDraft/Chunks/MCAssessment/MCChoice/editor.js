@@ -68,7 +68,11 @@ class Node extends React.Component {
 				<div className={'children'}>
 					<div>{this.props.children}</div>
 				</div>
-				{!hasFeedback ? <button onClick={() => this.addFeedback()}>{'Add Feedback'}</button> : null}
+				{!hasFeedback ? (
+					<button className={'add-feedback'} onClick={() => this.addFeedback()}>
+						{'Add Feedback'}
+					</button>
+				) : null}
 			</div>
 		)
 	}

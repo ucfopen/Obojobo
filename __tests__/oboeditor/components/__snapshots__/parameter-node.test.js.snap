@@ -14,6 +14,32 @@ exports[`Parameter Node Node component 1`] = `
 </div>
 `;
 
+exports[`Parameter Node Node component with checkbox 1`] = `
+<div
+  className="parameter-node"
+  dummy="dummyData"
+>
+  <span
+    contentEditable={false}
+  >
+    mockType: 
+  </span>
+  <label
+    className="switch"
+  >
+    <input
+      checked={false}
+      className="slider"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <span
+      className="slider round"
+    />
+  </label>
+</div>
+`;
+
 exports[`Parameter Node Node component with select 1`] = `
 <div
   className="parameter-node"
@@ -46,19 +72,21 @@ exports[`Parameter Node Node component with select 1`] = `
 
 exports[`Parameter Node Node component with select changes value 1`] = `"<div class=\\"parameter-node\\"><span contenteditable=\\"false\\">mockType: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"Option 1\\">Option 1</option><option value=\\"Option 2\\">Option 2</option></select></div>"`;
 
+exports[`Parameter Node Node component with select changes value 2`] = `"<div class=\\"parameter-node\\"><span contenteditable=\\"false\\">mockType: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><span class=\\"slider round\\"></span></label></div>"`;
+
 exports[`Parameter Node oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
-    "display": "Mock Display",
-    "isSelect": false,
-    "name": "mockKey",
+    "display": undefined,
+    "name": undefined,
     "options": undefined,
+    "type": "type-text",
   },
   "nodes": Array [
     Object {
       "leaves": Array [
         Object {
-          "text": "mockValue",
+          "text": undefined,
         },
       ],
       "object": "text",
@@ -72,17 +100,21 @@ Object {
 exports[`Parameter Node oboToSlate converts an OboNode to a Slate node with options 1`] = `
 Object {
   "data": Object {
-    "current": "mockValue",
-    "display": "Mock Display",
-    "isSelect": true,
-    "name": "mockKey",
-    "options": Array [
-      "Mock Option 1",
-      "Mock Option 2",
-      "Mock Option 3",
-    ],
+    "display": undefined,
+    "name": undefined,
+    "options": undefined,
+    "type": "type-text",
   },
-  "isVoid": true,
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": undefined,
+        },
+      ],
+      "object": "text",
+    },
+  ],
   "object": "block",
   "type": "Parameter",
 }
@@ -108,6 +140,12 @@ Object {
 `;
 
 exports[`Parameter Node slateToObo converts a Slate node to an OboNode with select 1`] = `
+Object {
+  "undefined": undefined,
+}
+`;
+
+exports[`Parameter Node slateToObo converts a Slate node to an OboNode with select 2`] = `
 Object {
   "undefined": undefined,
 }

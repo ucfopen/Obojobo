@@ -1,11 +1,24 @@
 import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import Common from 'Common'
 
 import Question from '../Question/editor'
+import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
+const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+
+const { Button } = Common.components
+
+const Settings = props => {
+	return (
+		<div {...props.attributes} className={'qb-settings'}>
+			<div>{props.children}</div>
+		</div>
+	)
+}
 
 class Node extends React.Component {
 	constructor(props) {
@@ -42,38 +55,6 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
-	handleSelectChange(event) {
-		const editor = this.props.editor
-		const change = editor.value.change()
-
-		this.setState({ select: event.target.value })
-
-		change.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					select: event.target.value,
-					choose: this.state.choose
-				}
-			}
-		})
-		editor.onChange(change)
-	}
-	handleChooseChange(event) {
-		const editor = this.props.editor
-		const change = editor.value.change()
-
-		this.setState({ choose: event.target.value })
-
-		change.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					choose: event.target.value,
-					select: this.state.select
-				}
-			}
-		})
-		editor.onChange(change)
-	}
 	render() {
 		return (
 			<div
@@ -83,28 +64,13 @@ class Node extends React.Component {
 				<button className={'delete'} onClick={() => this.delete()}>
 					X
 				</button>
-				<span contentEditable={false}>{'Choose: '}</span>
-				<input
-					className={'choose-input'}
-					type={'number'}
-					value={this.state.choose}
-					onChange={event => this.handleChooseChange(event)}
-					onClick={event => event.stopPropagation()}
-				/>
-				<span contentEditable={false}>{'Select: '}</span>
-				<select
-					name={'Select'}
-					value={this.state.select}
-					onChange={event => this.handleSelectChange(event)}
-					onClick={event => event.stopPropagation()}
-				>
-					<option value={'sequential'}>{'Sequential'}</option>
-					<option value={'random'}>{'Random'}</option>
-					<option value={'random-unseen'}>{'Random Unseen'}</option>
-				</select>
 				{this.props.children}
-				<button onClick={() => this.addQuestion()}>Add Question</button>
-				<button onClick={() => this.addQuestionBank()}>Add QuestionBank</button>
+				<Button className={'buffer'} onClick={() => this.addQuestion()}>
+					{'Add Question'}
+				</Button>
+				<Button className={'buffer'} onClick={() => this.addQuestionBank()}>
+					{'Add Question Bank'}
+				</Button>
 			</div>
 		)
 	}
@@ -128,10 +94,17 @@ const slateToObo = node => {
 	json.children = []
 
 	node.nodes.forEach(child => {
-		if (child.type === QUESTION_BANK_NODE) {
-			json.children.push(slateToObo(child))
-		} else {
-			json.children.push(Question.helpers.slateToObo(child))
+		switch (child.type) {
+			case QUESTION_BANK_NODE:
+				json.children.push(slateToObo(child))
+				break
+			case QUESTION_NODE:
+				json.children.push(Question.helpers.slateToObo(child))
+				break
+			case SETTINGS_NODE:
+				json.content.choose = child.nodes.first().text
+				json.content.select = child.nodes.last().data.get('current')
+				break
 		}
 	})
 
@@ -144,14 +117,32 @@ const oboToSlate = node => {
 	json.key = node.id
 	json.type = node.type
 	json.data = { content: node.content }
-	if (
-		!json.data.content.choose ||
-		json.data.content.choose === 'all' ||
-		json.data.content.choose === Infinity
-	) {
-		json.data.content.choose = node.children.length
-	}
 	json.nodes = []
+
+	const settings = {
+		object: 'block',
+		type: SETTINGS_NODE,
+		nodes: []
+	}
+
+	settings.nodes.push(
+		ParameterNode.helpers.oboToSlate({
+			name: 'choose',
+			value: node.content.choose + '',
+			display: 'Choose'
+		})
+	)
+
+	settings.nodes.push(
+		ParameterNode.helpers.oboToSlate({
+			name: 'select',
+			value: node.content.select,
+			display: 'Select',
+			options: ['sequential', 'random', 'random-unseen']
+		})
+	)
+
+	json.nodes.push(settings)
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
@@ -170,23 +161,92 @@ const plugins = {
 		switch (props.node.type) {
 			case QUESTION_BANK_NODE:
 				return <Node {...props} />
+			case SETTINGS_NODE:
+				return <Settings {...props} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.QuestionBank': {
-				nodes: [{ types: [QUESTION_NODE, QUESTION_BANK_NODE], min: 1 }],
+				nodes: [
+					{ types: [SETTINGS_NODE], min: 1, max: 1 },
+					{ types: [QUESTION_NODE, QUESTION_BANK_NODE], min: 1 }
+				],
 				normalize: (change, violation, { node, child, index }) => {
 					switch (violation) {
 						case CHILD_REQUIRED: {
+							if (index === 0) {
+								const block = Block.create({
+									type: SETTINGS_NODE
+								})
+								return change.insertNodeByKey(node.key, index, block)
+							}
 							const block = Block.create({
 								type: QUESTION_NODE
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
+							if (index === 0) {
+								const block = Block.create({
+									type: SETTINGS_NODE
+								})
+								return change.wrapBlockByKey(child.key, block)
+							}
 							return change.wrapBlockByKey(child.key, {
 								type: QUESTION_NODE
+							})
+						}
+					}
+				}
+			},
+			'ObojoboDraft.Chunks.QuestionBank.Settings': {
+				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_REQUIRED: {
+							if (index === 0) {
+								const block = Block.create(
+									ParameterNode.helpers.oboToSlate({
+										name: 'choose',
+										value: Infinity + '',
+										display: 'Choose'
+									})
+								)
+								return change.insertNodeByKey(node.key, index, block)
+							}
+							const block = Block.create(
+								ParameterNode.helpers.oboToSlate({
+									name: 'select',
+									value: 'sequential',
+									display: 'Select',
+									options: ['sequential', 'random', 'random-unseen']
+								})
+							)
+							return change.insertNodeByKey(node.key, index, block)
+						}
+						case CHILD_TYPE_INVALID: {
+							return change.withoutNormalization(c => {
+								c.removeNodeByKey(child.key)
+								if (index === 0) {
+									const block = Block.create(
+										ParameterNode.helpers.oboToSlate({
+											name: 'choose',
+											value: Infinity + '',
+											display: 'Choose'
+										})
+									)
+									return c.insertNodeByKey(node.key, index, block)
+								}
+								const block = Block.create(
+									ParameterNode.helpers.oboToSlate({
+										name: 'select',
+										value: 'sequential',
+										display: 'Select',
+										options: ['sequential', 'random', 'random-unseen']
+									})
+								)
+								return c.insertNodeByKey(node.key, index, block)
 							})
 						}
 					}
@@ -198,7 +258,8 @@ const plugins = {
 
 const QuestionBank = {
 	components: {
-		Node
+		Node,
+		Settings
 	},
 	helpers: {
 		insertNode,

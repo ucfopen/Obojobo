@@ -50,7 +50,11 @@ class Node extends React.Component {
 		return (
 			<div {...this.props.attributes} className={'assessment'}>
 				{this.props.children}
-				{!hasRubric ? <button onClick={() => this.addRubric()}>{'Add Rubric'}</button> : null}
+				{!hasRubric ? (
+					<button className={'add-rubric'} onClick={() => this.addRubric()}>
+						{'Add Rubric'}
+					</button>
+				) : null}
 			</div>
 		)
 	}
@@ -104,15 +108,20 @@ const oboToSlate = node => {
 	}
 
 	settings.nodes.push(
-		ParameterNode.helpers.oboToSlate('attempts', json.data.content.attempts + '', 'Attempts')
+		ParameterNode.helpers.oboToSlate({
+			name: 'attempts',
+			value: json.data.content.attempts + '',
+			display: 'Attempts'
+		})
 	)
 
 	settings.nodes.push(
-		ParameterNode.helpers.oboToSlate('review', json.data.content.review, 'Review', [
-			'always',
-			'never',
-			'no-attempts-remaining'
-		])
+		ParameterNode.helpers.oboToSlate({
+			name: 'review',
+			value: json.data.content.review,
+			display: 'Review',
+			options: ['always', 'never', 'no-attempts-remaining']
+		})
 	)
 
 	json.nodes.push(settings)
@@ -227,16 +236,21 @@ const plugins = {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(
-									ParameterNode.helpers.oboToSlate('attempts', 'unlimited', 'Attempts')
+									ParameterNode.helpers.oboToSlate({
+										name: 'attempts',
+										value: 'unlimited',
+										display: 'Attempts'
+									})
 								)
 								return change.insertNodeByKey(node.key, index, block)
 							}
 							const block = Block.create(
-								ParameterNode.helpers.oboToSlate('review', 'never', 'Review', [
-									'always',
-									'never',
-									'no-attempts-remaining'
-								])
+								ParameterNode.helpers.oboToSlate({
+									name: 'review',
+									value: 'never',
+									display: 'Review',
+									options: ['always', 'never', 'no-attempts-remaining']
+								})
 							)
 							return change.insertNodeByKey(node.key, index, block)
 						}
@@ -245,16 +259,21 @@ const plugins = {
 								c.removeNodeByKey(child.key)
 								if (index === 0) {
 									const block = Block.create(
-										ParameterNode.helpers.oboToSlate('attempts', 'unlimited', 'Attempts')
+										ParameterNode.helpers.oboToSlate({
+											name: 'attempts',
+											value: 'unlimited',
+											display: 'Attempts'
+										})
 									)
 									return c.insertNodeByKey(node.key, index, block)
 								}
 								const block = Block.create(
-									ParameterNode.helpers.oboToSlate('review', 'never', 'Review', [
-										'always',
-										'never',
-										'no-attempts-remaining'
-									])
+									ParameterNode.helpers.oboToSlate({
+										name: 'review',
+										value: 'never',
+										display: 'Review',
+										options: ['always', 'never', 'no-attempts-remaining']
+									})
 								)
 								return c.insertNodeByKey(node.key, index, block)
 							})

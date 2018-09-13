@@ -1,8 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCAssessment editor Node builds the expected component 1`] = `
+exports[`MCAssessment editor ChoiceList builds the expected component 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored"
   dummy="dummyData"
 >
   <span
@@ -12,70 +11,91 @@ exports[`MCAssessment editor Node builds the expected component 1`] = `
      
   </span>
   <div
-    className="content-box"
+    className="obojobo-draft--components--button is-not-dangerous align-center choice-button pad"
   >
     <button
+      disabled={undefined}
       onClick={[Function]}
+      tabIndex={undefined}
     >
-      Add Choice
+      + Add Choice
     </button>
-    <div
-      contentEditable={false}
-    >
-      Response Type: 
-      <select
-        name="Response Type"
-        onChange={[Function]}
-        onClick={[Function]}
-        value={undefined}
-      >
-        <option
-          value="pick-one"
-        >
-          Pick One
-        </option>
-        <option
-          value="pick-all"
-        >
-          Pick All
-        </option>
-      </select>
-    </div>
-    <div
-      contentEditable={false}
-    >
-       Shuffle?
-      <input
-        checked={undefined}
-        onChange={[Function]}
-        type="checkbox"
-      />
-    </div>
   </div>
 </div>
 `;
 
-exports[`MCAssessment editor Node component adds choice 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored\\"><span class=\\"instructions\\"><!-- react-text: 3 -->Pick all of the correct answers<!-- /react-text --><!-- react-text: 4 --> <!-- /react-text --></span><div class=\\"content-box\\"><button>Add Choice</button><div contenteditable=\\"false\\"><!-- react-text: 8 -->Response Type: <!-- /react-text --><select name=\\"Response Type\\"><option value=\\"pick-one\\">Pick One</option><option value=\\"pick-all\\">Pick All</option></select></div><div contenteditable=\\"false\\"><!-- react-text: 13 --> Shuffle?<!-- /react-text --><input type=\\"checkbox\\" value=\\"on\\"></div></div></div>"`;
+exports[`MCAssessment editor ChoiceList component adds choice 1`] = `"<div><span class=\\"instructions\\"><!-- react-text: 3 -->Pick all of the correct answers<!-- /react-text --><!-- react-text: 4 --> <!-- /react-text --></span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center choice-button pad\\"><button>+ Add Choice</button></div></div>"`;
 
-exports[`MCAssessment editor Node component changes shuffle 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored\\"><span class=\\"instructions\\"><!-- react-text: 3 -->Pick all of the correct answers<!-- /react-text --><!-- react-text: 4 --> <!-- /react-text --></span><div class=\\"content-box\\"><button>Add Choice</button><div contenteditable=\\"false\\"><!-- react-text: 8 -->Response Type: <!-- /react-text --><select name=\\"Response Type\\"><option value=\\"pick-one\\">Pick One</option><option value=\\"pick-all\\">Pick All</option></select></div><div contenteditable=\\"false\\"><!-- react-text: 13 --> Shuffle?<!-- /react-text --><input type=\\"checkbox\\" value=\\"on\\"></div></div></div>"`;
+exports[`MCAssessment editor Node builds the expected component 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored"
+  dummy="dummyData"
+/>
+`;
 
-exports[`MCAssessment editor Node component changes shuffle 2`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored\\"><span class=\\"instructions\\"><!-- react-text: 3 -->Pick all of the correct answers<!-- /react-text --><!-- react-text: 4 --> <!-- /react-text --></span><div class=\\"content-box\\"><button>Add Choice</button><div contenteditable=\\"false\\"><!-- react-text: 8 -->Response Type: <!-- /react-text --><select name=\\"Response Type\\"><option value=\\"pick-one\\">Pick One</option><option value=\\"pick-all\\">Pick All</option></select></div><div contenteditable=\\"false\\"><!-- react-text: 13 --> Shuffle?<!-- /react-text --><input type=\\"checkbox\\" value=\\"on\\"></div></div></div>"`;
+exports[`MCAssessment editor Settings builds the expected component 1`] = `
+<div
+  className="mc-settings"
+  dummy="dummyData"
+>
+  <div />
+</div>
+`;
 
 exports[`MCAssessment editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
-    "content": undefined,
+    "content": Object {},
   },
   "key": "mockKey",
   "nodes": Array [
-    undefined,
     Object {
-      "data": Object {
-        "content": undefined,
-      },
-      "key": undefined,
+      "nodes": Array [
+        undefined,
+        Object {
+          "data": Object {
+            "content": undefined,
+          },
+          "key": undefined,
+          "object": "block",
+          "type": "NotADefinedNode",
+        },
+      ],
       "object": "block",
-      "type": "NotADefinedNode",
+      "type": "ObojoboDraft.Chunks.MCAssessment.ChoiceList",
+    },
+    Object {
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "current": undefined,
+            "display": "Response Type",
+            "name": "responseType",
+            "options": Array [
+              "pick-one",
+              "pick-all",
+            ],
+            "type": "type-select",
+          },
+          "isVoid": true,
+          "object": "block",
+          "type": "Parameter",
+        },
+        Object {
+          "data": Object {
+            "checked": undefined,
+            "display": "Shuffle",
+            "name": "shuffle",
+            "options": undefined,
+            "type": "type-toggle",
+          },
+          "isVoid": true,
+          "object": "block",
+          "type": "Parameter",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.MCAssessment.Settings",
     },
   ],
   "object": "block",
@@ -83,7 +103,20 @@ Object {
 }
 `;
 
-exports[`MCAssessment editor plugins.renderNode renders a button when passed 1`] = `
+exports[`MCAssessment editor plugins.renderNode renders a ChoiceList when passed 1`] = `
+<ChoiceList
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.MCAssessment.ChoiceList",
+    }
+  }
+/>
+`;
+
+exports[`MCAssessment editor plugins.renderNode renders a MCAssessment when passed 1`] = `
 <Node
   node={
     Object {
@@ -96,18 +129,27 @@ exports[`MCAssessment editor plugins.renderNode renders a button when passed 1`]
 />
 `;
 
+exports[`MCAssessment editor plugins.renderNode renders a Setting when passed 1`] = `
+<Settings
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.MCAssessment.Settings",
+    }
+  }
+/>
+`;
+
 exports[`MCAssessment editor slateToObo converts a Slate node to an OboNode 1`] = `
 Object {
   "children": Array [
     undefined,
-    Object {
-      "children": Array [],
-      "id": undefined,
-      "type": "NotADefinedNode",
-    },
   ],
   "content": Object {
     "responseType": "pick-one",
+    "shuffle": false,
   },
   "id": "mockKey",
   "type": "mockType",
@@ -138,6 +180,7 @@ Object {
   ],
   "content": Object {
     "responseType": "pick-one-multiple-correct",
+    "shuffle": false,
   },
   "id": "mockKey",
   "type": "mockType",

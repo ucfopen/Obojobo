@@ -58,7 +58,6 @@ const slateToObo = node => {
 
 	return json
 }
-
 const oboToSlate = node => {
 	const json = {}
 	json.object = 'block'

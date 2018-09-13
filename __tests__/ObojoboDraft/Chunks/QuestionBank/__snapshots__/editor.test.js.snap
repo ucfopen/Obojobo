@@ -11,77 +11,67 @@ exports[`QuestionBank editor Node builds the expected component 1`] = `
   >
     X
   </button>
-  <span
-    contentEditable={false}
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center buffer"
   >
-    Choose: 
-  </span>
-  <input
-    className="choose-input"
-    onChange={[Function]}
-    onClick={[Function]}
-    type="number"
-    value={undefined}
-  />
-  <span
-    contentEditable={false}
-  >
-    Select: 
-  </span>
-  <select
-    name="Select"
-    onChange={[Function]}
-    onClick={[Function]}
-    value={undefined}
-  >
-    <option
-      value="sequential"
+    <button
+      disabled={undefined}
+      onClick={[Function]}
+      tabIndex={undefined}
     >
-      Sequential
-    </option>
-    <option
-      value="random"
-    >
-      Random
-    </option>
-    <option
-      value="random-unseen"
-    >
-      Random Unseen
-    </option>
-  </select>
-  <button
-    onClick={[Function]}
+      Add Question
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center buffer"
   >
-    Add Question
-  </button>
-  <button
-    onClick={[Function]}
-  >
-    Add QuestionBank
-  </button>
+    <button
+      disabled={undefined}
+      onClick={[Function]}
+      tabIndex={undefined}
+    >
+      Add Question Bank
+    </button>
+  </div>
 </div>
 `;
 
-exports[`QuestionBank editor Node component adds question 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><span contenteditable=\\"false\\">Choose: </span><input type=\\"number\\" class=\\"choose-input\\" value=\\"8\\"/><span contenteditable=\\"false\\">Select: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"sequential\\">Sequential</option><option value=\\"random\\">Random</option><option value=\\"random-unseen\\">Random Unseen</option></select><button>Add Question</button><button>Add QuestionBank</button></div>"`;
+exports[`QuestionBank editor Node builds the expected component 2`] = `
+<div
+  className="qb-settings"
+  dummy="dummyData"
+>
+  <div />
+</div>
+`;
 
-exports[`QuestionBank editor Node component adds question bank 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><span contenteditable=\\"false\\">Choose: </span><input type=\\"number\\" class=\\"choose-input\\" value=\\"8\\"/><span contenteditable=\\"false\\">Select: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"sequential\\">Sequential</option><option value=\\"random\\">Random</option><option value=\\"random-unseen\\">Random Unseen</option></select><button>Add Question</button><button>Add QuestionBank</button></div>"`;
+exports[`QuestionBank editor Node component adds question 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
 
-exports[`QuestionBank editor Node component changes choose type 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><span contenteditable=\\"false\\">Choose: </span><input type=\\"number\\" class=\\"choose-input\\" value=\\"8\\"/><span contenteditable=\\"false\\">Select: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"sequential\\">Sequential</option><option value=\\"random\\">Random</option><option value=\\"random-unseen\\">Random Unseen</option></select><button>Add Question</button><button>Add QuestionBank</button></div>"`;
+exports[`QuestionBank editor Node component adds question bank 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
 
-exports[`QuestionBank editor Node component changes select number 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><span contenteditable=\\"false\\">Choose: </span><input type=\\"number\\" class=\\"choose-input\\" value=\\"8\\"/><span contenteditable=\\"false\\">Select: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"sequential\\">Sequential</option><option value=\\"random\\">Random</option><option value=\\"random-unseen\\">Random Unseen</option></select><button>Add Question</button><button>Add QuestionBank</button></div>"`;
-
-exports[`QuestionBank editor Node component deletes self 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><span contenteditable=\\"false\\">Choose: </span><input type=\\"number\\" class=\\"choose-input\\" value=\\"8\\"/><span contenteditable=\\"false\\">Select: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"sequential\\">Sequential</option><option value=\\"random\\">Random</option><option value=\\"random-unseen\\">Random Unseen</option></select><button>Add Question</button><button>Add QuestionBank</button></div>"`;
+exports[`QuestionBank editor Node component deletes self 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
 
 exports[`QuestionBank editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
     "content": Object {
-      "choose": 2,
+      "choose": Infinity,
     },
   },
   "key": "mockKey",
   "nodes": Array [
+    Object {
+      "nodes": Array [
+        Object {
+          "type": "mockNode",
+        },
+        Object {
+          "type": "mockNode",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
+    },
     Object {
       "data": Object {
         "content": Object {
@@ -90,6 +80,18 @@ Object {
       },
       "key": "mockKey",
       "nodes": Array [
+        Object {
+          "nodes": Array [
+            Object {
+              "type": "mockNode",
+            },
+            Object {
+              "type": "mockNode",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
+        },
         undefined,
       ],
       "object": "block",
@@ -102,7 +104,7 @@ Object {
 }
 `;
 
-exports[`QuestionBank editor plugins.renderNode renders a button when passed 1`] = `
+exports[`QuestionBank editor plugins.renderNode renders a question bank when passed 1`] = `
 <Node
   node={
     Object {
@@ -110,6 +112,19 @@ exports[`QuestionBank editor plugins.renderNode renders a button when passed 1`]
         "get": [Function],
       },
       "type": "ObojoboDraft.Chunks.QuestionBank",
+    }
+  }
+/>
+`;
+
+exports[`QuestionBank editor plugins.renderNode renders settings when passed 1`] = `
+<Settings
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
     }
   }
 />
@@ -126,7 +141,10 @@ Object {
     },
     undefined,
   ],
-  "content": Object {},
+  "content": Object {
+    "choose": "mockText",
+    "select": false,
+  },
   "id": "mockKey",
   "type": "mockType",
 }

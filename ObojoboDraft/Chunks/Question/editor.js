@@ -1,6 +1,7 @@
 import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import Common from 'Common'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -15,6 +16,8 @@ const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
+const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 import Break from '../Break/editor'
 import Code from '../Code/editor'
@@ -28,8 +31,10 @@ import Table from '../Table/editor'
 import Text from '../Text/editor'
 import YouTube from '../YouTube/editor'
 import MCAssessment from '../MCAssessment/editor'
+import Page from '../../Pages/Page/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 
+const { Button } = Common.components
 const nodes = {
 	'ObojoboDraft.Chunks.Break': Break,
 	'ObojoboDraft.Chunks.Code': Code,
@@ -45,6 +50,25 @@ const nodes = {
 	'ObojoboDraft.Chunks.HTML': HTML
 }
 
+const Solution = props => {
+	const deleteNode = () => {
+		const editor = props.editor
+		const change = editor.value.change()
+		change.removeNodeByKey(props.node.key)
+
+		editor.onChange(change)
+	}
+
+	return (
+		<div className={'solution-editor'} {...props.attributes}>
+			{props.children}
+			<button className={'delete'} onClick={() => deleteNode()}>
+				X
+			</button>
+		</div>
+	)
+}
+
 class Node extends React.Component {
 	delete() {
 		const editor = this.props.editor
@@ -53,7 +77,19 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
+	addSolution() {
+		const editor = this.props.editor
+		const change = editor.value.change()
+
+		const newQuestion = Block.create({
+			type: SOLUTION_NODE
+		})
+		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
+
+		editor.onChange(change)
+	}
 	render() {
+		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
 		return (
 			<div
 				className={
@@ -63,12 +99,17 @@ class Node extends React.Component {
 			>
 				<div className={'flipper'}>
 					<div className={'content back'}>
-						<button className={'delete'} onClick={() => this.delete()}>
-							X
-						</button>
 						{this.props.children}
+						{hasSolution ? null : (
+							<Button className={'add-solution'} onClick={() => this.addSolution()}>
+								{'Add Solution'}
+							</Button>
+						)}
 					</div>
 				</div>
+				<button className={'delete'} onClick={() => this.delete()}>
+					X
+				</button>
 			</div>
 		)
 	}
@@ -90,8 +131,12 @@ const slateToObo = node => {
 	json.content = node.data.get('content') || {}
 	json.children = []
 
+	delete json.content.solution
+
 	node.nodes.forEach(child => {
-		if (nodes.hasOwnProperty(child.type)) {
+		if (child.type === SOLUTION_NODE) {
+			json.content.solution = Page.helpers.slateToObo(child.nodes.get(0))
+		} else if (nodes.hasOwnProperty(child.type)) {
 			json.children.push(nodes[child.type].helpers.slateToObo(child))
 		} else {
 			json.children.push(DefaultNode.helpers.slateToObo(child))
@@ -118,6 +163,17 @@ const oboToSlate = node => {
 		}
 	})
 
+	if (json.data.content.solution) {
+		const solution = {
+			object: 'block',
+			type: SOLUTION_NODE,
+			nodes: []
+		}
+
+		solution.nodes.push(Page.helpers.oboToSlate(json.data.content.solution))
+		json.nodes.push(solution)
+	}
+
 	return json
 }
 
@@ -126,6 +182,8 @@ const plugins = {
 		switch (props.node.type) {
 			case QUESTION_NODE:
 				return <Node {...props} />
+			case SOLUTION_NODE:
+				return <Solution {...props} />
 		}
 	},
 	schema: {
@@ -148,7 +206,8 @@ const plugins = {
 						],
 						min: 1
 					},
-					{ types: [MCASSESSMENT_NODE], min: 1, max: 1 }
+					{ types: [MCASSESSMENT_NODE], min: 1, max: 1 },
+					{ types: [SOLUTION_NODE], max: 1 }
 				],
 
 				normalize: (change, violation, { node, child, index }) => {
@@ -180,6 +239,24 @@ const plugins = {
 						}
 					}
 				}
+			},
+			'ObojoboDraft.Chunks.Question.Solution': {
+				nodes: [{ types: [PAGE_NODE], max: 1, min: 1 }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_REQUIRED: {
+							const block = Block.create({
+								type: PAGE_NODE
+							})
+							return change.insertNodeByKey(node.key, index, block)
+						}
+						case CHILD_TYPE_INVALID: {
+							return change.wrapBlockByKey(child.key, {
+								type: PAGE_NODE
+							})
+						}
+					}
+				}
 			}
 		}
 	}
@@ -187,7 +264,8 @@ const plugins = {
 
 const Question = {
 	components: {
-		Node
+		Node,
+		Solution
 	},
 	helpers: {
 		insertNode,
