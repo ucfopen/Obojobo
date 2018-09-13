@@ -22,6 +22,7 @@ import MCFeedback from '../../Chunks/MCAssessment/MCFeedback/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 const nodes = {
 	'ObojoboDraft.Chunks.ActionButton': ActionButton,
@@ -44,7 +45,11 @@ const nodes = {
 }
 
 const Node = props => {
-	return <div {...props.attributes}>{props.childen}</div>
+	return (
+		<div className={'page-editor'} {...props.attributes}>
+			{props.children}
+		</div>
+	)
 }
 
 const slateToObo = node => {
@@ -86,6 +91,12 @@ const oboToSlate = node => {
 }
 
 const plugins = {
+	renderNode(props) {
+		switch (props.node.type) {
+			case PAGE_NODE:
+				return <Node {...props} />
+		}
+	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Pages.Page': {

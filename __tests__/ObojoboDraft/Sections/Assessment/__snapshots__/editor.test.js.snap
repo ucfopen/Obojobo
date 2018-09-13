@@ -22,7 +22,7 @@ exports[`Assessment editor Node component 1`] = `
 />
 `;
 
-exports[`Assessment editor Node component adds child 1`] = `"<div class=\\"assessment\\"><button>Add Rubric</button></div>"`;
+exports[`Assessment editor Node component adds child 1`] = `"<div class=\\"assessment\\"><button class=\\"add-rubric\\">Add Rubric</button></div>"`;
 
 exports[`Assessment editor oboToSlate converts an OboComponent to a Slate node 1`] = `
 Object {
@@ -36,9 +36,9 @@ Object {
         Object {
           "data": Object {
             "display": "Attempts",
-            "isSelect": false,
             "name": "attempts",
             "options": undefined,
+            "type": "type-text",
           },
           "nodes": Array [
             Object {
@@ -57,13 +57,13 @@ Object {
           "data": Object {
             "current": undefined,
             "display": "Review",
-            "isSelect": true,
             "name": "review",
             "options": Array [
               "always",
               "never",
               "no-attempts-remaining",
             ],
+            "type": "type-select",
           },
           "isVoid": true,
           "object": "block",
@@ -96,9 +96,9 @@ Object {
         Object {
           "data": Object {
             "display": "Attempts",
-            "isSelect": false,
             "name": "attempts",
             "options": undefined,
+            "type": "type-text",
           },
           "nodes": Array [
             Object {
@@ -117,13 +117,13 @@ Object {
           "data": Object {
             "current": undefined,
             "display": "Review",
-            "isSelect": true,
             "name": "review",
             "options": Array [
               "always",
               "never",
               "no-attempts-remaining",
             ],
+            "type": "type-select",
           },
           "isVoid": true,
           "object": "block",

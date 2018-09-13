@@ -94,7 +94,9 @@ class Node extends React.Component {
 					{'Type: ' + this.state.type}
 				</div>
 				{this.props.children}
-				<button onClick={() => this.addMod()}>{'Add Mod'}</button>
+				<button className={'add-button'} onClick={() => this.addMod()}>
+					{'Add Mod'}
+				</button>
 				<button className={'delete-node'} onClick={() => this.deleteNode()}>
 					{'X'}
 				</button>
@@ -137,24 +139,32 @@ const oboToSlate = node => {
 	json.nodes = []
 
 	json.nodes.push(
-		ParameterNode.helpers.oboToSlate(
-			'passingAttemptScore',
-			node.passingAttemptScore,
-			'Passing Score'
-		)
+		ParameterNode.helpers.oboToSlate({
+			name: 'passingAttemptScore',
+			value: node.passingAttemptScore,
+			display: 'Passing Score'
+		})
 	)
 	json.nodes.push(
-		ParameterNode.helpers.oboToSlate('passedResult', node.passedResult, 'Passed Result')
+		ParameterNode.helpers.oboToSlate({
+			name: 'passedResult',
+			value: node.passedResult,
+			display: 'Passed Result'
+		})
 	)
 	json.nodes.push(
-		ParameterNode.helpers.oboToSlate('failedResult', node.failedResult, 'Failed Result')
+		ParameterNode.helpers.oboToSlate({
+			name: 'failedResult',
+			value: node.failedResult,
+			display: 'Failed Result'
+		})
 	)
 	json.nodes.push(
-		ParameterNode.helpers.oboToSlate(
-			'unableToPassResult',
-			node.unableToPassResult,
-			'Unable to Pass Result'
-		)
+		ParameterNode.helpers.oboToSlate({
+			name: 'unableToPassResult',
+			value: node.unableToPassResult,
+			display: 'Unable to Pass Result'
+		})
 	)
 
 	if (node.mods) {
@@ -172,13 +182,19 @@ const oboToSlate = node => {
 			}
 
 			slateMod.nodes.push(
-				ParameterNode.helpers.oboToSlate(
-					'attemptCondition',
-					mod.attemptCondition,
-					'Attempt Condition'
-				)
+				ParameterNode.helpers.oboToSlate({
+					name: 'attemptCondition',
+					value: mod.attemptCondition,
+					display: 'Attempt Condition'
+				})
 			)
-			slateMod.nodes.push(ParameterNode.helpers.oboToSlate('reward', mod.reward, 'Reward'))
+			slateMod.nodes.push(
+				ParameterNode.helpers.oboToSlate({
+					name: 'reward',
+					value: mod.reward,
+					display: 'Reward'
+				})
+			)
 
 			modList.nodes.push(slateMod)
 		})
@@ -206,7 +222,11 @@ const validateRubric = node => {
 	if (node.nodes.size === 0 || node.nodes.size >= 4) return
 	if (node.nodes.first().data.get('name') !== 'passingAttemptScore') {
 		const block = Block.create(
-			ParameterNode.helpers.oboToSlate('passingAttemptScore', 100 + '', 'Passing Score')
+			ParameterNode.helpers.oboToSlate({
+				name: 'passingAttemptScore',
+				value: 100 + '',
+				display: 'Passing Score'
+			})
 		)
 
 		return change => change.insertNodeByKey(node.key, 0, block)
@@ -214,7 +234,11 @@ const validateRubric = node => {
 
 	if (node.nodes.size === 1 || node.nodes.get(1).data.get('name') !== 'passedResult') {
 		const block = Block.create(
-			ParameterNode.helpers.oboToSlate('passedResult', 100 + '', 'Passed Result')
+			ParameterNode.helpers.oboToSlate({
+				name: 'passedResult',
+				value: 100 + '',
+				display: 'Passed Result'
+			})
 		)
 
 		return change => change.insertNodeByKey(node.key, 1, block)
@@ -222,13 +246,21 @@ const validateRubric = node => {
 
 	if (node.nodes.size === 2 || node.nodes.get(2).data.get('name') !== 'failedResult') {
 		const block = Block.create(
-			ParameterNode.helpers.oboToSlate('failedResult', 0 + '', 'Failed Result')
+			ParameterNode.helpers.oboToSlate({
+				name: 'failedResult',
+				value: 0 + '',
+				display: 'Failed Result'
+			})
 		)
 		return change => change.insertNodeByKey(node.key, 2, block)
 	}
 
 	const block = Block.create(
-		ParameterNode.helpers.oboToSlate('unableToPassResult', '', 'Unable to Pass Result')
+		ParameterNode.helpers.oboToSlate({
+			name: 'unableToPassResult',
+			value: '',
+			display: 'Unable to Pass Result'
+		})
 	)
 	return change => change.insertNodeByKey(node.key, 3, block)
 }
@@ -267,30 +299,38 @@ const plugins = {
 							switch (index) {
 								case 0:
 									block = Block.create(
-										ParameterNode.helpers.oboToSlate(
-											'passingAttemptScore',
-											100 + '',
-											'Passing Score'
-										)
+										ParameterNode.helpers.oboToSlate({
+											name: 'passingAttemptScore',
+											value: 100 + '',
+											display: 'Passing Score'
+										})
 									)
 									break
 								case 1:
 									block = Block.create(
-										ParameterNode.helpers.oboToSlate('passedResult', 100 + '', 'Passed Result')
+										ParameterNode.helpers.oboToSlate({
+											name: 'passedResult',
+											value: 100 + '',
+											display: 'Passed Result'
+										})
 									)
 									break
 								case 2:
 									block = Block.create(
-										ParameterNode.helpers.oboToSlate('failedResult', 0 + '', 'Failed Result')
+										ParameterNode.helpers.oboToSlate({
+											name: 'failedResult',
+											value: 0 + '',
+											display: 'Failed Result'
+										})
 									)
 									break
 								case 3:
 									block = Block.create(
-										ParameterNode.helpers.oboToSlate(
-											'unableToPassResult',
-											'',
-											'Unable to Pass Result'
-										)
+										ParameterNode.helpers.oboToSlate({
+											name: 'unableToPassResult',
+											value: '',
+											display: 'Unable to Pass Result'
+										})
 									)
 									break
 							}
@@ -303,33 +343,42 @@ const plugins = {
 								switch (index) {
 									case 0:
 										block = Block.create(
-											ParameterNode.helpers.oboToSlate(
-												'passingAttemptScore',
-												100 + '',
-												'Passing Score'
-											)
+											ParameterNode.helpers.oboToSlate({
+												name: 'passingAttemptScore',
+												value: 100 + '',
+												display: 'Passing Score'
+											})
 										)
-										return change.insertNodeByKey(node.key, index, block)
+										break
 									case 1:
 										block = Block.create(
-											ParameterNode.helpers.oboToSlate('passedResult', 100 + '', 'Passed Result')
+											ParameterNode.helpers.oboToSlate({
+												name: 'passedResult',
+												value: 100 + '',
+												display: 'Passed Result'
+											})
 										)
-										return change.insertNodeByKey(node.key, index, block)
+										break
 									case 2:
 										block = Block.create(
-											ParameterNode.helpers.oboToSlate('failedResult', 0 + '', 'Failed Result')
+											ParameterNode.helpers.oboToSlate({
+												name: 'failedResult',
+												value: 0 + '',
+												display: 'Failed Result'
+											})
 										)
-										return change.insertNodeByKey(node.key, index, block)
+										break
 									case 3:
 										block = Block.create(
-											ParameterNode.helpers.oboToSlate(
-												'unableToPassResult',
-												'',
-												'Unable to Pass Result'
-											)
+											ParameterNode.helpers.oboToSlate({
+												name: 'unableToPassResult',
+												value: '',
+												display: 'Unable to Pass Result'
+											})
 										)
-										return change.insertNodeByKey(node.key, index, block)
+										break
 								}
+								return change.insertNodeByKey(node.key, index, block)
 							})
 						}
 					}
@@ -360,16 +409,20 @@ const plugins = {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(
-									ParameterNode.helpers.oboToSlate(
-										'attemptCondition',
-										'[1,$last_attempt]',
-										'Attempt Condition'
-									)
+									ParameterNode.helpers.oboToSlate({
+										name: 'attemptCondition',
+										value: '[1,$last_attempt]',
+										display: 'Attempt Condition'
+									})
 								)
 								return change.insertNodeByKey(node.key, index, block)
 							}
 							const block = Block.create(
-								ParameterNode.helpers.oboToSlate('reward', 0 + '', 'Reward')
+								ParameterNode.helpers.oboToSlate({
+									name: 'reward',
+									value: 0 + '',
+									display: 'Reward'
+								})
 							)
 							return change.insertNodeByKey(node.key, index, block)
 						}
@@ -378,16 +431,20 @@ const plugins = {
 								c.removeNodeByKey(child.key)
 								if (index === 0) {
 									const block = Block.create(
-										ParameterNode.helpers.oboToSlate(
-											'attemptCondition',
-											'[1,$last_attempt]',
-											'Attempt Condition'
-										)
+										ParameterNode.helpers.oboToSlate({
+											name: 'attemptCondition',
+											value: '[1,$last_attempt]',
+											display: 'Attempt Condition'
+										})
 									)
 									return c.insertNodeByKey(node.key, index, block)
 								}
 								const block = Block.create(
-									ParameterNode.helpers.oboToSlate('reward', 0 + '', 'Reward')
+									ParameterNode.helpers.oboToSlate({
+										name: 'reward',
+										value: 0 + '',
+										display: 'Reward'
+									})
 								)
 								return c.insertNodeByKey(node.key, index, block)
 							})

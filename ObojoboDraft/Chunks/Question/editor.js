@@ -1,6 +1,7 @@
 import React from 'react'
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID, LAST_CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import Common from 'Common'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -15,6 +16,8 @@ const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
+const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 import Break from '../Break/editor'
 import Code from '../Code/editor'
@@ -28,8 +31,10 @@ import Table from '../Table/editor'
 import Text from '../Text/editor'
 import YouTube from '../YouTube/editor'
 import MCAssessment from '../MCAssessment/editor'
+import Page from '../../Pages/Page/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 
+const { Button } = Common.components
 const nodes = {
 	'ObojoboDraft.Chunks.Break': Break,
 	'ObojoboDraft.Chunks.Code': Code,
@@ -45,6 +50,25 @@ const nodes = {
 	'ObojoboDraft.Chunks.HTML': HTML
 }
 
+const Solution = props => {
+	const deleteNode = () => {
+		const editor = props.editor
+		const change = editor.value.change()
+		change.removeNodeByKey(props.node.key)
+
+		editor.onChange(change)
+	}
+
+	return (
+		<div className={'solution-editor'} {...props.attributes}>
+			{props.children}
+			<button className={'delete'} onClick={() => deleteNode()}>
+				X
+			</button>
+		</div>
+	)
+}
+
 class Node extends React.Component {
 	delete() {
 		const editor = this.props.editor
@@ -53,15 +77,39 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
-	render(){
+	addSolution() {
+		const editor = this.props.editor
+		const change = editor.value.change()
+
+		const newQuestion = Block.create({
+			type: SOLUTION_NODE
+		})
+		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
+
+		editor.onChange(change)
+	}
+	render() {
+		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
 		return (
-			<div className={'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'} {...this.props.attributes}>
+			<div
+				className={
+					'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'
+				}
+				{...this.props.attributes}
+			>
 				<div className={'flipper'}>
 					<div className={'content back'}>
-						<button className={'delete'} onClick={() => this.delete()}>X</button>
 						{this.props.children}
+						{hasSolution ? null : (
+							<Button className={'add-solution'} onClick={() => this.addSolution()}>
+								{'Add Solution'}
+							</Button>
+						)}
 					</div>
 				</div>
+				<button className={'delete'} onClick={() => this.delete()}>
+					X
+				</button>
 			</div>
 		)
 	}
@@ -83,8 +131,12 @@ const slateToObo = node => {
 	json.content = node.data.get('content') || {}
 	json.children = []
 
+	delete json.content.solution
+
 	node.nodes.forEach(child => {
-		if(nodes.hasOwnProperty(child.type)){
+		if (child.type === SOLUTION_NODE) {
+			json.content.solution = Page.helpers.slateToObo(child.nodes.get(0))
+		} else if (nodes.hasOwnProperty(child.type)) {
 			json.children.push(nodes[child.type].helpers.slateToObo(child))
 		} else {
 			json.children.push(DefaultNode.helpers.slateToObo(child))
@@ -104,12 +156,23 @@ const oboToSlate = node => {
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		if(nodes.hasOwnProperty(child.type)){
+		if (nodes.hasOwnProperty(child.type)) {
 			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
 		} else {
 			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
 		}
 	})
+
+	if (json.data.content.solution) {
+		const solution = {
+			object: 'block',
+			type: SOLUTION_NODE,
+			nodes: []
+		}
+
+		solution.nodes.push(Page.helpers.oboToSlate(json.data.content.solution))
+		json.nodes.push(solution)
+	}
 
 	return json
 }
@@ -119,26 +182,32 @@ const plugins = {
 		switch (props.node.type) {
 			case QUESTION_NODE:
 				return <Node {...props} />
+			case SOLUTION_NODE:
+				return <Solution {...props} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Question': {
 				nodes: [
-					{ types: [
-						BREAK_NODE,
-						CODE_NODE,
-						FIGURE_NODE,
-						HEADING_NODE,
-						IFRAME_NODE,
-						LIST_NODE,
-						MATH_NODE,
-						TEXT_NODE,
-						TABLE_NODE,
-						YOUTUBE_NODE,
-						HTML_NODE
-					], min: 1 },
-					{ types: [MCASSESSMENT_NODE], min: 1, max: 1}
+					{
+						types: [
+							BREAK_NODE,
+							CODE_NODE,
+							FIGURE_NODE,
+							HEADING_NODE,
+							IFRAME_NODE,
+							LIST_NODE,
+							MATH_NODE,
+							TEXT_NODE,
+							TABLE_NODE,
+							YOUTUBE_NODE,
+							HTML_NODE
+						],
+						min: 1
+					},
+					{ types: [MCASSESSMENT_NODE], min: 1, max: 1 },
+					{ types: [SOLUTION_NODE], max: 1 }
 				],
 
 				normalize: (change, violation, { node, child, index }) => {
@@ -146,10 +215,10 @@ const plugins = {
 						case CHILD_REQUIRED: {
 							// If we are missing the last node,
 							// it should be a MCAssessemnt
-							if (index === node.nodes.size){
+							if (index === node.nodes.size) {
 								const block = Block.create({
 									type: MCASSESSMENT_NODE,
-									data: { content: { responseType: 'pick-one', shuffle: true }}
+									data: { content: { responseType: 'pick-one', shuffle: true } }
 								})
 								return change.insertNodeByKey(node.key, index, block)
 							}
@@ -157,19 +226,34 @@ const plugins = {
 							// Otherwise, just add a text node
 							const block = Block.create({
 								type: TEXT_NODE,
-								data: { content: { indent: 0 }}
+								data: { content: { indent: 0 } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							if(child.object !== 'text') return
-							return change.wrapBlockByKey(
-								child.key,
-								{
-									type: TEXT_NODE,
-									data: { content: { indent: 0 }}
-								}
-							)
+							if (child.object !== 'text') return
+							return change.wrapBlockByKey(child.key, {
+								type: TEXT_NODE,
+								data: { content: { indent: 0 } }
+							})
+						}
+					}
+				}
+			},
+			'ObojoboDraft.Chunks.Question.Solution': {
+				nodes: [{ types: [PAGE_NODE], max: 1, min: 1 }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_REQUIRED: {
+							const block = Block.create({
+								type: PAGE_NODE
+							})
+							return change.insertNodeByKey(node.key, index, block)
+						}
+						case CHILD_TYPE_INVALID: {
+							return change.wrapBlockByKey(child.key, {
+								type: PAGE_NODE
+							})
 						}
 					}
 				}
@@ -181,11 +265,12 @@ const plugins = {
 const Question = {
 	components: {
 		Node,
+		Solution
 	},
 	helpers: {
 		insertNode,
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }

@@ -1,88 +1,56 @@
 import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import Common from 'Common'
 
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
+const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 import MCChoice from './MCChoice/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
+import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
+
+const { Button } = Common.components
+
+const Settings = props => {
+	return (
+		<div {...props.attributes} className={'mc-settings'}>
+			<div>{props.children}</div>
+		</div>
+	)
+}
+
+const ChoiceList = props => {
+	const addChoice = () => {
+		const editor = props.editor
+		const change = editor.value.change()
+
+		const newChoice = Block.create({
+			type: MCCHOICE_NODE,
+			data: { content: { score: 0 } }
+		})
+		change.insertNodeByKey(props.node.key, props.node.nodes.size, newChoice)
+
+		editor.onChange(change)
+	}
+
+	return (
+		<div {...props.attributes}>
+			<span className={'instructions'}>{'Pick all of the correct answers'} </span>
+			{props.children}
+			<Button className={'choice-button pad'} onClick={() => addChoice()}>
+				{'+ Add Choice'}
+			</Button>
+		</div>
+	)
+}
 
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = props.node.data.get('content')
-	}
-	handleTypeChange(event) {
-		const editor = this.props.editor
-		const change = editor.value.change()
-
-		this.setState({ responseType: event.target.value })
-
-		change.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					responseType: event.target.value,
-					shuffle: this.state.shuffle
-				}
-			}
-		})
-		editor.onChange(change)
-	}
-	handleShuffleChange(event) {
-		const editor = this.props.editor
-		const change = editor.value.change()
-
-		this.setState({ shuffle: event.target.checked })
-
-		change.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					shuffle: event.target.checked,
-					responseType: this.state.responseType
-				}
-			}
-		})
-		editor.onChange(change)
-	}
-	addChoice() {
-		const editor = this.props.editor
-		const change = editor.value.change()
-
-		const newQuestion = Block.create({
-			type: MCCHOICE_NODE,
-			data: { content: { score: 0 } }
-		})
-		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
-
-		editor.onChange(change)
-	}
-	renderContent() {
-		return (
-			<div className={'content-box'}>
-				<button onClick={() => this.addChoice()}>{'Add Choice'}</button>
-				<div contentEditable={false}>
-					{'Response Type: '}
-					<select
-						name={'Response Type'}
-						value={this.state.responseType}
-						onChange={event => this.handleTypeChange(event)}
-						onClick={event => event.stopPropagation()}
-					>
-						<option value={'pick-one'}>{'Pick One'}</option>
-						<option value={'pick-all'}>{'Pick All'}</option>
-					</select>
-				</div>
-				<div contentEditable={false}>
-					{' Shuffle?'}
-					<input
-						type="checkbox"
-						checked={this.state.shuffle}
-						onChange={event => this.handleShuffleChange(event)}
-					/>
-				</div>
-			</div>
-		)
 	}
 	render() {
 		return (
@@ -92,9 +60,7 @@ class Node extends React.Component {
 				}
 				{...this.props.attributes}
 			>
-				<span className={'instructions'}>{'Pick all of the correct answers'} </span>
 				{this.props.children}
-				{this.renderContent()}
 			</div>
 		)
 	}
@@ -110,11 +76,19 @@ const slateToObo = node => {
 	let correct = 0
 
 	node.nodes.forEach(child => {
-		if (child.type === MCCHOICE_NODE) {
-			json.children.push(MCChoice.helpers.slateToObo(child))
-			if (child.data.get('content').score === 100) correct++
-		} else {
-			json.children.push(DefaultNode.helpers.slateToObo(child))
+		switch (child.type) {
+			case CHOICE_LIST_NODE:
+				child.nodes.forEach(choice => {
+					json.children.push(MCChoice.helpers.slateToObo(choice))
+					if (choice.data.get('content').score === 100) correct++
+				})
+				break
+			case SETTINGS_NODE:
+				json.content.responseType = child.nodes.first().data.get('current')
+				json.content.shuffle = child.nodes.last().data.get('checked')
+				break
+			default:
+				json.children.push(DefaultNode.helpers.slateToObo(child))
 		}
 	})
 
@@ -136,13 +110,47 @@ const oboToSlate = node => {
 	json.data = { content: node.content }
 	json.nodes = []
 
+	const choiceList = {
+		object: 'block',
+		type: CHOICE_LIST_NODE,
+		nodes: []
+	}
+
 	node.children.forEach(child => {
 		if (child.type === MCCHOICE_NODE) {
-			json.nodes.push(MCChoice.helpers.oboToSlate(child))
+			choiceList.nodes.push(MCChoice.helpers.oboToSlate(child))
 		} else {
-			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
+			choiceList.nodes.push(DefaultNode.helpers.oboToSlate(child))
 		}
 	})
+
+	json.nodes.push(choiceList)
+
+	const settings = {
+		object: 'block',
+		type: SETTINGS_NODE,
+		nodes: []
+	}
+
+	settings.nodes.push(
+		ParameterNode.helpers.oboToSlate({
+			name: 'responseType',
+			value: node.content.responseType,
+			display: 'Response Type',
+			options: ['pick-one', 'pick-all']
+		})
+	)
+
+	settings.nodes.push(
+		ParameterNode.helpers.oboToSlate({
+			name: 'shuffle',
+			value: node.content.shuffle,
+			display: 'Shuffle',
+			checked: true
+		})
+	)
+
+	json.nodes.push(settings)
 
 	return json
 }
@@ -152,11 +160,51 @@ const plugins = {
 		switch (props.node.type) {
 			case MCASSESSMENT_NODE:
 				return <Node {...props} />
+			case SETTINGS_NODE:
+				return <Settings {...props} />
+			case CHOICE_LIST_NODE:
+				return <ChoiceList {...props} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.MCAssessment': {
+				nodes: [
+					{ types: [CHOICE_LIST_NODE], min: 1, max: 1 },
+					{ types: [SETTINGS_NODE], min: 1, max: 1 }
+				],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_REQUIRED: {
+							if (index === 0) {
+								const block = Block.create({
+									type: CHOICE_LIST_NODE
+								})
+								return change.insertNodeByKey(node.key, index, block)
+							}
+
+							const block = Block.create({
+								type: SETTINGS_NODE
+							})
+							return change.insertNodeByKey(node.key, index, block)
+						}
+						case CHILD_TYPE_INVALID: {
+							if (index === 0) {
+								const block = Block.create({
+									type: CHOICE_LIST_NODE
+								})
+								return change.wrapBlockByKey(child.key, block)
+							}
+
+							const block = Block.create({
+								type: SETTINGS_NODE
+							})
+							return change.wrapBlockByKey(child.key, block)
+						}
+					}
+				}
+			},
+			'ObojoboDraft.Chunks.MCAssessment.ChoiceList': {
 				nodes: [{ types: [MCCHOICE_NODE], min: 1 }],
 				normalize: (change, violation, { node, child, index }) => {
 					switch (violation) {
@@ -168,9 +216,64 @@ const plugins = {
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
+							const block = Block.create({
 								type: MCCHOICE_NODE,
 								data: { content: { score: 0 } }
+							})
+							return change.wrapBlockByKey(child.key, block)
+						}
+					}
+				}
+			},
+			'ObojoboDraft.Chunks.MCAssessment.Settings': {
+				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_REQUIRED: {
+							if (index === 0) {
+								const block = Block.create(
+									ParameterNode.helpers.oboToSlate({
+										name: 'responseType',
+										value: 'Pick One',
+										display: 'Response Type',
+										options: ['pick-one', 'pick-all']
+									})
+								)
+								return change.insertNodeByKey(node.key, index, block)
+							}
+							const block = Block.create(
+								ParameterNode.helpers.oboToSlate({
+									name: 'shuffle',
+									value: true,
+									display: 'Shuffle',
+									checked: true
+								})
+							)
+							return change.insertNodeByKey(node.key, index, block)
+						}
+						case CHILD_TYPE_INVALID: {
+							return change.withoutNormalization(c => {
+								c.removeNodeByKey(child.key)
+								if (index === 0) {
+									const block = Block.create(
+										ParameterNode.helpers.oboToSlate({
+											name: 'responseType',
+											value: 'Pick One',
+											display: 'Response Type',
+											options: ['pick-one', 'pick-all']
+										})
+									)
+									return c.insertNodeByKey(node.key, index, block)
+								}
+								const block = Block.create(
+									ParameterNode.helpers.oboToSlate({
+										name: 'shuffle',
+										value: true,
+										display: 'Shuffle',
+										checked: true
+									})
+								)
+								return c.insertNodeByKey(node.key, index, block)
 							})
 						}
 					}
@@ -182,7 +285,9 @@ const plugins = {
 
 const MCAssessment = {
 	components: {
-		Node
+		Node,
+		Settings,
+		ChoiceList
 	},
 	helpers: {
 		slateToObo,

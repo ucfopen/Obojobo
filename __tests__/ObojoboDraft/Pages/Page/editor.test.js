@@ -26,9 +26,7 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 describe('Page', () => {
 	test('Node builds the expected component', () => {
 		const Node = Page.components.Node
-		const component = renderer.create(
-			<Node attributes={{ dummy: 'dummyData' }} children={'mockChildren'} />
-		)
+		const component = renderer.create(<Node attributes={{ dummy: 'dummyData' }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -87,6 +85,21 @@ describe('Page', () => {
 		const slateNode = Page.helpers.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode renders a solution when passed', () => {
+		const props = {
+			node: {
+				type: PAGE_NODE,
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		expect(Page.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {

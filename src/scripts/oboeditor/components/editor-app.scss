@@ -96,6 +96,23 @@
 			width: auto;
 			border-bottom: 1px solid $color-preview;
 		}
+
+		button {
+			font-family: $font-default;
+			font-size: 0.75em;
+			line-height: 1em;
+			font-family: $font-default;
+			font-size: 1em;
+			text-align: center;
+			border-radius: $dimension-rounded-radius;
+			padding: 0.4em;
+		}
+
+		.add-button {
+			margin-top: 0.2em;
+			background-color: $color-preview;
+			color: white;
+		}
 	}
 
 	.settings {
@@ -118,5 +135,52 @@
 			transform-origin: top left;
 			font-family: $font-default;
 		}
+	}
+
+	.switch {
+		position: relative;
+		display: inline-block;
+		width: 2em;
+		height: 1em;
+
+		input {
+			opacity: 0;
+		}
+
+		.slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: $color-shadow;
+			border-radius: 1em;
+		}
+
+		.slider:before {
+			position: absolute;
+			content: '';
+			height: 0.5em;
+			width: 0.5em;
+			left: 0.25em;
+			bottom: 0.25em;
+			background-color: white;
+			border-radius: 50%;
+		}
+
+		input:checked + .slider {
+			background-color: $color-obojobo-blue;
+		}
+		input:checked + .slider:before {
+			transform: translate(1em, 0);
+		}
+		input:focus + .slider {
+			outline: rgb(59, 153, 252) auto 5px;
+		}
+	}
+
+	.buffer {
+		margin: $dimension-padding / 3;
 	}
 }

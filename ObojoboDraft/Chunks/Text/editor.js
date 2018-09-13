@@ -59,7 +59,6 @@ const slateToObo = node => {
 
 	return json
 }
-
 const oboToSlate = node => {
 	const json = {}
 	json.object = 'block'
@@ -69,7 +68,6 @@ const oboToSlate = node => {
 
 	json.nodes = []
 	node.content.textGroup.forEach(line => {
-		const indent = line.data ? line.data.indent : 0
 		const textLine = {
 			object: 'text',
 			leaves: [
