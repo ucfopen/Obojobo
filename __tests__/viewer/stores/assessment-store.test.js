@@ -298,4 +298,93 @@ describe('AssessmentStore', () => {
 				expect(AssessmentStore.getState().assessments.assessmentId.currentResponses).toEqual(['q1'])
 			})
 	})
+
+	test('updateAttempts sets highestAttemptScoreAttempts and highestAssessmentScoreAttempts correctly', () => {
+		AssessmentStore.updateAttempts([
+			{
+				assessmentId: 'assessmentId',
+				attempts: [
+					{
+						attemptId: 'attempt-1',
+						attemptScore: 0,
+						assessmentScore: null,
+						state: {
+							questions: []
+						}
+					},
+					{
+						attemptID: 'attempt-2',
+						attemptScore: 50,
+						assessmentScore: 25,
+						state: {
+							questions: []
+						}
+					},
+					{
+						attemptId: 'attempt-3',
+						attemptScore: 100,
+						assessmentScore: 50,
+						state: {
+							questions: []
+						}
+					},
+					{
+						attemptId: 'attempt-4',
+						attemptScore: 100,
+						assessmentScore: null,
+						state: {
+							questions: []
+						}
+					},
+					{
+						attemptId: 'attempt-5',
+						attemptScore: null,
+						assessmentScore: 50,
+						state: {
+							questions: []
+						}
+					}
+				]
+			}
+		])
+
+		let state = AssessmentStore.getState()
+		let assessState = state.assessments.assessmentId
+		expect(assessState.highestAttemptScoreAttempts).toEqual([
+			{
+				attemptId: 'attempt-3',
+				attemptScore: 100,
+				assessmentScore: 50,
+				state: {
+					questions: []
+				}
+			},
+			{
+				attemptId: 'attempt-4',
+				attemptScore: 100,
+				assessmentScore: null,
+				state: {
+					questions: []
+				}
+			}
+		])
+		expect(assessState.highestAssessmentScoreAttempts).toEqual([
+			{
+				attemptId: 'attempt-3',
+				attemptScore: 100,
+				assessmentScore: 50,
+				state: {
+					questions: []
+				}
+			},
+			{
+				attemptId: 'attempt-5',
+				attemptScore: null,
+				assessmentScore: 50,
+				state: {
+					questions: []
+				}
+			}
+		])
+	})
 })
