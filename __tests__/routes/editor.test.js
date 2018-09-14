@@ -62,8 +62,18 @@ describe('editor route', () => {
 
 		// mock the list of drafts in backwards order
 		db.any.mockResolvedValueOnce([
-			{ draftId: 99, xml: 'xml-1', content: { content: { title: 'b-mock-title' } } },
-			{ draftId: 100, xml: 'xml-2', content: { content: { title: 'a-mock-title' } } }
+			{
+				draftId: 99,
+				xml: 'xml-1',
+				createdAt: new Date('2018-09-13 13:15:42.139095'),
+				content: { content: { title: 'b-mock-title' } }
+			},
+			{
+				draftId: 100,
+				xml: 'xml-2',
+				createdAt: new Date('2018-09-15 13:15:42.139095'),
+				content: { content: { title: 'a-mock-title' } }
+			}
 		])
 
 		return request(app)
@@ -86,7 +96,12 @@ describe('editor route', () => {
 
 		// mock the list of drafts with xml content
 		db.any.mockResolvedValueOnce([
-			{ draftId: 99, xml: 'xml-1', content: { content: { title: 'b-mock-title' } } }
+			{
+				draftId: 99,
+				xml: 'xml-1',
+				createdAt: new Date('2018-09-13 13:15:42.139095'),
+				content: { content: { title: 'b-mock-title' } }
+			}
 		])
 
 		return request(app)
@@ -103,7 +118,12 @@ describe('editor route', () => {
 
 		// mock the list of drafts with no xml content
 		db.any.mockResolvedValueOnce([
-			{ draftId: 99, xml: null, content: { content: { title: 'b-mock-title' } } }
+			{
+				draftId: 99,
+				xml: null,
+				createdAt: new Date('2018-09-13 13:15:42.139095'),
+				content: { content: { title: 'b-mock-title' } }
+			}
 		])
 
 		return request(app)
