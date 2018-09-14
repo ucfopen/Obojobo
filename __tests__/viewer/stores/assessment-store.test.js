@@ -637,4 +637,31 @@ describe('AssessmentStore', () => {
 		expect(AssessmentUtil.isInAssessment).toHaveBeenCalled()
 		expect(mockFunction).toHaveBeenCalled()
 	})
+
+	test('updateAttempts sets highestAttemptScoreAttempts and highestAssessmentScoreAttempts correctly', () => {
+		AssessmentUtil.findHighestAttempts.mockImplementation((attempts, prop) => {
+			return 'Called with ' + prop
+		})
+
+		AssessmentStore.updateAttempts([
+			{
+				assessmentId: 'assessmentId',
+				attempts: [
+					{
+						attemptId: 'attempt-1',
+						attemptScore: 0,
+						assessmentScore: null,
+						state: {
+							questions: []
+						}
+					}
+				]
+			}
+		])
+
+		const state = AssessmentStore.getState()
+		const assessState = state.assessments.assessmentId
+		expect(assessState.highestAttemptScoreAttempts).toEqual('Called with attemptScore')
+		expect(assessState.highestAssessmentScoreAttempts).toEqual('Called with assessmentScore')
+	})
 })
