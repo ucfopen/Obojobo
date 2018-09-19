@@ -42,7 +42,7 @@ export default class Nav extends React.Component {
 
 	renderLinkButton(label, isDisabled, refId = null) {
 		return (
-			<button ref={refId} disabled={isDisabled}>
+			<button ref={refId} aria-disabled={isDisabled}>
 				{this.renderLabel(label)}
 			</button>
 		)
@@ -109,6 +109,10 @@ export default class Nav extends React.Component {
 		}
 	}
 
+	focus() {
+		this.refs.list.focus()
+	}
+
 	render() {
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
@@ -134,7 +138,7 @@ export default class Nav extends React.Component {
 				<button className="toggle-button" onClick={NavUtil.toggle}>
 					Toggle Navigation Menu
 				</button>
-				<ul aria-hidden={isNavInaccessible}>
+				<ul aria-hidden={isNavInaccessible} tabIndex="-1" ref="list">
 					{list.map((item, index) => {
 						switch (item.type) {
 							case 'heading':

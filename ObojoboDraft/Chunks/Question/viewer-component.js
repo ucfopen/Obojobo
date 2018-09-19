@@ -57,6 +57,14 @@ export default class Question extends React.Component {
 				break
 		}
 
+		let startQuestionAriaLabel
+		if (mode === 'practice') {
+			startQuestionAriaLabel = 'Try Question'
+		} else {
+			startQuestionAriaLabel =
+				'Start Question ' + (this.props.questionIndex + 1) + ' of ' + this.props.numQuestionsInBank
+		}
+
 		const classNames =
 			'obojobo-draft--chunks--question' +
 			scoreClassName +
@@ -68,7 +76,9 @@ export default class Question extends React.Component {
 				model={this.props.model}
 				moduleData={this.props.moduleData}
 				className={classNames}
-				tabIndex="-1"
+				role="region"
+				aria-label="Question"
+				aria-live="polite"
 			>
 				<div className="flipper">
 					<div className="content-back">
@@ -81,7 +91,10 @@ export default class Question extends React.Component {
 						/>
 					</div>
 					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
-						<Button value={mode === 'practice' ? 'Try Question' : 'View Question'} />
+						<Button
+							value={mode === 'practice' ? 'Try Question' : 'Start Question'}
+							ariaLabel={startQuestionAriaLabel}
+						/>
 					</div>
 				</div>
 			</OboComponent>
@@ -109,6 +122,8 @@ export default class Question extends React.Component {
 				moduleData={this.props.moduleData}
 				className={className}
 				tabIndex="-1"
+				role="region"
+				aria-label="Question"
 			>
 				<div className="flipper">
 					<div className="content back">

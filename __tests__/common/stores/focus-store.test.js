@@ -3,11 +3,16 @@ jest.mock('../../../src/scripts/common/models/obo-model')
 import FocusStore from '../../../src/scripts/common/stores/focus-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import OboModel from '../../../src/scripts/common/models/obo-model'
+import focus from '../../../src/scripts/common/page/focus'
+
+jest.mock('../../../src/scripts/common/page/focus')
 
 describe('FocusStore', () => {
 	beforeEach(() => {
 		FocusStore.init()
 		FocusStore.triggerChange = jest.fn()
+
+		jest.resetAllMocks()
 	})
 
 	test('should init state with a specific structure and return it', () => {
@@ -116,19 +121,17 @@ describe('FocusStore', () => {
 	})
 
 	test('focus will update state, call focus on element, trigger change', () => {
-		const mockFocus = jest.fn()
+		const mockEl = jest.fn()
 		OboModel.models = {
 			testId: {
 				getDomEl: () => {
-					return {
-						focus: mockFocus
-					}
+					return mockEl
 				}
 			}
 		}
 		FocusStore._focus('testId')
 
-		expect(mockFocus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledTimes(1)
 		expect(FocusStore.getState()).toEqual({
 			focussedId: 'testId',
 			viewState: 'active'
@@ -137,19 +140,17 @@ describe('FocusStore', () => {
 	})
 
 	test('focus with isVisuallyFocused = false will NOT update state, call focus on element, trigger change', () => {
-		const mockFocus = jest.fn()
+		const mockEl = jest.fn()
 		OboModel.models = {
 			testId: {
 				getDomEl: () => {
-					return {
-						focus: mockFocus
-					}
+					return mockEl
 				}
 			}
 		}
 		FocusStore._focus('testId', false)
 
-		expect(mockFocus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledTimes(1)
 		expect(FocusStore.getState()).toEqual({
 			focussedId: 'testId',
 			viewState: 'inactive'

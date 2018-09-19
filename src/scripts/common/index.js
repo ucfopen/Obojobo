@@ -50,6 +50,7 @@ import DOMUtil from './page/dom-util'
 import Head from './page/head'
 import Keyboard from './page/keyboard'
 import Screen from './page/screen'
+import focus from './page/focus'
 import ChunkStyleList from './text/chunk-style-list'
 import StyleableText from './text/styleable-text'
 import StyleableTextComponent from './text/styleable-text-component'
@@ -158,7 +159,8 @@ export default {
 		DOMUtil,
 		Head,
 		Keyboard,
-		Screen
+		Screen,
+		focus
 	},
 
 	text: {

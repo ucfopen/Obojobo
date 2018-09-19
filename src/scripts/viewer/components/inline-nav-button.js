@@ -6,6 +6,11 @@ import NavUtil from '../../viewer/util/nav-util'
 
 export default class InlineNavButton extends React.Component {
 	onClick(event) {
+		if (this.props.onClick) {
+			this.props.onClick()
+			return
+		}
+
 		if (this.props.disabled) {
 			return
 		}
@@ -28,7 +33,8 @@ export default class InlineNavButton extends React.Component {
 					this.props.disabled ? ' is-not-enabled' : ' is-enabled'
 				}`}
 				onClick={this.onClick.bind(this)}
-				disabled={this.props.disabled}
+				aria-label={this.props.ariaLabel}
+				aria-disabled={this.props.disabled}
 			>
 				{this.props.title}
 			</button>

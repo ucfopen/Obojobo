@@ -104,7 +104,7 @@ body {
 	}
 }
 
-.component {
+.component[data-obo-component='true'] {
 	box-sizing: border-box;
 	color: $color-text;
 	display: block;
@@ -127,8 +127,19 @@ body {
 		padding-bottom: 0;
 	}
 
-	&[tabIndex='-1']:focus {
+	&:focus {
 		outline: none;
+	}
+
+	.for-screen-reader-only {
+		width: 0;
+		height: 0;
+		overflow: hidden;
+		pointer-events: none;
+		display: inline-block;
+		position: absolute;
+		left: 0;
+		top: 0;
 	}
 
 	.pad {

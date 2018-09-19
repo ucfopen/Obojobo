@@ -2,7 +2,9 @@
 
 exports[`Modal Modal 1`] = `
 <div
+  aria-labelledby="obojobo-draft--components--modal--modal--content"
   className="obojobo-draft--components--modal--modal mockClassName"
+  role="dialog"
 >
   <input
     className="first-tab"
@@ -22,6 +24,7 @@ exports[`Modal Modal 1`] = `
   </div>
   <div
     className="content"
+    id="obojobo-draft--components--modal--modal--content"
   >
     Content
   </div>

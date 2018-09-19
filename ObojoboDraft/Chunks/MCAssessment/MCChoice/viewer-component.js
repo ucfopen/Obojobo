@@ -2,6 +2,8 @@ import './viewer-component.scss'
 
 import React from 'react'
 
+const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
+
 import Common from 'Common'
 import Viewer from 'Viewer'
 import isOrNot from '../../../../src/scripts/common/isornot'
@@ -15,6 +17,8 @@ const SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen'
 const COULD_HAVE_CHOSEN = 'could-have-chosen'
 const SHOULD_HAVE_CHOSEN = 'should-have-chosen'
 const UNCHOSEN_CORRECTLY = 'unchosen-correctly'
+
+const TRANSITION_TIME_MS = 800
 
 const getInputType = responseType => {
 	switch (responseType) {
@@ -52,7 +56,7 @@ const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 	return score === 100
 }
 
-const renderAnsFlag = type => {
+const renderAnswerFlag = type => {
 	let flagEl
 
 	switch (type) {
@@ -65,10 +69,10 @@ const renderAnsFlag = type => {
 			flagEl = <p>Your Answer (Incorrect)</p>
 			break
 		case COULD_HAVE_CHOSEN:
-			flagEl = <p>Another Correct Answer</p>
+			flagEl = <p>Also Correct Answer</p>
 			break
 		case SHOULD_HAVE_CHOSEN:
-			flagEl = <p> Correct Answer </p>
+			flagEl = <p>Correct Answer</p>
 			break
 	}
 
@@ -96,6 +100,13 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	}
 
 	return UNCHOSEN_CORRECTLY
+}
+
+const getChoiceText = (isCorrect, isTypePickAll) => {
+	if (isTypePickAll && isCorrect) return 'A correct response:'
+	if (isTypePickAll && !isCorrect) return 'An incorrect response:'
+	if (!isTypePickAll && isCorrect) return 'Your correct response:'
+	if (!isTypePickAll && !isCorrect) return 'Your incorrect response:'
 }
 
 const MCChoice = props => {
@@ -126,7 +137,7 @@ const MCChoice = props => {
 
 	let flag
 	if (props.mode === 'review') {
-		flag = renderAnsFlag(ansType)
+		flag = renderAnswerFlag(ansType)
 	}
 
 	const className =
@@ -141,9 +152,9 @@ const MCChoice = props => {
 			model={props.model}
 			moduleData={props.moduleData}
 			className={className}
-			data-choice-label={props.label}
 			tag="label"
 		>
+			{/* <span>Choice {label}:</span> */}
 			<input
 				type={inputType}
 				value={props.model.get('id')}
@@ -151,11 +162,18 @@ const MCChoice = props => {
 				name={props.model.parent.get('id')}
 				role={inputType}
 				aria-checked={isSelected}
+				disabled={props.mode === 'review'}
 			/>
+			{isSelected && props.questionSubmitted && props.mode !== 'review' ? (
+				<span className="for-screen-reader-only">
+					{getChoiceText(isCorrect, props.responseType === 'pick-all')}
+				</span>
+			) : null}
 			<div className="children">
 				{props.model.children.map(child => {
 					const type = child.get('type')
 					const isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+					const isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 					const id = child.get('id')
 
 					if (isAnswerItem) {
@@ -166,9 +184,26 @@ const MCChoice = props => {
 								<Component key={id} model={child} moduleData={props.moduleData} />
 							</div>
 						)
-					}
+					} else if (isFeedbackItem) {
+						const Component = child.getComponentClass()
 
-					return null
+						return (
+							<ReactCSSTransitionGroup
+								className="feedback-container"
+								component="div"
+								transitionName="feedback"
+								transitionEnterTimeout={TRANSITION_TIME_MS}
+								transitionLeaveTimeout={TRANSITION_TIME_MS}
+								key="_feedback-container"
+							>
+								{isSelected && props.questionSubmitted ? (
+									<div className="feedback">
+										<Component key={id} model={child} moduleData={props.moduleData} />
+									</div>
+								) : null}
+							</ReactCSSTransitionGroup>
+						)
+					}
 				})}
 			</div>
 		</OboComponent>

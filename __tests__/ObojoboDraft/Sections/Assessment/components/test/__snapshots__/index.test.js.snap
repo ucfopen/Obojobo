@@ -27,6 +27,8 @@ exports[`Test Test component 1`] = `
       className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
+        aria-label={undefined}
+        aria-selected={undefined}
         disabled={undefined}
         onClick={undefined}
         tabIndex={undefined}
@@ -65,6 +67,8 @@ exports[`Test Test component fetching score 1`] = `
       className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
+        aria-label={undefined}
+        aria-selected={undefined}
         disabled={true}
         onClick={undefined}
         tabIndex={undefined}
@@ -103,6 +107,8 @@ exports[`Test Test component with completeAttempt 1`] = `
       className="obojobo-draft--components--button is-not-dangerous align-center"
     >
       <button
+        aria-label={undefined}
+        aria-selected={undefined}
         disabled={undefined}
         onClick={undefined}
         tabIndex={undefined}

@@ -2,8 +2,9 @@
 
 exports[`Inline Nav Button correctly renders when disabled prop is true 1`] = `
 <button
+  aria-disabled={true}
+  aria-label={undefined}
   className="viewer--components--inline-nav-button is-goNext is-not-enabled"
-  disabled={true}
   onClick={[Function]}
 >
   testTitle
@@ -12,8 +13,9 @@ exports[`Inline Nav Button correctly renders when disabled prop is true 1`] = `
 
 exports[`Inline Nav Button correctly renders when type prop is goNext 1`] = `
 <button
+  aria-disabled={false}
+  aria-label={undefined}
   className="viewer--components--inline-nav-button is-goNext is-enabled"
-  disabled={false}
   onClick={[Function]}
 >
   testTitle
@@ -22,8 +24,9 @@ exports[`Inline Nav Button correctly renders when type prop is goNext 1`] = `
 
 exports[`Inline Nav Button correctly renders when type prop is goPrev 1`] = `
 <button
+  aria-disabled={false}
+  aria-label={undefined}
   className="viewer--components--inline-nav-button is-goPrev is-enabled"
-  disabled={false}
   onClick={[Function]}
 >
   testTitle

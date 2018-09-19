@@ -50,6 +50,10 @@
 		color: $color-shadow;
 		pointer-events: none;
 
+		&:focus {
+			outline: none;
+		}
+
 		&.is-prev {
 			border-bottom: 1px solid $color-shadow;
 		}

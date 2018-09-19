@@ -294,6 +294,8 @@ exports[`IFrame IFrame component renders 7`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -352,6 +354,8 @@ exports[`IFrame IFrame component renders 8`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -410,6 +414,8 @@ exports[`IFrame IFrame component renders 9`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -468,6 +474,8 @@ exports[`IFrame IFrame component renders 10`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -526,6 +534,8 @@ exports[`IFrame IFrame component renders 11`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -584,6 +594,8 @@ exports[`IFrame IFrame component renders 12`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -894,6 +906,8 @@ exports[`IFrame IFrame component renders 19`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -952,6 +966,8 @@ exports[`IFrame IFrame component renders 20`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -1010,6 +1026,8 @@ exports[`IFrame IFrame component renders 21`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -1068,6 +1086,8 @@ exports[`IFrame IFrame component renders 22`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -1126,6 +1146,8 @@ exports[`IFrame IFrame component renders 23`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}
@@ -1184,6 +1206,8 @@ exports[`IFrame IFrame component renders 24`] = `
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
           <button
+            aria-label={undefined}
+            aria-selected={undefined}
             disabled={undefined}
             onClick={undefined}
             tabIndex={undefined}

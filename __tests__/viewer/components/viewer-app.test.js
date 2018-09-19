@@ -243,6 +243,7 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
+		NavUtil.isNavEnabled.mockReturnValueOnce(true)
 		NavUtil.canNavigate.mockReturnValueOnce(true)
 		NavUtil.getPrevModel.mockReturnValueOnce({ title: 'mockPrevTitle' })
 		NavUtil.getNextModel.mockReturnValueOnce({ title: 'mockNextTitle' })
@@ -261,6 +262,7 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
+		NavUtil.isNavEnabled.mockReturnValueOnce(true)
 		NavUtil.canNavigate.mockReturnValueOnce(true)
 		NavUtil.getPrevModel.mockReturnValueOnce({ title: null })
 		NavUtil.getNextModel.mockReturnValueOnce({ title: null })

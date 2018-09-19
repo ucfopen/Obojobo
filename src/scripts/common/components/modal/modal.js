@@ -44,6 +44,8 @@ class Modal extends React.Component {
 					'obojobo-draft--components--modal--modal' +
 					(this.props.className ? ' ' + this.props.className : '')
 				}
+				role="dialog"
+				aria-labelledby="obojobo-draft--components--modal--modal--content"
 			>
 				<input
 					className="first-tab"
@@ -54,7 +56,9 @@ class Modal extends React.Component {
 				{this.props.onClose ? (
 					<DeleteButton ref="closeButton" onClick={this.props.onClose} />
 				) : null}
-				<div className="content">{this.props.children}</div>
+				<div className="content" id="obojobo-draft--components--modal--modal--content">
+					{this.props.children}
+				</div>
 				<input
 					className="last-tab"
 					ref="lastTab"

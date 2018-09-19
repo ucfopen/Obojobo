@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessmentExplanation MCAssessmentExplanation renders with isShowingExplanation=false 1`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  />
+</div>
+`;
+
+exports[`MCAssessmentExplanation MCAssessmentExplanation renders with isShowingExplanation=true 1`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  />
+</div>
+`;

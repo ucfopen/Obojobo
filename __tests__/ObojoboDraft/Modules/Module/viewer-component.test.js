@@ -7,11 +7,13 @@ jest.mock('../../../../src/scripts/common/flux/dispatcher', () => ({
 	trigger: jest.fn(),
 	on: jest.fn()
 }))
+jest.mock('../../../../src/scripts/common/page/focus')
 
 import Module from '../../../../ObojoboDraft/Modules/Module/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import NavUtil from '../../../../src/scripts/viewer/util/nav-util'
 import Dispatcher from '../../../../src/scripts/common/flux/dispatcher'
+import focus from '../../../../src/scripts/common/page/focus'
 
 const json = require('../../../../test-object.json')
 
@@ -124,7 +126,8 @@ describe('Module', () => {
 		const component = shallow(<Module model={model} moduleData={moduleData} />)
 		component.instance().forceUpdate()
 
-		expect(mockPage1Element.focus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledWith(mockPage1Element)
 
 		// Restore overrides:
 		Object.defineProperty(document, 'activeElement', {

@@ -58,6 +58,9 @@ const AssessmentUtil = {
 
 	getAssessmentScoreForModel(state, model) {
 		const attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+
+		console.log('gASFM', state, model, attempts)
+
 		if (attempts.length === 0) {
 			return null
 		}

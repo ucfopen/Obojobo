@@ -1,9 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MCChoice viewer-component MCChoice component 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-mockMode"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice1"
   data-obo-component={true}
@@ -12,8 +11,11 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={false}
     name="id"
+    role="radio"
     type="radio"
     value="choice1"
   />
@@ -59,14 +61,16 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component in review mode - chosen correctly 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-chosen-correctly is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice1"
   data-obo-component={true}
@@ -75,8 +79,11 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
   tabIndex={-1}
 >
   <input
+    aria-checked={true}
     checked={true}
+    disabled={true}
     name="id"
+    role="radio"
     type="radio"
     value="choice1"
   />
@@ -129,14 +136,16 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component in review mode - could have chosen 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice1"
   data-obo-component={true}
@@ -145,8 +154,11 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={true}
     name="id"
+    role="radio"
     type="radio"
     value="choice1"
   />
@@ -158,7 +170,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
         className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-could-have-chosen"
       >
         <p>
-          Another Correct Answer
+          Also Correct Answer
         </p>
       </div>
       <div
@@ -199,14 +211,16 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component in review mode - should have chosen 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice1"
   data-obo-component={true}
@@ -215,8 +229,11 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={true}
     name="id"
+    role="radio"
     type="radio"
     value="choice1"
   />
@@ -228,7 +245,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
         className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-could-have-chosen"
       >
         <p>
-          Another Correct Answer
+          Also Correct Answer
         </p>
       </div>
       <div
@@ -269,14 +286,16 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component in review mode - should not have chosen 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-unchosen-correctly is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice2"
   data-obo-component={true}
@@ -285,8 +304,11 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={true}
     name="id"
+    role="radio"
     type="radio"
     value="choice2"
   />
@@ -333,14 +355,16 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component in review mode - unchosen correctly 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-unchosen-correctly is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice2"
   data-obo-component={true}
@@ -349,8 +373,11 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={true}
     name="id"
+    role="radio"
     type="radio"
     value="choice2"
   />
@@ -397,16 +424,18 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component in review mode with no score data 1`] = `<div />`;
 
 exports[`MCChoice viewer-component MCChoice component pick-all in review mode - chosen correctly 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-chosen-correctly is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice1"
   data-obo-component={true}
@@ -415,8 +444,11 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   tabIndex={-1}
 >
   <input
+    aria-checked={true}
     checked={true}
+    disabled={true}
     name="id"
+    role="checkbox"
     type="checkbox"
     value="choice1"
   />
@@ -469,14 +501,16 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component pick-all in review mode - should have chosen 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-not-correct is-type-should-have-chosen is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice1"
   data-obo-component={true}
@@ -485,8 +519,11 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={true}
     name="id"
+    role="checkbox"
     type="checkbox"
     value="choice1"
   />
@@ -498,7 +535,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-should-have-chosen"
       >
         <p>
-           Correct Answer 
+          Correct Answer
         </p>
       </div>
       <div
@@ -539,14 +576,16 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component pick-all in review mode - should not have chosen 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-should-not-have-chosen is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice2"
   data-obo-component={true}
@@ -555,8 +594,11 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   tabIndex={-1}
 >
   <input
+    aria-checked={true}
     checked={true}
+    disabled={true}
     name="id"
+    role="checkbox"
     type="checkbox"
     value="choice2"
   />
@@ -609,14 +651,16 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component pick-all in review mode - unchosen correctly 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-unchosen-correctly is-mode-review"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice2"
   data-obo-component={true}
@@ -625,8 +669,11 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={true}
     name="id"
+    role="checkbox"
     type="checkbox"
     value="choice2"
   />
@@ -673,14 +720,16 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-undefined"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice1"
   data-obo-component={true}
@@ -689,8 +738,11 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={false}
     name="id"
+    role="checkbox"
     type="checkbox"
     value="choice1"
   />
@@ -736,14 +788,16 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;
 
 exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-correct 1`] = `
-<div
+<label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-selected is-correct is-type-could-have-chosen is-mode-undefined"
-  data-choice-label="mocklabel"
   data-focussed={false}
   data-id="choice1"
   data-obo-component={true}
@@ -752,8 +806,11 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
   tabIndex={-1}
 >
   <input
+    aria-checked={false}
     checked={false}
+    disabled={false}
     name="id"
+    role="radio"
     type="radio"
     value="choice1"
   />
@@ -799,6 +856,9 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
         </div>
       </div>
     </div>
+    <div
+      className="feedback-container"
+    />
   </div>
-</div>
+</label>
 `;

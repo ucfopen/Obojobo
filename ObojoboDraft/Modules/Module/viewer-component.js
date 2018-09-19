@@ -9,6 +9,7 @@ const { OboComponent } = Common.components
 const { Dispatcher } = Common.flux
 const { NavUtil } = Viewer.util
 const { FocusUtil } = Common.util
+const { focus } = Common.page
 
 class Module extends React.Component {
 	componentWillReceiveProps(nextProps) {
@@ -32,7 +33,8 @@ class Module extends React.Component {
 
 		const el = c.getDomEl()
 		if (document.body.contains(el) && !el.contains(document.activeElement)) {
-			el.focus()
+			//el.focus()
+			focus(el)
 		}
 	}
 

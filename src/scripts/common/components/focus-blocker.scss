@@ -22,13 +22,13 @@
 	}
 }
 
-.component {
+.component[data-obo-component='true'] {
 	animation: component-focus-blocker-z-index $duration-animation-default * 4;
-}
 
-.component[data-focussed='true'] {
-	z-index: 2;
-	animation: none;
+	&[data-focussed='true'] {
+		z-index: 2;
+		animation: none;
+	}
 }
 
 .viewer--viewer-app {

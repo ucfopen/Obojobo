@@ -5,6 +5,8 @@ exports[`Button 1`] = `
   className="obojobo-draft--components--button is-not-dangerous align-center"
 >
   <button
+    aria-label={undefined}
+    aria-selected={undefined}
     disabled={undefined}
     onClick={undefined}
     tabIndex={undefined}
@@ -19,6 +21,8 @@ exports[`Button align 1`] = `
   className="obojobo-draft--components--button is-not-dangerous align-left"
 >
   <button
+    aria-label={undefined}
+    aria-selected={undefined}
     disabled={undefined}
     onClick={undefined}
     tabIndex={undefined}
@@ -33,6 +37,8 @@ exports[`Button altAction 1`] = `
   className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
 >
   <button
+    aria-label={undefined}
+    aria-selected={undefined}
     disabled={undefined}
     onClick={undefined}
     tabIndex={undefined}
@@ -47,6 +53,8 @@ exports[`Button dangerous 1`] = `
   className="obojobo-draft--components--button is-dangerous align-center"
 >
   <button
+    aria-label={undefined}
+    aria-selected={undefined}
     disabled={undefined}
     onClick={undefined}
     tabIndex={undefined}
@@ -61,6 +69,8 @@ exports[`Button disabled 1`] = `
   className="obojobo-draft--components--button is-not-dangerous align-center"
 >
   <button
+    aria-label={undefined}
+    aria-selected={undefined}
     disabled={true}
     onClick={undefined}
     tabIndex={undefined}
@@ -75,6 +85,8 @@ exports[`Button shouldPreventTab 1`] = `
   className="obojobo-draft--components--button is-not-dangerous align-center"
 >
   <button
+    aria-label={undefined}
+    aria-selected={undefined}
     disabled={true}
     onClick={undefined}
     tabIndex="-1"

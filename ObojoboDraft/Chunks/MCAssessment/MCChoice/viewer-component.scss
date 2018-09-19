@@ -19,9 +19,69 @@
 	}
 
 	> .children {
-		margin-left: 2em;
+		margin-left: 0; // margin-left: 2em;
 		margin-right: 0;
-		pointer-events: none;
+		//@TODO: Temporary!
+		/////////pointer-events: none;
+
+		> .feedback-container {
+			> .feedback {
+				border-radius: 0.25em;
+				margin-right: 1em;
+				margin-bottom: 1em;
+				margin-left: 3em;
+				// padding-left: 1em;
+				background: rgba(255, 255, 255, 0.5);
+
+				&.feedback-enter {
+					max-height: 0;
+					overflow: hidden;
+					opacity: 0;
+					margin-bottom: 0;
+				}
+
+				&.feedback-enter.feedback-enter-active {
+					max-height: 60em;
+					margin-bottom: 1em;
+					opacity: 1;
+
+					/* prettier-ignore */
+					transition:
+						max-height $duration-animation-default * 2,
+						margin-bottom $duration-animation-default * 2,
+						// border $duration-animation-default * 2,
+						opacity $duration-animation-default * 2;
+				}
+
+				&.feedback-leave {
+					max-height: 60em;
+					margin-bottom: 1em;
+					// border: 1px solid $color-shadow;
+					overflow: hidden;
+					opacity: 1;
+				}
+
+				&.feedback-leave.feedback-leave-active {
+					max-height: 0;
+					margin-bottom: 0;
+					// border: 0 solid $color-transparent;
+					opacity: 0;
+
+					/* prettier-ignore */
+					transition:
+					max-height $duration-animation-default / 2,
+					margin-bottom $duration-animation-default / 2,
+					// border $duration-animation-default / 2,
+					opacity $duration-animation-default / 2;
+				}
+
+				> .obojobo-draft--chunks--mc-assessment--mc-feedback {
+					padding-left: 0;
+					padding-right: 0;
+					margin-left: -0.4em;
+				}
+			}
+		}
 	}
 
 	&.is-selected {
@@ -31,13 +91,18 @@
 	&.is-mode-review {
 		cursor: default;
 
-		> input {
-			display: none;
-		}
+		// > input {
+		// 	display: none;
+		// }
 
-		> .children {
-			margin-left: 0;
-		}
+		// > .children {
+		// 	.obojobo-draft--chunks--mc-assessment--mc-answer {
+		// 		margin-left: -2em;
+		// 	}
+		// 	.obojobo-draft--chunks--mc-assessment--mc-feedback {
+		// 		margin-left: -3em * 0.8;
+		// 	}
+		// }
 
 		&:hover {
 			cursor: default;

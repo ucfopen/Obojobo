@@ -1,6 +1,7 @@
 import Store from '../../common/flux/store'
 import Dispatcher from '../../common/flux/dispatcher'
 import OboModel from '../../common/models/obo-model'
+import focus from '../../common/page/focus'
 
 class FocusStore extends Store {
 	constructor() {
@@ -37,7 +38,7 @@ class FocusStore extends Store {
 	_focus(id, isVisuallyFocused = true) {
 		if (OboModel.models[id]) {
 			const domEl = OboModel.models[id].getDomEl()
-			if (domEl && domEl.focus) domEl.focus()
+			focus(domEl)
 		}
 		this.state.focussedId = id
 

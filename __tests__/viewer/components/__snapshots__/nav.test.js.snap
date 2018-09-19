@@ -8,6 +8,8 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      aria-label={undefined}
+      aria-selected={undefined}
       disabled={true}
       onClick={[Function]}
       tabIndex={undefined}
@@ -23,6 +25,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
   </button>
   <ul
     aria-hidden={true}
+    tabIndex="-1"
   >
     <li
       className="heading is-not-selected"
@@ -34,7 +37,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       onClick={[Function]}
     >
       <button
-        disabled={true}
+        aria-disabled={true}
       >
         label5
       </button>
@@ -44,7 +47,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       onClick={[Function]}
     >
       <button
-        disabled={true}
+        aria-disabled={true}
       >
         <div
           className="mockStylableText"
@@ -61,7 +64,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       onClick={[Function]}
     >
       <button
-        disabled={true}
+        aria-disabled={true}
       >
         label56
       </button>
@@ -71,7 +74,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       onClick={[Function]}
     >
       <button
-        disabled={true}
+        aria-disabled={true}
       >
         label6
       </button>
@@ -93,6 +96,8 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      aria-label={undefined}
+      aria-selected={undefined}
       disabled={true}
       onClick={[Function]}
       tabIndex={undefined}
@@ -108,6 +113,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
   </button>
   <ul
     aria-hidden={true}
+    tabIndex="-1"
   >
     <li
       className="heading is-not-selected"
@@ -119,7 +125,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
       onClick={[Function]}
     >
       <button
-        disabled={true}
+        aria-disabled={true}
       >
         label5
       </button>
@@ -132,7 +138,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
       onClick={[Function]}
     >
       <button
-        disabled={true}
+        aria-disabled={true}
       >
         <div
           className="mockStylableText"
@@ -152,7 +158,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
       onClick={[Function]}
     >
       <button
-        disabled={true}
+        aria-disabled={true}
       >
         label56
       </button>
@@ -165,7 +171,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
       onClick={[Function]}
     >
       <button
-        disabled={true}
+        aria-disabled={true}
       >
         label6
       </button>
@@ -190,6 +196,8 @@ exports[`Nav renders closed 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      aria-label={undefined}
+      aria-selected={undefined}
       disabled={undefined}
       onClick={[Function]}
       tabIndex={undefined}
@@ -205,6 +213,7 @@ exports[`Nav renders closed 1`] = `
   </button>
   <ul
     aria-hidden={false}
+    tabIndex="-1"
   />
   <div
     className="viewer--components--logo is-not-inverted"
@@ -222,6 +231,8 @@ exports[`Nav renders opened 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      aria-label={undefined}
+      aria-selected={undefined}
       disabled={true}
       onClick={[Function]}
       tabIndex={undefined}
@@ -237,6 +248,7 @@ exports[`Nav renders opened 1`] = `
   </button>
   <ul
     aria-hidden={true}
+    tabIndex="-1"
   />
   <div
     className="viewer--components--logo is-not-inverted"
@@ -254,6 +266,8 @@ exports[`Nav renders unlocked 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      aria-label={undefined}
+      aria-selected={undefined}
       disabled={true}
       onClick={[Function]}
       tabIndex={undefined}
@@ -269,6 +283,7 @@ exports[`Nav renders unlocked 1`] = `
   </button>
   <ul
     aria-hidden={true}
+    tabIndex="-1"
   />
   <div
     className="viewer--components--logo is-not-inverted"

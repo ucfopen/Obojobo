@@ -31,6 +31,8 @@ exports[`FullReview FullReview component with attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt undefined"
+            aria-selected={true}
             disabled={undefined}
             onClick={[Function]}
             tabIndex={undefined}
@@ -59,6 +61,8 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt undefined"
+            aria-selected={true}
             disabled={undefined}
             onClick={[Function]}
             tabIndex={undefined}
@@ -87,6 +91,8 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt undefined"
+            aria-selected={true}
             disabled={undefined}
             onClick={[Function]}
             tabIndex={undefined}
@@ -115,6 +121,8 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt undefined"
+            aria-selected={true}
             disabled={undefined}
             onClick={[Function]}
             tabIndex={undefined}
@@ -133,6 +141,7 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
         className="attempt-info-container"
       >
         <svg
+          aria-hidden={true}
           viewBox="0 0 114.33 114.33"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -228,33 +237,44 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
           <div
             className="attempt-info-content"
           >
-            <ul>
-              <li>
+            <div>
+              Submitted
+               
+              <time
+                aria-hidden="true"
+                dateTime="2018-06-05T16:28:11.228-04:00"
+              >
                 6/5/18 at 4:28pm
-              </li>
-              <li>
-                 out of 
-                1
-                 questions correct
-              </li>
-              <li>
-                Attempt Score: 
-                <strong>
-                  80% → 80%
-                </strong>
-                <div
-                  className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+              </time>
+              <span
+                className="for-screen-reader-only"
+              >
+                June 5th 2018 at 4:28pm
+              </span>
+            </div>
+            <div>
+               out of 
+              1
+               questions correct
+            </div>
+            <div>
+              Attempt Score: 
+              <strong>
+                80% → 80%
+              </strong>
+              <div
+                className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
+              >
+                <button
+                  aria-label="Click to explain attempt score in detail"
+                  onClick={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
                 >
-                  <button
-                    onClick={[Function]}
-                    onMouseOut={[Function]}
-                    onMouseOver={[Function]}
-                  >
-                    ?
-                  </button>
-                </div>
-              </li>
-            </ul>
+                  ?
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -269,12 +289,14 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
           Question 1: Incorrect
         </p>
         <div
+          aria-label="Question"
           className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice"
           data-focussed={false}
           data-id="question"
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Question"
           id="obo-question"
+          role="region"
           tabIndex="-1"
         >
           <div
@@ -317,6 +339,8 @@ exports[`FullReview FullReview component with non-passing attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt undefined"
+            aria-selected={true}
             disabled={undefined}
             onClick={[Function]}
             tabIndex={undefined}
@@ -345,6 +369,8 @@ exports[`FullReview FullReview component with two attempts 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt undefined"
+            aria-selected={false}
             disabled={undefined}
             onClick={[Function]}
             tabIndex={undefined}
@@ -358,6 +384,8 @@ exports[`FullReview FullReview component with two attempts 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt undefined"
+            aria-selected={true}
             disabled={undefined}
             onClick={[Function]}
             tabIndex={undefined}

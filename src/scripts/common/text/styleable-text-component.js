@@ -19,6 +19,9 @@ export default class StyleableTextComponent extends React.Component {
 				if (el.attrs && el.attrs['class']) {
 					attrs.className = el.attrs['class']
 				}
+				if (el.attrs && el.attrs.alt) {
+					attrs['aria-label'] = el.attrs.alt
+				}
 				break
 		}
 

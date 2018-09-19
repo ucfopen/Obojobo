@@ -44,6 +44,10 @@
 		padding: 0;
 		margin: 0;
 		z-index: 5; // used to position between the footer logo and the toggle-button
+
+		&:focus {
+			outline: none;
+		}
 	}
 
 	li {
