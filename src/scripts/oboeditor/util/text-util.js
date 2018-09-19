@@ -1,4 +1,24 @@
 const TextUtil = {
+	// Collapse multiple scripts into one value
+	collapseScripts: marks => {
+		let scriptHeight = 0
+		const finalMarks = marks.map(mark => {
+			if (mark.type !== 'sup') return mark
+
+			scriptHeight += mark.data
+			return null
+		})
+
+		if (scriptHeight !== 0) {
+			finalMarks.push({
+				type: 'sup',
+				data: { num: scriptHeight > 0 ? 1 : -1 }
+			})
+		}
+
+		return finalMarks.filter(mark => mark !== null)
+	},
+
 	// Parse Obojobo text object into Slate leaves array
 	parseMarkings: line => {
 		const fullText = line.text.value
@@ -30,9 +50,10 @@ const TextUtil = {
 
 			// Range: [last, point)
 			const leaf = {
-				text: fullText.slice(last, point),
-				marks: []
+				text: fullText.slice(last, point)
 			}
+
+			const marks = []
 
 			// Check if the current range is contained within each style and add
 			// any relevent marks
@@ -46,8 +67,10 @@ const TextUtil = {
 					data: style.data
 				}
 
-				leaf.marks.push(mark)
+				marks.push(mark)
 			})
+
+			leaf.marks = TextUtil.collapseScripts(marks)
 
 			// finished a range
 			last = point
@@ -66,7 +89,7 @@ const TextUtil = {
 					start: currIndex,
 					end: currIndex + textRange.text.length,
 					type: mark.type,
-					data: JSON.parse(JSON.stringify(mark.data))
+					data: mark.type === 'sup' ? mark.data.get('num') : mark.data.toJSON()
 				}
 				line.text.styleList.push(style)
 			})

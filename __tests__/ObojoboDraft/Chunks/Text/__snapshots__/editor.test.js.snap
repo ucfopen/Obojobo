@@ -1,44 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Text editor Line builds the expected component 1`] = `
+<span
+  className="text align-left"
+  data-indent={0}
+  dummy="dummyData"
+/>
+`;
+
 exports[`Text editor Node builds the expected component 1`] = `
 <div
   className="component"
 >
   <div
     className="text-chunk obojobo-draft--chunks--single-text pad"
-  >
-    <span
-      className="text align-left"
-      data-indent={undefined}
-    >
-      mockChildren
-    </span>
-  </div>
+  />
 </div>
 `;
 
 exports[`Text editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
-    "content": Object {
-      "textGroup": Array [
-        Object {
-          "text": Object {
-            "value": "mockText",
-          },
-        },
-      ],
-    },
+    "content": Object {},
   },
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "leaves": Array [
+      "data": Object {
+        "indent": 1,
+      },
+      "nodes": Array [
         Object {
-          "text": "mockText",
+          "leaves": undefined,
+          "object": "text",
         },
       ],
-      "object": "text",
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.Text.TextLine",
+    },
+    Object {
+      "data": Object {
+        "indent": 0,
+      },
+      "nodes": Array [
+        Object {
+          "leaves": undefined,
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.Text.TextLine",
     },
   ],
   "object": "block",
@@ -46,39 +57,20 @@ Object {
 }
 `;
 
-exports[`Text editor oboToSlate converts an OboNode to a Slate node with an indent 1`] = `
-Object {
-  "data": Object {
-    "content": Object {
-      "textGroup": Array [
-        Object {
-          "data": Object {
-            "indent": 1,
-          },
-          "text": Object {
-            "value": "mockText",
-          },
-        },
-      ],
-    },
-  },
-  "key": "mockKey",
-  "nodes": Array [
+exports[`Text editor plugins.renderNode renders a line when passed 1`] = `
+<Line
+  node={
     Object {
-      "leaves": Array [
-        Object {
-          "text": "mockText",
-        },
-      ],
-      "object": "text",
-    },
-  ],
-  "object": "block",
-  "type": "mockType",
-}
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Text.TextLine",
+    }
+  }
+/>
 `;
 
-exports[`Text editor plugins.renderNode renders a button when passed 1`] = `
+exports[`Text editor plugins.renderNode renders code when passed 1`] = `
 <Node
   node={
     Object {
@@ -98,18 +90,11 @@ Object {
     "textGroup": Array [
       Object {
         "data": Object {
-          "indent": undefined,
+          "indent": Object {},
         },
         "text": Object {
-          "styleList": Array [
-            Object {
-              "data": Object {},
-              "end": 8,
-              "start": 0,
-              "type": "b",
-            },
-          ],
-          "value": "mockText",
+          "styleList": Array [],
+          "value": "mockCode",
         },
       },
     ],

@@ -285,7 +285,7 @@ const plugins = {
 		}
 	},
 	validateNode(node) {
-		if (node.object !== 'block' && node.type !== LIST_NODE) return
+		if (node.object !== 'block' || node.type !== LIST_NODE) return
 
 		const invalids = node.nodes
 			.map((child, i) => {

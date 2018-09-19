@@ -1,7 +1,8 @@
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import React from 'react'
 import { Value } from 'slate'
 
+jest.mock('slate-react')
 jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../ObojoboDraft/Sections/Assessment/editor', () => ({
 	helpers: {
@@ -21,12 +22,6 @@ jest.mock('../../../ObojoboDraft/Sections/Assessment/editor', () => ({
 import PageEditor from '../../../src/scripts/oboeditor/components/page-editor'
 import Break from '../../../ObojoboDraft/Chunks/Break/editor'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
-
-const BOLD_MARK = 'b'
-const ITALIC_MARK = 'i'
-const STRIKE_MARK = 'del'
-const QUOTE_MARK = 'q'
-const LINK_MARK = 'a'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -226,6 +221,31 @@ describe('PageEditor', () => {
 		expect(APIUtil.postDraft).toHaveBeenCalle
 	})
 
+	test('EditorNav component toggles mark', () => {
+		window.getSelection = jest.fn().mockReturnValueOnce({
+			rangeCount: {
+				nodeType: 'mockType'
+			}
+		})
+		jest.spyOn(Break.helpers, 'insertNode')
+		Break.helpers.insertNode.mockReturnValueOnce(null)
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+		const component = mount(<PageEditor {...props} />)
+		const tree = component.html()
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('EditorNav component inserts item', () => {
 		jest.spyOn(Break.helpers, 'insertNode')
 		Break.helpers.insertNode.mockReturnValueOnce(null)
@@ -259,39 +279,6 @@ describe('PageEditor', () => {
 		const tree = component.html()
 
 		component.find('.obojobo-draft--pages--page').simulate('change', { value: Value.create({}) })
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('EditorNav component renders marks', () => {
-		jest.spyOn(Break.helpers, 'insertNode')
-		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		Break.helpers.insertNode.mockReturnValueOnce(null)
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = shallow(<PageEditor {...props} />)
-		const tree = component.html()
-
-		const editorProps = component.find('.obojobo-draft--pages--page').props()
-
-		const mark = {
-			children: 'mockChild',
-			mark: { type: BOLD_MARK }
-		}
-
-		expect(editorProps.renderMark(mark)).toMatchSnapshot()
-		mark.mark.type = ITALIC_MARK
-		expect(editorProps.renderMark(mark)).toMatchSnapshot()
-		mark.mark.type = STRIKE_MARK
-		expect(editorProps.renderMark(mark)).toMatchSnapshot()
-		mark.mark.type = QUOTE_MARK
-		expect(editorProps.renderMark(mark)).toMatchSnapshot()
-		mark.mark.type = LINK_MARK
-		expect(editorProps.renderMark(mark)).toMatchSnapshot()
 
 		expect(tree).toMatchSnapshot()
 	})

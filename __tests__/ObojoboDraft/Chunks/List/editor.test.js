@@ -14,7 +14,6 @@ describe('List editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -38,7 +37,6 @@ describe('List editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -66,7 +64,7 @@ describe('List editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component.find('button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -80,7 +78,6 @@ describe('List editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -108,7 +105,7 @@ describe('List editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component.find('button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -118,7 +115,6 @@ describe('List editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -138,7 +134,6 @@ describe('List editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -158,7 +153,6 @@ describe('List editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -191,7 +185,7 @@ describe('List editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => {
+				get: () => {
 					return { listStyles: {} }
 				}
 			},
@@ -200,7 +194,7 @@ describe('List editor', () => {
 				{
 					type: LIST_LEVEL_NODE,
 					data: {
-						get: type => {
+						get: () => {
 							return {}
 						}
 					},
@@ -226,7 +220,7 @@ describe('List editor', () => {
 						{
 							type: LIST_LEVEL_NODE,
 							data: {
-								get: type => {
+								get: () => {
 									return {}
 								}
 							},
@@ -514,6 +508,56 @@ describe('List editor', () => {
 
 		expect(change.setNodeByKey).not.toHaveBeenCalled()
 		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.validateNode exits if not a list node', () => {
+		const node = {
+			object: 'block',
+			type: 'mockNode'
+		}
+
+		const change = {
+			mergeNodeByKey: jest.fn()
+		}
+		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => funct(change))
+
+		List.plugins.validateNode(node)
+
+		expect(change.mergeNodeByKey).not.toHaveBeenCalled()
+	})
+
+	test('plugins.validateNode exits if not invalid', () => {
+		const node = {
+			object: 'block',
+			type: LIST_NODE,
+			nodes: {
+				map: funct => {
+					funct({ type: LIST_LEVEL_NODE }, 0)
+					funct({ type: LIST_LEVEL_NODE }, 1)
+					funct({ type: 'notALevel' }, 0)
+
+					return {
+						filter: () => {
+							return {
+								size: 0
+							}
+						}
+					}
+				},
+				get: i => {
+					return i === 2 ? { type: 'notALevel' } : { type: LIST_LEVEL_NODE }
+				}
+			}
+		}
+
+		const change = {
+			mergeNodeByKey: jest.fn()
+		}
+		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => funct(change))
+
+		List.plugins.validateNode(node)
+
+		expect(change.mergeNodeByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.validateNode nomalizes levels next to each other', () => {

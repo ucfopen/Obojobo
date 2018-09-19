@@ -7,7 +7,14 @@
 		top: 0;
 		z-index: 999;
 		width: inherit;
-		background: $color-obojobo-blue;
+		background-color: $color-bg;
+		button {
+			background-color: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			margin: 0.1em;
+			font-size: 1em;
+			color: $color-bg;
+		}
 	}
 
 	.exporter {
@@ -19,17 +26,14 @@
 	}
 
 	.dropdown {
-		position: fixed;
-		top: 0.5em;
-		right: 2em;
-		z-index: 999;
-
+		position: absolute;
+		right: 0;
 		button {
 			display: block;
 			background-color: $color-obojobo-blue;
 			border-radius: $dimension-rounded-radius;
 			margin: 0.3em;
-			font-size: 1.3em;
+			font-size: 1em;
 			color: $color-bg;
 		}
 
@@ -44,13 +48,15 @@
 			position: absolute;
 			right: 0;
 			z-index: 1;
+			background-color: $color-bg;
+			border-radius: $dimension-rounded-radius;
 
 			button {
 				display: block;
 				background-color: $color-obojobo-blue;
 				border-radius: $dimension-rounded-radius;
 				margin: 0.3em;
-				font-size: 1.3em;
+				font-size: 1em;
 				width: 100%;
 				color: $color-bg;
 			}
@@ -182,5 +188,9 @@
 
 	.buffer {
 		margin: $dimension-padding / 3;
+	}
+
+	.latex-editor {
+		background-color: $color-bg2;
 	}
 }

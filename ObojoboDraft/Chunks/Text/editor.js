@@ -1,26 +1,43 @@
 import React from 'react'
-import { Data } from 'slate'
+import { Block } from 'slate'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+
+const Line = props => {
+	return (
+		<span
+			className={'text align-left'}
+			{...props.attributes}
+			data-indent={props.node.data.get('indent')}
+		>
+			{props.children}
+		</span>
+	)
+}
 
 const Node = props => {
 	return (
 		<div className={'component'}>
-			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>
-				<span className={`text align-left`} data-indent={props.node.data.get('content').indent}>
-					{props.children}
-				</span>
-			</div>
+			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>{props.children}</div>
 		</div>
 	)
 }
 
+const isType = change => {
+	return change.value.blocks.some(block => {
+		return !!change.value.document.getClosest(block.key, parent => {
+			return parent.type === TEXT_NODE
+		})
+	})
+}
+
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: TEXT_NODE,
-			data: { content: { indent: 0 } }
-		})
+		.insertBlock(TEXT_NODE)
 		.collapseToStartOfNextText()
 		.focus()
 }
@@ -29,55 +46,51 @@ const slateToObo = node => {
 	const json = {}
 	json.id = node.key
 	json.type = node.type
-	json.content = {}
+	json.content = node.data.get('content') || {}
+
 	json.content.textGroup = []
+	node.nodes.forEach(line => {
+		const textLine = {
+			text: { value: line.text, styleList: [] },
+			data: { indent: line.data.get('indent') }
+		}
 
-	const line = {
-		text: { value: node.text, styleList: [] },
-		data: { indent: node.data.get('content').indent }
-	}
-
-	let currIndex = 0
-
-	node.nodes.forEach(text => {
-		text.leaves.forEach(textRange => {
-			textRange.marks.forEach(mark => {
-				const style = {
-					start: currIndex,
-					end: currIndex + textRange.text.length,
-					type: mark.type,
-					data: JSON.parse(JSON.stringify(mark.data))
-				}
-				line.text.styleList.push(style)
-			})
-			currIndex += textRange.text.length
+		line.nodes.forEach(text => {
+			TextUtil.slateToOboText(text, textLine)
 		})
-	})
 
-	json.content.textGroup.push(line)
+		json.content.textGroup.push(textLine)
+	})
 	json.children = []
+
+	console.log(json)
 
 	return json
 }
+
 const oboToSlate = node => {
 	const json = {}
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
-	json.data = { content: node.content }
+	json.data = { content: {} }
 
 	json.nodes = []
 	node.content.textGroup.forEach(line => {
-		const textLine = {
-			object: 'text',
-			leaves: [
+		const indent = line.data ? line.data.indent : 0
+		const codeLine = {
+			object: 'block',
+			type: TEXT_LINE_NODE,
+			data: { indent: indent },
+			nodes: [
 				{
-					text: line.text.value
+					object: 'text',
+					leaves: TextUtil.parseMarkings(line)
 				}
 			]
 		}
 
-		json.nodes.push(textLine)
+		json.nodes.push(codeLine)
 	})
 
 	return json
@@ -85,17 +98,31 @@ const oboToSlate = node => {
 
 const plugins = {
 	onKeyDown(event, change) {
-		const isText = change.value.blocks.some(block => block.type === TEXT_NODE)
+		const isText = isType(change)
+
+		// Enter
+		if (isText && event.key === 'Enter') {
+			event.preventDefault()
+			const last = change.value.endBlock
+			// Double Enter
+			if (last.text === '') {
+				change.removeNodeByKey(last.key)
+				change.splitBlock(2)
+				return true
+			}
+			change.insertBlock({ type: TEXT_LINE_NODE, data: { indent: 0 } })
+			return true
+		}
 
 		// Shift Tab
 		if (isText && event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
 			change.value.blocks.forEach(block => {
-				let newIndent = block.data.get('content').indent - 1
+				let newIndent = block.data.get('indent') - 1
 				if (newIndent < 1) newIndent = 0
 
 				return change.setNodeByKey(block.key, {
-					data: { content: { indent: newIndent } }
+					data: { indent: newIndent }
 				})
 			})
 			return true
@@ -106,7 +133,7 @@ const plugins = {
 			event.preventDefault()
 			change.value.blocks.forEach(block =>
 				change.setNodeByKey(block.key, {
-					data: { content: { indent: block.data.get('content').indent + 1 } }
+					data: { indent: block.data.get('indent') + 1 }
 				})
 			)
 			return true
@@ -116,11 +143,33 @@ const plugins = {
 		switch (props.node.type) {
 			case TEXT_NODE:
 				return <Node {...props} />
+			case TEXT_LINE_NODE:
+				return <Line {...props} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Text': {
+				nodes: [{ types: [TEXT_LINE_NODE] }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_TYPE_INVALID: {
+							return change.wrapBlockByKey(child.key, {
+								type: TEXT_LINE_NODE,
+								data: { indent: 0 }
+							})
+						}
+						case CHILD_REQUIRED: {
+							const block = Block.create({
+								type: TEXT_LINE_NODE,
+								data: { indent: 0 }
+							})
+							return change.insertNodeByKey(node.key, index, block)
+						}
+					}
+				}
+			},
+			'ObojoboDraft.Chunks.Text.TextLine': {
 				nodes: [{ objects: ['text'] }]
 			}
 		}
@@ -129,7 +178,8 @@ const plugins = {
 
 const Text = {
 	components: {
-		Node
+		Node,
+		Line
 	},
 	helpers: {
 		insertNode,
