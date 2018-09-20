@@ -11,7 +11,6 @@
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.min.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/mode/xml/xml.min.js",
-				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/mode/javascript/javascript.min.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/edit/matchtags.min.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/xml-fold.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/foldgutter.js",
@@ -23,82 +22,98 @@
 			let css = [
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.css",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/foldgutter.css",
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/theme/monokai.css",
 			]
+
+			let fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i']
 
 		%>
 		<%- include ./partials/head %>
 
 		<style type="text/css">
-			body { font-family:Arial; padding:0; margin:0; margin-top: 40px; }
+			body { font-family:'Libre Franklin', Arial; padding:0; margin:0; margin-top: 40px; }
 			ul > li > p, ul > li > a { display:inline-block; margin-right: 1em; }
-			button { font-size: 16pt; background-color: purple; color: white; font-weight: bold; border:none; }
-			#button-create-new-draft { width: 100%; }
+			a { color: #0d4fa7; text-decoration: underline; cursor: pointer; }
+			button { font-size: 16pt; background-color: #6714bd; color: white; font-weight: bold; border:none; cursor: pointer; opacity: 0.8; font-family:'Libre Franklin', Arial; border-radius: 4px; padding: 0.1em 1em; }
+			button:hover { opacity: 1; }
+			button:disabled { background-color: gray }
+			#button-create-new-draft { width: 100%; border-radius: 0; }
 			#editor-container { position: absolute; top: 40px; bottom: 0; left: 300px; right: 0; }
 			#editor { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
-			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; }
+			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; font-size: 11pt; }
 			#sidebar { overflow: scroll; position: absolute; left: 0; top: 40px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
 			#sidebar ul { padding: 0; margin: 0; }
-			#sidebar li { list-style-type: none; border-bottom: 1px solid #e6e6e6; padding: 10px; box-sizing: border-box; cursor: pointer; position: relative; }
+			#sidebar li { list-style-type: none; border-bottom: 1px solid #e6e6e6; padding: 10px; box-sizing: border-box; position: relative; }
 			#sidebar li:hover { background:#f3faff; }
-			#sidebar li p { margin: 0; pointer-events: none; }
+			#sidebar li p { margin: 0; pointer-events: none; font-size: 0.9em; }
 			.CodeMirror { border-left: 1px solid black; border-bottom: 1px solid black; height: 100%; }
 			h1 { position: absolute; left: 0; top: 0; right: 0; border-bottom: 1px solid black; font-size: 10pt; height: 40px; margin: 0; padding: 12px; box-sizing: border-box; }
 			.selected { background: #d7efff !important; }
 			#button-save-draft { position: absolute; left:50%; bottom: 5px; transform: translate(-50%);}
-			.draft-id { display: block; font-size: 8pt; opacity: 0.5; margin-bottom: 15px; pointer-events: none;  }
-			.link-preview { font-size: 9pt; }
+			.draft-id, .date { display: block; font-size: 8pt; opacity: 0.5; pointer-events: none; }
+			.draft-id { margin-top: 15px; margin-bottom: 15px; }
+			.link-preview { font-size: 9pt; margin-right: 1em; }
 			.link-url { font-size: 9pt; text-decoration: underline;}
+			.link-url.copied { color: green; pointer-events: none; text-decoration: none; font-weight: bold; }
 			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
 			.link-delete:hover { color:red; }
-			.add-question-btn { position: absolute; top: 5px; left: 341px; }
+			.add-question-btn { position: absolute; top: 5px; right: 1em; }
+			#search { position: relative; }
+			#search input { width: 100%; font-family:'Libre Franklin', Arial; border: none; border-bottom: 1px solid gray; font-size: 1em; padding: 0.6em; }
+			#search button { position: absolute; top: 0; right: 0; height: 37px; width: 37px; background: transparent; color: gray; }
+			#sidebar .controls { display: none; }
+			#sidebar .selected .controls { display: block; }
+			#sidebar a { opacity: 0.8; }
+			#sidebar a:hover { opacity: 1; }
+			#pop-up-message { border: 2px solid green; color: green; background: #cbe4cb; position: fixed; right: 1em; bottom: 50px; width: 300px; height: 70px; z-index: 99; padding: 1em; box-sizing: border-box; pointer-events: none; border-radius: 0.25em; text-align: center; font-size: 1.4em; font-weight: bold; transform: translate(0, 120px); transition: transform 0.2s; }
+			.saved #pop-up-message { transform: translate(0, 0); }
+			.CodeMirror-wrap { background: #1d1d1b !important; }
+			#remove-search { padding: 0; }
+			.link-edit.unsaved .title { color: #032ca0; font-weight: bold; }
+			.link-edit.unsaved .title:after { content: "*"; }
 		</style>
 	</head>
 	<body>
-		<%
-			drafts.sort(function(a, b) {
-			if (
-				a.content
-				&& b.content
-				&& a.content.content
-				&& b.content.content
-				&& a.content.content.title
-				&& b.content.content.title
-			) {
-				const aTitle = a.content.content.title.toString().toLowerCase()
-				const bTitle = b.content.content.title.toString().toLowerCase()
-				return aTitle > bTitle
-			}
- 			})
-
-			let timeConverter = function(a){
-				let months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-				return months[a.getMonth()]
-					+ ' ' + a.getDate()
-					+ ' ' + a.getFullYear()
-					+ ' ' + a.getHours()
-					+ ':' + a.getMinutes()
-			}
- 		%>
 		<div>
 			<h1>Obojobo Draft Manager</h1>
 			<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
 			<div id="sidebar">
 				<button id="button-create-new-draft">+ Create new draft</button>
-				<ul>
-					<% drafts.forEach(function(draft){ %>
+				<div id="search">
+					<input id="search-input" type="text" placeholder="Search..."  />
+					<button id="remove-search">&times;</button>
+				</div>
+				<ul id="list">
+					<% drafts.sort(function(a, b) {
+						let aTime = (new Date(a.createdAt)).getTime()
+						let bTime = (new Date(b.createdAt)).getTime()
+
+						return bTime - aTime
+					}).forEach(function(draft){ %>
 						<li
 							id="<%= draft.draftId %>"
 							class="link-edit"
 							data-id="<%= draft.draftId %>"
+							data-search-str="<%= draft.draftId %> <% if(draft.content && draft.content.content && draft.content.content.title){ %><%= draft.content.content.title.toLowerCase() %><% } %>"
 							data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content) %>">
 								<% if(draft.content && draft.content.content && draft.content.content.title){ %>
-									<p><%= draft.content.content.title %></p>
+									<p class="title"><%= draft.content.content.title %></p>
 								<% } else { %>
-									<p><%= draft.draftId %></p>
+									<p class="title"><%= draft.draftId %></p>
 								<% } %>
-								<span class="draft-id"><%= draft.draftId %><br/><%= timeConverter(draft.createdAt) %></span>
-								<a target="_blank" class="link-preview" href="/preview/<%= draft.draftId %>">Preview</a>
-								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
+								<%
+									var date = new Date(draft.createdAt)
+									var isPm = date.getHours() > 12
+									var hours = isPm ? date.getHours() - 12 : date.getHours()
+									var minutes = '' + date.getMinutes()
+									if(minutes.length === 1) minutes = '0' + minutes
+								%>
+								<span class="date"><%= date.toDateString() + ' ' + hours + ':' + minutes + ' ' + (isPm ? 'pm' : 'am') %></span>
+								<div class="controls">
+									<span class="draft-id">id: <%= draft.draftId %></span>
+									<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
+									<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
+								</div>
 								<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
 						</li>
 					<% }) %>
@@ -110,11 +125,77 @@
 					<button id="button-save-draft">Save Draft</button>
 				</div>
 			</div>
+			<div id="pop-up-message">
+				Saved!
+			</div>
 		</div>
 		<script>
+			var domParser = new DOMParser()
+
+			// Setup unload
+			window.onbeforeunload = function(event) {
+				let unsavedEls = document.getElementsByClassName('unsaved')
+				if(unsavedEls.length > 0) {
+					return true // Returning true will cause browser to ask user to confirm leaving page
+				}
+
+				return undefined // Returning undefined will allow browser to close normally
+			}
+
+			// Reload preview windows:
+			var childWindow = null;
+			function preview(draftId, url) {
+				childWindow = window.open(url, 'preview')
+			}
+
+			// Setup search
+			document.getElementById('remove-search').addEventListener('click', function(event) {
+				document.getElementById('search-input').value = ''
+				search('')
+			})
+			document.getElementById('search').addEventListener('keyup', function(event) {
+				search(event.target.value)
+			})
+			var draftSearchStrings = [];
+			var draftEls = document.querySelectorAll('.link-edit');
+			for(var i = 0, len = draftEls.length; i < len; i++) {
+				draftSearchStrings.push(draftEls[i].getAttribute('data-search-str'))
+			}
+
+			function search(ss) {
+				ss = ss.toLowerCase()
+				draftSearchStrings.forEach(function(draftSS) {
+					let id = draftSS.split(' ')[0]
+					let el = document.getElementById(id)
+					if(ss === '' || draftSS.indexOf(ss) > -1) {
+						el.style.display = 'block';
+					}
+					else
+					{
+						el.style.display = 'none';
+					}
+				})
+			}
+
+			var isCtrlPressed = false;
+
+			document.addEventListener('keydown', function(event) {
+				if(event.key === "Meta") {
+					isCtrlPressed = true;
+					return;
+				}
+
+				if(event.keyCode === 83 && isCtrlPressed) {
+					event.preventDefault();
+					saveDraft();
+				}
+
+				isCtrlPressed = false;
+			})
 			document.addEventListener('keyup', function(event) {
 				if(event.keyCode === 83 && event.ctrlKey)
 				{
+					event.preventDefault();
 					saveDraft();
 				}
 			})
@@ -128,7 +209,8 @@
 				indentWithTabs: true,
 				tabSize: 4,
 				indentUnit: 4,
-				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+				theme: 'monokai'
 			})
 
 			var editingDraftId = null
@@ -155,7 +237,10 @@
 			for(var i = 0; i < urlLinks.length; i++)
 			{
 				urlLinks[i].addEventListener('click', function(event) {
+					event.preventDefault()
+					event.stopPropagation()
 					getURL(event.target.getAttribute('data-id'))
+					return false
 				})
 			}
 
@@ -173,7 +258,7 @@
 					resp.json().then(function(json) {
 						if(json.value.id)
 						{
-							alert('New draft created, reloading...')
+							location.hash = 'id:' + json.value.id
 							location.reload()
 						}
 						else
@@ -192,7 +277,6 @@
 			document.getElementById('button-save-draft').addEventListener('click', saveDraft)
 
 			function addQuestion() {
-
 				var cursor = editor.getCursor()
 				var line = editor.getLine(cursor.line)
 				var textBeforeCaret = line.substr(0, cursor.ch).replace(/\S/g, '')
@@ -217,6 +301,8 @@
 
 			function edit(draftId) {
 				if(!draftId) return
+
+				editor.off('change', onEditorChange)
 
 				// if the selected draftId isn't loaded
 				// do nothing and reset the url
@@ -246,6 +332,8 @@
 				editor.setValue(content);
 
 				location.hash = 'id:' + draftId;
+
+				editor.on('change', onEditorChange)
 			}
 
 			function del(draftId) {
@@ -266,7 +354,6 @@
 					resp.json().then(function(json) {
 						if(json.status.toLowerCase() === 'ok')
 						{
-							alert('Draft deleted, reloading...')
 							location.reload()
 						}
 						else
@@ -302,7 +389,13 @@
 					document.getSelection().addRange(selected)
 				}
 
-				let response = alert('Copied ' + str + ' to the clipboard')
+				let linkURLEl = document.getElementById(draftId).getElementsByClassName('link-url')[0]
+				linkURLEl.innerText = 'Get URL - Copied to the clipboard!'
+				linkURLEl.classList.add('copied')
+				setTimeout(function () {
+					linkURLEl.innerText = 'Get URL'
+					linkURLEl.classList.remove('copied')
+				}, 2000)
 			}
 
 			function postCurrentlyEditingDraft(draftContent) {
@@ -333,7 +426,20 @@
 					switch (res.status) {
 						case 200:
 							res.json().then(function(json) {
-								if (json.value.id) alert('Saved! (' + json.value.id + ')')
+								if (json.value.id) {
+									document.body.classList.add('saved')
+									document.getElementById('button-save-draft').innerText = 'Saved!'
+									document.getElementById('button-save-draft').disabled = true
+									setTimeout(function() {
+										document.body.classList.remove('saved')
+										document.getElementById('button-save-draft').innerText = 'Save Draft'
+										document.getElementById('button-save-draft').disabled = false
+									}, 1000)
+									if(childWindow && childWindow.location && childWindow.location.reload) childWindow.location.reload()
+									updateTitleFromEditor(editingDraftId)
+									moveToTopOfList(editingDraftId)
+									document.getElementById(editingDraftId).classList.remove('unsaved')
+								}
 								else {
 									alert('Error: ' + error)
 									console.error(error)
@@ -355,6 +461,57 @@
 					alert('Error: ' + error)
 					console.error(error)
 				})
+			}
+
+			function moveToTopOfList(draftId) {
+				try {
+					let el = document.getElementById(draftId)
+					let ulEl = document.getElementById('list')
+					if(ulEl && ulEl.children && ulEl.children.length > 1) {
+						// debugger
+						ulEl.insertBefore(el, ulEl.children[0])
+					}
+				} catch(e) {
+					// Do nothing
+					console.error(e)
+				}
+			}
+
+			function updateTitleFromEditor(draftId) {
+				let title = getTitleFromEditor()
+				if(!title) return
+
+				try {
+					let el = document.getElementById(draftId).getElementsByClassName('title')[0]
+					el.innerText = title
+				} catch(e) {
+					// Do nothing
+				}
+			}
+
+			function getTitleFromEditor() {
+				try {
+					let doc = domParser.parseFromString(editor.getValue(), 'application/xml')
+					let els = doc.getElementsByTagName('Module')
+					if(els.length === 0) {
+						els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
+					}
+					if(els.length > 0) {
+						let el = els[0]
+						let title = el.getAttribute('title')
+						if(title) return title
+					}
+				} catch(e) {
+					// Do nothing
+				}
+
+				return null
+			}
+
+			function onEditorChange(event) {
+				let el = document.getElementById(editingDraftId)
+				el.setAttribute('data-content', editor.getValue())
+				el.classList.add('unsaved')
 			}
 
 			if(location.hash.indexOf('#id:') === 0)
