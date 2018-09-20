@@ -122,11 +122,7 @@ Object {
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "leaves": Array [
-        Object {
-          "text": "mockCaption",
-        },
-      ],
+      "leaves": undefined,
       "object": "text",
     },
   ],
@@ -156,14 +152,7 @@ Object {
       Object {
         "data": null,
         "text": Object {
-          "styleList": Array [
-            Object {
-              "data": Object {},
-              "end": 8,
-              "start": 0,
-              "type": "b",
-            },
-          ],
+          "styleList": Array [],
           "value": "mockText",
         },
       },

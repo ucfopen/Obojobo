@@ -42,11 +42,7 @@ Object {
       },
       "nodes": Array [
         Object {
-          "leaves": Array [
-            Object {
-              "text": "mockCode",
-            },
-          ],
+          "leaves": undefined,
           "object": "text",
         },
       ],
@@ -61,11 +57,7 @@ Object {
       },
       "nodes": Array [
         Object {
-          "leaves": Array [
-            Object {
-              "text": "mockCode2",
-            },
-          ],
+          "leaves": undefined,
           "object": "text",
         },
       ],
@@ -114,14 +106,7 @@ Object {
           "indent": undefined,
         },
         "text": Object {
-          "styleList": Array [
-            Object {
-              "data": Object {},
-              "end": 8,
-              "start": 0,
-              "type": "b",
-            },
-          ],
+          "styleList": Array [],
           "value": "mockCode",
         },
       },

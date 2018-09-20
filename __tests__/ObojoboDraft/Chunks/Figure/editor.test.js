@@ -2,6 +2,8 @@ import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
+jest.mock('../../../../src/scripts/oboeditor/util/text-util')
+
 import Figure from '../../../../ObojoboDraft/Chunks/Figure/editor'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 

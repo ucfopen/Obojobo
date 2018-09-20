@@ -2,6 +2,8 @@ import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID, PARENT_TYPE_INVALID } from 'slate-schema-violations'
 
+import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -127,21 +129,8 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 			data: { indent: currLevel }
 		}
 
-		let currIndex = 0
-
 		child.nodes.forEach(text => {
-			text.leaves.forEach(textRange => {
-				textRange.marks.forEach(mark => {
-					const style = {
-						start: currIndex,
-						end: currIndex + textRange.text.length,
-						type: mark.type,
-						data: JSON.parse(JSON.stringify(mark.data))
-					}
-					listLine.text.styleList.push(style)
-				})
-				currIndex += textRange.text.length
-			})
+			TextUtil.slateToOboText(text, listLine)
 		})
 
 		textGroup.push(listLine)
@@ -195,11 +184,7 @@ const oboToSlate = node => {
 					nodes: [
 						{
 							object: 'text',
-							leaves: [
-								{
-									text: line.text.value
-								}
-							]
+							leaves: TextUtil.parseMarkings(line)
 						}
 					]
 				}

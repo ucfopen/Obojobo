@@ -94,11 +94,7 @@ Object {
         Object {
           "nodes": Array [
             Object {
-              "leaves": Array [
-                Object {
-                  "text": "mockLine1",
-                },
-              ],
+              "leaves": undefined,
               "object": "text",
             },
           ],
@@ -160,11 +156,7 @@ Object {
                             Object {
                               "nodes": Array [
                                 Object {
-                                  "leaves": Array [
-                                    Object {
-                                      "text": "mockLine1",
-                                    },
-                                  ],
+                                  "leaves": undefined,
                                   "object": "text",
                                 },
                               ],
@@ -239,11 +231,7 @@ Object {
         Object {
           "nodes": Array [
             Object {
-              "leaves": Array [
-                Object {
-                  "text": "mockLine1",
-                },
-              ],
+              "leaves": undefined,
               "object": "text",
             },
           ],
@@ -305,11 +293,7 @@ Object {
                             Object {
                               "nodes": Array [
                                 Object {
-                                  "leaves": Array [
-                                    Object {
-                                      "text": "mockLine1",
-                                    },
-                                  ],
+                                  "leaves": undefined,
                                   "object": "text",
                                 },
                               ],
@@ -401,14 +385,7 @@ Object {
           "indent": 0,
         },
         "text": Object {
-          "styleList": Array [
-            Object {
-              "data": Object {},
-              "end": 8,
-              "start": 0,
-              "type": "b",
-            },
-          ],
+          "styleList": Array [],
           "value": "mockText",
         },
       },

@@ -7,8 +7,8 @@ const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 
 import MCAnswer from '../MCAnswer/editor'
-import MCFeedback from '../MCFeedback/editor'
 import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
+import isOrNot from '../../../../src/scripts/common/isornot'
 
 class Node extends React.Component {
 	constructor(props) {
@@ -170,11 +170,6 @@ const MCChoice = {
 		oboToSlate
 	},
 	plugins
-}
-
-const isOrNot = (item, text) => {
-	if (item) return ' is-' + text
-	return ' is-not-' + text
 }
 
 export default MCChoice

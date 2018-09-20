@@ -10,7 +10,7 @@ const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const Line = props => {
 	return (
 		<span
-			className={'text align-left'}
+			className={'text align-' + props.node.data.get('align')}
 			{...props.attributes}
 			data-indent={props.node.data.get('indent')}
 		>
@@ -76,10 +76,11 @@ const oboToSlate = node => {
 	json.nodes = []
 	node.content.textGroup.forEach(line => {
 		const indent = line.data ? line.data.indent : 0
+		const align = line.data ? line.data.align : 0
 		const codeLine = {
 			object: 'block',
 			type: TEXT_LINE_NODE,
-			data: { indent: indent },
+			data: { indent, align },
 			nodes: [
 				{
 					object: 'text',

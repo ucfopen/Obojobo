@@ -3,6 +3,8 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID, PARENT_TYPE_INVALID } from 'slate-schema-violations'
 
+jest.mock('../../../../src/scripts/oboeditor/util/text-util')
+
 import List from '../../../../ObojoboDraft/Chunks/List/editor'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
