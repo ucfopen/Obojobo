@@ -19,7 +19,7 @@ class Node extends React.Component {
 			data: {
 				content: {
 					latex: event.target.value,
-					label: this.state.latex
+					label: this.state.label
 				}
 			}
 		})
@@ -56,7 +56,7 @@ class Node extends React.Component {
 		katexHtml = katexHtml.html
 
 		return (
-			<div className={'non-editable-chunk'}>
+			<div className={'non-editable-chunk align-right'}>
 				<div className="katex-container" dangerouslySetInnerHTML={{ __html: katexHtml }} />
 				{this.state.label === '' ? null : <div className="equation-label">{this.state.label}</div>}
 			</div>
@@ -93,7 +93,9 @@ class Node extends React.Component {
 	render() {
 		return (
 			<div
-				className={'component obojobo-draft--chunks--math-equation pad align-center'}
+				className={
+					'component obojobo-draft--chunks--math-equation pad ' + 'align-' + this.state.align
+				}
 				{...this.props.attributes}
 			>
 				{this.renderLatex()}

@@ -92,6 +92,7 @@ Object {
     "textGroup": Array [
       Object {
         "data": Object {
+          "align": Object {},
           "indent": Object {},
         },
         "text": Object {

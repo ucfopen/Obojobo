@@ -2,6 +2,7 @@ import { shallow } from 'enzyme'
 import React from 'react'
 
 import Toolbar from '../../../src/scripts/oboeditor/components/toolbar'
+const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 describe('Editor Toolbar', () => {
 	test('Node component', () => {
@@ -132,6 +133,48 @@ describe('Editor Toolbar', () => {
 
 		expect(tree).toMatchSnapshot()
 		expect(change.addMark).toHaveBeenCalled()
+	})
+
+	test('Node component toggles left align', () => {
+		const Node = Toolbar.components.Node
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+		const component = shallow(
+			<Node
+				value={{
+					change: () => change,
+					marks: {
+						some: funct => {
+							return funct({ type: 'mockMark' })
+						}
+					},
+					blocks: {
+						forEach: funct => {
+							funct({
+								data: { toJSON: () => ({}) },
+								type: TEXT_LINE_NODE
+							})
+
+							funct({
+								data: { toJSON: () => ({ content: {} }) },
+								type: 'mockNode'
+							})
+						}
+					}
+				}}
+				onChange={jest.fn()}
+			/>
+		)
+		const tree = component.html()
+
+		component
+			.find('button')
+			.at(9)
+			.simulate('click', { preventDefault: jest.fn() })
+
+		expect(tree).toMatchSnapshot()
+		expect(change.setNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Bold component', () => {

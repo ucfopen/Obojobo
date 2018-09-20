@@ -280,6 +280,10 @@ describe('Heading editor', () => {
 			content: {
 				textGroup: [
 					{
+						text: { value: 'mockText' },
+						data: { align: 'right' }
+					},
+					{
 						text: { value: 'mockText' }
 					}
 				]

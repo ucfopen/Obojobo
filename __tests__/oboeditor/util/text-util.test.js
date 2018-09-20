@@ -97,6 +97,16 @@ describe('TextUtil', () => {
 		expect(TextUtil.parseMarkings(line)).toMatchSnapshot()
 	})
 
+	test('parseMarkings creates leaves without styleList', () => {
+		const text = {
+			value: 'ThisTextIsFormatted'
+		}
+
+		const line = { text }
+
+		expect(TextUtil.parseMarkings(line)).toMatchSnapshot()
+	})
+
 	test('slateToOboText converts a text node to a textGroup', () => {
 		const text = {
 			leaves: [

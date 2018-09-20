@@ -52,7 +52,7 @@ const slateToObo = node => {
 	node.nodes.forEach(line => {
 		const textLine = {
 			text: { value: line.text, styleList: [] },
-			data: { indent: line.data.get('indent') }
+			data: { indent: line.data.get('indent'), align: line.data.get('align') }
 		}
 
 		line.nodes.forEach(text => {

@@ -30,6 +30,9 @@ const TextUtil = {
 		const vitalPoints = new Set()
 		vitalPoints.add(0)
 		vitalPoints.add(fullText.length)
+
+		if (!line.text.styleList) return [fullText]
+
 		line.text.styleList.forEach(style => {
 			vitalPoints.add(style.start)
 			vitalPoints.add(style.end)

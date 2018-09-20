@@ -148,4 +148,10 @@ Array [
 ]
 `;
 
+exports[`TextUtil parseMarkings creates leaves without styleList 1`] = `
+Array [
+  "ThisTextIsFormatted",
+]
+`;
+
 exports[`TextUtil slateToOboText converts a text node to a textGroup 1`] = `undefined`;
