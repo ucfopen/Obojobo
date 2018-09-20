@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-express",
-	"version": "3.3.3",
+	"version": "3.4.0",
 	"private": true,
 	"scripts": {
 		"start": "pm2 start pm2_prod.yaml",
