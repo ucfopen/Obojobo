@@ -15,7 +15,6 @@ describe('Figure editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -41,7 +40,6 @@ describe('Figure editor', () => {
 		const Node = Figure.components.Node
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -55,13 +53,13 @@ describe('Figure editor', () => {
 				}}
 			/>
 		)
-		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
+		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 

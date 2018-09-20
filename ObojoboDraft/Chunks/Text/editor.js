@@ -63,8 +63,6 @@ const slateToObo = node => {
 	})
 	json.children = []
 
-	console.log(json)
-
 	return json
 }
 

@@ -65,9 +65,7 @@ exports[`Figure editor Node builds the expected component 1`] = `
         src={undefined}
         unselectable="on"
       />
-      <figcaption>
-        mockChildren
-      </figcaption>
+      <figcaption />
     </div>
   </div>
 </div>
@@ -81,7 +79,7 @@ exports[`Figure editor Node component changes size with no width or height 1`] =
 
 exports[`Figure editor Node component deletes self 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption>mockChildren</figcaption></div></div></div>"`;
 
-exports[`Figure editor Node component edits alt text 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption>mockChildren</figcaption></div></div></div>"`;
+exports[`Figure editor Node component edits alt text 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption></figcaption></div></div></div>"`;
 
 exports[`Figure editor Node component edits url 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption>mockChildren</figcaption></div></div></div>"`;
 

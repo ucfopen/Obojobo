@@ -4,4 +4,45 @@
 	.text {
 		display: block;
 	}
+
+	.dropdown-heading {
+		position: absolute;
+		right: 0;
+		top: 1em;
+		button {
+			display: block;
+			background-color: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			margin: 0.3em;
+			font-size: 1em;
+			color: $color-bg;
+		}
+
+		.is-open {
+			display: block;
+		}
+		.is-not-open {
+			display: none;
+		}
+
+		.drop-content-heading {
+			background-color: $color-bg;
+			border-radius: $dimension-rounded-radius;
+			position: absolute;
+			right: 1em;
+			z-index: 1;
+			min-width: 20em;
+			top: auto;
+
+			button {
+				display: block;
+				background-color: $color-bg;
+				border-radius: $dimension-rounded-radius;
+				margin: 0.3em;
+				font-size: 1em;
+				width: 100%;
+				color: black;
+			}
+		}
+	}
 }

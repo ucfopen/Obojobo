@@ -1,17 +1,102 @@
 import React from 'react'
+import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+import isOrNot from '../../../src/scripts/common/isornot'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
-const Node = props => {
-	const HTag = `h${props.node.data.get('content').level || 1}`
-	return (
-		<div className={'component'}>
-			<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
-				<HTag>{props.children}</HTag>
+class Node extends React.Component {
+	constructor(props) {
+		super(props)
+		this.state = this.props.node.data.get('content')
+		this.state.isOpen = false
+
+		this.handleClick = this.handleClick.bind(this)
+	}
+
+	componentDidMount() {
+		document.addEventListener('mousedown', this.handleClick, false)
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('mousedown', this.handleClick, false)
+	}
+
+	handleClick(event) {
+		if (!this.node) return
+		if (this.node.contains(event.target)) return
+
+		this.handleOutsideClick()
+	}
+
+	handleLevelChange(num) {
+		const editor = this.props.editor
+		const change = editor.value.change()
+
+		this.setState(state => {
+			return { isOpen: !state.isOpen, level: num }
+		})
+
+		change.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					level: num
+				}
+			}
+		})
+		editor.onChange(change)
+	}
+	toggleLevelSelect() {
+		this.setState(state => {
+			return { isOpen: !state.isOpen }
+		})
+	}
+	handleOutsideClick() {
+		this.setState({ isOpen: false })
+	}
+
+	render() {
+		const HTag = `h${this.state.level || 1}`
+		const text = this.props.node.text
+		const dropText = text.length > 15 ? text.slice(0, 15) : text
+		return (
+			<div
+				className={'component'}
+				ref={node => {
+					this.node = node
+				}}
+			>
+				<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
+					<HTag>
+						<span className={'text align-center'}>{this.props.children}</span>
+					</HTag>
+
+					<div className={'dropdown-heading'}>
+						<button onClick={() => this.toggleLevelSelect()}>{'▼'}</button>
+						<div className={'drop-content-heading ' + isOrNot(this.state.isOpen, 'open')}>
+							<button onClick={() => this.handleLevelChange(1)}>
+								<h1>{dropText}</h1>
+							</button>
+							<button onClick={() => this.handleLevelChange(2)}>
+								<h2>{dropText}</h2>
+							</button>
+							<button onClick={() => this.handleLevelChange(3)}>
+								<h3>{dropText}</h3>
+							</button>
+							<button onClick={() => this.handleLevelChange(4)}>
+								<h4>{dropText}</h4>
+							</button>
+							<button onClick={() => this.handleLevelChange(5)}>
+								<h5>{dropText}</h5>
+							</button>
+							<button onClick={() => this.handleLevelChange(6)}>
+								<h6>{dropText}</h6>
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
-		</div>
-	)
+		)
+	}
 }
 
 const insertNode = change => {
@@ -36,21 +121,8 @@ const slateToObo = node => {
 		text: { value: node.text, styleList: [] }
 	}
 
-	let currIndex = 0
-
 	node.nodes.forEach(text => {
-		text.leaves.forEach(textRange => {
-			textRange.marks.forEach(mark => {
-				const style = {
-					start: currIndex,
-					end: currIndex + textRange.text.length,
-					type: mark.type,
-					data: JSON.parse(JSON.stringify(mark.data))
-				}
-				line.text.styleList.push(style)
-			})
-			currIndex += textRange.text.length
-		})
+		TextUtil.slateToOboText(text, line)
 	})
 
 	json.content.textGroup.push(line)
@@ -71,11 +143,7 @@ const oboToSlate = node => {
 	node.content.textGroup.forEach(line => {
 		const headingline = {
 			object: 'text',
-			leaves: [
-				{
-					text: line.text.value
-				}
-			]
+			leaves: TextUtil.parseMarkings(line)
 		}
 
 		json.nodes.push(headingline)

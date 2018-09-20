@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Heading editor Node builds the expected component 1`] = `
+exports[`Heading editor Node component 1`] = `
 <div
   className="component"
 >
@@ -8,11 +8,90 @@ exports[`Heading editor Node builds the expected component 1`] = `
     className="text-chunk obojobo-draft--chunks--heading pad"
   >
     <h1>
-      mockChildren
+      <span
+        className="text align-center"
+      />
     </h1>
+    <div
+      className="dropdown-heading"
+    >
+      <button
+        onClick={[Function]}
+      >
+        ▼
+      </button>
+      <div
+        className="drop-content-heading  is-not-open"
+      >
+        <button
+          onClick={[Function]}
+        >
+          <h1>
+            Your Title Goes
+          </h1>
+        </button>
+        <button
+          onClick={[Function]}
+        >
+          <h2>
+            Your Title Goes
+          </h2>
+        </button>
+        <button
+          onClick={[Function]}
+        >
+          <h3>
+            Your Title Goes
+          </h3>
+        </button>
+        <button
+          onClick={[Function]}
+        >
+          <h4>
+            Your Title Goes
+          </h4>
+        </button>
+        <button
+          onClick={[Function]}
+        >
+          <h5>
+            Your Title Goes
+          </h5>
+        </button>
+        <button
+          onClick={[Function]}
+        >
+          <h6>
+            Your Title Goes
+          </h6>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 `;
+
+exports[`Heading editor Node component changes heading level 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-center\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component changes heading level 2`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h2><span class=\\"text align-center\\"></span></h2><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component changes heading level 3`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h3><span class=\\"text align-center\\"></span></h3><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component changes heading level 4`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h4><span class=\\"text align-center\\"></span></h4><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component changes heading level 5`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h5><span class=\\"text align-center\\"></span></h5><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component changes heading level 6`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h6><span class=\\"text align-center\\"></span></h6><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component handles clicks 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-center\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component handles clicks 2`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-center\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component handles clicks 3`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-center\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component mounts and unmounts properly 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-center\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+
+exports[`Heading editor Node component toggles level select 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-center\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
 
 exports[`Heading editor oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
 Object {
@@ -24,11 +103,7 @@ Object {
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "leaves": Array [
-        Object {
-          "text": "mockText",
-        },
-      ],
+      "leaves": undefined,
       "object": "text",
     },
   ],
@@ -58,14 +133,7 @@ Object {
     "textGroup": Array [
       Object {
         "text": Object {
-          "styleList": Array [
-            Object {
-              "data": Object {},
-              "end": 8,
-              "start": 0,
-              "type": "b",
-            },
-          ],
+          "styleList": Array [],
           "value": "mockText",
         },
       },
