@@ -50,7 +50,7 @@
 			h1 { position: absolute; left: 0; top: 0; right: 0; border-bottom: 1px solid black; font-size: 10pt; height: 40px; margin: 0; padding: 12px; box-sizing: border-box; }
 			.selected { background: #d7efff !important; }
 			#button-save-draft { position: absolute; left:50%; bottom: 5px; transform: translate(-50%);}
-			.draft-id, .date { display: block; font-size: 8pt; opacity: 0.5; pointer-events: none; }
+			.draft-id, .date { display: block; font-size: 8pt; opacity: 0.7; pointer-events: none; }
 			.draft-id { margin-top: 15px; margin-bottom: 15px; }
 			.link-preview { font-size: 9pt; margin-right: 1em; }
 			.link-url { font-size: 9pt; text-decoration: underline;}
@@ -87,6 +87,13 @@
 					<% drafts.sort(function(a, b) {
 						let aTime = (new Date(a.createdAt)).getTime()
 						let bTime = (new Date(b.createdAt)).getTime()
+						let aTitle = a.content && a.content.content ? '' + a.content.content.title : null
+						let bTitle = b.content && b.content.content ? '' + b.content.content.title : null
+
+						if(aTitle.toLowerCase() < bTitle.toLowerCase()) return -1;
+						if(aTitle.toLowerCase() > bTitle.toLowerCase()) return 1;
+						if(aTitle < bTitle) return 1;
+						if(aTitle > bTitle) return -1;
 
 						return bTime - aTime
 					}).forEach(function(draft){ %>
@@ -94,7 +101,7 @@
 							id="<%= draft.draftId %>"
 							class="link-edit"
 							data-id="<%= draft.draftId %>"
-							data-search-str="<%= draft.draftId %> <% if(draft.content && draft.content.content && draft.content.content.title){ %><%= draft.content.content.title.toLowerCase() %><% } %>"
+							data-search-str="<%= draft.draftId %> <% if(draft.content && draft.content.content && draft.content.content.title){ %><%= ('' + draft.content.content.title).toLowerCase() %><% } %>"
 							data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content) %>">
 								<% if(draft.content && draft.content.content && draft.content.content.title){ %>
 									<p class="title"><%= draft.content.content.title %></p>
@@ -437,7 +444,6 @@
 									}, 1000)
 									if(childWindow && childWindow.location && childWindow.location.reload) childWindow.location.reload()
 									updateTitleFromEditor(editingDraftId)
-									moveToTopOfList(editingDraftId)
 									document.getElementById(editingDraftId).classList.remove('unsaved')
 								}
 								else {
@@ -461,20 +467,6 @@
 					alert('Error: ' + error)
 					console.error(error)
 				})
-			}
-
-			function moveToTopOfList(draftId) {
-				try {
-					let el = document.getElementById(draftId)
-					let ulEl = document.getElementById('list')
-					if(ulEl && ulEl.children && ulEl.children.length > 1) {
-						// debugger
-						ulEl.insertBefore(el, ulEl.children[0])
-					}
-				} catch(e) {
-					// Do nothing
-					console.error(e)
-				}
 			}
 
 			function updateTitleFromEditor(draftId) {
