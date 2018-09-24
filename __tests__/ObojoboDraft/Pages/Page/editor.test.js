@@ -27,7 +27,7 @@ describe('Page', () => {
 	test('Node builds the expected component', () => {
 		const Node = Page.components.Node
 		const component = renderer.create(
-			<Node attributes={{ dummy: 'dummyData' }} children={'mockChildren'} />
+			<Node attributes={{ dummy: 'dummyData' }}  />
 		)
 		const tree = component.toJSON()
 

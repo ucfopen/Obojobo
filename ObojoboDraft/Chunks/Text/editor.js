@@ -1,5 +1,4 @@
 import React from 'react'
-import { Data } from 'slate'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -69,7 +68,6 @@ const oboToSlate = node => {
 
 	json.nodes = []
 	node.content.textGroup.forEach(line => {
-		const indent = line.data ? line.data.indent : 0
 		const textLine = {
 			object: 'text',
 			leaves: [

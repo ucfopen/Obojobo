@@ -1,3 +1,5 @@
+/* eslint no-alert: 0 */
+
 import React from 'react'
 import Common from 'Common'
 
@@ -123,12 +125,8 @@ class EditorNav extends React.Component {
 				<button className="toggle-button">Toggle Navigation Menu</button>
 				<ul>
 					{list.map((item, index) => {
-						switch (item.type) {
-							case 'heading':
-								return this.renderHeading(index, item)
-							case 'link':
-								return this.renderLink(index, this.state.navTargetId === item.id, list)
-						}
+						if (item.type === 'heading') return this.renderHeading(index, item)
+						return this.renderLink(index, this.state.navTargetId === item.id, list)
 					})}
 				</ul>
 				<button onClick={() => this.addPage()}>{'Add Page'}</button>

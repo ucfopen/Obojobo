@@ -1,5 +1,5 @@
 import React from 'react'
-import { Data, Block } from 'slate'
+import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ActionButton from '../../Chunks/ActionButton/editor'
@@ -21,7 +21,6 @@ import MCAnswer from '../../Chunks/MCAssessment/MCAnswer/editor'
 import MCFeedback from '../../Chunks/MCAssessment/MCFeedback/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const nodes = {

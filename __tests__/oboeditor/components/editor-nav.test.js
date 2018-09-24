@@ -1,4 +1,4 @@
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
@@ -82,7 +82,7 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		const click = component
+		component
 			.find('button')
 			.at(1)
 			.simulate('click')
@@ -98,7 +98,7 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		const click = component
+		component
 			.find('button')
 			.at(2)
 			.simulate('click')
@@ -123,7 +123,7 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		const click = component
+		component
 			.find('li')
 			.find('button')
 			.at(0) // [Move Up, Edit Name, Delete]
@@ -149,7 +149,7 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		const click = component
+		component
 			.find('li')
 			.find('button')
 			.at(0) // [Move Down, Edit Name, Delete]
@@ -177,7 +177,7 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		const click = component
+		component
 			.find('li')
 			.find('button')
 			.at(1) // [Move Down, Edit Name, Delete]
@@ -205,7 +205,7 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		const click = component
+		component
 			.find('li')
 			.find('button')
 			.at(2) // [Move Down, Edit Name, Delete]

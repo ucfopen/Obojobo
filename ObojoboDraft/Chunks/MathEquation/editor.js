@@ -6,20 +6,17 @@ const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = this.props.node.data.get('content')
 	}
 
 	handleLatexChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		this.setState({ latex: event.target.value })
-
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
-					latex: event.target.value,
-					label: this.state.latex
+					label: this.props.node.data.get('content').label,
+					latex: event.target.value
 				}
 			}
 		})
@@ -30,13 +27,11 @@ class Node extends React.Component {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		this.setState({ label: event.target.value })
-
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					label: event.target.value,
-					latex: this.state.latex
+					latex: this.props.node.data.get('content').latex
 				}
 			}
 		})
@@ -44,7 +39,8 @@ class Node extends React.Component {
 	}
 
 	renderLatex() {
-		let katexHtml = getLatexHtml(this.state.latex)
+		const content = this.props.node.data.get('content')
+		let katexHtml = getLatexHtml(content.latex)
 		if (katexHtml.error) {
 			return (
 				<div className={'katex-container katex-error'}>
@@ -58,21 +54,20 @@ class Node extends React.Component {
 		return (
 			<div className={'non-editable-chunk'}>
 				<div className="katex-container" dangerouslySetInnerHTML={{ __html: katexHtml }} />
-				{this.state.label === '' ? null : <div className="equation-label">{this.state.label}</div>}
+				{content.label === '' ? null : <div className="equation-label">{content.label}</div>}
 			</div>
 		)
 	}
 
 	renderEquationEditor() {
-		const { isFocused } = this.props
-
+		const content = this.props.node.data.get('content')
 		return (
 			<div className={'equation-editor'}>
 				<div>
 					<p>Latex Equation</p>
 					<input
 						name={'Latex Equation'}
-						value={this.state.latex}
+						value={content.latex}
 						onChange={event => this.handleLatexChange(event)}
 						onClick={event => event.stopPropagation()}
 						frameBorder="0"
@@ -82,7 +77,7 @@ class Node extends React.Component {
 					<p>Equation Label</p>
 					<input
 						name={'Equation Label'}
-						value={this.state.label}
+						value={content.label}
 						onChange={event => this.handleLabelChange(event)}
 						onClick={event => event.stopPropagation()}
 						frameBorder="0"

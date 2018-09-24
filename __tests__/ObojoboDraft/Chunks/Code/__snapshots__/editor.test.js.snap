@@ -5,9 +5,7 @@ exports[`Code editor Line builds the expected component 1`] = `
   className="text align-left"
   data-indent={undefined}
   dummy="dummyData"
->
-  mockChildren
-</span>
+/>
 `;
 
 exports[`Code editor Node builds the expected component 1`] = `
@@ -19,9 +17,7 @@ exports[`Code editor Node builds the expected component 1`] = `
     dummy="dummyData"
   >
     <pre>
-      <code>
-        mockChildren
-      </code>
+      <code />
     </pre>
   </div>
 </div>

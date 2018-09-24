@@ -3,16 +3,15 @@ import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 const Line = props => {
-
 	return (
 		<span
 			className={'text align-left'}
 			{...props.attributes}
-			data-indent={props.node.data.get('content').indent}>
+			data-indent={props.node.data.get('content').indent}
+		>
 			{props.children}
 		</span>
 	)
@@ -21,13 +20,9 @@ const Line = props => {
 const Node = props => {
 	return (
 		<div className={'component'}>
-			<div
-				className={`text-chunk obojobo-draft--chunks--code pad`}
-				{...props.attributes}>
+			<div className={`text-chunk obojobo-draft--chunks--code pad`} {...props.attributes}>
 				<pre>
-					<code>
-						{props.children}
-					</code>
+					<code>{props.children}</code>
 				</pre>
 			</div>
 		</div>
@@ -99,7 +94,7 @@ const oboToSlate = node => {
 		const codeLine = {
 			object: 'block',
 			type: CODE_LINE_NODE,
-			data: { content: { indent: indent }},
+			data: { content: { indent } },
 			nodes: [
 				{
 					object: 'text',
@@ -127,7 +122,7 @@ const plugins = {
 		// Enter
 		if (isCode && event.key === 'Enter') {
 			event.preventDefault()
-			change.insertBlock({ type: CODE_LINE_NODE, data: { content: { indent: 0 }}})
+			change.insertBlock({ type: CODE_LINE_NODE, data: { content: { indent: 0 } } })
 			return true
 		}
 
@@ -136,10 +131,10 @@ const plugins = {
 			event.preventDefault()
 			change.value.blocks.forEach(block => {
 				let newIndent = block.data.get('content').indent - 1
-				if(newIndent < 1) newIndent = 0
+				if (newIndent < 1) newIndent = 0
 
 				return change.setNodeByKey(block.key, {
-					data: { content: { indent: newIndent }}
+					data: { content: { indent: newIndent } }
 				})
 			})
 			return true
@@ -148,9 +143,11 @@ const plugins = {
 		// Tab indent
 		if (isCode && event.key === 'Tab') {
 			event.preventDefault()
-			change.value.blocks.forEach(block => change.setNodeByKey(block.key, {
-				data: { content: { indent: block.data.get('content').indent + 1 }}
-			}))
+			change.value.blocks.forEach(block =>
+				change.setNodeByKey(block.key, {
+					data: { content: { indent: block.data.get('content').indent + 1 } }
+				})
+			)
 			return true
 		}
 	},
@@ -169,18 +166,15 @@ const plugins = {
 				normalize: (change, violation, { node, child, index }) => {
 					switch (violation) {
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(
-								child.key,
-								{
-									type: CODE_LINE_NODE,
-									data: { content: { indent: 0 }}
-								}
-							)
+							return change.wrapBlockByKey(child.key, {
+								type: CODE_LINE_NODE,
+								data: { content: { indent: 0 } }
+							})
 						}
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: CODE_LINE_NODE,
-								data: { content: { indent: 0 }}
+								data: { content: { indent: 0 } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
@@ -202,7 +196,7 @@ const Code = {
 	helpers: {
 		insertNode,
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }

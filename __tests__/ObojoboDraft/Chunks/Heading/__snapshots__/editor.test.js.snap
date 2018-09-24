@@ -7,9 +7,7 @@ exports[`Heading editor Node builds the expected component 1`] = `
   <div
     className="text-chunk obojobo-draft--chunks--heading pad"
   >
-    <h1>
-      mockChildren
-    </h1>
+    <h1 />
   </div>
 </div>
 `;

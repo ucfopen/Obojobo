@@ -1,5 +1,4 @@
 import React from 'react'
-import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import Heading from '../../../../ObojoboDraft/Chunks/Heading/editor'
@@ -11,7 +10,6 @@ describe('Heading editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -44,7 +42,7 @@ describe('Heading editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => {
+				get: () => {
 					return {}
 				}
 			},

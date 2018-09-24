@@ -15,7 +15,6 @@ describe('Actions editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -41,7 +40,6 @@ describe('Actions editor', () => {
 		const Node = Actions.components.Node
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -58,7 +56,7 @@ describe('Actions editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component.find('button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -68,7 +66,6 @@ describe('Actions editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -94,7 +91,6 @@ describe('Actions editor', () => {
 		const Node = Actions.components.Score
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -110,7 +106,7 @@ describe('Actions editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component.find('button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 	})

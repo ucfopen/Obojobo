@@ -6,7 +6,7 @@ import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 describe('DefaultNode', () => {
 	test('Node builds the expected component', () => {
 		const Node = DefaultNode.components.Node
-		const component = renderer.create(<Node attributes={{dummy: 'dummyData'}} children={'mockChildren'} />)
+		const component = renderer.create(<Node attributes={{ dummy: 'dummyData' }} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -27,7 +27,7 @@ describe('DefaultNode', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => {}
+				get: () => {}
 			}
 		}
 		const oboNode = DefaultNode.helpers.slateToObo(slateNode)

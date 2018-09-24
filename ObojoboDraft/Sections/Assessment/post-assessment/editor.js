@@ -1,5 +1,7 @@
+/* eslint no-alert: 0 */
+
 import React from 'react'
-import { Data, Block } from 'slate'
+import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 // A single score action
@@ -13,31 +15,28 @@ import Page from '../../../Pages/Page/editor'
 class Score extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-			for: this.props.node.data.get('for')
-		}
 	}
 
 	changeRange() {
-		const newRange = window.prompt('Enter the new range:', this.state.for) || this.state.for
+		const dataFor = this.props.node.data.get('for')
+		const newRange = window.prompt('Enter the new range:', dataFor) || dataFor
 
 		// TODO Validate range
 
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		this.setState({ for: newRange })
-
 		change.setNodeByKey(this.props.node.key, { data: { for: newRange } })
 		editor.onChange(change)
 	}
 
 	render() {
+		const dataFor = this.props.node.data.get('for')
 		return (
 			<div className={'score-actions-page pad'}>
 				{this.props.children}
 				<div className={'action-data'}>
-					{'Score Range: ' + this.state.for + ' '}
+					{'Score Range: ' + dataFor + ' '}
 					<button onClick={() => this.changeRange()}>Edit Range</button>
 				</div>
 			</div>

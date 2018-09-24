@@ -1,5 +1,6 @@
+/* eslint no-undefined: 0 */
+
 import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
-import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import Common from '../../../src/scripts/common/index'
 jest.mock('../../../src/scripts/oboeditor/util/editor-util')
 jest.mock('../../../src/scripts/viewer/util/api-util')
@@ -233,7 +234,6 @@ describe('EditorStore', () => {
 				}
 			}
 		})
-		const oldNavItem = { processTrigger: jest.fn() }
 		const newNavItem = {
 			id: 'newItem',
 			showChildrenOnNavigation: true,
@@ -375,7 +375,7 @@ describe('EditorStore', () => {
 
 		EditorStore.setState({
 			currentModel: {
-				getParentOfType: type => 'mockParent'
+				getParentOfType: () => 'mockParent'
 			}
 		})
 

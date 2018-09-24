@@ -7,14 +7,13 @@ const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 
 import MCAnswer from '../MCAnswer/editor'
-import MCFeedback from '../MCFeedback/editor'
 import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
 
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = props.node.data.get('content')
 	}
+
 	delete(event) {
 		event.stopPropagation()
 		const editor = this.props.editor
@@ -23,13 +22,12 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
+
 	handleScoreChange(event) {
 		event.stopPropagation()
 		const editor = this.props.editor
 		const change = editor.value.change()
-		const newScore = this.state.score === 100 ? 0 : 100
-
-		this.setState({ score: newScore })
+		const newScore = this.props.node.data.get('content').score === 100 ? 0 : 100
 
 		change.setNodeByKey(this.props.node.key, {
 			data: {
@@ -40,6 +38,7 @@ class Node extends React.Component {
 		})
 		editor.onChange(change)
 	}
+
 	addFeedback() {
 		const editor = this.props.editor
 		const change = editor.value.change()
@@ -51,18 +50,20 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
+
 	render() {
+		const score = this.props.node.data.get('content').score
 		const hasFeedback = this.props.node.nodes.size === 2
 		const className =
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
-			isOrNot(this.state.score === 100, 'correct')
+			isOrNot(score === 100, 'correct')
 		return (
 			<div className={className} {...this.props.attributes}>
 				<button className={'delete'} onClick={event => this.delete(event)}>
 					X
 				</button>
 				<button className={'correct-button'} onClick={event => this.handleScoreChange(event)}>
-					{this.state.score === 100 ? '✔' : '✖'}
+					{score === 100 ? '✔' : '✖'}
 				</button>
 				<div className={'children'}>
 					<div>{this.props.children}</div>

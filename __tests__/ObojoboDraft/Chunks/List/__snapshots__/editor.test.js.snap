@@ -10,9 +10,7 @@ exports[`List editor Level component 1`] = `
         "listStyleType": "square",
       }
     }
-  >
-    mockChildren
-  </ul>
+  />
 </div>
 `;
 
@@ -26,9 +24,7 @@ exports[`List editor Level component ordered 1`] = `
         "listStyleType": "alpha",
       }
     }
-  >
-    mockChildren
-  </ol>
+  />
 </div>
 `;
 
@@ -36,9 +32,7 @@ exports[`List editor Line component 1`] = `
 <div
   dummy="dummyData"
 >
-  <li>
-    mockChildren
-  </li>
+  <li />
 </div>
 `;
 
@@ -50,7 +44,6 @@ exports[`List editor Node component 1`] = `
     className="text-chunk obojobo-draft--chunks--list pad"
     dummy="dummyData"
   >
-    mockChildren
     <button
       onClick={[Function]}
     >
@@ -60,9 +53,9 @@ exports[`List editor Node component 1`] = `
 </div>
 `;
 
-exports[`List editor Node component toggles type 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><!-- react-text: 3 -->mockChildren<!-- /react-text --><button>Swap to Unordered</button></div></div>"`;
+exports[`List editor Node component toggles type 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Unordered</button></div></div>"`;
 
-exports[`List editor Node component toggles type from unordered to ordered 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><!-- react-text: 3 -->mockChildren<!-- /react-text --><button>Swap to Ordered</button></div></div>"`;
+exports[`List editor Node component toggles type from unordered to ordered 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Ordered</button></div></div>"`;
 
 exports[`List editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

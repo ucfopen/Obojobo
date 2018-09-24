@@ -11,7 +11,6 @@ describe('IFrame editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -35,7 +34,6 @@ describe('IFrame editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -53,11 +51,11 @@ describe('IFrame editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('input').simulate('click', {
+		component.find('input').simulate('click', {
 			stopPropagation: () => true
 		})
 
-		const click2 = component.find('input').simulate('change', {
+		component.find('input').simulate('change', {
 			target: { value: 'mockInput' }
 		})
 
@@ -82,7 +80,7 @@ describe('IFrame editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => {
+				get: () => {
 					return null
 				}
 			},

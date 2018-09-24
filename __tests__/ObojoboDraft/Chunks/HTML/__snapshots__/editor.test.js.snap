@@ -6,9 +6,7 @@ exports[`HTML editor Node builds the expected component 1`] = `
 >
   <div
     className="obojobo-draft--chunks--html viewer pad"
-  >
-    mockChildren
-  </div>
+  />
 </div>
 `;
 

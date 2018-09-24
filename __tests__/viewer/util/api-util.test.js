@@ -360,9 +360,7 @@ describe('apiutil', () => {
 
 	test('postDraft calls fetch', () => {
 		expect.assertions(4)
-		const assessment = {
-			get: prop => prop
-		}
+
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'ok',
@@ -370,7 +368,7 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.postDraft('mockDraftId', {}).then(res => {
+		return APIUtil.postDraft('mockDraftId', {}).then(() => {
 			expect(fetch).toHaveBeenCalled()
 			const calledEndpoint = fetch.mock.calls[0][0]
 			const calledOptions = fetch.mock.calls[0][1]

@@ -10,9 +10,7 @@ exports[`Text editor Node builds the expected component 1`] = `
     <span
       className="text align-left"
       data-indent={undefined}
-    >
-      mockChildren
-    </span>
+    />
   </div>
 </div>
 `;

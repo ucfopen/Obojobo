@@ -15,7 +15,6 @@ describe('Question editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -39,7 +38,6 @@ describe('Question editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => null
@@ -53,7 +51,7 @@ describe('Question editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component.find('button').simulate('click')
 
 		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
@@ -77,7 +75,7 @@ describe('Question editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => null
+				get: () => null
 			},
 			nodes: [
 				{

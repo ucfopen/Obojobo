@@ -1,7 +1,6 @@
 import React from 'react'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const Node = props => {
 	const HTag = `h${props.node.data.get('content').level || 1}`

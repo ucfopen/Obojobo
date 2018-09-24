@@ -22,17 +22,16 @@ const Line = props => {
 class Level extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = props.node.data.get('content')
 	}
 
 	getListStyle() {
 		return {
-			listStyleType: this.state.bulletStyle
+			listStyleType: this.props.node.data.get('content').bulletStyle
 		}
 	}
 
 	renderList() {
-		if (this.state.type === 'unordered') {
+		if (this.props.node.data.get('content').type === 'unordered') {
 			return <ul style={this.getListStyle()}>{this.props.children}</ul>
 		} else {
 			return <ol style={this.getListStyle()}>{this.props.children}</ol>
@@ -47,13 +46,11 @@ class Level extends React.Component {
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = props.node.data.get('content')
 	}
 
 	toggleType() {
-		const newType = this.state.listStyles.type === 'unordered' ? 'ordered' : 'unordered'
-
-		this.state.listStyles.type = newType
+		const content = this.props.node.data.get('content')
+		content.listStyles.type = content.listStyles.type === 'unordered' ? 'ordered' : 'unordered'
 
 		const levels = this.props.node.filterDescendants(desc => desc.type === LIST_LEVEL_NODE)
 
@@ -62,23 +59,22 @@ class Node extends React.Component {
 
 		levels.forEach(levelNode => {
 			const levelContent = levelNode.data.get('content')
-			levelContent.type = newType
+			levelContent.type = content.listStyles.type
+			const bulletList = content.listStyles.type === 'unordered' ? unorderedBullets : orderedBullets
+			const previousBulletList =
+				content.listStyles.type === 'unordered' ? orderedBullets : unorderedBullets
 
-			// convert between unordered and ordered bullet styles
-			const bulletList = newType === 'unordered' ? unorderedBullets : orderedBullets
-			const oldList = newType !== 'unordered' ? unorderedBullets : orderedBullets
+			// bullet style will be different depending on tab indentation
+			// the index of the current bullet style is preserved between toggling
 			levelContent.bulletStyle =
-				bulletList[oldList.indexOf(levelContent.bulletStyle) % bulletList.length]
+				bulletList[previousBulletList.indexOf(levelContent.bulletStyle) % bulletList.length]
 
 			// modify the level node
 			change.setNodeByKey(levelNode.key, {
 				data: { content: levelContent }
 			})
-
-			editor.onChange(change)
 		})
-
-		this.forceUpdate()
+		editor.onChange(change)
 	}
 
 	render() {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID, LAST_CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -53,12 +53,19 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
-	render(){
+	render() {
 		return (
-			<div className={'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'} {...this.props.attributes}>
+			<div
+				className={
+					'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'
+				}
+				{...this.props.attributes}
+			>
 				<div className={'flipper'}>
 					<div className={'content back'}>
-						<button className={'delete'} onClick={() => this.delete()}>X</button>
+						<button className={'delete'} onClick={() => this.delete()}>
+							X
+						</button>
 						{this.props.children}
 					</div>
 				</div>
@@ -84,7 +91,7 @@ const slateToObo = node => {
 	json.children = []
 
 	node.nodes.forEach(child => {
-		if(nodes.hasOwnProperty(child.type)){
+		if (nodes.hasOwnProperty(child.type)) {
 			json.children.push(nodes[child.type].helpers.slateToObo(child))
 		} else {
 			json.children.push(DefaultNode.helpers.slateToObo(child))
@@ -104,7 +111,7 @@ const oboToSlate = node => {
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		if(nodes.hasOwnProperty(child.type)){
+		if (nodes.hasOwnProperty(child.type)) {
 			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
 		} else {
 			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
@@ -125,20 +132,23 @@ const plugins = {
 		blocks: {
 			'ObojoboDraft.Chunks.Question': {
 				nodes: [
-					{ types: [
-						BREAK_NODE,
-						CODE_NODE,
-						FIGURE_NODE,
-						HEADING_NODE,
-						IFRAME_NODE,
-						LIST_NODE,
-						MATH_NODE,
-						TEXT_NODE,
-						TABLE_NODE,
-						YOUTUBE_NODE,
-						HTML_NODE
-					], min: 1 },
-					{ types: [MCASSESSMENT_NODE], min: 1, max: 1}
+					{
+						types: [
+							BREAK_NODE,
+							CODE_NODE,
+							FIGURE_NODE,
+							HEADING_NODE,
+							IFRAME_NODE,
+							LIST_NODE,
+							MATH_NODE,
+							TEXT_NODE,
+							TABLE_NODE,
+							YOUTUBE_NODE,
+							HTML_NODE
+						],
+						min: 1
+					},
+					{ types: [MCASSESSMENT_NODE], min: 1, max: 1 }
 				],
 
 				normalize: (change, violation, { node, child, index }) => {
@@ -146,10 +156,10 @@ const plugins = {
 						case CHILD_REQUIRED: {
 							// If we are missing the last node,
 							// it should be a MCAssessemnt
-							if (index === node.nodes.size){
+							if (index === node.nodes.size) {
 								const block = Block.create({
 									type: MCASSESSMENT_NODE,
-									data: { content: { responseType: 'pick-one', shuffle: true }}
+									data: { content: { responseType: 'pick-one', shuffle: true } }
 								})
 								return change.insertNodeByKey(node.key, index, block)
 							}
@@ -157,19 +167,16 @@ const plugins = {
 							// Otherwise, just add a text node
 							const block = Block.create({
 								type: TEXT_NODE,
-								data: { content: { indent: 0 }}
+								data: { content: { indent: 0 } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							if(child.object !== 'text') return
-							return change.wrapBlockByKey(
-								child.key,
-								{
-									type: TEXT_NODE,
-									data: { content: { indent: 0 }}
-								}
-							)
+							if (child.object !== 'text') return
+							return change.wrapBlockByKey(child.key, {
+								type: TEXT_NODE,
+								data: { content: { indent: 0 } }
+							})
 						}
 					}
 				}
@@ -180,12 +187,12 @@ const plugins = {
 
 const Question = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		insertNode,
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }

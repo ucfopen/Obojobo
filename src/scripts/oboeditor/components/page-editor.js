@@ -1,11 +1,10 @@
+/* eslint no-alert: 0 */
+
 import React from 'react'
 
-import { Value, Schema } from 'slate'
+import { Value } from 'slate'
 import { Editor } from 'slate-react'
-import initialValue from '../documents/value.json'
 import APIUtil from '../../viewer/util/api-util'
-import Common from 'Common'
-const { OboModel } = Common.models
 
 import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
 import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
@@ -28,32 +27,11 @@ import MCFeedback from '../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/
 import Page from '../../../../ObojoboDraft/Pages/Page/editor'
 import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
 import DefaultNode from './default-node'
-import BasicMark from '../marks/basic-mark'
-
-const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
-const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
-const CODE_NODE = 'ObojoboDraft.Chunks.Code'
-const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
-const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
-const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
-const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
-const LIST_NODE = 'ObojoboDraft.Chunks.List'
-const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
-const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
-const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
-const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
-const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
-const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
-const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
-const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
-
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+import basicMark from '../marks/basic-mark'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
-const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 
 const BOLD_MARK = 'b'
@@ -97,13 +75,13 @@ const dontInsert = [
 ]
 
 const plugins = [
-	BasicMark({ type: BOLD_MARK, key: 'b' }),
-	BasicMark({ type: ITALIC_MARK, key: 'i' }),
-	BasicMark({ type: STRIKE_MARK, key: 's' }),
-	BasicMark({ type: LINK_MARK, key: 'k' }),
-	BasicMark({ type: QUOTE_MARK, key: 'm' }),
-	BasicMark({ type: SUPERSCRIPT_MARK, key: 'n' }),
-	BasicMark({ type: LATEX_MARK, key: 'l' }),
+	basicMark({ type: BOLD_MARK, key: 'b' }),
+	basicMark({ type: ITALIC_MARK, key: 'i' }),
+	basicMark({ type: STRIKE_MARK, key: 's' }),
+	basicMark({ type: LINK_MARK, key: 'k' }),
+	basicMark({ type: QUOTE_MARK, key: 'm' }),
+	basicMark({ type: SUPERSCRIPT_MARK, key: 'n' }),
+	basicMark({ type: LATEX_MARK, key: 'l' }),
 	ActionButton.plugins,
 	Break.plugins,
 	Code.plugins,
@@ -148,12 +126,11 @@ class PageEditor extends React.Component {
 		if (prevProps.page.id !== this.props.page.id) {
 			this.exportToJSON(prevProps.page, prevState.value)
 			this.setState({ value: Value.fromJSON(this.importFromJSON()) })
-			return
 		}
 	}
 
 	renderEmpty() {
-		return <p>No content avalible, click on a page to start editing</p>
+		return <p>No content available, click on a page to start editing</p>
 	}
 
 	render() {
@@ -273,7 +250,7 @@ class PageEditor extends React.Component {
 	}
 
 	saveDraft() {
-		const value = this.exportToJSON(this.props.page, this.state.value)
+		this.exportToJSON(this.props.page, this.state.value)
 		const json = this.props.model.flatJSON()
 
 		// deal with content
@@ -283,7 +260,7 @@ class PageEditor extends React.Component {
 			if (child.get('type') === CONTENT_NODE) {
 				contentJSON = child.flatJSON()
 
-				for (let item of Array.from(child.children.models)) {
+				for (const item of Array.from(child.children.models)) {
 					contentJSON.children.push({
 						id: item.get('id'),
 						type: item.get('type'),
@@ -292,7 +269,7 @@ class PageEditor extends React.Component {
 					})
 				}
 			} else if (child.get('type') === ASSESSMENT_NODE) {
-				;(contentJSON.id = child.get('id')),
+				(contentJSON.id = child.get('id')),
 					(contentJSON.type = child.get('type')),
 					(contentJSON.children = child.get('children'))
 				contentJSON.content = child.get('content')

@@ -204,7 +204,7 @@ class OboModel extends Backbone.Model {
 	}
 
 	flatJSON() {
-		let json = super.toJSON()
+		const json = super.toJSON()
 		this.adapter.toJSON(this, json)
 
 		json.children = []

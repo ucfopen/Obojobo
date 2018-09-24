@@ -14,7 +14,6 @@ describe('QuestionBank editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -38,7 +37,6 @@ describe('QuestionBank editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -54,7 +52,7 @@ describe('QuestionBank editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
@@ -72,7 +70,6 @@ describe('QuestionBank editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -89,7 +86,7 @@ describe('QuestionBank editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(1)
 			.simulate('click')
@@ -107,7 +104,6 @@ describe('QuestionBank editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -124,7 +120,7 @@ describe('QuestionBank editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(2)
 			.simulate('click')
@@ -142,7 +138,6 @@ describe('QuestionBank editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -159,11 +154,11 @@ describe('QuestionBank editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('input').simulate('change', {
+		component.find('input').simulate('change', {
 			target: { value: 'mockValue' }
 		})
 
-		const click1 = component.find('input').simulate('click', {
+		component.find('input').simulate('click', {
 			stopPropagation: jest.fn()
 		})
 
@@ -180,7 +175,6 @@ describe('QuestionBank editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -197,11 +191,11 @@ describe('QuestionBank editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('select').simulate('change', {
+		component.find('select').simulate('change', {
 			target: { value: 'mockValue' }
 		})
 
-		const click1 = component.find('select').simulate('click', {
+		component.find('select').simulate('click', {
 			stopPropagation: jest.fn()
 		})
 

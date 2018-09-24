@@ -1,3 +1,5 @@
+/* eslint react/no-direct-mutation-state:0 */
+
 import React from 'react'
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
@@ -16,42 +18,39 @@ const allowedActions = [
 	'assessment:startAttempt',
 	'assessment:endAttempt',
 	'js',
-	'viewer:alert',
+	'viewer:alert'
 ]
+/* eslint-disable eqeqeq */
 const requiresValue = {
 	'nav:goto': value => {
 		const json = JSON.parse(value)
-		return json.id !== null && json.id !== undefined
+		return json.id != null
 	},
 	'nav:openExternalLink': value => {
 		const json = JSON.parse(value)
-		return json.url !== null && json.url !== undefined
+		return json.url != null
 	},
 	'assessment:startAttempt': value => {
 		const json = JSON.parse(value)
-		return json.id !== null && json.id !== undefined
+		return json.id != null
 	},
 	'assessment:endAttempt': value => {
 		const json = JSON.parse(value)
-		return json.id !== null && json.id !== undefined
+		return json.id != null
 	},
-	'js': value => {
+	js: value => {
 		return typeof value === typeof ''
 	},
 	'viewer:alert': value => {
 		const json = JSON.parse(value)
-		return json.title !== null
-			&& json.title !== undefined
-			&& json.message !== null
-			&& json.message !== undefined
+		return json.title != null && json.message != null
 	}
 }
+/* eslint-enable eqeqeq */
 
 class Trigger extends React.Component {
 	deleteTrigger() {
-		const itemIndex = this.props.parent.findIndex(
-			action => action.type === this.props.type
-		)
+		const itemIndex = this.props.parent.findIndex(action => action.type === this.props.type)
 
 		this.props.parent.splice(itemIndex, 1)
 		this.props.update()
@@ -66,7 +65,9 @@ class Trigger extends React.Component {
 				<div>
 					<p>{this.props.value}</p>
 				</div>
-				<button className={'delete'} onClick={() => this.deleteTrigger()}>x</button>
+				<button className={'delete'} onClick={() => this.deleteTrigger()}>
+					x
+				</button>
 			</div>
 		)
 	}
@@ -74,43 +75,51 @@ class Trigger extends React.Component {
 
 class Node extends React.Component {
 	constructor(props) {
-		super(props);
+		super(props)
 		this.state = this.props.node.data.get('content')
 		this.state.newTrigger = { type: allowedActions[0], value: '' }
 		this.state.isValid = 'valid'
 	}
 
 	handleActionChange(event) {
-		this.setState({ newTrigger: {
-			type: event.target.value,
-			value: this.state.newTrigger.value,
-		}})
+		this.setState({
+			newTrigger: {
+				type: event.target.value,
+				value: this.state.newTrigger.value
+			}
+		})
 	}
 
 	handleValueChange(event) {
-		this.setState({ newTrigger: {
-			type: this.state.newTrigger.type,
-			value: event.target.value,
-		}})
+		this.setState({
+			newTrigger: {
+				type: this.state.newTrigger.type,
+				value: event.target.value
+			}
+		})
 	}
 
-	handleLabelChange(event){
+	handleLabelChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
 		this.setState({ label: event.target.value })
 
-		change.setNodeByKey(this.props.node.key, { data: { content: {
-			label: event.target.value,
-			newTrigger: this.state.newTrigger,
-			actions: this.state.actions
-		}}})
+		change.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					label: event.target.value,
+					newTrigger: this.state.newTrigger,
+					actions: this.state.actions
+				}
+			}
+		})
 		editor.onChange(change)
 	}
 
 	addAction() {
 		const verify = requiresValue[this.state.newTrigger.type]
-		if (verify && !verify(this.state.newTrigger.value)){
+		if (verify && !verify(this.state.newTrigger.value)) {
 			this.state.isValid = 'invalid'
 			this.forceUpdate()
 			return
@@ -125,7 +134,7 @@ class Node extends React.Component {
 	}
 
 	renderNew() {
-		return(
+		return (
 			<div className={`trigger new-trigger is-type-${this.state.isValid}`}>
 				<div className={'trigger-name'}>
 					<p>Action</p>
@@ -133,10 +142,13 @@ class Node extends React.Component {
 						name={'Action'}
 						value={this.state.newTrigger.type}
 						onChange={event => this.handleActionChange(event)}
-						onClick={event => event.stopPropagation()}>
+						onClick={event => event.stopPropagation()}
+					>
 						{allowedActions.map(action => {
 							return (
-								<option value={action} key={action}>{action}</option>
+								<option value={action} key={action}>
+									{action}
+								</option>
 							)
 						})}
 					</select>
@@ -147,7 +159,8 @@ class Node extends React.Component {
 						name={'Value'}
 						value={this.state.newTrigger.value}
 						onChange={event => this.handleValueChange(event)}
-						onClick={event => event.stopPropagation()}/>
+						onClick={event => event.stopPropagation()}
+					/>
 				</div>
 				<button onClick={() => this.addAction()}>Save</button>
 			</div>
@@ -177,7 +190,7 @@ class Node extends React.Component {
 		const { isFocused } = this.props
 
 		const wrapperStyle = {
-			position: 'relative',
+			position: 'relative'
 		}
 
 		const maskStyle = {
@@ -188,17 +201,15 @@ class Node extends React.Component {
 			height: '100%',
 			width: '100%',
 			cursor: 'cell',
-			zIndex: 1,
+			zIndex: 1
 		}
 
 		const iframeStyle = {
-			display: 'block',
+			display: 'block'
 		}
 
 		return (
-			<div
-				style={wrapperStyle}
-				className={'obojobo-draft--components--button'}>
+			<div style={wrapperStyle} className={'obojobo-draft--components--button'}>
 				<div style={maskStyle} />
 				<div className={'button'}>
 					<input
@@ -221,7 +232,8 @@ class Node extends React.Component {
 			<div className={'component'}>
 				<div
 					className={'text-chunk obojobo-draft--chunks--action-button pad'}
-				{...this.props.attributes} >
+					{...this.props.attributes}
+				>
 					{this.renderButton()}
 					{isSelected ? this.renderTriggers() : null}
 				</div>
@@ -232,9 +244,13 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({ type: BUTTON_NODE, data: {
-			content: { actions: [], label: '' }
-		}, isVoid: true  })
+		.insertBlock({
+			type: BUTTON_NODE,
+			data: {
+				content: { actions: [], label: '' }
+			},
+			isVoid: true
+		})
 		.collapseToStartOfNextText()
 		.focus()
 }
@@ -246,15 +262,17 @@ const slateToObo = node => {
 	json.content = {}
 	const nodeContent = node.data.get('content')
 	json.content.label = nodeContent.label
-	json.content.triggers = [{
-		type: 'onClick',
-		actions: nodeContent.actions.map(action => {
-			return {
-				type: action.type,
-				value: action.value !== '' ? JSON.parse(action.value) : {}
-			}
-		})
-	}]
+	json.content.triggers = [
+		{
+			type: 'onClick',
+			actions: nodeContent.actions.map(action => {
+				return {
+					type: action.type,
+					value: action.value !== '' ? JSON.parse(action.value) : {}
+				}
+			})
+		}
+	]
 
 	json.children = []
 	return json
@@ -268,14 +286,14 @@ const oboToSlate = node => {
 
 	json.data = { content: {} }
 	json.data.content.label = node.content.label
-	if(!json.data.content.label){
+	if (!json.data.content.label) {
 		node.content.textGroup.forEach(line => {
-			json.data.content.label =  line.text.value
+			json.data.content.label = line.text.value
 		})
 	}
 
 	json.data.content.actions = []
-	if(node.content.triggers) {
+	if (node.content.triggers) {
 		json.data.content.actions = node.content.triggers[0].actions.map(action => {
 			return {
 				type: action.type,
@@ -297,7 +315,7 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.ActionButton': {
-				isVoid: true,
+				isVoid: true
 			}
 		}
 	}

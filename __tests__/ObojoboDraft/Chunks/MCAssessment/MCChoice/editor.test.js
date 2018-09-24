@@ -17,7 +17,6 @@ describe('MCChoice editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -38,7 +37,6 @@ describe('MCChoice editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -63,7 +61,6 @@ describe('MCChoice editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'mockKey',
 					nodes: [],
@@ -81,7 +78,7 @@ describe('MCChoice editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
@@ -99,13 +96,14 @@ describe('MCChoice editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'mockKey',
 					nodes: [],
 					data: {
 						get: () => {
-							return {}
+							return {
+								score: 0
+							}
 						}
 					}
 				}}
@@ -115,20 +113,44 @@ describe('MCChoice editor', () => {
 				}}
 			/>
 		)
-		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(1)
 			.simulate('click')
 
-		const click2 = component
+		expect(change.setNodeByKey).toHaveBeenCalledWith('mockKey', {
+			data: { content: { score: 100 } }
+		})
+
+		const component2 = mount(
+			<Node
+				node={{
+					key: 'mockKey',
+					nodes: [],
+					data: {
+						get: () => {
+							return {
+								score: 100
+							}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+
+		component2
 			.find('button')
 			.at(1)
 			.simulate('click')
 
-		expect(change.setNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
+		expect(change.setNodeByKey).toHaveBeenCalledWith('mockKey', {
+			data: { content: { score: 0 } }
+		})
 	})
 
 	test('Node component adds feedback', () => {
@@ -140,7 +162,6 @@ describe('MCChoice editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'mockKey',
 					nodes: [],
@@ -156,15 +177,13 @@ describe('MCChoice editor', () => {
 				}}
 			/>
 		)
-		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(2)
 			.simulate('click')
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()
-		expect(tree).toMatchSnapshot()
 	})
 
 	test('slateToObo converts a Slate node to an OboNode with content', () => {

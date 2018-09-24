@@ -48,7 +48,7 @@ window.__oboViewerRender = () => {
 }
 
 window.__oboEditorRender = () => {
-	return ReactDOM.render(
+	ReactDOM.render(
 		<div className="root">
 			<Editor.components.EditorApp />
 		</div>,

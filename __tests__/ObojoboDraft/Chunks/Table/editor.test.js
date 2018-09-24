@@ -14,7 +14,6 @@ describe('Table editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -38,7 +37,6 @@ describe('Table editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -65,7 +63,7 @@ describe('Table editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
@@ -83,7 +81,6 @@ describe('Table editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -99,7 +96,7 @@ describe('Table editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(2) // Need to skip an extra button for the extra column
 			.simulate('click')
@@ -117,7 +114,6 @@ describe('Table editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -127,6 +123,13 @@ describe('Table editor', () => {
 					nodes: {
 						get: () => {
 							return {
+								data: {
+									get: () => {
+										return {
+											header: true
+										}
+									}
+								},
 								key: 'topRow',
 								nodes: [
 									{
@@ -145,7 +148,7 @@ describe('Table editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(3)
 			.simulate('click')
@@ -163,7 +166,6 @@ describe('Table editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -190,7 +192,7 @@ describe('Table editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(2)
 			.simulate('click')
@@ -204,7 +206,6 @@ describe('Table editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -228,7 +229,6 @@ describe('Table editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'thisRow'
 				}}
@@ -268,7 +268,7 @@ describe('Table editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
@@ -286,7 +286,6 @@ describe('Table editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'thisRow'
 				}}
@@ -325,7 +324,7 @@ describe('Table editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
@@ -344,7 +343,6 @@ describe('Table editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'thisRow'
 				}}
@@ -370,7 +368,6 @@ describe('Table editor', () => {
 									},
 									nodes: {
 										get: () => {
-											console.log('retriveing')
 											return {
 												key: 'thisRow',
 												nodes: [
@@ -391,7 +388,7 @@ describe('Table editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
@@ -406,7 +403,6 @@ describe('Table editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -426,7 +422,6 @@ describe('Table editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {

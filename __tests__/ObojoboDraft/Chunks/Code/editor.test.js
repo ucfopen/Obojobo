@@ -1,5 +1,4 @@
 import React from 'react'
-import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
@@ -10,15 +9,18 @@ const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 describe('Code editor', () => {
 	test('Node builds the expected component', () => {
 		const Node = Code.components.Node
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -26,15 +28,18 @@ describe('Code editor', () => {
 
 	test('Line builds the expected component', () => {
 		const Node = Code.components.Line
-		const component = renderer.create(<Node
-			attributes={{dummy: 'dummyData'}}
-			children={'mockChildren'}
-			node={{
-				data: {
-					get: () => { return {}}
-				}
-			}}
-			/>)
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -58,12 +63,18 @@ describe('Code editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => { return null}
+				get: () => {
+					return null
+				}
 			},
 			nodes: [
 				{
 					text: 'mockCode',
-					data: { get: () => { return {}}},
+					data: {
+						get: () => {
+							return {}
+						}
+					},
 					nodes: [
 						{
 							leaves: [
@@ -95,10 +106,10 @@ describe('Code editor', () => {
 				textGroup: [
 					{
 						data: { indent: 1 },
-						text: { value: 'mockCode'}
+						text: { value: 'mockCode' }
 					},
 					{
-						text: { value: 'mockCode2'}
+						text: { value: 'mockCode2' }
 					}
 				]
 			}
@@ -113,7 +124,9 @@ describe('Code editor', () => {
 			node: {
 				type: CODE_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}
@@ -126,7 +139,9 @@ describe('Code editor', () => {
 			node: {
 				type: CODE_LINE_NODE,
 				data: {
-					get: () => { return {} }
+					get: () => {
+						return {}
+					}
 				}
 			}
 		}
@@ -137,7 +152,7 @@ describe('Code editor', () => {
 	test('plugins.onKeyDown deals with [Enter]', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey'
 					}
@@ -163,10 +178,14 @@ describe('Code editor', () => {
 	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey',
-						data: { get: () => { return { indent: 0}}}
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
 					}
 				],
 				document: {
@@ -191,10 +210,14 @@ describe('Code editor', () => {
 	test('plugins.onKeyDown deals with [Shift]+[Tab] with indented code', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey',
-						data: { get: () => { return { indent: 6}}}
+						data: {
+							get: () => {
+								return { indent: 6 }
+							}
+						}
 					}
 				],
 				document: {
@@ -219,10 +242,14 @@ describe('Code editor', () => {
 	test('plugins.onKeyDown deals with [Tab]', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey',
-						data: { get: () => { return { indent: 0}}}
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
 					}
 				],
 				document: {
@@ -246,15 +273,19 @@ describe('Code editor', () => {
 	test('plugins.onKeyDown deals with random keys', () => {
 		const change = {
 			value: {
-				blocks:[
+				blocks: [
 					{
 						key: 'mockBlockKey',
-						data: { get: () => { return { indent: 0}}}
+						data: {
+							get: () => {
+								return { indent: 0 }
+							}
+						}
 					}
 				],
 				document: {
 					getClosest: (key, funct) => {
-						funct({type: 'mockType'})
+						funct({ type: 'mockType' })
 						return true
 					}
 				}

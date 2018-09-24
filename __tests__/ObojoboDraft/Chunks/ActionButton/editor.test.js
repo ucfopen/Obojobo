@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import renderer from 'react-test-renderer'
@@ -47,9 +49,7 @@ describe('ActionButton editor', () => {
 				}
 			}
 		}
-		const component = renderer.create(
-			<Node attributes={{ dummy: 'dummyData' }} children={'mockChildren'} node={nodeData} />
-		)
+		const component = renderer.create(<Node attributes={{ dummy: 'dummyData' }} node={nodeData} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -74,7 +74,6 @@ describe('ActionButton editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
@@ -107,7 +106,6 @@ describe('ActionButton editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
@@ -119,12 +117,12 @@ describe('ActionButton editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('input')
 			.at(0)
 			.simulate('click', { stopPropagation: () => true })
 
-		const click2 = component
+		component
 			.find('input')
 			.at(0)
 			.simulate('change', {
@@ -173,7 +171,6 @@ describe('ActionButton editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
@@ -185,12 +182,12 @@ describe('ActionButton editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('select')
 			.at(0)
 			.simulate('click', { stopPropagation: () => true })
 
-		const click2 = component
+		component
 			.find('select')
 			.at(0)
 			.simulate('change', {
@@ -225,7 +222,6 @@ describe('ActionButton editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
@@ -237,12 +233,12 @@ describe('ActionButton editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('textarea')
 			.at(0)
 			.simulate('click', { stopPropagation: () => true })
 
-		const click2 = component
+		component
 			.find('textarea')
 			.at(0)
 			.simulate('change', {
@@ -277,7 +273,6 @@ describe('ActionButton editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
@@ -289,7 +284,7 @@ describe('ActionButton editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('textarea')
 			.at(0)
 			.simulate('change', {
@@ -299,7 +294,7 @@ describe('ActionButton editor', () => {
 				}
 			})
 
-		const click2 = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
@@ -329,7 +324,6 @@ describe('ActionButton editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
@@ -341,7 +335,7 @@ describe('ActionButton editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')
@@ -371,7 +365,6 @@ describe('ActionButton editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
@@ -383,7 +376,7 @@ describe('ActionButton editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('textarea')
 			.at(0)
 			.simulate('change', {
@@ -393,7 +386,7 @@ describe('ActionButton editor', () => {
 				}
 			})
 
-		const click2 = component
+		component
 			.find('button')
 			.at(0)
 			.simulate('click')

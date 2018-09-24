@@ -15,7 +15,6 @@ describe('MCAssessment editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -39,7 +38,6 @@ describe('MCAssessment editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'mockKey',
 					nodes: [],
@@ -57,7 +55,7 @@ describe('MCAssessment editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component.find('button').simulate('click')
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
@@ -72,7 +70,6 @@ describe('MCAssessment editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'mockKey',
 					nodes: [],
@@ -90,7 +87,7 @@ describe('MCAssessment editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('input').simulate('change', {
+		component.find('input').simulate('change', {
 			target: { checked: true }
 		})
 
@@ -107,7 +104,6 @@ describe('MCAssessment editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'mockKey',
 					nodes: [],
@@ -125,12 +121,12 @@ describe('MCAssessment editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('select').simulate('change', {
+		component.find('select').simulate('change', {
 			target: { value: 'mockValue' },
 			stopPropagation: jest.fn()
 		})
 
-		const click2 = component.find('select').simulate('click', {
+		component.find('select').simulate('click', {
 			target: { value: 'mockValue' },
 			stopPropagation: jest.fn()
 		})
