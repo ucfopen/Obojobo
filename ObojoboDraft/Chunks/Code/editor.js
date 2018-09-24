@@ -102,16 +102,34 @@ const plugins = {
 	onKeyDown(event, change) {
 		// See if any of the selected nodes have a CODE_NODE parent
 		const isCode = isType(change)
+		if (!isCode) return
+
+		// Delete empty code node
+		if (event.key === 'Backspace' || event.key === 'Delete') {
+			const last = change.value.endBlock
+			let parent
+			change.value.blocks.forEach(block => {
+				parent = change.value.document.getClosest(block.key, parent => {
+					return parent.type === CODE_NODE
+				})
+			})
+
+			if (last.text === '' && parent.nodes.size === 1) {
+				event.preventDefault()
+				change.removeNodeByKey(parent.key)
+				return true
+			}
+		}
 
 		// Enter
-		if (isCode && event.key === 'Enter') {
+		if (event.key === 'Enter') {
 			event.preventDefault()
 			change.insertBlock({ type: CODE_LINE_NODE, data: { content: { indent: 0 } } })
 			return true
 		}
 
 		// Shift Tab
-		if (isCode && event.key === 'Tab' && event.shiftKey) {
+		if (event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
 			change.value.blocks.forEach(block => {
 				let newIndent = block.data.get('content').indent - 1
@@ -125,7 +143,7 @@ const plugins = {
 		}
 
 		// Tab indent
-		if (isCode && event.key === 'Tab') {
+		if (event.key === 'Tab') {
 			event.preventDefault()
 			change.value.blocks.forEach(block =>
 				change.setNodeByKey(block.key, {

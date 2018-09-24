@@ -213,9 +213,27 @@ const plugins = {
 	onKeyDown(event, change) {
 		// See if any of the selected nodes have a CODE_NODE parent
 		const isLine = isType(change)
+		if (!isLine) return
+
+		// Delete empty code node
+		if (event.key === 'Backspace' || event.key === 'Delete') {
+			const last = change.value.endBlock
+			let parent
+			change.value.blocks.forEach(block => {
+				parent = change.value.document.getClosest(block.key, parent => {
+					return parent.type === LIST_NODE
+				})
+			})
+
+			if (last.text === '' && parent.nodes.size === 1) {
+				event.preventDefault()
+				change.removeNodeByKey(parent.key)
+				return true
+			}
+		}
 
 		// Enter
-		if (isLine && event.key === 'Enter') {
+		if (event.key === 'Enter') {
 			event.preventDefault()
 			change.insertBlock({
 				type: LIST_LINE_NODE,
@@ -225,14 +243,14 @@ const plugins = {
 		}
 
 		// Shift Tab
-		if (isLine && event.key === 'Tab' && event.shiftKey) {
+		if (event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
 			change.unwrapBlock(LIST_LEVEL_NODE)
 			return true
 		}
 
 		// Tab indent
-		if (isLine && event.key === 'Tab') {
+		if (event.key === 'Tab') {
 			event.preventDefault()
 			let bullet = 'disc'
 			let type = 'unordered'

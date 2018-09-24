@@ -167,7 +167,7 @@ class Node extends React.Component {
 			<div className={'component'} {...this.props.attributes}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
-						<table className="view" ref="table" key="table">
+						<table className="view" key="table">
 							<tbody>
 								{this.props.children}
 								{this.renderColDelete()}
@@ -183,6 +183,14 @@ class Node extends React.Component {
 			</div>
 		)
 	}
+}
+
+const isType = change => {
+	return change.value.blocks.some(block => {
+		return !!change.value.document.getClosest(block.key, parent => {
+			return parent.type === TABLE_NODE
+		})
+	})
 }
 
 const insertNode = change => {
@@ -279,6 +287,20 @@ const oboToSlate = node => {
 }
 
 const plugins = {
+	onKeyDown(event, change) {
+		// See if any of the selected nodes have a CODE_NODE parent
+		const isTable = isType(change)
+
+		// Do not delete empty cell
+		if (isTable && (event.key === 'Backspace' || event.key === 'Delete')) {
+			const last = change.value.endBlock
+
+			if (last.text === '') {
+				event.preventDefault()
+				return true
+			}
+		}
+	},
 	renderNode(props) {
 		switch (props.node.type) {
 			case TABLE_NODE:

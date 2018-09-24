@@ -98,9 +98,27 @@ const oboToSlate = node => {
 const plugins = {
 	onKeyDown(event, change) {
 		const isText = isType(change)
+		if (!isText) return
+
+		// Delete empty text node
+		if (event.key === 'Backspace' || event.key === 'Delete') {
+			const last = change.value.endBlock
+			let parent
+			change.value.blocks.forEach(block => {
+				parent = change.value.document.getClosest(block.key, parent => {
+					return parent.type === TEXT_NODE
+				})
+			})
+
+			if (last.text === '' && parent.nodes.size === 1) {
+				event.preventDefault()
+				change.removeNodeByKey(parent.key)
+				return true
+			}
+		}
 
 		// Enter
-		if (isText && event.key === 'Enter') {
+		if (event.key === 'Enter') {
 			event.preventDefault()
 			const last = change.value.endBlock
 			// Double Enter
@@ -114,7 +132,7 @@ const plugins = {
 		}
 
 		// Shift Tab
-		if (isText && event.key === 'Tab' && event.shiftKey) {
+		if (event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
 			change.value.blocks.forEach(block => {
 				let newIndent = block.data.get('indent') - 1
@@ -127,14 +145,21 @@ const plugins = {
 			return true
 		}
 
-		// Tab indent
-		if (isText && event.key === 'Tab') {
+		// Alt Tab
+		if (event.key === 'Tab' && event.altKey) {
 			event.preventDefault()
 			change.value.blocks.forEach(block =>
 				change.setNodeByKey(block.key, {
 					data: { indent: block.data.get('indent') + 1 }
 				})
 			)
+			return true
+		}
+
+		// Tab insert
+		if (event.key === 'Tab') {
+			event.preventDefault()
+			change.insertText('\t')
 			return true
 		}
 	},

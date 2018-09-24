@@ -67,7 +67,9 @@ class Node extends React.Component {
 			>
 				<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
 					<HTag>
-						<span className={'text align-' + this.state.align}>{this.props.children}</span>
+						<span className={'text align-' + this.props.node.data.get('content').align}>
+							{this.props.children}
+						</span>
 					</HTag>
 
 					<div className={'dropdown-heading'}>

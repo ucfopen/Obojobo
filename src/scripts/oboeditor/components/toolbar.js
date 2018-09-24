@@ -171,7 +171,7 @@ const markList = [
 	{
 		name: 'Quote',
 		type: QUOTE_MARK,
-		key: 'q',
+		key: "'",
 		render: Quote,
 		plugin: basicMark
 	},
@@ -213,6 +213,12 @@ const markList = [
 		plugin: superMark
 	},
 	{
+		name: 'Left',
+		align: ALIGN_LEFT,
+		key: 'l',
+		plugin: alignMark
+	},
+	{
 		name: 'Right',
 		align: ALIGN_RIGHT,
 		key: 'r',
@@ -222,12 +228,6 @@ const markList = [
 		name: 'Center',
 		align: ALIGN_CENTER,
 		key: 'e',
-		plugin: alignMark
-	},
-	{
-		name: 'Left',
-		align: ALIGN_LEFT,
-		key: 'l',
 		plugin: alignMark
 	}
 ]

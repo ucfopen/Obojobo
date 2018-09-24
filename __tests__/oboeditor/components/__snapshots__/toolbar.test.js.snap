@@ -10,17 +10,17 @@ exports[`Editor Toolbar Link component 1`] = `"<a href=\\"/view/00000000-0000-00
 
 exports[`Editor Toolbar Monospace component 1`] = `"<code></code>"`;
 
-exports[`Editor Toolbar Node component 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Right</button><button>Center</button><button>Left</button></div>"`;
+exports[`Editor Toolbar Node component 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Left</button><button>Right</button><button>Center</button></div>"`;
 
-exports[`Editor Toolbar Node component toggles Basic Mark 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Right</button><button>Center</button><button>Left</button></div>"`;
+exports[`Editor Toolbar Node component toggles Basic Mark 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Left</button><button>Right</button><button>Center</button></div>"`;
 
-exports[`Editor Toolbar Node component toggles Link 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Right</button><button>Center</button><button>Left</button></div>"`;
+exports[`Editor Toolbar Node component toggles Link 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Left</button><button>Right</button><button>Center</button></div>"`;
 
-exports[`Editor Toolbar Node component toggles Subscript 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Right</button><button>Center</button><button>Left</button></div>"`;
+exports[`Editor Toolbar Node component toggles Subscript 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Left</button><button>Right</button><button>Center</button></div>"`;
 
-exports[`Editor Toolbar Node component toggles Superscript 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Right</button><button>Center</button><button>Left</button></div>"`;
+exports[`Editor Toolbar Node component toggles Superscript 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Left</button><button>Right</button><button>Center</button></div>"`;
 
-exports[`Editor Toolbar Node component toggles left align 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Right</button><button>Center</button><button>Left</button></div>"`;
+exports[`Editor Toolbar Node component toggles left align 1`] = `"<div><button>Bold</button><button>Italic</button><button>Strikethrough</button><button>Quote</button><button>Monospace</button><button>Latex</button><button>Link</button><button>Superscript</button><button>Subscript</button><button>Left</button><button>Right</button><button>Center</button></div>"`;
 
 exports[`Editor Toolbar Quote component 1`] = `"<q></q>"`;
 

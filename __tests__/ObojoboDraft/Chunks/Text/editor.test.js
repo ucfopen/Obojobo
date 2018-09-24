@@ -147,6 +147,107 @@ describe('Text editor', () => {
 		expect(Text.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
+	test('plugins.onKeyDown deals with no text', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				},
+				endBlock: {
+					key: 'mockKey',
+					text: 'mockText'
+				}
+			}
+		}
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (num, funct) => {
+						funct({ key: 'mockKey' })
+						return {
+							key: 'mockParent',
+							nodes: { size: 1 }
+						}
+					}
+				},
+				endBlock: {
+					key: 'mockKey',
+					text: 'mockText'
+				}
+			}
+		}
+		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(change.removeNodeByKey).not.toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] deletes empty code node', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (num, funct) => {
+						funct({ key: 'mockKey' })
+						return {
+							key: 'mockParent',
+							nodes: { size: 1 }
+						}
+					}
+				},
+				endBlock: {
+					key: 'mockKey',
+					text: ''
+				}
+			}
+		}
+		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
 	test('plugins.onKeyDown deals with first [Enter]', () => {
 		const change = {
 			value: {
@@ -264,7 +365,7 @@ describe('Text editor', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Tab]', () => {
+	test('plugins.onKeyDown deals with [Alt]+[Tab]', () => {
 		const change = {
 			value: {
 				blocks: [
@@ -281,13 +382,43 @@ describe('Text editor', () => {
 		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
+			altKey: true,
 			key: 'Tab',
 			preventDefault: jest.fn()
 		}
 
 		Text.plugins.onKeyDown(event, change)
 
-		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(change.setNodeByKey).toHaveBeenCalledWith('mockBlockKey', {
+			data: { indent: 1 }
+		})
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Tab]', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						data: { get: () => 0 }
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			}
+		}
+		change.insertText = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(change.insertText).toHaveBeenCalledWith('\t')
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 

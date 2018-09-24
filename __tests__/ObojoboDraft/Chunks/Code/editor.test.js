@@ -14,7 +14,6 @@ describe('Code editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -34,7 +33,6 @@ describe('Code editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -67,7 +65,7 @@ describe('Code editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => {
+				get: () => {
 					return null
 				}
 			},
@@ -151,6 +149,103 @@ describe('Code editor', () => {
 		}
 
 		expect(Code.plugins.renderNode(props)).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with no code', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				},
+				endBlock: {
+					key: 'mockKey',
+					text: 'mockText'
+				}
+			}
+		}
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		Code.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (num, funct) => {
+						funct({ key: 'mockKey' })
+						return {
+							key: 'mockParent',
+							nodes: { size: 1 }
+						}
+					}
+				},
+				endBlock: {
+					key: 'mockKey',
+					text: 'mockText'
+				}
+			}
+		}
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		Code.plugins.onKeyDown(event, change)
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] on empty code', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (num, funct) => {
+						funct({ key: 'mockKey' })
+						return {
+							key: 'mockParent',
+							nodes: { size: 1 }
+						}
+					}
+				},
+				endBlock: {
+					key: 'mockKey',
+					text: ''
+				}
+			}
+		}
+		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		Code.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Enter]', () => {
