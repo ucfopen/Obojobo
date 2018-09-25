@@ -33,7 +33,7 @@ const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 }
 
 // Start a new visit
-// mounted as /api/visit/start
+// mounted as /api/visits/start
 router
 	.route('/start')
 	.post([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])

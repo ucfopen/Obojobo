@@ -19,6 +19,7 @@ module.exports = (env, argv) => {
 	console.log(`Building assets for ${is_production ? 'production' : 'development'}`)
 
 	return {
+		mode: is_production ? 'production' : 'development',
 		target: 'web',
 		devServer: {
 			https: true,
