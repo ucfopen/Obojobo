@@ -157,7 +157,9 @@ const editorConfig = {
 		'react-dom': 'ReactDOM',
 		backbone: 'Backbone',
 		katex: 'katex',
-		Common: 'Common'
+		Common: 'Common',
+		slate: 'Slate',
+		immutable: 'Immutable'
 	},
 	plugins: [new MiniCssExtractPlugin()]
 }
