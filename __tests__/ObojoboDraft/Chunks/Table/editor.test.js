@@ -519,10 +519,6 @@ describe('Table editor', () => {
 				],
 				document: {
 					getClosest: () => false
-				},
-				endBlock: {
-					key: 'mockKey',
-					text: 'mockText'
 				}
 			}
 		}
@@ -538,7 +534,7 @@ describe('Table editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
+	test('plugins.onKeyDown deals with random key press', () => {
 		const change = {
 			value: {
 				blocks: [
@@ -547,18 +543,52 @@ describe('Table editor', () => {
 					}
 				],
 				document: {
-					getClosest: (num, funct) => {
-						funct({ key: 'mockKey' })
-						return {
-							key: 'mockParent',
-							nodes: { size: 1 }
-						}
+					getClosest: (key, funct) => {
+						funct({ type: TABLE_NODE })
+						return true
 					}
-				},
-				endBlock: {
-					key: 'mockKey',
-					text: 'mockText'
 				}
+			}
+		}
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'K',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		const change = {
+			value: {
+				document: {
+					getClosest: () => true
+				},
+				blocks: [{ key: 'mockKey' }]
+			}
+		}
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown(event, change)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] collapsed at start of block', () => {
+		const change = {
+			value: {
+				startOffset: 0,
+				isCollapsed: true,
+				document: {
+					getClosest: () => true
+				},
+				blocks: [{ key: 'mockKey' }]
 			}
 		}
 
@@ -568,33 +598,65 @@ describe('Table editor', () => {
 		}
 
 		Table.plugins.onKeyDown(event, change)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] inside cell', () => {
+		const change = {
+			value: {
+				startOffset: 0,
+				isCollapsed: false,
+				document: {
+					getClosest: () => true
+				},
+				blocks: [{ key: 'mockKey' }]
+			}
+		}
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown(event, change)
+
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] on empty cell', () => {
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without first', () => {
 		const change = {
 			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: (num, funct) => {
-						funct({ key: 'mockKey' })
-						return {
-							key: 'mockParent',
-							nodes: { size: 1 }
-						}
-					}
+				startOffset: 0,
+				isCollapsed: false,
+				startBlock: {
+					key: 'mockStart'
 				},
 				endBlock: {
-					key: 'mockKey',
-					text: ''
+					key: 'mockEnd'
+				},
+				blocks: {
+					some: () => true,
+					toSet: () => ({
+						first: () => false,
+						last: () => true,
+						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
+						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
+					})
+				},
+				selection: {
+					collapseToStart: () => ({
+						isAtEndOf: value => value
+					}),
+					collapseToEnd: () => ({
+						isAtStartOf: value => value
+					})
+				},
+				document: {
+					getClosest: () => true
 				}
 			}
 		}
-		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
+		change.removeNodeByKey = jest.fn()
 
 		const event = {
 			key: 'Delete',
@@ -604,6 +666,53 @@ describe('Table editor', () => {
 		Table.plugins.onKeyDown(event, change)
 
 		expect(event.preventDefault).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without last', () => {
+		const change = {
+			value: {
+				startOffset: 0,
+				isCollapsed: false,
+				startBlock: {
+					key: 'mockStart'
+				},
+				endBlock: {
+					key: 'mockEnd'
+				},
+				blocks: {
+					some: () => true,
+					toSet: () => ({
+						first: () => true,
+						last: () => false,
+						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
+						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
+					})
+				},
+				selection: {
+					collapseToStart: () => ({
+						isAtEndOf: value => value
+					}),
+					collapseToEnd: () => ({
+						isAtStartOf: value => value
+					})
+				},
+				document: {
+					getClosest: () => true
+				}
+			}
+		}
+		change.removeNodeByKey = jest.fn()
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders a button when passed', () => {
@@ -651,7 +760,7 @@ describe('Table editor', () => {
 		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
+	test('plugins.schema.normalize fixes invalid children in table', () => {
 		const change = {
 			wrapBlockByKey: jest.fn()
 		}
@@ -671,7 +780,49 @@ describe('Table editor', () => {
 		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize adds missing children', () => {
+	test('plugins.schema.normalize fixes invalid block in table', () => {
+		const change = {
+			removeNodeByKey: jest.fn()
+		}
+
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {
+				data: {
+					get: () => {
+						return { header: 'mockHeader' }
+					}
+				},
+				nodes: { size: 3 }
+			},
+			child: { object: 'block', key: 'mockKey' },
+			index: 0
+		})
+
+		expect(change.removeNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid block at end of table', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {
+				data: {
+					get: () => {
+						return { header: 'mockHeader' }
+					}
+				},
+				nodes: { size: 10 }
+			},
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
+		})
+
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize adds missing children in table', () => {
 		const change = {
 			insertNodeByKey: jest.fn()
 		}
@@ -711,6 +862,48 @@ describe('Table editor', () => {
 		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid block in Row', () => {
+		const change = {
+			removeNodeByKey: jest.fn()
+		}
+
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {
+				data: {
+					get: () => {
+						return { header: 'mockHeader' }
+					}
+				},
+				nodes: { size: 3 }
+			},
+			child: { object: 'block', key: 'mockKey' },
+			index: 0
+		})
+
+		expect(change.removeNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid block at end of Row', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {
+				data: {
+					get: () => {
+						return { header: 'mockHeader' }
+					}
+				},
+				nodes: { size: 10 }
+			},
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
+		})
+
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize adds missing children in Row', () => {
 		const change = {
 			insertNodeByKey: jest.fn()
@@ -729,5 +922,46 @@ describe('Table editor', () => {
 		})
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid children in Cell', () => {
+		const change = {
+			unwrapBlockByKey: jest.fn()
+		}
+
+		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {
+				data: {
+					get: () => {
+						return { header: 'mockHeader' }
+					}
+				}
+			},
+			child: { key: 'mockKey' },
+			index: null
+		})
+
+		expect(change.unwrapBlockByKey).not.toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid block at end of Cell', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {
+				data: {
+					get: () => {
+						return { header: 'mockHeader' }
+					}
+				},
+				nodes: { size: 10 }
+			},
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
+		})
+
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
 	})
 })

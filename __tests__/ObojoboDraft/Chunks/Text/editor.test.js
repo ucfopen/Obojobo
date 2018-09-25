@@ -452,7 +452,7 @@ describe('Text editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
+	test('plugins.schema.normalize fixes invalid children in text', () => {
 		const change = {
 			wrapBlockByKey: jest.fn()
 		}
@@ -466,7 +466,21 @@ describe('Text editor', () => {
 		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
+	test('plugins.schema.normalize fixes invalid block in text', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
+		})
+
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes required children in text', () => {
 		const change = {
 			insertNodeByKey: jest.fn()
 		}
@@ -478,5 +492,33 @@ describe('Text editor', () => {
 		})
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid children in text line', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: null,
+			child: { key: 'mockKey' },
+			index: null
+		})
+
+		expect(change.unwrapNodeByKey).not.toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid block in text line', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
+		})
+
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
 	})
 })

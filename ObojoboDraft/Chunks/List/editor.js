@@ -218,23 +218,57 @@ const plugins = {
 		// Delete empty code node
 		if (event.key === 'Backspace' || event.key === 'Delete') {
 			const last = change.value.endBlock
-			let parent
-			change.value.blocks.forEach(block => {
-				parent = change.value.document.getClosest(block.key, parent => {
-					return parent.type === LIST_NODE
-				})
+
+			// If the block is not empty or we are deleting multiple things, delete normally
+			if (!change.value.isCollapsed || last.text !== '') return
+
+			// Get the deepest level that contains this line
+			const listLevel = change.value.document.getClosest(last.key, par => {
+				return par.type === LIST_LEVEL_NODE
 			})
 
-			if (last.text === '' && parent.nodes.size === 1) {
+			// levels with more than one child should delete normally
+			if (listLevel.nodes.size > 1) return
+
+			// Get the deepest level that holds the listLevel
+			const oneLevelUp = change.value.document.getClosest(listLevel.key, par => {
+				return par.type === LIST_LEVEL_NODE
+			})
+
+			// If it is a nested item, move it up one layer
+			if (oneLevelUp) {
 				event.preventDefault()
-				change.removeNodeByKey(parent.key)
+				change.unwrapNodeByKey(last.key)
 				return true
 			}
+
+			// If it is at the top level of an empty list, delete the whole list
+			const parent = change.value.document.getClosest(last.key, par => {
+				return par.type === LIST_NODE
+			})
+
+			event.preventDefault()
+			change.removeNodeByKey(parent.key)
+			return true
 		}
 
 		// Enter
 		if (event.key === 'Enter') {
 			event.preventDefault()
+			const last = change.value.endBlock
+
+			// Get the deepest level that contains this line
+			const listLevel = change.value.document.getClosest(last.key, par => {
+				return par.type === LIST_LEVEL_NODE
+			})
+
+			// Double enter on last node
+			if (change.value.isCollapsed && last.text === '' && listLevel.nodes.last().key == last.key) {
+				// Schema will change this back to a list_line unless it is at the end of the list
+				change.setNodeByKey(last.key, { type: TEXT_NODE })
+				return true
+			}
+
 			change.insertBlock({
 				type: LIST_LINE_NODE,
 				data: { content: { indent: 1, bullet: '*' } }
@@ -319,8 +353,18 @@ const plugins = {
 					// find type and bullet style
 					const type = node.data.get('content').listStyles.type
 					const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
-
 					switch (violation) {
+						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
+
+							return change.wrapBlockByKey(child.key, {
+								type: LIST_LEVEL_NODE,
+								data: { content: { type: type, bulletStyle: bulletList[0] } }
+							})
+						}
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: LIST_LEVEL_NODE,
@@ -328,44 +372,24 @@ const plugins = {
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
-						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
-								type: LIST_LEVEL_NODE,
-								data: { content: { type: type, bulletStyle: bulletList[0] } }
-							})
-						}
 					}
 				}
 			},
 			'ObojoboDraft.Chunks.List.Level': {
 				nodes: [{ types: [LIST_LEVEL_NODE, LIST_LINE_NODE], min: 1 }],
-				parent: { types: [LIST_LEVEL_NODE, LIST_NODE] },
-				normalize: (change, violation, { node, child, parent, index }) => {
+				normalize: (change, violation, { node, child, index }) => {
 					switch (violation) {
-						case PARENT_TYPE_INVALID: {
-							return change.withoutNormalization(c => {
-								let childIndex = parent.nodes.indexOf(node)
-								node.nodes.forEach(childNode => {
-									if (childNode.type === LIST_LINE_NODE) {
-										c.setNodeByKey(childNode.key, {
-											type: TEXT_NODE,
-											data: { content: { indent: 0 } }
-										})
-									}
-									c.moveNodeByKey(childNode.key, parent.key, childIndex)
-									childIndex++
-								})
-								return c.removeNodeByKey(node.key)
-							})
-						}
 						case CHILD_TYPE_INVALID: {
-							if (child.object === 'block') {
-								return change.setNodeByKey(child.key, LIST_LINE_NODE)
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
 							}
 
-							return change.wrapBlockByKey(child.key, {
-								type: LIST_LINE_NODE
-							})
+							return change
+								.wrapBlockByKey(child.key, {
+									type: LIST_LINE_NODE
+								})
+								.collapseToStartOfNextText()
 						}
 						case CHILD_REQUIRED: {
 							const block = Block.create(LIST_LINE_NODE)

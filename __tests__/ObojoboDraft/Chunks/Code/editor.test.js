@@ -403,7 +403,7 @@ describe('Code editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
+	test('plugins.schema.normalize fixes invalid children in code', () => {
 		const change = {
 			wrapBlockByKey: jest.fn()
 		}
@@ -417,7 +417,21 @@ describe('Code editor', () => {
 		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
+	test('plugins.schema.normalize fixes invalid last block in code', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Code.plugins.schema.blocks[CODE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
+		})
+
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes required children in code', () => {
 		const change = {
 			insertNodeByKey: jest.fn()
 		}
@@ -429,5 +443,33 @@ describe('Code editor', () => {
 		})
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize does nothing to invalid children in code line', () => {
+		const change = {
+			unwrapBlockByKey: jest.fn()
+		}
+
+		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: null,
+			child: { key: 'mockKey' },
+			index: null
+		})
+
+		expect(change.unwrapBlockByKey).not.toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid last block in code line', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
+		})
+
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
 	})
 })

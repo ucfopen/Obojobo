@@ -168,6 +168,11 @@ const plugins = {
 				normalize: (change, violation, { node, child, index }) => {
 					switch (violation) {
 						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
+
 							return change.wrapBlockByKey(child.key, {
 								type: CODE_LINE_NODE,
 								data: { content: { indent: 0 } }
@@ -184,7 +189,17 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.Code.CodeLine': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [{ objects: ['text'] }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
+						}
+					}
+				}
 			}
 		}
 	}

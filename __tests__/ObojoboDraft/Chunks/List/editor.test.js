@@ -363,7 +363,7 @@ describe('List editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] with normal delete', () => {
 		const change = {
 			value: {
 				blocks: [
@@ -383,7 +383,8 @@ describe('List editor', () => {
 				endBlock: {
 					key: 'mockKey',
 					text: 'mockText'
-				}
+				},
+				isCollapsed: true
 			}
 		}
 
@@ -396,7 +397,125 @@ describe('List editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] on empty list', () => {
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] on lists with more than one node', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (num, funct) => {
+						funct({ key: 'mockKey' })
+						return {
+							key: 'mockParent',
+							nodes: { size: 3 }
+						}
+					}
+				},
+				endBlock: {
+					key: 'mockKey',
+					text: ''
+				},
+				isCollapsed: true
+			}
+		}
+		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		List.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] on lists with one node', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (num, funct) => {
+						funct({ key: 'mockKey' })
+						return {
+							key: 'mockParent',
+							nodes: { size: 1 }
+						}
+					}
+				},
+				endBlock: {
+					key: 'mockLastKey',
+					text: ''
+				},
+				isCollapsed: true
+			}
+		}
+		change.unwrapNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		List.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(change.unwrapNodeByKey).toHaveBeenCalledWith('mockLastKey')
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] on lists with one top level node', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: jest
+						.fn()
+						.mockReturnValueOnce({}) // isType call
+						.mockReturnValueOnce({
+							key: 'mockLevel',
+							nodes: { size: 1 }
+						}) // listLevel
+						.mockReturnValueOnce() // oneLevel
+						.mockImplementationOnce((key, funct) => {
+							funct({ key: 'mockKey' })
+							return {
+								key: 'mockParent',
+								nodes: { size: 1 }
+							}
+						}) // parent
+				},
+				endBlock: {
+					key: 'mockLastKey',
+					text: ''
+				},
+				isCollapsed: true
+			}
+		}
+		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		List.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalledWith('mockParent')
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
 		const change = {
 			value: {
 				blocks: [
@@ -419,31 +538,6 @@ describe('List editor', () => {
 				}
 			}
 		}
-		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
-
-		const event = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		List.plugins.onKeyDown(event, change)
-
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Enter]', () => {
-		const change = {
-			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
 		change.insertBlock = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
@@ -454,6 +548,46 @@ describe('List editor', () => {
 		List.plugins.onKeyDown(event, change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with double [Enter] on last node', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (num, funct) => {
+						funct({ key: 'mockKey' })
+						return {
+							key: 'mockParent',
+							nodes: {
+								size: 1,
+								last: () => ({ key: 'mockKey' })
+							}
+						}
+					}
+				},
+				isCollapsed: true,
+				endBlock: {
+					key: 'mockKey',
+					text: ''
+				}
+			}
+		}
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		List.plugins.onKeyDown(event, change)
+
+		expect(change.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -702,7 +836,7 @@ describe('List editor', () => {
 		expect(change.mergeNodeByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
+	test('plugins.schema.normalize fixes invalid children in list', () => {
 		const change = {
 			wrapBlockByKey: jest.fn()
 		}
@@ -726,7 +860,32 @@ describe('List editor', () => {
 		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
+	test('plugins.schema.normalize fixes invalid block in list', () => {
+		const change = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_NODE].normalize(change, CHILD_TYPE_INVALID, {
+			node: {
+				data: {
+					get: () => {
+						return {
+							listStyles: {
+								type: 'unordered'
+							}
+						}
+					}
+				},
+				nodes: { size: 10 }
+			},
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
+		})
+
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes required children in list', () => {
 		const change = {
 			insertNodeByKey: jest.fn()
 		}
@@ -750,70 +909,36 @@ describe('List editor', () => {
 		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid parents', () => {
+	test('plugins.schema.normalize fixes invalid block in Level', () => {
 		const change = {
-			setNodeByKey: jest.fn(),
-			moveNodeByKey: jest.fn(),
-			removeNodeByKey: jest.fn()
-		}
-
-		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => funct(change))
-
-		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, PARENT_TYPE_INVALID, {
-			node: {
-				nodes: [
-					{
-						type: LIST_LINE_NODE
-					},
-					{
-						type: 'mockNode'
-					}
-				]
-			},
-			child: { key: 'mockKey' },
-			index: null,
-			parent: {
-				nodes: {
-					indexOf: () => 0
-				}
-			}
-		})
-
-		expect(change.setNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid children in Level', () => {
-		const change = {
-			insertNodeByKey: jest.fn(),
-			wrapBlockByKey: jest.fn(),
-			setNodeByKey: jest.fn()
+			unwrapNodeByKey: jest.fn()
 		}
 
 		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_TYPE_INVALID, {
-			node: {},
-			child: { object: 'block' },
-			index: 0
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey' },
+			index: 9
 		})
 
-		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid text children in Level', () => {
 		const change = {
-			insertNodeByKey: jest.fn(),
-			wrapBlockByKey: jest.fn()
+			collapseToStartOfNextText: jest.fn()
 		}
+		change.wrapBlockByKey = jest.fn().mockReturnValueOnce(change)
 
 		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_TYPE_INVALID, {
 			node: {},
-			child: { object: 'text' },
+			child: { object: 'text', key: 'mockKey' },
 			index: 0
 		})
 
 		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children in Level', () => {
+	test('plugins.schema.normalize fixes required children in Level', () => {
 		const change = {
 			insertNodeByKey: jest.fn(),
 			wrapBlockByKey: jest.fn()

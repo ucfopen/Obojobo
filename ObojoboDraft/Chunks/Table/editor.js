@@ -290,15 +290,58 @@ const plugins = {
 	onKeyDown(event, change) {
 		// See if any of the selected nodes have a CODE_NODE parent
 		const isTable = isType(change)
+		if (!isTable) return
 
-		// Do not delete empty cell
+		// Disallow enter in tables
+		if (event.key === 'Enter') {
+			event.preventDefault()
+			return false
+		}
+
 		if (isTable && (event.key === 'Backspace' || event.key === 'Delete')) {
-			const last = change.value.endBlock
+			const value = change.value
+			const startBlock = value.startBlock
+			const startOffset = value.startOffset
+			const isCollapsed = value.isCollapsed
+			const endBlock = value.endBlock
 
-			if (last.text === '') {
+			// If a cursor is collapsed at the start of the first block, do nothing
+			if (startOffset === 0 && isCollapsed) {
 				event.preventDefault()
-				return true
+				return change
 			}
+
+			// Deletion within a cell
+			if (startBlock === endBlock) {
+				return
+			}
+
+			// Deletion across cells
+			event.preventDefault()
+			const blocks = value.blocks
+
+			// Get all cells that contains the selection
+			const cells = blocks.toSet()
+
+			const ignoreFirstCell = value.selection.collapseToStart().isAtEndOf(cells.first())
+			const ignoreLastCell = value.selection.collapseToEnd().isAtStartOf(cells.last())
+
+			let cellsToClear = cells
+			if (ignoreFirstCell) {
+				cellsToClear = cellsToClear.rest()
+			}
+			if (ignoreLastCell) {
+				cellsToClear = cellsToClear.butLast()
+			}
+
+			// Clear all the selection
+			cellsToClear.forEach(cell => {
+				cell.nodes.forEach(node => {
+					change.removeNodeByKey(node.key)
+				})
+			})
+
+			return true
 		}
 	},
 	renderNode(props) {
@@ -319,6 +362,16 @@ const plugins = {
 					const header = index === 0 && node.data.get('content').header
 					switch (violation) {
 						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
+
+							// If a block was inserted in the middle, delete it to maintain table shape
+							if (child.object === 'block') {
+								return change.removeNodeByKey(child.key)
+							}
+
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_ROW_NODE,
 								data: { content: { header } }
@@ -340,6 +393,16 @@ const plugins = {
 					const header = node.data.get('content').header
 					switch (violation) {
 						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
+
+							// If a block was inserted in the middle, delete it to maintain table shape
+							if (child.object === 'block') {
+								return change.removeNodeByKey(child.key)
+							}
+
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_CELL_NODE,
 								data: { content: { header } }
@@ -351,6 +414,19 @@ const plugins = {
 								data: { content: { header } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
+						}
+					}
+				}
+			},
+			'ObojoboDraft.Chunks.Table.Cell': {
+				nodes: [{ objects: ['text'] }],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
 						}
 					}
 				}
