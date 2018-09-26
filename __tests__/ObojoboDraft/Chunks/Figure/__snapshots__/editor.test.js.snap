@@ -61,8 +61,9 @@ exports[`Figure editor Node builds the expected component 1`] = `
       className="container"
     >
       <img
-        alt={undefined}
-        src={undefined}
+        alt="mockAltText"
+        src="mockUrl"
+        title="mockAltText"
         unselectable="on"
       />
       <figcaption />
@@ -71,17 +72,17 @@ exports[`Figure editor Node builds the expected component 1`] = `
 </div>
 `;
 
-exports[`Figure editor Node component changes size 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption>mockChildren</figcaption></div></div></div>"`;
+exports[`Figure editor Node component changes size 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div>No Image Selected, Please Add an Image URL</div><img unselectable=\\"on\\"><figcaption></figcaption></div></div></div>"`;
 
-exports[`Figure editor Node component changes size to small 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption>mockChildren</figcaption></div></div></div>"`;
+exports[`Figure editor Node component changes size to small 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div>No Image Selected, Please Add an Image URL</div><img unselectable=\\"on\\"><figcaption></figcaption></div></div></div>"`;
 
-exports[`Figure editor Node component changes size with no width or height 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption>mockChildren</figcaption></div></div></div>"`;
+exports[`Figure editor Node component changes size with no width or height 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div>No Image Selected, Please Add an Image URL</div><img unselectable=\\"on\\"><figcaption></figcaption></div></div></div>"`;
 
-exports[`Figure editor Node component deletes self 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption>mockChildren</figcaption></div></div></div>"`;
+exports[`Figure editor Node component deletes self 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div>No Image Selected, Please Add an Image URL</div><img unselectable=\\"on\\"><figcaption></figcaption></div></div></div>"`;
 
-exports[`Figure editor Node component edits alt text 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption></figcaption></div></div></div>"`;
+exports[`Figure editor Node component edits alt text 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div>No Image Selected, Please Add an Image URL</div><img unselectable=\\"on\\" title=\\"\\" alt=\\"\\"><figcaption></figcaption></div></div></div>"`;
 
-exports[`Figure editor Node component edits url 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><img unselectable=\\"on\\"><figcaption>mockChildren</figcaption></div></div></div>"`;
+exports[`Figure editor Node component edits url 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"image-toolbar\\"><button>Edit Alt Text</button><button>Edit URL</button><select name=\\"Size\\"><option value=\\"small\\">small</option><option value=\\"medium\\">medium</option><option value=\\"large\\">large</option><option value=\\"custom\\">custom</option></select><div><button class=\\"delete-node\\">X</button></div></div><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div>No Image Selected, Please Add an Image URL</div><img unselectable=\\"on\\"><figcaption></figcaption></div></div></div>"`;
 
 exports[`Figure editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
@@ -142,6 +143,21 @@ exports[`Figure editor plugins.renderNode renders a button when passed 1`] = `
     }
   }
 />
+`;
+
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-center"
+  contentEditable={false}
+>
+  Type Your Caption Here
+</span>
 `;
 
 exports[`Figure editor slateToObo converts a Slate node to an OboNode with content 1`] = `

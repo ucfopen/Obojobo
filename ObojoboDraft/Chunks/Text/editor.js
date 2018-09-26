@@ -171,6 +171,17 @@ const plugins = {
 				return <Line {...props} />
 		}
 	},
+	renderPlaceholder(props) {
+		const { node } = props
+		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE) return
+		if (node.text !== '') return
+
+		return (
+			<span className={'placeholder align-' + node.data.get('align')} contentEditable={false}>
+				{'Type Your Text Here'}
+			</span>
+		)
+	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Text': {

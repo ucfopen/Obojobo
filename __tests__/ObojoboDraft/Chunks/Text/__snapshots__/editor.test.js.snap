@@ -85,6 +85,21 @@ exports[`Text editor plugins.renderNode renders code when passed 1`] = `
 />
 `;
 
+exports[`Text editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Text editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Text editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Text editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-left"
+  contentEditable={false}
+>
+  Type Your Text Here
+</span>
+`;
+
 exports[`Text editor slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [],

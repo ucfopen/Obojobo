@@ -19,9 +19,10 @@ describe('Figure editor', () => {
 				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({
+							url: 'mockUrl',
+							alt: 'mockAltText'
+						})
 					}
 				}}
 			/>
@@ -33,7 +34,7 @@ describe('Figure editor', () => {
 
 	test('Node component edits alt text', () => {
 		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
+		window.prompt.mockReturnValueOnce('')
 
 		const change = {
 			setNodeByKey: jest.fn()
@@ -67,7 +68,7 @@ describe('Figure editor', () => {
 
 	test('Node component edits url', () => {
 		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
+		window.prompt.mockReturnValueOnce('')
 
 		const change = {
 			setNodeByKey: jest.fn()
@@ -76,7 +77,6 @@ describe('Figure editor', () => {
 		const Node = Figure.components.Node
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -92,7 +92,7 @@ describe('Figure editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(1)
 			.simulate('click')
@@ -111,7 +111,6 @@ describe('Figure editor', () => {
 		const Node = Figure.components.Node
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -127,7 +126,7 @@ describe('Figure editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('button')
 			.at(2)
 			.simulate('click')
@@ -146,7 +145,6 @@ describe('Figure editor', () => {
 		const Node = Figure.components.Node
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -162,7 +160,7 @@ describe('Figure editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('select').simulate('change', {
+		component.find('select').simulate('change', {
 			target: { value: 'custom' }
 		})
 
@@ -180,7 +178,6 @@ describe('Figure editor', () => {
 		const Node = Figure.components.Node
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -196,7 +193,7 @@ describe('Figure editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('select').simulate('change', {
+		component.find('select').simulate('change', {
 			target: { value: 'custom' }
 		})
 
@@ -211,7 +208,6 @@ describe('Figure editor', () => {
 		const Node = Figure.components.Node
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -227,11 +223,11 @@ describe('Figure editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('select').simulate('click', {
+		component.find('select').simulate('click', {
 			stopPropagation: () => true
 		})
 
-		const click2 = component.find('select').simulate('change', {
+		component.find('select').simulate('change', {
 			target: { value: 'small' }
 		})
 
@@ -256,7 +252,7 @@ describe('Figure editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => {
+				get: () => {
 					return {}
 				}
 			},
@@ -323,5 +319,46 @@ describe('Figure editor', () => {
 		}
 
 		expect(Figure.plugins.renderNode(props)).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			Figure.plugins.renderPlaceholder({
+				node: {
+					object: 'text'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			Figure.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: 'mockType'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			Figure.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: FIGURE_NODE,
+					text: 'Some text'
+				}
+			})
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			Figure.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: FIGURE_NODE,
+					text: ''
+				}
+			})
+		).toMatchSnapshot()
 	})
 })

@@ -147,6 +147,48 @@ describe('Text editor', () => {
 		expect(Text.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			Text.plugins.renderPlaceholder({
+				node: {
+					object: 'text'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			Text.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: 'mockType'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			Text.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: TEXT_LINE_NODE,
+					text: 'Some text'
+				}
+			})
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			Text.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: TEXT_LINE_NODE,
+					text: '',
+					data: { get: () => 'left' }
+				}
+			})
+		).toMatchSnapshot()
+	})
+
 	test('plugins.onKeyDown deals with no text', () => {
 		const change = {
 			value: {

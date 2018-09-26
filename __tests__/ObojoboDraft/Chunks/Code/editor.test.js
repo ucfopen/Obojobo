@@ -151,6 +151,47 @@ describe('Code editor', () => {
 		expect(Code.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			Code.plugins.renderPlaceholder({
+				node: {
+					object: 'text'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			Code.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: 'mockType'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			Code.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: CODE_LINE_NODE,
+					text: 'Some text'
+				}
+			})
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			Code.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: CODE_LINE_NODE,
+					text: ''
+				}
+			})
+		).toMatchSnapshot()
+	})
+
 	test('plugins.onKeyDown deals with no code', () => {
 		const change = {
 			value: {

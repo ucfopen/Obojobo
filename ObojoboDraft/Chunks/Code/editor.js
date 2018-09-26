@@ -161,6 +161,17 @@ const plugins = {
 				return <Line {...props} />
 		}
 	},
+	renderPlaceholder(props) {
+		const { node } = props
+		if (node.object !== 'block' || node.type !== CODE_LINE_NODE) return
+		if (node.text !== '') return
+
+		return (
+			<span className={'placeholder'} contentEditable={false}>
+				{'Type Your Code Here'}
+			</span>
+		)
+	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Code': {

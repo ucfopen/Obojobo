@@ -27,42 +27,42 @@ exports[`Heading editor Node component 1`] = `
           onClick={[Function]}
         >
           <h1>
-            Your Title Goes
+            Your Heading
           </h1>
         </button>
         <button
           onClick={[Function]}
         >
           <h2>
-            Your Title Goes
+            Your Heading
           </h2>
         </button>
         <button
           onClick={[Function]}
         >
           <h3>
-            Your Title Goes
+            Your Heading
           </h3>
         </button>
         <button
           onClick={[Function]}
         >
           <h4>
-            Your Title Goes
+            Your Heading
           </h4>
         </button>
         <button
           onClick={[Function]}
         >
           <h5>
-            Your Title Goes
+            Your Heading
           </h5>
         </button>
         <button
           onClick={[Function]}
         >
           <h6>
-            Your Title Goes
+            Your Heading
           </h6>
         </button>
       </div>
@@ -89,7 +89,7 @@ exports[`Heading editor Node component handles clicks 2`] = `"<div class=\\"comp
 
 exports[`Heading editor Node component handles clicks 3`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
 
-exports[`Heading editor Node component mounts and unmounts properly 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
+exports[`Heading editor Node component mounts and unmounts properly 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Goes</h1></button><button><h2>Your Title Goes</h2></button><button><h3>Your Title Goes</h3></button><button><h4>Your Title Goes</h4></button><button><h5>Your Title Goes</h5></button><button><h6>Your Title Goes</h6></button></div></div></div></div>"`;
 
 exports[`Heading editor Node component toggles level select 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div></div>"`;
 
@@ -128,6 +128,21 @@ exports[`Heading editor plugins.renderNode renders a button when passed 1`] = `
     }
   }
 />
+`;
+
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Heading editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-left"
+  contentEditable={false}
+>
+  Type Your Heading Here
+</span>
 `;
 
 exports[`Heading editor slateToObo converts a Slate node to an OboNode with content 1`] = `

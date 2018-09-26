@@ -195,4 +195,20 @@
 	.latex-editor {
 		background-color: $color-bg2;
 	}
+
+	.placeholder {
+		display: inline-block;
+		position: absolute;
+		pointer-events: none;
+		white-space: nowrap;
+		opacity: 0.33;
+
+		&.align-right {
+			transform: translate(-100%);
+		}
+
+		&.align-center {
+			transform: translate(-50%);
+		}
+	}
 }

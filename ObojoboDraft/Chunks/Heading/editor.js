@@ -39,7 +39,8 @@ class Node extends React.Component {
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
-					level: num
+					level: num,
+					align: this.props.node.data.get('content').align
 				}
 			}
 		})
@@ -57,7 +58,8 @@ class Node extends React.Component {
 	render() {
 		const HTag = `h${this.state.level || 1}`
 		const text = this.props.node.text
-		const dropText = text.length > 15 ? text.slice(0, 15) : text
+		let dropText = text.length > 15 ? text.slice(0, 15) : text
+		dropText = dropText.length === 0 ? 'Your Heading' : dropText
 		return (
 			<div
 				className={'component'}
@@ -162,6 +164,20 @@ const plugins = {
 			case HEADING_NODE:
 				return <Node {...props} />
 		}
+	},
+	renderPlaceholder(props) {
+		const { node } = props
+		if (node.object !== 'block' || node.type !== HEADING_NODE) return
+		if (node.text !== '') return
+
+		return (
+			<span
+				className={'placeholder align-' + node.data.get('content').align}
+				contentEditable={false}
+			>
+				{'Type Your Heading Here'}
+			</span>
+		)
 	},
 	schema: {
 		blocks: {
