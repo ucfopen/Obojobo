@@ -121,8 +121,14 @@ class NavStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
-			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
-			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
+			locked:
+				viewState['nav:isLocked'] !== null && typeof viewState['nav:isLocked'] !== 'undefined'
+					? viewState['nav:isLocked'].value
+					: false,
+			open:
+				viewState['nav:isOpen'] !== null && typeof viewState['nav:isOpen'] !== 'undefined'
+					? viewState['nav:isOpen'].value
+					: true,
 			context: 'practice',
 			visitId
 		}
@@ -130,7 +136,7 @@ class NavStore extends Store {
 		this.buildMenu(model)
 		NavUtil.gotoPath(startingPath)
 
-		if (startingId != null) {
+		if (startingId !== null && typeof startingId !== 'undefined') {
 			NavUtil.goto(startingId)
 		} else {
 			let first = NavUtil.getFirst(this.state)
@@ -151,7 +157,7 @@ class NavStore extends Store {
 			return false
 		}
 
-		if (this.state.navTargetId != null) {
+		if (this.state.navTargetId !== null && typeof this.state.navTargetId !== 'undefined') {
 			if (this.state.navTargetId === navItem.id) {
 				return
 			}
@@ -179,17 +185,17 @@ class NavStore extends Store {
 	generateNav(model, indent) {
 		if (!model) return {}
 
-		if (indent == null) {
+		if (indent === null || typeof indent === 'undefined') {
 			indent = ''
 		}
 		let item = Common.Store.getItemForType(model.get('type'))
 
 		let navItem = null
-		if (item.getNavItem != null) {
+		if (item.getNavItem !== null && typeof item.getNavItem !== 'undefined') {
 			navItem = item.getNavItem(model)
 		}
 
-		if (navItem == null) {
+		if (navItem === null || typeof navItem === 'undefined') {
 			navItem = {}
 		}
 

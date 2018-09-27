@@ -4,9 +4,7 @@ exports[`MCAnswer editor Node builds the expected component 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-answer"
   dummy="dummyData"
->
-  mockChildren
-</div>
+/>
 `;
 
 exports[`MCAnswer editor oboToSlate converts an OboNode to a Slate node 1`] = `

@@ -1,13 +1,9 @@
-export default class TextChunk extends React.Component {
-	static get defaultProps() {
-		return { indent: 0 }
-	}
+import React from 'react'
 
-	render() {
-		return (
-			<div className={`text-chunk${this.props.className ? ` ${this.props.className}` : ''}`}>
-				{this.props.children}
-			</div>
-		)
-	}
-}
+const TextChunk = props => (
+	<div className={`text-chunk${props.className ? ` ${props.className}` : ''}`}>
+		{props.children}
+	</div>
+)
+
+export default TextChunk

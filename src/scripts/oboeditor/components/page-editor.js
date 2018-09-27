@@ -1,3 +1,5 @@
+/* eslint no-alert: 0 */
+
 import React from 'react'
 
 import { Value } from 'slate'
@@ -117,7 +119,7 @@ class PageEditor extends React.Component {
 	}
 
 	renderEmpty() {
-		return <p>No content avalible, click on a page to start editing</p>
+		return <p>No content available, click on a page to start editing</p>
 	}
 
 	render() {

@@ -1,11 +1,16 @@
+/* eslint-disable no-undefined */
+/* eslint-disable no-console */
+
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import ReactDOM from 'react-dom'
+import { mount } from 'enzyme'
 
 jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/viewer/stores/question-store')
 jest.mock('../../../src/scripts/common/stores/modal-store')
 jest.mock('../../../src/scripts/common/util/modal-util')
 jest.mock('../../../src/scripts/common/stores/focus-store')
+jest.mock('../../../src/scripts/viewer/stores/media-store')
 jest.mock('../../../src/scripts/common/util/focus-util')
 jest.mock('../../../src/scripts/viewer/stores/nav-store')
 jest.mock('../../../src/scripts/viewer/util/nav-util')
@@ -14,7 +19,7 @@ jest.mock('../../../src/scripts/viewer/components/nav')
 jest.mock('../../../src/scripts/common/page/dom-util')
 jest.mock('../../../src/scripts/common/page/screen')
 
-import OboModel from '../../../__mocks__/_obo-model-with-chunks'
+import '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
 import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
 
@@ -24,6 +29,7 @@ import ModalStore from '../../../src/scripts/common/stores/modal-store'
 import ModalUtil from '../../../src/scripts/common/util/modal-util'
 import FocusStore from '../../../src/scripts/common/stores/focus-store'
 import FocusUtil from '../../../src/scripts/common/util/focus-util'
+import MediaStore from '../../../src/scripts/viewer/stores/media-store'
 import NavStore from '../../../src/scripts/viewer/stores/nav-store'
 import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
@@ -34,7 +40,7 @@ import Common from '../../../src/scripts/common'
 import testObject from '../../../test-object.json'
 
 describe('ViewerApp', () => {
-	let mocksForMount = (status = 'ok') => {
+	const mocksForMount = (status = 'ok') => {
 		APIUtil.requestStart.mockResolvedValueOnce({
 			status: status,
 			value: {
@@ -72,7 +78,7 @@ describe('ViewerApp', () => {
 	test('viewer:scrollTo calls ModalUtil', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -91,7 +97,7 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -110,15 +116,15 @@ describe('ViewerApp', () => {
 		jest.spyOn(String.prototype, 'split').mockReturnValueOnce([])
 
 		// temporarily mock and unmock console.error to prevent logging to screen
-		let originalError = console.error
+		const originalError = console.error
 		console.error = jest.fn()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
 
 			// restore important globals
-			let errorMock = console.error
+			const errorMock = console.error
 			console.error = originalError
 
 			expect(component.html()).toMatchSnapshot()
@@ -133,7 +139,7 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		// This will be reset by jestReset, and is called multiple times
 		NavUtil.canNavigate.mockImplementation(() => {
@@ -157,7 +163,7 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
 			component.instance().setState({ requestStatus: 'invalid' })
@@ -174,7 +180,7 @@ describe('ViewerApp', () => {
 		mocksForMount()
 
 		NavUtil.getNavTargetModel.mockReturnValueOnce({ title: 'mockTarget' })
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -192,7 +198,7 @@ describe('ViewerApp', () => {
 		NavUtil.canNavigate.mockReturnValueOnce(true)
 		NavUtil.getPrevModel.mockReturnValueOnce({ title: 'mockPrevTitle' })
 		NavUtil.getNextModel.mockReturnValueOnce({ title: 'mockNextTitle' })
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -210,7 +216,7 @@ describe('ViewerApp', () => {
 		NavUtil.canNavigate.mockReturnValueOnce(true)
 		NavUtil.getPrevModel.mockReturnValueOnce({ title: null })
 		NavUtil.getNextModel.mockReturnValueOnce({ title: null })
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -226,7 +232,7 @@ describe('ViewerApp', () => {
 		mocksForMount()
 
 		ModalUtil.getCurrentModal.mockReturnValueOnce({ hideViewer: true })
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -241,7 +247,7 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
 			component.setState({
@@ -265,7 +271,7 @@ describe('ViewerApp', () => {
 		mocksForMount()
 
 		ModalUtil.getCurrentModal.mockReturnValueOnce({ component: [] })
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
 
@@ -279,7 +285,7 @@ describe('ViewerApp', () => {
 	test('onNavStoreChange calls setState', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		jest.spyOn(component.instance(), 'setState')
 		NavStore.getState.mockReturnValueOnce({})
@@ -298,7 +304,7 @@ describe('ViewerApp', () => {
 	test('onQuestionStoreChange calls setState', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			jest.spyOn(component.instance(), 'setState')
@@ -317,7 +323,7 @@ describe('ViewerApp', () => {
 	test('onAssessmentStoreChange calls setState', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			jest.spyOn(component.instance(), 'setState')
@@ -336,7 +342,7 @@ describe('ViewerApp', () => {
 	test('onModalStoreChange calls setState', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			jest.spyOn(component.instance(), 'setState')
@@ -355,7 +361,7 @@ describe('ViewerApp', () => {
 	test('onFocusStoreChange calls setState', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			jest.spyOn(component.instance(), 'setState')
@@ -371,12 +377,31 @@ describe('ViewerApp', () => {
 		})
 	})
 
+	test('onMediaStoreChange calls setState', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			jest.spyOn(component.instance(), 'setState')
+			MediaStore.getState.mockReturnValueOnce({})
+
+			component.update()
+			component.instance().onMediaStoreChange()
+
+			expect(component.instance().setState).toHaveBeenCalledWith({ mediaState: {} })
+
+			component.unmount()
+			done()
+		})
+	})
+
 	test('onVisibilityChange calls APIUtil when leaving', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
-		let originalHidden = document.hidden
+		const originalHidden = document.hidden
 		document.hidden = true
 
 		setTimeout(() => {
@@ -385,12 +410,12 @@ describe('ViewerApp', () => {
 
 			component.instance().onVisibilityChange()
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith(
-				component.instance().state.model,
-				'viewer:leave',
-				'1.0.0',
-				{}
-			)
+			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:leave',
+				draftId: undefined,
+				eventVersion: '1.0.0',
+				visitId: undefined
+			})
 
 			component.unmount()
 			document.hidden = originalHidden
@@ -401,7 +426,7 @@ describe('ViewerApp', () => {
 	test('onVisibilityChange calls APIUtil when returning', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.instance().leaveEvent = { id: 'mockId' }
@@ -410,12 +435,13 @@ describe('ViewerApp', () => {
 
 			component.instance().onVisibilityChange()
 
-			expect(APIUtil.postEvent).toHaveBeenCalledWith(
-				component.instance().state.model,
-				'viewer:return',
-				'1.0.0',
-				{ relatedEventId: 'mockId' }
-			)
+			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:return',
+				draftId: undefined,
+				eventVersion: '1.0.0',
+				payload: { relatedEventId: 'mockId' },
+				visitId: undefined
+			})
 
 			component.unmount()
 			done()
@@ -425,7 +451,7 @@ describe('ViewerApp', () => {
 	test('getTextForVariable calls Common.Store', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			jest.spyOn(Common.Store, 'getTextForVariable')
@@ -443,7 +469,7 @@ describe('ViewerApp', () => {
 	test('scrollToTop returns with no container', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			jest.spyOn(ReactDOM, 'findDOMNode')
@@ -464,7 +490,7 @@ describe('ViewerApp', () => {
 	test('onMouseDown returns with no focus', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -481,7 +507,7 @@ describe('ViewerApp', () => {
 	test('onMouseDown returns when clicking on focus', done => {
 		expect.assertions(2)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -503,7 +529,7 @@ describe('ViewerApp', () => {
 	test('onMouseDown calls FocusUtil when not clicking on focus', done => {
 		expect.assertions(2)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -525,7 +551,7 @@ describe('ViewerApp', () => {
 	test('onScroll returns with no focus', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -542,7 +568,7 @@ describe('ViewerApp', () => {
 	test('onScroll returns with no component', done => {
 		expect.assertions(2)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -561,8 +587,8 @@ describe('ViewerApp', () => {
 	test('onScroll returns with no element', done => {
 		expect.assertions(3)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
-		let mockFocused = {
+		const component = mount(<ViewerApp />)
+		const mockFocused = {
 			getDomEl: jest.fn()
 		}
 
@@ -587,8 +613,8 @@ describe('ViewerApp', () => {
 	test('onScroll returns with visible Element', done => {
 		expect.assertions(4)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
-		let mockFocused = {
+		const component = mount(<ViewerApp />)
+		const mockFocused = {
 			getDomEl: jest.fn().mockReturnValueOnce(true)
 		}
 
@@ -615,8 +641,8 @@ describe('ViewerApp', () => {
 	test('onScroll unfocuses with non-visible Element', done => {
 		expect.assertions(4)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
-		let mockFocused = {
+		const component = mount(<ViewerApp />)
+		const mockFocused = {
 			getDomEl: jest.fn().mockReturnValueOnce(true)
 		}
 
@@ -643,7 +669,7 @@ describe('ViewerApp', () => {
 	test('onIdle posts an Event', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -661,7 +687,7 @@ describe('ViewerApp', () => {
 	test('onReturnFromIdle posts an Event', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -679,13 +705,13 @@ describe('ViewerApp', () => {
 	test('onBeforeWindowClose returns undefined', done => {
 		expect.assertions(2)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
 			jest.spyOn(Dispatcher, 'trigger')
 
-			let close = component.instance().onBeforeWindowClose()
+			const close = component.instance().onBeforeWindowClose()
 
 			expect(Dispatcher.trigger).toHaveBeenCalled()
 			expect(close).toEqual(undefined)
@@ -698,8 +724,8 @@ describe('ViewerApp', () => {
 	test('onBeforeWindowClose calls closePrevented', done => {
 		expect.assertions(2)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
-		let originalTrigger = Dispatcher.trigger
+		const component = mount(<ViewerApp />)
+		const originalTrigger = Dispatcher.trigger
 		Dispatcher.trigger = jest.fn()
 
 		setTimeout(() => {
@@ -708,7 +734,7 @@ describe('ViewerApp', () => {
 				funct()
 			})
 
-			let close = component.instance().onBeforeWindowClose()
+			const close = component.instance().onBeforeWindowClose()
 
 			expect(Dispatcher.trigger).toHaveBeenCalled()
 			expect(close).toEqual(true)
@@ -722,12 +748,12 @@ describe('ViewerApp', () => {
 	test('onWindowClose calls APIUtil', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
 
-			let close = component.instance().onWindowClose()
+			component.instance().onWindowClose()
 
 			expect(APIUtil.postEvent).toHaveBeenCalled()
 
@@ -739,7 +765,7 @@ describe('ViewerApp', () => {
 	test('clearPreviewScores resets assessments and calls Modal.show', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -759,7 +785,7 @@ describe('ViewerApp', () => {
 	test('clearPreviewScores Modal.show with error', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -780,7 +806,7 @@ describe('ViewerApp', () => {
 	test('clearPreviewScores Modal.show with detailed error', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
@@ -804,14 +830,87 @@ describe('ViewerApp', () => {
 	test('unlockNavigation calls NavUtil', done => {
 		expect.assertions(1)
 		mocksForMount()
-		let component = mount(<ViewerApp />)
+		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
 
-			let close = component.instance().unlockNavigation()
+			component.instance().unlockNavigation()
 
 			expect(NavUtil.unlock).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onResize dispatches viewer:contentAreaResized', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		Dispatcher.trigger = jest.fn()
+		jest.spyOn(ReactDOM, 'findDOMNode')
+		ReactDOM.findDOMNode.mockReturnValueOnce({
+			getBoundingClientRect: () => ({ width: 'mocked-width' })
+		})
+
+		setTimeout(() => {
+			component.update()
+			component.instance().onResize()
+
+			expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:contentAreaResized', 'mocked-width')
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('onDelayResize calls onResize', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+		component.instance().onResize = jest.fn()
+
+		setTimeout(() => {
+			jest.useFakeTimers()
+
+			component.update()
+			component.instance().onDelayResize()
+
+			jest.runAllTimers()
+
+			expect(component.instance().onResize).toHaveBeenCalledTimes(1)
+
+			jest.useRealTimers()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('nav:open, nav:close and nav:toggle call onDelayResize', done => {
+		Dispatcher.on = jest.fn()
+
+		expect.assertions(3)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			expect(Dispatcher.on).toHaveBeenCalledWith(
+				'nav:open',
+				component.instance().boundOnDelayResize
+			)
+			expect(Dispatcher.on).toHaveBeenCalledWith(
+				'nav:close',
+				component.instance().boundOnDelayResize
+			)
+			expect(Dispatcher.on).toHaveBeenCalledWith(
+				'nav:toggle',
+				component.instance().boundOnDelayResize
+			)
 
 			component.unmount()
 			done()

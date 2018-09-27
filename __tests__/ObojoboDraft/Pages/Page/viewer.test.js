@@ -9,7 +9,7 @@ jest.mock('../../../../ObojoboDraft/Pages/Page/viewer-component', () => ({}))
 const Common = require('../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
-import Page from '../../../../ObojoboDraft/Pages/Page/viewer'
+import '../../../../ObojoboDraft/Pages/Page/viewer'
 import ViewerComponent from '../../../../ObojoboDraft/Pages/Page/viewer-component'
 
 describe('ObojoboDraft.Pages.Page registration', () => {

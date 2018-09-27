@@ -6,7 +6,7 @@ import Dialog from '../../../../src/scripts/common/components/modal/dialog'
 describe('Dialog', () => {
 	test('Dialog component', () => {
 		const component = renderer.create(<Dialog buttons={[]}>Content</Dialog>)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -17,13 +17,13 @@ describe('Dialog', () => {
 				Content
 			</Dialog>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Dialog component focuses', () => {
-		let button = {
+		const button = {
 			default: true
 		}
 		const component = mount(
@@ -32,9 +32,9 @@ describe('Dialog', () => {
 			</Dialog>
 		)
 
-		let spy = jest.spyOn(component.instance().refs.button0, 'focus')
+		const spy = jest.spyOn(component.instance().refs.button0, 'focus')
 
-		let textEnter = component
+		component
 			.find('input')
 			.first()
 			.simulate('focus')

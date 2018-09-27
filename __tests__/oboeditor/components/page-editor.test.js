@@ -268,6 +268,8 @@ describe('PageEditor', () => {
 
 	test('EditorNav component changes value', () => {
 		jest.spyOn(Break.helpers, 'insertNode')
+		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
+
 		Break.helpers.insertNode.mockReturnValueOnce(null)
 		const props = {
 			page: {

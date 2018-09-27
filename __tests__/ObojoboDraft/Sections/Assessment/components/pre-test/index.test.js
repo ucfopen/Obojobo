@@ -1,20 +1,19 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { mount } from 'enzyme'
 
 import PreTest from '../../../../../../ObojoboDraft/Sections/Assessment/components/pre-test/index'
 
 describe('PreTest', () => {
 	test('PreTest component', () => {
-		let model = {
+		const model = {
 			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent')
 		}
-		let moduleData = {
+		const moduleData = {
 			focusState: {}
 		}
 
-		let component = renderer.create(<PreTest model={model} moduleData={moduleData} />)
-		let tree = component.toJSON()
+		const component = renderer.create(<PreTest model={model} moduleData={moduleData} />)
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

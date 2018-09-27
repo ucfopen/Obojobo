@@ -1,3 +1,5 @@
+/* eslint eqeqeq: 0 */
+
 import Common from 'Common'
 
 import EditorUtil from '../util/editor-util'
@@ -11,8 +13,6 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 
 class EditorStore extends Store {
 	constructor() {
-		let item
-		let oldNavTargetId
 		super('editorstore')
 
 		Dispatcher.on(
@@ -26,11 +26,9 @@ class EditorStore extends Store {
 					this.triggerChange()
 				},
 				'editor:goto': payload => {
-					oldNavTargetId = this.state.navTargetId
 					this.gotoItem(this.state.itemsById[payload.value.id])
 				},
 				'editor:gotoPath': payload => {
-					oldNavTargetId = this.state.navTargetId
 					this.gotoItem(this.state.itemsByPath[payload.value.path])
 				},
 				'editor:addPage': payload => {
@@ -73,7 +71,7 @@ class EditorStore extends Store {
 		if (startingId != null) {
 			EditorUtil.goto(startingId)
 		} else {
-			let first = EditorUtil.getFirst(this.state)
+			const first = EditorUtil.getFirst(this.state)
 
 			if (first && first.id) EditorUtil.goto(first.id)
 		}
@@ -96,7 +94,7 @@ class EditorStore extends Store {
 				return
 			}
 
-			let navTargetModel = EditorUtil.getNavTargetModel(this.state)
+			const navTargetModel = EditorUtil.getNavTargetModel(this.state)
 			if (navTargetModel && navTargetModel.processTrigger) {
 				navTargetModel.processTrigger('onNavExit')
 			}
@@ -121,7 +119,7 @@ class EditorStore extends Store {
 		if (indent == null) {
 			indent = ''
 		}
-		let item = Common.Store.getItemForType(model.get('type'))
+		const item = Common.Store.getItemForType(model.get('type'))
 
 		let navItem = null
 		if (item.getNavItem != null) {
@@ -153,20 +151,16 @@ class EditorStore extends Store {
 			correct: false
 		}
 
-		for (let child of Array.from(model.children.models)) {
-			let childNavItem = this.generateNav(child, indent + '_')
+		for (const child of Array.from(model.children.models)) {
+			const childNavItem = this.generateNav(child, indent + '_')
 			navItem.children.push(childNavItem)
 			childNavItem.fullPath = navItem.fullPath
 				.concat(childNavItem.fullPath)
 				.filter(item => item !== '')
 
-			let flatPath = childNavItem.fullPath.join('/')
+			const flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
-			childNavItem.fullFlatPath = [
-				'/editor',
-				model.getRoot().get('draftId'),
-				flatPath
-			].join('/')
+			childNavItem.fullFlatPath = ['/editor', model.getRoot().get('draftId'), flatPath].join('/')
 			this.state.itemsByPath[flatPath] = childNavItem
 			this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem
 		}
@@ -182,7 +176,7 @@ class EditorStore extends Store {
 		// Add the newPage to the content
 		const pageModel = OboModel.create(newPage)
 		model.children.forEach(child => {
-			if(child.get('type') === CONTENT_NODE){
+			if (child.get('type') === CONTENT_NODE) {
 				child.children.add(pageModel)
 			}
 		})
@@ -223,13 +217,13 @@ class EditorStore extends Store {
 
 	movePage(pageId, index) {
 		const model = OboModel.models[pageId]
-		const newModel = model.moveTo(index)
+		model.moveTo(index)
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 		this.triggerChange()
 	}
 }
 
-let editorStore = new EditorStore()
+const editorStore = new EditorStore()
 window.__es = editorStore
 export default editorStore

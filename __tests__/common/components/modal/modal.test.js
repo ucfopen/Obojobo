@@ -1,7 +1,6 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import Modal from '../../../../src/scripts/common/components/modal/modal'
-import ModalUtil from '../../../../src/scripts/common/util/modal-util'
 import renderer from 'react-test-renderer'
 
 describe('Modal', () => {
@@ -22,7 +21,7 @@ describe('Modal', () => {
 				Content
 			</Modal>
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -45,7 +44,7 @@ describe('Modal', () => {
 	})
 
 	test('Esc closes modal', () => {
-		const component = mount(
+		mount(
 			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
 				Content
 			</Modal>
@@ -59,7 +58,7 @@ describe('Modal', () => {
 	})
 
 	test('Modal does not close with other keys', () => {
-		const component = mount(
+		mount(
 			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
 				Content
 			</Modal>

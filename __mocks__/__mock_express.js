@@ -1,16 +1,16 @@
 // This file is used to set up Mocks for Express Methods and
 // Router Methods. It is used primarily in __tests___/routes
 
-let mockExpressMethods = {}
-let mockRouterMethods = {}
+const mockExpressMethods = {}
+const mockRouterMethods = {}
 
-let mockExpress = () => {
+const mockExpress = () => {
 	jest.mock(
 		'express',
 		() => {
-			let module = () => {
-				let methods = ['on', 'use', 'get', 'post', 'put', 'delete', 'all', 'static']
-				let obj = {}
+			const module = () => {
+				const methods = ['on', 'use', 'get', 'post', 'put', 'delete', 'all', 'static']
+				const obj = {}
 				methods.forEach(m => {
 					obj[m] = mockExpressMethods[m] = jest.fn()
 				})
@@ -18,8 +18,8 @@ let mockExpress = () => {
 			}
 
 			module.Router = () => {
-				let methods = ['all', 'get', 'post', 'delete', 'put']
-				let obj = {}
+				const methods = ['all', 'get', 'post', 'delete', 'put']
+				const obj = {}
 				methods.forEach(m => {
 					obj[m] = mockRouterMethods[m] = jest.fn()
 				})

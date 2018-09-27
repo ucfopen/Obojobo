@@ -1,17 +1,17 @@
 import getDisplayFriendlyScore from './get-display-friendly-score'
 
-let whitespaceRegex = /\s/g
+const whitespaceRegex = /\s/g
 
-let getModText = (attemptCondition, totalNumberOfAttemptsAllowed) => {
+const getModText = (attemptCondition, totalNumberOfAttemptsAllowed) => {
 	attemptCondition = ('' + attemptCondition)
 		.replace(whitespaceRegex, '')
 		.replace('$last_attempt', '' + totalNumberOfAttemptsAllowed)
 
-	let range = []
+	const range = []
 	if (attemptCondition.indexOf(',') === -1) {
 		range.push(parseInt(attemptCondition, 10))
 	} else {
-		let tokens = attemptCondition.split(',')
+		const tokens = attemptCondition.split(',')
 		range.push(parseInt(tokens[0].substr(1), 10))
 		range.push(parseInt(tokens[1].substr(0, tokens[1].length - 1), 10))
 
@@ -30,10 +30,10 @@ let getModText = (attemptCondition, totalNumberOfAttemptsAllowed) => {
 	return 'Passed on attempts ' + range[0] + ' to ' + range[1]
 }
 
-let getTextItemsForMods = (mods, totalNumberOfAttemptsAllowed) => {
+const getTextItemsForMods = (mods, totalNumberOfAttemptsAllowed) => {
 	return mods.map(mod => {
 		return {
-			type: parseInt(mod.reward) >= 0 ? 'extra-credit' : 'penalty',
+			type: parseInt(mod.reward, 10) >= 0 ? 'extra-credit' : 'penalty',
 			text: getModText(mod.attemptCondition, totalNumberOfAttemptsAllowed),
 			value: getDisplayFriendlyScore(Math.abs(mod.reward))
 		}

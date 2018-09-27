@@ -81,7 +81,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
   >
     <div>
       <div
-        className="answer-flag is-type-chosen-correctly"
+        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-chosen-correctly"
       >
         <p>
           Your Answer (Correct)
@@ -148,7 +148,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
   >
     <div>
       <div
-        className="answer-flag is-type-could-have-chosen"
+        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-could-have-chosen"
       >
         <p>
           Another Correct Answer
@@ -215,7 +215,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
   >
     <div>
       <div
-        className="answer-flag is-type-could-have-chosen"
+        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-could-have-chosen"
       >
         <p>
           Another Correct Answer
@@ -406,7 +406,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   >
     <div>
       <div
-        className="answer-flag is-type-chosen-correctly"
+        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-chosen-correctly"
       >
         <p>
           Your Answer (Correct)
@@ -473,7 +473,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   >
     <div>
       <div
-        className="answer-flag is-type-should-have-chosen"
+        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-should-have-chosen"
       >
         <p>
            Correct Answer 
@@ -540,7 +540,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
   >
     <div>
       <div
-        className="answer-flag is-type-should-not-have-chosen"
+        className="obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-should-not-have-chosen"
       >
         <p>
           Your Answer (Incorrect)

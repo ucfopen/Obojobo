@@ -12,7 +12,7 @@ describe('Figure editor', () => {
 		jest.restoreAllMocks()
 		jest.resetAllMocks()
 	})
-	test('Node builds the expected component', () => {
+	test('Node component', () => {
 		const Node = Figure.components.Node
 		const component = renderer.create(
 			<Node
@@ -20,8 +20,9 @@ describe('Figure editor', () => {
 				node={{
 					data: {
 						get: () => ({
+							size: 'mockSize',
 							url: 'mockUrl',
-							alt: 'mockAltText'
+							alt: 'mockAlt'
 						})
 					}
 				}}
@@ -32,9 +33,66 @@ describe('Figure editor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('Node renders with custom size correctly', () => {
+		expect.assertions(3)
+
+		const Node = Figure.components.Node
+		const component = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: () => ({
+							size: 'custom',
+							url: 'mockUrl',
+							alt: 'mockAlt',
+							width: 'customWidth',
+							height: 'customHeight'
+						})
+					}
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+
+		const componentNoWidth = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: () => ({
+							size: 'custom',
+							url: 'mockUrl',
+							alt: 'mockAlt',
+							height: 'customHeight'
+						})
+					}
+				}}
+			/>
+		)
+		expect(componentNoWidth.toJSON()).toMatchSnapshot()
+
+		const componentNoHeight = renderer.create(
+			<Node
+				attributes={{ dummy: 'dummyData' }}
+				node={{
+					data: {
+						get: () => ({
+							size: 'custom',
+							url: 'mockUrl',
+							alt: 'mockAlt',
+							width: 'mockWidth'
+						})
+					}
+				}}
+			/>
+		)
+		expect(componentNoHeight.toJSON()).toMatchSnapshot()
+	})
+
 	test('Node component edits alt text', () => {
 		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce('')
+		window.prompt.mockReturnValueOnce('mockAltText')
 
 		const change = {
 			setNodeByKey: jest.fn()
@@ -44,10 +102,9 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
+					key: 'mockKey',
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					}
 				}}
 				editor={{
@@ -62,13 +119,15 @@ describe('Figure editor', () => {
 			.at(0)
 			.simulate('click')
 
-		const tree = component.html()
-		expect(tree).toMatchSnapshot()
+		expect(change.setNodeByKey).toBeCalledWith(
+			'mockKey',
+			expect.objectContaining({ data: { content: { alt: 'mockAltText' } } })
+		)
 	})
 
-	test('Node component edits url', () => {
+	test('Node component edits alt text - defaulting to content.alt if input invalid', () => {
 		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce('')
+		window.prompt.mockReturnValueOnce(null)
 
 		const change = {
 			setNodeByKey: jest.fn()
@@ -78,6 +137,42 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
+					key: 'mockKey',
+					data: {
+						get: () => ({ alt: 'contentAlt' })
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(change.setNodeByKey).toBeCalledWith(
+			'mockKey',
+			expect.objectContaining({ data: { content: { alt: 'contentAlt' } } })
+		)
+	})
+
+	test('Node component edits url', () => {
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce('mockUrl')
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				node={{
+					key: 'mockKey',
 					data: {
 						get: () => {
 							return {}
@@ -90,20 +185,56 @@ describe('Figure editor', () => {
 				}}
 			/>
 		)
-		const tree = component.html()
 
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
+		expect(change.setNodeByKey).toBeCalledWith(
+			'mockKey',
+			expect.objectContaining({ data: { content: { url: 'mockUrl' } } })
+		)
 	})
 
-	test('Node component deletes self', () => {
+	test('Node component edits url - defaulting to content.url if input invalid', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				node={{
+					key: 'mockKey',
+					data: {
+						get: () => ({
+							url: 'contentUrl'
+						})
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(change.setNodeByKey).toBeCalledWith(
+			'mockKey',
+			expect.objectContaining({ data: { content: { url: 'contentUrl' } } })
+		)
+	})
+
+	test('Node component deletes self', () => {
 		const change = {
 			removeNodeByKey: jest.fn()
 		}
@@ -112,6 +243,7 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
+					key: 'mockKey',
 					data: {
 						get: () => {
 							return {}
@@ -124,20 +256,16 @@ describe('Figure editor', () => {
 				}}
 			/>
 		)
-		const tree = component.html()
 
 		component
 			.find('button')
 			.at(2)
 			.simulate('click')
 
-		expect(tree).toMatchSnapshot()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Node component changes size', () => {
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(100).mockReturnValueOnce(100)
-
 		const change = {
 			setNodeByKey: jest.fn()
 		}
@@ -146,6 +274,7 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
+					key: 'mockKey',
 					data: {
 						get: () => {
 							return {}
@@ -158,71 +287,8 @@ describe('Figure editor', () => {
 				}}
 			/>
 		)
-		const tree = component.html()
 
-		component.find('select').simulate('change', {
-			target: { value: 'custom' }
-		})
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Node component changes size with no width or height', () => {
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null).mockReturnValueOnce(null)
-
-		const change = {
-			setNodeByKey: jest.fn()
-		}
-
-		const Node = Figure.components.Node
-		const component = mount(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
-		)
-		const tree = component.html()
-
-		component.find('select').simulate('change', {
-			target: { value: 'custom' }
-		})
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Node component changes size to small', () => {
-		const change = {
-			setNodeByKey: jest.fn()
-		}
-
-		const Node = Figure.components.Node
-		const component = mount(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
-		)
-		const tree = component.html()
-
+		// to fulfill coverage
 		component.find('select').simulate('click', {
 			stopPropagation: () => true
 		})
@@ -231,7 +297,54 @@ describe('Figure editor', () => {
 			target: { value: 'small' }
 		})
 
-		expect(tree).toMatchSnapshot()
+		expect(change.setNodeByKey).toBeCalledWith(
+			'mockKey',
+			expect.objectContaining({
+				data: {
+					content: expect.objectContaining({ size: 'small' })
+				}
+			})
+		)
+	})
+
+	test('Node component accepts custom size', () => {
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce(100).mockReturnValueOnce(200)
+
+		const change = {
+			setNodeByKey: jest.fn()
+		}
+
+		const Node = Figure.components.Node
+		const component = mount(
+			<Node
+				node={{
+					key: 'mockKey',
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+
+		component.find('select').simulate('change', {
+			target: { value: 'custom' }
+		})
+
+		expect(change.setNodeByKey).toBeCalledWith(
+			'mockKey',
+			expect.objectContaining({
+				data: {
+					content: expect.objectContaining({ size: 'custom', height: 100, width: 200 })
+				}
+			})
+		)
 	})
 
 	test('insertNode calls change methods', () => {

@@ -10,7 +10,6 @@ const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
-const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -51,11 +50,18 @@ class Node extends React.Component {
 
 		editor.onChange(change)
 	}
-	render(){
+	render() {
 		return (
-			<div className={'component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback'} {...this.props.attributes}>
-				<button className={'delete'} onClick={() => this.delete()}>X</button>
-				<span className={'label'} contentEditable={false}>{'Feedback'}</span>
+			<div
+				className={'component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback'}
+				{...this.props.attributes}
+			>
+				<button className={'delete'} onClick={() => this.delete()}>
+					X
+				</button>
+				<span className={'label'} contentEditable={false}>
+					{'Feedback'}
+				</span>
 				{this.props.children}
 			</div>
 		)
@@ -71,7 +77,7 @@ const slateToObo = node => {
 
 	node.nodes.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		if(nodes.hasOwnProperty(child.type)){
+		if (nodes.hasOwnProperty(child.type)) {
 			json.children.push(nodes[child.type].helpers.slateToObo(child))
 		} else {
 			json.children.push(DefaultNode.helpers.slateToObo(child))
@@ -91,7 +97,7 @@ const oboToSlate = node => {
 
 	node.children.forEach(child => {
 		// If the current Node is a registered OboNode, use its custom converter
-		if(nodes.hasOwnProperty(child.type)){
+		if (nodes.hasOwnProperty(child.type)) {
 			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
 		} else {
 			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
@@ -112,38 +118,38 @@ const plugins = {
 		blocks: {
 			'ObojoboDraft.Chunks.MCAssessment.MCFeedback': {
 				nodes: [
-					{ types: [
-						BREAK_NODE,
-						CODE_NODE,
-						FIGURE_NODE,
-						HEADING_NODE,
-						IFRAME_NODE,
-						LIST_NODE,
-						MATH_NODE,
-						TEXT_NODE,
-						TABLE_NODE,
-						YOUTUBE_NODE,
-						HTML_NODE
-					], min: 1 }
+					{
+						types: [
+							BREAK_NODE,
+							CODE_NODE,
+							FIGURE_NODE,
+							HEADING_NODE,
+							IFRAME_NODE,
+							LIST_NODE,
+							MATH_NODE,
+							TEXT_NODE,
+							TABLE_NODE,
+							YOUTUBE_NODE,
+							HTML_NODE
+						],
+						min: 1
+					}
 				],
 				normalize: (change, violation, { node, child, index }) => {
 					switch (violation) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: TEXT_NODE,
-								data: { content: { indent: 0 }}
+								data: { content: { indent: 0 } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							if(child.object !== 'text') return
-							return change.wrapBlockByKey(
-								child.key,
-								{
-									type: TEXT_NODE,
-									data: { content: { indent: 0 }}
-								}
-							)
+							if (child.object !== 'text') return
+							return change.wrapBlockByKey(child.key, {
+								type: TEXT_NODE,
+								data: { content: { indent: 0 } }
+							})
 						}
 					}
 				}
@@ -158,7 +164,7 @@ const MCFeedback = {
 	},
 	helpers: {
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }

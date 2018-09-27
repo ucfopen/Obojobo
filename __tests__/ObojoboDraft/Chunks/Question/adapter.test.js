@@ -1,17 +1,19 @@
-import Common from 'Common'
+jest.mock('../../../../src/scripts/common/models/obo-model', () => {
+	return require('../../../../__mocks__/obo-model-adapter-mock').default
+})
+import OboModel from '../../../../src/scripts/common/models/obo-model'
+
 import QuestionAdapter from '../../../../ObojoboDraft/Chunks/Question/adapter'
-import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
 describe('Question adapter', () => {
 	test('construct builds without attributes', () => {
-		let model = { modelState: {} }
+		const model = new OboModel({})
 		QuestionAdapter.construct(model)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('construct builds with attributes', () => {
-		let model = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				mode: 'review',
 				practice: false,
@@ -40,74 +42,56 @@ describe('Question adapter', () => {
 				}
 			}
 		}
+		const model = new OboModel(attrs)
 
 		QuestionAdapter.construct(model, attrs)
-		expect(model).toMatchSnapshot()
+		expect(model.modelState).toMatchSnapshot()
 	})
 
 	test('clone creates a copy', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				practice: false
 			}
 		}
+		const a = new OboModel(attrs)
+		const b = new OboModel({})
 
 		QuestionAdapter.construct(a, attrs)
 		QuestionAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)
-		expect(a).toEqual(b)
+		expect(a.modelState).not.toBe(b.modelState)
+		expect(a.modelState).toEqual(b.modelState)
 	})
 
 	test('clone creates a copy with solution', () => {
-		let a = { modelState: {} }
-		let b = { modelState: {} }
-		let attrs = {
+		const attrs = {
 			content: {
 				practice: false,
-				solution: {
-					id: '249138ca-be09-4ab5-b015-3a8107b4c79e',
-					type: 'ObojoboDraft.Pages.Page',
-					content: {},
-					children: [
-						{
-							id: '7fa8ecca-cdd2-4cb8-ae55-5435db9fb05e',
-							type: 'ObojoboDraft.Chunks.Text',
-							content: {
-								textGroup: [
-									{
-										text: {
-											value: 'this is some example solution text',
-											styleList: []
-										},
-										data: null
-									}
-								]
-							},
-							children: []
-						}
-					]
-				}
+				solution: 'mocked-solution'
 			}
 		}
+		const a = new OboModel(attrs)
+		const b = new OboModel({})
 
 		QuestionAdapter.construct(a, attrs)
 		QuestionAdapter.clone(a, b)
 
 		expect(a).not.toBe(b)
-		expect(a).toEqual(b)
+		expect(a.modelState).not.toBe(b.modelState)
+		expect(a.modelState).toEqual(b.modelState)
 	})
 
 	test('toJSON builds a JSON representation', () => {
-		let model = { modelState: {} }
-		let json = { content: {} }
-		let attrs = {
+		const json = { content: {} }
+		const attrs = {
 			content: {
 				practice: false
 			}
 		}
+		const model = new OboModel(attrs)
+
 		QuestionAdapter.construct(model, attrs)
 		QuestionAdapter.toJSON(model, json)
 
@@ -115,9 +99,8 @@ describe('Question adapter', () => {
 	})
 
 	test('toJSON builds a JSON representation with solution', () => {
-		let model = { modelState: {} }
-		let json = { content: {} }
-		let attrs = {
+		const json = { content: {} }
+		const attrs = {
 			content: {
 				practice: false,
 				solution: {
@@ -145,6 +128,11 @@ describe('Question adapter', () => {
 				}
 			}
 		}
+		const model = new OboModel(attrs)
+		OboModel.prototype.toJSON = jest.fn().mockReturnValueOnce({
+			mockedToJSON: true
+		})
+
 		QuestionAdapter.construct(model, attrs)
 		QuestionAdapter.toJSON(model, json)
 

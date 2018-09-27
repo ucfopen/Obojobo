@@ -3,7 +3,6 @@ import renderer from 'react-test-renderer'
 
 import OboComponent from '../../../src/scripts/common/components/obo-component'
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
-import FocusUtil from '../../../src/scripts/common/util/focus-util'
 
 jest.mock('../../../src/scripts/common/util/focus-util', () => {
 	return {
@@ -19,7 +18,7 @@ test('OboComponent', () => {
 			Test
 		</OboComponent>
 	)
-	let tree = component.toJSON()
+	const tree = component.toJSON()
 
 	expect(tree).toMatchSnapshot()
 })
@@ -32,7 +31,7 @@ test('OboComponent tag', () => {
 			Test
 		</OboComponent>
 	)
-	let tree = component.toJSON()
+	const tree = component.toJSON()
 
 	expect(tree).toMatchSnapshot()
 })

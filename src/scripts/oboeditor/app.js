@@ -1,33 +1,30 @@
 import Common from 'Common'
-import Viewer from 'Viewer'
-
 import Editor from '../oboeditor'
 
-import './polyfills'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-let { APIUtil } = Viewer.util
-
-var debounce = function(ms, cb) {
+const debounce = function(ms, cb) {
 	clearTimeout(debounce.id)
 	return (debounce.id = setTimeout(cb, ms))
 }
 debounce.id = null
 
 // set up global event listeners
-let { Dispatcher } = Common.flux
+const { Dispatcher } = Common.flux
 
 // Set up listeners for window for blur/focus
-let onFocus = function() {
+const onFocus = function() {
 	document.body.className = 'is-focused-window'
 	return Dispatcher.trigger('window:focus')
 }
 
-let onBlur = function() {
+const onBlur = function() {
 	document.body.className = 'is-blured-window'
 	return Dispatcher.trigger('window:blur')
 }
 
-let ie = false
+const ie = false
 //@cc_on ie = true;
 if (ie) {
 	document.onfocusin = onFocus
@@ -37,16 +34,8 @@ if (ie) {
 	window.onblur = onBlur
 }
 
-let moduleData = {
-	model: null,
-	navState: null,
-	questionState: null,
-	assessmentState: null,
-	modalState: null
-}
-
 window.__oboEditorRender = () => {
-	return ReactDOM.render(
+	ReactDOM.render(
 		<div className="root">
 			<Editor.components.EditorApp />
 		</div>,

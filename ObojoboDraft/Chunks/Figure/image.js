@@ -1,11 +1,12 @@
-import Common from 'Common'
 import './image.scss'
 
-export default props => {
-	let imgStyles
-	let data = props.chunk.modelState
+import React from 'react'
 
-	if (data.url == null) {
+const Image = props => {
+	let imgStyles
+	const data = props.chunk.modelState
+
+	if (!data.url) {
 		return <div className="img-placeholder" />
 	}
 
@@ -17,14 +18,16 @@ export default props => {
 		case 'custom':
 			imgStyles = {}
 
-			if (data.width != null) {
+			if (data.width) {
 				imgStyles.width = data.width + 'px'
 			}
 
-			if (data.height != null) {
+			if (data.height) {
 				imgStyles.height = data.height + 'px'
 			}
 
 			return <img src={data.url} unselectable="on" alt={data.alt} style={imgStyles} />
 	}
 }
+
+export default Image

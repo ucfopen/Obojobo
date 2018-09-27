@@ -1,8 +1,9 @@
+/* eslint no-alert: 0 */
+
 import React from 'react'
 import Common from 'Common'
 
 import EditorUtil from '../util/editor-util'
-import APIUtil from '../../viewer/util/api-util'
 import generateId from '../generate-ids'
 
 import './editor-nav.scss'
@@ -24,8 +25,7 @@ class EditorNav extends React.Component {
 	}
 
 	addAssessment() {
-		const label = window.prompt('Enter the title for the new Assessment:')
-			|| ('Assessment')
+		const label = window.prompt('Enter the title for the new Assessment:') || 'Assessment'
 
 		const newAssessment = Object.assign({}, assessmentTemplate)
 		newAssessment.id = generateId()
@@ -36,8 +36,7 @@ class EditorNav extends React.Component {
 	}
 
 	addPage() {
-		const label = window.prompt('Enter the title for the new page:')
-			|| ('Default Page')
+		const label = window.prompt('Enter the title for the new page:') || 'Default Page'
 
 		const newPage = Object.assign({}, pageTemplate)
 		newPage.id = generateId()
@@ -52,8 +51,7 @@ class EditorNav extends React.Component {
 	}
 
 	renamePage(pageId) {
-		const label = window.prompt('Enter the title for the new page:')
-			|| (pageId)
+		const label = window.prompt('Enter the title for the new page:') || pageId
 		EditorUtil.renamePage(pageId, label)
 	}
 
@@ -71,32 +69,26 @@ class EditorNav extends React.Component {
 			<div className={'dropdown'}>
 				<span className={'drop-arrow'}>▼</span>
 				<div className={'drop-content'}>
-					{ model.isFirst() ? null :
-						<button
-							onClick={() => this.movePage(item.id, model.getIndex()-1)}>
-							Move Up
-						</button>
-					}
-					{ model.isLast() ? null :
-						<button
-							onClick={() => this.movePage(item.id, model.getIndex()+1)}>
-							Move Down
-						</button>
-					}
+					{model.isFirst() ? null : (
+						<button onClick={() => this.movePage(item.id, model.getIndex() - 1)}>Move Up</button>
+					)}
+					{model.isLast() ? null : (
+						<button onClick={() => this.movePage(item.id, model.getIndex() + 1)}>Move Down</button>
+					)}
 					<button onClick={() => this.renamePage(item.id)}>Edit Name</button>
 					<button onClick={() => this.deletePage(item.id)}>Delete</button>
-					<button>{'Id: '+ item.id}</button>
+					<button>{'Id: ' + item.id}</button>
 				</div>
 			</div>
 		)
 	}
 
 	renderLink(index, isSelected, list) {
-		let item = list[index]
-		let isFirstInList = !list[index - 1]
-		let isLastInList = !list[index + 1]
+		const item = list[index]
+		const isFirstInList = !list[index - 1]
+		const isLastInList = !list[index + 1]
 
-		let className =
+		const className =
 			'link' +
 			isOrNot(isSelected, 'selected') +
 			isOrNot(item.flags.assessment, 'assessment') +
@@ -120,27 +112,21 @@ class EditorNav extends React.Component {
 	}
 
 	render() {
-		let className =
+		const className =
 			'viewer--components--nav' +
 			isOrNot(this.state.locked, 'locked') +
 			isOrNot(this.state.open, 'open') +
 			isOrNot(!this.state.disabled, 'enabled')
 
-		let list = EditorUtil.getOrderedList(this.props.navState)
+		const list = EditorUtil.getOrderedList(this.props.navState)
 
 		return (
 			<div className={className}>
-				<button className="toggle-button" >
-					Toggle Navigation Menu
-				</button>
+				<button className="toggle-button">Toggle Navigation Menu</button>
 				<ul>
 					{list.map((item, index) => {
-						switch (item.type) {
-							case 'heading':
-								return this.renderHeading(index, item)
-							case 'link':
-								return this.renderLink(index, this.state.navTargetId === item.id, list)
-						}
+						if (item.type === 'heading') return this.renderHeading(index, item)
+						return this.renderLink(index, this.state.navTargetId === item.id, list)
 					})}
 				</ul>
 				<button onClick={() => this.addPage()}>{'Add Page'}</button>
@@ -151,8 +137,8 @@ class EditorNav extends React.Component {
 }
 
 const isOrNot = (item, text) => {
-	if(item) return ' is-'+text
-	return ' is-not-'+text
+	if (item) return ' is-' + text
+	return ' is-not-' + text
 }
 
 export default EditorNav

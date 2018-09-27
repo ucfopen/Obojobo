@@ -1,20 +1,16 @@
+import React from 'react'
+
 import Common from 'Common'
 import Viewer from 'Viewer'
 
 const { OboModel } = Common.models
 const { AssessmentUtil } = Viewer.util
-const Launch = Common.Launch
 const NavUtil = Viewer.util.NavUtil
 
 import LTIStatus from './lti-status'
 import FullReview from '../full-review' //@TODO - Rename to simply "Review"
 
 const AssessmentPostTest = props => {
-	const questionScores = AssessmentUtil.getLastAttemptScoresForModel(
-		props.moduleData.assessmentState,
-		props.model
-	)
-
 	const isFullReviewAvailable = reviewType => {
 		switch (reviewType) {
 			case 'always':
@@ -30,10 +26,7 @@ const AssessmentPostTest = props => {
 		return !AssessmentUtil.hasAttemptsRemaining(props.moduleData.assessmentState, props.model)
 	}
 
-	// const scoreAction = assessment.getScoreAction()
-	const numCorrect = AssessmentUtil.getNumCorrect(questionScores)
-
-	let assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
+	const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 		props.moduleData.assessmentState,
 		props.model
 	)
@@ -58,10 +51,10 @@ const AssessmentPostTest = props => {
 
 	let scoreActionsPage
 
-	if (props.scoreAction.page != null) {
-		let pageModel = OboModel.create(props.scoreAction.page)
-		pageModel.parent = props.model //'@TODO - FIGURE OUT A BETTER WAY TO DO THIS - THIS IS NEEDED TO GET {{VARIABLES}} WORKING')
-		let PageComponent = pageModel.getComponentClass()
+	if (props.scoreAction.page) {
+		const pageModel = OboModel.create(props.scoreAction.page)
+		pageModel.parent = props.model
+		const PageComponent = pageModel.getComponentClass()
 		scoreActionsPage = <PageComponent model={pageModel} moduleData={props.moduleData} />
 	} else {
 		scoreActionsPage = <p>{props.scoreAction.message}</p>

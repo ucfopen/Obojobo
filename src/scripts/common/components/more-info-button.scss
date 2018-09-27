@@ -5,6 +5,7 @@
 		0% {
 			transform: translate(100%, -50%) translate(-1em, 0);
 		}
+
 		100% {
 			transform: translate(100%, -50%);
 		}
@@ -14,6 +15,7 @@
 		0% {
 			opacity: 0;
 		}
+
 		100% {
 			opacity: 1;
 		}
@@ -21,27 +23,6 @@
 
 	position: relative;
 	display: inline-block;
-
-	&.is-default-label {
-		> button {
-			width: 2em;
-		}
-	}
-
-	&.is-mode-hover {
-		> button {
-			background: transparentize($color-action, 0.3);
-			color: $color-bg;
-		}
-	}
-
-	&.is-mode-clicked {
-		> button {
-			background: $color-action;
-			color: $color-bg;
-			cursor: pointer;
-		}
-	}
 
 	> button {
 		background: $color-bg2;
@@ -61,10 +42,13 @@
 		background: $color-bg2;
 		box-shadow: $box-shadow-overlay;
 		z-index: $z-index-above-content;
-		animation: obojobo-draft--components--more-info-button--fadein $duration-animation-default,
+
+		/* prettier-ignore */
+		animation:
+			obojobo-draft--components--more-info-button--fadein $duration-animation-default,
 			obojobo-draft--components--more-info-button--slidein $duration-animation-default;
 
-		&:before {
+		&::before {
 			position: absolute;
 			left: 0;
 			top: 50%;
@@ -80,6 +64,27 @@
 		> .container {
 			background: $color-bg2;
 			position: relative;
+		}
+	}
+
+	&.is-default-label {
+		> button {
+			width: 2em;
+		}
+	}
+
+	&.is-mode-hover {
+		> button {
+			background: transparentize($color-action, 0.3);
+			color: $color-bg;
+		}
+	}
+
+	&.is-mode-clicked {
+		> button {
+			background: $color-action;
+			color: $color-bg;
+			cursor: pointer;
 		}
 	}
 }

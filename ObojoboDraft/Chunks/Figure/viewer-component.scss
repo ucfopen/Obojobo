@@ -20,7 +20,6 @@
 
 		img {
 			background: $color-bg;
-			border: none;
 			display: block;
 		}
 
@@ -32,7 +31,7 @@
 	figcaption {
 		font-family: $font-default;
 		font-size: 0.8em;
-		color: lighten($color-text, 40%);
+		color: $color-text-minor;
 	}
 
 	&.custom {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Data, Block } from 'slate'
+import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ActionButton from '../../Chunks/ActionButton/editor'

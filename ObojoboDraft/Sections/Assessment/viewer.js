@@ -1,7 +1,7 @@
 import Common from 'Common'
 import Viewer from 'Viewer'
 
-let { AssessmentUtil } = Viewer.util
+const { AssessmentUtil } = Viewer.util
 
 import adapter from './adapter'
 import ViewerComponent from './viewer-component'
@@ -12,7 +12,7 @@ Common.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 	componentClass: ViewerComponent,
 	selectionHandler: null,
 	getNavItem(model) {
-		let title = model.title || 'Assessment'
+		const title = model.title || 'Assessment'
 
 		return {
 			type: 'link',
@@ -24,15 +24,15 @@ Common.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 	},
 	variables: {
 		'assessment:attemptsRemaining'(textModel, viewerProps) {
-			let assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
+			const assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
 			if (assessmentModel.modelState.attempts === Infinity) {
 				return 'unlimited'
 			}
 
 			return AssessmentUtil.getAttemptsRemaining(viewerProps.assessmentState, assessmentModel)
 		},
-		'assessment:attemptsAmount'(textModel, viewerProps) {
-			let assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
+		'assessment:attemptsAmount'(textModel) {
+			const assessmentModel = textModel.getParentOfType('ObojoboDraft.Sections.Assessment')
 			if (assessmentModel.modelState.attempts === Infinity) {
 				return 'unlimited'
 			}

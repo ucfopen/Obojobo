@@ -1,30 +1,27 @@
-let db = oboRequire('db')
-let DraftDocument = oboRequire('models/draft')
-let Assessment = require('./assessment')
-let AssessmentRubric = require('./assessment-rubric')
-let createCaliperEvent = oboRequire('routes/api/events/create_caliper_event') //@TODO
-let insertEvent = oboRequire('insert_event')
-let lti = oboRequire('lti')
-let logger = oboRequire('logger')
-let attemptStart = require('./attempt-start')
+const DraftDocument = oboRequire('models/draft')
+const Assessment = require('./assessment')
+const AssessmentRubric = require('./assessment-rubric')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const insertEvent = oboRequire('insert_event')
+const lti = oboRequire('lti')
+const logger = oboRequire('logger')
+const attemptStart = require('./attempt-start')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
-let endAttempt = (req, res, user, draftDocument, attemptId, isPreviewing) => {
+const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 	let attempt
 	let attemptHistory
-	let responseHistory
 	let calculatedScores
-	let updateAttemptData
 	let assessmentScoreId
 
-	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreviewing}")`)
+	logger.info(`End attempt "${attemptId}" begin for user "${user.id}" (Preview="${isPreview}")`)
 
 	return getAttempt(attemptId)
 		.then(attemptResult => {
 			logger.info(`End attempt "${attemptId}" - getAttempt success`)
 
 			attempt = attemptResult
-			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId)
+			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId, isPreview)
 		})
 		.then(attemptHistoryResult => {
 			logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
@@ -59,7 +56,7 @@ let endAttempt = (req, res, user, draftDocument, attemptId, isPreviewing) => {
 				attempt.draftId,
 				draftDocument.contentId,
 				calculatedScores,
-				isPreviewing
+				isPreview
 			)
 		})
 		.then(completeAttemptResult => {
@@ -73,7 +70,7 @@ let endAttempt = (req, res, user, draftDocument, attemptId, isPreviewing) => {
 				attempt,
 				draftDocument,
 				user,
-				isPreviewing,
+				isPreview,
 				attemptHistory
 			)
 		})
@@ -84,7 +81,7 @@ let endAttempt = (req, res, user, draftDocument, attemptId, isPreviewing) => {
 				attempt.assessmentId,
 				attemptId,
 				attempt.number,
-				isPreviewing,
+				isPreview,
 				req.hostname,
 				req.connection.remoteAddress
 			)
@@ -109,7 +106,7 @@ let endAttempt = (req, res, user, draftDocument, attemptId, isPreviewing) => {
 				attempt.number,
 				calculatedScores.attempt.attemptScore,
 				calculatedScores.assessmentScoreDetails.assessmentModdedScore,
-				isPreviewing,
+				isPreview,
 				ltiRequestResult.scoreSent,
 				ltiRequestResult.status,
 				ltiRequestResult.statusDetails,
@@ -120,10 +117,10 @@ let endAttempt = (req, res, user, draftDocument, attemptId, isPreviewing) => {
 				calculatedScores.assessmentScoreDetails
 			)
 		})
-		.then(() => Assessment.getAttempts(user.id, attempt.draftId, attempt.assessmentId))
+		.then(() => Assessment.getAttempts(user.id, attempt.draftId, isPreview, attempt.assessmentId))
 }
 
-let getAttempt = attemptId => {
+const getAttempt = attemptId => {
 	let result
 
 	return Assessment.getAttempt(attemptId)
@@ -145,12 +142,13 @@ let getAttempt = attemptId => {
 		}))
 }
 
-let getAttemptHistory = (userId, draftId, assessmentId) =>
-	Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId)
+const getAttemptHistory = (userId, draftId, assessmentId, isPreview) =>
+	Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, isPreview)
 
-let getResponsesForAttempt = (userId, draftId) => Assessment.getResponsesForAttempt(userId, draftId)
+const getResponsesForAttempt = (userId, draftId) =>
+	Assessment.getResponsesForAttempt(userId, draftId)
 
-let getCalculatedScores = (
+const getCalculatedScores = (
 	req,
 	res,
 	assessmentModel,
@@ -158,13 +156,13 @@ let getCalculatedScores = (
 	attemptHistory,
 	responseHistory
 ) => {
-	let scoreInfo = {
+	const scoreInfo = {
 		scores: [0],
 		questions: attemptState.questions,
 		scoresByQuestionId: {}
 	}
 
-	let promises = assessmentModel.yell(
+	const promises = assessmentModel.yell(
 		'ObojoboDraft.Sections.Assessment:attemptEnd',
 		req,
 		res,
@@ -184,26 +182,26 @@ let getCalculatedScores = (
 	)
 }
 
-let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
-	let questionScores = scoreInfo.questions.map(question => ({
+const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
+	const questionScores = scoreInfo.questions.map(question => ({
 		id: question.id,
 		score: scoreInfo.scoresByQuestionId[question.id] || 0
 	}))
 
-	let attemptScore = scoreInfo.scores.reduce((a, b) => a + b) / scoreInfo.questions.length
+	const attemptScore = scoreInfo.scores.reduce((a, b) => a + b) / scoreInfo.questions.length
 
-	let allScores = attemptHistory
+	const allScores = attemptHistory
 		.map(attempt => parseFloat(attempt.result.attemptScore))
 		.concat(attemptScore)
 
-	let numAttempts =
+	const numAttempts =
 		typeof assessmentModel.node.content.attempts === 'undefined' ||
 		assessmentModel.node.content.attempts === 'unlimited'
 			? Infinity
 			: parseInt(assessmentModel.node.content.attempts, 10)
 
-	let rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
-	let assessmentScoreDetails = rubric.getAssessmentScoreInfoForAttempt(numAttempts, allScores)
+	const rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
+	const assessmentScoreDetails = rubric.getAssessmentScoreInfoForAttempt(numAttempts, allScores)
 
 	return {
 		attempt: {
@@ -214,14 +212,14 @@ let calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
 	}
 }
 
-let completeAttempt = (
+const completeAttempt = (
 	assessmentId,
 	attemptId,
 	userId,
 	draftId,
 	contentId,
 	calculatedScores,
-	preview
+	isPreview
 ) =>
 	Assessment.completeAttempt(
 		assessmentId,
@@ -231,20 +229,20 @@ let completeAttempt = (
 		contentId,
 		calculatedScores.attempt,
 		calculatedScores.assessmentScoreDetails,
-		preview
+		isPreview
 	)
 
-let insertAttemptEndEvents = (
+const insertAttemptEndEvents = (
 	user,
 	draftDocument,
 	assessmentId,
 	attemptId,
 	attemptNumber,
-	isPreviewing,
+	isPreview,
 	hostname,
 	remoteAddress
 ) => {
-	let { createAssessmentAttemptSubmittedEvent } = createCaliperEvent(null, hostname)
+	const { createAssessmentAttemptSubmittedEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
 		action: 'assessment:attemptEnd',
 		actorTime: new Date().toISOString(),
@@ -258,18 +256,18 @@ let insertAttemptEndEvents = (
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId,
 		eventVersion: '1.1.0',
+		isPreview: isPreview,
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
 			actor: { type: 'user', id: user.id },
 			draftId: draftDocument.draftId,
 			contentId: draftDocument.contentId,
 			assessmentId,
-			attemptId: attemptId,
-			isPreviewMode: isPreviewing
+			attemptId: attemptId
 		})
 	})
 }
 
-let insertAttemptScoredEvents = (
+const insertAttemptScoredEvents = (
 	user,
 	draftDocument,
 	assessmentId,
@@ -278,7 +276,7 @@ let insertAttemptScoredEvents = (
 	attemptNumber,
 	attemptScore,
 	assessmentScore,
-	isPreviewing,
+	isPreview,
 	ltiScoreSent,
 	ltiScoreStatus,
 	ltiStatusDetails,
@@ -288,7 +286,7 @@ let insertAttemptScoredEvents = (
 	remoteAddress,
 	scoreDetails
 ) => {
-	let { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
+	const { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
 
 	return lti
 		.getLatestHighestAssessmentScoreRecord(user.id, draftDocument.draftId, assessmentId)
@@ -316,6 +314,7 @@ let insertAttemptScoredEvents = (
 				draftId: draftDocument.draftId,
 				contentId: draftDocument.contentId,
 				eventVersion: '2.0.0',
+				isPreview: isPreview,
 				caliperPayload: createAssessmentAttemptScoredEvent({
 					actor: { type: 'serverApp' },
 					draftId: draftDocument.draftId,
@@ -323,7 +322,6 @@ let insertAttemptScoredEvents = (
 					assessmentId,
 					attemptId: attemptId,
 					attemptScore,
-					isPreviewMode: isPreviewing,
 					extensions: {
 						attemptCount: attemptNumber,
 						attemptScore,
@@ -336,56 +334,57 @@ let insertAttemptScoredEvents = (
 		})
 }
 
-let reloadAttemptStateIfReviewing = (
+const reloadAttemptStateIfReviewing = (
 	attemptId,
 	draftId,
 	attempt,
 	draftDocument,
 	user,
-	isPreviewing,
+	isPreview,
 	attemptHistory
 ) => {
-	let assessmentNode = attempt.assessmentModel
+	const assessmentNode = attempt.assessmentModel
 
 	// Do not reload the state if reviews are never allowed
-	if (assessmentNode.node.content.review == 'never') {
+	if (assessmentNode.node.content.review === 'never') {
 		return null
 	}
 
-	let isLastAttempt = attempt.number == assessmentNode.node.content.attempts
+	const isLastAttempt = attempt.number === assessmentNode.node.content.attempts
 
 	// Do not reload the state if reviews are only allowed after the last
 	// attempt and this is not the last attempt
-	if (assessmentNode.node.content.review == 'no-attempts-remaining' && !isLastAttempt) {
+	if (assessmentNode.node.content.review === 'no-attempts-remaining' && !isLastAttempt) {
 		return null
 	}
 
-	let assessmentProperties = loadAssessmentProperties(
+	const assessmentProperties = loadAssessmentProperties(
 		draftDocument,
 		attempt,
 		user,
-		isPreviewing,
+		isPreview,
 		attemptHistory
 	)
 
-	let state = attemptStart.getState(assessmentProperties)
+	const state = attemptStart.getState(assessmentProperties)
 	// Not ideal, but attempt-start needs this as a recursive structure to send
 	// client promises
 	state.questions = state.questions.map(q => q.toObject())
 
 	// If reviews are always allowed, reload the state for this attempt
 	// Each attempt's state will be reloaded as it finishes
-	if (assessmentNode.node.content.review == 'always') {
+	if (assessmentNode.node.content.review === 'always') {
 		return Assessment.updateAttemptState(attemptId, state)
 	}
 
 	// If reviews are allowed after last attempt and this is the last attempt,
 	// reload the states for all attempts
-	if (assessmentNode.node.content.review == 'no-attempts-remaining' && isLastAttempt) {
+	if (assessmentNode.node.content.review === 'no-attempts-remaining' && isLastAttempt) {
 		// Reload state for all previous attempts
 		return Assessment.getAttempts(
 			assessmentProperties.user.id,
 			draftId,
+			isPreview,
 			assessmentProperties.id
 		).then(result => {
 			result.attempts.map(attempt => {
@@ -394,9 +393,9 @@ let reloadAttemptStateIfReviewing = (
 					assessmentProperties.draftTree
 				)
 
-				let newQuestions = []
+				const newQuestions = []
 
-				attempt.state.questions.map(question => {
+				attempt.state.questions.forEach(question => {
 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
 				})
 
@@ -411,14 +410,14 @@ let reloadAttemptStateIfReviewing = (
 	return null
 }
 
-let recreateChosenQuestionTree = (node, assessmentNode) => {
+const recreateChosenQuestionTree = (node, assessmentNode) => {
 	if (node.type === QUESTION_NODE_TYPE) {
 		return getNodeQuestion(node.id, assessmentNode)
 	}
 
-	let newChildren = []
+	const newChildren = []
 
-	for (let child of node.children) {
+	for (const child of node.children) {
 		newChildren.push(recreateChosenQuestionTree(child, assessmentNode))
 	}
 
@@ -426,17 +425,17 @@ let recreateChosenQuestionTree = (node, assessmentNode) => {
 	return node
 }
 // Pulls down a single question from the draft
-let getNodeQuestion = (nodeId, assessmentNode) => {
+const getNodeQuestion = (nodeId, assessmentNode) => {
 	return assessmentNode.getChildNodeById(nodeId).toObject()
 }
 
 // Pulls assessment properties out of the promise flow
-let loadAssessmentProperties = (draftTree, attempt, user, isPreviewing, attemptHistory) => {
+const loadAssessmentProperties = (draftTree, attempt, user, isPreview, attemptHistory) => {
 	const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
 
 	return {
 		user: user,
-		isPreviewing: isPreviewing,
+		isPreview: isPreview,
 		draftTree: draftTree,
 		id: attempt.assessmentId,
 		oboNode: assessmentNode,

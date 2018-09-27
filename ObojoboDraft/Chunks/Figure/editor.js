@@ -1,3 +1,5 @@
+/* eslint no-alert: 0 */
+
 import React from 'react'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
@@ -6,25 +8,23 @@ const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = this.props.node.data.get('content')
 	}
 
 	handleAltChange() {
-		const newAltText = window.prompt('Enter the new alt text:', this.state.alt)
-
 		const editor = this.props.editor
 		const change = editor.value.change()
+		const content = this.props.node.data.get('content')
 
-		this.setState({ alt: newAltText })
+		const newAltText = window.prompt('Enter the new alt text:', content.alt) || content.alt
 
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					alt: newAltText,
-					url: this.state.url,
-					size: this.state.size,
-					height: this.state.height,
-					width: this.state.width
+					url: content.url,
+					size: content.size,
+					height: content.height,
+					width: content.width
 				}
 			}
 		})
@@ -32,21 +32,20 @@ class Node extends React.Component {
 	}
 
 	handleURLChange() {
-		const newURL = window.prompt('Enter the new URL:', this.state.url)
-
 		const editor = this.props.editor
 		const change = editor.value.change()
+		const content = this.props.node.data.get('content')
 
-		this.setState({ url: newURL })
+		const newURL = window.prompt('Enter the new URL:', content.url) || content.url
 
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					url: newURL,
-					alt: this.state.alt,
-					size: this.state.size,
-					height: this.state.height,
-					width: this.state.width
+					alt: content.alt,
+					size: content.size,
+					height: content.height,
+					width: content.width
 				}
 			}
 		})
@@ -54,25 +53,24 @@ class Node extends React.Component {
 	}
 
 	handleSizeChange(event) {
+		const content = this.props.node.data.get('content')
 		const newSize = event.target.value
 		// height and width will clear out the old values if custom is not selected
 		let newHeight = null
 		let newWidth = null
 		if (newSize === 'custom') {
-			newHeight = window.prompt('Enter the new height:', this.state.height)
-			newWidth = window.prompt('Enter the new width:', this.state.width)
+			newHeight = window.prompt('Enter the new height:', content.height || 100)
+			newWidth = window.prompt('Enter the new width:', content.width || 100)
 		}
 
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		this.setState({ size: newSize, height: newHeight, width: newWidth })
-
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
-					url: this.state.url,
-					alt: this.state.alt,
+					url: content.url,
+					alt: content.alt,
 					size: newSize,
 					height: newHeight,
 					width: newWidth
@@ -93,19 +91,19 @@ class Node extends React.Component {
 
 	renderEditToolbar() {
 		return (
-			<div className={'image-toolbar'}>
-				<button onClick={() => this.handleAltChange()}>{'Edit Alt Text'}</button>
-				<button onClick={() => this.handleURLChange()}>{'Edit URL'}</button>
+			<div className="image-toolbar">
+				<button onClick={() => this.handleAltChange()}>Edit Alt Text</button>
+				<button onClick={() => this.handleURLChange()}>Edit URL</button>
 				<select
 					name={'Size'}
-					value={this.state.size}
+					value={this.props.node.data.get('content').size}
 					onChange={event => this.handleSizeChange(event)}
 					onClick={event => event.stopPropagation()}
 				>
-					<option value={'small'}>{'small'}</option>
-					<option value={'medium'}>{'medium'}</option>
-					<option value={'large'}>{'large'}</option>
-					<option value={'custom'}>{'custom'}</option>
+					<option value={'small'}>small</option>
+					<option value={'medium'}>medium</option>
+					<option value={'large'}>large</option>
+					<option value={'custom'}>custom</option>
 				</select>
 				<div>
 					<button className={'delete-node'} onClick={() => this.deleteNode()}>
@@ -117,46 +115,48 @@ class Node extends React.Component {
 	}
 
 	render() {
+		const content = this.props.node.data.get('content')
+
 		let isCustom = false
 		const imgStyles = {}
 
-		if (this.state.size === 'custom') {
-			if (this.state.width) {
-				imgStyles.width = this.state.width + 'px'
+		if (content.size === 'custom') {
+			if (content.width) {
+				imgStyles.width = content.width + 'px'
 			}
 
-			if (this.state.height) {
-				imgStyles.height = this.state.height + 'px'
+			if (content.height) {
+				imgStyles.height = content.height + 'px'
 			}
 			isCustom = true
 		}
 
-		const hasImage = this.state.url && this.state.url.length !== 0
-		const hasAltText = this.state.alt && this.state.alt.length !== 0
+		const hasImage = content.url && content.url.length !== 0
+		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
 			<div className={'component'} {...this.props.attributes}>
-				<div className={`obojobo-draft--chunks--figure viewer ` + this.state.size}>
+				<div className={`obojobo-draft--chunks--figure viewer ` + content.size}>
 					{this.renderEditToolbar()}
 					<div className={'container'}>
-						{hasAltText ? null : <div>{'Accessibility Warning: No Alt Text!'}</div>}
+						{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
 
-						{hasImage ? null : <div>{'No Image Selected, Please Add an Image URL'}</div>}
+						{hasImage ? null : <div>No Image Selected, Please Add an Image URL</div>}
 
 						{isCustom ? (
 							<img
-								title={this.state.alt}
-								src={this.state.url}
+								title={content.alt}
+								src={content.url}
 								unselectable="on"
-								alt={this.state.alt}
+								alt={content.alt}
 								style={imgStyles}
 							/>
 						) : (
 							<img
-								title={this.state.alt}
-								src={this.state.url}
+								title={content.alt}
+								src={content.url}
 								unselectable="on"
-								alt={this.state.alt}
+								alt={content.alt}
 							/>
 						)}
 						<figcaption>{this.props.children}</figcaption>

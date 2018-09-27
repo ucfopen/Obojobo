@@ -1,12 +1,14 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 
-let { OboComponent } = Common.components
-let { TextGroupEl } = Common.chunk.textChunk
-let { TextChunk } = Common.chunk
+const { OboComponent } = Common.components
+const { TextGroupEl } = Common.chunk.textChunk
+const { TextChunk } = Common.chunk
 
-export default props => (
+const Code = props => (
 	<OboComponent model={props.model} moduleData={props.moduleData}>
 		<TextChunk className="obojobo-draft--chunks--code pad">
 			<pre>
@@ -24,3 +26,5 @@ export default props => (
 		</TextChunk>
 	</OboComponent>
 )
+
+export default Code

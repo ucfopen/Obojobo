@@ -99,6 +99,7 @@ describe('MCAssessment editor', () => {
 				}}
 			/>
 		)
+
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

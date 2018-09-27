@@ -12,8 +12,6 @@ class Node extends React.Component {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		this.setState({ src: event.target.value })
-
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
@@ -28,7 +26,7 @@ class Node extends React.Component {
 		return (
 			<div>
 				<input
-					value={this.state.src}
+					value={this.props.node.data.get('content').src}
 					onChange={event => this.handleSourceChange(event)}
 					onClick={event => event.stopPropagation()}
 				/>
@@ -55,25 +53,24 @@ class Node extends React.Component {
 			zIndex: 1
 		}
 
-		const iframeStyle = {
-			display: 'block'
-		}
-
 		return (
 			<div className={'obojobo-draft--chunks--iframe viewer'} style={wrapperStyle}>
 				<div style={maskStyle} />
-				<iframe is src={this.state.src} frameBorder="0" allowFullScreen="true" />
+				<iframe
+					is
+					src={this.props.node.data.get('content').src}
+					frameBorder="0"
+					allowFullScreen="true"
+				/>
 			</div>
 		)
 	}
 
 	render() {
-		const { isSelected } = this.props
-
 		return (
 			<div className={'component'} {...this.props.attributes}>
 				{this.renderFrame()}
-				{isSelected ? this.renderInput() : null}
+				{this.props.isSelected ? this.renderInput() : null}
 			</div>
 		)
 	}

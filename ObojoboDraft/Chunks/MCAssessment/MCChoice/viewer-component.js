@@ -1,12 +1,13 @@
 import './viewer-component.scss'
 
+import React from 'react'
+
 import Common from 'Common'
 import Viewer from 'Viewer'
 import isOrNot from '../../../../src/scripts/common/isornot'
 
-let { OboComponent } = Common.components
-let { OboModel } = Common.models
-let { QuestionUtil } = Viewer.util
+const { OboComponent } = Common.components
+const { QuestionUtil } = Viewer.util
 
 const QUESTION_TYPE = 'ObojoboDraft.Chunks.Question'
 const CHOSEN_CORRECTLY = 'chosen-correctly'
@@ -27,7 +28,7 @@ const getInputType = responseType => {
 }
 
 const questionIsSelected = (questionState, model, navStateContext) => {
-	let response = QuestionUtil.getResponse(
+	const response = QuestionUtil.getResponse(
 		questionState,
 		model.getParentOfType(QUESTION_TYPE),
 		navStateContext
@@ -71,16 +72,20 @@ const renderAnsFlag = type => {
 			break
 	}
 
-	return <div className={`answer-flag is-type-${type}`}>{flagEl}</div>
+	return (
+		<div className={`obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag is-type-${type}`}>
+			{flagEl}
+		</div>
+	)
 }
 
 const getAnsType = (model, isCorrect, isSelected) => {
 	// The user selected a correct answer (not necessarily this one)
 	// On multi-select questions, this is only true if a user selected all and only correct answers
 	// Renamed for clarity w/ isACorrectChoice
-	let userIsCorrect = isCorrect
+	const userIsCorrect = isCorrect
 
-	let isACorrectChoice = model.get('content').score === 100
+	const isACorrectChoice = model.get('content').score === 100
 
 	if (isSelected) {
 		return isACorrectChoice ? CHOSEN_CORRECTLY : SHOULD_NOT_HAVE_CHOSEN
@@ -110,20 +115,20 @@ const MCChoice = props => {
 		return <div />
 	}
 
-	let isSelected = questionIsSelected(
+	const isSelected = questionIsSelected(
 		props.moduleData.questionState,
 		props.model,
 		props.moduleData.navState.context
 	)
 
-	let ansType = getAnsType(props.model, isCorrect, isSelected)
+	const ansType = getAnsType(props.model, isCorrect, isSelected)
 
 	let flag
 	if (props.mode === 'review') {
 		flag = renderAnsFlag(ansType)
 	}
 
-	let className =
+	const className =
 		'obojobo-draft--chunks--mc-assessment--mc-choice' +
 		isOrNot(isSelected, 'selected') +
 		isOrNot(isCorrect, 'correct') +
@@ -144,14 +149,13 @@ const MCChoice = props => {
 				name={props.model.parent.get('id')}
 			/>
 			<div className="children">
-				{props.model.children.map((child, index) => {
-					let type = child.get('type')
-					let isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
-					let isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
-					let id = child.get('id')
+				{props.model.children.map(child => {
+					const type = child.get('type')
+					const isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
+					const id = child.get('id')
 
 					if (isAnswerItem) {
-						let Component = child.getComponentClass()
+						const Component = child.getComponentClass()
 						return (
 							<div key={id}>
 								{flag}
@@ -159,6 +163,8 @@ const MCChoice = props => {
 							</div>
 						)
 					}
+
+					return null
 				})}
 			</div>
 		</OboComponent>

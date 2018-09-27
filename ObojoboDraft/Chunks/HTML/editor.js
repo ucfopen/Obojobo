@@ -1,14 +1,11 @@
 import React from 'react'
 
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const Node = props => {
 	return (
 		<div className={'component'}>
-			<div className={'obojobo-draft--chunks--html viewer pad'}>
-				{props.children}
-			</div>
+			<div className={'obojobo-draft--chunks--html viewer pad'}>{props.children}</div>
 		</div>
 	)
 }
@@ -16,7 +13,7 @@ const Node = props => {
 const insertNode = change => {
 	change
 		.insertBlock({
-			type: HTML_NODE,
+			type: HTML_NODE
 		})
 		.collapseToStartOfNextText()
 		.focus()
@@ -71,12 +68,12 @@ const plugins = {
 
 const Heading = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		insertNode,
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }

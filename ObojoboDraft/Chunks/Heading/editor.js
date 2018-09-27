@@ -7,8 +7,9 @@ const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = this.props.node.data.get('content')
-		this.state.isOpen = false
+		this.state = {
+			isOpen: false
+		}
 
 		this.handleClick = this.handleClick.bind(this)
 	}
@@ -33,7 +34,7 @@ class Node extends React.Component {
 		const change = editor.value.change()
 
 		this.setState(state => {
-			return { isOpen: !state.isOpen, level: num }
+			return { isOpen: !state.isOpen }
 		})
 
 		change.setNodeByKey(this.props.node.key, {
@@ -56,7 +57,8 @@ class Node extends React.Component {
 	}
 
 	render() {
-		const HTag = `h${this.state.level || 1}`
+		const content = this.props.node.data.get('content')
+		const HTag = `h${content.level || 1}`
 		const text = this.props.node.text
 		let dropText = text.length > 15 ? text.slice(0, 15) : text
 		dropText = dropText.length === 0 ? 'Your Heading' : dropText
@@ -69,7 +71,7 @@ class Node extends React.Component {
 			>
 				<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
 					<HTag>
-						<span className={'text align-' + this.props.node.data.get('content').align}>
+						<span className={'text align-' + content.align}>
 							{this.props.children}
 						</span>
 					</HTag>

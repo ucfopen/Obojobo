@@ -1,3 +1,4 @@
+const React = require('react')
 const path = require('path')
 const Enzyme = require('enzyme')
 const EnzymeAdapter = require('enzyme-adapter-react-15')
@@ -21,8 +22,8 @@ React.addons = {
 }
 
 jest.mock('fs')
-let fs = require('fs')
-let dbJson = {
+const fs = require('fs')
+const dbJson = {
 	test: {
 		host: 'hostVal',
 		port: 'portVal',
@@ -35,8 +36,19 @@ let dbJson = {
 	}
 }
 
-// get the actual empty.xml
-let realFs = require.requireActual('fs')
+global.mockStaticDate = () => {
+	const RealDate = Date
+	global.Date = class extends RealDate {
+		constructor() {
+			super()
+			return new RealDate('2016-09-22T16:57:14.500Z')
+		}
+
+		static now() {
+			return 1530552702222
+		}
+	}
+}
 
 fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
 fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')

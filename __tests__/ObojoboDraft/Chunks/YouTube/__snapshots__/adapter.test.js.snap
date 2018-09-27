@@ -2,17 +2,13 @@
 
 exports[`Youtube adapter construct builds with attributes 1`] = `
 Object {
-  "modelState": Object {
-    "videoId": "example_video_id",
-  },
+  "videoId": "example_video_id",
 }
 `;
 
 exports[`Youtube adapter construct builds without attributes 1`] = `
 Object {
-  "modelState": Object {
-    "videoId": null,
-  },
+  "videoId": null,
 }
 `;
 

@@ -11,12 +11,9 @@ describe('Break editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					}
 				}}
 			/>
@@ -33,16 +30,14 @@ describe('Break editor', () => {
 				isSelected={true}
 				node={{
 					data: {
-						get: () => {
-							return { width: 'normal' }
-						}
+						get: () => ({ width: 'normal' })
 					}
 				}}
 			/>
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click') // toggle to large
+		component.find('button').simulate('click') // toggle to large
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -54,16 +49,14 @@ describe('Break editor', () => {
 				isSelected={true}
 				node={{
 					data: {
-						get: () => {
-							return { width: 'large' }
-						}
+						get: () => ({ width: 'large' })
 					}
 				}}
 			/>
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click') // toggle to large
+		component.find('button').simulate('click') // toggle to normal
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -86,9 +79,7 @@ describe('Break editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => {
-					return {}
-				}
+				get: () => ({})
 			}
 		}
 		const oboNode = Break.helpers.slateToObo(slateNode)
@@ -112,9 +103,7 @@ describe('Break editor', () => {
 			node: {
 				type: BREAK_NODE,
 				data: {
-					get: () => {
-						return {}
-					}
+					get: () => ({})
 				}
 			}
 		}

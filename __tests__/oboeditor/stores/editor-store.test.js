@@ -1,5 +1,6 @@
+/* eslint no-undefined: 0 */
+
 import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
-import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import Common from '../../../src/scripts/common/index'
 jest.mock('../../../src/scripts/oboeditor/util/editor-util')
 jest.mock('../../../src/scripts/viewer/util/api-util')
@@ -161,9 +162,9 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'generateNav')
 		EditorStore.generateNav.mockImplementationOnce(model => model)
 
-		let before = EditorStore.getState()
+		const before = EditorStore.getState()
 		EditorStore.buildMenu('mockModel')
-		let after = EditorStore.getState()
+		const after = EditorStore.getState()
 
 		expect(after).toMatchSnapshot()
 
@@ -205,8 +206,8 @@ describe('EditorStore', () => {
 				}
 			}
 		})
-		let oldNavItem = { processTrigger: jest.fn() }
-		let newNavItem = {
+		const oldNavItem = { processTrigger: jest.fn() }
+		const newNavItem = {
 			id: 'newItem',
 			showChildrenOnNavigation: true,
 			processTrigger: jest.fn()
@@ -215,7 +216,7 @@ describe('EditorStore', () => {
 		EditorUtil.getNavTargetModel.mockReturnValueOnce(newNavItem)
 
 		expect(EditorStore.gotoItem(newNavItem)).toBe(true)
-		let after = EditorStore.getState()
+		const after = EditorStore.getState()
 		expect(after).toMatchSnapshot()
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 	})
@@ -233,8 +234,7 @@ describe('EditorStore', () => {
 				}
 			}
 		})
-		let oldNavItem = { processTrigger: jest.fn() }
-		let newNavItem = {
+		const newNavItem = {
 			id: 'newItem',
 			showChildrenOnNavigation: true,
 			processTrigger: jest.fn()
@@ -243,7 +243,7 @@ describe('EditorStore', () => {
 		EditorUtil.getNavTargetModel.mockReturnValueOnce(newNavItem)
 
 		expect(EditorStore.gotoItem(newNavItem)).toBe(true)
-		let after = EditorStore.getState()
+		const after = EditorStore.getState()
 		expect(after).toMatchSnapshot()
 	})
 
@@ -254,7 +254,7 @@ describe('EditorStore', () => {
 	test('generateNav with no navItem returns default object', () => {
 		EditorStore.setState({ itemsById: {} })
 
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce('testId')
@@ -282,13 +282,13 @@ describe('EditorStore', () => {
 	})
 
 	test('generateNav builds a navItem', () => {
-		let item = {
+		const item = {
 			getNavItem: jest.fn().mockReturnValueOnce({
 				id: 'mockItem',
 				path: 'whatever'
 			})
 		}
-		let childItem = {
+		const childItem = {
 			get: () => 9,
 			children: {
 				models: []
@@ -298,7 +298,7 @@ describe('EditorStore', () => {
 				path: 'whatever2'
 			})
 		}
-		let model = {
+		const model = {
 			get: () => 11,
 			getRoot: () => ({ get: () => 66 }),
 			children: {
@@ -329,7 +329,7 @@ describe('EditorStore', () => {
 				add: child => childrenlist.push(child)
 			},
 			childrenlist // This is a mock construct for the sake of the test, ordinarily
-						 // the page would be added into children
+			// the page would be added into children
 		}
 		Common.models.OboModel.getRoot.mockReturnValueOnce({
 			children: [
@@ -343,7 +343,7 @@ describe('EditorStore', () => {
 
 		EditorStore.addPage({ id: 'mockPage' })
 
-		expect(mockContent.childrenlist).toEqual([{"id": "mockPage"}])
+		expect(mockContent.childrenlist).toEqual([{ id: 'mockPage' }])
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
@@ -357,14 +357,14 @@ describe('EditorStore', () => {
 				add: child => childrenlist.push(child)
 			},
 			childrenlist // This is a mock construct for the sake of the test, ordinarily
-						 // the page would be added into children
+			// the page would be added into children
 		}
 		Common.models.OboModel.getRoot.mockReturnValueOnce(mockRoot)
 		Common.models.OboModel.create.mockReturnValueOnce({ id: 'mockAssessment' })
 
 		EditorStore.addAssessment({ id: 'mockAssessment' })
 
-		expect(mockRoot.childrenlist).toEqual([{"id": "mockAssessment"}])
+		expect(mockRoot.childrenlist).toEqual([{ id: 'mockAssessment' }])
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
@@ -375,7 +375,7 @@ describe('EditorStore', () => {
 
 		EditorStore.setState({
 			currentModel: {
-				getParentOfType: type => 'mockParent'
+				getParentOfType: () => 'mockParent'
 			}
 		})
 

@@ -12,7 +12,6 @@ describe('MathEquation editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -33,7 +32,6 @@ describe('MathEquation editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -54,7 +52,6 @@ describe('MathEquation editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -78,7 +75,6 @@ describe('MathEquation editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -96,14 +92,14 @@ describe('MathEquation editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('input')
 			.at(0)
 			.simulate('click', {
 				stopPropagation: () => true
 			})
 
-		const click2 = component
+		component
 			.find('input')
 			.at(0)
 			.simulate('change', {
@@ -122,7 +118,6 @@ describe('MathEquation editor', () => {
 
 		const component = mount(
 			<Node
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -140,14 +135,14 @@ describe('MathEquation editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component
+		component
 			.find('input')
 			.at(1)
 			.simulate('click', {
 				stopPropagation: () => true
 			})
 
-		const click2 = component
+		component
 			.find('input')
 			.at(1)
 			.simulate('change', {

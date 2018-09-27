@@ -11,7 +11,6 @@ const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
-const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
@@ -43,17 +42,15 @@ const nodes = {
 	'ObojoboDraft.Chunks.HTML': HTML
 }
 
-class Node extends React.Component {
-	render() {
-		return (
-			<div
-				className={'component obojobo-draft--chunks--mc-assessment--mc-answer'}
-				{...this.props.attributes}
-			>
-				{this.props.children}
-			</div>
-		)
-	}
+const Node = props => {
+	return (
+		<div
+			className={'component obojobo-draft--chunks--mc-assessment--mc-answer'}
+			{...props.attributes}
+		>
+			{props.children}
+		</div>
+	)
 }
 
 const slateToObo = node => {

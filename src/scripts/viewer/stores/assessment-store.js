@@ -1,3 +1,5 @@
+import React from 'react'
+
 import Common from 'Common'
 
 import AssessmentUtil from '../../viewer/util/assessment-util'
@@ -33,7 +35,6 @@ const getNewAssessmentObject = assessmentId => ({
 
 class AssessmentStore extends Store {
 	constructor() {
-		let assessment, id, model
 		super('assessmentstore')
 
 		Dispatcher.on('assessment:startAttempt', payload => {
@@ -71,7 +72,6 @@ class AssessmentStore extends Store {
 
 	updateAttempts(attemptsByAssessment) {
 		let unfinishedAttempt = null
-		const nonExistantQuestions = []
 		const assessments = this.state.assessments
 		let assessment
 
@@ -132,7 +132,8 @@ class AssessmentStore extends Store {
 					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
 				>
 					<p>
-						It looks like you were in the middle of an attempt. We'll resume you where you left off.
+						It looks like you were in the middle of an attempt. We&amp;ll resume you where you left
+						off.
 					</p>
 				</SimpleDialog>,
 				true
@@ -150,7 +151,11 @@ class AssessmentStore extends Store {
 	tryStartAttempt(id) {
 		const model = OboModel.models[id]
 
-		return APIUtil.startAttempt(model.getRoot(), model, {})
+		return APIUtil.startAttempt({
+			draftId: model.getRoot().get('draftId'),
+			assessmentId: model.get('id'),
+			visitId: NavStore.getState().visitId
+		})
 			.then(res => {
 				if (res.status === 'error') {
 					switch (res.value.message.toLowerCase()) {
@@ -171,7 +176,7 @@ class AssessmentStore extends Store {
 				this.triggerChange()
 			})
 			.catch(e => {
-				console.error(e)
+				console.error(e) /* eslint-disable-line no-console */
 			})
 	}
 
@@ -202,7 +207,11 @@ class AssessmentStore extends Store {
 	tryEndAttempt(id, context) {
 		const model = OboModel.models[id]
 		const assessment = this.state.assessments[id]
-		return APIUtil.endAttempt(model.getRoot(), assessment.current)
+		return APIUtil.endAttempt({
+			attemptId: assessment.current.attemptId,
+			draftId: model.getRoot().get('draftId'),
+			visitId: NavStore.getState().visitId
+		})
 			.then(res => {
 				if (res.status === 'error') {
 					return ErrorUtil.errorResponse(res)
@@ -211,7 +220,7 @@ class AssessmentStore extends Store {
 				return this.triggerChange()
 			})
 			.catch(e => {
-				console.error(e)
+				console.error(e) /* eslint-disable-line no-console */
 			})
 	}
 
@@ -267,7 +276,11 @@ class AssessmentStore extends Store {
 		assessment.ltiNetworkState = LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE
 		this.triggerChange()
 
-		return APIUtil.resendLTIAssessmentScore(assessmentModel.getRoot(), assessmentModel)
+		return APIUtil.resendLTIAssessmentScore({
+			draftId: assessmentModel.getRoot().get('draftId'),
+			assessmentId: assessmentModel.get('id'),
+			visitId: NavStore.getState().visitId
+		})
 			.then(res => {
 				assessment.ltiNetworkState = LTINetworkStates.IDLE
 
@@ -282,7 +295,7 @@ class AssessmentStore extends Store {
 				return this.triggerChange()
 			})
 			.catch(e => {
-				console.error(e)
+				console.error(e) /* eslint-disable-line no-console */
 			})
 	}
 
@@ -299,7 +312,7 @@ class AssessmentStore extends Store {
 		this.triggerChange()
 	}
 
-	trySetResponse(questionId, response, targetId) {
+	trySetResponse(questionId) {
 		const model = OboModel.models[questionId]
 		const assessment = AssessmentUtil.getAssessmentForModel(this.state, model)
 

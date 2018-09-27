@@ -6,7 +6,7 @@ import ReviewIcon from '../../../../../ObojoboDraft/Sections/Assessment/componen
 describe('ReviewIcon', () => {
 	test('ReviewIcon component', () => {
 		const component = renderer.create(<ReviewIcon />)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

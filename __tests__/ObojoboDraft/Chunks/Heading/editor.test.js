@@ -15,9 +15,7 @@ describe('Heading editor', () => {
 				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					},
 					text: ''
 				}}
@@ -36,9 +34,7 @@ describe('Heading editor', () => {
 				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					},
 					text: 'Your Title Goes Here'
 				}}
@@ -58,9 +54,7 @@ describe('Heading editor', () => {
 				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					},
 					text: 'Your Title Here'
 				}}
@@ -83,9 +77,7 @@ describe('Heading editor', () => {
 				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					},
 					text: 'Your Title Here'
 				}}
@@ -121,9 +113,7 @@ describe('Heading editor', () => {
 				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					},
 					text: 'Your Title Here'
 				}}
@@ -247,9 +237,7 @@ describe('Heading editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: () => {
-					return {}
-				}
+				get: () => ({})
 			},
 			text: 'mockText',
 			nodes: [
@@ -280,11 +268,11 @@ describe('Heading editor', () => {
 			content: {
 				textGroup: [
 					{
-						text: { value: 'mockText' },
-						data: { align: 'right' }
+						text: { value: 'mockText' }
 					},
 					{
-						text: { value: 'mockText' }
+						text: { value: 'mockText' },
+						data: { align: 'left' }
 					}
 				]
 			}

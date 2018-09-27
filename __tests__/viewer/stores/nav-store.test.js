@@ -68,7 +68,7 @@ describe('NavStore', () => {
 			}
 		})
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 		jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(true)
 		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
@@ -86,7 +86,7 @@ describe('NavStore', () => {
 			}
 		})
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 		jest.spyOn(NavStore, 'gotoItem')
 		NavStore.gotoItem.mockReturnValueOnce(false)
 		eventCallbacks['nav:gotoPath']({ value: { path: 'fake' } })
@@ -124,7 +124,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// simulate nextItem lookup
 		NavUtil.getPrev.mockReturnValueOnce({ id: 'mockPrev' })
@@ -161,7 +161,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// simulate nextItem lookup
 		NavUtil.getNext.mockReturnValueOnce({ id: 'mockNext' })
@@ -201,7 +201,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
@@ -223,7 +223,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:goto']({ value: { id: 'mock' } })
@@ -239,7 +239,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:lock']()
@@ -257,7 +257,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:unlock']()
@@ -275,7 +275,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:close']()
@@ -293,7 +293,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:open']()
@@ -311,7 +311,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:close']()
@@ -329,7 +329,7 @@ describe('NavStore', () => {
 
 		// mock getRoot
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce('root')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
 
 		// go
 		eventCallbacks['nav:toggle']()
@@ -442,7 +442,7 @@ describe('NavStore', () => {
 	})
 
 	test('init builds with no first', () => {
-		NavUtil.getFirst.mockReturnValueOnce(undefined)
+		NavUtil.getFirst.mockReturnValueOnce(undefined) //eslint-disable-line
 		NavStore.init(null, null, 'startingpath', 11)
 		expect(NavUtil.goto).not.toHaveBeenCalledWith()
 	})
@@ -451,9 +451,9 @@ describe('NavStore', () => {
 		jest.spyOn(NavStore, 'generateNav')
 		NavStore.generateNav.mockImplementationOnce(model => model)
 
-		let before = NavStore.getState()
+		const before = NavStore.getState()
 		NavStore.buildMenu('mockModel')
-		let after = NavStore.getState()
+		const after = NavStore.getState()
 
 		expect(after).toMatchSnapshot()
 
@@ -495,8 +495,8 @@ describe('NavStore', () => {
 				}
 			}
 		})
-		let oldNavItem = { processTrigger: jest.fn() }
-		let newNavItem = {
+		const oldNavItem = { processTrigger: jest.fn() }
+		const newNavItem = {
 			id: 'newItem',
 			showChildrenOnNavigation: true,
 			processTrigger: jest.fn()
@@ -505,7 +505,7 @@ describe('NavStore', () => {
 		NavUtil.getNavTargetModel.mockReturnValueOnce(newNavItem)
 
 		expect(NavStore.gotoItem(newNavItem)).toBe(true)
-		let after = NavStore.getState()
+		const after = NavStore.getState()
 		expect(after).toMatchSnapshot()
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
@@ -527,8 +527,7 @@ describe('NavStore', () => {
 				}
 			}
 		})
-		let oldNavItem = { processTrigger: jest.fn() }
-		let newNavItem = {
+		const newNavItem = {
 			id: 'newItem',
 			showChildrenOnNavigation: true,
 			processTrigger: jest.fn()
@@ -537,7 +536,7 @@ describe('NavStore', () => {
 		NavUtil.getNavTargetModel.mockReturnValueOnce(newNavItem)
 
 		expect(NavStore.gotoItem(newNavItem)).toBe(true)
-		let after = NavStore.getState()
+		const after = NavStore.getState()
 		expect(after).toMatchSnapshot()
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
@@ -552,7 +551,7 @@ describe('NavStore', () => {
 	test('generateNav with no navItem returns default object', () => {
 		NavStore.setState({ itemsById: {} })
 
-		let model = {
+		const model = {
 			get: jest
 				.fn()
 				.mockReturnValueOnce('testId')
@@ -580,13 +579,13 @@ describe('NavStore', () => {
 	})
 
 	test('generateNav builds a navItem', () => {
-		let item = {
+		const item = {
 			getNavItem: jest.fn().mockReturnValueOnce({
 				id: 'mockItem',
 				path: 'whatever'
 			})
 		}
-		let childItem = {
+		const childItem = {
 			get: () => 9,
 			children: {
 				models: []
@@ -596,7 +595,7 @@ describe('NavStore', () => {
 				path: 'whatever2'
 			})
 		}
-		let model = {
+		const model = {
 			get: () => 11,
 			getRoot: () => ({ get: () => 66 }),
 			children: {

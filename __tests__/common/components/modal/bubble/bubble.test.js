@@ -6,7 +6,7 @@ import Bubble from '../../../../../src/scripts/common/components/modal/bubble/bu
 describe('Bubble', () => {
 	test('Bubble', () => {
 		const component = renderer.create(<Bubble>contents</Bubble>)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

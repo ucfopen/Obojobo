@@ -1,5 +1,6 @@
+import React from 'react'
+
 import Common from 'Common'
-import Viewer from 'Viewer'
 
 const { OboModel } = Common.models
 

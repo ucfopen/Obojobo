@@ -1,13 +1,15 @@
 import './viewer-component.scss'
 
-import Common from 'Common'
-let { OboComponent } = Common.components
-let { TextGroupEl } = Common.chunk.textChunk
-let { TextChunk } = Common.chunk
+import React from 'react'
 
-export default props => {
+import Common from 'Common'
+const { OboComponent } = Common.components
+const { TextGroupEl } = Common.chunk.textChunk
+const { TextChunk } = Common.chunk
+
+const Heading = props => {
 	// creates an h1, h2, h3, etc to use in jsx below
-	let HTag = `h${props.model.modelState.headingLevel}`
+	const HTag = `h${props.model.modelState.headingLevel}`
 
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>
@@ -23,3 +25,5 @@ export default props => {
 		</OboComponent>
 	)
 }
+
+export default Heading

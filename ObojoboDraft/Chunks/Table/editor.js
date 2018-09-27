@@ -21,7 +21,9 @@ class Row extends React.Component {
 		const change = editor.value.change()
 
 		const parent = editor.value.document.getDescendant(this.props.parent.key)
+		// get reference to content (which will be mutated)
 		const content = parent.data.get('content')
+		// mutate
 		content.textGroup.numRows--
 
 		if (parent.nodes.get(0).key === this.props.node.key) {
@@ -60,23 +62,24 @@ class Row extends React.Component {
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = props.node.data.get('content')
 	}
 
 	addRow() {
-		this.state.textGroup.numRows++
 		const editor = this.props.editor
 		const change = editor.value.change()
+		// get reference to content (which will be mutated)
+		const content = this.props.node.data.get('content')
+		// mutate
+		content.textGroup.numRows++
 
 		const newRow = Block.create({
 			type: TABLE_ROW_NODE,
 			data: { content: { header: false } }
 		})
-
-		change.insertNodeByKey(this.props.node.key, this.state.textGroup.numRows - 1, newRow)
+		change.insertNodeByKey(this.props.node.key, content.textGroup.numRows - 1, newRow)
 
 		// Insert the cells for the new row, minus the cell that was inserted by normalization
-		for (let i = 0; i < this.state.textGroup.numCols - 1; i++) {
+		for (let i = 0; i < content.textGroup.numCols - 1; i++) {
 			change.insertNodeByKey(
 				newRow.key,
 				i,
@@ -91,15 +94,18 @@ class Node extends React.Component {
 	}
 
 	addCol() {
-		this.state.textGroup.numCols++
 		const editor = this.props.editor
 		const change = editor.value.change()
+		// get reference to content (which will be mutated)
+		const content = this.props.node.data.get('content')
+		// mutate
+		content.textGroup.numCols++
 
 		this.props.node.nodes.forEach(row => {
 			const header = row.data.get('content').header
 			change.insertNodeByKey(
 				row.key,
-				this.state.textGroup.numCols - 1,
+				content.textGroup.numCols - 1,
 				Block.create({
 					type: TABLE_CELL_NODE,
 					data: { content: { header } }
@@ -111,10 +117,12 @@ class Node extends React.Component {
 	}
 
 	deleteCol(index) {
-		this.state.textGroup.numCols--
-
 		const editor = this.props.editor
 		const change = editor.value.change()
+		// get reference to content (which will be mutated)
+		const content = this.props.node.data.get('content')
+		// mutate
+		content.textGroup.numCols--
 
 		this.props.node.nodes.forEach(row => {
 			const cell = row.nodes.get(index)
@@ -126,7 +134,7 @@ class Node extends React.Component {
 	}
 
 	renderColDelete() {
-		const buttons = new Array(this.state.textGroup.numCols)
+		const buttons = new Array(this.props.node.data.get('content').textGroup.numCols)
 		buttons.fill('X')
 
 		return (
@@ -146,17 +154,19 @@ class Node extends React.Component {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		// toggle the header flag for the table
-		this.state.header = !this.state.header
-
 		const topRow = this.props.node.nodes.get(0)
+		const toggledHeader = !topRow.data.get('content').header
 
 		// change the header flag on the top row
-		change.setNodeByKey(topRow.key, { data: { content: { header: this.state.header } } })
+		change.setNodeByKey(topRow.key, {
+			data: { content: { header: toggledHeader } }
+		})
 
 		// change the header flag on each cell of the top row
 		topRow.nodes.forEach(cell => {
-			change.setNodeByKey(cell.key, { data: { content: { header: this.state.header } } })
+			change.setNodeByKey(cell.key, {
+				data: { content: { header: toggledHeader } }
+			})
 		})
 
 		editor.onChange(change)

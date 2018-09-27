@@ -30,7 +30,7 @@
 			}
 
 			&.divider {
-				height: 1px;
+				height: 1px; /* stylelint-disable-line unit-blacklist */
 				border: none;
 				background: $color-hr;
 			}

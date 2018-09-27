@@ -15,8 +15,6 @@
 
 	// Editor Styles
 	.button {
-		@include user-select(none);
-
 		input {
 			font-family: $font-default;
 			// button lightened to be close to $color-action with opacity 0.8

@@ -123,6 +123,11 @@ describe('Table editor', () => {
 					nodes: {
 						get: () => {
 							return {
+								data: {
+									get: () => ({
+										header: true
+									})
+								},
 								key: 'topRow',
 								nodes: [
 									{
@@ -715,7 +720,7 @@ describe('Table editor', () => {
 		expect(change.removeNodeByKey).toHaveBeenCalled()
 	})
 
-	test('plugins.renderNode renders a button when passed', () => {
+	test('plugins.renderNode renders a Table when passed', () => {
 		const props = {
 			node: {
 				type: TABLE_NODE,
@@ -730,7 +735,7 @@ describe('Table editor', () => {
 		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
-	test('plugins.renderNode renders a button when passed', () => {
+	test('plugins.renderNode renders a row when passed', () => {
 		const props = {
 			node: {
 				type: TABLE_ROW_NODE,
@@ -745,7 +750,7 @@ describe('Table editor', () => {
 		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
-	test('plugins.renderNode renders a button when passed', () => {
+	test('plugins.renderNode renders a cell when passed', () => {
 		const props = {
 			node: {
 				type: TABLE_CELL_NODE,

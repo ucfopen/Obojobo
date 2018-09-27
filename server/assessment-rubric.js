@@ -1,13 +1,10 @@
 /*
-
 * = Optional
-
 Expected input for type 'attempt':
 {
 	type: 'attempt',
 	*mods: Array<Mod> (Default = [])
 }
-
 Expected input for type 'pass-fail':
 {
 	type: 'pass-file',
@@ -17,35 +14,29 @@ Expected input for type 'pass-fail':
 	*unableToPassResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' | null) [Default = null],
 	*mods: Array<Mod> (Default = [])
 }
-
 Mod:
-
 {
 	attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
 	reward: Number
 }
-
 AttemptRange:
 	("[" | "(") + (>=1 | '$last_attempt') + "," + (>=1 | '$last_attempt') + ("]" | ")")
-
 (Mods are only applied if PASSING. Mods must contain at least one condition)
-
 */
 
-//@TODO: Maybe shouldn't be importing this here since this file will someday be on the server
-let {
+const {
 	getParsedRange,
 	tryGetParsedFloat,
 	isValueInRange
 } = require('../src/scripts/common/util/range-parsing')
 
-let MOD_AMOUNT_LIMIT = 20
+const MOD_AMOUNT_LIMIT = 20
 
-let getRubricType = rubric =>
+const getRubricType = rubric =>
 	!rubric || !rubric.type ? AssessmentRubric.TYPE_ATTEMPT : rubric.type
 
-let createWhitelistedRubric = rubric => {
-	let rubricType = getRubricType(rubric)
+const createWhitelistedRubric = rubric => {
+	const rubricType = getRubricType(rubric)
 
 	let whitelistedRubric
 
@@ -76,9 +67,7 @@ let createWhitelistedRubric = rubric => {
 	return whitelistedRubric
 }
 
-let createWhitelistedMod = mod => {
-	let parsedReward
-
+const createWhitelistedMod = mod => {
 	// Ensure at least one condition exists:
 	if (!mod.attemptCondition) {
 		return null
@@ -98,20 +87,20 @@ let createWhitelistedMod = mod => {
 	}
 }
 
-let modToObject = whitelistedMod => {
+const modToObject = whitelistedMod => {
 	return {
 		attemptCondition: getRangeString(whitelistedMod.attemptCondition),
 		reward: whitelistedMod.reward
 	}
 }
 
-let getRangeString = range => {
+const getRangeString = range => {
 	if (range.min === range.max && range.isMinInclusive && range.isMaxInclusive) {
 		return '' + range.min
 	}
 
-	let lhs = range.isMinInclusive ? '[' : '('
-	let rhs = range.isMaxInclusive ? ']' : ')'
+	const lhs = range.isMinInclusive ? '[' : '('
+	const rhs = range.isMaxInclusive ? ']' : ')'
 
 	return lhs + range.min + ',' + range.max + rhs
 }
@@ -120,7 +109,7 @@ class AssessmentRubric {
 	constructor(rubric) {
 		this.originalRubric = Object.assign(rubric || {})
 
-		let mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
+		const mods = rubric && rubric.mods ? rubric.mods.slice(0, MOD_AMOUNT_LIMIT) : []
 
 		this.rubric = createWhitelistedRubric(rubric)
 		this.type = getRubricType(rubric)
@@ -151,23 +140,23 @@ class AssessmentRubric {
 			throw new Error('totalNumberOfAttemptsAvailable must be 1 to Infinity!')
 		}
 
-		let highestAttemptScore = Math.max.apply(null, attemptScores)
-		let highestAttemptNumber =
+		const highestAttemptScore = Math.max.apply(null, attemptScores)
+		const highestAttemptNumber =
 			attemptScores.reduce((iMax, x, i, arr) => (x >= arr[iMax] ? i : iMax), 0) + 1
-		let latestAttemptScore = attemptScores[attemptScores.length - 1]
+		const latestAttemptScore = attemptScores[attemptScores.length - 1]
 		let attemptNumber = attemptScores.length
-		let isLastAttempt = attemptNumber === totalNumberOfAttemptsAvailable
+		const isLastAttempt = attemptNumber === totalNumberOfAttemptsAvailable
 
-		let rewardedMods = []
-		let rewardedModsIndicies = []
+		const rewardedMods = []
+		const rewardedModsIndicies = []
 		let rewardTotal = 0
 		let assessmentScore
 		let status
 
-		let attemptReplaceDict = {}
+		const attemptReplaceDict = {}
 		attemptReplaceDict[AssessmentRubric.VAR_LAST_ATTEMPT] = totalNumberOfAttemptsAvailable
 
-		let scoreReplaceDict = {}
+		const scoreReplaceDict = {}
 
 		if (latestAttemptScore >= this.rubric.passingAttemptScore) {
 			status = AssessmentRubric.STATUS_PASSED

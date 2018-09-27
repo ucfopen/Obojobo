@@ -43,7 +43,8 @@ const obojoboDraftConfig = {
 		react: 'React',
 		'react-dom': 'ReactDOM',
 		backbone: 'Backbone',
-		katex: 'katex'
+		katex: 'katex',
+		underscore: '_'
 	},
 	plugins: [new MiniCssExtractPlugin()]
 }
@@ -90,6 +91,7 @@ const viewerConfig = {
 		'react-dom': 'ReactDOM',
 		backbone: 'Backbone',
 		katex: 'katex',
+		underscore: '_',
 		Common: 'Common'
 	},
 	plugins: [new MiniCssExtractPlugin()]
@@ -97,7 +99,7 @@ const viewerConfig = {
 
 const editorConfig = {
 	entry: {
-		editor: ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'oboeditor', 'dist.js')]
+		editor: ['whatwg-fetch', path.join(__dirname, 'src', 'scripts', 'oboeditor', 'app.js')]
 	},
 	output: {
 		// must match config.webpack.output_dir
@@ -127,7 +129,13 @@ const editorConfig = {
 				use: [
 					MiniCssExtractPlugin.loader,
 					'css-loader',
-					'sass-loader?includePaths[]=' + bourbon.includePaths
+					{
+						loader: 'postcss-loader',
+						options: {
+							plugins: () => [autoprefixer]
+						}
+					},
+					'sass-loader'
 				]
 			}
 		]
@@ -137,7 +145,9 @@ const editorConfig = {
 		'react-dom': 'ReactDOM',
 		backbone: 'Backbone',
 		katex: 'katex',
-		Common: 'Common'
+		Common: 'Common',
+		slate: 'Slate',
+		immutable: 'Immutable'
 	},
 	plugins: [new MiniCssExtractPlugin()]
 }
@@ -242,6 +252,7 @@ const mainConfig = {
 		'react-dom': 'ReactDOM',
 		backbone: 'Backbone',
 		katex: 'katex',
+		underscore: '_',
 		Common: 'Common',
 		Viewer: 'Viewer'
 	},

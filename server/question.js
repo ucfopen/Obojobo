@@ -1,4 +1,4 @@
-let DraftNode = oboRequire('models/draft_node')
+const DraftNode = oboRequire('models/draft_node')
 // import DraftNode from '../../../models/draft_node'
 
 class Question extends DraftNode {
@@ -10,14 +10,14 @@ class Question extends DraftNode {
 		})
 	}
 
-	onSendToAssessment(req, res) {
+	onSendToAssessment() {
 		this.node.content.mode = 'assessment'
 	}
 
 	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {
 		if (!assessment.contains(this.node)) return
 
-		let questionResponses = responseHistory.filter(responseRecord => {
+		const questionResponses = responseHistory.filter(responseRecord => {
 			return responseRecord.question_id === this.node.id
 		})
 

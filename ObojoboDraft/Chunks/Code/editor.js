@@ -82,7 +82,7 @@ const oboToSlate = node => {
 		const codeLine = {
 			object: 'block',
 			type: CODE_LINE_NODE,
-			data: { content: { indent: indent } },
+			data: { content: { indent } },
 			nodes: [
 				{
 					object: 'text',

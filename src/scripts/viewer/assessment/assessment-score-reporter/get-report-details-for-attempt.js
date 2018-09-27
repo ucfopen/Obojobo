@@ -1,8 +1,7 @@
-import getDisplayFriendlyScore from './get-display-friendly-score'
 import getStatusResult from './get-status-result'
 
-let getReportDetailsForAttempt = (assessmentRubric, scoreInfo) => {
-	let statusResult = getStatusResult(assessmentRubric, scoreInfo.status)
+const getReportDetailsForAttempt = (assessmentRubric, scoreInfo) => {
+	const statusResult = getStatusResult(assessmentRubric, scoreInfo.status)
 
 	return {
 		rubricType: assessmentRubric.type,

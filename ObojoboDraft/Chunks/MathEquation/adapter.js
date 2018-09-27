@@ -1,28 +1,9 @@
-let Adapter = {
-	construct(model, attrs) {
-		if (__guard__(attrs != null ? attrs.content : undefined, x => x.latex) != null) {
-			model.modelState.latex = attrs.content.latex
-		} else {
-			model.modelState.latex = ''
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.align) != null) {
-			model.modelState.align = attrs.content.align
-		} else {
-			model.modelState.align = 'center'
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.label) != null) {
-			model.modelState.label = attrs.content.label
-		} else {
-			model.modelState.label = ''
-		}
-
-		if (__guard__(attrs != null ? attrs.content : undefined, x1 => x1.size) != null) {
-			model.modelState.size = attrs.content.size + 'em'
-		} else {
-			model.modelState.size = '1em'
-		}
+const Adapter = {
+	construct(model) {
+		model.setStateProp('latex', '')
+		model.setStateProp('align', 'center', p => p.toLowerCase(), ['left', 'center', 'right'])
+		model.setStateProp('label', '')
+		model.setStateProp('size', '1em', p => (parseInt(p, 10) || 1) + 'em')
 	},
 
 	clone(model, clone) {
@@ -45,6 +26,3 @@ let Adapter = {
 }
 
 export default Adapter
-function __guard__(value, transform) {
-	return typeof value !== 'undefined' && value !== null ? transform(value) : undefined
-}

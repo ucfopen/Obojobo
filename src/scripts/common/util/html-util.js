@@ -1,22 +1,23 @@
-var sanitize = function(node) {
+const sanitize = function(node) {
 	if (node.nodeType === Node.ELEMENT_NODE) {
 		if (node.tagName.toLowerCase() === 'script') {
 			node = node.parentElement.replaceChild(document.createElement('span'), node)
 		}
 
-		for (let attr of Array.from(node.attributes)) {
+		for (const attr of Array.from(node.attributes)) {
 			switch (attr.name) {
 				case 'href':
 				case 'cite':
 				case 'style':
 					true //do nothing
 					break
+
 				default:
 					node.setAttribute(attr.name, '')
 			}
 		}
 
-		for (let child of Array.from(node.childNodes)) {
+		for (const child of Array.from(node.childNodes)) {
 			sanitize(child)
 		}
 	}
@@ -24,7 +25,7 @@ var sanitize = function(node) {
 	return node
 }
 
-let isElementInline = function(el) {
+const isElementInline = function(el) {
 	switch (el.tagName.toLowerCase()) {
 		case 'b':
 		case 'big':

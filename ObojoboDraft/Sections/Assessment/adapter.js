@@ -4,26 +4,29 @@ import AssessmentRubric from '../../../server/assessment-rubric'
 
 let Adapter = {
 	construct(model, attrs) {
-		// Set state if XML has the attributes.
-		if (attrs && attrs.content) {
-			let attempts = attrs.content.attempts || 'unlimited'
-			model.modelState.attempts = attempts === 'unlimited' ? Infinity : parseInt(attempts, 10)
-			model.modelState.review = attrs.content.review || 'never'
-			model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions || null)
-			model.modelState.rubric = new AssessmentRubric(attrs.content.rubric || null)
+		if (attrs && attrs.content && attrs.content.scoreActions) {
+			model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions)
 		} else {
-			// Default state.
-			model.modelState.attempts = Infinity
-			model.modelState.review = 'never'
 			model.modelState.scoreActions = new ScoreActions()
+		}
+
+		if (attrs && attrs.content && attrs.content.rubric) {
+			model.modelState.rubric = new AssessmentRubric(attrs.content.rubric)
+		} else {
 			model.modelState.rubric = new AssessmentRubric()
 		}
-	},
 
-	// model.modelState.assessmentState =
-	// 	inTest: false
-	// 	scores: []
-	// 	currentScore: 0
+		model.setStateProp(
+			'attempts',
+			Infinity,
+			p => (('' + p).toLowerCase() === 'unlimited' ? Infinity : parseInt(p, 10))
+		)
+		model.setStateProp('review', 'never', p => p.toLowerCase(), [
+			'never',
+			'always',
+			'no-attempts-remaining'
+		])
+	},
 
 	clone(model, clone) {
 		clone.modelState.attempts = model.modelState.attempts

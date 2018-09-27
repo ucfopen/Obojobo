@@ -11,13 +11,13 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 
 describe('Store', () => {
 	test('creates new instance', () => {
-		let store = new Store('store-name')
+		const store = new Store('store-name')
 
 		expect(store.name).toBe('store-name')
 	})
 
 	test('init resets state', () => {
-		let store = new Store('store-name')
+		const store = new Store('store-name')
 
 		store.init()
 		store.state = { a: 1 }
@@ -27,7 +27,7 @@ describe('Store', () => {
 	})
 
 	test('triggerChange dispatched a change event', () => {
-		let store = new Store('store-name')
+		const store = new Store('store-name')
 
 		store.triggerChange()
 
@@ -35,8 +35,8 @@ describe('Store', () => {
 	})
 
 	test('onChange listens for change event', () => {
-		let store = new Store('store-name')
-		let cb = new Function()
+		const store = new Store('store-name')
+		const cb = () => {}
 
 		store.onChange(cb)
 
@@ -44,8 +44,8 @@ describe('Store', () => {
 	})
 
 	test('offChange stops listening for change event', () => {
-		let store = new Store('store-name')
-		let cb = new Function()
+		const store = new Store('store-name')
+		const cb = () => {}
 
 		store.offChange(cb)
 
@@ -53,7 +53,7 @@ describe('Store', () => {
 	})
 
 	test('setAndTrigger updates state and triggers a change', () => {
-		let store = new Store('store-name')
+		const store = new Store('store-name')
 		store.init()
 
 		store.setAndTrigger({ a: 1, b: 2 })
@@ -63,8 +63,8 @@ describe('Store', () => {
 	})
 
 	test('getState returns a copy of state', () => {
-		let store = new Store('store-name')
-		let state = { a: 1, b: 2 }
+		const store = new Store('store-name')
+		const state = { a: 1, b: 2 }
 
 		store.init()
 		store.state = state
@@ -74,8 +74,8 @@ describe('Store', () => {
 	})
 
 	test('setState sets a copy of the given state', () => {
-		let store = new Store('store-name')
-		let state = { a: 1, b: 2 }
+		const store = new Store('store-name')
+		const state = { a: 1, b: 2 }
 
 		store.init()
 		store.setState(state)
@@ -85,8 +85,8 @@ describe('Store', () => {
 	})
 
 	test('updateStateByContext sets states', () => {
-		let store = new Store('store-name')
-		let state = { a: {}, b: {} }
+		const store = new Store('store-name')
+		const state = { a: {}, b: {} }
 
 		store.init()
 		store.setState(state)
@@ -96,7 +96,7 @@ describe('Store', () => {
 	})
 
 	test('updateStateByContext sets states that dont exist', () => {
-		let store = new Store('store-name')
+		const store = new Store('store-name')
 
 		store.init()
 		store.updateStateByContext({ a: 1, b: 2 }, 'mockContext')

@@ -262,7 +262,9 @@ Array [
 
 exports[`NavStore nav:close event fires and updates state 2`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:close",
   "1.0.0",
 ]
@@ -283,7 +285,9 @@ Array [
 
 exports[`NavStore nav:close event fires and updates state 5`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:close",
   "1.0.0",
 ]
@@ -298,7 +302,9 @@ Object {
 
 exports[`NavStore nav:goto changes page and posts event 1`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:goto",
   "1.0.0",
   Object {
@@ -312,7 +318,9 @@ exports[`NavStore nav:goto does not go to a fake page 1`] = `undefined`;
 
 exports[`NavStore nav:gotoPath event calls gotoItem and postEvent 1`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:gotoPath",
   "1.0.0",
   Object {
@@ -342,7 +350,9 @@ Object {
 
 exports[`NavStore nav:lock event fires and updates state 1`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:lock",
   "1.0.0",
 ]
@@ -357,7 +367,9 @@ Object {
 
 exports[`NavStore nav:next changes page and posts event 1`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:next",
   "1.0.0",
   Object {
@@ -377,7 +389,9 @@ Array [
 
 exports[`NavStore nav:open event fires and updates state 2`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:open",
   "1.0.0",
 ]
@@ -398,7 +412,9 @@ Array [
 
 exports[`NavStore nav:prev changes page and posts event 1`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:prev",
   "1.0.0",
   Object {
@@ -448,7 +464,9 @@ Array [
 
 exports[`NavStore nav:toggle event fires and updates state 2`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:toggle",
   "1.0.0",
   Object {
@@ -472,7 +490,9 @@ Array [
 
 exports[`NavStore nav:unlock event fires and updates state 2`] = `
 Array [
-  "root",
+  Object {
+    "get": [Function],
+  },
   "nav:unlock",
   "1.0.0",
 ]

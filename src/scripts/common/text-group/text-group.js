@@ -3,7 +3,7 @@ import StyleableText from '../../common/text/styleable-text'
 import Util from './text-group-util'
 import TextGroupItem from './text-group-item'
 
-let getItemsArray = function(itemOrItems) {
+const getItemsArray = function(itemOrItems) {
 	if (itemOrItems instanceof TextGroupItem) {
 		return [itemOrItems]
 	} else {
@@ -11,11 +11,8 @@ let getItemsArray = function(itemOrItems) {
 	}
 }
 
-let addChildToGroup = function(itemOrItems, group, atIndex) {
-	if (atIndex == null) {
-		atIndex = null
-	}
-	let items = getItemsArray(itemOrItems)
+const addChildToGroup = function(itemOrItems, group, atIndex = null) {
+	const items = getItemsArray(itemOrItems)
 
 	if (atIndex === null) {
 		group.items = group.items.concat(items)
@@ -26,15 +23,15 @@ let addChildToGroup = function(itemOrItems, group, atIndex) {
 			.concat(group.items.slice(atIndex))
 	}
 
-	return Array.from(items).map(item => (item.parent = group))
+	return items.map(item => (item.parent = group))
 }
 
-let removeChildFromGroup = function(itemOrItems, group) {
-	let removedItems = []
-	let items = getItemsArray(itemOrItems)
+const removeChildFromGroup = function(itemOrItems, group) {
+	const removedItems = []
+	const items = getItemsArray(itemOrItems)
 
-	for (let item of Array.from(items)) {
-		let removed = group.items.splice(item.index, 1)[0]
+	for (const item of items) {
+		const removed = group.items.splice(item.index, 1)[0]
 		removed.parent = null
 		removedItems.push(removed)
 	}
@@ -42,41 +39,32 @@ let removeChildFromGroup = function(itemOrItems, group) {
 	return removedItems
 }
 
-let setChildToGroup = function(item, group, atIndex) {
+const setChildToGroup = function(item, group, atIndex) {
 	group.items[atIndex] = item
 	return (item.parent = group)
 }
 
-let removeAllChildrenFromGroup = function(group) {
-	for (let item of Array.from(group.items)) {
+const removeAllChildrenFromGroup = function(group) {
+	for (const item of group.items) {
 		item.parent = null
 	}
 
 	return (group.items = [])
 }
 
-let createChild = (text, data, dataTemplate) =>
+const createChild = (text, data, dataTemplate) =>
 	new TextGroupItem(text, Util.createData(data, dataTemplate))
 
 // dataTemplate defines the data object that will be included in each item in the
 // textGroup. Attributes in the data added to the group will be ignored if those
 // attributes aren't in the dataTemplate (see Util.createData)
 class TextGroup {
-	constructor(maxItems, dataTemplate, initialItems) {
-		if (maxItems == null) {
-			maxItems = Infinity
-		}
+	constructor(maxItems = Infinity, dataTemplate = {}, initialItems = []) {
 		this.maxItems = maxItems
-		if (dataTemplate == null) {
-			dataTemplate = {}
-		}
-		if (initialItems == null) {
-			initialItems = []
-		}
 		this.items = []
 		this.dataTemplate = Object.freeze(Object.assign({}, dataTemplate))
 
-		for (let item of Array.from(initialItems)) {
+		for (const item of initialItems) {
 			this.add(item.text, item.data)
 		}
 	}
@@ -89,10 +77,7 @@ class TextGroup {
 		return this.items.indexOf(item)
 	}
 
-	init(numItems) {
-		if (numItems == null) {
-			numItems = 1
-		}
+	init(numItems = 1) {
 		this.clear()
 
 		while (numItems-- && !this.isFull) {
@@ -108,7 +93,7 @@ class TextGroup {
 		}
 
 		return (() => {
-			let result = []
+			const result = []
 			while (!this.isFull) {
 				result.push(this.add())
 			}
@@ -126,20 +111,14 @@ class TextGroup {
 		return this
 	}
 
-	addGroup(group, cloneDataFn) {
-		if (cloneDataFn == null) {
-			cloneDataFn = Util.defaultCloneFn
-		}
+	addGroup(group, cloneDataFn = Util.defaultCloneFn) {
 		return this.addGroupAt(group, null, cloneDataFn)
 	}
 
-	addGroupAt(group, index, cloneDataFn) {
-		if (cloneDataFn == null) {
-			cloneDataFn = Util.defaultCloneFn
-		}
-		let itemsToAdd = []
-		for (let item of Array.from(group.items)) {
-			let clone = item.clone(cloneDataFn)
+	addGroupAt(group, index, cloneDataFn = Util.defaultCloneFn) {
+		const itemsToAdd = []
+		for (const item of group.items) {
+			const clone = item.clone(cloneDataFn)
 			itemsToAdd.push(createChild(clone.text, clone.data, this.dataTemplate))
 		}
 
@@ -161,9 +140,9 @@ class TextGroup {
 	}
 
 	clone(cloneDataFn) {
-		let clonedItems = []
+		const clonedItems = []
 
-		for (let item of this.items) {
+		for (const item of this.items) {
 			clonedItems.push(item.clone(cloneDataFn))
 		}
 
@@ -171,9 +150,9 @@ class TextGroup {
 	}
 
 	toDescriptor() {
-		let desc = []
+		const desc = []
 
-		for (let item of Array.from(this.items)) {
+		for (const item of this.items) {
 			desc.push({ text: item.text.getExportedObject(), data: Util.defaultCloneFn(item.data) })
 		}
 
@@ -181,10 +160,7 @@ class TextGroup {
 	}
 
 	// textGroup.toSlice(0, 1) will reduce your text group to have one item
-	toSlice(from, to) {
-		if (to == null) {
-			to = Infinity
-		}
+	toSlice(from, to = Infinity) {
 		removeChildFromGroup(this.items.slice(to), this)
 		removeChildFromGroup(this.items.slice(0, from), this)
 
@@ -194,10 +170,10 @@ class TextGroup {
 	// splits the group into two, one with all the items before the specified index
 	// and the other with the items at index and above
 	splitBefore(index) {
-		let sibling = new TextGroup(this.maxItems, this.dataTemplate)
+		const sibling = new TextGroup(this.maxItems, this.dataTemplate)
 
 		while (this.length !== index) {
-			let item = this.remove(index)
+			const item = this.remove(index)
 			sibling.add(item.text, item.data)
 		}
 
@@ -205,9 +181,9 @@ class TextGroup {
 	}
 
 	splitText(index, offset) {
-		let item = this.items[index]
+		const item = this.items[index]
 
-		let newItem = createChild(
+		const newItem = createChild(
 			item.text.split(offset),
 			Util.defaultCloneFn(item.data),
 			this.dataTemplate
@@ -218,12 +194,9 @@ class TextGroup {
 		return newItem
 	}
 
-	merge(index, mergeDataFn) {
-		if (mergeDataFn == null) {
-			mergeDataFn = Util.defaultMergeFn
-		}
-		let digestedItem = this.items.splice(index + 1, 1)[0]
-		let consumerItem = this.items[index]
+	merge(index, mergeDataFn = Util.defaultMergeFn) {
+		const digestedItem = this.items.splice(index + 1, 1)[0]
+		const consumerItem = this.items[index]
 
 		if (digestedItem && consumerItem) {
 			consumerItem.data = Util.createData(
@@ -237,17 +210,18 @@ class TextGroup {
 		return this
 	}
 
-	deleteSpan(startIndex, startTextIndex, endIndex, endTextIndex, merge, mergeFn) {
-		if (merge == null) {
-			merge = true
-		}
-		if (mergeFn == null) {
-			mergeFn = Util.defaultMergeFn
-		}
-		let startItem = this.items[startIndex]
-		let endItem = this.items[endIndex]
-		let startText = startItem.text
-		let endText = endItem.text
+	deleteSpan(
+		startIndex,
+		startTextIndex,
+		endIndex,
+		endTextIndex,
+		merge = true,
+		mergeFn = Util.defaultMergeFn
+	) {
+		const startItem = this.items[startIndex]
+		const endItem = this.items[endIndex]
+		const startText = startItem.text
+		const endText = endItem.text
 
 		if (startText === endText) {
 			startText.deleteText(startTextIndex, endTextIndex)
@@ -258,9 +232,9 @@ class TextGroup {
 		endText.deleteText(0, endTextIndex)
 
 		if (merge) {
-			let newItems = []
+			const newItems = []
 			for (let i = 0; i < this.items.length; i++) {
-				let item = this.items[i]
+				const item = this.items[i]
 				if (i < startIndex || i > endIndex) {
 					newItems.push(item)
 				} else if (i === startIndex) {
@@ -278,10 +252,10 @@ class TextGroup {
 
 	// deletes text but doesn't remove empty texts and doesn't merge any text
 	clearSpan(startIndex, startTextIndex, endIndex, endTextIndex) {
-		let startItem = this.items[startIndex]
-		let endItem = this.items[endIndex]
-		let startText = startItem.text
-		let endText = endItem.text
+		const startItem = this.items[startIndex]
+		const endItem = this.items[endIndex]
+		const startText = startItem.text
+		const endText = endItem.text
 
 		if (startText === endText) {
 			startText.deleteText(startTextIndex, endTextIndex)
@@ -292,7 +266,7 @@ class TextGroup {
 		endText.deleteText(0, endTextIndex)
 
 		for (let i = 0; i < this.items.length; i++) {
-			let item = this.items[i]
+			const item = this.items[i]
 			if (i > startIndex && i < endIndex) {
 				item.text.init()
 			}
@@ -302,29 +276,47 @@ class TextGroup {
 	}
 
 	styleText(startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-		return this.applyStyleFunction('styleText', arguments)
+		return this.applyStyleFunction(
+			'styleText',
+			startIndex,
+			startTextIndex,
+			endIndex,
+			endTextIndex,
+			styleType,
+			styleData
+		)
 	}
 
 	unstyleText(startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-		return this.applyStyleFunction('unstyleText', arguments)
+		return this.applyStyleFunction(
+			'unstyleText',
+			startIndex,
+			startTextIndex,
+			endIndex,
+			endTextIndex,
+			styleType,
+			styleData
+		)
 	}
 
 	//@TODO - This won't work correctly
 	toggleStyleText(startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
-		return this.applyStyleFunction('toggleStyleText', arguments)
+		return this.applyStyleFunction(
+			'toggleStyleText',
+			startIndex,
+			startTextIndex,
+			endIndex,
+			endTextIndex,
+			styleType,
+			styleData
+		)
 	}
 
-	applyStyleFunction(fn, args) {
-		let [startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData] = Array.from(
-			args
-		)
-
-		// console.log 'APPLY STYLE FUNCTION', startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData
-
-		let startItem = this.items[startIndex]
-		let endItem = this.items[endIndex]
-		let startText = startItem.text
-		let endText = endItem.text
+	applyStyleFunction(fn, startIndex, startTextIndex, endIndex, endTextIndex, styleType, styleData) {
+		const startItem = this.items[startIndex]
+		const endItem = this.items[endIndex]
+		const startText = startItem.text
+		const endText = endItem.text
 
 		if (startText === endText) {
 			startText[fn](styleType, startTextIndex, endTextIndex, styleData)
@@ -332,7 +324,7 @@ class TextGroup {
 		}
 
 		let foundStartText = false
-		for (let item of Array.from(this.items)) {
+		for (const item of this.items) {
 			if (item.text === startText) {
 				item.text[fn](styleType, startTextIndex, startText.length, styleData)
 				foundStartText = true
@@ -349,17 +341,27 @@ class TextGroup {
 
 	getStyles(startIndex, startTextIndex, endIndex, endTextIndex) {
 		let style
-		let startItem = this.items[startIndex]
-		let endItem = this.items[endIndex]
+		const startItem = this.items[startIndex]
+		const endItem = this.items[endIndex]
 
-		if (startItem == null || endItem == null) {
+		if (
+			startItem === null ||
+			endItem === null ||
+			typeof startItem === 'undefined' ||
+			typeof endItem === 'undefined'
+		) {
 			return {}
 		}
 
-		let startText = startItem.text
-		let endText = endItem.text
+		const startText = startItem.text
+		const endText = endItem.text
 
-		if (startText == null || endText == null) {
+		if (
+			startText === null ||
+			endText === null ||
+			typeof startText === 'undefined' ||
+			typeof endText === 'undefined'
+		) {
 			return {}
 		}
 
@@ -368,9 +370,9 @@ class TextGroup {
 		}
 
 		let numTexts = 0
-		let allStyles = {}
+		const allStyles = {}
 		let foundStartText = false
-		for (let item of Array.from(this.items)) {
+		for (const item of this.items) {
 			let styles = {}
 
 			if (item.text === startText) {
@@ -386,7 +388,7 @@ class TextGroup {
 			}
 
 			for (style in styles) {
-				if (allStyles[style] != null) {
+				if (typeof allStyles[style] !== 'undefined') {
 					allStyles[style]++
 				} else {
 					allStyles[style] = 1
@@ -398,7 +400,7 @@ class TextGroup {
 			}
 		}
 
-		let returnedStyles = {}
+		const returnedStyles = {}
 		for (style in allStyles) {
 			if (allStyles[style] === numTexts) {
 				returnedStyles[style] = style
@@ -447,12 +449,14 @@ Object.defineProperties(TextGroup.prototype, {
 	}
 })
 
-TextGroup.fromDescriptor = function(descriptor, maxItems, dataTemplate, restoreDataDescriptorFn) {
-	if (restoreDataDescriptorFn == null) {
-		restoreDataDescriptorFn = Util.defaultCloneFn
-	}
-	let items = []
-	for (let item of descriptor) {
+TextGroup.fromDescriptor = function(
+	descriptor,
+	maxItems,
+	dataTemplate,
+	restoreDataDescriptorFn = Util.defaultCloneFn
+) {
+	const items = []
+	for (const item of descriptor) {
 		items.push(
 			createChild(
 				StyleableText.createFromObject(item.text),
@@ -465,17 +469,8 @@ TextGroup.fromDescriptor = function(descriptor, maxItems, dataTemplate, restoreD
 	return new TextGroup(maxItems, dataTemplate, items)
 }
 
-TextGroup.create = function(maxItems, dataTemplate, numItemsToCreate) {
-	if (maxItems == null) {
-		maxItems = Infinity
-	}
-	if (dataTemplate == null) {
-		dataTemplate = {}
-	}
-	if (numItemsToCreate == null) {
-		numItemsToCreate = 1
-	}
-	let group = new TextGroup(maxItems, dataTemplate)
+TextGroup.create = function(maxItems = Infinity, dataTemplate = {}, numItemsToCreate = 1) {
+	const group = new TextGroup(maxItems, dataTemplate)
 	group.init(numItemsToCreate)
 
 	return group

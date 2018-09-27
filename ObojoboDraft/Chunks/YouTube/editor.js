@@ -5,14 +5,11 @@ const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = this.props.node.data.get('content')
 	}
 
 	handleSourceChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
-
-		this.setState({ videoId: event.target.value })
 
 		change.setNodeByKey(this.props.node.key, {
 			data: {
@@ -26,6 +23,7 @@ class Node extends React.Component {
 
 	renderFrame() {
 		const { isFocused } = this.props
+		const content = this.props.node.data.get('content')
 
 		const wrapperStyle = {
 			position: 'relative',
@@ -47,13 +45,13 @@ class Node extends React.Component {
 			<div className={'obojobo-draft--chunks--you-tube viewer'} style={wrapperStyle}>
 				<div style={maskStyle} />
 				<iframe
-					src={'https://www.youtube.com/embed/' + this.state.videoId}
+					src={'https://www.youtube.com/embed/' + content.videoId}
 					frameBorder="0"
 					allowFullScreen="true"
 				/>
 				<input
+					value={content.videoId}
 					aria-label={'Youtube Video Id'}
-					value={this.state.videoId}
 					onChange={event => this.handleSourceChange(event)}
 					onClick={event => event.stopPropagation()}
 				/>
@@ -71,7 +69,6 @@ class Node extends React.Component {
 }
 
 const insertNode = change => {
-	console.log('inserting')
 	change
 		.insertBlock({
 			type: YOUTUBE_NODE,

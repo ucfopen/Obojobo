@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default {
 	__debug__hijackConsole: () => {
 		// console.time = ->

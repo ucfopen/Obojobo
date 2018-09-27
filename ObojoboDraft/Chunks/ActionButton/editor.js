@@ -1,3 +1,5 @@
+/* eslint react/no-direct-mutation-state:0 */
+
 import React from 'react'
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
@@ -18,22 +20,23 @@ const allowedActions = [
 	'js',
 	'viewer:alert'
 ]
+/* eslint-disable eqeqeq */
 const requiresValue = {
 	'nav:goto': value => {
 		const json = JSON.parse(value)
-		return json.id !== null && json.id !== undefined
+		return json.id != null
 	},
 	'nav:openExternalLink': value => {
 		const json = JSON.parse(value)
-		return json.url !== null && json.url !== undefined
+		return json.url != null
 	},
 	'assessment:startAttempt': value => {
 		const json = JSON.parse(value)
-		return json.id !== null && json.id !== undefined
+		return json.id != null
 	},
 	'assessment:endAttempt': value => {
 		const json = JSON.parse(value)
-		return json.id !== null && json.id !== undefined
+		return json.id != null
 	},
 	js: value => {
 		return typeof value === typeof ''
@@ -48,6 +51,7 @@ const requiresValue = {
 		)
 	}
 }
+/* eslint-enable eqeqeq */
 
 class Trigger extends React.Component {
 	deleteTrigger() {

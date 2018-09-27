@@ -1,5 +1,4 @@
 import React from 'react'
-import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
@@ -15,7 +14,6 @@ describe('MCAnswer editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -35,7 +33,7 @@ describe('MCAnswer editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => null
+				get: () => null
 			},
 			nodes: [
 				{

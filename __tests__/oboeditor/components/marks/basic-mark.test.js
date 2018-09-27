@@ -16,18 +16,19 @@ describe('HotKey', () => {
 	})
 
 	test('HotKey does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
-		const keyDown = markHotKey({type: 'bold', key: 'B'})
+		const keyDown = markHotKey({ type: 'bold', key: 'B' })
 
 		const mockChange = {
 			toggleMark: jest.fn()
 		}
-		keyDown.onKeyDown({key: 'R'}, mockChange)
+
+		keyDown.onKeyDown({ key: 'R' }, mockChange)
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
 
 	test('HotKey does toggles mark if CTRL/CMD + key is pressed', () => {
-		const keyDown = markHotKey({type: 'bold', key: 'B'})
+		const keyDown = markHotKey({ type: 'bold', key: 'B' })
 
 		const mockChange = {
 			toggleMark: jest.fn()

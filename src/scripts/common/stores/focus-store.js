@@ -1,7 +1,7 @@
 import Store from '../../common/flux/store'
 import Dispatcher from '../../common/flux/dispatcher'
 
-let TRANSITION_TIME_MS = 800
+const TRANSITION_TIME_MS = 800
 let timeoutId = null
 
 class FocusStore extends Store {
@@ -55,5 +55,5 @@ class FocusStore extends Store {
 	}
 }
 
-let focusStore = new FocusStore()
+const focusStore = new FocusStore()
 export default focusStore

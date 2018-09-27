@@ -35,27 +35,27 @@ class EditorApp extends React.Component {
 
 	componentDidMount() {
 		const urlTokens = document.location.pathname.split('/')
-		this.state.draftId = urlTokens[2] ? urlTokens[2] : null
+		const draftId = urlTokens[2] ? urlTokens[2] : null
 
-		return APIUtil.getDraft(this.state.draftId)
+		return APIUtil.getDraft(draftId)
 			.then(response => {
 				if (response.status === 'error') throw response.value
 				return response
 			})
 			.then(({ value: draftModel }) => {
-				this.state.model = OboModel.create(draftModel)
+				const obomodel = OboModel.create(draftModel)
 
-				EditorStore.init(
-					this.state.model,
-					this.state.model.modelState.start,
-					window.location.pathname
-				)
+				EditorStore.init(obomodel, obomodel.modelState.start, window.location.pathname)
 
-				this.state.editorState = EditorStore.getState()
-
-				this.setState({ loading: false })
+				this.setState({
+					editorState: EditorStore.getState(),
+					draftId,
+					model: obomodel,
+					loading: false
+				})
 			})
 			.catch(err => {
+				// eslint-disable-next-line
 				console.log(err)
 				this.setState({ requestStatus: 'invalid', requestError: err })
 			})

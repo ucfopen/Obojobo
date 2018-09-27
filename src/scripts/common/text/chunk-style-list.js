@@ -1,28 +1,37 @@
 import StyleType from './style-type'
 import StyleRange from './style-range'
 
-let keySortFn = (a, b) => Number(a) - Number(b)
+const keySortFn = (a, b) => Number(a) - Number(b)
 
 class ChunkStyleList {
+	static createFromObject(o) {
+		const styleList = new ChunkStyleList()
+
+		if (o) {
+			for (const rangeObj of Array.from(o)) {
+				styleList.add(StyleRange.createFromObject(rangeObj))
+			}
+		}
+
+		return styleList
+	}
+
 	constructor() {
 		this.clear()
 	}
 
 	clear() {
-		return (this.styles = [])
+		this.styles = []
 	}
-
-	// Object.observe @styles, ->
-	// 	console.log 'chunkstylelist changed'
 
 	getExportedObject() {
 		if (this.styles.length === 0) {
 			return null
 		}
 
-		let output = []
+		const output = []
 
-		for (let style of Array.from(this.styles)) {
+		for (const style of this.styles) {
 			output.push(style.getExportedObject())
 		}
 
@@ -30,9 +39,9 @@ class ChunkStyleList {
 	}
 
 	clone() {
-		let cloneStyleList = new ChunkStyleList()
+		const cloneStyleList = new ChunkStyleList()
 
-		for (let style of Array.from(this.styles)) {
+		for (const style of this.styles) {
 			cloneStyleList.add(style.clone())
 		}
 
@@ -53,35 +62,35 @@ class ChunkStyleList {
 
 	// does not consider data
 	remove(styleRange) {
-		let comparisons = this.getStyleComparisonsForRange(
+		const comparisons = this.getStyleComparisonsForRange(
 			styleRange.start,
 			styleRange.end,
 			styleRange.type
 		)
 
 		// For any ranges that are enscapulated by this range we simply delete them
-		for (var co of Array.from(comparisons.enscapsulatedBy)) {
+		for (const co of comparisons.enscapsulatedBy) {
 			co.invalidate()
 		}
 
 		// For any left ranges we need to trim off the right side
-		for (co of Array.from(comparisons.left)) {
+		for (const co of comparisons.left) {
 			co.end = styleRange.start
 		}
 
 		// For any right ranges we need to trim off the left side
-		for (co of Array.from(comparisons.right)) {
+		for (const co of comparisons.right) {
 			co.start = styleRange.end
 		}
 
 		// For any contained ranges we have to split them into two new ranges
 		// However we remove any new ranges if they have a length of 0
-		for (co of Array.from(comparisons.contains)) {
-			let leftRange = co
-			let origEnd = leftRange.end
-			leftRange.end = styleRange.start
+		for (const co of comparisons.contains) {
+			const leftRange = co
+			const origEnd = leftRange.end
+			const rightRange = new StyleRange(styleRange.end, origEnd, co.type, co.data)
 
-			let rightRange = new StyleRange(styleRange.end, origEnd, co.type, co.data)
+			leftRange.end = styleRange.start
 
 			if (leftRange.length() === 0) {
 				leftRange.invalidate()
@@ -95,12 +104,11 @@ class ChunkStyleList {
 		return this.normalize()
 	}
 
-	// type is optional
 	getStyleComparisonsForRange(from, to, type) {
 		type = type || null
 		to = to || from
 
-		let comparisons = {
+		const comparisons = {
 			after: [],
 			before: [],
 			enscapsulatedBy: [],
@@ -109,9 +117,8 @@ class ChunkStyleList {
 			right: []
 		}
 
-		//@TODO - optimize
-		for (let style of Array.from(this.styles)) {
-			let curComparison = style.compareToRange(from, to)
+		for (const style of this.styles) {
+			const curComparison = style.compareToRange(from, to)
 			if (type === null || style.type === type) {
 				comparisons[curComparison].push(style)
 			}
@@ -127,9 +134,9 @@ class ChunkStyleList {
 
 	// Returns a simple object with all the styles that are within the entire text range
 	getStylesInRange(from, to) {
-		let styles = {}
+		const styles = {}
 
-		for (let range of Array.from(this.getStyleComparisonsForRange(from, to).contains)) {
+		for (const range of this.getStyleComparisonsForRange(from, to).contains) {
 			styles[range.type] = range.type
 		}
 
@@ -137,36 +144,30 @@ class ChunkStyleList {
 	}
 
 	getStyles() {
-		let styles = {}
+		const styles = {}
 
-		for (let range of Array.from(this.styles)) {
+		for (const range of this.styles) {
 			styles[range.type] = range.type
 		}
 
 		return styles
 	}
 
-	// Moves each item in the list by byAmount
-	// shift: (byAmount) ->
-	// 	for range in @styles
-	// 		range.start += byAmount
-	// 		range.end += byAmount
-
 	cleanupSuperscripts() {
 		let level
-		let mark = []
-		let newStyles = []
+		const mark = []
+		const newStyles = []
 
-		for (let styleRange of Array.from(this.styles)) {
+		for (const styleRange of this.styles) {
 			if (styleRange.type !== StyleType.SUPERSCRIPT) {
 				newStyles.push(styleRange)
 				continue
 			}
 
-			if (mark[styleRange.start] == null) {
+			if (typeof mark[styleRange.start] === 'undefined') {
 				mark[styleRange.start] = 0
 			}
-			if (mark[styleRange.end] == null) {
+			if (typeof mark[styleRange.end] === 'undefined') {
 				mark[styleRange.end] = 0
 			}
 
@@ -176,16 +177,14 @@ class ChunkStyleList {
 			mark[styleRange.end] -= level
 		}
 
-		// console.log 'mark', mark
-
 		let curRange = new StyleRange(-1, -1, StyleType.SUPERSCRIPT, 0)
 		let curLevel = 0
 		for (let i = 0; i < mark.length; i++) {
-			level = mark[i]
-			if (mark[i] == null) {
+			if (typeof mark[i] === 'undefined') {
 				continue
 			}
 
+			level = mark[i]
 			curLevel += level
 
 			// Establish the first superscript range
@@ -204,13 +203,8 @@ class ChunkStyleList {
 			}
 		}
 
-		// console.log 'styles before', JSON.stringify(@styles, null, 2)
 		return (this.styles = newStyles)
 	}
-	// @styles.length = 0
-	// for style in newStyles
-	// 	@styles.push style
-	// console.log 'styles after ', JSON.stringify(@styles, null, 2)
 
 	// 1. Loop through every style range for every type
 	// 2. In an array A add 1 to A[range.start] and add -1 to A[range.end]
@@ -220,29 +214,26 @@ class ChunkStyleList {
 	// 6. Continue to add up numbers that you discover
 	// 7. When your total is a 0 that ends the range
 	normalize() {
-		//@TODO - possible to improve runtime if we sort the styles?
-
 		let i, styleType
 		this.cleanupSuperscripts()
 
-		let newStyles = []
+		const newStyles = []
 
 		// We can't merge in link styles since they might have different URLs!
-		// We have to treat them seperately
+		// We have to treat them separately
 		// [b: [b], i: [i], a: [google, microsoft]]
-		let datasToCheck = {}
-		let dataValues = {}
-		//@TODO - is it ok here to rely on this object's order?
-		for (let styleName in StyleType) {
+		const datasToCheck = {}
+		const dataValues = {}
+		for (const styleName in StyleType) {
 			styleType = StyleType[styleName]
 			datasToCheck[styleType] = []
 			dataValues[styleType] = []
 		}
 
 		for (i = this.styles.length - 1; i >= 0; i--) {
-			let styleRange = this.styles[i]
-			let curData = styleRange.data
-			let curEncodedData = JSON.stringify(curData)
+			const styleRange = this.styles[i]
+			const curData = styleRange.data
+			const curEncodedData = JSON.stringify(curData)
 
 			if (datasToCheck[styleRange.type].indexOf(curEncodedData) === -1) {
 				datasToCheck[styleRange.type].push(curEncodedData)
@@ -252,20 +243,18 @@ class ChunkStyleList {
 
 		for (styleType in dataValues) {
 			//console.log 'loop', styleType, datas
-			let datas = dataValues[styleType]
-			for (let data of Array.from(datas)) {
-				let tmp = {}
+			const datas = dataValues[styleType]
+			for (const data of datas) {
+				const tmp = {}
 				let total = 0
 				let start = null
 
-				for (let range of Array.from(this.styles)) {
-					// range.invalidate() if range.length() is 0 #<-----@TODO
-
+				for (const range of this.styles) {
 					if (range.isMergeable(styleType, data)) {
-						if (tmp[range.start] == null) {
+						if (typeof tmp[range.start] === 'undefined') {
 							tmp[range.start] = 0
 						}
-						if (tmp[range.end] == null) {
+						if (typeof tmp[range.end] === 'undefined') {
 							tmp[range.end] = 0
 						}
 
@@ -274,14 +263,12 @@ class ChunkStyleList {
 					}
 				}
 
-				let keys = Object.keys(tmp).sort(keySortFn)
+				const keys = Object.keys(tmp).sort(keySortFn)
 
-				for (let key of Array.from(keys)) {
-					let end = Number(key)
-					let t = tmp[key]
-					// if not isNaN t
-					// console.log 'here'
-					if (start == null) {
+				for (const key of keys) {
+					const end = Number(key)
+					const t = tmp[key]
+					if (start === null) {
 						start = end
 					}
 					total += t
@@ -294,7 +281,7 @@ class ChunkStyleList {
 		}
 
 		for (i = newStyles.length - 1; i >= 0; i--) {
-			let style = newStyles[i]
+			const style = newStyles[i]
 			if (style.isInvalid()) {
 				newStyles.splice(i, 1)
 			}
@@ -302,20 +289,6 @@ class ChunkStyleList {
 
 		return (this.styles = newStyles)
 	}
-}
-
-// console.timeEnd 'normalize'
-
-ChunkStyleList.createFromObject = function(o) {
-	let styleList = new ChunkStyleList()
-
-	if (o != null) {
-		for (let rangeObj of Array.from(o)) {
-			styleList.add(StyleRange.createFromObject(rangeObj))
-		}
-	}
-
-	return styleList
 }
 
 export default ChunkStyleList

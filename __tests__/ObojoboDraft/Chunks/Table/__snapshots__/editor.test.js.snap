@@ -232,7 +232,7 @@ Object {
 }
 `;
 
-exports[`Table editor plugins.renderNode renders a button when passed 1`] = `
+exports[`Table editor plugins.renderNode renders a Table when passed 1`] = `
 <Node
   node={
     Object {
@@ -245,20 +245,7 @@ exports[`Table editor plugins.renderNode renders a button when passed 1`] = `
 />
 `;
 
-exports[`Table editor plugins.renderNode renders a button when passed 2`] = `
-<Row
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.Table.Row",
-    }
-  }
-/>
-`;
-
-exports[`Table editor plugins.renderNode renders a button when passed 3`] = `
+exports[`Table editor plugins.renderNode renders a cell when passed 1`] = `
 <Cell
   node={
     Object {
@@ -266,6 +253,19 @@ exports[`Table editor plugins.renderNode renders a button when passed 3`] = `
         "get": [Function],
       },
       "type": "ObojoboDraft.Chunks.Table.Cell",
+    }
+  }
+/>
+`;
+
+exports[`Table editor plugins.renderNode renders a row when passed 1`] = `
+<Row
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Table.Row",
     }
   }
 />

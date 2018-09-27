@@ -15,15 +15,14 @@ jest.mock('../../../../ObojoboDraft/Chunks/Question/adapter', () => ({}))
 const Common = require('../../../../src/scripts/common/index')
 
 // include the script we're testing, it registers the model
-import Button from '../../../../ObojoboDraft/Chunks/Question/viewer'
+import '../../../../ObojoboDraft/Chunks/Question/viewer'
 import ViewerComponent from '../../../../ObojoboDraft/Chunks/Question/viewer-component'
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
-const MODE_PRACTICE = 'practice'
 
 describe('ObojoboDraft.Chunks.Question registration', () => {
 	test('registerModel registers expected vars', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Store.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.Question')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})
@@ -33,8 +32,8 @@ describe('ObojoboDraft.Chunks.Question registration', () => {
 	})
 
 	test('getNavItem returns link for a question', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			title: 'mockTitle',
 			// Mock the OboModel structure
 			parent: {
@@ -52,13 +51,13 @@ describe('ObojoboDraft.Chunks.Question registration', () => {
 			get: jest.fn().mockReturnValueOnce('mockQuestion')
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toMatchSnapshot()
 	})
 
 	test('getNavItem returns link for a question in practice mode', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			modelState: {
 				mode: 'practice'
 			},
@@ -78,13 +77,13 @@ describe('ObojoboDraft.Chunks.Question registration', () => {
 			get: jest.fn().mockReturnValueOnce('mockQuestion')
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toMatchSnapshot()
 	})
 
 	test('getNavItem returns link for a question in review mode', () => {
-		let register = Common.Store.registerModel.mock.calls[0]
-		let model = {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
 			modelState: {
 				mode: 'review'
 			},
@@ -104,7 +103,7 @@ describe('ObojoboDraft.Chunks.Question registration', () => {
 			get: jest.fn().mockReturnValueOnce('mockQuestion')
 		}
 
-		let nav = register[1].getNavItem(model)
+		const nav = register[1].getNavItem(model)
 		expect(nav).toMatchSnapshot()
 	})
 })

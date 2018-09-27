@@ -1,7 +1,6 @@
-//"obojobo-draft-document-engine": "git+ssh://git@clu.cdl.ucf.edu:obojobo/obojobo-draft-document-engine.git"
-import OboModel from './obomodel'
+/* eslint-disable */
 
-import createUUID from '../../common/util/uuid'
+import OboModel from './obomodel'
 
 class Chunk extends OboModel {
 	static initClass() {
@@ -19,26 +18,6 @@ class Chunk extends OboModel {
 		return Backbone.sync(method, model, options)
 	}
 
-	// constructor: (attrs) ->
-	// 	if not attrs.id?
-	// @new = true
-	// attrs.id = @createNewLocalId()
-
-	// super attrs
-
-	// @dirty = false
-	// @needsUpdate = false
-	// @editing = false
-
-	// if attrs.content
-	// 	@modelState = @getComponent().createNodeDataFromDescriptor(attrs)
-	// else
-	// 	@modelState = {}
-
-	// @on "change", @onChange, @
-
-	// @page = null
-
 	url() {
 		if (this.new != null) {
 			return this.urlRoot
@@ -47,8 +26,6 @@ class Chunk extends OboModel {
 	}
 
 	save(attrs, options) {
-		// console.clear()
-		console.log('SAVE TIME')
 		if (this.new != null) {
 			this.assignNewId()
 			options.type = 'post'
@@ -64,12 +41,6 @@ class Chunk extends OboModel {
 
 		return super.save(attrs, options)
 	}
-
-	// assignNewId: ->
-	// 	@set 'id', @createNewLocalId()
-
-	// createNewLocalId: ->
-	// 	createUUID()
 
 	onChange(model, options) {
 		if (model.get('index') !== model.previous('index')) {
@@ -255,7 +226,6 @@ class Chunk extends OboModel {
 	paste(text, html, chunks) {
 		return this.callCommandFn('paste', [text, html, chunks])
 	}
-
 	getCopyOfSelection(cloneId) {
 		return this.callSelectionFn('getCopyOfSelection', [cloneId])
 	}
@@ -323,7 +293,6 @@ Chunk.create = function(typeOrClass, content) {
 		componentClass = OBO.componentClassMap.errorClass
 		chunk = new Chunk(componentClass)
 	}
-	// type = ComponentClassMap.getTypeOfClass componentClass
 
 	return chunk
 }

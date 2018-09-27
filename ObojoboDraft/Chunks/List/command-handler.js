@@ -1,19 +1,18 @@
-let CommandHandler
-let { Editor } = window
+const { Editor } = window
 import Common from 'Common'
 
 let { TextGroupCommandHandler } = Editor.chunk.textChunk
 let { TextGroupSelection } = Common.textGroup
 let { Chunk } = Common.models
 
-export default (CommandHandler = class CommandHandler extends TextGroupCommandHandler {
+export default class CommandHandler extends TextGroupCommandHandler {
 	recalculateStartValues(refTextGroup, listStyles) {
 		let indentLevel
 		let indents = {}
 
 		for (let item of Array.from(refTextGroup.items)) {
 			indentLevel = item.data.indent
-			if (indents[indentLevel] == null) {
+			if (indents[indentLevel] === null || typeof indents[indentLevel] === 'undefined') {
 				indents[indentLevel] = 1
 			} else {
 				indents[indentLevel]++
@@ -35,7 +34,7 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 		})()
 	}
 
-	onEnter(selection, chunk, shiftKey) {
+	onEnter(selection, chunk) {
 		let afterNode
 		chunk.markDirty()
 
@@ -48,7 +47,6 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 			return chunk.splitText()
 		}
 
-		// if item.text.length is 0
 		if (item.data.indent > 0) {
 			item.data.indent--
 
@@ -81,26 +79,6 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 
 		return inbetweenNode.selectStart()
 	}
-	// return
-
-	// data.textGroup.splitText tgs.start.groupIndex, tgs.start.offset
-
-	// tgs.setCaretToTextStart tgs.start.groupIndex + 1
-
-	// getTextMenuCommands: (selection, chunk) ->
-	// 	commands = super selection, chunk
-	// 	commands.push {
-	// 		label: 'Unindent'
-	// 		fn: (selection, chunk) ->
-	// 			chunk.indent true
-	// 	}
-	// 	commands.push {
-	// 		label: 'Indent'
-	// 		fn: (selection, chunk) ->
-	// 			chunk.indent false
-	// 	}
-
-	// 	commands
 
 	deleteSelection(selection, chunk) {
 		let selType = selection.virtual.type
@@ -118,10 +96,15 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 	deleteText(selection, chunk, deleteForwards) {
 		chunk.markDirty()
 
+<<<<<<< HEAD
 		console.log('deleteText', this, this.recalculateStartValues)
 
 		let tgs = new TextGroupSelection(chunk, selection.virtual)
 		let data = chunk.modelState
+=======
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
+		const data = chunk.modelState
+>>>>>>> issue/next-166-wysiwyg-editor
 
 		let s = tgs.start
 
@@ -179,4 +162,4 @@ export default (CommandHandler = class CommandHandler extends TextGroupCommandHa
 
 		return super.deleteText(selection, chunk, deleteForwards)
 	}
-})
+}

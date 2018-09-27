@@ -2,8 +2,8 @@ import { sanitize, isElementInline } from '../../../src/scripts/common/util/html
 
 describe('HTMLUtils', () => {
 	test('sanitize() will strip out scripts and most tags', () => {
-		let div = document.createElement('div')
-		let html = `
+		const div = document.createElement('div')
+		const html = `
 			<div>
 				<script>alert('Hacked!');</script>
 				<a href="www.site.com" cite="citation" style="{color:red;}">Link</a>
@@ -23,11 +23,11 @@ describe('HTMLUtils', () => {
 		expect(div.innerHTML).toEqual(`
 			<div>
 				<span></span>
-				<a href=\"www.site.com\" cite=\"citation\" style=\"{color:red;}\">Link</a>
-				<a href=\"www.site.com\" cite=\"citation\" style=\"{color:red;}\" target=\"\">Link</a>
+				<a href="www.site.com" cite="citation" style="{color:red;}">Link</a>
+				<a href="www.site.com" cite="citation" style="{color:red;}" target="">Link</a>
 				<ul>
 					<li>
-						<a href=\"www.site.com\" cite=\"citation\" style=\"{color:red;}\" target=\"\">Link</a>
+						<a href="www.site.com" cite="citation" style="{color:red;}" target="">Link</a>
 						<span></span>
 					</li>
 				</ul>

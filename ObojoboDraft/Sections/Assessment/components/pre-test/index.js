@@ -1,5 +1,7 @@
+import React from 'react'
+
 const AssessmentPreTest = props => {
-	let Component = props.model.getComponentClass()
+	const Component = props.model.getComponentClass()
 
 	return (
 		<div className="pre-test">

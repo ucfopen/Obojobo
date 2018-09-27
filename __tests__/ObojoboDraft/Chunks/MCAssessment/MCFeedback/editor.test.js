@@ -15,7 +15,6 @@ describe('MCFeedback editor', () => {
 		const component = renderer.create(
 			<Node
 				attributes={{ dummy: 'dummyData' }}
-				children={'mockChildren'}
 				node={{
 					data: {
 						get: () => {
@@ -39,7 +38,6 @@ describe('MCFeedback editor', () => {
 
 		const component = shallow(
 			<Node
-				children={'mockChildren'}
 				node={{
 					key: 'mockKey',
 					nodes: [],
@@ -57,7 +55,7 @@ describe('MCFeedback editor', () => {
 		)
 		const tree = component.html()
 
-		const click = component.find('button').simulate('click')
+		component.find('button').simulate('click')
 
 		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
@@ -68,7 +66,7 @@ describe('MCFeedback editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: type => null
+				get: () => null
 			},
 			nodes: [
 				{

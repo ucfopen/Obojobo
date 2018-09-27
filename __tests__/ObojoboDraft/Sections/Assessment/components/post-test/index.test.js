@@ -9,15 +9,10 @@ jest.mock('../../../../../../ObojoboDraft/Sections/Assessment/components/full-re
 
 import PostTest from '../../../../../../ObojoboDraft/Sections/Assessment/components/post-test/index'
 import AssessmentUtil from '../../../../../../src/scripts/viewer/util/assessment-util'
-import NavUtil from '../../../../../../src/scripts/viewer/util/nav-util'
 import OboModel from '../../../../../../__mocks__/_obo-model-with-chunks'
 
 const FULL_REVIEW_ALWAYS = 'always'
-const FULL_REVIEW_NEVER = 'never'
 const FULL_REVIEW_AFTER_ALL = 'no-attempts-remaining'
-const GRADEBOOK_STATUS_OK_NO_OUTCOME_SERVICE = 'ok_no_outcome_service'
-const GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT = 'ok_null_score_not_sent'
-const GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE = 'ok_gradebook_matches_assessment_score'
 
 const assessmentJSON = {
 	id: 'assessment',
@@ -240,7 +235,7 @@ const scoreActionJSON = {
 
 describe('PostTest', () => {
 	test('PostTest component', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -250,23 +245,23 @@ describe('PostTest', () => {
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
-		let scoreAction = {
+		const model = OboModel.create(assessmentJSON)
+		const scoreAction = {
 			page: null,
 			message: 'mockMessage'
 		}
 
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 	test('PostTest component with scoreAction', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -276,23 +271,23 @@ describe('PostTest', () => {
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
-		let scoreAction = {
+		const model = OboModel.create(assessmentJSON)
+		const scoreAction = {
 			page: scoreActionJSON
 		}
 
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('PostTest component with recorded score', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -302,8 +297,8 @@ describe('PostTest', () => {
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
-		let scoreAction = {
+		const model = OboModel.create(assessmentJSON)
+		const scoreAction = {
 			page: scoreActionJSON
 		}
 
@@ -314,16 +309,16 @@ describe('PostTest', () => {
 			}
 		])
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('PostTest component with review', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -333,9 +328,9 @@ describe('PostTest', () => {
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_ALWAYS
-		let scoreAction = {
+		const scoreAction = {
 			page: scoreActionJSON
 		}
 
@@ -346,16 +341,16 @@ describe('PostTest', () => {
 			}
 		])
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('PostTest component with review after all attempts - attempts remaining', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -365,9 +360,9 @@ describe('PostTest', () => {
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_AFTER_ALL
-		let scoreAction = {
+		const scoreAction = {
 			page: scoreActionJSON
 		}
 
@@ -379,16 +374,16 @@ describe('PostTest', () => {
 		])
 		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(true)
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('PostTest component with review after all attempts - no attempts remaining', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -398,9 +393,9 @@ describe('PostTest', () => {
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_AFTER_ALL
-		let scoreAction = {
+		const scoreAction = {
 			page: scoreActionJSON
 		}
 
@@ -412,19 +407,18 @@ describe('PostTest', () => {
 		])
 		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(false)
 
-		let component = renderer.create(
+		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		let tree = component.toJSON()
+		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
 	// This button is actually part of the LTIStatus module
 	// The function is in PostTest because it needs the assessment model
-	// @TODO - refactor LTIStatus
 	test('PostTest component resends LTI when Resend button is clicked', () => {
-		let moduleData = {
+		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -434,9 +428,9 @@ describe('PostTest', () => {
 			},
 			focusState: {}
 		}
-		let model = OboModel.create(assessmentJSON)
+		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_AFTER_ALL
-		let scoreAction = {
+		const scoreAction = {
 			page: scoreActionJSON
 		}
 
@@ -451,11 +445,11 @@ describe('PostTest', () => {
 			state: 'mockState'
 		})
 
-		let component = mount(
+		const component = mount(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
 
-		let button = component
+		component
 			.childAt(0)
 			.childAt(0)
 			.childAt(2)
