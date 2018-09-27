@@ -100,13 +100,13 @@ class Node extends React.Component {
 					onChange={event => this.handleSizeChange(event)}
 					onClick={event => event.stopPropagation()}
 				>
-					<option value={'small'}>small</option>
-					<option value={'medium'}>medium</option>
-					<option value={'large'}>large</option>
-					<option value={'custom'}>custom</option>
+					<option value="small">small</option>
+					<option value="medium">medium</option>
+					<option value="large">large</option>
+					<option value="custom">custom</option>
 				</select>
 				<div>
-					<button className={'delete-node'} onClick={() => this.deleteNode()}>
+					<button className="delete-node" onClick={() => this.deleteNode()}>
 						{'X'}
 					</button>
 				</div>
@@ -135,7 +135,7 @@ class Node extends React.Component {
 		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
-			<div className={'component'} {...this.props.attributes}>
+			<div className="component" {...this.props.attributes}>
 				<div className={`obojobo-draft--chunks--figure viewer ` + content.size}>
 					{this.renderEditToolbar()}
 					<div className={'container'}>
@@ -152,13 +152,9 @@ class Node extends React.Component {
 								style={imgStyles}
 							/>
 						) : (
-							<img
-								title={content.alt}
-								src={content.url}
-								unselectable="on"
-								alt={content.alt}
-							/>
+							<img title={content.alt} src={content.url} unselectable="on" alt={content.alt} />
 						)}
+						{/* uses children below because the caption is a textgroup */}
 						<figcaption>{this.props.children}</figcaption>
 					</div>
 				</div>

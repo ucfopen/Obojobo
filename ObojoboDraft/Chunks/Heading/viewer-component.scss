@@ -9,6 +9,7 @@
 		position: absolute;
 		right: 0;
 		top: 1em;
+
 		button {
 			display: block;
 			border-radius: $dimension-rounded-radius;
@@ -19,6 +20,7 @@
 		.is-open {
 			display: block;
 		}
+
 		.is-not-open {
 			display: none;
 		}
@@ -39,7 +41,6 @@
 				margin: 0.3em;
 				font-size: 1em;
 				width: 100%;
-				color: black;
 			}
 		}
 	}

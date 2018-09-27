@@ -4,7 +4,7 @@ import Common from 'Common'
 
 const { TextGroupAdapter } = Common.chunk.textChunk
 
-let Adapter = {
+const Adapter = {
 	construct(model, attrs) {
 		TextGroupAdapter.construct(model, attrs)
 
@@ -26,9 +26,8 @@ let Adapter = {
 	},
 
 	toText(model) {
-		//@TODO - List toText method'
 		let text = ''
-		for (let textItem of Array.from(model.modelState.textGroup.items)) {
+		for (const textItem of Array.from(model.modelState.textGroup.items)) {
 			text += `  * ${textItem.text.value}\n`
 		}
 

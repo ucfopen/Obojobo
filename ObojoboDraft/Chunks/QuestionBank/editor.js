@@ -61,7 +61,7 @@ class Node extends React.Component {
 				className={'obojobo-draft--chunks--question-bank editor-bank'}
 				{...this.props.attributes}
 			>
-				<button className={'delete'} onClick={() => this.delete()}>
+				<button className={'delete-node'} onClick={() => this.delete()}>
 					X
 				</button>
 				{this.props.children}

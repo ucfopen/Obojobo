@@ -56,7 +56,7 @@ class Node extends React.Component {
 				className={'component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback'}
 				{...this.props.attributes}
 			>
-				<button className={'delete'} onClick={() => this.delete()}>
+				<button className={'delete-node'} onClick={() => this.delete()}>
 					X
 				</button>
 				<span className={'label'} contentEditable={false}>

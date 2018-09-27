@@ -1,7 +1,9 @@
 @import '../../../scss/includes';
 
 .editor {
-	margin-top: 2em;
+	margin-top: 3em;
+	margin-bottom: 3em;
+
 	.toolbar {
 		text-align: center;
 		position: fixed;
@@ -10,6 +12,7 @@
 		width: inherit;
 		background-color: $color-bg;
 		margin-right: 4em;
+
 		button {
 			background-color: $color-obojobo-blue;
 			border-radius: $dimension-rounded-radius;
@@ -27,9 +30,51 @@
 		font-size: inherit;
 	}
 
+	.parameter-node {
+		padding-right: 1em;
+		display: inline;
+	}
+
+	.rubric {
+		position: relative;
+		width: auto;
+		border-radius: $dimension-rounded-radius;
+		border: 1px solid $color-preview;
+		padding: 2em 3em;
+		background: transparentize($color-preview, 0.95);
+		margin-bottom: 3em;
+
+		button {
+			font-family: $font-default;
+			line-height: 1em;
+			font-size: 1em;
+			text-align: center;
+			border-radius: $dimension-rounded-radius;
+			padding: 0.4em;
+		}
+
+		.parameter-node {
+			display: block;
+			padding-top: 0.5em;
+		}
+
+		.mod {
+			position: relative;
+			width: auto;
+			border-bottom: 1px solid $color-preview;
+		}
+
+		.add-button {
+			margin-top: 0.2em;
+			background-color: $color-preview;
+			color: $color-bg;
+		}
+	}
+
 	.dropdown {
 		position: absolute;
 		right: 0;
+
 		button {
 			display: block;
 			background-color: $color-obojobo-blue;
@@ -37,12 +82,6 @@
 			margin: 0.3em;
 			font-size: 1em;
 			color: $color-bg;
-		}
-
-		&:hover {
-			.drop-content {
-				display: block;
-			}
 		}
 
 		.drop-content {
@@ -63,6 +102,12 @@
 				color: $color-bg;
 			}
 		}
+
+		&:hover {
+			.drop-content {
+				display: block;
+			}
+		}
 	}
 
 	.scoreactions {
@@ -72,54 +117,12 @@
 		padding: 2em 3em;
 		margin-bottom: 3em;
 		margin-top: 3em;
+
 		.score-actions-page {
 			background-color: $color-bg;
 			margin: 2em;
 			position: relative;
 			width: auto;
-		}
-	}
-
-	.parameter-node {
-		padding-right: 1em;
-		display: inline;
-	}
-
-	.rubric {
-		position: relative;
-		width: auto;
-		border-radius: $dimension-rounded-radius;
-		border: 1px solid $color-preview;
-		padding: 2em 3em;
-		background: transparentize($color-preview, 0.95);
-		margin-bottom: 3em;
-
-		.parameter-node {
-			display: block;
-			padding-top: 0.5em;
-		}
-
-		.mod {
-			position: relative;
-			width: auto;
-			border-bottom: 1px solid $color-preview;
-		}
-
-		button {
-			font-family: $font-default;
-			font-size: 0.75em;
-			line-height: 1em;
-			font-family: $font-default;
-			font-size: 1em;
-			text-align: center;
-			border-radius: $dimension-rounded-radius;
-			padding: 0.4em;
-		}
-
-		.add-button {
-			margin-top: 0.2em;
-			background-color: $color-preview;
-			color: white;
 		}
 	}
 
@@ -166,25 +169,23 @@
 			border-radius: 1em;
 		}
 
-		.slider:before {
+		.slider::before {
 			position: absolute;
 			content: '';
 			height: 0.5em;
 			width: 0.5em;
 			left: 0.25em;
 			bottom: 0.25em;
-			background-color: white;
+			background-color: $color-bg;
 			border-radius: 50%;
 		}
 
 		input:checked + .slider {
 			background-color: $color-obojobo-blue;
 		}
-		input:checked + .slider:before {
+
+		input:checked + .slider::before {
 			transform: translate(1em, 0);
-		}
-		input:focus + .slider {
-			outline: rgb(59, 153, 252) auto 5px;
 		}
 	}
 

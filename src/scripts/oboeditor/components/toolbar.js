@@ -1,3 +1,5 @@
+/* eslint no-alert: 0 */
+
 import React from 'react'
 import basicMark from './marks/basic-mark'
 import linkMark from './marks/link-mark'

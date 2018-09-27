@@ -6,11 +6,13 @@ const EnzymeAdapter = require('enzyme-adapter-react-15')
 Enzyme.configure({ adapter: new EnzymeAdapter() })
 
 // Hack to get LaTeX to not warn about quirks mode:
-document.write('<!DOCTYPE html><body><div id="viewer-app"></div><div id="viewer-app-loading"></div></body>')
+document.write(
+	'<!DOCTYPE html><body><div id="viewer-app"></div><div id="viewer-app-loading"></div></body>'
+)
 
 global.oboRequire = name => require(path.join(__dirname, '__mocks__', name))
 
-
+// Externals:
 window.React = require('react')
 window.ReactDOM = require('react-dom')
 window._ = require('underscore')
@@ -59,9 +61,12 @@ fs.__setMockFileContents(
 	'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
 )
 
-
 let isDocumentHidden = document.hidden
 Object.defineProperty(document, 'hidden', {
-	get() { return isDocumentHidden },
-	set(isHidden) { isDocumentHidden = isHidden }
+	get() {
+		return isDocumentHidden
+	},
+	set(isHidden) {
+		isDocumentHidden = isHidden
+	}
 })

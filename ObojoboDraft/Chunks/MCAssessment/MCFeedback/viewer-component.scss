@@ -8,15 +8,17 @@
 	&.editor-feedback {
 		background: $color-bg2;
 	}
+
 	.label {
 		position: absolute;
-		top: -.1em;
-		left: .6em;
+		top: -0.1em;
+		left: 0.6em;
 		color: $color-text-minor;
 		transform: scale(0.7);
 		transform-origin: top left;
 		font-family: $font-default;
 	}
+
 	.delete {
 		z-index: 2;
 	}

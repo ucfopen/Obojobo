@@ -61,7 +61,7 @@ class Chunk extends OboModel {
 	}
 
 	callCommandFn(fn, content) {
-		let componentClass = this.getComponent()
+		const componentClass = this.getComponent()
 		let selection = null
 		if ((this.page != null ? this.page.module : undefined) != null) {
 			;({ selection } = this.page.module.app.state)
@@ -69,7 +69,7 @@ class Chunk extends OboModel {
 		if (componentClass.getCommandHandler == null) {
 			return null
 		}
-		let commandHandler = componentClass.getCommandHandler(this, selection)
+		const commandHandler = componentClass.getCommandHandler(this, selection)
 		if (!(commandHandler != null ? commandHandler[fn] : undefined)) {
 			return null
 		}
@@ -77,79 +77,21 @@ class Chunk extends OboModel {
 	}
 
 	callSelectionFn(fn, content) {
-		let componentClass = this.getComponent()
+		const componentClass = this.getComponent()
 		let selection = null
 		if ((this.page != null ? this.page.module : undefined) != null) {
 			;({ selection } = this.page.module.app.state)
 		}
-		let selectionHandler = this.selectionHandler(this, selection)
+		const selectionHandler = this.selectionHandler(this, selection)
 		if (!(selectionHandler != null ? selectionHandler[fn] : undefined)) {
 			return null
 		}
 		return selectionHandler[fn].apply(selectionHandler, [selection, this].concat(content))
 	}
 
-	// getDomEl: ->
-	// 	# @TODO - This work?
-	// 	document.body.querySelector ".component[data-id='#{@get('id')}']"
-	// 	# document.body.querySelector ".component[data-component-index='#{@get('index')}']"
-
-	// clone: (cloneId = false) ->
-	// 	clone = new @constructor {
-	// 		type: @get('type')
-	// 	}
-	// 	clone.modelState = @getComponent().cloneNodeData @modelState
-
-	// 	if cloneId
-	// 		clone.set 'id', @get('id')
-
-	// 	clone
-
-	// markDirty: ->
-	// 	@dirty = true
-	// 	@needsUpdate = true
-
-	// markForUpdate: ->
-	// 	@needsUpdate = true
-
-	// markUpdated: ->
-	// 	@needsUpdate = false
-
 	isEditing() {
 		return this.page.module.app.state.editingChunk === this
 	}
-
-	// toJSON: ->
-	// 	contentJSON = @getComponent().getDataDescriptor @
-
-	// 	json =
-	// 		type: @get 'type'
-	// 		content: contentJSON
-	// 		contentType: @get 'contentType'
-	// 		derivedFrom: @get 'derivedFrom'
-	// 		index: @get('index')
-	// 		id: @get 'id'
-	// 		draftId: @get 'draftId'
-
-	// 	json
-
-	// revert: ->
-	// 	newChunk = Chunk.create()
-
-	// 	index = @get('index')
-	// 	id = @get('id')
-
-	// 	@clear()
-
-	// 	for attrName, attr of newChunk.attributes
-	// 		@set attrName, attr
-
-	// 	@set 'index', index
-	// 	@set 'id', id
-
-	// 	@modelState = newChunk.modelState
-
-	// 	@
 
 	getCaretEdge() {
 		return this.callCommandFn('getCaretEdge')

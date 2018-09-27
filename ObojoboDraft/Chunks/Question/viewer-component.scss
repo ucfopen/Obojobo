@@ -6,6 +6,7 @@
 
 	> .flipper {
 		$color-sep: rgba(0, 0, 0, 0.1);
+
 		transition: 0.4s;
 		-ms-transition: none;
 		transform-style: preserve-3d;
@@ -70,6 +71,7 @@
 			max-width: $dimension-column-width;
 			background: $color-bg;
 		}
+
 		> .responses-hidden {
 			font-family: $font-default;
 			font-size: 0.9em;
@@ -125,55 +127,18 @@
 	position: relative;
 	border-bottom-left-radius: 0.3em;
 	border-bottom-right-radius: 0.3em;
-	padding-bottom: 1px;
 
 	.page-editor {
 		margin: $dimension-padding / 3;
 		background: $color-bg;
 		border: 1px solid $color-shadow;
 
-		&:before {
+		&::before {
 			content: 'Full explanation:';
 			font-family: $font-default;
 			font-size: 1em;
 			font-weight: bold;
-			color: transparentize($color-text, 0.25);
-			margin-top: 1em;
-			margin-left: 2em;
-			margin-bottom: -1em;
-			display: block;
-			transform: scale(0.7);
-			transform-origin: top left;
-		}
-	}
-}
-
-.add-solution {
-	left: 50%;
-	transform: translate(-50%, 0);
-	position: relative;
-	margin: $dimension-padding / 3;
-}
-
-.solution-editor {
-	background: $color-bg2;
-	border-top: 1px solid $color-shadow;
-	position: relative;
-	border-bottom-left-radius: 0.3em;
-	border-bottom-right-radius: 0.3em;
-	padding-bottom: 1px;
-
-	.page-editor {
-		margin: $dimension-padding / 3;
-		background: $color-bg;
-		border: 1px solid $color-shadow;
-
-		&:before {
-			content: 'Full explanation:';
-			font-family: $font-default;
-			font-size: 1em;
-			font-weight: bold;
-			color: transparentize($color-text, 0.25);
+			color: $color-text-minor;
 			margin-top: 1em;
 			margin-left: 2em;
 			margin-bottom: -1em;

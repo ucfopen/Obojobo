@@ -4,6 +4,7 @@
 	.non-editable-chunk {
 		position: relative;
 	}
+
 	.katex-display {
 		margin: 0;
 	}
@@ -28,11 +29,11 @@
 	}
 
 	.katex-error {
-		background: #FF000011;
+		background: #ff000011;
 	}
 
 	.equation-editor {
-		positon: relative;
+		position: relative;
 		overflow: auto;
 
 		div {

@@ -662,11 +662,14 @@ describe('AssessmentUtil', () => {
 			get: jest.fn().mockReturnValueOnce('testId')
 		}
 
-		AssessmentUtil.endAttempt(model, 'mockContext')
-
-		expect(Dispatcher.trigger).toHaveBeenCalled()
+		AssessmentUtil.endAttempt({
+			model,
+			context: 'mockContext',
+			visitId: 'mockVisitId'
+		}),
+			expect(Dispatcher.trigger).toHaveBeenCalled()
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('assessment:endAttempt', {
-			value: { id: 'testId', context: 'mockContext' }
+			value: { id: 'testId', context: 'mockContext', visitId: 'mockVisitId' }
 		})
 	})
 

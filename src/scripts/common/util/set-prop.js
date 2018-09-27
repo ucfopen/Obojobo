@@ -3,6 +3,7 @@ Sets properties on targetObject using values from sourceObject.
 If transformValueFn is set then the value is modified by transformValueFn.
 Set value on sourceObject if value ∈ allowedValues (or allowedValues is empty)
 Finally, set value on sourceObject to defaultValue if all other steps failed
+
 Example 1:
 setProp({}, {a:'100'}, 'a', 1, p => parseInt(p), [1, 100])
 1. Set value = p('100') = 100
@@ -10,11 +11,13 @@ setProp({}, {a:'100'}, 'a', 1, p => parseInt(p), [1, 100])
 3. targetObject['a'] is set so do not use defaultValue
 ---
 targetObject = {a:100}
+
 Example 2:
 setProp({}, {b:'1'}, 'c', 1, p => parseInt(p), [1, 100])
 1. sourceObject['c'] does not exist so sourceObject['c'] = defaultValue
 ---
 targetObject = {c:1}
+
 Example 3:
 setProp({}, {c:'2'}, 'c', 1, p => parseInt(p), [1, 100])
 1. Set value = p('2') = 2

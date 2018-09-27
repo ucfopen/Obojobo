@@ -13,14 +13,9 @@
 	display: inline-block;
 
 	button {
-<<<<<<< HEAD
-		@include user-select(none);
-
-=======
 		$color-button-bg: lighten($color-action, 9%);
 
 		user-select: none;
->>>>>>> issue/next-166-wysiwyg-editor
 		cursor: pointer;
 		font-family: $font-default;
 		font-size: 0.85em;

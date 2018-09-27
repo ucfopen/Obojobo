@@ -1,94 +1,37 @@
 @import '../../../scss/includes';
 
-.obojobo-draft--components--button {
-	@mixin disabled() {
-		background-color: $color-bg2;
-		cursor: default;
-		color: $color-text-minor;
-		border: 1px solid $color-transparent;
-		border-bottom: 1px solid $color-transparent;
-		opacity: 1;
-	}
+.obojobo-draft--components--button-bar {
+	> div {
+		display: inline-block;
 
-	display: inline-block;
+		> .obojobo-draft--components--button > button {
+			border-radius: 0;
 
-	button {
-		$color-button-bg: lighten($color-action, 9%);
-
-		user-select: none;
-		cursor: pointer;
-		font-family: $font-default;
-		font-size: 0.85em;
-		position: relative;
-		min-width: 3.25em;
-		border-radius: 0.2em;
-		padding: 0.6rem 1em;
-		background-color: $color-button-bg;
-		color: $color-bg;
-		border: 1px solid $color-transparent;
-		border-bottom: 1px solid darken($color-action, 20%);
-
-		&:hover {
-			background-color: $color-action;
+			&:focus {
+				z-index: 2;
+			}
 		}
 
-		&:disabled {
-			@include disabled();
+		&:first-child > .obojobo-draft--components--button > button {
+			border-top-left-radius: $dimension-rounded-radius;
+			border-bottom-left-radius: $dimension-rounded-radius;
 		}
-	}
 
-	&.is-dangerous {
-		button {
-			background-color: $color-dangerous;
-			border-bottom: 1px solid darken($color-action, 20%);
+		&:last-child > .obojobo-draft--components--button > button {
+			border-top-right-radius: $dimension-rounded-radius;
+			border-bottom-right-radius: $dimension-rounded-radius;
 		}
-	}
 
-	&.alt-action {
-		button {
-			border: 1px solid $color-action;
-			border-bottom: 1px solid $color-action;
-			background-color: $color-bg;
-			color: $color-action;
+		&:not(:last-child) > .obojobo-draft--components--button > button {
+			border-right: none;
+		}
 
-			&:hover {
-				background-color: $color-action;
+		&.is-selected {
+			> .obojobo-draft--components--button > button {
+				background-color: $color-highlight;
 				color: $color-bg;
-			}
-
-			&:disabled {
-				@include disabled();
+				z-index: 1;
 			}
 		}
-	}
-
-	&.alt-action.is-dangerous {
-		button {
-			border: 1px solid $color-dangerous;
-			border-bottom: 1px solid $color-dangerous;
-			background-color: $color-bg;
-			color: $color-dangerous;
-
-			&:hover {
-				background-color: $color-dangerous;
-				color: $color-bg;
-			}
-
-			&:disabled {
-				@include disabled();
-			}
-		}
-	}
-
-	&.align-left {
-		text-align: left;
-	}
-
-	&.align-right {
-		text-align: right;
-	}
-
-	&.align-center {
-		text-align: center;
 	}
 }

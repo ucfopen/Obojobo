@@ -2,7 +2,7 @@ import ScoreActions from './post-assessment/score-actions'
 // @TODO: Importing from the server code, we shouldn't do this:
 import AssessmentRubric from '../../../server/assessment-rubric'
 
-let Adapter = {
+const Adapter = {
 	construct(model, attrs) {
 		if (attrs && attrs.content && attrs.content.scoreActions) {
 			model.modelState.scoreActions = new ScoreActions(attrs.content.scoreActions)
@@ -33,12 +33,6 @@ let Adapter = {
 		clone.modelState.scoreActions = model.modelState.scoreActions.clone()
 		clone.modelState.rubric = model.modelState.rubric.clone()
 	},
-
-	//@TODO - necessary?
-	// clone.modelState.assessmentState =
-	// 	inTest: model.modelState.assessmentState.inTest
-	// 	currentScore: model.modelState.assessmentState.currentScore
-	// 	scores: Object.assign [], model.modelState.assessmentState.scores
 
 	toJSON(model, json) {
 		json.content.attempts = model.modelState.attempts

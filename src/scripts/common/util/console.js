@@ -23,7 +23,7 @@ export default {
 
 		console.timeEnd = function(s) {
 			if (console._times[s] != null) {
-				let diff = performance.now() - console._times[s].start
+				const diff = performance.now() - console._times[s].start
 				console._times[s].count++
 				console._times[s].time += diff
 				console._times[s].avg = (console._times[s].time / console._times[s].count).toFixed(3)
@@ -36,8 +36,8 @@ export default {
 		// console.showTimeAverages()
 
 		console.showTimeAverages = function() {
-			let byTime = []
-			for (let s in console._times) {
+			const byTime = []
+			for (const s in console._times) {
 				byTime.push({ s, avg: console._times[s].avg })
 			}
 
@@ -51,10 +51,10 @@ export default {
 				return 0
 			})
 
-			for (let o of Array.from(byTime)) {
+			for (const o of Array.from(byTime)) {
 				console._log(`%c${o.avg}: ${o.s}`, 'color: blue;')
 				return
-			} //@Todo - hack to only show worst thing
+			}
 		}
 
 		// console._error = console.error

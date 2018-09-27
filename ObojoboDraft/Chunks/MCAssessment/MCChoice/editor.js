@@ -60,12 +60,10 @@ class Node extends React.Component {
 			isOrNot(score === 100, 'correct')
 		return (
 			<div className={className} {...this.props.attributes}>
-				<button className={'delete'} onClick={event => this.delete(event)}>
+				<button className={'delete-node'} onClick={event => this.delete(event)}>
 					X
 				</button>
-				<button
-					className={'correct-button'}
-					onClick={event => this.handleScoreChange(event)}>
+				<button className={'correct-button'} onClick={event => this.handleScoreChange(event)}>
 					{score === 100 ? '✔' : '✖'}
 				</button>
 				<div className={'children'}>

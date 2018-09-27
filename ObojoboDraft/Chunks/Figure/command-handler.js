@@ -3,8 +3,8 @@ import Common from 'Common'
 
 const { TextGroupCommandHandler } = Editor.chunk.textChunk
 
-let { TextGroupSelection } = Common.textGroup
-let { Chunk } = Common.models
+const { TextGroupSelection } = Common.textGroup
+const { Chunk } = Common.models
 
 const _selectionInAnchor = function(selection, chunk) {
 	const tgs = new TextGroupSelection(chunk, selection.virtual)
@@ -30,8 +30,8 @@ export default class CommandHandler extends TextGroupCommandHandler {
 	}
 
 	deleteText(selection, chunk, deleteForwards) {
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
-		let s = tgs.start
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
+		const s = tgs.start
 
 		if (s.groupIndex === 'anchor:main') {
 			chunk = this._revert(chunk)
@@ -107,11 +107,11 @@ export default class CommandHandler extends TextGroupCommandHandler {
 
 		chunk.markDirty()
 
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
 
-		let newText = tgs.start.text.split(tgs.start.offset)
+		const newText = tgs.start.text.split(tgs.start.offset)
 
-		let newNode = Chunk.create() //@TODO - assumes it has a textGroup
+		const newNode = Chunk.create()
 		newNode.modelState.textGroup.first.text = newText
 		chunk.addChildAfter(newNode)
 
@@ -121,7 +121,7 @@ export default class CommandHandler extends TextGroupCommandHandler {
 	paste(selection, chunk, text, html, chunks) {
 		if (_selectionInAnchor(selection, chunk)) {
 			chunk = this._revert(chunk)
-			let pasteIntoChunk = Chunk.create()
+			const pasteIntoChunk = Chunk.create()
 			chunk.addChildBefore(pasteIntoChunk)
 			pasteIntoChunk.selectAll()
 

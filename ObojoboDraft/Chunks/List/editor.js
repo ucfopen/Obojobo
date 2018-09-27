@@ -1,6 +1,6 @@
 import React from 'react'
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID, PARENT_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
@@ -259,7 +259,7 @@ const plugins = {
 			})
 
 			// Double enter on last node
-			if (change.value.isCollapsed && last.text === '' && listLevel.nodes.last().key == last.key) {
+			if (change.value.isCollapsed && last.text === '' && listLevel.nodes.last().key === last.key) {
 				// Schema will change this back to a list_line unless it is at the end of the list
 				change.setNodeByKey(last.key, { type: TEXT_NODE })
 				return true

@@ -1,15 +1,15 @@
 const { Editor } = window
 import Common from 'Common'
 
-let { TextGroupCommandHandler } = Editor.chunk.textChunk
-let { TextGroupSelection } = Common.textGroup
-let { Chunk } = Common.models
+const { TextGroupCommandHandler } = Editor.chunk.textChunk
+const { TextGroupSelection } = Common.textGroup
+const { Chunk } = Common.models
 
 export default class CommandHandler extends TextGroupCommandHandler {
 	splitText(selection, chunk) {
 		chunk.markDirty()
 
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
 
 		if (tgs.start.isGroupStart) {
 			const newChunk = Chunk.create()
@@ -17,9 +17,9 @@ export default class CommandHandler extends TextGroupCommandHandler {
 			return
 		}
 
-		let newText = tgs.start.text.split(tgs.start.offset)
+		const newText = tgs.start.text.split(tgs.start.offset)
 
-		let newNode = Chunk.create() //@TODO - assumes it has a textGroup
+		const newNode = Chunk.create()
 		newNode.modelState.textGroup.first.text = newText
 		chunk.addChildAfter(newNode)
 

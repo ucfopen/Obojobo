@@ -145,7 +145,4 @@ Object.defineProperties(DOMSelection.prototype, {
 	}
 })
 
-//@TODO
-window.__ds = () => DOMSelection.get()
-
 export default DOMSelection

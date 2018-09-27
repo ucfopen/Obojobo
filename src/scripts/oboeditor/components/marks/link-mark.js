@@ -1,3 +1,5 @@
+/* eslint no-alert: 0 */
+
 function linkMark(options) {
 	const { type, key, render } = options
 

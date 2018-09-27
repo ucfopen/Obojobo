@@ -6,7 +6,7 @@ exports[`QuestionBank editor Node builds the expected component 1`] = `
   dummy="dummyData"
 >
   <button
-    className="delete"
+    className="delete-node"
     onClick={[Function]}
   >
     X
@@ -45,11 +45,11 @@ exports[`QuestionBank editor Node builds the expected component 2`] = `
 </div>
 `;
 
-exports[`QuestionBank editor Node component adds question 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
+exports[`QuestionBank editor Node component adds question 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete-node\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
 
-exports[`QuestionBank editor Node component adds question bank 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
+exports[`QuestionBank editor Node component adds question bank 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete-node\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
 
-exports[`QuestionBank editor Node component deletes self 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
+exports[`QuestionBank editor Node component deletes self 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"delete-node\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
 
 exports[`QuestionBank editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

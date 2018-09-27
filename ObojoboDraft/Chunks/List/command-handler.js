@@ -1,16 +1,16 @@
 const { Editor } = window
 import Common from 'Common'
 
-let { TextGroupCommandHandler } = Editor.chunk.textChunk
-let { TextGroupSelection } = Common.textGroup
-let { Chunk } = Common.models
+const { TextGroupCommandHandler } = Editor.chunk.textChunk
+const { TextGroupSelection } = Common.textGroup
+const { Chunk } = Common.models
 
 export default class CommandHandler extends TextGroupCommandHandler {
 	recalculateStartValues(refTextGroup, listStyles) {
 		let indentLevel
-		let indents = {}
+		const indents = {}
 
-		for (let item of Array.from(refTextGroup.items)) {
+		for (const item of Array.from(refTextGroup.items)) {
 			indentLevel = item.data.indent
 			if (indents[indentLevel] === null || typeof indents[indentLevel] === 'undefined') {
 				indents[indentLevel] = 1
@@ -20,11 +20,11 @@ export default class CommandHandler extends TextGroupCommandHandler {
 		}
 
 		return (() => {
-			let result = []
+			const result = []
 			for (indentLevel in indents) {
-				let startAddition = indents[indentLevel]
+				const startAddition = indents[indentLevel]
 				let item1
-				let style = listStyles.getSetStyles(indentLevel)
+				const style = listStyles.getSetStyles(indentLevel)
 				if (style.start !== null) {
 					item1 = style.start += startAddition
 				}
@@ -38,10 +38,10 @@ export default class CommandHandler extends TextGroupCommandHandler {
 		let afterNode
 		chunk.markDirty()
 
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
-		let data = chunk.modelState
+		const tgs = new TextGroupSelection(chunk, selection.virtual)
+		const data = chunk.modelState
 
-		let item = data.textGroup.get(tgs.start.groupIndex)
+		const item = data.textGroup.get(tgs.start.groupIndex)
 
 		if (item.text.length !== 0) {
 			return chunk.splitText()
@@ -55,14 +55,14 @@ export default class CommandHandler extends TextGroupCommandHandler {
 			return
 		}
 
-		let caretInLastItem = tgs.start.text === data.textGroup.last.text
+		const caretInLastItem = tgs.start.text === data.textGroup.last.text
 
 		if (!caretInLastItem) {
 			afterNode = chunk.clone()
 			afterNode.modelState.textGroup = data.textGroup.splitBefore(tgs.start.groupIndex + 1)
 		}
 
-		let inbetweenNode = Chunk.create()
+		const inbetweenNode = Chunk.create()
 
 		data.textGroup.remove(tgs.start.groupIndex)
 
@@ -81,8 +81,8 @@ export default class CommandHandler extends TextGroupCommandHandler {
 	}
 
 	deleteSelection(selection, chunk) {
-		let selType = selection.virtual.type
-		let { textGroup } = chunk.modelState
+		const selType = selection.virtual.type
+		const { textGroup } = chunk.modelState
 
 		super.deleteSelection(selection, chunk)
 
@@ -96,17 +96,10 @@ export default class CommandHandler extends TextGroupCommandHandler {
 	deleteText(selection, chunk, deleteForwards) {
 		chunk.markDirty()
 
-<<<<<<< HEAD
-		console.log('deleteText', this, this.recalculateStartValues)
-
-		let tgs = new TextGroupSelection(chunk, selection.virtual)
-		let data = chunk.modelState
-=======
 		const tgs = new TextGroupSelection(chunk, selection.virtual)
 		const data = chunk.modelState
->>>>>>> issue/next-166-wysiwyg-editor
 
-		let s = tgs.start
+		const s = tgs.start
 
 		// If backspacing at the start of one of the list items (that isn't the first)
 		if (!deleteForwards && !s.isFirstText && s.isTextStart && s.textGroupItem.data.indent > 0) {
@@ -123,8 +116,7 @@ export default class CommandHandler extends TextGroupCommandHandler {
 			(s.groupIndex > 0 || data.indent === 0)
 		) {
 			let bottom, top
-			let newChunk = Chunk.create()
-			//@TODO - this assumes too much, should use 'absorb'
+			const newChunk = Chunk.create()
 			newChunk.modelState.textGroup.first.text = s.textGroupItem.text
 
 			if (s.isFirstText) {
@@ -144,7 +136,7 @@ export default class CommandHandler extends TextGroupCommandHandler {
 				top.addChildAfter(newChunk)
 			} else {
 				top = chunk
-				let middle = newChunk
+				const middle = newChunk
 				bottom = chunk.clone()
 
 				top.modelState.textGroup.toSlice(0, s.groupIndex)

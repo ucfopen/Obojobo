@@ -25,7 +25,7 @@ exports[`Question editor Node builds the expected component 1`] = `
     </div>
   </div>
   <button
-    className="delete"
+    className="delete-node"
     onClick={[Function]}
   >
     X
@@ -33,9 +33,9 @@ exports[`Question editor Node builds the expected component 1`] = `
 </div>
 `;
 
-exports[`Question editor Node component adds Solution 1`] = `"<div class=\\"component flip-container obojobo-draft--chunks--question  is-active is-mode-practice\\"><div class=\\"flipper\\"><div class=\\"content back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button>Add Solution</button></div></div></div><button class=\\"delete\\">X</button></div>"`;
+exports[`Question editor Node component adds Solution 1`] = `"<div class=\\"component flip-container obojobo-draft--chunks--question  is-active is-mode-practice\\"><div class=\\"flipper\\"><div class=\\"content back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button>Add Solution</button></div></div></div><button class=\\"delete-node\\">X</button></div>"`;
 
-exports[`Question editor Node component deletes self 1`] = `"<div class=\\"component flip-container obojobo-draft--chunks--question  is-active is-mode-practice\\"><div class=\\"flipper\\"><div class=\\"content back\\"></div></div><button class=\\"delete\\">X</button></div>"`;
+exports[`Question editor Node component deletes self 1`] = `"<div class=\\"component flip-container obojobo-draft--chunks--question  is-active is-mode-practice\\"><div class=\\"flipper\\"><div class=\\"content back\\"></div></div><button class=\\"delete-node\\">X</button></div>"`;
 
 exports[`Question editor Solution component 1`] = `
 <div
@@ -43,7 +43,7 @@ exports[`Question editor Solution component 1`] = `
   dummy="dummyData"
 >
   <button
-    className="delete"
+    className="delete-node"
     onClick={[Function]}
   >
     X
@@ -51,7 +51,7 @@ exports[`Question editor Solution component 1`] = `
 </div>
 `;
 
-exports[`Question editor Solution component deletes self 1`] = `"<div class=\\"solution-editor\\"><button class=\\"delete\\">X</button></div>"`;
+exports[`Question editor Solution component deletes self 1`] = `"<div class=\\"solution-editor\\"><button class=\\"delete-node\\">X</button></div>"`;
 
 exports[`Question editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

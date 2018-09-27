@@ -62,7 +62,7 @@ const Solution = props => {
 	return (
 		<div className={'solution-editor'} {...props.attributes}>
 			{props.children}
-			<button className={'delete'} onClick={() => deleteNode()}>
+			<button className={'delete-node'} onClick={() => deleteNode()}>
 				X
 			</button>
 		</div>
@@ -107,7 +107,7 @@ class Node extends React.Component {
 						)}
 					</div>
 				</div>
-				<button className={'delete'} onClick={() => this.delete()}>
+				<button className={'delete-node'} onClick={() => this.delete()}>
 					X
 				</button>
 			</div>

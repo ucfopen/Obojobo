@@ -43,12 +43,7 @@ const requiresValue = {
 	},
 	'viewer:alert': value => {
 		const json = JSON.parse(value)
-		return (
-			json.title !== null &&
-			json.title !== undefined &&
-			json.message !== null &&
-			json.message !== undefined
-		)
+		return json.title !== null && json.message !== null
 	}
 }
 /* eslint-enable eqeqeq */
@@ -70,7 +65,7 @@ class Trigger extends React.Component {
 				<div>
 					<p>{this.props.value}</p>
 				</div>
-				<button className={'delete'} onClick={() => this.deleteTrigger()}>
+				<button className={'delete-node'} onClick={() => this.deleteTrigger()}>
 					x
 				</button>
 			</div>
