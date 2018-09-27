@@ -1,9 +1,7 @@
 const TIMEOUT_RESTORE_TAB_INDEX_MS = 1000
 
 export default el => {
-	if (!el || !el.focus || !el.getAttribute || !el.setAttribute) return
-
-	console.log('focus on', el)
+	if (!el || !el.focus || !el.getAttribute || !el.setAttribute) return false
 
 	const tabIndex = el.getAttribute('tabindex')
 
@@ -16,4 +14,6 @@ export default el => {
 	setTimeout(() => {
 		el.setAttribute('tabindex', tabIndex)
 	}, TIMEOUT_RESTORE_TAB_INDEX_MS)
+
+	return true
 }

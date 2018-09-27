@@ -268,10 +268,11 @@ export default class ViewerApp extends React.Component {
 		if (!container) return
 
 		if (el) {
-			return (container.scrollTop = el.getBoundingClientRect().height)
+			container.scrollTop = el.getBoundingClientRect().height
+			return
 		}
 
-		return (container.scrollTop = 0)
+		container.scrollTop = 0
 	}
 
 	// === NON REACT LIFECYCLE METHODS ===

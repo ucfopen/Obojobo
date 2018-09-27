@@ -57,3 +57,11 @@ exports[`StyleableText Component StyleableText component with children 1`] = `
   </b>
 </span>
 `;
+
+exports[`StyleableText Component StyleableText with alt 1`] = `
+<span>
+  <span
+    aria-label="mock-alt-text"
+  />
+</span>
+`;

@@ -19,6 +19,11 @@ const UIStates = {
 	UI_RESYNCED: 'resynced'
 }
 
+const FocusTargets = {
+	RESYNC_FAILED_DIALOG: 'resyncFailed',
+	COMPONENT: 'component'
+}
+
 const renderNotLTI = () => <div className="is-not-lti">&nbsp;</div>
 
 const renderNoScoreSent = externalSystemLabel => (
@@ -71,88 +76,125 @@ const renderError = (ltiResyncState, ltiNetworkState, systemLabel, onClickResend
 	</div>
 )
 
-const getLTIStatusProps = props => {
-	const lti = props.ltiState
-	const isLTIDataComplete = !!(lti && lti.state)
-	const gradebookStatus = lti && lti.state ? lti.state.gradebookStatus : null
-	const networkState = lti ? lti.networkState : null
-	const resyncState = lti ? lti.resyncState : null
-	const isPreviewing = props.isPreviewing
-	const externalSystemLabel = props.externalSystemLabel
-	const roundedAssessmentScore = Math.round(props.assessmentScore)
-
-	return {
-		isLTIDataComplete,
-		gradebookStatus,
-		networkState,
-		resyncState,
-		isPreviewing,
-		externalSystemLabel,
-		roundedAssessmentScore
-	}
-}
-
-const getUIState = ltiProps => {
-	if (
-		ltiProps.isPreviewing ||
-		!ltiProps.externalSystemLabel ||
-		ltiProps.gradebookStatus === 'ok_no_outcome_service'
-	) {
-		return UIStates.UI_NOT_LTI
-	}
-	if (ltiProps.externalSystemLabel && !ltiProps.isLTIDataComplete) {
-		if (ltiProps.resyncState === LTIResyncStates.RESYNC_FAILED) {
-			return UIStates.UI_ERROR_RESYNC_FAILED
-		} else {
-			return UIStates.UI_ERROR
-		}
-	}
-	if (ltiProps.gradebookStatus === 'ok_null_score_not_sent') return UIStates.UI_NO_SCORE_SENT
-	if (ltiProps.gradebookStatus === 'ok_gradebook_matches_assessment_score') {
-		if (ltiProps.resyncState === LTIResyncStates.RESYNC_SUCCEEDED) {
-			return UIStates.UI_RESYNCED
-		}
-		return UIStates.UI_SYNCED
-	}
-	if (ltiProps.resyncState === LTIResyncStates.RESYNC_FAILED) {
-		return UIStates.UI_ERROR_RESYNC_FAILED
-	}
-
-	return UIStates.UI_ERROR
-}
-
 class LTIStatus extends React.Component {
-	componentWillReceiveProps(nextProps) {
-		const currentLtiProps = getLTIStatusProps(this.props)
-		const currentUIState = getUIState(currentLtiProps)
-		const nextLtiProps = getLTIStatusProps(nextProps)
-		const nextUIState = getUIState(nextLtiProps)
+	constructor() {
+		super()
 
+		this.nextFocusTarget = null
+	}
+
+	getLTIStatusProps(props) {
+		const lti = props.ltiState
+		const isLTIDataComplete = !!(lti && lti.state)
+		const gradebookStatus = lti && lti.state ? lti.state.gradebookStatus : null
+		const networkState = lti ? lti.networkState : null
+		const resyncState = lti ? lti.resyncState : null
+		const isPreviewing = props.isPreviewing
+		const externalSystemLabel = props.externalSystemLabel
+		const roundedAssessmentScore = Math.round(props.assessmentScore)
+
+		return {
+			isLTIDataComplete,
+			gradebookStatus,
+			networkState,
+			resyncState,
+			isPreviewing,
+			externalSystemLabel,
+			roundedAssessmentScore
+		}
+	}
+
+	getUIState(ltiProps) {
 		if (
-			currentUIState !== nextUIState ||
-			(currentLtiProps.networkState === LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE &&
-				nextLtiProps.networkState === LTINetworkStates.IDLE)
+			ltiProps.isPreviewing ||
+			!ltiProps.externalSystemLabel ||
+			ltiProps.gradebookStatus === 'ok_no_outcome_service'
 		) {
-			if (nextUIState === UIStates.UI_ERROR_RESYNC_FAILED) {
-				this.nextFocusEl = this.refs.resyncFailed
+			return UIStates.UI_NOT_LTI
+		}
+		if (ltiProps.externalSystemLabel && !ltiProps.isLTIDataComplete) {
+			if (ltiProps.resyncState === LTIResyncStates.RESYNC_FAILED) {
+				return UIStates.UI_ERROR_RESYNC_FAILED
 			} else {
-				this.nextFocusEl = ReactDOM.findDOMNode(this)
+				return UIStates.UI_ERROR
 			}
 		}
+		if (ltiProps.gradebookStatus === 'ok_null_score_not_sent') return UIStates.UI_NO_SCORE_SENT
+		if (ltiProps.gradebookStatus === 'ok_gradebook_matches_assessment_score') {
+			if (ltiProps.resyncState === LTIResyncStates.RESYNC_SUCCEEDED) {
+				return UIStates.UI_RESYNCED
+			}
+			return UIStates.UI_SYNCED
+		}
+		if (ltiProps.resyncState === LTIResyncStates.RESYNC_FAILED) {
+			return UIStates.UI_ERROR_RESYNC_FAILED
+		}
+
+		return UIStates.UI_ERROR
+	}
+
+	// Reduce props and nextProps to values which can be used to determine the next focusTarget
+	getCurrentAndNextLTIStates(props, nextProps) {
+		const currentLtiProps = this.getLTIStatusProps(props)
+		const currentUIState = this.getUIState(currentLtiProps)
+		const nextLtiProps = this.getLTIStatusProps(nextProps)
+		const nextUIState = this.getUIState(nextLtiProps)
+
+		return {
+			currentLTINetworkState: currentLtiProps.networkState,
+			nextLTINetworkState: nextLtiProps.networkState,
+			currentUIState,
+			nextUIState
+		}
+	}
+
+	getNextFocusTarget({ currentLTINetworkState, nextLTINetworkState, currentUIState, nextUIState }) {
+		let nextFocusTarget = null
+
+		if (
+			currentUIState !== nextUIState &&
+			currentLTINetworkState === LTINetworkStates.AWAITING_SEND_ASSESSMENT_SCORE_RESPONSE &&
+			nextLTINetworkState === LTINetworkStates.IDLE
+		) {
+			switch (nextUIState) {
+				case UIStates.UI_ERROR_RESYNC_FAILED:
+					nextFocusTarget = FocusTargets.RESYNC_FAILED_DIALOG
+					break
+
+				default:
+					nextFocusTarget = FocusTargets.COMPONENT
+					break
+			}
+		}
+
+		return nextFocusTarget
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.nextFocusTarget = this.getNextFocusTarget(
+			this.getCurrentAndNextLTIStates(this.props, nextProps)
+		)
 	}
 
 	componentDidUpdate() {
-		if (this.nextFocusEl) {
-			focus(this.nextFocusEl)
-			delete this.nextFocusEl
+		switch (this.nextFocusTarget) {
+			case FocusTargets.RESYNC_FAILED_DIALOG:
+				focus(this.refs.resyncFailed)
+				break
+
+			case FocusTargets.COMPONENT:
+				focus(ReactDOM.findDOMNode(this))
+				break
 		}
+
+		this.nextFocusTarget = null
 	}
 
 	render() {
-		const ltiProps = getLTIStatusProps(this.props)
+		const ltiProps = this.getLTIStatusProps(this.props)
 		let child
 
-		switch (getUIState(ltiProps)) {
+		switch (this.getUIState(ltiProps)) {
 			case UIStates.UI_NOT_LTI:
 				return renderNotLTI()
 
@@ -197,4 +239,4 @@ class LTIStatus extends React.Component {
 }
 
 export default LTIStatus
-export { getLTIStatusProps, getUIState, UIStates }
+export { UIStates }

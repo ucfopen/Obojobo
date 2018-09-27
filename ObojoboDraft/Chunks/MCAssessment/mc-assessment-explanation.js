@@ -7,10 +7,6 @@ const { Button } = Common.components
 const { focus } = Common.page
 
 export default class MCAssessmentExplanation extends React.Component {
-	constructor(props) {
-		super(props)
-	}
-
 	focusOnExplanation() {
 		focus(this.refSolutionContainer)
 	}

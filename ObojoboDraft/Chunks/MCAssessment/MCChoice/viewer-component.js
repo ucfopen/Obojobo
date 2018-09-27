@@ -106,7 +106,7 @@ const getChoiceText = (isCorrect, isTypePickAll) => {
 	if (isTypePickAll && isCorrect) return 'A correct response:'
 	if (isTypePickAll && !isCorrect) return 'An incorrect response:'
 	if (!isTypePickAll && isCorrect) return 'Your correct response:'
-	if (!isTypePickAll && !isCorrect) return 'Your incorrect response:'
+	/*if (!isTypePickAll && !isCorrect)*/ return 'Your incorrect response:'
 }
 
 const MCChoice = props => {
@@ -172,38 +172,38 @@ const MCChoice = props => {
 			<div className="children">
 				{props.model.children.map(child => {
 					const type = child.get('type')
-					const isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
-					const isFeedbackItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 					const id = child.get('id')
+					const Component = child.getComponentClass()
 
-					if (isAnswerItem) {
-						const Component = child.getComponentClass()
-						return (
-							<div key={id}>
-								{flag}
-								<Component key={id} model={child} moduleData={props.moduleData} />
-							</div>
-						)
-					} else if (isFeedbackItem) {
-						const Component = child.getComponentClass()
+					switch (type) {
+						case 'ObojoboDraft.Chunks.MCAssessment.MCAnswer':
+							return (
+								<div key={id}>
+									{flag}
+									<Component key={id} model={child} moduleData={props.moduleData} />
+								</div>
+							)
 
-						return (
-							<ReactCSSTransitionGroup
-								className="feedback-container"
-								component="div"
-								transitionName="feedback"
-								transitionEnterTimeout={TRANSITION_TIME_MS}
-								transitionLeaveTimeout={TRANSITION_TIME_MS}
-								key="_feedback-container"
-							>
-								{isSelected && props.questionSubmitted ? (
-									<div className="feedback">
-										<Component key={id} model={child} moduleData={props.moduleData} />
-									</div>
-								) : null}
-							</ReactCSSTransitionGroup>
-						)
+						case 'ObojoboDraft.Chunks.MCAssessment.MCFeedback':
+							return (
+								<ReactCSSTransitionGroup
+									className="feedback-container"
+									component="div"
+									transitionName="feedback"
+									transitionEnterTimeout={TRANSITION_TIME_MS}
+									transitionLeaveTimeout={TRANSITION_TIME_MS}
+									key="_feedback-container"
+								>
+									{isSelected && props.questionSubmitted ? (
+										<div className="feedback">
+											<Component key={id} model={child} moduleData={props.moduleData} />
+										</div>
+									) : null}
+								</ReactCSSTransitionGroup>
+							)
 					}
+
+					return null
 				})}
 			</div>
 		</OboComponent>

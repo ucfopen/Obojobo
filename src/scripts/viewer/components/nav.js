@@ -110,7 +110,7 @@ export default class Nav extends React.Component {
 	}
 
 	focus() {
-		this.refs.list.focus()
+		Common.page.focus(this.refs.list)
 	}
 
 	render() {

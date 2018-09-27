@@ -31,7 +31,8 @@ const MCAssessmentResults = props => {
 				) : null}
 			</div>
 		)
-	} else if (!isCorrect && !isForScreenReader) {
+	} else {
+		/*if (!isCorrect && !isForScreenReader) */
 		return (
 			<div className="result-container" aria-hidden="true">
 				<p className="result incorrect">{props.incorrectLabel}</p>

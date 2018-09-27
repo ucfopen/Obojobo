@@ -492,4 +492,9 @@ describe('NavUtil', () => {
 			value: { context: 'mockContext' }
 		})
 	})
+
+	test('isNavEnabled returns if the nav is enabled', () => {
+		expect(NavUtil.isNavEnabled({ disabled: true })).toBe(false)
+		expect(NavUtil.isNavEnabled({ disabled: false })).toBe(true)
+	})
 })

@@ -67,7 +67,7 @@ describe('MCAssessmentAnswerChoices', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('focusOnResults calls focus', () => {
+	test.only('focusOnResults calls focus', () => {
 		const component = renderer.create(<MCAssessmentAnswerChoices models={[]} />)
 
 		component.getInstance().focusOnResults()

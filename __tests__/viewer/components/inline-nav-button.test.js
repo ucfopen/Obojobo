@@ -9,9 +9,10 @@ jest.mock('src/scripts/viewer/util/nav-util', () => ({
 	goPrev: jest.fn()
 }))
 
-const getProps = (type, disabled = false) => ({
+const getProps = (type, disabled = false, onClick = null) => ({
 	type,
 	disabled,
+	onClick,
 	title: 'testTitle'
 })
 
@@ -62,5 +63,13 @@ describe('Inline Nav Button', () => {
 			}
 		})
 		expect(blurFn).toHaveBeenCalled()
+	})
+
+	test('onClick calls calls prop onClick', () => {
+		const onClick = jest.fn()
+
+		const el = shallow(<NavButton {...getProps('goNext', false, onClick)} />)
+		el.find('.viewer--components--inline-nav-button').simulate('click')
+		expect(onClick).toHaveBeenCalled()
 	})
 })

@@ -357,8 +357,8 @@
 		}
 	}
 
-	&.is-scored.is-not-correct.is-response-type-pick-all
-		.obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly {
+	// prettier-ignore
+	&.is-scored.is-not-correct.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly {
 		background: transparentize($color-highlight, 0.8);
 	}
 

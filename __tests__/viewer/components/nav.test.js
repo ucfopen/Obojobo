@@ -2,6 +2,8 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
+jest.mock('../../../src/scripts/common/page/focus')
+
 class MockStylableText {
 	constructor(text) {
 		this.value = text
@@ -9,6 +11,7 @@ class MockStylableText {
 }
 const mockStylableComponent = props => <div {...props} className={'mockStylableText'} />
 const mockScrollIntoView = jest.fn()
+const mockFocus = jest.fn()
 // Common
 jest.mock('../../../src/scripts/common/index', () => ({
 	models: {
@@ -36,6 +39,9 @@ jest.mock('../../../src/scripts/common/index', () => ({
 		Dispatcher: {
 			trigger: jest.fn()
 		}
+	},
+	page: {
+		focus: mockFocus
 	}
 }))
 
@@ -307,5 +313,21 @@ describe('Nav', () => {
 
 		el.setProps({ className: 'new-class-name-2' })
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+	})
+
+	test('focus calls focus ', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = {
+			navState: {
+				open: false,
+				locked: true
+			}
+		}
+		const component = renderer.create(<Nav {...props} />)
+
+		const mockListRef = jest.fn()
+		component.getInstance().refs.list = mockListRef
+		component.getInstance().focus()
+		expect(mockFocus).toHaveBeenCalledWith(mockListRef)
 	})
 })
