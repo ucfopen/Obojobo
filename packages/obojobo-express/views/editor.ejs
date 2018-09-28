@@ -16,7 +16,8 @@
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/foldgutter.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/foldcode.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/brace-fold.js",
-				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/indent-fold.js"
+				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/indent-fold.js",
+				"https://ajax.googleapis.com/ajax/libs/angularjs/1.7.4/angular.min.js"
 			]
 
 			let css = [
@@ -29,7 +30,6 @@
 
 		%>
 		<%- include ./partials/head %>
-
 		<style type="text/css">
 			body { font-family:'Libre Franklin', Arial; padding:0; margin:0; margin-top: 40px; }
 			ul > li > p, ul > li > a { display:inline-block; margin-right: 1em; }
@@ -135,7 +135,162 @@
 			<div id="pop-up-message">
 				Saved!
 			</div>
-		</div>
+			<form style="position: absolute; bottom: 5px;">
+				<div id="left-pane">
+					<div class="drag-header">
+						Upload a new file
+					</div>
+					<div class="drag-wrapper" file-on-change="uploadFile">
+						<div class="drag-text">
+							Drag a file here to upload
+						</div>
+					</div>
+					<div class="drag-footer">
+						<label>
+							<input type="file" onchange="uploadFile(this);" style="display:none" />
+							<span class="select_file_button">Browse...</span>
+						</label>
+					</div>
+				</div>
+				<input type="submit"></form>
+			</form>
+			<form id="import-form" class="right-pane">
+				<div class="pane-header">
+					Pick from your library
+					<a href="#" id="close-button"></a>
+				</div>
+				<div id="sort-bar">
+					<div id="sort-cols">
+						<div class="col-cont" ng-repeat="col in cols">
+							<label id='sort-{{col}}' class="dt-sorting">{{col}}</label>
+							<div class='arrows'></div>
+						</div>
+					</div>
+				</div>
+		
+				<table id="question-table">
+					<thead>
+						<tr>
+							<th ng-repeat="col in dt_cols"></th>
+						</tr>
+					</thead>
+				</table>
+				<div id="modal-cover"></div>
+			</form>	
+				
+			</div>
+		<!-- File Uploader -->
+		<script>
+			function _getMimeType(dataUrl) {
+				let allowedMimeTypes = ["image/jpg", "image/jpeg", "image/png"]
+
+				const mime = dataUrl.split(';')[0].split(':')[1]
+
+				if (mime == null || allowedMimeTypes.indexOf(mime) === -1) {
+					alert('This widget does not support selected file type is not supported. ' +
+						`The allowed types are: ${allowedMimeTypes.join(', ')}.`)
+					return null
+				}
+
+				return mime
+			}
+
+			function _getFileData(file, callback) {
+				const fileReader = new FileReader()
+
+				// File size is measured in bytes
+				if (file.size > 60000000) {
+					alert(
+						`The file being uploaded has a size greater than 60MB. Please choose a file that is no greater than 60MB.`
+					)
+					return null
+				}
+
+				fileReader.onload = event => {
+					const src = event.target.result
+					const mime = _getMimeType(src)
+					
+					if (mime == null) {
+						return null
+					}
+					
+					const fileData = {
+						name: file.name,
+						mime,
+						ext: file.name.split('.').pop(),
+						size: file.size,
+						src
+					}
+
+					return callback(fileData)
+				}
+
+				return fileReader.readAsDataURL(file)
+			}
+
+			function _dataURItoBlob(dataURI, mime) {
+				// convert base64/URLEncoded data component to raw binary data held in a string
+				let byteString
+
+				// data format: data:{mimeType};{encoding},{encodedDataString}
+				// dataParts = [0] => data:{mimeType};{encoding},
+				//			   [1] => {encodedDataString}
+				const dataParts = dataURI.split(',')
+
+				if (dataParts[0].indexOf('base64') >= 0) {
+					byteString = atob(dataParts[1])
+				} else {
+					byteString = unescape(dataParts[1])
+				}
+
+				const intArray = new Uint8Array(byteString.length)
+				for (let i in byteString) {
+					intArray[i] = byteString.charCodeAt(i)
+				}
+
+				return new Blob([intArray], { type: mime })
+			}
+
+			function _upload(fileData) {
+				var fd = new FormData()
+
+				fd.append('name', fileData.name)
+				fd.append('Content-Type', fileData.mime)
+				fd.append('success_action_status', '201')
+				fd.append('file', _dataURItoBlob(fileData.src, fileData.mime), fileData.name)
+
+				const request = new XMLHttpRequest()
+
+				request.onload = oEvent => {
+					const res = JSON.parse(request.response)
+
+					if (res.error) {
+						console.log(`Error code ${res.error.code}: ${res.error.message}`)
+					} else {
+						console.log("Successful upload")
+					}	
+				}
+
+				// request.open('POST', "upload_url")
+				// return request.send(fd)
+
+				console.log(_dataURItoBlob(fileData.src, fileData.mime));
+			}
+
+			function uploadFile(fileInput)
+			{
+				var upload = fileInput.files[0];
+				
+				if (upload != null) {
+					_getFileData(upload, fileData => {
+						if (fileData != null) {
+							_upload(fileData);
+						}
+					})
+				}
+			}
+		</script>
+		<!-- End Uploader -->
 		<script>
 			var domParser = new DOMParser()
 
