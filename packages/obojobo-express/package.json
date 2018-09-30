@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-express",
-	"version": "3.3.3",
+	"version": "3.3.4",
 	"private": true,
 	"scripts": {
 		"start": "pm2 start pm2_prod.yaml",
@@ -55,8 +55,8 @@
 		"json-inflector": "^1.1.0",
 		"moment": "^2.18.0",
 		"morgan": "~1.7.0",
-		"obojobo-document-engine":"1.0.2",
-		"obojobo-document-xml-parser":"0.3.0",
+		"obojobo-document-engine":"*",
+		"obojobo-document-xml-parser":"*",
 		"pg-promise": "^5.5.0",
 		"serve-favicon": "~2.3.0"
 	},

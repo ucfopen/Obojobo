@@ -87,11 +87,11 @@ class AssessmentStore extends Store {
 			assessments[assessId].lti = assessmentItem.ltiState
 			assessments[assessId].highestAttemptScoreAttempts = AssessmentUtil.findHighestAttempts(
 				attempts,
-				'assessmentScore'
+				'attemptScore'
 			)
 			assessments[assessId].highestAssessmentScoreAttempts = AssessmentUtil.findHighestAttempts(
 				attempts,
-				'attemptScore'
+				'assessmentScore'
 			)
 
 			attempts.forEach(attempt => {
