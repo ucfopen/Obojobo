@@ -93,6 +93,54 @@ describe('ViewerApp', () => {
 		})
 	})
 
+	test('focusOnContent focuses on the Module element', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const mockFocus = jest.fn()
+			const origGetElementById = document.getElementById
+			document.getElementById = jest.fn()
+			document.getElementById.mockReturnValueOnce({
+				focus: mockFocus
+			})
+
+			component.instance().focusOnContent()
+
+			expect(mockFocus).toHaveBeenCalledTimes(1)
+
+			component.unmount()
+			document.getElementById = origGetElementById
+			done()
+		})
+	})
+
+	test('focusOnContent does not call focus if element cannot be found', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const mockFocus = jest.fn()
+			const origGetElementById = document.getElementById
+			document.getElementById = jest.fn()
+			document.getElementById.mockReturnValueOnce(null)
+
+			component.instance().focusOnContent()
+
+			expect(mockFocus).not.toHaveBeenCalled()
+
+			component.unmount()
+			document.getElementById = origGetElementById
+			done()
+		})
+	})
+
 	test('ViewerApp component', done => {
 		expect.assertions(1)
 		mocksForMount()
@@ -179,7 +227,7 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
-		NavUtil.getNavTargetModel.mockReturnValueOnce({ title: 'mockTarget' })
+		NavUtil.getNavTarget.mockReturnValueOnce({ label: 'mockTarget' })
 		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
@@ -195,9 +243,10 @@ describe('ViewerApp', () => {
 		expect.assertions(1)
 		mocksForMount()
 
+		NavUtil.isNavEnabled.mockReturnValueOnce(true)
 		NavUtil.canNavigate.mockReturnValueOnce(true)
-		NavUtil.getPrevModel.mockReturnValueOnce({ title: 'mockPrevTitle' })
-		NavUtil.getNextModel.mockReturnValueOnce({ title: 'mockNextTitle' })
+		NavUtil.getPrev.mockReturnValueOnce({ label: 'mockPrevTitle' })
+		NavUtil.getNext.mockReturnValueOnce({ label: 'mockNextTitle' })
 		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
@@ -209,13 +258,31 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('ViewerApp component with nav models', done => {
+	test('ViewerApp component with nav models (no titles)', done => {
 		expect.assertions(1)
 		mocksForMount()
 
+		NavUtil.isNavEnabled.mockReturnValueOnce(true)
 		NavUtil.canNavigate.mockReturnValueOnce(true)
-		NavUtil.getPrevModel.mockReturnValueOnce({ title: null })
-		NavUtil.getNextModel.mockReturnValueOnce({ title: null })
+		NavUtil.getPrev.mockReturnValueOnce({})
+		NavUtil.getNext.mockReturnValueOnce({})
+		const component = mount(<ViewerApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('ViewerApp component without nav models', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		NavUtil.isNavEnabled.mockReturnValueOnce(true)
+		NavUtil.canNavigate.mockReturnValueOnce(true)
 		const component = mount(<ViewerApp />)
 		setTimeout(() => {
 			component.update()
@@ -481,6 +548,80 @@ describe('ViewerApp', () => {
 			component.instance().scrollToTop()
 
 			expect(ReactDOM.findDOMNode).toHaveBeenCalledTimes(2)
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('scrollToTop sets container.scrollTop', done => {
+		expect.assertions(1)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		const mockEl = {
+			getBoundingClientRect: () => ({
+				height: 'mock-height'
+			})
+		}
+		const containerEl = {
+			scrollTop: 0
+		}
+
+		setTimeout(() => {
+			component.update()
+
+			jest.spyOn(ReactDOM, 'findDOMNode')
+			ReactDOM.findDOMNode.mockReturnValueOnce(mockEl)
+			ReactDOM.findDOMNode.mockReturnValueOnce(containerEl)
+
+			component.instance().scrollToTop()
+
+			expect(containerEl.scrollTop).toBe('mock-height')
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('focusOnNavigation does nothing if nav is not enabled', done => {
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const focusFn = jest.fn()
+			component.instance().refs.nav = {
+				focus: focusFn
+			}
+			NavUtil.isNavEnabled.mockReturnValueOnce(false)
+			component.instance().focusOnNavigation()
+
+			expect(NavUtil.open).not.toHaveBeenCalled()
+			expect(focusFn).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('focusOnNavigation calls NavUtil.open and focuses on nav if nav is enabled', done => {
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const focusFn = jest.fn()
+			component.instance().refs.nav = {
+				focus: focusFn
+			}
+			NavUtil.isNavEnabled.mockReturnValueOnce(true)
+			component.instance().focusOnNavigation()
+
+			expect(NavUtil.open).toHaveBeenCalledTimes(1)
+			expect(focusFn).toHaveBeenCalledTimes(1)
 
 			component.unmount()
 			done()

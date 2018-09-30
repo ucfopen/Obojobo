@@ -233,6 +233,10 @@ const NavUtil = {
 				context
 			}
 		})
+	},
+
+	isNavEnabled(state) {
+		return !state.disabled
 	}
 }
 

@@ -1,7 +1,28 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--mc-assessment--mc-feedback {
+	// @keyframes obojobo-draft--chunks--mc-assessment--mc-feedback--bounce {
+	// 	0% {
+	// 		//transform: scale(0);
+	// 		transform: translate(-100vw);
+	// 	}
+
+	// 	// 50% {
+	// 	// 	transform: scale(1.1);
+	// 	// }
+
+	// 	// 80% {
+	// 	// 	transform: scale(0.9);
+	// 	// }
+
+	// 	100% {
+	// 		//transform: scale(1);
+	// 		transform: translate(0);
+	// 	}
+	// }
+
 	font-size: 0.8em;
 	padding-left: $dimension-padding * 0.2333333333;
 	padding-right: $dimension-padding * 0.2333333333;
+	// animation: obojobo-draft--chunks--mc-assessment--mc-feedback--bounce 1s;
 }

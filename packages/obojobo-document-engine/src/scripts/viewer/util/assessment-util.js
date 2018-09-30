@@ -58,6 +58,7 @@ const AssessmentUtil = {
 
 	getAssessmentScoreForModel(state, model) {
 		const attempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(state, model)
+
 		if (attempts.length === 0) {
 			return null
 		}

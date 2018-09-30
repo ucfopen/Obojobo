@@ -16,7 +16,7 @@ import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
 
 import preTest from './components/pre-test'
 import test from './components/test'
-import postTest from './components/post-test'
+import PostTest from './components/post-test'
 
 class Assessment extends React.Component {
 	constructor() {
@@ -179,11 +179,13 @@ class Assessment extends React.Component {
 					})
 
 				case 'post-test':
-					return postTest({
-						model: this.props.model,
-						moduleData: this.props.moduleData,
-						scoreAction: this.getScoreAction()
-					})
+					return (
+						<PostTest
+							model={this.props.model}
+							moduleData={this.props.moduleData}
+							scoreAction={this.getScoreAction()}
+						/>
+					)
 			}
 		})()
 

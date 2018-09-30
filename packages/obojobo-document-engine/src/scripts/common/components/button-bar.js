@@ -40,7 +40,9 @@ const ButtonBar = props => (
 
 			return (
 				<div key={i} className={isSelected ? 'is-selected' : ''}>
-					<Button {...childProps}>{child.props.children}</Button>
+					<Button {...childProps} ariaSelected={isSelected}>
+						{child.props.children}
+					</Button>
 				</div>
 			)
 		})}

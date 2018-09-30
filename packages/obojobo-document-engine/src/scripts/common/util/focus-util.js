@@ -2,9 +2,9 @@ import Dispatcher from '../../common/flux/dispatcher'
 import OboModel from '../../common/models/obo-model'
 
 const FocusUtil = {
-	focusComponent(id) {
+	focusComponent(id, isVisuallyFocused = true) {
 		Dispatcher.trigger('focus:component', {
-			value: { id }
+			value: { id, isVisuallyFocused }
 		})
 	},
 

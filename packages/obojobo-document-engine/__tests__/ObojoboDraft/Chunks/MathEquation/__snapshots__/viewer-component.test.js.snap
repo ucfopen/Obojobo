@@ -2,12 +2,14 @@
 
 exports[`MathEquation MathEquation component 1`] = `
 <div
+  aria-label="y=\\\\frac{1}{x}"
   className="component obojobo-draft--chunks--math-equation pad align-center"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="non-editable-chunk"
@@ -35,12 +37,14 @@ exports[`MathEquation MathEquation component with error 1`] = `null`;
 
 exports[`MathEquation MathEquation component with label 1`] = `
 <div
+  aria-label="y=\\\\frac{1}{x}"
   className="component obojobo-draft--chunks--math-equation pad align-center"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="non-editable-chunk"
@@ -61,9 +65,14 @@ exports[`MathEquation MathEquation component with label 1`] = `
       }
     />
     <div
+      aria-label="Equation mockLabel"
       className="equation-label"
     >
-      mockLabel
+      <span
+        aria-hidden="true"
+      >
+        mockLabel
+      </span>
     </div>
   </div>
 </div>

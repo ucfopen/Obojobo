@@ -10,12 +10,15 @@ import Common from 'Common'
 const { OboModel } = Common.models
 const { StyleableText } = Common.text
 const { StyleableTextComponent } = Common.text
+const { Button } = Common.components
+const { Dispatcher } = Common.flux
 
 export default class Nav extends React.Component {
 	onClick(item) {
 		switch (item.type) {
 			case 'link':
 				if (!NavUtil.canNavigate(this.props.navState)) return
+				this.shouldFocusOnContentAfterUpdate = true
 				NavUtil.gotoPath(item.fullPath)
 				break
 
@@ -25,15 +28,27 @@ export default class Nav extends React.Component {
 		}
 	}
 
+	onClickSkipNavigation() {
+		Dispatcher.trigger('viewer:focusOnContent')
+	}
+
 	renderLabel(label) {
 		if (label instanceof StyleableText) {
 			return <StyleableTextComponent text={label} />
 		}
 
-		return <a>{label}</a>
+		return label
 	}
 
-	renderLink(index, isSelected, list, lockEl) {
+	renderLinkButton(label, isDisabled, refId = null) {
+		return (
+			<button ref={refId} aria-disabled={isDisabled}>
+				{this.renderLabel(label)}
+			</button>
+		)
+	}
+
+	renderLink(index, isSelected, list, isItemDisabled, lockEl) {
 		const item = list[index]
 		const isFirstInList = !list[index - 1]
 		const isLastInList = !list[index + 1]
@@ -50,13 +65,13 @@ export default class Nav extends React.Component {
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLabel(item.label)}
+				{this.renderLinkButton(item.label, isItemDisabled, item.id)}
 				{lockEl}
 			</li>
 		)
 	}
 
-	renderSubLink(index, isSelected, list, lockEl) {
+	renderSubLink(index, isSelected, list, isItemDisabled, lockEl) {
 		const item = list[index]
 		const isLastInList = !list[index + 1]
 
@@ -68,7 +83,7 @@ export default class Nav extends React.Component {
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLabel(item.label)}
+				{this.renderLinkButton(item.label, isItemDisabled)}
 				{lockEl}
 			</li>
 		)
@@ -83,17 +98,26 @@ export default class Nav extends React.Component {
 	}
 
 	getLockEl(isLocked) {
-		if (isLocked) {
-			return <div className="lock-icon" />
+		if (!isLocked) return null
+		return <div className="lock-icon" />
+	}
+
+	componentDidUpdate() {
+		if (this.shouldFocusOnContentAfterUpdate) {
+			Dispatcher.trigger('viewer:focusOnContent')
+			delete this.shouldFocusOnContentAfterUpdate
 		}
+	}
+
+	focus() {
+		Common.page.focus(this.refs.list)
 	}
 
 	render() {
 		const navState = this.props.navState
-		const lockEl = this.getLockEl(navState.locked)
-
 		const list = NavUtil.getOrderedList(navState)
-
+		const lockEl = this.getLockEl(navState.locked)
+		const isNavInaccessible = navState.disabled || !navState.open
 		const className =
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
@@ -101,28 +125,49 @@ export default class Nav extends React.Component {
 			isOrNot(!navState.disabled, 'enabled')
 
 		return (
-			<div className={className}>
+			<nav className={className}>
+				<Button
+					altAction
+					className="skip-nav-button"
+					disabled={isNavInaccessible}
+					onClick={this.onClickSkipNavigation}
+					aria-hidden={isNavInaccessible}
+				>
+					Skip Navigation
+				</Button>
 				<button className="toggle-button" onClick={NavUtil.toggle}>
 					Toggle Navigation Menu
 				</button>
-				<ul>
+				<ul aria-hidden={isNavInaccessible} tabIndex="-1" ref="list">
 					{list.map((item, index) => {
 						switch (item.type) {
 							case 'heading':
 								return this.renderHeading(index, item)
 
 							case 'link':
-								return this.renderLink(index, navState.navTargetId === item.id, list, lockEl)
+								return this.renderLink(
+									index,
+									navState.navTargetId === item.id,
+									list,
+									navState.locked || isNavInaccessible,
+									lockEl
+								)
 
 							case 'sub-link':
-								return this.renderSubLink(index, navState.navTargetIndex === index, list, lockEl)
+								return this.renderSubLink(
+									index,
+									navState.navTargetIndex === index,
+									list,
+									isNavInaccessible,
+									lockEl
+								)
 						}
 
 						return null
 					})}
 				</ul>
 				<Logo />
-			</div>
+			</nav>
 		)
 	}
 }

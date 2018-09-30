@@ -23,30 +23,43 @@ exports[`PostTest PostTest component 1`] = `
       </span>
     </div>
     <div
-      className="obojobo-draft--sections--assessment--lti-status is-not-synced"
+      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
+      className="obojobo-draft--sections--assessment--lti-status"
+      role="dialog"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mockLTIHost.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-      </p>
       <div
-        className="is-shown"
+        id="obojobo-draft--sections--assessment--lti-status--dialog"
       >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button
-          onClick={[Function]}
+        <div
+          className="is-not-synced"
         >
-          Try again anyway
-        </button>
+          <h2>
+            There was a problem sending your score to mockLTIHost.
+          </h2>
+          <p>
+            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+          </p>
+          <div
+            aria-hidden={false}
+            className="is-not-synced-additional is-shown"
+            tabIndex="-1"
+          >
+            <strong>
+              Sorry - That didn't work.
+            </strong>
+             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+          </div>
+          <div
+            className="obojobo-draft--components--button is-dangerous align-center"
+          >
+            <button
+              onClick={[Function]}
+            >
+              Try again anyway
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -87,6 +100,11 @@ exports[`PostTest PostTest component with recorded score 1`] = `
         className="value"
       >
         100
+        <span
+          className="for-screen-reader-only percent-label"
+        >
+           percent out of 100
+        </span>
       </span>
       <span
         className="from-attempt"
@@ -95,30 +113,43 @@ exports[`PostTest PostTest component with recorded score 1`] = `
       </span>
     </div>
     <div
-      className="obojobo-draft--sections--assessment--lti-status is-not-synced"
+      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
+      className="obojobo-draft--sections--assessment--lti-status"
+      role="dialog"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mockLTIHost.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-      </p>
       <div
-        className="is-shown"
+        id="obojobo-draft--sections--assessment--lti-status--dialog"
       >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button
-          onClick={[Function]}
+        <div
+          className="is-not-synced"
         >
-          Try again anyway
-        </button>
+          <h2>
+            There was a problem sending your score to mockLTIHost.
+          </h2>
+          <p>
+            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+          </p>
+          <div
+            aria-hidden={false}
+            className="is-not-synced-additional is-shown"
+            tabIndex="-1"
+          >
+            <strong>
+              Sorry - That didn't work.
+            </strong>
+             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+          </div>
+          <div
+            className="obojobo-draft--components--button is-dangerous align-center"
+          >
+            <button
+              onClick={[Function]}
+            >
+              Try again anyway
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -131,6 +162,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -139,6 +171,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -167,6 +200,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -176,6 +210,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
             >
               <button
                 onClick={[Function]}
+                tabIndex="0"
               >
                 <span
                   className="text align-undefined"
@@ -227,6 +262,11 @@ exports[`PostTest PostTest component with review 1`] = `
         className="value"
       >
         100
+        <span
+          className="for-screen-reader-only percent-label"
+        >
+           percent out of 100
+        </span>
       </span>
       <span
         className="from-attempt"
@@ -235,30 +275,43 @@ exports[`PostTest PostTest component with review 1`] = `
       </span>
     </div>
     <div
-      className="obojobo-draft--sections--assessment--lti-status is-not-synced"
+      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
+      className="obojobo-draft--sections--assessment--lti-status"
+      role="dialog"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mockLTIHost.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-      </p>
       <div
-        className="is-shown"
+        id="obojobo-draft--sections--assessment--lti-status--dialog"
       >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button
-          onClick={[Function]}
+        <div
+          className="is-not-synced"
         >
-          Try again anyway
-        </button>
+          <h2>
+            There was a problem sending your score to mockLTIHost.
+          </h2>
+          <p>
+            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+          </p>
+          <div
+            aria-hidden={false}
+            className="is-not-synced-additional is-shown"
+            tabIndex="-1"
+          >
+            <strong>
+              Sorry - That didn't work.
+            </strong>
+             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+          </div>
+          <div
+            className="obojobo-draft--components--button is-dangerous align-center"
+          >
+            <button
+              onClick={[Function]}
+            >
+              Try again anyway
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -271,6 +324,7 @@ exports[`PostTest PostTest component with review 1`] = `
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -279,6 +333,7 @@ exports[`PostTest PostTest component with review 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -307,6 +362,7 @@ exports[`PostTest PostTest component with review 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -316,6 +372,7 @@ exports[`PostTest PostTest component with review 1`] = `
             >
               <button
                 onClick={[Function]}
+                tabIndex="0"
               >
                 <span
                   className="text align-undefined"
@@ -367,6 +424,11 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         className="value"
       >
         100
+        <span
+          className="for-screen-reader-only percent-label"
+        >
+           percent out of 100
+        </span>
       </span>
       <span
         className="from-attempt"
@@ -375,30 +437,43 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
       </span>
     </div>
     <div
-      className="obojobo-draft--sections--assessment--lti-status is-not-synced"
+      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
+      className="obojobo-draft--sections--assessment--lti-status"
+      role="dialog"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mockLTIHost.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-      </p>
       <div
-        className="is-shown"
+        id="obojobo-draft--sections--assessment--lti-status--dialog"
       >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button
-          onClick={[Function]}
+        <div
+          className="is-not-synced"
         >
-          Try again anyway
-        </button>
+          <h2>
+            There was a problem sending your score to mockLTIHost.
+          </h2>
+          <p>
+            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+          </p>
+          <div
+            aria-hidden={false}
+            className="is-not-synced-additional is-shown"
+            tabIndex="-1"
+          >
+            <strong>
+              Sorry - That didn't work.
+            </strong>
+             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+          </div>
+          <div
+            className="obojobo-draft--components--button is-dangerous align-center"
+          >
+            <button
+              onClick={[Function]}
+            >
+              Try again anyway
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -411,6 +486,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -419,6 +495,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -447,6 +524,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -456,6 +534,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
             >
               <button
                 onClick={[Function]}
+                tabIndex="0"
               >
                 <span
                   className="text align-undefined"
@@ -507,6 +586,11 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         className="value"
       >
         100
+        <span
+          className="for-screen-reader-only percent-label"
+        >
+           percent out of 100
+        </span>
       </span>
       <span
         className="from-attempt"
@@ -515,30 +599,43 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
       </span>
     </div>
     <div
-      className="obojobo-draft--sections--assessment--lti-status is-not-synced"
+      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
+      className="obojobo-draft--sections--assessment--lti-status"
+      role="dialog"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mockLTIHost.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-      </p>
       <div
-        className="is-shown"
+        id="obojobo-draft--sections--assessment--lti-status--dialog"
       >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button
-          onClick={[Function]}
+        <div
+          className="is-not-synced"
         >
-          Try again anyway
-        </button>
+          <h2>
+            There was a problem sending your score to mockLTIHost.
+          </h2>
+          <p>
+            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+          </p>
+          <div
+            aria-hidden={false}
+            className="is-not-synced-additional is-shown"
+            tabIndex="-1"
+          >
+            <strong>
+              Sorry - That didn't work.
+            </strong>
+             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+          </div>
+          <div
+            className="obojobo-draft--components--button is-dangerous align-center"
+          >
+            <button
+              onClick={[Function]}
+            >
+              Try again anyway
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -551,6 +648,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -559,6 +657,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -587,6 +686,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -596,6 +696,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
             >
               <button
                 onClick={[Function]}
+                tabIndex="0"
               >
                 <span
                   className="text align-undefined"
@@ -650,30 +751,43 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
       </span>
     </div>
     <div
-      className="obojobo-draft--sections--assessment--lti-status is-not-synced"
+      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
+      className="obojobo-draft--sections--assessment--lti-status"
+      role="dialog"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mockLTIHost.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-      </p>
       <div
-        className="is-shown"
+        id="obojobo-draft--sections--assessment--lti-status--dialog"
       >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button
-          onClick={[Function]}
+        <div
+          className="is-not-synced"
         >
-          Try again anyway
-        </button>
+          <h2>
+            There was a problem sending your score to mockLTIHost.
+          </h2>
+          <p>
+            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+          </p>
+          <div
+            aria-hidden={false}
+            className="is-not-synced-additional is-shown"
+            tabIndex="-1"
+          >
+            <strong>
+              Sorry - That didn't work.
+            </strong>
+             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+          </div>
+          <div
+            className="obojobo-draft--components--button is-dangerous align-center"
+          >
+            <button
+              onClick={[Function]}
+            >
+              Try again anyway
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <div
@@ -686,6 +800,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
         data-obo-component={true}
         data-type="ObojoboDraft.Pages.Page"
         id="obo-2692c3fa-2bd9-4f62-a83f-a173b4770017"
+        tabIndex={-1}
       >
         <div
           className="component"
@@ -694,6 +809,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.Heading"
           id="obo-084af3aa-18be-41d5-9938-1b4c311403fa"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--heading pad"
@@ -722,6 +838,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
           data-obo-component={true}
           data-type="ObojoboDraft.Chunks.ActionButton"
           id="obo-13b82592-8c45-4fe7-9d00-32a66f4d7418"
+          tabIndex={-1}
         >
           <div
             className="text-chunk obojobo-draft--chunks--action-button pad"
@@ -731,6 +848,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
             >
               <button
                 onClick={[Function]}
+                tabIndex="0"
               >
                 <span
                   className="text align-undefined"

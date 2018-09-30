@@ -66,6 +66,19 @@ describe('StyleableText Component', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('StyleableText with alt', () => {
+		StyleRenderer.mockReturnValueOnce({
+			type: 'span',
+			children: [],
+			attrs: { alt: 'mock-alt-text' }
+		})
+
+		const component = renderer.create(<StyleableText />)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('StyleableText component with children', () => {
 		StyleRenderer.mockReturnValueOnce({
 			type: 'b',

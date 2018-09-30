@@ -134,6 +134,9 @@ const wrapElement = function(styleRange, nodeToWrap, text) {
 			return newChild
 
 		case '_latex': {
+			if (!styleRange.data.alt) {
+				styleRange.data.alt = text
+			}
 			newChild = new MockElement('span', Object.assign({ class: 'latex' }, styleRange.data))
 			nodeToWrap.parent.replaceChild(nodeToWrap, newChild)
 			newChild.addChild(nodeToWrap)

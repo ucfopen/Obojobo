@@ -20,6 +20,7 @@ const ActionButton = props => {
 					onClick={model.processTrigger.bind(model, 'onClick')}
 					value={model.modelState.label}
 					align={model.modelState.align}
+					tabIndex="0"
 				>
 					<TextGroupEl textItem={textItem} groupIndex="0" parentModel={model} />
 				</Button>

@@ -47,6 +47,15 @@
 				margin-bottom: 0.5em;
 			}
 
+			.for-screen-reader-only.percent-label {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				width: 0;
+				height: 0;
+				overflow: hidden;
+			}
+
 			.from-attempt {
 				border-top: 1px solid transparentize($color-shadow, 0.2);
 				display: block;

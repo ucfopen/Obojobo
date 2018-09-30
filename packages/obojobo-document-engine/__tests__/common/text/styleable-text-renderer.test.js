@@ -131,7 +131,19 @@ describe('styleableTextRenderer', () => {
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
-			<span>dog <span class="latex" a="1"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span> cat</span>
+			<span>dog <span class="latex" a="1" alt="fox"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span> cat</span>
+		`.replace(/[\t\n]/g, '')
+		)
+	})
+
+	test('Latex (with alt text)', () => {
+		const st = new StyleableText('dog fox cat')
+		st.styleText('_latex', 4, 7, { alt: 'alt-text' })
+		const mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
+			<span>dog <span class="latex" alt="alt-text"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span> cat</span>
 		`.replace(/[\t\n]/g, '')
 		)
 	})

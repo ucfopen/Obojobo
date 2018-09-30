@@ -33,6 +33,7 @@ const MathEquation = props => {
 			model={props.model}
 			moduleData={props.moduleData}
 			className={`obojobo-draft--chunks--math-equation pad align-${props.model.modelState.align}`}
+			aria-label={props.model.modelState.alt || props.model.modelState.latex}
 		>
 			<NonEditableChunk>
 				<div
@@ -41,7 +42,9 @@ const MathEquation = props => {
 					dangerouslySetInnerHTML={{ __html: katexHtml }}
 				/>
 				{props.model.modelState.label === '' ? null : (
-					<div className="equation-label">{props.model.modelState.label}</div>
+					<div className="equation-label" aria-label={'Equation ' + props.model.modelState.label}>
+						<span aria-hidden="true">{props.model.modelState.label}</span>
+					</div>
 				)}
 			</NonEditableChunk>
 		</OboComponent>

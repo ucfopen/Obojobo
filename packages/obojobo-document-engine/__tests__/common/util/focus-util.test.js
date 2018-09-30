@@ -11,12 +11,33 @@ jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 })
 
 describe('FocusUtil', () => {
-	test('focusComponent will dispatch the correct event', () => {
+	test('focusComponent will dispatch the correct event with defaults', () => {
 		FocusUtil.focusComponent('testId')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
 			value: {
-				id: 'testId'
+				id: 'testId',
+				isVisuallyFocused: true
+			}
+		})
+	})
+
+	test('focusComponent will dispatch the correct event', () => {
+		FocusUtil.focusComponent('testId', true)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				isVisuallyFocused: true
+			}
+		})
+
+		FocusUtil.focusComponent('testId', false)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				isVisuallyFocused: false
 			}
 		})
 	})

@@ -1,0 +1,171 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=0, isTypePickAll=false, isForScreenReader=false 1`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    incorrect-label
+  </p>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=0, isTypePickAll=false, isForScreenReader=true 1`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    Results: 0% - incorrect-label
+  </p>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=0, isTypePickAll=true, isForScreenReader=false 1`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    incorrect-label
+  </p>
+  <span
+    className="pick-all-instructions"
+  >
+    message
+  </span>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=0, isTypePickAll=true, isForScreenReader=true 1`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    Results: 0% - incorrect-label
+  </p>
+  <span
+    className="pick-all-instructions"
+  >
+    message
+  </span>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=50, isTypePickAll=false, isForScreenReader=false 1`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    incorrect-label
+  </p>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=50, isTypePickAll=false, isForScreenReader=true 1`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    Results: 50% - incorrect-label
+  </p>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=50, isTypePickAll=false, isForScreenReader=true 2`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    Results: 50% - incorrect-label
+  </p>
+  <span
+    className="pick-all-instructions"
+  >
+    message
+  </span>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=50, isTypePickAll=true, isForScreenReader=false 1`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    incorrect-label
+  </p>
+  <span
+    className="pick-all-instructions"
+  >
+    message
+  </span>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=100, isTypePickAll=false, isForScreenReader=false 1`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result correct"
+  >
+    correct-label
+  </p>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=100, isTypePickAll=false, isForScreenReader=true 1`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result correct"
+  >
+    Results: 100% - correct-label
+  </p>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=100, isTypePickAll=false, isForScreenReader=true 2`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result correct"
+  >
+    Results: 100% - correct-label
+  </p>
+</div>
+`;
+
+exports[`MCAssessmentResults MCAssessmentResults renders with score=100, isTypePickAll=true, isForScreenReader=false 1`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result correct"
+  >
+    correct-label
+  </p>
+</div>
+`;
