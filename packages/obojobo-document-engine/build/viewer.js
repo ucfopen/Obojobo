@@ -18944,8 +18944,8 @@ var AssessmentStore = function (_Store) {
 				}
 
 				assessments[assessId].lti = assessmentItem.ltiState;
-				assessments[assessId].highestAttemptScoreAttempts = _assessmentUtil2.default.findHighestAttempts(attempts, 'assessmentScore');
-				assessments[assessId].highestAssessmentScoreAttempts = _assessmentUtil2.default.findHighestAttempts(attempts, 'attemptScore');
+				assessments[assessId].highestAttemptScoreAttempts = _assessmentUtil2.default.findHighestAttempts(attempts, 'attemptScore');
+				assessments[assessId].highestAssessmentScoreAttempts = _assessmentUtil2.default.findHighestAttempts(attempts, 'assessmentScore');
 
 				attempts.forEach(function (attempt) {
 					assessment = assessments[attempt.assessmentId];
