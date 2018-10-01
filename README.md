@@ -2,7 +2,7 @@
 
 Obojobo Next is a modern educational content ecosystem. Obojobo documents are programmable, extend-able, and heavily fortified with data analytics.
 
-Our focus is on making and delivering fantastic learning content to students. Obojobo is not a [Learning Management System](https://en.wikipedia.org/wiki/Learning_management_system). Rather, it's and incredibly powerful content engine for use inside your LMS.
+Our focus is on making and delivering fantastic learning content to students. Obojobo is not a [Learning Management System](https://en.wikipedia.org/wiki/Learning_management_system). Rather, it's an incredibly powerful content engine for use inside your LMS.
 
 View the [Obojobo Next Documentation](https://ucfopen.github.io/Obojobo-Docs/).
 
