@@ -44,9 +44,6 @@ describe('Get Installed Modules', () => {
 	})
 
 	test('getInstalledModules runs with files', () => {
-		fs.readFileSync.mockReturnValueOnce(
-			'{"production":{"excludeModules": ["*:mockExclude", "*:mockAlsoExclude", "mockModule:mockExclude"]}}'
-		)
 		glob.sync.mockReturnValueOnce([
 			'/node_modules/mockModule/mockFile.js',
 			'/node_modules/mockModule/mockFile.jpg'
@@ -117,6 +114,6 @@ describe('Get Installed Modules', () => {
 
 		expect(() => {
 			getInstalledModules('test4')
-		}).toThrowError('File Missing: "mockViewer.js" for "mockIncluded" registered in ./obojobo.json')
+		}).toThrowError('File Missing: "mockViewer.js" for "mockIncluded" registered in')
 	})
 })

@@ -9,13 +9,15 @@ global.validUUID = () => '00000000-0000-0000-0000-000000000000'
 jest.mock('fs')
 const fs = require('fs')
 const dbJson = {
-	test: {
+	default: {
+		driver: 'driverVal',
 		host: 'hostVal',
 		port: 'portVal',
 		database: 'databaseVal',
 		user: 'userVal',
 		password: 'pwVal'
 	},
+	// adds a simple config for testing environment switching
 	development: {
 		host: 'itsdev!'
 	}
@@ -28,7 +30,7 @@ const emptyXmlStream = realFs.readFileSync(emptyXmlPath)
 
 fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
 fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')
-fs.__setMockFileContents('./config/draft.json', '{"test":{"paths":[]}}')
+fs.__setMockFileContents('./config/draft.json', '{"test":{"excludeModules":["mockModule:mockExclude"]},"default":{"excludeModules":[]}}')
 fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"canDoThing":["roleName"]}}')
 fs.__setMockFileContents(
 	'./config/general.json',

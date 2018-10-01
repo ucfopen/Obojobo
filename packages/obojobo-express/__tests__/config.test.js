@@ -16,6 +16,7 @@ describe('config', () => {
 		expect(config).toHaveProperty('db.database')
 		expect(config).toHaveProperty('db.user')
 		expect(config).toHaveProperty('db.password')
+		expect(config.db.host).toBe('itsdev!')
 	})
 
 	test('expects config to have loaded all files', () => {

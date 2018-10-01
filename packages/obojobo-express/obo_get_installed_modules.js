@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const glob = require('glob')
 const logger = oboRequire('logger')
+const config = oboRequire('config')
 
 const memoizedValues = {}
 
@@ -22,10 +23,9 @@ const getInstalledModules = (configEnv = 'production') => {
 	  node_module or chunk name's value can be *, indicating all
 	*/
 	const excludeMap = new Map()
-	const excludeConfig = JSON.parse(fs.readFileSync('./config/draft.json'))[configEnv]
-	if (excludeConfig.hasOwnProperty('excludeModules')) {
-		excludeConfig.excludeModules.forEach(item => {
-			const [module, name] = item.split(':')
+	if (config.draft.hasOwnProperty('excludeModules')) {
+		config.draft.excludeModules.forEach(item => {
+			let [module, name] = item.split(':')
 			if (excludeMap.has(module)) {
 				excludeMap.get(module).push(name)
 			} else {
