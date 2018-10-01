@@ -280,7 +280,7 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
             className="flipper"
           >
             <div
-              className="content back"
+              className="content-back"
             >
               <div
                 className="obojobo-draft--chunks--mc-question--content"

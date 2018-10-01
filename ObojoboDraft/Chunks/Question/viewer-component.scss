@@ -67,16 +67,16 @@
 		> .content-back {
 			transform: rotateY(180deg);
 
-			// transition: border $duration-animation-default;
-			max-width: $dimension-column-width;
-			background: $color-bg;
+			> .responses-hidden {
+				font-family: $font-default;
+				font-size: 0.9em;
+				text-align: center;
+				margin-bottom: 1em;
+			}
 		}
 
-		> .responses-hidden {
-			font-family: $font-default;
-			font-size: 0.9em;
-			text-align: center;
-			margin-bottom: 1em;
+		&.question-editor {
+			background: $color-bg;
 		}
 	}
 
@@ -127,6 +127,7 @@
 	position: relative;
 	border-bottom-left-radius: 0.3em;
 	border-bottom-right-radius: 0.3em;
+	padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
 
 	.page-editor {
 		margin: $dimension-padding / 3;

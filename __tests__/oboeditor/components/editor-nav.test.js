@@ -59,6 +59,14 @@ describe('EditorNav', () => {
 				flags: {
 					assessment: true
 				}
+			},
+			{
+				id: 7,
+				type: 'sublink',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
 			}
 		])
 
@@ -84,7 +92,7 @@ describe('EditorNav', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(0)
 			.simulate('click')
 
 		expect(EditorUtil.addPage).toHaveBeenCalled()
@@ -100,7 +108,7 @@ describe('EditorNav', () => {
 
 		component
 			.find('button')
-			.at(2)
+			.at(1)
 			.simulate('click')
 
 		expect(EditorUtil.addAssessment).toHaveBeenCalled()

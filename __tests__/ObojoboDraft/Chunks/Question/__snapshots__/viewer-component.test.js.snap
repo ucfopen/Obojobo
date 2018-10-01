@@ -208,7 +208,7 @@ exports[`MCAssessment Question component with content only 1`] = `
     className="flipper"
   >
     <div
-      className="content back"
+      className="content-back"
     >
       <div
         className="obojobo-draft--chunks--mc-question--content"
@@ -236,7 +236,7 @@ exports[`MCAssessment Question component with content only in review mode 1`] = 
     className="flipper"
   >
     <div
-      className="content back"
+      className="content-back"
     >
       <div
         className="obojobo-draft--chunks--mc-question--content"

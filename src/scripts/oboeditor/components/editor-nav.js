@@ -122,15 +122,21 @@ class EditorNav extends React.Component {
 
 		return (
 			<div className={className}>
-				<button className="toggle-button">Toggle Navigation Menu</button>
 				<ul>
 					{list.map((item, index) => {
 						if (item.type === 'heading') return this.renderHeading(index, item)
-						return this.renderLink(index, this.state.navTargetId === item.id, list)
+						if (item.type === 'link') {
+							return this.renderLink(index, this.state.navTargetId === item.id, list)
+						}
+						return null
 					})}
 				</ul>
-				<button onClick={() => this.addPage()}>{'Add Page'}</button>
-				<button onClick={() => this.addAssessment()}>{'Add Assessment'}</button>
+				<button className={'content-add-button'} onClick={() => this.addPage()}>
+					+ Add Page
+				</button>
+				<button className={'content-add-button'} onClick={() => this.addAssessment()}>
+					+ Add Assessment
+				</button>
 			</div>
 		)
 	}

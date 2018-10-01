@@ -4,21 +4,18 @@ exports[`EditorNav EditorNav component 1`] = `
 <div
   className="viewer--components--nav is-not-locked is-not-open is-enabled"
 >
-  <button
-    className="toggle-button"
-  >
-    Toggle Navigation Menu
-  </button>
   <ul />
   <button
+    className="content-add-button"
     onClick={[Function]}
   >
-    Add Page
+    + Add Page
   </button>
   <button
+    className="content-add-button"
     onClick={[Function]}
   >
-    Add Assessment
+    + Add Assessment
   </button>
 </div>
 `;
@@ -27,11 +24,6 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
 <div
   className="viewer--components--nav is-locked is-not-open is-enabled"
 >
-  <button
-    className="toggle-button"
-  >
-    Toggle Navigation Menu
-  </button>
   <ul>
     <li
       className="heading is-not-selected"
@@ -80,7 +72,7 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
       </div>
     </li>
     <li
-      className="link is-not-selected is-assessment is-not-first-in-list is-last-in-list"
+      className="link is-not-selected is-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <a>
@@ -120,14 +112,16 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
     </li>
   </ul>
   <button
+    className="content-add-button"
     onClick={[Function]}
   >
-    Add Page
+    + Add Page
   </button>
   <button
+    className="content-add-button"
     onClick={[Function]}
   >
-    Add Assessment
+    + Add Assessment
   </button>
 </div>
 `;

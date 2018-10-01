@@ -6,6 +6,14 @@ import linkMark from './marks/link-mark'
 import superMark from './marks/super-mark'
 import alignMark from './marks/align-mark'
 
+import BoldIcon from '../assets/bold-icon'
+import ItalicIcon from '../assets/italic-icon'
+import LinkIcon from '../assets/link-icon'
+import SupIcon from '../assets/sup-icon'
+import SubIcon from '../assets/sub-icon'
+import IndentIcon from '../assets/indent-icon'
+import UnindentIcon from '../assets/unindent-icon'
+
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
 const STRIKE_MARK = 'del'
@@ -21,6 +29,7 @@ const ALIGN_CENTER = 'center'
 const ALIGN_LEFT = 'left'
 
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
+const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 const Bold = props => {
 	return <strong>{props.children}</strong>
@@ -60,6 +69,8 @@ class Node extends React.Component {
 		if (mark.name === 'Superscript') return this.toggleScript(1)
 		if (mark.name === 'Subscript') return this.toggleScript(-1)
 		if (mark.name === 'Link') return this.toggleLink()
+		if (mark.name === 'Indent') return this.indent()
+		if (mark.name === 'Unindent') return this.unindent()
 
 		const value = this.props.value
 		const change = value.change().toggleMark(mark.type)
@@ -133,13 +144,64 @@ class Node extends React.Component {
 		this.props.onChange(change)
 	}
 
+	indent() {
+		const value = this.props.value
+		const change = value.change()
+
+		value.blocks.forEach(block => {
+			const dataJSON = block.data.toJSON()
+			if (block.type === TEXT_LINE_NODE) {
+				dataJSON.indent = dataJSON.indent + 1
+			}
+
+			if (block.type === CODE_LINE_NODE) {
+				dataJSON.content.indent = dataJSON.content.indent + 1
+			}
+
+			change.setNodeByKey(block.key, { data: dataJSON })
+		})
+
+		this.props.onChange(change)
+	}
+
+	unindent() {
+		const value = this.props.value
+		const change = value.change()
+
+		value.blocks.forEach(block => {
+			const dataJSON = block.data.toJSON()
+			if (block.type === TEXT_LINE_NODE) {
+				let newIndent = dataJSON.indent - 1
+				if (newIndent < 1) newIndent = 0
+
+				dataJSON.indent = newIndent
+			}
+
+			if (block.type === CODE_LINE_NODE) {
+				let newIndent = dataJSON.content.indent - 1
+				if (newIndent < 1) newIndent = 0
+
+				dataJSON.content.indent = newIndent
+			}
+
+			change.setNodeByKey(block.key, { data: dataJSON })
+		})
+
+		this.props.onChange(change)
+	}
+
 	render() {
 		return (
 			<div>
 				{markList.map(mark => {
+					const Icon = mark.icon
 					return (
-						<button key={mark.name} onClick={event => this.toggleMark(mark, event)}>
-							{mark.name}
+						<button
+							key={mark.name}
+							onClick={event => this.toggleMark(mark, event)}
+							title={mark.name}
+						>
+							<Icon />
 						</button>
 					)
 				})}
@@ -154,49 +216,56 @@ const markList = [
 		type: BOLD_MARK,
 		key: 'b',
 		render: Bold,
-		plugin: basicMark
+		plugin: basicMark,
+		icon: BoldIcon
 	},
 	{
 		name: 'Italic',
 		type: ITALIC_MARK,
 		key: 'i',
 		render: Italics,
-		plugin: basicMark
+		plugin: basicMark,
+		icon: ItalicIcon
 	},
 	{
 		name: 'Strikethrough',
 		type: STRIKE_MARK,
 		key: 'd',
 		render: Strike,
-		plugin: basicMark
+		plugin: basicMark,
+		icon: BoldIcon
 	},
 	{
 		name: 'Quote',
 		type: QUOTE_MARK,
 		key: "'",
 		render: Quote,
-		plugin: basicMark
+		plugin: basicMark,
+		icon: BoldIcon
 	},
 	{
 		name: 'Monospace',
 		type: MONOSPACE_MARK,
 		key: 'm',
 		render: Monospace,
-		plugin: basicMark
+		plugin: basicMark,
+		icon: BoldIcon
 	},
 	{
 		name: 'Latex',
 		type: LATEX_MARK,
 		key: 'q',
 		render: Latex,
-		plugin: basicMark
+		plugin: basicMark,
+		icon: BoldIcon
 	},
 	{
 		name: 'Link',
 		type: LINK_MARK,
 		key: 'k',
 		render: Link,
-		plugin: linkMark
+		plugin: linkMark,
+		icon: LinkIcon
 	},
 	{
 		name: 'Superscript',
@@ -204,7 +273,8 @@ const markList = [
 		key: '.',
 		modifier: 1,
 		render: Superscript,
-		plugin: superMark
+		plugin: superMark,
+		icon: SupIcon
 	},
 	{
 		name: 'Subscript',
@@ -212,25 +282,41 @@ const markList = [
 		key: ',',
 		modifier: -1,
 		render: Superscript,
-		plugin: superMark
+		plugin: superMark,
+		icon: SubIcon
 	},
 	{
 		name: 'Left',
 		align: ALIGN_LEFT,
 		key: 'l',
-		plugin: alignMark
+		plugin: alignMark,
+		icon: BoldIcon
 	},
 	{
 		name: 'Right',
 		align: ALIGN_RIGHT,
 		key: 'r',
-		plugin: alignMark
+		plugin: alignMark,
+		icon: BoldIcon
 	},
 	{
 		name: 'Center',
 		align: ALIGN_CENTER,
 		key: 'e',
-		plugin: alignMark
+		plugin: alignMark,
+		icon: BoldIcon
+	},
+	{
+		name: 'Indent',
+		type: ITALIC_MARK,
+		plugin: () => ({}),
+		icon: IndentIcon
+	},
+	{
+		name: 'Unindent',
+		type: ITALIC_MARK,
+		plugin: () => ({}),
+		icon: UnindentIcon
 	}
 ]
 

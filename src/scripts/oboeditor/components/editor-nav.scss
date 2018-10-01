@@ -1,17 +1,6 @@
 @import '../../../scss/includes';
 
 .viewer--components--nav {
-	button {
-		border: none;
-		font-size: 1em;
-		background: transparent;
-		font-family: $font-default;
-		cursor: pointer;
-		padding: 0;
-		margin: 0;
-		font-weight: inherit;
-	}
-
 	&::after {
 		top: 0;
 		left: -0.55em;
@@ -59,5 +48,15 @@
 				display: block;
 			}
 		}
+	}
+
+	.content-add-button {
+		display: block;
+		background: $color-obojobo-blue;
+		padding: 0.2em;
+		border-radius: $dimension-rounded-radius;
+		margin-bottom: 0.2em;
+		color: $color-bg;
+		font-size: 1em;
 	}
 }

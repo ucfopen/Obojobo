@@ -92,13 +92,11 @@ class Node extends React.Component {
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
 		return (
 			<div
-				className={
-					'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'
-				}
+				className={'component obojobo-draft--chunks--question is-viewed is-mode-practice'}
 				{...this.props.attributes}
 			>
-				<div className={'flipper'}>
-					<div className={'content back'}>
+				<div className={'flipper question-editor'}>
+					<div className={'content-back'}>
 						{this.props.children}
 						{hasSolution ? null : (
 							<Button className={'add-solution'} onClick={() => this.addSolution()}>

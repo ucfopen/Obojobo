@@ -6,6 +6,7 @@
 	padding-right: $dimension-padding * 0.2333333333;
 
 	&.editor-feedback {
+		pointer-events: all;
 		background: $color-bg2;
 	}
 
@@ -17,9 +18,5 @@
 		transform: scale(0.7);
 		transform-origin: top left;
 		font-family: $font-default;
-	}
-
-	.delete {
-		z-index: 2;
 	}
 }
