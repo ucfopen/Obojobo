@@ -8,10 +8,17 @@ import alignMark from './marks/align-mark'
 
 import BoldIcon from '../assets/bold-icon'
 import ItalicIcon from '../assets/italic-icon'
+import StrikeIcon from '../assets/strike-icon'
+import QuoteIcon from '../assets/quote-icon'
+import MonoIcon from '../assets/mono-icon'
+import LatexIcon from '../assets/latex-icon'
 import LinkIcon from '../assets/link-icon'
 import SupIcon from '../assets/sup-icon'
 import SubIcon from '../assets/sub-icon'
 import IndentIcon from '../assets/indent-icon'
+import LeftIcon from '../assets/left-icon'
+import RightIcon from '../assets/right-icon'
+import CenterIcon from '../assets/center-icon'
 import UnindentIcon from '../assets/unindent-icon'
 
 const BOLD_MARK = 'b'
@@ -233,7 +240,7 @@ const markList = [
 		key: 'd',
 		render: Strike,
 		plugin: basicMark,
-		icon: BoldIcon
+		icon: StrikeIcon
 	},
 	{
 		name: 'Quote',
@@ -241,7 +248,7 @@ const markList = [
 		key: "'",
 		render: Quote,
 		plugin: basicMark,
-		icon: BoldIcon
+		icon: QuoteIcon
 	},
 	{
 		name: 'Monospace',
@@ -249,7 +256,7 @@ const markList = [
 		key: 'm',
 		render: Monospace,
 		plugin: basicMark,
-		icon: BoldIcon
+		icon: MonoIcon
 	},
 	{
 		name: 'Latex',
@@ -257,7 +264,7 @@ const markList = [
 		key: 'q',
 		render: Latex,
 		plugin: basicMark,
-		icon: BoldIcon
+		icon: LatexIcon
 	},
 	{
 		name: 'Link',
@@ -290,21 +297,21 @@ const markList = [
 		align: ALIGN_LEFT,
 		key: 'l',
 		plugin: alignMark,
-		icon: BoldIcon
+		icon: LeftIcon
 	},
 	{
 		name: 'Right',
 		align: ALIGN_RIGHT,
 		key: 'r',
 		plugin: alignMark,
-		icon: BoldIcon
+		icon: RightIcon
 	},
 	{
 		name: 'Center',
 		align: ALIGN_CENTER,
 		key: 'e',
 		plugin: alignMark,
-		icon: BoldIcon
+		icon: CenterIcon
 	},
 	{
 		name: 'Indent',

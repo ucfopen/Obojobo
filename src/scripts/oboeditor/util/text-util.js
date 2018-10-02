@@ -94,6 +94,7 @@ const TextUtil = {
 					type: mark.type,
 					data: mark.type === 'sup' ? mark.data.get('num') : mark.data.toJSON()
 				}
+
 				line.text.styleList.push(style)
 			})
 			currIndex += textRange.text.length

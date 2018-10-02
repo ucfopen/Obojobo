@@ -178,6 +178,7 @@ class PageEditor extends React.Component {
 			const json = Assessment.helpers.slateToObo(value.document.nodes.get(0))
 			page.set('children', json.children)
 			page.set('content', json.content)
+
 			return json
 		} else {
 			// Build page wrapper
@@ -187,13 +188,15 @@ class PageEditor extends React.Component {
 			value.document.nodes.forEach(child => {
 				if (nodes.hasOwnProperty(child.type)) {
 					// If the current Node is a registered OboNode, use its custom converter
-					json.children.push(nodes[child.type].helpers.slateToObo(child))
+					const oboChild = nodes[child.type].helpers.slateToObo(child)
+					json.children.push(oboChild)
 				} else {
 					json.children.push(DefaultNode.helpers.slateToObo(child))
 				}
 			})
 
 			page.set('children', json.children)
+
 			return json
 		}
 	}

@@ -46,7 +46,7 @@ const slateToObo = node => {
 	const json = {}
 	json.id = node.key
 	json.type = node.type
-	json.content = node.data.get('content') || {}
+	json.content = {}
 
 	json.content.textGroup = []
 	node.nodes.forEach(line => {
