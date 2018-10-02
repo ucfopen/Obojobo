@@ -180,8 +180,10 @@ const plugins = {
 					switch (violation) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end
-							if (child.object === 'block' && index === node.nodes.size - 1) {
-								return change.unwrapNodeByKey(child.key)
+							if (child.object === 'block') {
+								if(index === node.nodes.size - 1 || index === 0){
+									return change.unwrapNodeByKey(child.key)
+								}
 							}
 
 							return change.wrapBlockByKey(child.key, {
@@ -205,8 +207,10 @@ const plugins = {
 					switch (violation) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end
-							if (child.object === 'block' && index === node.nodes.size - 1) {
-								return change.unwrapNodeByKey(child.key)
+							if (child.object === 'block') {
+								if(index === node.nodes.size - 1 || index === 0){
+									return change.unwrapNodeByKey(child.key)
+								}
 							}
 						}
 					}
