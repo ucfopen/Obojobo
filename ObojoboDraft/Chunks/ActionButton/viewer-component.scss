@@ -56,4 +56,12 @@
 		padding-left: 1em;
 		padding-right: 1em;
 	}
+
+	.is-type-invalid {
+		&::before {
+			content: 'Unable to validate value';
+			display: block;
+			color: $color-error;
+		}
+	}
 }
