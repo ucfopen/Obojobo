@@ -252,27 +252,30 @@
 			}
 
 			function _upload(fileData) {
-				var fd = new FormData()
-
-				fd.append('name', fileData.name)
-				fd.append('Content-Type', fileData.mime)
-				fd.append('success_action_status', '201')
-				fd.append('file', _dataURItoBlob(fileData.src, fileData.mime), fileData.name)
-
-				const request = new XMLHttpRequest()
-
-				request.onload = oEvent => {
-					const res = JSON.parse(request.response)
-
-					if (res.error) {
-						console.log(`Error code ${res.error.code}: ${res.error.message}`)
-					} else {
-						console.log("Successful upload")
-					}	
+				var body = {
+					"filename": fileData.name,
+					"file_size": fileData.size,
+					"mime_type": fileData.mime,
+					"dimensions": "original",
+					"success_action_status": '201',
+					"file": _dataURItoBlob(fileData.src, fileData.mime),
+					"filename": fileData.name
 				}
 
 				// request.open('POST', "upload_url")
 				// return request.send(fd)
+				fetch('/api/media/new', {
+					method: 'POST',
+					credentials: 'include',
+					body: JSON.stringify(body),
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(res => {
+					console.log(res.json());
+				})
 
 				console.log(_dataURItoBlob(fileData.src, fileData.mime));
 			}
