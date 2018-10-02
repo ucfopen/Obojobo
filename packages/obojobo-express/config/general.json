@@ -6,7 +6,7 @@
 		"secureCookie": false,
 		"bodyParser": {
 			"jsonOptions": {
-				"limit": "1mb"
+				"limit": "60mb"
 			},
 			"textOptions": {
 				"limit": "1mb"
