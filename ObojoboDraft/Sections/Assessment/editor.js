@@ -257,7 +257,7 @@ const plugins = {
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.withoutNormalizing(c => {
+							return change.withoutNormalization(c => {
 								c.removeNodeByKey(child.key)
 								if (index === 0) {
 									const block = Block.create(

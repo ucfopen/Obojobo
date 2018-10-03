@@ -295,7 +295,7 @@ const plugins = {
 		if (!invalids.size) return
 
 		return change => {
-			change.withoutNormalizing(c => {
+			change.withoutNormalization(c => {
 				// Reverse the list to handle consecutive merges, since the earlier nodes
 				// will always exist after each merge.
 				invalids.reverse().forEach(n => {
@@ -348,7 +348,7 @@ const plugins = {
 					const { node, child, parent, index } = error
 					switch (error.code) {
 						case PARENT_TYPE_INVALID: {
-							return change.withoutNormalizing(c => {
+							return change.withoutNormalization(c => {
 								let childIndex = parent.nodes.indexOf(node)
 								node.nodes.forEach(childNode => {
 									if (childNode.type === LIST_LINE_NODE) {
