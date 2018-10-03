@@ -17,7 +17,7 @@ import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-n
 
 const Settings = props => {
 	return (
-		<div {...props.attributes} className={'settings pad'}>
+		<div className={'settings pad'}>
 			<span contentEditable={false} className={'label'}>
 				{'Assessment Settings'}
 			</span>
@@ -48,7 +48,7 @@ class Node extends React.Component {
 	render() {
 		const hasRubric = this.props.node.nodes.size === 5
 		return (
-			<div {...this.props.attributes} className={'assessment'}>
+			<div className={'assessment'}>
 				{this.props.children}
 				{!hasRubric ? (
 					<button className={'add-rubric'} onClick={() => this.addRubric()}>
@@ -144,9 +144,9 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case ASSESSMENT_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case SETTINGS_NODE:
-				return <Settings {...props} />
+				return <Settings {...props} {...props.attributes} />
 		}
 	},
 	validateNode(node) {
@@ -257,7 +257,7 @@ const plugins = {
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.withoutNormalization(c => {
+							return change.withoutNormalizing(c => {
 								c.removeNodeByKey(child.key)
 								if (index === 0) {
 									const block = Block.create(

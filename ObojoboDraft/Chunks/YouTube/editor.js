@@ -60,11 +60,7 @@ class Node extends React.Component {
 	}
 
 	render() {
-		return (
-			<div className={'component'} {...this.props.attributes}>
-				{this.renderFrame()}
-			</div>
-		)
+		return <div className={'component'}>{this.renderFrame()}</div>
 	}
 }
 
@@ -102,7 +98,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case YOUTUBE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

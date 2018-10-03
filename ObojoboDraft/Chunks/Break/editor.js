@@ -14,7 +14,7 @@ class Node extends React.Component {
 	render() {
 		const { isSelected } = this.props
 		return (
-			<div {...this.props.attributes} className={'component'}>
+			<div className={'component'}>
 				<div
 					className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
 						this.props.node.data.get('content').width
@@ -64,7 +64,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case BREAK_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

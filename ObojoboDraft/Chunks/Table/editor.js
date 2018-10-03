@@ -10,9 +10,9 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 const Cell = props => {
 	if (props.node.data.get('content').header) {
-		return <th {...props.attributes}>{props.children}</th>
+		return <th>{props.children}</th>
 	}
-	return <td {...props.attributes}>{props.children}</td>
+	return <td>{props.children}</td>
 }
 
 class Row extends React.Component {
@@ -49,7 +49,7 @@ class Row extends React.Component {
 
 	render() {
 		return (
-			<tr {...this.props.attributes}>
+			<tr>
 				{this.props.children}
 				<td className={'delete-cell'}>
 					<button onClick={() => this.deleteRow()}>{'X'}</button>
@@ -175,7 +175,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div className={'component'} {...this.props.attributes}>
+			<div className={'component'}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
 						<table className="view" ref="table" key="table">
@@ -293,11 +293,11 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case TABLE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case TABLE_ROW_NODE:
-				return <Row {...props} />
+				return <Row {...props} {...props.attributes} />
 			case TABLE_CELL_NODE:
-				return <Cell {...props} />
+				return <Cell {...props} {...props.attributes} />
 		}
 	},
 	schema: {

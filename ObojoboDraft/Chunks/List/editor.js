@@ -13,7 +13,7 @@ const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 
 
 const Line = props => {
 	return (
-		<div {...props.attributes}>
+		<div>
 			<li>{props.children}</li>
 		</div>
 	)
@@ -39,7 +39,7 @@ class Level extends React.Component {
 	}
 
 	render() {
-		return <div {...this.props.attributes}>{this.renderList()}</div>
+		return <div>{this.renderList()}</div>
 	}
 }
 
@@ -82,7 +82,7 @@ class Node extends React.Component {
 		const other = type === 'ordered' ? 'Unordered' : 'Ordered'
 		return (
 			<div className={'component'}>
-				<div className={'text-chunk obojobo-draft--chunks--list pad'} {...this.props.attributes}>
+				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
 					{this.props.children}
 					<button onClick={() => this.toggleType()}>{'Swap to ' + other}</button>
 				</div>
@@ -273,11 +273,11 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case LIST_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case LIST_LINE_NODE:
-				return <Line {...props} />
+				return <Line {...props} {...props.attributes} />
 			case LIST_LEVEL_NODE:
-				return <Level {...props} />
+				return <Level {...props} {...props.attributes} />
 		}
 	},
 	validateNode(node) {
@@ -295,7 +295,7 @@ const plugins = {
 		if (!invalids.size) return
 
 		return change => {
-			change.withoutNormalization(c => {
+			change.withoutNormalizing(c => {
 				// Reverse the list to handle consecutive merges, since the earlier nodes
 				// will always exist after each merge.
 				invalids.reverse().forEach(n => {
@@ -348,7 +348,7 @@ const plugins = {
 					const { node, child, parent, index } = error
 					switch (error.code) {
 						case PARENT_TYPE_INVALID: {
-							return change.withoutNormalization(c => {
+							return change.withoutNormalizing(c => {
 								let childIndex = parent.nodes.indexOf(node)
 								node.nodes.forEach(childNode => {
 									if (childNode.type === LIST_LINE_NODE) {

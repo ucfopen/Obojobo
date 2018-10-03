@@ -16,7 +16,7 @@ const { Button } = Common.components
 
 const Settings = props => {
 	return (
-		<div {...props.attributes} className={'mc-settings'}>
+		<div className={'mc-settings'}>
 			<div>{props.children}</div>
 		</div>
 	)
@@ -37,7 +37,7 @@ const ChoiceList = props => {
 	}
 
 	return (
-		<div {...props.attributes}>
+		<div>
 			<span className={'instructions'}>{'Pick all of the correct answers'} </span>
 			{props.children}
 			<Button className={'choice-button pad'} onClick={() => addChoice()}>
@@ -58,7 +58,6 @@ class Node extends React.Component {
 				className={
 					'component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored'
 				}
-				{...this.props.attributes}
 			>
 				{this.props.children}
 			</div>
@@ -159,11 +158,11 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MCASSESSMENT_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case SETTINGS_NODE:
-				return <Settings {...props} />
+				return <Settings {...props} {...props.attributes} />
 			case CHOICE_LIST_NODE:
-				return <ChoiceList {...props} />
+				return <ChoiceList {...props} {...props.attributes} />
 		}
 	},
 	schema: {
@@ -274,7 +273,7 @@ const plugins = {
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.withoutNormalization(c => {
+							return change.withoutNormalizing(c => {
 								c.removeNodeByKey(child.key)
 								if (index === 0) {
 									const block = Block.create(

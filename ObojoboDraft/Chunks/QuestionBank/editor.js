@@ -14,7 +14,7 @@ const { Button } = Common.components
 
 const Settings = props => {
 	return (
-		<div {...props.attributes} className={'qb-settings'}>
+		<div className={'qb-settings'}>
 			<div>{props.children}</div>
 		</div>
 	)
@@ -57,10 +57,7 @@ class Node extends React.Component {
 	}
 	render() {
 		return (
-			<div
-				className={'obojobo-draft--chunks--question-bank editor-bank'}
-				{...this.props.attributes}
-			>
+			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 				<button className={'delete'} onClick={() => this.delete()}>
 					X
 				</button>
@@ -160,9 +157,9 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case QUESTION_BANK_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case SETTINGS_NODE:
-				return <Settings {...props} />
+				return <Settings {...props} {...props.attributes} />
 		}
 	},
 	schema: {
@@ -238,7 +235,7 @@ const plugins = {
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.withoutNormalization(c => {
+							return change.withoutNormalizing(c => {
 								c.removeNodeByKey(child.key)
 								if (index === 0) {
 									const block = Block.create(

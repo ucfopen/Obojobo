@@ -45,11 +45,7 @@ const nodes = {
 }
 
 const Node = props => {
-	return (
-		<div className={'page-editor'} {...props.attributes}>
-			{props.children}
-		</div>
-	)
+	return <div className={'page-editor'}>{props.children}</div>
 }
 
 const slateToObo = node => {
@@ -94,7 +90,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case PAGE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

@@ -229,7 +229,7 @@ class Node extends React.Component {
 		const { isSelected } = this.props
 
 		return (
-			<div className={'component'} {...this.props.attributes}>
+			<div className={'component'}>
 				<div className={'text-chunk obojobo-draft--chunks--action-button pad'}>
 					{this.renderButton()}
 					{isSelected ? this.renderTriggers() : null}
@@ -305,7 +305,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case BUTTON_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

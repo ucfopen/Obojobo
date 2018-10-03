@@ -68,7 +68,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div className={'component'} {...this.props.attributes}>
+			<div className={'component'}>
 				{this.renderFrame()}
 				{this.props.isSelected ? this.renderInput() : null}
 			</div>
@@ -110,7 +110,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case IFRAME_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

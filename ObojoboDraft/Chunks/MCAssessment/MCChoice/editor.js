@@ -58,7 +58,7 @@ class Node extends React.Component {
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
 			isOrNot(score === 100, 'correct')
 		return (
-			<div className={className} {...this.props.attributes}>
+			<div className={className}>
 				<button className={'delete'} onClick={event => this.delete(event)}>
 					X
 				</button>
@@ -131,7 +131,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MCCHOICE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

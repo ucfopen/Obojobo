@@ -4,7 +4,7 @@ const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
 const Node = props => {
 	return (
-		<div className={'component'} {...props.attributes}>
+		<div className={'component'}>
 			<div className={'obojobo-draft--chunks--html viewer pad'}>{props.children}</div>
 		</div>
 	)
@@ -54,7 +54,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case HTML_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

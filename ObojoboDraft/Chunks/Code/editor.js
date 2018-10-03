@@ -7,11 +7,7 @@ const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 const Line = props => {
 	return (
-		<span
-			className={'text align-left'}
-			{...props.attributes}
-			data-indent={props.node.data.get('content').indent}
-		>
+		<span className={'text align-left'} data-indent={props.node.data.get('content').indent}>
 			{props.children}
 		</span>
 	)
@@ -19,7 +15,7 @@ const Line = props => {
 
 const Node = props => {
 	return (
-		<div className={'component'} {...props.attributes}>
+		<div className={'component'}>
 			<div className={`text-chunk obojobo-draft--chunks--code pad`}>
 				<pre>
 					<code>{props.children}</code>
@@ -151,9 +147,9 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case CODE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case CODE_LINE_NODE:
-				return <Line {...props} />
+				return <Line {...props} {...props.attributes} />
 		}
 	},
 	schema: {

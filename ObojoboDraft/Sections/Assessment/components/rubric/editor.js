@@ -31,7 +31,7 @@ class Mod extends React.Component {
 
 	render() {
 		return (
-			<div {...this.props.attributes} className={'mod pad'}>
+			<div className={'mod pad'}>
 				{this.props.children}
 				<button className={'delete-node'} onClick={() => this.deleteNode()}>
 					{'X'}
@@ -43,7 +43,7 @@ class Mod extends React.Component {
 
 const ModList = props => {
 	return (
-		<div {...props.attributes}>
+		<div>
 			<p contentEditable={false}>{'Mods:'}</p>
 			{props.children}
 		</div>
@@ -88,7 +88,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div {...this.props.attributes} className={'rubric pad'}>
+			<div className={'rubric pad'}>
 				<h1 contentEditable={false}>{'Rubric'}</h1>
 				<div className={'parameter-node'} contentEditable={false}>
 					{'Type: ' + this.state.type}
@@ -269,11 +269,11 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MOD_NODE:
-				return <Mod {...props} />
+				return <Mod {...props} {...props.attributes} />
 			case MOD_LIST_NODE:
-				return <ModList {...props} />
+				return <ModList {...props} {...props.attributes} />
 			case RUBRIC_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	validateNode(node) {
@@ -341,7 +341,7 @@ const plugins = {
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.withoutNormalization(c => {
+							return change.withoutNormalizing(c => {
 								c.removeNodeByKey(child.key)
 								let block
 								switch (index) {
@@ -433,7 +433,7 @@ const plugins = {
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.withoutNormalization(c => {
+							return change.withoutNormalizing(c => {
 								c.removeNodeByKey(child.key)
 								if (index === 0) {
 									const block = Block.create(

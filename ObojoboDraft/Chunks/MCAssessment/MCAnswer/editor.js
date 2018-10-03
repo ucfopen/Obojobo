@@ -44,10 +44,7 @@ const nodes = {
 
 const Node = props => {
 	return (
-		<div
-			className={'component obojobo-draft--chunks--mc-assessment--mc-answer'}
-			{...props.attributes}
-		>
+		<div className={'component obojobo-draft--chunks--mc-assessment--mc-answer'}>
 			{props.children}
 		</div>
 	)
@@ -96,7 +93,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MCANSWER_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

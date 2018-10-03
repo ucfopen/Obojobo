@@ -60,7 +60,7 @@ const Solution = props => {
 	}
 
 	return (
-		<div className={'solution-editor'} {...props.attributes}>
+		<div className={'solution-editor'}>
 			{props.children}
 			<button className={'delete'} onClick={() => deleteNode()}>
 				X
@@ -95,7 +95,6 @@ class Node extends React.Component {
 				className={
 					'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'
 				}
-				{...this.props.attributes}
 			>
 				<div className={'flipper'}>
 					<div className={'content back'}>
@@ -181,9 +180,9 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case QUESTION_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case SOLUTION_NODE:
-				return <Solution {...props} />
+				return <Solution {...props} {...props.attributes} />
 		}
 	},
 	schema: {

@@ -4,7 +4,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const Node = props => {
 	return (
-		<div className={'component'} {...props.attributes}>
+		<div className={'component'}>
 			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>
 				<span className={`text align-left`} data-indent={props.node.data.get('content').indent}>
 					{props.children}
@@ -114,7 +114,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case TEXT_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

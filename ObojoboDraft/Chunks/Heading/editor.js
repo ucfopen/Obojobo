@@ -5,7 +5,7 @@ const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const Node = props => {
 	const HTag = `h${props.node.data.get('content').level || 1}`
 	return (
-		<div className={'component'} {...props.attributes}>
+		<div className={'component'}>
 			<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
 				<HTag>{props.children}</HTag>
 			</div>
@@ -86,7 +86,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case HEADING_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

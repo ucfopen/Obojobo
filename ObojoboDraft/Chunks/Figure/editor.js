@@ -131,7 +131,7 @@ class Node extends React.Component {
 		}
 
 		return (
-			<div className="component" {...this.props.attributes}>
+			<div className="component">
 				<div className={`obojobo-draft--chunks--figure viewer ` + content.size}>
 					{this.renderEditToolbar()}
 					<div className={'container'}>
@@ -243,7 +243,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case FIGURE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

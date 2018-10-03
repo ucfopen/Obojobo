@@ -54,7 +54,6 @@ class Node extends React.Component {
 		return (
 			<div
 				className={'component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback'}
-				{...this.props.attributes}
 			>
 				<button className={'delete'} onClick={() => this.delete()}>
 					X
@@ -111,7 +110,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MCFEEDBACK_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {
