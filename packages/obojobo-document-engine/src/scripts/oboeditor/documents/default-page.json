@@ -1,0 +1,26 @@
+{
+	"document": {
+		"nodes": [
+			{
+				"object": "block",
+				"type": "ObojoboDraft.Chunks.Heading",
+				"data": {
+					"content": {
+						"level": 1
+					}
+				},
+				"nodes": [
+					{
+						"object": "text",
+						"leaves": [
+							{
+								"text":
+									"Sample Page"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

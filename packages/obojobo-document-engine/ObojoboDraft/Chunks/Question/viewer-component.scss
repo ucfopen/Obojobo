@@ -67,12 +67,15 @@
 		> .content-back {
 			transform: rotateY(180deg);
 
-			> .responses-hidden {
-				font-family: $font-default;
-				font-size: 0.9em;
-				text-align: center;
-				margin-bottom: 1em;
-			}
+			// transition: border $duration-animation-default;
+			max-width: $dimension-column-width;
+			background: $color-bg;
+		}
+		> .responses-hidden {
+			font-family: $font-default;
+			font-size: 0.9em;
+			text-align: center;
+			margin-bottom: 1em;
 		}
 	}
 
@@ -115,4 +118,40 @@
 			border: 1.25px solid $color-incorrect;
 		}
 	}
+}
+
+.solution-editor {
+	background: $color-bg2;
+	border-top: 1px solid $color-shadow;
+	position: relative;
+	border-bottom-left-radius: 0.3em;
+	border-bottom-right-radius: 0.3em;
+	padding-bottom: 1px;
+
+	.page-editor {
+		margin: $dimension-padding / 3;
+		background: $color-bg;
+		border: 1px solid $color-shadow;
+
+		&:before {
+			content: 'Full explanation:';
+			font-family: $font-default;
+			font-size: 1em;
+			font-weight: bold;
+			color: transparentize($color-text, 0.25);
+			margin-top: 1em;
+			margin-left: 2em;
+			margin-bottom: -1em;
+			display: block;
+			transform: scale(0.7);
+			transform-origin: top left;
+		}
+	}
+}
+
+.add-solution {
+	left: 50%;
+	transform: translate(-50%, 0);
+	position: relative;
+	margin: $dimension-padding / 3;
 }

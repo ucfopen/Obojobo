@@ -1,0 +1,392 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Figure editor Node renders correctly 1`] = `
+<div
+  className="component"
+  dummy="dummyData"
+>
+  <div
+    className="obojobo-draft--chunks--figure viewer mockSize"
+  >
+    <div
+      className="image-toolbar"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Edit Alt Text
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Edit URL
+      </button>
+      <select
+        name="Size"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="mockSize"
+      >
+        <option
+          value="small"
+        >
+          small
+        </option>
+        <option
+          value="medium"
+        >
+          medium
+        </option>
+        <option
+          value="large"
+        >
+          large
+        </option>
+        <option
+          value="custom"
+        >
+          custom
+        </option>
+      </select>
+      <div>
+        <button
+          className="delete-node"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+    </div>
+    <div
+      className="container"
+    >
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        unselectable="on"
+      />
+      <figcaption />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Figure editor Node renders with custom size correctly 1`] = `
+<div
+  className="component"
+  dummy="dummyData"
+>
+  <div
+    className="obojobo-draft--chunks--figure viewer custom"
+  >
+    <div
+      className="image-toolbar"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Edit Alt Text
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Edit URL
+      </button>
+      <select
+        name="Size"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="custom"
+      >
+        <option
+          value="small"
+        >
+          small
+        </option>
+        <option
+          value="medium"
+        >
+          medium
+        </option>
+        <option
+          value="large"
+        >
+          large
+        </option>
+        <option
+          value="custom"
+        >
+          custom
+        </option>
+      </select>
+      <div>
+        <button
+          className="delete-node"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+    </div>
+    <div
+      className="container"
+    >
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "height": "customHeightpx",
+            "width": "customWidthpx",
+          }
+        }
+        unselectable="on"
+      />
+      <figcaption />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Figure editor Node renders with custom size correctly 2`] = `
+<div
+  className="component"
+  dummy="dummyData"
+>
+  <div
+    className="obojobo-draft--chunks--figure viewer custom"
+  >
+    <div
+      className="image-toolbar"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Edit Alt Text
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Edit URL
+      </button>
+      <select
+        name="Size"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="custom"
+      >
+        <option
+          value="small"
+        >
+          small
+        </option>
+        <option
+          value="medium"
+        >
+          medium
+        </option>
+        <option
+          value="large"
+        >
+          large
+        </option>
+        <option
+          value="custom"
+        >
+          custom
+        </option>
+      </select>
+      <div>
+        <button
+          className="delete-node"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+    </div>
+    <div
+      className="container"
+    >
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "height": "customHeightpx",
+          }
+        }
+        unselectable="on"
+      />
+      <figcaption />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Figure editor Node renders with custom size correctly 3`] = `
+<div
+  className="component"
+  dummy="dummyData"
+>
+  <div
+    className="obojobo-draft--chunks--figure viewer custom"
+  >
+    <div
+      className="image-toolbar"
+    >
+      <button
+        onClick={[Function]}
+      >
+        Edit Alt Text
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        Edit URL
+      </button>
+      <select
+        name="Size"
+        onChange={[Function]}
+        onClick={[Function]}
+        value="custom"
+      >
+        <option
+          value="small"
+        >
+          small
+        </option>
+        <option
+          value="medium"
+        >
+          medium
+        </option>
+        <option
+          value="large"
+        >
+          large
+        </option>
+        <option
+          value="custom"
+        >
+          custom
+        </option>
+      </select>
+      <div>
+        <button
+          className="delete-node"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+    </div>
+    <div
+      className="container"
+    >
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "width": "mockWidthpx",
+          }
+        }
+        unselectable="on"
+      />
+      <figcaption />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Figure editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "width": "large",
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Figure editor oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "textGroup": Array [
+        Object {
+          "text": Object {
+            "value": "mockCaption",
+          },
+        },
+      ],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "mockCaption",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Figure editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Figure",
+    }
+  }
+/>
+`;
+
+exports[`Figure editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
+          "value": "mockText",
+        },
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

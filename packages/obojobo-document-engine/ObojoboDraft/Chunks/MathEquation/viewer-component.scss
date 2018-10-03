@@ -1,6 +1,9 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--math-equation {
+	.non-editable-chunk {
+		position: relative;
+	}
 	.katex-display {
 		margin: 0;
 	}
@@ -22,5 +25,24 @@
 		top: 50%;
 		right: 3em;
 		transform: translate(0, -50%);
+	}
+
+	.katex-error {
+		background: #FF000011;
+	}
+
+	.equation-editor {
+		positon: relative;
+		overflow: auto;
+
+		div {
+			float: left;
+			width: 50%;
+			text-align: center;
+		}
+
+		input {
+			position: static;
+		}
 	}
 }

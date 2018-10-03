@@ -48,6 +48,11 @@
 	},
 	"author": "",
 	"dependencies": {
+		"babel-preset-es2015": "^6.24.1",
+		"babel-preset-stage-0": "^6.24.1",
+		"immutable": "^3.8.2",
+		"slate": "^0.34.7",
+		"slate-react": "^0.13.4",
 		"underscore": "1.5.1"
 	},
 	"devDependencies": {
@@ -111,6 +116,10 @@
 			"<rootDir>/src/scripts/viewer/index.js",
 			"<rootDir>/src/scripts/viewer/app.js",
 			"<rootDir>/src/scripts/viewer/dist.js",
+			"<rootDir>/src/scripts/oboeditor/index.js",
+			"<rootDir>/src/scripts/oboeditor/app.js",
+			"<rootDir>/src/scripts/oboeditor/dist.js",
+			"<rootDir>/src/scripts/oboeditor/documents/",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
 			"====THESE ARE NOT USED RIGHT NOW====",
 			"selection-handler.js",

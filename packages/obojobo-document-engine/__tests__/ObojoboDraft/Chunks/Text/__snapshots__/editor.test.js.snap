@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text editor Node builds the expected component 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--single-text pad"
+  >
+    <span
+      className="text align-left"
+      data-indent={undefined}
+    />
+  </div>
+</div>
+`;
+
+exports[`Text editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "textGroup": Array [
+        Object {
+          "text": Object {
+            "value": "mockText",
+          },
+        },
+      ],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "mockText",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Text editor oboToSlate converts an OboNode to a Slate node with an indent 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "textGroup": Array [
+        Object {
+          "data": Object {
+            "indent": 1,
+          },
+          "text": Object {
+            "value": "mockText",
+          },
+        },
+      ],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "mockText",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Text editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Text",
+    }
+  }
+/>
+`;
+
+exports[`Text editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Array [
+      Object {
+        "data": Object {
+          "indent": undefined,
+        },
+        "text": Object {
+          "styleList": Array [
+            Object {
+              "data": Object {},
+              "end": 8,
+              "start": 0,
+              "type": "b",
+            },
+          ],
+          "value": "mockText",
+        },
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

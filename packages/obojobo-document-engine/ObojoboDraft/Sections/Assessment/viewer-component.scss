@@ -24,3 +24,16 @@
 .obojobo-draft--sections--assessment--results-modal {
 	background: $color-bg2;
 }
+
+.add-rubric {
+	font-family: $font-default;
+	font-size: 0.75em;
+	line-height: 1em;
+	font-family: $font-default;
+	font-size: 1em;
+	text-align: center;
+	border-radius: $dimension-rounded-radius;
+	padding: 0.4em;
+	background-color: $color-preview;
+	color: white;
+}

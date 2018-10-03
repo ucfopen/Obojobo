@@ -1,0 +1,299 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Table editor Cell component 1`] = `
+<td
+  dummy="dummyData"
+/>
+`;
+
+exports[`Table editor Cell component as header 1`] = `
+<th
+  dummy="dummyData"
+/>
+`;
+
+exports[`Table editor Node component 1`] = `
+<div
+  className="component"
+  dummy="dummyData"
+>
+  <div
+    className="obojobo-draft--chunks--table viewer pad"
+  >
+    <div
+      className="container"
+    >
+      <table
+        className="view"
+      >
+        <tbody>
+          <tr>
+            <td
+              className="delete-cell"
+            >
+              <button
+                onClick={[Function]}
+              >
+                X
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div
+    className="table-editor"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Add Row
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Add Column
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Toggle Header
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Table editor Node component adds col 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+
+exports[`Table editor Node component adds row 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+
+exports[`Table editor Node component removes col 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+
+exports[`Table editor Node component toggles header 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+
+exports[`Table editor Row component 1`] = `
+<tr
+  dummy="dummyData"
+>
+  <td
+    className="delete-cell"
+  >
+    <button
+      onClick={[Function]}
+    >
+      X
+    </button>
+  </td>
+</tr>
+`;
+
+exports[`Table editor Row component deletes itself 1`] = `"<tr><td class=\\"delete-cell\\"><button>X</button></td></tr>"`;
+
+exports[`Table editor Row component deletes itself and its table 1`] = `"<tr><td class=\\"delete-cell\\"><button>X</button></td></tr>"`;
+
+exports[`Table editor Row component deletes itself and passes header status to sibling 1`] = `"<tr><td class=\\"delete-cell\\"><button>X</button></td></tr>"`;
+
+exports[`Table editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "header": true,
+      "textGroup": Object {
+        "numCols": 2,
+        "textGroup": Array [
+          Object {
+            "text": Object {
+              "value": "Mock1",
+            },
+          },
+          Object {
+            "text": Object {
+              "value": "Mock2",
+            },
+          },
+          Object {
+            "text": Object {
+              "value": "Mock3",
+            },
+          },
+          Object {
+            "text": Object {
+              "value": "Mock4",
+            },
+          },
+        ],
+      },
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "data": Object {
+        "content": Object {
+          "header": true,
+        },
+      },
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "content": Object {
+              "header": true,
+            },
+          },
+          "nodes": Array [
+            Object {
+              "leaves": Array [
+                Object {
+                  "text": "Mock1",
+                },
+              ],
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.Table.Cell",
+        },
+        Object {
+          "data": Object {
+            "content": Object {
+              "header": true,
+            },
+          },
+          "nodes": Array [
+            Object {
+              "leaves": Array [
+                Object {
+                  "text": "Mock2",
+                },
+              ],
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.Table.Cell",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.Table.Row",
+    },
+    Object {
+      "data": Object {
+        "content": Object {
+          "header": false,
+        },
+      },
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "content": Object {
+              "header": false,
+            },
+          },
+          "nodes": Array [
+            Object {
+              "leaves": Array [
+                Object {
+                  "text": "Mock3",
+                },
+              ],
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.Table.Cell",
+        },
+        Object {
+          "data": Object {
+            "content": Object {
+              "header": false,
+            },
+          },
+          "nodes": Array [
+            Object {
+              "leaves": Array [
+                Object {
+                  "text": "Mock4",
+                },
+              ],
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.Table.Cell",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.Table.Row",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Table editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Table",
+    }
+  }
+/>
+`;
+
+exports[`Table editor plugins.renderNode renders a button when passed 2`] = `
+<Row
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Table.Row",
+    }
+  }
+/>
+`;
+
+exports[`Table editor plugins.renderNode renders a button when passed 3`] = `
+<Cell
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Table.Cell",
+    }
+  }
+/>
+`;
+
+exports[`Table editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "textGroup": Object {
+      "textGroup": Array [
+        Object {
+          "text": Object {
+            "styleList": Array [
+              Object {
+                "data": Object {},
+                "end": 8,
+                "start": 0,
+                "type": "b",
+              },
+            ],
+            "value": "MockText",
+          },
+        },
+      ],
+    },
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

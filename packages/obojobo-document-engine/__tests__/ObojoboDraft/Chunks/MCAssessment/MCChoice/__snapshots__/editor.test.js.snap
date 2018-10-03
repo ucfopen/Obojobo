@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCChoice editor Node component 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct"
+  dummy="dummyData"
+>
+  <button
+    className="delete"
+    onClick={[Function]}
+  >
+    X
+  </button>
+  <button
+    className="correct-button"
+    onClick={[Function]}
+  >
+    ✖
+  </button>
+  <div
+    className="children"
+  >
+    <div />
+  </div>
+  <button
+    className="add-feedback"
+    onClick={[Function]}
+  >
+    Add Feedback
+  </button>
+</div>
+`;
+
+exports[`MCChoice editor Node component correct choice 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-correct"
+  dummy="dummyData"
+>
+  <button
+    className="delete"
+    onClick={[Function]}
+  >
+    X
+  </button>
+  <button
+    className="correct-button"
+    onClick={[Function]}
+  >
+    ✔
+  </button>
+  <div
+    className="children"
+  >
+    <div />
+  </div>
+</div>
+`;
+
+exports[`MCChoice editor Node component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct\\"><button class=\\"delete\\">X</button><button class=\\"correct-button\\">✖</button><div class=\\"children\\"><div></div></div><button class=\\"add-feedback\\">Add Feedback</button></div>"`;
+
+exports[`MCChoice editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": undefined,
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    undefined,
+    undefined,
+    Object {
+      "data": Object {
+        "content": undefined,
+      },
+      "key": undefined,
+      "object": "block",
+      "type": "notADefinedNode",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`MCChoice editor plugins.renderNode renders a choice 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+    }
+  }
+/>
+`;
+
+exports[`MCChoice editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+    Object {
+      "children": Array [],
+      "id": undefined,
+      "type": "notADefinedNode",
+    },
+  ],
+  "content": Object {},
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

@@ -95,6 +95,10 @@ const APIUtil = {
 		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId, visitId }).then(
 			processJsonResults
 		)
+	},
+
+	postDraft(id, draftJSON) {
+		return APIUtil.post(`/api/drafts/${id}`, draftJSON).then(processJsonResults)
 	}
 }
 

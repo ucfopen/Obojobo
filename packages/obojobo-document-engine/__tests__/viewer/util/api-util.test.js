@@ -357,4 +357,32 @@ describe('apiutil', () => {
 			expect(err).toBe('json parsing error')
 		})
 	})
+
+	test('postDraft calls fetch', () => {
+		expect.assertions(4)
+
+		fetch.mockResolvedValueOnce({
+			json: () => ({
+				status: 'ok',
+				value: 'mockValue'
+			})
+		})
+
+		return APIUtil.postDraft('mockDraftId', {}).then(() => {
+			expect(fetch).toHaveBeenCalled()
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
+			expect(calledEndpoint).toBe('/api/drafts/mockDraftId')
+			expect(calledOptions).toEqual({
+				body: expect.anything(),
+				credentials: 'include',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+			expect(JSON.parse(calledOptions.body)).toEqual({})
+		})
+	})
 })
