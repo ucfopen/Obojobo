@@ -116,7 +116,7 @@ const insertNode = change => {
 			data: { content: { latex: '', label: '' } },
 			isVoid: true
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 

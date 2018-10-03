@@ -291,9 +291,13 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment.Rubric': {
-				nodes: [{ types: ['Parameter'], min: 4, max: 4 }, { types: [MOD_LIST_NODE], max: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{ match: [{ type: 'Paramter' }], min: 4, max: 4 },
+					{ match: [{ type: MOD_LIST_NODE }], max: 1 }
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							let block
 							switch (index) {
@@ -385,9 +389,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.Rubric.ModList': {
-				nodes: [{ types: [MOD_NODE], min: 1, max: 20 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: MOD_NODE }], min: 1, max: 20 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: MOD_NODE
@@ -403,9 +408,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.Rubric.Mod': {
-				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: 'Parameter' }], min: 2, max: 2 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(

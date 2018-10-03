@@ -170,14 +170,15 @@ const plugins = {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment': {
 				nodes: [
-					{ types: [SETTINGS_NODE], min: 1, max: 1 },
-					{ types: [PAGE_NODE], min: 1, max: 1 },
-					{ types: [QUESTION_BANK_NODE], min: 1, max: 1 },
-					{ types: [ACTIONS_NODE], min: 1, max: 1 },
-					{ types: [RUBRIC_NODE], max: 1 }
+					{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
+					{ match: [{ type: PAGE_NODE }], min: 1, max: 1 },
+					{ match: [{ type: QUESTION_BANK_NODE }], min: 1, max: 1 },
+					{ match: [{ type: ACTIONS_NODE }], min: 1, max: 1 },
+					{ match: [{ type: RUBRIC_NODE }], max: 1 }
 				],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							let block
 							switch (index) {
@@ -230,9 +231,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.Settings': {
-				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: 'Parameter' }], min: 2, max: 2 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(

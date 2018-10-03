@@ -137,9 +137,20 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.MCAssessment.MCChoice': {
-				nodes: [{ types: [MCANSWER_NODE], min: 1, max: 1 }, { types: [MCFEEDBACK_NODE], max: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: MCANSWER_NODE }],
+						min: 1,
+						max: 1
+					},
+					{
+						match: [{ type: MCFEEDBACK_NODE }],
+						max: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: MCANSWER_NODE

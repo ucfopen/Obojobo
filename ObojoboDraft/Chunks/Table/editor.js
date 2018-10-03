@@ -202,7 +202,7 @@ const insertNode = change => {
 			type: TABLE_NODE,
 			data: { content: { header: true, textGroup: { numRows: 1, numCols: 1 } } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -303,10 +303,16 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Table': {
-				nodes: [{ types: [TABLE_ROW_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
+				nodes: [
+					{
+						match: [{ type: TABLE_ROW_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
 					const header = index === 0 && node.data.get('content').header
-					switch (violation) {
+					switch (error) {
 						case CHILD_TYPE_INVALID: {
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_ROW_NODE,
@@ -324,10 +330,16 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.Table.Row': {
-				nodes: [{ types: [TABLE_CELL_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
+				nodes: [
+					{
+						match: [{ type: TABLE_CELL_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
 					const header = node.data.get('content').header
-					switch (violation) {
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_CELL_NODE,

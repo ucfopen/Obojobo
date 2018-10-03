@@ -4,7 +4,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const Node = props => {
 	return (
-		<div className={'component'}>
+		<div className={'component'} {...props.attributes}>
 			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>
 				<span className={`text align-left`} data-indent={props.node.data.get('content').indent}>
 					{props.children}
@@ -20,7 +20,7 @@ const insertNode = change => {
 			type: TEXT_NODE,
 			data: { content: { indent: 0 } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -120,7 +120,7 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Text': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [{ match: [{ object: 'text' }] }]
 			}
 		}
 	}

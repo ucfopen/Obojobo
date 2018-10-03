@@ -34,7 +34,11 @@
 		"useTabs": true,
 		"singleQuote": true
 	},
-	"browserslist": ["> 1%", "last 2 versions", "not dead"],
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead"
+	],
 	"lint-staged": {
 		"{__{tests,mocks}__,ObojoboDraft,src,server}/**/*.{js,scss}": [
 			"yarn prettier --write",
@@ -48,11 +52,12 @@
 	},
 	"author": "",
 	"dependencies": {
-		"babel-preset-es2015": "^6.24.1",
-		"babel-preset-stage-0": "^6.24.1",
 		"immutable": "^3.8.2",
-		"slate": "^0.34.7",
-		"slate-react": "^0.13.4",
+		"react": "15.6.2",
+		"react-dom": "15.6.2",
+		"slate": "0.41.0",
+		"slate-react": "^0.18.10",
+		"slate-schema-violations": "^0.1.39",
 		"underscore": "1.5.1"
 	},
 	"devDependencies": {
@@ -80,8 +85,6 @@
 		"node-sass": "^4.9.0",
 		"postcss-loader": "^2.1.5",
 		"prettier": "1.11.1",
-		"react": "15.6.2",
-		"react-dom": "15.6.2",
 		"react-idle-timer": "1.3.3",
 		"react-test-renderer": "^15.5.4",
 		"react-transition-group": "^1.1.3",
@@ -100,7 +103,9 @@
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
-		"testMatch": ["**/__tests__/**/*.js?(x)"],
+		"testMatch": [
+			"**/__tests__/**/*.js?(x)"
+		],
 		"setupTestFrameworkScriptFile": "./setupTests.js",
 		"verbose": false,
 		"moduleNameMapper": {
@@ -109,9 +114,19 @@
 			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
-		"moduleDirectories": ["<rootDir>", "node_modules"],
-		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
-		"coverageReporters": ["text", "lcov"],
+		"moduleDirectories": [
+			"<rootDir>",
+			"node_modules"
+		],
+		"collectCoverageFrom": [
+			"src/scripts/**",
+			"ObojoboDraft/**",
+			"server/**"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
 		"coveragePathIgnorePatterns": [
 			"====THESE DONT NEED TESTS====",
 			"<rootDir>/src/scripts/viewer/index.js",

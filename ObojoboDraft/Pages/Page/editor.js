@@ -102,30 +102,31 @@ const plugins = {
 			'ObojoboDraft.Pages.Page': {
 				nodes: [
 					{
-						types: [
-							'ObojoboDraft.Chunks.ActionButton',
-							'ObojoboDraft.Chunks.Break',
-							'ObojoboDraft.Chunks.Code',
-							'ObojoboDraft.Chunks.Figure',
-							'ObojoboDraft.Chunks.Heading',
-							'ObojoboDraft.Chunks.IFrame',
-							'ObojoboDraft.Chunks.List',
-							'ObojoboDraft.Chunks.MathEquation',
-							'ObojoboDraft.Chunks.Table',
-							'ObojoboDraft.Chunks.Text',
-							'ObojoboDraft.Chunks.YouTube',
-							'ObojoboDraft.Chunks.QuestionBank',
-							'ObojoboDraft.Chunks.Question',
-							'ObojoboDraft.Chunks.MCAssessment',
-							'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-							'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-							'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+						match: [
+							{ type: 'ObojoboDraft.Chunks.ActionButton' },
+							{ type: 'ObojoboDraft.Chunks.Break' },
+							{ type: 'ObojoboDraft.Chunks.Code' },
+							{ type: 'ObojoboDraft.Chunks.Figure' },
+							{ type: 'ObojoboDraft.Chunks.Heading' },
+							{ type: 'ObojoboDraft.Chunks.IFrame' },
+							{ type: 'ObojoboDraft.Chunks.List' },
+							{ type: 'ObojoboDraft.Chunks.MathEquation' },
+							{ type: 'ObojoboDraft.Chunks.Table' },
+							{ type: 'ObojoboDraft.Chunks.Text' },
+							{ type: 'ObojoboDraft.Chunks.YouTube' },
+							{ type: 'ObojoboDraft.Chunks.QuestionBank' },
+							{ type: 'ObojoboDraft.Chunks.Question' },
+							{ type: 'ObojoboDraft.Chunks.MCAssessment' },
+							{ type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice' },
+							{ type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer' },
+							{ type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback' }
 						],
 						min: 1
 					}
 				],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: TEXT_NODE,

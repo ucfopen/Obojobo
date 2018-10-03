@@ -5,7 +5,7 @@ const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 const Node = props => {
 	const HTag = `h${props.node.data.get('content').level || 1}`
 	return (
-		<div className={'component'}>
+		<div className={'component'} {...props.attributes}>
 			<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
 				<HTag>{props.children}</HTag>
 			</div>
@@ -19,7 +19,6 @@ const insertNode = change => {
 			type: HEADING_NODE,
 			data: { content: { level: 2 } }
 		})
-		.collapseToStartOfNextText()
 		.focus()
 }
 
@@ -93,7 +92,12 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Heading': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [
+					{
+						match: [{ object: 'text' }],
+						min: 1
+					}
+				]
 			}
 		}
 	}

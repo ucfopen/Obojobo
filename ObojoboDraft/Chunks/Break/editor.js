@@ -5,7 +5,7 @@ const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 class Node extends React.Component {
 	toggleSize() {
 		const content = this.props.node.data.get('content')
-		const newSize = (content.width === 'normal' ? 'large' : 'normal')
+		const newSize = content.width === 'normal' ? 'large' : 'normal'
 		content.width = newSize
 
 		this.forceUpdate()
@@ -13,13 +13,14 @@ class Node extends React.Component {
 
 	render() {
 		const { isSelected } = this.props
-
 		return (
-			<div className={'component'}>
+			<div {...this.props.attributes} className={'component'}>
 				<div
-					className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${this.props.node.data.get('content').width}`}
-					{...this.props.attributes}>
-					<hr/>
+					className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
+						this.props.node.data.get('content').width
+					}`}
+				>
+					<hr />
 					{isSelected ? <button onClick={() => this.toggleSize()}>Toggle Size</button> : null}
 				</div>
 			</div>
@@ -31,10 +32,9 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: BREAK_NODE,
-			data: { content: { width: 'normal' } },
-			isVoid: true
+			data: { content: { width: 'normal' } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -53,10 +53,9 @@ const oboToSlate = node => {
 	json.object = 'block'
 	json.key = node.id
 	json.type = node.type
-	json.isVoid = true
 	json.data = { content: node.content }
 
-	if(!json.data.content.width) json.data.content.width = 'normal'
+	if (!json.data.content.width) json.data.content.width = 'normal'
 
 	return json
 }
@@ -71,20 +70,20 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Break': {
-				isVoid: true,
+				isVoid: true
 			}
 		}
 	}
 }
 
-const Break ={
+const Break = {
 	components: {
-		Node,
+		Node
 	},
 	helpers: {
 		insertNode,
 		slateToObo,
-		oboToSlate,
+		oboToSlate
 	},
 	plugins
 }

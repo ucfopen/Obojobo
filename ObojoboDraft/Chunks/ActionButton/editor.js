@@ -229,11 +229,8 @@ class Node extends React.Component {
 		const { isSelected } = this.props
 
 		return (
-			<div className={'component'}>
-				<div
-					className={'text-chunk obojobo-draft--chunks--action-button pad'}
-					{...this.props.attributes}
-				>
+			<div className={'component'} {...this.props.attributes}>
+				<div className={'text-chunk obojobo-draft--chunks--action-button pad'}>
 					{this.renderButton()}
 					{isSelected ? this.renderTriggers() : null}
 				</div>
@@ -248,10 +245,9 @@ const insertNode = change => {
 			type: BUTTON_NODE,
 			data: {
 				content: { actions: [], label: '' }
-			},
-			isVoid: true
+			}
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 

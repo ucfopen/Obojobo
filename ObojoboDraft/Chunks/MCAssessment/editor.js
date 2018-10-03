@@ -170,11 +170,20 @@ const plugins = {
 		blocks: {
 			'ObojoboDraft.Chunks.MCAssessment': {
 				nodes: [
-					{ types: [CHOICE_LIST_NODE], min: 1, max: 1 },
-					{ types: [SETTINGS_NODE], min: 1, max: 1 }
+					{
+						match: [{ type: CHOICE_LIST_NODE }],
+						min: 1,
+						max: 1
+					},
+					{
+						match: [{ type: SETTINGS_NODE }],
+						min: 1,
+						max: 1
+					}
 				],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create({
@@ -205,9 +214,15 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.MCAssessment.ChoiceList': {
-				nodes: [{ types: [MCCHOICE_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: MCCHOICE_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: MCCHOICE_NODE,
@@ -226,9 +241,16 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.MCAssessment.Settings': {
-				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: 'Parameter' }],
+						min: 2,
+						max: 2
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(

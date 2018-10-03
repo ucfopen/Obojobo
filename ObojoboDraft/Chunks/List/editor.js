@@ -105,7 +105,7 @@ const insertNode = change => {
 			type: LIST_NODE,
 			data: { content: { listStyles: { type: 'unordered' } } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -307,13 +307,19 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.List': {
-				nodes: [{ types: [LIST_LEVEL_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
+				nodes: [
+					{
+						match: [{ type: LIST_LEVEL_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
 					// find type and bullet style
 					const type = node.data.get('content').listStyles.type
 					const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
 
-					switch (violation) {
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: LIST_LEVEL_NODE,
@@ -331,10 +337,16 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.List.Level': {
-				nodes: [{ types: [LIST_LEVEL_NODE, LIST_LINE_NODE], min: 1 }],
-				parent: { types: [LIST_LEVEL_NODE, LIST_NODE] },
-				normalize: (change, violation, { node, child, parent, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: LIST_LEVEL_NODE }, { type: LIST_LINE_NODE }],
+						min: 1
+					}
+				],
+				parent: [{ type: LIST_LEVEL_NODE }, { type: LIST_NODE }],
+				normalize: (change, error) => {
+					const { node, child, parent, index } = error
+					switch (error.code) {
 						case PARENT_TYPE_INVALID: {
 							return change.withoutNormalization(c => {
 								let childIndex = parent.nodes.indexOf(node)
@@ -368,7 +380,7 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.List.Line': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [{ match: [{ object: 'text' }] }]
 			}
 		}
 	}

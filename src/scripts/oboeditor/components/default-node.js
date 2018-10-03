@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Node = props => {
-	return <p {...props.attributes}>{props.childen}</p>
+	return <p {...props.attributes}>{props.children}</p>
 }
 
 const slateToObo = node => {

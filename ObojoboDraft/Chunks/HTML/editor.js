@@ -4,7 +4,7 @@ const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
 const Node = props => {
 	return (
-		<div className={'component'}>
+		<div className={'component'} {...props.attributes}>
 			<div className={'obojobo-draft--chunks--html viewer pad'}>{props.children}</div>
 		</div>
 	)
@@ -15,7 +15,7 @@ const insertNode = change => {
 		.insertBlock({
 			type: HTML_NODE
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -60,7 +60,12 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.HTML': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [
+					{
+						match: [{ object: 'text' }],
+						min: 1
+					}
+				]
 			}
 		}
 	}

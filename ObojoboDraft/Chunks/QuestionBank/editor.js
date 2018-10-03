@@ -82,7 +82,7 @@ const insertNode = change => {
 			type: QUESTION_BANK_NODE,
 			data: { content: { choose: 1, select: 'sequential' } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -169,11 +169,12 @@ const plugins = {
 		blocks: {
 			'ObojoboDraft.Chunks.QuestionBank': {
 				nodes: [
-					{ types: [SETTINGS_NODE], min: 1, max: 1 },
-					{ types: [QUESTION_NODE, QUESTION_BANK_NODE], min: 1 }
+					{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
+					{ match: [{ type: QUESTION_NODE, QUESTION_BANK_NODE }], min: 1 }
 				],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create({
@@ -201,9 +202,20 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.QuestionBank.Settings': {
-				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [
+							{
+								type: 'Parameter'
+							}
+						],
+						min: 2,
+						max: 2
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(

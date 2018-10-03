@@ -80,10 +80,9 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: IFRAME_NODE,
-			data: { content: { src: 'https://www.youtube.com/embed/dQw4w9WgXcQ' } },
-			isVoid: true
+			data: { content: { src: 'https://www.youtube.com/embed/dQw4w9WgXcQ' } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -103,7 +102,6 @@ const oboToSlate = node => {
 	json.key = node.id
 	json.type = node.type
 	json.data = { content: node.content }
-	json.isVoid = true
 
 	return json
 }

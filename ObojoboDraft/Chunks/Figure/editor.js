@@ -162,7 +162,7 @@ const insertNode = change => {
 				}
 			}
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -249,7 +249,12 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Figure': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [
+					{
+						match: [{ object: 'text' }],
+						min: 0
+					}
+				]
 			}
 		}
 	}

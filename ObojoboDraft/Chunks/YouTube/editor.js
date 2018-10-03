@@ -72,10 +72,9 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: YOUTUBE_NODE,
-			data: { content: { videoId: 'FaHEusBG20c' } },
-			isVoid: true
+			data: { content: { videoId: 'FaHEusBG20c' } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -95,7 +94,6 @@ const oboToSlate = node => {
 	json.key = node.id
 	json.type = node.type
 	json.data = { content: node.content }
-	json.isVoid = true
 
 	return json
 }

@@ -131,9 +131,10 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment.ScoreActions': {
-				nodes: [{ types: [SCORE_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: SCORE_NODE }], min: 1 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: SCORE_NODE,
@@ -151,9 +152,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.ScoreAction': {
-				nodes: [{ types: [PAGE_NODE], min: 1, max: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: PAGE_NODE }], min: 1, max: 1 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: PAGE_NODE

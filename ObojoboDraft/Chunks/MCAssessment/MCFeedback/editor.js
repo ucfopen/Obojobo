@@ -119,24 +119,25 @@ const plugins = {
 			'ObojoboDraft.Chunks.MCAssessment.MCFeedback': {
 				nodes: [
 					{
-						types: [
-							BREAK_NODE,
-							CODE_NODE,
-							FIGURE_NODE,
-							HEADING_NODE,
-							IFRAME_NODE,
-							LIST_NODE,
-							MATH_NODE,
-							TEXT_NODE,
-							TABLE_NODE,
-							YOUTUBE_NODE,
-							HTML_NODE
+						match: [
+							{ type: BREAK_NODE },
+							{ type: CODE_NODE },
+							{ type: FIGURE_NODE },
+							{ type: HEADING_NODE },
+							{ type: IFRAME_NODE },
+							{ type: LIST_NODE },
+							{ type: MATH_NODE },
+							{ type: TEXT_NODE },
+							{ type: TABLE_NODE },
+							{ type: YOUTUBE_NODE },
+							{ type: HTML_NODE }
 						],
 						min: 1
 					}
 				],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: TEXT_NODE,
