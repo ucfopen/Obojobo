@@ -1,0 +1,334 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionButton editor Node builds the expected component 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--action-button pad"
+    dummy="dummyData"
+  >
+    <div
+      className="obojobo-draft--components--button"
+      style={
+        Object {
+          "position": "relative",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "cursor": "cell",
+            "display": "block",
+            "height": "100%",
+            "left": "0",
+            "position": "absolute",
+            "top": "0",
+            "width": "100%",
+            "zIndex": 1,
+          }
+        }
+      />
+      <div
+        className="button"
+      >
+        <input
+          frameBorder="0"
+          name="Button Name"
+          onChange={[Function]}
+          onClick={[Function]}
+          placeholder="Button Label"
+          style={
+            Object {
+              "display": "block",
+            }
+          }
+          value={undefined}
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButton editor Node builds the expected component when selected 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="text-chunk obojobo-draft--chunks--action-button pad"
+    dummy="dummyData"
+  >
+    <div
+      className="obojobo-draft--components--button"
+      style={
+        Object {
+          "position": "relative",
+        }
+      }
+    >
+      <div
+        style={
+          Object {
+            "cursor": "cell",
+            "display": "none",
+            "height": "100%",
+            "left": "0",
+            "position": "absolute",
+            "top": "0",
+            "width": "100%",
+            "zIndex": 1,
+          }
+        }
+      />
+      <div
+        className="button"
+      >
+        <input
+          frameBorder="0"
+          name="Button Name"
+          onChange={[Function]}
+          onClick={[Function]}
+          placeholder="Button Label"
+          style={
+            Object {
+              "display": "block",
+            }
+          }
+          value={undefined}
+        />
+      </div>
+    </div>
+    <div
+      className="trigger-box"
+    >
+      <div
+        className="trigger"
+      >
+        <div>
+          <p>
+            mockType
+          </p>
+        </div>
+        <div>
+          <p>
+            mockValue
+          </p>
+        </div>
+        <button
+          className="delete-node"
+          onClick={[Function]}
+        >
+          x
+        </button>
+      </div>
+      <div
+        className="trigger new-trigger is-type-valid"
+      >
+        <div
+          className="trigger-name"
+        >
+          <p>
+            Action
+          </p>
+          <select
+            name="Action"
+            onChange={[Function]}
+            onClick={[Function]}
+            value="nav:goto"
+          >
+            <option
+              value="nav:goto"
+            >
+              nav:goto
+            </option>
+            <option
+              value="nav:prev"
+            >
+              nav:prev
+            </option>
+            <option
+              value="nav:next"
+            >
+              nav:next
+            </option>
+            <option
+              value="nav:openExternalLink"
+            >
+              nav:openExternalLink
+            </option>
+            <option
+              value="nav:lock"
+            >
+              nav:lock
+            </option>
+            <option
+              value="nav:unlock"
+            >
+              nav:unlock
+            </option>
+            <option
+              value="nav:open"
+            >
+              nav:open
+            </option>
+            <option
+              value="nav:close"
+            >
+              nav:close
+            </option>
+            <option
+              value="nav:toggle"
+            >
+              nav:toggle
+            </option>
+            <option
+              value="assessment:startAttempt"
+            >
+              assessment:startAttempt
+            </option>
+            <option
+              value="assessment:endAttempt"
+            >
+              assessment:endAttempt
+            </option>
+            <option
+              value="js"
+            >
+              js
+            </option>
+            <option
+              value="viewer:alert"
+            >
+              viewer:alert
+            </option>
+          </select>
+        </div>
+        <div
+          className="trigger-value"
+        >
+          <p>
+            Value:
+          </p>
+          <textarea
+            name="Value"
+            onChange={[Function]}
+            onClick={[Function]}
+            value=""
+          />
+        </div>
+        <button
+          onClick={[Function]}
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButton editor Node component adds new action 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div style=\\"position:relative;\\" class=\\"obojobo-draft--components--button\\"><div style=\\"display:none;position:absolute;top:0px;left:0px;height:100%;width:100%;cursor:cell;z-index:1;\\"></div><div class=\\"button\\"><input name=\\"Button Name\\" placeholder=\\"Button Label\\" frameborder=\\"0\\" style=\\"display:block;\\"/></div></div><div class=\\"trigger-box\\"><div class=\\"trigger\\"><div><p>mockType</p></div><div><p>mockValue</p></div><button class=\\"delete-node\\">x</button></div><div class=\\"trigger new-trigger is-type-valid\\"><div class=\\"trigger-name\\"><p>Action</p><select name=\\"Action\\"><option selected=\\"\\" value=\\"nav:goto\\">nav:goto</option><option value=\\"nav:prev\\">nav:prev</option><option value=\\"nav:next\\">nav:next</option><option value=\\"nav:openExternalLink\\">nav:openExternalLink</option><option value=\\"nav:lock\\">nav:lock</option><option value=\\"nav:unlock\\">nav:unlock</option><option value=\\"nav:open\\">nav:open</option><option value=\\"nav:close\\">nav:close</option><option value=\\"nav:toggle\\">nav:toggle</option><option value=\\"assessment:startAttempt\\">assessment:startAttempt</option><option value=\\"assessment:endAttempt\\">assessment:endAttempt</option><option value=\\"js\\">js</option><option value=\\"viewer:alert\\">viewer:alert</option></select></div><div class=\\"trigger-value\\"><p>Value:</p><textarea name=\\"Value\\"></textarea></div><button>Save</button></div></div></div></div>"`;
+
+exports[`ActionButton editor Node component deletes a trigger 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button\\" style=\\"position: relative;\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><div class=\\"button\\"><input name=\\"Button Name\\" placeholder=\\"Button Label\\" frameborder=\\"0\\" style=\\"display: block;\\"></div></div><div class=\\"trigger-box\\"><div class=\\"trigger\\"><div><p>mockType</p></div><div><p>mockValue</p></div><button class=\\"delete-node\\">x</button></div><div class=\\"trigger new-trigger is-type-valid\\"><div class=\\"trigger-name\\"><p>Action</p><select name=\\"Action\\"><option value=\\"nav:goto\\">nav:goto</option><option value=\\"nav:prev\\">nav:prev</option><option value=\\"nav:next\\">nav:next</option><option value=\\"nav:openExternalLink\\">nav:openExternalLink</option><option value=\\"nav:lock\\">nav:lock</option><option value=\\"nav:unlock\\">nav:unlock</option><option value=\\"nav:open\\">nav:open</option><option value=\\"nav:close\\">nav:close</option><option value=\\"nav:toggle\\">nav:toggle</option><option value=\\"assessment:startAttempt\\">assessment:startAttempt</option><option value=\\"assessment:endAttempt\\">assessment:endAttempt</option><option value=\\"js\\">js</option><option value=\\"viewer:alert\\">viewer:alert</option></select></div><div class=\\"trigger-value\\"><p>Value:</p><textarea name=\\"Value\\"></textarea></div><button>Save</button></div></div></div></div>"`;
+
+exports[`ActionButton editor Node component fails to add new action 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div style=\\"position:relative;\\" class=\\"obojobo-draft--components--button\\"><div style=\\"display:none;position:absolute;top:0px;left:0px;height:100%;width:100%;cursor:cell;z-index:1;\\"></div><div class=\\"button\\"><input name=\\"Button Name\\" placeholder=\\"Button Label\\" frameborder=\\"0\\" style=\\"display:block;\\"/></div></div><div class=\\"trigger-box\\"><div class=\\"trigger\\"><div><p>mockType</p></div><div><p>mockValue</p></div><button class=\\"delete-node\\">x</button></div><div class=\\"trigger new-trigger is-type-valid\\"><div class=\\"trigger-name\\"><p>Action</p><select name=\\"Action\\"><option selected=\\"\\" value=\\"nav:goto\\">nav:goto</option><option value=\\"nav:prev\\">nav:prev</option><option value=\\"nav:next\\">nav:next</option><option value=\\"nav:openExternalLink\\">nav:openExternalLink</option><option value=\\"nav:lock\\">nav:lock</option><option value=\\"nav:unlock\\">nav:unlock</option><option value=\\"nav:open\\">nav:open</option><option value=\\"nav:close\\">nav:close</option><option value=\\"nav:toggle\\">nav:toggle</option><option value=\\"assessment:startAttempt\\">assessment:startAttempt</option><option value=\\"assessment:endAttempt\\">assessment:endAttempt</option><option value=\\"js\\">js</option><option value=\\"viewer:alert\\">viewer:alert</option></select></div><div class=\\"trigger-value\\"><p>Value:</p><textarea name=\\"Value\\"></textarea></div><button>Save</button></div></div></div></div>"`;
+
+exports[`ActionButton editor Node component with changing label 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div style=\\"position:relative;\\" class=\\"obojobo-draft--components--button\\"><div style=\\"display:none;position:absolute;top:0px;left:0px;height:100%;width:100%;cursor:cell;z-index:1;\\"></div><div class=\\"button\\"><input name=\\"Button Name\\" placeholder=\\"Button Label\\" frameborder=\\"0\\" style=\\"display:block;\\"/></div></div><div class=\\"trigger-box\\"><div class=\\"trigger\\"><div><p>mockType</p></div><div><p>mockValue</p></div><button class=\\"delete-node\\">x</button></div><div class=\\"trigger new-trigger is-type-valid\\"><div class=\\"trigger-name\\"><p>Action</p><select name=\\"Action\\"><option selected=\\"\\" value=\\"nav:goto\\">nav:goto</option><option value=\\"nav:prev\\">nav:prev</option><option value=\\"nav:next\\">nav:next</option><option value=\\"nav:openExternalLink\\">nav:openExternalLink</option><option value=\\"nav:lock\\">nav:lock</option><option value=\\"nav:unlock\\">nav:unlock</option><option value=\\"nav:open\\">nav:open</option><option value=\\"nav:close\\">nav:close</option><option value=\\"nav:toggle\\">nav:toggle</option><option value=\\"assessment:startAttempt\\">assessment:startAttempt</option><option value=\\"assessment:endAttempt\\">assessment:endAttempt</option><option value=\\"js\\">js</option><option value=\\"viewer:alert\\">viewer:alert</option></select></div><div class=\\"trigger-value\\"><p>Value:</p><textarea name=\\"Value\\"></textarea></div><button>Save</button></div></div></div></div>"`;
+
+exports[`ActionButton editor Node component with changing new action type 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div style=\\"position:relative;\\" class=\\"obojobo-draft--components--button\\"><div style=\\"display:none;position:absolute;top:0px;left:0px;height:100%;width:100%;cursor:cell;z-index:1;\\"></div><div class=\\"button\\"><input name=\\"Button Name\\" placeholder=\\"Button Label\\" frameborder=\\"0\\" style=\\"display:block;\\"/></div></div><div class=\\"trigger-box\\"><div class=\\"trigger\\"><div><p>mockType</p></div><div><p>mockValue</p></div><button class=\\"delete-node\\">x</button></div><div class=\\"trigger new-trigger is-type-valid\\"><div class=\\"trigger-name\\"><p>Action</p><select name=\\"Action\\"><option selected=\\"\\" value=\\"nav:goto\\">nav:goto</option><option value=\\"nav:prev\\">nav:prev</option><option value=\\"nav:next\\">nav:next</option><option value=\\"nav:openExternalLink\\">nav:openExternalLink</option><option value=\\"nav:lock\\">nav:lock</option><option value=\\"nav:unlock\\">nav:unlock</option><option value=\\"nav:open\\">nav:open</option><option value=\\"nav:close\\">nav:close</option><option value=\\"nav:toggle\\">nav:toggle</option><option value=\\"assessment:startAttempt\\">assessment:startAttempt</option><option value=\\"assessment:endAttempt\\">assessment:endAttempt</option><option value=\\"js\\">js</option><option value=\\"viewer:alert\\">viewer:alert</option></select></div><div class=\\"trigger-value\\"><p>Value:</p><textarea name=\\"Value\\"></textarea></div><button>Save</button></div></div></div></div>"`;
+
+exports[`ActionButton editor Node component with changing new action type 2`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div style=\\"position:relative;\\" class=\\"obojobo-draft--components--button\\"><div style=\\"display:none;position:absolute;top:0px;left:0px;height:100%;width:100%;cursor:cell;z-index:1;\\"></div><div class=\\"button\\"><input name=\\"Button Name\\" placeholder=\\"Button Label\\" frameborder=\\"0\\" style=\\"display:block;\\"/></div></div><div class=\\"trigger-box\\"><div class=\\"trigger\\"><div><p>mockType</p></div><div><p>mockValue</p></div><button class=\\"delete-node\\">x</button></div><div class=\\"trigger new-trigger is-type-valid\\"><div class=\\"trigger-name\\"><p>Action</p><select name=\\"Action\\"><option selected=\\"\\" value=\\"nav:goto\\">nav:goto</option><option value=\\"nav:prev\\">nav:prev</option><option value=\\"nav:next\\">nav:next</option><option value=\\"nav:openExternalLink\\">nav:openExternalLink</option><option value=\\"nav:lock\\">nav:lock</option><option value=\\"nav:unlock\\">nav:unlock</option><option value=\\"nav:open\\">nav:open</option><option value=\\"nav:close\\">nav:close</option><option value=\\"nav:toggle\\">nav:toggle</option><option value=\\"assessment:startAttempt\\">assessment:startAttempt</option><option value=\\"assessment:endAttempt\\">assessment:endAttempt</option><option value=\\"js\\">js</option><option value=\\"viewer:alert\\">viewer:alert</option></select></div><div class=\\"trigger-value\\"><p>Value:</p><textarea name=\\"Value\\"></textarea></div><button>Save</button></div></div></div></div>"`;
+
+exports[`ActionButton editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "actions": Array [],
+      "label": "mockLabel",
+    },
+  },
+  "key": "mockKey",
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`ActionButton editor oboToSlate converts an OboNode to a Slate node using a textGroup 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "actions": Array [],
+      "label": "mockLabel",
+    },
+  },
+  "key": "mockKey",
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`ActionButton editor oboToSlate converts an OboNode to a Slate node with triggers 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "actions": Array [
+        Object {
+          "type": "mockType",
+          "value": "",
+        },
+        Object {
+          "type": "mockOtherType",
+          "value": "{\\"id\\":\\"mockId\\"}",
+        },
+      ],
+      "label": "mockLabel",
+    },
+  },
+  "key": "mockKey",
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`ActionButton editor plugins.renderNode renders a button when passed 1`] = `
+<Node
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.ActionButton",
+    }
+  }
+/>
+`;
+
+exports[`ActionButton editor slateToObo converts a Slate node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "label": "",
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "mockType",
+            "value": Object {},
+          },
+          Object {
+            "type": "mockOtherType",
+            "value": Object {
+              "id": "mockId",
+            },
+          },
+        ],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

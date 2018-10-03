@@ -12,4 +12,56 @@
 			min-width: 9em;
 		}
 	}
+
+	// Editor Styles
+	.button {
+		input {
+			font-family: $font-default;
+			background-color: $color-action;
+			font-size: 0.85em;
+			color: $color-bg;
+			border: none;
+			width: 100%;
+
+			&::placeholder {
+				color: $color-bg;
+				opacity: 80%;
+			}
+		}
+
+		cursor: pointer;
+		font-family: $font-default;
+		font-size: 0.85em;
+		position: relative;
+		min-width: 3.25em;
+		border-radius: 0.2em;
+		padding: 0.6rem 1em;
+		background-color: $color-action;
+		color: $color-bg;
+		border: 1px solid $color-transparent;
+		border-bottom: 1px solid $color-action;
+	}
+
+	.trigger {
+		padding-left: 2em;
+		padding-bottom: 0.5em;
+		overflow: auto;
+		border: 1px solid #111111;
+		border-radius: 0.2em;
+		position: relative;
+	}
+
+	.trigger > div {
+		float: left;
+		padding-left: 1em;
+		padding-right: 1em;
+	}
+
+	.is-type-invalid {
+		&::before {
+			content: 'Unable to validate value';
+			display: block;
+			color: $color-error;
+		}
+	}
 }

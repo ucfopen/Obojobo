@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorNav EditorNav component 1`] = `
+<div
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+>
+  <ul />
+  <button
+    className="content-add-button"
+    onClick={[Function]}
+  >
+    + Add Page
+  </button>
+  <button
+    className="content-add-button"
+    onClick={[Function]}
+  >
+    + Add Assessment
+  </button>
+</div>
+`;
+
+exports[`EditorNav EditorNav component with all list item types 1`] = `
+<div
+  className="viewer--components--nav is-locked is-not-open is-enabled"
+>
+  <ul>
+    <li
+      className="heading is-not-selected"
+    >
+      <a>
+        label4
+      </a>
+    </li>
+    <li
+      className="link is-not-selected is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <a>
+        label5
+      </a>
+      <div
+        className="dropdown"
+      >
+        <span
+          className="drop-arrow"
+        >
+          ▼
+        </span>
+        <div
+          className="drop-content"
+        >
+          <button
+            onClick={[Function]}
+          >
+            Move Down
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            Edit Name
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            Delete
+          </button>
+          <button>
+            Id: 5
+          </button>
+        </div>
+      </div>
+    </li>
+    <li
+      className="link is-not-selected is-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <a>
+        label6
+      </a>
+      <div
+        className="dropdown"
+      >
+        <span
+          className="drop-arrow"
+        >
+          ▼
+        </span>
+        <div
+          className="drop-content"
+        >
+          <button
+            onClick={[Function]}
+          >
+            Move Up
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            Edit Name
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            Delete
+          </button>
+          <button>
+            Id: 6
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <button
+    className="content-add-button"
+    onClick={[Function]}
+  >
+    + Add Page
+  </button>
+  <button
+    className="content-add-button"
+    onClick={[Function]}
+  >
+    + Add Assessment
+  </button>
+</div>
+`;

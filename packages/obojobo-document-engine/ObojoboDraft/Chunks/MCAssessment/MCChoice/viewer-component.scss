@@ -8,6 +8,7 @@
 	font-family: $font-default;
 	padding-bottom: 1em;
 	cursor: pointer;
+	overflow: auto;
 
 	> input {
 		font-size: inherit;
@@ -47,5 +48,35 @@
 
 	&:hover {
 		background: transparentize($color-highlight, 0.85);
+	}
+
+	.correct-button {
+		position: relative;
+		top: 1em;
+		left: 1em;
+		font-size: inherit;
+		background: transparent;
+		border: none;
+	}
+
+	.add-feedback {
+		float: right;
+		font-size: 0.85em;
+		background-color: $color-bg2;
+		border: 1px solid transparentize($color-shadow, 0.2);
+		border-radius: $dimension-rounded-radius;
+		margin: 0.2em;
+	}
+
+	&.is-correct {
+		.correct-button {
+			color: $color-correct;
+		}
+	}
+
+	&.is-not-correct {
+		.correct-button {
+			color: $color-incorrect;
+		}
 	}
 }

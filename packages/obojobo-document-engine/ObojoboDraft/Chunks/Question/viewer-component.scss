@@ -74,6 +74,10 @@
 				margin-bottom: 1em;
 			}
 		}
+
+		&.question-editor {
+			background: $color-bg;
+		}
 	}
 
 	&.is-hidden > .flipper {
@@ -115,4 +119,40 @@
 			border: 1.25px solid $color-incorrect;
 		}
 	}
+}
+
+.solution-editor {
+	background: $color-bg2;
+	border-top: 1px solid $color-shadow;
+	position: relative;
+	border-bottom-left-radius: 0.3em;
+	border-bottom-right-radius: 0.3em;
+	padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
+
+	.page-editor {
+		margin: $dimension-padding / 3;
+		background: $color-bg;
+		border: 1px solid $color-shadow;
+
+		&::before {
+			content: 'Full explanation:';
+			font-family: $font-default;
+			font-size: 1em;
+			font-weight: bold;
+			color: $color-text-minor;
+			margin-top: 1em;
+			margin-left: 2em;
+			margin-bottom: -1em;
+			display: block;
+			transform: scale(0.7);
+			transform-origin: top left;
+		}
+	}
+}
+
+.add-solution {
+	left: 50%;
+	transform: translate(-50%, 0);
+	position: relative;
+	margin: $dimension-padding / 3;
 }
