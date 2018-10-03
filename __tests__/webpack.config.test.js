@@ -49,6 +49,7 @@ describe('Webpack', () => {
 				watchOptions: { ignored: '/node_modules/' }
 			},
 			entry: { viewer: expect.any(Array) },
+			mode: 'production',
 			module: { rules: expect.any(Array) },
 			output: {
 				filename: '[name].min.js',

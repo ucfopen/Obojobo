@@ -1,13 +1,13 @@
-let express = require('express')
-let path = require('path')
-let favicon = require('serve-favicon')
-let bodyParser = require('body-parser')
-let session = require('express-session')
-let pgSession = require('connect-pg-simple')
-let config = require('./config')
-let compression = require('compression')
-let logger = require('./logger')
-let ObojoboDocumentServer = require('./obo_express')
+const express = require('express')
+const path = require('path')
+const favicon = require('serve-favicon')
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const pgSession = require('connect-pg-simple')
+const config = require('./config')
+const compression = require('compression')
+const logger = require('./logger')
+const ObojoboDocumentServer = require('./obo_express')
 const IS_WEBPACK = process.env.IS_WEBPACK || false
 
 module.exports = app => {
@@ -51,40 +51,20 @@ module.exports = app => {
 	app.use('/profile', require('./routes/profile'))
 
 	// 404 handler
-	app.use(function(req, res, next) {
-		// let requests for webpack stuff (in /static/) fall through
+	app.use((req, res, next) => {
+		// lets requests for webpack stuff (in /static/) fall through
 		// to webpack
 		if (IS_WEBPACK && req.path.startsWith('/static')) {
 			next()
 			return
 		}
 
-		res.status(404)
-
-		// respond with html
-		if (req.accepts('html')) {
-			res.render('404')
-			return
-		}
-
-		// respond with json
-		if (req.accepts('json')) {
-			res.json({ error: 'Not Found' })
-			return
-		}
-
-		// default with html page
-		res.send('Not Found')
+		res.missing()
 	})
 
-	// other error handler
-	app.use(function(err, req, res, next) {
-		// set locals, only providing error in development
-		res.locals.message = err.message
-		res.locals.error = req.app.get('env') === 'development' ? err : {}
-		logger.error(err)
-		// render the error page
-		res.status(err.status || 500)
-		res.render('error', { title: 'Error' })
+	// unknown error handler
+	app.use((err, req, res, next) => {
+		logger.error('Unknown error', err)
+		res.unexpected(err)
 	})
 }

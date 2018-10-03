@@ -87,7 +87,7 @@
 							id="<%= draft.draftId %>"
 							class="link-edit"
 							data-id="<%= draft.draftId %>"
-							data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content) %>">
+							data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content, null, 2) %>">
 								<% if(draft.content && draft.content.content && draft.content.content.title){ %>
 									<p><%= draft.content.content.title %></p>
 								<% } else { %>

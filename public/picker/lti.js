@@ -57,7 +57,7 @@ obo.lti = (function() {
 
 	function getDraftById(draftId) {
 		return data.allItems.find(item => {
-			return item.drafId == draftId
+			return item.draftId == draftId
 		})
 	}
 
@@ -391,14 +391,14 @@ obo.lti = (function() {
 
 		var $this = $(this)
 		var $oboItem = $this.parent().parent()
-		selectedItem = getDraftById($oboItem.attr('data-inst-id'))
+		selectedItem = getDraftById($oboItem.attr('data-lo-id'))
 
 		gotoSection('create-instance')
 		$('#instance-name').val($oboItem.find('.title').text())
 
 		if (
-			typeof $oboItem.attr('data-inst-id') === 'undefined' ||
-			$oboItem.attr('data-inst-id') === '0'
+			typeof $oboItem.attr('data-lo-id') === 'undefined' ||
+			$oboItem.attr('data-lo-id') === '0'
 		) {
 			$('.instance-copy-note').hide()
 		} else {

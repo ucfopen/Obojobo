@@ -145,9 +145,7 @@ describe('editor route', () => {
 			.then(response => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain(
-					'{&#34;content&#34;:{&#34;title&#34;:&#34;b-mock-title&#34;}}'
-				)
+				expect(response.text).toContain('b-mock-title')
 			})
 	})
 

@@ -118,6 +118,7 @@ const unexpected = (req, res, next, message) => {
 			})
 		)
 	}
+
 	res.send(`Server Error: ${message}`)
 }
 
