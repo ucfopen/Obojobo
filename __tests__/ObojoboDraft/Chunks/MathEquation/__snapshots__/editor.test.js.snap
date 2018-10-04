@@ -3,7 +3,6 @@
 exports[`MathEquation editor Node component 1`] = `
 <div
   className="component obojobo-draft--chunks--math-equation pad align-center"
-  dummy="dummyData"
 >
   <div
     className="non-editable-chunk"
@@ -58,7 +57,6 @@ exports[`MathEquation editor Node component changes label 1`] = `"<div class=\\"
 exports[`MathEquation editor Node component with error 1`] = `
 <div
   className="component obojobo-draft--chunks--math-equation pad align-center"
-  dummy="dummyData"
 >
   <div
     className="katex-container katex-error"
@@ -101,7 +99,6 @@ exports[`MathEquation editor Node component with error 1`] = `
 exports[`MathEquation editor Node component with label 1`] = `
 <div
   className="component obojobo-draft--chunks--math-equation pad align-center"
-  dummy="dummyData"
 >
   <div
     className="non-editable-chunk"
@@ -174,6 +171,12 @@ Object {
 
 exports[`MathEquation editor plugins.renderNode renders a button when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

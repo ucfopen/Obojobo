@@ -15,7 +15,6 @@ describe('Rubric editor', () => {
 		const Node = Rubric.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -142,7 +141,6 @@ describe('Rubric editor', () => {
 		const Node = Rubric.components.ModList
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -159,7 +157,7 @@ describe('Rubric editor', () => {
 
 	test('Mod component', () => {
 		const Node = Rubric.components.Mod
-		const component = renderer.create(<Node attributes={{ dummy: 'dummyData' }} />)
+		const component = renderer.create(<Node />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -341,6 +339,7 @@ describe('Rubric editor', () => {
 
 	test('plugins.renderNode renders the rubric when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: RUBRIC_NODE,
 				data: {
@@ -356,6 +355,7 @@ describe('Rubric editor', () => {
 
 	test('plugins.renderNode renders a modlist when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MOD_LIST_NODE,
 				data: {
@@ -371,6 +371,7 @@ describe('Rubric editor', () => {
 
 	test('plugins.renderNode renders a modlist when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MOD_LIST_NODE,
 				data: {
@@ -386,6 +387,7 @@ describe('Rubric editor', () => {
 
 	test('plugins.renderNode renders a modlist when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MOD_NODE,
 				data: {
@@ -604,7 +606,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 0
@@ -622,7 +625,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 1
@@ -640,7 +644,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 2
@@ -658,7 +663,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 3
@@ -672,7 +678,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -686,7 +693,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1
@@ -700,7 +708,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 2
@@ -714,7 +723,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 3
@@ -728,7 +738,8 @@ describe('Rubric editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: null,
 			child: { key: 'mockKey' },
 			index: null
@@ -742,7 +753,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -760,7 +772,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 1
@@ -778,7 +791,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 0
@@ -792,7 +806,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -806,7 +821,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1

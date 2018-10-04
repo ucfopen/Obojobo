@@ -3,7 +3,6 @@
 exports[`QuestionBank editor Node builds the expected component 1`] = `
 <div
   className="obojobo-draft--chunks--question-bank editor-bank"
-  dummy="dummyData"
 >
   <button
     className="delete"
@@ -39,7 +38,6 @@ exports[`QuestionBank editor Node builds the expected component 1`] = `
 exports[`QuestionBank editor Node builds the expected component 2`] = `
 <div
   className="qb-settings"
-  dummy="dummyData"
 >
   <div />
 </div>
@@ -106,6 +104,12 @@ Object {
 
 exports[`QuestionBank editor plugins.renderNode renders a question bank when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -119,6 +123,12 @@ exports[`QuestionBank editor plugins.renderNode renders a question bank when pas
 
 exports[`QuestionBank editor plugins.renderNode renders settings when passed 1`] = `
 <Settings
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

@@ -312,7 +312,7 @@ const plugins = {
 				normalize: (change, error) => {
 					const { node, child, index } = error
 					const header = index === 0 && node.data.get('content').header
-					switch (error) {
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_ROW_NODE,

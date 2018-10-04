@@ -16,7 +16,6 @@ describe('Actions editor', () => {
 		const Node = Actions.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -67,7 +66,6 @@ describe('Actions editor', () => {
 		const Node = Actions.components.Score
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -191,6 +189,7 @@ describe('Actions editor', () => {
 
 	test('plugins.renderNode renders all actions when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: ACTIONS_NODE,
 				data: {
@@ -206,6 +205,7 @@ describe('Actions editor', () => {
 
 	test('plugins.renderNode renders a score action when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: SCORE_NODE,
 				data: {
@@ -224,7 +224,8 @@ describe('Actions editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Actions.plugins.schema.blocks[SCORE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Actions.plugins.schema.blocks[SCORE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: null,
 			child: { key: 'mockKey' },
 			index: null
@@ -238,7 +239,8 @@ describe('Actions editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Actions.plugins.schema.blocks[SCORE_NODE].normalize(change, CHILD_REQUIRED, {
+		Actions.plugins.schema.blocks[SCORE_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -252,7 +254,8 @@ describe('Actions editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: null,
 			child: { key: 'mockKey' },
 			index: null
@@ -266,7 +269,8 @@ describe('Actions editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(change, CHILD_REQUIRED, {
+		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0

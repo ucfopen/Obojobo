@@ -13,7 +13,6 @@ describe('List editor', () => {
 		const Node = List.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -114,7 +113,6 @@ describe('List editor', () => {
 		const Node = List.components.Level
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -133,7 +131,6 @@ describe('List editor', () => {
 		const Node = List.components.Level
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -152,7 +149,6 @@ describe('List editor', () => {
 		const Node = List.components.Line
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -289,6 +285,7 @@ describe('List editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: LIST_NODE,
 				data: {
@@ -304,6 +301,7 @@ describe('List editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: LIST_LEVEL_NODE,
 				data: {
@@ -319,6 +317,7 @@ describe('List editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: LIST_LINE_NODE,
 				data: {
@@ -558,7 +557,8 @@ describe('List editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		List.plugins.schema.blocks[LIST_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		List.plugins.schema.blocks[LIST_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {
@@ -582,7 +582,8 @@ describe('List editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		List.plugins.schema.blocks[LIST_NODE].normalize(change, CHILD_REQUIRED, {
+		List.plugins.schema.blocks[LIST_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				data: {
 					get: () => {
@@ -610,7 +611,8 @@ describe('List editor', () => {
 
 		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => funct(change))
 
-		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, PARENT_TYPE_INVALID, {
+		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, {
+			code: PARENT_TYPE_INVALID,
 			node: {
 				nodes: [
 					{
@@ -640,7 +642,8 @@ describe('List editor', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { object: 'block' },
 			index: 0
@@ -655,7 +658,8 @@ describe('List editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { object: 'text' },
 			index: 0
@@ -670,7 +674,8 @@ describe('List editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_REQUIRED, {
+		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: { object: 'block' },
 			index: 0

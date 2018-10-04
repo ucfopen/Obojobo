@@ -37,6 +37,12 @@ Object {
 
 exports[`Heading editor plugins.renderNode renders a button when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

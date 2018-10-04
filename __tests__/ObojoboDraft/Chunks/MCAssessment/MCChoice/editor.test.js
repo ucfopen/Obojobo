@@ -16,7 +16,6 @@ describe('MCChoice editor', () => {
 		const Node = MCChoice.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -36,7 +35,6 @@ describe('MCChoice editor', () => {
 		const Node = MCChoice.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -233,6 +231,7 @@ describe('MCChoice editor', () => {
 
 	test('plugins.renderNode renders a choice', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MCCHOICE_NODE,
 				data: {
@@ -251,7 +250,8 @@ describe('MCChoice editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', type: MCFEEDBACK_NODE },
 			index: 1
@@ -265,7 +265,8 @@ describe('MCChoice editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 3
@@ -279,7 +280,8 @@ describe('MCChoice editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', type: 'wrongType' },
 			index: 1
@@ -293,7 +295,8 @@ describe('MCChoice editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, CHILD_REQUIRED, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0

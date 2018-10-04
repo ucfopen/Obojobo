@@ -13,7 +13,6 @@ describe('MCAnswer editor', () => {
 		const Node = MCAnswer.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -69,6 +68,7 @@ describe('MCAnswer editor', () => {
 
 	test('plugins.renderNode renders a node', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MCANSWER_NODE,
 				data: {
@@ -87,7 +87,8 @@ describe('MCAnswer editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', object: 'text' },
 			index: null
@@ -101,7 +102,8 @@ describe('MCAnswer editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: null
@@ -115,7 +117,8 @@ describe('MCAnswer editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, CHILD_REQUIRED, {
+		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0

@@ -26,7 +26,7 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 describe('Page', () => {
 	test('Node builds the expected component', () => {
 		const Node = Page.components.Node
-		const component = renderer.create(<Node attributes={{ dummy: 'dummyData' }} />)
+		const component = renderer.create(<Node />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -89,6 +89,7 @@ describe('Page', () => {
 
 	test('plugins.renderNode renders a solution when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: PAGE_NODE,
 				data: {
@@ -107,7 +108,8 @@ describe('Page', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: null,
 			child: { key: 'mockKey' },
 			index: null
@@ -121,7 +123,8 @@ describe('Page', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, CHILD_REQUIRED, {
+		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0

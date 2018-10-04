@@ -3,7 +3,6 @@
 exports[`YouTube editor Node builds the expected component 1`] = `
 <div
   className="component"
-  dummy="dummyData"
 >
   <div
     className="obojobo-draft--chunks--you-tube viewer"
@@ -52,7 +51,6 @@ Object {
       "width": "large",
     },
   },
-  "isVoid": true,
   "key": "mockKey",
   "object": "block",
   "type": "mockType",
@@ -64,7 +62,6 @@ Object {
   "data": Object {
     "content": Object {},
   },
-  "isVoid": true,
   "key": "mockKey",
   "object": "block",
   "type": "mockType",
@@ -73,6 +70,12 @@ Object {
 
 exports[`YouTube editor plugins.renderNode renders a button when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

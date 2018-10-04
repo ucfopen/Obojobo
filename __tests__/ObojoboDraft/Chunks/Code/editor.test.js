@@ -11,7 +11,6 @@ describe('Code editor', () => {
 		const Node = Code.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -30,7 +29,6 @@ describe('Code editor', () => {
 		const Node = Code.components.Line
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -54,7 +52,6 @@ describe('Code editor', () => {
 		Code.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -121,6 +118,7 @@ describe('Code editor', () => {
 
 	test('plugins.renderNode renders code when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: CODE_NODE,
 				data: {
@@ -136,6 +134,7 @@ describe('Code editor', () => {
 
 	test('plugins.renderNode renders a line when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: CODE_LINE_NODE,
 				data: {
@@ -309,7 +308,8 @@ describe('Code editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Code.plugins.schema.blocks[CODE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: null,
 			child: { key: 'mockKey' },
 			index: null
@@ -323,7 +323,8 @@ describe('Code editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_NODE].normalize(change, CHILD_REQUIRED, {
+		Code.plugins.schema.blocks[CODE_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0

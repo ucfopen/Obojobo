@@ -9,7 +9,6 @@ describe('Heading editor', () => {
 		const Node = Heading.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -33,7 +32,6 @@ describe('Heading editor', () => {
 		Heading.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -87,6 +85,7 @@ describe('Heading editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: HEADING_NODE,
 				data: {

@@ -281,8 +281,6 @@ const plugins = {
 		}
 	},
 	validateNode(node) {
-		if (node.object !== 'block' && node.type !== LIST_NODE) return
-
 		const invalids = node.nodes
 			.map((child, i) => {
 				const next = node.nodes.get(i + 1)
@@ -291,8 +289,6 @@ const plugins = {
 				return next
 			})
 			.filter(Boolean)
-
-		if (!invalids.size) return
 
 		return change => {
 			change.withoutNormalization(c => {

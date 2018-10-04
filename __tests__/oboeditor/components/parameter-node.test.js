@@ -9,7 +9,6 @@ describe('Parameter Node', () => {
 		const Node = ParameterNode.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest.fn().mockReturnValueOnce(false)
@@ -26,7 +25,6 @@ describe('Parameter Node', () => {
 		const Node = ParameterNode.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest
@@ -53,7 +51,6 @@ describe('Parameter Node', () => {
 
 		const component = shallow(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest
@@ -83,7 +80,6 @@ describe('Parameter Node', () => {
 		const Node = ParameterNode.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest
@@ -109,7 +105,6 @@ describe('Parameter Node', () => {
 
 		const component = shallow(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest
@@ -193,6 +188,7 @@ describe('Parameter Node', () => {
 
 	test('plugins.renderNode renders a Parameter when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: 'Parameter',
 				data: {

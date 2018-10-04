@@ -4,7 +4,6 @@ exports[`Code editor Line builds the expected component 1`] = `
 <span
   className="text align-left"
   data-indent={undefined}
-  dummy="dummyData"
 />
 `;
 
@@ -14,7 +13,6 @@ exports[`Code editor Node builds the expected component 1`] = `
 >
   <div
     className="text-chunk obojobo-draft--chunks--code pad"
-    dummy="dummyData"
   >
     <pre>
       <code />
@@ -76,6 +74,12 @@ Object {
 
 exports[`Code editor plugins.renderNode renders a line when passed 1`] = `
 <Line
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -89,6 +93,12 @@ exports[`Code editor plugins.renderNode renders a line when passed 1`] = `
 
 exports[`Code editor plugins.renderNode renders code when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

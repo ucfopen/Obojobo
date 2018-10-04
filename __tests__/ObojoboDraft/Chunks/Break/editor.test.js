@@ -10,7 +10,6 @@ describe('Break editor', () => {
 		const Node = Break.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -108,6 +107,7 @@ describe('Break editor', () => {
 
 	test('plugins.renderNode renders a break when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: BREAK_NODE,
 				data: {

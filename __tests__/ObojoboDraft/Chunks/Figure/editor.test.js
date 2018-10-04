@@ -14,7 +14,6 @@ describe('Figure editor', () => {
 		const Node = Figure.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -39,7 +38,6 @@ describe('Figure editor', () => {
 		const Node = Figure.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -59,7 +57,6 @@ describe('Figure editor', () => {
 
 		const componentNoWidth = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -78,7 +75,6 @@ describe('Figure editor', () => {
 
 		const componentNoHeight = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -435,6 +431,7 @@ describe('Figure editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: FIGURE_NODE,
 				data: {

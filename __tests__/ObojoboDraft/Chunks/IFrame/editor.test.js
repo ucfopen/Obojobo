@@ -10,7 +10,6 @@ describe('IFrame editor', () => {
 		const Node = IFrame.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -115,6 +114,7 @@ describe('IFrame editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: IFRAME_NODE,
 				data: {

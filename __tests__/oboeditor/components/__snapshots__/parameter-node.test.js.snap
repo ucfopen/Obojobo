@@ -3,7 +3,6 @@
 exports[`Parameter Node Node component 1`] = `
 <div
   className="parameter-node"
-  dummy="dummyData"
 >
   <span
     contentEditable={false}
@@ -17,7 +16,6 @@ exports[`Parameter Node Node component 1`] = `
 exports[`Parameter Node Node component with checkbox 1`] = `
 <div
   className="parameter-node"
-  dummy="dummyData"
 >
   <span
     contentEditable={false}
@@ -43,7 +41,6 @@ exports[`Parameter Node Node component with checkbox 1`] = `
 exports[`Parameter Node Node component with select 1`] = `
 <div
   className="parameter-node"
-  dummy="dummyData"
 >
   <span
     contentEditable={false}
@@ -122,6 +119,11 @@ Object {
 
 exports[`Parameter Node plugins.renderNode renders a Parameter when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
   node={
     Object {
       "data": Object {

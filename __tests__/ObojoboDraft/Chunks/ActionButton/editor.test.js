@@ -49,7 +49,7 @@ describe('ActionButton editor', () => {
 				}
 			}
 		}
-		const component = renderer.create(<Node attributes={{ dummy: 'dummyData' }} node={nodeData} />)
+		const component = renderer.create(<Node node={nodeData} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -71,14 +71,7 @@ describe('ActionButton editor', () => {
 				}
 			}
 		}
-		const component = renderer.create(
-			<Node
-				attributes={{ dummy: 'dummyData' }}
-				node={nodeData}
-				isSelected={true}
-				isFocused={true}
-			/>
-		)
+		const component = renderer.create(<Node node={nodeData} isSelected={true} isFocused={true} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -475,6 +468,7 @@ describe('ActionButton editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: BUTTON_NODE,
 				data: {
