@@ -27,9 +27,12 @@
 	.exporter {
 		position: fixed;
 		bottom: 1em;
-		left: 1em;
+		left: 1.65em;
 		z-index: 999;
 		font-size: inherit;
+		background: $color-obojobo-blue;
+		border-radius: $dimension-rounded-radius;
+		color: $color-bg;
 	}
 
 	.parameter-node {
@@ -90,7 +93,7 @@
 			display: none;
 			position: absolute;
 			right: 0.1em;
-			z-index: 1;
+			z-index: 9999;
 			background-color: $color-bg;
 			border-radius: $dimension-rounded-radius;
 

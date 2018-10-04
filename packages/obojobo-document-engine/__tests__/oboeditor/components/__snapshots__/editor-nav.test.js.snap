@@ -2,27 +2,44 @@
 
 exports[`EditorNav EditorNav component 1`] = `
 <div
-  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  className="viewer--components--nav editor--components--nav  is-not-locked is-not-open is-enabled"
 >
   <ul />
-  <button
-    className="content-add-button"
-    onClick={[Function]}
+  <div
+    className="button-bar"
   >
-    + Add Page
-  </button>
-  <button
-    className="content-add-button"
-    onClick={[Function]}
-  >
-    + Add Assessment
-  </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      + Add Page
+    </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      + Add Assessment
+    </button>
+    <br />
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      Rename Module
+    </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      Copy Module URL
+    </button>
+  </div>
 </div>
 `;
 
 exports[`EditorNav EditorNav component with all list item types 1`] = `
 <div
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+  className="viewer--components--nav editor--components--nav  is-locked is-not-open is-enabled"
 >
   <ul>
     <li
@@ -65,7 +82,9 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
           >
             Delete
           </button>
-          <button>
+          <button
+            onClick={[Function]}
+          >
             Id: 5
           </button>
         </div>
@@ -104,24 +123,43 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
           >
             Delete
           </button>
-          <button>
+          <button
+            onClick={[Function]}
+          >
             Id: 6
           </button>
         </div>
       </div>
     </li>
   </ul>
-  <button
-    className="content-add-button"
-    onClick={[Function]}
+  <div
+    className="button-bar"
   >
-    + Add Page
-  </button>
-  <button
-    className="content-add-button"
-    onClick={[Function]}
-  >
-    + Add Assessment
-  </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      + Add Page
+    </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      + Add Assessment
+    </button>
+    <br />
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      Rename Module
+    </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      Copy Module URL
+    </button>
+  </div>
 </div>
 `;

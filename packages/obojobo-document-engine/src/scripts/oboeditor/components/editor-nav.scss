@@ -1,6 +1,10 @@
 @import '../../../scss/includes';
 
-.viewer--components--nav {
+.editor--components--nav {
+	$color-nav-bg: #fbfbfb;
+
+	padding-bottom: 17em;
+
 	&::after {
 		top: 0;
 		left: -0.55em;
@@ -18,6 +22,30 @@
 		color: $color-bg;
 	}
 
+	.button-bar {
+		padding-left: 2em;
+		padding-bottom: 2.8em;
+		position: fixed;
+		background: $color-nav-bg;
+		bottom: 0;
+		z-index: 5;
+		left: 0;
+		font-size: 1em;
+		font-weight: bold;
+		cursor: default;
+		width: 15em;
+
+		button {
+			display: block;
+			background: $color-obojobo-blue;
+			padding: 0.2em;
+			border-radius: $dimension-rounded-radius;
+			margin-bottom: 0.2em;
+			color: $color-bg;
+			font-size: 1em;
+		}
+	}
+
 	.dropdown {
 		float: right;
 		overflow: auto;
@@ -27,8 +55,7 @@
 			position: absolute;
 			right: 0;
 			z-index: 1;
-			padding: 0.2em;
-			border-bottom: 1px solid $color-bg;
+			border: 1px solid $color-bg;
 
 			button {
 				display: block;
@@ -36,6 +63,7 @@
 				width: 100%;
 				background: $color-obojobo-blue;
 				color: $color-bg;
+				max-width: 10em;
 			}
 
 			&.is-focused {
@@ -48,15 +76,5 @@
 				display: block;
 			}
 		}
-	}
-
-	.content-add-button {
-		display: block;
-		background: $color-obojobo-blue;
-		padding: 0.2em;
-		border-radius: $dimension-rounded-radius;
-		margin-bottom: 0.2em;
-		color: $color-bg;
-		font-size: 1em;
 	}
 }

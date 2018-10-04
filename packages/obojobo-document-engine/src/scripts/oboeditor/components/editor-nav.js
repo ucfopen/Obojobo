@@ -51,12 +51,33 @@ class EditorNav extends React.Component {
 	}
 
 	renamePage(pageId) {
-		const label = window.prompt('Enter the title for the new page:') || pageId
+		const label = window.prompt('Enter the new title:') || pageId
 		EditorUtil.renamePage(pageId, label)
 	}
 
 	movePage(pageId, index) {
 		EditorUtil.movePage(pageId, index)
+	}
+
+	copyToClipboard(str) {
+		// Loads the url into an invisible textarea
+		// to copy it to the clipboard
+		const el = document.createElement('textarea')
+		el.value = str
+		el.setAttribute('readonly', '')
+		el.style.position = 'absolute'
+		el.style.left = '-9999px'
+		document.body.appendChild(el)
+		const selected =
+			document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false
+		el.select()
+		document.execCommand('copy')
+		document.body.removeChild(el)
+		if (selected) {
+			document.getSelection().removeAllRanges()
+			document.getSelection().addRange(selected)
+		}
+		window.alert('Copied ' + str + ' to the clipboard')
 	}
 
 	renderLabel(label) {
@@ -77,7 +98,7 @@ class EditorNav extends React.Component {
 					)}
 					<button onClick={() => this.renamePage(item.id)}>Edit Name</button>
 					<button onClick={() => this.deletePage(item.id)}>Delete</button>
-					<button>{'Id: ' + item.id}</button>
+					<button onClick={() => this.copyToClipboard(item.id)}>{'Id: ' + item.id}</button>
 				</div>
 			</div>
 		)
@@ -113,12 +134,16 @@ class EditorNav extends React.Component {
 
 	render() {
 		const className =
-			'viewer--components--nav' +
+			'viewer--components--nav ' +
+			'editor--components--nav ' +
 			isOrNot(this.state.locked, 'locked') +
 			isOrNot(this.state.open, 'open') +
 			isOrNot(!this.state.disabled, 'enabled')
 
 		const list = EditorUtil.getOrderedList(this.props.navState)
+
+		const url = window.location.origin + '/view/'
+		const moduleItem = list[0]
 
 		return (
 			<div className={className}>
@@ -131,12 +156,21 @@ class EditorNav extends React.Component {
 						return null
 					})}
 				</ul>
-				<button className={'content-add-button'} onClick={() => this.addPage()}>
-					+ Add Page
-				</button>
-				<button className={'content-add-button'} onClick={() => this.addAssessment()}>
-					+ Add Assessment
-				</button>
+				<div className="button-bar">
+					<button className={'content-add-button'} onClick={() => this.addPage()}>
+						+ Add Page
+					</button>
+					<button className={'content-add-button'} onClick={() => this.addAssessment()}>
+						+ Add Assessment
+					</button>
+					<br />
+					<button className={'content-add-button'} onClick={() => this.renamePage(moduleItem.id)}>
+						Rename Module
+					</button>
+					<button className={'content-add-button'} onClick={() => this.copyToClipboard(url)}>
+						Copy Module URL
+					</button>
+				</div>
 			</div>
 		)
 	}
