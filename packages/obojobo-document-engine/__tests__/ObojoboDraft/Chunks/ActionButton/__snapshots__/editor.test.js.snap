@@ -44,7 +44,6 @@ exports[`ActionButton editor Node builds the expected component 1`] = `
               "display": "block",
             }
           }
-          value={undefined}
         />
       </div>
     </div>
@@ -96,7 +95,6 @@ exports[`ActionButton editor Node builds the expected component when selected 1`
               "display": "block",
             }
           }
-          value={undefined}
         />
       </div>
     </div>

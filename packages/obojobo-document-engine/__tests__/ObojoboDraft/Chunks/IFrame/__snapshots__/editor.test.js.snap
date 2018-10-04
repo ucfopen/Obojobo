@@ -32,7 +32,6 @@ exports[`IFrame editor Node component 1`] = `
       allowFullScreen="true"
       frameBorder="0"
       is={true}
-      src={undefined}
     />
   </div>
 </div>

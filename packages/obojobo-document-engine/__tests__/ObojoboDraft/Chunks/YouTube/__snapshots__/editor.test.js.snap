@@ -37,7 +37,6 @@ exports[`YouTube editor Node builds the expected component 1`] = `
       aria-label="Youtube Video Id"
       onChange={[Function]}
       onClick={[Function]}
-      value={undefined}
     />
   </div>
 </div>

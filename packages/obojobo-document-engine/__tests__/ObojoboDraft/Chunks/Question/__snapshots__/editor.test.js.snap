@@ -15,9 +15,7 @@ exports[`Question editor Node builds the expected component 1`] = `
         className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
       >
         <button
-          disabled={undefined}
           onClick={[Function]}
-          tabIndex={undefined}
         >
           Add Solution
         </button>

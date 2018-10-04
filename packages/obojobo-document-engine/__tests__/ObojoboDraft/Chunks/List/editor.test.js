@@ -851,7 +851,8 @@ describe('List editor', () => {
 							}
 						}
 					}
-				}
+				},
+				nodes: { size: 5 }
 			},
 			child: { key: 'mockKey' },
 			index: null
@@ -879,7 +880,7 @@ describe('List editor', () => {
 				nodes: { size: 10 }
 			},
 			child: { object: 'block', key: 'mockKey' },
-			index: 9
+			index: 0
 		})
 
 		expect(change.unwrapNodeByKey).toHaveBeenCalled()
@@ -917,7 +918,7 @@ describe('List editor', () => {
 		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_TYPE_INVALID, {
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
-			index: 9
+			index: 0
 		})
 
 		expect(change.unwrapNodeByKey).toHaveBeenCalled()
@@ -930,7 +931,7 @@ describe('List editor', () => {
 		change.wrapBlockByKey = jest.fn().mockReturnValueOnce(change)
 
 		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(change, CHILD_TYPE_INVALID, {
-			node: {},
+			node: { nodes: { size: 5 } },
 			child: { object: 'text', key: 'mockKey' },
 			index: 0
 		})

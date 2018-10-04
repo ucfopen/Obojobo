@@ -9,7 +9,9 @@
 		position: fixed;
 		top: 0;
 		z-index: 999;
-		width: inherit;
+		margin: 0 auto;
+		padding-right: 3em;
+		padding-left: 3em;
 		background-color: $color-bg;
 
 		button {
@@ -73,13 +75,13 @@
 
 	.dropdown {
 		position: absolute;
-		right: 0;
+		right: 3em;
 
 		button {
 			display: block;
 			background-color: $color-obojobo-blue;
 			border-radius: $dimension-rounded-radius;
-			margin: 0.3em;
+			margin: 0.1em;
 			font-size: 1em;
 			color: $color-bg;
 		}
@@ -87,7 +89,7 @@
 		.drop-content {
 			display: none;
 			position: absolute;
-			right: 0;
+			right: 0.1em;
 			z-index: 1;
 			background-color: $color-bg;
 			border-radius: $dimension-rounded-radius;
@@ -96,7 +98,7 @@
 				display: block;
 				background-color: $color-obojobo-blue;
 				border-radius: $dimension-rounded-radius;
-				margin: 0.3em;
+				margin: 0.1em;
 				font-size: 1em;
 				width: 100%;
 				color: $color-bg;
