@@ -44,7 +44,6 @@ exports[`MathEquation editor Node component 1`] = `
         name="Equation Label"
         onChange={[Function]}
         onClick={[Function]}
-        value={undefined}
       />
     </div>
   </div>
@@ -91,7 +90,6 @@ exports[`MathEquation editor Node component with error 1`] = `
         name="Equation Label"
         onChange={[Function]}
         onClick={[Function]}
-        value={undefined}
       />
     </div>
   </div>

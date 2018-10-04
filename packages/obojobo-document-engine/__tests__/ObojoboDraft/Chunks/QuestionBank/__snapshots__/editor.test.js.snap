@@ -15,9 +15,7 @@ exports[`QuestionBank editor Node builds the expected component 1`] = `
     className="obojobo-draft--components--button is-not-dangerous align-center buffer"
   >
     <button
-      disabled={undefined}
       onClick={[Function]}
-      tabIndex={undefined}
     >
       Add Question
     </button>
@@ -26,9 +24,7 @@ exports[`QuestionBank editor Node builds the expected component 1`] = `
     className="obojobo-draft--components--button is-not-dangerous align-center buffer"
   >
     <button
-      disabled={undefined}
       onClick={[Function]}
-      tabIndex={undefined}
     >
       Add Question Bank
     </button>

@@ -21,6 +21,7 @@ module.exports = (env, argv) => {
 	console.log(`Building assets for ${is_production ? 'production' : 'development'}`)
 
 	return {
+		mode: is_production ? 'production' : 'development',
 		target: 'web',
 		devServer: {
 			https: true,
@@ -41,7 +42,8 @@ module.exports = (env, argv) => {
 				`${docEngineBasePath}/common.css`,
 				`${docEngineBasePath}/viewer.js`,
 				`${docEngineBasePath}/viewer.css`,
-				`${docEngineBasePath}/viewer-app.js`
+				`${docEngineBasePath}/viewer-app.js`,
+				`${docEngineBasePath}/viewer-app.css`
 			].concat(getInstalledModules(is_production ? 'production' : 'development').assets)
 		},
 		module: {

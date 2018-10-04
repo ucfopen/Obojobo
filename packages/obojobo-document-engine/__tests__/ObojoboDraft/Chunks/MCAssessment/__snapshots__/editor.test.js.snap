@@ -14,9 +14,7 @@ exports[`MCAssessment editor ChoiceList builds the expected component 1`] = `
     className="obojobo-draft--components--button is-not-dangerous align-center choice-button pad"
   >
     <button
-      disabled={undefined}
       onClick={[Function]}
-      tabIndex={undefined}
     >
       + Add Choice
     </button>
