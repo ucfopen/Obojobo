@@ -14,7 +14,6 @@ describe('MCFeedback editor', () => {
 		const Node = MCFeedback.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -102,6 +101,7 @@ describe('MCFeedback editor', () => {
 
 	test('plugins.renderNode renders a node', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MCFEEDBACK_NODE,
 				data: {
@@ -120,7 +120,8 @@ describe('MCFeedback editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', object: 'text' },
 			index: null
@@ -134,7 +135,8 @@ describe('MCFeedback editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: null
@@ -148,7 +150,8 @@ describe('MCFeedback editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, CHILD_REQUIRED, {
+		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0

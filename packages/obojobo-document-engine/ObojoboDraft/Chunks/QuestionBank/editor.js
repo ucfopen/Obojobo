@@ -14,7 +14,7 @@ const { Button } = Common.components
 
 const Settings = props => {
 	return (
-		<div {...props.attributes} className={'qb-settings'}>
+		<div className={'qb-settings'}>
 			<div>{props.children}</div>
 		</div>
 	)
@@ -57,10 +57,7 @@ class Node extends React.Component {
 	}
 	render() {
 		return (
-			<div
-				className={'obojobo-draft--chunks--question-bank editor-bank'}
-				{...this.props.attributes}
-			>
+			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 				<button className={'delete'} onClick={() => this.delete()}>
 					X
 				</button>
@@ -82,7 +79,7 @@ const insertNode = change => {
 			type: QUESTION_BANK_NODE,
 			data: { content: { choose: 1, select: 'sequential' } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -160,20 +157,21 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case QUESTION_BANK_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case SETTINGS_NODE:
-				return <Settings {...props} />
+				return <Settings {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.QuestionBank': {
 				nodes: [
-					{ types: [SETTINGS_NODE], min: 1, max: 1 },
-					{ types: [QUESTION_NODE, QUESTION_BANK_NODE], min: 1 }
+					{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
+					{ match: [{ type: QUESTION_NODE, QUESTION_BANK_NODE }], min: 1 }
 				],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create({
@@ -201,9 +199,20 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.QuestionBank.Settings': {
-				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [
+							{
+								type: 'Parameter'
+							}
+						],
+						min: 2,
+						max: 2
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(

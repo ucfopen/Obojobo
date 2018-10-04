@@ -10,7 +10,6 @@ describe('Break editor', () => {
 		const Node = Break.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -70,13 +69,13 @@ describe('Break editor', () => {
 	test('insertNode calls change methods', () => {
 		const change = {}
 		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.collapseToStartOfNextText = jest.fn().mockReturnValueOnce(change)
+		change.moveToStartOfNextText = jest.fn().mockReturnValueOnce(change)
 		change.focus = jest.fn().mockReturnValueOnce(change)
 
 		Break.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.collapseToStartOfNextText).toHaveBeenCalled()
+		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -108,6 +107,7 @@ describe('Break editor', () => {
 
 	test('plugins.renderNode renders a break when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: BREAK_NODE,
 				data: {

@@ -10,7 +10,6 @@ describe('IFrame editor', () => {
 		const Node = IFrame.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -65,13 +64,13 @@ describe('IFrame editor', () => {
 	test('insertNode calls change methods', () => {
 		const change = {}
 		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.collapseToStartOfNextText = jest.fn().mockReturnValueOnce(change)
+		change.moveToStartOfNextText = jest.fn().mockReturnValueOnce(change)
 		change.focus = jest.fn().mockReturnValueOnce(change)
 
 		IFrame.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.collapseToStartOfNextText).toHaveBeenCalled()
+		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -115,6 +114,7 @@ describe('IFrame editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: IFRAME_NODE,
 				data: {

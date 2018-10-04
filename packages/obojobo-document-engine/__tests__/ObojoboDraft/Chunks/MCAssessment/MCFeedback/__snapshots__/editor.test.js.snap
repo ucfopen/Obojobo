@@ -3,7 +3,6 @@
 exports[`MCFeedback editor Node builds the expected component 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback"
-  dummy="dummyData"
 >
   <button
     className="delete"
@@ -46,6 +45,12 @@ Object {
 
 exports[`MCFeedback editor plugins.renderNode renders a node 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

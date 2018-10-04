@@ -1,21 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Table editor Cell component 1`] = `
-<td
-  dummy="dummyData"
-/>
-`;
+exports[`Table editor Cell component 1`] = `<td />`;
 
-exports[`Table editor Cell component as header 1`] = `
-<th
-  dummy="dummyData"
-/>
-`;
+exports[`Table editor Cell component as header 1`] = `<th />`;
 
 exports[`Table editor Node component 1`] = `
 <div
   className="component"
-  dummy="dummyData"
 >
   <div
     className="obojobo-draft--chunks--table viewer pad"
@@ -73,9 +64,7 @@ exports[`Table editor Node component removes col 1`] = `"<div class=\\"component
 exports[`Table editor Node component toggles header 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
 
 exports[`Table editor Row component 1`] = `
-<tr
-  dummy="dummyData"
->
+<tr>
   <td
     className="delete-cell"
   >
@@ -234,6 +223,12 @@ Object {
 
 exports[`Table editor plugins.renderNode renders a button when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -247,6 +242,12 @@ exports[`Table editor plugins.renderNode renders a button when passed 1`] = `
 
 exports[`Table editor plugins.renderNode renders a button when passed 2`] = `
 <Row
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -260,6 +261,12 @@ exports[`Table editor plugins.renderNode renders a button when passed 2`] = `
 
 exports[`Table editor plugins.renderNode renders a button when passed 3`] = `
 <Cell
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

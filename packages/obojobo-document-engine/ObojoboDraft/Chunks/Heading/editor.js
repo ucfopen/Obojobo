@@ -19,7 +19,6 @@ const insertNode = change => {
 			type: HEADING_NODE,
 			data: { content: { level: 2 } }
 		})
-		.collapseToStartOfNextText()
 		.focus()
 }
 
@@ -87,13 +86,18 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case HEADING_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Heading': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [
+					{
+						match: [{ object: 'text' }],
+						min: 1
+					}
+				]
 			}
 		}
 	}

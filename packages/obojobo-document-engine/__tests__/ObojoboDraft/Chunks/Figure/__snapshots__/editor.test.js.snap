@@ -3,7 +3,6 @@
 exports[`Figure editor Node renders correctly 1`] = `
 <div
   className="component"
-  dummy="dummyData"
 >
   <div
     className="obojobo-draft--chunks--figure viewer mockSize"
@@ -74,7 +73,6 @@ exports[`Figure editor Node renders correctly 1`] = `
 exports[`Figure editor Node renders with custom size correctly 1`] = `
 <div
   className="component"
-  dummy="dummyData"
 >
   <div
     className="obojobo-draft--chunks--figure viewer custom"
@@ -151,7 +149,6 @@ exports[`Figure editor Node renders with custom size correctly 1`] = `
 exports[`Figure editor Node renders with custom size correctly 2`] = `
 <div
   className="component"
-  dummy="dummyData"
 >
   <div
     className="obojobo-draft--chunks--figure viewer custom"
@@ -227,7 +224,6 @@ exports[`Figure editor Node renders with custom size correctly 2`] = `
 exports[`Figure editor Node renders with custom size correctly 3`] = `
 <div
   className="component"
-  dummy="dummyData"
 >
   <div
     className="obojobo-draft--chunks--figure viewer custom"
@@ -354,6 +350,12 @@ Object {
 
 exports[`Figure editor plugins.renderNode renders a button when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

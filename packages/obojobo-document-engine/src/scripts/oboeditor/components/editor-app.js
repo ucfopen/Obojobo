@@ -1,4 +1,4 @@
-import { setKeyGenerator } from 'slate'
+import { KeyUtils } from 'slate'
 import React from 'react'
 
 import Common from 'Common'
@@ -28,7 +28,7 @@ class EditorApp extends React.Component {
 		}
 
 		// Make Slate nodes generate with UUIDs
-		setKeyGenerator(generateId)
+		KeyUtils.setGenerator(generateId)
 
 		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
 	}
