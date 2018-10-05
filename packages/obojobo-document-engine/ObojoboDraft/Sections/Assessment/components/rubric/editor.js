@@ -31,7 +31,7 @@ class Mod extends React.Component {
 
 	render() {
 		return (
-			<div {...this.props.attributes} className={'mod pad'}>
+			<div className={'mod pad'}>
 				{this.props.children}
 				<button className={'delete-node'} onClick={() => this.deleteNode()}>
 					{'X'}
@@ -43,7 +43,7 @@ class Mod extends React.Component {
 
 const ModList = props => {
 	return (
-		<div {...props.attributes}>
+		<div>
 			<p contentEditable={false}>{'Mods:'}</p>
 			{props.children}
 		</div>
@@ -88,7 +88,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div {...this.props.attributes} className={'rubric pad'}>
+			<div className={'rubric pad'}>
 				<h1 contentEditable={false}>{'Rubric'}</h1>
 				<div className={'parameter-node'} contentEditable={false}>
 					{'Type: ' + this.state.type}
@@ -269,11 +269,11 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MOD_NODE:
-				return <Mod {...props} />
+				return <Mod {...props} {...props.attributes} />
 			case MOD_LIST_NODE:
-				return <ModList {...props} />
+				return <ModList {...props} {...props.attributes} />
 			case RUBRIC_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	validateNode(node) {
@@ -291,9 +291,13 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment.Rubric': {
-				nodes: [{ types: ['Parameter'], min: 4, max: 4 }, { types: [MOD_LIST_NODE], max: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{ match: [{ type: 'Paramter' }], min: 4, max: 4 },
+					{ match: [{ type: MOD_LIST_NODE }], max: 1 }
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							let block
 							switch (index) {
@@ -385,9 +389,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.Rubric.ModList': {
-				nodes: [{ types: [MOD_NODE], min: 1, max: 20 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: MOD_NODE }], min: 1, max: 20 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: MOD_NODE
@@ -403,9 +408,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.Rubric.Mod': {
-				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: 'Parameter' }], min: 2, max: 2 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(

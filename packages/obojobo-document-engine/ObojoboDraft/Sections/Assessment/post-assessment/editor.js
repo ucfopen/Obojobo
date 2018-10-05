@@ -42,7 +42,7 @@ class Score extends React.Component {
 	render() {
 		const dataFor = this.props.node.data.get('for')
 		return (
-			<div {...this.props.attributes} className={'score-actions-page pad'}>
+			<div className={'score-actions-page pad'}>
 				{this.props.children}
 				<div className={'action-data'}>
 					{'Score Range: ' + dataFor + ' '}
@@ -71,7 +71,7 @@ const Node = props => {
 	}
 
 	return (
-		<div {...props.attributes} className={'scoreactions'}>
+		<div className={'scoreactions'}>
 			<h1 contentEditable={false}>Score Actions</h1>
 			{props.children}
 			<button onClick={() => addAction()}>Add Action</button>
@@ -123,17 +123,18 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case SCORE_NODE:
-				return <Score {...props} />
+				return <Score {...props} {...props.attributes} />
 			case ACTIONS_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment.ScoreActions': {
-				nodes: [{ types: [SCORE_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: SCORE_NODE }], min: 1 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: SCORE_NODE,
@@ -151,9 +152,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.ScoreAction': {
-				nodes: [{ types: [PAGE_NODE], min: 1, max: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: PAGE_NODE }], min: 1, max: 1 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: PAGE_NODE

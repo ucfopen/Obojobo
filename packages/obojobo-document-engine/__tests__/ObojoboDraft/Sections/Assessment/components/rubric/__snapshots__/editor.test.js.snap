@@ -3,7 +3,6 @@
 exports[`Rubric editor Mod component 1`] = `
 <div
   className="mod pad"
-  dummy="dummyData"
 >
   <button
     className="delete-node"
@@ -19,9 +18,7 @@ exports[`Rubric editor Mod component deletes self 1`] = `"<div class=\\"mod pad\
 exports[`Rubric editor Mod component deletes self and parent 1`] = `"<div class=\\"mod pad\\"><button class=\\"delete-node\\">X</button></div>"`;
 
 exports[`Rubric editor ModList component 1`] = `
-<div
-  dummy="dummyData"
->
+<div>
   <p
     contentEditable={false}
   >
@@ -33,7 +30,6 @@ exports[`Rubric editor ModList component 1`] = `
 exports[`Rubric editor Node component 1`] = `
 <div
   className="rubric pad"
-  dummy="dummyData"
 >
   <h1
     contentEditable={false}
@@ -321,6 +317,12 @@ Object {
 
 exports[`Rubric editor plugins.renderNode renders a modlist when passed 1`] = `
 <ModList
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -334,6 +336,12 @@ exports[`Rubric editor plugins.renderNode renders a modlist when passed 1`] = `
 
 exports[`Rubric editor plugins.renderNode renders a modlist when passed 2`] = `
 <ModList
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -347,6 +355,12 @@ exports[`Rubric editor plugins.renderNode renders a modlist when passed 2`] = `
 
 exports[`Rubric editor plugins.renderNode renders a modlist when passed 3`] = `
 <Mod
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -360,6 +374,12 @@ exports[`Rubric editor plugins.renderNode renders a modlist when passed 3`] = `
 
 exports[`Rubric editor plugins.renderNode renders the rubric when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

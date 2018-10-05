@@ -1,1 +1,215 @@
-{"document":{"nodes":[{"object":"block","key":"b2abe350-3ec2-41b8-a395-d27d6fb65622","type":"ObojoboDraft.Chunks.Heading","data":{"content":{"level":1}},"nodes":[{"object":"text","leaves":[{"text":"2D Motion"}]}]},{"object":"block","key":"f32fe26b-b911-4133-8772-7d89c9d16077","type":"ObojoboDraft.Chunks.Heading","data":{"content":{"level":2}},"nodes":[{"object":"text","leaves":[{"text":"Projectile motion"}]}]},{"object":"block","key":"60f8b34c-f9a4-472a-ab3d-e11b29326be2","type":"ObojoboDraft.Chunks.Text","data":{"content":{"textGroup":[{"data":null,"text":{"value":"Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:","styleList":[{"end":59,"data":{},"type":"_latex","start":56}]}}]}},"nodes":[{"object":"text","leaves":[{"text":"Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:"}]}]},{"object":"block","key":"my-math-equation","type":"ObojoboDraft.Chunks.MathEquation","data":{"content":{"latex":"v_0=v_{0_x}i+v_{0_y}j"}},"isVoid":true},{"object":"block","key":"d1a19b91-c097-44d3-8216-7b83513edbd0","type":"ObojoboDraft.Chunks.Text","data":{"content":{"textGroup":[{"data":null,"text":{"value":"The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:","styleList":[{"end":22,"data":{},"type":"_latex","start":15},{"end":34,"data":{},"type":"_latex","start":27},{"end":83,"data":{},"type":"_latex","start":77}]}}]}},"nodes":[{"object":"text","leaves":[{"text":"The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:"}]}]},{"object":"block","key":"c644293a-756d-453e-93d8-bcef0634383d","type":"ObojoboDraft.Chunks.List","data":{"content":{"textGroup":[{"data":null,"text":{"value":"v_{0_x} = v_0 \\cos \\theta","styleList":[{"end":25,"data":{},"type":"_latex","start":0}]}},{"data":null,"text":{"value":"v_{0_t} = v_0 \\sin \\theta","styleList":[{"end":25,"data":{},"type":"_latex","start":0}]}}],"listStyles":{"type":"unordered","indents":{}}}},"nodes":[{"object":"block","type":"ObojoboDraft.Chunks.List.Level","data":{"content":{"type":"unordered","bulletStyle":"disc"}},"nodes":[{"object":"block","type":"ObojoboDraft.Chunks.List.Line","nodes":[{"object":"text","leaves":[{"text":"v_{0_x} = v_0 \\cos \\theta"}]}]}]},{"object":"block","type":"ObojoboDraft.Chunks.List.Level","data":{"content":{"type":"unordered","bulletStyle":"disc"}},"nodes":[{"object":"block","type":"ObojoboDraft.Chunks.List.Line","nodes":[{"object":"text","leaves":[{"text":"v_{0_t} = v_0 \\sin \\theta"}]}]}]}]},{"object":"block","key":"c454b78b-c1b9-4024-a143-0500beb5dcf1","type":"ObojoboDraft.Chunks.Text","data":{"content":{"textGroup":[{"data":null,"text":{"value":"See also the section Parabolic equation for information on finding the initial velocity.","styleList":[]}}]}},"nodes":[{"object":"text","leaves":[{"text":"See also the section Parabolic equation for information on finding the initial velocity."}]}]},{"object":"block","key":"42b9b80d-f4f4-48aa-9163-4338bb946c85","type":"ObojoboDraft.Chunks.Heading","data":{"content":{"level":2}},"nodes":[{"object":"text","leaves":[{"text":"Kinematic quantities of projectile motion"}]}]},{"object":"block","key":"42efe7e6-28fe-48fc-9473-d5738fc237ab","type":"ObojoboDraft.Chunks.Text","data":{"content":{"textGroup":[{"data":null,"text":{"value":"In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.","styleList":[]}}]}},"nodes":[{"object":"text","leaves":[{"text":"In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638."}]}]}]}}
+{
+	"document": {
+		"nodes": [
+			{
+				"object": "block",
+				"key": "b2abe350-3ec2-41b8-a395-d27d6fb65622",
+				"type": "ObojoboDraft.Chunks.Heading",
+				"data": { "content": { "level": 1 } },
+				"nodes": [{ "object": "text", "leaves": [{ "text": "2D Motion" }] }]
+			},
+			{
+				"object": "block",
+				"key": "f32fe26b-b911-4133-8772-7d89c9d16077",
+				"type": "ObojoboDraft.Chunks.Heading",
+				"data": { "content": { "level": 2 } },
+				"nodes": [{ "object": "text", "leaves": [{ "text": "Projectile motion" }] }]
+			},
+			{
+				"object": "block",
+				"key": "60f8b34c-f9a4-472a-ab3d-e11b29326be2",
+				"type": "ObojoboDraft.Chunks.Text",
+				"data": {
+					"content": {
+						"textGroup": [
+							{
+								"data": null,
+								"text": {
+									"value":
+										"Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
+									"styleList": [{ "end": 59, "data": {}, "type": "_latex", "start": 56 }]
+								}
+							}
+						]
+					}
+				},
+				"nodes": [
+					{
+						"object": "text",
+						"leaves": [
+							{
+								"text":
+									"Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:"
+							}
+						]
+					}
+				]
+			},
+			{
+				"object": "block",
+				"key": "my-math-equation",
+				"type": "ObojoboDraft.Chunks.MathEquation",
+				"data": { "content": { "latex": "v_0=v_{0_x}i+v_{0_y}j" } }
+			},
+			{
+				"object": "block",
+				"key": "d1a19b91-c097-44d3-8216-7b83513edbd0",
+				"type": "ObojoboDraft.Chunks.Text",
+				"data": {
+					"content": {
+						"textGroup": [
+							{
+								"data": null,
+								"text": {
+									"value":
+										"The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
+									"styleList": [
+										{ "end": 22, "data": {}, "type": "_latex", "start": 15 },
+										{ "end": 34, "data": {}, "type": "_latex", "start": 27 },
+										{ "end": 83, "data": {}, "type": "_latex", "start": 77 }
+									]
+								}
+							}
+						]
+					}
+				},
+				"nodes": [
+					{
+						"object": "text",
+						"leaves": [
+							{
+								"text":
+									"The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:"
+							}
+						]
+					}
+				]
+			},
+			{
+				"object": "block",
+				"key": "c644293a-756d-453e-93d8-bcef0634383d",
+				"type": "ObojoboDraft.Chunks.List",
+				"data": {
+					"content": {
+						"textGroup": [
+							{
+								"data": null,
+								"text": {
+									"value": "v_{0_x} = v_0 \\cos \\theta",
+									"styleList": [{ "end": 25, "data": {}, "type": "_latex", "start": 0 }]
+								}
+							},
+							{
+								"data": null,
+								"text": {
+									"value": "v_{0_t} = v_0 \\sin \\theta",
+									"styleList": [{ "end": 25, "data": {}, "type": "_latex", "start": 0 }]
+								}
+							}
+						],
+						"listStyles": { "type": "unordered", "indents": {} }
+					}
+				},
+				"nodes": [
+					{
+						"object": "block",
+						"type": "ObojoboDraft.Chunks.List.Level",
+						"data": { "content": { "type": "unordered", "bulletStyle": "disc" } },
+						"nodes": [
+							{
+								"object": "block",
+								"type": "ObojoboDraft.Chunks.List.Line",
+								"nodes": [
+									{ "object": "text", "leaves": [{ "text": "v_{0_x} = v_0 \\cos \\theta" }] }
+								]
+							}
+						]
+					},
+					{
+						"object": "block",
+						"type": "ObojoboDraft.Chunks.List.Level",
+						"data": { "content": { "type": "unordered", "bulletStyle": "disc" } },
+						"nodes": [
+							{
+								"object": "block",
+								"type": "ObojoboDraft.Chunks.List.Line",
+								"nodes": [
+									{ "object": "text", "leaves": [{ "text": "v_{0_t} = v_0 \\sin \\theta" }] }
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"object": "block",
+				"key": "c454b78b-c1b9-4024-a143-0500beb5dcf1",
+				"type": "ObojoboDraft.Chunks.Text",
+				"data": {
+					"content": {
+						"textGroup": [
+							{
+								"data": null,
+								"text": {
+									"value":
+										"See also the section Parabolic equation for information on finding the initial velocity.",
+									"styleList": []
+								}
+							}
+						]
+					}
+				},
+				"nodes": [
+					{
+						"object": "text",
+						"leaves": [
+							{
+								"text":
+									"See also the section Parabolic equation for information on finding the initial velocity."
+							}
+						]
+					}
+				]
+			},
+			{
+				"object": "block",
+				"key": "42b9b80d-f4f4-48aa-9163-4338bb946c85",
+				"type": "ObojoboDraft.Chunks.Heading",
+				"data": { "content": { "level": 2 } },
+				"nodes": [
+					{ "object": "text", "leaves": [{ "text": "Kinematic quantities of projectile motion" }] }
+				]
+			},
+			{
+				"object": "block",
+				"key": "42efe7e6-28fe-48fc-9473-d5738fc237ab",
+				"type": "ObojoboDraft.Chunks.Text",
+				"data": {
+					"content": {
+						"textGroup": [
+							{
+								"data": null,
+								"text": {
+									"value":
+										"In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.",
+									"styleList": []
+								}
+							}
+						]
+					}
+				},
+				"nodes": [
+					{
+						"object": "text",
+						"leaves": [
+							{
+								"text":
+									"In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638."
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

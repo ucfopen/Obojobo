@@ -3,7 +3,6 @@
 exports[`Page Node builds the expected component 1`] = `
 <div
   className="page-editor"
-  dummy="dummyData"
 />
 `;
 
@@ -31,6 +30,12 @@ Object {
 
 exports[`Page plugins.renderNode renders a solution when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

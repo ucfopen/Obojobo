@@ -20,7 +20,7 @@ const insertNode = change => {
 			type: TEXT_NODE,
 			data: { content: { indent: 0 } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -114,13 +114,13 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case TEXT_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Text': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [{ match: [{ object: 'text' }] }]
 			}
 		}
 	}

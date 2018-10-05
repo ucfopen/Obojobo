@@ -15,7 +15,7 @@ const insertNode = change => {
 		.insertBlock({
 			type: HTML_NODE
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -54,13 +54,18 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case HTML_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.HTML': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [
+					{
+						match: [{ object: 'text' }],
+						min: 1
+					}
+				]
 			}
 		}
 	}

@@ -89,10 +89,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div
-				className={'component obojobo-draft--chunks--math-equation pad align-center'}
-				{...this.props.attributes}
-			>
+			<div className={'component obojobo-draft--chunks--math-equation pad align-center'}>
 				{this.renderLatex()}
 				{this.renderEquationEditor()}
 			</div>
@@ -116,7 +113,7 @@ const insertNode = change => {
 			data: { content: { latex: '', label: '' } },
 			isVoid: true
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -145,7 +142,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MATH_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

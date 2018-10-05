@@ -11,7 +11,6 @@ describe('MathEquation editor', () => {
 		//katex.renderToString.mockReturnValueOnce('<b></b>')
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -31,7 +30,6 @@ describe('MathEquation editor', () => {
 		//katex.renderToString.mockReturnValueOnce('<b></b>')
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -51,7 +49,6 @@ describe('MathEquation editor', () => {
 		//katex.renderToString.mockReturnValueOnce('<b></b>')
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -155,13 +152,13 @@ describe('MathEquation editor', () => {
 	test('insertNode calls change methods', () => {
 		const change = {}
 		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.collapseToStartOfNextText = jest.fn().mockReturnValueOnce(change)
+		change.moveToStartOfNextText = jest.fn().mockReturnValueOnce(change)
 		change.focus = jest.fn().mockReturnValueOnce(change)
 
 		MathEquation.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.collapseToStartOfNextText).toHaveBeenCalled()
+		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -203,6 +200,7 @@ describe('MathEquation editor', () => {
 
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MATHEQUATION_NODE,
 				data: {

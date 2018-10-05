@@ -3,7 +3,6 @@
 exports[`MCChoice editor Node component 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct"
-  dummy="dummyData"
 >
   <button
     className="delete"
@@ -34,7 +33,6 @@ exports[`MCChoice editor Node component 1`] = `
 exports[`MCChoice editor Node component correct choice 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-correct"
-  dummy="dummyData"
 >
   <button
     className="delete"
@@ -83,6 +81,12 @@ Object {
 
 exports[`MCChoice editor plugins.renderNode renders a choice 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

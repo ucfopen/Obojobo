@@ -10,9 +10,9 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 const Cell = props => {
 	if (props.node.data.get('content').header) {
-		return <th {...props.attributes}>{props.children}</th>
+		return <th>{props.children}</th>
 	}
-	return <td {...props.attributes}>{props.children}</td>
+	return <td>{props.children}</td>
 }
 
 class Row extends React.Component {
@@ -49,7 +49,7 @@ class Row extends React.Component {
 
 	render() {
 		return (
-			<tr {...this.props.attributes}>
+			<tr>
 				{this.props.children}
 				<td className={'delete-cell'}>
 					<button onClick={() => this.deleteRow()}>{'X'}</button>
@@ -175,7 +175,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div className={'component'} {...this.props.attributes}>
+			<div className={'component'}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
 						<table className="view" ref="table" key="table">
@@ -202,7 +202,7 @@ const insertNode = change => {
 			type: TABLE_NODE,
 			data: { content: { header: true, textGroup: { numRows: 1, numCols: 1 } } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -293,20 +293,26 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case TABLE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case TABLE_ROW_NODE:
-				return <Row {...props} />
+				return <Row {...props} {...props.attributes} />
 			case TABLE_CELL_NODE:
-				return <Cell {...props} />
+				return <Cell {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Table': {
-				nodes: [{ types: [TABLE_ROW_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
+				nodes: [
+					{
+						match: [{ type: TABLE_ROW_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
 					const header = index === 0 && node.data.get('content').header
-					switch (violation) {
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_ROW_NODE,
@@ -324,10 +330,16 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.Table.Row': {
-				nodes: [{ types: [TABLE_CELL_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
+				nodes: [
+					{
+						match: [{ type: TABLE_CELL_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
 					const header = node.data.get('content').header
-					switch (violation) {
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_CELL_NODE,

@@ -60,7 +60,7 @@ const Solution = props => {
 	}
 
 	return (
-		<div className={'solution-editor'} {...props.attributes}>
+		<div className={'solution-editor'}>
 			{props.children}
 			<button className={'delete'} onClick={() => deleteNode()}>
 				X
@@ -95,7 +95,6 @@ class Node extends React.Component {
 				className={
 					'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'
 				}
-				{...this.props.attributes}
 			>
 				<div className={'flipper'}>
 					<div className={'content back'}>
@@ -120,7 +119,7 @@ const insertNode = change => {
 		.insertBlock({
 			type: QUESTION_NODE
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -181,9 +180,9 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case QUESTION_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case SOLUTION_NODE:
-				return <Solution {...props} />
+				return <Solution {...props} {...props.attributes} />
 		}
 	},
 	schema: {
@@ -191,30 +190,31 @@ const plugins = {
 			'ObojoboDraft.Chunks.Question': {
 				nodes: [
 					{
-						types: [
-							BREAK_NODE,
-							CODE_NODE,
-							FIGURE_NODE,
-							HEADING_NODE,
-							IFRAME_NODE,
-							LIST_NODE,
-							MATH_NODE,
-							TEXT_NODE,
-							TABLE_NODE,
-							YOUTUBE_NODE,
-							HTML_NODE
+						match: [
+							{ type: BREAK_NODE },
+							{ type: CODE_NODE },
+							{ type: FIGURE_NODE },
+							{ type: HEADING_NODE },
+							{ type: IFRAME_NODE },
+							{ type: LIST_NODE },
+							{ type: MATH_NODE },
+							{ type: TEXT_NODE },
+							{ type: TABLE_NODE },
+							{ type: YOUTUBE_NODE },
+							{ type: HTML_NODE }
 						],
 						min: 1
 					},
-					{ types: [MCASSESSMENT_NODE], min: 1, max: 1 },
-					{ types: [SOLUTION_NODE], max: 1 }
+					{ match: [MCASSESSMENT_NODE], min: 1, max: 1 },
+					{ match: [SOLUTION_NODE], max: 1 }
 				],
 
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							// If we are missing the last node,
-							// it should be a MCAssessemnt
+							// it should be a MCAssessment
 							if (index === node.nodes.size) {
 								const block = Block.create({
 									type: MCASSESSMENT_NODE,
@@ -241,9 +241,16 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.Question.Solution': {
-				nodes: [{ types: [PAGE_NODE], max: 1, min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: PAGE_NODE }],
+						min: 1,
+						max: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: PAGE_NODE

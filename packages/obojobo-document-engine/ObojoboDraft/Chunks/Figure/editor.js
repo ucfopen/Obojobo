@@ -131,7 +131,7 @@ class Node extends React.Component {
 		}
 
 		return (
-			<div className="component" {...this.props.attributes}>
+			<div className="component">
 				<div className={`obojobo-draft--chunks--figure viewer ` + content.size}>
 					{this.renderEditToolbar()}
 					<div className={'container'}>
@@ -162,7 +162,7 @@ const insertNode = change => {
 				}
 			}
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -243,13 +243,18 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case FIGURE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Figure': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [
+					{
+						match: [{ object: 'text' }],
+						min: 0
+					}
+				]
 			}
 		}
 	}

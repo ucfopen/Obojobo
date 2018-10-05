@@ -22,7 +22,6 @@ describe('QuestionBank editor', () => {
 		const Node = QuestionBank.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -41,7 +40,6 @@ describe('QuestionBank editor', () => {
 		const Node = QuestionBank.components.Settings
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -158,13 +156,13 @@ describe('QuestionBank editor', () => {
 	test('insertNode calls change methods', () => {
 		const change = {}
 		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.collapseToStartOfNextText = jest.fn().mockReturnValueOnce(change)
+		change.moveToStartOfNextText = jest.fn().mockReturnValueOnce(change)
 		change.focus = jest.fn().mockReturnValueOnce(change)
 
 		QuestionBank.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.collapseToStartOfNextText).toHaveBeenCalled()
+		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -233,6 +231,7 @@ describe('QuestionBank editor', () => {
 
 	test('plugins.renderNode renders a question bank when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: QUESTION_BANK_NODE,
 				data: {
@@ -248,6 +247,7 @@ describe('QuestionBank editor', () => {
 
 	test('plugins.renderNode renders settings when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: SETTINGS_NODE,
 				data: {
@@ -266,7 +266,8 @@ describe('QuestionBank editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 0
@@ -280,7 +281,8 @@ describe('QuestionBank editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 1
@@ -294,7 +296,8 @@ describe('QuestionBank editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, CHILD_REQUIRED, {
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
@@ -308,7 +311,8 @@ describe('QuestionBank editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, CHILD_REQUIRED, {
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 1
@@ -322,7 +326,8 @@ describe('QuestionBank editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_REQUIRED, {
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
@@ -336,7 +341,8 @@ describe('QuestionBank editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_REQUIRED, {
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 1
@@ -353,7 +359,8 @@ describe('QuestionBank editor', () => {
 
 		change.withoutNormalization = funct => funct(change)
 
-		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 0
@@ -370,7 +377,8 @@ describe('QuestionBank editor', () => {
 
 		change.withoutNormalization = funct => funct(change)
 
-		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 1

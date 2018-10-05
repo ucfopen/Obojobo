@@ -230,10 +230,7 @@ class Node extends React.Component {
 
 		return (
 			<div className={'component'}>
-				<div
-					className={'text-chunk obojobo-draft--chunks--action-button pad'}
-					{...this.props.attributes}
-				>
+				<div className={'text-chunk obojobo-draft--chunks--action-button pad'}>
 					{this.renderButton()}
 					{isSelected ? this.renderTriggers() : null}
 				</div>
@@ -248,10 +245,9 @@ const insertNode = change => {
 			type: BUTTON_NODE,
 			data: {
 				content: { actions: [], label: '' }
-			},
-			isVoid: true
+			}
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -309,7 +305,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case BUTTON_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {
