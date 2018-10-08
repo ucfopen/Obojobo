@@ -14,6 +14,10 @@
 		border: solid 2px $color-text-minor;
 	}
 
+	.link {
+		padding-right: 1em;
+	}
+
 	.nav-modify {
 		margin: 0.5em;
 		padding: 0.2em;
@@ -47,8 +51,9 @@
 	}
 
 	.dropdown {
-		float: right;
-		overflow: auto;
+		position: absolute;
+		right: 0;
+		top: 0;
 
 		.drop-content {
 			display: none;
