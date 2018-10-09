@@ -16,7 +16,6 @@ describe('MCAssessment editor', () => {
 		const Node = MCAssessment.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -35,7 +34,6 @@ describe('MCAssessment editor', () => {
 		const Node = MCAssessment.components.ChoiceList
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -89,7 +87,6 @@ describe('MCAssessment editor', () => {
 		const Node = MCAssessment.components.Settings
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -250,6 +247,7 @@ describe('MCAssessment editor', () => {
 
 	test('plugins.renderNode renders a MCAssessment when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MCASSESSMENT_NODE,
 				data: {
@@ -265,6 +263,7 @@ describe('MCAssessment editor', () => {
 
 	test('plugins.renderNode renders a Setting when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: SETTINGS_NODE,
 				data: {
@@ -281,6 +280,7 @@ describe('MCAssessment editor', () => {
 	test('plugins.renderNode renders a ChoiceList when passed', () => {
 		const props = {
 			node: {
+				attributes: { dummy: 'dummyData' },
 				type: CHOICE_LIST_NODE,
 				data: {
 					get: () => {
@@ -298,7 +298,8 @@ describe('MCAssessment editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 0
@@ -312,7 +313,8 @@ describe('MCAssessment editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 1
@@ -326,7 +328,8 @@ describe('MCAssessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, CHILD_REQUIRED, {
+		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
@@ -340,7 +343,8 @@ describe('MCAssessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, CHILD_REQUIRED, {
+		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 1
@@ -354,7 +358,8 @@ describe('MCAssessment editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: null
@@ -368,7 +373,8 @@ describe('MCAssessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(change, CHILD_REQUIRED, {
+		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
@@ -382,7 +388,8 @@ describe('MCAssessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_REQUIRED, {
+		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
@@ -396,7 +403,8 @@ describe('MCAssessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_REQUIRED, {
+		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 1
@@ -413,7 +421,8 @@ describe('MCAssessment editor', () => {
 
 		change.withoutNormalization = funct => funct(change)
 
-		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 0
@@ -430,7 +439,8 @@ describe('MCAssessment editor', () => {
 
 		change.withoutNormalization = funct => funct(change)
 
-		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 1

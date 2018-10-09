@@ -13,7 +13,6 @@ describe('Table editor', () => {
 		const Node = Table.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -203,7 +202,6 @@ describe('Table editor', () => {
 		const Node = Table.components.Row
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -400,7 +398,6 @@ describe('Table editor', () => {
 		const Node = Table.components.Cell
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -419,7 +416,6 @@ describe('Table editor', () => {
 		const Node = Table.components.Cell
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -437,13 +433,13 @@ describe('Table editor', () => {
 	test('insertNode calls change methods', () => {
 		const change = {}
 		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.collapseToStartOfNextText = jest.fn().mockReturnValueOnce(change)
+		change.moveToStartOfNextText = jest.fn().mockReturnValueOnce(change)
 		change.focus = jest.fn().mockReturnValueOnce(change)
 
 		Table.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.collapseToStartOfNextText).toHaveBeenCalled()
+		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -454,30 +450,39 @@ describe('Table editor', () => {
 			data: {
 				get: () => null
 			},
-			nodes: [
-				{
-					nodes: [
-						{
-							text: 'MockText',
-							nodes: [
-								{
-									leaves: [
-										{
-											text: 'MockText',
-											marks: [
-												{
-													type: 'b',
-													data: {}
-												}
-											]
-										}
-									]
-								}
-							]
-						}
-					]
+			nodes: {
+				get: () => ({
+					data: {
+						get: () => ({ header: true })
+					}
+				}),
+				forEach: funct => {
+					funct({
+						nodes: [
+							{
+								text: 'MockText',
+								nodes: [
+									{
+										leaves: [
+											{
+												text: 'MockText',
+												marks: [
+													{
+														type: 'b',
+														data: {
+															toJSON: () => true
+														}
+													}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					})
 				}
-			]
+			}
 		}
 		const oboNode = Table.helpers.slateToObo(slateNode)
 
@@ -588,8 +593,10 @@ describe('Table editor', () => {
 	test('plugins.onKeyDown deals with [Backspace] or [Delete] collapsed at start of block', () => {
 		const change = {
 			value: {
-				startOffset: 0,
-				isCollapsed: true,
+				selection: {
+					start: { offset: 0 },
+					isCollapsed: true
+				},
 				document: {
 					getClosest: () => true
 				},
@@ -609,8 +616,10 @@ describe('Table editor', () => {
 	test('plugins.onKeyDown deals with [Backspace] or [Delete] inside cell', () => {
 		const change = {
 			value: {
-				startOffset: 0,
-				isCollapsed: false,
+				selection: {
+					start: { offset: 0 },
+					isCollapsed: false
+				},
 				document: {
 					getClosest: () => true
 				},
@@ -631,8 +640,6 @@ describe('Table editor', () => {
 	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without first', () => {
 		const change = {
 			value: {
-				startOffset: 0,
-				isCollapsed: false,
 				startBlock: {
 					key: 'mockStart'
 				},
@@ -649,11 +656,17 @@ describe('Table editor', () => {
 					})
 				},
 				selection: {
-					collapseToStart: () => ({
-						isAtEndOf: value => value
+					start: { offset: 0 },
+					isCollapsed: false,
+					moveToStart: () => ({
+						start: {
+							isAtEndOfNode: value => value
+						}
 					}),
-					collapseToEnd: () => ({
-						isAtStartOf: value => value
+					moveToEnd: () => ({
+						end: {
+							isAtStartOfNode: value => value
+						}
 					})
 				},
 				document: {
@@ -677,8 +690,6 @@ describe('Table editor', () => {
 	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without last', () => {
 		const change = {
 			value: {
-				startOffset: 0,
-				isCollapsed: false,
 				startBlock: {
 					key: 'mockStart'
 				},
@@ -695,11 +706,17 @@ describe('Table editor', () => {
 					})
 				},
 				selection: {
-					collapseToStart: () => ({
-						isAtEndOf: value => value
+					start: { offset: 0 },
+					isCollapsed: false,
+					moveToStart: () => ({
+						start: {
+							isAtEndOfNode: value => value
+						}
 					}),
-					collapseToEnd: () => ({
-						isAtStartOf: value => value
+					moveToEnd: () => ({
+						end: {
+							isAtStartOfNode: value => value
+						}
 					})
 				},
 				document: {
@@ -722,6 +739,7 @@ describe('Table editor', () => {
 
 	test('plugins.renderNode renders a Table when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: TABLE_NODE,
 				data: {
@@ -737,6 +755,7 @@ describe('Table editor', () => {
 
 	test('plugins.renderNode renders a row when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: TABLE_ROW_NODE,
 				data: {
@@ -752,6 +771,7 @@ describe('Table editor', () => {
 
 	test('plugins.renderNode renders a cell when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: TABLE_CELL_NODE,
 				data: {
@@ -770,7 +790,8 @@ describe('Table editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {
@@ -790,7 +811,8 @@ describe('Table editor', () => {
 			removeNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {
@@ -811,7 +833,8 @@ describe('Table editor', () => {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {
@@ -832,7 +855,8 @@ describe('Table editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, CHILD_REQUIRED, {
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				data: {
 					get: () => {
@@ -852,7 +876,8 @@ describe('Table editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {
@@ -872,7 +897,8 @@ describe('Table editor', () => {
 			removeNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {
@@ -893,7 +919,8 @@ describe('Table editor', () => {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {
@@ -914,7 +941,8 @@ describe('Table editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, CHILD_REQUIRED, {
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				data: {
 					get: () => {
@@ -934,7 +962,8 @@ describe('Table editor', () => {
 			unwrapBlockByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {
@@ -954,7 +983,8 @@ describe('Table editor', () => {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
 					get: () => {

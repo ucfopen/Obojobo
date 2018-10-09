@@ -16,7 +16,7 @@ const { Button } = Common.components
 
 const Settings = props => {
 	return (
-		<div {...props.attributes} className={'mc-settings'}>
+		<div className={'mc-settings'}>
 			<div>{props.children}</div>
 		</div>
 	)
@@ -37,7 +37,7 @@ const ChoiceList = props => {
 	}
 
 	return (
-		<div {...props.attributes}>
+		<div>
 			<span className={'instructions'}>{'Pick all of the correct answers'} </span>
 			{props.children}
 			<Button className={'choice-button pad'} onClick={() => addChoice()}>
@@ -58,7 +58,6 @@ class Node extends React.Component {
 				className={
 					'component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored'
 				}
-				{...this.props.attributes}
 			>
 				{this.props.children}
 			</div>
@@ -159,22 +158,31 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MCASSESSMENT_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case SETTINGS_NODE:
-				return <Settings {...props} />
+				return <Settings {...props} {...props.attributes} />
 			case CHOICE_LIST_NODE:
-				return <ChoiceList {...props} />
+				return <ChoiceList {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.MCAssessment': {
 				nodes: [
-					{ types: [CHOICE_LIST_NODE], min: 1, max: 1 },
-					{ types: [SETTINGS_NODE], min: 1, max: 1 }
+					{
+						match: [{ type: CHOICE_LIST_NODE }],
+						min: 1,
+						max: 1
+					},
+					{
+						match: [{ type: SETTINGS_NODE }],
+						min: 1,
+						max: 1
+					}
 				],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create({
@@ -205,9 +213,15 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.MCAssessment.ChoiceList': {
-				nodes: [{ types: [MCCHOICE_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: MCCHOICE_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: MCCHOICE_NODE,
@@ -226,9 +240,16 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.MCAssessment.Settings': {
-				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: 'Parameter' }],
+						min: 2,
+						max: 2
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(

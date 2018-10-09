@@ -38,7 +38,7 @@ const isType = change => {
 const insertNode = change => {
 	change
 		.insertBlock(TEXT_NODE)
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -165,9 +165,9 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case TEXT_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case TEXT_LINE_NODE:
-				return <Line {...props} />
+				return <Line {...props} {...props.attributes} />
 		}
 	},
 	renderPlaceholder(props) {
@@ -184,9 +184,15 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Text': {
-				nodes: [{ types: [TEXT_LINE_NODE] }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: TEXT_LINE_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 							const isAtEdge = index === node.nodes.size - 1 || index === 0
@@ -210,9 +216,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.Text.TextLine': {
-				nodes: [{ objects: ['text'] }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ object: 'text' }] }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 							const isAtEdge = index === node.nodes.size - 1 || index === 0

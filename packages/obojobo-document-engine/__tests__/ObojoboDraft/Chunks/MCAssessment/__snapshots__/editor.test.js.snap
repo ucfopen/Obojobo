@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`MCAssessment editor ChoiceList builds the expected component 1`] = `
-<div
-  dummy="dummyData"
->
+<div>
   <span
     className="instructions"
   >
@@ -27,14 +25,12 @@ exports[`MCAssessment editor ChoiceList component adds choice 1`] = `"<div><span
 exports[`MCAssessment editor Node builds the expected component 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored"
-  dummy="dummyData"
 />
 `;
 
 exports[`MCAssessment editor Settings builds the expected component 1`] = `
 <div
   className="mc-settings"
-  dummy="dummyData"
 >
   <div />
 </div>
@@ -105,6 +101,9 @@ exports[`MCAssessment editor plugins.renderNode renders a ChoiceList when passed
 <ChoiceList
   node={
     Object {
+      "attributes": Object {
+        "dummy": "dummyData",
+      },
       "data": Object {
         "get": [Function],
       },
@@ -116,6 +115,12 @@ exports[`MCAssessment editor plugins.renderNode renders a ChoiceList when passed
 
 exports[`MCAssessment editor plugins.renderNode renders a MCAssessment when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -129,6 +134,12 @@ exports[`MCAssessment editor plugins.renderNode renders a MCAssessment when pass
 
 exports[`MCAssessment editor plugins.renderNode renders a Setting when passed 1`] = `
 <Settings
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

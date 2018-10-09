@@ -61,6 +61,12 @@ Object {
 
 exports[`Text editor plugins.renderNode renders a line when passed 1`] = `
 <Line
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

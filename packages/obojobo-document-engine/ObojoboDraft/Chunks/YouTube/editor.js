@@ -60,11 +60,7 @@ class Node extends React.Component {
 	}
 
 	render() {
-		return (
-			<div className={'component'} {...this.props.attributes}>
-				{this.renderFrame()}
-			</div>
-		)
+		return <div className={'component'}>{this.renderFrame()}</div>
 	}
 }
 
@@ -72,10 +68,9 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: YOUTUBE_NODE,
-			data: { content: { videoId: 'FaHEusBG20c' } },
-			isVoid: true
+			data: { content: { videoId: 'FaHEusBG20c' } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -95,7 +90,6 @@ const oboToSlate = node => {
 	json.key = node.id
 	json.type = node.type
 	json.data = { content: node.content }
-	json.isVoid = true
 
 	return json
 }
@@ -104,7 +98,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case YOUTUBE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

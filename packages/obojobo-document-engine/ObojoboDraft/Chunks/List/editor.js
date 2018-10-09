@@ -15,7 +15,7 @@ const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 
 
 const Line = props => {
 	return (
-		<div {...props.attributes}>
+		<div>
 			<li>{props.children}</li>
 		</div>
 	)
@@ -41,7 +41,7 @@ class Level extends React.Component {
 	}
 
 	render() {
-		return <div {...this.props.attributes}>{this.renderList()}</div>
+		return <div>{this.renderList()}</div>
 	}
 }
 
@@ -84,7 +84,7 @@ class Node extends React.Component {
 		const other = type === 'ordered' ? 'Unordered' : 'Ordered'
 		return (
 			<div className={'component'}>
-				<div className={'text-chunk obojobo-draft--chunks--list pad'} {...this.props.attributes}>
+				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
 					{this.props.children}
 					<button onClick={() => this.toggleType()}>{'Swap to ' + other}</button>
 				</div>
@@ -107,7 +107,7 @@ const insertNode = change => {
 			type: LIST_NODE,
 			data: { content: { listStyles: { type: 'unordered' } } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -216,7 +216,7 @@ const plugins = {
 			const last = change.value.endBlock
 
 			// If the block is not empty or we are deleting multiple things, delete normally
-			if (!change.value.isCollapsed || last.text !== '') return
+			if (!change.value.selection.isCollapsed || last.text !== '') return
 
 			// Get the deepest level that contains this line
 			const listLevel = change.value.document.getClosest(last.key, par => {
@@ -310,15 +310,17 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case LIST_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case LIST_LINE_NODE:
-				return <Line {...props} />
+				return <Line {...props} {...props.attributes} />
 			case LIST_LEVEL_NODE:
-				return <Level {...props} />
+				return <Level {...props} {...props.attributes} />
 		}
 	},
-	validateNode(node) {
-		if (node.object !== 'block' || node.type !== LIST_NODE) return
+	normalizeNode(node) {
+		if (node.object !== 'block') return
+		if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return
+		if (node.nodes.size <= 1) return
 
 		const invalids = node.nodes
 			.map((child, i) => {
@@ -329,13 +331,13 @@ const plugins = {
 			})
 			.filter(Boolean)
 
-		if (!invalids.size) return
+		if (invalids.size === 0) return
 
 		return change => {
 			change.withoutNormalization(c => {
 				// Reverse the list to handle consecutive merges, since the earlier nodes
 				// will always exist after each merge.
-				invalids.reverse().forEach(n => {
+				invalids.forEach(n => {
 					c.mergeNodeByKey(n.key)
 				})
 			})
@@ -344,17 +346,23 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.List': {
-				nodes: [{ types: [LIST_LEVEL_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
+				nodes: [
+					{
+						match: [{ type: LIST_LEVEL_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
 					// find type and bullet style
 					const type = node.data.get('content').listStyles.type
 					const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
 
-					switch (violation) {
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 							const isAtEdge = index === node.nodes.size - 1 || index === 0
-							if (child.object === 'block' && isAtEdge) {
+							if (child.object === 'block' && isAtEdge && child.type !== LIST_LINE_NODE) {
 								return change.unwrapNodeByKey(child.key)
 							}
 
@@ -374,9 +382,15 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.List.Level': {
-				nodes: [{ types: [LIST_LEVEL_NODE, LIST_LINE_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: LIST_LEVEL_NODE }, { type: LIST_LINE_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 							const isAtEdge = index === node.nodes.size - 1 || index === 0
@@ -388,7 +402,7 @@ const plugins = {
 								.wrapBlockByKey(child.key, {
 									type: LIST_LINE_NODE
 								})
-								.collapseToStartOfNextText()
+								.moveToStartOfNextText()
 						}
 						case CHILD_REQUIRED: {
 							const block = Block.create(LIST_LINE_NODE)
@@ -398,7 +412,7 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.List.Line': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [{ match: [{ object: 'text' }] }]
 			}
 		}
 	}

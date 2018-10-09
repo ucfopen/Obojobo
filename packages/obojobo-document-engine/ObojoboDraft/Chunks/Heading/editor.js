@@ -71,9 +71,7 @@ class Node extends React.Component {
 			>
 				<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
 					<HTag>
-						<span className={'text align-' + content.align}>
-							{this.props.children}
-						</span>
+						<span className={'text align-' + content.align}>{this.props.children}</span>
 					</HTag>
 
 					<div className={'dropdown-heading'}>
@@ -111,7 +109,6 @@ const insertNode = change => {
 			type: HEADING_NODE,
 			data: { content: { level: 2 } }
 		})
-		.collapseToStartOfNextText()
 		.focus()
 }
 
@@ -164,7 +161,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case HEADING_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	renderPlaceholder(props) {
@@ -184,7 +181,12 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Heading': {
-				nodes: [{ objects: ['text'] }]
+				nodes: [
+					{
+						match: [{ object: 'text' }],
+						min: 1
+					}
+				]
 			}
 		}
 	}

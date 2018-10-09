@@ -59,7 +59,7 @@ class Node extends React.Component {
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
 			isOrNot(score === 100, 'correct')
 		return (
-			<div className={className} {...this.props.attributes}>
+			<div className={className}>
 				<button className={'delete-node'} onClick={event => this.delete(event)}>
 					X
 				</button>
@@ -132,15 +132,26 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MCCHOICE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.MCAssessment.MCChoice': {
-				nodes: [{ types: [MCANSWER_NODE], min: 1, max: 1 }, { types: [MCFEEDBACK_NODE], max: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [
+					{
+						match: [{ type: MCANSWER_NODE }],
+						min: 1,
+						max: 1
+					},
+					{
+						match: [{ type: MCFEEDBACK_NODE }],
+						max: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: MCANSWER_NODE

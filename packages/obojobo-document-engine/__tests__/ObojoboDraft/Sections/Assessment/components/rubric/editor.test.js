@@ -15,7 +15,6 @@ describe('Rubric editor', () => {
 		const Node = Rubric.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -142,7 +141,6 @@ describe('Rubric editor', () => {
 		const Node = Rubric.components.ModList
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -159,7 +157,7 @@ describe('Rubric editor', () => {
 
 	test('Mod component', () => {
 		const Node = Rubric.components.Mod
-		const component = renderer.create(<Node attributes={{ dummy: 'dummyData' }} />)
+		const component = renderer.create(<Node />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -341,6 +339,7 @@ describe('Rubric editor', () => {
 
 	test('plugins.renderNode renders the rubric when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: RUBRIC_NODE,
 				data: {
@@ -356,6 +355,7 @@ describe('Rubric editor', () => {
 
 	test('plugins.renderNode renders a modlist when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MOD_LIST_NODE,
 				data: {
@@ -371,6 +371,7 @@ describe('Rubric editor', () => {
 
 	test('plugins.renderNode renders a modlist when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MOD_LIST_NODE,
 				data: {
@@ -386,6 +387,7 @@ describe('Rubric editor', () => {
 
 	test('plugins.renderNode renders a modlist when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: MOD_NODE,
 				data: {
@@ -397,202 +399,6 @@ describe('Rubric editor', () => {
 		}
 
 		expect(Rubric.plugins.renderNode(props)).toMatchSnapshot()
-	})
-
-	test('plugins.validateNode exits if not the right type', () => {
-		expect(
-			Rubric.plugins.validateNode({
-				object: 'text'
-			})
-		).toEqual(undefined)
-
-		expect(
-			Rubric.plugins.validateNode({
-				object: 'block',
-				type: MOD_LIST_NODE
-			})
-		).toEqual(undefined)
-
-		expect(
-			Rubric.plugins.validateNode({
-				object: 'block',
-				type: MOD_NODE,
-				nodes: {
-					first: jest.fn().mockReturnValueOnce({
-						object: 'text'
-					})
-				}
-			})
-		).toEqual(undefined)
-	})
-
-	test('plugins.validateNode exits on proper Mod', () => {
-		const node = {
-			object: 'block',
-			type: MOD_NODE,
-			nodes: {
-				size: 2,
-				first: jest.fn().mockReturnValue({
-					object: 'block',
-					data: { get: () => 'attemptCondition' }
-				})
-			}
-		}
-
-		expect(Rubric.plugins.validateNode(node)).toEqual(undefined)
-
-		node.nodes.size = 1
-
-		expect(Rubric.plugins.validateNode(node)).toEqual(undefined)
-	})
-
-	test('plugins.validateNode fixes mod', () => {
-		const node = {
-			object: 'block',
-			type: MOD_NODE,
-			nodes: {
-				size: 1,
-				first: jest.fn().mockReturnValue({
-					object: 'block',
-					data: { get: () => 'reward' }
-				})
-			}
-		}
-
-		const changer = Rubric.plugins.validateNode(node)
-		const change = {
-			insertNodeByKey: jest.fn()
-		}
-
-		expect(changer).toEqual(expect.any(Function))
-		changer(change)
-		expect(change.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.validateNode fixes first node in rubric', () => {
-		const node = {
-			object: 'block',
-			type: RUBRIC_NODE,
-			nodes: {
-				size: 1,
-				first: jest.fn().mockReturnValue({
-					object: 'block',
-					data: { get: () => 'passedResult' }
-				})
-			}
-		}
-
-		const changer = Rubric.plugins.validateNode(node)
-		const change = {
-			insertNodeByKey: jest.fn()
-		}
-
-		expect(changer).toEqual(expect.any(Function))
-		changer(change)
-		expect(change.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.validateNode fixes second node in rubric', () => {
-		const node = {
-			object: 'block',
-			type: RUBRIC_NODE,
-			nodes: {
-				size: 3,
-				first: jest.fn().mockReturnValue({
-					object: 'block',
-					data: { get: () => 'passingAttemptScore' }
-				}),
-				get: jest.fn().mockReturnValueOnce({
-					data: { get: () => 'failedResult' }
-				})
-			}
-		}
-
-		const changer = Rubric.plugins.validateNode(node)
-		const change = {
-			insertNodeByKey: jest.fn()
-		}
-
-		expect(changer).toEqual(expect.any(Function))
-		changer(change)
-		expect(change.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.validateNode fixes third node in rubric', () => {
-		const node = {
-			object: 'block',
-			type: RUBRIC_NODE,
-			nodes: {
-				size: 3,
-				first: jest.fn().mockReturnValue({
-					object: 'block',
-					data: { get: () => 'passingAttemptScore' }
-				}),
-				get: jest
-					.fn()
-					.mockReturnValueOnce({
-						data: { get: () => 'passedResult' }
-					})
-					.mockReturnValueOnce({
-						data: { get: () => 'unableToPassResult' }
-					})
-			}
-		}
-
-		const changer = Rubric.plugins.validateNode(node)
-		const change = {
-			insertNodeByKey: jest.fn()
-		}
-
-		expect(changer).toEqual(expect.any(Function))
-		changer(change)
-		expect(change.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.validateNode fixes fourth node in rubric', () => {
-		const node = {
-			object: 'block',
-			type: RUBRIC_NODE,
-			nodes: {
-				size: 3,
-				first: jest.fn().mockReturnValue({
-					object: 'block',
-					data: { get: () => 'passingAttemptScore' }
-				}),
-				get: jest
-					.fn()
-					.mockReturnValueOnce({
-						data: { get: () => 'passedResult' }
-					})
-					.mockReturnValueOnce({
-						data: { get: () => 'failedResult' }
-					})
-			}
-		}
-
-		const changer = Rubric.plugins.validateNode(node)
-		const change = {
-			insertNodeByKey: jest.fn()
-		}
-
-		expect(changer).toEqual(expect.any(Function))
-		changer(change)
-		expect(change.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.validateNode exits on proper RUBRIC_NODE', () => {
-		const node = {
-			object: 'block',
-			type: RUBRIC_NODE,
-			nodes: {
-				size: 4,
-				first: jest.fn().mockReturnValue({
-					object: 'block'
-				})
-			}
-		}
-
-		expect(Rubric.plugins.validateNode(node)).toEqual(undefined)
 	})
 
 	test('plugins.schema.normalize fixes invalid first child in rubric', () => {
@@ -604,7 +410,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 0
@@ -622,7 +429,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 1
@@ -640,7 +448,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 2
@@ -658,7 +467,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 3
@@ -672,7 +482,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -686,7 +497,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1
@@ -700,7 +512,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 2
@@ -714,7 +527,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 3
@@ -728,7 +542,8 @@ describe('Rubric editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: null,
 			child: { key: 'mockKey' },
 			index: null
@@ -742,7 +557,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -760,7 +576,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 1
@@ -778,7 +595,8 @@ describe('Rubric editor', () => {
 			funct(change)
 		}
 
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 0
@@ -792,7 +610,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -806,7 +625,8 @@ describe('Rubric editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, CHILD_REQUIRED, {
+		Rubric.plugins.schema.blocks[MOD_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1

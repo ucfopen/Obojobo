@@ -16,7 +16,6 @@ describe('Question editor', () => {
 		const Node = Question.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -101,7 +100,7 @@ describe('Question editor', () => {
 
 	test('Solution component', () => {
 		const Node = Question.components.Solution
-		const component = renderer.create(<Node attributes={{ dummy: 'dummyData' }} />)
+		const component = renderer.create(<Node />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -138,13 +137,13 @@ describe('Question editor', () => {
 	test('insertNode calls change methods', () => {
 		const change = {}
 		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.collapseToStartOfNextText = jest.fn().mockReturnValueOnce(change)
+		change.moveToStartOfNextText = jest.fn().mockReturnValueOnce(change)
 		change.focus = jest.fn().mockReturnValueOnce(change)
 
 		Question.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.collapseToStartOfNextText).toHaveBeenCalled()
+		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -215,6 +214,7 @@ describe('Question editor', () => {
 
 	test('plugins.renderNode renders a question when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: QUESTION_NODE,
 				data: {
@@ -230,6 +230,7 @@ describe('Question editor', () => {
 
 	test('plugins.renderNode renders a solution when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: SOLUTION_NODE,
 				data: {
@@ -248,7 +249,8 @@ describe('Question editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: {
 				key: 'mockKey',
@@ -265,7 +267,8 @@ describe('Question editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: {
 				key: 'mockKey'
@@ -281,7 +284,8 @@ describe('Question editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, CHILD_REQUIRED, {
+		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				nodes: { size: 0 }
 			},
@@ -297,7 +301,8 @@ describe('Question editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, CHILD_REQUIRED, {
+		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				nodes: { size: 1 }
 			},
@@ -313,7 +318,8 @@ describe('Question editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(change, CHILD_REQUIRED, {
+		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				nodes: { size: 0 }
 			},
@@ -329,7 +335,8 @@ describe('Question editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: {
 				key: 'mockKey',

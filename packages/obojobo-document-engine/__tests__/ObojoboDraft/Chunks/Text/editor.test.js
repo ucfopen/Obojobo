@@ -13,7 +13,6 @@ describe('Text editor', () => {
 		const Node = Text.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => 0
@@ -46,13 +45,13 @@ describe('Text editor', () => {
 	test('insertNode calls change methods', () => {
 		const change = {}
 		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.collapseToStartOfNextText = jest.fn().mockReturnValueOnce(change)
+		change.moveToStartOfNextText = jest.fn().mockReturnValueOnce(change)
 		change.focus = jest.fn().mockReturnValueOnce(change)
 
 		Text.helpers.insertNode(change)
 
 		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.collapseToStartOfNextText).toHaveBeenCalled()
+		expect(change.moveToStartOfNextText).toHaveBeenCalled()
 		expect(change.focus).toHaveBeenCalled()
 	})
 
@@ -134,6 +133,7 @@ describe('Text editor', () => {
 
 	test('plugins.renderNode renders a line when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: TEXT_LINE_NODE,
 				data: {
@@ -499,7 +499,8 @@ describe('Text editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 5 } },
 			child: { key: 'mockKey' },
 			index: null
@@ -513,7 +514,8 @@ describe('Text editor', () => {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
 			index: 0
@@ -527,7 +529,8 @@ describe('Text editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, CHILD_REQUIRED, {
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -541,7 +544,8 @@ describe('Text editor', () => {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 5 } },
 			child: { key: 'mockKey' },
 			index: null
@@ -555,7 +559,8 @@ describe('Text editor', () => {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
 			index: 0

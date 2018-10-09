@@ -23,7 +23,6 @@ describe('Assessment editor', () => {
 		const Node = Assessment.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -77,7 +76,6 @@ describe('Assessment editor', () => {
 		const Node = Assessment.components.Settings
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: () => {
@@ -174,6 +172,7 @@ describe('Assessment editor', () => {
 
 	test('plugins.renderNode renders the Assessment when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: ASSESSMENT_NODE,
 				data: {
@@ -189,6 +188,7 @@ describe('Assessment editor', () => {
 
 	test('plugins.renderNode renders Settings when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: SETTINGS_NODE,
 				data: {
@@ -202,94 +202,13 @@ describe('Assessment editor', () => {
 		expect(Assessment.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
-	test('plugins.validateNode exits if not the right type', () => {
-		expect(
-			Assessment.plugins.validateNode({
-				object: 'text'
-			})
-		).toEqual(undefined)
-
-		expect(
-			Assessment.plugins.validateNode({
-				object: 'block',
-				type: ASSESSMENT_NODE
-			})
-		).toEqual(undefined)
-
-		expect(
-			Assessment.plugins.validateNode({
-				object: 'block',
-				type: SETTINGS_NODE,
-				nodes: {
-					first: jest.fn().mockReturnValueOnce({
-						object: 'text'
-					})
-				}
-			})
-		).toEqual(undefined)
-
-		expect(
-			Assessment.plugins.validateNode({
-				object: 'block',
-				type: SETTINGS_NODE,
-				nodes: {
-					first: jest.fn().mockReturnValueOnce({
-						object: 'object'
-					}),
-					size: 2
-				}
-			})
-		).toEqual(undefined)
-
-		expect(
-			Assessment.plugins.validateNode({
-				object: 'block',
-				type: SETTINGS_NODE,
-				nodes: {
-					first: jest
-						.fn()
-						.mockReturnValueOnce({
-							object: 'object'
-						})
-						.mockReturnValueOnce({
-							object: 'object',
-							data: { get: () => 'attempts' }
-						}),
-					size: 1
-				}
-			})
-		).toEqual(undefined)
-	})
-
-	test('plugins.validateNode fixes improper settings', () => {
-		const node = {
-			object: 'block',
-			type: SETTINGS_NODE,
-			nodes: {
-				size: 1,
-				first: jest.fn().mockReturnValue({
-					object: 'object',
-					data: { get: () => 'review' }
-				})
-			}
-		}
-
-		const changer = Assessment.plugins.validateNode(node)
-		const change = {
-			insertNodeByKey: jest.fn()
-		}
-
-		expect(changer).toEqual(expect.any(Function))
-		changer(change)
-		expect(change.insertNodeByKey).toHaveBeenCalled()
-	})
-
 	test('plugins.schema.normalize fixes invalid first child in Assessment', () => {
 		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 0
@@ -303,7 +222,8 @@ describe('Assessment editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 1
@@ -317,7 +237,8 @@ describe('Assessment editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 2
@@ -331,7 +252,8 @@ describe('Assessment editor', () => {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 3
@@ -345,7 +267,8 @@ describe('Assessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, CHILD_REQUIRED, {
+		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -359,7 +282,8 @@ describe('Assessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, CHILD_REQUIRED, {
+		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1
@@ -373,7 +297,8 @@ describe('Assessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, CHILD_REQUIRED, {
+		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 2
@@ -387,7 +312,8 @@ describe('Assessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, CHILD_REQUIRED, {
+		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 3
@@ -405,7 +331,8 @@ describe('Assessment editor', () => {
 			funct(change)
 		}
 
-		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 1
@@ -423,7 +350,8 @@ describe('Assessment editor', () => {
 			funct(change)
 		}
 
-		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { key: 'mockKey' },
 			index: 0
@@ -437,7 +365,8 @@ describe('Assessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_REQUIRED, {
+		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -451,7 +380,8 @@ describe('Assessment editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, CHILD_REQUIRED, {
+		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1

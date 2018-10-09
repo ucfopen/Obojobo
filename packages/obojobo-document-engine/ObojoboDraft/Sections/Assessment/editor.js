@@ -17,7 +17,7 @@ import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-n
 
 const Settings = props => {
 	return (
-		<div {...props.attributes} className={'settings pad'}>
+		<div className={'settings pad'}>
 			<span contentEditable={false} className={'label'}>
 				{'Assessment Settings'}
 			</span>
@@ -48,7 +48,7 @@ class Node extends React.Component {
 	render() {
 		const hasRubric = this.props.node.nodes.size === 5
 		return (
-			<div {...this.props.attributes} className={'assessment'}>
+			<div className={'assessment'}>
 				{this.props.children}
 				{!hasRubric ? (
 					<button className={'add-rubric'} onClick={() => this.addRubric()}>
@@ -144,40 +144,24 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case ASSESSMENT_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case SETTINGS_NODE:
-				return <Settings {...props} />
+				return <Settings {...props} {...props.attributes} />
 		}
-	},
-	validateNode(node) {
-		if (node.object !== 'block') return
-		if (node.type !== SETTINGS_NODE) return
-		if (node.nodes.first().object === 'text') return
-		if (node.nodes.size !== 1) return
-		if (node.nodes.first().data.get('name') === 'attempts') return
-
-		const block = Block.create({
-			type: 'Parameter',
-			data: {
-				name: 'attempts',
-				display: 'Attempts'
-			}
-		})
-
-		return change => change.insertNodeByKey(node.key, 0, block)
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment': {
 				nodes: [
-					{ types: [SETTINGS_NODE], min: 1, max: 1 },
-					{ types: [PAGE_NODE], min: 1, max: 1 },
-					{ types: [QUESTION_BANK_NODE], min: 1, max: 1 },
-					{ types: [ACTIONS_NODE], min: 1, max: 1 },
-					{ types: [RUBRIC_NODE], max: 1 }
+					{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
+					{ match: [{ type: PAGE_NODE }], min: 1, max: 1 },
+					{ match: [{ type: QUESTION_BANK_NODE }], min: 1, max: 1 },
+					{ match: [{ type: ACTIONS_NODE }], min: 1, max: 1 },
+					{ match: [{ type: RUBRIC_NODE }], max: 1 }
 				],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							let block
 							switch (index) {
@@ -230,9 +214,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.Settings': {
-				nodes: [{ types: ['Parameter'], min: 2, max: 2 }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ type: 'Parameter' }], min: 2, max: 2 }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_REQUIRED: {
 							if (index === 0) {
 								const block = Block.create(

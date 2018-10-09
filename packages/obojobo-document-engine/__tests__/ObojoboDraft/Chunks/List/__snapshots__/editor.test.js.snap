@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`List editor Level component 1`] = `
-<div
-  dummy="dummyData"
->
+<div>
   <ul
     style={
       Object {
@@ -15,9 +13,7 @@ exports[`List editor Level component 1`] = `
 `;
 
 exports[`List editor Level component ordered 1`] = `
-<div
-  dummy="dummyData"
->
+<div>
   <ol
     style={
       Object {
@@ -29,9 +25,7 @@ exports[`List editor Level component ordered 1`] = `
 `;
 
 exports[`List editor Line component 1`] = `
-<div
-  dummy="dummyData"
->
+<div>
   <li />
 </div>
 `;
@@ -42,7 +36,6 @@ exports[`List editor Node component 1`] = `
 >
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
-    dummy="dummyData"
   >
     <button
       onClick={[Function]}
@@ -332,6 +325,12 @@ Object {
 
 exports[`List editor plugins.renderNode renders a button when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -345,6 +344,12 @@ exports[`List editor plugins.renderNode renders a button when passed 1`] = `
 
 exports[`List editor plugins.renderNode renders a button when passed 2`] = `
 <Level
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -358,6 +363,12 @@ exports[`List editor plugins.renderNode renders a button when passed 2`] = `
 
 exports[`List editor plugins.renderNode renders a button when passed 3`] = `
 <Line
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

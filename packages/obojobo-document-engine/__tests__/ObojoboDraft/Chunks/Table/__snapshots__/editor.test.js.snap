@@ -1,21 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Table editor Cell component 1`] = `
-<td
-  dummy="dummyData"
-/>
-`;
+exports[`Table editor Cell component 1`] = `<td />`;
 
-exports[`Table editor Cell component as header 1`] = `
-<th
-  dummy="dummyData"
-/>
-`;
+exports[`Table editor Cell component as header 1`] = `<th />`;
 
 exports[`Table editor Node component 1`] = `
 <div
   className="component"
-  dummy="dummyData"
 >
   <div
     className="obojobo-draft--chunks--table viewer pad"
@@ -73,9 +64,7 @@ exports[`Table editor Node component removes col 1`] = `"<div class=\\"component
 exports[`Table editor Node component toggles header 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
 
 exports[`Table editor Row component 1`] = `
-<tr
-  dummy="dummyData"
->
+<tr>
   <td
     className="delete-cell"
   >
@@ -144,9 +133,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                Object {
-                  "text": "Mock1",
-                },
+                "Mock1",
               ],
               "object": "text",
             },
@@ -163,9 +150,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                Object {
-                  "text": "Mock2",
-                },
+                "Mock2",
               ],
               "object": "text",
             },
@@ -193,9 +178,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                Object {
-                  "text": "Mock3",
-                },
+                "Mock3",
               ],
               "object": "text",
             },
@@ -212,9 +195,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                Object {
-                  "text": "Mock4",
-                },
+                "Mock4",
               ],
               "object": "text",
             },
@@ -234,6 +215,12 @@ Object {
 
 exports[`Table editor plugins.renderNode renders a Table when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -247,6 +234,12 @@ exports[`Table editor plugins.renderNode renders a Table when passed 1`] = `
 
 exports[`Table editor plugins.renderNode renders a cell when passed 1`] = `
 <Cell
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -260,6 +253,12 @@ exports[`Table editor plugins.renderNode renders a cell when passed 1`] = `
 
 exports[`Table editor plugins.renderNode renders a row when passed 1`] = `
 <Row
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -275,13 +274,14 @@ exports[`Table editor slateToObo converts a Slate node to an OboNode with conten
 Object {
   "children": Array [],
   "content": Object {
+    "header": true,
     "textGroup": Object {
       "textGroup": Array [
         Object {
           "text": Object {
             "styleList": Array [
               Object {
-                "data": Object {},
+                "data": true,
                 "end": 8,
                 "start": 0,
                 "type": "b",

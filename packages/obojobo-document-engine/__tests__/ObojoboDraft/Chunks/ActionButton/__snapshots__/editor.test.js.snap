@@ -6,7 +6,6 @@ exports[`ActionButton editor Node builds the expected component 1`] = `
 >
   <div
     className="text-chunk obojobo-draft--chunks--action-button pad"
-    dummy="dummyData"
   >
     <div
       className="obojobo-draft--components--button"
@@ -57,7 +56,6 @@ exports[`ActionButton editor Node builds the expected component when selected 1`
 >
   <div
     className="text-chunk obojobo-draft--chunks--action-button pad"
-    dummy="dummyData"
   >
     <div
       className="obojobo-draft--components--button"
@@ -292,6 +290,12 @@ Object {
 
 exports[`ActionButton editor plugins.renderNode renders a button when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

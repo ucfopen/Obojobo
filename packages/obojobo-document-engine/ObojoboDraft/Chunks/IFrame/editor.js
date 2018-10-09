@@ -68,7 +68,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div className={'component'} {...this.props.attributes}>
+			<div className={'component'}>
 				{this.renderFrame()}
 				{this.props.isSelected ? this.renderInput() : null}
 			</div>
@@ -80,10 +80,9 @@ const insertNode = change => {
 	change
 		.insertBlock({
 			type: IFRAME_NODE,
-			data: { content: { src: 'https://www.youtube.com/embed/dQw4w9WgXcQ' } },
-			isVoid: true
+			data: { content: { src: 'https://www.youtube.com/embed/dQw4w9WgXcQ' } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -103,7 +102,6 @@ const oboToSlate = node => {
 	json.key = node.id
 	json.type = node.type
 	json.data = { content: node.content }
-	json.isVoid = true
 
 	return json
 }
@@ -112,7 +110,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case IFRAME_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

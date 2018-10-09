@@ -3,7 +3,6 @@
 exports[`Assessment editor ModList component 1`] = `
 <div
   className="settings pad"
-  dummy="dummyData"
 >
   <span
     className="label"
@@ -18,7 +17,6 @@ exports[`Assessment editor ModList component 1`] = `
 exports[`Assessment editor Node component 1`] = `
 <div
   className="assessment"
-  dummy="dummyData"
 />
 `;
 
@@ -145,6 +143,12 @@ Object {
 
 exports[`Assessment editor plugins.renderNode renders Settings when passed 1`] = `
 <Settings
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -158,6 +162,12 @@ exports[`Assessment editor plugins.renderNode renders Settings when passed 1`] =
 
 exports[`Assessment editor plugins.renderNode renders the Assessment when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

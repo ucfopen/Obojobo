@@ -2,6 +2,7 @@ import React from 'react'
 
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 
@@ -10,9 +11,9 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 const Cell = props => {
 	if (props.node.data.get('content').header) {
-		return <th {...props.attributes}>{props.children}</th>
+		return <th>{props.children}</th>
 	}
-	return <td {...props.attributes}>{props.children}</td>
+	return <td>{props.children}</td>
 }
 
 class Row extends React.Component {
@@ -49,7 +50,7 @@ class Row extends React.Component {
 
 	render() {
 		return (
-			<tr {...this.props.attributes}>
+			<tr>
 				{this.props.children}
 				<td className={'delete-cell'}>
 					<button onClick={() => this.deleteRow()}>{'X'}</button>
@@ -174,7 +175,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div className={'component'} {...this.props.attributes}>
+			<div className={'component'}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
 						<table className="view" key="table">
@@ -209,7 +210,7 @@ const insertNode = change => {
 			type: TABLE_NODE,
 			data: { content: { header: true, textGroup: { numRows: 1, numCols: 1 } } }
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -218,32 +219,20 @@ const slateToObo = node => {
 	json.id = node.key
 	json.type = node.type
 	json.content = node.data.get('content') || { textGroup: {} }
+	json.content.header = node.nodes.get(0).data.get('content').header
 	json.content.textGroup.textGroup = []
 
 	node.nodes.forEach(row => {
 		row.nodes.forEach(cell => {
-			const codeLine = {
+			const cellLine = {
 				text: { value: cell.text, styleList: [] }
 			}
 
-			let currIndex = 0
-
 			cell.nodes.forEach(text => {
-				text.leaves.forEach(textRange => {
-					textRange.marks.forEach(mark => {
-						const style = {
-							start: currIndex,
-							end: currIndex + textRange.text.length,
-							type: mark.type,
-							data: JSON.parse(JSON.stringify(mark.data))
-						}
-						codeLine.text.styleList.push(style)
-					})
-					currIndex += textRange.text.length
-				})
+				TextUtil.slateToOboText(text, cellLine)
 			})
 
-			json.content.textGroup.textGroup.push(codeLine)
+			json.content.textGroup.textGroup.push(cellLine)
 		})
 	})
 	json.children = []
@@ -281,11 +270,7 @@ const oboToSlate = node => {
 			nodes: [
 				{
 					object: 'text',
-					leaves: [
-						{
-							text: line.text.value
-						}
-					]
+					leaves: TextUtil.parseMarkings(line)
 				}
 			]
 		}
@@ -298,7 +283,7 @@ const oboToSlate = node => {
 
 const plugins = {
 	onKeyDown(event, change) {
-		// See if any of the selected nodes have a CODE_NODE parent
+		// See if any of the selected nodes have a TABLE_NODE parent
 		const isTable = isType(change)
 		if (!isTable) return
 
@@ -308,11 +293,12 @@ const plugins = {
 			return false
 		}
 
-		if (isTable && (event.key === 'Backspace' || event.key === 'Delete')) {
+		if (event.key === 'Backspace' || event.key === 'Delete') {
 			const value = change.value
+			const selection = value.selection
 			const startBlock = value.startBlock
-			const startOffset = value.startOffset
-			const isCollapsed = value.isCollapsed
+			const startOffset = selection.start.offset
+			const isCollapsed = selection.isCollapsed
 			const endBlock = value.endBlock
 
 			// If a cursor is collapsed at the start of the first block, do nothing
@@ -333,8 +319,8 @@ const plugins = {
 			// Get all cells that contains the selection
 			const cells = blocks.toSet()
 
-			const ignoreFirstCell = value.selection.collapseToStart().isAtEndOf(cells.first())
-			const ignoreLastCell = value.selection.collapseToEnd().isAtStartOf(cells.last())
+			const ignoreFirstCell = value.selection.moveToStart().start.isAtEndOfNode(cells.first())
+			const ignoreLastCell = value.selection.moveToEnd().end.isAtStartOfNode(cells.last())
 
 			let cellsToClear = cells
 			if (ignoreFirstCell) {
@@ -357,20 +343,26 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case TABLE_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 			case TABLE_ROW_NODE:
-				return <Row {...props} />
+				return <Row {...props} {...props.attributes} />
 			case TABLE_CELL_NODE:
-				return <Cell {...props} />
+				return <Cell {...props} {...props.attributes} />
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Table': {
-				nodes: [{ types: [TABLE_ROW_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
+				nodes: [
+					{
+						match: [{ type: TABLE_ROW_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
 					const header = index === 0 && node.data.get('content').header
-					switch (violation) {
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end
 							if (child.object === 'block' && index === node.nodes.size - 1) {
@@ -398,10 +390,16 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.Table.Row': {
-				nodes: [{ types: [TABLE_CELL_NODE], min: 1 }],
-				normalize: (change, violation, { node, child, index }) => {
+				nodes: [
+					{
+						match: [{ type: TABLE_CELL_NODE }],
+						min: 1
+					}
+				],
+				normalize: (change, error) => {
+					const { node, child, index } = error
 					const header = node.data.get('content').header
-					switch (violation) {
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end
 							if (child.object === 'block' && index === node.nodes.size - 1) {
@@ -429,9 +427,10 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Chunks.Table.Cell': {
-				nodes: [{ objects: ['text'] }],
-				normalize: (change, violation, { node, child, index }) => {
-					switch (violation) {
+				nodes: [{ match: [{ object: 'text' }] }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
 							// Allow inserting of new nodes by unwrapping unexpected blocks at end
 							if (child.object === 'block' && index === node.nodes.size - 1) {

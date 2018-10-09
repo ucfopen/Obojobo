@@ -9,7 +9,6 @@ describe('Parameter Node', () => {
 		const Node = ParameterNode.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest.fn().mockReturnValueOnce(false)
@@ -26,7 +25,6 @@ describe('Parameter Node', () => {
 		const Node = ParameterNode.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest
@@ -53,7 +51,6 @@ describe('Parameter Node', () => {
 
 		const component = shallow(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest
@@ -83,7 +80,6 @@ describe('Parameter Node', () => {
 		const Node = ParameterNode.components.Node
 		const component = renderer.create(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest
@@ -109,7 +105,6 @@ describe('Parameter Node', () => {
 
 		const component = shallow(
 			<Node
-				attributes={{ dummy: 'dummyData' }}
 				node={{
 					data: {
 						get: jest
@@ -191,8 +186,205 @@ describe('Parameter Node', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
+	test('plugins.onKeyDown deals with no parameter', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						type: 'NotAParameter'
+					}
+				]
+			}
+		}
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with random key press', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						type: 'Parameter'
+					}
+				]
+			}
+		}
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'K',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		const change = {
+			value: {
+				blocks: [{ key: 'mockKey', type: 'Parameter' }]
+			}
+		}
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] collapsed at start of block', () => {
+		const change = {
+			value: {
+				selection: {
+					start: { offset: 0 },
+					isCollapsed: true
+				},
+				blocks: [{ key: 'mockKey', type: 'Parameter' }]
+			}
+		}
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] inside cell', () => {
+		const change = {
+			value: {
+				selection: {
+					start: { offset: 0 },
+					isCollapsed: false
+				},
+				blocks: [{ key: 'mockKey', type: 'Parameter' }]
+			}
+		}
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without first', () => {
+		const change = {
+			value: {
+				startBlock: {
+					key: 'mockStart'
+				},
+				endBlock: {
+					key: 'mockEnd'
+				},
+				blocks: {
+					some: () => true,
+					toSet: () => ({
+						first: () => false,
+						last: () => true,
+						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
+						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
+					})
+				},
+				selection: {
+					start: { offset: 0 },
+					isCollapsed: false,
+					moveToStart: () => ({
+						start: {
+							isAtEndOfNode: value => value
+						}
+					}),
+					moveToEnd: () => ({
+						end: {
+							isAtStartOfNode: value => value
+						}
+					})
+				}
+			}
+		}
+		change.removeNodeByKey = jest.fn()
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without last', () => {
+		const change = {
+			value: {
+				startBlock: {
+					key: 'mockStart'
+				},
+				endBlock: {
+					key: 'mockEnd'
+				},
+				blocks: {
+					some: () => true,
+					toSet: () => ({
+						first: () => true,
+						last: () => false,
+						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
+						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
+					})
+				},
+				selection: {
+					start: { offset: 0 },
+					isCollapsed: false,
+					moveToStart: () => ({
+						start: {
+							isAtEndOfNode: value => value
+						}
+					}),
+					moveToEnd: () => ({
+						end: {
+							isAtStartOfNode: value => value
+						}
+					})
+				}
+			}
+		}
+		change.removeNodeByKey = jest.fn()
+
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders a Parameter when passed', () => {
 		const props = {
+			attributes: { dummy: 'dummyData' },
 			node: {
 				type: 'Parameter',
 				data: {

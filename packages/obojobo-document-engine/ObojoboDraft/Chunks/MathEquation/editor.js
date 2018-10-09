@@ -58,9 +58,7 @@ class Node extends React.Component {
 		return (
 			<div className={'non-editable-chunk'}>
 				<div className="katex-container" dangerouslySetInnerHTML={{ __html: katexHtml }} />
-					{content.label === '' ? null : (
-						<div className="equation-label">{content.label}</div>
-					)}
+				{content.label === '' ? null : <div className="equation-label">{content.label}</div>}
 			</div>
 		)
 	}
@@ -97,11 +95,8 @@ class Node extends React.Component {
 		const content = this.props.node.data.get('content')
 		return (
 			<div
-				className={
-					'component obojobo-draft--chunks--math-equation pad ' +
-					'align-' + content.align
-				}
-				{...this.props.attributes}>
+				className={'component obojobo-draft--chunks--math-equation pad ' + 'align-' + content.align}
+			>
 				{this.renderLatex()}
 				{this.renderEquationEditor()}
 			</div>
@@ -125,7 +120,7 @@ const insertNode = change => {
 			data: { content: { latex: '', label: '' } },
 			isVoid: true
 		})
-		.collapseToStartOfNextText()
+		.moveToStartOfNextText()
 		.focus()
 }
 
@@ -154,7 +149,7 @@ const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
 			case MATH_NODE:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes} />
 		}
 	},
 	schema: {

@@ -3,7 +3,6 @@
 exports[`Question editor Node builds the expected component 1`] = `
 <div
   className="component obojobo-draft--chunks--question is-viewed is-mode-practice"
-  dummy="dummyData"
 >
   <div
     className="flipper question-editor"
@@ -38,7 +37,6 @@ exports[`Question editor Node component deletes self 1`] = `"<div class=\\"compo
 exports[`Question editor Solution component 1`] = `
 <div
   className="solution-editor"
-  dummy="dummyData"
 >
   <button
     className="delete-node"
@@ -106,6 +104,12 @@ Object {
 
 exports[`Question editor plugins.renderNode renders a question when passed 1`] = `
 <Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {
@@ -119,6 +123,12 @@ exports[`Question editor plugins.renderNode renders a question when passed 1`] =
 
 exports[`Question editor plugins.renderNode renders a solution when passed 1`] = `
 <Solution
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
   node={
     Object {
       "data": Object {

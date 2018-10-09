@@ -80,6 +80,12 @@ const Node = props => {
 	}
 }
 
+const isType = change => {
+	return change.value.blocks.some(block => {
+		return block.type === 'Parameter'
+	})
+}
+
 const slateToObo = node => {
 	const json = {}
 	switch (node.data.get('type')) {
@@ -135,6 +141,64 @@ const plugins = {
 		switch (props.node.type) {
 			case 'Parameter':
 				return <Node {...props} />
+		}
+	},
+	onKeyDown(event, change) {
+		// See if any of the selected nodes are a parameter
+		const isParameter = isType(change)
+		if (!isParameter) return
+
+		// Disallow enter in parameters
+		if (event.key === 'Enter') {
+			event.preventDefault()
+			return false
+		}
+
+		if (event.key === 'Backspace' || event.key === 'Delete') {
+			const value = change.value
+			const selection = value.selection
+			const startBlock = value.startBlock
+			const startOffset = selection.start.offset
+			const isCollapsed = selection.isCollapsed
+			const endBlock = value.endBlock
+
+			// If a cursor is collapsed at the start of the first block, do nothing
+			if (startOffset === 0 && isCollapsed) {
+				event.preventDefault()
+				return change
+			}
+
+			// Deletion within a parameter
+			if (startBlock === endBlock) {
+				return
+			}
+
+			// Deletion across parameters
+			event.preventDefault()
+			const blocks = value.blocks
+
+			// Get all cells that contains the selection
+			const cells = blocks.toSet()
+
+			const ignoreFirstCell = value.selection.moveToStart().start.isAtEndOfNode(cells.first())
+			const ignoreLastCell = value.selection.moveToEnd().end.isAtStartOfNode(cells.last())
+
+			let cellsToClear = cells
+			if (ignoreFirstCell) {
+				cellsToClear = cellsToClear.rest()
+			}
+			if (ignoreLastCell) {
+				cellsToClear = cellsToClear.butLast()
+			}
+
+			// Clear all the selection
+			cellsToClear.forEach(cell => {
+				cell.nodes.forEach(node => {
+					change.removeNodeByKey(node.key)
+				})
+			})
+
+			return true
 		}
 	}
 }
