@@ -4,6 +4,8 @@ import React from 'react'
 import Toolbar from '../../../src/scripts/oboeditor/components/toolbar'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
+const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 describe('Editor Toolbar', () => {
 	test('Node component', () => {
@@ -181,7 +183,8 @@ describe('Editor Toolbar', () => {
 	test('Node component toggles indent', () => {
 		const Node = Toolbar.components.Node
 		const change = {
-			setNodeByKey: jest.fn()
+			setNodeByKey: jest.fn(),
+			wrapBlockByKey: jest.fn()
 		}
 		const component = shallow(
 			<Node
@@ -204,11 +207,46 @@ describe('Editor Toolbar', () => {
 								type: CODE_LINE_NODE
 							})
 
+							// unordered list
+							funct({
+								data: { toJSON: () => ({}) },
+								type: LIST_LINE_NODE
+							})
+
+							// ordered list
+							funct({
+								data: { toJSON: () => ({}) },
+								type: LIST_LINE_NODE
+							})
+
 							funct({
 								data: { toJSON: () => ({ content: {} }) },
 								type: 'mockNode'
 							})
 						}
+					},
+					document: {
+						getClosest: jest
+							.fn()
+							.mockImplementationOnce((key, funct) => {
+								funct({ type: LIST_LEVEL_NODE })
+								return {
+									data: {
+										get: () => ({
+											bulletStyle: 'disc',
+											type: 'unordered'
+										})
+									}
+								}
+							})
+							.mockReturnValueOnce({
+								data: {
+									get: () => ({
+										bulletStyle: 'decimal',
+										type: 'ordered'
+									})
+								}
+							})
 					}
 				}}
 				onChange={jest.fn()}
@@ -223,12 +261,14 @@ describe('Editor Toolbar', () => {
 
 		expect(tree).toMatchSnapshot()
 		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('Node component toggles unindent', () => {
 		const Node = Toolbar.components.Node
 		const change = {
-			setNodeByKey: jest.fn()
+			setNodeByKey: jest.fn(),
+			unwrapNodeByKey: jest.fn()
 		}
 		const component = shallow(
 			<Node
@@ -260,6 +300,11 @@ describe('Editor Toolbar', () => {
 							})
 
 							funct({
+								data: { toJSON: () => ({ content: { indent: 0 } }) },
+								type: LIST_LINE_NODE
+							})
+
+							funct({
 								data: { toJSON: () => ({ content: {} }) },
 								type: 'mockNode'
 							})
@@ -278,6 +323,7 @@ describe('Editor Toolbar', () => {
 
 		expect(tree).toMatchSnapshot()
 		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Bold component', () => {

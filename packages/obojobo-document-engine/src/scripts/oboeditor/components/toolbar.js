@@ -37,6 +37,11 @@ const ALIGN_LEFT = 'left'
 
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
+const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
+const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
+
+const unorderedBullets = ['disc', 'circle', 'square']
+const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
 
 const Bold = props => {
 	return <strong>{props.children}</strong>
@@ -165,6 +170,29 @@ class Node extends React.Component {
 				dataJSON.content.indent = dataJSON.content.indent + 1
 			}
 
+			if (block.type === LIST_LINE_NODE) {
+				let bullet = 'disc'
+				let type = 'unordered'
+
+				// get the bullet and type of the closest parent level
+				const level = value.document.getClosest(block.key, parent => {
+					return parent.type === LIST_LEVEL_NODE
+				})
+
+				const content = level.data.get('content')
+				bullet = content.bulletStyle
+				type = content.type
+
+				// get the proper bullet for the next level
+				const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
+				const nextBullet = bulletList[(bulletList.indexOf(bullet) + 1) % bulletList.length]
+
+				return change.wrapBlockByKey(block.key, {
+					type: LIST_LEVEL_NODE,
+					data: { content: { type: type, bulletStyle: nextBullet } }
+				})
+			}
+
 			change.setNodeByKey(block.key, { data: dataJSON })
 		})
 
@@ -189,6 +217,10 @@ class Node extends React.Component {
 				if (newIndent < 1) newIndent = 0
 
 				dataJSON.content.indent = newIndent
+			}
+
+			if (block.type === LIST_LINE_NODE) {
+				return change.unwrapNodeByKey(block.key, LIST_LEVEL_NODE)
 			}
 
 			change.setNodeByKey(block.key, { data: dataJSON })

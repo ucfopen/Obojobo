@@ -71,6 +71,11 @@ Object {
             "value": "mockLine1",
           },
         },
+        Object {
+          "text": Object {
+            "value": "mockLine2",
+          },
+        },
       ],
     },
   },
@@ -94,18 +99,6 @@ Object {
           "object": "block",
           "type": "ObojoboDraft.Chunks.List.Line",
         },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.List.Level",
-    },
-    Object {
-      "data": Object {
-        "content": Object {
-          "bulletStyle": "decimal",
-          "type": undefined,
-        },
-      },
-      "nodes": Array [
         Object {
           "data": Object {
             "content": Object {
@@ -176,6 +169,16 @@ Object {
           "object": "block",
           "type": "ObojoboDraft.Chunks.List.Level",
         },
+        Object {
+          "nodes": Array [
+            Object {
+              "leaves": undefined,
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.List.Line",
+        },
       ],
       "object": "block",
       "type": "ObojoboDraft.Chunks.List.Level",
@@ -231,18 +234,6 @@ Object {
           "object": "block",
           "type": "ObojoboDraft.Chunks.List.Line",
         },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.List.Level",
-    },
-    Object {
-      "data": Object {
-        "content": Object {
-          "bulletStyle": "disc",
-          "type": "unordered",
-        },
-      },
-      "nodes": Array [
         Object {
           "data": Object {
             "content": Object {
@@ -412,6 +403,30 @@ Object {
     ],
   },
   "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`List editor validateJSON fixes an incorrect Slate node 1`] = `
+Object {
+  "id": "mockKey",
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        "mockLine1",
+      ],
+      "type": "ObojoboDraft.Chunks.List.Level",
+    },
+    Object {
+      "nodes": Array [
+        "mockLine2",
+      ],
+      "type": "ObojoboDraft.Chunks.List.Line",
+    },
+    Object {
+      "type": "ObojoboDraft.Chunks.List.Line",
+    },
+  ],
   "type": "mockType",
 }
 `;

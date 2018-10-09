@@ -10,7 +10,6 @@ const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 const unorderedBullets = ['disc', 'circle', 'square']
-
 const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
 
 const Line = props => {
@@ -151,6 +150,20 @@ const slateToObo = node => {
 	return json
 }
 
+const validateJSON = json => {
+	let last = json.nodes[0]
+	for (let i = 1; i < json.nodes.length; i++) {
+		const next = json.nodes[i]
+		if (last.type === LIST_LEVEL_NODE && next.type === LIST_LEVEL_NODE) {
+			next.nodes = last.nodes.concat(next.nodes)
+			json.nodes[i - 1] = false
+		}
+		last = next
+	}
+	json.nodes = json.nodes.filter(Boolean)
+	return json
+}
+
 const oboToSlate = node => {
 	const json = {}
 	json.object = 'block'
@@ -201,6 +214,8 @@ const oboToSlate = node => {
 
 		json.nodes.push(listLine)
 	})
+
+	validateJSON(json)
 
 	return json
 }
@@ -428,6 +443,7 @@ const List = {
 		isType,
 		insertNode,
 		slateToObo,
+		validateJSON,
 		oboToSlate
 	},
 	plugins

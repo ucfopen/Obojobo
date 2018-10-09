@@ -238,6 +238,29 @@ describe('List editor', () => {
 		expect(oboNode).toMatchSnapshot()
 	})
 
+	test('validateJSON fixes an incorrect Slate node', () => {
+		const oboNode = {
+			id: 'mockKey',
+			type: 'mockType',
+			nodes: [
+				{
+					type: LIST_LEVEL_NODE,
+					nodes: ['mockLine1']
+				},
+				{
+					type: LIST_LINE_NODE,
+					nodes: ['mockLine2']
+				},
+				{
+					type: LIST_LINE_NODE
+				}
+			]
+		}
+		const slateNode = List.helpers.validateJSON(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
+
 	test('oboToSlate converts an OboNode to a Slate node', () => {
 		const oboNode = {
 			id: 'mockKey',
@@ -251,6 +274,9 @@ describe('List editor', () => {
 					{
 						text: { value: 'mockLine1' },
 						data: { indent: 5 }
+					},
+					{
+						text: { value: 'mockLine2' }
 					}
 				]
 			}
