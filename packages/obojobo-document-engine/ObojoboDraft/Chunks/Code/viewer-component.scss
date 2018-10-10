@@ -2,12 +2,19 @@
 
 .obojobo-draft--chunks--code {
 	pre {
-		font-size: 1em;
-		padding-left: 2em;
-		padding-right: 2em;
+		font-size: 0.9em;
+		margin-top: 0;
+		margin-bottom: 0;
+		overflow-x: auto;
+		background: $color-bg2;
+		border-radius: $dimension-rounded-radius;
+		box-sizing: border-box;
+		padding: $dimension-padding / 4 $dimension-padding / 3 / 0.9;
+		tab-size: 2;
 	}
 
 	.text {
 		display: block;
+		min-height: 1em;
 	}
 }

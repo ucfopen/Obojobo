@@ -10,7 +10,7 @@ exports[`Code Code component 1`] = `
   id="obo-id"
 >
   <div
-    className="text-chunk obojobo-draft--chunks--single-text pad"
+    className="text-chunk obojobo-draft--chunks--code pad"
   >
     <pre>
       <code>
