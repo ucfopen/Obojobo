@@ -1,20 +1,45 @@
 const express = require('express')
-const logger = oboRequire('logger')
-const MediaModel = oboRequire('models/media')
 const router = express.Router()
+const multer = require('multer')
+
+const logger = oboRequire('logger')
+const mediaConfig = oboRequire('config').media
+const MediaModel = oboRequire('models/media')
+
+const diskStorage = multer.diskStorage({
+    destination: "./tmp/media"
+});
+
+const upload = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: mediaConfig.maxUploadSize
+    }
+}).single("userImage");
 
 const {
     requireCurrentUser,
-    requireCurrentVisit
 } = oboRequire('express_validators')
 
 // Upload media file
 // mounted as /api/media/new
 router
-    .route('/new')
+    .route('/upload')
     .post([requireCurrentUser])
     .post((req, res, next) => {
-        MediaModel.createAndSave(req.currentUser.id, req.body);
+        upload(req, res, err => {
+            if(err){
+                
+                next(new Error("An unexpected error occurred while attempting to upload the image."));
+            } else {
+                MediaModel
+                    .createAndSave(req.currentUser.id, req.file)
+                    .then(mediaId => {
+                        res.send(mediaId)
+                    })
+                    .catch(next)
+            }
+        })
     })
 
 module.exports = router

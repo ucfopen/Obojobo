@@ -15,14 +15,15 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db.createTable('media_records', {
-		user_media_id: { type: 'UUID', notNull: true },
-		media_id: { type: 'UUID', notNull: true }
+	return db.createTable('media_binaries', {
+		media_id: { type: 'UUID', notNull: true },
+		binary_id: { type: 'UUID', notNull: true },
+		dimensions: { type: "varchar", length: 25, notNull: true  }
 	})
 }
 
 exports.down = function(db) {
-	return db.dropTable('media_records')
+	return db.dropTable('media_binaries')
 }
 
 exports._meta = {

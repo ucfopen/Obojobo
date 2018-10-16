@@ -34,7 +34,7 @@
 			body { font-family:'Libre Franklin', Arial; padding:0; margin:0; margin-top: 40px; }
 			ul > li > p, ul > li > a { display:inline-block; margin-right: 1em; }
 			a { color: #0d4fa7; text-decoration: underline; cursor: pointer; }
-			button { font-size: 16pt; background-color: #6714bd; color: white; font-weight: bold; border:none; cursor: pointer; opacity: 0.8; font-family:'Libre Franklin', Arial; border-radius: 4px; padding: 0.1em 1em; }
+			button, input[type="submit"] { font-size: 16pt; background-color: #6714bd; color: white; font-weight: bold; border:none; cursor: pointer; opacity: 0.8; font-family:'Libre Franklin', Arial; border-radius: 4px; padding: 0.1em 1em; }
 			button:hover { opacity: 1; }
 			button:disabled { background-color: gray }
 			#button-create-new-draft { width: 100%; border-radius: 0; }
@@ -57,6 +57,7 @@
 			.link-url.copied { color: green; pointer-events: none; text-decoration: none; font-weight: bold; }
 			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
 			.link-delete:hover { color:red; }
+			.add-image-btn { position: absolute; top: 5px; right: 13em; }
 			.add-question-btn { position: absolute; top: 5px; right: 1em; }
 			#search { position: relative; }
 			#search input { width: 100%; font-family:'Libre Franklin', Arial; border: none; border-bottom: 1px solid gray; font-size: 1em; padding: 0.6em; }
@@ -71,11 +72,51 @@
 			#remove-search { padding: 0; }
 			.link-edit.unsaved .title { color: #032ca0; font-weight: bold; }
 			.link-edit.unsaved .title:after { content: "*"; }
+			#add-image-modal { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 99999; display: none; }
+			.modal { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 300px; background: white; border-radius: 5px; padding: 2em; }
+			#add-image-form-fieldset { border: none; margin: 0; padding: 0; }
+			.modal h2 { text-align: center; margin-top: 0; }
+			.modal .close-button { font-size: 16pt; background-color: #6714bd; color: white; font-weight: bold; border:none; cursor: pointer; opacity: 0.8; font-family:'Libre Franklin', Arial; border-radius: 4px; padding: 0.1em 1em; background: transparent; position: absolute; top: 0; right: 0; color: black; padding: 0; width: 1.5em; height: 1.5em; text-decoration: none; text-align: center; z-index: 1; }
+			.modal #image-file-input { font-size: 12pt; margin: 0 auto; display: inline-block; width: 100%; background: #efefef; padding: 3px; border-radius: 3px; box-sizing: border-box; margin-bottom: 10px; }
+			.modal input { font-size: 12pt; }
+			.modal input[type="submit"] { font-size: 16pt; }
+			.modal .size-option { display: block; }
+			.modal .size-option span { vertical-align: middle; }
+			.modal h3 { margin-bottom: 5px; font-size: 10pt; }
+			.modal #image-caption, .modal #alt-text { width: 100%; padding: 5px; box-sizing: border-box; margin-top: 5px; margin-bottom: 10px; }
+			.modal .caption label { font-size: 10pt; font-weight: bold; }
+			.modal .custom-size-inputs { visibility: hidden; display: inline-block; vertical-align: middle; margin-left: 20px; }
+			.modal .custom-size-inputs input { width: 60px; vertical-align: middle; }
+			.modal .custom-size-inputs span { font-size: 9pt; vertical-align: middle; opacity: 0.5; }
+			.modal .custom-size-inputs span.by { font-size: 12pt; margin-left: 5px; margin-right: 5px; opacity: 1; }
+			.modal .insert-image-button { margin: 0 auto; display: block; margin-top: 30px; }
+			.modal .image-loading { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.8); border-radius: 5px; }
+			.modal .step-2 { visibility: hidden; }
+			.modal.on-step-2 .step-2 { visibility: visible; }
+			.spinner { width: 80px; height: 80px; margin: 100px auto; background-color: #333; border-radius: 100%; -webkit-animation: sk-scaleout 1.0s infinite ease-in-out; animation: sk-scaleout 1.0s infinite ease-in-out; }
+			@-webkit-keyframes sk-scaleout {
+				0% { -webkit-transform: scale(0) }
+				100% {
+					-webkit-transform: scale(1.0);
+					opacity: 0;
+				}
+			}
+			@keyframes sk-scaleout {
+				0% {
+					-webkit-transform: scale(0);
+					transform: scale(0);
+				} 100% {
+					-webkit-transform: scale(1.0);
+					transform: scale(1.0);
+					opacity: 0;
+				}
+			}
 		</style>
 	</head>
 	<body>
 		<div>
 			<h1>Obojobo Draft Manager</h1>
+			<button onClick="addImage()" class="add-image-btn">Insert Image</button>
 			<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
 			<div id="sidebar">
 				<button id="button-create-new-draft">+ Create new draft</button>
@@ -135,167 +176,56 @@
 			<div id="pop-up-message">
 				Saved!
 			</div>
-			<form style="position: absolute; bottom: 5px;">
-				<div id="left-pane">
-					<div class="drag-header">
-						Upload a new file
-					</div>
-					<div class="drag-wrapper" file-on-change="uploadFile">
-						<div class="drag-text">
-							Drag a file here to upload
+			<div id="add-image-modal">
+				<form class="modal" id="add-image-form" action="#">
+					<fieldset id="add-image-form-fieldset">
+						<h2>Insert Image</h2>
+						<a role="button" class="close-button" onclick="closeInsertImageModal()">&times;</a>
+						<input id="image-file-input" type="file" onchange="onUpdateImage(this)" />
+						<div class="caption step-2">
+							<label for="alt-text">Alt text:</label>
+							<input id="alt-text" type="text" placeholder="Describe the image" />
 						</div>
-					</div>
-					<div class="drag-footer">
-						<label>
-							<input type="file" onchange="uploadFile(this);" style="display:none" />
-							<span class="select_file_button">Browse...</span>
-						</label>
-					</div>
-				</div>
-				<input type="submit"></form>
-			</form>
-			<form id="import-form" class="right-pane">
-				<div class="pane-header">
-					Pick from your library
-					<a href="#" id="close-button"></a>
-				</div>
-				<div id="sort-bar">
-					<div id="sort-cols">
-						<div class="col-cont" ng-repeat="col in cols">
-							<label id='sort-{{col}}' class="dt-sorting">{{col}}</label>
-							<div class='arrows'></div>
+						<div class="caption step-2">
+							<label for="image-caption">Optional caption:</label>
+							<input id="image-caption" type="text" placeholder="Will display below the image" />
 						</div>
-					</div>
-				</div>
-		
-				<table id="question-table">
-					<thead>
-						<tr>
-							<th ng-repeat="col in dt_cols"></th>
-						</tr>
-					</thead>
-				</table>
-				<div id="modal-cover"></div>
-			</form>	
-				
+						<div class="size step-2">
+							<h3>Size:</h3>
+							<label class="size-option">
+								<input type="radio" name="size" value="large" checked onchange="onChangeImageSize(this)" />
+								<span>Large</span>
+							</label>
+							<label class="size-option">
+								<input type="radio" name="size" value="medium" onchange="onChangeImageSize(this)" />
+								<span>Medium</span>
+							</label>
+							<label class="size-option">
+								<input type="radio" name="size" value="small" onchange="onChangeImageSize(this)" />
+								<span>Small</span>
+							</label>
+							<label class="size-option custom-size">
+								<input type="radio" name="size" value="custom" onchange="onChangeImageSize(this)" />
+								<span>Custom</span>
+								<div class="custom-size-inputs" id="custom-size-inputs">
+									<input name="custom-width" min="1" max="2000" step="1" type="number" placeholder="Width" />
+									<span>px </span><span class="by">&times;</span>
+									<input name="custom-height" min="1" max="2000" step="1" type="number" placeholder="Height" />
+									<span>px</span>
+								</div>
+							</label>
+						</div>
+						<input type="submit" class="insert-image-button step-2" id="insert-image-button" value="Insert" />
+						<div class="image-loading" id="image-loading"><div class="spinner"></div></div>
+					</fieldset>
+				</form>
 			</div>
-		<!-- File Uploader -->
-		<script>
-			function _getMimeType(dataUrl) {
-				let allowedMimeTypes = ["image/jpg", "image/jpeg", "image/png"]
+		</div>
 
-				const mime = dataUrl.split(';')[0].split(':')[1]
-
-				if (mime == null || allowedMimeTypes.indexOf(mime) === -1) {
-					alert('This widget does not support selected file type is not supported. ' +
-						`The allowed types are: ${allowedMimeTypes.join(', ')}.`)
-					return null
-				}
-
-				return mime
-			}
-
-			function _getFileData(file, callback) {
-				const fileReader = new FileReader()
-
-				// File size is measured in bytes
-				if (file.size > 60000000) {
-					alert(
-						`The file being uploaded has a size greater than 60MB. Please choose a file that is no greater than 60MB.`
-					)
-					return null
-				}
-
-				fileReader.onload = event => {
-					const src = event.target.result
-					const mime = _getMimeType(src)
-					
-					if (mime == null) {
-						return null
-					}
-					
-					const fileData = {
-						name: file.name,
-						mime,
-						ext: file.name.split('.').pop(),
-						size: file.size,
-						src
-					}
-
-					return callback(fileData)
-				}
-
-				return fileReader.readAsDataURL(file)
-			}
-
-			function _dataURItoBlob(dataURI, mime) {
-				// convert base64/URLEncoded data component to raw binary data held in a string
-				let byteString
-
-				// data format: data:{mimeType};{encoding},{encodedDataString}
-				// dataParts = [0] => data:{mimeType};{encoding},
-				//			   [1] => {encodedDataString}
-				const dataParts = dataURI.split(',')
-
-				if (dataParts[0].indexOf('base64') >= 0) {
-					byteString = atob(dataParts[1])
-				} else {
-					byteString = unescape(dataParts[1])
-				}
-
-				const intArray = new Uint8Array(byteString.length)
-				for (let i in byteString) {
-					intArray[i] = byteString.charCodeAt(i)
-				}
-
-				return new Blob([intArray], { type: mime })
-			}
-
-			function _upload(fileData) {
-				var body = {
-					"filename": fileData.name,
-					"file_size": fileData.size,
-					"mime_type": fileData.mime,
-					"dimensions": "original",
-					"success_action_status": '201',
-					"file": _dataURItoBlob(fileData.src, fileData.mime),
-					"filename": fileData.name
-				}
-
-				// request.open('POST', "upload_url")
-				// return request.send(fd)
-				fetch('/api/media/new', {
-					method: 'POST',
-					credentials: 'include',
-					body: JSON.stringify(body),
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json'
-					}
-				})
-				.then(res => {
-					console.log(res.json());
-				})
-
-				console.log(_dataURItoBlob(fileData.src, fileData.mime));
-			}
-
-			function uploadFile(fileInput)
-			{
-				var upload = fileInput.files[0];
-				
-				if (upload != null) {
-					_getFileData(upload, fileData => {
-						if (fileData != null) {
-							_upload(fileData);
-						}
-					})
-				}
-			}
-		</script>
-		<!-- End Uploader -->
 		<script>
 			var domParser = new DOMParser()
+
+			document.getElementById('add-image-form').addEventListener('submit', onSubmitInsertImage);
 
 			// Setup unload
 			window.onbeforeunload = function(event) {
@@ -452,6 +382,103 @@
 				setTimeout(function() {
 					editor.focus()
 				}, 100)
+			}
+
+			function addImage() {
+				var addImageModalEl = document.getElementById('add-image-modal');
+				addImageModalEl.style.display = 'block';
+			}
+
+			function enableLoadingSpinner() {
+				document.getElementById('image-loading').style.display = 'block';
+			}
+
+			function disableLoadingSpinner() {
+				document.getElementById('image-loading').style.display = 'none';
+			}
+
+			function onChangeImageSize(radioEl) {
+				var customSizeInputsEl = document.getElementById('custom-size-inputs');
+				customSizeInputsEl.style.visibility = radioEl.value === 'custom' ? 'visible' : 'hidden';
+			}
+
+			function closeInsertImageModal() {
+				var addImageModalEl = document.getElementById('add-image-modal');
+				addImageModalEl.style.display = 'none';
+
+				resetImageForm();
+			}
+
+			function onUpdateImage(imageFileInputEl) {
+				var modal = document.getElementById('add-image-form');
+
+				if(event.target.value) {
+					modal.classList.add('on-step-2');
+				} else {
+					modal.classList.remove('on-step-2');
+				}
+			}
+
+			function resetImageForm() {
+				document.getElementById('add-image-form').classList.remove('on-step-2');
+				document.getElementById('add-image-form').reset();
+				disableLoadingSpinner()
+				document.getElementById('custom-size-inputs').style.visibility = 'hidden';
+			}
+
+			function writeImageToDocument(mediaId) {
+				var cursor = editor.getCursor()
+				var line = editor.getLine(cursor.line)
+				var textBeforeCaret = line.substr(0, cursor.ch).replace(/\S/g, '')
+
+				// var imgText = '<img src="" size="large" alt="blah" />'
+				var imgText = '<figure>\n					<img src="' + mediaId + '" size="large" alt="blah" />\n					<figcaption>Figure</figcaption>\n				</figure>'
+				editor.replaceSelection(imgText)
+
+				setTimeout(function() {
+					editor.focus()
+				}, 100)
+			}
+
+			function processImageForm(form) {
+				var formData = new FormData();
+
+				var file = form.elements["size"].value;
+				
+				console.log(form.elements["size"])
+			}
+
+			function onSubmitInsertImage(event) {
+				event.preventDefault();
+
+				enableLoadingSpinner();
+
+				var fileInput = document.getElementById('image-file-input');
+				var file = fileInput.files[0];
+				
+				var formData = new FormData();
+				formData.append('userImage', file, file.name);
+
+				var request = new XMLHttpRequest();
+				
+				request.onreadystatechange = function()
+				{
+					// response text contains the media id upon successful upload, and the error message for 
+					// 	unsuccessful uploads
+					if (request.readyState == 4)
+					{
+						if (request.status == 200) {
+							writeImageToDocument(request.responseText);
+							closeInsertImageModal();
+						} else {
+							alert (request.responseText);
+							disableLoadingSpinner();
+						}
+					}					
+				}; 
+				
+				request.open('POST', '/api/media/upload', true);
+				request.send(formData);
 			}
 
 			function saveDraft() {

@@ -15,7 +15,7 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db.createTable('user_media', {
+	return db.createTable('media', {
 		id: { type: 'UUID', primaryKey: true, defaultValue: new String('uuid_generate_v4()') },
 		created_at: {
 			type: 'timestamp WITH TIME ZONE',
@@ -28,7 +28,7 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	return db.dropTable('user_media')
+	return db.dropTable('media')
 }
 
 exports._meta = {

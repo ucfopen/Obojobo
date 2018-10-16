@@ -1,0 +1,38 @@
+{
+	"development":{
+        "maxUploadSize": 100000,
+        "originalMediaTag": "original",
+		"presetDimensions":{
+			"small":{
+                "width": 336,
+                "height": 252
+            },
+            "medium":{
+                "width": 709,
+                "height": 532
+            },
+            "large":{
+                "width": 821,
+                "height": 616
+            }
+		}
+    },
+	"production":{
+        "maxUploadSize": 100000,
+        "originalMediaTag": "original",
+		"presetDimensions":{
+			"small":{
+                "width": 336,
+                "height": 252
+            },
+            "medium":{
+                "width": 709,
+                "height": 532
+            },
+            "large":{
+                "width": 821,
+                "height": 616
+            }
+		}
+    }
+}
