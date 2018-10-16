@@ -316,7 +316,7 @@ describe('Text editor', () => {
 
 		Text.plugins.onKeyDown(event, change)
 
-		expect(change.insertBlock).toHaveBeenCalled()
+		expect(change.insertBlock).not.toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 

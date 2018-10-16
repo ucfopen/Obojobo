@@ -568,6 +568,9 @@ describe('List editor', () => {
 				endBlock: {
 					key: 'mockKey',
 					text: ''
+				},
+				selection: {
+					isCollapsed: false
 				}
 			}
 		}
@@ -580,7 +583,7 @@ describe('List editor', () => {
 
 		List.plugins.onKeyDown(event, change)
 
-		expect(change.insertBlock).toHaveBeenCalled()
+		expect(change.insertBlock).not.toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -604,10 +607,12 @@ describe('List editor', () => {
 						}
 					}
 				},
-				isCollapsed: true,
 				endBlock: {
 					key: 'mockKey',
 					text: ''
+				},
+				selection: {
+					isCollapsed: true
 				}
 			}
 		}

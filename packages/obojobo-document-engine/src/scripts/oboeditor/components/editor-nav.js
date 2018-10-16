@@ -142,7 +142,7 @@ class EditorNav extends React.Component {
 
 		const list = EditorUtil.getOrderedList(this.props.navState)
 
-		const url = window.location.origin + '/view/'
+		const url = window.location.origin + '/view/' + this.props.draftId
 		const moduleItem = list[0]
 
 		return (

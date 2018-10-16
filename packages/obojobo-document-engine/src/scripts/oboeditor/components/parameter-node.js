@@ -64,7 +64,7 @@ const Node = props => {
 							checked={props.node.data.get('checked')}
 							onChange={event => handleCheckChange(event)}
 						/>
-						<span className={'slider round'} />
+						<div className="slider round" />
 					</label>
 				</div>
 			)

@@ -59,8 +59,8 @@ class Node extends React.Component {
 		let newHeight = null
 		let newWidth = null
 		if (newSize === 'custom') {
-			newHeight = window.prompt('Enter the new height:', content.height || 100)
-			newWidth = window.prompt('Enter the new width:', content.width || 100)
+			newHeight = window.prompt('Enter the new height:', content.height || null)
+			newWidth = window.prompt('Enter the new width:', content.width || null)
 		}
 
 		const editor = this.props.editor

@@ -156,7 +156,7 @@
 	.switch {
 		position: relative;
 		display: inline-block;
-		width: 2em;
+		width: 3em;
 		height: 1em;
 
 		input {
@@ -164,33 +164,61 @@
 		}
 
 		.slider {
+			border: 1px solid $color-shadow;
 			position: absolute;
-			cursor: pointer;
 			top: 0;
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-color: $color-shadow;
-			border-radius: 1em;
-		}
+			background-color: $color-bg2;
+			-webkit-transition: 0.4s;
+			transition: 0.4s;
+			border-radius: 0.7em;
 
-		.slider::before {
-			position: absolute;
-			content: '';
-			height: 0.5em;
-			width: 0.5em;
-			left: 0.25em;
-			bottom: 0.25em;
-			background-color: $color-bg;
-			border-radius: 50%;
+			// Circle slider
+			&::before {
+				border: 1px solid $color-shadow;
+				position: absolute;
+				content: '';
+				height: 0.7em;
+				width: 0.7em;
+				left: 0.05em;
+				bottom: 0.05em;
+				background-color: $color-bg;
+				-webkit-transition: 0.4s;
+				transition: 0.4s;
+				border-radius: 50%;
+			}
+
+			&::after {
+				content: 'OFF';
+				color: $color-text;
+				display: block;
+				position: absolute;
+				transform: translate(-50%, -50%);
+				top: 50%;
+				left: 50%;
+				font-size: 0.5em;
+			}
 		}
 
 		input:checked + .slider {
 			background-color: $color-obojobo-blue;
 		}
 
+		input:focus + .slider {
+			box-shadow: 0 0 5px #2196f3;
+		}
+
 		input:checked + .slider::before {
-			transform: translate(1em, 0);
+			-webkit-transform: translateX(2em);
+			-ms-transform: translateX(2em);
+			transform: translateX(2em);
+		}
+
+		input:checked + .slider::after {
+			content: 'ON';
+			color: $color-bg;
 		}
 	}
 

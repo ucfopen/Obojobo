@@ -33,6 +33,7 @@ import YouTube from '../YouTube/editor'
 import MCAssessment from '../MCAssessment/editor'
 import Page from '../../Pages/Page/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
+import emptyQuestion from './empty-question.json'
 
 const { Button } = Common.components
 const nodes = {
@@ -112,9 +113,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: QUESTION_NODE
-		})
+		.insertBlock(Block.fromJSON(emptyQuestion))
 		.moveToStartOfNextText()
 		.focus()
 }

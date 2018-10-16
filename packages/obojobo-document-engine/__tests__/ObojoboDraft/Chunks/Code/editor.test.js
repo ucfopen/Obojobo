@@ -310,8 +310,8 @@ describe('Code editor', () => {
 
 		Code.plugins.onKeyDown(event, change)
 
-		expect(change.insertBlock).toHaveBeenCalled()
-		expect(event.preventDefault).toHaveBeenCalled()
+		expect(change.insertBlock).not.toHaveBeenCalled()
+		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {

@@ -88,7 +88,11 @@ class EditorApp extends React.Component {
 					'viewer--viewer-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
 				}
 			>
-				<EditorNav navState={this.state.editorState} model={this.state.model} />
+				<EditorNav
+					navState={this.state.editorState}
+					model={this.state.model}
+					draftId={this.state.draftId}
+				/>
 				<div className={'component obojobo-draft--modules--module'}>
 					<PageEditor
 						page={this.state.editorState.currentModel}

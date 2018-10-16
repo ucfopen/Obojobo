@@ -126,8 +126,8 @@ const plugins = {
 				change.splitBlock(2)
 				return true
 			}
-			change.insertBlock({ type: TEXT_LINE_NODE, data: { indent: 0 } })
-			return true
+
+			return
 		}
 
 		// Shift Tab

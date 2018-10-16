@@ -15,7 +15,6 @@ const allowedActions = [
 	'nav:toggle',
 	'assessment:startAttempt',
 	'assessment:endAttempt',
-	'js',
 	'viewer:alert'
 ]
 const requiresValue = {

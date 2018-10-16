@@ -274,17 +274,17 @@ const plugins = {
 			})
 
 			// Double enter on last node
-			if (change.value.isCollapsed && last.text === '' && listLevel.nodes.last().key === last.key) {
+			if (
+				change.value.selection.isCollapsed &&
+				last.text === '' &&
+				listLevel.nodes.last().key === last.key
+			) {
 				// Schema will change this back to a list_line unless it is at the end of the list
 				change.setNodeByKey(last.key, { type: TEXT_NODE })
 				return true
 			}
 
-			change.insertBlock({
-				type: LIST_LINE_NODE,
-				data: { content: { indent: 1, bullet: '*' } }
-			})
-			return true
+			return
 		}
 
 		// Shift Tab

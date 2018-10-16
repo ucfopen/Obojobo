@@ -114,13 +114,6 @@ const plugins = {
 			}
 		}
 
-		// Enter
-		if (event.key === 'Enter') {
-			event.preventDefault()
-			change.insertBlock({ type: CODE_LINE_NODE, data: { content: { indent: 0 } } })
-			return true
-		}
-
 		// Shift Tab
 		if (event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
