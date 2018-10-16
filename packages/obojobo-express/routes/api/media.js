@@ -22,14 +22,13 @@ const {
 } = oboRequire('express_validators')
 
 // Upload media file
-// mounted as /api/media/new
+// mounted as /api/media/upload
 router
     .route('/upload')
     .post([requireCurrentUser])
     .post((req, res, next) => {
         upload(req, res, err => {
-            if(err){
-                
+            if(err){     
                 next(new Error("An unexpected error occurred while attempting to upload the image."));
             } else {
                 MediaModel
@@ -40,6 +39,21 @@ router
                     .catch(next)
             }
         })
+    })
+
+// Get media file
+// mounted as /api/media/:mediaId/:dimensions
+router
+    .route('/:mediaId/:dimensions')
+    .get([requireCurrentUser])
+    .get((req, res, next) => {
+        MediaModel
+            .fetchByIdAndDimensions(req.params.mediaId, req.params.dimensions)
+            .then(imageData => {
+                console.log(imageData);
+                res.send("Success!");
+            })
+            .catch(next)
     })
 
 module.exports = router
