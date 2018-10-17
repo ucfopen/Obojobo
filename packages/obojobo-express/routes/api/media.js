@@ -10,6 +10,8 @@ const diskStorage = multer.diskStorage({
     destination: "./tmp/media"
 });
 
+// single() takes the field name of the file field 
+//  in the multipart form being submitted
 const upload = multer({
     storage: diskStorage,
     limits: {

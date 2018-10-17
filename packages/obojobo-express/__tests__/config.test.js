@@ -24,6 +24,7 @@ describe('config', () => {
 		expect(config).toHaveProperty('lti')
 		expect(config).toHaveProperty('permissions')
 		expect(config).toHaveProperty('general')
+		expect(config).toHaveProperty('media')
 	})
 
 	test('selects the environment based on env', () => {

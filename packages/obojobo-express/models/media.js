@@ -1,14 +1,9 @@
 const fs = require('fs');
-const queryStream = require('pg-query-stream')
 const sharp = require('sharp');
 
 const mediaConfig = oboRequire('config').media
 const logger = oboRequire('logger.js');
 const db = oboRequire('db');
-
-const verifyMedia = () => {
-    return true;
-}
 
 class Media {
 	static resize(imageBinary, newDimensions) {
@@ -112,12 +107,6 @@ class Media {
 	static createAndSave(userId, fileInfo, dimensions = "original") {
 		let mediaBinaryData = null,
 			mediaData = null;
-		
-		console.log(fileInfo);
-
-        if ( ! verifyMedia()) {
-            return null;
-        }
 
 		return db
 			.tx(transactionDb => {
