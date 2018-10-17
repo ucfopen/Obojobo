@@ -5,6 +5,8 @@ const mediaConfig = oboRequire('config').media
 const logger = oboRequire('logger.js');
 const db = oboRequire('db');
 
+// test message - delete this line
+
 class Media {
 	static resize(imageBinary, newDimensions) {
 		switch (newDimensions) {
