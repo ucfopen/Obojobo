@@ -31,7 +31,7 @@ router
     .post((req, res, next) => {
         upload(req, res, err => {
             if(err){     
-                next(new Error("An unexpected error occurred while attempting to upload the image."));
+                next(err);
             } else {
                 MediaModel
                     .createAndSave(req.currentUser.id, req.file)
@@ -53,7 +53,7 @@ router
             .fetchByIdAndDimensions(req.params.mediaId, req.params.dimensions)
             .then(imageData => {
                 console.log(imageData);
-                res.send("Success!");
+                res.send(imageData);
             })
             .catch(next)
     })

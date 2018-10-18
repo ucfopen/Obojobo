@@ -1,6 +1,6 @@
 {
 	"development":{
-        "maxUploadSize": 100000,
+        "maxUploadSize": 1000000,
         "originalMediaTag": "original",
 		"presetDimensions":{
 			"small":{

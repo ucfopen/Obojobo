@@ -8,8 +8,10 @@ const db = oboRequire('db');
 // test message - delete this line
 
 class Media {
-	static resize(imageBinary, newDimensions) {
-		switch (newDimensions) {
+	static resize(mediaBinary, dimensionsAsString) {
+		let newDimensions;
+
+		switch (dimensionsAsString) {
 			case "small": {
 				newDimensions = mediaConfig.presetDimensions.small;
 				break;
@@ -22,17 +24,20 @@ class Media {
 				newDimensions = mediaConfig.presetDimensions.large;
 				break;
 			}
+			default: {
+				const parsedDimensions = dimensionsAsString.split("x")
+				newDimensions = {
+					width: parseInt(parsedDimensions[0], 10),
+					height: parseInt(parsedDimensions[1], 10),
+					fit: 'inside'
+				}
+				console.log(newDimensions)
+			}
 		}
 
-		sharp(imageBinary)
+		return sharp(mediaBinary)
 			.resize(newDimensions)
 			.toBuffer()
-			.then(data => {
-				console.log(data);
-			})
-			.catch(e => {
-				console.log(e);
-			})
 	}
 
 	static fetchByIdAndDimensions(mediaId, mediaDimensions) {
@@ -43,7 +48,7 @@ class Media {
 
 		console.log(`Fetching media by ID: ${mediaId}`);
 
-		db
+		return db
 			.tx(transactionDb => {
 				// find the users media reference
 				return transactionDb
@@ -62,6 +67,10 @@ class Media {
 						if (result) {
 							if (result.length === 1) {
 								binaryId = result[0].binary_id;
+
+								if (mediaDimensions === "original") {
+									mediaFound = true;
+								}
 							} else if (result.length === 2){
 								binaryId = (result[0].dimensions === mediaConfig.originalMediaTag)
 									? result[1].binary_id
@@ -71,34 +80,24 @@ class Media {
 							} else {
 								throw new Error("Too many images returned");
 							}
+
 						} else {
 							throw new Error("Image not found");
 						}
 
-						console.log(binaryId);
-						transactionDb.one(
+						return transactionDb.one(
 							`
 							SELECT *
 							FROM binaries
 							WHERE id = $[binaryId]
 							`,
 							{ binaryId }
-						).then(result => {
-							return result; 
-						})
-					})
-					.then(binaryData => {
-						media = binaryData.blob
-
-						if (mediaFound) {
-							return media;
-						} else {
-							return this.resize(media, mediaDimensions)
-						}
+						)
 					})
 			})
-			.then(() => {
-				return media;
+			.then(binaryData => {
+				if (mediaFound) return binaryData.blob;
+				return this.resize(binaryData.blob, mediaDimensions)
 			})
 			.catch(e => {
 				console.log(e);
