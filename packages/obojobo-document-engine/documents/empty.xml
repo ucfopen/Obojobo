@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ObojoboDraftDoc>
 	<!-- Sample Obojobo Draft Document -->
-	<!-- https://github.com/ucfcdl/Obojobo-Next/wiki/Obojobo-Document-XML-Format -->
+	<!-- https://ucfopen.github.io/Obojobo-Docs/releases/v3.3.2/authors/ -->
 	<Module title="My Obojobo Module Title">
 
 		<Content>
