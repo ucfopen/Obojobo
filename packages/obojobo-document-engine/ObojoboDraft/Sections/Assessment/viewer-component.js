@@ -59,7 +59,7 @@ class Assessment extends React.Component {
 	componentWillReceiveProps() {
 		const curStep = this.getCurrentStep()
 		if (curStep !== this.state.step) {
-			this.needsScroll = true
+			this.needsScrollToTopAndFocus = true
 		}
 
 		this.setState({
@@ -74,9 +74,10 @@ class Assessment extends React.Component {
 	}
 
 	componentDidUpdate() {
-		if (this.needsScroll) {
-			delete this.needsScroll
-			return Dispatcher.trigger('viewer:scrollToTop')
+		if (this.needsScrollToTopAndFocus) {
+			delete this.needsScrollToTopAndFocus
+			Dispatcher.trigger('viewer:scrollToTop')
+			Dispatcher.trigger('viewer:focusOnContent')
 		}
 	}
 

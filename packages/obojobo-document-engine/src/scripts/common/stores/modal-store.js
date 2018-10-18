@@ -1,5 +1,6 @@
 import Store from '../../common/flux/store'
 import Dispatcher from '../../common/flux/dispatcher'
+import focus from '../../common/page/focus'
 
 class ModalStore extends Store {
 	constructor() {
@@ -29,7 +30,7 @@ class ModalStore extends Store {
 		this.triggerChange()
 
 		if (this.lastActiveElement && document.body.contains(this.lastActiveElement)) {
-			this.lastActiveElement.focus()
+			focus(this.lastActiveElement)
 		}
 
 		delete this.lastActiveElement

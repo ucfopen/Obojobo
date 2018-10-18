@@ -22,6 +22,7 @@ Common.Store.registerModel('ObojoboDraft.Pages.Page', {
 		return {
 			type: 'link',
 			label,
+			contentType: 'Page',
 			path: [label.toLowerCase().replace(/ /g, '-')],
 			showChildren: false
 		}

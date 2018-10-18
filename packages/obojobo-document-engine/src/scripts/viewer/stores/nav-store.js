@@ -255,7 +255,8 @@ class NavStore extends Store {
 				label: '',
 				path: '',
 				showChildren: true,
-				showChildrenOnNavigation: true
+				showChildrenOnNavigation: true,
+				parent: null
 			},
 			navItem
 		)
@@ -272,6 +273,7 @@ class NavStore extends Store {
 
 		for (const child of Array.from(model.children.models)) {
 			const childNavItem = this.generateNav(child, indent + '_')
+			childNavItem.parent = navItem
 			navItem.children.push(childNavItem)
 			childNavItem.fullPath = navItem.fullPath
 				.concat(childNavItem.fullPath)

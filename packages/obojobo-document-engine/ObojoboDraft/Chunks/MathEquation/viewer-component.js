@@ -36,14 +36,19 @@ const MathEquation = props => {
 			aria-label={props.model.modelState.alt || props.model.modelState.latex}
 		>
 			<NonEditableChunk>
+				{props.model.modelState.label === '' ? null : (
+					<div className="for-screen-reader-only">
+						{'Equation ' + props.model.modelState.label}
+					</div>
+				)}
 				<div
 					className="katex-container"
 					style={{ fontSize: props.model.modelState.size }}
 					dangerouslySetInnerHTML={{ __html: katexHtml }}
 				/>
 				{props.model.modelState.label === '' ? null : (
-					<div className="equation-label" aria-label={'Equation ' + props.model.modelState.label}>
-						<span aria-hidden="true">{props.model.modelState.label}</span>
+					<div className="equation-label" aria-hidden="true">
+						{props.model.modelState.label}
 					</div>
 				)}
 			</NonEditableChunk>

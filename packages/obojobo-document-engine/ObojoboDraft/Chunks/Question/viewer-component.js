@@ -77,8 +77,7 @@ export default class Question extends React.Component {
 				moduleData={this.props.moduleData}
 				className={classNames}
 				role="region"
-				aria-label="Question"
-				aria-live="polite"
+				aria-live="assertive"
 			>
 				<div className="flipper">
 					<div className="content-back">
@@ -94,6 +93,7 @@ export default class Question extends React.Component {
 						<Button
 							value={mode === 'practice' ? 'Try Question' : 'Start Question'}
 							ariaLabel={startQuestionAriaLabel}
+							disabled={viewState !== 'hidden'}
 						/>
 					</div>
 				</div>

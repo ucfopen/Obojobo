@@ -16,9 +16,8 @@ import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
-const { ErrorUtil } = Common.util
+const { ErrorUtil, ModalUtil } = Common.util
 const { SimpleDialog, Dialog } = Common.components.modal
-const { ModalUtil } = Common.util
 
 const getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
@@ -223,6 +222,11 @@ class AssessmentStore extends Store {
 			})
 	}
 
+	onCloseResultsDialog() {
+		ModalUtil.hide()
+		Dispatcher.trigger('viewer:focusOnContent')
+	}
+
 	endAttempt(endAttemptResp, context) {
 		const assessId = endAttemptResp.assessmentId
 		const assessment = this.state.assessments[assessId]
@@ -256,7 +260,7 @@ class AssessmentStore extends Store {
 				buttons={[
 					{
 						value: `Show ${assessmentLabel} Overview`,
-						onClick: ModalUtil.hide,
+						onClick: this.onCloseResultsDialog.bind(this),
 						default: true
 					}
 				]}

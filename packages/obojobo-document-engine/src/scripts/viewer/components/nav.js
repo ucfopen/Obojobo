@@ -12,6 +12,12 @@ const { StyleableText } = Common.text
 const { StyleableTextComponent } = Common.text
 const { Button } = Common.components
 const { Dispatcher } = Common.flux
+const { focus } = Common.page
+
+const getLabelTextFromLabel = (label) => {
+	if(!label) return ''
+	return label instanceof StyleableText ? label.value : label
+}
 
 export default class Nav extends React.Component {
 	onClick(item) {
@@ -22,9 +28,12 @@ export default class Nav extends React.Component {
 				NavUtil.gotoPath(item.fullPath)
 				break
 
-			case 'sub-link':
-				OboModel.models[item.id].getDomEl().scrollIntoView({ behavior: 'smooth', block: 'start' })
+			case 'sub-link': {
+				const el = OboModel.models[item.id].getDomEl()
+				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+				focus(el)
 				break
+			}
 		}
 	}
 
@@ -33,16 +42,12 @@ export default class Nav extends React.Component {
 	}
 
 	renderLabel(label) {
-		if (label instanceof StyleableText) {
-			return <StyleableTextComponent text={label} />
-		}
-
-		return label
+		return label instanceof StyleableText ? <StyleableTextComponent text={label} /> : label
 	}
 
-	renderLinkButton(label, isDisabled, refId = null) {
+	renderLinkButton(label, ariaLabel, isDisabled, refId = null) {
 		return (
-			<button ref={refId} aria-disabled={isDisabled}>
+			<button ref={refId} aria-disabled={isDisabled} aria-label={ariaLabel}>
 				{this.renderLabel(label)}
 			</button>
 		)
@@ -63,9 +68,25 @@ export default class Nav extends React.Component {
 			isOrNot(isFirstInList, 'first-in-list') +
 			isOrNot(isLastInList, 'last-in-list')
 
+		const labelText = getLabelTextFromLabel(item.label)
+		let ariaLabel = labelText
+		if(item.contentType) {
+			ariaLabel = item.contentType + ': ' + ariaLabel
+		}
+		if(isSelected) {
+			ariaLabel = 'Currently on ' + ariaLabel
+		} else {
+			ariaLabel = 'Go to ' + ariaLabel
+		}
+
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLinkButton(item.label, isItemDisabled, item.id)}
+				{this.renderLinkButton(
+					item.label,
+					ariaLabel,
+					isItemDisabled,
+					item.id
+				)}
 				{lockEl}
 			</li>
 		)
@@ -81,9 +102,20 @@ export default class Nav extends React.Component {
 			isOrNot(item.flags.correct, 'correct') +
 			isOrNot(isLastInList, 'last-in-list')
 
+		const labelText = getLabelTextFromLabel(item.label)
+		let ariaLabel = labelText
+		ariaLabel = 'Jump to ' + labelText
+		if(item.parent && item.parent.type && item.parent.type === 'link') {
+			ariaLabel += ' inside ' + getLabelTextFromLabel(item.parent.label)
+		}
+
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLinkButton(item.label, isItemDisabled)}
+				{this.renderLinkButton(
+					item.label,
+					ariaLabel,
+					isItemDisabled
+				)}
 				{lockEl}
 			</li>
 		)
@@ -92,7 +124,7 @@ export default class Nav extends React.Component {
 	renderHeading(index, item) {
 		return (
 			<li key={index} className={'heading is-not-selected'}>
-				{this.renderLabel(item.label)}
+				{item.label}
 			</li>
 		)
 	}
