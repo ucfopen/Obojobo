@@ -224,7 +224,11 @@ class PageEditor extends React.Component {
 
 	renderExportButton() {
 		return (
-			<button className={'exporter'} onClick={() => this.saveDraft()}>
+			<button
+				disabled={this.props.draftId === '11111111-1111-1111-1111-111111111111'}
+				className={'exporter'}
+				onClick={() => this.saveDraft()}
+			>
 				{'Save Document'}
 			</button>
 		)

@@ -33,6 +33,10 @@
 		background: $color-obojobo-blue;
 		border-radius: $dimension-rounded-radius;
 		color: $color-bg;
+
+		&:disabled {
+			opacity: 0.5;
+		}
 	}
 
 	.parameter-node {
