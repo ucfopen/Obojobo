@@ -567,6 +567,7 @@ describe('NavStore', () => {
 
 		expect(NavStore.generateNav(model)).toEqual({
 			children: [],
+			parent: null,
 			flags: { complete: false, correct: false, visited: false },
 			fullPath: [],
 			id: 'testId',

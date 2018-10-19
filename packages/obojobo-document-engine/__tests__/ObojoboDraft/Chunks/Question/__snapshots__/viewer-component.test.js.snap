@@ -2,8 +2,7 @@
 
 exports[`MCAssessment Question component 1`] = `
 <div
-  aria-label="Question"
-  aria-live="polite"
+  aria-live="assertive"
   className="component obojobo-draft--chunks--question is-mockViewState is-mode-practice"
   data-focussed={false}
   data-id="id"
@@ -115,6 +114,7 @@ exports[`MCAssessment Question component 1`] = `
       >
         <button
           aria-label="Try Question"
+          disabled={true}
         >
           Try Question
         </button>
@@ -126,8 +126,7 @@ exports[`MCAssessment Question component 1`] = `
 
 exports[`MCAssessment Question component answered correctly 1`] = `
 <div
-  aria-label="Question"
-  aria-live="polite"
+  aria-live="assertive"
   className="component obojobo-draft--chunks--question is-correct is-mockViewState is-mode-practice"
   data-focussed={false}
   data-id="id"
@@ -239,6 +238,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
       >
         <button
           aria-label="Try Question"
+          disabled={true}
         >
           Try Question
         </button>
@@ -250,8 +250,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
 
 exports[`MCAssessment Question component answered incorrectly 1`] = `
 <div
-  aria-label="Question"
-  aria-live="polite"
+  aria-live="assertive"
   className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-mode-practice"
   data-focussed={false}
   data-id="id"
@@ -363,6 +362,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
       >
         <button
           aria-label="Try Question"
+          disabled={true}
         >
           Try Question
         </button>
@@ -374,8 +374,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
 
 exports[`MCAssessment Question component in practice mode 1`] = `
 <div
-  aria-label="Question"
-  aria-live="polite"
+  aria-live="assertive"
   className="component obojobo-draft--chunks--question is-mockViewState is-mode-practice"
   data-focussed={false}
   data-id="id"
@@ -487,6 +486,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
       >
         <button
           aria-label="Try Question"
+          disabled={true}
         >
           Try Question
         </button>
@@ -498,8 +498,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
 
 exports[`MCAssessment Question component in review mode 1`] = `
 <div
-  aria-label="Question"
-  aria-live="polite"
+  aria-live="assertive"
   className="component obojobo-draft--chunks--question is-active is-mode-review"
   data-focussed={false}
   data-id="id"
@@ -597,6 +596,7 @@ exports[`MCAssessment Question component in review mode 1`] = `
       >
         <button
           aria-label="Start Question NaN of undefined"
+          disabled={true}
         >
           Start Question
         </button>

@@ -52,6 +52,11 @@ exports[`MathEquation MathEquation component with label 1`] = `
     data-indent={0}
   >
     <div
+      className="for-screen-reader-only"
+    >
+      Equation mockLabel
+    </div>
+    <div
       className="katex-container"
       dangerouslySetInnerHTML={
         Object {
@@ -65,14 +70,10 @@ exports[`MathEquation MathEquation component with label 1`] = `
       }
     />
     <div
-      aria-label="Equation mockLabel"
+      aria-hidden="true"
       className="equation-label"
     >
-      <span
-        aria-hidden="true"
-      >
-        mockLabel
-      </span>
+      mockLabel
     </div>
   </div>
 </div>

@@ -35,6 +35,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
     >
       <button
         aria-disabled={true}
+        aria-label="Go to label5"
       >
         label5
       </button>
@@ -45,6 +46,29 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
     >
       <button
         aria-disabled={true}
+        aria-label="Go to Mock Content Type: label300"
+      >
+        label300
+      </button>
+    </li>
+    <li
+      className="sub-link is-not-selected is-not-correct is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Jump to label301 inside Parent Label"
+      >
+        label301
+      </button>
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to mockMe"
       >
         <div
           className="mockStylableText"
@@ -57,11 +81,21 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       </button>
     </li>
     <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to "
+      />
+    </li>
+    <li
       className="link is-selected is-visited is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
         aria-disabled={true}
+        aria-label="Currently on label56"
       >
         label56
       </button>
@@ -72,6 +106,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
     >
       <button
         aria-disabled={true}
+        aria-label="Jump to label6"
       >
         label6
       </button>
@@ -120,6 +155,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
     >
       <button
         aria-disabled={true}
+        aria-label="Go to label5"
       >
         label5
       </button>
@@ -133,6 +169,35 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
     >
       <button
         aria-disabled={true}
+        aria-label="Go to Mock Content Type: label300"
+      >
+        label300
+      </button>
+      <div
+        className="lock-icon"
+      />
+    </li>
+    <li
+      className="sub-link is-not-selected is-not-correct is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Jump to label301 inside Parent Label"
+      >
+        label301
+      </button>
+      <div
+        className="lock-icon"
+      />
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to mockMe"
       >
         <div
           className="mockStylableText"
@@ -148,11 +213,24 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
       />
     </li>
     <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to "
+      />
+      <div
+        className="lock-icon"
+      />
+    </li>
+    <li
       className="link is-selected is-visited is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
         aria-disabled={true}
+        aria-label="Currently on label56"
       >
         label56
       </button>
@@ -166,6 +244,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
     >
       <button
         aria-disabled={true}
+        aria-label="Jump to label6"
       >
         label6
       </button>

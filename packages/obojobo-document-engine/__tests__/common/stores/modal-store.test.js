@@ -1,5 +1,8 @@
 import ModalStore from '../../../src/scripts/common/stores/modal-store'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
+import focus from '../../../src/scripts/common/page/focus'
+
+jest.mock('../../../src/scripts/common/page/focus')
 
 describe('ModalStore', () => {
 	beforeEach(() => {
@@ -53,9 +56,7 @@ describe('ModalStore', () => {
 	})
 
 	test('_show stores document.activeElement, _hide calls focus on stored activeElement', () => {
-		const mockEl = {
-			focus: jest.fn()
-		}
+		const mockEl = jest.fn()
 
 		// Mock document.activeElement:
 		const origActiveElement = document.activeElement
@@ -77,7 +78,8 @@ describe('ModalStore', () => {
 		ModalStore._hide()
 
 		expect(ModalStore.lastActiveElement).not.toBeDefined()
-		expect(mockEl.focus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledWith(mockEl)
+		expect(focus).toHaveBeenCalledTimes(1)
 
 		// Restore overrides:
 		Object.defineProperty(document, 'activeElement', {
@@ -87,9 +89,7 @@ describe('ModalStore', () => {
 	})
 
 	test('_hide does not call focus on stored activeElement if element cannot be found', () => {
-		const mockEl = {
-			focus: jest.fn()
-		}
+		const mockEl = jest.fn()
 
 		// Mock document.activeElement:
 		const origActiveElement = document.activeElement
@@ -111,7 +111,7 @@ describe('ModalStore', () => {
 		ModalStore._hide()
 
 		expect(ModalStore.lastActiveElement).not.toBeDefined()
-		expect(mockEl.focus).not.toHaveBeenCalled()
+		expect(focus).not.toHaveBeenCalled()
 
 		// Restore overrides:
 		Object.defineProperty(document, 'activeElement', {

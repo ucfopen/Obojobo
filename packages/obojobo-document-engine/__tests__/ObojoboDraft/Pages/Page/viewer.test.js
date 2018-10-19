@@ -45,6 +45,7 @@ describe('ObojoboDraft.Pages.Page registration', () => {
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'Page 2',
+			contentType: 'Page',
 			path: ['page-2'],
 			showChildren: false
 		})
@@ -60,6 +61,7 @@ describe('ObojoboDraft.Pages.Page registration', () => {
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'mock Title',
+			contentType: 'Page',
 			path: ['mock-title'],
 			showChildren: false
 		})

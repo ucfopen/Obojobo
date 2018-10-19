@@ -62,59 +62,48 @@ const Common = require('../../../src/scripts/common/index')
 
 describe('Nav', () => {
 	const navItems = [
-		{
-			id: 4,
-			type: 'heading',
-			label: 'label4'
-		},
+		{ id: 4, type: 'heading', label: 'label4' },
 		{
 			id: 5,
 			type: 'link',
 			label: 'label5',
-			flags: {
-				visited: false,
-				complete: false,
-				correct: false
-			}
+			flags: { visited: false, complete: false, correct: false }
+		}, // content type
+		{
+			id: 300,
+			type: 'link',
+			label: 'label300',
+			contentType: 'Mock Content Type',
+			flags: { visited: false, complete: false, correct: false }
+		},
+		// subLink with parent
+		{
+			id: 301,
+			type: 'sub-link',
+			label: 'label301',
+			parent: {
+				type: 'link',
+				label: 'Parent Label'
+			},
+			contentType: 'Mock Content Type',
+			flags: { visited: false, complete: false, correct: false }
 		},
 		// test StyleableText
 		{
 			id: 5,
 			type: 'link',
 			label: new MockStylableText('mockMe'),
-			flags: {
-				visited: false,
-				complete: false,
-				correct: false
-			}
-		},
-		// flip the flags
+			flags: { visited: false, complete: false, correct: false }
+		}, // no label
+		{ id: 6, type: 'link', flags: { visited: false, complete: false, correct: false } }, // flip the flags
 		{
 			id: 56,
 			type: 'link',
 			label: 'label56',
-			flags: {
-				visited: true,
-				complete: true,
-				correct: true
-			}
+			flags: { visited: true, complete: true, correct: true }
 		},
-		{
-			id: 678,
-			type: 'non-existant-type',
-			label: 'label678',
-			flags: {
-				correct: false
-			}
-		},
-		{
-			id: 6,
-			type: 'sub-link',
-			label: 'label6',
-			flags: {
-				correct: false
-			}
-		}
+		{ id: 678, type: 'non-existant-type', label: 'label678', flags: { correct: false } },
+		{ id: 6, type: 'sub-link', label: 'label6', flags: { correct: false } }
 	]
 
 	beforeEach(() => {

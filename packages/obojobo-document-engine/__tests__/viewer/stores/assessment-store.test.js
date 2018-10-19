@@ -664,4 +664,14 @@ describe('AssessmentStore', () => {
 		expect(assessState.highestAttemptScoreAttempts).toEqual('Called with attemptScore')
 		expect(assessState.highestAssessmentScoreAttempts).toEqual('Called with assessmentScore')
 	})
+
+	test('onCloseResultsDialog hides modal and dispatches viewer:focusOnContent', () => {
+		const spy = jest.spyOn(Dispatcher, 'trigger')
+
+		AssessmentStore.onCloseResultsDialog()
+
+		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
+		expect(spy).toHaveBeenCalledTimes(1)
+		expect(spy).toHaveBeenCalledWith('viewer:focusOnContent')
+	})
 })
