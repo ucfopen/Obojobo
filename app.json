@@ -13,7 +13,7 @@
   "logo": "https://ucfopen.github.io/Obojobo-Docs/assets/images/obojobo_white.svg",
   "success_url": "/firstrun",
   "scripts": {
-    "postdeploy": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn db:migrateup"
+    "postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup"
   },
   "env": {
     "OBO_LTI_SECRET": {
