@@ -171,7 +171,6 @@
 			right: 0;
 			bottom: 0;
 			background-color: $color-bg2;
-			-webkit-transition: 0.4s;
 			transition: 0.4s;
 			border-radius: 0.7em;
 
@@ -185,7 +184,6 @@
 				left: 0.05em;
 				bottom: 0.05em;
 				background-color: $color-bg;
-				-webkit-transition: 0.4s;
 				transition: 0.4s;
 				border-radius: 50%;
 			}
@@ -211,8 +209,6 @@
 		}
 
 		input:checked + .slider::before {
-			-webkit-transform: translateX(2em);
-			-ms-transform: translateX(2em);
 			transform: translateX(2em);
 		}
 
