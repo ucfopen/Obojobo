@@ -11,12 +11,14 @@ class Node extends React.Component {
 	handleLatexChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
+		const content = this.props.node.data.get('content')
 
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
-					label: this.props.node.data.get('content').label,
-					latex: event.target.value
+					label: content.label,
+					latex: event.target.value,
+					align: content.align
 				}
 			}
 		})
@@ -26,12 +28,14 @@ class Node extends React.Component {
 	handleLabelChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
+		const content = this.props.node.data.get('content')
 
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					label: event.target.value,
-					latex: this.props.node.data.get('content').latex
+					latex: content.latex,
+					align: content.align
 				}
 			}
 		})
@@ -88,8 +92,11 @@ class Node extends React.Component {
 	}
 
 	render() {
+		const content = this.props.node.data.get('content')
 		return (
-			<div className={'component obojobo-draft--chunks--math-equation pad align-center'}>
+			<div
+				className={'component obojobo-draft--chunks--math-equation pad ' + 'align-' + content.align}
+			>
 				{this.renderLatex()}
 				{this.renderEquationEditor()}
 			</div>

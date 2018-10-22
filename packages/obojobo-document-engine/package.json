@@ -136,6 +136,8 @@
 			"<rootDir>/src/scripts/oboeditor/dist.js",
 			"<rootDir>/src/scripts/oboeditor/documents/",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
+			"<rootDir>/ObojoboDraft/Chunks/Question/empty-question.json",
+			"<rootDir>/ObojoboDraft/Chunks/QuestionBank/empty-question-bank.json",
 			"====THESE ARE NOT USED RIGHT NOW====",
 			"selection-handler.js",
 			"<rootDir>/src/scripts/common/util/console.js",

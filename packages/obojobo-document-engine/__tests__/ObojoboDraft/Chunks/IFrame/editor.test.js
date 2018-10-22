@@ -79,9 +79,7 @@ describe('IFrame editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: () => {
-					return null
-				}
+				get: () => null
 			},
 			text: 'mockText'
 		}

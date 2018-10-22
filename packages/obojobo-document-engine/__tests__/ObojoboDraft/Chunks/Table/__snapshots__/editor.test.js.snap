@@ -133,9 +133,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                Object {
-                  "text": "Mock1",
-                },
+                undefined,
               ],
               "object": "text",
             },
@@ -152,9 +150,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                Object {
-                  "text": "Mock2",
-                },
+                undefined,
               ],
               "object": "text",
             },
@@ -182,9 +178,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                Object {
-                  "text": "Mock3",
-                },
+                undefined,
               ],
               "object": "text",
             },
@@ -201,9 +195,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                Object {
-                  "text": "Mock4",
-                },
+                undefined,
               ],
               "object": "text",
             },
@@ -221,7 +213,7 @@ Object {
 }
 `;
 
-exports[`Table editor plugins.renderNode renders a button when passed 1`] = `
+exports[`Table editor plugins.renderNode renders a Table when passed 1`] = `
 <Node
   attributes={
     Object {
@@ -240,26 +232,7 @@ exports[`Table editor plugins.renderNode renders a button when passed 1`] = `
 />
 `;
 
-exports[`Table editor plugins.renderNode renders a button when passed 2`] = `
-<Row
-  attributes={
-    Object {
-      "dummy": "dummyData",
-    }
-  }
-  dummy="dummyData"
-  node={
-    Object {
-      "data": Object {
-        "get": [Function],
-      },
-      "type": "ObojoboDraft.Chunks.Table.Row",
-    }
-  }
-/>
-`;
-
-exports[`Table editor plugins.renderNode renders a button when passed 3`] = `
+exports[`Table editor plugins.renderNode renders a cell when passed 1`] = `
 <Cell
   attributes={
     Object {
@@ -278,17 +251,37 @@ exports[`Table editor plugins.renderNode renders a button when passed 3`] = `
 />
 `;
 
+exports[`Table editor plugins.renderNode renders a row when passed 1`] = `
+<Row
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Table.Row",
+    }
+  }
+/>
+`;
+
 exports[`Table editor slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [],
   "content": Object {
+    "header": true,
     "textGroup": Object {
       "textGroup": Array [
         Object {
           "text": Object {
             "styleList": Array [
               Object {
-                "data": Object {},
+                "data": true,
                 "end": 8,
                 "start": 0,
                 "type": "b",

@@ -22,7 +22,6 @@
 	> .children {
 		margin-left: 2em;
 		margin-right: 0;
-		pointer-events: none;
 	}
 
 	&.is-selected {
@@ -58,6 +57,7 @@
 		background: transparent;
 		border: none;
 	}
+
 	.add-feedback {
 		float: right;
 		font-size: 0.85em;
@@ -65,28 +65,17 @@
 		border: 1px solid transparentize($color-shadow, 0.2);
 		border-radius: $dimension-rounded-radius;
 		margin: 0.2em;
-
-		&:hover {
-			background-color: darken($color-bg2, 20%);
-		}
 	}
 
 	&.is-correct {
 		.correct-button {
 			color: $color-correct;
-
-			&:hover {
-				color: darken($color-correct, 20%);
-			}
 		}
 	}
 
 	&.is-not-correct {
 		.correct-button {
 			color: $color-incorrect;
-			&:hover {
-				color: darken($color-incorrect, 20%);
-			}
 		}
 	}
 }

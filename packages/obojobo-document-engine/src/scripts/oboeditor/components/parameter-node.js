@@ -1,5 +1,7 @@
 import React from 'react'
 
+import KeyDownUtil from '../util/keydown-util'
+
 const Node = props => {
 	const handleSelectChange = event => {
 		const editor = props.editor
@@ -64,7 +66,7 @@ const Node = props => {
 							checked={props.node.data.get('checked')}
 							onChange={event => handleCheckChange(event)}
 						/>
-						<span className={'slider round'} />
+						<div className="slider round" />
 					</label>
 				</div>
 			)
@@ -78,6 +80,12 @@ const Node = props => {
 				</div>
 			)
 	}
+}
+
+const isType = change => {
+	return change.value.blocks.some(block => {
+		return block.type === 'Parameter'
+	})
 }
 
 const slateToObo = node => {
@@ -135,6 +143,21 @@ const plugins = {
 		switch (props.node.type) {
 			case 'Parameter':
 				return <Node {...props} />
+		}
+	},
+	onKeyDown(event, change) {
+		// See if any of the selected nodes are a parameter
+		const isParameter = isType(change)
+		if (!isParameter) return
+
+		// Disallow enter in parameters
+		if (event.key === 'Enter') {
+			event.preventDefault()
+			return false
+		}
+
+		if (event.key === 'Backspace' || event.key === 'Delete') {
+			return KeyDownUtil.deleteNodeContents(event, change)
 		}
 	}
 }

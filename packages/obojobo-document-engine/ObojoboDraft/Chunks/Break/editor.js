@@ -42,7 +42,9 @@ const slateToObo = node => {
 	const json = {}
 	json.id = node.key
 	json.type = node.type
-	json.content = node.data.get('content')
+	json.content = {
+		width: node.data.get('content').width
+	}
 	json.children = []
 
 	return json

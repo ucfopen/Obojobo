@@ -2,36 +2,45 @@
 
 exports[`EditorNav EditorNav component 1`] = `
 <div
-  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  className="viewer--components--nav editor--components--nav  is-not-locked is-not-open is-enabled"
 >
-  <button
-    className="toggle-button"
-  >
-    Toggle Navigation Menu
-  </button>
   <ul />
-  <button
-    onClick={[Function]}
+  <div
+    className="button-bar"
   >
-    Add Page
-  </button>
-  <button
-    onClick={[Function]}
-  >
-    Add Assessment
-  </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      + Add Page
+    </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      + Add Assessment
+    </button>
+    <br />
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      Rename Module
+    </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      Copy Module URL
+    </button>
+  </div>
 </div>
 `;
 
 exports[`EditorNav EditorNav component with all list item types 1`] = `
 <div
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+  className="viewer--components--nav editor--components--nav  is-locked is-not-open is-enabled"
 >
-  <button
-    className="toggle-button"
-  >
-    Toggle Navigation Menu
-  </button>
   <ul>
     <li
       className="heading is-not-selected"
@@ -73,14 +82,16 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
           >
             Delete
           </button>
-          <button>
+          <button
+            onClick={[Function]}
+          >
             Id: 5
           </button>
         </div>
       </div>
     </li>
     <li
-      className="link is-not-selected is-assessment is-not-first-in-list is-last-in-list"
+      className="link is-not-selected is-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <a>
@@ -112,22 +123,43 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
           >
             Delete
           </button>
-          <button>
+          <button
+            onClick={[Function]}
+          >
             Id: 6
           </button>
         </div>
       </div>
     </li>
   </ul>
-  <button
-    onClick={[Function]}
+  <div
+    className="button-bar"
   >
-    Add Page
-  </button>
-  <button
-    onClick={[Function]}
-  >
-    Add Assessment
-  </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      + Add Page
+    </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      + Add Assessment
+    </button>
+    <br />
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      Rename Module
+    </button>
+    <button
+      className="content-add-button"
+      onClick={[Function]}
+    >
+      Copy Module URL
+    </button>
+  </div>
 </div>
 `;

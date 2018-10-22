@@ -33,6 +33,7 @@ import YouTube from '../YouTube/editor'
 import MCAssessment from '../MCAssessment/editor'
 import Page from '../../Pages/Page/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
+import emptyQuestion from './empty-question.json'
 
 const { Button } = Common.components
 const nodes = {
@@ -62,7 +63,7 @@ const Solution = props => {
 	return (
 		<div className={'solution-editor'}>
 			{props.children}
-			<button className={'delete'} onClick={() => deleteNode()}>
+			<button className={'delete-node'} onClick={() => deleteNode()}>
 				X
 			</button>
 		</div>
@@ -91,13 +92,9 @@ class Node extends React.Component {
 	render() {
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
 		return (
-			<div
-				className={
-					'component flip-container obojobo-draft--chunks--question  is-active is-mode-practice'
-				}
-			>
-				<div className={'flipper'}>
-					<div className={'content back'}>
+			<div className={'component obojobo-draft--chunks--question is-viewed is-mode-practice'}>
+				<div className={'flipper question-editor'}>
+					<div className={'content-back'}>
 						{this.props.children}
 						{hasSolution ? null : (
 							<Button className={'add-solution'} onClick={() => this.addSolution()}>
@@ -106,7 +103,7 @@ class Node extends React.Component {
 						)}
 					</div>
 				</div>
-				<button className={'delete'} onClick={() => this.delete()}>
+				<button className={'delete-node'} onClick={() => this.delete()}>
 					X
 				</button>
 			</div>
@@ -116,9 +113,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: QUESTION_NODE
-		})
+		.insertBlock(Block.fromJSON(emptyQuestion))
 		.moveToStartOfNextText()
 		.focus()
 }

@@ -98,11 +98,9 @@ describe('MCChoice editor', () => {
 					key: 'mockKey',
 					nodes: [],
 					data: {
-						get: () => {
-							return {
-								score: 0
-							}
-						}
+						get: () => ({
+							score: 0
+						})
 					}
 				}}
 				editor={{

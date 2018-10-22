@@ -204,67 +204,6 @@ const oboToSlate = node => {
 	return json
 }
 
-const validateMod = node => {
-	if (node.nodes.size !== 1) return
-	if (node.nodes.first().data.get('name') === 'attemptCondition') return
-
-	const block = Block.create({
-		type: 'Parameter',
-		data: {
-			name: 'attemptCondition',
-			display: 'Attempt Condition'
-		}
-	})
-
-	return change => change.insertNodeByKey(node.key, 0, block)
-}
-const validateRubric = node => {
-	if (node.nodes.size === 0 || node.nodes.size >= 4) return
-	if (node.nodes.first().data.get('name') !== 'passingAttemptScore') {
-		const block = Block.create(
-			ParameterNode.helpers.oboToSlate({
-				name: 'passingAttemptScore',
-				value: 100 + '',
-				display: 'Passing Score'
-			})
-		)
-
-		return change => change.insertNodeByKey(node.key, 0, block)
-	}
-
-	if (node.nodes.size === 1 || node.nodes.get(1).data.get('name') !== 'passedResult') {
-		const block = Block.create(
-			ParameterNode.helpers.oboToSlate({
-				name: 'passedResult',
-				value: 100 + '',
-				display: 'Passed Result'
-			})
-		)
-
-		return change => change.insertNodeByKey(node.key, 1, block)
-	}
-
-	if (node.nodes.size === 2 || node.nodes.get(2).data.get('name') !== 'failedResult') {
-		const block = Block.create(
-			ParameterNode.helpers.oboToSlate({
-				name: 'failedResult',
-				value: 0 + '',
-				display: 'Failed Result'
-			})
-		)
-		return change => change.insertNodeByKey(node.key, 2, block)
-	}
-
-	const block = Block.create(
-		ParameterNode.helpers.oboToSlate({
-			name: 'unableToPassResult',
-			value: '',
-			display: 'Unable to Pass Result'
-		})
-	)
-	return change => change.insertNodeByKey(node.key, 3, block)
-}
-
 const plugins = {
 	renderNode(props) {
 		switch (props.node.type) {
@@ -276,23 +215,11 @@ const plugins = {
 				return <Node {...props} {...props.attributes} />
 		}
 	},
-	validateNode(node) {
-		if (node.object !== 'block') return
-		if (node.type !== MOD_NODE && node.type !== RUBRIC_NODE) return
-		if (node.nodes.first().object === 'text') return
-
-		switch (node.type) {
-			case MOD_NODE:
-				return validateMod(node)
-			case RUBRIC_NODE:
-				return validateRubric(node)
-		}
-	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment.Rubric': {
 				nodes: [
-					{ match: [{ type: 'Paramter' }], min: 4, max: 4 },
+					{ match: [{ type: 'Parameter' }], min: 4, max: 4 },
 					{ match: [{ type: MOD_LIST_NODE }], max: 1 }
 				],
 				normalize: (change, error) => {

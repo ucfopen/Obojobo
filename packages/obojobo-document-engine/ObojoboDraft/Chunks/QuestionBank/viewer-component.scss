@@ -7,6 +7,7 @@
 	min-width: 9em;
 	padding: 1em;
 	overflow: auto;
+
 	&.editor-bank {
 		background: transparentize($color-action, 0.95);
 		border: 1px solid $color-action;
@@ -29,6 +30,7 @@
 		div {
 			display: inline;
 		}
+
 		text-align: center;
 	}
 }

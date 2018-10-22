@@ -51,7 +51,9 @@ exports[`Break editor plugins.renderNode renders a break when passed 1`] = `
 exports[`Break editor slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [],
-  "content": Object {},
+  "content": Object {
+    "width": undefined,
+  },
   "id": "mockKey",
   "type": "mockType",
 }

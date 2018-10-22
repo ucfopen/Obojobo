@@ -111,7 +111,7 @@ export default class Question extends React.Component {
 				className={className}
 			>
 				<div className="flipper">
-					<div className="content back">
+					<div className="content-back">
 						<QuestionContent model={this.props.model} moduleData={this.props.moduleData} />
 						<div className="pad responses-hidden">(Responses Hidden)</div>
 					</div>

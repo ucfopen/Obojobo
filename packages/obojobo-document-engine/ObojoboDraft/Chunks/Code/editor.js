@@ -1,6 +1,7 @@
 import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
@@ -41,7 +42,7 @@ const slateToObo = node => {
 	const json = {}
 	json.id = node.key
 	json.type = node.type
-	json.content = node.data.get('content') || {}
+	json.content = {}
 
 	json.content.textGroup = []
 	node.nodes.forEach(line => {
@@ -50,21 +51,8 @@ const slateToObo = node => {
 			data: { indent: line.data.get('content').indent }
 		}
 
-		let currIndex = 0
-
 		line.nodes.forEach(text => {
-			text.leaves.forEach(textRange => {
-				textRange.marks.forEach(mark => {
-					const style = {
-						start: currIndex,
-						end: currIndex + textRange.text.length,
-						type: mark.type,
-						data: JSON.parse(JSON.stringify(mark.data))
-					}
-					codeLine.text.styleList.push(style)
-				})
-				currIndex += textRange.text.length
-			})
+			TextUtil.slateToOboText(text, codeLine)
 		})
 
 		json.content.textGroup.push(codeLine)
@@ -91,11 +79,7 @@ const oboToSlate = node => {
 			nodes: [
 				{
 					object: 'text',
-					leaves: [
-						{
-							text: line.text.value
-						}
-					]
+					leaves: TextUtil.parseMarkings(line)
 				}
 			]
 		}
@@ -111,16 +95,27 @@ const plugins = {
 	onKeyDown(event, change) {
 		// See if any of the selected nodes have a CODE_NODE parent
 		const isCode = isType(change)
+		if (!isCode) return
 
-		// Enter
-		if (isCode && event.key === 'Enter') {
-			event.preventDefault()
-			change.insertBlock({ type: CODE_LINE_NODE, data: { content: { indent: 0 } } })
-			return true
+		// Delete empty code node
+		if (event.key === 'Backspace' || event.key === 'Delete') {
+			const last = change.value.endBlock
+			let parent
+			change.value.blocks.forEach(block => {
+				parent = change.value.document.getClosest(block.key, parent => {
+					return parent.type === CODE_NODE
+				})
+			})
+
+			if (last.text === '' && parent.nodes.size === 1) {
+				event.preventDefault()
+				change.removeNodeByKey(parent.key)
+				return true
+			}
 		}
 
 		// Shift Tab
-		if (isCode && event.key === 'Tab' && event.shiftKey) {
+		if (event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
 			change.value.blocks.forEach(block => {
 				let newIndent = block.data.get('content').indent - 1
@@ -134,7 +129,7 @@ const plugins = {
 		}
 
 		// Tab indent
-		if (isCode && event.key === 'Tab') {
+		if (event.key === 'Tab') {
 			event.preventDefault()
 			change.value.blocks.forEach(block =>
 				change.setNodeByKey(block.key, {
@@ -152,6 +147,17 @@ const plugins = {
 				return <Line {...props} {...props.attributes} />
 		}
 	},
+	renderPlaceholder(props) {
+		const { node } = props
+		if (node.object !== 'block' || node.type !== CODE_LINE_NODE) return
+		if (node.text !== '') return
+
+		return (
+			<span className={'placeholder'} contentEditable={false}>
+				{'Type Your Code Here'}
+			</span>
+		)
+	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Chunks.Code': {
@@ -165,6 +171,12 @@ const plugins = {
 					const { node, child, index } = error
 					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
+							const isAtEdge = index === node.nodes.size - 1 || index === 0
+							if (child.object === 'block' && isAtEdge) {
+								return change.unwrapNodeByKey(child.key)
+							}
+
 							return change.wrapBlockByKey(child.key, {
 								type: CODE_LINE_NODE,
 								data: { content: { indent: 0 } }
@@ -186,7 +198,18 @@ const plugins = {
 						match: [{ object: 'text' }],
 						min: 1
 					}
-				]
+				],
+				normalize: (change, violation, { node, child, index }) => {
+					switch (violation) {
+						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
+							const isAtEdge = index === node.nodes.size - 1 || index === 0
+							if (child.object === 'block' && isAtEdge) {
+								return change.unwrapNodeByKey(child.key)
+							}
+						}
+					}
+				}
 			}
 		}
 	}

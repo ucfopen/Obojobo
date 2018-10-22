@@ -2,7 +2,10 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
+jest.mock('src/scripts/oboeditor/util/keydown-util')
+
+import ParameterNode from 'src/scripts/oboeditor/components/parameter-node'
+import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 
 describe('Parameter Node', () => {
 	test('Node component', () => {
@@ -184,6 +187,82 @@ describe('Parameter Node', () => {
 		])
 
 		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('plugins.onKeyDown deals with no parameter', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						type: 'NotAParameter'
+					}
+				]
+			}
+		}
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with random key press', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						type: 'Parameter'
+					}
+				]
+			}
+		}
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			key: 'K',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Enter]', () => {
+		const change = {
+			value: {
+				blocks: [{ key: 'mockKey', type: 'Parameter' }]
+			}
+		}
+		const event = {
+			key: 'Enter',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
+		const change = {
+			value: {
+				blocks: [{ key: 'mockKey', type: 'Parameter' }]
+			}
+		}
+		const event = {
+			key: 'Delete',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders a Parameter when passed', () => {

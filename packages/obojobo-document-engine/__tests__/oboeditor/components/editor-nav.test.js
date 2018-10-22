@@ -10,6 +10,10 @@ import Common from '../../../src/scripts/common'
 jest.mock('../../../src/scripts/oboeditor/util/editor-util')
 
 describe('EditorNav', () => {
+	beforeAll(() => {
+		document.getSelection = jest.fn()
+		document.execCommand = jest.fn()
+	})
 	beforeEach(() => {
 		jest.clearAllMocks()
 
@@ -59,6 +63,14 @@ describe('EditorNav', () => {
 				flags: {
 					assessment: true
 				}
+			},
+			{
+				id: 7,
+				type: 'sublink',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
 			}
 		])
 
@@ -84,7 +96,7 @@ describe('EditorNav', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(0)
 			.simulate('click')
 
 		expect(EditorUtil.addPage).toHaveBeenCalled()
@@ -100,10 +112,55 @@ describe('EditorNav', () => {
 
 		component
 			.find('button')
-			.at(2)
+			.at(1)
 			.simulate('click')
 
 		expect(EditorUtil.addAssessment).toHaveBeenCalled()
+	})
+
+	test('EditorNav component clicks Rename Module button', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 6,
+				type: 'heading',
+				label: 'label6',
+				flags: {
+					assessment: true
+				}
+			}
+		])
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce(null)
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(EditorUtil.renamePage).toHaveBeenCalled()
+	})
+
+	test('EditorNav component clicks Copy URL button', () => {
+		document.getSelection.mockReturnValueOnce({ rangeCount: 0 })
+		jest.spyOn(window, 'alert')
+		window.alert.mockReturnValueOnce(null)
+
+		EditorUtil.getOrderedList.mockReturnValueOnce([])
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce(null)
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('button')
+			.at(3)
+			.simulate('click')
+
+		expect(window.alert).toHaveBeenCalled()
 	})
 
 	test('EditorNav component clicks Move Up button in item', () => {
@@ -212,5 +269,39 @@ describe('EditorNav', () => {
 			.simulate('click')
 
 		expect(EditorUtil.deletePage).toHaveBeenCalled()
+	})
+
+	test('EditorNav component clicks ID button in item', () => {
+		document.getSelection
+			.mockReturnValueOnce({ rangeCount: 1 })
+			.mockReturnValueOnce({ getRangeAt: () => 'mockRange' })
+			.mockReturnValueOnce({ removeAllRanges: () => true })
+			.mockReturnValueOnce({ addRange: () => true })
+		jest.spyOn(window, 'alert')
+		window.alert.mockReturnValueOnce(null)
+
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 5,
+					type: 'link',
+					label: 'label5',
+					flags: {
+						assessment: true
+					}
+				}
+			])
+			.mockReturnValueOnce([])
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('li')
+			.find('button')
+			.at(3) // [Move Down, Edit Name, Delete, Id:5]
+			.simulate('click')
+
+		expect(window.alert).toHaveBeenCalled()
 	})
 })

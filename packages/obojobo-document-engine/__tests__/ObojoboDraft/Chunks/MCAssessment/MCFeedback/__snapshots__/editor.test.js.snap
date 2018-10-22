@@ -5,7 +5,7 @@ exports[`MCFeedback editor Node builds the expected component 1`] = `
   className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback"
 >
   <button
-    className="delete"
+    className="delete-node"
     onClick={[Function]}
   >
     X
@@ -19,7 +19,7 @@ exports[`MCFeedback editor Node builds the expected component 1`] = `
 </div>
 `;
 
-exports[`MCFeedback editor Node component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback\\"><button class=\\"delete\\">X</button><span class=\\"label\\" contenteditable=\\"false\\">Feedback</span></div>"`;
+exports[`MCFeedback editor Node component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback\\"><button class=\\"delete-node\\">X</button><span class=\\"label\\" contenteditable=\\"false\\">Feedback</span></div>"`;
 
 exports[`MCFeedback editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

@@ -29,20 +29,11 @@ import Assessment from '../../../../ObojoboDraft/Sections/Assessment/editor'
 import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
 import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor'
 import DefaultNode from './default-node'
-import basicMark from '../marks/basic-mark'
 import ParameterNode from './parameter-node'
+import MarkToolbar from './toolbar'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-
-const BOLD_MARK = 'b'
-const ITALIC_MARK = 'i'
-const STRIKE_MARK = 'del'
-const QUOTE_MARK = 'q'
-
-const SUPERSCRIPT_MARK = 'sup'
-const LATEX_MARK = '_latex'
-const LINK_MARK = 'a'
 
 const nodes = {
 	'ObojoboDraft.Chunks.ActionButton': ActionButton,
@@ -76,13 +67,7 @@ const dontInsert = [
 ]
 
 const plugins = [
-	basicMark({ type: BOLD_MARK, key: 'b' }),
-	basicMark({ type: ITALIC_MARK, key: 'i' }),
-	basicMark({ type: STRIKE_MARK, key: 's' }),
-	basicMark({ type: LINK_MARK, key: 'k' }),
-	basicMark({ type: QUOTE_MARK, key: 'm' }),
-	basicMark({ type: SUPERSCRIPT_MARK, key: 'n' }),
-	basicMark({ type: LATEX_MARK, key: 'l' }),
+	...MarkToolbar.plugins,
 	ActionButton.plugins,
 	Break.plugins,
 	Code.plugins,
@@ -142,12 +127,15 @@ class PageEditor extends React.Component {
 
 		return (
 			<div className={'editor'}>
-				<div className={'dropdown'}>
-					<button>+ Insert Node</button>
-					<div className={'drop-content'}>
-						{Object.entries(nodes).map(item => {
-							return this.buildButton(item)
-						})}
+				<div className={'toolbar'}>
+					<MarkToolbar.components.Node value={this.state.value} onChange={change => this.onChange(change)} />
+					<div className={'dropdown'}>
+						<button>+ Insert Node</button>
+						<div className={'drop-content'}>
+							{Object.entries(nodes).map(item => {
+								return this.buildButton(item)
+							})}
+						</div>
 					</div>
 				</div>
 				<Editor
@@ -155,7 +143,6 @@ class PageEditor extends React.Component {
 					placeholder="Obojobo Visual Editor"
 					value={this.state.value}
 					onChange={change => this.onChange(change)}
-					renderMark={props => this.renderMark(props)}
 					plugins={plugins}
 				/>
 				{this.renderExportButton()}
@@ -167,35 +154,20 @@ class PageEditor extends React.Component {
 		this.setState({ value })
 	}
 
-	renderMark(props) {
-		switch (props.mark.type) {
-			case BOLD_MARK:
-				return <strong>{props.children}</strong>
-			case ITALIC_MARK:
-				return <em>{props.children}</em>
-			case STRIKE_MARK:
-				return <del>{props.children}</del>
-			case QUOTE_MARK:
-				return <q>{props.children}</q>
-			case LINK_MARK:
-				return <a href="www.myucf.edu">{props.children}</a>
-		}
-	}
-
-	insertBlock(item) {
+	insertBlock(block) {
 		const { value } = this.state
 		const change = value.change()
 
-		item[1].helpers.insertNode(change)
+		block.helpers.insertNode(change)
 
 		this.onChange(change)
 	}
 
-	buildButton(item) {
-		if (dontInsert.includes(item[0])) return null
+	buildButton([key, block]) {
+		if (dontInsert.includes(key)) return null
 		return (
-			<button key={item[0]} onClick={() => this.insertBlock(item)}>
-				{item[0]}
+			<button key={key} onClick={() => this.insertBlock(block)}>
+				{key}
 			</button>
 		)
 	}
@@ -205,6 +177,7 @@ class PageEditor extends React.Component {
 			const json = Assessment.helpers.slateToObo(value.document.nodes.get(0))
 			page.set('children', json.children)
 			page.set('content', json.content)
+
 			return json
 		} else {
 			// Build page wrapper
@@ -214,13 +187,15 @@ class PageEditor extends React.Component {
 			value.document.nodes.forEach(child => {
 				if (nodes.hasOwnProperty(child.type)) {
 					// If the current Node is a registered OboNode, use its custom converter
-					json.children.push(nodes[child.type].helpers.slateToObo(child))
+					const oboChild = nodes[child.type].helpers.slateToObo(child)
+					json.children.push(oboChild)
 				} else {
 					json.children.push(DefaultNode.helpers.slateToObo(child))
 				}
 			})
 
 			page.set('children', json.children)
+
 			return json
 		}
 	}

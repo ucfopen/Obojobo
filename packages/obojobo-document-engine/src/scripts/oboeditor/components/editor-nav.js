@@ -51,12 +51,27 @@ class EditorNav extends React.Component {
 	}
 
 	renamePage(pageId) {
-		const label = window.prompt('Enter the title for the new page:') || pageId
+		const label = window.prompt('Enter the new title:') || pageId
 		EditorUtil.renamePage(pageId, label)
 	}
 
 	movePage(pageId, index) {
 		EditorUtil.movePage(pageId, index)
+	}
+
+	copyToClipboard(str) {
+		// Loads the url into an invisible textarea
+		// to copy it to the clipboard
+		const el = document.createElement('textarea')
+		el.value = str
+		el.setAttribute('readonly', '')
+		el.style.position = 'absolute'
+		el.style.left = '-9999px'
+		document.body.appendChild(el)
+		el.select()
+		document.execCommand('copy')
+		document.body.removeChild(el)
+		window.alert('Copied ' + str + ' to the clipboard')
 	}
 
 	renderLabel(label) {
@@ -77,7 +92,7 @@ class EditorNav extends React.Component {
 					)}
 					<button onClick={() => this.renamePage(item.id)}>Edit Name</button>
 					<button onClick={() => this.deletePage(item.id)}>Delete</button>
-					<button>{'Id: ' + item.id}</button>
+					<button onClick={() => this.copyToClipboard(item.id)}>{'Id: ' + item.id}</button>
 				</div>
 			</div>
 		)
@@ -113,24 +128,43 @@ class EditorNav extends React.Component {
 
 	render() {
 		const className =
-			'viewer--components--nav' +
+			'viewer--components--nav ' +
+			'editor--components--nav ' +
 			isOrNot(this.state.locked, 'locked') +
 			isOrNot(this.state.open, 'open') +
 			isOrNot(!this.state.disabled, 'enabled')
 
 		const list = EditorUtil.getOrderedList(this.props.navState)
 
+		const url = window.location.origin + '/view/' + this.props.draftId
+		const moduleItem = list[0]
+
 		return (
 			<div className={className}>
-				<button className="toggle-button">Toggle Navigation Menu</button>
 				<ul>
 					{list.map((item, index) => {
 						if (item.type === 'heading') return this.renderHeading(index, item)
-						return this.renderLink(index, this.state.navTargetId === item.id, list)
+						if (item.type === 'link') {
+							return this.renderLink(index, this.state.navTargetId === item.id, list)
+						}
+						return null
 					})}
 				</ul>
-				<button onClick={() => this.addPage()}>{'Add Page'}</button>
-				<button onClick={() => this.addAssessment()}>{'Add Assessment'}</button>
+				<div className="button-bar">
+					<button className={'content-add-button'} onClick={() => this.addPage()}>
+						+ Add Page
+					</button>
+					<button className={'content-add-button'} onClick={() => this.addAssessment()}>
+						+ Add Assessment
+					</button>
+					<br />
+					<button className={'content-add-button'} onClick={() => this.renamePage(moduleItem.id)}>
+						Rename Module
+					</button>
+					<button className={'content-add-button'} onClick={() => this.copyToClipboard(url)}>
+						Copy Module URL
+					</button>
+				</div>
 			</div>
 		)
 	}

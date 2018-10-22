@@ -1,6 +1,8 @@
 import React from 'react'
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID, PARENT_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -8,7 +10,6 @@ const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 const unorderedBullets = ['disc', 'circle', 'square']
-
 const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 'lower-roman']
 
 const Line = props => {
@@ -123,21 +124,8 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 			data: { indent: currLevel }
 		}
 
-		let currIndex = 0
-
 		child.nodes.forEach(text => {
-			text.leaves.forEach(textRange => {
-				textRange.marks.forEach(mark => {
-					const style = {
-						start: currIndex,
-						end: currIndex + textRange.text.length,
-						type: mark.type,
-						data: JSON.parse(JSON.stringify(mark.data))
-					}
-					listLine.text.styleList.push(style)
-				})
-				currIndex += textRange.text.length
-			})
+			TextUtil.slateToOboText(text, listLine)
 		})
 
 		textGroup.push(listLine)
@@ -159,6 +147,20 @@ const slateToObo = node => {
 	})
 	json.children = []
 
+	return json
+}
+
+const validateJSON = json => {
+	let last = json.nodes[0]
+	for (let i = 1; i < json.nodes.length; i++) {
+		const next = json.nodes[i]
+		if (last.type === LIST_LEVEL_NODE && next.type === LIST_LEVEL_NODE) {
+			next.nodes = last.nodes.concat(next.nodes)
+			json.nodes[i - 1] = false
+		}
+		last = next
+	}
+	json.nodes = json.nodes.filter(Boolean)
 	return json
 }
 
@@ -191,11 +193,7 @@ const oboToSlate = node => {
 					nodes: [
 						{
 							object: 'text',
-							leaves: [
-								{
-									text: line.text.value
-								}
-							]
+							leaves: TextUtil.parseMarkings(line)
 						}
 					]
 				}
@@ -217,6 +215,8 @@ const oboToSlate = node => {
 		json.nodes.push(listLine)
 	})
 
+	validateJSON(json)
+
 	return json
 }
 
@@ -224,26 +224,78 @@ const plugins = {
 	onKeyDown(event, change) {
 		// See if any of the selected nodes have a CODE_NODE parent
 		const isLine = isType(change)
+		if (!isLine) return
 
-		// Enter
-		if (isLine && event.key === 'Enter') {
-			event.preventDefault()
-			change.insertBlock({
-				type: LIST_LINE_NODE,
-				data: { content: { indent: 1, bullet: '*' } }
+		// Delete empty code node
+		if (event.key === 'Backspace' || event.key === 'Delete') {
+			const last = change.value.endBlock
+
+			// If the block is not empty or we are deleting multiple things, delete normally
+			if (!change.value.selection.isCollapsed || last.text !== '') return
+
+			// Get the deepest level that contains this line
+			const listLevel = change.value.document.getClosest(last.key, par => {
+				return par.type === LIST_LEVEL_NODE
 			})
+
+			// levels with more than one child should delete normally
+			if (listLevel.nodes.size > 1) return
+
+			// Get the deepest level that holds the listLevel
+			const oneLevelUp = change.value.document.getClosest(listLevel.key, par => {
+				return par.type === LIST_LEVEL_NODE
+			})
+
+			// If it is a nested item, move it up one layer
+			if (oneLevelUp) {
+				event.preventDefault()
+				change.unwrapNodeByKey(last.key)
+				return true
+			}
+
+			// If it is at the top level of an empty list, delete the whole list
+			const parent = change.value.document.getClosest(last.key, par => {
+				return par.type === LIST_NODE
+			})
+
+			event.preventDefault()
+			change.removeNodeByKey(parent.key)
 			return true
 		}
 
+		// Enter
+		if (event.key === 'Enter') {
+			event.preventDefault()
+			const last = change.value.endBlock
+
+			// Get the deepest level that contains this line
+			const listLevel = change.value.document.getClosest(last.key, par => {
+				return par.type === LIST_LEVEL_NODE
+			})
+
+			// Double enter on last node
+			if (
+				change.value.selection.isCollapsed &&
+				last.text === '' &&
+				listLevel.nodes.last().key === last.key
+			) {
+				// Schema will change this back to a list_line unless it is at the end of the list
+				change.setNodeByKey(last.key, { type: TEXT_NODE })
+				return true
+			}
+
+			return
+		}
+
 		// Shift Tab
-		if (isLine && event.key === 'Tab' && event.shiftKey) {
+		if (event.key === 'Tab' && event.shiftKey) {
 			event.preventDefault()
 			change.unwrapBlock(LIST_LEVEL_NODE)
 			return true
 		}
 
 		// Tab indent
-		if (isLine && event.key === 'Tab') {
+		if (event.key === 'Tab') {
 			event.preventDefault()
 			let bullet = 'disc'
 			let type = 'unordered'
@@ -280,7 +332,11 @@ const plugins = {
 				return <Level {...props} {...props.attributes} />
 		}
 	},
-	validateNode(node) {
+	normalizeNode(node) {
+		if (node.object !== 'block') return
+		if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return
+		if (node.nodes.size <= 1) return
+
 		const invalids = node.nodes
 			.map((child, i) => {
 				const next = node.nodes.get(i + 1)
@@ -290,11 +346,13 @@ const plugins = {
 			})
 			.filter(Boolean)
 
+		if (invalids.size === 0) return
+
 		return change => {
 			change.withoutNormalization(c => {
 				// Reverse the list to handle consecutive merges, since the earlier nodes
 				// will always exist after each merge.
-				invalids.reverse().forEach(n => {
+				invalids.forEach(n => {
 					c.mergeNodeByKey(n.key)
 				})
 			})
@@ -316,18 +374,24 @@ const plugins = {
 					const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
 
 					switch (error.code) {
+						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
+							const isAtEdge = index === node.nodes.size - 1 || index === 0
+							if (child.object === 'block' && isAtEdge && child.type !== LIST_LINE_NODE) {
+								return change.unwrapNodeByKey(child.key)
+							}
+
+							return change.wrapBlockByKey(child.key, {
+								type: LIST_LEVEL_NODE,
+								data: { content: { type: type, bulletStyle: bulletList[0] } }
+							})
+						}
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: LIST_LEVEL_NODE,
 								data: { content: { type: type, bulletStyle: bulletList[0] } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
-						}
-						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
-								type: LIST_LEVEL_NODE,
-								data: { content: { type: type, bulletStyle: bulletList[0] } }
-							})
 						}
 					}
 				}
@@ -339,34 +403,21 @@ const plugins = {
 						min: 1
 					}
 				],
-				parent: [{ type: LIST_LEVEL_NODE }, { type: LIST_NODE }],
 				normalize: (change, error) => {
-					const { node, child, parent, index } = error
+					const { node, child, index } = error
 					switch (error.code) {
-						case PARENT_TYPE_INVALID: {
-							return change.withoutNormalization(c => {
-								let childIndex = parent.nodes.indexOf(node)
-								node.nodes.forEach(childNode => {
-									if (childNode.type === LIST_LINE_NODE) {
-										c.setNodeByKey(childNode.key, {
-											type: TEXT_NODE,
-											data: { content: { indent: 0 } }
-										})
-									}
-									c.moveNodeByKey(childNode.key, parent.key, childIndex)
-									childIndex++
-								})
-								return c.removeNodeByKey(node.key)
-							})
-						}
 						case CHILD_TYPE_INVALID: {
-							if (child.object === 'block') {
-								return change.setNodeByKey(child.key, LIST_LINE_NODE)
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
+							const isAtEdge = index === node.nodes.size - 1 || index === 0
+							if (child.object === 'block' && isAtEdge) {
+								return change.unwrapNodeByKey(child.key)
 							}
 
-							return change.wrapBlockByKey(child.key, {
-								type: LIST_LINE_NODE
-							})
+							return change
+								.wrapBlockByKey(child.key, {
+									type: LIST_LINE_NODE
+								})
+								.moveToStartOfNextText()
 						}
 						case CHILD_REQUIRED: {
 							const block = Block.create(LIST_LINE_NODE)
@@ -392,6 +443,7 @@ const List = {
 		isType,
 		insertNode,
 		slateToObo,
+		validateJSON,
 		oboToSlate
 	},
 	plugins

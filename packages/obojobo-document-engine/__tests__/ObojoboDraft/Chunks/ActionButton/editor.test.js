@@ -11,22 +11,22 @@ describe('ActionButton editor', () => {
 	test('requiresValue.nav:goto looks for id', () => {
 		const value = '{"id": "mockId"}'
 		const checked = ActionButton.helpers.requiresValue['nav:goto'](value)
-		expect(checked).toEqual(true)
+		expect(checked).toEqual('mockId')
 	})
 	test('requiresValue.nav:openExternalLink looks for url', () => {
 		const value = '{"url": "mockURL"}'
 		const checked = ActionButton.helpers.requiresValue['nav:openExternalLink'](value)
-		expect(checked).toEqual(true)
+		expect(checked).toEqual('mockURL')
 	})
 	test('assessment:startAttempt looks for id', () => {
 		const value = '{"id": "mockId"}'
 		const checked = ActionButton.helpers.requiresValue['assessment:startAttempt'](value)
-		expect(checked).toEqual(true)
+		expect(checked).toEqual('mockId')
 	})
 	test('requiresValue.assessment:endAttempt looks for id', () => {
 		const value = '{"id": "mockId"}'
 		const checked = ActionButton.helpers.requiresValue['assessment:endAttempt'](value)
-		expect(checked).toEqual(true)
+		expect(checked).toEqual('mockId')
 	})
 	test('requiresValue.js looks for string', () => {
 		const value = 'mockJavaScript'
@@ -135,8 +135,7 @@ describe('ActionButton editor', () => {
 							value: 'mockValue'
 						}
 					],
-					label: 'mockLabel',
-					newTrigger: { type: 'nav:goto', value: '' }
+					label: 'mockLabel'
 				}
 			}
 		})

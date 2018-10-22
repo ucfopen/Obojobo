@@ -238,7 +238,6 @@ This reduce a tree of nodes to those nodes selected for an attempt
 node is probably initially a QuestionBank Node (or higher up tree)
 expects all `.children` of question banks to be questions or question banks
 alters `.children` of questionbank nodes
-
 SEE the `createChosenQuestionTree` tests in attempt-start.test.js for
 details on exactly what to expect from this
 */

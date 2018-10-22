@@ -17,12 +17,16 @@
 	.button {
 		input {
 			font-family: $font-default;
-			// button lightened to be close to $color-action with opacity 0.8
-			background-color: lighten($color-action, 9%);
+			background-color: $color-action;
 			font-size: 0.85em;
 			color: $color-bg;
 			border: none;
 			width: 100%;
+
+			&::placeholder {
+				color: $color-bg;
+				opacity: 80%;
+			}
 		}
 
 		cursor: pointer;
@@ -32,11 +36,10 @@
 		min-width: 3.25em;
 		border-radius: 0.2em;
 		padding: 0.6rem 1em;
-		// button lightened to be close to $color-action with opacity 0.8
-		background-color: lighten($color-action, 9%);
+		background-color: $color-action;
 		color: $color-bg;
 		border: 1px solid $color-transparent;
-		border-bottom: 1px solid darken($color-action, 20%);
+		border-bottom: 1px solid $color-action;
 	}
 
 	.trigger {
@@ -55,6 +58,10 @@
 	}
 
 	.is-type-invalid {
-		background-color: #ff000011;
+		&::before {
+			content: 'Unable to validate value';
+			display: block;
+			color: $color-error;
+		}
 	}
 }

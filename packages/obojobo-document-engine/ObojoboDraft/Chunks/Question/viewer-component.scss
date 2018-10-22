@@ -67,15 +67,16 @@
 		> .content-back {
 			transform: rotateY(180deg);
 
-			// transition: border $duration-animation-default;
-			max-width: $dimension-column-width;
-			background: $color-bg;
+			> .responses-hidden {
+				font-family: $font-default;
+				font-size: 0.9em;
+				text-align: center;
+				margin-bottom: 1em;
+			}
 		}
-		> .responses-hidden {
-			font-family: $font-default;
-			font-size: 0.9em;
-			text-align: center;
-			margin-bottom: 1em;
+
+		&.question-editor {
+			background: $color-bg;
 		}
 	}
 
@@ -126,19 +127,19 @@
 	position: relative;
 	border-bottom-left-radius: 0.3em;
 	border-bottom-right-radius: 0.3em;
-	padding-bottom: 1px;
+	padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
 
 	.page-editor {
 		margin: $dimension-padding / 3;
 		background: $color-bg;
 		border: 1px solid $color-shadow;
 
-		&:before {
+		&::before {
 			content: 'Full explanation:';
 			font-family: $font-default;
 			font-size: 1em;
 			font-weight: bold;
-			color: transparentize($color-text, 0.25);
+			color: $color-text-minor;
 			margin-top: 1em;
 			margin-left: 2em;
 			margin-bottom: -1em;

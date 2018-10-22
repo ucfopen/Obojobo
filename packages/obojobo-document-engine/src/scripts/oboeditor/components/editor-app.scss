@@ -1,75 +1,53 @@
 @import '../../../scss/includes';
 
 .editor {
-	margin-top: 1em;
+	margin-top: 3em;
+	margin-bottom: 3em;
+
 	.toolbar {
+		text-align: center;
 		position: fixed;
 		top: 0;
 		z-index: 999;
-		width: inherit;
-		background: $color-obojobo-blue;
+		margin: 0 auto;
+		padding-right: 3em;
+		padding-left: 3em;
+		left: $dimension-nav-menu;
+		right: 0;
+		background-color: $color-bg2;
+		border-bottom: 1px solid $color-shadow;
+
+		button {
+			font-size: 1em;
+			width: 2.5em;
+			height: 2.5em;
+			padding: 0.4em;
+			box-sizing: border-box;
+			margin: 0;
+			border: none;
+			background: transparent;
+			cursor: pointer;
+			opacity: 0.6;
+
+			svg path {
+				fill: $color-text;
+			}
+
+			svg line {
+				stroke: $color-text;
+			}
+		}
 	}
 
 	.exporter {
 		position: fixed;
 		bottom: 1em;
-		left: 1em;
+		left: 1.65em;
 		z-index: 999;
 		font-size: inherit;
-	}
-
-	.dropdown {
-		position: fixed;
-		top: 0.5em;
-		right: 2em;
-		z-index: 999;
-
-		button {
-			display: block;
-			background-color: $color-obojobo-blue;
-			border-radius: $dimension-rounded-radius;
-			margin: 0.3em;
-			font-size: 1.3em;
-			color: $color-bg;
-		}
-
-		&:hover {
-			.drop-content {
-				display: block;
-			}
-		}
-
-		.drop-content {
-			display: none;
-			position: absolute;
-			right: 0;
-			z-index: 1;
-
-			button {
-				display: block;
-				background-color: $color-obojobo-blue;
-				border-radius: $dimension-rounded-radius;
-				margin: 0.3em;
-				font-size: 1.3em;
-				width: 100%;
-				color: $color-bg;
-			}
-		}
-	}
-
-	.scoreactions {
-		font-family: $font-default;
-		background-color: $color-bg2;
+		background: $color-obojobo-blue;
 		border-radius: $dimension-rounded-radius;
-		padding: 2em 3em;
-		margin-bottom: 3em;
-		margin-top: 3em;
-		.score-actions-page {
-			background-color: $color-bg;
-			margin: 2em;
-			position: relative;
-			width: auto;
-		}
+		color: $color-bg;
 	}
 
 	.parameter-node {
@@ -86,6 +64,15 @@
 		background: transparentize($color-preview, 0.95);
 		margin-bottom: 3em;
 
+		button {
+			font-family: $font-default;
+			line-height: 1em;
+			font-size: 1em;
+			text-align: center;
+			border-radius: $dimension-rounded-radius;
+			padding: 0.4em;
+		}
+
 		.parameter-node {
 			display: block;
 			padding-top: 0.5em;
@@ -97,21 +84,65 @@
 			border-bottom: 1px solid $color-preview;
 		}
 
-		button {
-			font-family: $font-default;
-			font-size: 0.75em;
-			line-height: 1em;
-			font-family: $font-default;
-			font-size: 1em;
-			text-align: center;
-			border-radius: $dimension-rounded-radius;
-			padding: 0.4em;
-		}
-
 		.add-button {
 			margin-top: 0.2em;
 			background-color: $color-preview;
-			color: white;
+			color: $color-bg;
+		}
+	}
+
+	.dropdown {
+		position: absolute;
+		right: 3em;
+
+		button {
+			display: block;
+			background-color: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			margin: 0.1em;
+			font-size: 1em;
+			color: $color-bg;
+		}
+
+		.drop-content {
+			display: none;
+			position: absolute;
+			right: 0.1em;
+			z-index: 9999;
+			background-color: $color-bg;
+			border-radius: $dimension-rounded-radius;
+
+			button {
+				display: block;
+				background-color: $color-obojobo-blue;
+				border-radius: $dimension-rounded-radius;
+				margin: 0.1em;
+				font-size: 1em;
+				width: 100%;
+				color: $color-bg;
+			}
+		}
+
+		&:hover {
+			.drop-content {
+				display: block;
+			}
+		}
+	}
+
+	.scoreactions {
+		font-family: $font-default;
+		background-color: $color-bg2;
+		border-radius: $dimension-rounded-radius;
+		padding: 2em 3em;
+		margin-bottom: 3em;
+		margin-top: 3em;
+
+		.score-actions-page {
+			background-color: $color-bg;
+			margin: 2em;
+			position: relative;
+			width: auto;
 		}
 	}
 
@@ -140,7 +171,7 @@
 	.switch {
 		position: relative;
 		display: inline-block;
-		width: 2em;
+		width: 3em;
 		height: 1em;
 
 		input {
@@ -148,39 +179,94 @@
 		}
 
 		.slider {
+			border: 1px solid $color-shadow;
 			position: absolute;
-			cursor: pointer;
 			top: 0;
 			left: 0;
 			right: 0;
 			bottom: 0;
-			background-color: $color-shadow;
-			border-radius: 1em;
-		}
+			background-color: $color-bg2;
+			transition: 0.4s;
+			border-radius: 0.7em;
 
-		.slider:before {
-			position: absolute;
-			content: '';
-			height: 0.5em;
-			width: 0.5em;
-			left: 0.25em;
-			bottom: 0.25em;
-			background-color: white;
-			border-radius: 50%;
+			// Circle slider
+			&::before {
+				border: 1px solid $color-shadow;
+				position: absolute;
+				content: '';
+				height: 0.7em;
+				width: 0.7em;
+				left: 0.05em;
+				bottom: 0.05em;
+				background-color: $color-bg;
+				transition: 0.4s;
+				border-radius: 50%;
+			}
+
+			&::after {
+				content: 'OFF';
+				color: $color-text;
+				display: block;
+				position: absolute;
+				transform: translate(-50%, -50%);
+				top: 50%;
+				left: 50%;
+				font-size: 0.5em;
+			}
 		}
 
 		input:checked + .slider {
 			background-color: $color-obojobo-blue;
 		}
-		input:checked + .slider:before {
-			transform: translate(1em, 0);
-		}
+
 		input:focus + .slider {
-			outline: rgb(59, 153, 252) auto 5px;
+			box-shadow: 0 0 5px #2196f3;
+		}
+
+		input:checked + .slider::before {
+			transform: translateX(2em);
+		}
+
+		input:checked + .slider::after {
+			content: 'ON';
+			color: $color-bg;
 		}
 	}
 
 	.buffer {
 		margin: $dimension-padding / 3;
+	}
+
+	.latex-editor {
+		background-color: $color-bg2;
+	}
+
+	.placeholder {
+		display: inline-block;
+		position: absolute;
+		pointer-events: none;
+		white-space: nowrap;
+		opacity: 0.33;
+
+		&.align-right {
+			transform: translate(-100%);
+		}
+
+		&.align-center {
+			transform: translate(-50%);
+		}
+	}
+
+	.toolbar button:hover {
+		opacity: 1;
+		background: lighten($color-action, 48%);
+
+		svg path {
+			fill: $color-action;
+		}
+
+		svg line {
+			stroke: $color-action;
+		}
 	}
 }

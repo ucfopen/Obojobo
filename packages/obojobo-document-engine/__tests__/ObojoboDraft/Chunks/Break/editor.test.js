@@ -12,9 +12,7 @@ describe('Break editor', () => {
 			<Node
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					}
 				}}
 			/>
@@ -31,9 +29,7 @@ describe('Break editor', () => {
 				isSelected={true}
 				node={{
 					data: {
-						get: () => {
-							return { width: 'normal' }
-						}
+						get: () => ({ width: 'normal' })
 					}
 				}}
 			/>
@@ -52,16 +48,14 @@ describe('Break editor', () => {
 				isSelected={true}
 				node={{
 					data: {
-						get: () => {
-							return { width: 'large' }
-						}
+						get: () => ({ width: 'large' })
 					}
 				}}
 			/>
 		)
 		const tree = component.html()
 
-		component.find('button').simulate('click') // toggle to large
+		component.find('button').simulate('click') // toggle to normal
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -84,9 +78,7 @@ describe('Break editor', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: () => {
-					return {}
-				}
+				get: () => ({})
 			}
 		}
 		const oboNode = Break.helpers.slateToObo(slateNode)
@@ -111,9 +103,7 @@ describe('Break editor', () => {
 			node: {
 				type: BREAK_NODE,
 				data: {
-					get: () => {
-						return {}
-					}
+					get: () => ({})
 				}
 			}
 		}

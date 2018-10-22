@@ -1,5 +1,3 @@
-/* eslint react/no-direct-mutation-state:0 */
-
 import React from 'react'
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
@@ -17,100 +15,89 @@ const allowedActions = [
 	'nav:toggle',
 	'assessment:startAttempt',
 	'assessment:endAttempt',
-	'js',
 	'viewer:alert'
 ]
-/* eslint-disable eqeqeq */
 const requiresValue = {
 	'nav:goto': value => {
 		const json = JSON.parse(value)
-		return json.id != null
+		return json.id
 	},
 	'nav:openExternalLink': value => {
 		const json = JSON.parse(value)
-		return json.url != null
+		return json.url
 	},
 	'assessment:startAttempt': value => {
 		const json = JSON.parse(value)
-		return json.id != null
+		return json.id
 	},
 	'assessment:endAttempt': value => {
 		const json = JSON.parse(value)
-		return json.id != null
+		return json.id
 	},
 	js: value => {
 		return typeof value === typeof ''
 	},
 	'viewer:alert': value => {
 		const json = JSON.parse(value)
-		return json.title != null && json.message != null
+		return !!json.title && !!json.message
 	}
 }
-/* eslint-enable eqeqeq */
 
-class Trigger extends React.Component {
-	deleteTrigger() {
-		const itemIndex = this.props.parent.findIndex(action => action.type === this.props.type)
-
-		this.props.parent.splice(itemIndex, 1)
-		this.props.update()
-	}
-
-	render() {
-		return (
-			<div className={'trigger'} key={this.props.type}>
-				<div>
-					<p>{this.props.type}</p>
-				</div>
-				<div>
-					<p>{this.props.value}</p>
-				</div>
-				<button className={'delete'} onClick={() => this.deleteTrigger()}>
-					x
-				</button>
+const Trigger = props => {
+	return (
+		<div className={'trigger'} key={props.type}>
+			<div>
+				<p>{props.type}</p>
 			</div>
-		)
-	}
+			<div>
+				<p>{props.value}</p>
+			</div>
+			<button className={'delete-node'} onClick={props.update}>
+				x
+			</button>
+		</div>
+	)
 }
 
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
-		this.state = this.props.node.data.get('content')
-		this.state.newTrigger = { type: allowedActions[0], value: '' }
-		this.state.isValid = 'valid'
+		this.state = {
+			newTrigger: { type: allowedActions[0], value: '' },
+			isValid: 'valid'
+		}
 	}
 
 	handleActionChange(event) {
-		this.setState({
-			newTrigger: {
-				type: event.target.value,
-				value: this.state.newTrigger.value
-			}
+		const type = event.target.value
+
+		return this.setState(state => {
+			const newTrigger = state.newTrigger
+			newTrigger.type = type
+			return { newTrigger }
 		})
 	}
 
 	handleValueChange(event) {
-		this.setState({
-			newTrigger: {
-				type: this.state.newTrigger.type,
-				value: event.target.value
-			}
+		const value = event.target.value
+
+		this.setState(state => {
+			const newTrigger = state.newTrigger
+			newTrigger.value = value
+			return { newTrigger }
 		})
 	}
 
 	handleLabelChange(event) {
 		const editor = this.props.editor
 		const change = editor.value.change()
-
-		this.setState({ label: event.target.value })
+		const content = this.props.node.data.get('content')
 
 		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					label: event.target.value,
-					newTrigger: this.state.newTrigger,
-					actions: this.state.actions
+					actions: content.actions
 				}
 			}
 		})
@@ -118,19 +105,44 @@ class Node extends React.Component {
 	}
 
 	addAction() {
+		const editor = this.props.editor
+		const change = editor.value.change()
 		const verify = requiresValue[this.state.newTrigger.type]
+		const content = this.props.node.data.get('content')
+
 		if (verify && !verify(this.state.newTrigger.value)) {
-			this.state.isValid = 'invalid'
-			this.forceUpdate()
+			this.setState({ isValid: 'invalid' })
 			return
 		}
 
-		this.state.isValid = 'valid'
-		this.state.actions.push(this.state.newTrigger)
+		content.actions.push(this.state.newTrigger)
 
-		this.state.newTrigger = { type: allowedActions[0], value: '' }
+		this.setState({
+			isValid: 'valid',
+			newTrigger: {
+				type: allowedActions[0],
+				value: ''
+			}
+		})
 
-		this.forceUpdate()
+		change.setNodeByKey(this.props.node.key, {
+			data: { content }
+		})
+
+		editor.onChange(change)
+	}
+
+	removeAction(index) {
+		const editor = this.props.editor
+		const change = editor.value.change()
+		const content = this.props.node.data.get('content')
+
+		content.actions.splice(index, 1)
+
+		change.setNodeByKey(this.props.node.key, {
+			data: { content }
+		})
+		editor.onChange(change)
 	}
 
 	renderNew() {
@@ -168,16 +180,17 @@ class Node extends React.Component {
 	}
 
 	renderTriggers() {
+		const content = this.props.node.data.get('content')
 		return (
 			<div className={'trigger-box'}>
-				{this.props.node.data.get('content').actions.map(action => {
+				{content.actions.map((action, index) => {
 					return (
 						<Trigger
 							type={action.type}
 							value={action.value}
 							key={action.type}
-							parent={this.state.actions}
-							update={() => this.forceUpdate()}
+							parent={content.actions}
+							update={() => this.removeAction(index)}
 						/>
 					)
 				})}
@@ -188,6 +201,7 @@ class Node extends React.Component {
 
 	renderButton() {
 		const { isFocused } = this.props
+		const content = this.props.node.data.get('content')
 
 		const wrapperStyle = {
 			position: 'relative'
@@ -214,9 +228,10 @@ class Node extends React.Component {
 				<div className={'button'}>
 					<input
 						name={'Button Name'}
-						value={this.state.label}
+						value={content.label}
 						onChange={event => this.handleLabelChange(event)}
 						onClick={event => event.stopPropagation()}
+						placeholder={'Button Label'}
 						frameBorder="0"
 						style={iframeStyle}
 					/>
@@ -257,7 +272,7 @@ const slateToObo = node => {
 	json.type = node.type
 	json.content = {}
 	const nodeContent = node.data.get('content')
-	json.content.label = nodeContent.label
+	json.content.label = nodeContent.label || ''
 	json.content.triggers = [
 		{
 			type: 'onClick',
@@ -282,7 +297,7 @@ const oboToSlate = node => {
 
 	json.data = { content: {} }
 	json.data.content.label = node.content.label
-	if (!json.data.content.label) {
+	if (!json.data.content.label && node.content.textGroup) {
 		node.content.textGroup.forEach(line => {
 			json.data.content.label = line.text.value
 		})

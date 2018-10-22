@@ -1,5 +1,5 @@
 function MarkHotkey(options) {
-	const { type, key } = options
+	const { type, key, render } = options
 
 	return {
 		onKeyDown(event, change) {
@@ -9,6 +9,12 @@ function MarkHotkey(options) {
 
 			change.toggleMark(type)
 			return true
+		},
+		renderMark(props) {
+			switch (props.mark.type) {
+				case type:
+					return render(props)
+			}
 		}
 	}
 }

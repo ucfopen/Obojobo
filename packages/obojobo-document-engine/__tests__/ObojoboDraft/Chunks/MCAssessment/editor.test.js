@@ -43,9 +43,6 @@ describe('MCAssessment editor', () => {
 				}}
 			/>
 		)
-		// const tree = component.html()
-		// component.find('button').simulate('click')
-
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -77,9 +74,6 @@ describe('MCAssessment editor', () => {
 		)
 		const tree = component.html()
 
-		// component.find('input').simulate('change', {
-		// 	target: { checked: true }
-		// })
 		component
 			.find('button')
 			.at(0)
@@ -102,17 +96,7 @@ describe('MCAssessment editor', () => {
 				}}
 			/>
 		)
-		// const tree = component.html()
 
-		// component.find('select').simulate('change', {
-		// 	target: { value: 'mockValue' },
-		// 	stopPropagation: jest.fn()
-		// })
-
-		// component.find('select').simulate('click', {
-		// 	target: { value: 'mockValue' },
-		// 	stopPropagation: jest.fn()
-		// })
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

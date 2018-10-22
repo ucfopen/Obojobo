@@ -5,6 +5,7 @@ import Common from 'Common'
 
 import Question from '../Question/editor'
 import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
+import emptyQuestionBank from './empty-question-bank.json'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
@@ -58,7 +59,7 @@ class Node extends React.Component {
 	render() {
 		return (
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-				<button className={'delete'} onClick={() => this.delete()}>
+				<button className={'delete-node'} onClick={() => this.delete()}>
 					X
 				</button>
 				{this.props.children}
@@ -75,10 +76,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: QUESTION_BANK_NODE,
-			data: { content: { choose: 1, select: 'sequential' } }
-		})
+		.insertBlock(Block.fromJSON(emptyQuestionBank))
 		.moveToStartOfNextText()
 		.focus()
 }
@@ -167,7 +165,7 @@ const plugins = {
 			'ObojoboDraft.Chunks.QuestionBank': {
 				nodes: [
 					{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
-					{ match: [{ type: QUESTION_NODE, QUESTION_BANK_NODE }], min: 1 }
+					{ match: [{ type: QUESTION_NODE }, { type: QUESTION_BANK_NODE }], min: 1 }
 				],
 				normalize: (change, error) => {
 					const { node, child, index } = error

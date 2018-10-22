@@ -2,6 +2,8 @@ import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
+jest.mock('../../../../src/scripts/oboeditor/util/text-util')
+
 import Figure from '../../../../ObojoboDraft/Chunks/Figure/editor'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
@@ -10,19 +12,17 @@ describe('Figure editor', () => {
 		jest.restoreAllMocks()
 		jest.resetAllMocks()
 	})
-	test('Node renders correctly', () => {
+	test('Node component', () => {
 		const Node = Figure.components.Node
 		const component = renderer.create(
 			<Node
 				node={{
 					data: {
-						get: () => {
-							return {
-								size: 'mockSize',
-								url: 'mockUrl',
-								alt: 'mockAlt'
-							}
-						}
+						get: () => ({
+							size: 'mockSize',
+							url: 'mockUrl',
+							alt: 'mockAlt'
+						})
 					}
 				}}
 			/>
@@ -40,15 +40,13 @@ describe('Figure editor', () => {
 			<Node
 				node={{
 					data: {
-						get: () => {
-							return {
-								size: 'custom',
-								url: 'mockUrl',
-								alt: 'mockAlt',
-								width: 'customWidth',
-								height: 'customHeight'
-							}
-						}
+						get: () => ({
+							size: 'custom',
+							url: 'mockUrl',
+							alt: 'mockAlt',
+							width: 'customWidth',
+							height: 'customHeight'
+						})
 					}
 				}}
 			/>
@@ -59,14 +57,12 @@ describe('Figure editor', () => {
 			<Node
 				node={{
 					data: {
-						get: () => {
-							return {
-								size: 'custom',
-								url: 'mockUrl',
-								alt: 'mockAlt',
-								height: 'customHeight'
-							}
-						}
+						get: () => ({
+							size: 'custom',
+							url: 'mockUrl',
+							alt: 'mockAlt',
+							height: 'customHeight'
+						})
 					}
 				}}
 			/>
@@ -77,14 +73,12 @@ describe('Figure editor', () => {
 			<Node
 				node={{
 					data: {
-						get: () => {
-							return {
-								size: 'custom',
-								url: 'mockUrl',
-								alt: 'mockAlt',
-								width: 'mockWidth'
-							}
-						}
+						get: () => ({
+							size: 'custom',
+							url: 'mockUrl',
+							alt: 'mockAlt',
+							width: 'mockWidth'
+						})
 					}
 				}}
 			/>
@@ -104,11 +98,9 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
-					key: 'mock_key',
+					key: 'mockKey',
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({})
 					}
 				}}
 				editor={{
@@ -124,7 +116,7 @@ describe('Figure editor', () => {
 			.simulate('click')
 
 		expect(change.setNodeByKey).toBeCalledWith(
-			'mock_key',
+			'mockKey',
 			expect.objectContaining({ data: { content: { alt: 'mockAltText' } } })
 		)
 	})
@@ -141,13 +133,9 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
-					key: 'mock_key',
+					key: 'mockKey',
 					data: {
-						get: () => {
-							return {
-								alt: 'contentAlt'
-							}
-						}
+						get: () => ({ alt: 'contentAlt' })
 					}
 				}}
 				editor={{
@@ -163,7 +151,7 @@ describe('Figure editor', () => {
 			.simulate('click')
 
 		expect(change.setNodeByKey).toBeCalledWith(
-			'mock_key',
+			'mockKey',
 			expect.objectContaining({ data: { content: { alt: 'contentAlt' } } })
 		)
 	})
@@ -180,7 +168,7 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
-					key: 'mock_key',
+					key: 'mockKey',
 					data: {
 						get: () => {
 							return {}
@@ -200,7 +188,7 @@ describe('Figure editor', () => {
 			.simulate('click')
 
 		expect(change.setNodeByKey).toBeCalledWith(
-			'mock_key',
+			'mockKey',
 			expect.objectContaining({ data: { content: { url: 'mockUrl' } } })
 		)
 	})
@@ -217,13 +205,11 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
-					key: 'mock_key',
+					key: 'mockKey',
 					data: {
-						get: () => {
-							return {
-								url: 'contentUrl'
-							}
-						}
+						get: () => ({
+							url: 'contentUrl'
+						})
 					}
 				}}
 				editor={{
@@ -239,7 +225,7 @@ describe('Figure editor', () => {
 			.simulate('click')
 
 		expect(change.setNodeByKey).toBeCalledWith(
-			'mock_key',
+			'mockKey',
 			expect.objectContaining({ data: { content: { url: 'contentUrl' } } })
 		)
 	})
@@ -253,7 +239,7 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
-					key: 'mock_key',
+					key: 'mockKey',
 					data: {
 						get: () => {
 							return {}
@@ -284,7 +270,7 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
-					key: 'mock_key',
+					key: 'mockKey',
 					data: {
 						get: () => {
 							return {}
@@ -308,7 +294,7 @@ describe('Figure editor', () => {
 		})
 
 		expect(change.setNodeByKey).toBeCalledWith(
-			'mock_key',
+			'mockKey',
 			expect.objectContaining({
 				data: {
 					content: expect.objectContaining({ size: 'small' })
@@ -329,7 +315,7 @@ describe('Figure editor', () => {
 		const component = mount(
 			<Node
 				node={{
-					key: 'mock_key',
+					key: 'mockKey',
 					data: {
 						get: () => {
 							return {}
@@ -348,7 +334,7 @@ describe('Figure editor', () => {
 		})
 
 		expect(change.setNodeByKey).toBeCalledWith(
-			'mock_key',
+			'mockKey',
 			expect.objectContaining({
 				data: {
 					content: expect.objectContaining({ size: 'custom', height: 100, width: 200 })
@@ -443,5 +429,46 @@ describe('Figure editor', () => {
 		}
 
 		expect(Figure.plugins.renderNode(props)).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			Figure.plugins.renderPlaceholder({
+				node: {
+					object: 'text'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			Figure.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: 'mockType'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			Figure.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: FIGURE_NODE,
+					text: 'Some text'
+				}
+			})
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			Figure.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: FIGURE_NODE,
+					text: ''
+				}
+			})
+		).toMatchSnapshot()
 	})
 })

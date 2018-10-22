@@ -8,6 +8,7 @@ const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 
 import MCAnswer from '../MCAnswer/editor'
 import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
+import isOrNot from '../../../../src/scripts/common/isornot'
 
 class Node extends React.Component {
 	constructor(props) {
@@ -59,7 +60,7 @@ class Node extends React.Component {
 			isOrNot(score === 100, 'correct')
 		return (
 			<div className={className}>
-				<button className={'delete'} onClick={event => this.delete(event)}>
+				<button className={'delete-node'} onClick={event => this.delete(event)}>
 					X
 				</button>
 				<button className={'correct-button'} onClick={event => this.handleScoreChange(event)}>
@@ -182,11 +183,6 @@ const MCChoice = {
 		oboToSlate
 	},
 	plugins
-}
-
-const isOrNot = (item, text) => {
-	if (item) return ' is-' + text
-	return ' is-not-' + text
 }
 
 export default MCChoice

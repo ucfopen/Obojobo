@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Figure editor Node renders correctly 1`] = `
+exports[`Figure editor Node component 1`] = `
 <div
   className="component"
 >
@@ -62,6 +62,7 @@ exports[`Figure editor Node renders correctly 1`] = `
       <img
         alt="mockAlt"
         src="mockUrl"
+        title="mockAlt"
         unselectable="on"
       />
       <figcaption />
@@ -138,6 +139,7 @@ exports[`Figure editor Node renders with custom size correctly 1`] = `
             "width": "customWidthpx",
           }
         }
+        title="mockAlt"
         unselectable="on"
       />
       <figcaption />
@@ -213,6 +215,7 @@ exports[`Figure editor Node renders with custom size correctly 2`] = `
             "height": "customHeightpx",
           }
         }
+        title="mockAlt"
         unselectable="on"
       />
       <figcaption />
@@ -288,6 +291,7 @@ exports[`Figure editor Node renders with custom size correctly 3`] = `
             "width": "mockWidthpx",
           }
         }
+        title="mockAlt"
         unselectable="on"
       />
       <figcaption />
@@ -335,11 +339,7 @@ Object {
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "leaves": Array [
-        Object {
-          "text": "mockCaption",
-        },
-      ],
+      "leaves": undefined,
       "object": "text",
     },
   ],
@@ -367,6 +367,21 @@ exports[`Figure editor plugins.renderNode renders a button when passed 1`] = `
 />
 `;
 
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Figure editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-center"
+  contentEditable={false}
+>
+  Type Your Caption Here
+</span>
+`;
+
 exports[`Figure editor slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [],
@@ -375,14 +390,7 @@ Object {
       Object {
         "data": null,
         "text": Object {
-          "styleList": Array [
-            Object {
-              "data": Object {},
-              "end": 8,
-              "start": 0,
-              "type": "b",
-            },
-          ],
+          "styleList": Array [],
           "value": "mockText",
         },
       },

@@ -149,23 +149,6 @@ const plugins = {
 				return <Settings {...props} {...props.attributes} />
 		}
 	},
-	validateNode(node) {
-		if (node.object !== 'block') return
-		if (node.type !== SETTINGS_NODE) return
-		if (node.nodes.first().object === 'text') return
-		if (node.nodes.size !== 1) return
-		if (node.nodes.first().data.get('name') === 'attempts') return
-
-		const block = Block.create({
-			type: 'Parameter',
-			data: {
-				name: 'attempts',
-				display: 'Attempts'
-			}
-		})
-
-		return change => change.insertNodeByKey(node.key, 0, block)
-	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment': {

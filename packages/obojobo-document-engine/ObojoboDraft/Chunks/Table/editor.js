@@ -2,6 +2,8 @@ import React from 'react'
 
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 
@@ -76,7 +78,6 @@ class Node extends React.Component {
 			type: TABLE_ROW_NODE,
 			data: { content: { header: false } }
 		})
-
 		change.insertNodeByKey(this.props.node.key, content.textGroup.numRows - 1, newRow)
 
 		// Insert the cells for the new row, minus the cell that was inserted by normalization
@@ -178,7 +179,7 @@ class Node extends React.Component {
 			<div className={'component'}>
 				<div className={'obojobo-draft--chunks--table viewer pad'}>
 					<div className={'container'}>
-						<table className="view" ref="table" key="table">
+						<table className="view" key="table">
 							<tbody>
 								{this.props.children}
 								{this.renderColDelete()}
@@ -196,6 +197,14 @@ class Node extends React.Component {
 	}
 }
 
+const isType = change => {
+	return change.value.blocks.some(block => {
+		return !!change.value.document.getClosest(block.key, parent => {
+			return parent.type === TABLE_NODE
+		})
+	})
+}
+
 const insertNode = change => {
 	change
 		.insertBlock({
@@ -211,32 +220,20 @@ const slateToObo = node => {
 	json.id = node.key
 	json.type = node.type
 	json.content = node.data.get('content') || { textGroup: {} }
+	json.content.header = node.nodes.get(0).data.get('content').header
 	json.content.textGroup.textGroup = []
 
 	node.nodes.forEach(row => {
 		row.nodes.forEach(cell => {
-			const codeLine = {
+			const cellLine = {
 				text: { value: cell.text, styleList: [] }
 			}
 
-			let currIndex = 0
-
 			cell.nodes.forEach(text => {
-				text.leaves.forEach(textRange => {
-					textRange.marks.forEach(mark => {
-						const style = {
-							start: currIndex,
-							end: currIndex + textRange.text.length,
-							type: mark.type,
-							data: JSON.parse(JSON.stringify(mark.data))
-						}
-						codeLine.text.styleList.push(style)
-					})
-					currIndex += textRange.text.length
-				})
+				TextUtil.slateToOboText(text, cellLine)
 			})
 
-			json.content.textGroup.textGroup.push(codeLine)
+			json.content.textGroup.textGroup.push(cellLine)
 		})
 	})
 	json.children = []
@@ -274,11 +271,7 @@ const oboToSlate = node => {
 			nodes: [
 				{
 					object: 'text',
-					leaves: [
-						{
-							text: line.text.value
-						}
-					]
+					leaves: TextUtil.parseMarkings(line)
 				}
 			]
 		}
@@ -290,6 +283,21 @@ const oboToSlate = node => {
 }
 
 const plugins = {
+	onKeyDown(event, change) {
+		// See if any of the selected nodes have a TABLE_NODE parent
+		const isTable = isType(change)
+		if (!isTable) return
+
+		// Disallow enter in tables
+		if (event.key === 'Enter') {
+			event.preventDefault()
+			return false
+		}
+
+		if (event.key === 'Backspace' || event.key === 'Delete') {
+			return KeyDownUtil.deleteNodeContents(event, change)
+		}
+	},
 	renderNode(props) {
 		switch (props.node.type) {
 			case TABLE_NODE:
@@ -314,6 +322,16 @@ const plugins = {
 					const header = index === 0 && node.data.get('content').header
 					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
+
+							// If a block was inserted in the middle, delete it to maintain table shape
+							if (child.object === 'block') {
+								return change.removeNodeByKey(child.key)
+							}
+
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_ROW_NODE,
 								data: { content: { header } }
@@ -341,6 +359,16 @@ const plugins = {
 					const header = node.data.get('content').header
 					switch (error.code) {
 						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
+
+							// If a block was inserted in the middle, delete it to maintain table shape
+							if (child.object === 'block') {
+								return change.removeNodeByKey(child.key)
+							}
+
 							return change.wrapBlockByKey(child.key, {
 								type: TABLE_CELL_NODE,
 								data: { content: { header } }
@@ -352,6 +380,20 @@ const plugins = {
 								data: { content: { header } }
 							})
 							return change.insertNodeByKey(node.key, index, block)
+						}
+					}
+				}
+			},
+			'ObojoboDraft.Chunks.Table.Cell': {
+				nodes: [{ match: [{ object: 'text' }] }],
+				normalize: (change, error) => {
+					const { node, child, index } = error
+					switch (error.code) {
+						case CHILD_TYPE_INVALID: {
+							// Allow inserting of new nodes by unwrapping unexpected blocks at end
+							if (child.object === 'block' && index === node.nodes.size - 1) {
+								return change.unwrapNodeByKey(child.key)
+							}
 						}
 					}
 				}
