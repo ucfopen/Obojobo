@@ -2,9 +2,9 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-jest.mock('../../../../src/scripts/oboeditor/util/text-util')
+jest.mock('src/scripts/oboeditor/util/text-util')
 
-import Text from '../../../../ObojoboDraft/Chunks/Text/editor'
+import Text from 'ObojoboDraft/Chunks/Text/editor'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 

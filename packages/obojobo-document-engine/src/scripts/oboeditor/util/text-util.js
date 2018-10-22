@@ -21,6 +21,8 @@ const TextUtil = {
 
 	// Parse Obojobo text object into Slate leaves array
 	parseMarkings: line => {
+		if (!line.text.styleList) return [fullText]
+
 		const fullText = line.text.value
 
 		// Retrieve all important points in this text
@@ -30,8 +32,6 @@ const TextUtil = {
 		const vitalPoints = new Set()
 		vitalPoints.add(0)
 		vitalPoints.add(fullText.length)
-
-		if (!line.text.styleList) return [fullText]
 
 		line.text.styleList.forEach(style => {
 			vitalPoints.add(style.start)

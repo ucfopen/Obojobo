@@ -133,7 +133,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                "Mock1",
+                undefined,
               ],
               "object": "text",
             },
@@ -150,7 +150,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                "Mock2",
+                undefined,
               ],
               "object": "text",
             },
@@ -178,7 +178,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                "Mock3",
+                undefined,
               ],
               "object": "text",
             },
@@ -195,7 +195,7 @@ Object {
           "nodes": Array [
             Object {
               "leaves": Array [
-                "Mock4",
+                undefined,
               ],
               "object": "text",
             },
