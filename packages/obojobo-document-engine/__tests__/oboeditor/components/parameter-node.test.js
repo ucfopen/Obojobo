@@ -2,7 +2,10 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
+jest.mock('src/scripts/oboeditor/util/keydown-util')
+
+import ParameterNode from 'src/scripts/oboeditor/components/parameter-node'
+import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 
 describe('Parameter Node', () => {
 	test('Node component', () => {
@@ -247,139 +250,19 @@ describe('Parameter Node', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] collapsed at start of block', () => {
+	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
 		const change = {
 			value: {
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: true
-				},
 				blocks: [{ key: 'mockKey', type: 'Parameter' }]
 			}
 		}
-
 		const event = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
 		ParameterNode.plugins.onKeyDown(event, change)
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] inside cell', () => {
-		const change = {
-			value: {
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false
-				},
-				blocks: [{ key: 'mockKey', type: 'Parameter' }]
-			}
-		}
-
-		const event = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		ParameterNode.plugins.onKeyDown(event, change)
-
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without first', () => {
-		const change = {
-			value: {
-				startBlock: {
-					key: 'mockStart'
-				},
-				endBlock: {
-					key: 'mockEnd'
-				},
-				blocks: {
-					some: () => true,
-					toSet: () => ({
-						first: () => false,
-						last: () => true,
-						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
-						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
-					})
-				},
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false,
-					moveToStart: () => ({
-						start: {
-							isAtEndOfNode: value => value
-						}
-					}),
-					moveToEnd: () => ({
-						end: {
-							isAtStartOfNode: value => value
-						}
-					})
-				}
-			}
-		}
-		change.removeNodeByKey = jest.fn()
-
-		const event = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		ParameterNode.plugins.onKeyDown(event, change)
-
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without last', () => {
-		const change = {
-			value: {
-				startBlock: {
-					key: 'mockStart'
-				},
-				endBlock: {
-					key: 'mockEnd'
-				},
-				blocks: {
-					some: () => true,
-					toSet: () => ({
-						first: () => true,
-						last: () => false,
-						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
-						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
-					})
-				},
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false,
-					moveToStart: () => ({
-						start: {
-							isAtEndOfNode: value => value
-						}
-					}),
-					moveToEnd: () => ({
-						end: {
-							isAtStartOfNode: value => value
-						}
-					})
-				}
-			}
-		}
-		change.removeNodeByKey = jest.fn()
-
-		const event = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		ParameterNode.plugins.onKeyDown(event, change)
-
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders a Parameter when passed', () => {
