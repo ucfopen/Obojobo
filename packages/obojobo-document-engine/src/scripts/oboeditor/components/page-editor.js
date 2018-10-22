@@ -124,12 +124,11 @@ class PageEditor extends React.Component {
 
 	render() {
 		if (this.props.page === null) return this.renderEmpty()
-		const MarkToolBarNode = MarkToolbar.components.Node
 
 		return (
 			<div className={'editor'}>
 				<div className={'toolbar'}>
-					<MarkToolBarNode value={this.state.value} onChange={change => this.onChange(change)} />
+					<MarkToolbar.components.Node value={this.state.value} onChange={change => this.onChange(change)} />
 					<div className={'dropdown'}>
 						<button>+ Insert Node</button>
 						<div className={'drop-content'}>
@@ -164,11 +163,11 @@ class PageEditor extends React.Component {
 		this.onChange(change)
 	}
 
-	buildButton(item) {
-		if (dontInsert.includes(item[0])) return null
+	buildButton([key, block]) {
+		if (dontInsert.includes(key)) return null
 		return (
-			<button key={item[0]} onClick={() => this.insertBlock(item[1])}>
-				{item[0]}
+			<button key={key} onClick={() => this.insertBlock(block)}>
+				{block}
 			</button>
 		)
 	}
