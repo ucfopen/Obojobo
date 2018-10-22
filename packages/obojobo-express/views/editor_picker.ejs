@@ -77,6 +77,7 @@
 			<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
 			<div id="sidebar">
 				<button id="button-create-new-draft">+ Create new draft</button>
+				<button id="button-create-new-tutorial">+ View OboEditor Tutorial</button>
 				<div id="search">
 					<input id="search-input" type="text" placeholder="Search..."  />
 					<button id="remove-search">&times;</button>
@@ -235,6 +236,37 @@
 			}
 			document.getElementById('button-create-new-draft').addEventListener('click', function(event) {
 				fetch('/api/drafts/new', {
+					method: 'POST',
+					credentials: 'include',
+					body: '',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(function(resp) {
+					resp.json().then(function(json) {
+						if(json.value.id)
+						{
+							location.hash = 'id:' + json.value.id
+							location.reload()
+						}
+						else
+						{
+							alert('Error: ' + error)
+							console.error(error)
+						}
+					})
+				})
+				.catch(function(error) {
+					alert('Error: ' + error)
+					console.error(error)
+				})
+			})
+
+			document.getElementById('button-create-new-tutorial').addEventListener('click', function(event) {
+				console.log('fetching')
+				fetch('/api/drafts/tutorial', {
 					method: 'POST',
 					credentials: 'include',
 					body: '',
