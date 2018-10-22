@@ -4,7 +4,6 @@ exports[`Text editor Line builds the expected component 1`] = `
 <span
   className="text align-0"
   data-indent={0}
-  dummy="dummyData"
 />
 `;
 
@@ -78,7 +77,7 @@ exports[`Text editor plugins.renderNode renders a line when passed 1`] = `
 />
 `;
 
-exports[`Text editor plugins.renderNode renders code when passed 1`] = `
+exports[`Text editor plugins.renderNode renders text when passed 1`] = `
 <Node
   node={
     Object {
@@ -118,7 +117,7 @@ Object {
         },
         "text": Object {
           "styleList": Array [],
-          "value": "mockCode",
+          "value": "mockText",
         },
       },
     ],

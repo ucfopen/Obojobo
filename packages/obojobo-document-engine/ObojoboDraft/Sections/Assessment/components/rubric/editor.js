@@ -264,7 +264,6 @@ const plugins = {
 										})
 									)
 									break
-								//return getCorrectRubricBlock(node).toJSON()
 							}
 							return change.insertNodeByKey(node.key, index, block)
 						}
