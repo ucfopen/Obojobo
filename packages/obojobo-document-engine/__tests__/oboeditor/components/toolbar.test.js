@@ -40,7 +40,39 @@ describe('Editor Toolbar', () => {
 		expect(change.toggleMark).toHaveBeenCalled()
 	})
 
-	test('Node component toggles Link', () => {
+	test('Node component toggles Link on', () => {
+		window.prompt = jest.fn().mockReturnValueOnce(null)
+		const Node = Toolbar.components.Node
+		const change = {
+			addMark: jest.fn(),
+			removeMark: jest.fn()
+		}
+		const component = shallow(
+			<Node
+				value={{
+					change: () => change,
+					marks: [
+						{
+							type: 'b'
+						}
+					]
+				}}
+				onChange={jest.fn()}
+			/>
+		)
+		const tree = component.html()
+
+		component
+			.find('button')
+			.at(6)
+			.simulate('click', { preventDefault: jest.fn() })
+
+		expect(tree).toMatchSnapshot()
+		expect(change.addMark).toHaveBeenCalled()
+		expect(change.removeMark).not.toHaveBeenCalled()
+	})
+
+	test('Node component toggles Link off', () => {
 		window.prompt = jest.fn().mockReturnValueOnce(null)
 		const Node = Toolbar.components.Node
 		const change = {
@@ -72,7 +104,7 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.addMark).toHaveBeenCalled()
+		expect(change.addMark).not.toHaveBeenCalled()
 		expect(change.removeMark).toHaveBeenCalled()
 	})
 
