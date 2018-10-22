@@ -167,7 +167,7 @@ class PageEditor extends React.Component {
 		if (dontInsert.includes(key)) return null
 		return (
 			<button key={key} onClick={() => this.insertBlock(block)}>
-				{block}
+				{key}
 			</button>
 		)
 	}

@@ -23,7 +23,7 @@ const TextUtil = {
 	parseMarkings: line => {
 		const fullText = line.text.value
 
-		// Retrive all important points in this text
+		// Retrieve all important points in this text
 		// Start and end of text, and the start and end of every style
 		// Use a set to insure no points are duplicated
 		// O(n) where n = number of styles
@@ -59,7 +59,7 @@ const TextUtil = {
 			const marks = []
 
 			// Check if the current range is contained within each style and add
-			// any relevent marks
+			// any relevant marks
 			line.text.styleList.forEach(style => {
 				// If the style ends before this range or starts after it, it doesnt apply
 				if (style.end <= last || style.start >= point) return
