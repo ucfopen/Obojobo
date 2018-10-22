@@ -10,11 +10,22 @@ const Image = props => {
 		return <div className="img-placeholder" />
 	}
 
+	const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+	const urlIsUUID = uuidRegex.test(data.url)
+	let imgEndpoint
+	if (urlIsUUID) {
+		// Endpoint: /api/media/:mediaId/:size
+		if (data.width && data.height) imgEndpoint = `/api/media/${data.width}x${data.height}/`
+		else imgEndpoint = `/api/media/${data.url}/${data.size}`
+	}
+
+	const src = urlIsUUID ? imgEndpoint : data.url
+
 	switch (data.size) {
 		case 'small':
 		case 'medium':
 		case 'large':
-			return <img src={data.url} unselectable="on" alt={data.alt} />
+			return <img src={src} unselectable="on" alt={data.alt} />
 		case 'custom':
 			imgStyles = {}
 
@@ -26,7 +37,7 @@ const Image = props => {
 				imgStyles.height = data.height + 'px'
 			}
 
-			return <img src={data.url} unselectable="on" alt={data.alt} style={imgStyles} />
+			return <img src={src} unselectable="on" alt={data.alt} style={imgStyles} />
 	}
 }
 
