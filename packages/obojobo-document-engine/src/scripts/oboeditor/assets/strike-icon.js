@@ -3,13 +3,15 @@ import React from 'react'
 const StrikeIcon = () => {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-			<defs>
-				<style type="text/css">
-					{`.icon{fill:#ffffff}
-					  .st1{fill:#ffffff; stroke:#ffffff; stroke-linecap:round; stroke-miterlimit:10; }`}
-				</style>
-			</defs>
-			<line className="st1" x1="9.1" y1="16" x2="22.9" y2="16" />
+			<line
+				className="st1"
+				x1="9.1"
+				y1="16"
+				x2="22.9"
+				y2="16"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+			/>
 			<g className="icon">
 				<path
 					d="M19.1,16.5c0.2,0.3,0.4,0.5,0.5,0.8c0.1,0.3,0.2,0.7,0.2,1.1c0,1-0.4,1.8-1.1,2.4c-0.7,0.6-1.6,0.9-2.7,0.9

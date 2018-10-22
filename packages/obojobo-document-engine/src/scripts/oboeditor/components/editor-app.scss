@@ -12,15 +12,30 @@
 		margin: 0 auto;
 		padding-right: 3em;
 		padding-left: 3em;
-		background-color: $color-bg;
+		left: $dimension-nav-menu;
+		right: 0;
+		background-color: $color-bg2;
+		border-bottom: 1px solid $color-shadow;
 
 		button {
-			background-color: $color-obojobo-blue;
-			border-radius: $dimension-rounded-radius;
-			margin: 0.1em;
 			font-size: 1em;
-			color: $color-bg;
-			min-width: 2.5em;
+			width: 2.5em;
+			height: 2.5em;
+			padding: 0.4em;
+			box-sizing: border-box;
+			margin: 0;
+			border: none;
+			background: transparent;
+			cursor: pointer;
+			opacity: 0.6;
+
+			svg path {
+				fill: $color-text;
+			}
+
+			svg line {
+				stroke: $color-text;
+			}
 		}
 	}
 
@@ -239,6 +254,19 @@
 
 		&.align-center {
 			transform: translate(-50%);
+		}
+	}
+
+	.toolbar button:hover {
+		opacity: 1;
+		background: lighten($color-action, 48%);
+
+		svg path {
+			fill: $color-action;
+		}
+
+		svg line {
+			stroke: $color-action;
 		}
 	}
 }
