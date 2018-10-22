@@ -3,9 +3,6 @@ import React from 'react'
 const MonoIcon = () => {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-			<defs>
-				<style type="text/css">{`.icon{fill:#ffffff}`}</style>
-			</defs>
 			<g className="icon">
 				<path
 					d="M11.4,14l-2.6,1.6c-0.7,0.4-0.7,1.4,0,1.8l2.6,1.6l-0.7,1l-4.1-2.6c-0.3-0.2-0.5-0.5-0.5-0.9v0c0-0.4,0.2-0.7,0.5-0.9
