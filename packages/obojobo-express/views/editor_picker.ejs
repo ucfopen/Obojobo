@@ -78,7 +78,7 @@
 			<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
 			<div id="sidebar">
 				<button id="button-create-new-draft">+ Create new draft</button>
-				<button id="button-create-new-tutorial">+ OboEditor Tutorial</button>
+				<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ OboEditor Tutorial</button>
 				<div id="search">
 					<input id="search-input" type="text" placeholder="Search..."  />
 					<button id="remove-search">&times;</button>
@@ -265,8 +265,8 @@
 				})
 			})
 
-			document.getElementById('button-create-new-tutorial').addEventListener('click', function(event) {
-				console.log('fetching')
+			// Set up OboEditor items
+			function createTutorialDraft() {
 				fetch('/api/drafts/tutorial', {
 					method: 'POST',
 					credentials: 'include',
@@ -278,23 +278,26 @@
 				})
 				.then(function(resp) {
 					resp.json().then(function(json) {
-						if(json.value.id)
-						{
-							location.hash = 'id:' + json.value.id
-							location.reload()
-						}
-						else
-						{
-							alert('Error: ' + error)
+						if(json.value.id) {
+							window.location.hash = 'id:' + json.value.id
+							window.location.reload()
+						} else {
+							window.alert('Error: ' + error)
 							console.error(error)
 						}
 					})
 				})
 				.catch(function(error) {
-					alert('Error: ' + error)
+					window.alert('Error: ' + error)
 					console.error(error)
 				})
-			})
+			}
+			// Add tutorial draft if the user has no drafts
+			if(draftEls.length === 0){
+				createTutorialDraft()
+			}
+
+
 			document.getElementById('button-save-draft').addEventListener('click', saveDraft)
 			function addQuestion() {
 				var cursor = editor.getCursor()
