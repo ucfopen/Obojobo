@@ -3,9 +3,6 @@ import React from 'react'
 const QuoteIcon = () => {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-			<defs>
-				<style type="text/css">{`.icon{fill:#ffffff}`}</style>
-			</defs>
 			<g className="icon">
 				<path
 					d="M9.9,14.2c-0.3,0.2-0.5,0.3-0.7,0.4s-0.3,0.3-0.5,0.4c-0.2,0.2-0.3,0.4-0.4,0.5c-0.1,0.2-0.1,0.4-0.2,0.7h0.4

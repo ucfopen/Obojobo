@@ -21,17 +21,17 @@ const TextUtil = {
 
 	// Parse Obojobo text object into Slate leaves array
 	parseMarkings: line => {
+		if (!line.text.styleList) return [fullText]
+
 		const fullText = line.text.value
 
-		// Retrive all important points in this text
+		// Retrieve all important points in this text
 		// Start and end of text, and the start and end of every style
 		// Use a set to insure no points are duplicated
 		// O(n) where n = number of styles
 		const vitalPoints = new Set()
 		vitalPoints.add(0)
 		vitalPoints.add(fullText.length)
-
-		if (!line.text.styleList) return [fullText]
 
 		line.text.styleList.forEach(style => {
 			vitalPoints.add(style.start)
@@ -59,7 +59,7 @@ const TextUtil = {
 			const marks = []
 
 			// Check if the current range is contained within each style and add
-			// any relevent marks
+			// any relevant marks
 			line.text.styleList.forEach(style => {
 				// If the style ends before this range or starts after it, it doesnt apply
 				if (style.end <= last || style.start >= point) return

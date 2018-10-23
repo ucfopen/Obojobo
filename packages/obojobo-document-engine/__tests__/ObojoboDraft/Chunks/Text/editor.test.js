@@ -2,9 +2,9 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-jest.mock('../../../../src/scripts/oboeditor/util/text-util')
+jest.mock('src/scripts/oboeditor/util/text-util')
 
-import Text from '../../../../ObojoboDraft/Chunks/Text/editor'
+import Text from 'ObojoboDraft/Chunks/Text/editor'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
@@ -66,7 +66,7 @@ describe('Text editor', () => {
 			},
 			nodes: [
 				{
-					text: 'mockCode',
+					text: 'mockText',
 					data: {
 						get: () => {
 							return {}
@@ -76,7 +76,7 @@ describe('Text editor', () => {
 						{
 							leaves: [
 								{
-									text: 'mockCode',
+									text: 'mockText',
 									marks: [
 										{
 											type: 'b',
@@ -103,10 +103,10 @@ describe('Text editor', () => {
 				textGroup: [
 					{
 						data: { indent: 1 },
-						text: { value: 'mockCode' }
+						text: { value: 'mockText' }
 					},
 					{
-						text: { value: 'mockCode2' }
+						text: { value: 'mockText2' }
 					}
 				]
 			}
@@ -116,7 +116,7 @@ describe('Text editor', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('plugins.renderNode renders code when passed', () => {
+	test('plugins.renderNode renders text when passed', () => {
 		const props = {
 			node: {
 				type: TEXT_NODE,
@@ -254,7 +254,7 @@ describe('Text editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] deletes empty code node', () => {
+	test('plugins.onKeyDown deals with [Backspace] or [Delete] deletes empty text node', () => {
 		const change = {
 			value: {
 				blocks: [
@@ -379,7 +379,7 @@ describe('Text editor', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Shift]+[Tab] with indented code', () => {
+	test('plugins.onKeyDown deals with [Shift]+[Tab] with indented text', () => {
 		const change = {
 			value: {
 				blocks: [

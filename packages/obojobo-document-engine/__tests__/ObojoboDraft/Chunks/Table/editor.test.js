@@ -3,7 +3,10 @@ import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-import Table from '../../../../ObojoboDraft/Chunks/Table/editor'
+jest.mock('src/scripts/oboeditor/util/keydown-util')
+
+import Table from 'ObojoboDraft/Chunks/Table/editor'
+import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
@@ -590,151 +593,22 @@ describe('Table editor', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] collapsed at start of block', () => {
+	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
 		const change = {
 			value: {
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: true
-				},
 				document: {
 					getClosest: () => true
 				},
 				blocks: [{ key: 'mockKey' }]
 			}
 		}
-
 		const event = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
 		Table.plugins.onKeyDown(event, change)
-		expect(event.preventDefault).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] inside cell', () => {
-		const change = {
-			value: {
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false
-				},
-				document: {
-					getClosest: () => true
-				},
-				blocks: [{ key: 'mockKey' }]
-			}
-		}
-
-		const event = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown(event, change)
-
-		expect(event.preventDefault).not.toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without first', () => {
-		const change = {
-			value: {
-				startBlock: {
-					key: 'mockStart'
-				},
-				endBlock: {
-					key: 'mockEnd'
-				},
-				blocks: {
-					some: () => true,
-					toSet: () => ({
-						first: () => false,
-						last: () => true,
-						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
-						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
-					})
-				},
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false,
-					moveToStart: () => ({
-						start: {
-							isAtEndOfNode: value => value
-						}
-					}),
-					moveToEnd: () => ({
-						end: {
-							isAtStartOfNode: value => value
-						}
-					})
-				},
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
-		change.removeNodeByKey = jest.fn()
-
-		const event = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown(event, change)
-
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.onKeyDown deals with [Backspace] or [Delete] across cells without last', () => {
-		const change = {
-			value: {
-				startBlock: {
-					key: 'mockStart'
-				},
-				endBlock: {
-					key: 'mockEnd'
-				},
-				blocks: {
-					some: () => true,
-					toSet: () => ({
-						first: () => true,
-						last: () => false,
-						rest: () => [{ nodes: [{ key: 'mock keyTwo' }] }],
-						butLast: () => [{ nodes: [{ key: 'mock keyOne' }] }]
-					})
-				},
-				selection: {
-					start: { offset: 0 },
-					isCollapsed: false,
-					moveToStart: () => ({
-						start: {
-							isAtEndOfNode: value => value
-						}
-					}),
-					moveToEnd: () => ({
-						end: {
-							isAtStartOfNode: value => value
-						}
-					})
-				},
-				document: {
-					getClosest: () => true
-				}
-			}
-		}
-		change.removeNodeByKey = jest.fn()
-
-		const event = {
-			key: 'Delete',
-			preventDefault: jest.fn()
-		}
-
-		Table.plugins.onKeyDown(event, change)
-
-		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders a Table when passed', () => {

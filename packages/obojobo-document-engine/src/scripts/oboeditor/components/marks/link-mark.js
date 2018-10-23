@@ -10,6 +10,7 @@ function linkMark(options) {
 			event.preventDefault()
 
 			const value = change.value
+			let removedMarks = false
 
 			value.marks.forEach(mark => {
 				if (mark.type === 'a') {
@@ -17,8 +18,11 @@ function linkMark(options) {
 						type: 'a',
 						data: mark.data.toJSON()
 					})
+					removedMarks = true
 				}
 			})
+
+			if (removedMarks) return false
 
 			const href = window.prompt('Link address:') || null
 

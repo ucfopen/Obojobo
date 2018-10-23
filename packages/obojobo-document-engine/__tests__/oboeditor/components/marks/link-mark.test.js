@@ -26,7 +26,33 @@ describe('LinkMark', () => {
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
 
-	test('LinkMark does toggles mark if CTRL/CMD + key is pressed', () => {
+	test('LinkMark does toggles mark on if CTRL/CMD + key is pressed', () => {
+		window.prompt = jest.fn().mockReturnValueOnce(null)
+		const keyDown = markHotKey({ type: 'a', key: 'k' })
+
+		const mockChange = {
+			toggleMark: jest.fn(),
+			removeMark: jest.fn(),
+			value: {
+				marks: [
+					{
+						type: 'b'
+					}
+				]
+			}
+		}
+		const mockEvent = {
+			ctrlKey: true,
+			key: 'k',
+			preventDefault: jest.fn()
+		}
+
+		keyDown.onKeyDown(mockEvent, mockChange)
+
+		expect(mockChange.toggleMark).toHaveBeenCalled()
+	})
+
+	test('LinkMark does toggles mark off if CTRL/CMD + key is pressed', () => {
 		window.prompt = jest.fn().mockReturnValueOnce(null)
 		const keyDown = markHotKey({ type: 'a', key: 'k' })
 
@@ -57,9 +83,6 @@ describe('LinkMark', () => {
 
 		keyDown.onKeyDown(mockEvent, mockChange)
 
-		expect(mockChange.toggleMark).toHaveBeenCalledWith({
-			data: { href: null },
-			type: 'a'
-		})
+		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
 })

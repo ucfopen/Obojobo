@@ -3,6 +3,7 @@ import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 
@@ -294,50 +295,7 @@ const plugins = {
 		}
 
 		if (event.key === 'Backspace' || event.key === 'Delete') {
-			const value = change.value
-			const selection = value.selection
-			const startBlock = value.startBlock
-			const startOffset = selection.start.offset
-			const isCollapsed = selection.isCollapsed
-			const endBlock = value.endBlock
-
-			// If a cursor is collapsed at the start of the first block, do nothing
-			if (startOffset === 0 && isCollapsed) {
-				event.preventDefault()
-				return change
-			}
-
-			// Deletion within a cell
-			if (startBlock === endBlock) {
-				return
-			}
-
-			// Deletion across cells
-			event.preventDefault()
-			const blocks = value.blocks
-
-			// Get all cells that contains the selection
-			const cells = blocks.toSet()
-
-			const ignoreFirstCell = value.selection.moveToStart().start.isAtEndOfNode(cells.first())
-			const ignoreLastCell = value.selection.moveToEnd().end.isAtStartOfNode(cells.last())
-
-			let cellsToClear = cells
-			if (ignoreFirstCell) {
-				cellsToClear = cellsToClear.rest()
-			}
-			if (ignoreLastCell) {
-				cellsToClear = cellsToClear.butLast()
-			}
-
-			// Clear all the selection
-			cellsToClear.forEach(cell => {
-				cell.nodes.forEach(node => {
-					change.removeNodeByKey(node.key)
-				})
-			})
-
-			return true
+			return KeyDownUtil.deleteNodeContents(event, change)
 		}
 	},
 	renderNode(props) {

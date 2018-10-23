@@ -11,7 +11,6 @@ const Line = props => {
 	return (
 		<span
 			className={'text align-' + props.node.data.get('align')}
-			{...props.attributes}
 			data-indent={props.node.data.get('indent')}
 		>
 			{props.children}

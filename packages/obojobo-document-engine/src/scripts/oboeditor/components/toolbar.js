@@ -136,15 +136,23 @@ class Node extends React.Component {
 		const value = this.props.value
 		const change = value.change()
 
+		let removedMarks = false
+
 		value.marks.forEach(mark => {
 			if (mark.type === LINK_MARK) {
 				change.removeMark({
 					type: LINK_MARK,
 					data: mark.data.toJSON()
 				})
+				removedMarks = true
 			}
-			return false
 		})
+
+		// If a mark was removed, don't prompt for a link address
+		if (removedMarks) {
+			this.props.onChange(change)
+			return false
+		}
 
 		const href = window.prompt('Link address:') || null
 
