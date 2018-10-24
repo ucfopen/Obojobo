@@ -45,91 +45,33 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
     <li
       className="heading is-not-selected"
     >
-      <a>
+      <span>
         label4
-      </a>
+      </span>
     </li>
     <li
-      className="link is-not-selected is-not-assessment is-not-first-in-list is-not-last-in-list"
+      className="link is-selected is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
-      <a>
-        label5
-      </a>
-      <div
-        className="dropdown"
+      <button
+        aria-label="Currently on Page: label5"
       >
-        <span
-          className="drop-arrow"
-        >
-          ▼
+        <span>
+          label5
         </span>
-        <div
-          className="drop-content"
-        >
-          <button
-            onClick={[Function]}
-          >
-            Move Down
-          </button>
-          <button
-            onClick={[Function]}
-          >
-            Edit Name
-          </button>
-          <button
-            onClick={[Function]}
-          >
-            Delete
-          </button>
-          <button
-            onClick={[Function]}
-          >
-            Id: 5
-          </button>
-        </div>
-      </div>
+      </button>
     </li>
     <li
       className="link is-not-selected is-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
-      <a>
-        label6
-      </a>
-      <div
-        className="dropdown"
+      <button
+        aria-label="Go to label6"
       >
-        <span
-          className="drop-arrow"
-        >
-          ▼
+        <span>
+          label6
         </span>
-        <div
-          className="drop-content"
-        >
-          <button
-            onClick={[Function]}
-          >
-            Move Up
-          </button>
-          <button
-            onClick={[Function]}
-          >
-            Edit Name
-          </button>
-          <button
-            onClick={[Function]}
-          >
-            Delete
-          </button>
-          <button
-            onClick={[Function]}
-          >
-            Id: 6
-          </button>
-        </div>
-      </div>
+      </button>
     </li>
   </ul>
   <div

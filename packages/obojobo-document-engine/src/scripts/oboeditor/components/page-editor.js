@@ -223,9 +223,11 @@ class PageEditor extends React.Component {
 
 	renderExportButton() {
 		return (
-			<button className={'exporter'} onClick={() => this.saveDraft()}>
-				{'Save Document'}
-			</button>
+			<div className="footer-menu">
+				<button className={'exporter'} onClick={() => this.saveDraft()}>
+					{'Save Document'}
+				</button>
+			</div>
 		)
 	}
 

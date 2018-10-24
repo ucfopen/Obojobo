@@ -39,15 +39,25 @@
 		}
 	}
 
-	.exporter {
+	.footer-menu {
+		text-align: center;
 		position: fixed;
-		bottom: 1em;
-		left: 1.65em;
+		bottom: 0;
 		z-index: 999;
-		font-size: inherit;
-		background: $color-obojobo-blue;
-		border-radius: $dimension-rounded-radius;
-		color: $color-bg;
+		margin: 0 auto;
+		padding-right: 3em;
+		padding-left: 3em;
+		left: $dimension-nav-menu;
+		right: 0;
+		background-color: $color-bg2;
+		border-top: 1px solid $color-shadow;
+
+		.exporter {
+			font-size: inherit;
+			background: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			color: $color-bg;
+		}
 	}
 
 	.parameter-node {

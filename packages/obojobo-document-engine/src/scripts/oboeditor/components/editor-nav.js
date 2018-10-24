@@ -75,7 +75,15 @@ class EditorNav extends React.Component {
 	}
 
 	renderLabel(label) {
-		return <a>{label}</a>
+		return <span>{label}</span>
+	}
+
+	renderLinkButton(label, ariaLabel, isDisabled, refId = null) {
+		return (
+			<button ref={refId} aria-disabled={isDisabled} aria-label={ariaLabel}>
+				{this.renderLabel(label)}
+			</button>
+		)
 	}
 
 	renderDropDown(item) {
@@ -98,7 +106,7 @@ class EditorNav extends React.Component {
 		)
 	}
 
-	renderLink(index, isSelected, list) {
+	renderLink(index, isSelected, list, isItemDisabled, lockEl) {
 		const item = list[index]
 		const isFirstInList = !list[index - 1]
 		const isLastInList = !list[index + 1]
@@ -110,10 +118,25 @@ class EditorNav extends React.Component {
 			isOrNot(isFirstInList, 'first-in-list') +
 			isOrNot(isLastInList, 'last-in-list')
 
+		let ariaLabel = item.label
+		if(item.contentType) {
+			ariaLabel = item.contentType + ': ' + ariaLabel
+		}
+		if(isSelected) {
+			ariaLabel = 'Currently on ' + ariaLabel
+		} else {
+			ariaLabel = 'Go to ' + ariaLabel
+		}
+
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLabel(item.label)}
-				{this.renderDropDown(item)}
+				{this.renderLinkButton(
+					item.label,
+					ariaLabel,
+					isItemDisabled,
+					item.id
+				)}
+				{lockEl}
 			</li>
 		)
 	}
