@@ -2,12 +2,14 @@ import { mount } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import EditorNav from '../../../src/scripts/oboeditor/components/editor-nav'
+import EditorNav from 'src/scripts/oboeditor/components/editor-nav'
 
-import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
-import Common from '../../../src/scripts/common'
-
-jest.mock('../../../src/scripts/oboeditor/util/editor-util')
+import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+jest.mock('src/scripts/oboeditor/util/editor-util')
+import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
+jest.mock('src/scripts/oboeditor/util/clipboard-util')
+// SubMenu
+jest.mock('src/scripts/oboeditor/components/sub-menu')
 
 describe('EditorNav', () => {
 	beforeAll(() => {
@@ -16,19 +18,6 @@ describe('EditorNav', () => {
 	})
 	beforeEach(() => {
 		jest.clearAllMocks()
-
-		Common.models.OboModel.models = {
-			'5': {
-				isFirst: () => true,
-				isLast: () => false,
-				getIndex: () => 0
-			},
-			'6': {
-				isFirst: () => false,
-				isLast: () => true,
-				getIndex: () => 1
-			}
-		}
 	})
 
 	test('EditorNav component', () => {
@@ -46,7 +35,7 @@ describe('EditorNav', () => {
 			{
 				id: 4,
 				type: 'heading',
-				label: 'label4',
+				label: 'label4'
 			},
 			{
 				id: 56,
@@ -104,11 +93,14 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		component
-			.find('li')
-			.find('button')
-			.at(0)
-			.simulate('click')
+		component.instance().onClick({
+			id: 6,
+			type: 'link',
+			label: 'label6',
+			flags: {
+				assessment: true
+			}
+		})
 
 		expect(EditorUtil.gotoPath).toHaveBeenCalled()
 	})
@@ -171,10 +163,6 @@ describe('EditorNav', () => {
 	})
 
 	test('EditorNav component clicks Copy URL button', () => {
-		document.getSelection.mockReturnValueOnce({ rangeCount: 0 })
-		jest.spyOn(window, 'alert')
-		window.alert.mockReturnValueOnce(null)
-
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
@@ -187,148 +175,6 @@ describe('EditorNav', () => {
 			.at(3)
 			.simulate('click')
 
-		expect(window.alert).toHaveBeenCalled()
-	})
-
-	test.skip('EditorNav component clicks Move Up button in item', () => {
-		EditorUtil.getOrderedList
-			.mockReturnValueOnce([
-				{
-					id: 6,
-					type: 'link',
-					label: 'label6',
-					flags: {
-						assessment: true
-					}
-				}
-			])
-			.mockReturnValueOnce([])
-
-		const props = { navState: {} }
-		const component = mount(<EditorNav {...props} />)
-
-		component
-			.find('li')
-			.find('button')
-			.at(0) // [Move Up, Edit Name, Delete]
-			.simulate('click')
-
-		expect(EditorUtil.movePage).toHaveBeenCalled()
-	})
-
-	test.skip('EditorNav component clicks Move Down button in item', () => {
-		EditorUtil.getOrderedList
-			.mockReturnValueOnce([
-				{
-					id: 5,
-					type: 'link',
-					label: 'label5',
-					flags: {
-						assessment: true
-					}
-				}
-			])
-			.mockReturnValueOnce([])
-
-		const props = { navState: {} }
-		const component = mount(<EditorNav {...props} />)
-
-		component
-			.find('li')
-			.find('button')
-			.at(0) // [Move Down, Edit Name, Delete]
-			.simulate('click')
-
-		expect(EditorUtil.movePage).toHaveBeenCalled()
-	})
-
-	test.skip('EditorNav component clicks Edit Name button in item', () => {
-		EditorUtil.getOrderedList
-			.mockReturnValueOnce([
-				{
-					id: 5,
-					type: 'link',
-					label: 'label5',
-					flags: {
-						assessment: true
-					}
-				}
-			])
-			.mockReturnValueOnce([])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-
-		const props = { navState: {} }
-		const component = mount(<EditorNav {...props} />)
-
-		component
-			.find('li')
-			.find('button')
-			.at(1) // [Move Down, Edit Name, Delete]
-			.simulate('click')
-
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
-	})
-
-	test.skip('EditorNav component clicks Delete button in item', () => {
-		EditorUtil.getOrderedList
-			.mockReturnValueOnce([
-				{
-					id: 5,
-					type: 'link',
-					label: 'label5',
-					flags: {
-						assessment: true
-					}
-				}
-			])
-			.mockReturnValueOnce([])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-
-		const props = { navState: {} }
-		const component = mount(<EditorNav {...props} />)
-
-		component
-			.find('li')
-			.find('button')
-			.at(2) // [Move Down, Edit Name, Delete]
-			.simulate('click')
-
-		expect(EditorUtil.deletePage).toHaveBeenCalled()
-	})
-
-	test.skip('EditorNav component clicks ID button in item', () => {
-		document.getSelection
-			.mockReturnValueOnce({ rangeCount: 1 })
-			.mockReturnValueOnce({ getRangeAt: () => 'mockRange' })
-			.mockReturnValueOnce({ removeAllRanges: () => true })
-			.mockReturnValueOnce({ addRange: () => true })
-		jest.spyOn(window, 'alert')
-		window.alert.mockReturnValueOnce(null)
-
-		EditorUtil.getOrderedList
-			.mockReturnValueOnce([
-				{
-					id: 5,
-					type: 'link',
-					label: 'label5',
-					flags: {
-						assessment: true
-					}
-				}
-			])
-			.mockReturnValueOnce([])
-
-		const props = { navState: {} }
-		const component = mount(<EditorNav {...props} />)
-
-		component
-			.find('li')
-			.find('button')
-			.at(3) // [Move Down, Edit Name, Delete, Id:5]
-			.simulate('click')
-
-		expect(window.alert).toHaveBeenCalled()
+		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
 	})
 })

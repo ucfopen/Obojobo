@@ -49,30 +49,6 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
         label4
       </span>
     </li>
-    <li
-      className="link is-selected is-not-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-label="Currently on Page: label5"
-      >
-        <span>
-          label5
-        </span>
-      </button>
-    </li>
-    <li
-      className="link is-not-selected is-assessment is-not-first-in-list is-not-last-in-list"
-      onClick={[Function]}
-    >
-      <button
-        aria-label="Go to label6"
-      >
-        <span>
-          label6
-        </span>
-      </button>
-    </li>
   </ul>
   <div
     className="button-bar"
