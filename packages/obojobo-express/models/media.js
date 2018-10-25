@@ -1,52 +1,95 @@
-const fs = require('fs');
-const sharp = require('sharp');
+const fs = require('fs')
+const sharp = require('sharp')
 
 const mediaConfig = oboRequire('config').media
-const logger = oboRequire('logger.js');
-const db = oboRequire('db');
-
-// test message - delete this line
+const logger = oboRequire('logger.js')
+const db = oboRequire('db')
 
 class Media {
+	static parseCustomImageDimensions(dimensionsAsString) {
+		let width, height
+
+		const parsedDimensions = dimensionsAsString.split('x'),
+			finalDimensions = {}
+
+		if (parsedDimensions.length !== 2) {
+			const message =
+				'Invalid dimension string provided. Expecting {width}x{height} (i.e. 1200x900).'
+
+			logger.error(message + ` Got ${dimensionsAsString} instead.`)
+
+			throw new Error(
+				'Invalid dimension string provided. Expecting {width}x{height} (i.e. 1200x900).'
+			)
+		}
+
+		width = parsedDimensions[0]
+		height = parsedDimensions[1]
+
+		if (width !== '*') {
+			width = parseInt(width, 10)
+
+			if (isNaN(width)) {
+				const message = 'Invalid type specified for image width. Integer or * wildcard expected.'
+
+				logger.error(message + ` Got ${dimensionsAsString} instead.`)
+
+				throw new Error(message)
+			}
+
+			finalDimensions['width'] = width
+		}
+
+		if (height !== '*') {
+			height = parseInt(height, 10)
+
+			if (isNaN(height)) {
+				const message = 'Invalid type specified for image height. Integer or * wildcard expected.'
+
+				logger.error(message + ` Got ${dimensionsAsString} instead.`)
+
+				throw new Error(message)
+			}
+
+			finalDimensions['height'] = height
+		}
+
+		return finalDimensions
+	}
+
 	static resize(mediaBinary, dimensionsAsString) {
-		let newDimensions;
+		let newDimensions
 
 		switch (dimensionsAsString) {
-			case "small": {
-				newDimensions = mediaConfig.presetDimensions.small;
-				break;
+			case 'small': {
+				newDimensions = mediaConfig.presetDimensions.small
+				break
 			}
-			case "medium": {
-				newDimensions = mediaConfig.presetDimensions.medium;
-				break;
+			case 'medium': {
+				newDimensions = mediaConfig.presetDimensions.medium
+				break
 			}
-			case "large": {
-				newDimensions = mediaConfig.presetDimensions.large;
-				break;
+			case 'large': {
+				newDimensions = mediaConfig.presetDimensions.large
+				break
 			}
 			default: {
-				const parsedDimensions = dimensionsAsString.split("x")
-				newDimensions = {
-					width: parseInt(parsedDimensions[0], 10),
-					height: parseInt(parsedDimensions[1], 10),
-					fit: 'inside'
-				}
-				console.log(newDimensions)
+				newDimensions = this.parseCustomImageDimensions(dimensionsAsString)
 			}
 		}
+
+		// maintains aspect ratio
+		newDimensions['fit'] = 'inside'
 
 		return sharp(mediaBinary)
 			.resize(newDimensions)
 			.toBuffer()
 	}
 
-	static fetchByIdAndDimensions(mediaId, mediaDimensions) {
-		let media = null,
-			binaryId = null;
+	static fetchByIdAndDimensions(mediaId, mediaDimensions = 'large') {
+		let binaryId = null
 
-		let mediaFound = false;
-
-		console.log(`Fetching media by ID: ${mediaId}`);
+		let mediaFound = false
 
 		return db
 			.tx(transactionDb => {
@@ -66,23 +109,23 @@ class Media {
 					.then(result => {
 						if (result) {
 							if (result.length === 1) {
-								binaryId = result[0].binary_id;
+								binaryId = result[0].binary_id
 
-								if (mediaDimensions === "original") {
-									mediaFound = true;
+								if (mediaDimensions === 'original') {
+									mediaFound = true
 								}
-							} else if (result.length === 2){
-								binaryId = (result[0].dimensions === mediaConfig.originalMediaTag)
-									? result[1].binary_id
-									: result[0].binary_id;
+							} else if (result.length === 2) {
+								binaryId =
+									result[0].dimensions === mediaConfig.originalMediaTag
+										? result[1].binary_id
+										: result[0].binary_id
 
-								mediaFound = true;
+								mediaFound = true
 							} else {
-								throw new Error("Too many images returned");
+								throw new Error('Too many images returned')
 							}
-
 						} else {
-							throw new Error("Image not found");
+							throw new Error('Image not found')
 						}
 
 						return transactionDb.one(
@@ -96,22 +139,21 @@ class Media {
 					})
 			})
 			.then(binaryData => {
-				if (mediaFound) return binaryData.blob;
+				if (mediaFound) return binaryData.blob
 				return this.resize(binaryData.blob, mediaDimensions)
 			})
 			.catch(e => {
-				console.log(e);
-				return null;
-			});
+				throw e
+			})
 	}
 
-	static createAndSave(userId, fileInfo, dimensions = "original") {
+	static createAndSave(userId, fileInfo, dimensions = 'original') {
 		let mediaBinaryData = null,
-			mediaData = null;
+			mediaData = null
 
 		return db
 			.tx(transactionDb => {
-				const file = fs.readFileSync(fileInfo.path);
+				const file = fs.readFileSync(fileInfo.path)
 
 				return transactionDb
 					.one(
@@ -123,10 +165,10 @@ class Media {
 						RETURNING *`,
 						{ file, file_size: fileInfo.size, mime_type: fileInfo.mimetype }
 					)
-                    .then(result => {
-                        mediaBinaryData = result;
+					.then(result => {
+						mediaBinaryData = result
 
-                        return transactionDb.one(
+						return transactionDb.one(
 							`
 							INSERT INTO media
 								(user_id, file_name)
@@ -135,9 +177,9 @@ class Media {
 							RETURNING *`,
 							{ userId, filename: fileInfo.filename }
 						)
-                    })
+					})
 					.then(result => {
-						mediaData = result;
+						mediaData = result
 
 						return transactionDb.one(
 							`
@@ -148,7 +190,7 @@ class Media {
 							RETURNING *`,
 							{ mediaId: mediaData.id, mediaBinariesId: mediaBinaryData.id, dimensions }
 						)
-                    })
+					})
 			})
 			.then(() => {
 				// Delete the temporary media stored by Multer
@@ -158,9 +200,9 @@ class Media {
 				return mediaData.id
 			})
 			.catch(e => {
-				console.log(e)
+				throw e
 			})
 	}
 }
 
-module.exports = Media;
+module.exports = Media

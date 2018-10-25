@@ -15,7 +15,8 @@
                 "width": 821,
                 "height": 616
             }
-		}
+		},
+        "tempUploadDestination": "./tmp/media"
     },
 	"production":{
         "maxUploadSize": 100000,
@@ -33,6 +34,7 @@
                 "width": 821,
                 "height": 616
             }
-		}
+        },
+        "tempUploadDestination": "./tmp/media"
     }
 }
