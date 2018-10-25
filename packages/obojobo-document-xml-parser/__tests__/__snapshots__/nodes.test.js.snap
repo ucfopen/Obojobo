@@ -206,6 +206,34 @@ Object {
       "id": null,
       "type": "ObojoboDraft.Chunks.Figure",
     },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "size": "custom",
+        "url": "someSrc",
+        "width": 50,
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Figure",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "size": "large",
+        "textGroup": Array [
+          Object {
+            "data": null,
+            "text": Object {
+              "styleList": Array [],
+              "value": "someCaption",
+            },
+          },
+        ],
+        "url": "someSrc",
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Figure",
+    },
   ],
   "content": Object {},
   "id": null,

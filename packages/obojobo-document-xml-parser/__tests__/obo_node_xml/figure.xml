@@ -16,5 +16,12 @@
                 <t>This is a small image</t>
             </textGroup>
         </Figure>
+        <figure>
+            <img src="someSrc" size="custom" width="50" />
+		</figure>
+        <figure>
+            <img src="someSrc" size="large" />
+            <figcaption>someCaption</figcaption>
+		</figure>
     </Module>
 </ObjoboDraftDoc>

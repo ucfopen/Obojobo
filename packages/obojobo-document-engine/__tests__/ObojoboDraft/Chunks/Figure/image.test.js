@@ -4,18 +4,19 @@ import Image from '../../../../ObojoboDraft/Chunks/Figure/image'
 
 describe('Image', () => {
 	let imageSm
-	let imageSmUrl
+	let imageSmNoUrl
 	let imageCustom
 	let imageHeightOnly
 	let imageWidthOnly
+	const imgUrl = '52727a4f-0970-4b2c-941a-ce8027078b40'
 	beforeEach(() => {
-		imageSm = <Image chunk={{ modelState: { size: 'small', alt: 'alt text' } }} />
-		imageSmUrl = <Image chunk={{ modelState: { url: 'url', size: 'small', alt: 'alt text' } }} />
+		imageSmNoUrl = <Image chunk={{ modelState: { size: 'small', alt: 'alt text' } }} />
+		imageSm = <Image chunk={{ modelState: { url: imgUrl, size: 'small', alt: 'alt text' } }} />
 		imageCustom = (
 			<Image
 				chunk={{
 					modelState: {
-						url: 'url',
+						url: imgUrl,
 						size: 'custom',
 						height: 100,
 						width: 200
@@ -27,7 +28,7 @@ describe('Image', () => {
 			<Image
 				chunk={{
 					modelState: {
-						url: 'url',
+						url: imgUrl,
 						size: 'custom',
 						height: 100
 					}
@@ -38,7 +39,7 @@ describe('Image', () => {
 			<Image
 				chunk={{
 					modelState: {
-						url: 'url',
+						url: imgUrl,
 						size: 'custom',
 						width: 100
 					}
@@ -46,11 +47,11 @@ describe('Image', () => {
 			/>
 		)
 	})
-	test('Image component without error', () => {
+	test('Image component', () => {
 		expect(renderer.create(imageSm)).toMatchSnapshot()
 	})
-	test('Image component with a custom url of a preset size', () => {
-		expect(renderer.create(imageSmUrl)).toMatchSnapshot()
+	test('Image component with no url', () => {
+		expect(renderer.create(imageSmNoUrl)).toMatchSnapshot()
 	})
 
 	test('Image component with a custom url of a custom size', () => {

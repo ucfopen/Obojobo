@@ -1,8 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Image Image component 1`] = `
+<img
+  alt="alt text"
+  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/small"
+  unselectable="on"
+/>
+`;
+
 exports[`Image Image component with a custom url of a custom size 1`] = `
 <img
-  src="url"
+  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/200x100"
   style={
     Object {
       "height": "100px",
@@ -13,17 +21,9 @@ exports[`Image Image component with a custom url of a custom size 1`] = `
 />
 `;
 
-exports[`Image Image component with a custom url of a preset size 1`] = `
-<img
-  alt="alt text"
-  src="url"
-  unselectable="on"
-/>
-`;
-
 exports[`Image Image component with height only 1`] = `
 <img
-  src="url"
+  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/*x100"
   style={
     Object {
       "height": "100px",
@@ -33,20 +33,20 @@ exports[`Image Image component with height only 1`] = `
 />
 `;
 
+exports[`Image Image component with no url 1`] = `
+<div
+  className="img-placeholder"
+/>
+`;
+
 exports[`Image Image component with width only 1`] = `
 <img
-  src="url"
+  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/100x*"
   style={
     Object {
       "width": "100px",
     }
   }
   unselectable="on"
-/>
-`;
-
-exports[`Image Image component without error 1`] = `
-<div
-  className="img-placeholder"
 />
 `;
