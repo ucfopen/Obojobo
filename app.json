@@ -11,7 +11,7 @@
   ],
   "website": "https://ucfopen.github.io/Obojobo-Docs/",
   "logo": "https://ucfopen.github.io/Obojobo-Docs/assets/images/obojobo_white.svg",
-  "success_url": "/firstrun",
+  "success_url": "/lti",
   "scripts": {
     "postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup"
   },
