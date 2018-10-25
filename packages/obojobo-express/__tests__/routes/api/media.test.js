@@ -9,6 +9,8 @@ jest.mock('../../../config', () => {
 		media: {
 			maxUploadSize: 100000,
 			originalMediaTag: 'original',
+			minImageSize: 10,
+			maxImageSize: 8000,
 			presetDimensions: {
 				small: {
 					width: 336,

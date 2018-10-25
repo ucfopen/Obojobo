@@ -26,6 +26,15 @@ class Media {
 		width = parsedDimensions[0]
 		height = parsedDimensions[1]
 
+		if (width === '*' && height === '*') {
+			const message =
+				'Must provide a height, width, or height and width. *.* is an invalid image dimension string.'
+
+			logger.error(message)
+
+			throw new Error(message)
+		}
+
 		if (width !== '*') {
 			width = parseInt(width, 10)
 
@@ -37,7 +46,14 @@ class Media {
 				throw new Error(message)
 			}
 
-			finalDimensions['width'] = width
+			// Enforce min and max width
+			if (width < mediaConfig.minImageSize) {
+				finalDimensions['width'] = mediaConfig.minImageSize
+			} else if (width > mediaConfig.maxImageSize) {
+				finalDimensions['width'] = mediaConfig.maxImageSize
+			} else {
+				finalDimensions['width'] = width
+			}
 		}
 
 		if (height !== '*') {
@@ -51,7 +67,14 @@ class Media {
 				throw new Error(message)
 			}
 
-			finalDimensions['height'] = height
+			// enforce min and max height
+			if (height < mediaConfig.minImageSize) {
+				finalDimensions['height'] = mediaConfig.minImageSize
+			} else if (height > mediaConfig.maxImageSize) {
+				finalDimensions['height'] = mediaConfig.maxImageSize
+			} else {
+				finalDimensions['height'] = height
+			}
 		}
 
 		return finalDimensions
@@ -74,7 +97,7 @@ class Media {
 				break
 			}
 			default: {
-				newDimensions = this.parseCustomImageDimensions(dimensionsAsString)
+				newDimensions = Media.parseCustomImageDimensions(dimensionsAsString)
 			}
 		}
 
@@ -139,12 +162,69 @@ class Media {
 					})
 			})
 			.then(binaryData => {
+				let resizedBinary = null
+
 				if (mediaFound) return binaryData.blob
-				return this.resize(binaryData.blob, mediaDimensions)
+
+				return Media.resize(binaryData.blob, mediaDimensions)
+					.then(result => {
+						resizedBinary = result
+						return sharp(resizedBinary).metadata()
+					})
+					.then(metadata => {
+						return Media.cacheImageInDb(resizedBinary, metadata, mediaDimensions, mediaId)
+					})
+					.then(() => {
+						return resizedBinary
+					})
 			})
-			.catch(e => {
-				throw e
+			.then(binary => {
+				return binary
 			})
+			.catch(err => {
+				logger.error(err)
+				throw err
+			})
+	}
+
+	static cacheImageInDb(imageBinary, imageMetadata, imageDimensions, originalImageId) {
+		return (
+			db
+				.tx(transactionDb => {
+					return transactionDb
+						.one(
+							`
+						INSERT INTO binaries
+							(blob, file_size, mime_type)
+						VALUES
+							($[imageBinary], $[mediaSize], $[mimeType])
+						RETURNING *
+						`,
+							{ imageBinary, mediaSize: imageMetadata.size, mimeType: imageMetadata.format }
+						)
+						.then(result => {
+							return transactionDb.one(
+								`
+								INSERT INTO media_binaries
+									(media_id, binary_id, dimensions)
+								VALUES
+									($[mediaId], $[mediaBinariesId], $[imageDimensions])
+								RETURNING *
+								`,
+								{ mediaId: originalImageId, mediaBinariesId: result.id, imageDimensions }
+							)
+						})
+				})
+				.then(newMediaRecord => {
+					// transaction committed
+					return newMediaRecord.media_id
+				})
+				// catches any errors from transaction queries
+				.catch(err => {
+					logger.error(err)
+					throw err
+				})
+		)
 	}
 
 	static createAndSave(userId, fileInfo, dimensions = 'original') {
@@ -170,11 +250,11 @@ class Media {
 
 						return transactionDb.one(
 							`
-							INSERT INTO media
-								(user_id, file_name)
-							VALUES
-								($[userId], $[filename])
-							RETURNING *`,
+								INSERT INTO media
+									(user_id, file_name)
+								VALUES
+									($[userId], $[filename])
+								RETURNING *`,
 							{ userId, filename: fileInfo.filename }
 						)
 					})
@@ -199,8 +279,9 @@ class Media {
 				// ID of the user media, not the binary data
 				return mediaData.id
 			})
-			.catch(e => {
-				throw e
+			.catch(err => {
+				logger.error(err)
+				throw err
 			})
 	}
 }

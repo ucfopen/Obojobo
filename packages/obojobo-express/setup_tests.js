@@ -30,7 +30,7 @@ fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
 fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')
 fs.__setMockFileContents('./config/draft.json', '{"test":{"paths":[]}}')
 fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"canDoThing":["roleName"]}}')
-fs.__setMockFileContents('./config/media.json', '{"test":{"maxUploadSize":100000,"originalMediaTag":"original","presetDimensions":[]}}')
+fs.__setMockFileContents('./config/media.json', '{"test":{"maxUploadSize":100000,"minImageSize": 10,"maxImageSize": 8000,"originalMediaTag":"original","presetDimensions":[]}}')
 fs.__setMockFileContents(
 	'./config/general.json',
 	'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
