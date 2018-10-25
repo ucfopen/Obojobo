@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import renderer from 'react-test-renderer'
 import Image from '../../../../ObojoboDraft/Chunks/Figure/image'
 
 describe('Image', () => {
@@ -18,7 +18,7 @@ describe('Image', () => {
 						url: 'url',
 						size: 'custom',
 						height: 100,
-						width: 100
+						width: 200
 					}
 				}}
 			/>
@@ -47,19 +47,19 @@ describe('Image', () => {
 		)
 	})
 	test('Image component without error', () => {
-		expect(shallow(imageSm)).toMatchSnapshot()
+		expect(renderer.create(imageSm)).toMatchSnapshot()
 	})
 	test('Image component with a custom url of a preset size', () => {
-		expect(shallow(imageSmUrl)).toMatchSnapshot()
+		expect(renderer.create(imageSmUrl)).toMatchSnapshot()
 	})
 
 	test('Image component with a custom url of a custom size', () => {
-		expect(shallow(imageCustom)).toMatchSnapshot()
+		expect(renderer.create(imageCustom)).toMatchSnapshot()
 	})
 	test('Image component with height only', () => {
-		expect(shallow(imageHeightOnly)).toMatchSnapshot()
+		expect(renderer.create(imageHeightOnly)).toMatchSnapshot()
 	})
 	test('Image component with width only', () => {
-		expect(shallow(imageWidthOnly)).toMatchSnapshot()
+		expect(renderer.create(imageWidthOnly)).toMatchSnapshot()
 	})
 })
