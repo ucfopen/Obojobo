@@ -25,7 +25,7 @@ const getInstalledModules = (configEnv = 'production') => {
 	const excludeMap = new Map()
 	if (config.draft.hasOwnProperty('excludeModules')) {
 		config.draft.excludeModules.forEach(item => {
-			let [module, name] = item.split(':')
+			const [module, name] = item.split(':')
 			if (excludeMap.has(module)) {
 				excludeMap.get(module).push(name)
 			} else {
@@ -59,6 +59,11 @@ const getInstalledModules = (configEnv = 'production') => {
 				const libDir = path.dirname(file)
 
 				json['express'].forEach(express => {
+					if (moduleExludeRules.includes('*') || moduleExludeRules.includes(express)) {
+						logger.info(`🚫 Excluded ${moduleName}:${express}`)
+						return
+					}
+
 					expressFiles.add(path.resolve(libDir, express))
 				})
 

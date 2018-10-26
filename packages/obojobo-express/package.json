@@ -116,7 +116,8 @@
 		"coveragePathIgnorePatterns": [
 			"<rootDir>/node_modules",
 			"<rootDir>/app.js",
-			"<rootDir>/dev_nonce_store.js"
+			"<rootDir>/dev_nonce_store.js",
+			"<rootDir>/setup_tests.js"
 		],
 		"coverageReporters": [
 			"text",

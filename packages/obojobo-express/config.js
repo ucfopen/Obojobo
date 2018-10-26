@@ -12,8 +12,8 @@ if (process.env.NODE_ENV) {
 // expects DATABASE_URL to be HEROKU format like 'postgres://user:password@domain:port/dbname'
 // NOTE db-migrate commands will automatically use HEROKU's DATABASE_URL, skipping our config
 if (process.env.DATABASE_URL){
-	let url = require('url')
-	let dburl = url.parse(process.env.DATABASE_URL)
+	const url = require('url')
+	const dburl = url.parse(process.env.DATABASE_URL)
 	process.env.DB_USER = dburl.auth.split(':')[0]
 	process.env.DB_PASS = dburl.auth.split(':')[1]
 	process.env.DB_HOST = dburl.hostname
@@ -21,7 +21,7 @@ if (process.env.DATABASE_URL){
 	process.env.DB_PORT = dburl.port
 }
 
-let replaceENVsInObject = json => {
+const replaceENVsInObject = json => {
 	const rawJson = JSON.stringify(json) // convert back to string
 
 	// replace any "ENV": "CONFIG_VAR" settings with
@@ -33,8 +33,7 @@ let replaceENVsInObject = json => {
 	while( (result = pattern.exec(rawJson)) ){
 		if(!process.env[result[1]]){
 			throw new Error(`Expected ENV var ${result[1]} is not set`)
-		}
-		else{
+		}else{
 			let replacement = process.env[result[1]]
 			// if the value isnt true, false, or an integer, wrap it with quotes
 			if(replacement !== 'true' && replacement !== 'false' && !(/^\d+$/g.test(replacement))){
@@ -57,7 +56,7 @@ const getConfigFileData = (configFile, env) => {
 		let envObject = json[env] ? json[env] : {}
 
 		if(!json[env] && !json.default){
-			throw new Error(`Missing config environment for "default" and "${env}"`)
+			throw new Error(`Missing config environment for "default" and "${env}" for ${configFile}`)
 		}
 
 		if(json[env]){
@@ -68,7 +67,7 @@ const getConfigFileData = (configFile, env) => {
 
 	} catch (error){
 		logger.error(`Error loading config file: ${configFile}`)
-		logger.error(error)
+		logger.error(error.toString())
 	}
 	return {}
 }
