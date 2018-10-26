@@ -2,12 +2,12 @@ import { mount } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import EditorNav from '../../../src/scripts/oboeditor/components/editor-nav'
+import EditorNav from 'src/scripts/oboeditor/components/editor-nav'
 
-import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
-import Common from '../../../src/scripts/common'
+import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import Common from 'src/scripts/common'
 
-jest.mock('../../../src/scripts/oboeditor/util/editor-util')
+jest.mock('src/scripts/oboeditor/util/editor-util')
 
 describe('EditorNav', () => {
 	beforeAll(() => {
@@ -118,7 +118,7 @@ describe('EditorNav', () => {
 		expect(EditorUtil.addAssessment).toHaveBeenCalled()
 	})
 
-	test('EditorNav component clicks Rename Module button', () => {
+	test('EditorNav component clicks Rename Module button and cancels change', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([
 			{
 				id: 6,
@@ -140,7 +140,57 @@ describe('EditorNav', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
+		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
+	})
+
+	test('EditorNav component clicks Rename Module button with empty name', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 6,
+				type: 'heading',
+				label: 'label6',
+				flags: {
+					assessment: true
+				}
+			}
+		])
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce('')
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(EditorUtil.renamePage).toHaveBeenCalledWith(6, '(Unnamed Module)')
+	})
+
+	test('EditorNav component clicks Rename Module button', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 6,
+				type: 'heading',
+				label: 'label6',
+				flags: {
+					assessment: true
+				}
+			}
+		])
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce('mockNewName')
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(EditorUtil.renamePage).toHaveBeenCalledWith(6, 'mockNewName')
 	})
 
 	test('EditorNav component clicks Copy URL button', () => {
@@ -149,8 +199,6 @@ describe('EditorNav', () => {
 		window.alert.mockReturnValueOnce(null)
 
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
 
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
@@ -215,7 +263,7 @@ describe('EditorNav', () => {
 		expect(EditorUtil.movePage).toHaveBeenCalled()
 	})
 
-	test('EditorNav component clicks Edit Name button in item', () => {
+	test('EditorNav component clicks Edit Name button in item and cancels change', () => {
 		EditorUtil.getOrderedList
 			.mockReturnValueOnce([
 				{
@@ -230,6 +278,34 @@ describe('EditorNav', () => {
 			.mockReturnValueOnce([])
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('li')
+			.find('button')
+			.at(1) // [Move Down, Edit Name, Delete]
+			.simulate('click')
+
+		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
+	})
+
+	test('EditorNav component clicks Edit Name button in item', () => {
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 5,
+					type: 'link',
+					label: 'label5',
+					flags: {
+						assessment: true
+					}
+				}
+			])
+			.mockReturnValueOnce([])
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce('mockNewName')
 
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
@@ -256,8 +332,6 @@ describe('EditorNav', () => {
 				}
 			])
 			.mockReturnValueOnce([])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
 
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
