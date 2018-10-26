@@ -31,6 +31,7 @@ import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubr
 import DefaultNode from './default-node'
 import ParameterNode from './parameter-node'
 import MarkToolbar from './toolbar'
+import EditorSchema from '../plugins/editor-schema'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -90,7 +91,8 @@ const plugins = [
 	Page.plugins,
 	Rubric.plugins,
 	ParameterNode.plugins,
-	Assessment.plugins
+	Assessment.plugins,
+	EditorSchema
 ]
 
 class PageEditor extends React.Component {
@@ -128,7 +130,10 @@ class PageEditor extends React.Component {
 		return (
 			<div className={'editor'}>
 				<div className={'toolbar'}>
-					<MarkToolbar.components.Node value={this.state.value} onChange={change => this.onChange(change)} />
+					<MarkToolbar.components.Node
+						value={this.state.value}
+						onChange={change => this.onChange(change)}
+					/>
 					<div className={'dropdown'}>
 						<button>+ Insert Node</button>
 						<div className={'drop-content'}>
@@ -140,7 +145,6 @@ class PageEditor extends React.Component {
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
-					placeholder="Obojobo Visual Editor"
 					value={this.state.value}
 					onChange={change => this.onChange(change)}
 					plugins={plugins}
