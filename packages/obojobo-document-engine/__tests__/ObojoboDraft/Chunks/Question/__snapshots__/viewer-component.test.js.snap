@@ -36,6 +36,11 @@ exports[`MCAssessment Question component 1`] = `
           <legend
             className="instructions"
           >
+            <span
+              className="for-screen-reader-only"
+            >
+              Multiple choice form with 0 choices. 
+            </span>
             <span>
               Pick the correct answer
             </span>
@@ -160,6 +165,11 @@ exports[`MCAssessment Question component answered correctly 1`] = `
           <legend
             className="instructions"
           >
+            <span
+              className="for-screen-reader-only"
+            >
+              Multiple choice form with 0 choices. 
+            </span>
             <span>
               Pick the correct answer
             </span>
@@ -284,6 +294,11 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
           <legend
             className="instructions"
           >
+            <span
+              className="for-screen-reader-only"
+            >
+              Multiple choice form with 0 choices. 
+            </span>
             <span>
               Pick the correct answer
             </span>
@@ -408,6 +423,11 @@ exports[`MCAssessment Question component in practice mode 1`] = `
           <legend
             className="instructions"
           >
+            <span
+              className="for-screen-reader-only"
+            >
+              Multiple choice form with 0 choices. 
+            </span>
             <span>
               Pick the correct answer
             </span>
@@ -532,6 +552,11 @@ exports[`MCAssessment Question component in review mode 1`] = `
           <legend
             className="instructions"
           >
+            <span
+              className="for-screen-reader-only"
+            >
+              Multiple choice form with 0 choices. 
+            </span>
             <span>
               Pick the correct answer
             </span>

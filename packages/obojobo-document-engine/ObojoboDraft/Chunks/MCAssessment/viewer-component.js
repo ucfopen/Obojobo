@@ -348,6 +348,7 @@ export default class MCAssessment extends React.Component {
 		const isShowingExplanation = this.isShowingExplanation()
 		const isShowingExplanationButton = this.isShowingExplanationButton()
 		const score = this.getScore()
+		const sortedChoiceModels = this.getSortedChoiceModels()
 		const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
 		const isPractice = this.props.mode === 'practice'
 		const isReview = this.props.mode === 'review'
@@ -370,10 +371,15 @@ export default class MCAssessment extends React.Component {
 				className={className}
 			>
 				<fieldset>
-					<legend className="instructions">{this.getInstructions(responseType)}</legend>
+					<legend className="instructions">
+						<span className="for-screen-reader-only">{`Multiple choice form with ${
+							sortedChoiceModels.length
+						} choices. `}</span>
+						{this.getInstructions(responseType)}
+					</legend>
 					<MCAssessmentAnswerChoices
 						ref="answerChoices"
-						models={this.getSortedChoiceModels()}
+						models={sortedChoiceModels}
 						responseType={responseType}
 						score={score}
 						mode={this.props.mode}

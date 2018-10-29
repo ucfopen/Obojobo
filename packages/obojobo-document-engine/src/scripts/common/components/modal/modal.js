@@ -3,6 +3,7 @@ import './modal.scss'
 import React from 'react'
 
 import DeleteButton from '../../../common/components/delete-button'
+import ModalUtil from '../../../common/util/modal-util'
 
 class Modal extends React.Component {
 	constructor() {
@@ -11,21 +12,21 @@ class Modal extends React.Component {
 	}
 
 	componentDidMount() {
-		if (this.props.onClose) {
-			return document.addEventListener('keyup', this.boundKeyUp)
-		}
+		document.addEventListener('keyup', this.boundKeyUp)
 	}
 
 	componentWillUnmount() {
-		if (this.props.onClose) {
-			return document.removeEventListener('keyup', this.boundKeyUp)
-		}
+		document.removeEventListener('keyup', this.boundKeyUp)
 	}
 
 	onKeyUp(event) {
 		if (event.keyCode === 27) {
 			//ESC
-			return this.props.onClose()
+			if (this.props.onClose) {
+				this.props.onClose()
+			} else {
+				ModalUtil.hide()
+			}
 		}
 	}
 

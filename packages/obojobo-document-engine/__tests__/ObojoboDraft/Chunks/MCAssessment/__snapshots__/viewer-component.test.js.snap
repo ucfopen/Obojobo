@@ -16,6 +16,11 @@ exports[`MCAssessment MCAssessment component 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -74,6 +79,11 @@ exports[`MCAssessment MCAssessment component not shuffled 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -132,6 +142,11 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -175,6 +190,11 @@ exports[`MCAssessment MCAssessment component question with visible explanation 1
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -284,6 +304,11 @@ exports[`MCAssessment MCAssessment component review mode 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -356,6 +381,11 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick one of the correct answers
       </span>
@@ -428,6 +458,11 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -500,6 +535,11 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 2 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -688,6 +728,11 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -774,6 +819,11 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick 
         <b>
@@ -860,6 +910,11 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -932,6 +987,11 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 2 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -1120,6 +1180,11 @@ exports[`MCAssessment MCAssessment component with labels 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -1178,6 +1243,11 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -1236,6 +1306,11 @@ exports[`MCAssessment MCAssessment component with one response 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -1294,6 +1369,11 @@ exports[`MCAssessment MCAssessment component with one response in practice mode 
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
@@ -1342,6 +1422,11 @@ exports[`MCAssessment MCAssessment component with sortedIds 1`] = `
     <legend
       className="instructions"
     >
+      <span
+        className="for-screen-reader-only"
+      >
+        Multiple choice form with 0 choices. 
+      </span>
       <span>
         Pick the correct answer
       </span>
