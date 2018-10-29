@@ -5,8 +5,10 @@ exports[`HTML editor Node builds the expected component 1`] = `
   className="component"
 >
   <div
-    className="obojobo-draft--chunks--html viewer pad"
-  />
+    className="obojobo-draft--chunks--html viewer pad html-editor"
+  >
+    <pre />
+  </div>
 </div>
 `;
 
