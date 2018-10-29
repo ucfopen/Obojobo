@@ -12,4 +12,9 @@
 	&.align-right {
 		text-align: right;
 	}
+
+	&.html-editor {
+		background: $color-bg2;
+		border: 1px solid black;
+	}
 }

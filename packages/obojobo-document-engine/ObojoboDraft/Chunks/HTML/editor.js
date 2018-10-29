@@ -5,7 +5,7 @@ const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 const Node = props => {
 	return (
 		<div className={'component'}>
-			<div className={'obojobo-draft--chunks--html viewer pad'}>{props.children}</div>
+			<div className={'obojobo-draft--chunks--html viewer pad html-editor'}>{props.children}</div>
 		</div>
 	)
 }

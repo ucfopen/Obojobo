@@ -33,13 +33,13 @@ const nodes = {
 	'ObojoboDraft.Chunks.Code': Code,
 	'ObojoboDraft.Chunks.Figure': Figure,
 	'ObojoboDraft.Chunks.Heading': Heading,
+	'ObojoboDraft.Chunks.HTML': HTML,
 	'ObojoboDraft.Chunks.IFrame': IFrame,
 	'ObojoboDraft.Chunks.List': List,
 	'ObojoboDraft.Chunks.MathEquation': MathEquation,
 	'ObojoboDraft.Chunks.Table': Table,
 	'ObojoboDraft.Chunks.Text': Text,
-	'ObojoboDraft.Chunks.YouTube': YouTube,
-	'ObojoboDraft.Chunks.HTML': HTML
+	'ObojoboDraft.Chunks.YouTube': YouTube
 }
 
 const Node = props => {
@@ -106,6 +106,7 @@ const plugins = {
 							{ type: CODE_NODE },
 							{ type: FIGURE_NODE },
 							{ type: HEADING_NODE },
+							{ type: HTML_NODE },
 							{ type: IFRAME_NODE },
 							{ type: LIST_NODE },
 							{ type: MATH_NODE },
