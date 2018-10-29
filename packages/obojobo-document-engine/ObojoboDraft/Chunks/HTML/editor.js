@@ -68,6 +68,13 @@ const plugins = {
 			event.preventDefault()
 			return change.insertText('\n')
 		}
+
+		// Tab insert
+		if (event.key === 'Tab') {
+			event.preventDefault()
+			change.insertText('\t')
+			return true
+		}
 	},
 	schema: {
 		blocks: {

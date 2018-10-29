@@ -153,6 +153,28 @@ describe('HTML editor', () => {
 
 		HTML.plugins.onKeyDown(event, change)
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.insertText).toHaveBeenCalled()
+		expect(change.insertText).toHaveBeenCalledWith('\n')
+	})
+
+	test('plugins.onKeyDown deals with [Tab]', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						type: HTML_NODE
+					}
+				]
+			},
+			insertText: jest.fn()
+		}
+
+		const event = {
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		HTML.plugins.onKeyDown(event, change)
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(change.insertText).toHaveBeenCalledWith('\t')
 	})
 })
