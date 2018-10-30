@@ -66,6 +66,7 @@
         },
         {
             "name":"ObojoboDraft.Chunks.QuestionBank",
+            "draftNode":"server/question-bank.js",
             "viewerScript":"build/ObojoboDraft.Chunks.QuestionBank.js",
             "viewerCSS":"build/ObojoboDraft.Chunks.QuestionBank.css"
         },
