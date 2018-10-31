@@ -47,13 +47,10 @@ class Media {
 			}
 
 			// Enforce min and max width
-			if (width < mediaConfig.minImageSize) {
-				finalDimensions['width'] = mediaConfig.minImageSize
-			} else if (width > mediaConfig.maxImageSize) {
-				finalDimensions['width'] = mediaConfig.maxImageSize
-			} else {
-				finalDimensions['width'] = width
-			}
+			finalDimensions['width'] = Math.max(
+				mediaConfig.minImageSize,
+				Math.min(mediaConfig.maxImageSize, width)
+			)
 		}
 
 		if (height !== '*') {
@@ -68,13 +65,10 @@ class Media {
 			}
 
 			// enforce min and max height
-			if (height < mediaConfig.minImageSize) {
-				finalDimensions['height'] = mediaConfig.minImageSize
-			} else if (height > mediaConfig.maxImageSize) {
-				finalDimensions['height'] = mediaConfig.maxImageSize
-			} else {
-				finalDimensions['height'] = height
-			}
+			finalDimensions['height'] = Math.max(
+				mediaConfig.minImageSize,
+				Math.min(mediaConfig.maxImageSize, height)
+			)
 		}
 
 		return finalDimensions
@@ -130,14 +124,20 @@ class Media {
 						{ mediaId, mediaDimensions, originalMediaTag: mediaConfig.originalMediaTag }
 					)
 					.then(result => {
-						if (result) {
+						if (result && result.length > 0) {
+							// result.length == 1 implies that the query only returned a reference to the
+							// original image and a resize may be necessary to provide an image with the
+							// requested dimensions
 							if (result.length === 1) {
 								binaryId = result[0].binary_id
 
+								// If the original image is being requested, a resize is not necessary
 								if (mediaDimensions === 'original') {
 									mediaFound = true
 								}
 							} else if (result.length === 2) {
+								// result.length == 2 implies that the query found and returned a reference to
+								// an image with the requested dimensions and a resize is not necessary
 								binaryId =
 									result[0].dimensions === mediaConfig.originalMediaTag
 										? result[1].binary_id
@@ -164,8 +164,15 @@ class Media {
 			.then(binaryData => {
 				let resizedBinary = null
 
+				// If the first query in the transaction finds a reference to the requested image with dimensions,
+				// the second query returns the binary for that image with dimensions, and that binary can be
+				// immediately returned.
 				if (mediaFound) return binaryData.blob
 
+				// If the first query in the transaction does not find a reference to the requested image with
+				// dimensions, the second query returns the binary of the original image. To meet the request,
+				// the orginal is resized and the new binary is stored in the database for future retrieval.
+				// The resized image is returned.
 				return Media.resize(binaryData.blob, mediaDimensions)
 					.then(result => {
 						resizedBinary = result
