@@ -5,7 +5,14 @@
 		"password": "mysecretpassword",
 		"host": "127.0.0.1",
 		"database": "postgres",
-		"port": 5432,
-		"schema": ""
+		"port": 5432
+	},
+	"production":{
+		"driver": "postgres",
+		"user":  {"ENV": "DB_USER"},
+		"password": {"ENV": "DB_PASS"},
+		"host": {"ENV": "DB_HOST"},
+		"database": {"ENV": "DB_NAME"},
+		"port": {"ENV": "DB_PORT"}
 	}
 }
