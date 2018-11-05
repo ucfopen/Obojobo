@@ -274,6 +274,9 @@ const Question = {
 		slateToObo,
 		oboToSlate
 	},
+	json: {
+		defaultNode: emptyQuestion
+	},
 	plugins
 }
 

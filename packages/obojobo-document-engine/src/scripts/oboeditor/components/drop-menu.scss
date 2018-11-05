@@ -1,0 +1,68 @@
+@import '../../../scss/includes';
+
+.dropdown-menu {
+	position: absolute;
+
+	&.align-left {
+		left: 0;
+	}
+	&.align-right {
+		right: 0;
+	}
+
+	.drop-icon {
+		background-color: $color-bg2;
+		position: absolute;
+		display: block;
+		border: 1px solid $color-shadow;
+		border-radius: 50%;
+		width: 1.5em;
+		height: 1.5em;
+		line-height: 1.3em;
+		text-align: center;
+		text-decoration: none;
+		color: lighten($color-text, 40%);
+		font-size: 1.7em;
+		font-weight: bold;
+		z-index: 2;
+
+		&:hover {
+			color: $color-text;
+			border-color: $color-text
+		}
+	}
+
+	div {
+		position: absolute;
+		left: 2.6em;
+		top: .6em;
+		display: none;
+		z-index: 99;
+		background-color: $color-bg;
+
+		button {
+			display: block;
+			background-color: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			margin: 0.1em;
+			font-size: 1em;
+			color: $color-bg;
+			text-align: center;
+			width: 100%;
+		}
+	}
+
+	// Makes the dropdown menu keyboard accessible
+	&.is-open {
+		div {
+			display: block;
+		}
+	}
+
+	// Reveals the dropdown menu the expected way for mouse users
+	&:hover {
+		div {
+			display: block;
+		}
+	}
+}

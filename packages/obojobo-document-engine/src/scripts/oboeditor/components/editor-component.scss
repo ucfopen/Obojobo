@@ -1,0 +1,72 @@
+@import '../../../scss/includes';
+
+.oboeditor-component {
+	position: relative;
+
+	.component-toolbar {
+		position: absolute;
+		border: 1px solid red;
+		height: 100%;
+
+		.top {
+			top: -1.2em;
+			left: 0;
+		}
+		.bottom {
+			bottom: 1.2em;
+			left: 0;
+		}
+
+
+		.component-dropdown {
+			position: absolute;
+
+			.insert-button {
+				background-color: $color-bg2;
+				position: absolute;
+				display: block;
+				border: 1px solid $color-shadow;
+				border-radius: 50%;
+				width: 1.5em;
+				height: 1.5em;
+				line-height: 1.3em;
+				text-align: center;
+				text-decoration: none;
+				color: lighten($color-text, 40%);
+				font-size: 1.7em;
+				font-weight: bold;
+				z-index: 2;
+
+				&:hover {
+					color: $color-text;
+					border-color: $color-text
+				}
+			}
+
+			.drop-content {
+				display: none;
+				position: absolute;
+				left: 3em;
+				z-index: 9999;
+				background-color: $color-bg;
+				border-radius: $dimension-rounded-radius;
+
+				button {
+					display: block;
+					background-color: $color-obojobo-blue;
+					border-radius: $dimension-rounded-radius;
+					margin: 0.1em;
+					font-size: 1em;
+					width: 100%;
+					color: $color-bg;
+				}
+			}
+
+			&:hover {
+				.drop-content {
+					display: block;
+				}
+			}
+		}
+	}
+}

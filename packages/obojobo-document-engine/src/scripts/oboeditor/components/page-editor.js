@@ -30,6 +30,8 @@ import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-asse
 import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor'
 import DefaultNode from './default-node'
 import ParameterNode from './parameter-node'
+
+import Component from './editor-component'
 import MarkToolbar from './toolbar'
 import saveDocument from '../plugins/save-document'
 
@@ -69,6 +71,7 @@ const dontInsert = [
 
 const plugins = [
 	saveDocument(),
+	Component.plugins,
 	...MarkToolbar.plugins,
 	ActionButton.plugins,
 	Break.plugins,
@@ -187,13 +190,8 @@ class PageEditor extends React.Component {
 			json.children = []
 
 			value.document.nodes.forEach(child => {
-				if (nodes.hasOwnProperty(child.type)) {
-					// If the current Node is a registered OboNode, use its custom converter
-					const oboChild = nodes[child.type].helpers.slateToObo(child)
-					json.children.push(oboChild)
-				} else {
-					json.children.push(DefaultNode.helpers.slateToObo(child))
-				}
+				const oboChild = Component.helpers.slateToObo(child)
+				json.children.push(oboChild)
 			})
 
 			page.set('children', json.children)
@@ -211,12 +209,7 @@ class PageEditor extends React.Component {
 			json.document.nodes.push(Assessment.helpers.oboToSlate(page))
 		} else {
 			page.attributes.children.forEach(child => {
-				// If the current Node is a registered OboNode, use its custom converter
-				if (nodes.hasOwnProperty(child.type)) {
-					json.document.nodes.push(nodes[child.type].helpers.oboToSlate(child))
-				} else {
-					json.document.nodes.push(DefaultNode.helpers.oboToSlate(child))
-				}
+				json.document.nodes.push(Component.helpers.oboToSlate(child))
 			})
 		}
 
