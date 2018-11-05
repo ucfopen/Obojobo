@@ -11,19 +11,21 @@ const Image = props => {
 	}
 
 	const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-	const urlIsUUID = uuidRegex.test(data.url)
+	const isUrlUUID = uuidRegex.test(data.url)
 	let imgEndpoint
+	let src
 
-	if (urlIsUUID) {
+	if (isUrlUUID) {
 		// Endpoint: /api/media/:mediaId/:size
 		if (data.height || data.width) {
 			imgEndpoint = `/api/media/${data.url}/${data.width || '*'}x${data.height || '*'}`
 		} else {
 			imgEndpoint = `/api/media/${data.url}/${data.size}`
 		}
+		src = imgEndpoint
+	} else {
+		src = data.url
 	}
-
-	const src = urlIsUUID ? imgEndpoint : data.url
 
 	switch (data.size) {
 		case 'small':

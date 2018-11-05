@@ -1,13 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Image Image component 1`] = `
-<img
-  alt="alt text"
-  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/small"
-  unselectable="on"
-/>
-`;
-
 exports[`Image Image component with a custom url of a custom size 1`] = `
 <img
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/200x100"
@@ -47,6 +39,30 @@ exports[`Image Image component with width only 1`] = `
       "width": "100px",
     }
   }
+  unselectable="on"
+/>
+`;
+
+exports[`Image Large image component 1`] = `
+<img
+  alt="alt text"
+  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/large"
+  unselectable="on"
+/>
+`;
+
+exports[`Image Medium image component 1`] = `
+<img
+  alt="alt text"
+  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/medium"
+  unselectable="on"
+/>
+`;
+
+exports[`Image Small image component 1`] = `
+<img
+  alt="alt text"
+  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/small"
   unselectable="on"
 />
 `;
