@@ -381,7 +381,7 @@ describe('media model', () => {
 			expect(MediaModel.storeImageInDb).toHaveBeenCalledWith({
 				binary: mockImageBinary,
 				size: 'mockSize',
-				mimetype: 'mockFormat',
+				mimetype: 'image/mockFormat',
 				dimensions: 'small',
 				mode: 'modeInsertResizedImage',
 				mediaId: 'SOME_UUID',

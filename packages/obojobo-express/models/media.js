@@ -275,11 +275,13 @@ class Media {
 	}
 
 	static cacheImageInDb(imageBinary, imageMetadata, imageDimensions, originalImageId) {
+		// sharp does not represent mimetypes as image/{mimetype}, transforming to this format keeps database consistent
+		const mimetype = `image/${imageMetadata.format}`
 		return (
 			Media.storeImageInDb({
 				binary: imageBinary,
 				size: imageMetadata.size,
-				mimetype: imageMetadata.format,
+				mimetype,
 				dimensions: imageDimensions,
 				mode: MODE_INSERT_RESIZED_IMAGE,
 				mediaId: originalImageId,
