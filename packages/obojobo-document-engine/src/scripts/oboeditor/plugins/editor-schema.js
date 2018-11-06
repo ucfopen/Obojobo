@@ -24,30 +24,24 @@ const nodes = [
 	'ObojoboDraft.Pages.Page'
 ]
 
-const matcher = nodes.map(chunk => {
-	return { type: chunk }
-})
-
 const EditorSchema = {
 	schema: {
 		document: {
-			nodes: [{ match: matcher, min: 1 }],
+			nodes: [{ match: nodes.map(chunk => ({type: chunk})), min: 1 }],
 			normalize: (change, error) => {
 				const { node, child, index } = error
 
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case CHILD_REQUIRED: 
 						return change.insertNodeByKey(node.key, index, {
 							object: 'block',
 							type: TEXT_NODE
 						})
-					}
-					case CHILD_TYPE_INVALID: {
+					case CHILD_TYPE_INVALID:
 						return change.wrapBlockByKey(child.key, {
 							object: 'block',
 							type: TEXT_NODE
 						})
-					}
 				}
 			}
 		}
