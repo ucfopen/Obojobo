@@ -33,7 +33,9 @@ import YouTube from '../YouTube/editor'
 import MCAssessment from '../MCAssessment/editor'
 import Page from '../../Pages/Page/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
+
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const { Button } = Common.components
 const nodes = {
@@ -268,7 +270,8 @@ const Question = {
 	name: QUESTION_NODE,
 	components: {
 		Node,
-		Solution
+		Solution,
+		Icon
 	},
 	helpers: {
 		insertNode,

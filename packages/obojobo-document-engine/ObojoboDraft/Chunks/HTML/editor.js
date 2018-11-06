@@ -2,6 +2,7 @@ import React from 'react'
 import { Block } from 'slate'
 
 import emptyNode from './empty-node'
+import Icon from './icon'
 
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
@@ -74,7 +75,8 @@ const plugins = {
 const Heading = {
 	name: HTML_NODE,
 	components: {
-		Node
+		Node,
+		Icon
 	},
 	helpers: {
 		insertNode,

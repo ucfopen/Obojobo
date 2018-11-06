@@ -2,6 +2,7 @@ import React from 'react'
 import { Block } from 'slate'
 
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
@@ -104,7 +105,8 @@ const plugins = {
 const YouTube = {
 	name: YOUTUBE_NODE,
 	components: {
-		Node
+		Node,
+		Icon
 	},
 	helpers: {
 		insertNode,

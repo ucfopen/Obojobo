@@ -2,7 +2,9 @@ import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
@@ -218,7 +220,8 @@ const Code = {
 	name: CODE_NODE,
 	components: {
 		Node,
-		Line
+		Line,
+		Icon
 	},
 	helpers: {
 		insertNode,

@@ -3,7 +3,9 @@ import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -433,7 +435,8 @@ const List = {
 	components: {
 		Node,
 		Level,
-		Line
+		Line,
+		Icon
 	},
 	helpers: {
 		isType,

@@ -2,6 +2,7 @@ import React from 'react'
 import { Block } from 'slate'
 
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
@@ -331,7 +332,8 @@ const ActionButton = {
 	name: BUTTON_NODE,
 	components: {
 		Node,
-		Trigger
+		Trigger,
+		Icon
 	},
 	helpers: {
 		insertNode,

@@ -6,6 +6,7 @@ import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
 
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
@@ -402,7 +403,8 @@ const Table = {
 	components: {
 		Node,
 		Row,
-		Cell
+		Cell,
+		Icon
 	},
 	helpers: {
 		insertNode,

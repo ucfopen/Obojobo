@@ -5,6 +5,7 @@ import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
@@ -238,7 +239,8 @@ const Text = {
 	name: TEXT_NODE,
 	components: {
 		Node,
-		Line
+		Line,
+		Icon
 	},
 	helpers: {
 		insertNode,

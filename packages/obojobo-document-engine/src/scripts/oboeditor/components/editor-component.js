@@ -14,7 +14,7 @@ import MathEquation from '../../../../ObojoboDraft/Chunks/MathEquation/editor'
 import Table from '../../../../ObojoboDraft/Chunks/Table/editor'
 import Text from '../../../../ObojoboDraft/Chunks/Text/editor'
 import YouTube from '../../../../ObojoboDraft/Chunks/YouTube/editor'
-import QuestionBank from '../../../../ObojoboDraft/Chunks/QuestionBank/editor'
+//import QuestionBank from '../../../../ObojoboDraft/Chunks/QuestionBank/editor'
 import Question from '../../../../ObojoboDraft/Chunks/Question/editor'
 import DefaultNode from './default-node'
 
@@ -141,7 +141,6 @@ const plugins = {
 					}
 				],
 				normalize: (change, error) => {
-					console.log(error.child.toJSON())
 					const { node, child, index } = error
 					switch (error.code) {
 						case CHILD_REQUIRED: {

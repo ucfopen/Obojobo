@@ -22,21 +22,22 @@
 
 	div {
 		position: absolute;
-		left: 1em;
-		top: .6em;
+		left: 1.6em;
+		top: 0;
 		display: none;
 		z-index: 99;
+		min-width: 25em;
 		background-color: $color-bg;
 
 		button {
-			display: block;
-			background-color: $color-obojobo-blue;
+			display: inline-block;
+			background-color: $color-bg2;
 			border-radius: $dimension-rounded-radius;
 			margin: 0.1em;
 			font-size: 1em;
-			color: $color-bg;
+			min-width: 1.5em;
+			color: $color-text;
 			text-align: center;
-			width: 100%;
 		}
 	}
 

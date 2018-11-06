@@ -5,7 +5,9 @@ import Common from 'Common'
 
 import Question from '../Question/editor'
 import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
+
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
@@ -267,7 +269,8 @@ const QuestionBank = {
 	name: QUESTION_BANK_NODE,
 	components: {
 		Node,
-		Settings
+		Settings,
+		Icon
 	},
 	helpers: {
 		insertNode,

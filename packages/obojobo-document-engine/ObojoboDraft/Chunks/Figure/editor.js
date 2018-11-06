@@ -2,7 +2,9 @@
 import React from 'react'
 import { Block } from 'slate'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
@@ -259,7 +261,8 @@ const plugins = {
 const Figure = {
 	name: FIGURE_NODE,
 	components: {
-		Node
+		Node,
+		Icon
 	},
 	helpers: {
 		insertNode,

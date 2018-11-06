@@ -1,6 +1,8 @@
 import React from 'react'
 import { Block } from 'slate'
+
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
@@ -123,7 +125,8 @@ const plugins = {
 const IFrame = {
 	name: IFRAME_NODE,
 	components: {
-		Node
+		Node,
+		Icon
 	},
 	helpers: {
 		insertNode,

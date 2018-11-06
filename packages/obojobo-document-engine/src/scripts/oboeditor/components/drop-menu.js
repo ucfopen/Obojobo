@@ -81,6 +81,7 @@ class DropMenu extends React.Component {
 	}
 
 	renderItem(item) {
+		const { Icon } = item.components
 		return (
 			<button
 				key={item.name}
@@ -92,7 +93,7 @@ class DropMenu extends React.Component {
 					if(item.onClick) return item.onClick()
 					return this.props.masterOnClick(item)
 				}}>
-				{item.name}
+				{Icon ? <Icon/> : item.name}
 			</button>
 		)
 	}

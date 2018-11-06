@@ -2,7 +2,9 @@ import React from 'react'
 import { Block } from 'slate'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 import isOrNot from '../../../src/scripts/common/isornot'
+
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
@@ -191,7 +193,8 @@ const plugins = {
 const Heading = {
 	name: HEADING_NODE,
 	components: {
-		Node
+		Node,
+		Icon
 	},
 	helpers: {
 		insertNode,

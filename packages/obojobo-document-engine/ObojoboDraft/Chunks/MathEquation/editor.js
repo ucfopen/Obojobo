@@ -3,6 +3,7 @@ import katex from 'katex'
 import { Block } from 'slate'
 
 import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
 
@@ -162,7 +163,8 @@ const plugins = {
 const MathEquation = {
 	name: MATH_NODE,
 	components: {
-		Node
+		Node,
+		Icon
 	},
 	helpers: {
 		insertNode,
