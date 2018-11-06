@@ -2,6 +2,7 @@ jest.mock('../../db')
 jest.mock('../../config', () => {
 	return {
 		media: {
+			allowedMimeTypesRegex: 'jpeg|jpg|png|gif|svg',
 			maxUploadSize: 100000,
 			minImageSize: 10,
 			maxImageSize: 8000,
@@ -292,7 +293,7 @@ describe('media model', () => {
 				mimetype: 'image/png',
 				dimensions: 'original',
 				mode: 'modeInsertOriginalImage',
-				filename: '0d3fd1ddb4838ea8fc2a651804428f3a',
+				filename: 'bambi-sleeping2.png',
 				mediaId: null,
 				userId: mockUserId
 			})
@@ -800,5 +801,39 @@ describe('media model', () => {
 		MediaModel.resize(mockBuffer, '100x200')
 
 		expect(MediaModel.parseCustomImageDimensions).toBeCalledWith('100x200')
+	})
+
+	test('isValidFileType rejects invalid file types', () => {
+		let isValidFile = MediaModel.isValidFileType('mockFilename.pdf', 'pdf')
+		expect(isValidFile).toBeFalsy()
+
+		isValidFile = MediaModel.isValidFileType('mockFilename.bin', 'bin')
+		expect(isValidFile).toBeFalsy()
+
+		isValidFile = MediaModel.isValidFileType('mockFilename.tiff', 'tiff')
+		expect(isValidFile).toBeFalsy()
+	})
+
+	test('isValidFileType recognizes jpg and jpeg', () => {
+		let isValidFile = MediaModel.isValidFileType('mockFilename.jpg', 'jpg')
+		expect(isValidFile).toBeTruthy()
+
+		isValidFile = MediaModel.isValidFileType('mockFilename.jpeg', 'jpeg')
+		expect(isValidFile).toBeTruthy()
+	})
+
+	test('isValidFileType recognizes png', () => {
+		const isValidFile = MediaModel.isValidFileType('mockFilename.png', 'png')
+		expect(isValidFile).toBeTruthy()
+	})
+
+	test('isValidFileType recognizes gif', () => {
+		const isValidFile = MediaModel.isValidFileType('mockFilename.gif', 'gif')
+		expect(isValidFile).toBeTruthy()
+	})
+
+	test('isValidFileType recognizes svg', () => {
+		const isValidFile = MediaModel.isValidFileType('mockFilename.svg', 'svg')
+		expect(isValidFile).toBeTruthy()
 	})
 })

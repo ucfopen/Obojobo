@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 const sharp = require('sharp')
 
 const mediaConfig = oboRequire('config').media
@@ -294,6 +295,20 @@ class Media {
 				})
 		)
 	}
+	static isValidFileType(filename, mimetype) {
+		const allowedFileTypes = new RegExp(mediaConfig.allowedMimeTypesRegex)
+
+		// test for valid mimetype
+		const isAllowerMimetype = allowedFileTypes.test(mimetype)
+		// test for valid extensions
+		const isAllowedExt = allowedFileTypes.test(path.extname(filename).toLowerCase())
+
+		if (!isAllowerMimetype || !isAllowedExt) {
+			return false
+		}
+
+		return true
+	}
 
 	static createAndSave(userId, fileInfo) {
 		let file
@@ -306,7 +321,7 @@ class Media {
 		}
 
 		return Media.storeImageInDb({
-			filename: fileInfo.filename,
+			filename: fileInfo.originalname,
 			binary: file,
 			size: fileInfo.size,
 			mimetype: fileInfo.mimetype,

@@ -7,6 +7,7 @@ jest.mock('../../../logger')
 jest.mock('../../../config', () => {
 	return {
 		media: {
+			allowedMimeTypesRegex: 'jpeg|jpg|png|gif|svg',
 			maxUploadSize: 100000,
 			originalMediaTag: 'original',
 			minImageSize: 10,
@@ -38,11 +39,14 @@ const mockMulterUpload = jest.fn().mockImplementation((req, res, cb) => {
 })
 
 const mockMulterDiskStorage = jest.fn()
+const mockMulter = jest.fn().mockImplementation(() => {
+	return {
+		single: () => mockMulterUpload
+	}
+})
 
 jest.mock('multer', () => {
-	const multer = () => ({
-		single: () => mockMulterUpload
-	})
+	const multer = mockMulter
 
 	multer.diskStorage = mockMulterDiskStorage
 
@@ -97,6 +101,23 @@ describe('api draft route', () => {
 			.fn()
 			.mockResolvedValueOnce('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
 
+		MediaModel.isValidFileType = jest.fn()
+
+		MediaModel.isValidFileType.mockImplementationOnce(() => {
+			return true
+		})
+
+		MediaModel.isValidFileType.mockImplementationOnce(() => {
+			return false
+		})
+
+		const mockFileData = {
+			originalname: 'mockOriginalName',
+			mimetype: 'mockMimeType'
+		}
+
+		const mockCallBack = jest.fn()
+
 		return request(app)
 			.post('/api/media/upload')
 			.then(response => {
@@ -105,6 +126,18 @@ describe('api draft route', () => {
 					destination: mediaConfig.tempUploadDestination
 				})
 				expect(response.text).toBe('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
+
+				// test the multer fileFilter
+				mockMulter.mock.calls[0][0].fileFilter('mockRequest', mockFileData, mockCallBack)
+				expect(MediaModel.isValidFileType).toBeCalledWith('mockOriginalName', 'mockMimeType')
+				expect(mockCallBack).toBeCalledWith(null, true)
+
+				mockMulter.mock.calls[0][0].fileFilter('mockRequest', mockFileData, mockCallBack)
+				expect(MediaModel.isValidFileType).toBeCalledWith('mockOriginalName', 'mockMimeType')
+				expect(mockCallBack).toBeCalledWith(
+					'File upload only supports the following filetypes: jpeg, jpg, png, gif, svg',
+					false
+				)
 			})
 	})
 

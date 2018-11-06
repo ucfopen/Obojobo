@@ -1,42 +1,46 @@
 {
-    "development": {
-        "maxUploadSize": 10000000,
-        "minImageSize": 10,
-        "maxImageSize": 8000,
-        "originalMediaTag": "original",
-        "presetDimensions": {
-            "small": {
-                "width": 336,
-                "height": 252
-            },
-            "medium": {
-                "width": 709,
-                "height": 532
-            },
-            "large": {
-                "width": 821,
-                "height": 616
-            }
-        },
-        "tempUploadDestination": "./tmp/media"
-    },
-    "production": {
-        "maxUploadSize": 100000,
-        "originalMediaTag": "original",
-        "presetDimensions": {
-            "small": {
-                "width": 336,
-                "height": 252
-            },
-            "medium": {
-                "width": 709,
-                "height": 532
-            },
-            "large": {
-                "width": 821,
-                "height": 616
-            }
-        },
-        "tempUploadDestination": "./tmp/media"
-    }
+	"development": {
+		"allowedMimeTypesRegex": "jpeg|jpg|png|gif|svg",
+		"maxUploadSize": 10000000,
+		"minImageSize": 10,
+		"maxImageSize": 8000,
+		"originalMediaTag": "original",
+		"presetDimensions": {
+			"small": {
+				"width": 336,
+				"height": 252
+			},
+			"medium": {
+				"width": 709,
+				"height": 532
+			},
+			"large": {
+				"width": 821,
+				"height": 616
+			}
+		},
+		"tempUploadDestination": "./tmp/media"
+	},
+	"production": {
+		"allowedMimeTypesRegex": "jpeg|jpg|png|gif|svg",
+		"maxUploadSize": 100000,
+		"minImageSize": 10,
+		"maxImageSize": 8000,
+		"originalMediaTag": "original",
+		"presetDimensions": {
+			"small": {
+				"width": 336,
+				"height": 252
+			},
+			"medium": {
+				"width": 709,
+				"height": 532
+			},
+			"large": {
+				"width": 821,
+				"height": 616
+			}
+		},
+		"tempUploadDestination": "./tmp/media"
+	}
 }
