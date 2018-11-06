@@ -5,12 +5,16 @@ const mediaConfig = oboRequire('config').media
 const logger = oboRequire('logger.js')
 const db = oboRequire('db')
 
+const MODE_INSERT_ORIGINAL_IMAGE = 'modeInsertOriginalImage'
+const MODE_INSERT_RESIZED_IMAGE = 'modeInsertResizedImage'
+
 class Media {
 	static parseCustomImageDimensions(dimensionsAsString) {
-		let width, height
+		let width
+		let height
 
-		const parsedDimensions = dimensionsAsString.split('x'),
-			finalDimensions = {}
+		const parsedDimensions = dimensionsAsString.split('x')
+		const finalDimensions = {}
 
 		if (parsedDimensions.length !== 2) {
 			const message =
@@ -194,36 +198,93 @@ class Media {
 			})
 	}
 
+	static storeImageInDb({ filename, binary, size, mimetype, dimensions, mode, mediaId, userId }) {
+		let mediaBinaryInfo = null
+
+		if (!binary || !size || !mimetype || !dimensions || !mode) {
+			throw new Error('One or more required arguments not provided.')
+		}
+
+		if (mode === MODE_INSERT_ORIGINAL_IMAGE && !userId) {
+			throw new Error('Inserting an original image, but no user id provided')
+		}
+
+		if (mode === MODE_INSERT_ORIGINAL_IMAGE && !filename) {
+			throw new Error('Inserting an original image, but no filename provided')
+		}
+
+		if (mode === MODE_INSERT_RESIZED_IMAGE && !mediaId) {
+			throw new Error('Inserting a resized image, but no media id of the original image provided')
+		}
+
+		return db.tx(transactionDb => {
+			// The following query takes an image binary and metadata, and stores it in the binaries database table.
+			// The binaries database table holds the binaries for images uploaded by a user, and stores resized
+			// images derived from the orginal user uploads. There is no difference between storing an original
+			// or resized image here. All entries are independent.
+			return transactionDb
+				.one(
+					`
+					INSERT INTO binaries
+						(blob, file_size, mime_type)
+					VALUES
+						($[binary], $[size], $[mimetype])
+					RETURNING *`,
+					{ binary, size, mimetype }
+				)
+				.then(result => {
+					mediaBinaryInfo = result
+
+					// If an orginal image is being stored, this query will create a record that the user uploaded an
+					// image. From this record, the user's original image and resized images derived from the original
+					// can be found. All resized images derived from an original will have the same mediaId as the
+					// original, so it is not necessary to store a reference to the resized images in the media table.
+					if (mode === MODE_INSERT_ORIGINAL_IMAGE) {
+						return transactionDb.one(
+							`
+							INSERT INTO media
+								(user_id, file_name)
+							VALUES
+								($[userId], $[filename])
+							RETURNING *`,
+							{ userId, filename }
+						)
+					}
+				})
+				.then(result => {
+					// If a resized image is being stored, a new media record was not created. The mediaId of the
+					// original image the resized image was derived from must be passed in and used.
+					const mediaRecordId = mode === MODE_INSERT_ORIGINAL_IMAGE ? result.id : mediaId
+
+					// The media_binaries table links media records to their respective binary information. This
+					// query creates that link. Both original and resized images must be linked. Since resized
+					// images have the same id as the original they are derived from, a dimensions field is
+					// stored to describe the binary the link is pointing to.
+					return transactionDb.one(
+						`
+							INSERT INTO media_binaries
+								(media_id, binary_id, dimensions)
+							VALUES
+								($[mediaRecordId], $[mediaBinariesId], $[dimensions])
+							RETURNING *`,
+						{ mediaRecordId, mediaBinariesId: mediaBinaryInfo.id, dimensions }
+					)
+				})
+		})
+	}
+
 	static cacheImageInDb(imageBinary, imageMetadata, imageDimensions, originalImageId) {
 		return (
-			db
-				.tx(transactionDb => {
-					return transactionDb
-						.one(
-							`
-						INSERT INTO binaries
-							(blob, file_size, mime_type)
-						VALUES
-							($[imageBinary], $[mediaSize], $[mimeType])
-						RETURNING *
-						`,
-							{ imageBinary, mediaSize: imageMetadata.size, mimeType: imageMetadata.format }
-						)
-						.then(result => {
-							return transactionDb.one(
-								`
-								INSERT INTO media_binaries
-									(media_id, binary_id, dimensions)
-								VALUES
-									($[mediaId], $[mediaBinariesId], $[imageDimensions])
-								RETURNING *
-								`,
-								{ mediaId: originalImageId, mediaBinariesId: result.id, imageDimensions }
-							)
-						})
-				})
+			Media.storeImageInDb({
+				binary: imageBinary,
+				size: imageMetadata.size,
+				mimetype: imageMetadata.format,
+				dimensions: imageDimensions,
+				mode: MODE_INSERT_RESIZED_IMAGE,
+				mediaId: originalImageId,
+				userId: null
+			})
 				.then(newMediaRecord => {
-					// transaction committed
 					return newMediaRecord.media_id
 				})
 				// catches any errors from transaction queries
@@ -234,57 +295,31 @@ class Media {
 		)
 	}
 
-	static createAndSave(userId, fileInfo, dimensions = 'original') {
-		let mediaBinaryData = null,
-			mediaData = null
+	static createAndSave(userId, fileInfo) {
+		let file
 
-		return db
-			.tx(transactionDb => {
-				const file = fs.readFileSync(fileInfo.path)
+		try {
+			file = fs.readFileSync(fileInfo.path)
+		} catch (err) {
+			// calling methods expect a thenable object to be returned
+			return Promise.reject(err)
+		}
 
-				return transactionDb
-					.one(
-						`
-						INSERT INTO binaries
-							(blob, file_size, mime_type)
-						VALUES
-							($[file], $[file_size], $[mime_type])
-						RETURNING *`,
-						{ file, file_size: fileInfo.size, mime_type: fileInfo.mimetype }
-					)
-					.then(result => {
-						mediaBinaryData = result
-
-						return transactionDb.one(
-							`
-								INSERT INTO media
-									(user_id, file_name)
-								VALUES
-									($[userId], $[filename])
-								RETURNING *`,
-							{ userId, filename: fileInfo.filename }
-						)
-					})
-					.then(result => {
-						mediaData = result
-
-						return transactionDb.one(
-							`
-							INSERT INTO media_binaries
-								(media_id, binary_id, dimensions)
-							VALUES
-								($[mediaId], $[mediaBinariesId], $[dimensions])
-							RETURNING *`,
-							{ mediaId: mediaData.id, mediaBinariesId: mediaBinaryData.id, dimensions }
-						)
-					})
-			})
-			.then(() => {
+		return Media.storeImageInDb({
+			filename: fileInfo.filename,
+			binary: file,
+			size: fileInfo.size,
+			mimetype: fileInfo.mimetype,
+			dimensions: mediaConfig.originalMediaTag,
+			mode: MODE_INSERT_ORIGINAL_IMAGE,
+			mediaId: null,
+			userId
+		})
+			.then(mediaRecord => {
 				// Delete the temporary media stored by Multer
 				fs.unlinkSync(fileInfo.path)
-
 				// ID of the user media, not the binary data
-				return mediaData.id
+				return mediaRecord.media_id
 			})
 			.catch(err => {
 				logger.error(err)
