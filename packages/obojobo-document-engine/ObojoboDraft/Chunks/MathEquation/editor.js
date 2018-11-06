@@ -1,5 +1,8 @@
 import React from 'react'
 import katex from 'katex'
+import { Block } from 'slate'
+
+import emptyNode from './empty-node.json'
 
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
 
@@ -115,12 +118,7 @@ const getLatexHtml = latex => {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: MATH_NODE,
-			data: { content: { latex: '', label: '' } },
-			isVoid: true
-		})
-		.moveToStartOfNextText()
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -162,6 +160,7 @@ const plugins = {
 }
 
 const MathEquation = {
+	name: MATH_NODE,
 	components: {
 		Node
 	},
@@ -169,6 +168,9 @@ const MathEquation = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

@@ -1,21 +1,21 @@
 import React from 'react'
+import { Block } from 'slate'
+
+import emptyNode from './empty-node'
 
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
 const Node = props => {
 	return (
-		<div className={'component'}>
-			<div className={'obojobo-draft--chunks--html viewer pad'}>{props.children}</div>
+		<div className={'obojobo-draft--chunks--html viewer pad'}>
+			{props.children}
 		</div>
 	)
 }
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: HTML_NODE
-		})
-		.moveToStartOfNextText()
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -72,6 +72,7 @@ const plugins = {
 }
 
 const Heading = {
+	name: HTML_NODE,
 	components: {
 		Node
 	},
@@ -79,6 +80,9 @@ const Heading = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

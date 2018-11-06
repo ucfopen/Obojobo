@@ -5,7 +5,7 @@ import Common from 'Common'
 
 import Question from '../Question/editor'
 import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
-import emptyQuestionBank from './empty-question-bank.json'
+import emptyNode from './empty-node.json'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
@@ -76,7 +76,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock(Block.fromJSON(emptyQuestionBank))
+		.insertBlock(Block.fromJSON(emptyNode))
 		.moveToStartOfNextText()
 		.focus()
 }
@@ -264,6 +264,7 @@ const plugins = {
 }
 
 const QuestionBank = {
+	name: QUESTION_BANK_NODE,
 	components: {
 		Node,
 		Settings
@@ -272,6 +273,9 @@ const QuestionBank = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

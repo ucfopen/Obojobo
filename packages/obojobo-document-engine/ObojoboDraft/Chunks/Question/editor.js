@@ -33,7 +33,7 @@ import YouTube from '../YouTube/editor'
 import MCAssessment from '../MCAssessment/editor'
 import Page from '../../Pages/Page/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
-import emptyQuestion from './empty-question.json'
+import emptyNode from './empty-node.json'
 
 const { Button } = Common.components
 const nodes = {
@@ -92,7 +92,7 @@ class Node extends React.Component {
 	render() {
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
 		return (
-			<div className={'component obojobo-draft--chunks--question is-viewed is-mode-practice'}>
+			<div className={'component obojobo-draft--chunks--question is-viewed is-mode-practice pad'}>
 				<div className={'flipper question-editor'}>
 					<div className={'content-back'}>
 						{this.props.children}
@@ -113,7 +113,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock(Block.fromJSON(emptyQuestion))
+		.insertBlock(Block.fromJSON(emptyNode))
 		.moveToStartOfNextText()
 		.focus()
 }
@@ -265,6 +265,7 @@ const plugins = {
 }
 
 const Question = {
+	name: QUESTION_NODE,
 	components: {
 		Node,
 		Solution
@@ -275,7 +276,7 @@ const Question = {
 		oboToSlate
 	},
 	json: {
-		defaultNode: emptyQuestion
+		emptyNode
 	},
 	plugins
 }

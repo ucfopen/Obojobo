@@ -1,7 +1,8 @@
 /* eslint no-alert: 0 */
-
 import React from 'react'
+import { Block } from 'slate'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+import emptyNode from './empty-node.json'
 
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
@@ -135,28 +136,26 @@ class Node extends React.Component {
 		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
-			<div className="component">
-				<div className={`obojobo-draft--chunks--figure viewer ` + content.size}>
-					{this.renderEditToolbar()}
-					<div className={'container'}>
-						{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
+			<div className={`obojobo-draft--chunks--figure viewer ` + content.size}>
+				{this.renderEditToolbar()}
+				<div className={'container'}>
+					{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
 
-						{hasImage ? null : <div>No Image Selected, Please Add an Image URL</div>}
+					{hasImage ? null : <div>No Image Selected, Please Add an Image URL</div>}
 
-						{isCustom ? (
-							<img
-								title={content.alt}
-								src={content.url}
-								unselectable="on"
-								alt={content.alt}
-								style={imgStyles}
-							/>
-						) : (
-							<img title={content.alt} src={content.url} unselectable="on" alt={content.alt} />
-						)}
-						{/* uses children below because the caption is a textgroup */}
-						<figcaption>{this.props.children}</figcaption>
-					</div>
+					{isCustom ? (
+						<img
+							title={content.alt}
+							src={content.url}
+							unselectable="on"
+							alt={content.alt}
+							style={imgStyles}
+						/>
+					) : (
+						<img title={content.alt} src={content.url} unselectable="on" alt={content.alt} />
+					)}
+					{/* uses children below because the caption is a textgroup */}
+					<figcaption>{this.props.children}</figcaption>
 				</div>
 			</div>
 		)
@@ -165,17 +164,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: FIGURE_NODE,
-			data: {
-				content: {
-					size: 'medium',
-					alt: null,
-					url: null
-				}
-			}
-		})
-		.moveToStartOfNextText()
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -268,6 +257,7 @@ const plugins = {
 }
 
 const Figure = {
+	name: FIGURE_NODE,
 	components: {
 		Node
 	},
@@ -275,6 +265,9 @@ const Figure = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

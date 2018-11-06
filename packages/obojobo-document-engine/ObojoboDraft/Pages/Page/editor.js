@@ -20,6 +20,7 @@ import MCChoice from '../../Chunks/MCAssessment/MCChoice/editor'
 import MCAnswer from '../../Chunks/MCAssessment/MCAnswer/editor'
 import MCFeedback from '../../Chunks/MCAssessment/MCFeedback/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
+import Component from '../../../src/scripts/oboeditor/components/editor-component'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
@@ -75,12 +76,7 @@ const oboToSlate = node => {
 	json.nodes = []
 
 	node.children.forEach(child => {
-		// If the current Node is a registered OboNode, use its custom converter
-		if (nodes.hasOwnProperty(child.type)) {
-			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
-		} else {
-			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
-		}
+		json.nodes.push(Component.helpers.oboToSlate(child))
 	})
 
 	return json
@@ -96,45 +92,23 @@ const plugins = {
 	schema: {
 		blocks: {
 			'ObojoboDraft.Pages.Page': {
-				nodes: [
-					{
-						match: [
-							{ type: 'ObojoboDraft.Chunks.ActionButton' },
-							{ type: 'ObojoboDraft.Chunks.Break' },
-							{ type: 'ObojoboDraft.Chunks.Code' },
-							{ type: 'ObojoboDraft.Chunks.Figure' },
-							{ type: 'ObojoboDraft.Chunks.Heading' },
-							{ type: 'ObojoboDraft.Chunks.IFrame' },
-							{ type: 'ObojoboDraft.Chunks.List' },
-							{ type: 'ObojoboDraft.Chunks.MathEquation' },
-							{ type: 'ObojoboDraft.Chunks.Table' },
-							{ type: 'ObojoboDraft.Chunks.Text' },
-							{ type: 'ObojoboDraft.Chunks.YouTube' },
-							{ type: 'ObojoboDraft.Chunks.QuestionBank' },
-							{ type: 'ObojoboDraft.Chunks.Question' },
-							{ type: 'ObojoboDraft.Chunks.MCAssessment' },
-							{ type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice' },
-							{ type: 'ObojoboDraft.Chunks.MCAssessment.MCAnswer' },
-							{ type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback' }
-						],
-						min: 1
-					}
-				],
+				nodes: [{ match: [ { type: 'oboeditor.component' } ], min: 1 }],
 				normalize: (change, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
-								type: TEXT_NODE,
-								data: { content: { indent: 0 } }
+								object: 'block',
+								type: 'oboeditor.component'
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
-								type: TEXT_NODE,
-								data: { content: { indent: 0 } }
+							const block = Block.create({
+								object: 'block',
+								type: 'oboeditor.component'
 							})
+							return change.wrapBlockByKey(child.key, block)
 						}
 					}
 				}

@@ -1,4 +1,7 @@
 import React from 'react'
+import { Block } from 'slate'
+
+import emptyNode from './empty-node.json'
 
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
@@ -21,14 +24,9 @@ class Node extends React.Component {
 		editor.onChange(change)
 	}
 
-	renderFrame() {
+	render() {
 		const { isFocused } = this.props
 		const content = this.props.node.data.get('content')
-
-		const wrapperStyle = {
-			position: 'relative',
-			outline: isFocused ? '2px solid blue' : 'none'
-		}
 
 		const maskStyle = {
 			display: isFocused ? 'none' : 'block',
@@ -42,7 +40,7 @@ class Node extends React.Component {
 		}
 
 		return (
-			<div className={'obojobo-draft--chunks--you-tube viewer'} style={wrapperStyle}>
+			<div className={'obojobo-draft--chunks--you-tube viewer pad'}>
 				<div style={maskStyle} />
 				<iframe
 					src={'https://www.youtube.com/embed/' + content.videoId}
@@ -58,18 +56,11 @@ class Node extends React.Component {
 			</div>
 		)
 	}
-
-	render() {
-		return <div className={'component'}>{this.renderFrame()}</div>
-	}
 }
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: YOUTUBE_NODE,
-			data: { content: { videoId: 'FaHEusBG20c' } }
-		})
+		.insertBlock(Block.fromJSON(emptyNode))
 		.moveToStartOfNextText()
 		.focus()
 }
@@ -111,6 +102,7 @@ const plugins = {
 }
 
 const YouTube = {
+	name: YOUTUBE_NODE,
 	components: {
 		Node
 	},
@@ -118,6 +110,9 @@ const YouTube = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

@@ -3,6 +3,7 @@ import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+import emptyNode from './empty-node.json'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -82,11 +83,9 @@ class Node extends React.Component {
 		const type = this.props.node.data.get('content').listStyles.type
 		const other = type === 'ordered' ? 'Unordered' : 'Ordered'
 		return (
-			<div className={'component'}>
-				<div className={'text-chunk obojobo-draft--chunks--list pad'}>
-					{this.props.children}
-					<button onClick={() => this.toggleType()}>{'Swap to ' + other}</button>
-				</div>
+			<div className={'text-chunk obojobo-draft--chunks--list pad'}>
+				{this.props.children}
+				<button onClick={() => this.toggleType()}>{'Swap to ' + other}</button>
 			</div>
 		)
 	}
@@ -102,11 +101,7 @@ const isType = change => {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: LIST_NODE,
-			data: { content: { listStyles: { type: 'unordered' } } }
-		})
-		.moveToStartOfNextText()
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -434,6 +429,7 @@ const plugins = {
 }
 
 const List = {
+	name: LIST_NODE,
 	components: {
 		Node,
 		Level,
@@ -445,6 +441,9 @@ const List = {
 		slateToObo,
 		validateJSON,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

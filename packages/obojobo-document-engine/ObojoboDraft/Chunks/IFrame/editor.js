@@ -1,4 +1,6 @@
 import React from 'react'
+import { Block } from 'slate'
+import emptyNode from './empty-node.json'
 
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
@@ -78,11 +80,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: IFRAME_NODE,
-			data: { content: { src: 'https://www.youtube.com/embed/dQw4w9WgXcQ' } }
-		})
-		.moveToStartOfNextText()
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -123,6 +121,7 @@ const plugins = {
 }
 
 const IFrame = {
+	name: IFRAME_NODE,
 	components: {
 		Node
 	},
@@ -130,6 +129,9 @@ const IFrame = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

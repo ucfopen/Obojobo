@@ -1,6 +1,6 @@
 import React from 'react'
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_UNKNOWN } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID, CHILD_UNKNOWN } from 'slate-schema-violations'
 
 import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
 import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
@@ -38,57 +38,38 @@ const nodes = {
 	'ObojoboDraft.Chunks.Table': Table,
 	'ObojoboDraft.Chunks.Text': Text,
 	'ObojoboDraft.Chunks.YouTube': YouTube,
-	'ObojoboDraft.Chunks.QuestionBank': QuestionBank,
-	'ObojoboDraft.Chunks.Question': Question
 }
 
-const names = [
-	'ObojoboDraft.Chunks.ActionButton',
-	'ObojoboDraft.Chunks.Break',
-	'ObojoboDraft.Chunks.Code',
-	'ObojoboDraft.Chunks.Figure',
-	'ObojoboDraft.Chunks.Heading',
-	'ObojoboDraft.Chunks.HTML',
-	'ObojoboDraft.Chunks.IFrame',
-	'ObojoboDraft.Chunks.List',
-	'ObojoboDraft.Chunks.MathEquation',
-	'ObojoboDraft.Chunks.Table',
-	'ObojoboDraft.Chunks.Text',
-	'ObojoboDraft.Chunks.YouTube',
-	'ObojoboDraft.Chunks.QuestionBank',
-	'ObojoboDraft.Chunks.Question'
-]
-
 class Node extends React.Component {
-	insertBlockAtStart(label) {
+	insertBlockAtStart(item) {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		change.insertNodeByKey(this.props.node.key, 0, Block.create(label))
+		change.insertNodeByKey(this.props.node.key, 0, Block.create(item.json.emptyNode))
 
 		editor.onChange(change)
 	}
 
-	insertBlockAtEnd(label) {
+	insertBlockAtEnd(item) {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, Block.create(label))
+		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, Block.create(item.json.emptyNode))
 
 		editor.onChange(change)
 	}
 
 	render(){
 		return (
-			<div className={'oboeditor-component'}>
+			<div className={'oboeditor-component component'}>
 				{this.props.isSelected ? <div className={'component-toolbar'}>
 					<DropMenu
-						dropOptions={names}
+						dropOptions={Object.values(nodes)}
 						className={'align-left top'}
 						icon="+"
 						masterOnClick={this.insertBlockAtStart.bind(this)}/>
 					<DropMenu
-						dropOptions={names}
+						dropOptions={Object.values(nodes)}
 						className={'align-left bottom'}
 						icon="+"
 						masterOnClick={this.insertBlockAtEnd.bind(this)}/>
@@ -146,6 +127,7 @@ const plugins = {
 							{ type: 'ObojoboDraft.Chunks.Code' },
 							{ type: 'ObojoboDraft.Chunks.Figure' },
 							{ type: 'ObojoboDraft.Chunks.Heading' },
+							{ type: 'ObojoboDraft.Chunks.HTML' },
 							{ type: 'ObojoboDraft.Chunks.IFrame' },
 							{ type: 'ObojoboDraft.Chunks.List' },
 							{ type: 'ObojoboDraft.Chunks.MathEquation' },
@@ -159,14 +141,21 @@ const plugins = {
 					}
 				],
 				normalize: (change, error) => {
-					const { node, index } = error
+					console.log(error.child.toJSON())
+					const { node, child, index } = error
 					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
-								type: TEXT_NODE,
-								data: { content: { indent: 0 } }
+								type: TEXT_NODE
 							})
 							return change.insertNodeByKey(node.key, index, block)
+						}
+
+						case CHILD_TYPE_INVALID: {
+							const block = Block.create({
+								type: TEXT_NODE
+							})
+							return change.wrapBlockByKey(child.key, block)
 						}
 						// Occurs when multiple valid nodes are found within a
 						// component

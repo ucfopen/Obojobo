@@ -1,12 +1,13 @@
 import React from 'react'
-
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
 
-const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
+import emptyNode from './empty-node.json'
 
+const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
@@ -176,16 +177,14 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div className={'component'}>
-				<div className={'obojobo-draft--chunks--table viewer pad'}>
-					<div className={'container'}>
-						<table className="view" key="table">
-							<tbody>
-								{this.props.children}
-								{this.renderColDelete()}
-							</tbody>
-						</table>
-					</div>
+			<div className={'obojobo-draft--chunks--table viewer pad'}>
+				<div className={'container'}>
+					<table className="view" key="table">
+						<tbody>
+							{this.props.children}
+							{this.renderColDelete()}
+						</tbody>
+					</table>
 				</div>
 				<div className={'table-editor'}>
 					<button onClick={() => this.addRow()}>{'Add Row'}</button>
@@ -207,11 +206,7 @@ const isType = change => {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: TABLE_NODE,
-			data: { content: { header: true, textGroup: { numRows: 1, numCols: 1 } } }
-		})
-		.moveToStartOfNextText()
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -403,6 +398,7 @@ const plugins = {
 }
 
 const Table = {
+	name: TABLE_NODE,
 	components: {
 		Node,
 		Row,
@@ -412,6 +408,9 @@ const Table = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

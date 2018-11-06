@@ -83,16 +83,16 @@ class DropMenu extends React.Component {
 	renderItem(item) {
 		return (
 			<button
-				key={item}
+				key={item.name}
 				tabIndex="-1"
 				ref={button => {
-					this[item] = button
+					this[item.name] = button
 				}}
 				onClick={() => {
 					if(item.onClick) return item.onClick()
 					return this.props.masterOnClick(item)
 				}}>
-				{item}
+				{item.name}
 			</button>
 		)
 	}

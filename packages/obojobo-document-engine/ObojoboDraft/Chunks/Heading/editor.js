@@ -1,6 +1,8 @@
 import React from 'react'
+import { Block } from 'slate'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 import isOrNot from '../../../src/scripts/common/isornot'
+import emptyNode from './empty-node.json'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
@@ -64,38 +66,35 @@ class Node extends React.Component {
 		dropText = dropText.length === 0 ? 'Your Heading' : dropText
 		return (
 			<div
-				className={'component'}
-				ref={node => {
+				className={'text-chunk obojobo-draft--chunks--heading pad'}
+					ref={node => {
 					this.node = node
-				}}
-			>
-				<div className={'text-chunk obojobo-draft--chunks--heading pad'}>
-					<HTag>
-						<span className={'text align-' + content.align}>{this.props.children}</span>
-					</HTag>
+				}}>
+				<HTag>
+					<span className={'text align-' + content.align}>{this.props.children}</span>
+				</HTag>
 
-					<div className={'dropdown-heading'}>
-						<button onClick={() => this.toggleLevelSelect()}>{'▼'}</button>
-						<div className={'drop-content-heading ' + isOrNot(this.state.isOpen, 'open')}>
-							<button onClick={() => this.handleLevelChange(1)}>
-								<h1>{dropText}</h1>
-							</button>
-							<button onClick={() => this.handleLevelChange(2)}>
-								<h2>{dropText}</h2>
-							</button>
-							<button onClick={() => this.handleLevelChange(3)}>
-								<h3>{dropText}</h3>
-							</button>
-							<button onClick={() => this.handleLevelChange(4)}>
-								<h4>{dropText}</h4>
-							</button>
-							<button onClick={() => this.handleLevelChange(5)}>
-								<h5>{dropText}</h5>
-							</button>
-							<button onClick={() => this.handleLevelChange(6)}>
-								<h6>{dropText}</h6>
-							</button>
-						</div>
+				<div className={'dropdown-heading'}>
+					<button onClick={() => this.toggleLevelSelect()}>{'▼'}</button>
+					<div className={'drop-content-heading ' + isOrNot(this.state.isOpen, 'open')}>
+						<button onClick={() => this.handleLevelChange(1)}>
+							<h1>{dropText}</h1>
+						</button>
+						<button onClick={() => this.handleLevelChange(2)}>
+							<h2>{dropText}</h2>
+						</button>
+						<button onClick={() => this.handleLevelChange(3)}>
+							<h3>{dropText}</h3>
+						</button>
+						<button onClick={() => this.handleLevelChange(4)}>
+							<h4>{dropText}</h4>
+						</button>
+						<button onClick={() => this.handleLevelChange(5)}>
+							<h5>{dropText}</h5>
+						</button>
+						<button onClick={() => this.handleLevelChange(6)}>
+							<h6>{dropText}</h6>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -105,10 +104,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: HEADING_NODE,
-			data: { content: { level: 2 } }
-		})
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -193,6 +189,7 @@ const plugins = {
 }
 
 const Heading = {
+	name: HEADING_NODE,
 	components: {
 		Node
 	},
@@ -200,6 +197,9 @@ const Heading = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

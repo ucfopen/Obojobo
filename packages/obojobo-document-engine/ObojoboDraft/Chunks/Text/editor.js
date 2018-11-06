@@ -4,6 +4,8 @@ import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
+import emptyNode from './empty-node.json'
+
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
@@ -20,8 +22,8 @@ const Line = props => {
 
 const Node = props => {
 	return (
-		<div className={'component'}>
-			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>{props.children}</div>
+		<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>
+			{props.children}
 		</div>
 	)
 }
@@ -36,8 +38,7 @@ const isType = change => {
 
 const insertNode = change => {
 	change
-		.insertBlock(TEXT_NODE)
-		.moveToStartOfNextText()
+		.insertBlock(emptyNode)
 		.focus()
 }
 
@@ -234,6 +235,7 @@ const plugins = {
 }
 
 const Text = {
+	name: TEXT_NODE,
 	components: {
 		Node,
 		Line
@@ -242,6 +244,9 @@ const Text = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

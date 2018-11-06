@@ -1,4 +1,7 @@
 import React from 'react'
+import { Block } from 'slate'
+
+import emptyNode from './empty-node.json'
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
@@ -244,11 +247,9 @@ class Node extends React.Component {
 		const { isSelected } = this.props
 
 		return (
-			<div className={'component'}>
-				<div className={'text-chunk obojobo-draft--chunks--action-button pad'}>
-					{this.renderButton()}
-					{isSelected ? this.renderTriggers() : null}
-				</div>
+			<div className={'text-chunk obojobo-draft--chunks--action-button pad'}>
+				{this.renderButton()}
+				{isSelected ? this.renderTriggers() : null}
 			</div>
 		)
 	}
@@ -256,13 +257,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: BUTTON_NODE,
-			data: {
-				content: { actions: [], label: '' }
-			}
-		})
-		.moveToStartOfNextText()
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -333,6 +328,7 @@ const plugins = {
 }
 
 const ActionButton = {
+	name: BUTTON_NODE,
 	components: {
 		Node,
 		Trigger
@@ -342,6 +338,9 @@ const ActionButton = {
 		slateToObo,
 		oboToSlate,
 		requiresValue
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

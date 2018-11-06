@@ -11,30 +11,18 @@
 	}
 
 	.drop-icon {
-		background-color: $color-bg2;
 		position: absolute;
 		display: block;
-		border: 1px solid $color-shadow;
-		border-radius: 50%;
-		width: 1.5em;
-		height: 1.5em;
-		line-height: 1.3em;
+		font-size: 1em;
 		text-align: center;
 		text-decoration: none;
-		color: lighten($color-text, 40%);
-		font-size: 1.7em;
 		font-weight: bold;
 		z-index: 2;
-
-		&:hover {
-			color: $color-text;
-			border-color: $color-text
-		}
 	}
 
 	div {
 		position: absolute;
-		left: 2.6em;
+		left: 1em;
 		top: .6em;
 		display: none;
 		z-index: 99;
@@ -52,17 +40,17 @@
 		}
 	}
 
-	// Makes the dropdown menu keyboard accessible
+	// Makes the insert menu keyboard accessible
 	&.is-open {
 		div {
-			display: block;
+			display: inline-block;
 		}
 	}
 
-	// Reveals the dropdown menu the expected way for mouse users
+	// Reveals the insert menu the expected way for mouse users
 	&:hover {
 		div {
-			display: block;
+			display: inline-block;
 		}
 	}
 }

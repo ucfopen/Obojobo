@@ -2,6 +2,7 @@ import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+import emptyNode from './empty-node.json'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
@@ -16,12 +17,10 @@ const Line = props => {
 
 const Node = props => {
 	return (
-		<div className={'component'}>
-			<div className={`text-chunk obojobo-draft--chunks--code pad`}>
-				<pre>
-					<code>{props.children}</code>
-				</pre>
-			</div>
+		<div className={`text-chunk obojobo-draft--chunks--code pad`}>
+			<pre>
+				<code>{props.children}</code>
+			</pre>
 		</div>
 	)
 }
@@ -35,7 +34,7 @@ const isType = change => {
 }
 
 const insertNode = change => {
-	change.insertBlock(CODE_NODE).focus()
+	change.insertBlock(Block.fromJSON(emptyNode)).focus()
 }
 
 const slateToObo = node => {
@@ -216,6 +215,7 @@ const plugins = {
 }
 
 const Code = {
+	name: CODE_NODE,
 	components: {
 		Node,
 		Line
@@ -224,6 +224,9 @@ const Code = {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

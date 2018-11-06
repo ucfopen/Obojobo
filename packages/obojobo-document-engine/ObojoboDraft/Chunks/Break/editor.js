@@ -1,4 +1,8 @@
 import React from 'react'
+import { Block } from 'slate'
+
+import emptyNode from './empty-node.json'
+import Icon from './icon'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
@@ -14,15 +18,13 @@ class Node extends React.Component {
 	render() {
 		const { isSelected } = this.props
 		return (
-			<div className={'component'}>
-				<div
-					className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
-						this.props.node.data.get('content').width
-					}`}
-				>
-					<hr />
-					{isSelected ? <button onClick={() => this.toggleSize()}>Toggle Size</button> : null}
-				</div>
+			<div
+				className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
+					this.props.node.data.get('content').width
+				}`}
+			>
+				<hr />
+				{isSelected ? <button onClick={() => this.toggleSize()}>Toggle Size</button> : null}
 			</div>
 		)
 	}
@@ -30,11 +32,7 @@ class Node extends React.Component {
 
 const insertNode = change => {
 	change
-		.insertBlock({
-			type: BREAK_NODE,
-			data: { content: { width: 'normal' } }
-		})
-		.moveToStartOfNextText()
+		.insertBlock(Block.fromJSON(emptyNode))
 		.focus()
 }
 
@@ -79,13 +77,18 @@ const plugins = {
 }
 
 const Break = {
+	name: BREAK_NODE,
 	components: {
-		Node
+		Node,
+		Icon
 	},
 	helpers: {
 		insertNode,
 		slateToObo,
 		oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }
