@@ -26,12 +26,8 @@ exports.up = function(db) {
 			user_id: { type: 'bigserial', notNull: true },
 			file_name: { type: 'varchar', length: 100, notNull: true }
 		})
-		.then(result => {
-			return db.addIndex('media', 'media_user_id_index', ['user_id'])
-		})
-		.then(result => {
-			return db.addIndex('media', 'media_created_at_index', ['created_at'])
-		})
+		.then(() => db.addIndex('media', 'media_user_id_index', ['user_id']))
+		.then(() => db.addIndex('media', 'media_created_at_index', ['created_at']))
 }
 
 exports.down = function(db) {

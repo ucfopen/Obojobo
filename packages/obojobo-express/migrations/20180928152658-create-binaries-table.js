@@ -27,12 +27,8 @@ exports.up = function(db) {
 			file_size: { type: 'int', notNull: true },
 			mime_type: { type: 'varchar', length: 25, notNull: true }
 		})
-		.then(result => {
-			return db.addIndex('binaries', 'binaries_created_at_index', ['created_at'])
-		})
-		.then(result => {
-			return db.addIndex('binaries', 'binaries_mime_type_index', ['mime_type'])
-		})
+		.then(() => db.addIndex('binaries', 'binaries_created_at_index', ['created_at']))
+		.then(() => db.addIndex('binaries', 'binaries_mime_type_index', ['mime_type']))
 }
 
 exports.down = function(db) {

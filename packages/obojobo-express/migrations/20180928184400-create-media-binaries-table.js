@@ -21,20 +21,11 @@ exports.up = function(db) {
 			binary_id: { type: 'UUID', notNull: true },
 			dimensions: { type: 'varchar', length: 25, notNull: true }
 		})
-		.then(result => {
-			return db.addIndex(
-				'media_binaries',
-				'media_binaries_unique',
-				['media_id', 'dimensions'],
-				true
-			)
-		})
-		.then(result => {
-			return db.addIndex('media_binaries', 'media_binaries_media_id_index', ['media_id'])
-		})
-		.then(result => {
-			return db.addIndex('media_binaries', 'media_binaries_dimensions_index', ['dimensions'])
-		})
+		.then(() =>
+			db.addIndex('media_binaries', 'media_binaries_unique', ['media_id', 'dimensions'], true)
+		)
+		.then(() => db.addIndex('media_binaries', 'media_binaries_media_id_index', ['media_id']))
+		.then(() => db.addIndex('media_binaries', 'media_binaries_dimensions_index', ['dimensions']))
 }
 
 exports.down = function(db) {
