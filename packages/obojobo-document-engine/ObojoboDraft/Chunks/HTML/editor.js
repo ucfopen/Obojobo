@@ -66,7 +66,8 @@ const plugins = {
 		// Insert a softbreak on enter
 		if (event.key === 'Enter') {
 			event.preventDefault()
-			return change.insertText('\n')
+			change.insertText('\n')
+			return true
 		}
 
 		// Tab insert
@@ -90,7 +91,7 @@ const plugins = {
 	}
 }
 
-const Heading = {
+const HTML = {
 	components: {
 		Node
 	},
@@ -102,4 +103,4 @@ const Heading = {
 	plugins
 }
 
-export default Heading
+export default HTML
