@@ -155,7 +155,7 @@ describe('EditorNav', () => {
 			}
 		])
 		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce('')
+		window.prompt.mockReturnValueOnce('   ')
 
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
@@ -289,6 +289,34 @@ describe('EditorNav', () => {
 			.simulate('click')
 
 		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
+	})
+
+	test('EditorNav component clicks Edit Name button in item and submits only whitespace', () => {
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 5,
+					type: 'link',
+					label: 'label5',
+					flags: {
+						assessment: true
+					}
+				}
+			])
+			.mockReturnValueOnce([])
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce('     ')
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('li')
+			.find('button')
+			.at(1) // [Move Down, Edit Name, Delete]
+			.simulate('click')
+
+		expect(EditorUtil.renamePage).toHaveBeenCalled()
 	})
 
 	test('EditorNav component clicks Edit Name button in item', () => {

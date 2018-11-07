@@ -51,10 +51,13 @@ class EditorNav extends React.Component {
 	}
 
 	renamePage(pageId) {
-		const label = window.prompt('Enter the new title:')
+		let label = window.prompt('Enter the new title:')
 
 		// null means the user canceled without changing the value
 		if (label === null) return
+
+		// If the user sent an empty value or only whitespace, set it to null to fix later
+		if (!label || /\s/.test(label)) label = null
 
 		// If presented with an empty "ok", the page validation code will
 		// provide "Page n" as the name
@@ -67,8 +70,8 @@ class EditorNav extends React.Component {
 		// null means the user canceled without changing the value
 		if (label === null) return
 
-		// If the module name is empty, provide a default value
-		if (!label) label = '(Unnamed Module)'
+		// If the module name is empty or just whitespace, provide a default value
+		if (!label || /\s/.test(label)) label = '(Unnamed Module)'
 
 		EditorUtil.renamePage(moduleId, label)
 	}
