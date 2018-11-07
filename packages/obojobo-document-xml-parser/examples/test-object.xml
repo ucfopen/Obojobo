@@ -52,6 +52,36 @@
 				<p>An image with no source:</p>
 				<img />
 			</Page>
+			<Page id="iframe-page" title="IFrame Examples">
+				<h1>IFrame Examples</h1>
+				<p>IFrames display external sites within Obojobo</p>
+				<p>This is a <code>webpage</code> type IFrame, with default attributes. Once it is clicked, it will load and display its content.</p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" />
+				<p>This is a <code>media</code> type IFrame, with default attributes. Since it is optimized for media playback, its defaults are different than the webpage defaults.</p>
+				<IFrame type="media" src="https://www.youtube.com/embed/gJ390e5sjHk" />
+				<p>This is an IFrame that autoloads without the user clicking on it. Autoloading may slow down the load speed of the Obojobo Module.</p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" autoload="true"/>
+				<p>This IFrame has a custom title, that displays instead of the URL.  It is also read out by screen-readers.</p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" title="University of Central Florida"/>
+				<p>This IFrame has a custom with and height, and it has no border once it is loaded.</p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" height="300" width="300" border="false"/>
+				<p>The content of this IFrame is scaled to fit within the IFrame box, instead of scrolling. </p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" width="500" fit="scale"/>
+				<p>This IFrame is zoomed in 150% once it is loaded. </p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" initialZoom="1.5"/>
+				<h2>IFrame Controls</h2>
+				<p>An IFrame can contain any of the three control types: <code>reload</code>, <code>new-window</code>, and <code>zoom</code>.</p>
+				<p>All of the controls for this IFrame have been removed. </p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" controls=""/>
+				<p>This IFrame only has the <code>reload</code> control. <code>Reload</code> allows the user to refresh the site within the IFrame.</p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" controls="reload"/>
+				<p>This IFrame only has the <code>new-window</code> control. <code>New-window</code> allows the user to load the external site in a new tab or a new window, depending on their browser's defaults.</p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" controls="new-window"/>
+				<p>This IFrame only has the <code>zoom</code> controls. <code>Zoom</code> allows the user to zoom in and out on the website, for eaiser viewing of small details</p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" controls="zoom"/>
+				<p>This IFrame has both <code>reload</code> and <code>zoom</code>, but not <code>new-window</code></p>
+				<IFrame type="webpage" src="https://www.ucf.edu/" controls="reload,zoom"/>
+			</Page>
 			<Page id="questions-page" title="Practice Questions">
 				<h2>Practice question:</h2>
 				<p>This question is a <b>pick-one-multiple-correct</b> type question with feedback and an included <b>solution</b>:</p>
