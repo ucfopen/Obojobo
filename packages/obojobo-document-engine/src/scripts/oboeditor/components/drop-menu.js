@@ -18,6 +18,13 @@ class DropMenu extends React.Component {
 		this.timeOutId = null
 	}
 
+	openMenu(){
+		this.setState({
+			isOpen: true,
+			currentFocus: 0
+		})
+	}
+
 	componentDidUpdate() {
 		// This is called after renderDropDown so that the proper ref setup has
 		// already occurred
@@ -25,7 +32,7 @@ class DropMenu extends React.Component {
 		// accessed via up and down arrows
 		this.menu = []
 		this.props.dropOptions.forEach(item => {
-			this.menu.push(this[item])
+			this.menu.push(this[item.name])
 		})
 
 		// When the menu is open, focus on the current dropdown item
@@ -35,21 +42,31 @@ class DropMenu extends React.Component {
 	}
 
 	onKeyDown(event) {
-		// Open the menu and set the first item as the current focus
-		if (event.key === 'ArrowRight') {
+		if(event.key === 'Escape') {
+			event.preventDefault()
 			this.setState({
-				isOpen: true,
-				currentFocus: 0
+				isOpen: false
 			})
-		}
-
-		// Close the menu and return focus to the link item
-		if (event.key === 'ArrowLeft' || event.key === 'Escape') {
-			this.setState({ isOpen: false })
 			this.mainButton.focus()
 		}
 
-		// Move down through the submenu
+		// Move right/up through the insert menu
+		if (event.key === 'ArrowRight') {
+			event.preventDefault()
+			this.setState(currentState => ({
+				currentFocus: (currentState.currentFocus + 1) % this.menu.length
+			}))
+		}
+
+		// Move left/down through the insert menu
+		if (event.key === 'ArrowLeft') {
+			event.preventDefault()
+			this.setState(currentState => ({
+				currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
+			}))
+		}
+
+		// Move left/down through the insert menu
 		if (event.key === 'ArrowDown') {
 			event.preventDefault()
 			this.setState(currentState => ({
@@ -57,11 +74,11 @@ class DropMenu extends React.Component {
 			}))
 		}
 
-		// Move up through the submenu
+		// Move right/up through the insert menu
 		if (event.key === 'ArrowUp') {
 			event.preventDefault()
 			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus - 1) % this.menu.length
+				currentFocus: (currentState.currentFocus + this.menu.length  - 1) % this.menu.length
 			}))
 		}
 	}
@@ -83,18 +100,20 @@ class DropMenu extends React.Component {
 	renderItem(item) {
 		const { Icon } = item.components
 		return (
-			<button
-				key={item.name}
-				tabIndex="-1"
-				ref={button => {
-					this[item.name] = button
-				}}
-				onClick={() => {
-					if(item.onClick) return item.onClick()
-					return this.props.masterOnClick(item)
-				}}>
-				{Icon ? <Icon/> : item.name}
-			</button>
+			<div key={item.name} className="insert-button">
+				<button
+					tabIndex="-1"
+					ref={button => {
+						this[item.name] = button
+					}}
+					onClick={() => {
+						if(item.onClick) return item.onClick()
+						return this.props.masterOnClick(item)
+					}}>
+					{Icon ? <Icon/> : item.name}
+				</button>
+				<span>{item.name}</span>
+			</div>
 		)
 	}
 
@@ -110,14 +129,13 @@ class DropMenu extends React.Component {
 					className={'drop-icon'}
 					ref={button => {
 						this.mainButton = button
-					}}>
+					}}
+					onClick={() => this.openMenu()}>
 					{this.props.icon}
 				</button>
-				<div className={isOrNot(this.state.isOpen, 'open')}>
-					{this.props.dropOptions.map(item => {
+				{this.props.dropOptions.map(item => {
 						return this.renderItem(item)
 					})}
-				</div>
 			</div>
 		)
 	}

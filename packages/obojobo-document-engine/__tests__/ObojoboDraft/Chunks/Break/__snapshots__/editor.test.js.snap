@@ -2,19 +2,15 @@
 
 exports[`Break editor Node builds the expected component 1`] = `
 <div
-  className="component"
+  className="non-editable-chunk obojobo-draft--chunks--break viewer width-undefined"
 >
-  <div
-    className="non-editable-chunk obojobo-draft--chunks--break viewer width-undefined"
-  >
-    <hr />
-  </div>
+  <hr />
 </div>
 `;
 
-exports[`Break editor Node component toggles size to large 1`] = `"<div class=\\"component\\"><div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-normal\\"><hr><button>Toggle Size</button></div></div>"`;
+exports[`Break editor Node component toggles size to large 1`] = `"<div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-normal\\"><hr><button>Toggle Size</button></div>"`;
 
-exports[`Break editor Node component toggles size to large 2`] = `"<div class=\\"component\\"><div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-large\\"><hr><button>Toggle Size</button></div></div>"`;
+exports[`Break editor Node component toggles size to large 2`] = `"<div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-large\\"><hr><button>Toggle Size</button></div>"`;
 
 exports[`Break editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

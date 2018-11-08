@@ -36,6 +36,19 @@
 			svg line {
 				stroke: $color-text;
 			}
+
+			&:hover {
+				opacity: 1;
+				background: lighten($color-action, 48%);
+
+				svg path {
+					fill: $color-action;
+				}
+
+				svg line {
+					stroke: $color-action;
+				}
+			}
 		}
 	}
 
@@ -264,19 +277,6 @@
 
 		&.align-center {
 			transform: translate(-50%);
-		}
-	}
-
-	.toolbar button:hover {
-		opacity: 1;
-		background: lighten($color-action, 48%);
-
-		svg path {
-			fill: $color-action;
-		}
-
-		svg line {
-			stroke: $color-action;
 		}
 	}
 }

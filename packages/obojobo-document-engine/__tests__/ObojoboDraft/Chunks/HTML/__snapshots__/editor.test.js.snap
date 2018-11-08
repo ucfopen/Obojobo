@@ -2,12 +2,8 @@
 
 exports[`HTML editor Node builds the expected component 1`] = `
 <div
-  className="component"
->
-  <div
-    className="obojobo-draft--chunks--html viewer pad"
-  />
-</div>
+  className="obojobo-draft--chunks--html viewer pad"
+/>
 `;
 
 exports[`HTML editor oboToSlate converts an OboNode to a Slate node 1`] = `

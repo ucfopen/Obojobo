@@ -32,23 +32,19 @@ exports[`List editor Line component 1`] = `
 
 exports[`List editor Node component 1`] = `
 <div
-  className="component"
+  className="text-chunk obojobo-draft--chunks--list pad"
 >
-  <div
-    className="text-chunk obojobo-draft--chunks--list pad"
+  <button
+    onClick={[Function]}
   >
-    <button
-      onClick={[Function]}
-    >
-      Swap to Ordered
-    </button>
-  </div>
+    Swap to Ordered
+  </button>
 </div>
 `;
 
-exports[`List editor Node component toggles type 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Unordered</button></div></div>"`;
+exports[`List editor Node component toggles type 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Unordered</button></div>"`;
 
-exports[`List editor Node component toggles type from unordered to ordered 1`] = `"<div class=\\"component\\"><div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Ordered</button></div></div>"`;
+exports[`List editor Node component toggles type from unordered to ordered 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Ordered</button></div>"`;
 
 exports[`List editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {

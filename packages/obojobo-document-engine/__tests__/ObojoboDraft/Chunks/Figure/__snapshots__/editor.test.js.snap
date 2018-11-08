@@ -2,300 +2,284 @@
 
 exports[`Figure editor Node component 1`] = `
 <div
-  className="component"
+  className="obojobo-draft--chunks--figure viewer mockSize"
 >
   <div
-    className="obojobo-draft--chunks--figure viewer mockSize"
+    className="image-toolbar"
   >
-    <div
-      className="image-toolbar"
+    <button
+      onClick={[Function]}
     >
-      <button
-        onClick={[Function]}
-      >
-        Edit Alt Text
-      </button>
-      <button
-        onClick={[Function]}
-      >
-        Edit URL
-      </button>
-      <select
-        name="Size"
-        onChange={[Function]}
-        onClick={[Function]}
-        value="mockSize"
-      >
-        <option
-          value="small"
-        >
-          small
-        </option>
-        <option
-          value="medium"
-        >
-          medium
-        </option>
-        <option
-          value="large"
-        >
-          large
-        </option>
-        <option
-          value="custom"
-        >
-          custom
-        </option>
-      </select>
-      <div>
-        <button
-          className="delete-node"
-          onClick={[Function]}
-        >
-          X
-        </button>
-      </div>
-    </div>
-    <div
-      className="container"
+      Edit Alt Text
+    </button>
+    <button
+      onClick={[Function]}
     >
-      <img
-        alt="mockAlt"
-        src="mockUrl"
-        title="mockAlt"
-        unselectable="on"
-      />
-      <figcaption />
+      Edit URL
+    </button>
+    <select
+      name="Size"
+      onChange={[Function]}
+      onClick={[Function]}
+      value="mockSize"
+    >
+      <option
+        value="small"
+      >
+        small
+      </option>
+      <option
+        value="medium"
+      >
+        medium
+      </option>
+      <option
+        value="large"
+      >
+        large
+      </option>
+      <option
+        value="custom"
+      >
+        custom
+      </option>
+    </select>
+    <div>
+      <button
+        className="delete-node"
+        onClick={[Function]}
+      >
+        X
+      </button>
     </div>
+  </div>
+  <div
+    className="container"
+  >
+    <img
+      alt="mockAlt"
+      src="mockUrl"
+      title="mockAlt"
+      unselectable="on"
+    />
+    <figcaption />
   </div>
 </div>
 `;
 
 exports[`Figure editor Node renders with custom size correctly 1`] = `
 <div
-  className="component"
+  className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="obojobo-draft--chunks--figure viewer custom"
+    className="image-toolbar"
   >
-    <div
-      className="image-toolbar"
+    <button
+      onClick={[Function]}
     >
-      <button
-        onClick={[Function]}
+      Edit Alt Text
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Edit URL
+    </button>
+    <select
+      name="Size"
+      onChange={[Function]}
+      onClick={[Function]}
+      value="custom"
+    >
+      <option
+        value="small"
       >
-        Edit Alt Text
-      </button>
-      <button
-        onClick={[Function]}
+        small
+      </option>
+      <option
+        value="medium"
       >
-        Edit URL
-      </button>
-      <select
-        name="Size"
-        onChange={[Function]}
-        onClick={[Function]}
+        medium
+      </option>
+      <option
+        value="large"
+      >
+        large
+      </option>
+      <option
         value="custom"
       >
-        <option
-          value="small"
-        >
-          small
-        </option>
-        <option
-          value="medium"
-        >
-          medium
-        </option>
-        <option
-          value="large"
-        >
-          large
-        </option>
-        <option
-          value="custom"
-        >
-          custom
-        </option>
-      </select>
-      <div>
-        <button
-          className="delete-node"
-          onClick={[Function]}
-        >
-          X
-        </button>
-      </div>
+        custom
+      </option>
+    </select>
+    <div>
+      <button
+        className="delete-node"
+        onClick={[Function]}
+      >
+        X
+      </button>
     </div>
-    <div
-      className="container"
-    >
-      <img
-        alt="mockAlt"
-        src="mockUrl"
-        style={
-          Object {
-            "height": "customHeightpx",
-            "width": "customWidthpx",
-          }
+  </div>
+  <div
+    className="container"
+  >
+    <img
+      alt="mockAlt"
+      src="mockUrl"
+      style={
+        Object {
+          "height": "customHeightpx",
+          "width": "customWidthpx",
         }
-        title="mockAlt"
-        unselectable="on"
-      />
-      <figcaption />
-    </div>
+      }
+      title="mockAlt"
+      unselectable="on"
+    />
+    <figcaption />
   </div>
 </div>
 `;
 
 exports[`Figure editor Node renders with custom size correctly 2`] = `
 <div
-  className="component"
+  className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="obojobo-draft--chunks--figure viewer custom"
+    className="image-toolbar"
   >
-    <div
-      className="image-toolbar"
+    <button
+      onClick={[Function]}
     >
-      <button
-        onClick={[Function]}
+      Edit Alt Text
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Edit URL
+    </button>
+    <select
+      name="Size"
+      onChange={[Function]}
+      onClick={[Function]}
+      value="custom"
+    >
+      <option
+        value="small"
       >
-        Edit Alt Text
-      </button>
-      <button
-        onClick={[Function]}
+        small
+      </option>
+      <option
+        value="medium"
       >
-        Edit URL
-      </button>
-      <select
-        name="Size"
-        onChange={[Function]}
-        onClick={[Function]}
+        medium
+      </option>
+      <option
+        value="large"
+      >
+        large
+      </option>
+      <option
         value="custom"
       >
-        <option
-          value="small"
-        >
-          small
-        </option>
-        <option
-          value="medium"
-        >
-          medium
-        </option>
-        <option
-          value="large"
-        >
-          large
-        </option>
-        <option
-          value="custom"
-        >
-          custom
-        </option>
-      </select>
-      <div>
-        <button
-          className="delete-node"
-          onClick={[Function]}
-        >
-          X
-        </button>
-      </div>
+        custom
+      </option>
+    </select>
+    <div>
+      <button
+        className="delete-node"
+        onClick={[Function]}
+      >
+        X
+      </button>
     </div>
-    <div
-      className="container"
-    >
-      <img
-        alt="mockAlt"
-        src="mockUrl"
-        style={
-          Object {
-            "height": "customHeightpx",
-          }
+  </div>
+  <div
+    className="container"
+  >
+    <img
+      alt="mockAlt"
+      src="mockUrl"
+      style={
+        Object {
+          "height": "customHeightpx",
         }
-        title="mockAlt"
-        unselectable="on"
-      />
-      <figcaption />
-    </div>
+      }
+      title="mockAlt"
+      unselectable="on"
+    />
+    <figcaption />
   </div>
 </div>
 `;
 
 exports[`Figure editor Node renders with custom size correctly 3`] = `
 <div
-  className="component"
+  className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="obojobo-draft--chunks--figure viewer custom"
+    className="image-toolbar"
   >
-    <div
-      className="image-toolbar"
+    <button
+      onClick={[Function]}
     >
-      <button
-        onClick={[Function]}
+      Edit Alt Text
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Edit URL
+    </button>
+    <select
+      name="Size"
+      onChange={[Function]}
+      onClick={[Function]}
+      value="custom"
+    >
+      <option
+        value="small"
       >
-        Edit Alt Text
-      </button>
-      <button
-        onClick={[Function]}
+        small
+      </option>
+      <option
+        value="medium"
       >
-        Edit URL
-      </button>
-      <select
-        name="Size"
-        onChange={[Function]}
-        onClick={[Function]}
+        medium
+      </option>
+      <option
+        value="large"
+      >
+        large
+      </option>
+      <option
         value="custom"
       >
-        <option
-          value="small"
-        >
-          small
-        </option>
-        <option
-          value="medium"
-        >
-          medium
-        </option>
-        <option
-          value="large"
-        >
-          large
-        </option>
-        <option
-          value="custom"
-        >
-          custom
-        </option>
-      </select>
-      <div>
-        <button
-          className="delete-node"
-          onClick={[Function]}
-        >
-          X
-        </button>
-      </div>
+        custom
+      </option>
+    </select>
+    <div>
+      <button
+        className="delete-node"
+        onClick={[Function]}
+      >
+        X
+      </button>
     </div>
-    <div
-      className="container"
-    >
-      <img
-        alt="mockAlt"
-        src="mockUrl"
-        style={
-          Object {
-            "width": "mockWidthpx",
-          }
+  </div>
+  <div
+    className="container"
+  >
+    <img
+      alt="mockAlt"
+      src="mockUrl"
+      style={
+        Object {
+          "width": "mockWidthpx",
         }
-        title="mockAlt"
-        unselectable="on"
-      />
-      <figcaption />
-    </div>
+      }
+      title="mockAlt"
+      unselectable="on"
+    />
+    <figcaption />
   </div>
 </div>
 `;

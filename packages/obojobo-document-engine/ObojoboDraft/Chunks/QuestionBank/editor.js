@@ -79,7 +79,6 @@ class Node extends React.Component {
 const insertNode = change => {
 	change
 		.insertBlock(Block.fromJSON(emptyNode))
-		.moveToStartOfNextText()
 		.focus()
 }
 

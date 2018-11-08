@@ -8,15 +8,11 @@ exports[`Code editor Line builds the expected component 1`] = `
 
 exports[`Code editor Node builds the expected component 1`] = `
 <div
-  className="component"
+  className="text-chunk obojobo-draft--chunks--code pad"
 >
-  <div
-    className="text-chunk obojobo-draft--chunks--code pad"
-  >
-    <pre>
-      <code />
-    </pre>
-  </div>
+  <pre>
+    <code />
+  </pre>
 </div>
 `;
 

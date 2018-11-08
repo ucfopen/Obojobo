@@ -13,14 +13,26 @@ Object {
   },
   "key": "mockKey",
   "nodes": Array [
-    undefined,
     Object {
-      "data": Object {
-        "content": undefined,
-      },
-      "key": undefined,
+      "nodes": Array [
+        undefined,
+      ],
       "object": "block",
-      "type": "NotADefinedNode",
+      "type": "oboeditor.component",
+    },
+    Object {
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "content": undefined,
+          },
+          "key": undefined,
+          "object": "block",
+          "type": "NotADefinedNode",
+        },
+      ],
+      "object": "block",
+      "type": "oboeditor.component",
     },
   ],
   "object": "block",

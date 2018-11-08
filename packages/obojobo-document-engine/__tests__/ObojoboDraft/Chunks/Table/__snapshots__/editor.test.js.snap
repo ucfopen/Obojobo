@@ -6,32 +6,28 @@ exports[`Table editor Cell component as header 1`] = `<th />`;
 
 exports[`Table editor Node component 1`] = `
 <div
-  className="component"
+  className="obojobo-draft--chunks--table viewer pad"
 >
   <div
-    className="obojobo-draft--chunks--table viewer pad"
+    className="container"
   >
-    <div
-      className="container"
+    <table
+      className="view"
     >
-      <table
-        className="view"
-      >
-        <tbody>
-          <tr>
-            <td
-              className="delete-cell"
+      <tbody>
+        <tr>
+          <td
+            className="delete-cell"
+          >
+            <button
+              onClick={[Function]}
             >
-              <button
-                onClick={[Function]}
-              >
-                X
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+              X
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <div
     className="table-editor"
@@ -55,13 +51,13 @@ exports[`Table editor Node component 1`] = `
 </div>
 `;
 
-exports[`Table editor Node component adds col 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+exports[`Table editor Node component adds col 1`] = `"<div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
 
-exports[`Table editor Node component adds row 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+exports[`Table editor Node component adds row 1`] = `"<div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
 
-exports[`Table editor Node component removes col 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+exports[`Table editor Node component removes col 1`] = `"<div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
 
-exports[`Table editor Node component toggles header 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
+exports[`Table editor Node component toggles header 1`] = `"<div class=\\"obojobo-draft--chunks--table viewer pad\\"><div class=\\"container\\"><table class=\\"view\\"><tbody><tr><td class=\\"delete-cell\\"><button>X</button></td></tr></tbody></table></div><div class=\\"table-editor\\"><button>Add Row</button><button>Add Column</button><button>Toggle Header</button></div></div>"`;
 
 exports[`Table editor Row component 1`] = `
 <tr>
