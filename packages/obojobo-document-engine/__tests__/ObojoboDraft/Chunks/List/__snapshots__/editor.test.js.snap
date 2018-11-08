@@ -413,15 +413,22 @@ Object {
   "nodes": Array [
     Object {
       "nodes": Array [
-        "mockLine1",
+        Object {
+          "type": "ObojoboDraft.Chunks.List.Line",
+        },
+        Object {
+          "nodes": Array [
+            Object {
+              "type": "ObojoboDraft.Chunks.List.Line",
+            },
+            Object {
+              "type": "ObojoboDraft.Chunks.List.Line",
+            },
+          ],
+          "type": "ObojoboDraft.Chunks.List.Level",
+        },
       ],
       "type": "ObojoboDraft.Chunks.List.Level",
-    },
-    Object {
-      "nodes": Array [
-        "mockLine2",
-      ],
-      "type": "ObojoboDraft.Chunks.List.Line",
     },
     Object {
       "type": "ObojoboDraft.Chunks.List.Line",

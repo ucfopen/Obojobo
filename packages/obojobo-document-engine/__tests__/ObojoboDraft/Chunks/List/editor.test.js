@@ -245,11 +245,32 @@ describe('List editor', () => {
 			nodes: [
 				{
 					type: LIST_LEVEL_NODE,
-					nodes: ['mockLine1']
+					nodes: [
+						{
+							type: LIST_LINE_NODE
+						}
+					]
 				},
 				{
-					type: LIST_LINE_NODE,
-					nodes: ['mockLine2']
+					type: LIST_LEVEL_NODE,
+					nodes: [
+						{
+							type: LIST_LEVEL_NODE,
+							nodes: [
+								{
+									type: LIST_LINE_NODE
+								}
+							]
+						},
+						{
+							type: LIST_LEVEL_NODE,
+							nodes: [
+								{
+									type: LIST_LINE_NODE
+								}
+							]
+						}
+					]
 				},
 				{
 					type: LIST_LINE_NODE
