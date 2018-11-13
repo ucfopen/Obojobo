@@ -28,6 +28,8 @@ import Text from '../../Text/editor'
 import YouTube from '../../YouTube/editor'
 import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
 
+import OboEditorStore from '../../../../src/scripts/oboeditor/store'
+
 const nodes = {
 	'ObojoboDraft.Chunks.Break': Break,
 	'ObojoboDraft.Chunks.Code': Code,
@@ -151,5 +153,12 @@ const MCAnswer = {
 	},
 	plugins
 }
+
+OboEditorStore.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
+	name: 'Multiple Choice Answer',
+	isInsertable: false,
+	componentClass: Node,
+	plugins
+})
 
 export default MCAnswer

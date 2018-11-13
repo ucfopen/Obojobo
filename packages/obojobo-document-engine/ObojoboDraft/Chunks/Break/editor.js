@@ -3,32 +3,11 @@ import { Block } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
+import Node from './editor-component'
+
+import OboEditorStore from '../../../src/scripts/oboeditor/store'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
-
-class Node extends React.Component {
-	toggleSize() {
-		const content = this.props.node.data.get('content')
-		const newSize = content.width === 'normal' ? 'large' : 'normal'
-		content.width = newSize
-
-		this.forceUpdate()
-	}
-
-	render() {
-		const { isSelected } = this.props
-		return (
-			<div
-				className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
-					this.props.node.data.get('content').width
-				}`}
-			>
-				<hr />
-				{isSelected ? <button onClick={() => this.toggleSize()}>Toggle Size</button> : null}
-			</div>
-		)
-	}
-}
 
 const insertNode = change => {
 	change
@@ -92,5 +71,14 @@ const Break = {
 	},
 	plugins
 }
+
+OboEditorStore.registerModel('ObojoboDraft.Chunks.Break', {
+	name: 'Break',
+	icon: Icon,
+	isInsertable: true,
+	componentClass: Node,
+	insertJSON: emptyNode,
+	plugins
+})
 
 export default Break

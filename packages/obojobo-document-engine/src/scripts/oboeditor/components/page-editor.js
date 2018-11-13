@@ -31,7 +31,6 @@ import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubr
 import ParameterNode from './parameter-node'
 import Component from './editor-component'
 import MarkToolbar from './toolbar'
-import saveDocument from '../plugins/save-document'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -68,7 +67,6 @@ const dontInsert = [
 ]
 
 const plugins = [
-	saveDocument(),
 	Component.plugins,
 	...MarkToolbar.plugins,
 	ActionButton.plugins,

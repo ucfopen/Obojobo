@@ -7,6 +7,8 @@ import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 
+import OboEditorStore from '../../../src/scripts/oboeditor/store'
+
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
@@ -252,5 +254,14 @@ const Text = {
 	},
 	plugins
 }
+
+OboEditorStore.registerModel('ObojoboDraft.Chunks.Text', {
+	name: 'Text',
+	icon: Icon,
+	isInsertable: true,
+	componentClass: Node,
+	insertJSON: emptyNode,
+	plugins
+})
 
 export default Text

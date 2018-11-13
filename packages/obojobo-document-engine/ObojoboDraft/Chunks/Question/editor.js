@@ -37,6 +37,8 @@ import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 
+import OboEditorStore from '../../../src/scripts/oboeditor/store'
+
 const { Button } = Common.components
 const nodes = {
 	'ObojoboDraft.Chunks.Break': Break,
@@ -282,5 +284,14 @@ const Question = {
 	},
 	plugins
 }
+
+OboEditorStore.registerModel('ObojoboDraft.Chunks.Question', {
+	name: 'Question',
+	icon: Icon,
+	isInsertable: true,
+	componentClass: Node,
+	insertJSON: emptyNode,
+	plugins
+})
 
 export default Question

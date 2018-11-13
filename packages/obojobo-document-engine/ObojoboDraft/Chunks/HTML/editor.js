@@ -3,16 +3,11 @@ import { Block } from 'slate'
 
 import emptyNode from './empty-node'
 import Icon from './icon'
+import Node from './editor-component'
+
+import OboEditorStore from '../../../src/scripts/oboeditor/store'
 
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
-
-const Node = props => {
-	return (
-		<div className={'obojobo-draft--chunks--html viewer pad'}>
-			{props.children}
-		</div>
-	)
-}
 
 const insertNode = change => {
 	change
@@ -72,7 +67,7 @@ const plugins = {
 	}
 }
 
-const Heading = {
+const HTML = {
 	name: HTML_NODE,
 	components: {
 		Node,
@@ -89,4 +84,13 @@ const Heading = {
 	plugins
 }
 
-export default Heading
+OboEditorStore.registerModel('ObojoboDraft.Chunks.HTML', {
+	name: 'HTML',
+	icon: Icon,
+	isInsertable: true,
+	componentClass: Node,
+	insertJSON: emptyNode,
+	plugins
+})
+
+export default HTML

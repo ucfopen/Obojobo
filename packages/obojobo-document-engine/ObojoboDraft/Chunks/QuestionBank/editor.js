@@ -9,6 +9,8 @@ import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-n
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 
+import OboEditorStore from '../../../src/scripts/oboeditor/store'
+
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
@@ -281,5 +283,14 @@ const QuestionBank = {
 	},
 	plugins
 }
+
+OboEditorStore.registerModel('ObojoboDraft.Chunks.QuestionBank', {
+	name: 'Question Bank',
+	icon: Icon,
+	isInsertable: true,
+	componentClass: Node,
+	insertJSON: emptyNode,
+	plugins
+})
 
 export default QuestionBank

@@ -10,13 +10,12 @@ class _Store {
 
 		opts = Object.assign(
 			{
-				type: null,
-				default: false,
-				insertItem: null,
+				name: '',
+				icon: null,
+				isInsertable: false,
 				componentClass: null,
-				selectionHandler: null,
-				commandHandler: null,
-				variables: {},
+				insertJSON: null,
+				plugins: null,
 				init() {}
 			},
 			opts
@@ -26,9 +25,13 @@ class _Store {
 
 		return this
 	}
+
+	getModels() {
+		console.log(items)
+	}
 }
 
 const Store = new _Store()
 
 Store.init()
-export { Store }
+export default Store

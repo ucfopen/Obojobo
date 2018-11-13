@@ -10,6 +10,8 @@ import MCAnswer from '../MCAnswer/editor'
 import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
 import isOrNot from '../../../../src/scripts/common/isornot'
 
+import OboEditorStore from '../../../../src/scripts/oboeditor/store'
+
 class Node extends React.Component {
 	constructor(props) {
 		super(props)
@@ -184,5 +186,12 @@ const MCChoice = {
 	},
 	plugins
 }
+
+OboEditorStore.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
+	name: 'Multiple Choice Choice',
+	isInsertable: false,
+	componentClass: Node,
+	plugins
+})
 
 export default MCChoice

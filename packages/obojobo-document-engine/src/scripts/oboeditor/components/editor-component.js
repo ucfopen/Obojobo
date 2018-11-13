@@ -15,8 +15,11 @@ import Table from '../../../../ObojoboDraft/Chunks/Table/editor'
 import Text from '../../../../ObojoboDraft/Chunks/Text/editor'
 import YouTube from '../../../../ObojoboDraft/Chunks/YouTube/editor'
 //import QuestionBank from '../../../../ObojoboDraft/Chunks/QuestionBank/editor'
-import Question from '../../../../ObojoboDraft/Chunks/Question/editor'
+//import Question from '../../../../ObojoboDraft/Chunks/Question/editor'
 import DefaultNode from './default-node'
+
+import OboEditorStore from '../store'
+OboEditorStore.getModels()
 
 import DropMenu from './drop-menu'
 
