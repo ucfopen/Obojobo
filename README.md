@@ -29,7 +29,7 @@ We added Heroku support as an easy way to give Obojobo a **free test drive** (or
 
 [![Deploy Obojobo to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy/)
 
-> [Heroku](https://www.heroku.com/what) is a cloud service that lets you host web apps in the cloud without worring so much about the infrastructure.
+> [Heroku](https://www.heroku.com/what) is a cloud service that lets you host web apps in the cloud without having to worry so much about the infrastructure.
 
 ## Development Setup
 
