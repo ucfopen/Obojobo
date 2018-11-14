@@ -24,6 +24,10 @@
 			padding: 1em 0;
 			padding-top: 0;
 			box-sizing: border-box;
+
+			&:focus {
+				outline: none;
+			}
 		}
 
 		> .recorded-score {

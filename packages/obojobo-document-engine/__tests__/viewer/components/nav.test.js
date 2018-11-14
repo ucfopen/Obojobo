@@ -2,7 +2,10 @@ import { mount, shallow } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
+import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
+
 jest.mock('../../../src/scripts/common/page/focus')
+jest.mock('../../../src/scripts/viewer/util/focus-util')
 
 class MockStylableText {
 	constructor(text) {
@@ -58,7 +61,6 @@ jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({}))
 
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
 const Nav = require('../../../src/scripts/viewer/components/nav').default
-const Common = require('../../../src/scripts/common/index')
 
 describe('Nav', () => {
 	const navItems = [
@@ -239,7 +241,7 @@ describe('Nav', () => {
 		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
 	})
 
-	test('onClickSkipNavigation fires event', () => {
+	test('onClickSkipNavigation calls FocusUtil.focusOnNavTargetContent', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([
 			{
 				id: 5,
@@ -259,13 +261,12 @@ describe('Nav', () => {
 		}
 		const el = shallow(<Nav {...props} />)
 
-		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+		expect(FocusUtil.focusOnNavTargetContent).not.toHaveBeenCalled()
 		el.find('.skip-nav-button').simulate('click')
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('viewer:focusOnContent')
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusOnNavTargetContent).toHaveBeenCalledTimes(1)
 	})
 
-	test('Clicking on a link calls viewer:focusOnContent', () => {
+	test('Clicking on a link calls FocusUtil.focusOnNavigation', () => {
 		NavUtil.getOrderedList.mockReturnValue([
 			{
 				id: 'mock-id',
@@ -291,17 +292,9 @@ describe('Nav', () => {
 		NavUtil.canNavigate.mockReturnValueOnce(true)
 		const li = el.find('li')
 
+		expect(FocusUtil.focusOnNavigation).not.toHaveBeenCalled()
 		li.simulate('click')
-
-		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
-
-		// Force a re-render and a call to componentDidUpdate:
-		el.setProps({ className: 'new-class-name' })
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('viewer:focusOnContent')
-
-		el.setProps({ className: 'new-class-name-2' })
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusOnNavigation).toHaveBeenCalledTimes(1)
 	})
 
 	test('focus calls focus ', () => {
@@ -314,9 +307,9 @@ describe('Nav', () => {
 		}
 		const component = renderer.create(<Nav {...props} />)
 
-		const mockListRef = jest.fn()
-		component.getInstance().refs.list = mockListRef
+		const mockSelfRef = jest.fn()
+		component.getInstance().refs.self = mockSelfRef
 		component.getInstance().focus()
-		expect(mockFocus).toHaveBeenCalledWith(mockListRef)
+		expect(mockFocus).toHaveBeenCalledWith(mockSelfRef)
 	})
 })

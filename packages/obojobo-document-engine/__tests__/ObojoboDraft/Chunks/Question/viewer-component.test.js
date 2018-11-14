@@ -4,10 +4,10 @@ import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
 
 jest.mock('../../../../src/scripts/viewer/util/question-util')
-jest.mock('../../../../src/scripts/common/util/focus-util')
+jest.mock('../../../../src/scripts/viewer/util/focus-util')
 
 import Question from '../../../../ObojoboDraft/Chunks/Question/viewer-component'
-import FocusUtil from '../../../../src/scripts/common/util/focus-util'
+import FocusUtil from '../../../../src/scripts/viewer/util/focus-util'
 import QuestionUtil from '../../../../src/scripts/viewer/util/question-util'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 
@@ -316,7 +316,7 @@ describe('MCAssessment', () => {
 		expect(value).toEqual(undefined) //eslint-disable-line
 	})
 
-	test('onClickBlocker calls FocusUtil.focusComponent in practice mode', () => {
+	test('onClickBlocker calls FocusUtil.focusOnContent in practice mode', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
@@ -333,6 +333,32 @@ describe('MCAssessment', () => {
 		component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
-		expect(FocusUtil.focusComponent).toHaveBeenCalled()
+		expect(FocusUtil.focusOnContent).toHaveBeenCalled()
+	})
+
+	test('focusOnContent does nothing if component has no child components', () => {
+		const didFocus = Question.focusOnContent({
+			children: {
+				at: () => null
+			}
+		})
+
+		expect(didFocus).toBe(false)
+	})
+
+	test('focusOnContent focuses on the first child component', () => {
+		const mockFocus = jest.fn()
+		const didFocus = Question.focusOnContent({
+			children: {
+				at: () => ({
+					getDomEl: () => ({
+						focus: mockFocus
+					})
+				})
+			}
+		})
+
+		expect(didFocus).toBe(true)
+		expect(mockFocus).toHaveBeenCalledTimes(1)
 	})
 })

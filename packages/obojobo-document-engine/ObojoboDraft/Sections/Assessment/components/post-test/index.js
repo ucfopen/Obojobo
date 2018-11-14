@@ -3,14 +3,34 @@ import React from 'react'
 import Common from 'Common'
 import Viewer from 'Viewer'
 
+import { FOCUS_ON_ASSESSMENT_CONTENT } from '../../assessment-event-constants'
+
 const { OboModel } = Common.models
-const { AssessmentUtil } = Viewer.util
-const NavUtil = Viewer.util.NavUtil
+const { focus } = Common.page
+const { AssessmentUtil, NavUtil } = Viewer.util
+const { Dispatcher } = Common.flux
 
 import LTIStatus from './lti-status'
 import FullReview from '../full-review'
 
 class AssessmentPostTest extends React.Component {
+	constructor() {
+		super()
+		this.boundFocusOnContent = this.focusOnContent.bind(this)
+	}
+
+	componentWillMount() {
+		Dispatcher.on(FOCUS_ON_ASSESSMENT_CONTENT, this.boundFocusOnContent)
+	}
+
+	componentWillUnmount() {
+		Dispatcher.off(FOCUS_ON_ASSESSMENT_CONTENT, this.boundFocusOnContent)
+	}
+
+	focusOnContent() {
+		focus(this.refs.h1)
+	}
+
 	render() {
 		const props = this.props
 
@@ -73,7 +93,9 @@ class AssessmentPostTest extends React.Component {
 		return (
 			<div className="score unlock">
 				<div className="overview">
-					<h1>{assessmentLabel} Overview</h1>
+					<h1 ref="h1" tabIndex="-1">
+						{assessmentLabel} Overview
+					</h1>
 					{assessmentScore === null ? (
 						<div className="recorded-score is-null">
 							<h2>Recorded Score:</h2>

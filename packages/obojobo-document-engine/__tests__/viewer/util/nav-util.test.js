@@ -204,6 +204,11 @@ describe('NavUtil', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 	})
 
+	test('getNavTarget returns null if no state or no state.itemsById', () => {
+		expect(NavUtil.getNavTarget()).toBe(null)
+		expect(NavUtil.getNavTarget({})).toBe(null)
+	})
+
 	test('getNavTargetModel returns OboModel reference', () => {
 		const mockState = {
 			navTargetId: 'mockId',
@@ -496,5 +501,9 @@ describe('NavUtil', () => {
 	test('isNavEnabled returns if the nav is enabled', () => {
 		expect(NavUtil.isNavEnabled({ disabled: true })).toBe(false)
 		expect(NavUtil.isNavEnabled({ disabled: false })).toBe(true)
+	})
+
+	test('isNavOpen returns the open value of state', () => {
+		expect(NavUtil.isNavOpen({ open: 'mock-open' })).toBe('mock-open')
 	})
 })

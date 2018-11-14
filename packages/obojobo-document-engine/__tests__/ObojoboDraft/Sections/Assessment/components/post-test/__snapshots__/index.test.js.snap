@@ -7,7 +7,9 @@ exports[`PostTest PostTest component 1`] = `
   <div
     className="overview"
   >
-    <h1>
+    <h1
+      tabIndex="-1"
+    >
        Overview
     </h1>
     <div
@@ -87,7 +89,9 @@ exports[`PostTest PostTest component with recorded score 1`] = `
   <div
     className="overview"
   >
-    <h1>
+    <h1
+      tabIndex="-1"
+    >
        Overview
     </h1>
     <div
@@ -249,7 +253,9 @@ exports[`PostTest PostTest component with review 1`] = `
   <div
     className="overview"
   >
-    <h1>
+    <h1
+      tabIndex="-1"
+    >
        Overview
     </h1>
     <div
@@ -411,7 +417,9 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
   <div
     className="overview"
   >
-    <h1>
+    <h1
+      tabIndex="-1"
+    >
        Overview
     </h1>
     <div
@@ -573,7 +581,9 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
   <div
     className="overview"
   >
-    <h1>
+    <h1
+      tabIndex="-1"
+    >
        Overview
     </h1>
     <div
@@ -735,7 +745,9 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
   <div
     className="overview"
   >
-    <h1>
+    <h1
+      tabIndex="-1"
+    >
        Overview
     </h1>
     <div

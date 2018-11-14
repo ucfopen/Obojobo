@@ -6,20 +6,27 @@ import Common from 'Common'
 import Viewer from 'Viewer'
 import isOrNot from '../../../src/scripts/common/isornot'
 
-const { OboComponent } = Common.components
-const { FocusUtil } = Common.util
+const { OboComponent } = Viewer.components
+const { FocusUtil, QuestionUtil } = Viewer.util
 const { Button } = Common.components
-
-const { QuestionUtil } = Viewer.util
 
 import QuestionContent from './Content/viewer-component'
 
 export default class Question extends React.Component {
+	static focusOnContent(model) {
+		const firstModel = model.children.at(0)
+		if (!firstModel) return false
+
+		firstModel.getDomEl().focus()
+
+		return true
+	}
+
 	onClickBlocker() {
 		QuestionUtil.viewQuestion(this.props.model.get('id'))
 		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		FocusUtil.focusComponent(this.props.model.get('id'), mode === 'practice')
+		FocusUtil.focusOnContent(this.props.model.get('id'), mode === 'practice')
 	}
 
 	render() {
@@ -77,7 +84,7 @@ export default class Question extends React.Component {
 				moduleData={this.props.moduleData}
 				className={classNames}
 				role="region"
-				aria-live="assertive"
+				aria-label="Question"
 			>
 				<div className="flipper">
 					<div className="content-back">

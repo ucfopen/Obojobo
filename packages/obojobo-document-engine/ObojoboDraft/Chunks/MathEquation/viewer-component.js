@@ -4,7 +4,9 @@ import React from 'react'
 import katex from 'katex'
 
 import Common from 'Common'
-const { OboComponent } = Common.components
+import Viewer from 'Viewer'
+
+const { OboComponent } = Viewer.components
 const { NonEditableChunk } = Common.chunk
 
 const getLatexHtml = function(latex) {
@@ -33,13 +35,11 @@ const MathEquation = props => {
 			model={props.model}
 			moduleData={props.moduleData}
 			className={`obojobo-draft--chunks--math-equation pad align-${props.model.modelState.align}`}
-			aria-label={props.model.modelState.alt || props.model.modelState.latex}
+			aria-label={props.model.modelState.alt}
 		>
 			<NonEditableChunk>
 				{props.model.modelState.label === '' ? null : (
-					<div className="for-screen-reader-only">
-						{'Equation ' + props.model.modelState.label}
-					</div>
+					<div className="for-screen-reader-only">{'Equation ' + props.model.modelState.label}</div>
 				)}
 				<div
 					className="katex-container"

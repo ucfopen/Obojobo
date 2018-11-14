@@ -13,11 +13,11 @@ import MCAssessmentAnswerChoices from './mc-assessment-answer-choices'
 import MCAssessmentSubmitAndResultsFooter from './mc-assessment-submit-and-results-footer'
 import MCAssessmentExplanation from './mc-assessment-explanation'
 
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { DOMUtil } = Common.page
-const { FocusUtil } = Common.util
+const { FocusUtil } = Viewer.util
 const { QuestionUtil } = Viewer.util
 
 const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
@@ -258,7 +258,7 @@ export default class MCAssessment extends React.Component {
 
 			case FOCUS_TARGET_QUESTION:
 				delete this.nextFocus
-				FocusUtil.focusComponent(this.getQuestionModel().get('id'), false)
+				FocusUtil.focusOnContent(this.getQuestionModel().get('id'), false)
 				break
 		}
 	}

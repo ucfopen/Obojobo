@@ -6,16 +6,16 @@ import NavUtil from '../../viewer/util/nav-util'
 import Logo from '../../viewer/components/logo'
 import isOrNot from '../../common/isornot'
 import Common from 'Common'
+import FocusUtil from '../util/focus-util'
 
 const { OboModel } = Common.models
 const { StyleableText } = Common.text
 const { StyleableTextComponent } = Common.text
 const { Button } = Common.components
-const { Dispatcher } = Common.flux
 const { focus } = Common.page
 
-const getLabelTextFromLabel = (label) => {
-	if(!label) return ''
+const getLabelTextFromLabel = label => {
+	if (!label) return ''
 	return label instanceof StyleableText ? label.value : label
 }
 
@@ -24,8 +24,8 @@ export default class Nav extends React.Component {
 		switch (item.type) {
 			case 'link':
 				if (!NavUtil.canNavigate(this.props.navState)) return
-				this.shouldFocusOnContentAfterUpdate = true
 				NavUtil.gotoPath(item.fullPath)
+				FocusUtil.focusOnNavigation()
 				break
 
 			case 'sub-link': {
@@ -38,7 +38,7 @@ export default class Nav extends React.Component {
 	}
 
 	onClickSkipNavigation() {
-		Dispatcher.trigger('viewer:focusOnContent')
+		FocusUtil.focusOnNavTargetContent()
 	}
 
 	renderLabel(label) {
@@ -70,10 +70,10 @@ export default class Nav extends React.Component {
 
 		const labelText = getLabelTextFromLabel(item.label)
 		let ariaLabel = labelText
-		if(item.contentType) {
-			ariaLabel = item.contentType + ': ' + ariaLabel
+		if (item.contentType) {
+			ariaLabel = item.contentType + ' ' + ariaLabel
 		}
-		if(isSelected) {
+		if (isSelected) {
 			ariaLabel = 'Currently on ' + ariaLabel
 		} else {
 			ariaLabel = 'Go to ' + ariaLabel
@@ -81,12 +81,7 @@ export default class Nav extends React.Component {
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLinkButton(
-					item.label,
-					ariaLabel,
-					isItemDisabled,
-					item.id
-				)}
+				{this.renderLinkButton(item.label, ariaLabel, isItemDisabled, item.id)}
 				{lockEl}
 			</li>
 		)
@@ -105,17 +100,13 @@ export default class Nav extends React.Component {
 		const labelText = getLabelTextFromLabel(item.label)
 		let ariaLabel = labelText
 		ariaLabel = 'Jump to ' + labelText
-		if(item.parent && item.parent.type && item.parent.type === 'link') {
+		if (item.parent && item.parent.type && item.parent.type === 'link') {
 			ariaLabel += ' inside ' + getLabelTextFromLabel(item.parent.label)
 		}
 
 		return (
 			<li key={index} onClick={this.onClick.bind(this, item)} className={className}>
-				{this.renderLinkButton(
-					item.label,
-					ariaLabel,
-					isItemDisabled
-				)}
+				{this.renderLinkButton(item.label, ariaLabel, isItemDisabled)}
 				{lockEl}
 			</li>
 		)
@@ -134,15 +125,8 @@ export default class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
-	componentDidUpdate() {
-		if (this.shouldFocusOnContentAfterUpdate) {
-			Dispatcher.trigger('viewer:focusOnContent')
-			delete this.shouldFocusOnContentAfterUpdate
-		}
-	}
-
 	focus() {
-		Common.page.focus(this.refs.list)
+		Common.page.focus(this.refs.self)
 	}
 
 	render() {
@@ -157,7 +141,7 @@ export default class Nav extends React.Component {
 			isOrNot(!navState.disabled, 'enabled')
 
 		return (
-			<nav className={className}>
+			<nav className={className} tabIndex="-1" ref="self" role="navigation" aria-label="Navigation">
 				<Button
 					altAction
 					className="skip-nav-button"

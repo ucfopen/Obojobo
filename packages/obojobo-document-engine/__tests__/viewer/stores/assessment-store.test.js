@@ -7,6 +7,7 @@ import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
 import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
 import NavStore from '../../../src/scripts/viewer/stores/nav-store'
+import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import APIUtil from '../../../src/scripts/viewer/util/api-util'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
@@ -28,6 +29,7 @@ jest.mock('../../../src/scripts/viewer/util/nav-util')
 jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/viewer/util/assessment-util.js')
 jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
+jest.mock('../../../src/scripts/viewer/util/focus-util')
 
 describe('AssessmentStore', () => {
 	const getExampleAssessment = () => ({
@@ -665,13 +667,10 @@ describe('AssessmentStore', () => {
 		expect(assessState.highestAssessmentScoreAttempts).toEqual('Called with assessmentScore')
 	})
 
-	test('onCloseResultsDialog hides modal and dispatches viewer:focusOnContent', () => {
-		const spy = jest.spyOn(Dispatcher, 'trigger')
-
+	test('onCloseResultsDialog hides modal and focuses on nav target content', () => {
 		AssessmentStore.onCloseResultsDialog()
 
 		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
-		expect(spy).toHaveBeenCalledTimes(1)
-		expect(spy).toHaveBeenCalledWith('viewer:focusOnContent')
+		expect(FocusUtil.focusOnNavTargetContent).toHaveBeenCalledTimes(1)
 	})
 })

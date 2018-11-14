@@ -1,6 +1,6 @@
 import React from 'react'
 
-import FocusUtil from '../../common/util/focus-util'
+import FocusUtil from '../util/focus-util'
 
 class OboComponent extends React.Component {
 	static get defaultProps() {
@@ -24,7 +24,7 @@ class OboComponent extends React.Component {
 		}
 
 		const isFocussed =
-			FocusUtil.getFocussedComponent(this.props.moduleData.focusState) === this.props.model
+			FocusUtil.getVisuallyFocussedModel(this.props.moduleData.focusState) === this.props.model
 
 		const otherProps = {}
 		for (const propKey in this.props) {

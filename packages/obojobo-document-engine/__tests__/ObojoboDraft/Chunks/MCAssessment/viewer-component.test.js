@@ -8,12 +8,12 @@ import { shallow, mount } from 'enzyme'
 jest.mock('../../../../src/scripts/viewer/util/question-util')
 jest.mock('../../../../src/scripts/common/flux/dispatcher')
 jest.mock('../../../../src/scripts/common/page/dom-util')
-jest.mock('../../../../src/scripts/common/util/focus-util')
+jest.mock('../../../../src/scripts/viewer/util/focus-util')
 import QuestionUtil from '../../../../src/scripts/viewer/util/question-util'
 import Dispatcher from '../../../../src/scripts/common/flux/dispatcher'
 import DOMUtil from '../../../../src/scripts/common/page/dom-util'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
-import FocusUtil from '../../../../src/scripts/common/util/focus-util'
+import FocusUtil from '../../../../src/scripts/viewer/util/focus-util'
 
 const MCCHOICE_NODE_TYPE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 const TYPE_PICK_ONE = 'pick-one'
@@ -1838,7 +1838,7 @@ describe('MCAssessment', () => {
 		expect(mockFocusOnResults).toHaveBeenCalledTimes(0)
 	})
 
-	test('componentDidUpdate calls FocusUtil.focusComponent on the question if nextFocus="question"', () => {
+	test('componentDidUpdate calls FocusUtil.focusOnContent on the question if nextFocus="question"', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {},
@@ -1854,11 +1854,11 @@ describe('MCAssessment', () => {
 			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
 		)
 
-		FocusUtil.focusComponent = jest.fn()
+		FocusUtil.focusOnContent = jest.fn()
 
 		component.instance().nextFocus = 'question'
 		component.instance().componentDidUpdate()
 		expect(component.instance().nextFocus).not.toBeDefined()
-		expect(FocusUtil.focusComponent).toHaveBeenCalledWith('parent', false)
+		expect(FocusUtil.focusOnContent).toHaveBeenCalledWith('parent', false)
 	})
 })

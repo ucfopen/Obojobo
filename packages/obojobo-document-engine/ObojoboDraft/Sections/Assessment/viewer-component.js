@@ -5,20 +5,43 @@ import React from 'react'
 import Common from 'Common'
 import Viewer from 'Viewer'
 
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
 const { ModalUtil } = Common.util
 
 const { AssessmentUtil } = Viewer.util
-const { NavUtil } = Viewer.util
+const { NavUtil, FocusUtil } = Viewer.util
 
 import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
+import { FOCUS_ON_ASSESSMENT_CONTENT } from './assessment-event-constants'
 
-import preTest from './components/pre-test'
-import test from './components/test'
+import PreTest from './components/pre-test'
+import Test from './components/test'
 import PostTest from './components/post-test'
 
 class Assessment extends React.Component {
+	static focusOnContent() {
+		Dispatcher.trigger(FOCUS_ON_ASSESSMENT_CONTENT)
+	}
+
+	static getCurrentStep(model, assessmentState) {
+		const assessment = AssessmentUtil.getAssessmentForModel(assessmentState, model)
+
+		if (assessment === null) {
+			return 'pre-test'
+		}
+
+		if (assessment.current !== null) {
+			return 'test'
+		}
+
+		if (assessment.attempts.length > 0) {
+			return 'post-test'
+		}
+
+		return 'pre-test'
+	}
+
 	constructor() {
 		super()
 		this.state = {
@@ -36,29 +59,16 @@ class Assessment extends React.Component {
 	}
 
 	getCurrentStep() {
-		const assessment = AssessmentUtil.getAssessmentForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
-
-		if (assessment === null) {
-			return 'pre-test'
-		}
-
-		if (assessment.current !== null) {
-			return 'test'
-		}
-
-		if (assessment.attempts.length > 0) {
-			return 'post-test'
-		}
-
-		return 'pre-test'
+		return this.constructor.getCurrentStep(this.props.model, this.props.moduleData.assessmentState)
 	}
 
 	componentWillReceiveProps() {
+		// If we were on a step (meaning we haven't left the assessment section)
+		// and the step has changed we need to scroll to the top and focus
+		// on the content
 		const curStep = this.getCurrentStep()
-		if (curStep !== this.state.step) {
+
+		if (this.state.step !== null && curStep !== this.state.step) {
 			this.needsScrollToTopAndFocus = true
 		}
 
@@ -77,7 +87,8 @@ class Assessment extends React.Component {
 		if (this.needsScrollToTopAndFocus) {
 			delete this.needsScrollToTopAndFocus
 			Dispatcher.trigger('viewer:scrollToTop')
-			Dispatcher.trigger('viewer:focusOnContent')
+
+			FocusUtil.focusOnNavTargetContent()
 		}
 	}
 
@@ -165,23 +176,25 @@ class Assessment extends React.Component {
 		const childEl = (() => {
 			switch (this.getCurrentStep()) {
 				case 'pre-test':
-					return preTest({
-						model: this.props.model.children.at(0),
-						moduleData: this.props.moduleData
-					})
+					return (
+						<PreTest model={this.props.model.children.at(0)} moduleData={this.props.moduleData} />
+					)
 
 				case 'test':
-					return test({
-						model: this.props.model.children.at(1),
-						moduleData: this.props.moduleData,
-						onClickSubmit: this.onClickSubmit,
-						isAttemptComplete: this.isAttemptComplete(),
-						isFetching: this.state.isFetching
-					})
+					return (
+						<Test
+							model={this.props.model.children.at(1)}
+							moduleData={this.props.moduleData}
+							onClickSubmit={this.onClickSubmit}
+							isAttemptComplete={this.isAttemptComplete()}
+							isFetching={this.state.isFetching}
+						/>
+					)
 
 				case 'post-test':
 					return (
 						<PostTest
+							ref="child"
 							model={this.props.model}
 							moduleData={this.props.moduleData}
 							scoreAction={this.getScoreAction()}

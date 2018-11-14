@@ -4,11 +4,10 @@ import React from 'react'
 
 const ReactCSSTransitionGroup = React.addons.CSSTransitionGroup
 
-import Common from 'Common'
 import Viewer from 'Viewer'
 import isOrNot from '../../../../src/scripts/common/isornot'
 
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 const { QuestionUtil } = Viewer.util
 
 const QUESTION_TYPE = 'ObojoboDraft.Chunks.Question'

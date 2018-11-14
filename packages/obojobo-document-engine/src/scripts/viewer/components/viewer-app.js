@@ -9,10 +9,12 @@ import IdleTimer from 'react-idle-timer'
 
 import InlineNavButton from '../../viewer/components/inline-nav-button'
 import NavUtil from '../../viewer/util/nav-util'
+import FocusUtil from '../../viewer/util/focus-util'
 import APIUtil from '../../viewer/util/api-util'
 import QuestionStore from '../../viewer/stores/question-store'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import NavStore from '../../viewer/stores/nav-store'
+import FocusStore from '../../viewer/stores/focus-store'
 import MediaStore from '../../viewer/stores/media-store'
 import Nav from './nav'
 import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
@@ -21,8 +23,7 @@ import Header from '../../viewer/components/header'
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
-const { DOMUtil } = Common.page
-const { Screen } = Common.page
+const { Screen, focus } = Common.page
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { ModalContainer } = Common.components
@@ -30,10 +31,6 @@ const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { FocusBlocker } = Common.components
 const { ModalStore } = Common.stores
-const { FocusStore } = Common.stores
-const { FocusUtil } = Common.util
-
-// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
 
 Dispatcher.on('viewer:alert', payload =>
 	ModalUtil.show(
@@ -53,8 +50,6 @@ export default class ViewerApp extends React.Component {
 			ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value
 		})
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
-		Dispatcher.on('viewer:focusOnContent', this.focusOnContent.bind(this))
-		Dispatcher.on('viewer:focusOnNavigation', this.focusOnNavigation.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
 
 		const state = {
@@ -69,17 +64,32 @@ export default class ViewerApp extends React.Component {
 			loading: true,
 			requestStatus: 'unknown',
 			isPreviewing: false,
-			lti: {
-				outcomeServiceHostname: null
-			}
+			lti: { outcomeServiceHostname: null }
 		}
-		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
-		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
+		this.onNavStoreChange = () =>
+			this.setState({
+				navState: NavStore.getState()
+			})
+		this.onQuestionStoreChange = () =>
+			this.setState({
+				questionState: QuestionStore.getState()
+			})
 		this.onAssessmentStoreChange = () =>
-			this.setState({ assessmentState: AssessmentStore.getState() })
-		this.onModalStoreChange = () => this.setState({ modalState: ModalStore.getState() })
-		this.onFocusStoreChange = () => this.setState({ focusState: FocusStore.getState() })
-		this.onMediaStoreChange = () => this.setState({ mediaState: MediaStore.getState() })
+			this.setState({
+				assessmentState: AssessmentStore.getState()
+			})
+		this.onModalStoreChange = () =>
+			this.setState({
+				modalState: ModalStore.getState()
+			})
+		this.onFocusStoreChange = () =>
+			this.setState({
+				focusState: FocusStore.getState()
+			})
+		this.onMediaStoreChange = () =>
+			this.setState({
+				mediaState: MediaStore.getState()
+			})
 
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
@@ -132,8 +142,6 @@ export default class ViewerApp extends React.Component {
 			})
 			.then(({ value: draftModel }) => {
 				const model = OboModel.create(draftModel)
-
-				// console.log('model', draftModel, model)
 
 				NavStore.init(
 					model,
@@ -207,6 +215,29 @@ export default class ViewerApp extends React.Component {
 		if (this.state.loading && !nextState.loading) {
 			this.needsRemoveLoadingElement = true
 		}
+
+		this.focusOnContentIfNavTargetChanging(nextState)
+	}
+
+	isDOMFocusInsideNav() {
+		if (!this.refs.nav) return false
+		return ReactDOM.findDOMNode(this.refs.nav).contains(document.activeElement)
+	}
+
+	isNavTargetChanging(nextState) {
+		return NavUtil.getNavTarget(nextState.navState) !== NavUtil.getNavTarget(this.state.navState)
+	}
+
+	focusOnContentIfNavTargetChanging(nextState) {
+		const focussedItem = FocusUtil.getFocussedItem(this.state.focusState)
+
+		if (
+			!this.isDOMFocusInsideNav() &&
+			this.isNavTargetChanging(nextState) &&
+			focussedItem.type === null
+		) {
+			FocusUtil.focusOnNavTargetContent()
+		}
 	}
 
 	componentDidUpdate() {
@@ -231,6 +262,62 @@ export default class ViewerApp extends React.Component {
 				delete this.needsRemoveLoadingElement
 			}
 		}
+
+		this.updateDOMFocus()
+	}
+
+	updateDOMFocus() {
+		const focussedItem = FocusUtil.getFocussedItemAndClear(this.state.focusState)
+
+		switch (focussedItem.type) {
+			case FocusStore.TYPE_COMPONENT: {
+				const model = OboModel.models[focussedItem.target]
+				if (!model) return false
+				focus(model.getDomEl())
+
+				return true
+			}
+
+			case FocusStore.TYPE_NAV_TARGET_CONTENT: {
+				this.focusOnContent(NavUtil.getNavTargetModel(this.state.navState))
+
+				return true
+			}
+
+			case FocusStore.TYPE_CONTENT: {
+				this.focusOnContent(OboModel.models[focussedItem.target])
+
+				return true
+			}
+
+			case FocusStore.TYPE_VIEWER: {
+				if (focussedItem.target === FocusStore.VIEWER_TARGET_NAVIGATION) {
+					if (
+						!NavUtil.isNavEnabled(this.state.navState) ||
+						!NavUtil.isNavOpen(this.state.navState)
+					) {
+						return false
+					}
+
+					this.refs.nav.focus()
+					return true
+				}
+
+				return false
+			}
+		}
+
+		return false
+	}
+
+	focusOnContent(model) {
+		if (!model) return false
+		const Component = model.getComponentClass()
+		if (!Component) return false
+
+		Component.focusOnContent(model)
+
+		return true
 	}
 
 	onVisibilityChange() {
@@ -278,24 +365,36 @@ export default class ViewerApp extends React.Component {
 	// === NON REACT LIFECYCLE METHODS ===
 
 	onMouseDown(event) {
-		const focusState = this.state.focusState
+		this.clearVisualFocus(event.target)
+	}
 
-		if (focusState.focussedId === null || typeof focusState.focussedId === 'undefined') {
-			return
-		}
-		if (!DOMUtil.findParentComponentIds(event.target).has(focusState.focussedId)) {
-			return FocusUtil.unfocus()
+	onFocus(event) {
+		this.clearVisualFocus(event.target)
+	}
+
+	clearVisualFocus(el) {
+		// When focusing on another element we want to remove
+		// the focus effect if the element is not part of the focused element
+
+		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
+
+		if (visuallyFocussedModel) {
+			const focussedElement = visuallyFocussedModel.getDomEl()
+
+			if (!focussedElement || !focussedElement.contains(el)) {
+				FocusUtil.clearVisualFocus()
+			}
 		}
 	}
 
 	onScroll() {
 		const focusState = this.state.focusState
 
-		if (!focusState.focussedId) {
+		if (!focusState.visualFocusTarget) {
 			return
 		}
 
-		const component = FocusUtil.getFocussedComponent(focusState)
+		const component = FocusUtil.getVisuallyFocussedModel(focusState)
 		if (!component) {
 			return
 		}
@@ -306,7 +405,7 @@ export default class ViewerApp extends React.Component {
 		}
 
 		if (!Screen.isElementVisible(el)) {
-			return FocusUtil.unfocus()
+			return FocusUtil.clearVisualFocus()
 		}
 	}
 
@@ -380,20 +479,6 @@ export default class ViewerApp extends React.Component {
 		})
 	}
 
-	focusOnContent() {
-		const id = OboModel.getRoot().getDomId()
-		const el = document.getElementById(id)
-
-		if (el) el.focus()
-	}
-
-	focusOnNavigation() {
-		if (!NavUtil.isNavEnabled(this.state.navState)) return
-
-		NavUtil.open()
-		this.refs.nav.focus()
-	}
-
 	clearPreviewScores() {
 		APIUtil.clearPreviewScores({
 			draftId: this.state.model.get('draftId'),
@@ -456,6 +541,8 @@ export default class ViewerApp extends React.Component {
 
 		const isNavEnabled = NavUtil.isNavEnabled(this.state.navState)
 
+		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
+
 		if (isNavEnabled) {
 			const canNavigate = NavUtil.canNavigate(this.state.navState)
 
@@ -515,12 +602,11 @@ export default class ViewerApp extends React.Component {
 
 		const classNames = [
 			'viewer--viewer-app',
-			'is-loaded',
 			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
 			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
 			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
 			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
-			`is-focus-state-${this.state.focusState.viewState}`
+			visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive'
 		].join(' ')
 
 		return (
@@ -534,6 +620,7 @@ export default class ViewerApp extends React.Component {
 				<div
 					ref="container"
 					onMouseDown={this.onMouseDown.bind(this)}
+					onFocus={this.onFocus.bind(this)}
 					onScroll={this.onScroll.bind(this)}
 					className={classNames}
 				>

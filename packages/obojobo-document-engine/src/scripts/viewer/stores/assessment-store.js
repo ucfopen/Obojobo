@@ -6,6 +6,7 @@ import AssessmentUtil from '../../viewer/util/assessment-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'
+import FocusUtil from '../../viewer/util/focus-util'
 import NavStore from '../../viewer/stores/nav-store'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
@@ -224,7 +225,7 @@ class AssessmentStore extends Store {
 
 	onCloseResultsDialog() {
 		ModalUtil.hide()
-		Dispatcher.trigger('viewer:focusOnContent')
+		FocusUtil.focusOnNavTargetContent()
 	}
 
 	endAttempt(endAttemptResp, context) {

@@ -112,7 +112,8 @@ const NavUtil = {
 	},
 
 	getNavTarget(state) {
-		return state.itemsById[state.navTargetId]
+		if (!state || !state.itemsById) return null
+		return state.itemsById[state.navTargetId] || null
 	},
 
 	getNavTargetModel(state) {
@@ -237,6 +238,10 @@ const NavUtil = {
 
 	isNavEnabled(state) {
 		return !state.disabled
+	},
+
+	isNavOpen(state) {
+		return state.open
 	}
 }
 
