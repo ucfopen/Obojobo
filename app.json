@@ -1,57 +1,50 @@
 {
-  "name": "Obojobo Next",
-  "description": "Run Obojobo Next on Heroku",
-  "keywords": [
-    "education",
-    "edtech",
-    "obojobo",
-    "openedu",
-    "open education",
-    "learning"
-  ],
-  "website": "https://ucfopen.github.io/Obojobo-Docs/",
-  "logo": "https://ucfopen.github.io/Obojobo-Docs/assets/images/obojobo_white.svg",
-  "success_url": "/lti",
-  "scripts": {
-    "postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup"
-  },
-  "env": {
-    "OBO_LTI_SECRET": {
-      "description": "LTI Secret used for default key 'obo-next-production-lit-key'",
-      "generator": "secret"
-    },
-    "OBO_COOKIE_SECRET": {
-      "description": "Secret string used to encrypt cookie data",
-      "generator": "secret"
-    },
-    "DEBUG": {
-      "description": "Select which logs to write to the error log",
-      "value": "obojobo_server:error,obojobo_server:warn"
-    },
-    "YARN_PRODUCTION": {
-      "description": "Makes sure yarn install includes dev dependencies",
-      "value": "false"
-    }
-  },
-  "formation": {
-    "web": {
-      "quantity": 1,
-      "size": "free"
-    }
-  },
-  "image": "heroku/nodejs",
-  "addons": [
-    {
-      "plan": "heroku-postgresql:hobby-dev",
-      "options": {
-        "version": "9.6"
-      }
-    }
-  ],
-  "buildpacks": [
-    {
-      "url": "heroku/nodejs"
-    }
-  ],
-  "environments": {}
+	"name": "Obojobo Next",
+	"description": "Run Obojobo Next on Heroku",
+	"keywords": ["education", "edtech", "obojobo", "openedu", "open education", "learning"],
+	"website": "https://ucfopen.github.io/Obojobo-Docs/",
+	"logo": "https://ucfopen.github.io/Obojobo-Docs/assets/images/obojobo_white.svg",
+	"success_url": "/lti",
+	"scripts": {
+		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed"
+	},
+	"env": {
+		"OBO_LTI_SECRET": {
+			"description": "LTI Secret used for default key 'obo-next-production-lit-key'",
+			"generator": "secret"
+		},
+		"OBO_COOKIE_SECRET": {
+			"description": "Secret string used to encrypt cookie data",
+			"generator": "secret"
+		},
+		"DEBUG": {
+			"description": "Select which logs to write to the error log",
+			"value": "obojobo_server:error,obojobo_server:warn"
+		},
+		"YARN_PRODUCTION": {
+			"description": "Makes sure yarn install includes dev dependencies",
+			"value": "false"
+		}
+	},
+	"formation": {
+		"web": {
+			"quantity": 1,
+			"size": "free"
+		}
+	},
+	"image": "heroku/nodejs",
+	"addons": [
+		{
+			"plan": "heroku-postgresql:hobby-dev",
+			"options": {
+				"version": "9.6"
+			}
+		}
+	],
+	"buildpacks": [
+		{
+			"url": "heroku/nodejs"
+		}
+	],
+	"environments": {}
 }

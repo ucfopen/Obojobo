@@ -19,9 +19,9 @@ To keep our collective efforts aimed in the same direction, we've outlined what 
 
 ## Requirements
 
-* [Node](https://nodejs.org/) & [Yarn](https://yarnpkg.com/)
-* [PosgreSQL](https://www.postgresql.org/) Database
-* [Docker](https://www.docker.com/) (for development)
+- [Node](https://nodejs.org/) & [Yarn](https://yarnpkg.com/)
+- [PosgreSQL](https://www.postgresql.org/) Database
+- [Docker](https://www.docker.com/) (for development)
 
 ## Quick Heroku Deploy
 
@@ -29,7 +29,7 @@ We added Heroku support as an easy way to give Obojobo a **free test drive** (or
 
 [![Deploy Obojobo to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy/)
 
-> [Heroku](https://www.heroku.com/what) is a cloud service that lets you host web apps in the cloud without worring so much the infrastructure.
+> [Heroku](https://www.heroku.com/what) is a cloud service that lets you host web apps in the cloud without worring so much about the infrastructure.
 
 ## Development Setup
 
@@ -37,7 +37,7 @@ We added Heroku support as an easy way to give Obojobo a **free test drive** (or
 2. Run `yarn install` to install dependencies
 3. Run `yarn setup` runs a basic setup script to build assets and setup a docker database container
 4. Run `yarn dev` to start the development express server
-7. Visit [https://127.0.0.1:8080](https://127.0.0.1:8080) - You should see "Welcome to Obojobo Next"
+5. Visit [https://127.0.0.1:8080](https://127.0.0.1:8080) - You should see "Welcome to Obojobo Next"
 
 > Familiarize yourself with the **scripts** section of package.json.
 
