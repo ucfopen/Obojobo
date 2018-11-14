@@ -1,1 +1,1 @@
-This is the draft document viewer for Obojobo Next. Documentation & install instructions for this project can be found at https://github.com/ucfcdl/Obojobo-Next.
+This is the Obojobo Next Document Engine. Documentation for this project can be found at https://ucfopen.github.io/Obojobo-Docs/.
