@@ -23,9 +23,7 @@ class Media {
 
 			logger.error(message + ` Got ${dimensionsAsString} instead.`)
 
-			throw new Error(
-				'Invalid dimension string provided. Expecting {width}x{height} (i.e. 1200x900).'
-			)
+			throw new Error(message)
 		}
 
 		width = parsedDimensions[0]
@@ -129,31 +127,33 @@ class Media {
 						{ mediaId, mediaDimensions, originalMediaTag: mediaConfig.originalMediaTag }
 					)
 					.then(result => {
-						if (result && result.length > 0) {
+						if (!result || !result.length) throw new Error('Image not found')
+
+						switch (result.length) {
 							// result.length == 1 implies that the query only returned a reference to the
 							// original image and a resize may be necessary to provide an image with the
 							// requested dimensions
-							if (result.length === 1) {
+							case 1:
 								binaryId = result[0].binary_id
 
 								// If the original image is being requested, a resize is not necessary
 								if (mediaDimensions === 'original') {
 									mediaFound = true
 								}
-							} else if (result.length === 2) {
-								// result.length == 2 implies that the query found and returned a reference to
-								// an image with the requested dimensions and a resize is not necessary
+								break
+							// result.length == 2 implies that the query found and returned a reference to
+							// an image with the requested dimensions and a resize is not necessary
+							case 2:
 								binaryId =
 									result[0].dimensions === mediaConfig.originalMediaTag
 										? result[1].binary_id
 										: result[0].binary_id
 
 								mediaFound = true
-							} else {
+								break
+
+							default:
 								throw new Error('Too many images returned')
-							}
-						} else {
-							throw new Error('Image not found')
 						}
 
 						return transactionDb.one(
@@ -301,15 +301,12 @@ class Media {
 		const allowedFileTypes = new RegExp(mediaConfig.allowedMimeTypesRegex)
 
 		// test for valid mimetype
-		const isAllowerMimetype = allowedFileTypes.test(mimetype)
+		const isAllowedMimetype = allowedFileTypes.test(mimetype)
+
 		// test for valid extensions
 		const isAllowedExt = allowedFileTypes.test(path.extname(filename).toLowerCase())
 
-		if (!isAllowerMimetype || !isAllowedExt) {
-			return false
-		}
-
-		return true
+		return isAllowedMimetype && isAllowedExt
 	}
 
 	static createAndSave(userId, fileInfo) {

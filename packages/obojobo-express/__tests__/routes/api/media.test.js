@@ -96,7 +96,7 @@ describe('api draft route', () => {
 
 	test('POST /api/media/upload works normally', () => {
 		mockCurrentUser = { id: 99 } // mock current logged in user
-		//mockMulterUpload.mockResolvedValueOnce(Promise.resolve())
+
 		MediaModel.createAndSave = jest
 			.fn()
 			.mockResolvedValueOnce('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
@@ -143,7 +143,7 @@ describe('api draft route', () => {
 
 	test('POST /api/media/upload catches error from Multer', () => {
 		mockCurrentUser = { id: 99 } // mock current logged in user
-		//mockMulterUpload.mockResolvedValueOnce(Promise.resolve())
+
 		MediaModel.createAndSave = jest
 			.fn()
 			.mockResolvedValueOnce('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
@@ -167,7 +167,7 @@ describe('api draft route', () => {
 
 test('GET api/media/:id/:dimensions', () => {
 	mockCurrentUser = { id: 99 } // mock current logged in user
-	//multer.single = jest.fn();
+
 	MediaModel.fetchByIdAndDimensions = jest.fn().mockResolvedValueOnce('ImageData')
 
 	return request(app)

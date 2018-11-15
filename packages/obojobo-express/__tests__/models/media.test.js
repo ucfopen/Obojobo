@@ -334,9 +334,6 @@ describe('media model', () => {
 		})
 
 		fs.readFileSync = jest.fn()
-		// fs.readFileSync.mockImplementation(() => {
-		// 	throw new Error('Mock error from readFileSync')
-		// })
 
 		return MediaModel.createAndSave(mockUserId, mockFileInfo)
 			.then(() => {
@@ -781,7 +778,7 @@ describe('media model', () => {
 		expect(mockSharpResize).toBeCalledWith(expectedDimensions)
 	})
 
-	test('resize calls parseCustomImageDimenstions when custom dimensions given', () => {
+	test('resize calls parseCustomImageDimensions when custom dimensions given', () => {
 		const mockBuffer = new Buffer('some_image')
 
 		mockSharpResize.mockImplementationOnce(() => {
