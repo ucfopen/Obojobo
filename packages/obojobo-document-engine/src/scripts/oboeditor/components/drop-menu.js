@@ -32,7 +32,7 @@ class DropMenu extends React.Component {
 		// accessed via up and down arrows
 		this.menu = []
 		this.props.dropOptions.forEach(item => {
-			this.menu.push(this[item.name])
+			if(item.isInsertable) this.menu.push(this[item.name])
 		})
 
 		// When the menu is open, focus on the current dropdown item
@@ -98,7 +98,8 @@ class DropMenu extends React.Component {
 	}
 
 	renderItem(item) {
-		const { Icon } = item.components
+		if (!item.isInsertable) return null
+		const Icon = item.icon
 		return (
 			<div key={item.name} className="insert-button">
 				<button

@@ -7,8 +7,6 @@ import MCChoice from './MCChoice/editor'
 import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
 
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
-
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
 const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
@@ -319,10 +317,11 @@ const MCAssessment = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.MCAssessment', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.MCAssessment', {
 	name: 'Multiple Choice Assessment',
 	isInsertable: false,
-	componentClass: Node,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

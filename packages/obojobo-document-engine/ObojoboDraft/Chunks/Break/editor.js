@@ -4,8 +4,7 @@ import { Block } from 'slate'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
@@ -72,12 +71,13 @@ const Break = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.Break', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.Break', {
 	name: 'Break',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

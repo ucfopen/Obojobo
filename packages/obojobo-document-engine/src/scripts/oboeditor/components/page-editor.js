@@ -1,7 +1,6 @@
 /* eslint no-alert: 0 */
-
 import React from 'react'
-
+import Common from 'Common'
 import { Value } from 'slate'
 import { Editor } from 'slate-react'
 import APIUtil from '../../viewer/util/api-util'

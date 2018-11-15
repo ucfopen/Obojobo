@@ -1,25 +1,7 @@
 import React from 'react'
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID, CHILD_UNKNOWN } from 'slate-schema-violations'
-
-import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
-import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
-import Code from '../../../../ObojoboDraft/Chunks/Code/editor'
-import Figure from '../../../../ObojoboDraft/Chunks/Figure/editor'
-import Heading from '../../../../ObojoboDraft/Chunks/Heading/editor'
-import HTML from '../../../../ObojoboDraft/Chunks/HTML/editor'
-import IFrame from '../../../../ObojoboDraft/Chunks/IFrame/editor'
-import List from '../../../../ObojoboDraft/Chunks/List/editor'
-import MathEquation from '../../../../ObojoboDraft/Chunks/MathEquation/editor'
-import Table from '../../../../ObojoboDraft/Chunks/Table/editor'
-import Text from '../../../../ObojoboDraft/Chunks/Text/editor'
-import YouTube from '../../../../ObojoboDraft/Chunks/YouTube/editor'
-//import QuestionBank from '../../../../ObojoboDraft/Chunks/QuestionBank/editor'
-//import Question from '../../../../ObojoboDraft/Chunks/Question/editor'
-import DefaultNode from './default-node'
-
-import OboEditorStore from '../store'
-OboEditorStore.getModels()
+import { CHILD_REQUIRED, CHILD_UNKNOWN } from 'slate-schema-violations'
+import Common from 'Common'
 
 import DropMenu from './drop-menu'
 
@@ -28,27 +10,12 @@ import './editor-component.scss'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const COMPONENT_NODE = 'oboeditor.component'
 
-const nodes = {
-	'ObojoboDraft.Chunks.ActionButton': ActionButton,
-	'ObojoboDraft.Chunks.Break': Break,
-	'ObojoboDraft.Chunks.Code': Code,
-	'ObojoboDraft.Chunks.Figure': Figure,
-	'ObojoboDraft.Chunks.Heading': Heading,
-	'ObojoboDraft.Chunks.HTML': HTML,
-	'ObojoboDraft.Chunks.IFrame': IFrame,
-	'ObojoboDraft.Chunks.List': List,
-	'ObojoboDraft.Chunks.MathEquation': MathEquation,
-	'ObojoboDraft.Chunks.Table': Table,
-	'ObojoboDraft.Chunks.Text': Text,
-	'ObojoboDraft.Chunks.YouTube': YouTube,
-}
-
 class Node extends React.Component {
 	insertBlockAtStart(item) {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		change.insertNodeByKey(this.props.node.key, 0, Block.create(item.json.emptyNode))
+		change.insertNodeByKey(this.props.node.key, 0, Block.create(item.insertJSON))
 
 		editor.onChange(change)
 	}
@@ -57,9 +24,13 @@ class Node extends React.Component {
 		const editor = this.props.editor
 		const change = editor.value.change()
 
-		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, Block.create(item.json.emptyNode))
+		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, Block.create(item.insertJSON))
 
 		editor.onChange(change)
+	}
+
+	convertItemsToArray(items){
+		return Array.from(items.values())
 	}
 
 	render(){
@@ -67,12 +38,12 @@ class Node extends React.Component {
 			<div className={'oboeditor-component component'}>
 				{this.props.isSelected ? <div className={'component-toolbar'}>
 					<DropMenu
-						dropOptions={Object.values(nodes)}
+						dropOptions={Common.Store.getItems(this.convertItemsToArray)}
 						className={'align-left top'}
 						icon="+"
 						masterOnClick={this.insertBlockAtStart.bind(this)}/>
 					<DropMenu
-						dropOptions={Object.values(nodes)}
+						dropOptions={Common.Store.getItems(this.convertItemsToArray)}
 						className={'align-left bottom'}
 						icon="+"
 						masterOnClick={this.insertBlockAtEnd.bind(this)}/>
@@ -87,11 +58,7 @@ const slateToObo = node => {
 	let json = {}
 
 	node.nodes.forEach(child => {
-		if (nodes.hasOwnProperty(child.type)) {
-			json = nodes[child.type].helpers.slateToObo(child)
-		} else {
-			json = DefaultNode.helpers.slateToObo(child)
-		}
+		json = Common.Store.getItemForType(child.type).slateToObo(child)
 	})
 
 	return json
@@ -103,12 +70,8 @@ const oboToSlate = node => {
 	json.type = COMPONENT_NODE
 	json.nodes = []
 
-	if (nodes.hasOwnProperty(node.type)) {
-		json.nodes.push(nodes[node.type].helpers.oboToSlate(node))
-	} else {
-		json.nodes.push(DefaultNode.helpers.oboToSlate(node))
-	}
-
+	const editorModel = Common.Store.getItemForType(node.type)
+	json.nodes.push(editorModel.oboToSlate(node))
 	return json
 }
 
@@ -144,20 +107,13 @@ const plugins = {
 					}
 				],
 				normalize: (change, error) => {
-					const { node, child, index } = error
+					const { node, index } = error
 					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: TEXT_NODE
 							})
 							return change.insertNodeByKey(node.key, index, block)
-						}
-
-						case CHILD_TYPE_INVALID: {
-							const block = Block.create({
-								type: TEXT_NODE
-							})
-							return change.wrapBlockByKey(child.key, block)
 						}
 						// Occurs when multiple valid nodes are found within a
 						// component
@@ -171,7 +127,7 @@ const plugins = {
 	}
 }
 
-const PageNode = {
+const ComponentNode = {
 	components: {
 		Node
 	},
@@ -182,4 +138,4 @@ const PageNode = {
 	plugins
 }
 
-export default PageNode
+export default ComponentNode

@@ -4,8 +4,7 @@ import { Block } from 'slate'
 import emptyNode from './empty-node'
 import Icon from './icon'
 import Node from './editor-component'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
@@ -84,12 +83,13 @@ const HTML = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.HTML', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.HTML', {
 	name: 'HTML',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

@@ -4,8 +4,7 @@ import { Block } from 'slate'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
@@ -68,12 +67,13 @@ const YouTube = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.YouTube', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.YouTube', {
 	name: 'YouTube',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

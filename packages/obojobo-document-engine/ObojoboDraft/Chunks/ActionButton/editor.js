@@ -5,8 +5,7 @@ import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
 import Schema from './schema'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
@@ -137,12 +136,13 @@ const ActionButton = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.ActionButton', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.ActionButton', {
 	name: 'Button',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

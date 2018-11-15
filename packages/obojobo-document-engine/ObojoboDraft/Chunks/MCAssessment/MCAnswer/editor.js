@@ -28,7 +28,7 @@ import Text from '../../Text/editor'
 import YouTube from '../../YouTube/editor'
 import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
 
-import OboEditorStore from '../../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const nodes = {
 	'ObojoboDraft.Chunks.Break': Break,
@@ -154,10 +154,11 @@ const MCAnswer = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
 	name: 'Multiple Choice Answer',
 	isInsertable: false,
-	componentClass: Node,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

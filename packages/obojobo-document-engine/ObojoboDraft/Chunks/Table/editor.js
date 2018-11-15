@@ -7,8 +7,7 @@ import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
@@ -419,12 +418,13 @@ const Table = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.Table', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.Table', {
 	name: 'Table',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

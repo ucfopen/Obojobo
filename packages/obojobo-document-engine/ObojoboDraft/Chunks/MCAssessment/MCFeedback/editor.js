@@ -28,7 +28,7 @@ import Text from '../../Text/editor'
 import YouTube from '../../YouTube/editor'
 import DefaultNode from '../../../../src/scripts/oboeditor/components/default-node'
 
-import OboEditorStore from '../../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const nodes = {
 	'ObojoboDraft.Chunks.Break': Break,
@@ -171,10 +171,11 @@ const MCFeedback = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
 	name: 'Multiple Choice Feedback',
 	isInsertable: false,
-	componentClass: Node,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

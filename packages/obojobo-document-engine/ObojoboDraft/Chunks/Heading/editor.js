@@ -5,8 +5,7 @@ import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
@@ -113,12 +112,13 @@ const Heading = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.Heading', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.Heading', {
 	name: 'Heading',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

@@ -4,8 +4,7 @@ import { Block } from 'slate'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
 
@@ -69,12 +68,13 @@ const MathEquation = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.MathEquation', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.MathEquation', {
 	name: 'Math Equation',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

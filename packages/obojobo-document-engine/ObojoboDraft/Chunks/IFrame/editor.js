@@ -4,8 +4,7 @@ import { Block } from 'slate'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
@@ -68,12 +67,13 @@ const IFrame = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.IFrame', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.IFrame', {
 	name: 'IFrame',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

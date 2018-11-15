@@ -9,8 +9,6 @@ import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-n
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
-
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
@@ -112,7 +110,7 @@ const slateToObo = node => {
 const oboToSlate = node => {
 	const json = {}
 	json.object = 'block'
-	json.key = node.id
+	///json.key = node.id
 	json.type = node.type
 	json.data = { content: node.content }
 	json.nodes = []
@@ -150,6 +148,8 @@ const oboToSlate = node => {
 			json.nodes.push(Question.helpers.oboToSlate(child))
 		}
 	})
+
+	console.log(json)
 
 	return json
 }
@@ -284,12 +284,13 @@ const QuestionBank = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.QuestionBank', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.QuestionBank', {
 	name: 'Question Bank',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

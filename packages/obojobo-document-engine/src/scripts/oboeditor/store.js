@@ -15,6 +15,8 @@ class _Store {
 				isInsertable: false,
 				componentClass: null,
 				insertJSON: null,
+				slateToObo: null,
+				oboToSlate: null,
 				plugins: null,
 				init() {}
 			},
@@ -27,7 +29,11 @@ class _Store {
 	}
 
 	getModels() {
-		console.log(items)
+		return items
+	}
+
+	getModel(name) {
+		return items.get(name)
 	}
 }
 

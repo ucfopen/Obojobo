@@ -2,7 +2,6 @@
 
 .dropdown-menu {
 	position: absolute;
-	min-width: 25em;
 	z-index: 2;
 
 	&.align-left {
@@ -69,6 +68,8 @@
 
 	// Makes the insert menu keyboard accessible
 	&.is-open {
+		min-width: 25em;
+
 		.insert-button {
 			display: inline-block;
 		}
@@ -76,6 +77,8 @@
 
 	// Reveals the insert menu the expected way for mouse users
 	&:hover {
+		min-width: 25em;
+
 		.insert-button {
 			display: inline-block;
 		}

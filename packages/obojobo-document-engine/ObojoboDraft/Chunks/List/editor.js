@@ -6,8 +6,7 @@ import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -453,12 +452,13 @@ const List = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.List', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.List', {
 	name: 'List',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

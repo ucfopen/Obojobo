@@ -5,8 +5,7 @@ import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
+import Common from 'Common'
 
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
@@ -121,12 +120,13 @@ const Figure = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.Figure', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.Figure', {
 	name: 'Figure',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

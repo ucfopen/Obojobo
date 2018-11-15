@@ -3,57 +3,19 @@ import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import Common from 'Common'
 
-const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
-const CODE_NODE = 'ObojoboDraft.Chunks.Code'
-const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
-const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
-const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
-const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
-const LIST_NODE = 'ObojoboDraft.Chunks.List'
-const MATH_NODE = 'ObojoboDraft.Chunks.MathEquation'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
-const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
-import Break from '../Break/editor'
-import Code from '../Code/editor'
-import Figure from '../Figure/editor'
-import Heading from '../Heading/editor'
-import HTML from '../HTML/editor'
-import IFrame from '../IFrame/editor'
-import List from '../List/editor'
-import MathEquation from '../MathEquation/editor'
-import Table from '../Table/editor'
-import Text from '../Text/editor'
-import YouTube from '../YouTube/editor'
-import MCAssessment from '../MCAssessment/editor'
 import Page from '../../Pages/Page/editor'
-import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
+import Component from '../../../src/scripts/oboeditor/components/editor-component'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 
-import OboEditorStore from '../../../src/scripts/oboeditor/store'
-
 const { Button } = Common.components
-const nodes = {
-	'ObojoboDraft.Chunks.Break': Break,
-	'ObojoboDraft.Chunks.Code': Code,
-	'ObojoboDraft.Chunks.Figure': Figure,
-	'ObojoboDraft.Chunks.Heading': Heading,
-	'ObojoboDraft.Chunks.IFrame': IFrame,
-	'ObojoboDraft.Chunks.List': List,
-	'ObojoboDraft.Chunks.MathEquation': MathEquation,
-	'ObojoboDraft.Chunks.Table': Table,
-	'ObojoboDraft.Chunks.Text': Text,
-	'ObojoboDraft.Chunks.YouTube': YouTube,
-	'ObojoboDraft.Chunks.MCAssessment': MCAssessment,
-	'ObojoboDraft.Chunks.HTML': HTML
-}
 
 const Solution = props => {
 	const deleteNode = () => {
@@ -133,10 +95,10 @@ const slateToObo = node => {
 	node.nodes.forEach(child => {
 		if (child.type === SOLUTION_NODE) {
 			json.content.solution = Page.helpers.slateToObo(child.nodes.get(0))
-		} else if (nodes.hasOwnProperty(child.type)) {
-			json.children.push(nodes[child.type].helpers.slateToObo(child))
+		} else if (child.type === MCASSESSMENT_NODE) {
+			json.children.push(Common.Store.getItemForType(child.type).slateToObo(child))
 		} else {
-			json.children.push(DefaultNode.helpers.slateToObo(child))
+			json.children.push(Component.helpers.slateToObo(child))
 		}
 	})
 
@@ -152,12 +114,10 @@ const oboToSlate = node => {
 	json.nodes = []
 
 	node.children.forEach(child => {
-		// If the current Node is a registered OboNode, use its custom converter
-		if (nodes.hasOwnProperty(child.type)) {
-			json.nodes.push(nodes[child.type].helpers.oboToSlate(child))
-		} else {
-			json.nodes.push(DefaultNode.helpers.oboToSlate(child))
+		if(child.type === MCASSESSMENT_NODE) {
+			json.nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
 		}
+		json.nodes.push(Component.helpers.oboToSlate(child))
 	})
 
 	if (json.data.content.solution) {
@@ -187,22 +147,7 @@ const plugins = {
 		blocks: {
 			'ObojoboDraft.Chunks.Question': {
 				nodes: [
-					{
-						match: [
-							{ type: BREAK_NODE },
-							{ type: CODE_NODE },
-							{ type: FIGURE_NODE },
-							{ type: HEADING_NODE },
-							{ type: IFRAME_NODE },
-							{ type: LIST_NODE },
-							{ type: MATH_NODE },
-							{ type: TEXT_NODE },
-							{ type: TABLE_NODE },
-							{ type: YOUTUBE_NODE },
-							{ type: HTML_NODE }
-						],
-						min: 1
-					},
+					{ match: [ { type: 'oboeditor.component' } ], min: 1 },
 					{ match: [MCASSESSMENT_NODE], min: 1, max: 1 },
 					{ match: [SOLUTION_NODE], max: 1 }
 				],
@@ -223,16 +168,32 @@ const plugins = {
 
 							// Otherwise, just add a text node
 							const block = Block.create({
-								type: TEXT_NODE,
-								data: { content: { indent: 0 } }
+								object: 'block',
+								type: 'oboeditor.component',
+								nodes: [
+									{
+										object: 'block',
+										type: TEXT_NODE
+									}
+								]
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
 							if (child.object !== 'text') return
-							return change.wrapBlockByKey(child.key, {
-								type: TEXT_NODE,
-								data: { content: { indent: 0 } }
+							const block = Block.fromJSON({
+								object: 'block',
+								type: 'oboeditor.component',
+								nodes: [
+									{
+										object: 'block',
+										type: TEXT_NODE
+									}
+								]
+							})
+							return change.withoutNormalization(c => {
+								c.removeNodeByKey(child.key)
+								return c.insertNodeByKey(node.key, index, block)
 							})
 						}
 					}
@@ -285,12 +246,13 @@ const Question = {
 	plugins
 }
 
-OboEditorStore.registerModel('ObojoboDraft.Chunks.Question', {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.Question', {
 	name: 'Question',
 	icon: Icon,
 	isInsertable: true,
-	componentClass: Node,
 	insertJSON: emptyNode,
+	slateToObo,
+	oboToSlate,
 	plugins
 })
 

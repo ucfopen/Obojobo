@@ -1,49 +1,12 @@
 import React from 'react'
 import { Block } from 'slate'
+import Common from 'Common'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-import ActionButton from '../../Chunks/ActionButton/editor'
-import Break from '../../Chunks/Break/editor'
-import Code from '../../Chunks/Code/editor'
-import Figure from '../../Chunks/Figure/editor'
-import Heading from '../../Chunks/Heading/editor'
-import IFrame from '../../Chunks/IFrame/editor'
-import List from '../../Chunks/List/editor'
-import MathEquation from '../../Chunks/MathEquation/editor'
-import Table from '../../Chunks/Table/editor'
-import Text from '../../Chunks/Text/editor'
-import YouTube from '../../Chunks/YouTube/editor'
-import QuestionBank from '../../Chunks/QuestionBank/editor'
-import Question from '../../Chunks/Question/editor'
-import MCAssessment from '../../Chunks/MCAssessment/editor'
-import MCChoice from '../../Chunks/MCAssessment/MCChoice/editor'
-import MCAnswer from '../../Chunks/MCAssessment/MCAnswer/editor'
-import MCFeedback from '../../Chunks/MCAssessment/MCFeedback/editor'
-import DefaultNode from '../../../src/scripts/oboeditor/components/default-node'
 import Component from '../../../src/scripts/oboeditor/components/editor-component'
 
-const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
-const nodes = {
-	'ObojoboDraft.Chunks.ActionButton': ActionButton,
-	'ObojoboDraft.Chunks.Break': Break,
-	'ObojoboDraft.Chunks.Code': Code,
-	'ObojoboDraft.Chunks.Figure': Figure,
-	'ObojoboDraft.Chunks.Heading': Heading,
-	'ObojoboDraft.Chunks.IFrame': IFrame,
-	'ObojoboDraft.Chunks.List': List,
-	'ObojoboDraft.Chunks.MathEquation': MathEquation,
-	'ObojoboDraft.Chunks.Table': Table,
-	'ObojoboDraft.Chunks.Text': Text,
-	'ObojoboDraft.Chunks.YouTube': YouTube,
-	'ObojoboDraft.Chunks.QuestionBank': QuestionBank,
-	'ObojoboDraft.Chunks.Question': Question,
-	'ObojoboDraft.Chunks.MCAssessment': MCAssessment,
-	'ObojoboDraft.Chunks.MCAssessment.MCChoice': MCChoice,
-	'ObojoboDraft.Chunks.MCAssessment.MCAnswer': MCAnswer,
-	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': MCFeedback
-}
+const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
 const Node = props => {
 	return <div className={'page-editor'}>{props.children}</div>
@@ -57,11 +20,7 @@ const slateToObo = node => {
 	json.children = []
 
 	node.nodes.forEach(child => {
-		if (nodes.hasOwnProperty(child.type)) {
-			json.children.push(nodes[child.type].helpers.slateToObo(child))
-		} else {
-			json.children.push(DefaultNode.helpers.slateToObo(child))
-		}
+		json.children.push(Component.helpers.slateToObo(child))
 	})
 
 	return json
@@ -99,16 +58,31 @@ const plugins = {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								object: 'block',
-								type: 'oboeditor.component'
+								type: 'oboeditor.component',
+								nodes: [
+									{
+										object: 'block',
+										type: TEXT_NODE
+									}
+								]
 							})
 							return change.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							const block = Block.create({
+							const block = Block.fromJSON({
 								object: 'block',
-								type: 'oboeditor.component'
+								type: 'oboeditor.component',
+								nodes: [
+									{
+										object: 'block',
+										type: TEXT_NODE
+									}
+								]
 							})
-							return change.wrapBlockByKey(child.key, block)
+							return change.withoutNormalization(c => {
+								c.removeNodeByKey(child.key)
+								return c.insertNodeByKey(node.key, index, block)
+							})
 						}
 					}
 				}

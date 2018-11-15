@@ -1,4 +1,5 @@
 let items
+let editorItems
 let defaults
 let registeredToolbarItems
 let toolbarItems
@@ -41,6 +42,11 @@ class _Store {
 	}
 
 	registerModel(className, opts = {}) {
+		// Temporary workaround until we fix webpack to give the editor its own
+		// entry point
+		const item = items.get(className)
+		if (item) opts = Object.assign(opts, item)
+
 		items.set(className, opts)
 
 		opts = Object.assign(
@@ -52,6 +58,39 @@ class _Store {
 				selectionHandler: null,
 				commandHandler: null,
 				variables: {},
+				init() {}
+			},
+			opts
+		)
+
+		if (opts.default) {
+			defaults.set(opts.type, className)
+		}
+
+		opts.init()
+
+		for (const variable in opts.variables) {
+			const cb = opts.variables[variable]
+			variableHandlers.set(variable, cb)
+		}
+
+		return this
+	}
+
+	registerEditorModel(className, opts = {}) {
+		items.set(className, opts)
+
+		opts = Object.assign(
+			{
+				type: null,
+				name: '',
+				icon: null,
+				default: false,
+				insertItem: null,
+				isInsertable: false,
+				slateToObo: null,
+				oboToSlate: null,
+				plugins: null,
 				init() {}
 			},
 			opts
@@ -95,7 +134,7 @@ class _Store {
 	}
 
 	getItems(callback) {
-		callback(items)
+		return callback(items)
 	}
 
 	getTextForVariable(variable, model, viewerState) {
