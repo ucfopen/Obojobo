@@ -17,7 +17,7 @@
 		font-family: $font-default;
 	}
 
-	> .control-button-container {
+	.control-button-container {
 		display: inline-block;
 		font-size: 1.1em;
 		height: 1em;
@@ -55,6 +55,10 @@
 			bottom: 3.2em;
 			font-size: 0.65em;
 		}
+
+		&:hover > button {
+			background-color: $color-action;
+		}
 	}
 
 	> .reload {
@@ -78,6 +82,46 @@
 		}
 	}
 
+	> .new-window-link {
+		position: relative;
+		display: inline-block;
+		margin-top: 0;
+		font-family: $font-default;
+		font-size: 0.7em;
+		opacity: 0.75;
+		line-height: 1.5em;
+		vertical-align: top;
+
+		> a {
+			display: inline-block;
+			color: $color-action;
+			cursor: pointer;
+		}
+
+		> .tool-tip {
+			@include tool-tip();
+
+			top: -3.8em;
+			left: 50%;
+			transform: translate(-50%);
+			display: none;
+		}
+
+		&:hover {
+			opacity: 1;
+
+			> .tool-tip {
+				display: block;
+			}
+		}
+	}
+
+	.control-button-container:hover {
+		> .tool-tip {
+			display: inline-block;
+		}
+	}
+
 	> .size-controls {
 		position: absolute;
 		right: 0;
@@ -90,9 +134,9 @@
 
 	> .size-controls > .zoom-controls > .zoom-reset {
 		> .zoom-reset-button {
-			$color-zoom-reset-button: #b497d3;
+			$color-zoom-reset: #b497d3;
 
-			color: $color-zoom-reset-button;
+			color: $color-zoom-reset;
 			overflow: visible;
 			font-size: 0.5em;
 			width: inherit;
@@ -133,50 +177,6 @@
 
 		&:hover > .zoom-in-button {
 			background-image: url('./zoom-in-hover.svg');
-		}
-	}
-
-	> .new-window-link {
-		position: relative;
-		display: inline-block;
-		margin-top: 0;
-		font-family: $font-default;
-		font-size: 0.7em;
-		opacity: 0.75;
-		line-height: 1.5em;
-		vertical-align: top;
-
-		> a {
-			display: inline-block;
-			color: $color-action;
-			cursor: pointer;
-		}
-
-		> .tool-tip {
-			@include tool-tip();
-
-			top: -3.8em;
-			left: 50%;
-			transform: translate(-50%);
-			display: none;
-		}
-
-		&:hover {
-			opacity: 1;
-
-			> .tool-tip {
-				display: block;
-			}
-		}
-	}
-
-	> .control-button-container &:hover {
-		> button {
-			background-color: $color-action;
-		}
-
-		> .tool-tip {
-			display: inline-block;
 		}
 	}
 }

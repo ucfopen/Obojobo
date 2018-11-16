@@ -9,6 +9,7 @@ import IFrame from '../../../../ObojoboDraft/Chunks/IFrame/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../../src/scripts/common/flux/dispatcher'
 import MediaUtil from '../../../../src/scripts/viewer/util/media-util'
+import MediaStore from '../../../../src/scripts/viewer/stores/media-store'
 
 const renderSettingsModule = require('../../../../ObojoboDraft/Chunks/IFrame/render-settings')
 const originalGetRenderSettingsFn = renderSettingsModule.getRenderSettings
@@ -60,6 +61,8 @@ describe('IFrame', () => {
 
 		OboModel.models.navTarget = {}
 
+		MediaStore.init()
+
 		moduleData = {
 			model: {
 				title: 'mocked-module-title'
@@ -69,10 +72,7 @@ describe('IFrame', () => {
 				navTargetId: 'navTarget'
 			},
 			focusState: {},
-			mediaState: {
-				shown: {},
-				zoomById: {}
-			}
+			mediaState: MediaStore.getState()
 		}
 
 		ReactDOM.findDOMNode = jest.fn(() => fakeDOMNode)

@@ -291,9 +291,6 @@ exports[`IFrame IFrame component renders 7`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -344,9 +341,6 @@ exports[`IFrame IFrame component renders 8`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -397,9 +391,6 @@ exports[`IFrame IFrame component renders 9`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -450,9 +441,6 @@ exports[`IFrame IFrame component renders 10`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -503,9 +491,6 @@ exports[`IFrame IFrame component renders 11`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -556,9 +541,6 @@ exports[`IFrame IFrame component renders 12`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -855,9 +837,6 @@ exports[`IFrame IFrame component renders 19`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -908,9 +887,6 @@ exports[`IFrame IFrame component renders 20`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -961,9 +937,6 @@ exports[`IFrame IFrame component renders 21`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -1014,9 +987,6 @@ exports[`IFrame IFrame component renders 22`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -1067,9 +1037,6 @@ exports[`IFrame IFrame component renders 23`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -1120,9 +1087,6 @@ exports[`IFrame IFrame component renders 24`] = `
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -1166,9 +1130,6 @@ exports[`IFrame IFrame component renders 25`] = `
           displayed-title
         </span>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>

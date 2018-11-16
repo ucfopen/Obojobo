@@ -83,16 +83,14 @@ const getAfterStyle = (setWidth, setHeight, fit) => {
 }
 
 const getZoomValues = (mediaState, model) => {
-	const userZoom = MediaUtil.getZoom(mediaState, model)
-	const initialZoom = model.modelState.initialZoom
-	const currentZoom = userZoom || initialZoom
-	const isZoomDifferentFromInitial = currentZoom !== initialZoom
+	const currentZoom = MediaUtil.getZoom(mediaState, model)
+	const defaultZoom = MediaUtil.getDefaultZoom(mediaState, model)
+	const isZoomAtDefault = MediaUtil.isZoomAtDefault(mediaState, model)
 
 	return {
-		userZoom,
-		initialZoom,
 		currentZoom,
-		isZoomDifferentFromInitial
+		defaultZoom,
+		isZoomAtDefault
 	}
 }
 
@@ -107,11 +105,16 @@ const getRenderSettings = (
 ) => {
 	const ms = model.modelState
 	const zoomValues = getZoomValues(mediaState, model)
-	const zoom = zoomValues.currentZoom
 	const setDimensions = getSetDimensions(ms, defaultWidth, defaultHeight)
 	const scaleAmount = getScaleAmount(actualWidth, padding, setDimensions.w)
 	const displayedTitle = getDisplayedTitle(ms)
-	const scaleDimensions = getScaleDimensions(ms, zoom, scaleAmount, minScale, setDimensions)
+	const scaleDimensions = getScaleDimensions(
+		ms,
+		zoomValues.currentZoom,
+		scaleAmount,
+		minScale,
+		setDimensions
+	)
 	const controlsOpts = getControlsOptions(ms)
 	const isAtMinScale = scaleDimensions.scale === minScale
 	const iframeStyle = getIFrameStyle(scaleDimensions.scale)
@@ -120,7 +123,6 @@ const getRenderSettings = (
 
 	return {
 		zoomValues,
-		zoom,
 		displayedTitle,
 		scaleDimensions,
 		isShowing,
