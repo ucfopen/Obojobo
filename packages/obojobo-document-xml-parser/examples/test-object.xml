@@ -171,33 +171,33 @@
 				<p>IFrames display external sites within Obojobo.</p>
 				<h2>Types of IFrames:</h2>
 				<p>This is a <code>webpage</code> type IFrame with default attributes that make it suitable to embed webpages. Once it is clicked it will load and display its content.</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" />
+				<IFrame type="webpage" src="https://www.ucf.edu" title="Webpage type IFrame" />
 				<p>This is a <code>media</code> type IFrame with default attributes. Since it is optimized for media playback its defaults are different than the webpage defaults.</p>
-				<IFrame type="media" src="https://www.youtube.com/embed/gJ390e5sjHk" title='UCF "This is Big" Video' />
+				<IFrame type="media" src="https://www.youtube.com/embed/gJ390e5sjHk" title='Media type IFrame' />
 				<p>Use the <code>media</code> type when embedding video or interactive material. Otherwise, use <code>webpage</code> when embedding other standard websites. If no type is specified then <code>media</code> will be used.</p>
 				<h2>Additional options</h2>
 				<p>The <code>autoload</code> property allows an IFrame to load automatically without requiring the user to click on it first. Autoloading is not recommended as it may slow down the load speed of the Obojobo Module.</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" autoload="true"/>
+				<IFrame type="webpage" src="https://www.ucf.edu" autoload="true"/>
 				<p>The IFrame below omits the <code>title</code> property. When omitted the embedded URL is shown instead.  In general it's recommended to include a title as this is more readable than a URL (and will also be read out by screen-readers). </p>
 				<IFrame type="webpage" src="https://www.ucf.edu" />
 				<p>You can specify a custom <code>width</code> and <code>height</code>, as shown below. This IFrame also has no border (once it is loaded).</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" height="300" width="300" border="false"/>
+				<IFrame type="webpage" src="https://www.ucf.edu" title="Custom width and height" height="300" width="300" border="false"/>
 				<p>Using the <code>fit</code> property you can control what happens when a loaded IFrame is constricted by the available space. The IFrame below specifies <code>fit="scale"</code> which means it will scale down proportionally as the IFrame box shrinks. To see it in action click on the IFrame, then try reducing the size of the browser until the IFrame can no longer fit in the available space - you will see the inner contents become smaller. This is the default setting when <code>type</code> is set to <code>media</code> (and in general is recommended when embedding media).</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" fit="scale"/>
+				<IFrame type="webpage" src="https://www.ucf.edu" title="Scale fit" fit="scale"/>
 				<p>The other <code>fit</code> type is <code>fit="scroll"</code>. This does not scale down the inner contents, instead the contents remain the same size while the IFrame box that contains them becomes skinnier. If the external content won't fit inside the reduced IFrame box then the user will need to scroll inside the IFrame to see all of the content. This is the default setting when <code>type</code> is set to <code>webpage</code> (and in general is recommended when embedding content with text).</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" fit="scroll"/>
+				<IFrame type="webpage" src="https://www.ucf.edu" title="Scroll fit" fit="scroll"/>
 				<p>The <code>initialZoom</code> property allows the IFrame below to be zoomed in once it is loaded. In this example the embedded webpage is zoomed to 150% of its original size. This can be useful to tailor embedded content to more closely match the text size of your Obojobo module (or if the content you're embedding defaults to a small size).</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" initialZoom="1.5"/>
+				<IFrame type="webpage" src="https://www.ucf.edu" title="Initial zoom set to 150%" initialZoom="1.5"/>
 				<h2>IFrame Controls</h2>
 				<p>An IFrame can contain any of the three control types: <code>reload</code>, <code>new-window</code> and <code>zoom</code>.</p>
 				<p>The IFrame below only has the <code>reload</code> control. <code>reload</code> allows the user to refresh the site within the IFrame. This is useful for media if that media has no reload control. It's also helpful for webpages if the user manages to navigate to another page inside the IFrame - The reload button will restore them to the original page you embedded.</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" controls="reload"/>
+				<IFrame type="webpage" src="https://www.ucf.edu" title="Reload control only" controls="reload"/>
 				<p>The IFrame below only has the <code>new-window</code> control. <code>new-window</code> includes a link below the contents that allows the user to load the external site in a new tab or a new window (depending on their browser's defaults).</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" controls="new-window"/>
+				<IFrame type="webpage" src="https://www.ucf.edu" title="New window control only" controls="new-window"/>
 				<p>The IFrame below only has the <code>zoom</code> controls. <code>Zoom</code> allows the user to zoom in and out on the website for eaiser viewing of small details.</p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" controls="zoom"/>
+				<IFrame type="webpage" src="https://www.ucf.edu" title="Zoom control only" controls="zoom"/>
 				<p>Finally, in the example below all of the controls have been removed: </p>
-				<IFrame type="webpage" src="https://www.ucf.edu" title="University of Central Florida" controls=""/>
+				<IFrame type="webpage" src="https://www.ucf.edu" title="No controls" controls=""/>
 				<p>If you don't specify the <code>controls</code> property then the defaults will be used. With <code>media</code> type IFrames the default control is <code>reload</code> only. For <code>webpage</code> type IFrames all controls (<code>reload</code>, <code>new-window</code> and <code>zoom</code>) are included by default.</p>
 			</Page>
 			<Page title="Other Content Types">
