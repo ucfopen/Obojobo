@@ -161,7 +161,7 @@ exports[`Assessment editor plugins.renderNode renders Settings when passed 1`] =
 `;
 
 exports[`Assessment editor plugins.renderNode renders the Assessment when passed 1`] = `
-<Node
+<Assessment
   attributes={
     Object {
       "dummy": "dummyData",

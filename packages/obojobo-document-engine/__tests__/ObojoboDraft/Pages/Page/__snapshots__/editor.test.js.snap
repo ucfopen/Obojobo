@@ -41,7 +41,7 @@ Object {
 `;
 
 exports[`Page plugins.renderNode renders a solution when passed 1`] = `
-<Node
+<Page
   attributes={
     Object {
       "dummy": "dummyData",

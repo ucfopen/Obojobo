@@ -44,7 +44,7 @@ Object {
 `;
 
 exports[`MCFeedback editor plugins.renderNode renders a node 1`] = `
-<Node
+<MCFeedback
   attributes={
     Object {
       "dummy": "dummyData",

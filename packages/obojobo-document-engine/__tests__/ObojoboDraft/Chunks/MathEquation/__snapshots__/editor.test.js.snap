@@ -168,7 +168,7 @@ Object {
 `;
 
 exports[`MathEquation editor plugins.renderNode renders a button when passed 1`] = `
-<Node
+<MathEquation
   attributes={
     Object {
       "dummy": "dummyData",

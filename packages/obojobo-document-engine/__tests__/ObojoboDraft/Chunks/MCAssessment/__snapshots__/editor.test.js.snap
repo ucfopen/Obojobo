@@ -114,7 +114,7 @@ exports[`MCAssessment editor plugins.renderNode renders a ChoiceList when passed
 `;
 
 exports[`MCAssessment editor plugins.renderNode renders a MCAssessment when passed 1`] = `
-<Node
+<MCAssessment
   attributes={
     Object {
       "dummy": "dummyData",
@@ -167,13 +167,7 @@ Object {
 
 exports[`MCAssessment editor slateToObo converts a Slate node to an OboNode with no content 1`] = `
 Object {
-  "children": Array [
-    Object {
-      "children": Array [],
-      "id": undefined,
-      "type": "NotADefinedNode",
-    },
-  ],
+  "children": Array [],
   "content": Object {},
   "id": "mockKey",
   "type": "mockType",

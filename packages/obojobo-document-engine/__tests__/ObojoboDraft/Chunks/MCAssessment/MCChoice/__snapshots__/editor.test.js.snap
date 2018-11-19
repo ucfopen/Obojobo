@@ -80,7 +80,7 @@ Object {
 `;
 
 exports[`MCChoice editor plugins.renderNode renders a choice 1`] = `
-<Node
+<MCChoice
   attributes={
     Object {
       "dummy": "dummyData",

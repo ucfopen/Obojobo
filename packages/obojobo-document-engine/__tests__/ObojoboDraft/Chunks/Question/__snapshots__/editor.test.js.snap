@@ -103,7 +103,7 @@ Object {
 `;
 
 exports[`Question editor plugins.renderNode renders a question when passed 1`] = `
-<Node
+<Question
   attributes={
     Object {
       "dummy": "dummyData",

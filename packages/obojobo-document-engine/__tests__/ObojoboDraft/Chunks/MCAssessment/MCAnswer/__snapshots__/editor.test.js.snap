@@ -29,7 +29,7 @@ Object {
 `;
 
 exports[`MCAnswer editor plugins.renderNode renders a node 1`] = `
-<Node
+<MCAnswer
   attributes={
     Object {
       "dummy": "dummyData",

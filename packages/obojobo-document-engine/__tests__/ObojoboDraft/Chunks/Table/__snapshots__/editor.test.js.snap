@@ -210,7 +210,7 @@ Object {
 `;
 
 exports[`Table editor plugins.renderNode renders a Table when passed 1`] = `
-<Node
+<Table
   attributes={
     Object {
       "dummy": "dummyData",

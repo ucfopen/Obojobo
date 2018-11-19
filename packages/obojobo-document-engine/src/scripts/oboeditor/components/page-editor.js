@@ -34,37 +34,6 @@ import MarkToolbar from './toolbar'
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
-const nodes = {
-	'ObojoboDraft.Chunks.ActionButton': ActionButton,
-	'ObojoboDraft.Chunks.Break': Break,
-	'ObojoboDraft.Chunks.Code': Code,
-	'ObojoboDraft.Chunks.Figure': Figure,
-	'ObojoboDraft.Chunks.Heading': Heading,
-	'ObojoboDraft.Chunks.HTML': HTML,
-	'ObojoboDraft.Chunks.IFrame': IFrame,
-	'ObojoboDraft.Chunks.List': List,
-	'ObojoboDraft.Chunks.MathEquation': MathEquation,
-	'ObojoboDraft.Chunks.Table': Table,
-	'ObojoboDraft.Chunks.Text': Text,
-	'ObojoboDraft.Chunks.YouTube': YouTube,
-	'ObojoboDraft.Chunks.QuestionBank': QuestionBank,
-	'ObojoboDraft.Chunks.Question': Question,
-	'ObojoboDraft.Chunks.MCAssessment': MCAssessment,
-	'ObojoboDraft.Chunks.MCAssessment.MCChoice': MCChoice,
-	'ObojoboDraft.Chunks.MCAssessment.MCAnswer': MCAnswer,
-	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': MCFeedback,
-	'ObojoboDraft.Pages.Page': Page
-}
-
-const dontInsert = [
-	'ObojoboDraft.Chunks.HTML',
-	'ObojoboDraft.Chunks.MCAssessment',
-	'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-	'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-	'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-	'ObojoboDraft.Pages.Page'
-]
-
 const plugins = [
 	Component.plugins,
 	...MarkToolbar.plugins,
@@ -129,14 +98,6 @@ class PageEditor extends React.Component {
 			<div className={'editor'}>
 				<div className={'toolbar'}>
 					<MarkToolbar.components.Node value={this.state.value} onChange={change => this.onChange(change)} />
-					<div className={'dropdown'}>
-						<button>+ Insert Node</button>
-						<div className={'drop-content'}>
-							{Object.entries(nodes).map(item => {
-								return this.buildButton(item)
-							})}
-						</div>
-					</div>
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
@@ -154,27 +115,9 @@ class PageEditor extends React.Component {
 		this.setState({ value })
 	}
 
-	insertBlock(block) {
-		const { value } = this.state
-		const change = value.change()
-
-		block.helpers.insertNode(change)
-
-		this.onChange(change)
-	}
-
-	buildButton([key, block]) {
-		if (dontInsert.includes(key)) return null
-		return (
-			<button key={key} onClick={() => this.insertBlock(block)}>
-				{key}
-			</button>
-		)
-	}
-
 	exportToJSON(page, value) {
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = Assessment.helpers.slateToObo(value.document.nodes.get(0))
+			const json = Common.Store.getItemForType(ASSESSMENT_NODE).slateToObo(value.document.nodes.get(0))
 			page.set('children', json.children)
 			page.set('content', json.content)
 
@@ -201,7 +144,7 @@ class PageEditor extends React.Component {
 		const json = { document: { nodes: [] } }
 
 		if (page.get('type') === ASSESSMENT_NODE) {
-			json.document.nodes.push(Assessment.helpers.oboToSlate(page))
+			json.document.nodes.push(Common.Store.getItemForType(ASSESSMENT_NODE).oboToSlate(page))
 		} else {
 			page.attributes.children.forEach(child => {
 				json.document.nodes.push(Component.helpers.oboToSlate(child))

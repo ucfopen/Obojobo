@@ -13,7 +13,8 @@
 
 	.drop-icon {
 		display: inline-block;
-		font-size: 1em;
+		font-size: 1.3em;
+		min-width: 1.5em;
 		text-align: center;
 		text-decoration: none;
 		font-weight: bold;
@@ -31,12 +32,15 @@
 			display: block;
 			background-color: $color-bg2;
 			border-radius: $dimension-rounded-radius;
-			font-size: 1em;
+			font-size: 1.3em;
 			min-width: 1.5em;
 			color: $color-text;
 			text-align: center;
+			box-sizing: border-box;
 
 			&:focus {
+				background: lighten($color-action, 48%);
+
 				 + span {
 					opacity: 1;
 				}
@@ -60,6 +64,10 @@
 
 
 		&:hover {
+			button {
+				background: lighten($color-action, 48%);
+			}
+
 			span {
 				opacity: 1;
 			}
@@ -68,7 +76,7 @@
 
 	// Makes the insert menu keyboard accessible
 	&.is-open {
-		min-width: 25em;
+		min-width: 30em;
 
 		.insert-button {
 			display: inline-block;
@@ -77,7 +85,7 @@
 
 	// Reveals the insert menu the expected way for mouse users
 	&:hover {
-		min-width: 25em;
+		min-width: 30em;
 
 		.insert-button {
 			display: inline-block;

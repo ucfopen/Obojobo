@@ -43,7 +43,7 @@ Object {
 `;
 
 exports[`HTML editor plugins.renderNode renders a button when passed 1`] = `
-<Node
+<HTML
   attributes={
     Object {
       "dummy": "dummyData",

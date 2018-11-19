@@ -311,7 +311,7 @@ Object {
 `;
 
 exports[`List editor plugins.renderNode renders a button when passed 1`] = `
-<Node
+<List
   attributes={
     Object {
       "dummy": "dummyData",

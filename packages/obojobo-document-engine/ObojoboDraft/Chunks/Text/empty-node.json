@@ -8,7 +8,7 @@
 			"object":"block",
 			"type":"ObojoboDraft.Chunks.Text.TextLine",
 			"isVoid":false,
-			"data":{ "content":{ "indent":0 } },
+			"data":{ "indent":0 },
 			"nodes":[
 				{
 					"object":"text",

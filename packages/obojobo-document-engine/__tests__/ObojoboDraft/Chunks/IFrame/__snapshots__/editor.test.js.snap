@@ -63,7 +63,7 @@ Object {
 `;
 
 exports[`IFrame editor plugins.renderNode renders a button when passed 1`] = `
-<Node
+<IFrame
   attributes={
     Object {
       "dummy": "dummyData",

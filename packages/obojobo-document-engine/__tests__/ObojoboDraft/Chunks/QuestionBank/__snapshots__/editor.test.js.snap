@@ -99,7 +99,7 @@ Object {
 `;
 
 exports[`QuestionBank editor plugins.renderNode renders a question bank when passed 1`] = `
-<Node
+<QuestionBank
   attributes={
     Object {
       "dummy": "dummyData",

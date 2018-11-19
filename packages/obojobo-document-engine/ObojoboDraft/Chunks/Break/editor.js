@@ -1,42 +1,13 @@
 import React from 'react'
-import { Block } from 'slate'
+import Common from 'Common'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
-import Common from 'Common'
+import Schema from './schema'
+import Converter from './converter'
 
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
-
-const insertNode = change => {
-	change
-		.insertBlock(Block.fromJSON(emptyNode))
-		.focus()
-}
-
-const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = {
-		width: node.data.get('content').width
-	}
-	json.children = []
-
-	return json
-}
-
-const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-	json.data = { content: node.content }
-
-	if (!json.data.content.width) json.data.content.width = 'normal'
-
-	return json
-}
 
 const plugins = {
 	renderNode(props) {
@@ -45,14 +16,18 @@ const plugins = {
 				return <Node {...props} {...props.attributes} />
 		}
 	},
-	schema: {
-		blocks: {
-			'ObojoboDraft.Chunks.Break': {
-				isVoid: true
-			}
-		}
-	}
+	schema: Schema
 }
+
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.Break', {
+	name: 'Break',
+	icon: Icon,
+	isInsertable: true,
+	insertJSON: emptyNode,
+	slateToObo: Converter.slateToObo,
+	oboToSlate: Converter.oboToSlate,
+	plugins
+})
 
 const Break = {
 	name: BREAK_NODE,
@@ -61,24 +36,13 @@ const Break = {
 		Icon
 	},
 	helpers: {
-		insertNode,
-		slateToObo,
-		oboToSlate
+		slateToObo: Converter.slateToObo,
+		oboToSlate: Converter.oboToSlate
 	},
 	json: {
 		emptyNode
 	},
 	plugins
 }
-
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.Break', {
-	name: 'Break',
-	icon: Icon,
-	isInsertable: true,
-	insertJSON: emptyNode,
-	slateToObo,
-	oboToSlate,
-	plugins
-})
 
 export default Break

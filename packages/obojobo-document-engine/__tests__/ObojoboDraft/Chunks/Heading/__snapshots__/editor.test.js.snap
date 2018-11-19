@@ -114,7 +114,7 @@ Object {
 `;
 
 exports[`Heading editor plugins.renderNode renders a button when passed 1`] = `
-<Node
+<Heading
   attributes={
     Object {
       "dummy": "dummyData",

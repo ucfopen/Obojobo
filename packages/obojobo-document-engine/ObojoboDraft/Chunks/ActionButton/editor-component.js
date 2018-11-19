@@ -32,9 +32,6 @@ const requiresValue = {
 		const json = JSON.parse(value)
 		return json.id
 	},
-	js: value => {
-		return typeof value === typeof ''
-	},
 	'viewer:alert': value => {
 		const json = JSON.parse(value)
 		return !!json.title && !!json.message

@@ -333,7 +333,7 @@ Object {
 `;
 
 exports[`Figure editor plugins.renderNode renders a button when passed 1`] = `
-<Node
+<Figure
   attributes={
     Object {
       "dummy": "dummyData",
