@@ -15,21 +15,6 @@ const multerUpload = multer({
 	storage: diskStorage,
 	limits: {
 		fileSize: mediaConfig.maxUploadSize
-	},
-	fileFilter: (req, file, cb) => {
-		const isValidFile = MediaModel.isValidFileType(file.originalname, file.mimetype)
-
-		if (!isValidFile) {
-			// there is an error, do not accept the file
-			cb(
-				'File upload only supports the following filetypes: ' +
-					mediaConfig.allowedMimeTypesRegex.split('|').join(', '),
-				false
-			)
-		}
-
-		// there is no error, accept the file
-		return cb(null, true)
 	}
 }).single('userImage')
 

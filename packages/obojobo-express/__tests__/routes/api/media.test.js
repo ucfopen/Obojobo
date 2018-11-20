@@ -111,13 +111,6 @@ describe('api draft route', () => {
 			return false
 		})
 
-		const mockFileData = {
-			originalname: 'mockOriginalName',
-			mimetype: 'mockMimeType'
-		}
-
-		const mockCallBack = jest.fn()
-
 		return request(app)
 			.post('/api/media/upload')
 			.then(response => {
@@ -126,18 +119,6 @@ describe('api draft route', () => {
 					destination: mediaConfig.tempUploadDestination
 				})
 				expect(response.text).toBe('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
-
-				// test the multer fileFilter
-				mockMulter.mock.calls[0][0].fileFilter('mockRequest', mockFileData, mockCallBack)
-				expect(MediaModel.isValidFileType).toBeCalledWith('mockOriginalName', 'mockMimeType')
-				expect(mockCallBack).toBeCalledWith(null, true)
-
-				mockMulter.mock.calls[0][0].fileFilter('mockRequest', mockFileData, mockCallBack)
-				expect(MediaModel.isValidFileType).toBeCalledWith('mockOriginalName', 'mockMimeType')
-				expect(mockCallBack).toBeCalledWith(
-					'File upload only supports the following filetypes: jpeg, jpg, png, gif, svg',
-					false
-				)
 			})
 	})
 

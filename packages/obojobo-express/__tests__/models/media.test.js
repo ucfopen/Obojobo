@@ -26,6 +26,8 @@ jest.mock('../../config', () => {
 	}
 })
 jest.mock('fs')
+jest.mock('file-type')
+jest.mock('is-svg')
 
 const mockSharpResize = jest.fn()
 jest.mock('sharp', () => () => {
@@ -39,6 +41,8 @@ jest.mock('sharp', () => () => {
 })
 
 import fs from 'fs'
+import fileType from 'file-type'
+import isSvg from 'is-svg'
 import MediaModel from '../../models/media'
 
 const mediaConfig = require('../../config').media
@@ -61,6 +65,7 @@ describe('media model', () => {
 	const mediaModelResize = MediaModel.resize
 	const mediaModelParseCustom = MediaModel.parseCustomImageDimensions
 	const mediaModelCacheImage = MediaModel.cacheImageInDb
+	const mediaModelValidFileType = MediaModel.isValidFileType
 
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -69,6 +74,7 @@ describe('media model', () => {
 		MediaModel.resize = mediaModelResize
 		MediaModel.parseCustomImageDimensions = mediaModelParseCustom
 		MediaModel.cacheImageInDb = mediaModelCacheImage
+		MediaModel.isValidFileType = mediaModelValidFileType
 	})
 	afterEach(() => {})
 
@@ -266,7 +272,7 @@ describe('media model', () => {
 		})
 	})
 
-	test('createAndSave calls MediaModel with correct arguments', () => {
+	test('createAndSave calls storeImageInDB with correct arguments', () => {
 		const mockNewMediaRecord = {
 			media_id: 'MEDIA_UUID',
 			binary_id: 'BINARY_UUID',
@@ -276,6 +282,11 @@ describe('media model', () => {
 		MediaModel.storeImageInDb = jest.fn()
 		MediaModel.storeImageInDb.mockImplementationOnce(() => {
 			return Promise.resolve(mockNewMediaRecord)
+		})
+
+		MediaModel.isValidFileType = jest.fn()
+		MediaModel.isValidFileType.mockImplementationOnce(() => {
+			return true
 		})
 
 		fs.readFileSync = jest.fn()
@@ -309,7 +320,7 @@ describe('media model', () => {
 		MediaModel.storeImageInDb = jest.fn()
 
 		fs.readFileSync = jest.fn()
-		fs.readFileSync.mockImplementation(() => {
+		fs.readFileSync.mockImplementationOnce(() => {
 			throw new Error('Mock error from readFileSync')
 		})
 
@@ -325,8 +336,38 @@ describe('media model', () => {
 			})
 	})
 
+	test('createAndSave correctly throws error on invalid file types', () => {
+		expect.assertions(4)
+
+		MediaModel.storeImageInDb = jest.fn()
+
+		MediaModel.isValidFileType = jest.fn()
+		MediaModel.isValidFileType.mockImplementationOnce(() => {
+			return false
+		})
+
+		return MediaModel.createAndSave(mockUserId, mockFileInfo)
+			.then(() => {
+				// this line should not be executed because an error should be thrown and caught from readFileSync
+				expect('this').toBe('not called')
+			})
+			.catch(e => {
+				expect(fs.unlinkSync).toHaveBeenCalled()
+				expect(e).not.toBeNull()
+				expect(e.message).toBe(
+					'File upload only supports the following filetypes: jpeg, jpg, png, gif, svg'
+				)
+				expect(e).toBeInstanceOf(Error)
+			})
+	})
+
 	test('createAndSave correctly catches errors from storeImageInDb', () => {
 		expect.assertions(3)
+
+		MediaModel.isValidFileType = jest.fn()
+		MediaModel.isValidFileType.mockImplementationOnce(() => {
+			return true
+		})
 
 		MediaModel.storeImageInDb = jest.fn()
 		MediaModel.storeImageInDb.mockImplementationOnce(() => {
@@ -800,37 +841,71 @@ describe('media model', () => {
 		expect(MediaModel.parseCustomImageDimensions).toBeCalledWith('100x200')
 	})
 
-	test('isValidFileType rejects invalid file types', () => {
-		let isValidFile = MediaModel.isValidFileType('mockFilename.pdf', 'pdf')
-		expect(isValidFile).toBeFalsy()
+	test('isValidFileType returns false if file-type library returns null', () => {
+		fileType.mockImplementationOnce(() => {
+			return null
+		})
 
-		isValidFile = MediaModel.isValidFileType('mockFilename.bin', 'bin')
-		expect(isValidFile).toBeFalsy()
+		const isValidFile = MediaModel.isValidFileType(new Buffer('TestImage'))
 
-		isValidFile = MediaModel.isValidFileType('mockFilename.tiff', 'tiff')
 		expect(isValidFile).toBeFalsy()
 	})
 
 	test('isValidFileType recognizes jpg and jpeg', () => {
-		let isValidFile = MediaModel.isValidFileType('mockFilename.jpg', 'jpg')
+		let isValidFile
+
+		fileType.mockImplementationOnce(() => {
+			return {
+				ext: 'jpg'
+			}
+		})
+
+		isValidFile = MediaModel.isValidFileType(new Buffer('TestImage'))
 		expect(isValidFile).toBeTruthy()
 
-		isValidFile = MediaModel.isValidFileType('mockFilename.jpeg', 'jpeg')
+		fileType.mockImplementationOnce(() => {
+			return {
+				ext: 'jpeg'
+			}
+		})
+
+		isValidFile = MediaModel.isValidFileType(new Buffer('TestImage'))
 		expect(isValidFile).toBeTruthy()
 	})
 
 	test('isValidFileType recognizes png', () => {
-		const isValidFile = MediaModel.isValidFileType('mockFilename.png', 'png')
+		fileType.mockImplementationOnce(() => {
+			return {
+				ext: 'png'
+			}
+		})
+
+		const isValidFile = MediaModel.isValidFileType(new Buffer('TestImage'))
 		expect(isValidFile).toBeTruthy()
 	})
 
 	test('isValidFileType recognizes gif', () => {
-		const isValidFile = MediaModel.isValidFileType('mockFilename.gif', 'gif')
+		fileType.mockImplementationOnce(() => {
+			return {
+				ext: 'gif'
+			}
+		})
+
+		const isValidFile = MediaModel.isValidFileType(new Buffer('TestImage'))
 		expect(isValidFile).toBeTruthy()
 	})
 
 	test('isValidFileType recognizes svg', () => {
-		const isValidFile = MediaModel.isValidFileType('mockFilename.svg', 'svg')
+		fileType.mockImplementationOnce(() => {
+			return null
+		})
+
+		isSvg.mockImplementationOnce(() => {
+			return true
+		})
+
+		const isValidFile = MediaModel.isValidFileType(new Buffer('TestImage'))
+		expect(isSvg).toHaveBeenCalledWith(new Buffer('TestImage'))
 		expect(isValidFile).toBeTruthy()
 	})
 })

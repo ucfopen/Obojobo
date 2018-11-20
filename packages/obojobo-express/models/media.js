@@ -1,5 +1,6 @@
+const fileType = require('file-type')
 const fs = require('fs')
-const path = require('path')
+const isSvg = require('is-svg')
 const sharp = require('sharp')
 
 const mediaConfig = oboRequire('config').media
@@ -297,16 +298,16 @@ class Media {
 				})
 		)
 	}
-	static isValidFileType(filename, mimetype) {
+
+	static isValidFileType(file) {
 		const allowedFileTypes = new RegExp(mediaConfig.allowedMimeTypesRegex)
 
-		// test for valid mimetype
-		const isAllowedMimetype = allowedFileTypes.test(mimetype)
+		// fileType looks into the file to find the true file type using magic numbers
+		const fileTypeInfo = fileType(file)
 
-		// test for valid extensions
-		const isAllowedExt = allowedFileTypes.test(path.extname(filename).toLowerCase())
-
-		return isAllowedMimetype && isAllowedExt
+		// fileType does not support SVGs because the whole buffer must be read to determine if the
+		// buffer is an SVG.
+		return (fileTypeInfo && allowedFileTypes.test(fileTypeInfo.ext)) || isSvg(file)
 	}
 
 	static createAndSave(userId, fileInfo) {
@@ -317,6 +318,18 @@ class Media {
 		} catch (err) {
 			// calling methods expect a thenable object to be returned
 			return Promise.reject(err)
+		}
+
+		if (!Media.isValidFileType(file, fileInfo.originalname, fileInfo.mimetype)) {
+			// Delete the temporary media stored by Multer
+			fs.unlinkSync(fileInfo.path)
+			return Promise.reject(
+				new Error(
+					`File upload only supports the following filetypes: ${mediaConfig.allowedMimeTypesRegex
+						.split('|')
+						.join(', ')}`
+				)
+			)
 		}
 
 		return Media.storeImageInDb({
