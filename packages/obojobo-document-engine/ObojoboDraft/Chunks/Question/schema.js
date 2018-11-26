@@ -43,7 +43,6 @@ const schema = {
 						return change.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						if (child.object !== 'text') return
 						const block = Block.fromJSON({
 							object: 'block',
 							type: 'oboeditor.component',

@@ -1,33 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCAnswer editor Node builds the expected component 1`] = `
-<div
-  className="component obojobo-draft--chunks--mc-assessment--mc-answer"
-/>
-`;
-
-exports[`MCAnswer editor oboToSlate converts an OboNode to a Slate node 1`] = `
-Object {
-  "data": Object {
-    "content": undefined,
-  },
-  "key": "mockKey",
-  "nodes": Array [
-    undefined,
-    Object {
-      "data": Object {
-        "content": undefined,
-      },
-      "key": undefined,
-      "object": "block",
-      "type": "notADefinedNode",
-    },
-  ],
-  "object": "block",
-  "type": "mockType",
-}
-`;
-
 exports[`MCAnswer editor plugins.renderNode renders a node 1`] = `
 <MCAnswer
   attributes={
@@ -45,20 +17,4 @@ exports[`MCAnswer editor plugins.renderNode renders a node 1`] = `
     }
   }
 />
-`;
-
-exports[`MCAnswer editor slateToObo converts a Slate node to an OboNode with content 1`] = `
-Object {
-  "children": Array [
-    undefined,
-    Object {
-      "children": Array [],
-      "id": undefined,
-      "type": "notADefinedNode",
-    },
-  ],
-  "content": Object {},
-  "id": "mockKey",
-  "type": "mockType",
-}
 `;

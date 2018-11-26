@@ -1,38 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`YouTube editor Node builds the expected component 1`] = `
-<div
-  className="obojobo-draft--chunks--you-tube viewer pad"
->
-  <div
-    style={
-      Object {
-        "cursor": "cell",
-        "display": "block",
-        "height": "100%",
-        "left": "0",
-        "position": "absolute",
-        "top": "0",
-        "width": "100%",
-        "zIndex": 1,
-      }
-    }
-  />
-  <iframe
-    allowFullScreen="true"
-    frameBorder="0"
-    src="https://www.youtube.com/embed/undefined"
-  />
-  <input
-    aria-label="Youtube Video Id"
-    onChange={[Function]}
-    onClick={[Function]}
-  />
-</div>
-`;
-
-exports[`YouTube editor Node component changes input 1`] = `"<div class=\\"obojobo-draft--chunks--you-tube viewer pad\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe src=\\"https://www.youtube.com/embed/undefined\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><input aria-label=\\"Youtube Video Id\\"></div>"`;
-
 exports[`YouTube editor oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {

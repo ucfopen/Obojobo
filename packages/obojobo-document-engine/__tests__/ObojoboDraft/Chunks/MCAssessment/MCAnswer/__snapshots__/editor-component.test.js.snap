@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAnswer Editor Node MCAnswer builds the expected component 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+/>
+`;

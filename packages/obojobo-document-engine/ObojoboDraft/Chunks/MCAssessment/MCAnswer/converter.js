@@ -2,6 +2,7 @@ import Component from '../../../../src/scripts/oboeditor/components/editor-compo
 
 const slateToObo = node => {
 	const json = {}
+	console.log(node)
 	json.id = node.key
 	json.type = node.type
 	json.content = node.data.get('content') || {}

@@ -47,6 +47,10 @@ const slateToObo = node => {
 }
 
 const validateJSON = json => {
+	// Do not consolidate lines
+	if (json.type === LIST_LINE_NODE) return json
+
+	// Consolidate levels that are next to each other
 	let last = json.nodes[0]
 	for (let i = 1; i < json.nodes.length; i++) {
 		const next = json.nodes[i]
@@ -56,7 +60,9 @@ const validateJSON = json => {
 		}
 		last = next
 	}
-	json.nodes = json.nodes.filter(Boolean)
+
+	// Filter out removed nodes and validate newly combined children
+	json.nodes = json.nodes.filter(Boolean).map(node => validateJSON(node))
 	return json
 }
 
@@ -110,6 +116,8 @@ const oboToSlate = node => {
 
 		json.nodes.push(listLine)
 	})
+
+	console.log(json)
 
 	validateJSON(json)
 

@@ -1,46 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Page Node builds the expected component 1`] = `
-<div
-  className="page-editor"
-/>
-`;
-
-exports[`Page oboToSlate converts an OboNode to a Slate node 1`] = `
-Object {
-  "data": Object {
-    "content": undefined,
-  },
-  "key": "mockKey",
-  "nodes": Array [
-    Object {
-      "nodes": Array [
-        undefined,
-      ],
-      "object": "block",
-      "type": "oboeditor.component",
-    },
-    Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "content": undefined,
-          },
-          "key": undefined,
-          "object": "block",
-          "type": "NotADefinedNode",
-        },
-      ],
-      "object": "block",
-      "type": "oboeditor.component",
-    },
-  ],
-  "object": "block",
-  "type": "mockType",
-}
-`;
-
-exports[`Page plugins.renderNode renders a solution when passed 1`] = `
+exports[`Page editor plugins.renderNode renders a solution when passed 1`] = `
 <Page
   attributes={
     Object {
@@ -57,35 +17,4 @@ exports[`Page plugins.renderNode renders a solution when passed 1`] = `
     }
   }
 />
-`;
-
-exports[`Page slateToObo converts a Slate node to an OboNode 1`] = `
-Object {
-  "children": Array [
-    undefined,
-    Object {
-      "children": Array [],
-      "id": undefined,
-      "type": "NotADefinedNode",
-    },
-  ],
-  "content": Object {},
-  "id": "mockKey",
-  "type": "mockType",
-}
-`;
-
-exports[`Page slateToObo converts a Slate node to an OboNode with no content 1`] = `
-Object {
-  "children": Array [
-    undefined,
-    Object {
-      "children": Array [],
-      "id": undefined,
-      "type": "NotADefinedNode",
-    },
-  ],
-  "id": "mockKey",
-  "type": "mockType",
-}
 `;

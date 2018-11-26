@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTML Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": undefined,
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`HTML Converter oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
+Object {
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": undefined,
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`HTML Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "html": "mockText",
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
