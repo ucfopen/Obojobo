@@ -1,3 +1,4 @@
+/* eslint-disable no-undefined */
 import React from 'react'
 import { shallow, mount } from 'enzyme'
 import renderer from 'react-test-renderer'
@@ -37,7 +38,9 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const component = renderer.create(<ActionButton node={nodeData} isSelected={true} isFocused={true} />)
+		const component = renderer.create(
+			<ActionButton node={nodeData} isSelected={true} isFocused={true} />
+		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

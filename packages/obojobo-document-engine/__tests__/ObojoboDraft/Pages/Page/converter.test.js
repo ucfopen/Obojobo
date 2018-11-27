@@ -9,8 +9,6 @@ jest.mock('Common', () => ({
 
 import Converter from '../../../../ObojoboDraft/Pages/Page/converter'
 
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
 describe('Page Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode', () => {
 		const slateNode = {

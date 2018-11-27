@@ -33,7 +33,7 @@ describe('Page editor', () => {
 
 		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
-			node: null,
+			node: { key: 'mockNode' },
 			child: { key: 'mockKey' },
 			index: null
 		})

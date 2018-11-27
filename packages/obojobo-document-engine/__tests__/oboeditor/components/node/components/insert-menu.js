@@ -2,30 +2,33 @@ import { mount } from 'enzyme'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import DropMenu from 'src/scripts/oboeditor/components/drop-menu'
+import InsertMenu from 'src/scripts/oboeditor/components/node/components/insert-menu'
+import BoldIcon from 'src/scripts/oboeditor/assets/bold-icon'
 
 jest.useFakeTimers()
 
 const testOptions = [
 	{
+		isInsertable: true,
 		name: 'dummyItem1',
+		icon: BoldIcon,
 		components: {}
 	},
 	{
+		isInsertable: false,
 		name: 'dummyItem2',
-		onClick: jest.fn(),
 		components: {}
 	}
 ]
 
-describe('DropMenu', () => {
+describe('InsertMenu', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 	})
 
-	test('DropMenu component', () => {
+	test('InsertMenu component', () => {
 		const component = renderer.create(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />
@@ -35,14 +38,15 @@ describe('DropMenu', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('DropMenu component calls parent onClick function', () => {
+	test('InsertMenu component calls parent onClick function', () => {
 		const parentOnClick = jest.fn()
 		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={parentOnClick} />
 		)
+
 		component
 			.find('button')
 			.at(1)
@@ -51,25 +55,9 @@ describe('DropMenu', () => {
 		expect(parentOnClick).toHaveBeenCalled()
 	})
 
-	test('DropMenu component calls individual onClick function', () => {
-		const parentOnClick = jest.fn()
+	test('InsertMenu component opens menu', () => {
 		const component = mount(
-			<DropMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={parentOnClick} />
-		)
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
-
-		expect(testOptions[1].onClick).toHaveBeenCalled()
-	})
-
-	test('DropMenu component opens menu', () => {
-		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />
@@ -84,9 +72,9 @@ describe('DropMenu', () => {
 		expect(html).toMatchSnapshot()
 	})
 
-	test('DropMenu component closes menu', () => {
+	test('InsertMenu component closes menu', () => {
 		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />
@@ -101,9 +89,9 @@ describe('DropMenu', () => {
 		expect(html).toMatchSnapshot()
 	})
 
-	test('DropMenu component moves down through the menu', () => {
+	test('InsertMenu component moves down through the menu', () => {
 		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />
@@ -118,9 +106,9 @@ describe('DropMenu', () => {
 		expect(html).toMatchSnapshot()
 	})
 
-	test('DropMenu component moves down through the menu', () => {
+	test('InsertMenu component moves down through the menu', () => {
 		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />
@@ -135,9 +123,9 @@ describe('DropMenu', () => {
 		expect(html).toMatchSnapshot()
 	})
 
-	test('DropMenu component moves up through the menu', () => {
+	test('InsertMenu component moves up through the menu', () => {
 		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />
@@ -152,9 +140,9 @@ describe('DropMenu', () => {
 		expect(html).toMatchSnapshot()
 	})
 
-	test('DropMenu component moves down through the menu', () => {
+	test('InsertMenu component moves down through the menu', () => {
 		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />
@@ -169,9 +157,9 @@ describe('DropMenu', () => {
 		expect(html).toMatchSnapshot()
 	})
 
-	test('DropMenu component closes menu when unfocused', () => {
+	test('InsertMenu component closes menu when unfocused', () => {
 		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />
@@ -186,9 +174,9 @@ describe('DropMenu', () => {
 		expect(html).toMatchSnapshot()
 	})
 
-	test('DropMenu component cancels menu closure when focused', () => {
+	test('InsertMenu component cancels menu closure when focused', () => {
 		const component = mount(
-			<DropMenu
+			<InsertMenu
 				dropOptions={testOptions}
 				icon="+"
 				masterOnClick={jest.fn()} />

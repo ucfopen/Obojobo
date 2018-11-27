@@ -28,7 +28,7 @@ import Assessment from '../../../../ObojoboDraft/Sections/Assessment/editor'
 import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
 import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor'
 import ParameterNode from './parameter-node'
-import Component from './editor-component'
+import Component from './node/editor'
 import MarkToolbar from './toolbar'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
@@ -97,7 +97,10 @@ class PageEditor extends React.Component {
 		return (
 			<div className={'editor'}>
 				<div className={'toolbar'}>
-					<MarkToolbar.components.Node value={this.state.value} onChange={change => this.onChange(change)} />
+					<MarkToolbar.components.Node
+						value={this.state.value}
+						onChange={change => this.onChange(change)}
+					/>
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
@@ -117,7 +120,9 @@ class PageEditor extends React.Component {
 
 	exportToJSON(page, value) {
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = Common.Store.getItemForType(ASSESSMENT_NODE).slateToObo(value.document.nodes.get(0))
+			const json = Common.Store.getItemForType(ASSESSMENT_NODE).slateToObo(
+				value.document.nodes.get(0)
+			)
 			page.set('children', json.children)
 			page.set('content', json.content)
 
@@ -144,7 +149,7 @@ class PageEditor extends React.Component {
 		const json = { document: { nodes: [] } }
 
 		if (page.get('type') === ASSESSMENT_NODE) {
-			json.document.nodes.push(Common.Store.getItemForType(ASSESSMENT_NODE).oboToSlate(page))
+			json.document.nodes.push(Assessment.helpers.oboToSlate(page))
 		} else {
 			page.attributes.children.forEach(child => {
 				json.document.nodes.push(Component.helpers.oboToSlate(child))

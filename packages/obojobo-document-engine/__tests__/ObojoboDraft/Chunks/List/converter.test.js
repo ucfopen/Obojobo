@@ -1,7 +1,6 @@
 jest.mock('../../../../src/scripts/oboeditor/util/text-util')
 
 import Converter from '../../../../ObojoboDraft/Chunks/List/converter'
-const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 describe('List Converter', () => {

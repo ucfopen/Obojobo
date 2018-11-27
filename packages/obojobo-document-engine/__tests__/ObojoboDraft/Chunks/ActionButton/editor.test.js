@@ -1,4 +1,3 @@
-/* eslint-disable no-undefined */
 import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 

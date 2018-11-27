@@ -1,5 +1,5 @@
 import Common from 'Common'
-import Component from '../../../src/scripts/oboeditor/components/editor-component'
+import Component from '../../../src/scripts/oboeditor/components/node/editor'
 
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
@@ -36,7 +36,7 @@ const oboToSlate = node => {
 	json.nodes = []
 
 	node.children.forEach(child => {
-		if(child.type === MCASSESSMENT_NODE) {
+		if (child.type === MCASSESSMENT_NODE) {
 			json.nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
 		}
 		json.nodes.push(Component.helpers.oboToSlate(child))
@@ -49,7 +49,9 @@ const oboToSlate = node => {
 			nodes: []
 		}
 
-		solution.nodes.push(Common.Store.getItemForType(PAGE_NODE).oboToSlate(json.data.content.solution))
+		solution.nodes.push(
+			Common.Store.getItemForType(PAGE_NODE).oboToSlate(json.data.content.solution)
+		)
 		json.nodes.push(solution)
 	}
 

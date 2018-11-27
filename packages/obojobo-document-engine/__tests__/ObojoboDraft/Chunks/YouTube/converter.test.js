@@ -1,5 +1,4 @@
 import Converter from 'ObojoboDraft/Chunks/YouTube/converter'
-const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
 describe('YouTube Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {

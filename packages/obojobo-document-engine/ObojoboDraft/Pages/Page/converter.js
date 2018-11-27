@@ -1,4 +1,4 @@
-import Component from '../../../src/scripts/oboeditor/components/editor-component'
+import Component from '../../../src/scripts/oboeditor/components/node/editor'
 
 const slateToObo = node => {
 	const json = {}

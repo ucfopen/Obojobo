@@ -117,8 +117,6 @@ const oboToSlate = node => {
 		json.nodes.push(listLine)
 	})
 
-	console.log(json)
-
 	validateJSON(json)
 
 	return json

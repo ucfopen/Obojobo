@@ -1,8 +1,8 @@
 /* eslint no-alert: 0 */
 import React from 'react'
-import isOrNot from '../../common/isornot'
+import isOrNot from '../../../../common/isornot'
 
-import './drop-menu.scss'
+import './insert-menu.scss'
 
 class DropMenu extends React.Component {
 	constructor(props) {
@@ -108,8 +108,7 @@ class DropMenu extends React.Component {
 						this[item.name] = button
 					}}
 					onClick={() => {
-						if(item.onClick) return item.onClick()
-						return this.props.masterOnClick(item)
+						this.props.masterOnClick(item)
 					}}>
 					{Icon ? <Icon/> : item.name}
 				</button>

@@ -1,5 +1,4 @@
 import Converter from '../../../../ObojoboDraft/Chunks/IFrame/converter'
-const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
 describe('IFrame Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {

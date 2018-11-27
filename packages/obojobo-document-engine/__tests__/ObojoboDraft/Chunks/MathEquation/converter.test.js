@@ -1,5 +1,4 @@
 import Converter from '../../../../ObojoboDraft/Chunks/MathEquation/converter'
-const MATHEQUATION_NODE = 'ObojoboDraft.Chunks.MathEquation'
 
 describe('MathEquation Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {

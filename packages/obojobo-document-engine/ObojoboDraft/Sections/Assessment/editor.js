@@ -21,7 +21,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Sections.Assessment', {
+Common.Store.registerEditorModel(ASSESSMENT_NODE, {
 	name: 'Assessment',
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
