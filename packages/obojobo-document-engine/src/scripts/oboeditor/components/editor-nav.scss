@@ -3,7 +3,8 @@
 .editor--components--nav {
 	$color-nav-bg: #fbfbfb;
 
-	padding-bottom: 17em;
+	margin-bottom: 10.9em;
+	padding-bottom: 6em;
 
 	&::after {
 		top: 0;
@@ -27,8 +28,11 @@
 	}
 
 	.button-bar {
-		padding-left: 2rem;
-		padding-bottom: 2.8rem;
+		border-top: 1px solid transparentize($color-shadow, 0.1);
+		border-right: 1px solid transparentize($color-shadow, 0.1);
+		padding-top: 1rem;
+		padding-left: 1rem;
+		padding-bottom: 1rem;
 		position: fixed;
 		background: $color-nav-bg;
 		bottom: 0;
@@ -37,7 +41,7 @@
 		font-size: 1em;
 		font-weight: bold;
 		cursor: default;
-		width: 15em;
+		width: 16.95em;
 
 		button {
 			display: block;
