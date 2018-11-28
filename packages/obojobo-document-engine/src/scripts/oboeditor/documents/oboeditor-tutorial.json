@@ -2872,7 +2872,7 @@
                       "indent": 0
                     },
                     "text": {
-                      "value": "Accessibility Warning! Tables without headers can be very hard for text-to-speech devices to decipher. Try to use headers whenever possible.  ",
+                      "value": "Accessibility Warning! Tables without headers can be very hard for text-to-speech devices to decipher. Try to use headers whenever possible.",
                       "styleList": [
                         {
                           "end": 22,
@@ -3860,7 +3860,7 @@
                       "indent": 0
                     },
                     "text": {
-                      "value": "Each figure also has an Alt Text attribute. The alt text will not be seen by most users, but it is displayed when the image does not load or when assistive technology such as screen readers are used. Therefore, even though it is not required, adding alt text makes your Obojobo module more accessible. To add alt text, click the Edit Alt Text button and then type the image description into the pop-up box.",
+                      "value": "Each figure also has an Alt Text attribute. The alt text will not be seen by most users, but it is displayed when the image does not load or when assistive technology such as text-to-speech devices are used. Therefore, even though it is not required, adding alt text makes your Obojobo module more accessible. To add alt text, click the Edit Alt Text button and then type the image description into the pop-up box.",
                       "styleList": [
                         {
                           "end": 345,
