@@ -68,7 +68,7 @@ class Node extends React.Component {
 		return (
 			<div className={'equation-editor'}>
 				<div>
-					<p>Latex Equation</p>
+					<p>LaTeX Equation</p>
 					<input
 						name={'Latex Equation'}
 						value={content.latex}

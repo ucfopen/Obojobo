@@ -24,7 +24,7 @@ exports[`MathEquation editor Node component 1`] = `
   >
     <div>
       <p>
-        Latex Equation
+        LaTeX Equation
       </p>
       <input
         frameBorder="0"
@@ -49,9 +49,9 @@ exports[`MathEquation editor Node component 1`] = `
 </div>
 `;
 
-exports[`MathEquation editor Node component changes input 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
+exports[`MathEquation editor Node component changes input 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>LaTeX Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
 
-exports[`MathEquation editor Node component changes label 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
+exports[`MathEquation editor Node component changes label 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>LaTeX Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
 
 exports[`MathEquation editor Node component with error 1`] = `
 <div
@@ -69,7 +69,7 @@ exports[`MathEquation editor Node component with error 1`] = `
   >
     <div>
       <p>
-        Latex Equation
+        LaTeX Equation
       </p>
       <input
         frameBorder="0"
@@ -115,7 +115,7 @@ exports[`MathEquation editor Node component with label 1`] = `
   >
     <div>
       <p>
-        Latex Equation
+        LaTeX Equation
       </p>
       <input
         frameBorder="0"
