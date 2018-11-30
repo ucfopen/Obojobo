@@ -10,6 +10,7 @@ describe('Image', () => {
 	let imageCustom
 	let imageHeightOnly
 	let imageWidthOnly
+	let imageNoWidthNoHeight
 	const uuidUrl = '52727a4f-0970-4b2c-941a-ce8027078b40'
 	beforeEach(() => {
 		imageSmNoUrl = <Image chunk={{ modelState: { size: 'small', alt: 'alt text' } }} />
@@ -50,6 +51,16 @@ describe('Image', () => {
 				}}
 			/>
 		)
+		imageNoWidthNoHeight = (
+			<Image
+				chunk={{
+					modelState: {
+						url: uuidUrl,
+						size: 'custom'
+					}
+				}}
+			/>
+		)
 	})
 
 	test('Image component with no url', () => {
@@ -71,10 +82,16 @@ describe('Image', () => {
 	test('Image component with a custom url of a custom size', () => {
 		expect(renderer.create(imageCustom)).toMatchSnapshot()
 	})
+
 	test('Image component with height only', () => {
 		expect(renderer.create(imageHeightOnly)).toMatchSnapshot()
 	})
+
 	test('Image component with width only', () => {
 		expect(renderer.create(imageWidthOnly)).toMatchSnapshot()
+	})
+
+	test('Image component with no width and no height', () => {
+		expect(renderer.create(imageNoWidthNoHeight)).toMatchSnapshot()
 	})
 })

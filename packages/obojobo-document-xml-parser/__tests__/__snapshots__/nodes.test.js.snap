@@ -207,29 +207,80 @@ Object {
       "type": "ObojoboDraft.Chunks.Figure",
     },
     Object {
-      "children": Array [],
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "size": "custom",
+            "url": "someSrc",
+            "width": 50,
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.Figure",
+        },
+      ],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Figure",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "size": "custom",
+            "url": "someSrc",
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.Figure",
+        },
+      ],
+      "content": Object {},
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Figure",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "size": "medium",
+            "url": "someSrc",
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.Figure",
+        },
+      ],
       "content": Object {
-        "size": "custom",
-        "url": "someSrc",
-        "width": 50,
+        "figcaption": Array [
+          Object {
+            "text": "someCaption",
+            "type": "text",
+          },
+        ],
       },
       "id": null,
       "type": "ObojoboDraft.Chunks.Figure",
     },
     Object {
-      "children": Array [],
+      "children": Array [
+        Object {
+          "children": Array [],
+          "content": Object {
+            "size": "large",
+            "url": "someSrc",
+          },
+          "id": null,
+          "type": "ObojoboDraft.Chunks.Figure",
+        },
+      ],
       "content": Object {
-        "size": "large",
-        "textGroup": Array [
+        "figcaption": Array [
           Object {
-            "data": null,
-            "text": Object {
-              "styleList": Array [],
-              "value": "someCaption",
-            },
+            "text": "someCaption",
+            "type": "text",
           },
         ],
-        "url": "someSrc",
       },
       "id": null,
       "type": "ObojoboDraft.Chunks.Figure",

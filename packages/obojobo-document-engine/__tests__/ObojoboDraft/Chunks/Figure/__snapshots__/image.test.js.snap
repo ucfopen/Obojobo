@@ -31,6 +31,14 @@ exports[`Image Image component with no url 1`] = `
 />
 `;
 
+exports[`Image Image component with no width and no height 1`] = `
+<img
+  src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/custom"
+  style={Object {}}
+  unselectable="on"
+/>
+`;
+
 exports[`Image Image component with width only 1`] = `
 <img
   src="/api/media/52727a4f-0970-4b2c-941a-ce8027078b40/100x*"
