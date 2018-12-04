@@ -51,8 +51,29 @@ class EditorNav extends React.Component {
 	}
 
 	renamePage(pageId) {
-		const label = window.prompt('Enter the new title:') || pageId
+		let label = window.prompt('Enter the new title:')
+
+		// null means the user canceled without changing the value
+		if (label === null) return
+
+		// If the user sent an empty value or only whitespace, set it to null to fix later
+		if (!label || /\s/.test(label)) label = null
+
+		// If presented with an empty "ok", the page validation code will
+		// provide "Page n" as the name
 		EditorUtil.renamePage(pageId, label)
+	}
+
+	renameModule(moduleId) {
+		let label = window.prompt('Enter the new title:')
+
+		// null means the user canceled without changing the value
+		if (label === null) return
+
+		// If the module name is empty or just whitespace, provide a default value
+		if (!label || /\s/.test(label)) label = '(Unnamed Module)'
+
+		EditorUtil.renamePage(moduleId, label)
 	}
 
 	movePage(pageId, index) {
@@ -158,7 +179,7 @@ class EditorNav extends React.Component {
 						+ Add Assessment
 					</button>
 					<br />
-					<button className={'content-add-button'} onClick={() => this.renamePage(moduleItem.id)}>
+					<button className={'content-add-button'} onClick={() => this.renameModule(moduleItem.id)}>
 						Rename Module
 					</button>
 					<button className={'content-add-button'} onClick={() => this.copyToClipboard(url)}>
