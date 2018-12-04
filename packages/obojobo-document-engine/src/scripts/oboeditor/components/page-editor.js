@@ -128,7 +128,10 @@ class PageEditor extends React.Component {
 		return (
 			<div className={'editor'}>
 				<div className={'toolbar'}>
-					<MarkToolbar.components.Node value={this.state.value} onChange={change => this.onChange(change)} />
+					<MarkToolbar.components.Node
+						value={this.state.value}
+						onChange={change => this.onChange(change)}
+					/>
 					<div className={'dropdown'}>
 						<button>+ Insert Node</button>
 						<div className={'drop-content'}>

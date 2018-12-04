@@ -7,6 +7,7 @@ import Break from '../../Chunks/Break/editor'
 import Code from '../../Chunks/Code/editor'
 import Figure from '../../Chunks/Figure/editor'
 import Heading from '../../Chunks/Heading/editor'
+import HTML from '../../Chunks/HTML/editor'
 import IFrame from '../../Chunks/IFrame/editor'
 import List from '../../Chunks/List/editor'
 import MathEquation from '../../Chunks/MathEquation/editor'
@@ -30,6 +31,7 @@ const nodes = {
 	'ObojoboDraft.Chunks.Code': Code,
 	'ObojoboDraft.Chunks.Figure': Figure,
 	'ObojoboDraft.Chunks.Heading': Heading,
+	'ObojoboDraft.Chunks.HTML': HTML,
 	'ObojoboDraft.Chunks.IFrame': IFrame,
 	'ObojoboDraft.Chunks.List': List,
 	'ObojoboDraft.Chunks.MathEquation': MathEquation,
@@ -104,6 +106,7 @@ const plugins = {
 							{ type: 'ObojoboDraft.Chunks.Code' },
 							{ type: 'ObojoboDraft.Chunks.Figure' },
 							{ type: 'ObojoboDraft.Chunks.Heading' },
+							{ type: 'ObojoboDraft.Chunks.HTML' },
 							{ type: 'ObojoboDraft.Chunks.IFrame' },
 							{ type: 'ObojoboDraft.Chunks.List' },
 							{ type: 'ObojoboDraft.Chunks.MathEquation' },
