@@ -3,7 +3,7 @@ import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import EditorSchema from 'src/scripts/oboeditor/plugins/editor-schema'
 
 describe('EditorSchema', () => {
-	test('matcher builds a list of all possible node types', () => {
+	test('matcher builds oboeditor.component', () => {
 		expect(EditorSchema.schema).toMatchSnapshot()
 	})
 	test('schema.normalize fixes required children in editor', () => {
@@ -23,8 +23,13 @@ describe('EditorSchema', () => {
 
 	test('schema.normalize fixes invalid children in editor', () => {
 		const change = {
-			wrapBlockByKey: jest.fn()
+			removeNodeByKey: jest.fn(),
+			insertNodeByKey: jest.fn()
 		}
+
+		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => {
+			funct(change)
+		})
 
 		EditorSchema.schema.document.normalize(change, {
 			code: CHILD_TYPE_INVALID,
@@ -33,6 +38,6 @@ describe('EditorSchema', () => {
 			index: 0
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 })

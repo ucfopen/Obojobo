@@ -6,6 +6,9 @@
 	padding-right: $dimension-padding * 0.2333333333;
 
 	&.editor-feedback {
+		margin-top: 2em;
+		padding-top: 2em;
+		padding-bottom: 2em;
 		pointer-events: all;
 		background: $color-bg2;
 	}

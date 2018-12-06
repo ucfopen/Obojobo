@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component Editor Node Node builds the expected component 1`] = `
+<div
+  className="oboeditor-component component"
+/>
+`;
+
+exports[`Component Editor Node Node component inserts node above 1`] = `"<div class=\\"oboeditor-component component\\"><div class=\\"component-toolbar\\"><div class=\\"dropdown-menu  is-not-open align-left top\\" contenteditable=\\"false\\"><button class=\\"drop-icon\\">+</button><div class=\\"insert-button\\"><button tabindex=\\"-1\\">mockItem</button><span>mockItem</span></div></div><div class=\\"dropdown-menu  is-not-open align-left bottom\\" contenteditable=\\"false\\"><button class=\\"drop-icon\\">+</button><div class=\\"insert-button\\"><button tabindex=\\"-1\\">mockItem</button><span>mockItem</span></div></div></div></div>"`;
+
+exports[`Component Editor Node Node component inserts node below 1`] = `"<div class=\\"oboeditor-component component\\"><div class=\\"component-toolbar\\"><div class=\\"dropdown-menu  is-not-open align-left top\\" contenteditable=\\"false\\"><button class=\\"drop-icon\\">+</button><div class=\\"insert-button\\"><button tabindex=\\"-1\\">mockItem</button><span>mockItem</span></div></div><div class=\\"dropdown-menu  is-not-open align-left bottom\\" contenteditable=\\"false\\"><button class=\\"drop-icon\\">+</button><div class=\\"insert-button\\"><button tabindex=\\"-1\\">mockItem</button><span>mockItem</span></div></div></div></div>"`;

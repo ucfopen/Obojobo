@@ -1,0 +1,52 @@
+@import '../../../scss/includes';
+
+.link {
+	padding-right: 1em;
+
+	.dropdown {
+		position: absolute;
+		right: 0;
+		background: none;
+		text-align: center;
+
+		li {
+			display: none;
+			z-index: 99;
+			padding: 0;
+			margin: 0;
+			border: 0;
+
+			button {
+				width: 100%;
+				text-align: center;
+				height: 100%;
+				display: block;
+				background: $color-obojobo-blue;
+				border-radius: $dimension-rounded-radius;
+				color: $color-bg;
+				font-size: 1rem;
+			}
+		}
+
+		span {
+			float: right;
+			z-index: 0;
+		}
+
+		// Makes the dropdown menu keyboard accessible
+		&.is-open {
+			li {
+				display: block;
+				width: 10em;
+			}
+		}
+
+		// Reveals the dropdown menu the expected way for mouse users
+		&:hover {
+			li {
+				display: block;
+				width: 10em;
+			}
+		}
+	}
+}

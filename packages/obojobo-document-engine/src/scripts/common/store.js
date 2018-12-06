@@ -41,6 +41,11 @@ class _Store {
 	}
 
 	registerModel(className, opts = {}) {
+		// Temporary workaround until we fix webpack to give the editor its own
+		// entry point
+		const item = items.get(className)
+		if (item) opts = Object.assign(opts, item)
+
 		items.set(className, opts)
 
 		opts = Object.assign(
@@ -71,6 +76,32 @@ class _Store {
 		return this
 	}
 
+	registerEditorModel(className, opts = {}) {
+		// Temporary workaround until we fix webpack to give the editor its own
+		// entry point
+		const item = items.get(className)
+		if (item) opts = Object.assign(opts, item)
+
+		items.set(className, opts)
+
+		opts = Object.assign(
+			{
+				type: null,
+				name: '',
+				icon: null,
+				default: false,
+				insertItem: null,
+				isInsertable: false,
+				slateToObo: null,
+				oboToSlate: null,
+				plugins: null
+			},
+			opts
+		)
+
+		return this
+	}
+
 	getDefaultItemForModelType(modelType) {
 		const type = defaults.get(modelType)
 		if (!type) {
@@ -95,7 +126,7 @@ class _Store {
 	}
 
 	getItems(callback) {
-		callback(items)
+		return callback(items)
 	}
 
 	getTextForVariable(variable, model, viewerState) {

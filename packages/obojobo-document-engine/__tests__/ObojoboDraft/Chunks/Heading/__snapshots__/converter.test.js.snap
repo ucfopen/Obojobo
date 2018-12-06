@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading Converter oboToSlate converts an OboNode to a Slate node with a caption 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "align": "left",
+      "level": undefined,
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": undefined,
+      "object": "text",
+    },
+    Object {
+      "leaves": undefined,
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Heading Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "headingLevel": undefined,
+    "textGroup": Array [
+      Object {
+        "data": Object {
+          "align": undefined,
+        },
+        "text": Object {
+          "styleList": Array [],
+          "value": "mockText",
+        },
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

@@ -5,9 +5,41 @@ describe('Store', () => {
 		Store.init()
 	})
 
-	test('registers a model', () => {
+	test('registerModel registers a model', () => {
 		expect.assertions(2)
 		Store.registerModel('type')
+
+		Store.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('type')).toEqual({})
+		})
+	})
+
+	test('registerModel registers a model that already exists', () => {
+		expect.assertions(2)
+		Store.registerModel('type')
+		Store.registerModel('type')
+
+		Store.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('type')).toEqual({})
+		})
+	})
+
+	test('registerEditorModel registers a model', () => {
+		expect.assertions(2)
+		Store.registerEditorModel('type')
+
+		Store.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('type')).toEqual({})
+		})
+	})
+
+	test('registerEditorModel registers a model that already exists', () => {
+		expect.assertions(2)
+		Store.registerEditorModel('type')
+		Store.registerEditorModel('type')
 
 		Store.getItems(items => {
 			expect(items.size).toBe(1)
