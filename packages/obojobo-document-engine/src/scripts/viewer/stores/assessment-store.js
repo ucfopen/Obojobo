@@ -103,10 +103,6 @@ class AssessmentStore extends Store {
 				} else {
 					assessment.attempts.push(attempt)
 				}
-
-				attempt.state.questions.forEach(question => {
-					OboModel.create(question)
-				})
 			})
 		})
 
@@ -144,7 +140,10 @@ class AssessmentStore extends Store {
 	onResumeAttemptConfirm(unfinishedAttempt) {
 		ModalUtil.hide()
 
-		this.startAttempt(unfinishedAttempt)
+		APIUtil.resumeAttempt(unfinishedAttempt).then(response => {
+			this.startAttempt(response.value)
+		})
+
 		this.triggerChange()
 	}
 
@@ -185,7 +184,7 @@ class AssessmentStore extends Store {
 		const model = OboModel.models[id]
 
 		model.children.at(1).children.reset()
-		for (const child of Array.from(startAttemptResp.state.questions)) {
+		for (const child of Array.from(startAttemptResp.questions)) {
 			const c = OboModel.create(child)
 			model.children.at(1).children.add(c)
 		}
@@ -228,8 +227,7 @@ class AssessmentStore extends Store {
 		const assessId = endAttemptResp.assessmentId
 		const assessment = this.state.assessments[assessId]
 		const model = OboModel.models[assessId]
-
-		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
+		assessment.current.state.chosen.forEach(question => QuestionUtil.hideQuestion(question.id))
 		assessment.currentResponses.forEach(questionId =>
 			QuestionUtil.clearResponse(questionId, context)
 		)

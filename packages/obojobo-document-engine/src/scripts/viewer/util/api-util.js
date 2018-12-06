@@ -77,6 +77,12 @@ const APIUtil = {
 		}).then(processJsonResults)
 	},
 
+	resumeAttempt(attempt) {
+		return APIUtil.post(`/api/assessments/attempt/${attempt.attemptId}/resume`, attempt).then(
+			processJsonResults
+		)
+	},
+
 	endAttempt({ attemptId, draftId, visitId }) {
 		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
 			processJsonResults

@@ -64,15 +64,15 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 
 			assessmentScoreId = completeAttemptResult.assessmentScoreId
 
-			return reloadAttemptStateIfReviewing(
-				attemptId,
-				attempt.draftId,
-				attempt,
-				draftDocument,
-				user,
-				isPreview,
-				attemptHistory
-			)
+			// return reloadAttemptStateIfReviewing(
+			// 	attemptId,
+			// 	attempt.draftId,
+			// 	attempt,
+			// 	draftDocument,
+			// 	user,
+			// 	isPreview,
+			// 	attemptHistory
+			// )
 		})
 		.then(() => {
 			return insertAttemptEndEvents(
@@ -158,7 +158,7 @@ const getCalculatedScores = (
 ) => {
 	const scoreInfo = {
 		scores: [0],
-		questions: attemptState.questions,
+		chosenAssessment: attemptState.chosen,
 		scoresByQuestionId: {}
 	}
 
@@ -183,12 +183,17 @@ const getCalculatedScores = (
 }
 
 const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
-	const questionScores = scoreInfo.questions.map(question => ({
-		id: question.id,
-		score: scoreInfo.scoresByQuestionId[question.id] || 0
-	}))
+	const questionScores = []
+	let numQuestions = 0
 
-	const attemptScore = scoreInfo.scores.reduce((a, b) => a + b) / scoreInfo.questions.length
+	for (const node of scoreInfo.chosenAssessment) {
+		if (node.type === QUESTION_NODE_TYPE) {
+			numQuestions++
+			questionScores.push({ id: node.id, score: scoreInfo.scoresByQuestionId[node.id] || 0 })
+		}
+	}
+
+	const attemptScore = scoreInfo.scores.reduce((a, b) => a + b) / numQuestions
 
 	const allScores = attemptHistory
 		.map(attempt => parseFloat(attempt.result.attemptScore))
@@ -334,96 +339,104 @@ const insertAttemptScoredEvents = (
 		})
 }
 
-const reloadAttemptStateIfReviewing = (
-	attemptId,
-	draftId,
-	attempt,
-	draftDocument,
-	user,
-	isPreview,
-	attemptHistory
-) => {
-	const assessmentNode = attempt.assessmentModel
+// const reloadAttemptStateIfReviewing = (
+// 	attemptId,
+// 	draftId,
+// 	attempt,
+// 	draftDocument,
+// 	user,
+// 	isPreview,
+// 	attemptHistory
+// ) => {
+// 	const assessmentNode = attempt.assessmentModel
 
-	// Do not reload the state if reviews are never allowed
-	if (assessmentNode.node.content.review === 'never') {
-		return null
-	}
+// 	// Do not reload the state if reviews are never allowed
+// 	if (assessmentNode.node.content.review === 'never') {
+// 		return null
+// 	}
 
-	const isLastAttempt = attempt.number === assessmentNode.node.content.attempts
+// 	const isLastAttempt = attempt.number === assessmentNode.node.content.attempts
 
-	// Do not reload the state if reviews are only allowed after the last
-	// attempt and this is not the last attempt
-	if (assessmentNode.node.content.review === 'no-attempts-remaining' && !isLastAttempt) {
-		return null
-	}
+// 	// Do not reload the state if reviews are only allowed after the last
+// 	// attempt and this is not the last attempt
+// 	if (assessmentNode.node.content.review === 'no-attempts-remaining' && !isLastAttempt) {
+// 		return null
+// 	}
 
-	const assessmentProperties = loadAssessmentProperties(
-		draftDocument,
-		attempt,
-		user,
-		isPreview,
-		attemptHistory
-	)
+// 	const assessmentProperties = loadAssessmentProperties(
+// 		draftDocument,
+// 		attempt,
+// 		user,
+// 		isPreview,
+// 		attemptHistory
+// 	)
+// 	console.log(attempt)
+// 	const state = attempt
 
-	const state = attemptStart.getState(assessmentProperties)
-	// Not ideal, but attempt-start needs this as a recursive structure to send
-	// client promises
-	state.questions = state.questions.map(q => q.toObject())
+// 	// Not ideal, but attempt-start needs this as a recursive structure to send
+// 	// client promises
+// 	const temp = []
+// 	for (const node in state.chosen) {
+// 		if (node.type === QUESTION_NODE_TYPE) {
+// 			temp.push(assessmentProperties.oboNode.draftTree.getChildNodeById(node.id).toObject())
+// 		}
+// 	}
+// 	state.chosen = temp
 
-	// If reviews are always allowed, reload the state for this attempt
-	// Each attempt's state will be reloaded as it finishes
-	if (assessmentNode.node.content.review === 'always') {
-		return Assessment.updateAttemptState(attemptId, state)
-	}
+// 	// If reviews are always allowed, reload the state for this attempt
+// 	// Each attempt's state will be reloaded as it finishes
+// 	if (assessmentNode.node.content.review === 'always') {
+// 		return Assessment.updateAttemptState(attemptId, state)
+// 	}
 
-	// If reviews are allowed after last attempt and this is the last attempt,
-	// reload the states for all attempts
-	if (assessmentNode.node.content.review === 'no-attempts-remaining' && isLastAttempt) {
-		// Reload state for all previous attempts
-		return Assessment.getAttempts(
-			assessmentProperties.user.id,
-			draftId,
-			isPreview,
-			assessmentProperties.id
-		).then(result => {
-			result.attempts.map(attempt => {
-				attempt.state.qb = recreateChosenQuestionTree(
-					attempt.state.qb,
-					assessmentProperties.draftTree
-				)
+// 	// If reviews are allowed after last attempt and this is the last attempt,
+// 	// reload the states for all attempts
+// 	if (assessmentNode.node.content.review === 'no-attempts-remaining' && isLastAttempt) {
+// 		// Reload state for all previous attempts
+// 		return Assessment.getAttempts(
+// 			assessmentProperties.user.id,
+// 			draftId,
+// 			isPreview,
+// 			assessmentProperties.id
+// 		).then(result => {
+// 			result.attempts.map(attempt => {
+// 				attempt.state.qb = recreateChosenQuestionTree(
+// 					attempt.state.qb,
+// 					assessmentProperties.draftTree
+// 				)
 
-				const newQuestions = []
+// 				const newQuestions = []
 
-				attempt.state.questions.forEach(question => {
-					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
-				})
+// 				attempt.state.chosen.forEach(question => {
+// 					newQuestions.push(getNodeQuestion(question.id, assessmentProperties.draftTree))
+// 				})
 
-				attempt.state.questions = newQuestions
+// 				attempt.state.chosen = newQuestions
 
-				return Assessment.updateAttemptState(attempt.attemptId, attempt.state)
-			})
-		})
-	}
+// 				return Assessment.updateAttemptState(attempt.attemptId, attempt.state)
+// 			})
+// 		})
+// 	}
 
-	logger.error(`Error: Reached exceptional state while reloading state for ${attemptId}`)
-	return null
-}
+// 	logger.error(`Error: Reached exceptional state while reloading state for ${attemptId}`)
+// 	return null
+// }
 
-const recreateChosenQuestionTree = (node, assessmentNode) => {
-	if (node.type === QUESTION_NODE_TYPE) {
-		return getNodeQuestion(node.id, assessmentNode)
-	}
+// const recreateChosenQuestionTree = (node, assessmentNode) => {
+// 	if (node.type === QUESTION_NODE_TYPE) {
+// 		return getNodeQuestion(node.id, assessmentNode)
+// 	}
 
-	const newChildren = []
+// 	const newChildren = []
 
-	for (const child of node.children) {
-		newChildren.push(recreateChosenQuestionTree(child, assessmentNode))
-	}
+// 	for (const child of node.children) {
+// 		newChildren.push(recreateChosenQuestionTree(child, assessmentNode))
+// 	}
 
-	node.children = newChildren
-	return node
-}
+// 	node.children = newChildren
+// 	return node
+// }
+
 // Pulls down a single question from the draft
 const getNodeQuestion = (nodeId, assessmentNode) => {
 	return assessmentNode.getChildNodeById(nodeId).toObject()
@@ -459,8 +472,8 @@ module.exports = {
 	insertAttemptEndEvents,
 	sendLTIHighestAssessmentScore: lti.sendHighestAssessmentScore,
 	insertAttemptScoredEvents,
-	reloadAttemptStateIfReviewing,
-	recreateChosenQuestionTree,
+	// reloadAttemptStateIfReviewing,
+	// recreateChosenQuestionTree,
 	getNodeQuestion,
 	loadAssessmentProperties
 }

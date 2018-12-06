@@ -70,25 +70,37 @@ const startAttempt = (req, res) => {
 
 			attemptState = getState(assessmentProperties)
 
-			return Promise.all(getSendToClientPromises(attemptState, req, res))
+			return Promise.all(
+				getSendToClientPromises(assessmentProperties.oboNode, attemptState, req, res)
+			)
 		})
 		.then(() => {
-			const questionObjects = attemptState.questions.map(q => q.toObject())
 			return Assessment.insertNewAttempt(
 				assessmentProperties.user.id,
 				currentDocument.draftId,
 				currentDocument.contentId,
 				req.body.assessmentId,
 				{
-					questions: questionObjects,
-					data: attemptState.data,
-					qb: attemptState.qb
+					chosen: attemptState.chosen
 				},
 				assessmentProperties.isPreview
 			)
 		})
 		.then(result => {
+			// the client needs the full object version of the question nodes to render the
+			// assessment. This information is not kept in the state and must be dynamically generated
+			result.questions = []
+			for (const node of result.state.chosen) {
+				// the client does not need question bank nodes to render the assessment
+				if (node.type === QUESTION_NODE_TYPE) {
+					result.questions.push(
+						assessmentProperties.oboNode.draftTree.getChildNodeById(node.id).toObject()
+					)
+				}
+			}
+
 			res.success(result)
+
 			return insertAttemptStartCaliperEvent(
 				result.attemptId,
 				assessmentProperties.numAttemptsTaken,
@@ -113,13 +125,22 @@ const startAttempt = (req, res) => {
 const getState = assessmentProperties => {
 	assessmentProperties.questionUsesMap = loadChildren(assessmentProperties)
 
-	const tree = assessmentProperties.questionBank.buildAssessment(
+	let chosenAssessment = assessmentProperties.questionBank.buildAssessment(
 		assessmentProperties.questionUsesMap
 	)
+
+	// The state of an assessment can be stored using only the id and type
+	// of nodes in the assessment. The remaining data can be retrieved
+	// from the draftTree
+	chosenAssessment = [].concat.apply([], chosenAssessment).map(node => {
+		return {
+			type: node.type,
+			id: node.id
+		}
+	})
+
 	return {
-		qb: tree,
-		questions: getNodeQuestions(tree, assessmentProperties.oboNode, []),
-		data: {}
+		chosen: chosenAssessment
 	}
 }
 
@@ -128,8 +149,8 @@ const loadChildren = assessmentProperties => {
 	const childrenMap = createAssessmentUsedQuestionMap(assessmentProperties)
 
 	for (const attempt of assessmentProperties.attemptHistory) {
-		if (attempt.state.qb) {
-			initAssessmentUsedQuestions(attempt.state.qb, childrenMap)
+		if (attempt.state.chosen) {
+			initAssessmentUsedQuestions(attempt.chosen, childrenMap)
 		}
 	}
 	return childrenMap
@@ -151,33 +172,19 @@ const createAssessmentUsedQuestionMap = assessmentProperties => {
 
 // When a question has been used, we will increment the value
 // pointed to by the node's id in our usedMap.
-const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
-	if (usedQuestionMap.has(node.id)) usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
-
-	for (const child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
-}
-
-// Return an array of question type nodes from a node tree.
-const getNodeQuestions = (node, assessmentNode, questions = []) => {
-	// add this item to the questions array
-	if (node.type === QUESTION_NODE_TYPE) {
-		questions.push(assessmentNode.draftTree.getChildNodeById(node.id))
+const initAssessmentUsedQuestions = (chosenAssessment, usedQuestionMap) => {
+	for (const node in chosenAssessment) {
+		if (usedQuestionMap.has(node.id)) usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
 	}
-
-	// recurse through this node's children
-	for (const child of node.children) {
-		questions.concat(getNodeQuestions(child, assessmentNode, questions))
-	}
-
-	return questions
 }
 
 // Return an array of promises that could be the result of yelling an
 // assessment:sendToAssessment event.
-const getSendToClientPromises = (attemptState, req, res) => {
+const getSendToClientPromises = (assessmentNode, attemptState, req, res) => {
 	let promises = []
-	for (const q of attemptState.questions) {
-		promises = promises.concat(q.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res))
+	for (const node of attemptState.chosen) {
+		const nodeInstance = assessmentNode.draftTree.getChildNodeById(node.id)
+		promises = promises.concat(nodeInstance.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res))
 	}
 
 	return promises
@@ -225,7 +232,6 @@ module.exports = {
 	startAttempt,
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
-	getNodeQuestions,
 	getSendToClientPromises,
 	insertAttemptStartCaliperEvent,
 	loadChildren,

@@ -34,11 +34,10 @@ class QuestionBank extends DraftNode {
 		}
 
 		const chosenChildren = this.buildFromArray(chosenIds, questionUsesMap)
+		const thisQb = this.toObject()
+		chosenChildren.push({ id: thisQb.id, type: thisQb.type })
 
-		const tree = this.toObject()
-		tree.children = chosenChildren
-
-		return tree
+		return chosenChildren
 	}
 
 	getContentValues() {

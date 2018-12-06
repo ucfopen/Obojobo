@@ -7,6 +7,7 @@ const VisitModel = oboRequire('models/visit')
 const lti = oboRequire('lti')
 const logger = oboRequire('logger')
 const startAttempt = require('./attempt-start').startAttempt
+const resumeAttempt = require('./attempt-resume').resumeAttempt
 const endAttempt = require('./attempt-end').endAttempt
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
 
@@ -70,6 +71,8 @@ app.post('/api/lti/sendAssessmentScore', (req, res) => {
 })
 
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
+
+app.post('/api/assessments/attempt/:attemptId/resume', (req, res) => resumeAttempt(req, res))
 
 app.post('/api/assessments/attempt/:attemptId/end', (req, res) => {
 	let currentUser = null
