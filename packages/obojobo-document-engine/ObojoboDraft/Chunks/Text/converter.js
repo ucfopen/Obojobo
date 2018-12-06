@@ -36,7 +36,7 @@ const oboToSlate = node => {
 	json.nodes = []
 	node.content.textGroup.forEach(line => {
 		const indent = line.data ? line.data.indent : 0
-		const align = line.data ? line.data.align : 0
+		const align = line.data ? line.data.align : 'left'
 		const textLine = {
 			object: 'block',
 			type: TEXT_LINE_NODE,

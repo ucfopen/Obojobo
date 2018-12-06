@@ -137,7 +137,7 @@ describe('EditorNav', () => {
 		expect(EditorUtil.addAssessment).toHaveBeenCalled()
 	})
 
-	test('EditorNav component clicks Rename Module button', () => {
+	test('EditorNav component clicks Rename Module button and cancels change', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([
 			{
 				id: 6,
@@ -159,13 +159,61 @@ describe('EditorNav', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(EditorUtil.renamePage).toHaveBeenCalled()
+		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
+	})
+
+	test('EditorNav component clicks Rename Module button with empty name', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 6,
+				type: 'heading',
+				label: 'label6',
+				flags: {
+					assessment: true
+				}
+			}
+		])
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce('   ')
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(EditorUtil.renamePage).toHaveBeenCalledWith(6, '(Unnamed Module)')
+	})
+
+	test('EditorNav component clicks Rename Module button', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 6,
+				type: 'heading',
+				label: 'label6',
+				flags: {
+					assessment: true
+				}
+			}
+		])
+		jest.spyOn(window, 'prompt')
+		window.prompt.mockReturnValueOnce('mockNewName')
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(EditorUtil.renamePage).toHaveBeenCalledWith(6, 'mockNewName')
 	})
 
 	test('EditorNav component clicks Copy URL button', () => {
 		EditorUtil.getOrderedList.mockReturnValueOnce([])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
 
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)

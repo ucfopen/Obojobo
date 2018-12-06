@@ -23,7 +23,7 @@ Object {
     },
     Object {
       "data": Object {
-        "align": 0,
+        "align": "left",
         "indent": 0,
       },
       "nodes": Array [

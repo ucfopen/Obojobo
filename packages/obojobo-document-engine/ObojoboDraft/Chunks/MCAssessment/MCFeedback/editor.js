@@ -21,7 +21,7 @@ Common.Store.registerEditorModel('ObojoboDraft.Chunks.MCAssessment.MCFeedback', 
 	name: 'Multiple Choice Feedback',
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate,
+	oboToSlate: Converter.oboToSlate,
 	plugins
 })
 

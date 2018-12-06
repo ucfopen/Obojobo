@@ -18,11 +18,6 @@ class EditorNav extends React.Component {
 		this.state = this.props.navState
 	}
 
-	renameModule(pageId) {
-		const label = window.prompt('Enter the new title:') || pageId
-		EditorUtil.renamePage(pageId, label)
-	}
-
 	onClick(item) {
 		EditorUtil.gotoPath(item.fullPath)
 		this.setState({ navTargetId: item.id })
@@ -48,6 +43,18 @@ class EditorNav extends React.Component {
 
 		EditorUtil.addPage(newPage)
 		this.setState({ navTargetId: newPage.id })
+	}
+
+	renameModule(module) {
+		let label = window.prompt('Enter the new title:', module.label)
+
+		// null means the user canceled without changing the value
+		if (label === null) return
+
+		// If the module name is empty or just whitespace, provide a default value
+		if (!label || /\s/.test(label)) label = '(Unnamed Module)'
+
+		EditorUtil.renamePage(module.id, label)
 	}
 
 	renderLabel(label) {
@@ -102,7 +109,7 @@ class EditorNav extends React.Component {
 						+ Add Assessment
 					</button>
 					<br />
-					<button className={'content-add-button'} onClick={() => this.renameModule(moduleItem.id)}>
+					<button className={'content-add-button'} onClick={() => this.renameModule(moduleItem)}>
 						Rename Module
 					</button>
 					<button

@@ -30,6 +30,7 @@ import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubr
 import ParameterNode from './parameter-node'
 import Component from './node/editor'
 import MarkToolbar from './toolbar'
+import EditorSchema from '../plugins/editor-schema'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -59,14 +60,17 @@ const plugins = [
 	Page.plugins,
 	Rubric.plugins,
 	ParameterNode.plugins,
-	Assessment.plugins
+	Assessment.plugins,
+	EditorSchema
 ]
 
 class PageEditor extends React.Component {
 	constructor(props) {
 		super(props)
+		const json = this.importFromJSON()
+
 		this.state = {
-			value: Value.fromJSON(this.importFromJSON())
+			value: Value.fromJSON(json)
 		}
 	}
 
@@ -104,7 +108,6 @@ class PageEditor extends React.Component {
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
-					placeholder="Obojobo Visual Editor"
 					value={this.state.value}
 					onChange={change => this.onChange(change)}
 					plugins={plugins}
