@@ -58,7 +58,7 @@ exports[`MCAssessment Question component 1`] = `
                 <p
                   className="result incorrect"
                 >
-                  Results: undefined% - Incorrect
+                  Incorrect - You received a undefined% on this question.
                 </p>
               </div>
             </div>
@@ -187,7 +187,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
                 <p
                   className="result incorrect"
                 >
-                  Results: undefined% - Incorrect
+                  Incorrect - You received a undefined% on this question.
                 </p>
               </div>
             </div>
@@ -316,7 +316,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
                 <p
                   className="result incorrect"
                 >
-                  Results: undefined% - Incorrect
+                  Incorrect - You received a undefined% on this question.
                 </p>
               </div>
             </div>
@@ -445,7 +445,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
                 <p
                   className="result incorrect"
                 >
-                  Results: undefined% - Incorrect
+                  Incorrect - You received a undefined% on this question.
                 </p>
               </div>
             </div>
@@ -574,7 +574,7 @@ exports[`MCAssessment Question component in review mode 1`] = `
                 <p
                   className="result incorrect"
                 >
-                  Results: undefined% - Incorrect
+                  Incorrect - You received a undefined% on this question.
                 </p>
               </div>
             </div>

@@ -11,7 +11,9 @@ const MCAssessmentResults = props => {
 	if (isCorrect && isForScreenReader) {
 		return (
 			<div className="result-container">
-				<p className="result correct">{`Results: ${score}% - ${props.correctLabel}`}</p>
+				<p className="result correct">{`${
+					props.correctLabel
+				} - You received a ${score}% on this question.`}</p>
 			</div>
 		)
 	} else if (isCorrect && !isForScreenReader) {
@@ -23,7 +25,9 @@ const MCAssessmentResults = props => {
 	} else if (!isCorrect && isForScreenReader) {
 		return (
 			<div className="result-container">
-				<p className="result incorrect">{`Results: ${score}% - ${props.incorrectLabel}`}</p>
+				<p className="result incorrect">{`${
+					props.incorrectLabel
+				} - You received a ${score}% on this question.`}</p>
 				{isTypePickAll ? (
 					<span key="_instructions" className="pick-all-instructions">
 						{props.pickAllIncorrectMessage}

@@ -8,7 +8,15 @@ const { focus } = Common.page
 
 export default class MCAssessmentExplanation extends React.Component {
 	focusOnExplanation() {
-		focus(this.refSolutionContainer)
+		// Attempt to call focusOnContent on the solution component
+		try {
+			const solutionModel = this.props.solutionModel
+			const SolutionComponent = solutionModel.getComponentClass()
+			SolutionComponent.focusOnContent(solutionModel)
+		} catch (e) {
+			// If that fails, simply focus on the label as a work-around:
+			focus(this.refs.label)
+		}
 	}
 
 	render() {
@@ -48,6 +56,7 @@ export default class MCAssessmentExplanation extends React.Component {
 							<span
 								id="obojobo-draft--chunks--mc-assessment--solution-label"
 								className="for-screen-reader-only"
+								ref="label"
 							>
 								Explanation of the answer:
 							</span>

@@ -153,7 +153,6 @@ const MCChoice = props => {
 			className={className}
 			tag="label"
 		>
-			{/* <span>Choice {label}:</span> */}
 			<input
 				type={inputType}
 				value={props.model.get('id')}

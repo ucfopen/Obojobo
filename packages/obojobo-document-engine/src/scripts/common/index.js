@@ -12,7 +12,6 @@ import TextGroupAdapter from './chunk/text-chunk/text-group-adapter'
 import ChunkUtil from './chunk/util/chunk-util'
 import Insert from './chunk/util/insert'
 import InsertWithText from './chunk/util/insert-with-text'
-// import OboComponent from '../viewer/components/obo-component'
 import Anchor from './components/anchor'
 import DeleteButton from './components/delete-button'
 import EditButton from './components/edit-button'
@@ -98,7 +97,6 @@ export default {
 	},
 
 	components: {
-		// OboComponent,
 		Anchor,
 		DeleteButton,
 		EditButton,

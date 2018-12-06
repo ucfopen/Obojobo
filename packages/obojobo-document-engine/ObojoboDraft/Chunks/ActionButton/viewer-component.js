@@ -5,10 +5,10 @@ import React from 'react'
 import Common from 'Common'
 import Viewer from 'Viewer'
 
-const OboComponent = Viewer.components.OboComponent
-const Button = Common.components.Button
-const TextGroupEl = Common.chunk.textChunk.TextGroupEl
-const TextChunk = Common.chunk.TextChunk
+const { OboComponent } = Viewer.components
+const { Button } = Common.components
+const { TextGroupEl } = Common.chunk.textChunk
+const { TextChunk } = Common.chunk
 
 const ActionButton = props => {
 	const model = props.model

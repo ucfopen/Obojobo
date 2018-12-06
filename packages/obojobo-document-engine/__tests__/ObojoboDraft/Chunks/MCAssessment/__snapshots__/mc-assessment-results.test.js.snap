@@ -20,7 +20,7 @@ exports[`MCAssessmentResults MCAssessmentResults renders with score=0, isTypePic
   <p
     className="result incorrect"
   >
-    Results: 0% - incorrect-label
+    incorrect-label - You received a 0% on this question.
   </p>
 </div>
 `;
@@ -50,7 +50,7 @@ exports[`MCAssessmentResults MCAssessmentResults renders with score=0, isTypePic
   <p
     className="result incorrect"
   >
-    Results: 0% - incorrect-label
+    incorrect-label - You received a 0% on this question.
   </p>
   <span
     className="pick-all-instructions"
@@ -80,7 +80,7 @@ exports[`MCAssessmentResults MCAssessmentResults renders with score=50, isTypePi
   <p
     className="result incorrect"
   >
-    Results: 50% - incorrect-label
+    incorrect-label - You received a 50% on this question.
   </p>
 </div>
 `;
@@ -92,7 +92,7 @@ exports[`MCAssessmentResults MCAssessmentResults renders with score=50, isTypePi
   <p
     className="result incorrect"
   >
-    Results: 50% - incorrect-label
+    incorrect-label - You received a 50% on this question.
   </p>
   <span
     className="pick-all-instructions"
@@ -140,7 +140,7 @@ exports[`MCAssessmentResults MCAssessmentResults renders with score=100, isTypeP
   <p
     className="result correct"
   >
-    Results: 100% - correct-label
+    correct-label - You received a 100% on this question.
   </p>
 </div>
 `;
@@ -152,7 +152,7 @@ exports[`MCAssessmentResults MCAssessmentResults renders with score=100, isTypeP
   <p
     className="result correct"
   >
-    Results: 100% - correct-label
+    correct-label - You received a 100% on this question.
   </p>
 </div>
 `;
