@@ -1,17 +1,10 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--iframe {
-	$color-container: #fdfdfd;
-	$color-container-hover: #f9f4ff;
-
 	display: block;
 	font-size: 1em;
 	margin: 0 auto;
 	text-align: center;
-
-	&.is-controls-enabled {
-		margin-bottom: 1.5em;
-	}
 
 	> .container {
 		// @HACK: Enforce pixel perfect children.
@@ -90,6 +83,24 @@
 		}
 	}
 
+	&.is-missing-src {
+		> .container {
+			$error-color: lighten($color-error, 65%);
+
+			border: 1px solid $color-error;
+			background-color: $error-color;
+			pointer-events: none;
+
+			> .click-to-load > span {
+				color: $color-error;
+			}
+		}
+	}
+
+	&.is-showing.is-controls-enabled {
+		margin-bottom: 1.5em;
+	}
+
 	&.is-showing {
 		> .container {
 			border: 1px solid $color-transparent;
@@ -126,10 +137,13 @@
 		}
 
 		> .container {
+			$bg-color: #fdfdfd;
+			$hover-bg-color: #f9f4ff;
+
 			border: 1px solid transparentize($color-action, 0.8);
 			max-height: 15em;
 			border-radius: $dimension-rounded-radius;
-			background-color: $color-container;
+			background-color: $bg-color;
 			overflow: hidden;
 			cursor: pointer;
 
@@ -145,34 +159,18 @@
 				bottom: 0;
 				transition: transform $duration-animation-default, opacity $duration-animation-default;
 			}
-		}
-	}
 
-	&.is-missing-src {
-		> .container {
-			$color-missing-src-error: lighten($color-error, 65%);
+			&:hover {
+				> .click-to-load {
+					transform: translate(-50%, -50%) scale(1.05);
+					transform-origin: center center;
+				}
 
-			border: 1px solid $color-error;
-			background-color: $color-missing-src-error;
-			pointer-events: none;
-
-			> .click-to-load > span {
-				color: $color-error;
+				&::before {
+					transform: scale(1.2);
+					opacity: 0.4;
+				}
 			}
-		}
-	}
-
-	&.is-not-showing > .container:hover {
-		background-color: $color-container-hover;
-
-		> .click-to-load {
-			transform: translate(-50%, -50%) scale(1.05);
-			transform-origin: center center;
-		}
-
-		&::before {
-			transform: scale(1.2);
-			opacity: 0.4;
 		}
 	}
 }
