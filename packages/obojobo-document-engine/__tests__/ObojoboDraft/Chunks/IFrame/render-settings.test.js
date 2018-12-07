@@ -386,6 +386,6 @@ describe('render-settings', () => {
 				controls: ''
 			}
 		}
-		expect(getRenderSettings(model, 500, 10, 123, 456, 0.1, mediaState)).toMatchSnapshot()
+		expect(getRenderSettings(model, 500, 10, 123, 456, 0.1, 20, mediaState)).toMatchSnapshot()
 	})
 })

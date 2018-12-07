@@ -12,6 +12,7 @@ import { getRenderSettings } from './render-settings'
 const DEFAULT_WIDTH = 710
 const DEFAULT_HEIGHT = 500
 const MIN_SCALE = 0.1
+const MAX_SCALE = 10
 const DECREASE_ZOOM_STEP = -0.1
 const INCREASE_ZOOM_STEP = 0.1
 
@@ -138,6 +139,7 @@ export default class IFrame extends React.Component {
 			isShowing,
 			controlsOpts,
 			isAtMinScale,
+			isAtMaxScale,
 			iframeStyle,
 			afterStyle
 		} = getRenderSettings(
@@ -147,6 +149,7 @@ export default class IFrame extends React.Component {
 			DEFAULT_WIDTH,
 			DEFAULT_HEIGHT,
 			MIN_SCALE,
+			MAX_SCALE,
 			this.props.moduleData.mediaState
 		)
 
@@ -172,9 +175,7 @@ export default class IFrame extends React.Component {
 						style={scaleDimensions.containerStyle}
 					>
 						<div className="iframe-container">
-							{!isShowing ? (
-								<div className="blocker" style={iframeStyle} />
-							) : (
+							{isShowing ? (
 								<iframe
 									ref="iframe"
 									title={ms.title}
@@ -184,6 +185,8 @@ export default class IFrame extends React.Component {
 									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
 									style={iframeStyle}
 								/>
+							) : (
+								<div className="blocker" style={iframeStyle} />
 							)}
 						</div>
 						<div className="after" style={afterStyle} />
@@ -193,12 +196,13 @@ export default class IFrame extends React.Component {
 								{ms.src === null ? null : <Button>View Content</Button>}
 							</div>
 						)}
-						{!isShowing ? null : (
+						{isShowing ? (
 							<Controls
 								newWindowSrc={src}
 								controlsOptions={controlsOpts}
-								isZoomAbleToBeReset={!zoomValues.isZoomAtDefault}
-								isUnableToZoomOut={isAtMinScale}
+								isZoomResettable={!zoomValues.isZoomAtDefault}
+								isZoomOutDisabled={isAtMinScale}
+								isZoomInDisabled={isAtMaxScale}
 								reload={this.boundOnReload}
 								zoomIn={this.onClickSetZoom.bind(
 									this,
@@ -210,7 +214,7 @@ export default class IFrame extends React.Component {
 								)}
 								zoomReset={this.boundOnZoomReset}
 							/>
-						)}
+						) : null}
 					</div>
 				</div>
 			</OboComponent>

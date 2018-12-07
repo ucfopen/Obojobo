@@ -17,6 +17,7 @@ Object {
     "transform": "scale(1)",
     "width": "100%",
   },
+  "isAtMaxScale": false,
   "isAtMinScale": false,
   "isShowing": false,
   "scaleDimensions": Object {

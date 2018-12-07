@@ -101,6 +101,7 @@ const getRenderSettings = (
 	defaultWidth,
 	defaultHeight,
 	minScale,
+	maxScale,
 	mediaState
 ) => {
 	const ms = model.modelState
@@ -116,7 +117,8 @@ const getRenderSettings = (
 		setDimensions
 	)
 	const controlsOpts = getControlsOptions(ms)
-	const isAtMinScale = scaleDimensions.scale === minScale
+	const isAtMinScale = scaleDimensions.scale <= minScale
+	const isAtMaxScale = scaleDimensions.scale >= maxScale
 	const iframeStyle = getIFrameStyle(scaleDimensions.scale)
 	const afterStyle = getAfterStyle(setDimensions.w, setDimensions.h, ms.fit)
 	const isShowing = getIsShowing(mediaState, model)
@@ -128,6 +130,7 @@ const getRenderSettings = (
 		isShowing,
 		controlsOpts,
 		isAtMinScale,
+		isAtMaxScale,
 		iframeStyle,
 		afterStyle
 	}

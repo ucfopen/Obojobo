@@ -173,6 +173,10 @@
 		> .zoom-in-button {
 			background-image: url('./zoom-in.svg');
 			background-size: 50%;
+
+			&:disabled {
+				opacity: 0.4;
+			}
 		}
 
 		&:hover > .zoom-in-button {
