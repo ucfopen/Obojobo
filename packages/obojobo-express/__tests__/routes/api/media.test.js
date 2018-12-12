@@ -149,13 +149,15 @@ describe('api draft route', () => {
 test('GET api/media/:id/:dimensions', () => {
 	mockCurrentUser = { id: 99 } // mock current logged in user
 
-	MediaModel.fetchByIdAndDimensions = jest.fn().mockResolvedValueOnce('ImageData')
+	MediaModel.fetchByIdAndDimensions = jest.fn().mockResolvedValueOnce({
+		mimeType: 'text/html',
+		binaryData: 'ImageData'
+	})
 
 	return request(app)
 		.get('/api/media/id/100x100')
 		.then(response => {
 			expect(MediaModel.fetchByIdAndDimensions).toBeCalledWith('id', '100x100')
-
 			expect(response.text).toBe('ImageData')
 		})
 })

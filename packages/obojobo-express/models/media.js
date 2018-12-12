@@ -10,7 +10,39 @@ const db = oboRequire('db')
 const MODE_INSERT_ORIGINAL_IMAGE = 'modeInsertOriginalImage'
 const MODE_INSERT_RESIZED_IMAGE = 'modeInsertResizedImage'
 
+const MIMETYPE_SVG = 'image/svg+xml'
+const MIMETYPE_GIF = 'image/gif'
+
 class Media {
+	// Return true if both dimensions are supplied or if the requested targetNewSize is smaller than
+	// the original size:
+	static async shouldResizeMedia(originalMediaBinaryData, targetDimensions) {
+		const targetNewSize = Media.getDimensionValues(targetDimensions)
+		if (targetNewSize.width && targetNewSize.height) return true
+
+		const originalImageMetadata = await sharp(originalMediaBinaryData).metadata()
+		return (
+			targetNewSize.width < originalImageMetadata.width ||
+			targetNewSize.height < originalImageMetadata.height
+		)
+	}
+
+	// Convinence method to take the metadata produced by sharp and turn it into a valid mimetype
+	static getMimeTypeFromMetadata(metadata) {
+		return `image/${metadata.format}`
+	}
+
+	static isMimeTypeResizable(mimeType) {
+		switch (mimeType) {
+			case MIMETYPE_SVG:
+			case MIMETYPE_GIF:
+				return false
+
+			default:
+				return true
+		}
+	}
+
 	static parseCustomImageDimensions(dimensionsAsString) {
 		let width
 		let height
@@ -78,126 +110,103 @@ class Media {
 		return finalDimensions
 	}
 
-	static resize(mediaBinary, dimensionsAsString) {
-		let newDimensions
-
+	static getDimensionValues(dimensionsAsString) {
 		switch (dimensionsAsString) {
-			case 'small': {
-				newDimensions = mediaConfig.presetDimensions.small
-				break
-			}
-			case 'medium': {
-				newDimensions = mediaConfig.presetDimensions.medium
-				break
-			}
-			case 'large': {
-				newDimensions = mediaConfig.presetDimensions.large
-				break
-			}
-			default: {
-				newDimensions = Media.parseCustomImageDimensions(dimensionsAsString)
-			}
+			case 'small':
+				return mediaConfig.presetDimensions.small
+			case 'medium':
+				return mediaConfig.presetDimensions.medium
+			case 'large':
+				return mediaConfig.presetDimensions.large
+			default:
+				return Media.parseCustomImageDimensions(dimensionsAsString)
 		}
+	}
 
-		// maintains aspect ratio
-		newDimensions['fit'] = 'inside'
+	static resize(mediaBinary, { width, height }) {
+		const fit = width && height ? 'fill' : 'cover'
 
 		return sharp(mediaBinary)
-			.resize(newDimensions)
+			.resize({
+				fit,
+				width,
+				height
+			})
 			.toBuffer()
 	}
 
-	static fetchByIdAndDimensions(mediaId, mediaDimensions = 'large') {
-		let binaryId = null
+	// targetDimensions can either be a label ['small', 'medium', 'large', 'original'] or a string
+	// of specific dimensions (such as "640x*", "*x480" or "640x480").
+	// If the requested dimension has already been processed and saved it is retrieved without any
+	// additional processing. If a single dimension is requested (such as one of the labels like
+	// 'small' which simply is a width or a specific dimension with a wildcard like '640x*') then
+	// the image will be scaled proportionally up until that original image's native size. In this
+	// case the image will not be upscaled (so, for example, for an image that is originally
+	// 640x480 if you request the size '1080x*' you'll simply get back the original 640x480 size).
+	// However, if you request two dimensions (like '640x480) the image will distort and will
+	// potentially be upscaled if needed to ensure that the resulting image matches the requested
+	// size.
+	static async fetchByIdAndDimensions(mediaId, targetDimensions = 'large') {
+		const dimensionOriginal = mediaConfig.originalMediaTag
 
-		let mediaFound = false
+		let originalMedia = null
 
-		return db
-			.tx(transactionDb => {
-				// find the users media reference
-				return transactionDb
-					.manyOrNone(
-						`
-						SELECT *
-						FROM media_binaries
-						WHERE media_id = $[mediaId]
-						AND (dimensions = $[mediaDimensions]
-						OR dimensions = $[originalMediaTag])
-						ORDER BY dimensions
-						`,
-						{ mediaId, mediaDimensions, originalMediaTag: mediaConfig.originalMediaTag }
-					)
-					.then(result => {
-						if (!result || !result.length) throw new Error('Image not found')
+		const medias = await db.manyOrNone(
+			`
+			SELECT *
+			FROM media_binaries M
+			JOIN binaries B
+			ON M.binary_id = B.id
+			WHERE M.media_id = $[mediaId]
+			AND (M.dimensions = $[targetDimensions]
+			OR M.dimensions = $[dimensionOriginal])
+			ORDER BY M.dimensions
+			`,
+			{ mediaId, targetDimensions, dimensionOriginal }
+		)
 
-						switch (result.length) {
-							// result.length == 1 implies that the query only returned a reference to the
-							// original image and a resize may be necessary to provide an image with the
-							// requested dimensions
-							case 1:
-								binaryId = result[0].binary_id
+		if (!medias || !medias.length) throw new Error('Image not found')
 
-								// If the original image is being requested, a resize is not necessary
-								if (mediaDimensions === 'original') {
-									mediaFound = true
-								}
-								break
-							// result.length == 2 implies that the query found and returned a reference to
-							// an image with the requested dimensions and a resize is not necessary
-							case 2:
-								binaryId =
-									result[0].dimensions === mediaConfig.originalMediaTag
-										? result[1].binary_id
-										: result[0].binary_id
+		// Create a map to retrieve the resulting media objects by their dimension label
+		const mediaByDimensions = new Map(medias.map(m => [m.dimensions, m]))
+		originalMedia = mediaByDimensions.get(dimensionOriginal)
 
-								mediaFound = true
-								break
+		if (!originalMedia) throw new Error('Original image size not found')
 
-							default:
-								throw new Error('Too many images returned')
-						}
+		// Return the requested size (if we have it)
+		const targetMedia = mediaByDimensions.get(targetDimensions)
+		if (targetMedia) {
+			return {
+				binaryData: targetMedia.blob,
+				mimeType: targetMedia.mime_type
+			}
+		}
 
-						return transactionDb.one(
-							`
-							SELECT *
-							FROM binaries
-							WHERE id = $[binaryId]
-							`,
-							{ binaryId }
-						)
-					})
-			})
-			.then(binaryData => {
-				let resizedBinary = null
+		// If the media type is not resizable of if the new size we want is larger than the
+		// original size then we won't resize it, instead we'll just return the original
+		// size (ignoring whatever the requested size was)
+		if (
+			!Media.isMimeTypeResizable(originalMedia.mime_type) ||
+			!await Media.shouldResizeMedia(originalMedia.blob, targetDimensions)
+		) {
+			return {
+				binaryData: originalMedia.blob,
+				mimeType: originalMedia.mime_type
+			}
+		}
 
-				// If the first query in the transaction finds a reference to the requested image with dimensions,
-				// the second query returns the binary for that image with dimensions, and that binary can be
-				// immediately returned.
-				if (mediaFound) return binaryData.blob
-
-				// If the first query in the transaction does not find a reference to the requested image with
-				// dimensions, the second query returns the binary of the original image. To meet the request,
-				// the orginal is resized and the new binary is stored in the database for future retrieval.
-				// The resized image is returned.
-				return Media.resize(binaryData.blob, mediaDimensions)
-					.then(result => {
-						resizedBinary = result
-						return sharp(resizedBinary).metadata()
-					})
-					.then(metadata => {
-						return Media.cacheImageInDb(resizedBinary, metadata, mediaDimensions, mediaId)
-					})
-					.then(() => {
-						return resizedBinary
-					})
-			})
-			.then(binary => {
-				return binary
-			})
-			.catch(err => {
-				logger.error(err)
-				throw err
-			})
+		// If we are here then we didn't find the media at the size we were looking for.
+		// Now we need to resize the image, store the new dimension in the database
+		// for future retrieval, then return the newly resized image data.
+		const resizedInfo = await Media.saveImageAtNewSize(
+			mediaId,
+			originalMedia.blob,
+			targetDimensions
+		)
+		return {
+			binaryData: resizedInfo.binary,
+			mimeType: Media.getMimeTypeFromMetadata(resizedInfo.metadata)
+		}
 	}
 
 	static storeImageInDb({ filename, binary, size, mimetype, dimensions, mode, mediaId, userId }) {
@@ -275,28 +284,26 @@ class Media {
 		})
 	}
 
-	static cacheImageInDb(imageBinary, imageMetadata, imageDimensions, originalImageId) {
-		// sharp does not represent mimetypes as image/{mimetype}, transforming to this format keeps database consistent
-		const mimetype = `image/${imageMetadata.format}`
-		return (
-			Media.storeImageInDb({
-				binary: imageBinary,
-				size: imageMetadata.size,
-				mimetype,
-				dimensions: imageDimensions,
-				mode: MODE_INSERT_RESIZED_IMAGE,
-				mediaId: originalImageId,
-				userId: null
-			})
-				.then(newMediaRecord => {
-					return newMediaRecord.media_id
-				})
-				// catches any errors from transaction queries
-				.catch(err => {
-					logger.error(err)
-					throw err
-				})
-		)
+	static async saveImageAtNewSize(originalImageId, originalImageBinary, targetDimensions) {
+		const newSize = Media.getDimensionValues(targetDimensions)
+
+		const resizedBinary = await Media.resize(originalImageBinary, newSize)
+		const imageMetadata = await sharp(resizedBinary).metadata()
+
+		await Media.storeImageInDb({
+			binary: resizedBinary,
+			size: imageMetadata.size,
+			mimetype: Media.getMimeTypeFromMetadata(imageMetadata),
+			dimensions: targetDimensions,
+			mode: MODE_INSERT_RESIZED_IMAGE,
+			mediaId: originalImageId,
+			userId: null
+		})
+
+		return {
+			metadata: imageMetadata,
+			binary: resizedBinary
+		}
 	}
 
 	static isValidFileType(file) {

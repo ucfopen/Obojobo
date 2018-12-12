@@ -61,7 +61,8 @@ router
 	.get((req, res, next) => {
 		MediaModel.fetchByIdAndDimensions(req.params.mediaId, req.params.dimensions)
 			.then(imageData => {
-				res.send(imageData)
+				res.contentType(imageData.mimeType)
+				res.send(imageData.binaryData)
 			})
 			.catch(next)
 	})

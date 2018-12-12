@@ -5,23 +5,20 @@ jest.mock('../../config', () => {
 			allowedMimeTypesRegex: 'jpeg|jpg|png|gif|svg',
 			maxUploadSize: 100000,
 			minImageSize: 10,
-			maxImageSize: 8000,
+			maxImageSize: 3000,
 			originalMediaTag: 'original',
 			presetDimensions: {
 				small: {
-					width: 336,
-					height: 252
+					width: 332
 				},
 				medium: {
-					width: 709,
-					height: 532
+					width: 712
 				},
 				large: {
-					width: 821,
-					height: 616
-				},
-				tempUploadDestination: './tmp/media'
-			}
+					width: 836
+				}
+			},
+			tempUploadDestination: './tmp/media'
 		}
 	}
 })
@@ -35,7 +32,9 @@ jest.mock('sharp', () => () => {
 		resize: mockSharpResize,
 		metadata: () => ({
 			size: 'mockSize',
-			format: 'mockFormat'
+			format: 'mockFormat',
+			width: 400,
+			height: 300
 		})
 	}
 })
@@ -45,7 +44,7 @@ import fileType from 'file-type'
 import isSvg from 'is-svg'
 import MediaModel from '../../models/media'
 
-const mediaConfig = require('../../config').media
+require('../../config').media
 
 const db = oboRequire('db')
 
@@ -64,7 +63,7 @@ describe('media model', () => {
 	const mockFileBinaryData = new Buffer('testBinaryInformation')
 	const mediaModelResize = MediaModel.resize
 	const mediaModelParseCustom = MediaModel.parseCustomImageDimensions
-	const mediaModelCacheImage = MediaModel.cacheImageInDb
+	const mediaModelCacheImage = MediaModel.saveImageAtNewSize
 	const mediaModelValidFileType = MediaModel.isValidFileType
 
 	beforeAll(() => {})
@@ -73,7 +72,7 @@ describe('media model', () => {
 		db.one.mockReset()
 		MediaModel.resize = mediaModelResize
 		MediaModel.parseCustomImageDimensions = mediaModelParseCustom
-		MediaModel.cacheImageInDb = mediaModelCacheImage
+		MediaModel.saveImageAtNewSize = mediaModelCacheImage
 		MediaModel.isValidFileType = mediaModelValidFileType
 	})
 	afterEach(() => {})
@@ -388,298 +387,236 @@ describe('media model', () => {
 			})
 	})
 
-	test('cacheImageInDb calls MediaModel with correct arguments', () => {
+	test('saveImageAtNewSize calls MediaModel with correct arguments', async () => {
 		const mockNewMediaRecord = {
 			media_id: 'MEDIA_UUID',
 			binary_id: 'BINARY_UUID',
 			dimensions: 'small'
 		}
-
 		const mockImageBinary = new Buffer('image')
-		const mockImageMetadata = {
-			size: 'mockSize',
-			format: 'mockFormat'
-		}
 		const mockImageDimensions = 'small'
 		const mockOriginalImageId = 'SOME_UUID'
+		const mockResizedBinary = jest.fn()
 
-		MediaModel.storeImageInDb = jest.fn()
-		MediaModel.storeImageInDb.mockImplementationOnce(() => {
-			return Promise.resolve(mockNewMediaRecord)
-		})
+		MediaModel.resize = jest.fn().mockReturnValueOnce(mockResizedBinary)
+		MediaModel.storeImageInDb = jest.fn().mockResolvedValueOnce(mockNewMediaRecord)
 
-		return MediaModel.cacheImageInDb(
+		const newImageInfo = await MediaModel.saveImageAtNewSize(
+			mockOriginalImageId,
 			mockImageBinary,
-			mockImageMetadata,
-			mockImageDimensions,
-			mockOriginalImageId
-		).then(newMediaRecordId => {
-			expect(MediaModel.storeImageInDb).toBeCalledTimes(1)
-
-			expect(MediaModel.storeImageInDb).toHaveBeenCalledWith({
-				binary: mockImageBinary,
-				size: 'mockSize',
-				mimetype: 'image/mockFormat',
-				dimensions: 'small',
-				mode: 'modeInsertResizedImage',
-				mediaId: 'SOME_UUID',
-				userId: null
-			})
-
-			// Check that the correct value is being returned to the route
-			expect(newMediaRecordId).toEqual(mockNewMediaRecord.media_id)
-		})
-	})
-
-	test('cacheImageInDb catches errors from storeImageInDb', () => {
-		expect.assertions(3)
-
-		const mockImageBinary = new Buffer('image')
-		const mockImageMetadata = {
-			size: 'mockSize',
-			format: 'mockFormat'
-		}
-		const mockImageDimensions = 'small'
-		const mockOriginalImageId = 'SOME_UUID'
-
-		MediaModel.storeImageInDb = jest.fn()
-		MediaModel.storeImageInDb.mockImplementationOnce(() => {
-			return Promise.reject(new Error('Mock error from storeImageInDb'))
-		})
-
-		return MediaModel.cacheImageInDb(
-			mockImageBinary,
-			mockImageMetadata,
-			mockImageDimensions,
-			mockOriginalImageId
+			mockImageDimensions
 		)
-			.then(() => {
-				expect('not').toBe('called')
-			})
-			.catch(err => {
-				expect(err).not.toBeNull()
-				expect(err.message).toBe('Mock error from storeImageInDb')
-				expect(err).toBeInstanceOf(Error)
-			})
-	})
 
-	test('fetchByIdAndDimensions retrieves existing media when given correct size format', () => {
-		const mockMediaBinaryResults = [
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'original'
-			}
-		]
-		const mockBinaryResult = {
-			blob: mockFileBinaryData
-		}
-
-		db.manyOrNone.mockResolvedValueOnce(mockMediaBinaryResults)
-		db.one.mockResolvedValueOnce(mockBinaryResult)
-
-		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'original').then(binaryData => {
-			expect(db.tx).toBeCalled()
-
-			// An image's binary data is returned to the editor when an image is requested
-			expect(binaryData).toEqual(mockFileBinaryData)
-		})
-	})
-
-	test('fetchByIdAndDimensions resizes original media and caches the resized image', () => {
-		const mockMediaBinaryResults = [
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'original'
-			}
-		]
-		const mockBinaryResult = {
-			blob: mockFileBinaryData
-		}
-
-		MediaModel.resize = jest.fn()
-		MediaModel.cacheImageInDb = jest.fn()
-
-		MediaModel.resize.mockResolvedValueOnce(new Buffer('resizedImage'))
-		MediaModel.cacheImageInDb.mockResolvedValueOnce('SOME_UUID')
-
-		// Mocks resolution of first query to media_binaries
-		db.manyOrNone.mockResolvedValueOnce(mockMediaBinaryResults)
-
-		// Mocks resolution of first query to binaries
-		db.one.mockResolvedValueOnce(mockBinaryResult)
-
-		return MediaModel.fetchByIdAndDimensions('MEDIA_UUID', 'small').then(binaryData => {
-			expect(db.tx).toBeCalled()
-
-			expect(MediaModel.cacheImageInDb).toHaveBeenCalledWith(
-				new Buffer('resizedImage'),
-				{
-					format: 'mockFormat',
-					size: 'mockSize'
-				},
-				'small',
-				'MEDIA_UUID'
-			)
-			// An image's binary data is returned to the editor when an image is requested
-			expect(binaryData).toEqual(new Buffer('resizedImage'))
-		})
-	})
-
-	test('fetchByIdAndDimensions correctly identifies original image reference when returned as first item from media_binaries', () => {
-		const mockMediaBinaryResults = [
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'original'
+		// Expect newImageInfo to return the results of sharp.metadata()
+		expect(newImageInfo).toEqual({
+			metadata: {
+				format: 'mockFormat',
+				size: 'mockSize',
+				width: 400,
+				height: 300
 			},
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'small'
-			}
-		]
-
-		const mockBinaryResult = {
-			blob: mockFileBinaryData
-		}
-
-		MediaModel.resize = jest.fn()
-
-		db.manyOrNone.mockResolvedValueOnce(mockMediaBinaryResults)
-		db.one.mockResolvedValueOnce(mockBinaryResult)
-
-		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'small').then(binaryData => {
-			expect(db.tx).toBeCalled()
-
-			// Since a reference to small was returned from media_binaries, the original
-			//  does not need to be resized
-			expect(MediaModel.resize).not.toBeCalled()
-
-			// An image's binary data is returned to the editor when an image is requested
-			expect(binaryData).toEqual(mockFileBinaryData)
+			binary: mockResizedBinary
+		})
+		expect(MediaModel.storeImageInDb).toBeCalledTimes(1)
+		expect(MediaModel.storeImageInDb).toHaveBeenCalledWith({
+			binary: mockResizedBinary,
+			size: 'mockSize',
+			mimetype: 'image/mockFormat',
+			dimensions: 'small',
+			mode: 'modeInsertResizedImage',
+			mediaId: 'SOME_UUID',
+			userId: null
 		})
 	})
 
-	test('fetchByIdAndDimensions correctly identifies original image reference when returned as second item from media_binaries', () => {
-		const mockMediaBinaryResults = [
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'small'
-			},
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'original'
-			}
-		]
+	test('fetchByIdAndDimensions throws error if no images returned from db', async () => {
+		const mockResults = []
 
-		const mockBinaryResult = {
-			blob: mockFileBinaryData
-		}
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
 
-		MediaModel.resize = jest.fn()
-
-		db.manyOrNone.mockResolvedValueOnce(mockMediaBinaryResults)
-		db.one.mockResolvedValueOnce(mockBinaryResult)
-
-		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'small').then(binaryData => {
-			expect(db.tx).toBeCalled()
-
-			// Since a reference to small was returned from media_binaries, the original
-			//  does not need to be resized
-			expect(MediaModel.resize).not.toBeCalled()
-
-			// An image's binary data is returned to the editor when an image is requested
-			expect(binaryData).toEqual(mockFileBinaryData)
-		})
-	})
-
-	test('fetchByIdAndDimensions throws error when receiving no results from media_binaries table', () => {
 		expect.assertions(1)
 
-		const mockMediaBinaryResults = null
-
-		db.manyOrNone.mockResolvedValueOnce(mockMediaBinaryResults)
-
-		return MediaModel.fetchByIdAndDimensions('SOME_UUID')
-			.then(binaryData => {
-				// this line should not be executed because an error should be thrown and caught with given input
-				expect(binaryData).toBe('not set')
-			})
-			.catch(e => {
-				expect(e).not.toBeNull()
-			})
+		try {
+			await MediaModel.fetchByIdAndDimensions('SOME_UUID', 'original')
+		} catch (e) {
+			expect(e.message).toBe('Image not found')
+		}
 	})
 
-	test('fetchByIdAndDimensions throws error when receiving more than 2 results from media_binaries', () => {
+	test('fetchByIdAndDimensions throws error if original size is not found', async () => {
+		const mockResults = [
+			{
+				dimensions: 'some-size',
+				media_id: 'MEDIA_UUID',
+				binary_id: 'BINARY_UUID',
+				mime_type: 'mockMimeType',
+				blob: mockFileBinaryData
+			}
+		]
+
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
 		expect.assertions(1)
 
-		// The database should not be holding two images with both the same id and same dimensions
-		const mockMediaBinaryResults = [
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'original'
-			},
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'small'
-			},
-			{
-				media_id: 'MEDIA_UUID',
-				binary_id: 'BINARY_UUID',
-				dimensions: 'small'
-			}
-		]
-
-		db.manyOrNone.mockResolvedValueOnce(mockMediaBinaryResults)
-
-		return MediaModel.fetchByIdAndDimensions('SOME_UUID')
-			.then(binaryData => {
-				// this line should not be executed because an error should be thrown and caught with given input
-				expect(binaryData).toBe('not set')
-			})
-			.catch(e => {
-				expect(e).not.toBeNull()
-			})
+		try {
+			await MediaModel.fetchByIdAndDimensions('SOME_UUID', 'original')
+		} catch (e) {
+			expect(e.message).toBe('Original image size not found')
+		}
 	})
 
-	test('fetchByIdAndDimensions defaults to large dimensions', () => {
-		const mockMediaBinaryResults = [
+	test('fetchByIdAndDimensions retrieves original media when given correct size format', () => {
+		const mockResults = [
 			{
+				dimensions: 'original',
 				media_id: 'MEDIA_UUID',
 				binary_id: 'BINARY_UUID',
-				dimensions: 'original'
+				mime_type: 'mockMimeType',
+				blob: mockFileBinaryData
 			}
 		]
 
-		const mockBinaryResult = {
-			blob: mockFileBinaryData
-		}
+		const spy = jest.spyOn(MediaModel, 'saveImageAtNewSize')
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
 
-		MediaModel.resize = jest.fn()
-		MediaModel.cacheImageInDb = jest.fn()
-
-		MediaModel.resize.mockResolvedValueOnce(new Buffer('resizedImage'))
-		MediaModel.cacheImageInDb.mockResolvedValueOnce('SOME_UUID')
-
-		// Mocks resolution of first query to media_binaries
-		db.manyOrNone.mockResolvedValueOnce(mockMediaBinaryResults)
-
-		// Mocks resolution of first query to binaries
-		db.one.mockResolvedValueOnce(mockBinaryResult)
-
-		return MediaModel.fetchByIdAndDimensions('FETCHING_UUID').then(binaryData => {
-			expect(db.tx).toBeCalled()
-
-			expect(MediaModel.resize.mock.calls[0][1]).toEqual('large')
-
+		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'original').then(imageData => {
 			// An image's binary data is returned to the editor when an image is requested
-			expect(binaryData).toEqual(new Buffer('resizedImage'))
+			expect(imageData).toEqual({
+				binaryData: mockFileBinaryData,
+				mimeType: 'mockMimeType'
+			})
+			expect(spy).not.toHaveBeenCalled()
+			spy.mockRestore()
+		})
+	})
+
+	test('fetchByIdAndDimensions retrieves requested media when given correct size format', () => {
+		const mockResults = [
+			{
+				dimensions: 'original'
+			},
+			{
+				dimensions: 'some-size',
+				media_id: 'MEDIA_UUID',
+				binary_id: 'BINARY_UUID',
+				mime_type: 'mockMimeType',
+				blob: mockFileBinaryData
+			}
+		]
+
+		const spy = jest.spyOn(MediaModel, 'saveImageAtNewSize')
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'some-size').then(imageData => {
+			// An image's binary data is returned to the editor when an image is requested
+			expect(imageData).toEqual({ binaryData: mockFileBinaryData, mimeType: 'mockMimeType' })
+			expect(spy).not.toHaveBeenCalled()
+			spy.mockRestore()
+		})
+	})
+
+	test('fetchByIdAndDimensions retrieves large size media when not given a size', () => {
+		const mockResults = [
+			{ dimensions: 'original' },
+			{
+				dimensions: 'large',
+				media_id: 'MEDIA_UUID',
+				binary_id: 'BINARY_UUID',
+				mime_type: 'mockMimeType',
+				blob: mockFileBinaryData
+			}
+		]
+
+		const spy = jest.spyOn(MediaModel, 'saveImageAtNewSize')
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		return MediaModel.fetchByIdAndDimensions('SOME_UUID').then(imageData => {
+			// An image's binary data is returned to the editor when an image is requested
+			expect(imageData).toEqual({ binaryData: mockFileBinaryData, mimeType: 'mockMimeType' })
+			expect(spy).not.toHaveBeenCalled()
+			spy.mockRestore()
+		})
+	})
+
+	test('fetchByIdAndDimensions retrieves original media when asking for a type of media that should not be resized', () => {
+		const mockResults = [
+			{
+				dimensions: 'original',
+				media_id: 'MEDIA_UUID',
+				binary_id: 'BINARY_UUID',
+				mime_type: 'image/svg+xml',
+				blob: mockFileBinaryData
+			}
+		]
+
+		const spy = jest.spyOn(MediaModel, 'saveImageAtNewSize')
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'some-size').then(imageData => {
+			// An image's binary data is returned to the editor when an image is requested
+			expect(imageData).toEqual({ binaryData: mockFileBinaryData, mimeType: 'image/svg+xml' })
+			expect(spy).not.toHaveBeenCalled()
+			spy.mockRestore()
+		})
+	})
+
+	test('fetchByIdAndDimensions retrieves original media when asking for a new size of media that is larger than the original', () => {
+		const mockResults = [
+			{
+				dimensions: 'original',
+				media_id: 'MEDIA_UUID',
+				binary_id: 'BINARY_UUID',
+				mime_type: 'mockMimeType',
+				blob: mockFileBinaryData
+			}
+		]
+
+		const shouldResizeMediaSpy = jest
+			.spyOn(MediaModel, 'shouldResizeMedia')
+			.mockResolvedValueOnce(false)
+		const saveImageAtNewSizeSpy = jest.spyOn(MediaModel, 'saveImageAtNewSize')
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'some-size').then(imageData => {
+			// An image's binary data is returned to the editor when an image is requested
+			expect(imageData).toEqual({ binaryData: mockFileBinaryData, mimeType: 'mockMimeType' })
+			expect(saveImageAtNewSizeSpy).not.toHaveBeenCalled()
+			shouldResizeMediaSpy.mockRestore()
+			saveImageAtNewSizeSpy.mockRestore()
+		})
+	})
+
+	test('fetchByIdAndDimensions resizes media when asking for a new size of media which is smaller than the original', () => {
+		const mockResults = [
+			{
+				dimensions: 'original',
+				media_id: 'MEDIA_UUID',
+				binary_id: 'BINARY_UUID',
+				mime_type: 'mockMimeType',
+				blob: mockFileBinaryData
+			}
+		]
+
+		const shouldResizeMediaSpy = jest
+			.spyOn(MediaModel, 'shouldResizeMedia')
+			.mockResolvedValueOnce(true)
+		const saveImageAtNewSizeSpy = jest
+			.spyOn(MediaModel, 'saveImageAtNewSize')
+			.mockImplementation(() => ({
+				binary: 'mockResizedBinary',
+				metadata: { format: 'mock-mime-type' }
+			}))
+		db.manyOrNone.mockResolvedValueOnce(mockResults)
+
+		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'small').then(imageData => {
+			// An image's binary data is returned to the editor when an image is requested
+			expect(imageData).toEqual({
+				binaryData: 'mockResizedBinary',
+				mimeType: 'image/mock-mime-type'
+			})
+			expect(saveImageAtNewSizeSpy).toHaveBeenCalled()
+			shouldResizeMediaSpy.mockRestore()
+			saveImageAtNewSizeSpy.mockRestore()
 		})
 	})
 
@@ -714,7 +651,7 @@ describe('media model', () => {
 		expect(parsedDimensionsString).toMatchObject(expectedDimensionObject)
 	})
 
-	test('parseCustomImageDimensions enforces max size configuration', () => {
+	test('parseCustomImageDimensions enforces min size configuration', () => {
 		const dimensionsString = '1x1'
 		const parsedDimensionsString = MediaModel.parseCustomImageDimensions(dimensionsString)
 		const expectedDimensionObject = {
@@ -729,8 +666,8 @@ describe('media model', () => {
 		const dimensionsString = '10000x10000'
 		const parsedDimensionsString = MediaModel.parseCustomImageDimensions(dimensionsString)
 		const expectedDimensionObject = {
-			width: 8000,
-			height: 8000
+			width: 3000,
+			height: 3000
 		}
 
 		expect(parsedDimensionsString).toMatchObject(expectedDimensionObject)
@@ -762,12 +699,12 @@ describe('media model', () => {
 		expect(MediaModel.parseCustomImageDimensions.bind(this, dimensionsString)).toThrowError(Error)
 	})
 
-	test('resize correctly parses small dimensions and passes them to sharp', () => {
+	test('resize calls sharp.resize correctly when given width only', () => {
 		const mockBuffer = new Buffer('some_image')
 		const expectedDimensions = {
-			width: mediaConfig.presetDimensions.small.width,
-			height: mediaConfig.presetDimensions.small.height,
-			fit: 'inside'
+			width: 200,
+			height: undefined, //eslint-disable-line no-undefined
+			fit: 'cover'
 		}
 
 		mockSharpResize.mockImplementationOnce(() => {
@@ -776,69 +713,39 @@ describe('media model', () => {
 			}
 		})
 
-		MediaModel.resize(mockBuffer, 'small')
+		MediaModel.resize(mockBuffer, { width: 200 })
 
 		expect(mockSharpResize).toBeCalledWith(expectedDimensions)
 	})
 
-	test('resize correctly parses medium dimensions and passes them to sharp', () => {
+	test('resize calls sharp.resize correctly when given height only', () => {
 		const mockBuffer = new Buffer('some_image')
 		const expectedDimensions = {
-			width: mediaConfig.presetDimensions.medium.width,
-			height: mediaConfig.presetDimensions.medium.height,
-			fit: 'inside'
+			width: undefined, //eslint-disable-line no-undefined
+			height: 100,
+			fit: 'cover'
 		}
 
 		mockSharpResize.mockImplementationOnce(() => {
-			return {
-				toBuffer: () => jest.fn()
-			}
+			return { toBuffer: () => jest.fn() }
 		})
 
-		MediaModel.resize(mockBuffer, 'medium')
+		MediaModel.resize(mockBuffer, { height: 100 })
 
 		expect(mockSharpResize).toBeCalledWith(expectedDimensions)
 	})
 
-	test('resize correctly parses large dimensions and passes them to sharp', () => {
+	test('resize calls sharp.resize correctly when given width and height', () => {
 		const mockBuffer = new Buffer('some_image')
-		const expectedDimensions = {
-			width: mediaConfig.presetDimensions.large.width,
-			height: mediaConfig.presetDimensions.large.height,
-			fit: 'inside'
-		}
+		const expectedDimensions = { width: 200, height: 100, fit: 'fill' }
 
 		mockSharpResize.mockImplementationOnce(() => {
-			return {
-				toBuffer: () => jest.fn()
-			}
+			return { toBuffer: () => jest.fn() }
 		})
 
-		MediaModel.resize(mockBuffer, 'large')
+		MediaModel.resize(mockBuffer, { width: 200, height: 100 })
 
 		expect(mockSharpResize).toBeCalledWith(expectedDimensions)
-	})
-
-	test('resize calls parseCustomImageDimensions when custom dimensions given', () => {
-		const mockBuffer = new Buffer('some_image')
-
-		mockSharpResize.mockImplementationOnce(() => {
-			return {
-				toBuffer: () => jest.fn()
-			}
-		})
-
-		MediaModel.parseCustomImageDimensions = jest.fn()
-		MediaModel.parseCustomImageDimensions.mockImplementationOnce(() => {
-			return {
-				height: 1,
-				width: 1
-			}
-		})
-
-		MediaModel.resize(mockBuffer, '100x200')
-
-		expect(MediaModel.parseCustomImageDimensions).toBeCalledWith('100x200')
 	})
 
 	test('isValidFileType returns false if file-type library returns null', () => {
@@ -907,5 +814,62 @@ describe('media model', () => {
 		const isValidFile = MediaModel.isValidFileType(new Buffer('TestImage'))
 		expect(isSvg).toHaveBeenCalledWith(new Buffer('TestImage'))
 		expect(isValidFile).toBeTruthy()
+	})
+
+	test('getDimensionValues returns expected values', () => {
+		expect(MediaModel.getDimensionValues('small')).toEqual({ width: 332 })
+		expect(MediaModel.getDimensionValues('medium')).toEqual({ width: 712 })
+		expect(MediaModel.getDimensionValues('large')).toEqual({ width: 836 })
+		expect(MediaModel.getDimensionValues('200x100')).toEqual({ width: 200, height: 100 })
+		expect(MediaModel.getDimensionValues('200x*')).toEqual({ width: 200 })
+		expect(MediaModel.getDimensionValues('*x100')).toEqual({ height: 100 })
+	})
+
+	test('shouldResizeMedia returns true if both dimensions given', async () => {
+		MediaModel.getDimensionValues = jest.fn().mockReturnValueOnce({ width: 200, height: 100 })
+
+		const shouldResizeMedia = await MediaModel.shouldResizeMedia(jest.fn(), 'some-dimensions')
+
+		expect(shouldResizeMedia).toBe(true)
+	})
+
+	test('shouldResizeMedia returns true if new image width is smaller than the original image width', async () => {
+		// Original image is 400x300 according to mock
+
+		MediaModel.getDimensionValues = jest.fn().mockReturnValueOnce({ width: 200 })
+
+		const shouldResizeMedia = await MediaModel.shouldResizeMedia(jest.fn(), 'some-dimensions')
+
+		expect(shouldResizeMedia).toBe(true)
+	})
+
+	test('shouldResizeMedia returns true if new image height is smaller than the original image height', async () => {
+		// Original image is 400x300 according to mock
+
+		MediaModel.getDimensionValues = jest.fn().mockReturnValueOnce({ height: 200 })
+
+		const shouldResizeMedia = await MediaModel.shouldResizeMedia(jest.fn(), 'some-dimensions')
+
+		expect(shouldResizeMedia).toBe(true)
+	})
+
+	test('shouldResizeMedia returns false if new image width is larger than the original image width', async () => {
+		// Original image is 400x300 according to mock
+
+		MediaModel.getDimensionValues = jest.fn().mockReturnValueOnce({ width: 2000 })
+
+		const shouldResizeMedia = await MediaModel.shouldResizeMedia(jest.fn(), 'some-dimensions')
+
+		expect(shouldResizeMedia).toBe(false)
+	})
+
+	test('shouldResizeMedia returns false if new image height is larger than the original image height', async () => {
+		// Original image is 400x300 according to mock
+
+		MediaModel.getDimensionValues = jest.fn().mockReturnValueOnce({ height: 2000 })
+
+		const shouldResizeMedia = await MediaModel.shouldResizeMedia(jest.fn(), 'some-dimensions')
+
+		expect(shouldResizeMedia).toBe(false)
 	})
 })

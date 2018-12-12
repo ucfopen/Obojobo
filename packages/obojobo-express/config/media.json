@@ -3,20 +3,17 @@
 		"allowedMimeTypesRegex": "jpeg|jpg|png|gif|svg",
 		"maxUploadSize": 10000000,
 		"minImageSize": 10,
-		"maxImageSize": 8000,
+		"maxImageSize": 3000,
 		"originalMediaTag": "original",
 		"presetDimensions": {
 			"small": {
-				"width": 336,
-				"height": 252
+				"width": 332
 			},
 			"medium": {
-				"width": 709,
-				"height": 532
+				"width": 712
 			},
 			"large": {
-				"width": 821,
-				"height": 616
+				"width": 836
 			}
 		},
 		"tempUploadDestination": "./tmp/media"
@@ -25,20 +22,17 @@
 		"allowedMimeTypesRegex": "jpeg|jpg|png|gif|svg",
 		"maxUploadSize": 100000,
 		"minImageSize": 10,
-		"maxImageSize": 8000,
+		"maxImageSize": 3000,
 		"originalMediaTag": "original",
 		"presetDimensions": {
 			"small": {
-				"width": 336,
-				"height": 252
+				"width": 332
 			},
 			"medium": {
-				"width": 709,
-				"height": 532
+				"width": 712
 			},
 			"large": {
-				"width": 821,
-				"height": 616
+				"width": 836
 			}
 		},
 		"tempUploadDestination": "./tmp/media"
