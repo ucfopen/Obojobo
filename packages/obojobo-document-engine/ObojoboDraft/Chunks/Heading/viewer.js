@@ -1,15 +1,11 @@
-import Common from 'Common'
-
 import adapter from './adapter'
+import Common from 'Common'
 import ViewerComponent from './viewer-component'
 
-const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
-
-Common.Store.registerModel('ObojoboDraft.Chunks.Heading', {
-	type: 'chunk',
+Common.Registry.registerModel('ObojoboDraft.Chunks.Heading', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
-	selectionHandler: new SelectionHandler(),
+	type: 'chunk',
 	getNavItem(model) {
 		switch (model.modelState.headingLevel) {
 			// when 1

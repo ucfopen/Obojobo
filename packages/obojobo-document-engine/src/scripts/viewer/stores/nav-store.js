@@ -238,7 +238,7 @@ class NavStore extends Store {
 		if (indent === null || typeof indent === 'undefined') {
 			indent = ''
 		}
-		const item = Common.Store.getItemForType(model.get('type'))
+		const item = Common.Registry.getItemForType(model.get('type'))
 
 		let navItem = null
 		if (item.getNavItem !== null && typeof item.getNavItem !== 'undefined') {

@@ -17,7 +17,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.MCAssessment.MCChoice', {
 	name: 'Multiple Choice Choice',
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,

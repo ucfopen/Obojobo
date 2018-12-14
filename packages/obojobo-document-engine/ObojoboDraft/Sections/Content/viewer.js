@@ -1,13 +1,11 @@
 import Common from 'Common'
-
 import ViewerComponent from './viewer-component'
 
-Common.Store.registerModel('ObojoboDraft.Sections.Content', {
-	type: 'section',
-	default: true,
+Common.Registry.registerModel('ObojoboDraft.Sections.Content', {
 	adapter: null,
 	componentClass: ViewerComponent,
-	selectionHandler: null,
+	default: true,
+	type: 'section',
 	getNavItem: () => ({
 		type: 'hidden',
 		showChildren: true

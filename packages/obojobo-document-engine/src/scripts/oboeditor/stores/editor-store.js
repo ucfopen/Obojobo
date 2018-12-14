@@ -53,7 +53,7 @@ class EditorStore extends Store {
 
 	init(model, startingId, startingPath, viewState = {}) {
 		this.state = {
-			items: {},
+			navItems: {},
 			itemsById: {},
 			itemsByPath: {},
 			itemsByFullPath: {},
@@ -81,7 +81,7 @@ class EditorStore extends Store {
 		this.state.itemsById = {}
 		this.state.itemsByPath = {}
 		this.state.itemsByFullPath = {}
-		this.state.items = this.generateNav(model)
+		this.state.navItems = this.generateNav(model)
 	}
 
 	gotoItem(navItem) {
@@ -119,7 +119,7 @@ class EditorStore extends Store {
 		if (indent == null) {
 			indent = ''
 		}
-		const item = Common.Store.getItemForType(model.get('type'))
+		const item = Common.Registry.getItemForType(model.get('type'))
 
 		let navItem = null
 		if (item.getNavItem != null) {

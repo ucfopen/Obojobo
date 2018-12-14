@@ -1,12 +1,9 @@
 import adapter from './adapter'
-import ViewerComponent from './viewer-component'
 import Common from 'Common'
+import ViewerComponent from './viewer-component'
 
-const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
-
-Common.Store.registerModel('ObojoboDraft.Chunks.ActionButton', {
-	type: 'chunk',
+Common.Registry.registerModel('ObojoboDraft.Chunks.ActionButton', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
-	selectionHandler: new SelectionHandler()
+	type: 'chunk'
 })

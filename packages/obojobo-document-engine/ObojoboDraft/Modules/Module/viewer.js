@@ -1,14 +1,12 @@
-import Common from 'Common'
-
 import adapter from './adapter'
+import Common from 'Common'
 import ViewerComponent from './viewer-component'
 
-Common.Store.registerModel('ObojoboDraft.Modules.Module', {
-	type: 'module',
-	default: true,
+Common.Registry.registerModel('ObojoboDraft.Modules.Module', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
-	selectionHandler: null,
+	default: true,
+	type: 'module',
 	getNavItem(model) {
 		return {
 			type: 'heading',

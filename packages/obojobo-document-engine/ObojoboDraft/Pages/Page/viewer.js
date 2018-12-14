@@ -1,12 +1,10 @@
 import Common from 'Common'
-
 import ViewerComponent from './viewer-component'
 
-Common.Store.registerModel('ObojoboDraft.Pages.Page', {
-	type: 'page',
-	default: true,
+Common.Registry.registerModel('ObojoboDraft.Pages.Page', {
 	componentClass: ViewerComponent,
-	selectionHandler: null,
+	default: true,
+	type: 'page',
 	getNavItem(model) {
 		let label
 

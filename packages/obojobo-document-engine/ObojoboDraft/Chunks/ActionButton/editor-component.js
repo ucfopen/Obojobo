@@ -1,3 +1,5 @@
+import './viewer-component.scss'
+
 import React from 'react'
 
 // TODO could probably be registered by Obojobo Nodes

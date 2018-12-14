@@ -8,6 +8,8 @@ import generateId from '../generate-ids'
 import isOrNot from '../../common/isornot'
 
 import './editor-nav.scss'
+// relies on styles from viewer
+import '../../viewer/components/nav.scss'
 
 import pageTemplate from '../documents/new-page.json'
 import assessmentTemplate from '../documents/new-assessment.json'

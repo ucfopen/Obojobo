@@ -36,7 +36,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.HTML', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.HTML', {
 	name: 'HTML',
 	icon: Icon,
 	isInsertable: true,

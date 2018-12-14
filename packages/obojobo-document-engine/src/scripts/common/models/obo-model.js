@@ -2,7 +2,7 @@ import Backbone from 'backbone'
 
 import uuid from '../../common/util/uuid'
 import Dispatcher from '../../common/flux/dispatcher'
-import { Store } from '../../common/store'
+import { Registry } from '../registry'
 import DOMUtil from '../../common/page/dom-util'
 import setProp from '../../common/util/set-prop'
 
@@ -32,12 +32,7 @@ class OboModel extends Backbone.Model {
 		}
 	}
 
-	// OboModel.create('chunk') = default chunk
-	// OboModel.create('ObojoboDraft.Chunks.List') = new list
-	// OboModel.create({type:'ObojoboDraft.Chunks.Table', content:{}, children:[]}) = new Table with children
 	static create(typeOrNameOrJson, attrs = {}) {
-		// console.log('oboModel.create', typeOrNameOrJson, attrs)
-		// try json
 		if (typeof typeOrNameOrJson === 'object') {
 			const oboModel = OboModel.create(typeOrNameOrJson.type, typeOrNameOrJson)
 
@@ -53,12 +48,10 @@ class OboModel extends Backbone.Model {
 			return oboModel
 		}
 
-		let item = Store.getDefaultItemForModelType(typeOrNameOrJson)
+		let item = Registry.getDefaultItemForModelType(typeOrNameOrJson)
 		if (!item) {
-			item = Store.getItemForType(typeOrNameOrJson)
+			item = Registry.getItemForType(typeOrNameOrJson)
 		}
-
-		// console.log('item be all', item)
 
 		if (!item) {
 			return null
@@ -272,7 +265,7 @@ class OboModel extends Backbone.Model {
 	}
 
 	getComponentClass() {
-		return Store.getItemForType(this.get('type')).componentClass
+		return Registry.getItemForType(this.get('type')).componentClass
 	}
 
 	hasChildren() {

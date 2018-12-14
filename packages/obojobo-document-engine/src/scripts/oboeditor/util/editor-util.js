@@ -93,7 +93,7 @@ const EditorUtil = {
 		return item.label
 	},
 	getOrderedList(state) {
-		return getFlatList(state.items)
+		return getFlatList(state.navItems)
 	},
 	getNavTarget(state) {
 		return state.itemsById[state.navTargetId]

@@ -13,8 +13,9 @@ const {
 	requireCanViewDrafts
 } = oboRequire('express_validators')
 
+// update to use path
 const draftTemplateXML = fs
-	.readFileSync('../../node_modules/obojobo-document-engine/documents/empty.xml')
+	.readFileSync(`${__dirname}/../../../obojobo-document-engine/documents/empty.xml`)
 	.toString()
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 

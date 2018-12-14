@@ -16,9 +16,9 @@ const slateToObo = node => {
 
 	node.nodes.forEach(child => {
 		if (child.type === SOLUTION_NODE) {
-			json.content.solution = Common.Store.getItemForType(PAGE_NODE).slateToObo(child.nodes.get(0))
+			json.content.solution = Common.Registry.getItemForType(PAGE_NODE).slateToObo(child.nodes.get(0))
 		} else if (child.type === MCASSESSMENT_NODE) {
-			json.children.push(Common.Store.getItemForType(child.type).slateToObo(child))
+			json.children.push(Common.Registry.getItemForType(child.type).slateToObo(child))
 		} else {
 			json.children.push(Component.helpers.slateToObo(child))
 		}
@@ -37,7 +37,7 @@ const oboToSlate = node => {
 
 	node.children.forEach(child => {
 		if (child.type === MCASSESSMENT_NODE) {
-			json.nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
+			json.nodes.push(Common.Registry.getItemForType(child.type).oboToSlate(child))
 		}
 		json.nodes.push(Component.helpers.oboToSlate(child))
 	})
@@ -50,7 +50,7 @@ const oboToSlate = node => {
 		}
 
 		solution.nodes.push(
-			Common.Store.getItemForType(PAGE_NODE).oboToSlate(json.data.content.solution)
+			Common.Registry.getItemForType(PAGE_NODE).oboToSlate(json.data.content.solution)
 		)
 		json.nodes.push(solution)
 	}

@@ -1,4 +1,6 @@
 /* eslint no-alert: 0 */
+import './viewer-component.scss'
+
 import React from 'react'
 
 class Figure extends React.Component {

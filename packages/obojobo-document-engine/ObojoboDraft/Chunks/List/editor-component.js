@@ -1,3 +1,5 @@
+import './viewer-component.scss'
+
 import React from 'react'
 
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'

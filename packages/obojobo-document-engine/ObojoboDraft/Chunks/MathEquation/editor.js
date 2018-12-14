@@ -19,7 +19,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.MathEquation', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.MathEquation', {
 	name: 'Math Equation',
 	icon: Icon,
 	isInsertable: true,

@@ -1,12 +1,8 @@
 import Common from 'Common'
-
 import ViewerComponent from './viewer-component'
 
-const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
-
-Common.Store.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
-	type: 'chunk',
+Common.Registry.registerModel('ObojoboDraft.Chunks.MCAssessment.MCAnswer', {
 	adapter: null,
 	componentClass: ViewerComponent,
-	selectionHandler: new SelectionHandler()
+	type: 'chunk'
 })

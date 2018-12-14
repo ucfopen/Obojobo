@@ -33,7 +33,10 @@ const { ModalStore } = Common.stores
 const { FocusStore } = Common.stores
 const { FocusUtil } = Common.util
 
-// Dispatcher.on 'all', (eventName, payload) -> console.log 'EVENT TRIGGERED', eventName
+const isElementVisible = node => {
+	const rect = node.getBoundingClientRect()
+	return !(rect.top > window.innerHeight || rect.bottom < 0)
+}
 
 Dispatcher.on('viewer:alert', payload =>
 	ModalUtil.show(
@@ -130,8 +133,6 @@ export default class ViewerApp extends React.Component {
 			})
 			.then(({ value: draftModel }) => {
 				const model = OboModel.create(draftModel)
-
-				// console.log('model', draftModel, model)
 
 				NavStore.init(
 					model,
@@ -256,7 +257,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	getTextForVariable(event, variable, textModel) {
-		return (event.text = Common.Store.getTextForVariable(variable, textModel, this.state))
+		return (event.text = Common.Registry.getTextForVariable(variable, textModel, this.state))
 	}
 
 	scrollToTop() {
@@ -302,7 +303,7 @@ export default class ViewerApp extends React.Component {
 			return
 		}
 
-		if (!Screen.isElementVisible(el)) {
+		if (isElementVisible(el)) {
 			return FocusUtil.unfocus()
 		}
 	}

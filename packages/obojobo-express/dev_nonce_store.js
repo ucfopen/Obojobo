@@ -42,7 +42,7 @@ class DevNonceStore extends NonceStore {
 					next(null, true)
 				} else {
 					logger.warn(
-						`Timestamp is Expired - current:${currentTime} - lti timestamp:${timestamp} <= age limit:${EXPIRE_IN_SEC} - epried: ${currentTime -
+						`Timestamp is Expired - current:${currentTime} - lti timestamp:${timestamp} <= age limit:${EXPIRE_IN_SEC} - expired: ${currentTime -
 							timestamp -
 							EXPIRE_IN_SEC}s ago`
 					)

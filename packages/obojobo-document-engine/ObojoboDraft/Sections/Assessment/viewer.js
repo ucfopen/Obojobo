@@ -1,16 +1,14 @@
+import adapter from './adapter'
 import Common from 'Common'
 import Viewer from 'Viewer'
+import ViewerComponent from './viewer-component'
 
 const { AssessmentUtil } = Viewer.util
 
-import adapter from './adapter'
-import ViewerComponent from './viewer-component'
-
-Common.Store.registerModel('ObojoboDraft.Sections.Assessment', {
-	type: 'section',
+Common.Registry.registerModel('ObojoboDraft.Sections.Assessment', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
-	selectionHandler: null,
+	type: 'section',
 	getNavItem(model) {
 		const title = model.title || 'Assessment'
 
@@ -40,16 +38,4 @@ Common.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 			return assessmentModel.modelState.attempts
 		}
 	}
-
-	// generateNav: (model) ->
-	// 	[
-	// 		{
-	// 			type: 'link',
-	// 			label: model.title ||= 'Assessment',
-	// 			id: model.get('id')
-	// 		},
-	// 		{
-	// 			type: 'seperator'
-	// 		}
-	// 	]
 })

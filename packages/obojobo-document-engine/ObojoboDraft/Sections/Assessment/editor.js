@@ -21,12 +21,21 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel(ASSESSMENT_NODE, {
+Common.Registry.registerModel(ASSESSMENT_NODE, {
 	name: 'Assessment',
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
-	plugins
+	getNavItem(model) {
+		const title = model.title || 'Assessment'
+		return {
+			type: 'link',
+			label: title,
+			path: [title.toLowerCase().replace(/ /g, '-')],
+			showChildren: false,
+			showChildrenOnNavigation: false
+		}
+	}
 })
 
 const Assessment = {

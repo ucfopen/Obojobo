@@ -141,7 +141,7 @@ const loadChildren = assessmentProperties => {
 
 // Choose is the number of questions to show per attempt, select indicates how to display them.
 const getQuestionBankProperties = questionBankNode => ({
-	choose: questionBankNode.content.choose || Infinity,
+	choose: parseInt(questionBankNode.content.choose, 10) || Infinity,
 	select: questionBankNode.content.select || 'sequential'
 })
 

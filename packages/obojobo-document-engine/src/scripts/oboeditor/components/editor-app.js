@@ -10,7 +10,11 @@ import EditorStore from '../stores/editor-store'
 
 import generateId from '../generate-ids'
 
+import '../../../scss/main.scss'
 import './editor-app.scss'
+// uses viewer css for styling
+import '../../../scripts/viewer/components/viewer-app.scss'
+import '../../../../ObojoboDraft/Modules/Module/viewer-component.scss'
 
 const { OboModel } = Common.models
 
@@ -30,7 +34,12 @@ class EditorApp extends React.Component {
 		// Make Slate nodes generate with UUIDs
 		KeyUtils.setGenerator(generateId)
 
-		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
+		this.onEditorStoreChange = () => {
+			this.setState({ editorState: EditorStore.getState() })
+		}
+
+		// === SET UP DATA STORES ===
+		EditorStore.onChange(this.onEditorStoreChange)
 	}
 
 	componentDidMount() {
@@ -59,11 +68,6 @@ class EditorApp extends React.Component {
 				console.log(err)
 				this.setState({ requestStatus: 'invalid', requestError: err })
 			})
-	}
-
-	componentWillMount() {
-		// === SET UP DATA STORES ===
-		EditorStore.onChange(this.onEditorStoreChange)
 	}
 
 	componentWillUnmount() {

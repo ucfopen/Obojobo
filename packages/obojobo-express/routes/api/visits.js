@@ -17,7 +17,6 @@ const {
 
 const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 	const visitStartReturnExtensionsProps = {}
-
 	return draftDocument
 		.yell(
 			'internal:startVisit',

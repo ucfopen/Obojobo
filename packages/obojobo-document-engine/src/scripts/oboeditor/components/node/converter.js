@@ -6,7 +6,7 @@ const slateToObo = node => {
 	let json = {}
 
 	node.nodes.forEach(child => {
-		json = Common.Store.getItemForType(child.type).slateToObo(child)
+		json = Common.Registry.getItemForType(child.type).slateToObo(child)
 	})
 
 	return json
@@ -18,8 +18,10 @@ const oboToSlate = node => {
 	json.type = COMPONENT_NODE
 	json.nodes = []
 
-	const editorModel = Common.Store.getItemForType(node.type)
-	json.nodes.push(editorModel.oboToSlate(node))
+	const editorModel = Common.Registry.getItemForType(node.type)
+	if (!editorModel.ignore) {
+		json.nodes.push(editorModel.oboToSlate(node))
+	}
 	return json
 }
 

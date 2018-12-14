@@ -17,7 +17,7 @@ const slateToObo = node => {
 		switch (child.type) {
 			case CHOICE_LIST_NODE:
 				child.nodes.forEach(choice => {
-					json.children.push(Common.Store.getItemForType(choice.type).slateToObo(choice))
+					json.children.push(Common.Registry.getItemForType(choice.type).slateToObo(choice))
 					if (choice.data.get('content').score === 100) correct++
 				})
 				break
@@ -53,7 +53,7 @@ const oboToSlate = node => {
 	}
 
 	node.children.forEach(child => {
-		choiceList.nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
+		choiceList.nodes.push(Common.Registry.getItemForType(child.type).oboToSlate(child))
 	})
 
 	json.nodes.push(choiceList)

@@ -1,32 +1,24 @@
+const path = require('path')
 const express = require('express')
 const draftNodeStore = oboRequire('draft_node_store')
-const getInstalledModules = require('./obo_get_installed_modules')
 const logger = oboRequire('logger')
 
+const { oboNodesServer, oboExpress } = require(path.resolve('obojobo.js'))
+
 module.exports = app => {
-	const isProd = app.get('env') === 'production'
-
-	// ===========  GENERATE installed_modules.json ===========
-	const spawn = require('child_process').spawnSync
-	spawn('yarn', [isProd ? 'chunks:register' : 'chunks:registerdev'])
-
-	const modules = getInstalledModules(app.get('env'))
-
 	// =========== REGISTER CUSTOM EXPRESS MIDDLEWARE ===========
-	modules.express.forEach(expressFile => {
-		logger.info('Registering express App', expressFile)
-		app.use(require(expressFile))
+	oboExpress.forEach(expressFile => {
+		const resolvedPath = path.resolve('packages/obojobo-document-engine/server', expressFile)
+		logger.info('Registering express App:', resolvedPath)
+		app.use(require(resolvedPath))
 	})
 
 	// =========== REGISTER CUSTOM DRAFT NODES ===========
-	modules.draftNodes.forEach((nodeFile, nodeName) => {
-		draftNodeStore.add(nodeName, nodeFile)
+	oboNodesServer.forEach(node => {
+		const location = path.resolve('packages/obojobo-document-engine', node.location)
+		logger.info('Adding server node:', location)
+		draftNodeStore.add(node.name, location)
 	})
-
-	// =========== STATIC ASSET PATHS ================
-	// Register static assets
-	// app.use(express.static(path.join(__dirname, 'public')))
-	// app.use(asset.url, express.static(asset.path))
 
 	// ===========  ASSETS FROM THE ASSET MANIFEST ===========
 	const registerAssetVersions = (base, ext) => {
@@ -36,5 +28,6 @@ module.exports = app => {
 
 	registerAssetVersions('viewer', '.js')
 	registerAssetVersions('viewer', '.css')
-	registerAssetVersions('viewer-app', '.js')
+	registerAssetVersions('editor', '.js')
+	registerAssetVersions('editor', '.css')
 }

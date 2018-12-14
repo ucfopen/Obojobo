@@ -33,14 +33,44 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.Heading', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.Heading', {
 	name: 'Heading',
 	icon: Icon,
 	isInsertable: true,
 	insertJSON: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
-	plugins
+	plugins,
+	getNavItem(model) {
+		switch (model.modelState.headingLevel) {
+			// when 1
+			// 	type: 'link',
+			// 	label: model.modelState.textGroup.first.text.value,
+			// 	path: [model.modelState.textGroup.first.text.value.toLowerCase().replace(/ /g, '-')],
+			// 	showChildren: false
+
+			case 1:
+			case 2:
+				if (model.modelState.headingLevel === 1 && model.getIndex() === 0) {
+					return null
+				}
+
+				return {
+					type: 'sub-link',
+					label: model.modelState.textGroup.first.text,
+					path: [
+						model
+							.toText()
+							.toLowerCase()
+							.replace(/ /g, '-')
+					],
+					showChildren: false
+				}
+
+			default:
+				return null
+		}
+	}
 })
 
 const Heading = {

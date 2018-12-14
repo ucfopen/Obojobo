@@ -1,3 +1,5 @@
+import '../../viewer-component.scss'
+
 import React from 'react'
 import { Block } from 'slate'
 import Common from 'Common'
@@ -30,6 +32,5 @@ const ChoiceList = props => {
 		</div>
 	)
 }
-
 
 export default ChoiceList

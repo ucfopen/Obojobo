@@ -17,12 +17,31 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Pages.Page', {
+Common.Registry.registerModel('ObojoboDraft.Pages.Page', {
 	name: 'Page',
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
-	plugins
+	plugins,
+	getNavItem(model) {
+		let label
+
+		if (model.title) {
+			label = model.title
+		} else {
+			const pages = model.parent.children.models.filter(
+				child => child.get('type') === 'ObojoboDraft.Pages.Page'
+			)
+			label = `Page ${pages.indexOf(model) + 1}`
+		}
+
+		return {
+			type: 'link',
+			label,
+			path: [label.toLowerCase().replace(/ /g, '-')],
+			showChildren: false
+		}
+	}
 })
 
 const Page = {

@@ -19,7 +19,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.ActionButton', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.ActionButton', {
 	name: 'Button',
 	icon: Icon,
 	isInsertable: true,

@@ -1,3 +1,5 @@
+import './viewer-component.scss'
+
 import React from 'react'
 
 class MCFeedback extends React.Component {

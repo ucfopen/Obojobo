@@ -1,12 +1,9 @@
-import Common from 'Common'
-
-import SelectionHandler from './selection-handler'
 import adapter from './adapter'
+import Common from 'Common'
 import ViewerComponent from './viewer-component'
 
-Common.Store.registerModel('ObojoboDraft.Chunks.Figure', {
-	type: 'chunk',
+Common.Registry.registerModel('ObojoboDraft.Chunks.Figure', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
-	selectionHandler: new SelectionHandler()
+	type: 'chunk'
 })

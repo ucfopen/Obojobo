@@ -1,16 +1,10 @@
-let items
-let defaults
-let registeredToolbarItems
-let toolbarItems
-let variableHandlers
-
-class _Store {
+class _Registry {
 	init() {
-		items = new Map()
-		defaults = new Map()
-		toolbarItems = []
-		variableHandlers = new Map()
-		registeredToolbarItems = {
+		this.items = new Map()
+		this.defaults = new Map()
+		this.toolbarItems = []
+		this.variableHandlers = new Map()
+		this.registeredToolbarItems = {
 			separator: { id: 'separator', type: 'separator' }
 		}
 	}
@@ -41,12 +35,10 @@ class _Store {
 	}
 
 	registerModel(className, opts = {}) {
-		// Temporary workaround until we fix webpack to give the editor its own
-		// entry point
-		const item = items.get(className)
+		const item = this.items.get(className)
 		if (item) opts = Object.assign(opts, item)
 
-		items.set(className, opts)
+		this.items.set(className, opts)
 
 		opts = Object.assign(
 			{
@@ -54,43 +46,13 @@ class _Store {
 				default: false,
 				insertItem: null,
 				componentClass: null,
-				selectionHandler: null,
 				commandHandler: null,
 				variables: {},
-				init() {}
-			},
-			opts
-		)
-
-		if (opts.default) {
-			defaults.set(opts.type, className)
-		}
-
-		opts.init()
-
-		for (const variable in opts.variables) {
-			const cb = opts.variables[variable]
-			variableHandlers.set(variable, cb)
-		}
-
-		return this
-	}
-
-	registerEditorModel(className, opts = {}) {
-		// Temporary workaround until we fix webpack to give the editor its own
-		// entry point
-		const item = items.get(className)
-		if (item) opts = Object.assign(opts, item)
-
-		items.set(className, opts)
-
-		opts = Object.assign(
-			{
-				type: null,
+				init() {},
+				// editor
+				// pull out to editor registry eventually
 				name: '',
 				icon: null,
-				default: false,
-				insertItem: null,
 				isInsertable: false,
 				slateToObo: null,
 				oboToSlate: null,
@@ -99,38 +61,48 @@ class _Store {
 			opts
 		)
 
+		if (opts.default) {
+			this.defaults.set(opts.type, className)
+		}
+
+		opts.init()
+
+		for (const variable in opts.variables) {
+			const cb = opts.variables[variable]
+			this.variableHandlers.set(variable, cb)
+		}
+
 		return this
 	}
 
 	getDefaultItemForModelType(modelType) {
-		const type = defaults.get(modelType)
+		const type = this.defaults.get(modelType)
 		if (!type) {
 			return null
 		}
-
-		return items.get(type)
+		return this.items.get(type)
 	}
 
 	getItemForType(type) {
-		return items.get(type)
+		return this.items.get(type)
 	}
 
 	registerToolbarItem(opts) {
-		registeredToolbarItems[opts.id] = opts
+		this.registeredToolbarItems[opts.id] = opts
 		return this
 	}
 
 	addToolbarItem(id) {
-		toolbarItems.push(Object.assign({}, registeredToolbarItems[id]))
+		this.toolbarItems.push(Object.assign({}, this.registeredToolbarItems[id]))
 		return this
 	}
 
 	getItems(callback) {
-		return callback(items)
+		return callback(this.items)
 	}
 
 	getTextForVariable(variable, model, viewerState) {
-		const cb = variableHandlers.get(variable)
+		const cb = this.variableHandlers.get(variable)
 		if (!cb) {
 			return null
 		}
@@ -139,15 +111,25 @@ class _Store {
 	}
 
 	get registeredToolbarItems() {
-		return registeredToolbarItems
+		return this.registeredToolbarItems
+	}
+
+	set registeredToolbarItems(arg) {
+		return {
+			separator: { id: 'separator', type: 'separator' }
+		}
 	}
 
 	get toolbarItems() {
-		return toolbarItems
+		return this.toolbarItems
+	}
+
+	set toolbarItems(arg) {
+		return []
 	}
 }
 
-const Store = new _Store()
+const Registry = new _Registry()
 
-Store.init()
-export { Store }
+Registry.init()
+export { Registry }

@@ -123,7 +123,7 @@ class PageEditor extends React.Component {
 
 	exportToJSON(page, value) {
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = Common.Store.getItemForType(ASSESSMENT_NODE).slateToObo(
+			const json = Common.Registry.getItemForType(ASSESSMENT_NODE).slateToObo(
 				value.document.nodes.get(0)
 			)
 			page.set('children', json.children)
@@ -155,6 +155,7 @@ class PageEditor extends React.Component {
 			json.document.nodes.push(Assessment.helpers.oboToSlate(page))
 		} else {
 			page.attributes.children.forEach(child => {
+				// wraps each node with oboeditor-component
 				json.document.nodes.push(Component.helpers.oboToSlate(child))
 			})
 		}

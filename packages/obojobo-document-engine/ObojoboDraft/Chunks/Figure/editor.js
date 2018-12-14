@@ -30,7 +30,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.Figure', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.Figure', {
 	name: 'Figure',
 	icon: Icon,
 	isInsertable: true,

@@ -19,7 +19,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.Break', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.Break', {
 	name: 'Break',
 	icon: Icon,
 	isInsertable: true,

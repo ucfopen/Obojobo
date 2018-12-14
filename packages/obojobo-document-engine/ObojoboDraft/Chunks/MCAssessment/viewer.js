@@ -1,17 +1,13 @@
-import Common from 'Common'
-
-import './MCChoice/viewer'
-import './MCAnswer/viewer'
-import './MCFeedback/viewer'
-
 import adapter from './adapter'
+import Common from 'Common'
 import ViewerComponent from './viewer-component'
 
-const SelectionHandler = Common.chunk.textChunk.TextGroupSelectionHandler
+import './MCAnswer/viewer'
+import './MCChoice/viewer'
+import './MCFeedback/viewer'
 
-Common.Store.registerModel('ObojoboDraft.Chunks.MCAssessment', {
-	type: 'chunk',
+Common.Registry.registerModel('ObojoboDraft.Chunks.MCAssessment', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
-	selectionHandler: new SelectionHandler()
+	type: 'chunk'
 })

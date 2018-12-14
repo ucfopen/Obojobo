@@ -7,7 +7,12 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const EditorSchema = {
 	schema: {
 		document: {
-			nodes: [{ match: [{ type: 'oboeditor.component' }], min: 1 }],
+			nodes: [
+				{
+					match: [{ type: 'oboeditor.component' }, { type: 'ObojoboDraft.Sections.Assessment' }],
+					min: 1
+				}
+			],
 			normalize: (change, error) => {
 				const { node, child, index } = error
 				switch (error.code) {

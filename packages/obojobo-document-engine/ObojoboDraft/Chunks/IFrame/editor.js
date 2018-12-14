@@ -19,7 +19,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.IFrame', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.IFrame', {
 	name: 'IFrame',
 	icon: Icon,
 	isInsertable: true,

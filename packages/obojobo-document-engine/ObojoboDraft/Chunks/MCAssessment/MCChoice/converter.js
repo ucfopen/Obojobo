@@ -8,7 +8,7 @@ const slateToObo = node => {
 	json.children = []
 
 	node.nodes.forEach(child => {
-		json.children.push(Common.Store.getItemForType(child.type).slateToObo(child))
+		json.children.push(Common.Registry.getItemForType(child.type).slateToObo(child))
 	})
 
 	return json
@@ -23,7 +23,7 @@ const oboToSlate = node => {
 	json.nodes = []
 
 	node.children.forEach(child => {
-		json.nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
+		json.nodes.push(Common.Registry.getItemForType(child.type).oboToSlate(child))
 	})
 
 	return json

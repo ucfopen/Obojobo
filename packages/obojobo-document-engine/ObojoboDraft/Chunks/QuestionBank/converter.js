@@ -19,7 +19,7 @@ const slateToObo = node => {
 				json.children.push(slateToObo(child))
 				break
 			case QUESTION_NODE:
-				json.children.push(Common.Store.getItemForType(child.type).slateToObo(child))
+				json.children.push(Common.Registry.getItemForType(child.type).slateToObo(child))
 				break
 			case SETTINGS_NODE:
 				json.content.choose = child.nodes.first().text
@@ -69,7 +69,7 @@ const oboToSlate = node => {
 		if (child.type === QUESTION_BANK_NODE) {
 			json.nodes.push(oboToSlate(child))
 		} else {
-			json.nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
+			json.nodes.push(Common.Registry.getItemForType(child.type).oboToSlate(child))
 		}
 	})
 

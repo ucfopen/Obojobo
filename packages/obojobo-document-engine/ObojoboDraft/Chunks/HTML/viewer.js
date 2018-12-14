@@ -1,12 +1,9 @@
-import Common from 'Common'
 import adapter from './adapter'
+import Common from 'Common'
 import ViewerComponent from './viewer-component'
 
-const SelectionHandler = Common.chunk.focusableChunk.FocusableSelectionHandler
-
-Common.Store.registerModel('ObojoboDraft.Chunks.HTML', {
-	type: 'chunk',
+Common.Registry.registerModel('ObojoboDraft.Chunks.HTML', {
 	adapter: adapter,
 	componentClass: ViewerComponent,
-	selectionHandler: new SelectionHandler()
+	type: 'chunk'
 })

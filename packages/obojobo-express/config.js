@@ -7,7 +7,8 @@ if (process.env.NODE_ENV) {
 }
 
 const getConfigFileData = (configFile, type) => {
-	const json = JSON.parse(fs.readFileSync(configFile))
+	// should convert to use path
+	const json = JSON.parse(fs.readFileSync(`${__dirname}/${configFile}`))
 	return json[type]
 }
 

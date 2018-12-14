@@ -39,13 +39,13 @@ class Node extends React.Component {
 				{this.props.isSelected ? (
 					<div className={'component-toolbar'}>
 						<DropMenu
-							dropOptions={Common.Store.getItems(this.convertItemsToArray)}
+							dropOptions={Common.Registry.getItems(this.convertItemsToArray)}
 							className={'align-left top'}
 							icon="+"
 							masterOnClick={this.insertBlockAtStart.bind(this)}
 						/>
 						<DropMenu
-							dropOptions={Common.Store.getItems(this.convertItemsToArray)}
+							dropOptions={Common.Registry.getItems(this.convertItemsToArray)}
 							className={'align-left bottom'}
 							icon="+"
 							masterOnClick={this.insertBlockAtEnd.bind(this)}

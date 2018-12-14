@@ -19,7 +19,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.YouTube', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.YouTube', {
 	name: 'YouTube',
 	icon: Icon,
 	isInsertable: true,

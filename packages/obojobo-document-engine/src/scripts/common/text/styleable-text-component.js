@@ -1,7 +1,8 @@
-import styleableTextRenderer from './styleable-text-renderer'
-import { EMPTY_CHAR as emptyChar } from '../../common/text/text-constants'
-
 import React from 'react'
+
+import styleableTextRenderer from './styleable-text-renderer'
+
+const emptyChar = String.fromCharCode(8203)
 
 export default class StyleableTextComponent extends React.Component {
 	createChild(el, key) {

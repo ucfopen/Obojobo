@@ -23,7 +23,7 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Store.registerEditorModel('ObojoboDraft.Chunks.QuestionBank', {
+Common.Registry.registerModel('ObojoboDraft.Chunks.QuestionBank', {
 	name: 'Question Bank',
 	icon: Icon,
 	isInsertable: true,

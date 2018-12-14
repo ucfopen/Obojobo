@@ -1,20 +1,30 @@
 {
-  "private": true,
-  "name": "obojobo-next",
-  "scripts": {
-    "setup": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn db:rebuild",
-    "dev": "cd node_modules/obojobo-express && yarn dev",
-    "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\"",
-    "test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test",
-    "precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit"
-  },
-  "devDependencies": {
-    "concurrently": "^3.5.0",
-    "husky": "^0.13.3"
-  },
-  "workspaces": [
-    "packages/obojobo-document-engine",
-    "packages/obojobo-document-xml-parser",
-    "packages/obojobo-express"
-  ]
+	"private": true,
+	"name": "obojobo-next",
+	"scripts": {
+		"build:docEngine": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info webpack",
+		"db:rebuild": "cd packages/obojobo-express && yarn db:rebuild",
+		"delete:node_modules": "rm -rf node_modules && cd packages/obojobo-document-engine && rm -rf node_modules && cd ../obojobo-express && rm -rf node_modules && cd ../obojobo-document-xml-parser && rm -rf node_modules",
+		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
+		"precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit",
+		"setup": "yarn build:docEngine && cd ../obojobo-express && yarn db:rebuild",
+		"test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test"
+	},
+	"devDependencies": {
+		"concurrently": "^3.5.0",
+		"husky": "^0.13.3",
+		"nodemon": "^1.18.8"
+	},
+	"workspaces": [
+		"packages/obojobo-document-engine",
+		"packages/obojobo-document-xml-parser",
+		"packages/obojobo-express"
+	],
+	"nodemonConfig": {
+		"ext": "js ejs",
+		"watch": [
+			"./packages/obojobo-express",
+			"./packages/obojobo-document-engine/server"
+		]
+	}
 }
