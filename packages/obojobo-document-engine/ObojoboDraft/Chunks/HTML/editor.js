@@ -1,54 +1,13 @@
 import React from 'react'
+import Common from 'Common'
+
+import emptyNode from './empty-node.json'
+import Icon from './icon'
+import Node from './editor-component'
+import Schema from './schema'
+import Converter from './converter'
 
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
-
-const Node = props => {
-	return (
-		<div className={'component'}>
-			<div className={'obojobo-draft--chunks--html viewer pad'}>{props.children}</div>
-		</div>
-	)
-}
-
-const insertNode = change => {
-	change
-		.insertBlock({
-			type: HTML_NODE
-		})
-		.moveToStartOfNextText()
-		.focus()
-}
-
-const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = {}
-	json.content.html = node.text
-	json.children = []
-
-	return json
-}
-
-const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-
-	json.nodes = [
-		{
-			object: 'text',
-			leaves: [
-				{
-					text: node.content.html
-				}
-			]
-		}
-	]
-
-	return json
-}
 
 const plugins = {
 	renderNode(props) {
@@ -57,30 +16,50 @@ const plugins = {
 				return <Node {...props} {...props.attributes} />
 		}
 	},
-	schema: {
-		blocks: {
-			'ObojoboDraft.Chunks.HTML': {
-				nodes: [
-					{
-						match: [{ object: 'text' }],
-						min: 1
-					}
-				]
-			}
+	onKeyDown(event, change) {
+		const isHTML = change.value.blocks.some(block => block.type === HTML_NODE)
+		if (!isHTML) return
+
+		// Insert a softbreak on enter
+		if (event.key === 'Enter') {
+			event.preventDefault()
+			return change.insertText('\n')
 		}
-	}
+
+		// Tab insert
+		if (event.key === 'Tab') {
+			event.preventDefault()
+			change.insertText('\t')
+			return true
+		}
+	},
+	schema: Schema
 }
 
-const Heading = {
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.HTML', {
+	name: 'HTML',
+	icon: Icon,
+	isInsertable: true,
+	insertJSON: emptyNode,
+	slateToObo: Converter.slateToObo,
+	oboToSlate: Converter.oboToSlate,
+	plugins
+})
+
+const HTML = {
+	name: HTML_NODE,
 	components: {
-		Node
+		Node,
+		Icon
 	},
 	helpers: {
-		insertNode,
-		slateToObo,
-		oboToSlate
+		slateToObo: Converter.slateToObo,
+		oboToSlate: Converter.oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }
 
-export default Heading
+export default HTML

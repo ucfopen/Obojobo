@@ -1,30 +1,21 @@
 import React from 'react'
-import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import Common from 'Common'
 
-import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+import emptyNode from './empty-node.json'
+import Icon from './icon'
+import Node from './editor-component'
+import Line from './components/line/editor-component'
+import Schema from './schema'
+import Converter from './converter'
+
+import deleteEmptyParent from './changes/delete-empty-parent'
+import splitParent from './changes/split-parent'
+import decreaseIndent from './changes/decrease-indent'
+import increaseIndent from './changes/increase-indent'
+import insertTab from './changes/insert-tab'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
-
-const Line = props => {
-	return (
-		<span
-			className={'text align-' + props.node.data.get('align')}
-			data-indent={props.node.data.get('indent')}
-		>
-			{props.children}
-		</span>
-	)
-}
-
-const Node = props => {
-	return (
-		<div className={'component'}>
-			<div className={'text-chunk obojobo-draft--chunks--single-text pad'}>{props.children}</div>
-		</div>
-	)
-}
 
 const isType = change => {
 	return change.value.blocks.some(block => {
@@ -34,65 +25,6 @@ const isType = change => {
 	})
 }
 
-const insertNode = change => {
-	change
-		.insertBlock(TEXT_NODE)
-		.moveToStartOfNextText()
-		.focus()
-}
-
-const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = {}
-
-	json.content.textGroup = []
-	node.nodes.forEach(line => {
-		const textLine = {
-			text: { value: line.text, styleList: [] },
-			data: { indent: line.data.get('indent'), align: line.data.get('align') }
-		}
-
-		line.nodes.forEach(text => {
-			TextUtil.slateToOboText(text, textLine)
-		})
-
-		json.content.textGroup.push(textLine)
-	})
-	json.children = []
-
-	return json
-}
-const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-	json.data = { content: {} }
-
-	json.nodes = []
-	node.content.textGroup.forEach(line => {
-		const indent = line.data ? line.data.indent : 0
-		const align = line.data ? line.data.align : 0
-		const textLine = {
-			object: 'block',
-			type: TEXT_LINE_NODE,
-			data: { indent, align },
-			nodes: [
-				{
-					object: 'text',
-					leaves: TextUtil.parseMarkings(line)
-				}
-			]
-		}
-
-		json.nodes.push(textLine)
-	})
-
-	return json
-}
-
 const plugins = {
 	onKeyDown(event, change) {
 		const isText = isType(change)
@@ -100,65 +32,31 @@ const plugins = {
 
 		// Delete empty text node
 		if (event.key === 'Backspace' || event.key === 'Delete') {
-			const last = change.value.endBlock
-			let parent
-			change.value.blocks.forEach(block => {
-				parent = change.value.document.getClosest(block.key, parent => {
-					return parent.type === TEXT_NODE
-				})
-			})
-
-			if (last.text === '' && parent.nodes.size === 1) {
-				event.preventDefault()
-				change.removeNodeByKey(parent.key)
-				return true
-			}
+			return deleteEmptyParent(event, change)
 		}
 
 		// Enter
 		if (event.key === 'Enter') {
-			event.preventDefault()
 			const last = change.value.endBlock
+			if (last.text !== '') return
+
 			// Double Enter
-			if (last.text === '') {
-				change.removeNodeByKey(last.key)
-				change.splitBlock(2)
-				return true
-			}
-
-			return
+			return splitParent(event, change)
 		}
 
-		// Shift Tab
+		// Shift+Tab
 		if (event.key === 'Tab' && event.shiftKey) {
-			event.preventDefault()
-			change.value.blocks.forEach(block => {
-				let newIndent = block.data.get('indent') - 1
-				if (newIndent < 1) newIndent = 0
-
-				return change.setNodeByKey(block.key, {
-					data: { indent: newIndent }
-				})
-			})
-			return true
+			return decreaseIndent(event, change)
 		}
 
-		// Alt Tab
+		// Alt+Tab
 		if (event.key === 'Tab' && event.altKey) {
-			event.preventDefault()
-			change.value.blocks.forEach(block =>
-				change.setNodeByKey(block.key, {
-					data: { indent: block.data.get('indent') + 1 }
-				})
-			)
-			return true
+			return increaseIndent(event, change)
 		}
 
-		// Tab insert
+		// Tab
 		if (event.key === 'Tab') {
-			event.preventDefault()
-			change.insertText('\t')
-			return true
+			return insertTab(event, change)
 		}
 	},
 	renderNode(props) {
@@ -180,68 +78,32 @@ const plugins = {
 			</span>
 		)
 	},
-	schema: {
-		blocks: {
-			'ObojoboDraft.Chunks.Text': {
-				nodes: [
-					{
-						match: [{ type: TEXT_LINE_NODE }],
-						min: 1
-					}
-				],
-				normalize: (change, error) => {
-					const { node, child, index } = error
-					switch (error.code) {
-						case CHILD_TYPE_INVALID: {
-							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
-							const isAtEdge = index === node.nodes.size - 1 || index === 0
-							if (child.object === 'block' && isAtEdge) {
-								return change.unwrapNodeByKey(child.key)
-							}
-
-							return change.wrapBlockByKey(child.key, {
-								type: TEXT_LINE_NODE,
-								data: { indent: 0 }
-							})
-						}
-						case CHILD_REQUIRED: {
-							const block = Block.create({
-								type: TEXT_LINE_NODE,
-								data: { indent: 0 }
-							})
-							return change.insertNodeByKey(node.key, index, block)
-						}
-					}
-				}
-			},
-			'ObojoboDraft.Chunks.Text.TextLine': {
-				nodes: [{ match: [{ object: 'text' }] }],
-				normalize: (change, error) => {
-					const { node, child, index } = error
-					switch (error.code) {
-						case CHILD_TYPE_INVALID: {
-							// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
-							const isAtEdge = index === node.nodes.size - 1 || index === 0
-							if (child.object === 'block' && isAtEdge) {
-								return change.unwrapNodeByKey(child.key)
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+	schema: Schema
 }
 
+Common.Store.registerEditorModel('ObojoboDraft.Chunks.Text', {
+	name: 'Text',
+	icon: Icon,
+	isInsertable: true,
+	insertJSON: emptyNode,
+	slateToObo: Converter.slateToObo,
+	oboToSlate: Converter.oboToSlate,
+	plugins
+})
+
 const Text = {
+	name: TEXT_NODE,
 	components: {
 		Node,
-		Line
+		Line,
+		Icon
 	},
 	helpers: {
-		insertNode,
-		slateToObo,
-		oboToSlate
+		slateToObo: Converter.slateToObo,
+		oboToSlate: Converter.oboToSlate
+	},
+	json: {
+		emptyNode
 	},
 	plugins
 }

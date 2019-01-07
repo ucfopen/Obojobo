@@ -1,5 +1,4 @@
 /* eslint no-alert: 0 */
-
 import React from 'react'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'

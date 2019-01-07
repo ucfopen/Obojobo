@@ -1,63 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Text editor Line builds the expected component 1`] = `
-<span
-  className="text align-0"
-  data-indent={0}
-/>
-`;
-
-exports[`Text editor Node builds the expected component 1`] = `
-<div
-  className="component"
->
-  <div
-    className="text-chunk obojobo-draft--chunks--single-text pad"
-  />
-</div>
-`;
-
-exports[`Text editor oboToSlate converts an OboNode to a Slate node 1`] = `
-Object {
-  "data": Object {
-    "content": Object {},
-  },
-  "key": "mockKey",
-  "nodes": Array [
-    Object {
-      "data": Object {
-        "align": undefined,
-        "indent": 1,
-      },
-      "nodes": Array [
-        Object {
-          "leaves": undefined,
-          "object": "text",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Text.TextLine",
-    },
-    Object {
-      "data": Object {
-        "align": 0,
-        "indent": 0,
-      },
-      "nodes": Array [
-        Object {
-          "leaves": undefined,
-          "object": "text",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Chunks.Text.TextLine",
-    },
-  ],
-  "object": "block",
-  "type": "mockType",
-}
-`;
-
 exports[`Text editor plugins.renderNode renders a line when passed 1`] = `
 <Line
   attributes={
@@ -78,7 +20,7 @@ exports[`Text editor plugins.renderNode renders a line when passed 1`] = `
 `;
 
 exports[`Text editor plugins.renderNode renders text when passed 1`] = `
-<Node
+<Text
   node={
     Object {
       "data": Object {
@@ -103,26 +45,4 @@ exports[`Text editor plugins.renderPlaceholder renders a placeholder 1`] = `
 >
   Type Your Text Here
 </span>
-`;
-
-exports[`Text editor slateToObo converts a Slate node to an OboNode with content 1`] = `
-Object {
-  "children": Array [],
-  "content": Object {
-    "textGroup": Array [
-      Object {
-        "data": Object {
-          "align": Object {},
-          "indent": Object {},
-        },
-        "text": Object {
-          "styleList": Array [],
-          "value": "mockText",
-        },
-      },
-    ],
-  },
-  "id": "mockKey",
-  "type": "mockType",
-}
 `;
