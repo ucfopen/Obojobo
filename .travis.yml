@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - '10.4.1'
+  - '10'
+  - '11'
+cache:
+  yarn: true
+  directories:
+  - node_modules
+  - packages/obojobo-document-engine/node_modules
+  - packages/obojobo-document-xml-parser/node_modules
+  - packages/obojobo-express/node_modules
+script:
+- yarn test:ci
