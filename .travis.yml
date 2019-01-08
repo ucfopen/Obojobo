@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+- '6'
+cache:
+  yarn: true
+  directories:
+  - node_modules
+  - packages/obojobo-document-engine/node_modules
+  - packages/obojobo-document-xml-parser/node_modules
+  - packages/obojobo-express/node_modules
+before_install:
+- npm config set spin false
+- npm install -g npm@^5
+script:
+- yarn test:ci
+

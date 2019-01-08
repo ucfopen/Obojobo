@@ -7,6 +7,7 @@
     "dev": "cd node_modules/obojobo-express && yarn dev",
     "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\"",
     "test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test",
+    "test:ci": "cd node_modules/obojobo-document-xml-parser && yarn test:ci && cd ../obojobo-express && yarn test:ci && cd ../obojobo-document-engine && yarn test:ci",
     "precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit",
     "heroku-postbuild": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn assets"
   },
