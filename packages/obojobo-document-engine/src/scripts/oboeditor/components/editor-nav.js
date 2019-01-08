@@ -69,16 +69,24 @@ class EditorNav extends React.Component {
 		this.setState({ navTargetId: newPage.id })
 	}
 
-	renameModule(module) {
-		let label = window.prompt('Enter the new title:', module.label)
+	showRenameModuleModal(module) {
+		ModalUtil.show(
+			<Prompt
+				cancelOk
+				title="Rename Module"
+				message="Enter the new title for the module:"
+				value={module.label}
+				onConfirm={this.renameModule.bind(this, module.id)}/>
+		)
+	}
 
-		// null means the user canceled without changing the value
-		if (label === null) return
+	renameModule(moduleId, label) {
+		ModalUtil.hide()
 
 		// If the module name is empty or just whitespace, provide a default value
-		if (!label || /\s/.test(label)) label = '(Unnamed Module)'
+		if (!label || !(/\s/.test(label))) label = '(Unnamed Module)'
 
-		EditorUtil.renamePage(module.id, label)
+		EditorUtil.renamePage(moduleId, label)
 	}
 
 	renderLabel(label) {
@@ -137,7 +145,9 @@ class EditorNav extends React.Component {
 						+ Add Assessment
 					</button>
 					<br />
-					<button className={'content-add-button'} onClick={() => this.renameModule(moduleItem)}>
+					<button
+						className={'content-add-button'}
+						onClick={this.showRenameModuleModal.bind(this, moduleItem)}>
 						Rename Module
 					</button>
 					<button
