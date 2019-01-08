@@ -25,6 +25,7 @@ import Question from './components/modal/question'
 import SimpleMessage from './components/modal/simple-message'
 import Modal from './components/modal/modal'
 import Dialog from './components/modal/dialog'
+import Prompt from './components/modal/prompt'
 import SimpleDialog from './components/modal/simple-dialog'
 import ErrorDialog from './components/modal/error-dialog'
 import TextMenu from './components/text-menu'
@@ -112,6 +113,7 @@ export default {
 				SingleInputBubble
 			},
 			Question,
+			Prompt,
 			SimpleMessage,
 			Modal,
 			Dialog,

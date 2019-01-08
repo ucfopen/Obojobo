@@ -1,5 +1,6 @@
 /* eslint no-alert: 0 */
 import React from 'react'
+import Common from 'Common'
 
 import EditorUtil from '../util/editor-util'
 import ClipboardUtil from '../util/clipboard-util'
@@ -12,6 +13,9 @@ import './editor-nav.scss'
 import pageTemplate from '../documents/new-page.json'
 import assessmentTemplate from '../documents/new-assessment.json'
 
+const { Prompt } = Common.components.modal
+const { ModalUtil } = Common.util
+
 class EditorNav extends React.Component {
 	constructor(props) {
 		super(props)
@@ -23,23 +27,43 @@ class EditorNav extends React.Component {
 		this.setState({ navTargetId: item.id })
 	}
 
-	addAssessment() {
-		const label = window.prompt('Enter the title for the new Assessment:') || 'Assessment'
+	showAddAssessmentModal() {
+		ModalUtil.show(
+			<Prompt
+				cancelOk
+				title="Add Assessment"
+				message="Enter the title for the new assessment:"
+				onConfirm={this.addAssessment.bind(this)}/>
+		)
+	}
+
+	addAssessment(name = 'Assessment') {
+		ModalUtil.hide()
 
 		const newAssessment = Object.assign({}, assessmentTemplate)
 		newAssessment.id = generateId()
-		newAssessment.content.title = label
+		newAssessment.content.title = name
 
 		EditorUtil.addAssessment(newAssessment)
-		this.setState({ navTargetId: newAssessment.id })
+		return this.setState({ navTargetId: newAssessment.id })
 	}
 
-	addPage() {
-		const label = window.prompt('Enter the title for the new page:') || 'Default Page'
+	showAddPageModal() {
+		ModalUtil.show(
+			<Prompt
+				cancelOk
+				title="Add Page"
+				message="Enter the title for the new page:"
+				onConfirm={this.addPage.bind(this)}/>
+		)
+	}
+
+	addPage(title = 'Default Page') {
+		ModalUtil.hide()
 
 		const newPage = Object.assign({}, pageTemplate)
 		newPage.id = generateId()
-		newPage.content.title = label
+		newPage.content.title = title
 
 		EditorUtil.addPage(newPage)
 		this.setState({ navTargetId: newPage.id })
@@ -102,10 +126,14 @@ class EditorNav extends React.Component {
 					})}
 				</ul>
 				<div className="button-bar">
-					<button className={'content-add-button'} onClick={() => this.addPage()}>
+					<button
+						className={'content-add-button'}
+						onClick={this.showAddPageModal.bind(this)}>
 						+ Add Page
 					</button>
-					<button className={'content-add-button'} onClick={() => this.addAssessment()}>
+					<button
+						className={'content-add-button'}
+						onClick={this.showAddAssessmentModal.bind(this)}>
 						+ Add Assessment
 					</button>
 					<br />
