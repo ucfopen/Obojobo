@@ -2,11 +2,14 @@
   "private": true,
   "name": "obojobo-next",
   "scripts": {
+    "start": "cd node_modules/obojobo-express && node ./bin/www",
     "setup": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn db:rebuild",
     "dev": "cd node_modules/obojobo-express && yarn dev",
     "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\"",
     "test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test",
-    "precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit"
+    "test:ci": "cd node_modules/obojobo-document-xml-parser && yarn test:ci && cd ../obojobo-express && yarn test:ci && cd ../obojobo-document-engine && yarn test:ci",
+    "precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit",
+    "heroku-postbuild": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn assets"
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
@@ -16,5 +19,9 @@
     "packages/obojobo-document-engine",
     "packages/obojobo-document-xml-parser",
     "packages/obojobo-express"
-  ]
+  ],
+  "engines": {
+    "yarn": "^1.0",
+    "node": "^10.4.1"
+  }
 }
