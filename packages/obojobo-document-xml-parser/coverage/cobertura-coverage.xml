@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="318" lines-covered="224" line-rate="0.7044" branches-valid="149" branches-covered="92" branch-rate="0.6174000000000001" timestamp="1546970721214" complexity="0" version="0.1">
+<coverage lines-valid="318" lines-covered="224" line-rate="0.7044" branches-valid="149" branches-covered="92" branch-rate="0.6174000000000001" timestamp="1546971693488" complexity="0" version="0.1">
   <sources>
     <source>/Users/ra741975/progman/Obojobo/packages/obojobo-document-xml-parser</source>
   </sources>
