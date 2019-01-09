@@ -226,13 +226,8 @@ class LTIStatus extends React.Component {
 		}
 
 		return (
-			<div
-				role="dialog"
-				aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
-				tabIndex="-1"
-				className="obojobo-draft--sections--assessment--lti-status"
-			>
-				<div id="obojobo-draft--sections--assessment--lti-status--dialog">{child}</div>
+			<div role="dialog" tabIndex="-1" className="obojobo-draft--sections--assessment--lti-status">
+				{child}
 			</div>
 		)
 	}

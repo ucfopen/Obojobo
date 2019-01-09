@@ -25,42 +25,37 @@ exports[`PostTest PostTest component 1`] = `
       </span>
     </div>
     <div
-      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
       className="obojobo-draft--sections--assessment--lti-status"
       role="dialog"
       tabIndex="-1"
     >
       <div
-        id="obojobo-draft--sections--assessment--lti-status--dialog"
+        className="is-not-synced"
       >
+        <h2>
+          There was a problem sending your score to mockLTIHost.
+        </h2>
+        <p>
+          Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+        </p>
         <div
-          className="is-not-synced"
+          aria-hidden={false}
+          className="is-not-synced-additional is-shown"
+          tabIndex="-1"
         >
-          <h2>
-            There was a problem sending your score to mockLTIHost.
-          </h2>
-          <p>
-            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-          </p>
-          <div
-            aria-hidden={false}
-            className="is-not-synced-additional is-shown"
-            tabIndex="-1"
+          <strong>
+            Sorry - That didn't work.
+          </strong>
+           Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+        </div>
+        <div
+          className="obojobo-draft--components--button is-dangerous align-center"
+        >
+          <button
+            onClick={[Function]}
           >
-            <strong>
-              Sorry - That didn't work.
-            </strong>
-             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-          </div>
-          <div
-            className="obojobo-draft--components--button is-dangerous align-center"
-          >
-            <button
-              onClick={[Function]}
-            >
-              Try again anyway
-            </button>
-          </div>
+            Try again anyway
+          </button>
         </div>
       </div>
     </div>
@@ -117,42 +112,37 @@ exports[`PostTest PostTest component with recorded score 1`] = `
       </span>
     </div>
     <div
-      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
       className="obojobo-draft--sections--assessment--lti-status"
       role="dialog"
       tabIndex="-1"
     >
       <div
-        id="obojobo-draft--sections--assessment--lti-status--dialog"
+        className="is-not-synced"
       >
+        <h2>
+          There was a problem sending your score to mockLTIHost.
+        </h2>
+        <p>
+          Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+        </p>
         <div
-          className="is-not-synced"
+          aria-hidden={false}
+          className="is-not-synced-additional is-shown"
+          tabIndex="-1"
         >
-          <h2>
-            There was a problem sending your score to mockLTIHost.
-          </h2>
-          <p>
-            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-          </p>
-          <div
-            aria-hidden={false}
-            className="is-not-synced-additional is-shown"
-            tabIndex="-1"
+          <strong>
+            Sorry - That didn't work.
+          </strong>
+           Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+        </div>
+        <div
+          className="obojobo-draft--components--button is-dangerous align-center"
+        >
+          <button
+            onClick={[Function]}
           >
-            <strong>
-              Sorry - That didn't work.
-            </strong>
-             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-          </div>
-          <div
-            className="obojobo-draft--components--button is-dangerous align-center"
-          >
-            <button
-              onClick={[Function]}
-            >
-              Try again anyway
-            </button>
-          </div>
+            Try again anyway
+          </button>
         </div>
       </div>
     </div>
@@ -281,42 +271,37 @@ exports[`PostTest PostTest component with review 1`] = `
       </span>
     </div>
     <div
-      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
       className="obojobo-draft--sections--assessment--lti-status"
       role="dialog"
       tabIndex="-1"
     >
       <div
-        id="obojobo-draft--sections--assessment--lti-status--dialog"
+        className="is-not-synced"
       >
+        <h2>
+          There was a problem sending your score to mockLTIHost.
+        </h2>
+        <p>
+          Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+        </p>
         <div
-          className="is-not-synced"
+          aria-hidden={false}
+          className="is-not-synced-additional is-shown"
+          tabIndex="-1"
         >
-          <h2>
-            There was a problem sending your score to mockLTIHost.
-          </h2>
-          <p>
-            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-          </p>
-          <div
-            aria-hidden={false}
-            className="is-not-synced-additional is-shown"
-            tabIndex="-1"
+          <strong>
+            Sorry - That didn't work.
+          </strong>
+           Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+        </div>
+        <div
+          className="obojobo-draft--components--button is-dangerous align-center"
+        >
+          <button
+            onClick={[Function]}
           >
-            <strong>
-              Sorry - That didn't work.
-            </strong>
-             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-          </div>
-          <div
-            className="obojobo-draft--components--button is-dangerous align-center"
-          >
-            <button
-              onClick={[Function]}
-            >
-              Try again anyway
-            </button>
-          </div>
+            Try again anyway
+          </button>
         </div>
       </div>
     </div>
@@ -445,42 +430,37 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
       </span>
     </div>
     <div
-      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
       className="obojobo-draft--sections--assessment--lti-status"
       role="dialog"
       tabIndex="-1"
     >
       <div
-        id="obojobo-draft--sections--assessment--lti-status--dialog"
+        className="is-not-synced"
       >
+        <h2>
+          There was a problem sending your score to mockLTIHost.
+        </h2>
+        <p>
+          Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+        </p>
         <div
-          className="is-not-synced"
+          aria-hidden={false}
+          className="is-not-synced-additional is-shown"
+          tabIndex="-1"
         >
-          <h2>
-            There was a problem sending your score to mockLTIHost.
-          </h2>
-          <p>
-            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-          </p>
-          <div
-            aria-hidden={false}
-            className="is-not-synced-additional is-shown"
-            tabIndex="-1"
+          <strong>
+            Sorry - That didn't work.
+          </strong>
+           Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+        </div>
+        <div
+          className="obojobo-draft--components--button is-dangerous align-center"
+        >
+          <button
+            onClick={[Function]}
           >
-            <strong>
-              Sorry - That didn't work.
-            </strong>
-             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-          </div>
-          <div
-            className="obojobo-draft--components--button is-dangerous align-center"
-          >
-            <button
-              onClick={[Function]}
-            >
-              Try again anyway
-            </button>
-          </div>
+            Try again anyway
+          </button>
         </div>
       </div>
     </div>
@@ -609,42 +589,37 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
       </span>
     </div>
     <div
-      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
       className="obojobo-draft--sections--assessment--lti-status"
       role="dialog"
       tabIndex="-1"
     >
       <div
-        id="obojobo-draft--sections--assessment--lti-status--dialog"
+        className="is-not-synced"
       >
+        <h2>
+          There was a problem sending your score to mockLTIHost.
+        </h2>
+        <p>
+          Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+        </p>
         <div
-          className="is-not-synced"
+          aria-hidden={false}
+          className="is-not-synced-additional is-shown"
+          tabIndex="-1"
         >
-          <h2>
-            There was a problem sending your score to mockLTIHost.
-          </h2>
-          <p>
-            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-          </p>
-          <div
-            aria-hidden={false}
-            className="is-not-synced-additional is-shown"
-            tabIndex="-1"
+          <strong>
+            Sorry - That didn't work.
+          </strong>
+           Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+        </div>
+        <div
+          className="obojobo-draft--components--button is-dangerous align-center"
+        >
+          <button
+            onClick={[Function]}
           >
-            <strong>
-              Sorry - That didn't work.
-            </strong>
-             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-          </div>
-          <div
-            className="obojobo-draft--components--button is-dangerous align-center"
-          >
-            <button
-              onClick={[Function]}
-            >
-              Try again anyway
-            </button>
-          </div>
+            Try again anyway
+          </button>
         </div>
       </div>
     </div>
@@ -763,42 +738,37 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
       </span>
     </div>
     <div
-      aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
       className="obojobo-draft--sections--assessment--lti-status"
       role="dialog"
       tabIndex="-1"
     >
       <div
-        id="obojobo-draft--sections--assessment--lti-status--dialog"
+        className="is-not-synced"
       >
+        <h2>
+          There was a problem sending your score to mockLTIHost.
+        </h2>
+        <p>
+          Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
+        </p>
         <div
-          className="is-not-synced"
+          aria-hidden={false}
+          className="is-not-synced-additional is-shown"
+          tabIndex="-1"
         >
-          <h2>
-            There was a problem sending your score to mockLTIHost.
-          </h2>
-          <p>
-            Don’t worry - your score is safely recorded here. We just weren’t able to send it to mockLTIHost. Click the button below to resend your score:
-          </p>
-          <div
-            aria-hidden={false}
-            className="is-not-synced-additional is-shown"
-            tabIndex="-1"
+          <strong>
+            Sorry - That didn't work.
+          </strong>
+           Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
+        </div>
+        <div
+          className="obojobo-draft--components--button is-dangerous align-center"
+        >
+          <button
+            onClick={[Function]}
           >
-            <strong>
-              Sorry - That didn't work.
-            </strong>
-             Most likely the connection to mockLTIHost has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mockLTIHost, return to this page and then resend your score.
-          </div>
-          <div
-            className="obojobo-draft--components--button is-dangerous align-center"
-          >
-            <button
-              onClick={[Function]}
-            >
-              Try again anyway
-            </button>
-          </div>
+            Try again anyway
+          </button>
         </div>
       </div>
     </div>

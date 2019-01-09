@@ -2,66 +2,56 @@
 
 exports[`LTIStatus LTIStatus component shows a resync successful message 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-resynced"
   >
-    <div
-      className="is-resynced"
-    >
-      <h2>
-        Success!
-      </h2>
-      <p>
-        ✔ Your recorded score of NaN% was successfully sent to mocklti.
-      </p>
-    </div>
+    <h2>
+      Success!
+    </h2>
+    <p>
+      ✔ Your recorded score of NaN% was successfully sent to mocklti.
+    </p>
   </div>
 </div>
 `;
 
 exports[`LTIStatus LTIStatus component shows loading state 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-not-synced"
   >
+    <h2>
+      There was a problem sending your score to mocklti.
+    </h2>
+    <p>
+      Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
+    </p>
     <div
-      className="is-not-synced"
+      aria-hidden={false}
+      className="is-not-synced-additional is-shown"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mocklti.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
-      </p>
-      <div
-        aria-hidden={false}
-        className="is-not-synced-additional is-shown"
-        tabIndex="-1"
+      <strong>
+        Sorry - That didn't work.
+      </strong>
+       Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center"
+    >
+      <button
+        disabled={true}
       >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-not-dangerous align-center"
-      >
-        <button
-          disabled={true}
-        >
-          Re-sending score...
-        </button>
-      </div>
+        Re-sending score...
+      </button>
     </div>
   </div>
 </div>
@@ -69,40 +59,35 @@ exports[`LTIStatus LTIStatus component shows loading state 1`] = `
 
 exports[`LTIStatus LTIStatus component with an externalSystemLabel and no lti state returns renderError 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-not-synced"
   >
+    <h2>
+      There was a problem sending your score to mocklti.
+    </h2>
+    <p>
+      Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
+    </p>
     <div
-      className="is-not-synced"
+      aria-hidden={false}
+      className="is-not-synced-additional is-shown"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mocklti.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
-      </p>
-      <div
-        aria-hidden={false}
-        className="is-not-synced-additional is-shown"
-        tabIndex="-1"
-      >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button>
-          Try again anyway
-        </button>
-      </div>
+      <strong>
+        Sorry - That didn't work.
+      </strong>
+       Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+    </div>
+    <div
+      className="obojobo-draft--components--button is-dangerous align-center"
+    >
+      <button>
+        Try again anyway
+      </button>
     </div>
   </div>
 </div>
@@ -110,40 +95,35 @@ exports[`LTIStatus LTIStatus component with an externalSystemLabel and no lti st
 
 exports[`LTIStatus LTIStatus component with error shows additional information if resync failed 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-not-synced"
   >
+    <h2>
+      There was a problem sending your score to mocklti.
+    </h2>
+    <p>
+      Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
+    </p>
     <div
-      className="is-not-synced"
+      aria-hidden={false}
+      className="is-not-synced-additional is-shown"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mocklti.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
-      </p>
-      <div
-        aria-hidden={false}
-        className="is-not-synced-additional is-shown"
-        tabIndex="-1"
-      >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button>
-          Try again anyway
-        </button>
-      </div>
+      <strong>
+        Sorry - That didn't work.
+      </strong>
+       Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+    </div>
+    <div
+      className="obojobo-draft--components--button is-dangerous align-center"
+    >
+      <button>
+        Try again anyway
+      </button>
     </div>
   </div>
 </div>
@@ -159,40 +139,35 @@ exports[`LTIStatus LTIStatus component with isPreviewing true returns notLTI 1`]
 
 exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_INVALID returns renderError 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-not-synced"
   >
+    <h2>
+      There was a problem sending your score to mocklti.
+    </h2>
+    <p>
+      Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
+    </p>
     <div
-      className="is-not-synced"
+      aria-hidden={true}
+      className="is-not-synced-additional is-not-shown"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mocklti.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
-      </p>
-      <div
-        aria-hidden={true}
-        className="is-not-synced-additional is-not-shown"
-        tabIndex="-1"
-      >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button>
-          Resend score
-        </button>
-      </div>
+      <strong>
+        Sorry - That didn't work.
+      </strong>
+       Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+    </div>
+    <div
+      className="obojobo-draft--components--button is-dangerous align-center"
+    >
+      <button>
+        Resend score
+      </button>
     </div>
   </div>
 </div>
@@ -200,40 +175,35 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_INV
 
 exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_NEWER_SCORE_UNSENT returns renderError 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-not-synced"
   >
+    <h2>
+      There was a problem sending your score to mocklti.
+    </h2>
+    <p>
+      Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
+    </p>
     <div
-      className="is-not-synced"
+      aria-hidden={true}
+      className="is-not-synced-additional is-not-shown"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mocklti.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
-      </p>
-      <div
-        aria-hidden={true}
-        className="is-not-synced-additional is-not-shown"
-        tabIndex="-1"
-      >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button>
-          Resend score
-        </button>
-      </div>
+      <strong>
+        Sorry - That didn't work.
+      </strong>
+       Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+    </div>
+    <div
+      className="obojobo-draft--components--button is-dangerous align-center"
+    >
+      <button>
+        Resend score
+      </button>
     </div>
   </div>
 </div>
@@ -241,40 +211,35 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_NEW
 
 exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_STATE_UNKNOWN returns renderError 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-not-synced"
   >
+    <h2>
+      There was a problem sending your score to mocklti.
+    </h2>
+    <p>
+      Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
+    </p>
     <div
-      className="is-not-synced"
+      aria-hidden={true}
+      className="is-not-synced-additional is-not-shown"
+      tabIndex="-1"
     >
-      <h2>
-        There was a problem sending your score to mocklti.
-      </h2>
-      <p>
-        Don’t worry - your score is safely recorded here. We just weren’t able to send it to mocklti. Click the button below to resend your score:
-      </p>
-      <div
-        aria-hidden={true}
-        className="is-not-synced-additional is-not-shown"
-        tabIndex="-1"
-      >
-        <strong>
-          Sorry - That didn't work.
-        </strong>
-         Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
-      </div>
-      <div
-        className="obojobo-draft--components--button is-dangerous align-center"
-      >
-        <button>
-          Resend score
-        </button>
-      </div>
+      <strong>
+        Sorry - That didn't work.
+      </strong>
+       Most likely the connection to mocklti has expired and just needs to be refreshed. Please close this tab or window, reopen this module from mocklti, return to this page and then resend your score.
+    </div>
+    <div
+      className="obojobo-draft--components--button is-dangerous align-center"
+    >
+      <button>
+        Resend score
+      </button>
     </div>
   </div>
 </div>
@@ -282,38 +247,28 @@ exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_ERROR_STA
 
 exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_OK_GRADEBOOK_MATCHES_SCORE returns synced 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-synced"
   >
-    <div
-      className="is-synced"
-    >
-      ✔ Your recorded score of 76% was sent to mocklti.
-    </div>
+    ✔ Your recorded score of 76% was sent to mocklti.
   </div>
 </div>
 `;
 
 exports[`LTIStatus LTIStatus component with lti state GRADEBOOK_STATUS_OK_NULL_SCORE_NOT_SENT returns noScoreSent 1`] = `
 <div
-  aria-labelledby="obojobo-draft--sections--assessment--lti-status--dialog"
   className="obojobo-draft--sections--assessment--lti-status"
   role="dialog"
   tabIndex="-1"
 >
   <div
-    id="obojobo-draft--sections--assessment--lti-status--dialog"
+    className="is-synced"
   >
-    <div
-      className="is-synced"
-    >
-      No score has been sent to mocklti (Only passing scores are sent)
-    </div>
+    No score has been sent to mocklti (Only passing scores are sent)
   </div>
 </div>
 `;
