@@ -150,9 +150,10 @@ const loadChildren = assessmentProperties => {
 
 	for (const attempt of assessmentProperties.attemptHistory) {
 		if (attempt.state.chosen) {
-			initAssessmentUsedQuestions(attempt.chosen, childrenMap)
+			initAssessmentUsedQuestions(attempt.state.chosen, childrenMap)
 		}
 	}
+
 	return childrenMap
 }
 
@@ -173,8 +174,10 @@ const createAssessmentUsedQuestionMap = assessmentProperties => {
 // When a question has been used, we will increment the value
 // pointed to by the node's id in our usedMap.
 const initAssessmentUsedQuestions = (chosenAssessment, usedQuestionMap) => {
-	for (const node in chosenAssessment) {
-		if (usedQuestionMap.has(node.id)) usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
+	for (const node of chosenAssessment) {
+		if (usedQuestionMap.has(node.id)) {
+			usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
+		}
 	}
 }
 

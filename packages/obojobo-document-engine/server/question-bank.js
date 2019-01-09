@@ -4,8 +4,8 @@ const logger = oboRequire('logger')
 const { getRandom } = require('./util')
 
 const SELECT_SEQUENTIAL = 'sequential'
-const SELECT_RANDOM = 'random'
-const SELECT_RANDOM_UNSEEN = 'random_unseen'
+const SELECT_RANDOM = 'random-all'
+const SELECT_RANDOM_UNSEEN = 'random-unseen'
 
 const CHOOSE_ALL = 'all'
 
