@@ -2062,7 +2062,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2139,7 +2139,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2213,7 +2213,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2290,7 +2290,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2369,7 +2369,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId

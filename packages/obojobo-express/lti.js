@@ -634,7 +634,7 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 //
 // MAIN METHOD:
 //
-const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
+const sendHighestAssessmentScore = (userId, draftDocument, assessmentId, isPreview) => {
 	const logId = uuid()
 	let requiredData = null
 	let outcomeData = null
@@ -665,7 +665,7 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 
 			result.outcomeServiceURL = outcomeData.serviceURL
 
-			if (requiredData.assessmentScoreRecord.isPreview) {
+			if (isPreview) {
 				throw ERROR_PREVIEW_MODE
 			}
 
@@ -720,7 +720,7 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId) => {
 				outcomeData.type,
 				requiredData.scoreType,
 				result.status === STATUS_SUCCESS,
-				requiredData.assessmentScoreRecord.isPreview
+				isPreview
 			)
 
 			logger.info(`LTI gradebook status is "${result.gradebookStatus}"`, logId)
