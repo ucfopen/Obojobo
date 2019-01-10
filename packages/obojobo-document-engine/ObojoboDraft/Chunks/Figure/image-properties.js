@@ -5,13 +5,11 @@ import SimpleDialog from './simple-dialog'
 
 import './prompt.scss'
 
-class Prompt extends React.Component {
+class ImageProperties extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.state = {
-			text: this.props.value || ""
-		}
+		this.state = this.props.content
 	}
 
 	onKeyUp(event) {
@@ -24,10 +22,10 @@ class Prompt extends React.Component {
 		}
 	}
 
-	handleTextChange(event) {
-		const text = event.target.value
+	handleAltTextChange(event) {
+		const alt = event.target.value
 
-		return this.setState({text})
+		return this.setState({alt})
 	}
 
 	focusOnFirstElement() {
@@ -38,15 +36,14 @@ class Prompt extends React.Component {
 		return (
 			<SimpleDialog
 				cancelOk
-				title={this.props.title}
-				onConfirm={() => this.props.onConfirm(this.state.text)}
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
-				className="prompt">
-				<label htmlFor="promptInput">{this.props.message}</label>
+				title="Figure Properties"
+				onConfirm={() => this.props.onConfirm(this.state)}
+				focusOnFirstElement={this.focusOnFirstElement.bind(this)}>
+				<label htmlFor="altInput">Alt Text:</label>
 				<input
 					type="text"
-					id="promptInput"
-					value={this.state.text}
+					id="altInput"
+					value={this.state.alt}
 					onKeyUp={this.onKeyUp.bind(this)}
 					onChange={event => this.handleTextChange(event)}
 					ref={'input'}
@@ -56,4 +53,4 @@ class Prompt extends React.Component {
 	}
 }
 
-export default Prompt
+export default ImageProperties

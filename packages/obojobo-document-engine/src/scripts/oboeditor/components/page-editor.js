@@ -32,6 +32,8 @@ import Component from './node/editor'
 import MarkToolbar from './toolbar'
 import EditorSchema from '../plugins/editor-schema'
 
+import './page-editor.scss'
+
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 

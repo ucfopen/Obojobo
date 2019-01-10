@@ -17,8 +17,6 @@ const { OboModel } = Common.models
 
 import generateId from '../generate-ids'
 
-import './editor-app.scss'
-
 Dispatcher.on('editor:alert', payload =>
 	ModalUtil.show(
 		<SimpleDialog ok title={payload.value.title}>
@@ -104,7 +102,7 @@ class EditorApp extends React.Component {
 		return (
 			<div
 				className={
-					'viewer--viewer-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
+					'viewer--viewer-app editor--editor-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
 				}
 			>
 				<EditorNav

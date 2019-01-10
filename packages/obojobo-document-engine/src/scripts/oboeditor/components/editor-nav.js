@@ -58,11 +58,15 @@ class EditorNav extends React.Component {
 		)
 	}
 
-	addPage(title = 'Default Page') {
+	addPage(title = null) {
 		ModalUtil.hide()
 
 		const newPage = Object.assign({}, pageTemplate)
 		newPage.id = generateId()
+
+		// Fix page titles that are whitespace strings
+		if (!/[^\s]/.test(title)) title = null
+
 		newPage.content.title = title
 
 		EditorUtil.addPage(newPage)
@@ -84,7 +88,7 @@ class EditorNav extends React.Component {
 		ModalUtil.hide()
 
 		// If the module name is empty or just whitespace, provide a default value
-		if (!label || !(/\s/.test(label))) label = '(Unnamed Module)'
+		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 
 		EditorUtil.renamePage(moduleId, label)
 	}
