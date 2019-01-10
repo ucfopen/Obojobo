@@ -112,6 +112,24 @@ describe('styleableTextRenderer', () => {
 		)
 	})
 
+	test('Role', () => {
+		const st = new StyleableText('dog fox cat')
+		st.styleText('a', 4, 7, { role: 'mock-role' })
+		const mockEl = styleableTextRenderer(st)
+
+		expect(mockElToHTMLString(mockEl)).toEqual(
+			`
+			<span>
+				dog
+				 <a role="mock-role">
+					fox
+				</a>
+				 cat
+			</span>
+		`.replace(/[\t\n]/g, '')
+		)
+	})
+
 	test('Comment', () => {
 		const st = new StyleableText('dog fox cat')
 		st.styleText('_comment', 4, 7, { a: 1 })
@@ -131,7 +149,7 @@ describe('styleableTextRenderer', () => {
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
-			<span>dog <span class="latex" a="1" alt="fox"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span> cat</span>
+			<span>dog <span class="latex" role="math" a="1" alt="fox"><span aria-hidden="true"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span></span> cat</span>
 		`.replace(/[\t\n]/g, '')
 		)
 	})
@@ -143,7 +161,7 @@ describe('styleableTextRenderer', () => {
 
 		expect(mockElToHTMLString(mockEl)).toEqual(
 			`
-			<span>dog <span class="latex" alt="alt-text"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span> cat</span>
+			<span>dog <span class="latex" role="math" alt="alt-text"><span aria-hidden="true"><span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>f</mi><mi>o</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">fox</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="base"><span class="mord mathit" style="margin-right:0.10764em;">f</span><span class="mord mathit">o</span><span class="mord mathit">x</span></span></span></span></span></span> cat</span>
 		`.replace(/[\t\n]/g, '')
 		)
 	})

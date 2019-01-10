@@ -63,6 +63,7 @@ let parseText = (node, textItem, foundText, lastTextNode) => {
 	{
 		case 'latex':
 			type = '_latex'
+			data = { alt: node.attributes.alt }
 			break;
 
 		case 'a':

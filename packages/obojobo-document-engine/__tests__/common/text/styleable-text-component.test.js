@@ -79,6 +79,32 @@ describe('StyleableText Component', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('StyleableText with role', () => {
+		StyleRenderer.mockReturnValueOnce({
+			type: 'span',
+			children: [],
+			attrs: { role: 'mock-role-text' }
+		})
+
+		const component = renderer.create(<StyleableText />)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('StyleableText with alt and role', () => {
+		StyleRenderer.mockReturnValueOnce({
+			type: 'span',
+			children: [],
+			attrs: { alt: 'mock-alt-text', role: 'mock-role-text' }
+		})
+
+		const component = renderer.create(<StyleableText />)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('StyleableText component with children', () => {
 		StyleRenderer.mockReturnValueOnce({
 			type: 'b',
