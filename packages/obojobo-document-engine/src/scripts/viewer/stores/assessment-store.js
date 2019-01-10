@@ -13,6 +13,8 @@ import QuestionStore from './question-store'
 import AssessmentScoreReporter from '../../viewer/assessment/assessment-score-reporter'
 import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-report-view'
 
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
@@ -227,7 +229,13 @@ class AssessmentStore extends Store {
 		const assessId = endAttemptResp.assessmentId
 		const assessment = this.state.assessments[assessId]
 		const model = OboModel.models[assessId]
-		assessment.current.state.chosen.forEach(question => QuestionUtil.hideQuestion(question.id))
+
+		assessment.current.state.chosen.forEach(question => {
+			if (question.type === QUESTION_NODE_TYPE) {
+				QuestionUtil.hideQuestion(question.id)
+			}
+		})
+
 		assessment.currentResponses.forEach(questionId =>
 			QuestionUtil.clearResponse(questionId, context)
 		)
