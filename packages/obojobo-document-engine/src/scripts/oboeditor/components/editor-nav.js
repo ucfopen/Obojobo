@@ -30,7 +30,6 @@ class EditorNav extends React.Component {
 	showAddAssessmentModal() {
 		ModalUtil.show(
 			<Prompt
-				cancelOk
 				title="Add Assessment"
 				message="Enter the title for the new assessment:"
 				onConfirm={this.addAssessment.bind(this)}/>
@@ -51,7 +50,6 @@ class EditorNav extends React.Component {
 	showAddPageModal() {
 		ModalUtil.show(
 			<Prompt
-				cancelOk
 				title="Add Page"
 				message="Enter the title for the new page:"
 				onConfirm={this.addPage.bind(this)}/>
@@ -76,7 +74,6 @@ class EditorNav extends React.Component {
 	showRenameModuleModal(module) {
 		ModalUtil.show(
 			<Prompt
-				cancelOk
 				title="Rename Module"
 				message="Enter the new title for the module:"
 				value={module.label}
