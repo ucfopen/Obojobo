@@ -1,11 +1,6 @@
 jest.mock('../../../../src/scripts/common/index', () => ({
-	Store: {
+	Registry: {
 		registerModel: jest.fn()
-	},
-	chunk: {
-		textChunk: {
-			TextGroupSelectionHandler: jest.fn()
-		}
 	}
 }))
 
@@ -20,17 +15,16 @@ import ViewerComponent from '../../../../ObojoboDraft/Chunks/Heading/viewer-comp
 
 describe('ObojoboDraft.Chunks.Heading registration', () => {
 	test('registerModel registers expected vars', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.Heading')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
-		expect(register[1]).toHaveProperty('selectionHandler', {})
 		expect(register[1]).toHaveProperty('getNavItem', expect.any(Function))
 	})
 
 	test('getNavItem returns link for level 1 headings', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			modelState: {
 				headingLevel: 1,
@@ -49,7 +43,7 @@ describe('ObojoboDraft.Chunks.Heading registration', () => {
 	})
 
 	test('getNavItem returns nothing for level 1 headings with a zero index', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			modelState: {
 				headingLevel: 1
@@ -62,7 +56,7 @@ describe('ObojoboDraft.Chunks.Heading registration', () => {
 	})
 
 	test('getNavItem returns link for level 2 headings', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			modelState: {
 				headingLevel: 2,
@@ -80,7 +74,7 @@ describe('ObojoboDraft.Chunks.Heading registration', () => {
 	})
 
 	test('getNavItem returns nothing for level 3 headings', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			modelState: {
 				headingLevel: 3

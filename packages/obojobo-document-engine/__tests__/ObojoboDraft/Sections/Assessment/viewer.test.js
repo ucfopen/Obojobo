@@ -1,5 +1,5 @@
 jest.mock('../../../../src/scripts/common/index', () => ({
-	Store: {
+	Registry: {
 		registerModel: jest.fn()
 	}
 }))
@@ -24,12 +24,11 @@ import Viewer from '../../../../src/scripts/viewer'
 
 describe('ObojoboDraft.Sections.Assessment registration', () => {
 	test('registerModel registers expected vars', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Sections.Assessment')
 		expect(register[1]).toHaveProperty('type', 'section')
 		expect(register[1]).toHaveProperty('adapter', {})
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
-		expect(register[1]).toHaveProperty('selectionHandler', null)
 		expect(register[1]).toHaveProperty('getNavItem', expect.any(Function))
 		expect(register[1]).toHaveProperty('variables', {
 			'assessment:attemptsAmount': expect.any(Function),
@@ -38,7 +37,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('getNavItem returns link without title', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			title: null
 		}
@@ -54,7 +53,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('getNavItem returns link with title', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			title: 'mock Title'
 		}
@@ -70,7 +69,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('assessment:attemptsRemaining returns unlimited with Infinity attempts', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce({
 				modelState: {
@@ -88,7 +87,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('assessment:attemptsRemaining calls AssessmentUtil', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce({
 				modelState: {
@@ -115,7 +114,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('assessment:attemptsAmount returns unlimited with Infinity attempts', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce({
 				modelState: {
@@ -133,7 +132,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 	})
 
 	test('assessment:attemptsAmount returns number of attempts', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			getParentOfType: jest.fn().mockReturnValueOnce({
 				modelState: {

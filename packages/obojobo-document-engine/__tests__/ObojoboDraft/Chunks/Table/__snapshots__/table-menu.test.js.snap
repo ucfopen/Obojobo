@@ -229,8 +229,6 @@ ShallowWrapper {
         "supportPrevContextArgumentOfComponentDidUpdate": true,
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
 }
 `;

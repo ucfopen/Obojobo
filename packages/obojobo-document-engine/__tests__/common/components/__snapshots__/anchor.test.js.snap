@@ -7,7 +7,9 @@ exports[`Anchor Anchor component 1`] = `
   data-group-index="anchor:undefined"
   suppressContentEditableWarning={true}
   tabIndex=""
-/>
+>
+  ​
+</span>
 `;
 
 exports[`Anchor Anchor shouldPreventTab 1`] = `
@@ -18,5 +20,7 @@ exports[`Anchor Anchor shouldPreventTab 1`] = `
   shouldPreventTab={true}
   suppressContentEditableWarning={true}
   tabIndex="-1"
-/>
+>
+  ​
+</span>
 `;

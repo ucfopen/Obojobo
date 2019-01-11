@@ -16,10 +16,10 @@ Object {
 
 exports[`EditorStore buildMenu should reset menu items 1`] = `
 Object {
-  "items": "mockModel",
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
+  "navItems": "mockModel",
 }
 `;
 
@@ -218,11 +218,11 @@ exports[`EditorStore init builds state locked state 1`] = `
 Object {
   "context": "editor",
   "currentModel": null,
-  "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
   "locked": true,
+  "navItems": Object {},
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
@@ -233,11 +233,11 @@ exports[`EditorStore init builds state open state 1`] = `
 Object {
   "context": "editor",
   "currentModel": null,
-  "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
   "locked": false,
+  "navItems": Object {},
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
@@ -248,11 +248,11 @@ exports[`EditorStore init builds state with basic options 1`] = `
 Object {
   "context": "editor",
   "currentModel": null,
-  "items": Object {},
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
   "locked": false,
+  "navItems": Object {},
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,

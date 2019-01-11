@@ -2,7 +2,7 @@
 /* eslint no-console: 0 */
 
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
-import { Store } from '../../../src/scripts/common/store'
+import { Registry } from '../../../src/scripts/common/registry'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import AssessmentUtil from '../../../src/scripts/viewer/util/assessment-util'
 import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
@@ -96,7 +96,7 @@ describe('AssessmentStore', () => {
 		NavStore.init()
 
 		// Need to make sure all the Obo components are loaded
-		Store.getItems(() => {
+		Registry.getItems(() => {
 			done()
 		})
 	})

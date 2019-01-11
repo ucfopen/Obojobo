@@ -265,8 +265,8 @@ describe('EditorStore', () => {
 			}
 		}
 
-		jest.spyOn(Common.Store, 'getItemForType')
-		Common.Store.getItemForType.mockReturnValueOnce({ getNavItem: null })
+		jest.spyOn(Common.Registry, 'getItemForType')
+		Common.Registry.getItemForType.mockReturnValueOnce({ getNavItem: null })
 
 		expect(EditorStore.generateNav(model)).toEqual({
 			children: [],
@@ -305,9 +305,9 @@ describe('EditorStore', () => {
 				models: [childItem]
 			}
 		}
-		jest.spyOn(Common.Store, 'getItemForType')
-		Common.Store.getItemForType.mockReturnValueOnce(item)
-		Common.Store.getItemForType.mockReturnValueOnce(childItem)
+		jest.spyOn(Common.Registry, 'getItemForType')
+		Common.Registry.getItemForType.mockReturnValueOnce(item)
+		Common.Registry.getItemForType.mockReturnValueOnce(childItem)
 
 		EditorStore.setState({
 			itemsByPath: {},

@@ -17,7 +17,6 @@ jest.mock('../../../src/scripts/viewer/util/nav-util')
 jest.mock('../../../src/scripts/viewer/stores/assessment-store')
 jest.mock('../../../src/scripts/viewer/components/nav')
 jest.mock('../../../src/scripts/common/page/dom-util')
-jest.mock('../../../src/scripts/common/page/screen')
 
 import '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
@@ -34,7 +33,6 @@ import NavStore from '../../../src/scripts/viewer/stores/nav-store'
 import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
 import DOMUtil from '../../../src/scripts/common/page/dom-util'
-import Screen from '../../../src/scripts/common/page/screen'
 import Common from '../../../src/scripts/common'
 
 import testObject from '../../../test-object.json'
@@ -448,18 +446,18 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('getTextForVariable calls Common.Store', done => {
+	test('getTextForVariable calls Common.Registry', done => {
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			jest.spyOn(Common.Store, 'getTextForVariable')
+			jest.spyOn(Common.Registry, 'getTextForVariable')
 			component.update()
 
 			component.instance().getTextForVariable({})
 
-			expect(Common.Store.getTextForVariable).toHaveBeenCalled()
+			expect(Common.Registry.getTextForVariable).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -577,7 +575,7 @@ describe('ViewerApp', () => {
 			component.instance().onScroll()
 
 			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
-			expect(Screen.isElementVisible).not.toHaveBeenCalled()
+			expect(DOMUtil.isElementVisible).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -603,7 +601,7 @@ describe('ViewerApp', () => {
 
 			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
 			expect(mockFocused.getDomEl).toHaveBeenCalled()
-			expect(Screen.isElementVisible).not.toHaveBeenCalled()
+			expect(DOMUtil.isElementVisible).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -624,13 +622,13 @@ describe('ViewerApp', () => {
 			FocusUtil.getFocussedComponent
 				.mockReturnValueOnce(mockFocused)
 				.mockReturnValueOnce(mockFocused)
-			Screen.isElementVisible.mockReturnValueOnce(true)
+			DOMUtil.isElementVisible.mockReturnValueOnce(true)
 
 			component.instance().onScroll()
 
 			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
 			expect(mockFocused.getDomEl).toHaveBeenCalled()
-			expect(Screen.isElementVisible).toHaveBeenCalled()
+			expect(DOMUtil.isElementVisible).toHaveBeenCalled()
 			expect(FocusUtil.unfocus).not.toHaveBeenCalled()
 
 			component.unmount()
@@ -652,13 +650,13 @@ describe('ViewerApp', () => {
 			FocusUtil.getFocussedComponent
 				.mockReturnValueOnce(mockFocused)
 				.mockReturnValueOnce(mockFocused)
-			Screen.isElementVisible.mockReturnValueOnce(false)
+			DOMUtil.isElementVisible.mockReturnValueOnce(false)
 
 			component.instance().onScroll()
 
 			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
 			expect(mockFocused.getDomEl).toHaveBeenCalled()
-			expect(Screen.isElementVisible).toHaveBeenCalled()
+			expect(DOMUtil.isElementVisible).toHaveBeenCalled()
 			expect(FocusUtil.unfocus).toHaveBeenCalled()
 
 			component.unmount()

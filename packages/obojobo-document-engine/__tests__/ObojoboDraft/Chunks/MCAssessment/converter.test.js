@@ -1,5 +1,5 @@
 jest.mock('Common', () => ({
-	Store: {
+	Registry: {
 		getItemForType: () => ({
 			slateToObo: jest.fn(),
 			oboToSlate: jest.fn()

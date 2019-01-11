@@ -45,10 +45,13 @@ exports[`StyleableText Component StyleableText component with children 1`] = `
         }
       }
     />
-    <span />
+    <span>
+      ​
+    </span>
     <span>
       mockText 
 
+      ​
     </span>
     <span>
       mockText

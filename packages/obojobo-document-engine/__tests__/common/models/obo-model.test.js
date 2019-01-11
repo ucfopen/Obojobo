@@ -2,7 +2,7 @@ import React from 'react'
 
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import { Store } from '../../../src/scripts/common/store'
+import { Registry } from '../../../src/scripts/common/registry'
 
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return require('../../../__mocks__/obo-model-mock').default
@@ -166,7 +166,7 @@ describe('OboModel', () => {
 
 	test('removing children sets their parent to null, marks them dirty and removes them from the model db', () => {
 		expect.assertions(4)
-		Store.getItems(() => {
+		Registry.getItems(() => {
 			const o = OboModel.create({
 				id: 'root',
 				type: 'ObojoboDraft.Modules.Module',
@@ -517,7 +517,7 @@ describe('OboModel', () => {
 
 	test('getComponentClass returns the component class of a model', () => {
 		expect.assertions(1)
-		Store.getItems(items => {
+		Registry.getItems(items => {
 			OboModel.create({
 				id: 'rootId',
 				type: 'ObojoboDraft.Chunks.Text'

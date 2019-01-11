@@ -1,12 +1,11 @@
 jest.mock('../../../../src/scripts/common/index', () => ({
-	Store: {
+	Registry: {
 		registerModel: jest.fn()
 	}
 }))
 
 jest.mock('../../../../ObojoboDraft/Chunks/Figure/viewer-component', () => ({}))
 jest.mock('../../../../ObojoboDraft/Chunks/Figure/adapter', () => ({}))
-jest.mock('../../../../ObojoboDraft/Chunks/Figure/selection-handler', () => jest.fn())
 
 const Common = require('../../../../src/scripts/common/index')
 
@@ -16,11 +15,10 @@ import ViewerComponent from '../../../../ObojoboDraft/Chunks/Figure/viewer-compo
 
 describe('ObojoboDraft.Chunks.Figure registration', () => {
 	test('registerModel registers expected vars', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.Figure')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
-		expect(register[1]).toHaveProperty('selectionHandler', {})
 	})
 })

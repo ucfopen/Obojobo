@@ -22,7 +22,6 @@ const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
 const { DOMUtil } = Common.page
-const { Screen } = Common.page
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { ModalContainer } = Common.components
@@ -32,11 +31,6 @@ const { FocusBlocker } = Common.components
 const { ModalStore } = Common.stores
 const { FocusStore } = Common.stores
 const { FocusUtil } = Common.util
-
-const isElementVisible = node => {
-	const rect = node.getBoundingClientRect()
-	return !(rect.top > window.innerHeight || rect.bottom < 0)
-}
 
 Dispatcher.on('viewer:alert', payload =>
 	ModalUtil.show(
@@ -302,8 +296,7 @@ export default class ViewerApp extends React.Component {
 		if (!el) {
 			return
 		}
-
-		if (isElementVisible(el)) {
+		if (!DOMUtil.isElementVisible(el)) {
 			return FocusUtil.unfocus()
 		}
 	}

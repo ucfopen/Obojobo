@@ -69,8 +69,6 @@ ShallowWrapper {
         "supportPrevContextArgumentOfComponentDidUpdate": true,
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
 }
 `;
@@ -135,8 +133,6 @@ ShallowWrapper {
         "supportPrevContextArgumentOfComponentDidUpdate": true,
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
 }
 `;
@@ -207,8 +203,6 @@ ShallowWrapper {
         "supportPrevContextArgumentOfComponentDidUpdate": true,
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
 }
 `;
@@ -279,8 +273,6 @@ ShallowWrapper {
         "supportPrevContextArgumentOfComponentDidUpdate": true,
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
 }
 `;
@@ -340,8 +332,6 @@ ShallowWrapper {
         "supportPrevContextArgumentOfComponentDidUpdate": true,
       },
     },
-    "attachTo": undefined,
-    "hydrateIn": undefined,
   },
 }
 `;

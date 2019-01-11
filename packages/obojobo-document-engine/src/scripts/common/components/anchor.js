@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { EMPTY_CHAR } from '../../common/text/text-constants'
+const EMPTY_CHAR = String.fromCharCode(8203)
 
 const Anchor = props => (
 	<span

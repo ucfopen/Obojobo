@@ -1,10 +1,16 @@
+let items
+let defaults
+let registeredToolbarItems
+let toolbarItems
+let variableHandlers
+
 class _Registry {
 	init() {
-		this.items = new Map()
-		this.defaults = new Map()
-		this.toolbarItems = []
-		this.variableHandlers = new Map()
-		this.registeredToolbarItems = {
+		items = new Map()
+		defaults = new Map()
+		toolbarItems = []
+		variableHandlers = new Map()
+		registeredToolbarItems = {
 			separator: { id: 'separator', type: 'separator' }
 		}
 	}
@@ -35,10 +41,10 @@ class _Registry {
 	}
 
 	registerModel(className, opts = {}) {
-		const item = this.items.get(className)
+		const item = items.get(className)
 		if (item) opts = Object.assign(opts, item)
 
-		this.items.set(className, opts)
+		items.set(className, opts)
 
 		opts = Object.assign(
 			{
@@ -62,47 +68,47 @@ class _Registry {
 		)
 
 		if (opts.default) {
-			this.defaults.set(opts.type, className)
+			defaults.set(opts.type, className)
 		}
 
 		opts.init()
 
 		for (const variable in opts.variables) {
 			const cb = opts.variables[variable]
-			this.variableHandlers.set(variable, cb)
+			variableHandlers.set(variable, cb)
 		}
 
 		return this
 	}
 
 	getDefaultItemForModelType(modelType) {
-		const type = this.defaults.get(modelType)
+		const type = defaults.get(modelType)
 		if (!type) {
 			return null
 		}
-		return this.items.get(type)
+		return items.get(type)
 	}
 
 	getItemForType(type) {
-		return this.items.get(type)
+		return items.get(type)
 	}
 
 	registerToolbarItem(opts) {
-		this.registeredToolbarItems[opts.id] = opts
+		registeredToolbarItems[opts.id] = opts
 		return this
 	}
 
 	addToolbarItem(id) {
-		this.toolbarItems.push(Object.assign({}, this.registeredToolbarItems[id]))
+		toolbarItems.push(Object.assign({}, registeredToolbarItems[id]))
 		return this
 	}
 
 	getItems(callback) {
-		return callback(this.items)
+		callback(items)
 	}
 
 	getTextForVariable(variable, model, viewerState) {
-		const cb = this.variableHandlers.get(variable)
+		const cb = variableHandlers.get(variable)
 		if (!cb) {
 			return null
 		}
@@ -111,17 +117,11 @@ class _Registry {
 	}
 
 	get registeredToolbarItems() {
-		return this.registeredToolbarItems
-	}
-
-	set registeredToolbarItems(arg) {
-		return {
-			separator: { id: 'separator', type: 'separator' }
-		}
+		return registeredToolbarItems
 	}
 
 	get toolbarItems() {
-		return this.toolbarItems
+		return toolbarItems
 	}
 
 	set toolbarItems(arg) {

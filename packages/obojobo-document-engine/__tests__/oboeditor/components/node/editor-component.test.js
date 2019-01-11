@@ -1,5 +1,5 @@
 jest.mock('Common', () => ({
-	Store: {
+	Registry: {
 		getItems: funct => {
 			return funct({
 				values: () => [

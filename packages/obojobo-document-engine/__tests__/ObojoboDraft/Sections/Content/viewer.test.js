@@ -1,5 +1,5 @@
 jest.mock('../../../../src/scripts/common/index', () => ({
-	Store: {
+	Registry: {
 		registerModel: jest.fn()
 	}
 }))
@@ -14,18 +14,17 @@ import ViewerComponent from '../../../../ObojoboDraft/Sections/Content/viewer-co
 
 describe('ObojoboDraft.Sections.Content registration', () => {
 	test('registerModel registers expected vars', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Sections.Content')
 		expect(register[1]).toHaveProperty('getNavItem')
 		expect(register[1]).toHaveProperty('type', 'section')
 		expect(register[1]).toHaveProperty('default', true)
 		expect(register[1]).toHaveProperty('adapter', null)
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
-		expect(register[1]).toHaveProperty('selectionHandler', null)
 	})
 
 	test('getNavItem returns expected object', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			children: {
 				models: []

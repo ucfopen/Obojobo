@@ -28,78 +28,70 @@ describe('EditorUtil', () => {
 	test('rebuildMenu calls editor:rebuildMenu', () => {
 		EditorUtil.rebuildMenu('mockOboModel')
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith(
-			'editor:rebuildMenu',
-			{"value": {"model": "mockOboModel"}}
-		)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:rebuildMenu', {
+			value: { model: 'mockOboModel' }
+		})
 	})
 	test('goto calls editor:goto', () => {
 		EditorUtil.goto('mockId')
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith(
-			'editor:goto',
-			{"value": {"id": "mockId"}}
-		)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:goto', {
+			value: { id: 'mockId' }
+		})
 	})
 	test('addPage calls editor:addPage', () => {
 		EditorUtil.addPage('mockOboModel')
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith(
-			'editor:addPage',
-			{"value": {"newPage": "mockOboModel"}}
-		)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:addPage', {
+			value: { newPage: 'mockOboModel' }
+		})
 	})
 	test('addAssessment calls editor:addAssessment', () => {
 		EditorUtil.addAssessment('mockOboModel')
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith(
-			'editor:addAssessment',
-			{"value": {"newAssessment": "mockOboModel"}}
-		)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:addAssessment', {
+			value: { newAssessment: 'mockOboModel' }
+		})
 	})
 	test('deletePage calls editor:deletePage', () => {
 		EditorUtil.deletePage('mockId')
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith(
-			'editor:deletePage',
-			{"value": {"pageId": "mockId"}}
-		)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:deletePage', {
+			value: { pageId: 'mockId' }
+		})
 	})
 	test('gotoPath calls editor:gotoPath', () => {
 		EditorUtil.gotoPath('mockPath')
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith(
-			'editor:gotoPath',
-			{"value": {"path": "mockPath"}}
-		)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:gotoPath', {
+			value: { path: 'mockPath' }
+		})
 	})
 	test('getFirst gets the ordered list and returns the first link', () => {
 		const mockState = {
-			items: {
+			navItems: {
 				id: 'mockId',
-				type: "hidden",
+				type: 'hidden',
 				showChildren: true,
 				children: [
-					{type: 'not-link', id: 1, showChildren: false },
-					{type: 'link', id: 2, showChildren: false }
+					{ type: 'not-link', id: 1, showChildren: false },
+					{ type: 'link', id: 2, showChildren: false }
 				]
 			}
 		}
 
 		const firstItem = EditorUtil.getFirst(mockState)
 
-		expect(firstItem).toEqual({"id": 2, "showChildren": false, "type": "link"})
+		expect(firstItem).toEqual({ id: 2, showChildren: false, type: 'link' })
 	})
 
 	test('getFirst returns null when no link items exist', () => {
 		const mockState = {
-			items: {
+			navItems: {
 				id: 'mockId',
-				type: "hidden",
+				type: 'hidden',
 				showChildren: true,
-				children: [
-					{type: 'not-link', id: 1, showChildren: false }
-				]
+				children: [{ type: 'not-link', id: 1, showChildren: false }]
 			}
 		}
 
@@ -143,7 +135,7 @@ describe('EditorUtil', () => {
 	test('getNavLabelForModel returns the correct model', () => {
 		const mockState = {
 			itemsById: {
-				mockId: { label: 'mockLabel'}
+				mockId: { label: 'mockLabel' }
 			}
 		}
 
@@ -159,7 +151,7 @@ describe('EditorUtil', () => {
 	test('getNavLabelForModel returns null whith no match', () => {
 		const mockState = {
 			itemsById: {
-				mockId: { label: 'mockLabel'}
+				mockId: { label: 'mockLabel' }
 			}
 		}
 
@@ -174,13 +166,13 @@ describe('EditorUtil', () => {
 
 	test('getOrderedList generates a nav list', () => {
 		const mockState = {
-			items: {
+			navItems: {
 				id: 'mockId',
-				type: "hidden",
+				type: 'hidden',
 				showChildren: true,
 				children: [
-					{type: 'not-link', id: 1, showChildren: false },
-					{type: 'link', id: 2, showChildren: false }
+					{ type: 'not-link', id: 1, showChildren: false },
+					{ type: 'link', id: 2, showChildren: false }
 				]
 			}
 		}
@@ -188,33 +180,35 @@ describe('EditorUtil', () => {
 		const items = EditorUtil.getOrderedList(mockState)
 
 		expect(items).toEqual([
-			{type: 'not-link', id: 1, showChildren: false },
-			{"id": 2, "showChildren": false, "type": "link"}
+			{ type: 'not-link', id: 1, showChildren: false },
+			{ id: 2, showChildren: false, type: 'link' }
 		])
 	})
 
 	test('getOrderedList generates assessment items', () => {
 		const mockState = {
-			items: {
+			navItems: {
 				id: 'mockId',
-				type: "hidden",
+				type: 'hidden',
 				showChildren: true,
 				children: [
-					{type: 'not-link', id: 1, showChildren: false },
-					{type: 'link', id: 2, showChildren: false },
-					{id: 'mockAssessment', type: 'link', flags: {}, showChildren: false}
+					{ type: 'not-link', id: 1, showChildren: false },
+					{ type: 'link', id: 2, showChildren: false },
+					{ id: 'mockAssessment', type: 'link', flags: {}, showChildren: false }
 				]
 			}
 		}
 
-		Common.models.OboModel.models.mockAssessment.get.mockReturnValueOnce('ObojoboDraft.Sections.Assessment')
+		Common.models.OboModel.models.mockAssessment.get.mockReturnValueOnce(
+			'ObojoboDraft.Sections.Assessment'
+		)
 
 		const items = EditorUtil.getOrderedList(mockState)
 
 		expect(items).toEqual([
-			{"id": 1, "showChildren": false, "type": "not-link"},
-			{"id": 2, "showChildren": false, "type": "link"},
-			{"flags": {"assessment": true}, "id": "mockAssessment", "showChildren": false, "type": "link"}
+			{ id: 1, showChildren: false, type: 'not-link' },
+			{ id: 2, showChildren: false, type: 'link' },
+			{ flags: { assessment: true }, id: 'mockAssessment', showChildren: false, type: 'link' }
 		])
 	})
 
@@ -234,7 +228,7 @@ describe('EditorUtil', () => {
 	test('getNavTargetModel returns the current targets model', () => {
 		const mockState = {
 			itemsById: {
-				mockAssessment: { id: 'mockAssessment'}
+				mockAssessment: { id: 'mockAssessment' }
 			},
 			navTargetId: 'mockAssessment'
 		}
@@ -250,7 +244,7 @@ describe('EditorUtil', () => {
 	test('getNavTargetModel returns null with no item', () => {
 		const mockState = {
 			itemsById: {
-				mockAssessment: { id: 'mockAssessment'}
+				mockAssessment: { id: 'mockAssessment' }
 			},
 			navTargetId: 'mockNoItem'
 		}
@@ -263,18 +257,16 @@ describe('EditorUtil', () => {
 	test('renamePage calls editor:renamePage', () => {
 		EditorUtil.renamePage('mockId', 'newName')
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith(
-			'editor:renamePage',
-			{value: {pageId: "mockId", name: 'newName'}}
-		)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:renamePage', {
+			value: { pageId: 'mockId', name: 'newName' }
+		})
 	})
 
 	test('movePage calls editor:movePage', () => {
 		EditorUtil.movePage('mockId', 'newIndex')
 
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith(
-			'editor:movePage',
-			{value: {pageId: "mockId", index: 'newIndex'}}
-		)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:movePage', {
+			value: { pageId: 'mockId', index: 'newIndex' }
+		})
 	})
 })

@@ -1,10 +1,9 @@
 jest.mock('../../../../src/scripts/common/index', () => ({
-	Store: {
+	Registry: {
 		registerModel: jest.fn()
 	},
 	chunk: {
 		textChunk: {
-			TextGroupSelectionHandler: jest.fn(),
 			TextGroupAdapter: jest.fn()
 		}
 	}
@@ -20,11 +19,10 @@ import ViewerComponent from '../../../../ObojoboDraft/Chunks/Text/viewer-compone
 
 describe('ObojoboDraft.Chunks.Text registration', () => {
 	test('registerModel registers expected vars', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.Text')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', expect.any(Function))
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
-		expect(register[1]).toHaveProperty('selectionHandler', {})
 	})
 })

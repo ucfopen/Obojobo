@@ -562,8 +562,8 @@ describe('NavStore', () => {
 			}
 		}
 
-		jest.spyOn(Common.Store, 'getItemForType')
-		Common.Store.getItemForType.mockReturnValueOnce({ getNavItem: null })
+		jest.spyOn(Common.Registry, 'getItemForType')
+		Common.Registry.getItemForType.mockReturnValueOnce({ getNavItem: null })
 
 		expect(NavStore.generateNav(model)).toEqual({
 			children: [],
@@ -602,9 +602,9 @@ describe('NavStore', () => {
 				models: [childItem]
 			}
 		}
-		jest.spyOn(Common.Store, 'getItemForType')
-		Common.Store.getItemForType.mockReturnValueOnce(item)
-		Common.Store.getItemForType.mockReturnValueOnce(childItem)
+		jest.spyOn(Common.Registry, 'getItemForType')
+		Common.Registry.getItemForType.mockReturnValueOnce(item)
+		Common.Registry.getItemForType.mockReturnValueOnce(childItem)
 
 		NavStore.setState({
 			itemsByPath: {},

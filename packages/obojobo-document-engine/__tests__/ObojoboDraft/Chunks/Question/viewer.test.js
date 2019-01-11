@@ -1,11 +1,6 @@
 jest.mock('../../../../src/scripts/common/index', () => ({
-	Store: {
+	Registry: {
 		registerModel: jest.fn()
-	},
-	chunk: {
-		textChunk: {
-			TextGroupSelectionHandler: jest.fn()
-		}
 	}
 }))
 
@@ -22,17 +17,16 @@ const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 describe('ObojoboDraft.Chunks.Question registration', () => {
 	test('registerModel registers expected vars', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		expect(register[0]).toBe('ObojoboDraft.Chunks.Question')
 		expect(register[1]).toHaveProperty('type', 'chunk')
 		expect(register[1]).toHaveProperty('adapter', {})
 		expect(register[1]).toHaveProperty('componentClass', ViewerComponent)
-		expect(register[1]).toHaveProperty('selectionHandler', {})
 		expect(register[1]).toHaveProperty('getNavItem', expect.any(Function))
 	})
 
 	test('getNavItem returns link for a question', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			title: 'mockTitle',
 			// Mock the OboModel structure
@@ -56,7 +50,7 @@ describe('ObojoboDraft.Chunks.Question registration', () => {
 	})
 
 	test('getNavItem returns link for a question in practice mode', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			modelState: {
 				mode: 'practice'
@@ -82,7 +76,7 @@ describe('ObojoboDraft.Chunks.Question registration', () => {
 	})
 
 	test('getNavItem returns link for a question in review mode', () => {
-		const register = Common.Store.registerModel.mock.calls[0]
+		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
 			modelState: {
 				mode: 'review'
