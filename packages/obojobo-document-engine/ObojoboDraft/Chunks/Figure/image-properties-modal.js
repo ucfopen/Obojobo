@@ -4,7 +4,7 @@ import Common from 'Common'
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
-import './image-properties.scss'
+import './image-properties-modal.scss'
 
 class ImageProperties extends React.Component {
 	constructor(props) {

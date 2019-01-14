@@ -2,7 +2,9 @@
 import React from 'react'
 import Common from 'Common'
 
-import ImageProperties from './image-properties'
+import ImageProperties from './image-properties-modal'
+
+import './editor-component.scss'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components

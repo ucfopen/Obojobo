@@ -1,0 +1,40 @@
+@import '~styles/includes';
+
+.score-range {
+	text-align: left;
+
+	input {
+		margin-bottom: .5em;
+		margin-left: 0.5em;
+		margin-right: 1em;
+	}
+
+	fieldset {
+		text-align: left;
+		border: none;
+		padding-left: 0;
+	}
+
+	.type-input {
+		display: block;
+
+		.single-type-input {
+			padding-left: 2em;
+		}
+
+		.range-type-input {
+			padding-left: 2em;
+		}
+
+		.range-display {
+			width: 100%;
+			text-align: center;
+			font-size: 0.7em;
+			color: $color-text-minor;
+		}
+
+		label {
+			display: inline;
+		}
+	}
+}

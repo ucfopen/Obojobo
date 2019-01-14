@@ -25,7 +25,7 @@ import MCAnswer from '../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/edit
 import MCFeedback from '../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
 import Page from '../../../../ObojoboDraft/Pages/Page/editor'
 import Assessment from '../../../../ObojoboDraft/Sections/Assessment/editor'
-import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
+import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor-component'
 import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor'
 import ParameterNode from './parameter-node'
 import Component from './node/editor'
