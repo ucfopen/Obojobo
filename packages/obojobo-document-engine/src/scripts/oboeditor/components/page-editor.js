@@ -1,4 +1,3 @@
-/* eslint no-alert: 0 */
 import React from 'react'
 import Common from 'Common'
 import { Value } from 'slate'
@@ -34,8 +33,13 @@ import EditorSchema from '../plugins/editor-schema'
 
 import './page-editor.scss'
 
+const { SimpleDialog, Prompt } = Common.components.modal
+const { ModalUtil } = Common.util
+
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+
+const LINK_MARK = 'a'
 
 const plugins = [
 	Component.plugins,
@@ -113,6 +117,7 @@ class PageEditor extends React.Component {
 					value={this.state.value}
 					onChange={change => this.onChange(change)}
 					plugins={plugins}
+					onKeyDown={this.onKeyDown.bind(this)}
 				/>
 				{this.renderExportButton()}
 			</div>
@@ -205,9 +210,61 @@ class PageEditor extends React.Component {
 
 		APIUtil.postDraft(this.props.draftId, json).then(result => {
 			if (result.status === 'ok') {
-				window.alert('Successfully saved draft')
+				ModalUtil.show(
+					<SimpleDialog ok title={'Successfully saved draft'}/>
+				)
+			} else {
+				ModalUtil.show(
+					<SimpleDialog ok title={'Error: '+ result.value.message}/>
+				)
 			}
 		})
+	}
+
+	// This is the onKeyDown plugin for links, but it was moved to
+	// page-editor.js to curcumvent Slate's synchronous keyDown system.
+	// When we upgrade Slate to 0.43+, the keyDown event should be moved
+	// back to link-mark.js for consistency
+	onKeyDown(event, change) {
+		console.log('onKeyDown')
+		if (!(event.ctrlKey || event.metaKey) || event.key !== 'k') return
+
+		event.preventDefault()
+		return this.toggleLink(change)
+	}
+	toggleLink() {
+		ModalUtil.show(
+			<Prompt
+				title="Insert Link"
+				message="Enter the link url:"
+				onConfirm={this.changeLinkValue.bind(this)}/>
+		)
+	}
+	changeLinkValue(href) {
+		ModalUtil.hide()
+
+		const value = this.state.value
+		const change = value.change()
+
+		// remove existing links
+		value.marks.forEach(mark => {
+			if (mark.type === LINK_MARK) {
+				change.removeMark({
+					type: LINK_MARK,
+					data: mark.data.toJSON()
+				})
+			}
+		})
+
+		// If href is empty, don't add a link
+		if(!href || !/[^\s]/.test(href))  return this.onChange(change)
+
+		change.addMark({
+			type: LINK_MARK,
+			data: { href }
+		})
+
+		return this.onChange(change)
 	}
 }
 

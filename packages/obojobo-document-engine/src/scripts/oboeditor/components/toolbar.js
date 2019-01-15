@@ -1,5 +1,3 @@
-/* eslint no-alert: 0 */
-
 import React from 'react'
 import Common from 'Common'
 

@@ -1,34 +1,11 @@
-/* eslint no-alert: 0 */
-
 function linkMark(options) {
-	const { type, key, render } = options
+	const { type, render } = options
 
 	return {
-		onKeyDown(event, change) {
-			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return
-
-			event.preventDefault()
-
-			const value = change.value
-			let removedMarks = false
-
-			value.marks.forEach(mark => {
-				if (mark.type === 'a') {
-					change.removeMark({
-						type: 'a',
-						data: mark.data.toJSON()
-					})
-					removedMarks = true
-				}
-			})
-
-			if (removedMarks) return false
-
-			const href = window.prompt('Link address:') || null
-
-			change.toggleMark({ type, data: { href } })
-			return true
-		},
+		// This plugin's version of onKeyDown(event, change) has been moved to
+		// page-editor as a workaround for Slate's synchronous keyDown plugins
+		// When we upgrade Slate to 0.43+, the keyDown event should be moved back
+		// here for consistency
 		renderMark(props) {
 			switch (props.mark.type) {
 				case type:
