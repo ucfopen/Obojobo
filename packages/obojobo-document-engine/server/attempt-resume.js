@@ -1,18 +1,23 @@
 const attemptStart = require('./attempt-start')
+const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const insertEvent = oboRequire('insert_event')
+
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 const resumeAttempt = (req, res) => {
 	const attempt = req.body
-	let currentDocument = null
+	let draftDocument = null
+	let currentUser = null
 	let assessmentNode
 
 	return req
 		.requireCurrentUser()
-		.then(() => {
+		.then(user => {
+			currentUser = user
 			return req.requireCurrentDocument()
 		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
+		.then(currentDocument => {
+			draftDocument = currentDocument
 			assessmentNode = currentDocument.getChildNodeById(attempt.assessmentId)
 
 			return Promise.all(
@@ -26,9 +31,55 @@ const resumeAttempt = (req, res) => {
 					attempt.questions.push(assessmentNode.draftTree.getChildNodeById(node.id).toObject())
 				}
 			}
-
-			res.success(attempt)
 		})
+		.then(() => {
+			return insertAttemptResumeEvents(
+				currentUser,
+				draftDocument,
+				attempt.assessmentId,
+				attempt.id,
+				attempt.number,
+				false,
+				req.hostname,
+				req.connection.remoteAddress
+			)
+		})
+		.then(() => res.success(attempt))
+}
+
+const insertAttemptResumeEvents = (
+	user,
+	draftDocument,
+	assessmentId,
+	attemptId,
+	attemptNumber,
+	isPreview,
+	hostname,
+	remoteAddress
+) => {
+	const { createAssessmentAttemptResumedEvent } = createCaliperEvent(null, hostname)
+	return insertEvent({
+		action: 'assessment:attemptResume',
+		actorTime: new Date().toISOString(),
+		payload: {
+			attemptId: attemptId,
+			attemptCount: attemptNumber
+		},
+		userId: user.id,
+		ip: remoteAddress,
+		metadata: {},
+		draftId: draftDocument.draftId,
+		contentId: draftDocument.contentId,
+		eventVersion: '1.1.0',
+		isPreview: isPreview,
+		caliperPayload: createAssessmentAttemptResumedEvent({
+			actor: { type: 'user', id: user.id },
+			draftId: draftDocument.draftId,
+			contentId: draftDocument.contentId,
+			assessmentId,
+			attemptId: attemptId
+		})
+	})
 }
 
 module.exports = {

@@ -80,6 +80,7 @@ describe('server/express', () => {
 		expect(server.put).toHaveBeenCalledTimes(0)
 		expect(server.post).toBeCalledWith('/api/lti/sendAssessmentScore', expect.anything())
 		expect(server.post).toBeCalledWith('/api/assessments/attempt/start', expect.anything())
+		expect(server.post).toBeCalledWith('/api/assessments/attempt/resume', expect.anything())
 		expect(server.post).toBeCalledWith('/api/assessments/attempt/:attemptId/end', expect.anything())
 		expect(server.post).toBeCalledWith('/api/assessments/clear-preview-scores', expect.anything())
 		expect(server.get).toBeCalledWith('/api/lti/state/draft/:draftId', expect.anything())
