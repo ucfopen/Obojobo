@@ -12,13 +12,12 @@
 		font-size: 0.8em;
 		height: 2em;
 		padding: 0.2em;
-		width: 75%;
 	}
 
 	button {
 		background: $color-action;
 		border: none;
-		border-radius: 0 0.3rem 0.3rem 0;
+		border-radius: $dimension-rounded-radius;
 		box-sizing: border-box;
 		color: $color-bg;
 		cursor: pointer;
@@ -29,7 +28,6 @@
 		padding: 0.23rem 0.5em;
 		text-transform: uppercase;
 		vertical-align: top;
-		width: 25%;
 	}
 
 	.label {
