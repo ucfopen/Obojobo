@@ -3,19 +3,18 @@ const express = require('express')
 const draftNodeStore = oboRequire('draft_node_store')
 const logger = oboRequire('logger')
 
-const { oboNodesServer, oboExpress } = require(path.resolve('obojobo.js'))
-
+const { oboNodesServer, oboExpress } = require(path.resolve(__dirname, '../../obojobo.js'))
 module.exports = app => {
 	// =========== REGISTER CUSTOM EXPRESS MIDDLEWARE ===========
 	oboExpress.forEach(expressFile => {
-		const resolvedPath = path.resolve('packages/obojobo-document-engine/server', expressFile)
-		logger.info('Registering express App:', resolvedPath)
-		app.use(require(resolvedPath))
+		const pathToLoad = `obojobo-document-engine/server/${expressFile}`
+		logger.info('Registering express App:', pathToLoad)
+		app.use(require(pathToLoad))
 	})
 
 	// =========== REGISTER CUSTOM DRAFT NODES ===========
 	oboNodesServer.forEach(node => {
-		const location = path.resolve('packages/obojobo-document-engine', node.location)
+		const location = path.resolve(__dirname, '../obojobo-document-engine', node.location)
 		logger.info('Adding server node:', location)
 		draftNodeStore.add(node.name, location)
 	})

@@ -31,7 +31,7 @@ app.on('mount', app => {
 	app.use(currentVisitMiddleware)
 	app.use(currentDocumentMiddleware)
 	app.use(oboLtiMiddleware)
-	app.use(responseDecorator)
+	app.use('/', responseDecorator)
 
 	// =========== ROUTING & CONTROLLERS ===========
 	app.use('/preview', oboRequire('routes/preview'))

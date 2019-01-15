@@ -1,5 +1,6 @@
 const express = require('express')
 const fs = require('fs')
+const path = require('path')
 const router = express.Router()
 const DraftModel = oboRequire('models/draft')
 const logger = oboRequire('logger')
@@ -15,7 +16,7 @@ const {
 
 // update to use path
 const draftTemplateXML = fs
-	.readFileSync(`${__dirname}/../../../obojobo-document-engine/documents/empty.xml`)
+	.readFileSync(path.resolve(__dirname, '../../../obojobo-document-engine/documents/empty.xml'))
 	.toString()
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 

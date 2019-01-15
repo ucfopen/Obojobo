@@ -67,7 +67,6 @@ describe('obo express', () => {
 		expect(registerChunks).toHaveBeenCalledWith(mockApp)
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_load_balancer_helper'))
 		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
-		expect(mockApp.use).toHaveBeenCalledWith(oboRequire('express_current_user'))
 		expect(mockApp.use).toHaveBeenCalledWith('/', oboRequire('express_response_decorator'))
 	})
 

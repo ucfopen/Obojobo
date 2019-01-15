@@ -1,3 +1,5 @@
+const path = require('path')
+
 // Global for loading specialized Obojobo stuff
 // use oboRequire('models/draft') to load draft models from any context
 global.oboRequire = name => {
@@ -23,24 +25,29 @@ const dbJson = {
 
 // get the actual empty.xml
 const realFs = require.requireActual('fs')
-const emptyXmlPath = '../../node_modules/obojobo-document-engine/documents/empty.xml'
+const emptyXmlPath = path.resolve('../obojobo-document-engine/documents/empty.xml')
 const emptyXmlStream = realFs.readFileSync(emptyXmlPath)
 
-fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
-fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')
-fs.__setMockFileContents('./config/draft.json', '{"test":{"paths":[]}}')
-fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"canDoThing":["roleName"]}}')
+fs.__setMockFileContents(`${__dirname}/config/db.json`, JSON.stringify(dbJson))
 fs.__setMockFileContents(
-	'./config/general.json',
+	`${__dirname}/config/lti.json`,
+	'{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}'
+)
+fs.__setMockFileContents(`${__dirname}/config/draft.json`, '{"test":{"paths":[]}}')
+fs.__setMockFileContents(
+	`${__dirname}/config/permission_groups.json`,
+	'{"test":{"canDoThing":["roleName"]}}'
+)
+fs.__setMockFileContents(
+	`${__dirname}/config/general.json`,
 	'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
 )
 fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
 
-// use this to wrap a class with a virtual mock
-// mockVirtual('./express_load_balancer_helper')
-// let elbh = require('./express_load_balancer_helper')
-// elbh.myFunc = jest.fn()
-// then when an include requires elbh, it'll get your mock
+// mockVirtual is used when you don't want jest to
+// acknowledge any existing mock in the system
+// and force whatever you're mocking to just return jest.fn()
+// it can also be used to mock a file that doesn't exist
 global.mockVirtual = mock => {
 	const mockFunction = jest.fn()
 	jest.mock(
