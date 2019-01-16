@@ -3,6 +3,7 @@
     <Text>
         <textGroup>
             <t>This is a test</t>
+            <t>This is a <latex alt="math">math</latex> equation</t>
         </textGroup>
     </Text>
 </ObojoboDraftDoc>

@@ -2,12 +2,15 @@
 
 exports[`YouTube YouTube component 1`] = `
 <div
+  aria-label="YouTube Video"
   className="component"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.YouTube"
   id="obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--you-tube viewer"

@@ -8,6 +8,7 @@ exports[`IFrame IFrame component renders 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -49,6 +50,7 @@ exports[`IFrame IFrame component renders 2`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -90,6 +92,7 @@ exports[`IFrame IFrame component renders 3`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
@@ -131,6 +134,7 @@ exports[`IFrame IFrame component renders 4`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -172,6 +176,7 @@ exports[`IFrame IFrame component renders 5`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -213,6 +218,7 @@ exports[`IFrame IFrame component renders 6`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
@@ -254,6 +260,7 @@ exports[`IFrame IFrame component renders 7`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -304,6 +311,7 @@ exports[`IFrame IFrame component renders 8`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -354,6 +362,7 @@ exports[`IFrame IFrame component renders 9`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
@@ -404,6 +413,7 @@ exports[`IFrame IFrame component renders 10`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -454,6 +464,7 @@ exports[`IFrame IFrame component renders 11`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -504,6 +515,7 @@ exports[`IFrame IFrame component renders 12`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
@@ -554,6 +566,7 @@ exports[`IFrame IFrame component renders 13`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -595,6 +608,7 @@ exports[`IFrame IFrame component renders 14`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -636,6 +650,7 @@ exports[`IFrame IFrame component renders 15`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
@@ -677,6 +692,7 @@ exports[`IFrame IFrame component renders 16`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -718,6 +734,7 @@ exports[`IFrame IFrame component renders 17`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -759,6 +776,7 @@ exports[`IFrame IFrame component renders 18`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
@@ -800,6 +818,7 @@ exports[`IFrame IFrame component renders 19`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -850,6 +869,7 @@ exports[`IFrame IFrame component renders 20`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -900,6 +920,7 @@ exports[`IFrame IFrame component renders 21`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
@@ -950,6 +971,7 @@ exports[`IFrame IFrame component renders 22`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -1000,6 +1022,7 @@ exports[`IFrame IFrame component renders 23`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -1050,6 +1073,7 @@ exports[`IFrame IFrame component renders 24`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
@@ -1100,6 +1124,7 @@ exports[`IFrame IFrame component renders 25`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-missing-src is-scaled-up"

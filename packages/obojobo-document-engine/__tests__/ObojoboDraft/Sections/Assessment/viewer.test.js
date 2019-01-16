@@ -47,6 +47,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'Assessment',
+			contentType: 'Assessment Section',
 			path: ['assessment'],
 			showChildren: false,
 			showChildrenOnNavigation: false
@@ -63,6 +64,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'mock Title',
+			contentType: 'Assessment Section',
 			path: ['mock-title'],
 			showChildren: false,
 			showChildrenOnNavigation: false

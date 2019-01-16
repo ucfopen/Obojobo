@@ -1,13 +1,11 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import OboComponent from '../../../src/scripts/common/components/obo-component'
+import OboComponent from '../../../src/scripts/viewer/components/obo-component'
 import OboModel from '../../../__mocks__/_obo-model-with-chunks'
 
-jest.mock('../../../src/scripts/common/util/focus-util', () => {
-	return {
-		getFocussedComponent: () => null
-	}
+jest.mock('../../../src/scripts/viewer/util/focus-util', () => {
+	return { getVisuallyFocussedModel: () => null }
 })
 
 test('OboComponent', () => {

@@ -23,4 +23,11 @@
 		right: 3em;
 		transform: translate(0, -50%);
 	}
+
+	.for-screen-reader-only {
+		right: inherit;
+		bottom: inherit;
+		left: 0;
+		top: 0;
+	}
 }

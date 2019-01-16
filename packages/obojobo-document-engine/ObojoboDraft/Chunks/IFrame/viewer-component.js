@@ -16,7 +16,8 @@ const MAX_SCALE = 10
 const DECREASE_ZOOM_STEP = -0.1
 const INCREASE_ZOOM_STEP = 0.1
 
-const { OboComponent, Button } = Common.components
+const { OboComponent } = Viewer.components
+const { Button } = Common.components
 const Dispatcher = Common.flux.Dispatcher
 const MediaUtil = Viewer.util.MediaUtil
 const isOrNot = Common.util.isOrNot

@@ -9,6 +9,7 @@ jest.mock('../../../../ObojoboDraft/Sections/Assessment/components/test')
 jest.mock('../../../../ObojoboDraft/Sections/Assessment/components/post-test')
 jest.mock('../../../../src/scripts/viewer/util/nav-util')
 jest.mock('../../../../src/scripts/common/flux/dispatcher')
+jest.mock('../../../../src/scripts/common/page/focus')
 jest.mock('../../../../src/scripts/common/util/modal-util')
 
 import Assessment from '../../../../ObojoboDraft/Sections/Assessment/viewer-component'
@@ -766,5 +767,102 @@ describe('Assessment', () => {
 			model
 		)
 		expect(action).toEqual('mockAction')
+	})
+
+	test('If the current step is changing viewer:scrollToTop is fired', () => {
+		const model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce('mockAction')
+		}
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: { context: 'mockContext' },
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const spy = jest.spyOn(Assessment, 'getCurrentStep').mockImplementation(() => 'step-1')
+
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		component.setState({ step: 'step-2' })
+		component.setProps()
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:scrollToTop')
+
+		spy.mockRestore()
+	})
+
+	test('If the current step is changing but it was null viewer:scrollToTop is NOT fired', () => {
+		const model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce('mockAction')
+		}
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: { context: 'mockContext' },
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const spy = jest.spyOn(Assessment, 'getCurrentStep').mockImplementation(() => 'step-1')
+
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		component.setState({ step: null })
+		component.setProps()
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		spy.mockRestore()
+	})
+
+	test('If the current step is NOT changing then viewer:scrollToTop is NOT fired', () => {
+		const model = OboModel.create(assessmentJSON)
+		model.modelState.scoreActions = {
+			getActionForScore: jest.fn().mockReturnValueOnce('mockAction')
+		}
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			questionState: 'mockQuestionState',
+			navState: { context: 'mockContext' },
+			focusState: {}
+		}
+
+		// mock for render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+
+		const spy = jest.spyOn(Assessment, 'getCurrentStep').mockImplementation(() => 'step-1')
+
+		const component = mount(<Assessment model={model} moduleData={moduleData} />)
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		component.setState({ step: 'step-1' })
+		component.setProps()
+
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		spy.mockRestore()
+	})
+
+	test('focusOnContent dispatches event', () => {
+		expect(Dispatcher.trigger).not.toHaveBeenCalled()
+
+		Assessment.focusOnContent()
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith(
+			'ObojoboDraft.Sections.Assessment:focusOnContent'
+		)
 	})
 })
