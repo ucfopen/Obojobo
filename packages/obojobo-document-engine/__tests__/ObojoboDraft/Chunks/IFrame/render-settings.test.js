@@ -2,6 +2,7 @@ import {
 	getIsShowing,
 	getControlsOptions,
 	getDisplayedTitle,
+	getAriaRegionLabel,
 	getSetDimensions,
 	getScaleAmount,
 	getScaleDimensions,
@@ -266,6 +267,15 @@ describe('render-settings', () => {
 		expect(t({ src: 'src', title: null })).toBe('src')
 		expect(t({ src: 'src', title: 'title' })).toBe('title')
 		expect(t({ src: false, title: null })).toBe('')
+	})
+
+	test('getAriaRegionLabel', () => {
+		const t = getAriaRegionLabel
+
+		expect(t({ src: 'mock-src', title: 'mock-title' }, 'displayed-title')).toBe(
+			'External content titled "displayed-title" from mock-src.'
+		)
+		expect(t({ src: 'mock-src' }, 'displayed-title')).toBe('External content from mock-src.')
 	})
 
 	test('getSetDimensions', () => {

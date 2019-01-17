@@ -8,6 +8,7 @@ import Viewer from 'Viewer'
 
 import Controls from './controls'
 import { getRenderSettings } from './render-settings'
+import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 
 const DEFAULT_WIDTH = 710
 const DEFAULT_HEIGHT = 500
@@ -30,6 +31,8 @@ export default class IFrame extends React.Component {
 		this.boundOnZoomReset = this.onClickZoomReset.bind(this)
 		this.boundOnReload = this.onClickReload.bind(this)
 		this.boundOnViewerContentAreaResized = this.onViewerContentAreaResized.bind(this)
+		this.boundSkipToBottom = this.onClickSkipToBottom.bind(this)
+		this.boundSkipToTop = this.onClickSkipToTop.bind(this)
 
 		MediaUtil.setDefaultZoom(this.props.model.get('id'), this.props.model.modelState.initialZoom)
 
@@ -37,6 +40,14 @@ export default class IFrame extends React.Component {
 			actualWidth: 0,
 			padding: 0
 		}
+	}
+
+	onClickSkipToBottom() {
+		this.refs.buttonSkipToTop.focus()
+	}
+
+	onClickSkipToTop() {
+		this.refs.buttonSkipToBottom.focus()
 	}
 
 	getMeasuredDimensions() {
@@ -61,6 +72,7 @@ export default class IFrame extends React.Component {
 
 	onClickContainer() {
 		MediaUtil.show(this.props.model.get('id'))
+		FocusUtil.focusComponent(this.props.model.get('id'), false)
 	}
 
 	onClickZoomReset() {
@@ -136,6 +148,7 @@ export default class IFrame extends React.Component {
 		const {
 			zoomValues,
 			displayedTitle,
+			ariaRegionLabel,
 			scaleDimensions,
 			isShowing,
 			controlsOpts,
@@ -157,7 +170,13 @@ export default class IFrame extends React.Component {
 		const src = this.createSrc(ms.src)
 
 		return (
-			<OboComponent model={this.props.model} moduleData={this.props.moduleData} ref="self">
+			<OboComponent
+				model={this.props.model}
+				moduleData={this.props.moduleData}
+				ref="self"
+				role="region"
+				aria-label={ariaRegionLabel}
+			>
 				<div
 					className={
 						'obojobo-draft--chunks--iframe viewer pad' +
@@ -175,6 +194,16 @@ export default class IFrame extends React.Component {
 						onClick={!isShowing && ms.src !== null ? this.boundOnClickContainer : null}
 						style={scaleDimensions.containerStyle}
 					>
+						{isShowing ? (
+							<Button
+								altAction
+								className="button-skip top"
+								ref="buttonSkipToBottom"
+								onClick={this.boundSkipToBottom}
+							>
+								You are at the beginning of this embedded content. Click to skip to the end.
+							</Button>
+						) : null}
 						<div className="iframe-container">
 							{isShowing ? (
 								<iframe
@@ -193,8 +222,12 @@ export default class IFrame extends React.Component {
 						<div className="after" style={afterStyle} />
 						{isShowing ? null : (
 							<div className="click-to-load">
-								<span className="title">{displayedTitle}</span>
-								{ms.src === null ? null : <Button>View Content</Button>}
+								<span className="title" aria-hidden>
+									{displayedTitle}
+								</span>
+								{ms.src === null ? null : (
+									<Button ariaLabel="Click to load external content">View Content</Button>
+								)}
 							</div>
 						)}
 						{isShowing ? (
@@ -215,6 +248,16 @@ export default class IFrame extends React.Component {
 								)}
 								zoomReset={this.boundOnZoomReset}
 							/>
+						) : null}
+						{isShowing ? (
+							<Button
+								altAction
+								className="button-skip bottom"
+								ref="buttonSkipToTop"
+								onClick={this.boundSkipToTop}
+							>
+								You are at the end of this embedded content. Click to skip to the beginning.
+							</Button>
 						) : null}
 					</div>
 				</div>

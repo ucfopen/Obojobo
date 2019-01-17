@@ -34,6 +34,14 @@ const getDisplayedTitle = modelState => {
 	return (modelState.src || '').replace(/^https?:\/\//, '')
 }
 
+const getAriaRegionLabel = (modelState, displayedTitle) => {
+	if (modelState.title) {
+		return 'External content titled "' + displayedTitle + '" from ' + modelState.src + '.'
+	} else {
+		return 'External content from ' + modelState.src + '.'
+	}
+}
+
 const getSetDimensions = (modelState, defaultWidth, defaultHeight) => ({
 	w: modelState.width || defaultWidth,
 	h: modelState.height || defaultHeight
@@ -109,6 +117,7 @@ const getRenderSettings = (
 	const setDimensions = getSetDimensions(ms, defaultWidth, defaultHeight)
 	const scaleAmount = getScaleAmount(actualWidth, padding, setDimensions.w)
 	const displayedTitle = getDisplayedTitle(ms)
+	const ariaRegionLabel = getAriaRegionLabel(ms, displayedTitle)
 	const scaleDimensions = getScaleDimensions(
 		ms,
 		zoomValues.currentZoom,
@@ -126,6 +135,7 @@ const getRenderSettings = (
 	return {
 		zoomValues,
 		displayedTitle,
+		ariaRegionLabel,
 		scaleDimensions,
 		isShowing,
 		controlsOpts,
@@ -140,6 +150,7 @@ export {
 	getIsShowing,
 	getControlsOptions,
 	getDisplayedTitle,
+	getAriaRegionLabel,
 	getSetDimensions,
 	getScaleAmount,
 	getScaleDimensions,
