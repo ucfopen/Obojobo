@@ -1673,22 +1673,6 @@ Object {
           "value": "This is a test",
         },
       },
-      Object {
-        "data": null,
-        "text": Object {
-          "styleList": Array [
-            Object {
-              "data": Object {
-                "alt": "math",
-              },
-              "end": 14,
-              "start": 10,
-              "type": "_latex",
-            },
-          ],
-          "value": "This is a math equation",
-        },
-      },
     ],
   },
   "id": null,

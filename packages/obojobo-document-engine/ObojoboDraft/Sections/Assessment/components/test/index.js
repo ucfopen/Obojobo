@@ -6,7 +6,6 @@ import { FOCUS_ON_ASSESSMENT_CONTENT } from '../../assessment-event-constants'
 
 const { Button } = Common.components
 const { Dispatcher } = Common.flux
-const { focus } = Common.page
 
 class AssessmentTest extends React.Component {
 	constructor() {
@@ -26,8 +25,10 @@ class AssessmentTest extends React.Component {
 		const firstQuestion = this.props.model.children.at(0)
 		if (!firstQuestion) return false
 
-		focus(firstQuestion.getDomEl())
+		const componentClass = firstQuestion.getComponentClass()
+		if (!componentClass) return false
 
+		componentClass.focusOnContent(firstQuestion)
 		return true
 	}
 
