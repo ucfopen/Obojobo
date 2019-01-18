@@ -5,13 +5,20 @@ import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-jest.mock('../../../../../ObojoboDraft/Pages/Page/editor')
+jest.mock('ObojoboDraft/Pages/Page/editor')
 
-import Actions from '../../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
+import ModalUtil from 'src/scripts/common/util/modal-util'
+jest.mock('src/scripts/common/util/modal-util')
+
+import Actions from 'ObojoboDraft/Sections/Assessment/post-assessment/editor-component'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 
 describe('Actions editor', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('Node component', () => {
 		const Node = Actions.components.Node
 		const component = renderer.create(
@@ -81,28 +88,9 @@ describe('Actions editor', () => {
 	})
 
 	test('Score component changes range', () => {
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-
-		const change = {
-			setNodeByKey: jest.fn()
-		}
-
 		const Node = Actions.components.Score
 		const component = shallow(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
+			<Node node={{ data: { get: () => ({}) } }}/>
 		)
 		const tree = component.html()
 
@@ -112,6 +100,7 @@ describe('Actions editor', () => {
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
 	test('Score component deletes self', () => {
@@ -136,11 +125,15 @@ describe('Actions editor', () => {
 			/>
 		)
 		const tree = component.html()
+		expect(tree).toBe("<div><div class=\"action-data\"><h2>Score Range: [object Object] </h2><button class=\"range-edit\" aria-label=\"Edit Score Range\">✎</button></div><div class=\"score-actions-page pad\"><div class=\"obojobo-draft--components--button is-not-dangerous align-center delete-button\"><button>×</button></div></div></div>")
 
-		component
+		const buttons = component
 			.find('button')
-			.at(1)
-			.simulate('click')
+			.html()
+
+		expect(buttons).toBe(false)
+			//.at(1)
+			//.simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(change.removeNodeByKey).toHaveBeenCalled()

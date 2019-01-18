@@ -6,7 +6,7 @@ exports[`Editor Toolbar Italics component 1`] = `"<em></em>"`;
 
 exports[`Editor Toolbar Latex component 1`] = `"<span class=\\"latex-editor\\"></span>"`;
 
-exports[`Editor Toolbar Link component 1`] = `"<a href=\\"/view/00000000-0000-0000-0000-000000000000\\"></a>"`;
+exports[`Editor Toolbar Link component 1`] = `"<span class=\\"editor--components--mark--link\\"><a href=\\"/view/00000000-0000-0000-0000-000000000000\\" title=\\"/view/00000000-0000-0000-0000-000000000000\\"></a><button class=\\"link-edit\\" aria-label=\\"Edit Link\\"></button></span>"`;
 
 exports[`Editor Toolbar Monospace component 1`] = `"<code></code>"`;
 

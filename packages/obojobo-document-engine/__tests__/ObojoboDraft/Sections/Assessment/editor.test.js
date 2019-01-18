@@ -5,10 +5,10 @@ import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-jest.mock('../../../../ObojoboDraft/Pages/Page/editor')
-jest.mock('../../../../ObojoboDraft/Chunks/QuestionBank/editor')
-jest.mock('../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor')
-jest.mock('../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor')
+jest.mock('ObojoboDraft/Pages/Page/editor')
+jest.mock('ObojoboDraft/Chunks/QuestionBank/editor')
+jest.mock('ObojoboDraft/Sections/Assessment/components/rubric/editor')
+jest.mock('ObojoboDraft/Sections/Assessment/post-assessment/editor-component')
 
 import Assessment from '../../../../ObojoboDraft/Sections/Assessment/editor'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'

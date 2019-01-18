@@ -5,63 +5,48 @@ exports[`Figure Editor Node Figure component 1`] = `
   className="obojobo-draft--chunks--figure viewer mockSize"
 >
   <div
-    className="image-toolbar"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Edit Alt Text
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Edit URL
-    </button>
-    <select
-      name="Size"
-      onChange={[Function]}
-      onClick={[Function]}
-      value="mockSize"
-    >
-      <option
-        value="small"
-      >
-        small
-      </option>
-      <option
-        value="medium"
-      >
-        medium
-      </option>
-      <option
-        value="large"
-      >
-        large
-      </option>
-      <option
-        value="custom"
-      >
-        custom
-      </option>
-    </select>
-    <div>
-      <button
-        className="delete-node"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-  </div>
-  <div
     className="container"
   >
-    <img
-      alt="mockAlt"
-      src="mockUrl"
-      title="mockAlt"
-      unselectable="on"
-    />
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center upload-button"
+        >
+          <button>
+            Upload Image
+          </button>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        title="mockAlt"
+        unselectable="on"
+      />
+    </div>
     <figcaption />
   </div>
 </div>
@@ -72,69 +57,54 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
   className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="image-toolbar"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Edit Alt Text
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Edit URL
-    </button>
-    <select
-      name="Size"
-      onChange={[Function]}
-      onClick={[Function]}
-      value="custom"
-    >
-      <option
-        value="small"
-      >
-        small
-      </option>
-      <option
-        value="medium"
-      >
-        medium
-      </option>
-      <option
-        value="large"
-      >
-        large
-      </option>
-      <option
-        value="custom"
-      >
-        custom
-      </option>
-    </select>
-    <div>
-      <button
-        className="delete-node"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-  </div>
-  <div
     className="container"
   >
-    <img
-      alt="mockAlt"
-      src="mockUrl"
-      style={
-        Object {
-          "height": "customHeightpx",
-          "width": "customWidthpx",
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center upload-button"
+        >
+          <button>
+            Upload Image
+          </button>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "height": "customHeightpx",
+            "width": "customWidthpx",
+          }
         }
-      }
-      title="mockAlt"
-      unselectable="on"
-    />
+        title="mockAlt"
+        unselectable="on"
+      />
+    </div>
     <figcaption />
   </div>
 </div>
@@ -145,68 +115,53 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
   className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="image-toolbar"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Edit Alt Text
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Edit URL
-    </button>
-    <select
-      name="Size"
-      onChange={[Function]}
-      onClick={[Function]}
-      value="custom"
-    >
-      <option
-        value="small"
-      >
-        small
-      </option>
-      <option
-        value="medium"
-      >
-        medium
-      </option>
-      <option
-        value="large"
-      >
-        large
-      </option>
-      <option
-        value="custom"
-      >
-        custom
-      </option>
-    </select>
-    <div>
-      <button
-        className="delete-node"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-  </div>
-  <div
     className="container"
   >
-    <img
-      alt="mockAlt"
-      src="mockUrl"
-      style={
-        Object {
-          "height": "customHeightpx",
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center upload-button"
+        >
+          <button>
+            Upload Image
+          </button>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "height": "customHeightpx",
+          }
         }
-      }
-      title="mockAlt"
-      unselectable="on"
-    />
+        title="mockAlt"
+        unselectable="on"
+      />
+    </div>
     <figcaption />
   </div>
 </div>
@@ -217,68 +172,53 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
   className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="image-toolbar"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Edit Alt Text
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Edit URL
-    </button>
-    <select
-      name="Size"
-      onChange={[Function]}
-      onClick={[Function]}
-      value="custom"
-    >
-      <option
-        value="small"
-      >
-        small
-      </option>
-      <option
-        value="medium"
-      >
-        medium
-      </option>
-      <option
-        value="large"
-      >
-        large
-      </option>
-      <option
-        value="custom"
-      >
-        custom
-      </option>
-    </select>
-    <div>
-      <button
-        className="delete-node"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-  </div>
-  <div
     className="container"
   >
-    <img
-      alt="mockAlt"
-      src="mockUrl"
-      style={
-        Object {
-          "width": "mockWidthpx",
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center upload-button"
+        >
+          <button>
+            Upload Image
+          </button>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "width": "mockWidthpx",
+          }
         }
-      }
-      title="mockAlt"
-      unselectable="on"
-    />
+        title="mockAlt"
+        unselectable="on"
+      />
+    </div>
     <figcaption />
   </div>
 </div>
