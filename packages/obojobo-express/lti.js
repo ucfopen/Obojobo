@@ -571,7 +571,7 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 		//
 		case ERROR_PREVIEW_MODE:
 			result.status = STATUS_NOT_ATTEMPTED_PREVIEW_MODE
-			logger.info(`LTI not sending preview score for user:"${userId}" on draft:"${draftId}"`, logId)
+			logger.info(`LTI not sending preview score`, logId)
 			break
 
 		case ERROR_NO_OUTCOME_SERVICE_FOR_LAUNCH:
