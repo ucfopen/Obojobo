@@ -12,6 +12,7 @@ Object {
   "nav:openExternalLink": [Function],
   "nav:prev": [Function],
   "nav:rebuildMenu": [Function],
+  "nav:redAlert": [Function],
   "nav:setContext": [Function],
   "nav:setFlag": [Function],
   "nav:showChildren": [Function],
@@ -433,6 +434,20 @@ Array [
 `;
 
 exports[`NavStore nav:prev does not change to invalid page 1`] = `undefined`;
+
+exports[`NavStore nav:redAlert posts event with payload 1`] = `
+Array [
+  Object {
+    "action": "nav:redAlert",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "redAlert": true,
+    },
+    "visitId": undefined,
+  },
+]
+`;
 
 exports[`NavStore nav:setFlag event updates state and calls trigger 1`] = `
 Object {
