@@ -36,7 +36,8 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	canNavigate: jest.fn(),
 	gotoPath: jest.fn(),
 	toggle: jest.fn(),
-	getOrderedList: jest.fn()
+	getOrderedList: jest.fn(),
+	setRedAlert: jest.fn()
 }))
 
 // NavStore
@@ -217,5 +218,43 @@ describe('Nav', () => {
 
 		el.find('li').simulate('click')
 		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+	})
+
+	test('onClick calls setRedAlert method', () => {
+		NavUtil.getOrderedList.mockReturnValue([
+			{
+				id: 5,
+				type: 'sub-link',
+				label: 'label',
+				flags: {
+					correct: false
+				}
+			}
+		])
+		NavUtil.setRedAlert.mockReturnValue()
+
+		const redAlertNav = shallow(
+			<Nav
+				{...{
+					navState: {
+						redAlert: true
+					}
+				}}
+			/>
+		)
+		const noAlertNav = shallow(
+			<Nav
+				{...{
+					navState: {
+						redAlert: false
+					}
+				}}
+			/>
+		)
+
+		redAlertNav.find('.red-alert-button').simulate('click')
+		expect(NavUtil.setRedAlert).toHaveBeenLastCalledWith(false)
+		noAlertNav.find('.red-alert-button').simulate('click')
+		expect(NavUtil.setRedAlert).toHaveBeenLastCalledWith(true)
 	})
 })

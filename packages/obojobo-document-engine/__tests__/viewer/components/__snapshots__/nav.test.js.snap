@@ -68,6 +68,12 @@ exports[`Nav renders all list item types 1`] = `
       />
     </li>
   </ul>
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
   >
@@ -87,6 +93,12 @@ exports[`Nav renders closed 1`] = `
     Toggle Navigation Menu
   </button>
   <ul />
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
   >
@@ -106,6 +118,12 @@ exports[`Nav renders opened 1`] = `
     Toggle Navigation Menu
   </button>
   <ul />
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
   >
@@ -125,6 +143,12 @@ exports[`Nav renders unlocked 1`] = `
     Toggle Navigation Menu
   </button>
   <ul />
+  <button
+    className="red-alert-button"
+    onClick={[Function]}
+  >
+    Red Alert
+  </button>
   <div
     className="viewer--components--logo is-not-inverted"
   >

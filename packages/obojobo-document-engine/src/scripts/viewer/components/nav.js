@@ -121,6 +121,14 @@ export default class Nav extends React.Component {
 						return null
 					})}
 				</ul>
+				<button
+					className="red-alert-button"
+					onClick={() => {
+						NavUtil.setRedAlert(!navState.redAlert)
+					}}
+				>
+					Red Alert
+				</button>
 				<Logo />
 			</div>
 		)

@@ -4,6 +4,7 @@
 	$color-nav-bg: #fbfbfb;
 	$color-nav-highlight: $color-obojobo-blue;
 	$color-nav-hover: darken($color-highlight, 25%);
+	$color-red-alert: #aa0000;
 	$padding: 2rem;
 
 	overflow: auto;
@@ -331,6 +332,13 @@
 
 	&.is-not-open .viewer--components--logo {
 		opacity: 0;
+	}
+
+	.red-alert-button {
+		color: $color-nav-bg;
+		background-color: $color-red-alert;
+		font-size: 3em;
+		padding: 1em;
 	}
 }
 

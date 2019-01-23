@@ -159,7 +159,7 @@ class NavStore extends Store {
 					}
 				},
 				'nav:redAlert': payload => {
-					const newRedAlert = payload.value.redAlert
+					const newRedAlert = !!payload.value.redAlert
 					this.state.redAlert = newRedAlert
 					APIUtil.postEvent({
 						draftId: OboModel.getRoot().get('draftId'),
