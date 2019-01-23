@@ -524,7 +524,7 @@ const getAttemptStartServerResponse = () => {
 								}
 							],
 							content: {
-								select: 'random'
+								select: 'random-all'
 							},
 							id: 'a02315ea-3f37-4208-86c8-1ddef043278d',
 							type: 'ObojoboDraft.Chunks.QuestionBank'
@@ -1084,7 +1084,7 @@ const getAttemptEndServerResponse = () => {
 									id: 'a02315ea-3f37-4208-86c8-1ddef043278d',
 									type: 'ObojoboDraft.Chunks.QuestionBank',
 									content: {
-										select: 'random'
+										select: 'random-all'
 									},
 									children: [
 										{
