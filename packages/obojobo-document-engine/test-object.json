@@ -3522,7 +3522,7 @@
 							"id": "a02315ea-3f37-4208-86c8-1ddef043278d",
 							"type": "ObojoboDraft.Chunks.QuestionBank",
 							"content": {
-								"select": "random"
+								"select": "sequential"
 							},
 							"children": [
 								{
@@ -4035,7 +4035,7 @@
 							"id": "527a87ef-0e31-4ee0-9c77-9c9fbab297ba",
 							"type": "ObojoboDraft.Chunks.QuestionBank",
 							"content": {
-								"select": "random"
+								"select": "sequential"
 							},
 							"children": [
 								{
