@@ -151,10 +151,7 @@ describe('Question editor', () => {
 				mode: 'practice'
 			},
 			title: 'TestTitle',
-			get: () => 'testId',
-			modelState: {
-				mode: 'practice'
-			}
+			get: () => 'testId'
 		}
 
 		expect(questionMock.getNavItem(model)).toEqual({

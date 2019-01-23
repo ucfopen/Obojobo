@@ -1,3 +1,5 @@
+/* eslint no-undefined: 0 */
+
 import Common from 'Common'
 import '../../../../ObojoboDraft/Modules/Module/editor'
 
