@@ -10,4 +10,12 @@ Object {
 }
 `;
 
+exports[`Component converter oboToSlate converts an OboNode to a Slate node 2`] = `
+Object {
+  "nodes": Array [],
+  "object": "block",
+  "type": "oboeditor.component",
+}
+`;
+
 exports[`Component converter slateToObo converts a Slate node to an OboNode with content 1`] = `undefined`;

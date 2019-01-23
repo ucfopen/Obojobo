@@ -1,3 +1,5 @@
+import Common from 'Common'
+
 Common.Registry.registerModel('ObojoboDraft.Modules.Module', {
 	name: 'Module',
 	ignore: true,

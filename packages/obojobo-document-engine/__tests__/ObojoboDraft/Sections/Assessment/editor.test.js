@@ -4,7 +4,16 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import Common from 'Common'
 
+jest.mock('Common', () => ({
+	Registry: {
+		registerModel: jest.fn()
+	},
+	components: {
+		Button: jest.fn()
+	}
+}))
 jest.mock('../../../../ObojoboDraft/Pages/Page/editor')
 jest.mock('../../../../ObojoboDraft/Chunks/QuestionBank/editor')
 jest.mock('../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor')
@@ -388,5 +397,35 @@ describe('Assessment editor', () => {
 		})
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('getNavItem returns expected object', () => {
+		const assessmentMock = Common.Registry.registerModel.mock.calls[0][1]
+
+		const model = {
+			parent: {
+				children: {
+					models: [{ get: () => true }]
+				}
+			},
+			title: 'Test Title'
+		}
+
+		expect(assessmentMock.getNavItem(model)).toEqual({
+			type: 'link',
+			label: 'Test Title',
+			path: ['test-title'],
+			showChildren: false,
+			showChildrenOnNavigation: false
+		})
+
+		model.title = null
+		expect(assessmentMock.getNavItem(model)).toEqual({
+			type: 'link',
+			label: 'Assessment',
+			path: ['assessment'],
+			showChildren: false,
+			showChildrenOnNavigation: false
+		})
 	})
 })

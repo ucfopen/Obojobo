@@ -1,5 +1,13 @@
 import Heading from '../../../../ObojoboDraft/Chunks/Heading/editor'
+import Common from 'Common'
+
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
+
+jest.mock('Common', () => ({
+	Registry: {
+		registerModel: jest.fn()
+	}
+}))
 
 describe('Heading editor', () => {
 	test('plugins.renderNode renders a button when passed', () => {
@@ -18,7 +26,7 @@ describe('Heading editor', () => {
 		expect(Heading.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
-	test('plugins.renderPlaceholder exits when not relevent', () => {
+	test('plugins.renderPlaceholder exits when not relevant', () => {
 		expect(
 			Heading.plugins.renderPlaceholder({
 				node: {
@@ -58,5 +66,36 @@ describe('Heading editor', () => {
 				}
 			})
 		).toMatchSnapshot()
+	})
+
+	test('getNavItem returns expected object', () => {
+		const headingMock = Common.Registry.registerModel.mock.calls[0][1]
+
+		const model = {
+			modelState: {
+				headingLevel: 1,
+				textGroup: {
+					first: {
+						text: 'testText'
+					}
+				}
+			},
+			getIndex: () => 0,
+			showChildren: false,
+			toText: () => 'test string'
+		}
+
+		expect(headingMock.getNavItem(model)).toBe(null)
+
+		model.modelState.headingLevel = 2
+		expect(headingMock.getNavItem(model)).toEqual({
+			type: 'sub-link',
+			label: 'testText',
+			path: ['test-string'],
+			showChildren: false
+		})
+
+		model.modelState.headingLevel = 3
+		expect(headingMock.getNavItem(model)).toBe(null)
 	})
 })

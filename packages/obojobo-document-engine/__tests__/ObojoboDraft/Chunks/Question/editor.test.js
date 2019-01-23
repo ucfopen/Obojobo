@@ -1,8 +1,16 @@
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
+import Common from 'Common'
 import Question from '../../../../ObojoboDraft/Chunks/Question/editor'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
+
+jest.mock('Common', () => ({
+	Registry: {
+		registerModel: jest.fn()
+	},
+	components: { Button: jest.fn() }
+}))
 
 describe('Question editor', () => {
 	test('plugins.renderNode renders a question when passed', () => {
@@ -128,5 +136,45 @@ describe('Question editor', () => {
 		})
 
 		expect(change.wrapBlockByKey).toHaveBeenCalled()
+	})
+
+	test('getNavItem returns expected object', () => {
+		const questionMock = Common.Registry.registerModel.mock.calls[0][1]
+
+		const model = {
+			parent: {
+				children: {
+					models: [{ get: () => true }]
+				}
+			},
+			modelState: {
+				mode: 'practice'
+			},
+			title: 'TestTitle',
+			get: () => 'testId',
+			modelState: {
+				mode: 'practice'
+			}
+		}
+
+		expect(questionMock.getNavItem(model)).toEqual({
+			label: 'TestTitle',
+			path: ['#obo-testId'],
+			type: 'sub-link'
+		})
+
+		model.title = null
+		expect(questionMock.getNavItem(model)).toEqual({
+			label: 'Practice Question 0',
+			path: ['#obo-testId'],
+			type: 'sub-link'
+		})
+
+		model.modelState.mode = null
+		expect(questionMock.getNavItem(model)).toEqual({
+			label: 'Question 0',
+			path: ['#obo-testId'],
+			type: 'sub-link'
+		})
 	})
 })

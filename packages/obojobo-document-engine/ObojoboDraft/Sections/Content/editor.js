@@ -1,3 +1,5 @@
+import Common from 'Common'
+
 Common.Registry.registerModel('ObojoboDraft.Sections.Content', {
 	name: 'Section Content',
 	ignore: true,

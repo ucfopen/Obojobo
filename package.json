@@ -7,7 +7,7 @@
 		"delete:node_modules": "rm -rf node_modules && cd packages/obojobo-document-engine && rm -rf node_modules && cd ../obojobo-express && rm -rf node_modules && cd ../obojobo-document-xml-parser && rm -rf node_modules",
 		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
 		"precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit",
-		"setup": "yarn build:docEngine && cd ../obojobo-express && yarn db:rebuild",
+		"setup": "yarn build:docEngine && cd packages/obojobo-express && yarn db:rebuild",
 		"test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test"
 	},
 	"devDependencies": {

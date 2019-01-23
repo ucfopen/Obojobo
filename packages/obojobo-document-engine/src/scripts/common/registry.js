@@ -104,7 +104,7 @@ class _Registry {
 	}
 
 	getItems(callback) {
-		callback(items)
+		return callback(items)
 	}
 
 	getTextForVariable(variable, model, viewerState) {
@@ -122,10 +122,6 @@ class _Registry {
 
 	get toolbarItems() {
 		return toolbarItems
-	}
-
-	set toolbarItems(arg) {
-		return []
 	}
 }
 

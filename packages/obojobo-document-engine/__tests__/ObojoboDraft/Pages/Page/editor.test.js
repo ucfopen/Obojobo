@@ -1,8 +1,15 @@
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
+import Common from 'Common'
 import Page from '../../../../ObojoboDraft/Pages/Page/editor'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+
+jest.mock('Common', () => ({
+	Registry: {
+		registerModel: jest.fn()
+	}
+}))
 
 describe('Page editor', () => {
 	test('plugins.renderNode renders a solution when passed', () => {
@@ -54,5 +61,33 @@ describe('Page editor', () => {
 		})
 
 		expect(change.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('getNavItem returns expected object', () => {
+		const pageMock = Common.Registry.registerModel.mock.calls[0][1]
+
+		const model = {
+			parent: {
+				children: {
+					models: [{ get: () => true }]
+				}
+			},
+			title: 'Test Title'
+		}
+
+		expect(pageMock.getNavItem(model)).toEqual({
+			type: 'link',
+			label: 'Test Title',
+			path: ['test-title'],
+			showChildren: false
+		})
+
+		model.title = null
+		expect(pageMock.getNavItem(model)).toEqual({
+			type: 'link',
+			label: 'Page 0',
+			path: ['page-0'],
+			showChildren: false
+		})
 	})
 })
