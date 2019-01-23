@@ -1,7 +1,10 @@
 import { mount } from 'enzyme'
 import React from 'react'
 import Modal from '../../../../src/scripts/common/components/modal/modal'
+import ModalUtil from '../../../../src/scripts/common/util/modal-util'
 import renderer from 'react-test-renderer'
+
+jest.mock('../../../../src/scripts/common/util/modal-util')
 
 describe('Modal', () => {
 	let onClose, focusOnFirstElement
@@ -55,6 +58,16 @@ describe('Modal', () => {
 		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 27 }))
 
 		expect(onClose).toHaveBeenCalledTimes(1)
+	})
+
+	test('Esc closes modal (even when no onClose method present)', () => {
+		mount(<Modal focusOnFirstElement={focusOnFirstElement}>Content</Modal>)
+
+		expect(ModalUtil.hide).toHaveBeenCalledTimes(0)
+
+		document.dispatchEvent(new KeyboardEvent('keyup', { keyCode: 27 }))
+
+		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
 	})
 
 	test('Modal does not close with other keys', () => {

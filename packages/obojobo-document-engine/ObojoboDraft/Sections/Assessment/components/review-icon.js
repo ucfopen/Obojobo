@@ -2,7 +2,7 @@ import React from 'react'
 
 const ReviewIcon = () => {
 	return (
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.33 114.33">
+		<svg aria-hidden xmlns="http://www.w3.org/2000/svg" viewBox="0 0 114.33 114.33">
 			<defs>
 				<style
 				>{`.cls-1{fill:#eadff6;}.cls-2{fill:#fff;}.cls-3{fill:#d7c6ed;}.cls-4{fill:#8fb9eb;}.cls-5{fill:#e8f3e2;}.cls-6{fill:#77b851;}`}</style>

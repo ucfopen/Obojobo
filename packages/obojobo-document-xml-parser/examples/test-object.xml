@@ -6,12 +6,12 @@
 			<Page id="page-1" title="Example content page">
 				<h1>2D Motion</h1>
 				<h2>Projectile motion</h2>
-				<p>Let the projectile be launched with an initial velocity <latex>v_0</latex> which can be expressed as the sum of horizontal and vertical components as follows:</p>
-				<MathEquation id="my-math-equation" latex="v_0=v_{0_x}i+v_{0_y}j" />
-				<p>The components <latex>x_{0_x}</latex> and <latex>v_{0_y}</latex> can be found if the initial launch angle, <latex>\theta</latex>, is known:</p>
+				<p>Let the projectile be launched with an initial velocity <latex alt="v sub 0">v_0</latex> which can be expressed as the sum of horizontal and vertical components as follows:</p>
+				<MathEquation id="my-math-equation" latex="v_0=v_{0_x}i+v_{0_y}j" alt="v sub zero equals v sub zero sub x i plus v sub zero sub y j" />
+				<p>The components <latex alt="x sub 0 sub x">x_{0_x}</latex> and <latex alt="v sub 0 sub y">v_{0_y}</latex> can be found if the initial launch angle, <latex alt="theta">\theta</latex>, is known:</p>
 				<ul>
-					<li><latex>v_{0_x} = v_0 \cos \theta</latex></li>
-					<li><latex>v_{0_t} = v_0 \sin \theta</latex></li>
+					<li><latex alt="v sub 0 sub x equals v sub 0 times cosine of theta">v_{0_x} = v_0 \cos \theta</latex></li>
+					<li><latex alt="v sub 0 sub t equals v sub 0 times sine of theta">v_{0_t} = v_0 \sin \theta</latex></li>
 				</ul>
 				<p>See also the section Parabolic equation for information on finding the initial velocity.</p>
 				<h2>Kinematic quantities of projectile motion</h2>
@@ -60,24 +60,24 @@
 					<MCAssessment responseType="pick-one-multiple-correct">
 						<MCChoice id="pq1-answer-1" score="100">
 							<MCAnswer>
-								<MathEquation latex="x=v_xt" align="left" />
+								<MathEquation latex="x=v_xt" alt="x equals v sub x times t" align="left" />
 							</MCAnswer>
 						</MCChoice>
 						<MCChoice id="pq1-answer-2" score="100">
 							<MCAnswer>
-								<MathEquation latex="x=v_{ix}t + \frac{1}{2} a_x t^2" align="left" />
+								<MathEquation latex="x=v_{ix}t + \frac{1}{2} a_x t^2" alt="x equals v sub i x times t plus one half a sub x times t squared" align="left" />
 							</MCAnswer>
 							<MCFeedback>
 								<p>Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:</p>
-								<MathEquation latex="x=v_xt" align="left" />
+								<MathEquation latex="x=v_xt" alt="x equals v sub x times t" align="left" />
 							</MCFeedback>
 						</MCChoice>
 						<MCChoice id="pq1-answer-3" score="0">
 							<MCAnswer>
-								<MathEquation latex="x=\frac{1}{2} a_x t^2" align="left" />
+								<MathEquation latex="x=\frac{1}{2} a_x t^2" alt="x equals one half a sub x times t squared" align="left" />
 							</MCAnswer>
 							<MCFeedback>
-								<p>The <latex>a_x</latex> term representing horizontal acceleration is always 0 so this equation is simply <latex>x = 0</latex>.</p>
+								<p>The <latex alt="a sub x">a_x</latex> term representing horizontal acceleration is always 0 so this equation is simply <latex alt="x equals 0">x = 0</latex>.</p>
 							</MCFeedback>
 						</MCChoice>
 					</MCAssessment>
@@ -211,10 +211,10 @@ int Fibonacci(int n)
 				<YouTube videoId="gJ390e5sjHk" />
 				<h2>Math Equations</h2>
 				<p>Math equations can be specified with LaTeX:</p>
-				<MathEquation latex="x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />
+				<MathEquation latex="x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" alt="x equals negative b plus or minus the square root of b squared minus 4 a c, end square root, all over 2 a" />
 				<p>Using the label option you can label your equation:</p>
-				<MathEquation latex="\Delta x=\int_{t_0}^{t_1} v(t)dt" label="(1.1)" />
-				<p>You can also include math inline with other text, such as <latex>\alpha = \omega t</latex>.</p>
+				<MathEquation latex="\Delta x=\int_{t_0}^{t_1} v(t)dt" alt="delta x equals the integral from t 0 to t 1 of v of t, d t" label="(1.1)" />
+				<p>You can also include math inline with other text, such as <latex alt="alpha equals omega times t">\alpha = \omega t</latex>.</p>
 				<h2>HTML</h2>
 				<p>In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.</p>
 				<HTML html="<div style='background:#f1f1f1;padding:2em;'><h1>Custom HTML</h1><p>Plain HTML code is supported.</p></div>" />
@@ -250,7 +250,7 @@ int Fibonacci(int n)
 				<h2 align="right">Align right</h2>
 				<h2 align="center">Align center</h2>
 				<h2>Aligning equations:</h2>
-				<MathEquation latex="y=\sin(x)" align="right" />
+				<MathEquation latex="y=\sin(x)" alt="y equals sine of x" align="right" />
 				<h2>Aligning text items:</h2>
 				<Text>
 					<textGroup>
@@ -262,7 +262,7 @@ int Fibonacci(int n)
 				<h2>Aligning buttons:</h2>
 				<ActionButton align="right" label="I am right aligned" />
 				<h2>Styling</h2>
-				<p><b>Bold</b>, <i>Italic</i>, Superscript<sup>2</sup>, Subscript<sub>2</sub>, <a href="http://www.google.com/">Links</a>, <del>Strikethrough content</del>, a <q>quotation</q>, <code>monospaced text</code> and in-line math equations: <latex>\frac{dy}{dx}</latex></p>
+				<p><b>Bold</b>, <i>Italic</i>, Superscript<sup>2</sup>, Subscript<sub>2</sub>, <a href="http://www.google.com/">Links</a>, <del>Strikethrough content</del>, a <q>quotation</q>, <code>monospaced text</code> and in-line math equations: <latex alt="d y over d x">\frac{dy}{dx}</latex></p>
 				<h2>Advanced lists:</h2>
 				<p>This is an ordered list however the second indent-level is unordered (using square) bullets and the forth indent level is using uppercase letters starting at the 10th letter (J)</p>
 				<List>

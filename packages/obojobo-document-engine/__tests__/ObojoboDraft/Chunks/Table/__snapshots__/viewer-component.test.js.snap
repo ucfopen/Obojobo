@@ -8,6 +8,7 @@ exports[`Table Table component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Table"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--table viewer pad"
@@ -112,6 +113,7 @@ exports[`Table Table component without header 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Table"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--table viewer pad"

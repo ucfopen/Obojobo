@@ -2,10 +2,9 @@ import './viewer-component.scss'
 
 import React from 'react'
 
-import Common from 'Common'
 import Viewer from 'Viewer'
 
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 const { NavUtil } = Viewer.util
 
 const Content = props => {
