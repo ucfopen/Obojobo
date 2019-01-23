@@ -158,14 +158,16 @@ class NavStore extends Store {
 						NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
 					}
 				},
-				'nav:redAlert': () => {
+				'nav:redAlert': payload => {
+					const newRedAlert = payload.value.redAlert
+					this.state.redAlert = newRedAlert
 					APIUtil.postEvent({
 						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:redAlert',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId,
 						payload: {
-							redAlert: this.state.redAlert
+							redAlert: newRedAlert
 						}
 					})
 				}

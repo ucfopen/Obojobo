@@ -438,7 +438,7 @@ Array [
 
 exports[`NavStore nav:prev does not change to invalid page 1`] = `undefined`;
 
-exports[`NavStore nav:redAlert posts event with payload 1`] = `
+exports[`NavStore nav:redAlert sets state and posts event with payload 1`] = `
 Array [
   Object {
     "action": "nav:redAlert",

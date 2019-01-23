@@ -233,6 +233,14 @@ const NavUtil = {
 				context
 			}
 		})
+	},
+
+	setRedAlert(newRedAlert) {
+		return Dispatcher.trigger('nav:redAlert', {
+			value: {
+				redAlert: !!newRedAlert
+			}
+		})
 	}
 }
 

@@ -492,4 +492,13 @@ describe('NavUtil', () => {
 			value: { context: 'mockContext' }
 		})
 	})
+
+	test('setRedAlert triggers nav:redAlert', () => {
+		NavUtil.setRedAlert(true)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert', {
+			value: {
+				redAlert: true
+			}
+		})
+	})
 })

@@ -620,12 +620,8 @@ describe('NavStore', () => {
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
-	test('nav:redAlert posts event with payload', () => {
-		NavStore.setState({
-			redAlert: true
-		})
-
-		eventCallbacks['nav:redAlert']()
+	test('nav:redAlert sets state and posts event with payload', () => {
+		eventCallbacks['nav:redAlert']({ value: { redAlert: true } })
 		expect(APIUtil.postEvent).toHaveBeenCalled()
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
