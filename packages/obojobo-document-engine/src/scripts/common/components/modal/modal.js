@@ -3,6 +3,7 @@ import './modal.scss'
 import React from 'react'
 
 import DeleteButton from '../../../common/components/delete-button'
+import ModalUtil from '../../../common/util/modal-util'
 
 class Modal extends React.Component {
 	constructor() {
@@ -11,21 +12,21 @@ class Modal extends React.Component {
 	}
 
 	componentDidMount() {
-		if (this.props.onClose) {
-			return document.addEventListener('keyup', this.boundKeyUp)
-		}
+		document.addEventListener('keyup', this.boundKeyUp)
 	}
 
 	componentWillUnmount() {
-		if (this.props.onClose) {
-			return document.removeEventListener('keyup', this.boundKeyUp)
-		}
+		document.removeEventListener('keyup', this.boundKeyUp)
 	}
 
 	onKeyUp(event) {
 		if (event.keyCode === 27) {
 			//ESC
-			return this.props.onClose()
+			if (this.props.onClose) {
+				this.props.onClose()
+			} else {
+				ModalUtil.hide()
+			}
 		}
 	}
 
@@ -44,6 +45,8 @@ class Modal extends React.Component {
 					'obojobo-draft--components--modal--modal' +
 					(this.props.className ? ' ' + this.props.className : '')
 				}
+				role="dialog"
+				aria-labelledby="obojobo-draft--components--modal--modal--content"
 			>
 				<input
 					className="first-tab"
@@ -54,7 +57,9 @@ class Modal extends React.Component {
 				{this.props.onClose ? (
 					<DeleteButton ref="closeButton" onClick={this.props.onClose} />
 				) : null}
-				<div className="content">{this.props.children}</div>
+				<div className="content" id="obojobo-draft--components--modal--modal--content">
+					{this.props.children}
+				</div>
 				<input
 					className="last-tab"
 					ref="lastTab"

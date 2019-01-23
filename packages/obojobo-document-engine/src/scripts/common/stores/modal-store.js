@@ -1,5 +1,6 @@
 import Store from '../../common/flux/store'
 import Dispatcher from '../../common/flux/dispatcher'
+import focus from '../../common/page/focus'
 
 class ModalStore extends Store {
 	constructor() {
@@ -19,6 +20,7 @@ class ModalStore extends Store {
 	}
 
 	_show(modalItem) {
+		this.lastActiveElement = document.activeElement
 		this.state.modals.push(modalItem)
 		this.triggerChange()
 	}
@@ -26,6 +28,12 @@ class ModalStore extends Store {
 	_hide() {
 		this.state.modals.shift()
 		this.triggerChange()
+
+		if (this.lastActiveElement && document.body.contains(this.lastActiveElement)) {
+			focus(this.lastActiveElement)
+		}
+
+		delete this.lastActiveElement
 	}
 
 	getState() {

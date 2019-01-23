@@ -3,6 +3,7 @@
 exports[`MathEquation adapter construct builds with attributes 1`] = `
 Object {
   "align": "left",
+  "alt": undefined,
   "label": "mockLabel",
   "latex": "mockEquations",
   "size": "3em",
@@ -12,6 +13,7 @@ Object {
 exports[`MathEquation adapter construct builds without attributes 1`] = `
 Object {
   "align": "center",
+  "alt": undefined,
   "label": "",
   "latex": "",
   "size": "1em",
@@ -22,6 +24,7 @@ exports[`MathEquation adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
     "align": "left",
+    "alt": undefined,
     "label": "",
     "latex": "test",
     "size": "1em",
