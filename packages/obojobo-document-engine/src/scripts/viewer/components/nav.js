@@ -98,7 +98,8 @@ export default class Nav extends React.Component {
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
-			isOrNot(!navState.disabled, 'enabled')
+			isOrNot(!navState.disabled, 'enabled') +
+			isOrNot(NavUtil.isRedAlertEnabled(navState), 'red-alert')
 
 		return (
 			<div className={className}>

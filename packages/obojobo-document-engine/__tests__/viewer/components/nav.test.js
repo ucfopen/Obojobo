@@ -37,7 +37,8 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	gotoPath: jest.fn(),
 	toggle: jest.fn(),
 	getOrderedList: jest.fn(),
-	setRedAlert: jest.fn()
+	setRedAlert: jest.fn(),
+	isRedAlertEnabled: jest.fn()
 }))
 
 // NavStore
@@ -256,5 +257,42 @@ describe('Nav', () => {
 		expect(NavUtil.setRedAlert).toHaveBeenLastCalledWith(false)
 		noAlertNav.find('.red-alert-button').simulate('click')
 		expect(NavUtil.setRedAlert).toHaveBeenLastCalledWith(true)
+	})
+
+	test('red alert classes applied to Nav according to state', () => {
+		NavUtil.getOrderedList.mockReturnValue([
+			{
+				id: 5,
+				type: 'sub-link',
+				label: 'label',
+				flags: {
+					correct: false
+				}
+			}
+		])
+		NavUtil.isRedAlertEnabled.mockReturnValueOnce(true).mockReturnValueOnce(false)
+		const redAlertNav = shallow(
+			<Nav
+				{...{
+					navState: {
+						redAlert: true
+					}
+				}}
+			/>
+		)
+		const noAlertNav = shallow(
+			<Nav
+				{...{
+					navState: {
+						redAlert: false
+					}
+				}}
+			/>
+		)
+
+		expect(redAlertNav.hasClass('is-red-alert')).toBe(true)
+		expect(redAlertNav.hasClass('is-not-red-alert')).toBe(false)
+		expect(noAlertNav.hasClass('is-not-red-alert')).toBe(true)
+		expect(noAlertNav.hasClass('is-red-alert')).toBe(false)
 	})
 })

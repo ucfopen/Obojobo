@@ -2,7 +2,7 @@
 
 exports[`Nav renders all list item types 1`] = `
 <div
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled is-not-red-alert"
 >
   <button
     className="toggle-button"
@@ -84,7 +84,7 @@ exports[`Nav renders all list item types 1`] = `
 
 exports[`Nav renders closed 1`] = `
 <div
-  className="viewer--components--nav is-locked is-open is-enabled"
+  className="viewer--components--nav is-locked is-open is-enabled is-not-red-alert"
 >
   <button
     className="toggle-button"
@@ -109,7 +109,7 @@ exports[`Nav renders closed 1`] = `
 
 exports[`Nav renders opened 1`] = `
 <div
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled is-not-red-alert"
 >
   <button
     className="toggle-button"
@@ -134,7 +134,7 @@ exports[`Nav renders opened 1`] = `
 
 exports[`Nav renders unlocked 1`] = `
 <div
-  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-red-alert"
 >
   <button
     className="toggle-button"

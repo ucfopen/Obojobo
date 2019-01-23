@@ -340,6 +340,14 @@
 		font-size: 3em;
 		padding: 1em;
 	}
+
+	&.is-red-alert {
+		background-color: $color-red-alert;
+	}
+
+	&.is-not-red-alert {
+		background-color: $color-nav-bg;
+	}
 }
 
 .is-previewing .viewer--components--nav {
