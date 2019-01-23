@@ -3,7 +3,6 @@ import renderer from 'react-test-renderer'
 
 import Test from '../../../../../../ObojoboDraft/Sections/Assessment/components/test/index'
 import Dispatcher from '../../../../../../src/scripts/common/flux/dispatcher'
-import focus from '../../../../../../src/scripts/common/page/focus'
 import { FOCUS_ON_ASSESSMENT_CONTENT } from '../../../../../../ObojoboDraft/Sections/Assessment/assessment-event-constants'
 
 jest.mock('../../../../../../src/scripts/common/flux/dispatcher')
@@ -93,13 +92,12 @@ describe('Test', () => {
 		expect(component.getInstance().focusOnContent()).toBe(false)
 	})
 
-	test('focusOnContent focuses on the dom element of the first child (and returns true) when no child model present', () => {
-		const mockDomEl = jest.fn()
+	test('focusOnContent does nothing (and returns false) when no child component class exists', () => {
 		const model = {
 			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent'),
 			children: {
 				at: () => ({
-					getDomEl: () => mockDomEl
+					getComponentClass: () => false
 				})
 			}
 		}
@@ -107,7 +105,27 @@ describe('Test', () => {
 
 		const component = renderer.create(<Test model={model} moduleData={moduleData} />)
 
+		expect(component.getInstance().focusOnContent()).toBe(false)
+	})
+
+	test('focusOnContent calls the first child focusOnContent method (and returns true) when child model(s) are present', () => {
+		const mockFocusOnContent = jest.fn()
+		const mockFirstChild = {
+			getComponentClass: () => ({
+				focusOnContent: mockFocusOnContent
+			})
+		}
+		const model = {
+			getComponentClass: jest.fn().mockReturnValueOnce('MockComponent'),
+			children: {
+				at: () => mockFirstChild
+			}
+		}
+		const moduleData = { focusState: {} }
+
+		const component = renderer.create(<Test model={model} moduleData={moduleData} />)
+
 		expect(component.getInstance().focusOnContent()).toBe(true)
-		expect(focus).toHaveBeenCalledWith(mockDomEl)
+		expect(mockFocusOnContent).toHaveBeenCalledWith(mockFirstChild)
 	})
 })

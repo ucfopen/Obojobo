@@ -9,16 +9,28 @@ import isOrNot from '../../../src/scripts/common/isornot'
 const { OboComponent } = Viewer.components
 const { FocusUtil, QuestionUtil } = Viewer.util
 const { Button } = Common.components
+const { focus } = Common.page
 
 import QuestionContent from './Content/viewer-component'
 
 export default class Question extends React.Component {
 	static focusOnContent(model) {
-		const firstModel = model.children.at(0)
-		if (!firstModel) return false
+		const el = model.getDomEl()
+		const isHidden = el.classList.contains('is-hidden')
+		let focusableEl = null
 
-		firstModel.getDomEl().focus()
+		// If question is hidden then we focus on the button to "flip" the question over.
+		// Otherwise, focus on the first thing inside the question:
+		if (isHidden) {
+			focusableEl = el.querySelector('.blocker-front button')
+		} else {
+			const firstModel = model.children.at(0)
+			if (firstModel) focusableEl = firstModel.getDomEl()
+		}
 
+		if (!focusableEl) return false
+
+		focus(focusableEl)
 		return true
 	}
 

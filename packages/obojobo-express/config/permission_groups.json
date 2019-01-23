@@ -1,6 +1,5 @@
 {
-	"development": {
-		"canPreview": ["Instructor", "Administrator"],
+	"default": {
 		"canViewEditor": ["Instructor", "Administrator"],
 		"canEditDrafts": ["Instructor", "Administrator"],
 		"canDeleteDrafts": ["Instructor", "Administrator"],
