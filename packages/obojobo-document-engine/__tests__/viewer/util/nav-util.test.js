@@ -495,10 +495,28 @@ describe('NavUtil', () => {
 
 	test('setRedAlert triggers nav:redAlert', () => {
 		NavUtil.setRedAlert(true)
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert', {
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenLastCalledWith('nav:redAlert', {
 			value: {
 				redAlert: true
 			}
 		})
+		NavUtil.setRedAlert(false)
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenLastCalledWith('nav:redAlert', {
+			value: {
+				redAlert: false
+			}
+		})
+	})
+
+	test('isRedAlertEnabled returns red alert state', () => {
+		const redState = {
+			redAlert: true
+		}
+		const normalState = {
+			redAlert: false
+		}
+
+		expect(NavUtil.isRedAlertEnabled(redState)).toEqual(true)
+		expect(NavUtil.isRedAlertEnabled(normalState)).toEqual(false)
 	})
 })

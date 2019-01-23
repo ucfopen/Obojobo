@@ -241,6 +241,10 @@ const NavUtil = {
 				redAlert: newRedAlert
 			}
 		})
+	},
+
+	isRedAlertEnabled(state) {
+		return !!state.redAlert
 	}
 }
 
