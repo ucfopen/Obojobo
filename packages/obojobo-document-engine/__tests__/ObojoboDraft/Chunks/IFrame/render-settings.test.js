@@ -273,7 +273,7 @@ describe('render-settings', () => {
 		const t = getAriaRegionLabel
 
 		expect(t({ src: 'mock-src', title: 'mock-title' }, 'displayed-title')).toBe(
-			'External content titled "displayed-title" from mock-src.'
+			'External content "displayed-title" from mock-src.'
 		)
 		expect(t({ src: 'mock-src' }, 'displayed-title')).toBe('External content from mock-src.')
 	})

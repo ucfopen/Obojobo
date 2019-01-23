@@ -231,6 +231,16 @@ export default class IFrame extends React.Component {
 							</div>
 						)}
 						{isShowing ? (
+							<Button
+								altAction
+								className="button-skip bottom"
+								ref="buttonSkipToTop"
+								onClick={this.boundSkipToTop}
+							>
+								You are at the end of this embedded content. Click to skip to the beginning.
+							</Button>
+						) : null}
+						{isShowing ? (
 							<Controls
 								newWindowSrc={src}
 								controlsOptions={controlsOpts}
@@ -248,16 +258,6 @@ export default class IFrame extends React.Component {
 								)}
 								zoomReset={this.boundOnZoomReset}
 							/>
-						) : null}
-						{isShowing ? (
-							<Button
-								altAction
-								className="button-skip bottom"
-								ref="buttonSkipToTop"
-								onClick={this.boundSkipToTop}
-							>
-								You are at the end of this embedded content. Click to skip to the beginning.
-							</Button>
 						) : null}
 					</div>
 				</div>

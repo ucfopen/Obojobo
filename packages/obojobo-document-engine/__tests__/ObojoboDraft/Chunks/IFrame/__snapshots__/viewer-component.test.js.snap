@@ -45,10 +45,6 @@ exports[`IFrame IFrame component renders 1`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -57,6 +53,10 @@ exports[`IFrame IFrame component renders 1`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -107,10 +107,6 @@ exports[`IFrame IFrame component renders 2`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -119,6 +115,10 @@ exports[`IFrame IFrame component renders 2`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -169,10 +169,6 @@ exports[`IFrame IFrame component renders 3`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -181,6 +177,10 @@ exports[`IFrame IFrame component renders 3`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -231,10 +231,6 @@ exports[`IFrame IFrame component renders 4`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -243,6 +239,10 @@ exports[`IFrame IFrame component renders 4`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -293,10 +293,6 @@ exports[`IFrame IFrame component renders 5`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -305,6 +301,10 @@ exports[`IFrame IFrame component renders 5`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -355,10 +355,6 @@ exports[`IFrame IFrame component renders 6`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -367,6 +363,10 @@ exports[`IFrame IFrame component renders 6`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -747,10 +747,6 @@ exports[`IFrame IFrame component renders 13`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -759,6 +755,10 @@ exports[`IFrame IFrame component renders 13`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -809,10 +809,6 @@ exports[`IFrame IFrame component renders 14`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -821,6 +817,10 @@ exports[`IFrame IFrame component renders 14`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -871,10 +871,6 @@ exports[`IFrame IFrame component renders 15`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -883,6 +879,10 @@ exports[`IFrame IFrame component renders 15`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -933,10 +933,6 @@ exports[`IFrame IFrame component renders 16`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -945,6 +941,10 @@ exports[`IFrame IFrame component renders 16`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -995,10 +995,6 @@ exports[`IFrame IFrame component renders 17`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -1007,6 +1003,10 @@ exports[`IFrame IFrame component renders 17`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
@@ -1057,10 +1057,6 @@ exports[`IFrame IFrame component renders 18`] = `
         style={Object {}}
       />
       <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-        role="toolbar"
-      />
-      <div
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
@@ -1069,6 +1065,10 @@ exports[`IFrame IFrame component renders 18`] = `
           You are at the end of this embedded content. Click to skip to the beginning.
         </button>
       </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
     </div>
   </div>
 </div>
