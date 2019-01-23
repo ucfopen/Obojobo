@@ -191,6 +191,10 @@ class NavStore extends Store {
 					? viewState['nav:isOpen'].value
 					: true,
 			context: 'practice',
+			redAlert:
+				viewState['nav:redAlert'] !== null && typeof viewState['nav:redAlert'] !== 'undefined'
+					? viewState['nav:redAlert'].value
+					: false,
 			visitId
 		}
 

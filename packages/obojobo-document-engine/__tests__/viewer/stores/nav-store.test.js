@@ -447,6 +447,10 @@ describe('NavStore', () => {
 		expect(NavUtil.goto).not.toHaveBeenCalledWith()
 	})
 
+	test('init builds with redAlert', () => {
+		NavStore.init(null, 12, '', 11, { 'nav:redAlert': { value: true } })
+	})
+
 	test('buildMenu should reset menu items', () => {
 		jest.spyOn(NavStore, 'generateNav')
 		NavStore.generateNav.mockImplementationOnce(model => model)
