@@ -36,7 +36,7 @@ const getDisplayedTitle = modelState => {
 
 const getAriaRegionLabel = (modelState, displayedTitle) => {
 	if (modelState.title) {
-		return 'External content titled "' + displayedTitle + '" from ' + modelState.src + '.'
+		return 'External content "' + displayedTitle + '" from ' + modelState.src + '.'
 	} else {
 		return 'External content from ' + modelState.src + '.'
 	}
