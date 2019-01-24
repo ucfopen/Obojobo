@@ -1,8 +1,12 @@
 {
 	"development":{
 		"keys":{
-			"testkey": "testsecret",
-			"key2": "secret2"
+			"testkey": "testsecret"
+		}
+	},
+	"production":{
+		"keys":{
+			"obo-next-production-lti-key": {"ENV": "OBO_LTI_SECRET"}
 		}
 	}
 }

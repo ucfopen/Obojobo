@@ -4,6 +4,7 @@ const Adapter = {
 		model.setStateProp('align', 'center', p => p.toLowerCase(), ['left', 'center', 'right'])
 		model.setStateProp('label', '')
 		model.setStateProp('size', '1em', p => (parseInt(p, 10) || 1) + 'em')
+		model.setStateProp('alt')
 	},
 
 	clone(model, clone) {
@@ -11,6 +12,7 @@ const Adapter = {
 		clone.modelState.align = model.modelState.align
 		clone.modelState.label = model.modelState.label
 		clone.modelState.size = model.modelState.size
+		clone.modelState.alt = model.modelState.alt
 	},
 
 	toJSON(model, json) {
@@ -18,6 +20,7 @@ const Adapter = {
 		json.content.align = model.modelState.align
 		json.content.label = model.modelState.label
 		json.content.size = model.modelState.size
+		json.content.alt = model.modelState.alt
 	},
 
 	toText(model) {

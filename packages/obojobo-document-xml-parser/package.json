@@ -10,9 +10,8 @@
     "jest": "23.4.2"
   },
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:updateSnapshot": "jest --updateSnapshot",
+    "test": "TZ='America/New_York' jest --verbose",
+    "test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
     "convertTestObjectToJson": "node ./bin/xml2draft.js examples/test-object.xml --spaces=4 --generate-ids > test-object.json"
   },
   "author": "",

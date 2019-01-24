@@ -16,10 +16,6 @@
 	line-height: 3.5em;
 	transform: translate(0, -1px);
 
-	&:focus {
-		outline: none;
-	}
-
 	&.is-enabled {
 		&.is-prev {
 			border-bottom: 1px solid $color-action;
@@ -52,6 +48,11 @@
 	&.is-not-enabled {
 		background: $color-bg2;
 		color: $color-shadow;
+		pointer-events: none;
+
+		&:focus {
+			outline: none;
+		}
 
 		&.is-prev {
 			border-bottom: 1px solid $color-shadow;

@@ -8,6 +8,7 @@ exports[`HTML HTML component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.HTML"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--html viewer pad align-left"
@@ -28,6 +29,7 @@ exports[`HTML HTML component with equation 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.HTML"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--html viewer pad align-left"

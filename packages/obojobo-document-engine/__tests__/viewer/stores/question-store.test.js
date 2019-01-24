@@ -20,8 +20,8 @@ jest.mock('../../../src/scripts/viewer/util/question-util', () => ({
 	hideExplanation: jest.fn()
 }))
 
-jest.mock('../../../src/scripts/common/util/focus-util', () => ({
-	unfocus: jest.fn()
+jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
+	clearVisualFocus: jest.fn()
 }))
 
 const Common = require('../../../src/scripts/common/index').default
@@ -30,7 +30,7 @@ const Dispatcher = require('../../../src/scripts/common/flux/dispatcher')
 const QuestionUtil = require('../../../src/scripts/viewer/util/question-util')
 const OboModel = require('../../../__mocks__/_obo-model-with-chunks').default
 const APIUtil = require('../../../src/scripts/viewer/util/api-util')
-const FocusUtil = require('../../../src/scripts/common/util/focus-util')
+const FocusUtil = require('../../../src/scripts/viewer/util/focus-util')
 const QuestionStore = require('../../../src/scripts/viewer/stores/question-store').default
 
 let eventListeners // holds an array of Dispatcher.on.mock.calls created when QuestionStore is initiated
@@ -88,7 +88,7 @@ describe('QuestionStore', () => {
 		// the events we want to find are called when Common is loaded
 		// making them sort of annoying to load cleanly. Other stores are initialized too,
 		// so this is a liiiiitle fragile
-		eventListeners = Dispatcher.on.mock.calls[5][0]
+		eventListeners = Dispatcher.on.mock.calls[3][0]
 	})
 
 	beforeEach(() => {
@@ -543,7 +543,7 @@ describe('QuestionStore', () => {
 	test('question:scoreSet blurs focus if correct', () => {
 		__createModels()
 
-		expect(FocusUtil.unfocus).toHaveBeenCalledTimes(0)
+		expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(0)
 
 		__mockTrigger('question:scoreSet', {
 			value: {
@@ -553,7 +553,7 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(FocusUtil.unfocus).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(1)
 	})
 
 	test('question:scoreSet doesnt blur if incorrect', () => {
@@ -567,7 +567,7 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(FocusUtil.unfocus).not.toHaveBeenCalled()
+		expect(FocusUtil.clearVisualFocus).not.toHaveBeenCalled()
 	})
 
 	test('question:scoreSet updates the state', () => {

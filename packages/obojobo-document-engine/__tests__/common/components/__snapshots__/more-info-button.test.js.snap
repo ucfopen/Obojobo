@@ -5,6 +5,7 @@ exports[`MoreInfoButton Renders default props 1`] = `
   className="obojobo-draft--components--more-info-button is-default-label is-mode-hidden"
 >
   <button
+    aria-label="More info"
     onClick={[Function]}
     onMouseOut={[Function]}
     onMouseOver={[Function]}
@@ -19,6 +20,7 @@ exports[`MoreInfoButton Renders label 1`] = `
   className="obojobo-draft--components--more-info-button is-not-default-label is-mode-hidden"
 >
   <button
+    aria-label="More info"
     onClick={[Function]}
     onMouseOut={[Function]}
     onMouseOver={[Function]}
