@@ -22,6 +22,14 @@ oboEvents.on('client:nav:toggle', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, event.payload.open)
 })
 
+oboEvents.on('client:nav:redAlert', event => {
+	viewerState.setRedAlert(event.userId, 
+		event.draftId, 
+		event.actor_time, 
+		event.payload.redAlert
+	)
+})
+
 const setNavOpen = (userId, draftId, contentId, value) => {
 	viewerState.set(userId, draftId, contentId, 'nav:isOpen', 1, value)
 }
