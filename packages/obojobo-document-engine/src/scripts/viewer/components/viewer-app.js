@@ -273,7 +273,17 @@ export default class ViewerApp extends React.Component {
 			case FocusStore.TYPE_COMPONENT: {
 				const model = OboModel.models[focussedItem.target]
 				if (!model) return false
-				focus(model.getDomEl())
+
+				// Save the current scroll location since focus() will scroll the page (there is a
+				// preventScroll option but it is not widely supported). Once focus is called we'll
+				// quickly reset the scroll location to what it was before the focus. This allows
+				// the smooth scroll to move from where the page was rather than scrolling from an
+				// unexpected location.
+				const currentScrollTop = this.refs.container.scrollTop
+				const el = model.getDomEl()
+				focus(el)
+				this.refs.container.scrollTop = currentScrollTop
+				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 
 				return true
 			}

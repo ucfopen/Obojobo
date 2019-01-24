@@ -29,9 +29,7 @@ export default class Nav extends React.Component {
 				break
 
 			case 'sub-link': {
-				const el = OboModel.models[item.id].getDomEl()
-				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-				focus(el)
+				FocusUtil.focusComponent(item.id, false)
 				break
 			}
 		}
