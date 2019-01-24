@@ -5,7 +5,7 @@ function set(userId, draftId, contentId, key, version, value) {
 	return db
 		.none(
 			`
-				INSERT INTO view_state
+				INSERT INTO view_state,
 				(user_id, draft_id, draft_content_id, payload)
 				VALUES($[userId], $[draftId], $[contentId], $[initialContents])
 				ON CONFLICT (user_id, draft_content_id) DO UPDATE
@@ -27,11 +27,39 @@ function set(userId, draftId, contentId, key, version, value) {
 		})
 }
 
+function setRedAlert(userId, draftId, timestamp, redAlert) {
+	return db
+		.none(
+			`
+		INSERT INTO red_alert_status
+		(user_id, draft_id, creation_time, red_alert)
+		VALUES($[user_id], $[draft_id], $[actor_time], $[red_alert])
+		ON CONFLICT (user_id, draft_id) DO
+		UPDATE
+		SET	creation_time = $[actor_time], red_alert = $[red_alert]
+		WHERE red_alert_status.user_id = $[user_id]
+			AND red_alert_status.draft_id = $[draft_id]`,
+			{
+				user_id: userId,
+				draft_id: draftId,
+				actor_time: timestamp,
+				red_alert: redAlert
+			}
+		)
+		.catch(error => {
+			logger.error('DB UNEXPECTED on viewer_state.setRedAlert', error, error.toString())
+		})
+}
+
 function get(userId, contentId) {
 	return db
 		.oneOrNone(
 			`
-				SELECT payload FROM view_state
+				SELECT view_state.payload, red_alert_status.red_alert
+				FROM view_state
+				LEFT JOIN red_alert_status ON
+				view_state.user_id = red_alert_status.user_id AND
+				view_state.draft_content_id = red_alert_status.draft_id
 				WHERE view_state.user_id = $[userId] AND
 				view_state.draft_content_id = $[contentId]
 			`,
@@ -51,5 +79,6 @@ function get(userId, contentId) {
 
 module.exports = {
 	get,
-	set
+	set,
+	setRedAlert
 }

@@ -80,7 +80,7 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(result => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT payload FROM view_state'),
+				expect.stringContaining('SELECT view_state.payload, red_alert_status.red_alert'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
@@ -97,7 +97,7 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(result => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT payload FROM view_state'),
+				expect.stringContaining('SELECT view_state.payload, red_alert_status.red_alert'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
@@ -114,10 +114,45 @@ describe('viewer state', () => {
 		Viewer.get('mockUserId', 'mockContentId').then(() => {
 			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
 			expect(db.oneOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('SELECT payload FROM view_state'),
+				expect.stringContaining('SELECT view_state.payload, red_alert_status.red_alert'),
 				{
 					userId: 'mockUserId',
 					contentId: 'mockContentId'
+				}
+			)
+			expect(logger.error).toHaveBeenCalledTimes(1)
+			done()
+		})
+	})
+
+	test('setRedAlert inserts values into red_alert_status', done => {
+		db.none.mockResolvedValueOnce({})
+		Viewer.setRedAlert('mockUserId', 'mockDraftId', 'mockTimestamp', 'mockValue').then(() => {
+			expect(db.none).toHaveBeenCalledTimes(1)
+			expect(db.none).toHaveBeenCalledWith(
+				expect.stringContaining('INSERT INTO red_alert_status'),
+				{
+					user_id: 'mockUserId',
+					draft_id: 'mockDraftId',
+					actor_time: 'mockTimestamp',
+					red_alert: 'mockValue'
+				}
+			)
+			done()
+		})
+	})
+
+	test('setRedAlert fails on db error', done => {
+		db.none.mockRejectedValueOnce('mockDBError')
+		Viewer.setRedAlert('mockUserId', 'mockDraftId', 'mockTimestamp', 'mockValue').then(() => {
+			expect(db.none).toHaveBeenCalledTimes(1)
+			expect(db.none).toHaveBeenCalledWith(
+				expect.stringContaining('INSERT INTO red_alert_status'),
+				{
+					user_id: 'mockUserId',
+					draft_id: 'mockDraftId',
+					actor_time: 'mockTimestamp',
+					red_alert: 'mockValue'
 				}
 			)
 			expect(logger.error).toHaveBeenCalledTimes(1)
