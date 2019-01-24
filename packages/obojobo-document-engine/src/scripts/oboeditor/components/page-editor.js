@@ -210,13 +210,9 @@ class PageEditor extends React.Component {
 
 		APIUtil.postDraft(this.props.draftId, json).then(result => {
 			if (result.status === 'ok') {
-				ModalUtil.show(
-					<SimpleDialog ok title={'Successfully saved draft'}/>
-				)
+				ModalUtil.show(<SimpleDialog ok title={'Successfully saved draft'} />)
 			} else {
-				ModalUtil.show(
-					<SimpleDialog ok title={'Error: '+ result.value.message}/>
-				)
+				ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
 			}
 		})
 	}
@@ -226,7 +222,6 @@ class PageEditor extends React.Component {
 	// When we upgrade Slate to 0.43+, the keyDown event should be moved
 	// back to link-mark.js for consistency
 	onKeyDown(event, change) {
-		console.log('onKeyDown')
 		if (!(event.ctrlKey || event.metaKey) || event.key !== 'k') return
 
 		event.preventDefault()
@@ -237,7 +232,8 @@ class PageEditor extends React.Component {
 			<Prompt
 				title="Insert Link"
 				message="Enter the link url:"
-				onConfirm={this.changeLinkValue.bind(this)}/>
+				onConfirm={this.changeLinkValue.bind(this)}
+			/>
 		)
 	}
 	changeLinkValue(href) {
@@ -257,7 +253,7 @@ class PageEditor extends React.Component {
 		})
 
 		// If href is empty, don't add a link
-		if(!href || !/[^\s]/.test(href))  return this.onChange(change)
+		if (!href || !/[^\s]/.test(href)) return this.onChange(change)
 
 		change.addMark({
 			type: LINK_MARK,

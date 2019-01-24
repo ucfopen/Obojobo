@@ -4,4 +4,6 @@ exports[`EditorApp EditorApp component 1`] = `"<div class=\\"viewer--viewer-app 
 
 exports[`EditorApp EditorApp component renders error messsage 1`] = `"<div class=\\"viewer--viewer-app--visit-error\\"><h1>Error</h1><h2>someType</h2><div>someMessage</div></div>"`;
 
+exports[`EditorApp EditorApp component renders modal 1`] = `"<div class=\\"viewer--viewer-app editor--editor-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive\\"><!-- react-empty: 3 --><div class=\\"component obojobo-draft--modules--module\\"><!-- react-empty: 5 --></div><div class=\\"obojobo-draft--components--modal-container\\"><div class=\\"content\\">mock component</div></div></div>"`;
+
 exports[`EditorApp EditorApp component with no draft 1`] = `"<div class=\\"viewer--viewer-app editor--editor-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive\\"><!-- react-empty: 3 --><div class=\\"component obojobo-draft--modules--module\\"><!-- react-empty: 5 --></div></div>"`;

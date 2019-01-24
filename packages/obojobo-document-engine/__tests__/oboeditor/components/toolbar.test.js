@@ -1,7 +1,11 @@
 import { shallow } from 'enzyme'
 import React from 'react'
 
-import Toolbar from '../../../src/scripts/oboeditor/components/toolbar'
+import Toolbar from 'src/scripts/oboeditor/components/toolbar'
+
+import ModalUtil from 'src/scripts/common/util/modal-util'
+jest.mock('src/scripts/common/util/modal-util')
+
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -40,8 +44,7 @@ describe('Editor Toolbar', () => {
 		expect(change.toggleMark).toHaveBeenCalled()
 	})
 
-	test('Node component toggles Link on', () => {
-		window.prompt = jest.fn().mockReturnValueOnce(null)
+	test('Node component toggles link', () => {
 		const Node = Toolbar.components.Node
 		const change = {
 			addMark: jest.fn(),
@@ -68,21 +71,24 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.addMark).toHaveBeenCalled()
-		expect(change.removeMark).not.toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('Node component toggles Link off', () => {
+	test('changeLinkValue calls onChage with empty href', () => {
 		window.prompt = jest.fn().mockReturnValueOnce(null)
 		const Node = Toolbar.components.Node
 		const change = {
 			addMark: jest.fn(),
 			removeMark: jest.fn()
 		}
+
+		const onChange = jest.fn()
+
 		const component = shallow(
 			<Node
 				value={{
 					change: () => change,
+					onChange,
 					marks: {
 						forEach: funct => {
 							const mark = {
@@ -96,16 +102,44 @@ describe('Editor Toolbar', () => {
 				onChange={jest.fn()}
 			/>
 		)
-		const tree = component.html()
 
-		component
-			.find('button')
-			.at(6)
-			.simulate('click', { preventDefault: jest.fn() })
+		component.instance().changeLinkValue('   ')
 
-		expect(tree).toMatchSnapshot()
-		expect(change.addMark).not.toHaveBeenCalled()
-		expect(change.removeMark).toHaveBeenCalled()
+		expect(ModalUtil.hide).toHaveBeenCalled()
+	})
+
+	test('changeLinkValue calls onChage with href', () => {
+		window.prompt = jest.fn().mockReturnValueOnce(null)
+		const Node = Toolbar.components.Node
+		const change = {
+			addMark: jest.fn(),
+			removeMark: jest.fn()
+		}
+
+		const onChange = jest.fn()
+
+		const component = shallow(
+			<Node
+				value={{
+					change: () => change,
+					onChange,
+					marks: {
+						forEach: funct => {
+							const mark = {
+								type: 'a',
+								data: { get: () => 1, toJSON: () => ({}) }
+							}
+							return funct({ type: 'mockMark' }) || funct(mark)
+						}
+					}
+				}}
+				onChange={jest.fn()}
+			/>
+		)
+
+		component.instance().changeLinkValue('mockHref')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
 	})
 
 	test('Node component toggles Superscript', () => {

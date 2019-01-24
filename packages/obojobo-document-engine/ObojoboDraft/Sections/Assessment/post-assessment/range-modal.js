@@ -5,14 +5,15 @@ const { SimpleDialog } = Common.components.modal
 
 import './range-modal.scss'
 
-class ImageProperties extends React.Component {
+class RangeModal extends React.Component {
 	constructor(props) {
 		super(props)
 
-		const splitRange = this.props.for.split(",")
+		const splitRange = this.props.for.split(',')
 		const score = this.props.for
 
-		if(splitRange.length === 1){ // Single Score
+		if (splitRange.length === 1) {
+			// Single Score
 			this.state = {
 				type: 'single',
 				for: score,
@@ -21,39 +22,32 @@ class ImageProperties extends React.Component {
 				end: score,
 				endInclusive: true
 			}
-		} else { // Range
+		} else {
+			// Range
 			this.state = {
 				type: 'range',
 				for: score,
 				start: splitRange[0].substring(1),
 				startInclusive: score.charAt(0) === '[',
-				end: splitRange[1].substring(0,splitRange[1].length-1),
-				endInclusive: score.charAt(score.length-1) === ']'
+				end: splitRange[1].substring(0, splitRange[1].length - 1),
+				endInclusive: score.charAt(score.length - 1) === ']'
 			}
-
-			console.log(this.state)
 		}
-
-
 	}
 
 	generateFor(state, opts) {
 		const updatedState = Object.assign(state, opts)
 		const { startInclusive, start, end, endInclusive } = updatedState
 
-		if(start === end) return start
+		if (start === end) return start
 
-		return (
-			(startInclusive ? '[': '(')
-			+ start + ',' + end
-			+ (endInclusive ? ']': ')')
-		)
+		return (startInclusive ? '[' : '(') + start + ',' + end + (endInclusive ? ']' : ')')
 	}
 
 	handleStartChange(event) {
 		const start = event.target.value
 
-		this.setState((state) => ({
+		this.setState(state => ({
 			for: this.generateFor(state, { start }),
 			start
 		}))
@@ -62,7 +56,7 @@ class ImageProperties extends React.Component {
 	handleStartInclusiveChange(event) {
 		const startInclusive = event.target.checked
 
-		this.setState((state) => ({
+		this.setState(state => ({
 			for: this.generateFor(state, { startInclusive }),
 			startInclusive
 		}))
@@ -71,7 +65,7 @@ class ImageProperties extends React.Component {
 	handleEndChange(event) {
 		const end = event.target.value
 
-		this.setState((state) => ({
+		this.setState(state => ({
 			for: this.generateFor(state, { end }),
 			end
 		}))
@@ -80,7 +74,7 @@ class ImageProperties extends React.Component {
 	handleEndInclusiveChange(event) {
 		const endInclusive = event.target.checked
 
-		this.setState((state) => ({
+		this.setState(state => ({
 			for: this.generateFor(state, { endInclusive }),
 			endInclusive
 		}))
@@ -110,7 +104,8 @@ class ImageProperties extends React.Component {
 				cancelOk
 				title="Score Range"
 				onConfirm={() => this.props.onConfirm(this.state.for)}
-				focusOnFirstElement={this.focusOnFirstElement.bind(this)}>
+				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+			>
 				<div className="score-range">
 					<label htmlFor="typeInput">Range Type:</label>
 					<fieldset id="typeInput">
@@ -121,13 +116,12 @@ class ImageProperties extends React.Component {
 								value="single"
 								id="single"
 								ref={'input'}
-								checked={type === "single"}
-								onChange={this.onCheckType.bind(this)}/>
+								checked={type === 'single'}
+								onChange={this.onCheckType.bind(this)}
+							/>
 							<label htmlFor="single">Single Score</label>
-							{type === "single" ?
-								<div
-									className="single-type-input"
-									id="single-type-input">
+							{type === 'single' ? (
+								<div className="single-type-input" id="single-type-input">
 									<label htmlFor="score">Score:</label>
 									<input
 										id="score"
@@ -138,8 +132,10 @@ class ImageProperties extends React.Component {
 										type="number"
 										placeholder="1-100"
 										value={this.state.for}
-										onChange={this.handleScoreChange.bind(this)}/>
-								</div> : null}
+										onChange={this.handleScoreChange.bind(this)}
+									/>
+								</div>
+							) : null}
 						</div>
 						<div className="type-input">
 							<input
@@ -147,13 +143,12 @@ class ImageProperties extends React.Component {
 								name="type"
 								value="range"
 								id="range"
-								checked={type === "range"}
-								onChange={this.onCheckType.bind(this)}/>
+								checked={type === 'range'}
+								onChange={this.onCheckType.bind(this)}
+							/>
 							<label htmlFor="range">Range</label>
-							{type === "range" ?
-								<div
-									className="range-type-input"
-									id="range-type-input">
+							{type === 'range' ? (
+								<div className="range-type-input" id="range-type-input">
 									<div>
 										<label htmlFor="start">Start:</label>
 										<input
@@ -164,14 +159,14 @@ class ImageProperties extends React.Component {
 											step="1"
 											type="number"
 											value={this.state.start}
-											onChange={this.handleStartChange.bind(this)}/>
-										<label htmlFor="start-inclusive">
-											Inclusive?
-										</label>
+											onChange={this.handleStartChange.bind(this)}
+										/>
+										<label htmlFor="start-inclusive">Inclusive?</label>
 										<input
 											type="checkbox"
 											checked={this.state.startInclusive}
-											onChange={this.handleStartInclusiveChange.bind(this)}/>
+											onChange={this.handleStartInclusiveChange.bind(this)}
+										/>
 									</div>
 									<div>
 										<label htmlFor="urlInput">End:</label>
@@ -183,19 +178,18 @@ class ImageProperties extends React.Component {
 											step="1"
 											type="number"
 											value={this.state.end}
-											onChange={this.handleEndChange.bind(this)}/>
-										<label htmlFor="end-inclusive">
-											Inclusive?
-										</label>
+											onChange={this.handleEndChange.bind(this)}
+										/>
+										<label htmlFor="end-inclusive">Inclusive?</label>
 										<input
 											type="checkbox"
 											checked={this.state.endInclusive}
-											onChange={this.handleEndInclusiveChange.bind(this)}/>
+											onChange={this.handleEndInclusiveChange.bind(this)}
+										/>
 									</div>
-									<div className="range-display">
-										{this.state.for}
-									</div>
-								</div> : null}
+									<div className="range-display">{this.state.for}</div>
+								</div>
+							) : null}
 						</div>
 					</fieldset>
 				</div>
@@ -204,4 +198,4 @@ class ImageProperties extends React.Component {
 	}
 }
 
-export default ImageProperties
+export default RangeModal

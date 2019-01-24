@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorNav Link component 1`] = `
+<span
+  className="editor--components--mark--link"
+>
+  <a
+    href="mock href"
+    title="mock href"
+  />
+  <button
+    aria-label="Edit Link"
+    className="link-edit"
+    onClick={[Function]}
+  />
+</span>
+`;

@@ -22,11 +22,9 @@ class Score extends React.Component {
 		super(props)
 	}
 
-	showRangeModal(){
+	showRangeModal() {
 		ModalUtil.show(
-			<RangeModal
-				for={this.props.node.data.get('for')}
-				onConfirm={this.changeRange.bind(this)}/>
+			<RangeModal for={this.props.node.data.get('for')} onConfirm={this.changeRange.bind(this)} />
 		)
 	}
 
@@ -53,21 +51,19 @@ class Score extends React.Component {
 		const dataFor = this.props.node.data.get('for')
 		return (
 			<div>
-				<div
-					className={'action-data'}>
+				<div className={'action-data'}>
 					<h2>{'Score Range: ' + dataFor + ' '}</h2>
 					<button
 						className="range-edit"
 						onClick={this.showRangeModal.bind(this)}
-						aria-label="Edit Score Range">
+						aria-label="Edit Score Range"
+					>
 						✎
 					</button>
 				</div>
 				<div className={'score-actions-page pad'}>
 					{this.props.children}
-					<Button
-						className={'delete-button'}
-						onClick={() => this.deleteNode()}>
+					<Button className={'delete-button'} onClick={() => this.deleteNode()}>
 						×
 					</Button>
 				</div>
@@ -76,37 +72,35 @@ class Score extends React.Component {
 	}
 }
 
-const Node = props => {
-	const showRangeModal = () => {
-		ModalUtil.show(
-			<RangeModal
-				for={'100'}
-				onConfirm={addAction.bind(this)}/>
-		)
+class Node extends React.Component {
+	showRangeModal() {
+		ModalUtil.show(<RangeModal for={'100'} onConfirm={this.addAction.bind(this)} />)
 	}
 
-	const addAction = (range) => {
+	addAction(range) {
 		ModalUtil.hide()
 
-		const editor = props.editor
+		const editor = this.props.editor
 		const change = editor.value.change()
 
 		const newScore = Block.create({
 			type: SCORE_NODE,
 			data: { for: range }
 		})
-		change.insertNodeByKey(props.node.key, props.node.nodes.size, newScore)
+		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newScore)
 
 		editor.onChange(change)
 	}
 
-	return (
-		<div className={'scoreactions'}>
-			<h1 contentEditable={false}>Score Actions</h1>
-			{props.children}
-			<button onClick={showRangeModal.bind(this)}>Add Action</button>
-		</div>
-	)
+	render() {
+		return (
+			<div className={'scoreactions'}>
+				<h1 contentEditable={false}>Score Actions</h1>
+				{this.props.children}
+				<button onClick={this.showRangeModal.bind(this)}>Add Action</button>
+			</div>
+		)
+	}
 }
 
 const slateToObo = node => {

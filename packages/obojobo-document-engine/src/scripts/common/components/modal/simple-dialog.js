@@ -7,11 +7,9 @@ import Dialog from '../../../common/components/modal/dialog'
 
 class SimpleDialog extends React.Component {
 	focusOnFirstElement() {
-		if(this.props.focusOnFirstElement) {
+		if (this.props.focusOnFirstElement) {
 			return this.props.focusOnFirstElement()
 		}
-
-		return this.refs.button0.focus()
 	}
 
 	render() {
@@ -72,7 +70,8 @@ class SimpleDialog extends React.Component {
 					buttons={buttons}
 					title={this.props.title}
 					width={this.props.width}
-					focusOnFirstElement={this.focusOnFirstElement.bind(this)}>
+					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+				>
 					{this.props.children}
 				</Dialog>
 			</div>

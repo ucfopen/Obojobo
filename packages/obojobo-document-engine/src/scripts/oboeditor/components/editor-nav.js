@@ -31,12 +31,16 @@ class EditorNav extends React.Component {
 			<Prompt
 				title="Add Assessment"
 				message="Enter the title for the new assessment:"
-				onConfirm={this.addAssessment.bind(this)}/>
+				onConfirm={this.addAssessment.bind(this)}
+			/>
 		)
 	}
 
 	addAssessment(name = 'Assessment') {
 		ModalUtil.hide()
+
+		// Fix assessment titles that are whitespace strings
+		if (!/[^\s]/.test(name)) name = 'Assessment'
 
 		const newAssessment = Object.assign({}, assessmentTemplate)
 		newAssessment.id = generateId()
@@ -51,7 +55,8 @@ class EditorNav extends React.Component {
 			<Prompt
 				title="Add Page"
 				message="Enter the title for the new page:"
-				onConfirm={this.addPage.bind(this)}/>
+				onConfirm={this.addPage.bind(this)}
+			/>
 		)
 	}
 
@@ -76,7 +81,8 @@ class EditorNav extends React.Component {
 				title="Rename Module"
 				message="Enter the new title for the module:"
 				value={module.label}
-				onConfirm={this.renameModule.bind(this, module.id)}/>
+				onConfirm={this.renameModule.bind(this, module.id)}
+			/>
 		)
 	}
 
@@ -134,20 +140,17 @@ class EditorNav extends React.Component {
 					})}
 				</ul>
 				<div className="button-bar">
-					<button
-						className={'content-add-button'}
-						onClick={this.showAddPageModal.bind(this)}>
+					<button className={'content-add-button'} onClick={this.showAddPageModal.bind(this)}>
 						+ Add Page
 					</button>
-					<button
-						className={'content-add-button'}
-						onClick={this.showAddAssessmentModal.bind(this)}>
+					<button className={'content-add-button'} onClick={this.showAddAssessmentModal.bind(this)}>
 						+ Add Assessment
 					</button>
 					<br />
 					<button
 						className={'content-add-button'}
-						onClick={this.showRenameModuleModal.bind(this, moduleItem)}>
+						onClick={this.showRenameModuleModal.bind(this, moduleItem)}
+					>
 						Rename Module
 					</button>
 					<button

@@ -9,21 +9,11 @@ import APIUtil from '../../viewer/util/api-util'
 import EditorStore from '../stores/editor-store'
 
 const { ModalContainer } = Common.components
-const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
-const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
 import generateId from '../generate-ids'
-
-Dispatcher.on('editor:alert', payload =>
-	ModalUtil.show(
-		<SimpleDialog ok title={payload.value.title}>
-			{payload.value.message}
-		</SimpleDialog>
-	)
-)
 
 class EditorApp extends React.Component {
 	constructor(props) {
@@ -119,8 +109,8 @@ class EditorApp extends React.Component {
 					/>
 				</div>
 				{modalItem && modalItem.component ? (
-						<ModalContainer>{modalItem.component}</ModalContainer>
-					) : null}
+					<ModalContainer>{modalItem.component}</ModalContainer>
+				) : null}
 			</div>
 		)
 	}
