@@ -8,11 +8,9 @@ import isOrNot from '../../common/isornot'
 import Common from 'Common'
 import FocusUtil from '../util/focus-util'
 
-const { OboModel } = Common.models
 const { StyleableText } = Common.text
 const { StyleableTextComponent } = Common.text
 const { Button } = Common.components
-const { focus } = Common.page
 
 const getLabelTextFromLabel = label => {
 	if (!label) return ''

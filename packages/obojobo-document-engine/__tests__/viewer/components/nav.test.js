@@ -13,18 +13,13 @@ class MockStylableText {
 	}
 }
 const mockStylableComponent = props => <div {...props} className={'mockStylableText'} />
-const mockScrollIntoView = jest.fn()
 const mockFocus = jest.fn()
 // Common
 jest.mock('../../../src/scripts/common/index', () => ({
 	models: {
 		OboModel: {
 			models: {
-				5: {
-					getDomEl: jest.fn(() => ({
-						scrollIntoView: mockScrollIntoView
-					}))
-				}
+				5: {}
 			}
 		}
 	},
@@ -237,8 +232,10 @@ describe('Nav', () => {
 
 		const el = shallow(<Nav {...props} />)
 
+		expect(FocusUtil.focusComponent).not.toHaveBeenCalled()
 		el.find('li').simulate('click')
-		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+		expect(FocusUtil.focusComponent).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusComponent).toHaveBeenCalledWith(5, false)
 	})
 
 	test('onClickSkipNavigation calls FocusUtil.focusOnNavTargetContent', () => {

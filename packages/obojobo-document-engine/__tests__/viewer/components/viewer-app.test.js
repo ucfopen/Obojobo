@@ -1116,11 +1116,13 @@ describe('ViewerApp', () => {
 	})
 
 	test('updateDOMFocus for component type focus calls focus on dom element of found model', done => {
-		expect.assertions(2)
+		expect.assertions(3)
 		mocksForMount()
 
+		const mockScrollIntoView = jest.fn()
 		const component = mount(<ViewerApp />)
 		const mockDomEl = jest.fn()
+		mockDomEl.scrollIntoView = mockScrollIntoView
 		OboModel.models = { mockModelId: { getDomEl: () => mockDomEl } }
 
 		setTimeout(() => {
@@ -1131,6 +1133,7 @@ describe('ViewerApp', () => {
 			})
 			expect(component.instance().updateDOMFocus()).toBe(true)
 			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
 
 			component.unmount()
 			done()
