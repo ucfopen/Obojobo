@@ -1,14 +1,14 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const { oboNodesClient } = require('./obojobo')
+const { oboNodesClient } = require('../../obojobo')
 
 const getOboClientPath = (name, type) => {
 	const newPath = name
 		.split('.')
 		.join('/')
 		.concat(`/${type}.js`)
-	return path.join(__dirname, 'packages', 'obojobo-document-engine', newPath)
+	return path.join(__dirname, '..', 'obojobo-document-engine', newPath)
 }
 
 // Takes an array of strings of OboNodes
@@ -23,7 +23,7 @@ module.exports =
 		const filename_with_min = is_production ? '[name].min' : '[name]'
 		const commonPath = path.join(
 			__dirname,
-			'packages',
+			'..',
 			'obojobo-document-engine',
 			'src',
 			'scripts',
@@ -39,7 +39,7 @@ module.exports =
 				https: true,
 				host: '127.0.0.1',
 				before: app => {
-					require('./packages/obojobo-express/middleware.default')(app)
+					require('./middleware.default')(app)
 				},
 				publicPath: '/static/',
 				watchContentBase: true,
@@ -56,7 +56,7 @@ module.exports =
 					// the application logic
 					path.join(
 						__dirname,
-						'packages',
+						'..',
 						'obojobo-document-engine',
 						'src',
 						'scripts',
@@ -66,7 +66,7 @@ module.exports =
 					// where window and document variables are set and rendering is done
 					path.join(
 						__dirname,
-						'packages',
+						'..',
 						'obojobo-document-engine',
 						'src',
 						'scripts',
@@ -84,7 +84,7 @@ module.exports =
 					// and application logic
 					path.join(
 						__dirname,
-						'packages',
+						'..',
 						'obojobo-document-engine',
 						'src',
 						'scripts',
@@ -96,7 +96,7 @@ module.exports =
 				]
 			},
 			output: {
-				path: path.join(__dirname, 'packages', 'obojobo-express', 'public', 'compiled'),
+				path: path.join(__dirname, '..', 'obojobo-express', 'public', 'compiled'),
 				filename: `${filename_with_min}.js`
 			},
 			module: {
@@ -153,7 +153,7 @@ module.exports =
 			plugins: [new MiniCssExtractPlugin()],
 			resolve: {
 				alias: {
-					styles: path.join(__dirname, 'packages', 'obojobo-document-engine', 'src', 'scss')
+					styles: path.join(__dirname, '..', 'obojobo-document-engine', 'src', 'scss')
 				}
 			}
 		}

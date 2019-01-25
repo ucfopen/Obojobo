@@ -1,5 +1,5 @@
 import Common from 'Common'
-import Editor from '../oboeditor'
+import Editor from './index'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
