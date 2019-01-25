@@ -1,3 +1,6 @@
+const QueryResultError = require('pg-promise').errors.QueryResultError
+const queryResultErrorCode = require('pg-promise').errors.queryResultErrorCode
+
 const apiFunctions = ['success', 'missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 const functionsWithMessages = ['missing', 'badInput', 'unexpected', 'reject', 'notAuthorized']
 let mockArgs // array of mocked express middleware request arguments
@@ -188,9 +191,39 @@ describe('api response middleware', () => {
 	})
 
 	test('deals with error messages in unexpected', () => {
-		const { res, mockJson } = mockArgs
+		const { res } = mockArgs
 		res.unexpected(new Error('test error'))
-		expect(mockJson.mock.calls[0][0].value.message).toBe('Error: test error')
+		expect(res.json).toHaveBeenCalledWith({
+			status: 'error',
+			value: {
+				type: 'unexpected',
+				message: 'test error'
+			}
+		})
+		// expect(mockJson.mock.calls[0][0].value.message).toBe('Error: test error')
+	})
+
+	test('sanitizes error messages in unexpected for blacklisted errors', () => {
+		const { res } = mockArgs
+
+		const e = new QueryResultError(
+			queryResultErrorCode.noData,
+			{ rows: [] },
+			'mockQuery',
+			'mockValues'
+		)
+
+		expect(e.message).toBe('No data returned from the query.')
+
+		res.unexpected(e)
+
+		expect(res.json).toHaveBeenCalledWith({
+			status: 'error',
+			value: {
+				type: 'unexpected',
+				message: 'QueryResultError'
+			}
+		})
 	})
 
 	test('functions return expected values', () => {
