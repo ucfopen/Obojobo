@@ -4,6 +4,8 @@ import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ParameterNode from '../../../../../src/scripts/oboeditor/components/parameter-node'
 
+import './editor-component.scss'
+
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
 const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'

@@ -1,4 +1,5 @@
 import './viewer-component.scss'
+import './editor-component.scss'
 
 import React from 'react'
 import { Block } from 'slate'
@@ -130,7 +131,7 @@ class Table extends React.Component {
 						</tbody>
 					</table>
 				</div>
-				<div className={'table-editor'}>
+				<div className={'table-settings'}>
 					<button onClick={() => this.addRow()}>{'Add Row'}</button>
 					<button onClick={() => this.addCol()}>{'Add Column'}</button>
 					<button onClick={() => this.toggleHeader()}>{'Toggle Header'}</button>

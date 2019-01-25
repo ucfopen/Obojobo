@@ -1,5 +1,4 @@
 /* eslint no-alert: 0 */
-
 import React from 'react'
 import basicMark from './marks/basic-mark'
 import linkMark from './marks/link-mark'
@@ -20,6 +19,8 @@ import LeftIcon from '../assets/left-icon'
 import RightIcon from '../assets/right-icon'
 import CenterIcon from '../assets/center-icon'
 import UnindentIcon from '../assets/unindent-icon'
+
+import './toolbar.scss'
 
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'

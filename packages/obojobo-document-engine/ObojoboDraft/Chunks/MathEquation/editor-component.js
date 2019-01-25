@@ -1,4 +1,5 @@
 import './viewer-component.scss'
+import './editor-component.scss'
 
 import React from 'react'
 import katex from 'katex'

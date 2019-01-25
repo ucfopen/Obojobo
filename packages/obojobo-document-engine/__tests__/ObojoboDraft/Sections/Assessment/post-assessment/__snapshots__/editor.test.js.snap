@@ -20,31 +20,40 @@ exports[`Actions editor Node component 1`] = `
 exports[`Actions editor Node component adds child 1`] = `"<div class=\\"scoreactions\\"><h1 contenteditable=\\"false\\">Score Actions</h1><button>Add Action</button></div>"`;
 
 exports[`Actions editor Score component 1`] = `
-<div
-  className="score-actions-page pad"
->
+<div>
   <div
     className="action-data"
   >
-    Score Range: [object Object] 
+    <h2>
+      Score Range: [object Object] 
+    </h2>
     <button
+      aria-label="Edit Score Range"
+      className="range-edit"
       onClick={[Function]}
     >
-      Edit Range
+      ✎
     </button>
   </div>
-  <button
-    className="delete-node"
-    onClick={[Function]}
+  <div
+    className="score-actions-page pad"
   >
-    X
-  </button>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    >
+      <button
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
+  </div>
 </div>
 `;
 
-exports[`Actions editor Score component changes range 1`] = `"<div class=\\"score-actions-page pad\\"><div class=\\"action-data\\">Score Range: [object Object] <button>Edit Range</button></div><button class=\\"delete-node\\">X</button></div>"`;
+exports[`Actions editor Score component changes range 1`] = `"<div><div class=\\"action-data\\"><h2>Score Range: [object Object] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button>×</button></div></div></div>"`;
 
-exports[`Actions editor Score component deletes self 1`] = `"<div class=\\"score-actions-page pad\\"><div class=\\"action-data\\">Score Range: [object Object] <button>Edit Range</button></div><button class=\\"delete-node\\">X</button></div>"`;
+exports[`Actions editor Score component deletes self 1`] = `"<div><div class=\\"action-data\\"><h2>Score Range: [object Object] </h2><button class=\\"range-edit\\" aria-label=\\"Edit Score Range\\">✎</button></div><div class=\\"score-actions-page pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button>×</button></div></div></div>"`;
 
 exports[`Actions editor oboToSlate converts an OboComponent to a Slate node 1`] = `
 Object {

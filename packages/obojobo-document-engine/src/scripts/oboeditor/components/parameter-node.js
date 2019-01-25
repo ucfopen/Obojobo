@@ -2,6 +2,8 @@ import React from 'react'
 
 import KeyDownUtil from '../util/keydown-util'
 
+import './parameter-node.scss'
+
 const Node = props => {
 	const handleSelectChange = event => {
 		const editor = props.editor

@@ -137,10 +137,7 @@ describe('Actions editor', () => {
 		)
 		const tree = component.html()
 
-		component
-			.find('button')
-			.at(1)
-			.simulate('click')
+		component.find('.delete-button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(change.removeNodeByKey).toHaveBeenCalled()

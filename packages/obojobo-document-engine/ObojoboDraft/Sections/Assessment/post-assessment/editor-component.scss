@@ -1,0 +1,60 @@
+@import '~styles/includes';
+
+.scoreactions {
+	font-family: $font-default;
+	background-color: $color-bg2;
+	border-radius: $dimension-rounded-radius;
+	padding: 2em 3em;
+	margin-bottom: 3em;
+	margin-top: 3em;
+
+	h1 {
+		margin-bottom: 1em;
+	}
+
+	h2 {
+		display: inline;
+	}
+
+	button {
+		display: inline-block;
+	}
+
+	.score-actions-page {
+		background-color: $color-bg;
+		margin-left: 2em;
+		margin-right: 2em;
+		margin-bottom: 2em;
+		position: relative;
+		width: auto;
+		border: 3px solid transparentize($color-action, 0.7);
+
+		.delete-button {
+			position: absolute;
+			right: 0;
+			top: 0;
+			transform: translate(50%, -50%);
+			z-index: 3;
+
+			button {
+				font-size: 1.2em;
+				padding: 0;
+				min-width: 1.4em;
+				border-radius: 50%;
+			}
+		}
+	}
+
+	.range-edit {
+		transform: scaleX(-1);
+		display: inline;
+		font-size: 1.5em;
+		color: $color-action;
+		background-color: $color-text;
+		border: none;
+
+		&:hover {
+			color: $color-text;
+		}
+	}
+}

@@ -1,15 +1,20 @@
 /* eslint no-alert: 0 */
 import React from 'react'
+import Common from 'Common'
 import { Block } from 'slate'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import Page from '../../../Pages/Page/editor'
+
+import './editor-component.scss'
+
+const { Button } = Common.components
 
 // A single score action
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 // The whole array of score actions
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
-import Page from '../../../Pages/Page/editor'
 
 class Score extends React.Component {
 	constructor(props) {
@@ -41,15 +46,23 @@ class Score extends React.Component {
 	render() {
 		const dataFor = this.props.node.data.get('for')
 		return (
-			<div className={'score-actions-page pad'}>
-				{this.props.children}
+			<div>
 				<div className={'action-data'}>
-					{'Score Range: ' + dataFor + ' '}
-					<button onClick={() => this.changeRange()}>Edit Range</button>
+					<h2>{'Score Range: ' + dataFor + ' '}</h2>
+					<button
+						className="range-edit"
+						onClick={() => this.changeRange()}
+						aria-label="Edit Score Range"
+					>
+						✎
+					</button>
 				</div>
-				<button className={'delete-node'} onClick={() => this.deleteNode()}>
-					{'X'}
-				</button>
+				<div className={'score-actions-page pad'}>
+					{this.props.children}
+					<Button className={'delete-button'} onClick={() => this.deleteNode()}>
+						×
+					</Button>
+				</div>
 			</div>
 		)
 	}

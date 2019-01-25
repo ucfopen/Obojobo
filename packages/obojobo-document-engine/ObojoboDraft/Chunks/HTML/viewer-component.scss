@@ -12,30 +12,4 @@
 	&.align-right {
 		text-align: right;
 	}
-
-	&.html-editor {
-		pre {
-			::before {
-				color: $color-text-minor;
-				content: 'HTML';
-				display: block;
-				font-family: $font-default;
-				position: absolute;
-				left: 3.5em;
-				top: 0;
-				transform: scale(0.7);
-				transform-origin: top left;
-			}
-
-			font-size: 0.9em;
-			margin-top: 0;
-			margin-bottom: 0;
-			overflow-x: auto;
-			background: $color-bg2;
-			border-radius: $dimension-rounded-radius;
-			box-sizing: border-box;
-			padding: $dimension-padding / 4 $dimension-padding / 3 / 0.9;
-			tab-size: 2;
-		}
-	}
 }
