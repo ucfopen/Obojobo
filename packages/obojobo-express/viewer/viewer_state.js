@@ -5,7 +5,7 @@ function set(userId, draftId, contentId, key, version, value) {
 	return db
 		.none(
 			`
-				INSERT INTO view_state,
+				INSERT INTO view_state
 				(user_id, draft_id, draft_content_id, payload)
 				VALUES($[userId], $[draftId], $[contentId], $[initialContents])
 				ON CONFLICT (user_id, draft_content_id) DO UPDATE
@@ -59,7 +59,7 @@ function get(userId, contentId) {
 				FROM view_state
 				LEFT JOIN red_alert_status ON
 				view_state.user_id = red_alert_status.user_id AND
-				view_state.draft_content_id = red_alert_status.draft_id
+				view_state.draft_id = red_alert_status.draft_id
 				WHERE view_state.user_id = $[userId] AND
 				view_state.draft_content_id = $[contentId]
 			`,
@@ -70,7 +70,14 @@ function get(userId, contentId) {
 		)
 		.then(result => {
 			// return payload or empty object when result is null
-			return result !== null ? result.payload : {}
+			if (result === null) {
+				return {}
+			}
+			const payload = result.payload
+			if (typeof payload === 'object' && payload !== null) {
+				payload['nav:redAlert'] = { value: result.red_alert }
+			}
+			return payload
 		})
 		.catch(error => {
 			logger.error('DB UNEXPECTED on viewer_state.get', error, error.toString())

@@ -15,17 +15,21 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	return db.createTable('red_alert_status', {
-		id: { type: 'int', primaryKey: true, autoIncrement: true },
-		user_id: { type: 'bigint', unique: true },
-		draft_id: { type: 'UUID', unique: true },
-		creation_time: 'timestamp',
-		red_alert: 'boolean'
-	})
+	return db
+		.createTable('red_alert_status', {
+			id: { type: 'int', primaryKey: true, autoIncrement: true },
+			user_id: 'bigint',
+			draft_id: 'UUID',
+			creation_time: 'timestamp',
+			red_alert: 'boolean'
+		})
+		.then(result => {
+			return db.addIndex('red_alert_status', 'user_draft_unique', ['user_id', 'draft_id'], true)
+		})
 }
 
 exports.down = function(db) {
-	return null
+	return db.dropTable('red_alert_status')
 }
 
 exports._meta = {

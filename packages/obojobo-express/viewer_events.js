@@ -23,6 +23,7 @@ oboEvents.on('client:nav:toggle', event => {
 })
 
 oboEvents.on('client:nav:redAlert', event => {
+
 	viewerState.setRedAlert(event.userId, 
 		event.draftId, 
 		event.actor_time, 

@@ -108,7 +108,7 @@ describe('viewer state', () => {
 		})
 	})
 
-	test('get retrives values from view_state', done => {
+	test('get logs error', done => {
 		db.oneOrNone.mockRejectedValueOnce('mockDBError')
 
 		Viewer.get('mockUserId', 'mockContentId').then(() => {
@@ -156,6 +156,31 @@ describe('viewer state', () => {
 				}
 			)
 			expect(logger.error).toHaveBeenCalledTimes(1)
+			done()
+		})
+	})
+
+	test('get injects red_alert into view_state payload', done => {
+		db.oneOrNone.mockResolvedValueOnce({
+			payload: {
+				'nav:isOpen': { value: true, version: 1 }
+			},
+			red_alert: false
+		})
+
+		Viewer.get('mockUserId', 'mockContentId').then(result => {
+			expect(db.oneOrNone).toHaveBeenCalledTimes(1)
+			expect(db.oneOrNone).toHaveBeenCalledWith(
+				expect.stringContaining('SELECT view_state.payload, red_alert_status.red_alert'),
+				{
+					userId: 'mockUserId',
+					contentId: 'mockContentId'
+				}
+			)
+			expect(result).toEqual({
+				'nav:isOpen': { value: true, version: 1 },
+				'nav:redAlert': { value: false }
+			})
 			done()
 		})
 	})
