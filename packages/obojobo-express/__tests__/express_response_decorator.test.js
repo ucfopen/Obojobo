@@ -200,7 +200,6 @@ describe('api response middleware', () => {
 				message: 'test error'
 			}
 		})
-		// expect(mockJson.mock.calls[0][0].value.message).toBe('Error: test error')
 	})
 
 	test('sanitizes error messages in unexpected for blacklisted errors', () => {
