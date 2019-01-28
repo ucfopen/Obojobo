@@ -16,7 +16,7 @@ describe('QuestionBank adapter', () => {
 		const attrs = {
 			content: {
 				choose: 2,
-				select: 'random-all'
+				select: 'random'
 			}
 		}
 		const model = new OboModel(attrs)
@@ -29,7 +29,7 @@ describe('QuestionBank adapter', () => {
 		const attrs = {
 			content: {
 				choose: Infinity,
-				select: 'random-all'
+				select: 'random'
 			}
 		}
 		const model = new OboModel(attrs)
@@ -43,7 +43,7 @@ describe('QuestionBank adapter', () => {
 		const attrs = {
 			content: {
 				choose: 2,
-				select: 'random-all'
+				select: 'random'
 			}
 		}
 		const modelA = new OboModel(attrs)
@@ -61,7 +61,7 @@ describe('QuestionBank adapter', () => {
 		const attrs = {
 			content: {
 				choose: 2,
-				select: 'random-all'
+				select: 'random'
 			}
 		}
 		const model = new OboModel(attrs)
