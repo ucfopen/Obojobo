@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`QuestionBank registers expected events 1`] = `
-Array [
-  Object {
-    "ObojoboDraft.Sections.Assessment:sendToClient": [Function],
-  },
-]
-`;

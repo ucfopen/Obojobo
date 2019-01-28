@@ -92,7 +92,7 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 			//
 			logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-			return lti.sendHighestAssessmentScore(user.id, draftDocument, attempt.assessmentId)
+			return lti.sendHighestAssessmentScore(user.id, draftDocument, attempt.assessmentId, isPreview)
 		})
 		.then(ltiRequestResult => {
 			logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)

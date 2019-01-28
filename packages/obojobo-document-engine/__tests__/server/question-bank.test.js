@@ -83,6 +83,13 @@ describe('QuestionBank', () => {
 		jest.resetAllMocks()
 	})
 
+	test('removes children on sendToClient', () => {
+		const questionBank = buildQuestionBankForTest(0)
+		questionBank.children = 'mockChildren'
+		questionBank.onSendToClient()
+		expect(questionBank.children).toEqual([])
+	})
+
 	// Tree building tests - checks that child recursion works as expected
 	// SELECT_UNSEEN_RANDOM follows a similar selection pattern to SELECT_SEQUENTIAL
 	test('buildAssessment picks expected questions in order for FIRST attempt in sequential mode', () => {

@@ -13,10 +13,18 @@ class QuestionBank extends DraftNode {
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 
+		this.registerEvents({
+			'ObojoboDraft.Sections.Assessment:sendToClient': this.onSendToClient
+		})
+
 		const { choose, select } = this.getContentValues()
 
 		this.choose = choose
 		this.select = select
+	}
+
+	onSendToClient() {
+		this.children = []
 	}
 
 	buildAssessment(questionUsesMap) {
