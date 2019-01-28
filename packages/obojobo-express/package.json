@@ -107,6 +107,7 @@
 		"coveragePathIgnorePatterns": [
 			"<rootDir>/node_modules",
 			"<rootDir>/app.js",
+			"<rootDir>/webpack.config.js",
 			"<rootDir>/dev_nonce_store.js"
 		],
 		"coverageReporters": ["text", "lcov"],
