@@ -1,6 +1,17 @@
+const QueryResultError = require('pg-promise').errors.QueryResultError
 const inflector = require('json-inflector')
 const logger = oboRequire('logger')
 const apiUrlRegex = /\/api\/.*/
+
+const getSanitizedErrorMessage = e => {
+	// If the error is in our blacklist only return the error name:
+	if (e instanceof QueryResultError) {
+		return e.constructor.name
+	}
+
+	// Otherwise, allow the message to be returned
+	return e.message
+}
 
 const shouldRespondWithJson = req => {
 	// return api friendly result if route contains '/api/''
@@ -13,7 +24,7 @@ const camelize = o => {
 
 const success = (req, res, next, valueObject) => {
 	res.status(200)
-	if(shouldRespondWithJson(req)){
+	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
 				status: 'ok',
@@ -27,7 +38,7 @@ const success = (req, res, next, valueObject) => {
 
 const badInput = (req, res, next, message) => {
 	res.status(422)
-	if(shouldRespondWithJson(req)){
+	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
 				status: 'error',
@@ -44,7 +55,7 @@ const badInput = (req, res, next, message) => {
 
 const notAuthorized = (req, res, next, message) => {
 	res.status(401)
-	if(shouldRespondWithJson(req)){
+	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
 				status: 'error',
@@ -61,7 +72,7 @@ const notAuthorized = (req, res, next, message) => {
 
 const reject = (req, res, next, message) => {
 	res.status(403)
-	if(shouldRespondWithJson(req)){
+	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
 				status: 'error',
@@ -79,7 +90,7 @@ const reject = (req, res, next, message) => {
 const missing = (req, res, next, message) => {
 	res.status(404)
 
-	if(shouldRespondWithJson(req)){
+	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
 				status: 'error',
@@ -94,20 +105,24 @@ const missing = (req, res, next, message) => {
 	res.render('404')
 }
 
-const unexpected = (req, res, next, message) => {
+const unexpected = (req, res, next, messageOrError) => {
+	let message
+
 	res.status(500)
-	if (message instanceof Error) {
-		logger.error('error thrown', message.stack)
-		message = message.toString()
+
+	if (messageOrError instanceof Error) {
+		logger.error('error thrown', messageOrError.stack)
+		message = getSanitizedErrorMessage(messageOrError)
 	} else {
-		logger.error('error message', message)
+		logger.error('error message', messageOrError)
+		message = messageOrError
 	}
 
-	if(!message){
+	if (!message) {
 		message = 'Unexpected Error'
 	}
 
-	if(shouldRespondWithJson(req)){
+	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
 				status: 'error',
