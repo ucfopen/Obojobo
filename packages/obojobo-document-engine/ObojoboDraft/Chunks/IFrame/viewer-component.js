@@ -12,6 +12,9 @@ import { getRenderSettings } from './render-settings'
 const DEFAULT_WIDTH = 710
 const DEFAULT_HEIGHT = 500
 const MIN_SCALE = 0.1
+const MAX_SCALE = 10
+const DECREASE_ZOOM_STEP = -0.1
+const INCREASE_ZOOM_STEP = 0.1
 
 const { OboComponent } = Viewer.components
 const { Button } = Common.components
@@ -27,6 +30,8 @@ export default class IFrame extends React.Component {
 		this.boundOnZoomReset = this.onClickZoomReset.bind(this)
 		this.boundOnReload = this.onClickReload.bind(this)
 		this.boundOnViewerContentAreaResized = this.onViewerContentAreaResized.bind(this)
+
+		MediaUtil.setDefaultZoom(this.props.model.get('id'), this.props.model.modelState.initialZoom)
 
 		this.state = {
 			actualWidth: 0,
@@ -130,12 +135,12 @@ export default class IFrame extends React.Component {
 
 		const {
 			zoomValues,
-			zoom,
 			displayedTitle,
 			scaleDimensions,
 			isShowing,
 			controlsOpts,
 			isAtMinScale,
+			isAtMaxScale,
 			iframeStyle,
 			afterStyle
 		} = getRenderSettings(
@@ -145,6 +150,7 @@ export default class IFrame extends React.Component {
 			DEFAULT_WIDTH,
 			DEFAULT_HEIGHT,
 			MIN_SCALE,
+			MAX_SCALE,
 			this.props.moduleData.mediaState
 		)
 
@@ -170,9 +176,7 @@ export default class IFrame extends React.Component {
 						style={scaleDimensions.containerStyle}
 					>
 						<div className="iframe-container">
-							{!isShowing ? (
-								<div className="blocker" style={iframeStyle} />
-							) : (
+							{isShowing ? (
 								<iframe
 									ref="iframe"
 									title={ms.title}
@@ -182,6 +186,8 @@ export default class IFrame extends React.Component {
 									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
 									style={iframeStyle}
 								/>
+							) : (
+								<div className="blocker" style={iframeStyle} />
 							)}
 						</div>
 						<div className="after" style={afterStyle} />
@@ -191,16 +197,25 @@ export default class IFrame extends React.Component {
 								{ms.src === null ? null : <Button>View Content</Button>}
 							</div>
 						)}
-						<Controls
-							newWindowSrc={src}
-							controlsOptions={controlsOpts}
-							isZoomAbleToBeReset={zoomValues.isZoomDifferentFromInitial}
-							isUnableToZoomOut={isAtMinScale}
-							reload={this.boundOnReload}
-							zoomIn={this.onClickSetZoom.bind(this, parseFloat((zoom + 0.1).toFixed(2)))}
-							zoomOut={this.onClickSetZoom.bind(this, parseFloat((zoom - 0.1).toFixed(2)))}
-							zoomReset={this.boundOnZoomReset}
-						/>
+						{isShowing ? (
+							<Controls
+								newWindowSrc={src}
+								controlsOptions={controlsOpts}
+								isZoomResettable={!zoomValues.isZoomAtDefault}
+								isZoomOutDisabled={isAtMinScale}
+								isZoomInDisabled={isAtMaxScale}
+								reload={this.boundOnReload}
+								zoomIn={this.onClickSetZoom.bind(
+									this,
+									parseFloat((zoomValues.currentZoom + INCREASE_ZOOM_STEP).toFixed(2))
+								)}
+								zoomOut={this.onClickSetZoom.bind(
+									this,
+									parseFloat((zoomValues.currentZoom + DECREASE_ZOOM_STEP).toFixed(2))
+								)}
+								zoomReset={this.boundOnZoomReset}
+							/>
+						) : null}
 					</div>
 				</div>
 			</OboComponent>

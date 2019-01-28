@@ -1449,6 +1449,713 @@
 					]
 				},
 				{
+					"id": "iframe-page",
+					"type": "ObojoboDraft.Pages.Page",
+					"content": {
+						"title": "IFrame Examples"
+					},
+					"children": [
+						{
+							"id": "93e3ecdc-68f7-44fd-82d0-debbcc4980f6",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"headingLevel": 1,
+								"textGroup": [
+									{
+										"text": {
+											"value": "IFrame Examples",
+											"styleList": []
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "43cbd936-84ec-4d25-92cf-547125c4e43a",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value": "IFrames display external sites within Obojobo.",
+											"styleList": []
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "5544305c-122f-4d26-91de-4a0b310b361c",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"headingLevel": 2,
+								"textGroup": [
+									{
+										"text": {
+											"value": "Types of IFrames:",
+											"styleList": []
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "c83a5e76-8c98-4236-97ea-2128ca15b859",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"This is a webpage type IFrame with default attributes that make it suitable to embed webpages. webpage type Iframes will load and display their content when View Content is selected.",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 10,
+													"end": 17
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 95,
+													"end": 102
+												},
+												{
+													"type": "b",
+													"data": {},
+													"start": 157,
+													"end": 169
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "f78f05c1-bc3e-45b3-ab5e-d0c4d49015df",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "Webpage type IFrame"
+							},
+							"children": []
+						},
+						{
+							"id": "68436163-6228-44bb-bacf-5b18af73936b",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"This is a media type IFrame with default attributes. Since it is optimized for media playback, its defaults differ from the webpage defaults.",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 10,
+													"end": 15
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "c9ebe20d-e44e-4847-806a-00210b7629d2",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "media",
+								"src": "https://www.youtube.com/embed/gJ390e5sjHk",
+								"title": "Media type IFrame"
+							},
+							"children": []
+						},
+						{
+							"id": "f9b73d15-52c2-4992-94cd-7a0033b18dbc",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"Use the media type when embedding video or interactive material. Otherwise, use the webpage type when embedding websites. If no type is specified, media will be used.",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 8,
+													"end": 13
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 84,
+													"end": 91
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 147,
+													"end": 152
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "c7c8d6f7-9801-4192-b473-2004c3eaa082",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"headingLevel": 2,
+								"textGroup": [
+									{
+										"text": {
+											"value": "Additional options",
+											"styleList": []
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "8a9dbb49-1be2-4b68-b18e-0934cd9b8bc5",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"The autoload property allows an IFrame to load automatically. Autoloading is not recommended, as it may affect the load speed of the Obojobo Module.",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 4,
+													"end": 12
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "a9ba5ba8-08b6-4417-9d00-3e6314de08eb",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"autoload": true
+							},
+							"children": []
+						},
+						{
+							"id": "8e54a6ec-67c4-492b-b761-436f8dafc732",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"The IFrame below omits the title property. When omitted, the embedded URL is shown instead. In general, it is recommended to include a title, as this is more readable than a URL (and will also be read aloud by screen-readers).",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 27,
+													"end": 32
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "0947cb07-4649-44d3-af64-0041f5b0be1c",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu"
+							},
+							"children": []
+						},
+						{
+							"id": "8deedeee-72bd-49d2-b554-e0cfc1e91465",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"A custom width and height can be provided, as shown below. This IFrame also has no border (once it is loaded).",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 9,
+													"end": 14
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 19,
+													"end": 25
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "c62abc48-aa7a-495c-8da4-28bd5e751077",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "Custom width and height",
+								"height": 300,
+								"width": 300,
+								"border": false
+							},
+							"children": []
+						},
+						{
+							"id": "e7f355dc-e57a-4bb4-bc51-c4e612690dbd",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"The fit property controls an IFrame's behavior when constricted by the available space. The IFrame below specifies fit=\"scale\", which means it will scale down proportionally as the IFrame box shrinks. To see it in action, view the IFrame content, then try reducing the size of the browser until the IFrame can no longer fit in the available space - the inner contents will decrease in size. This is the default setting when type is set to media (and in general is recommended when embedding media).",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 4,
+													"end": 7
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 115,
+													"end": 126
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 424,
+													"end": 428
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 439,
+													"end": 444
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "c7029a67-4603-4e28-94df-2dfaed6f9073",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "Scale fit",
+								"fit": "scale"
+							},
+							"children": []
+						},
+						{
+							"id": "bcda6330-b6be-478e-9f32-14276cbf8da4",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"The other fit type is fit=\"scroll\". This does not scale down the inner contents. The contents remain the same size while the IFrame box that contains them becomes skinnier. If the external content won't fit inside the reduced IFrame box, the user will need to scroll inside the IFrame to see all of the content. This is the default setting when type is set to webpage (and in general is recommended when embedding content with text).",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 10,
+													"end": 13
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 22,
+													"end": 34
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 345,
+													"end": 349
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 360,
+													"end": 367
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "184bb01b-144d-43c4-b51e-de5195ec8755",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "Scroll fit",
+								"fit": "scroll"
+							},
+							"children": []
+						},
+						{
+							"id": "2d43112b-f560-4025-ab8c-3a8d500e99d1",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"The initialZoom property allows an IFrame to be set to a custom zoom level. In the example below, the embedded webpage is zoomed to 150% of its original size. This can be used to tailor embedded content to more closely match the text size of the Obojobo module (or if the embedded content defaults to a small size).",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 4,
+													"end": 15
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "3a5b383a-8556-4ac8-ae2c-6099664cfc33",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "Initial zoom set to 150%",
+								"initialZoom": 1.5
+							},
+							"children": []
+						},
+						{
+							"id": "c21046f8-ce45-44b4-a1d4-b12b5e5c79f1",
+							"type": "ObojoboDraft.Chunks.Heading",
+							"content": {
+								"headingLevel": 2,
+								"textGroup": [
+									{
+										"text": {
+											"value": "IFrame Controls",
+											"styleList": []
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "44fa1f68-4521-4d36-b188-f654861bedf4",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"An IFrame can contain any of the three control types: reload, new-window and zoom.",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 54,
+													"end": 60
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 62,
+													"end": 72
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 77,
+													"end": 81
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "603e6856-2fab-4f21-9cfd-bb65220e379f",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"The IFrame below has only the reload control. reload allows the user to refresh the site within the IFrame. It's helpful if the user manages to navigate to another page inside the IFrame - The reload button will restore the original embedded page.",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 30,
+													"end": 36
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 46,
+													"end": 52
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "13e6398c-290f-40d1-b984-f2159e1b793c",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "Reload control only",
+								"controls": "reload"
+							},
+							"children": []
+						},
+						{
+							"id": "0ecb2327-ea87-4289-8ecc-d61d109ce9d6",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"The IFrame below has only the new-window control. new-window allows the user to load the external site in a new tab or a new window (depending on browser defaults).",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 30,
+													"end": 40
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 50,
+													"end": 60
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "736ec1b3-4619-4f8d-b1d1-43f1179ed1ad",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "New window control only",
+								"controls": "new-window"
+							},
+							"children": []
+						},
+						{
+							"id": "c62df5b2-7fb4-43be-8542-2d467c995936",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"The IFrame below has only the zoom controls. Zoom enables the user to adjust the iframe scale.",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 30,
+													"end": 34
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 45,
+													"end": 49
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "a0bd320d-f9ba-4053-89b3-d26e90aa6640",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "Zoom control only",
+								"controls": "zoom"
+							},
+							"children": []
+						},
+						{
+							"id": "2f391375-4d0d-4144-922a-b45568d09300",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"Finally, in the example below, all of the controls have been removed: ",
+											"styleList": []
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						},
+						{
+							"id": "c3c23b8d-c319-439e-bd6d-27b715922fd8",
+							"type": "ObojoboDraft.Chunks.IFrame",
+							"content": {
+								"type": "webpage",
+								"src": "https://www.ucf.edu",
+								"title": "No controls",
+								"controls": ""
+							},
+							"children": []
+						},
+						{
+							"id": "4d328783-81c2-41eb-a194-f13c1aa978f4",
+							"type": "ObojoboDraft.Chunks.Text",
+							"content": {
+								"textGroup": [
+									{
+										"text": {
+											"value":
+												"If the controls property is not specified, the defaults will be used. With media type IFrames, the default controls include reload only. For webpage type IFrames, all controls (reload, new-window and zoom) are enabled by default.",
+											"styleList": [
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 7,
+													"end": 15
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 75,
+													"end": 80
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 124,
+													"end": 130
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 141,
+													"end": 148
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 177,
+													"end": 183
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 185,
+													"end": 195
+												},
+												{
+													"type": "monospace",
+													"data": {},
+													"start": 200,
+													"end": 204
+												}
+											]
+										},
+										"data": null
+									}
+								]
+							},
+							"children": []
+						}
+					]
+				},
+				{
 					"id": "6dd657d8-f780-4870-8cf4-cbd23c4fd19d",
 					"type": "ObojoboDraft.Pages.Page",
 					"content": {

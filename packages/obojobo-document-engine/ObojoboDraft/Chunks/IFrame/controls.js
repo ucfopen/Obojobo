@@ -38,7 +38,7 @@ const controls = props => {
 			{controlsOpts.zoom ? (
 				<div className="size-controls">
 					<div className="zoom-controls">
-						{props.isZoomAbleToBeReset ? (
+						{props.isZoomResettable ? (
 							<div className="control-button-container zoom-reset">
 								<button className="zoom-reset-button" onClick={props.zoomReset}>
 									Reset zoom
@@ -48,21 +48,28 @@ const controls = props => {
 						) : null}
 						<div className="control-button-container zoom-out">
 							<button
-								disabled={props.isUnableToZoomOut}
+								disabled={props.isZoomOutDisabled}
 								className="zoom-out-button"
 								onClick={props.zoomOut}
 							>
 								Zoom out
 							</button>
 							<span className="tool-tip">
-								{props.isUnableToZoomOut ? "Whoa that's tiny! 😲" : 'Zoom out'}
+								{props.isZoomOutDisabled ? "Whoa that's tiny! 😲" : 'Zoom out'}
 							</span>
 						</div>
 						<div className="control-button-container zoom-in">
-							<button className="zoom-in-button" onClick={props.zoomIn}>
+							<button
+								disabled={props.isZoomInDisabled}
+								className="zoom-in-button"
+								onClick={props.zoomIn}
+							>
 								Zoom in
 							</button>
 							<span className="tool-tip">Zoom in</span>
+							<span className="tool-tip">
+								{props.isZoomInDisabled ? 'At maximum zoom' : 'Zoom in'}
+							</span>
 						</div>
 					</div>
 				</div>
