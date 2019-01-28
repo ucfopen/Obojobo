@@ -3,28 +3,15 @@ import React from 'react'
 import { Value } from 'slate'
 
 jest.mock('slate-react')
-jest.mock('../../../src/scripts/viewer/util/api-util')
-jest.mock('../../../ObojoboDraft/Sections/Assessment/editor', () => ({
-	helpers: {
-		slateToObo: () => ({
-			children: [],
-			content: {}
-		}),
-		oboToSlate: () => ({
-			object: 'block',
-			isVoid: true,
-			type: 'mockNode'
-		})
-	},
-	plugins: {}
-}))
+jest.mock('src/scripts/viewer/util/api-util')
 
-import PageEditor from '../../../src/scripts/oboeditor/components/page-editor'
-import Break from '../../../ObojoboDraft/Chunks/Break/editor'
-import APIUtil from '../../../src/scripts/viewer/util/api-util'
+import PageEditor from 'src/scripts/oboeditor/components/page-editor'
+import APIUtil from 'src/scripts/viewer/util/api-util'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 describe('PageEditor', () => {
 	test('EditorNav component', () => {
@@ -100,11 +87,8 @@ describe('PageEditor', () => {
 				attributes: {
 					children: [
 						{
-							type: 'ObojoboDraft.Chunks.Break',
+							type: BREAK_NODE,
 							content: {}
-						},
-						{
-							type: 'NonsenseNode'
 						}
 					]
 				},
@@ -128,23 +112,38 @@ describe('PageEditor', () => {
 				attributes: {
 					children: [
 						{
-							type: 'ObojoboDraft.Chunks.Break',
-							content: {}
-						},
-						{
-							type: 'NonsenseNode'
+							type: BREAK_NODE,
+							content: {},
+							children: []
 						}
 					]
 				},
 				get: jest
 					.fn()
 					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
+					.mockReturnValueOnce({
+						scoreActions: [
+							{
+								for: '100',
+								page: {
+									type: PAGE_NODE,
+									children: [
+										{
+											type: BREAK_NODE,
+											content: {}
+										}
+									]
+								}
+							}
+						]
+					})
 					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in export
 			},
 			model: {
 				children: [
 					{
-						get: () => ASSESSMENT_NODE
+						get: () => ASSESSMENT_NODE,
+						children: []
 					},
 					{
 						get: () => CONTENT_NODE,
@@ -173,11 +172,11 @@ describe('PageEditor', () => {
 
 		component
 			.find('button')
-			.at(14)
+			.at(0)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
-		expect(APIUtil.postDraft).toHaveBeenCalle
+		expect(APIUtil.postDraft).toHaveBeenCalled()
 	})
 
 	test('EditorNav component with content fails to export to database', () => {
@@ -194,9 +193,6 @@ describe('PageEditor', () => {
 						{
 							type: 'ObojoboDraft.Chunks.Break',
 							content: {}
-						},
-						{
-							type: 'NonsenseNode'
 						}
 					]
 				},
@@ -214,7 +210,7 @@ describe('PageEditor', () => {
 
 		component
 			.find('button')
-			.at(14)
+			.at(0)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
@@ -227,8 +223,6 @@ describe('PageEditor', () => {
 				nodeType: 'mockType'
 			}
 		})
-		jest.spyOn(Break.helpers, 'insertNode')
-		Break.helpers.insertNode.mockReturnValueOnce(null)
 		const props = {
 			page: {
 				attributes: { children: [] },
@@ -246,31 +240,8 @@ describe('PageEditor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('EditorNav component inserts item', () => {
-		jest.spyOn(Break.helpers, 'insertNode')
-		Break.helpers.insertNode.mockReturnValueOnce(null)
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = shallow(<PageEditor {...props} />)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
 	test('EditorNav component changes value', () => {
-		jest.spyOn(Break.helpers, 'insertNode')
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-
-		Break.helpers.insertNode.mockReturnValueOnce(null)
 		const props = {
 			page: {
 				attributes: { children: [] },

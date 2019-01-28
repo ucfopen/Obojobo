@@ -3,8 +3,11 @@
 .editor--components--nav {
 	$color-nav-bg: #fbfbfb;
 
-	margin-bottom: 10.9em;
-	padding-bottom: 6em;
+	padding-bottom: 17em;
+
+	ul {
+		z-index: auto;
+	}
 
 	&::after {
 		top: 0;
@@ -13,10 +16,6 @@
 		height: 0.8em;
 		background: $color-bg;
 		border: solid 2px $color-text-minor;
-	}
-
-	.link {
-		padding-right: 1em;
 	}
 
 	.nav-modify {
@@ -28,11 +27,8 @@
 	}
 
 	.button-bar {
-		border-top: 1px solid transparentize($color-shadow, 0.1);
-		border-right: 1px solid transparentize($color-shadow, 0.1);
-		padding-top: 1rem;
-		padding-left: 1rem;
-		padding-bottom: 1rem;
+		padding-left: 2rem;
+		padding-bottom: 2rem;
 		position: fixed;
 		background: $color-nav-bg;
 		bottom: 0;
@@ -41,7 +37,7 @@
 		font-size: 1em;
 		font-weight: bold;
 		cursor: default;
-		width: 16.95em;
+		width: 15em;
 
 		button {
 			display: block;
@@ -51,39 +47,6 @@
 			margin-bottom: 0.2em;
 			color: $color-bg;
 			font-size: 1rem;
-		}
-	}
-
-	.dropdown {
-		position: absolute;
-		right: 0;
-		top: 0;
-
-		.drop-content {
-			display: none;
-			position: absolute;
-			right: 0;
-			z-index: 1;
-			border: 1px solid $color-bg;
-
-			button {
-				display: block;
-				border: none;
-				width: 100%;
-				background: $color-obojobo-blue;
-				color: $color-bg;
-				max-width: 10em;
-			}
-
-			&.is-focused {
-				display: block;
-			}
-		}
-
-		&:hover {
-			.drop-content {
-				display: block;
-			}
 		}
 	}
 }

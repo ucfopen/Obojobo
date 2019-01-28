@@ -1,0 +1,125 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SubMenu SubMenu component 1`] = `
+<li
+  className="link is-not-selected is-not-assessment is-first-in-list is-last-in-list"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+>
+  <button
+    aria-label="Go to Page: label5"
+  >
+    <span>
+      label5
+    </span>
+  </button>
+  <ul
+    className="dropdown  is-not-open"
+  >
+    <span>
+      ▼
+    </span>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Move Down
+      </button>
+    </li>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Edit Name
+      </button>
+    </li>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Delete
+      </button>
+    </li>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Id: 5
+      </button>
+    </li>
+  </ul>
+</li>
+`;
+
+exports[`SubMenu SubMenu component cancels menu closure when focused 1`] = `"<li class=\\"link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+
+exports[`SubMenu SubMenu component closes menu 1`] = `"<li class=\\"link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+
+exports[`SubMenu SubMenu component closes menu when unfocused 1`] = `"<li class=\\"link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+
+exports[`SubMenu SubMenu component moves down through the menu 1`] = `"<li class=\\"link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+
+exports[`SubMenu SubMenu component moves up through the menu 1`] = `"<li class=\\"link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+
+exports[`SubMenu SubMenu component opens menu 1`] = `"<li class=\\"link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+
+exports[`SubMenu SubMenu component selected with no contentType 1`] = `
+<li
+  className="link is-selected is-not-assessment is-first-in-list is-last-in-list"
+  onBlur={[Function]}
+  onFocus={[Function]}
+  onKeyDown={[Function]}
+>
+  <button
+    aria-label="Currently on label6"
+  >
+    <span>
+      label6
+    </span>
+  </button>
+  <ul
+    className="dropdown  is-not-open"
+  >
+    <span>
+      ▼
+    </span>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Move Up
+      </button>
+    </li>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Edit Name
+      </button>
+    </li>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Delete
+      </button>
+    </li>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Id: 6
+      </button>
+    </li>
+  </ul>
+</li>
+`;

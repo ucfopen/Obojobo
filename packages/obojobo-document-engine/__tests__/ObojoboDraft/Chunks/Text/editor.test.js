@@ -1,5 +1,3 @@
-import React from 'react'
-import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('src/scripts/oboeditor/util/text-util')
@@ -9,113 +7,6 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 describe('Text editor', () => {
-	test('Node builds the expected component', () => {
-		const Node = Text.components.Node
-		const component = renderer.create(
-			<Node
-				node={{
-					data: {
-						get: () => 0
-					}
-				}}
-			/>
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Line builds the expected component', () => {
-		const Node = Text.components.Line
-		const component = renderer.create(
-			<Node
-				attributes={{ dummy: 'dummyData' }}
-				node={{
-					data: {
-						get: () => 0
-					}
-				}}
-			/>
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('insertNode calls change methods', () => {
-		const change = {}
-		change.insertBlock = jest.fn().mockReturnValueOnce(change)
-		change.moveToStartOfNextText = jest.fn().mockReturnValueOnce(change)
-		change.focus = jest.fn().mockReturnValueOnce(change)
-
-		Text.helpers.insertNode(change)
-
-		expect(change.insertBlock).toHaveBeenCalled()
-		expect(change.moveToStartOfNextText).toHaveBeenCalled()
-		expect(change.focus).toHaveBeenCalled()
-	})
-
-	test('slateToObo converts a Slate node to an OboNode with content', () => {
-		const slateNode = {
-			key: 'mockKey',
-			type: 'mockType',
-			data: {
-				get: () => {
-					return null
-				}
-			},
-			nodes: [
-				{
-					text: 'mockText',
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: [
-						{
-							leaves: [
-								{
-									text: 'mockText',
-									marks: [
-										{
-											type: 'b',
-											data: {}
-										}
-									]
-								}
-							]
-						}
-					]
-				}
-			]
-		}
-		const oboNode = Text.helpers.slateToObo(slateNode)
-
-		expect(oboNode).toMatchSnapshot()
-	})
-
-	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const oboNode = {
-			id: 'mockKey',
-			type: 'mockType',
-			content: {
-				textGroup: [
-					{
-						data: { indent: 1 },
-						text: { value: 'mockText' }
-					},
-					{
-						text: { value: 'mockText2' }
-					}
-				]
-			}
-		}
-		const slateNode = Text.helpers.oboToSlate(oboNode)
-
-		expect(slateNode).toMatchSnapshot()
-	})
-
 	test('plugins.renderNode renders text when passed', () => {
 		const props = {
 			node: {
@@ -317,7 +208,6 @@ describe('Text editor', () => {
 		Text.plugins.onKeyDown(event, change)
 
 		expect(change.insertBlock).not.toHaveBeenCalled()
-		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with second [Enter]', () => {
@@ -433,6 +323,36 @@ describe('Text editor', () => {
 
 		expect(change.setNodeByKey).toHaveBeenCalledWith('mockBlockKey', {
 			data: { indent: 1 }
+		})
+		expect(event.preventDefault).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Alt]+[Tab] with 20 indents', () => {
+		const change = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						data: { get: () => 20 }
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			}
+		}
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+
+		const event = {
+			altKey: true,
+			key: 'Tab',
+			preventDefault: jest.fn()
+		}
+
+		Text.plugins.onKeyDown(event, change)
+
+		expect(change.setNodeByKey).toHaveBeenCalledWith('mockBlockKey', {
+			data: { indent: 20 }
 		})
 		expect(event.preventDefault).toHaveBeenCalled()
 	})

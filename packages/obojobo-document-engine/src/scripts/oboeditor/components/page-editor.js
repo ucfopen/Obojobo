@@ -1,7 +1,6 @@
 /* eslint no-alert: 0 */
-
 import React from 'react'
-
+import Common from 'Common'
 import { Value } from 'slate'
 import { Editor } from 'slate-react'
 import APIUtil from '../../viewer/util/api-util'
@@ -28,45 +27,16 @@ import Page from '../../../../ObojoboDraft/Pages/Page/editor'
 import Assessment from '../../../../ObojoboDraft/Sections/Assessment/editor'
 import ScoreActions from '../../../../ObojoboDraft/Sections/Assessment/post-assessment/editor'
 import Rubric from '../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor'
-import DefaultNode from './default-node'
 import ParameterNode from './parameter-node'
+import Component from './node/editor'
 import MarkToolbar from './toolbar'
+import EditorSchema from '../plugins/editor-schema'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
-const nodes = {
-	'ObojoboDraft.Chunks.ActionButton': ActionButton,
-	'ObojoboDraft.Chunks.Break': Break,
-	'ObojoboDraft.Chunks.Code': Code,
-	'ObojoboDraft.Chunks.Figure': Figure,
-	'ObojoboDraft.Chunks.Heading': Heading,
-	'ObojoboDraft.Chunks.HTML': HTML,
-	'ObojoboDraft.Chunks.IFrame': IFrame,
-	'ObojoboDraft.Chunks.List': List,
-	'ObojoboDraft.Chunks.MathEquation': MathEquation,
-	'ObojoboDraft.Chunks.Table': Table,
-	'ObojoboDraft.Chunks.Text': Text,
-	'ObojoboDraft.Chunks.YouTube': YouTube,
-	'ObojoboDraft.Chunks.QuestionBank': QuestionBank,
-	'ObojoboDraft.Chunks.Question': Question,
-	'ObojoboDraft.Chunks.MCAssessment': MCAssessment,
-	'ObojoboDraft.Chunks.MCAssessment.MCChoice': MCChoice,
-	'ObojoboDraft.Chunks.MCAssessment.MCAnswer': MCAnswer,
-	'ObojoboDraft.Chunks.MCAssessment.MCFeedback': MCFeedback,
-	'ObojoboDraft.Pages.Page': Page
-}
-
-const dontInsert = [
-	'ObojoboDraft.Chunks.HTML',
-	'ObojoboDraft.Chunks.MCAssessment',
-	'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-	'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-	'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-	'ObojoboDraft.Pages.Page'
-]
-
 const plugins = [
+	Component.plugins,
 	...MarkToolbar.plugins,
 	ActionButton.plugins,
 	Break.plugins,
@@ -90,14 +60,17 @@ const plugins = [
 	Page.plugins,
 	Rubric.plugins,
 	ParameterNode.plugins,
-	Assessment.plugins
+	Assessment.plugins,
+	EditorSchema
 ]
 
 class PageEditor extends React.Component {
 	constructor(props) {
 		super(props)
+		const json = this.importFromJSON()
+
 		this.state = {
-			value: Value.fromJSON(this.importFromJSON())
+			value: Value.fromJSON(json)
 		}
 	}
 
@@ -128,19 +101,13 @@ class PageEditor extends React.Component {
 		return (
 			<div className={'editor'}>
 				<div className={'toolbar'}>
-					<MarkToolbar.components.Node value={this.state.value} onChange={change => this.onChange(change)} />
-					<div className={'dropdown'}>
-						<button>+ Insert Node</button>
-						<div className={'drop-content'}>
-							{Object.entries(nodes).map(item => {
-								return this.buildButton(item)
-							})}
-						</div>
-					</div>
+					<MarkToolbar.components.Node
+						value={this.state.value}
+						onChange={change => this.onChange(change)}
+					/>
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
-					placeholder="Obojobo Visual Editor"
 					value={this.state.value}
 					onChange={change => this.onChange(change)}
 					plugins={plugins}
@@ -154,27 +121,11 @@ class PageEditor extends React.Component {
 		this.setState({ value })
 	}
 
-	insertBlock(block) {
-		const { value } = this.state
-		const change = value.change()
-
-		block.helpers.insertNode(change)
-
-		this.onChange(change)
-	}
-
-	buildButton([key, block]) {
-		if (dontInsert.includes(key)) return null
-		return (
-			<button key={key} onClick={() => this.insertBlock(block)}>
-				{key}
-			</button>
-		)
-	}
-
 	exportToJSON(page, value) {
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = Assessment.helpers.slateToObo(value.document.nodes.get(0))
+			const json = Common.Store.getItemForType(ASSESSMENT_NODE).slateToObo(
+				value.document.nodes.get(0)
+			)
 			page.set('children', json.children)
 			page.set('content', json.content)
 
@@ -185,13 +136,8 @@ class PageEditor extends React.Component {
 			json.children = []
 
 			value.document.nodes.forEach(child => {
-				if (nodes.hasOwnProperty(child.type)) {
-					// If the current Node is a registered OboNode, use its custom converter
-					const oboChild = nodes[child.type].helpers.slateToObo(child)
-					json.children.push(oboChild)
-				} else {
-					json.children.push(DefaultNode.helpers.slateToObo(child))
-				}
+				const oboChild = Component.helpers.slateToObo(child)
+				json.children.push(oboChild)
 			})
 
 			page.set('children', json.children)
@@ -209,12 +155,7 @@ class PageEditor extends React.Component {
 			json.document.nodes.push(Assessment.helpers.oboToSlate(page))
 		} else {
 			page.attributes.children.forEach(child => {
-				// If the current Node is a registered OboNode, use its custom converter
-				if (nodes.hasOwnProperty(child.type)) {
-					json.document.nodes.push(nodes[child.type].helpers.oboToSlate(child))
-				} else {
-					json.document.nodes.push(DefaultNode.helpers.oboToSlate(child))
-				}
+				json.document.nodes.push(Component.helpers.oboToSlate(child))
 			})
 		}
 
@@ -223,13 +164,11 @@ class PageEditor extends React.Component {
 
 	renderExportButton() {
 		return (
-			<button
-				disabled={this.props.draftId === '11111111-1111-1111-1111-111111111111'}
-				className={'exporter'}
-				onClick={() => this.saveDraft()}
-			>
-				{'Save Document'}
-			</button>
+			<div className="footer-menu">
+				<button className={'exporter'} onClick={() => this.saveDraft()}>
+					{'Save Document'}
+				</button>
+			</div>
 		)
 	}
 

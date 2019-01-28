@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChoiceList Editor Node ChoiceList builds the expected component 1`] = `
+<div>
+  <span
+    className="instructions"
+  >
+    Pick all of the correct answers
+     
+  </span>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center choice-button pad"
+  >
+    <button
+      onClick={[Function]}
+    >
+      + Add Choice
+    </button>
+  </div>
+</div>
+`;
+
+exports[`ChoiceList Editor Node ChoiceList component adds choice 1`] = `"<div><span class=\\"instructions\\"><!-- react-text: 3 -->Pick all of the correct answers<!-- /react-text --><!-- react-text: 4 --> <!-- /react-text --></span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center choice-button pad\\"><button>+ Add Choice</button></div></div>"`;

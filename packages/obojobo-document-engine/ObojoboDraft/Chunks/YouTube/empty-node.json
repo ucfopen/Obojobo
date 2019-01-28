@@ -1,0 +1,8 @@
+{
+	"object":"block",
+	"type":"ObojoboDraft.Chunks.YouTube",
+	"isVoid":true,
+	"data":{
+		"content": { "videoId": "gJ390e5sjHk" }
+	}
+}
