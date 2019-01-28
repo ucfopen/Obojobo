@@ -107,7 +107,8 @@
 			display: none;
 		}
 
-		&:hover {
+		&:hover,
+		&:focus-within {
 			opacity: 1;
 
 			> .tool-tip {
@@ -116,7 +117,8 @@
 		}
 	}
 
-	.control-button-container:hover {
+	.control-button-container:hover,
+	.control-button-container:focus-within {
 		> .tool-tip {
 			display: inline-block;
 		}

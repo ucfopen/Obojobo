@@ -5,6 +5,7 @@ Object {
   "afterStyle": Object {
     "height": 456,
   },
+  "ariaRegionLabel": "External content from src.",
   "controlsOpts": Object {
     "isControlsEnabled": false,
     "newWindow": false,

@@ -10,6 +10,41 @@
 		// @HACK: Enforce pixel perfect children.
 		// Used to make the "Click to load this content" element non-blurry in CHROME
 		transform-style: preserve-3d;
+
+		> .button-skip {
+			position: absolute;
+			left: 0;
+			z-index: 1;
+			font-size: 0.8em;
+			width: 100%;
+
+			> button {
+				padding: 0.5em 1em;
+				position: absolute;
+				left: -9999px; //stylelint-disable-line unit-blacklist
+				width: 100%;
+
+				&:focus {
+					left: 0;
+				}
+			}
+
+			&.top {
+				top: 0;
+
+				> button {
+					top: 0;
+				}
+			}
+
+			&.bottom {
+				bottom: 0;
+
+				> button {
+					bottom: 0;
+				}
+			}
+		}
 	}
 
 	> .container,

@@ -17,10 +17,15 @@ const controls = props => {
 				isOrNot(controlsOpts.zoom, 'zoomable') +
 				isOrNot(controlsOpts.reload, 'reloadable')
 			}
+			role="toolbar"
 		>
 			{controlsOpts.reload ? (
 				<div className="control-button-container reload">
-					<button className="reload-button" onClick={props.reload}>
+					<button
+						className="reload-button"
+						onClick={props.reload}
+						aria-label="Reload embedded content"
+					>
 						Reload
 					</button>
 					<span className="tool-tip">Reload</span>
@@ -28,7 +33,13 @@ const controls = props => {
 			) : null}
 			{controlsOpts.newWindow ? (
 				<div className="new-window-link">
-					<a target="_blank" rel="noopener noreferrer" href={props.newWindowSrc}>
+					<a
+						target="_blank"
+						rel="noopener noreferrer"
+						href={props.newWindowSrc}
+						aria-label="Open embedded content in a new window or tab"
+						role="button"
+					>
 						View in a new window
 					</a>
 
@@ -51,6 +62,7 @@ const controls = props => {
 								disabled={props.isZoomOutDisabled}
 								className="zoom-out-button"
 								onClick={props.zoomOut}
+								aria-label="Zoom out embedded content"
 							>
 								Zoom out
 							</button>
@@ -63,6 +75,7 @@ const controls = props => {
 								disabled={props.isZoomInDisabled}
 								className="zoom-in-button"
 								onClick={props.zoomIn}
+								aria-label="Zoom in embedded content"
 							>
 								Zoom in
 							</button>
