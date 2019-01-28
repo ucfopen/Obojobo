@@ -746,9 +746,9 @@ describe('start attempt route', () => {
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
-	test('createChosenQuestionTree creates a random-all group with no limit', () => {
+	test('createChosenQuestionTree creates a random group with no limit', () => {
 		const { QB, assessmentProperties } = buildTreeForTest()
-		QB.content.select = 'random-all'
+		QB.content.select = 'random'
 		QB.content.choose = Infinity
 		expect(_.shuffle).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
@@ -786,9 +786,9 @@ describe('start attempt route', () => {
 		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
 
-	test('createChosenQuestionTree creates a random-all group with a limit', () => {
+	test('createChosenQuestionTree creates a random group with a limit', () => {
 		const { QB, assessmentProperties } = buildTreeForTest()
-		QB.content.select = 'random-all'
+		QB.content.select = 'random'
 		QB.content.choose = 2
 		expect(_.shuffle).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
