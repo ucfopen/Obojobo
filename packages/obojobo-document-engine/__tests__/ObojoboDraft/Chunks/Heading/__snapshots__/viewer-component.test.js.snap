@@ -8,6 +8,7 @@ exports[`Heading Heading component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Heading"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--heading pad"
@@ -39,6 +40,7 @@ exports[`Heading Heading component level 2 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Heading"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--heading pad"
@@ -70,6 +72,7 @@ exports[`Heading Heading component level 3 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Heading"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--heading pad"

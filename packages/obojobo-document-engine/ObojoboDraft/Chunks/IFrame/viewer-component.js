@@ -13,7 +13,8 @@ const DEFAULT_WIDTH = 710
 const DEFAULT_HEIGHT = 500
 const MIN_SCALE = 0.1
 
-const { OboComponent, Button } = Common.components
+const { OboComponent } = Viewer.components
+const { Button } = Common.components
 const Dispatcher = Common.flux.Dispatcher
 const MediaUtil = Viewer.util.MediaUtil
 const isOrNot = Common.util.isOrNot

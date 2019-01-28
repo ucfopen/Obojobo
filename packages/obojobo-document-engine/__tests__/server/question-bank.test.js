@@ -48,14 +48,16 @@ describe('QuestionBank', () => {
 			return q
 		}
 		const newQb = (id, choose, children = []) => {
-			const qb = new QuestionBank(draftTree)
+			const node = {
+				content: {
+					choose: choose,
+					select: select
+				}
+			}
+			const qb = new QuestionBank(draftTree, node)
 			qb.id = id
 			qb.type = 'ObojoboDraft.Chunks.QuestionBank'
 			qb.children = children
-			qb.node.content = {
-				choose: choose,
-				select: select
-			}
 			children.forEach(c => qb.immediateChildrenSet.add(c.id))
 			nodes.push(qb)
 			return qb
@@ -491,7 +493,13 @@ describe('QuestionBank', () => {
 			getChildNodeById: jest.fn(id => 'mockObject-' + id)
 		}
 
-		const mockQBNode = new QuestionBank(mockDraftDocument)
+		const node = {
+			content: {
+				choose: 3,
+				select: null
+			}
+		}
+		const mockQBNode = new QuestionBank(mockDraftDocument, node)
 
 		const mockchosen = ['qb1.q1', 'qb1.q2', 'qb1.q3']
 
@@ -521,23 +529,29 @@ describe('QuestionBank', () => {
 		mockUsedQuestionMap.set('qb1.q3', 1)
 
 		const mockChildrenIds = ['qb1.q1', 'qb1.q2', 'qb1.q3']
-		const mockQBNode = new QuestionBank()
+
+		const node = {
+			content: {
+				choose: 0,
+				select: null
+			}
+		}
+		const mockQBNode = new QuestionBank(null, node)
 		mockQBNode.immediateChildrenSet = mockChildrenIds
 
-		// Choosing questions where numQuestionsPerAttempt is 0 (no quesitons should be chosen).
-		let chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap, 0)
-		expect(chosen).toEqual([])
-
 		// Choosing questions where numQuestionsPerAttempt = 1.
-		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap, 1)
+		mockQBNode.choose = 1
+		let chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap)
 		expect(chosen).toEqual(['qb1.q1'])
 
 		// Choosing questions where numQuestionsPerAttempt is more than 1.
-		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap, 2)
+		mockQBNode.choose = 2
+		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap)
 		expect(chosen).toEqual(['qb1.q1', 'qb1.q2'])
 
 		// Case to test sorting of question banks.
-		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap, Infinity)
+		mockQBNode.choose = Infinity
+		chosen = mockQBNode.createChosenArraySequentially(mockUsedQuestionMap)
 		expect(chosen).toEqual(['qb1.q1', 'qb1.q2', 'qb1.q3'])
 
 		// Case where questions need to be reordered (q2 should now come first).
@@ -550,26 +564,31 @@ describe('QuestionBank', () => {
 		_.shuffle = jest.fn(() => ['qb1.q2', 'qb1.q1', 'qb1.q3'])
 
 		const mockChildrenIds = ['qb1.q1', 'qb1.q2', 'qb1.q3']
-		const mockQBNode = new QuestionBank()
+
+		const node = {
+			content: {
+				choose: 1,
+				select: null
+			}
+		}
+		const mockQBNode = new QuestionBank(null, node)
 		mockQBNode.immediateChildrenSet = mockChildrenIds
 
-		// Choosing questions where numQuestionsPerAttempt is 0 (no quesitons should be chosen).
-		let chosen = mockQBNode.createChosenArrayRandomly(0)
-		expect(chosen).toEqual([])
-		expect(_.shuffle).toHaveBeenCalled()
-
 		// Choosing questions where numQuestionsPerAttempt = 1.
-		chosen = mockQBNode.createChosenArrayRandomly(1)
+		mockQBNode.choose = 1
+		let chosen = mockQBNode.createChosenArrayRandomly()
 		expect(chosen).toEqual(['qb1.q2'])
 		expect(_.shuffle).toHaveBeenCalled()
 
 		// Choosing questions where numQuestionsPerAttempt is more than 1.
-		chosen = mockQBNode.createChosenArrayRandomly(2)
+		mockQBNode.choose = 2
+		chosen = mockQBNode.createChosenArrayRandomly()
 		expect(chosen).toEqual(['qb1.q2', 'qb1.q1'])
 		expect(_.shuffle).toHaveBeenCalled()
 
 		// Case to test sorting of question banks.
-		chosen = mockQBNode.createChosenArrayRandomly(Infinity)
+		mockQBNode.choose = Infinity
+		chosen = mockQBNode.createChosenArrayRandomly()
 		expect(chosen).toEqual(['qb1.q2', 'qb1.q1', 'qb1.q3'])
 		expect(_.shuffle).toHaveBeenCalled()
 	})
@@ -582,32 +601,38 @@ describe('QuestionBank', () => {
 		mockUsedQuestionMap.set('qb1.q3', 1)
 
 		const mockChildrenIds = ['qb1.q1', 'qb1.q2', 'qb1.q3']
-		const mockQBNode = new QuestionBank()
+
+		const node = {
+			content: {
+				choose: 1,
+				select: null
+			}
+		}
+		const mockQBNode = new QuestionBank(null, node)
 		mockQBNode.immediateChildrenSet = mockChildrenIds
 
-		// Choosing questions where numQuestionsPerAttempt is 0 (no quesitons should be chosen).
-		let chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 0)
-		expect(chosen).toEqual([])
-		expect(getRandom).toHaveBeenCalled()
-
 		// Choosing questions where numQuestionsPerAttempt = 1.
-		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 1)
+		mockQBNode.choose = 1
+		let chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap)
 		expect(chosen).toEqual(['qb1.q1'])
 		expect(getRandom).toHaveBeenCalled()
 
 		// Choosing questions where numQuestionsPerAttempt is more than 1.
-		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 2)
+		mockQBNode.choose = 2
+		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap)
 		expect(chosen).toEqual(['qb1.q1', 'qb1.q2'])
 		expect(getRandom).toHaveBeenCalled()
 
 		// Case to test sorting of question banks.
-		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 3)
+		mockQBNode.choose = 3
+		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap)
 		expect(chosen).toEqual(['qb1.q1', 'qb1.q2', 'qb1.q3'])
 		expect(getRandom).toHaveBeenCalled()
 
 		// Case where questions need to be reordered (q2 should now come first).
+		mockQBNode.choose = 3
 		mockUsedQuestionMap.set('qb1.q1', 2)
-		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap, 3)
+		chosen = mockQBNode.createChosenArrayUnseenRandomly(mockUsedQuestionMap)
 		expect(chosen).toEqual(['qb1.q2', 'qb1.q3', 'qb1.q1'])
 	})
 })

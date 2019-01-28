@@ -3,7 +3,9 @@ import './viewer-component.scss'
 import React from 'react'
 
 import Common from 'Common'
-const { OboComponent } = Common.components
+import Viewer from 'Viewer'
+
+const { OboComponent } = Viewer.components
 const { TextGroupEl } = Common.chunk.textChunk
 const { TextChunk } = Common.chunk
 

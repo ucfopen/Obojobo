@@ -61,6 +61,10 @@
 			box-shadow: $box-shadow-overlay;
 		}
 
+		&:focus {
+			outline: none;
+		}
+
 		> .container {
 			background: $color-bg2;
 			position: relative;

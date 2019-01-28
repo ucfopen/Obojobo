@@ -2,12 +2,12 @@ import AssessmentStore from '../src/scripts/viewer/stores/assessment-store'
 import NavStore from '../src/scripts/viewer/stores/nav-store'
 import QuestionStore from '../src/scripts/viewer/stores/question-store'
 import ModalStore from '../src/scripts/common/stores/modal-store'
-import FocusStore from '../src/scripts/common/stores/focus-store'
+import FocusStore from '../src/scripts/viewer/stores/focus-store'
 import AssessmentUtil from '../src/scripts/viewer/util/assessment-util'
 import NavUtil from '../src/scripts/viewer/util/nav-util'
 import QuestionUtil from '../src/scripts/viewer/util/question-util'
 import ModalUtil from '../src/scripts/common/util/modal-util'
-import FocusUtil from '../src/scripts/common/util/focus-util'
+import FocusUtil from '../src/scripts/viewer/util/focus-util'
 
 const initModuleData = () => {
 	QuestionStore.init()

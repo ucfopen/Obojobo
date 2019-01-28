@@ -1,7 +1,5 @@
 {
-    "express":[
-        "server/express.js"
-    ],
+    "express": ["server/express.js"],
     "modules":[
         {
             "name":"ObojoboDraft.Chunks.ActionButton",

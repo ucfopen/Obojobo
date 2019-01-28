@@ -18,6 +18,6 @@
 			}
 		],
 		"color-hex-length": "long",
-		"sh-waqar/declaration-use-variable": [["/color/", "font-family"]]
+		"sh-waqar/declaration-use-variable": [["/color/", "font-family", { ignoreValues: ["transparent", "inherit"]}]]
 	}
 }
