@@ -2,6 +2,7 @@ const DraftNode = oboRequire('models/draft_node')
 const _ = require('underscore')
 const logger = oboRequire('logger')
 const { getRandom } = require('./util')
+const flatten = require('array-flatten')
 
 const SELECT_SEQUENTIAL = 'sequential'
 const SELECT_RANDOM = 'random-all'
@@ -56,12 +57,13 @@ class QuestionBank extends DraftNode {
 
 	// sends buildAssessment call to chosen children, and gathers responses
 	buildFromArray(chosenIds, questionUsesMap) {
-		const chosenChildren = []
+		let chosenChildren = []
 
 		for (const id of chosenIds) {
 			const childNode = this.draftTree.getChildNodeById(id)
 			if (childNode.buildAssessment) {
 				chosenChildren.push(childNode.buildAssessment(questionUsesMap))
+				chosenChildren = flatten(chosenChildren)
 			}
 		}
 

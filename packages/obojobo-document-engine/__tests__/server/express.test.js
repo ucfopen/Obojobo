@@ -72,15 +72,18 @@ describe('server/express', () => {
 	afterEach(() => {})
 
 	test('registers the expected routes', () => {
-		expect.assertions(10)
+		expect.assertions(11)
 
 		expect(server.get).toHaveBeenCalledTimes(4)
-		expect(server.post).toHaveBeenCalledTimes(4)
+		expect(server.post).toHaveBeenCalledTimes(5)
 		expect(server.delete).toHaveBeenCalledTimes(0)
 		expect(server.put).toHaveBeenCalledTimes(0)
 		expect(server.post).toBeCalledWith('/api/lti/sendAssessmentScore', expect.anything())
 		expect(server.post).toBeCalledWith('/api/assessments/attempt/start', expect.anything())
-		expect(server.post).toBeCalledWith('/api/assessments/attempt/resume', expect.anything())
+		expect(server.post).toBeCalledWith(
+			'/api/assessments/attempt/:attemptId/resume',
+			expect.anything()
+		)
 		expect(server.post).toBeCalledWith('/api/assessments/attempt/:attemptId/end', expect.anything())
 		expect(server.post).toBeCalledWith('/api/assessments/clear-preview-scores', expect.anything())
 		expect(server.get).toBeCalledWith('/api/lti/state/draft/:draftId', expect.anything())
@@ -181,7 +184,7 @@ describe('server/express', () => {
 		expect.assertions(5)
 
 		// grab a ref to expected route & verify it's the route we want
-		const endAttemptRoute = server.post.mock.calls[2]
+		const endAttemptRoute = server.post.mock.calls[3]
 		expect(endAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/end')
 
 		endAttempt.mockReturnValueOnce(Promise.resolve('endAttemptResult'))
@@ -199,7 +202,7 @@ describe('server/express', () => {
 		expect.assertions(2)
 
 		// grab a ref to expected route & verify it's the route we want
-		const endAttemptRoute = server.post.mock.calls[2]
+		const endAttemptRoute = server.post.mock.calls[3]
 		expect(endAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/end')
 
 		endAttempt.mockImplementationOnce(() => {
@@ -226,7 +229,7 @@ describe('server/express', () => {
 		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
 
 		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[3]
+		const clearPreviewScoresRoute = server.post.mock.calls[4]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		db.manyOrNone
@@ -265,7 +268,7 @@ describe('server/express', () => {
 		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
 
 		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[3]
+		const clearPreviewScoresRoute = server.post.mock.calls[4]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		db.manyOrNone
@@ -298,10 +301,10 @@ describe('server/express', () => {
 	})
 
 	test('/api/assessments/clear-preview-scores tests previewing state', () => {
-		expect.assertions(8)
+		// expect.assertions(8)
 
 		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[3]
+		const clearPreviewScoresRoute = server.post.mock.calls[4]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		// user that can't preview
@@ -324,7 +327,7 @@ describe('server/express', () => {
 		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
 
 		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[3]
+		const clearPreviewScoresRoute = server.post.mock.calls[4]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		db.manyOrNone.mockImplementationOnce(() => {

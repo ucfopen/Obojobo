@@ -34,7 +34,11 @@
 		"useTabs": true,
 		"singleQuote": true
 	},
-	"browserslist": ["> 1%", "last 2 versions", "not dead"],
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead"
+	],
 	"lint-staged": {
 		"{__{tests,mocks}__,ObojoboDraft,src,server}/**/*.{js,scss}": [
 			"yarn prettier --write",
@@ -48,6 +52,7 @@
 	},
 	"author": "",
 	"dependencies": {
+		"array-flatten": "^2.1.2",
 		"underscore": "1.5.1"
 	},
 	"devDependencies": {
@@ -94,7 +99,9 @@
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
-		"testMatch": ["**/__tests__/**/*.js?(x)"],
+		"testMatch": [
+			"**/__tests__/**/*.js?(x)"
+		],
 		"setupTestFrameworkScriptFile": "./setupTests.js",
 		"verbose": false,
 		"moduleNameMapper": {
@@ -103,9 +110,19 @@
 			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
-		"moduleDirectories": ["<rootDir>", "node_modules"],
-		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
-		"coverageReporters": ["text", "lcov"],
+		"moduleDirectories": [
+			"<rootDir>",
+			"node_modules"
+		],
+		"collectCoverageFrom": [
+			"src/scripts/**",
+			"ObojoboDraft/**",
+			"server/**"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
 		"coveragePathIgnorePatterns": [
 			"====THESE DONT NEED TESTS====",
 			"<rootDir>/src/scripts/viewer/index.js",

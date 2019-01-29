@@ -169,7 +169,7 @@ const getCalculatedScores = (
 		assessmentModel,
 		responseHistory,
 		{
-			getQuestions: () => scoreInfo.questions,
+			// this is only called by questions because question banks do not listen for ObojoboDraft.Sections.Assessment:attemptEnd
 			addScore: (questionId, score) => {
 				scoreInfo.scores.push(score)
 				scoreInfo.scoresByQuestionId[questionId] = score

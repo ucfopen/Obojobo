@@ -132,7 +132,7 @@ const getState = assessmentProperties => {
 	// The state of an assessment can be stored using only the id and type
 	// of nodes in the assessment. The remaining data can be retrieved
 	// from the draftTree
-	chosenAssessment = [].concat.apply([], chosenAssessment).map(node => {
+	chosenAssessment = chosenAssessment.map(node => {
 		return {
 			type: node.type,
 			id: node.id
@@ -186,6 +186,8 @@ const initAssessmentUsedQuestions = (chosenAssessment, usedQuestionMap) => {
 const getSendToClientPromises = (assessmentNode, attemptState, req, res) => {
 	let promises = []
 	for (const node of attemptState.chosen) {
+		// A nodeInstance must be fetched from the draftTree since the state of an assessment only holds question/questionBank node ids and types.
+		// Questions and question banks can be yelled at once an instance is retrieved.s
 		const nodeInstance = assessmentNode.draftTree.getChildNodeById(node.id)
 		promises = promises.concat(nodeInstance.yell(ACTION_ASSESSMENT_SEND_TO_ASSESSMENT, req, res))
 	}
