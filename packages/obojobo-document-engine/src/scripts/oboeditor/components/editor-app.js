@@ -13,7 +13,7 @@ import generateId from '../generate-ids'
 import '../../../scss/main.scss'
 // uses viewer css for styling
 import '../../../scripts/viewer/components/viewer-app.scss'
-import '../../../../ObojoboDraft/Modules/Module/viewer-component.scss'
+import 'obojobo-modules-module/viewer-component.scss'
 
 const { OboModel } = Common.models
 

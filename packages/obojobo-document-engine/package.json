@@ -11,8 +11,15 @@
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci":
 			"TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
-		"prettier:run": "prettier --write '{__{tests,mocks}__,ObojoboDraft,server,src}/**/*.{js,scss}'",
-		"prettier:debug": "prettier -l '{__{tests,mocks}__,ObojoboDraft,server,src}/**/*.{js,scss}'",
+		"start": "webpack --watch",
+		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
+		"build": "webpack --mode production --optimize-minimize",
+		"build:dev": "webpack --mode development",
+		"build:minifysvg":
+			"find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
+		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
+		"prettier:run": "prettier --write '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
+		"prettier:debug": "prettier -l '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
 		"precommit": "lint-staged && yarn lint:js && yarn test:ci",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss"
@@ -25,7 +32,7 @@
 	},
 	"browserslist": ["> 1%", "last 2 versions", "not dead"],
 	"lint-staged": {
-		"{__{tests,mocks}__,ObojoboDraft,src,server}/**/*.{js,scss}": [
+		"{__{tests,mocks}__,src,server}/**/*.{js,scss}": [
 			"yarn prettier --write",
 			"stylelint",
 			"git add"
@@ -63,7 +70,7 @@
 		"enzyme": "^3.3.0",
 		"enzyme-adapter-react-15": "^1.0.5",
 		"eslint": "^4.19.1",
-		"eslint-plugin-react": "^7.7.0",
+		"eslint-plugin-react": "7.9.1",
 		"husky": "^0.13.3",
 		"jest": "23.4.2",
 		"json-loader": "^0.5.4",
@@ -74,7 +81,7 @@
 		"postcss-loader": "^3.0.0",
 		"prettier": "1.11.1",
 		"react-idle-timer": "1.3.3",
-		"react-test-renderer": "^15.5.4",
+		"react-test-renderer": "15.6.2",
 		"react-transition-group": "^1.1.3",
 		"sass-loader": "^7.1.0",
 		"smoothscroll-polyfill": "^0.3.4",
@@ -99,7 +106,7 @@
 			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
 		"moduleDirectories": ["<rootDir>", "node_modules"],
-		"collectCoverageFrom": ["src/scripts/**", "ObojoboDraft/**", "server/**"],
+		"collectCoverageFrom": ["src/scripts/**", "server/**"],
 		"coverageReporters": ["text", "lcov"],
 		"coveragePathIgnorePatterns": [
 			"====THESE DONT NEED TESTS====",
@@ -117,11 +124,6 @@
 			"<rootDir>/src/scripts/common/util/console.js",
 			"====THESE ARE FOR THE EDITOR====",
 			"command-handler.js",
-			"<rootDir>/ObojoboDraft/Chunks/Table/create-form.js",
-			"<rootDir>/ObojoboDraft/Chunks/Table/grid-button.js",
-			"<rootDir>/ObojoboDraft/Chunks/Table/table-controls.js",
-			"<rootDir>/ObojoboDraft/Chunks/Table/table-menu.js",
-			"<rootDir>/ObojoboDraft/Chunks/Error",
 			"<rootDir>/src/scripts/common/dist.js",
 			"<rootDir>/src/scripts/common/chunk/util",
 			"<rootDir>/src/scripts/common/models/chunk.js",

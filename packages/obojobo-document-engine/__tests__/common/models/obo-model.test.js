@@ -498,7 +498,7 @@ describe('OboModel', () => {
 
 	test('getDomEl', () => {
 		const shallow = require('enzyme').shallow
-		const Heading = require('ObojoboDraft/Chunks/Heading/viewer-component').default
+		const Heading = require('obojobo-chunks-heading/viewer-component').default
 		const moduleData = require('__mocks__/viewer-state.mock').moduleData
 		const initModuleData = require('__mocks__/viewer-state.mock').initModuleData
 

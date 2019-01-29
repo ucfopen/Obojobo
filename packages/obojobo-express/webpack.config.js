@@ -5,16 +5,12 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const { oboNodesClient } = require('../../obojobo')
 
-const getOboClientPath = (name, type) => {
-	const newPath = name
-		.split('.')
-		.join('/')
-		.concat(`/${type}.js`)
-	return path.join(__dirname, '..', 'obojobo-document-engine', newPath)
-}
+const createClientPathArray = (arr, type) => arr.map(node => {
+	// node is just a string name, convert it to a full path
+	return require.resolve(`${node}${path.sep}${type}.js`)
+})
 
 // Takes an array of strings of OboNodes
-const createClientPathArray = (arr, type) => arr.map(name => getOboClientPath(name, type))
 const viewerOboNodes = createClientPathArray(oboNodesClient, 'viewer')
 const editorOboNodes = createClientPathArray(oboNodesClient, 'editor')
 
@@ -32,6 +28,7 @@ module.exports =
 			'common',
 			'dist.js'
 		)
+
 		console.log(`Building assets for ${is_production ? 'production' : 'development'}`)
 
 		return {

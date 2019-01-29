@@ -2,10 +2,14 @@
 	"private": true,
 	"name": "obojobo-next",
 	"scripts": {
-		"delete:node_modules": "rm -rf node_modules && cd packages/obojobo-document-engine && rm -rf node_modules && cd ../obojobo-express && rm -rf node_modules && cd ../obojobo-document-xml-parser && rm -rf node_modules",
-		"precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit",
-		"setup": "cd packages/obojobo-express && yarn build:docEngine && yarn db:rebuild",
-		"test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test"
+		"build:docEngine": "cd packages/obojobo-express && yarn build:docEngine",
+		"db:rebuild": "cd packages/obojobo-express && yarn db:rebuild",
+		"delete:node_modules": "rm -rf node_modules && rm -rf packages/*/node_modules",
+		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
+		"lint": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn lint); done",
+		"precommit": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn precommit); done",
+		"setup": "yarn build:docEngine && cd packages/obojobo-express && yarn db:rebuild",
+		"test": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test); done"
 	},
 	"devDependencies": {
 		"concurrently": "^3.5.0",
@@ -13,6 +17,25 @@
 		"nodemon": "^1.18.8"
 	},
 	"workspaces": [
+		"packages/obojobo-chunks-action-button",
+		"packages/obojobo-chunks-break",
+		"packages/obojobo-chunks-code",
+		"packages/obojobo-chunks-figure",
+		"packages/obojobo-chunks-heading",
+		"packages/obojobo-chunks-html",
+		"packages/obojobo-chunks-iframe",
+		"packages/obojobo-chunks-list",
+		"packages/obojobo-chunks-math-equation",
+		"packages/obojobo-chunks-multiple-choice-assessment",
+		"packages/obojobo-chunks-question",
+		"packages/obojobo-chunks-question-bank",
+		"packages/obojobo-chunks-table",
+		"packages/obojobo-chunks-text",
+		"packages/obojobo-chunks-youtube",
+		"packages/obojobo-modules-module",
+		"packages/obojobo-pages-page",
+		"packages/obojobo-sections-assessment",
+		"packages/obojobo-sections-content",
 		"packages/obojobo-document-engine",
 		"packages/obojobo-document-xml-parser",
 		"packages/obojobo-express"

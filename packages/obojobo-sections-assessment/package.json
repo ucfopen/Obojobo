@@ -1,0 +1,75 @@
+{
+	"name": "obojobo-sections-assessment",
+	"version": "1.0.0",
+	"description": "Assessment section for Obojobo",
+	"scripts": {
+		"test": "TZ='America/New_York' jest --verbose",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"lint": "yarn lint:js && yarn lint:css",
+		"lint:js": "eslint .",
+		"lint:css": "stylelint **/*.scss",
+		"precommit": "lint-staged && yarn test:ci",
+		"prettier:run": "prettier --write './**/*.{js,scss}'",
+		"prettier:debug": "prettier -l './**/*.{js,scss}'"
+	},
+	"lint-staged": {
+		"./**/*.{js,scss}": [
+			"yarn prettier:run",
+			"eslint",
+			"stylelint",
+			"git add"
+		]
+	},
+	"prettier": {
+		"printWidth": 100,
+		"semi": false,
+		"useTabs": true,
+		"singleQuote": true
+	},
+	"dependencies":{
+		"obojobo-document-engine": "^1.0.3",
+		"react": "15.6.2"
+	},
+	"devDependencies":{
+		"@babel/core": "^7.0.0-0",
+		"@babel/polyfill": "7.0.0",
+		"@babel/preset-env": "^7.2.0",
+		"@babel/preset-react": "^7.0.0",
+		"babel-core": "^7.0.0-bridge",
+		"babel-eslint": "^8.2.3",
+		"babel-jest": "^23.6.0",
+		"babel-loader": "^8.0.4",
+		"enzyme": "^3.3.0",
+		"enzyme-adapter-react-15": "^1.0.5",
+		"eslint": "^4.19.1",
+		"eslint-plugin-react": "7.9.1",
+		"jest": "23.4.2",
+		"lint-staged": "^6.1.1",
+		"prettier": "1.11.1",
+		"react-dom": "15.6.2",
+		"react-test-renderer": "15.6.2",
+		"stylelint": "^9.4.0",
+		"stylelint-config-standard": "^18.2.0",
+		"stylelint-declaration-use-variable": "^1.7.0"
+	},
+	"jest": {
+		"testMatch": ["**/*.test.js"],
+		"setupTestFrameworkScriptFile": "./setupTests.js",
+		"verbose": false,
+		"coverageReporters": ["text", "lcov"],
+		"coveragePathIgnorePatterns": ["setupTests.js", "node_modules"],
+		"moduleNameMapper": {
+			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",
+			"^Viewer(.*)$": "obojobo-document-engine/src/scripts/viewer$1",
+			"\\.(svg|scss)$": "<rootDir>/__mocks__/ignore-file-stub.js"
+		},
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
+	}
+}

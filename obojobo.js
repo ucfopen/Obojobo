@@ -3,28 +3,25 @@
 
 // list for viewer/editor js and css files
 const oboNodesClient = [
-	'ObojoboDraft.Chunks.ActionButton',
-	'ObojoboDraft.Chunks.Break',
-	'ObojoboDraft.Chunks.Code',
-	'ObojoboDraft.Chunks.Figure',
-	'ObojoboDraft.Chunks.Heading',
-	'ObojoboDraft.Chunks.HTML',
-	'ObojoboDraft.Chunks.IFrame',
-	'ObojoboDraft.Chunks.List',
-	'ObojoboDraft.Chunks.MathEquation',
-	'ObojoboDraft.Chunks.MCAssessment.MCAnswer',
-	'ObojoboDraft.Chunks.MCAssessment.MCChoice',
-	'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
-	'ObojoboDraft.Chunks.MCAssessment',
-	'ObojoboDraft.Chunks.Question',
-	'ObojoboDraft.Chunks.QuestionBank',
-	'ObojoboDraft.Chunks.Table',
-	'ObojoboDraft.Chunks.Text',
-	'ObojoboDraft.Chunks.YouTube',
-	'ObojoboDraft.Modules.Module',
-	'ObojoboDraft.Pages.Page',
-	'ObojoboDraft.Sections.Assessment',
-	'ObojoboDraft.Sections.Content'
+	'obojobo-chunks-action-button',
+	'obojobo-chunks-break',
+	'obojobo-chunks-code',
+	'obojobo-chunks-figure',
+	'obojobo-chunks-heading',
+	'obojobo-chunks-html',
+	'obojobo-chunks-iframe',
+	'obojobo-chunks-list',
+	'obojobo-chunks-math-equation',
+	'obojobo-chunks-multiple-choice-assessment',
+	'obojobo-chunks-question',
+	'obojobo-chunks-question-bank',
+	'obojobo-chunks-table',
+	'obojobo-chunks-text',
+	'obojobo-chunks-youtube',
+	'obojobo-modules-module',
+	'obojobo-pages-page',
+	'obojobo-sections-assessment',
+	'obojobo-sections-content'
 ]
 
 // list for server node js files
