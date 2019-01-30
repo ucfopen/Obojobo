@@ -52,12 +52,13 @@ global.mockStaticDate = () => {
 	}
 }
 
-fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
-fs.__setMockFileContents('./config/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')
-fs.__setMockFileContents('./config/draft.json', '{"test":{"paths":[]}}')
-fs.__setMockFileContents('./config/permission_groups.json', '{"test":{"canDoThing":["roleName"]}}')
+const configPath = path.resolve(__dirname+'/../config')
+fs.__setMockFileContents(configPath+'/db.json', JSON.stringify(dbJson))
+fs.__setMockFileContents(configPath+'/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')
+fs.__setMockFileContents(configPath+'/draft.json', '{"test":{"paths":[]}}')
+fs.__setMockFileContents(configPath+'/permission_groups.json', '{"test":{"canDoThing":["roleName"]}}')
 fs.__setMockFileContents(
-	'./config/general.json',
+	configPath+'/general.json',
 	'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
 )
 

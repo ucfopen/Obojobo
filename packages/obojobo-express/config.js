@@ -1,8 +1,9 @@
 const fs = require('fs')
+const path = require('path')
 const logger = require('./logger')
 const configuration = {}
 
-const CONFIG_DIR = './config'
+const CONFIG_DIR = path.resolve(__dirname, 'config')
 
 let env = 'development'
 

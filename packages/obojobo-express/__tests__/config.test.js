@@ -1,4 +1,5 @@
 const env_node = process.env.NODE_ENV
+const path = require('path')
 let logger
 
 describe('config', () => {
@@ -52,7 +53,8 @@ describe('config', () => {
 				port: { ENV: 'DB_PORT' }
 			}
 		}
-		fs.__setMockFileContents('./config/db.json', JSON.stringify(mockDBConfig))
+		const configPath = path.resolve(__dirname + '/../config')
+		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		process.env.DATABASE_URL = 'postgres://mock-user:mock-password@mock-host.com:7777/mock-dbname'
 		const config = oboRequire('config')
@@ -79,7 +81,9 @@ describe('config', () => {
 				user: { ENV: 'DB_USER' }
 			}
 		}
-		fs.__setMockFileContents('./config/db.json', JSON.stringify(mockDBConfig))
+
+		const configPath = path.resolve(__dirname + '/../config')
+		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		const config = oboRequire('config')
 		expect(logger.error).toHaveBeenCalledTimes(2)
@@ -96,7 +100,8 @@ describe('config', () => {
 				user: { ENV: 'DB_USER' }
 			}
 		}
-		fs.__setMockFileContents('./config/db.json', JSON.stringify(mockDBConfig))
+		const configPath = path.resolve(__dirname + '/../config')
+		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
 
 		oboRequire('config')
 		expect(logger.error).toHaveBeenCalledTimes(2)

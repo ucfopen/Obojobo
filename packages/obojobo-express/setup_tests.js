@@ -8,6 +8,7 @@ global.validUUID = () => '00000000-0000-0000-0000-000000000000'
 
 global.oboJestMockConfig = () => {
 	jest.mock('fs')
+	const path = require('path')
 	const fs = require('fs')
 	const dbJson = {
 		default: {
@@ -26,28 +27,29 @@ global.oboJestMockConfig = () => {
 
 	// get the actual empty.xml
 	const realFs = require.requireActual('fs')
-	const emptyXmlPath = '../../node_modules/obojobo-document-engine/documents/empty.xml'
+	const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
+	const configPath = path.resolve(__dirname, 'config')
 	const emptyXmlStream = realFs.readFileSync(emptyXmlPath)
-
-	fs.__setMockFileContents('./config/db.json', JSON.stringify(dbJson))
+	console.log(configPath+'/db.json')
+	fs.__setMockFileContents(configPath+'/db.json', JSON.stringify(dbJson))
 	fs.__setMockFileContents(
-		'./config/lti.json',
+		configPath+'/lti.json',
 		'{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}'
 	)
 	fs.__setMockFileContents(
-		'./config/draft.json',
+		configPath+'/draft.json',
 		'{"test":{"excludeModules":["mockModule:mockExclude"]},"default":{"excludeModules":[]}}'
 	)
 	fs.__setMockFileContents(
-		'./config/permission_groups.json',
+		configPath+'/permission_groups.json',
 		'{"test":{"canDoThing":["roleName"]}}'
 	)
 	fs.__setMockFileContents(
-		'./config/media.json',
+		configPath+'/media.json',
 		'{"test":{"maxUploadSize":100000,"minImageSize": 10,"maxImageSize": 8000,"originalMediaTag":"original","presetDimensions":[]}}'
 	)
 	fs.__setMockFileContents(
-		'./config/general.json',
+		configPath+'/general.json',
 		'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
 	)
 	fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
