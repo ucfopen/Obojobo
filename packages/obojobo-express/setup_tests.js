@@ -30,7 +30,6 @@ global.oboJestMockConfig = () => {
 	const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
 	const configPath = path.resolve(__dirname, 'config')
 	const emptyXmlStream = realFs.readFileSync(emptyXmlPath)
-	console.log(configPath+'/db.json')
 	fs.__setMockFileContents(configPath+'/db.json', JSON.stringify(dbJson))
 	fs.__setMockFileContents(
 		configPath+'/lti.json',
