@@ -23,21 +23,6 @@ React.addons = {
 	CSSTransitionGroup: require('react-transition-group/CSSTransitionGroup')
 }
 
-jest.mock('fs')
-const fs = require('fs')
-const dbJson = {
-	test: {
-		host: 'hostVal',
-		port: 'portVal',
-		database: 'databaseVal',
-		user: 'userVal',
-		password: 'pwVal'
-	},
-	development: {
-		host: 'itsdev!'
-	}
-}
-
 global.mockStaticDate = () => {
 	const RealDate = Date
 	global.Date = class extends RealDate {
@@ -51,16 +36,6 @@ global.mockStaticDate = () => {
 		}
 	}
 }
-
-const configPath = path.resolve(__dirname+'/../config')
-fs.__setMockFileContents(configPath+'/db.json', JSON.stringify(dbJson))
-fs.__setMockFileContents(configPath+'/lti.json', '{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}')
-fs.__setMockFileContents(configPath+'/draft.json', '{"test":{"paths":[]}}')
-fs.__setMockFileContents(configPath+'/permission_groups.json', '{"test":{"canDoThing":["roleName"]}}')
-fs.__setMockFileContents(
-	configPath+'/general.json',
-	'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
-)
 
 let isDocumentHidden = document.hidden
 Object.defineProperty(document, 'hidden', {
