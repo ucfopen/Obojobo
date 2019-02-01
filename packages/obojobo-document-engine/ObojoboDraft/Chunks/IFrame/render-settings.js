@@ -34,6 +34,14 @@ const getDisplayedTitle = modelState => {
 	return (modelState.src || '').replace(/^https?:\/\//, '')
 }
 
+const getAriaRegionLabel = (modelState, displayedTitle) => {
+	if (modelState.title) {
+		return 'External content "' + displayedTitle + '" from ' + modelState.src + '.'
+	} else {
+		return 'External content from ' + modelState.src + '.'
+	}
+}
+
 const getSetDimensions = (modelState, defaultWidth, defaultHeight) => ({
 	w: modelState.width || defaultWidth,
 	h: modelState.height || defaultHeight
@@ -83,16 +91,14 @@ const getAfterStyle = (setWidth, setHeight, fit) => {
 }
 
 const getZoomValues = (mediaState, model) => {
-	const userZoom = MediaUtil.getZoom(mediaState, model)
-	const initialZoom = model.modelState.initialZoom
-	const currentZoom = userZoom || initialZoom
-	const isZoomDifferentFromInitial = currentZoom !== initialZoom
+	const currentZoom = MediaUtil.getZoom(mediaState, model)
+	const defaultZoom = MediaUtil.getDefaultZoom(mediaState, model)
+	const isZoomAtDefault = MediaUtil.isZoomAtDefault(mediaState, model)
 
 	return {
-		userZoom,
-		initialZoom,
 		currentZoom,
-		isZoomDifferentFromInitial
+		defaultZoom,
+		isZoomAtDefault
 	}
 }
 
@@ -103,29 +109,38 @@ const getRenderSettings = (
 	defaultWidth,
 	defaultHeight,
 	minScale,
+	maxScale,
 	mediaState
 ) => {
 	const ms = model.modelState
 	const zoomValues = getZoomValues(mediaState, model)
-	const zoom = zoomValues.currentZoom
 	const setDimensions = getSetDimensions(ms, defaultWidth, defaultHeight)
 	const scaleAmount = getScaleAmount(actualWidth, padding, setDimensions.w)
 	const displayedTitle = getDisplayedTitle(ms)
-	const scaleDimensions = getScaleDimensions(ms, zoom, scaleAmount, minScale, setDimensions)
+	const ariaRegionLabel = getAriaRegionLabel(ms, displayedTitle)
+	const scaleDimensions = getScaleDimensions(
+		ms,
+		zoomValues.currentZoom,
+		scaleAmount,
+		minScale,
+		setDimensions
+	)
 	const controlsOpts = getControlsOptions(ms)
-	const isAtMinScale = scaleDimensions.scale === minScale
+	const isAtMinScale = scaleDimensions.scale <= minScale
+	const isAtMaxScale = scaleDimensions.scale >= maxScale
 	const iframeStyle = getIFrameStyle(scaleDimensions.scale)
 	const afterStyle = getAfterStyle(setDimensions.w, setDimensions.h, ms.fit)
 	const isShowing = getIsShowing(mediaState, model)
 
 	return {
 		zoomValues,
-		zoom,
 		displayedTitle,
+		ariaRegionLabel,
 		scaleDimensions,
 		isShowing,
 		controlsOpts,
 		isAtMinScale,
+		isAtMaxScale,
 		iframeStyle,
 		afterStyle
 	}
@@ -135,6 +150,7 @@ export {
 	getIsShowing,
 	getControlsOptions,
 	getDisplayedTitle,
+	getAriaRegionLabel,
 	getSetDimensions,
 	getScaleAmount,
 	getScaleDimensions,

@@ -10,38 +10,28 @@
 	transition: opacity $duration-animation-default * 4;
 	opacity: 0;
 	pointer-events: none;
-	// z-index: 1;
-
-	// &.is-active
-	// {
-	// 	opacity: 0.9;
-	// }
 }
 
-// .component
-// {
-// 	// z-index: 0;
-// 	// transition: z-index $duration-animation-default * 4 step-start;
-// 	// transition: opacity $duration-animation-default * 4, z-index $duration-animation-default * 4 $duration-animation-default * 4;
-// 	// transition: z-index $duration-animation-default * 4 $duration-animation-default * 4;
-// 	// transition: z-index 0;
-// }
+@keyframes component-focus-blocker-z-index {
+	0% {
+		z-index: 1;
+	}
 
-// .component[data-focussed="true"]
-// {
-// 	z-index: 200;
-// 	// background: red;
-// 	// transition: z-index $duration-animation-default * 4;
-// 	// transition: z-index $duration-animation-default * 4 $duration-animation-default * 4;
+	100% {
+		z-index: 2;
+	}
+}
 
-// }
+.component[data-obo-component='true'] {
+	animation: component-focus-blocker-z-index $duration-animation-default * 4;
 
-.component[data-focussed='true'] {
-	z-index: 2;
+	&[data-focussed='true'] {
+		z-index: 2;
+		animation: none;
+	}
 }
 
 .viewer--viewer-app {
-	&.is-focus-state-enter,
 	&.is-focus-state-active {
 		.viewer--components--focus-blocker {
 			opacity: 0.9;

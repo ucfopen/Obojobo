@@ -93,7 +93,11 @@ class EditorApp extends React.Component {
 					model={this.state.model}
 					draftId={this.state.draftId}
 				/>
-				<div className={'component obojobo-draft--modules--module'}>
+				<div
+					className={'component obojobo-draft--modules--module'}
+					data-obo-component="true"
+					data-type="ObojoboDraft.Modules.Module"
+					role="main">
 					<PageEditor
 						page={this.state.editorState.currentModel}
 						context={this.state.editorState.context}

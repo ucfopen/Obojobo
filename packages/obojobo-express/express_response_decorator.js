@@ -1,6 +1,17 @@
+const QueryResultError = require('pg-promise').errors.QueryResultError
 const inflector = require('json-inflector')
 const logger = oboRequire('logger')
 const apiUrlRegex = /\/api\/.*/
+
+const getSanitizedErrorMessage = e => {
+	// If the error is in our blacklist only return the error name:
+	if (e instanceof QueryResultError) {
+		return e.constructor.name
+	}
+
+	// Otherwise, allow the message to be returned
+	return e.message
+}
 
 const shouldRespondWithJson = req => {
 	// return api friendly result if route contains '/api/''
@@ -94,13 +105,17 @@ const missing = (req, res, next, message) => {
 	res.render('404')
 }
 
-const unexpected = (req, res, next, message) => {
+const unexpected = (req, res, next, messageOrError) => {
+	let message
+
 	res.status(500)
-	if (message instanceof Error) {
-		logger.error('error thrown', message.stack)
-		message = message.toString()
+
+	if (messageOrError instanceof Error) {
+		logger.error('error thrown', messageOrError.stack)
+		message = getSanitizedErrorMessage(messageOrError)
 	} else {
-		logger.error('error message', message)
+		logger.error('error message', messageOrError)
+		message = messageOrError
 	}
 
 	if (!message) {

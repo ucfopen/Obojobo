@@ -2,7 +2,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import IFrame from '../../../../ObojoboDraft/Chunks/IFrame/editor-component'
+import IFrame from 'ObojoboDraft/Chunks/IFrame/editor-component'
 
 describe('IFrame Editor Node', () => {
 	test('IFrame component', () => {
@@ -10,9 +10,7 @@ describe('IFrame Editor Node', () => {
 			<IFrame
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({ controls: ''})
 					}
 				}}
 			/>
@@ -31,9 +29,7 @@ describe('IFrame Editor Node', () => {
 			<IFrame
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({ controls: ''})
 					}
 				}}
 				isFocused={true}
@@ -44,15 +40,21 @@ describe('IFrame Editor Node', () => {
 				}}
 			/>
 		)
+
+		component
+			.find('input')
+			.at(0)
+			.simulate('click', {
+				stopPropagation: () => true
+			})
+
+		component
+			.find('input')
+			.at(0)
+			.simulate('change', {
+				target: { value: 'mockTitle' }
+			})
 		const tree = component.html()
-
-		component.find('input').simulate('click', {
-			stopPropagation: () => true
-		})
-
-		component.find('input').simulate('change', {
-			target: { value: 'mockInput' }
-		})
 
 		expect(tree).toMatchSnapshot()
 	})

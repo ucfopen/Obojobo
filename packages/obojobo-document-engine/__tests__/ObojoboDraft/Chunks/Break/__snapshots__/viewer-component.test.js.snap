@@ -8,6 +8,7 @@ exports[`Break Break component with textGroup 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Break"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="non-editable-chunk obojobo-draft--chunks--break viewer width-normal"

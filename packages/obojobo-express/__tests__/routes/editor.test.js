@@ -137,7 +137,7 @@ describe('editor route', () => {
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.statusCode).toBe(200)
 				expect(response.text).toContain('data-content="xml-1"')
-				expect(response.text).toContain('<p>1-mock-title</p>')
+				expect(response.text).toContain('<p class="title">1-mock-title</p>')
 			})
 	})
 

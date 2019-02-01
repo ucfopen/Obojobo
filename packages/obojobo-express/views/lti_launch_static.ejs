@@ -8,7 +8,7 @@
 		<h2>Configuration XML</h2>
 
 		<p>View the LTI <a href="<%= xml_url %>">configuration xml</a></p>
-		<p>This configuration is used to install your LTI tool into an LMS.  This xml can be referenced by url or copied and pasted durring the install process.</p>
+		<p>This configuration is used to install your LTI tool into an LMS.  This xml can be referenced by url or copied and pasted during the install process.</p>
 
 		<h3>Testing LTI Launch</h3>
 		<ol>
@@ -28,7 +28,7 @@
 					<li><code><%= assignment_selection_url %></code></li>
 				</ul>
 			</li>
-			<li>Set <b>Consmer key</b> to one of the available keys (as defined in <span>config/lti.json</span>):
+			<li>Set <b>Consumer key</b> to one of the available keys (as defined in <span>config/lti.json</span>):
 				<ul>
 					<% for (var i = 0; i < keys.length; i++) { %>
 					<li><code><%= keys[i] %></code></li>

@@ -8,6 +8,7 @@ exports[`QuestionBank QuestionBank component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.QuestionBank"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="component obojobo-draft--chunks--question-bank"
@@ -16,6 +17,7 @@ exports[`QuestionBank QuestionBank component 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.QuestionBank"
     id="obo-child-id"
+    tabIndex={-1}
   />
 </div>
 `;
