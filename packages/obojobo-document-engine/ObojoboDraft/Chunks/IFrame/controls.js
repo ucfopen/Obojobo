@@ -20,7 +20,10 @@ const controls = props => {
 		>
 			{controlsOpts.reload ? (
 				<div className="control-button-container reload">
-					<button className="reload-button" onClick={props.reload}>
+					<button
+						disabled={props.isEditor}
+						className="reload-button"
+						onClick={props.reload}>
 						Reload
 					</button>
 					<span className="tool-tip">Reload</span>
@@ -40,7 +43,10 @@ const controls = props => {
 					<div className="zoom-controls">
 						{props.isZoomAbleToBeReset ? (
 							<div className="control-button-container zoom-reset">
-								<button className="zoom-reset-button" onClick={props.zoomReset}>
+								<button
+									disabled={props.isEditor}
+									className="zoom-reset-button"
+									onClick={props.zoomReset}>
 									Reset zoom
 								</button>
 								<span className="tool-tip">Reset zoom</span>
@@ -48,7 +54,7 @@ const controls = props => {
 						) : null}
 						<div className="control-button-container zoom-out">
 							<button
-								disabled={props.isUnableToZoomOut}
+								disabled={props.isUnableToZoomOut || props.isEditor}
 								className="zoom-out-button"
 								onClick={props.zoomOut}
 							>
@@ -59,7 +65,10 @@ const controls = props => {
 							</span>
 						</div>
 						<div className="control-button-container zoom-in">
-							<button className="zoom-in-button" onClick={props.zoomIn}>
+							<button
+								disabled={props.isEditor}
+								className="zoom-in-button"
+								onClick={props.zoomIn}>
 								Zoom in
 							</button>
 							<span className="tool-tip">Zoom in</span>

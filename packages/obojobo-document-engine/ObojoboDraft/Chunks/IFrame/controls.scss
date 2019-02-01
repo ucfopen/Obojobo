@@ -65,6 +65,10 @@
 		> .reload-button {
 			background-image: url('./reload.svg');
 			background-size: 75%;
+
+			&:disabled {
+				opacity: 0.4;
+			}
 		}
 
 		> .tool-tip {
@@ -129,6 +133,10 @@
 		> .zoom-in-button {
 			background-image: url('./zoom-in.svg');
 			background-size: 50%;
+
+			&:disabled {
+				opacity: 0.4;
+			}
 		}
 
 		&:hover > .zoom-in-button {
