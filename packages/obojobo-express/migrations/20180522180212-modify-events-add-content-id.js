@@ -15,7 +15,6 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = function(db) {
-	// The UUID will temporarily allow null
 	return (
 		db
 			.addColumn('events', 'draft_content_id', {
@@ -24,45 +23,42 @@ exports.up = function(db) {
 			// Grab all the current records, which will not have draft_content_ids
 			.then(() => {
 				return db.runSql(`
-					SELECT
-						id,
-						draft_id,
-						created_at
-					FROM events
-				`)
-			})
-			// Find the correct UUID for each record
-			.then(result => {
-				let updates = []
-				result.rows.forEach(row => {
-					const draftId = row.draft_id
-					const created = row.created_at
-					const rowId = row.id
+					-- make a table with content id's and start/end dates that apply to it
+					CREATE TEMP TABLE content_dates AS
+					SELECT * FROM (
+						SELECT
+							id,
+							draft_id,
+							created_at,
+							CASE
+								WHEN lead(draft_id) over (order by draft_id, created_at asc) = draft_id
+								THEN lead(created_at) over (order by draft_id, created_at asc)
+								ELSE now()
+							END AS end_date
+						FROM drafts_content
+					) AS S;
 
-					updates.push(`
-						UPDATE
-							events
-						SET
-							draft_content_id=content.id
-						FROM
-						(
-							SELECT
-								id
-							FROM
-								drafts_content
-							WHERE
-								draft_id='${draftId}'
-								AND created_at<='${created.toISOString()}'
-							ORDER BY
-								created_at DESC
-							LIMIT 1
-						) content
-						WHERE
-							events.id=${rowId}
-					`)
-				})
-				updates = updates.join(';')
-				return db.runSql(updates)
+					-- use the temp table copy the draft_content_id into events table
+					UPDATE
+						events
+					SET
+						draft_content_id=DC.draft_content_id
+					FROM
+					(
+						SELECT
+							e.id AS event_id,
+							d.id AS draft_content_id
+						FROM events AS e
+						LEFT JOIN content_dates AS d
+							ON d.draft_id = e.draft_id
+							AND  d.created_at < e.created_at
+							AND  d.end_date > e.created_at
+						WHERE e.draft_id IS NOT null
+					) AS DC
+					WHERE
+						events.id=event_id
+						AND events.draft_id IS NOT null;
+				`)
 			})
 	)
 }
