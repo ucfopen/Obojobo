@@ -18,28 +18,6 @@ class IFrame extends React.Component {
 		}
 	}
 
-	handleTypeChange(event) {
-		this.setState({ type: event.target.value })
-
-		const editor = this.props.editor
-		const change = editor.value.change()
-		const content = this.props.node.data.get('content')
-
-		if(event.target.value === 'custom') return
-		else if(event.target.value === 'media') {
-			content.border = false,
-			content.fit = 'scalse',
-			content.controls = "reload"
-		} else {
-			content.border = true,
-			content.fit = 'scroll',
-			content.controls = "reload,new-window,zoom"
-		}
-
-		change.setNodeByKey(this.props.node.key, { data: { content } })
-		editor.onChange(change)
-	}
-
 	handleSliderChange(property, checked) {
 		const editor = this.props.editor
 		const change = editor.value.change()
@@ -72,17 +50,21 @@ class IFrame extends React.Component {
 
 		// Use checked value to determine the control string for the changed property
 		// Use controlList values to determine control strings for unchanged properties
-		if(property === 'reload') {
-			controls = (checked ? 'reload,' : '') +
-				(controlList.includes("new-window") ? 'new-window,' : '') +
-				(controlList.includes("zoom") ? 'zoom' : '')
-		}else if(property === 'new-window' ) {
-			controls = (controlList.includes("reload") ? 'reload,' : '') +
+		if (property === 'reload') {
+			controls =
+				(checked ? 'reload,' : '') +
+				(controlList.includes('new-window') ? 'new-window,' : '') +
+				(controlList.includes('zoom') ? 'zoom' : '')
+		} else if (property === 'new-window') {
+			controls =
+				(controlList.includes('reload') ? 'reload,' : '') +
 				(checked ? 'new-window,' : '') +
-				(controlList.includes("zoom") ? 'zoom' : '')
-		} else if(property === 'zoom') {
-			controls = (controlList.includes("reload") ? 'reload,' : '') +
-				(controlList.includes("new-window") ? 'new-window,' : '') +
+				(controlList.includes('zoom') ? 'zoom' : '')
+		} else {
+			// if(property === 'zoom') {
+			controls =
+				(controlList.includes('reload') ? 'reload,' : '') +
+				(controlList.includes('new-window') ? 'new-window,' : '') +
 				(checked ? 'zoom' : '')
 		}
 
@@ -93,7 +75,7 @@ class IFrame extends React.Component {
 	}
 
 	togglePreviewing() {
-		this.setState((state) => ({
+		this.setState(state => ({
 			isPreviewing: !state.isPreviewing
 		}))
 	}
@@ -110,7 +92,7 @@ class IFrame extends React.Component {
 
 		return (
 			<div className={'iframe-container'}>
-				<div className={'blocker'} style={iframeStyle} >
+				<div className={'blocker'} style={iframeStyle}>
 					<div className={'form'}>
 						<div>
 							<label htmlFor={'titleInput'}>Title:</label>
@@ -138,7 +120,8 @@ class IFrame extends React.Component {
 							<Slider
 								title={'Border'}
 								initialChecked={content.border}
-								handleCheckChange={this.handleSliderChange.bind(this, 'border')} />
+								handleCheckChange={this.handleSliderChange.bind(this, 'border')}
+							/>
 						</div>
 						<div>
 							<label htmlFor={'fitInput'}>Fit:</label>
@@ -146,7 +129,8 @@ class IFrame extends React.Component {
 								id="fitInput"
 								value={content.fit || 'scale'}
 								onChange={this.handleContentChange.bind(this, 'fit')}
-								onClick={event => event.stopPropagation()}>
+								onClick={event => event.stopPropagation()}
+							>
 								<option value="scale">Scale</option>
 								<option value="scroll">Scroll</option>
 							</select>
@@ -199,22 +183,26 @@ class IFrame extends React.Component {
 							<Slider
 								title={'Autoload'}
 								initialChecked={content.autoload}
-								handleCheckChange={this.handleSliderChange.bind(this, 'autoload')} />
+								handleCheckChange={this.handleSliderChange.bind(this, 'autoload')}
+							/>
 						</div>
 						<span>IFrame Controls:</span>
 						<div className="controls">
 							<Slider
 								title={'Reload'}
-								initialChecked={controlList.includes("reload")}
-								handleCheckChange={this.handleControlChange.bind(this, 'reload')} />
+								initialChecked={controlList.includes('reload')}
+								handleCheckChange={this.handleControlChange.bind(this, 'reload')}
+							/>
 							<Slider
 								title={'New Window'}
-								initialChecked={controlList.includes("new-window")}
-								handleCheckChange={this.handleControlChange.bind(this, 'new-window')} />
+								initialChecked={controlList.includes('new-window')}
+								handleCheckChange={this.handleControlChange.bind(this, 'new-window')}
+							/>
 							<Slider
 								title={'Zoom'}
-								initialChecked={controlList.includes("zoom")}
-								handleCheckChange={this.handleControlChange.bind(this, 'zoom')} />
+								initialChecked={controlList.includes('zoom')}
+								handleCheckChange={this.handleControlChange.bind(this, 'zoom')}
+							/>
 						</div>
 					</div>
 				</div>
@@ -227,9 +215,9 @@ class IFrame extends React.Component {
 		const content = this.props.node.data.get('content')
 
 		const iframeStyle = {
-			height: (100/content.initialZoom) + '%',
-			width: (100/content.initialZoom) + '%',
-			transform: 'scale('+ content.initialZoom +')'
+			height: 100 / content.initialZoom + '%',
+			width: 100 / content.initialZoom + '%',
+			transform: 'scale(' + content.initialZoom + ')'
 		}
 
 		return (
@@ -257,7 +245,8 @@ class IFrame extends React.Component {
 			height: (content.height || '500') + 'px'
 		}
 
-		const className = 'obojobo-draft--chunks--iframe viewer pad is-previewing' +
+		const className =
+			'obojobo-draft--chunks--iframe viewer pad is-previewing' +
 			isOrNot(content.border, 'bordered') +
 			isOrNot(this.state.isPreviewing, 'showing') +
 			' is-controls-enabled' +
@@ -265,21 +254,16 @@ class IFrame extends React.Component {
 			isOrNot(content.initialZoom > 1, 'scaled-up')
 
 		const controlsOpts = {
-			reload: controlList.includes("reload"),
-			newWindow: controlList.includes("new-window"),
-			zoom: controlList.includes("zoom"),
+			reload: controlList.includes('reload'),
+			newWindow: controlList.includes('new-window'),
+			zoom: controlList.includes('zoom')
 		}
 
 		return (
-			<div
-				className={className}>
+			<div className={className}>
 				<div className={'container'} style={wrapperStyle}>
-					{this.state.isPreviewing ? this.renderIFramePreview() : this.renderIFrameEditor() }
-					<Controls
-						newWindowSrc={content.src}
-						controlsOptions={controlsOpts}
-						isEditor
-					/>
+					{this.state.isPreviewing ? this.renderIFramePreview() : this.renderIFrameEditor()}
+					<Controls newWindowSrc={content.src} controlsOptions={controlsOpts} isEditor />
 				</div>
 			</div>
 		)
