@@ -24,21 +24,24 @@ exports.up = function(db) {
 			.then(() => {
 				return db.runSql(`
 					-- make a table with content id's and start/end dates that apply to it
-					CREATE TEMP TABLE content_dates AS
+					CREATE TEMP TABLE tmp_dates AS
 					SELECT * FROM (
 						SELECT
 							id,
 							draft_id,
 							created_at,
 							CASE
-								WHEN lead(draft_id) over (order by draft_id, created_at asc) = draft_id
-								THEN lead(created_at) over (order by draft_id, created_at asc)
+								WHEN lead(draft_id) over wnd = draft_id
+								THEN lead(created_at) over wnd
 								ELSE now()
 							END AS end_date
 						FROM drafts_content
+						WINDOW wnd AS (
+							PARTITION BY draft_id ORDER BY draft_id, created_at asc
+						)
 					) AS S;
 
-					-- use the temp table copy the draft_content_id into events table
+					-- use the temp table to copy data
 					UPDATE
 						events
 					SET
@@ -49,7 +52,7 @@ exports.up = function(db) {
 							e.id AS event_id,
 							d.id AS draft_content_id
 						FROM events AS e
-						LEFT JOIN content_dates AS d
+						LEFT JOIN tmp_dates AS d
 							ON d.draft_id = e.draft_id
 							AND  d.created_at < e.created_at
 							AND  d.end_date > e.created_at
@@ -58,6 +61,9 @@ exports.up = function(db) {
 					WHERE
 						events.id=event_id
 						AND events.draft_id IS NOT null;
+
+					-- remove the tmp table
+					Drop table tmp_dates;
 				`)
 			})
 	)
