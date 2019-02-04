@@ -50,7 +50,7 @@ exports.up = function(db) {
 					FROM
 					(
 						SELECT
-							e.id AS event_id,
+							e.id AS launch_id,
 							d.id AS draft_content_id
 						FROM launches AS e
 						LEFT JOIN tmp_dates AS d
@@ -60,7 +60,7 @@ exports.up = function(db) {
 						WHERE e.draft_id IS NOT null
 					) AS DC
 					WHERE
-						launches.id=event_id
+						launches.id=launch_id
 						AND launches.draft_id IS NOT null;
 
 					-- drop the tmp table
