@@ -4,9 +4,13 @@
 	text-align: left;
 
 	input {
-		margin-bottom: .5em;
+		margin-bottom: 0.5em;
 		margin-left: 0.5em;
 		margin-right: 1em;
+	}
+
+	input[type='number'] {
+		min-width: 50px; /* stylelint-disable-line unit-blacklist */
 	}
 
 	fieldset {

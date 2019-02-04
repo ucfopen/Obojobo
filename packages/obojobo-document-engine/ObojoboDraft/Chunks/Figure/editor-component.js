@@ -32,10 +32,6 @@ class Figure extends React.Component {
 		if (!this.node) return
 		if (this.node.contains(event.target)) return
 
-		this.handleOutsideClick()
-	}
-
-	handleOutsideClick() {
 		this.setState({ imageIsSelected: false })
 	}
 
@@ -47,7 +43,8 @@ class Figure extends React.Component {
 		ModalUtil.show(
 			<ImageProperties
 				content={this.props.node.data.get('content')}
-				onConfirm={this.changeProperties.bind(this)}/>
+				onConfirm={this.changeProperties.bind(this)}
+			/>
 		)
 	}
 
@@ -77,13 +74,8 @@ class Figure extends React.Component {
 	renderEditToolbar() {
 		return (
 			<div className="image-toolbar">
-				<Button
-					className="upload-button">
-					Upload Image
-				</Button>
-				<Button
-					className="properties-button"
-					onClick={this.showImagePropertiesModal.bind(this)}>
+				<Button className="upload-button">Upload Image</Button>
+				<Button className="properties-button" onClick={this.showImagePropertiesModal.bind(this)}>
 					Image Properties
 				</Button>
 			</div>
@@ -91,21 +83,16 @@ class Figure extends React.Component {
 	}
 
 	renderImage(isCustom, content, imgStyles) {
-		return (
-			isCustom ? (
-				<img
-					title={content.alt}
-					src={content.url}
-					unselectable="on"
-					alt={content.alt}
-					style={imgStyles}/>
-			) : (
-				<img
-					title={content.alt}
-					src={content.url}
-					unselectable="on"
-					alt={content.alt}/>
-			)
+		return isCustom ? (
+			<img
+				title={content.alt}
+				src={content.url}
+				unselectable="on"
+				alt={content.alt}
+				style={imgStyles}
+			/>
+		) : (
+			<img title={content.alt} src={content.url} unselectable="on" alt={content.alt} />
 		)
 	}
 
@@ -133,21 +120,27 @@ class Figure extends React.Component {
 		return (
 			<div
 				className={`obojobo-draft--chunks--figure viewer ` + content.size}
-				ref={node => { this.node = node }}>
+				ref={node => {
+					this.node = node
+				}}
+			>
 				<div className={'container'}>
 					{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
 					<div
-						className={'figure-box ' + isOrNot(isSelected || this.state.imageIsSelected, 'selected')}
-						onClick={this.onImageClick.bind(this)}>
-						<Button
-							className="delete-button"
-							onClick={this.deleteNode.bind(this)}>
+						className={
+							'figure-box ' + isOrNot(isSelected || this.state.imageIsSelected, 'selected')
+						}
+						onClick={this.onImageClick.bind(this)}
+					>
+						<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 							×
 						</Button>
 						{this.renderEditToolbar()}
-						{hasImage ?
-							this.renderImage(isCustom, content, imgStyles) :
-							<div className="img-placeholder" contentEditable="false" />}
+						{hasImage ? (
+							this.renderImage(isCustom, content, imgStyles)
+						) : (
+							<div className="img-placeholder" contentEditable="false" />
+						)}
 					</div>
 
 					{/* uses children below because the caption is a textgroup */}
