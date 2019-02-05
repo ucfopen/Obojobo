@@ -107,10 +107,17 @@ describe('viewer events', () => {
 		const mockPayloadEvent = {
 			userId: 'mockUserId',
 			draftId: 'mockDraftId',
+			contentId: 'mockContentId',
 			actor_time: 'mockTimestamp',
 			payload: { redAlert: 'mockValue' }
 		}
 		clientNavRedAlert(mockPayloadEvent)
-		expect(vs.setRedAlert).toBeCalledWith('mockUserId', 'mockDraftId', 'mockTimestamp', 'mockValue')
+		expect(vs.setRedAlert).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'mockTimestamp',
+			'mockValue'
+		)
 	})
 })

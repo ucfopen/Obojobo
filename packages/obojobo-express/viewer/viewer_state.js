@@ -58,11 +58,14 @@ function get(userId, contentId) {
 			`
 				SELECT view_state.payload, red_alert_status.red_alert
 				FROM view_state
-				LEFT JOIN red_alert_status ON
+				FULL OUTER JOIN red_alert_status ON
 				view_state.user_id = red_alert_status.user_id AND
-				view_state.draft_id = red_alert_status.draft_id
-				WHERE view_state.user_id = $[userId] AND
-				view_state.draft_content_id = $[contentId]
+				view_state.draft_id = red_alert_status.draft_id AND
+				view_state.draft_content_id = red_alert_status.draft_content_id
+				WHERE (view_state.user_id = $[userId] AND
+				view_state.draft_content_id = $[contentId]) OR
+				(red_alert_status.user_id = $[userId] AND
+				red_alert_status.draft_content_id = $[contentId])
 			`,
 			{
 				userId,
