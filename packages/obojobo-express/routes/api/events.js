@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const oboEvents = oboRequire('obo_events')
 const insertEvent = oboRequire('insert_event')
+const insertCaliperEvent = oboRequire('insert_caliper_event')
 const createCaliperEvent = require('./events/create_caliper_event')
 const {
 	checkValidationRules,
@@ -22,9 +23,9 @@ router
 		requireEvent,
 		checkValidationRules
 	])
-	.post((req, res) => {
+	.post(async (req, res) => {
+		const eventId = null
 		const event = req.body.event
-		const caliperEvent = createCaliperEvent(req)
 		const insertObject = {
 			actorTime: event.actor_time,
 			action: event.action,
@@ -35,17 +36,27 @@ router
 			isPreview: req.currentVisit.is_preview,
 			payload: event.payload,
 			draftId: req.currentDocument.draftId,
-			contentId: req.currentDocument.contentId,
-			caliperPayload: caliperEvent
+			contentId: req.currentDocument.contentId
 		}
 
-		return insertEvent(insertObject)
-			.then(result => {
-				insertObject.createdAt = result.created_at
-				oboEvents.emit(`client:${event.action}`, insertObject, req)
-				res.success(caliperEvent)
-			})
-			.catch(res.unexpected)
+		try {
+			const createdEvent = await insertEvent(insertObject)
+			req.body.event = createdEvent
+			console.log('ce', createdEvent)
+			const caliperEvent = createCaliperEvent(req, createdEvent)
+			if (caliperEvent) {
+				await insertCaliperEvent({
+					caliperPayload: caliperEvent,
+					isPreview: req.currentVisit.is_preview
+				})
+			}
+
+			oboEvents.emit(`client:${event.action}`, createdEvent, req)
+
+			res.success(caliperEvent)
+		} catch (e) {
+			res.unexpected(e)
+		}
 	})
 
 module.exports = router

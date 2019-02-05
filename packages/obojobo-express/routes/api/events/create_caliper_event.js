@@ -60,7 +60,7 @@ const createScore = (attemptIRI, scoredBy, score, scoreId = getNewGeneratedId())
 // object: (type: Assessment, REQUIRED) Assessment IRI of the assessment being acted upon
 // generated: (type: Attempt, Recommended) IRI of the attempt of this assessment
 // actor: (type: Person, REQUIRED) Current user
-const createAssessmentEvent = (obj, IRI) => {
+const createAssessmentEvent = (obj, IRI, internalEvent) => {
 	const required = ['action', 'assessmentId', 'attemptId', 'draftId', 'contentId']
 	validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -72,7 +72,7 @@ const createAssessmentEvent = (obj, IRI) => {
 	caliperEvent.setAction(action)
 	caliperEvent.setObject(IRI.getAssessmentIRI(contentId, assessmentId))
 	caliperEvent.setGenerated(IRI.getAssessmentAttemptIRI(attemptId))
-	Object.assign(caliperEvent.extensions, extensions)
+	Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 	return updateEventToVersion1_1(caliperEvent)
 }
@@ -82,7 +82,7 @@ const createAssessmentEvent = (obj, IRI) => {
 // action: (type: Term, REQUIRED) Showed | Hid | Activated | Deactivated
 // object: (type: DigitalResource | SoftwareApplication, REQUIRED) Viewer IRI of the element
 // actor: (REQUIRED)
-const createNavMenuEvent = (obj, IRI) => {
+const createNavMenuEvent = (obj, IRI, internalEvent) => {
 	const required = ['draftId', 'contentId', 'action']
 	validateCaliperEvent({ required }, obj)
 
@@ -93,7 +93,7 @@ const createNavMenuEvent = (obj, IRI) => {
 
 	caliperEvent.setAction(action)
 	caliperEvent.setObject(IRI.getViewerClientIRI(draftId, contentId, 'nav'))
-	Object.assign(caliperEvent.extensions, extensions)
+	Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 	return updateEventToVersion1_1(caliperEvent)
 }
@@ -113,7 +113,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// referrer: (type: DigitalResource | SoftwareApplication, Recommended) View IRI of where they came from
 		// object: (type: DigitalResource | SoftwareApplication, REQUIRED) Viewer IRI of where they went to
 		// actor: (type: Person, REQUIRED) Current user
-		createNavigationEvent: obj => {
+		createNavigationEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'from', 'to']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -125,7 +125,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.referrer = IRI.getDraftContentIRI(contentId, from)
 			caliperEvent.setAction(NavigationActions.NAVIGATED_TO)
 			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, to))
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -136,7 +136,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// object: (type: DigitalResource, REQUIRED) View IRI of the item being viewed
 		// target: (type: Frame, Optional) A more specific IRI of which part of the object is being viewed
 		// actor: (type: Person, REQUIRED) Current user
-		createViewEvent: obj => {
+		createViewEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'itemId']
 			const optional = ['frameName']
 			validateCaliperEvent({ required, optional }, obj, ACTOR_USER)
@@ -151,7 +151,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			if (frameName) {
 				caliperEvent.setTarget(IRI.getDraftContentIRI(contentId, itemId, frameName))
 			}
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -161,7 +161,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Hid
 		// object: (type: Entity, REQUIRED) View IRI of the item being hidden
 		// target: (type: Entity, Optional) A more specific IRI of which part of the object is being hidden
-		createHideEvent: obj => {
+		createHideEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'itemId']
 			const optional = ['frameName']
 			validateCaliperEvent({ required, optional }, obj)
@@ -176,44 +176,44 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			if (frameName) {
 				caliperEvent.setTarget(IRI.getDraftContentIRI(contentId, itemId, frameName))
 			}
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
 
-		createAssessmentAttemptStartedEvent: obj => {
+		createAssessmentAttemptStartedEvent: (obj, internalEvent = null) => {
 			obj.action = 'Started'
-			return createAssessmentEvent(obj, IRI)
+			return createAssessmentEvent(obj, IRI, internalEvent)
 		},
 
-		createAssessmentAttemptSubmittedEvent: obj => {
+		createAssessmentAttemptSubmittedEvent: (obj, internalEvent = null) => {
 			obj.action = 'Submitted'
-			return createAssessmentEvent(obj, IRI)
+			return createAssessmentEvent(obj, IRI, internalEvent)
 		},
 
-		createNavMenuHidEvent: obj => {
+		createNavMenuHidEvent: (obj, internalEvent = null) => {
 			obj.action = 'Hid'
-			return createNavMenuEvent(obj, IRI)
+			return createNavMenuEvent(obj, IRI, internalEvent)
 		},
 
-		createNavMenuShowedEvent: obj => {
+		createNavMenuShowedEvent: (obj, internalEvent = null) => {
 			obj.action = 'Showed'
-			return createNavMenuEvent(obj, IRI)
+			return createNavMenuEvent(obj, IRI, internalEvent)
 		},
 
-		createNavMenuToggledEvent: obj => {
+		createNavMenuToggledEvent: (obj, internalEvent = null) => {
 			obj.action = 'Toggled'
-			return createNavMenuEvent(obj, IRI)
+			return createNavMenuEvent(obj, IRI, internalEvent)
 		},
 
-		createNavMenuActivatedEvent: obj => {
+		createNavMenuActivatedEvent: (obj, internalEvent = null) => {
 			obj.action = 'Activated'
-			return createNavMenuEvent(obj, IRI)
+			return createNavMenuEvent(obj, IRI, internalEvent)
 		},
 
-		createNavMenuDeactivatedEvent: obj => {
+		createNavMenuDeactivatedEvent: (obj, internalEvent = null) => {
 			obj.action = 'Deactivated'
-			return createNavMenuEvent(obj, IRI)
+			return createNavMenuEvent(obj, IRI, internalEvent)
 		},
 
 		// Caliper-Spec Properties
@@ -221,7 +221,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Graded
 		// object: (type: Attempt, REQUIRED) Attempt IRI
 		// generated: (type: Score, Recommended) Score for the attempt
-		createAssessmentAttemptScoredEvent: obj => {
+		createAssessmentAttemptScoredEvent: (obj, internalEvent = null) => {
 			const required = ['assessmentId', 'attemptId', 'attemptScore', 'draftId', 'contentId']
 			validateCaliperEvent({ required }, obj, ACTOR_SERVER_APP)
 
@@ -240,7 +240,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 				createScore(IRI.getAssessmentAttemptIRI(attemptId), IRI.getAppServerIRI(), attemptScore)
 			)
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -250,7 +250,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Graded
 		// object: (type: Attempt, REQUIRED) Question Attempt IRI
 		// generated: (type: Score, Recommended) Score for the attempt
-		createPracticeGradeEvent: obj => {
+		createPracticeGradeEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'questionId', 'scoreId', 'score']
 			validateCaliperEvent({ required }, obj, ACTOR_VIEWER_CLIENT)
 
@@ -272,7 +272,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 				)
 			)
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -283,7 +283,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// target: (type: Entity, Optional) IRI for the question being answered
 		// object: (type: AssessmentItem, REQUIRED) Either an assessment attempt or practice attempt IRI
 		// actor: (type: Person, REQUIRED) Current user
-		createAssessmentItemEvent: obj => {
+		createAssessmentItemEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'questionId', 'targetId', 'selectedTargets']
 			const optional = ['assessmentId', 'attemptId']
 
@@ -319,7 +319,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 				caliperEvent.setObject(practiceQuestionAttemptIRI)
 			}
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -329,7 +329,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Reset
 		// object: (type: Entity, REQUIRED) Draft IRI
 		// target: (type: Entity, Optional) Practice attempt IRI
-		createPracticeQuestionSubmittedEvent: obj => {
+		createPracticeQuestionSubmittedEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'questionId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -342,7 +342,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, questionId))
 			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(contentId, questionId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -352,7 +352,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Reset
 		// object: (type: Entity, REQUIRED) Score URN
 		// target: (type: Entity, Optional) Practice question attempt IRI
-		createPracticeUngradeEvent: obj => {
+		createPracticeUngradeEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'questionId', 'scoreId']
 			validateCaliperEvent({ required }, obj, ACTOR_SERVER_APP)
 
@@ -365,7 +365,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setObject(getUrnFromUuid(scoreId))
 			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(contentId, questionId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -374,7 +374,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// type: (type: Term, REQUIRED) MediaEvent
 		// action: (type: Term, REQUIRED) ChangedSize
 		// object: (type: MediaObject, REQUIRED) Draft IRI
-		createMediaChangedSizeEvent: obj => {
+		createMediaChangedSizeEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'mediaId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -386,7 +386,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setAction('ChangedSize')
 			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, mediaId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -395,7 +395,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// type: (type: Term, REQUIRED) Event
 		// action: (type: Term, REQUIRED) Abandoned
 		// object: (type: Entity, REQUIRED) Draft IRI
-		createViewerAbandonedEvent: obj => {
+		createViewerAbandonedEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -407,7 +407,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setAction('Abandoned')
 			caliperEvent.setObject(IRI.getDraftContentIRI(contentId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -416,7 +416,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// type: (type: Term, REQUIRED) Event
 		// action: (type: Term, REQUIRED) Resumed
 		// object: (type: Entity, REQUIRED) Draft IRI
-		createViewerResumedEvent: obj => {
+		createViewerResumedEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -428,7 +428,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setAction('Resumed')
 			caliperEvent.setObject(IRI.getDraftContentIRI(contentId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -439,7 +439,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// object: (type: SoftwareApplication [for LoggedIn], REQUIRED) Obo IRI
 		// target: (type: DigitalResource, Optional) Draft IRI
 		// actor: (type: Person [for LoggedIn], REQUIRED)
-		createViewerSessionLoggedInEvent: obj => {
+		createViewerSessionLoggedInEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -452,7 +452,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setObject(IRI.getEdAppIRI())
 			caliperEvent.setTarget(IRI.getDraftContentIRI(contentId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -463,7 +463,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// object: (type: SoftwareApplication [for LoggedOut], REQUIRED) Obo IRI
 		// target: (type: DigitalResource, Optional) Draft IRI
 		// actor: (type: Person [for LoggedOut], REQUIRED)
-		createViewerSessionLoggedOutEvent: obj => {
+		createViewerSessionLoggedOutEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -476,7 +476,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setObject(IRI.getEdAppIRI())
 			caliperEvent.setTarget(IRI.getDraftContentIRI(contentId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -486,7 +486,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Reset
 		// object: (type: Entity, REQUIRED) Draft IRI
 		// target: (type: Entity, Optional) Practice attempt IRI
-		createPracticeQuestionResetEvent: obj => {
+		createPracticeQuestionResetEvent: (obj, internalEvent = null) => {
 			const required = ['draftId', 'contentId', 'questionId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -499,7 +499,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setObject(IRI.getDraftContentIRI(contentId, questionId))
 			caliperEvent.setTarget(IRI.getPracticeQuestionAttemptIRI(contentId, questionId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -510,7 +510,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Used
 		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
 		// target: (type: SoftwareApplication, Optional) Picker IRI
-		createLTIPickerEvent: obj => {
+		createLTIPickerEvent: (obj, internalEvent = null) => {
 			const required = []
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -524,7 +524,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setObject(IRI.getEdAppIRI())
 			caliperEvent.setTarget(IRI.getPickerIRI())
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -535,7 +535,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Used
 		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
 		// generated: (type: Entity, Optional) Visit IRI
-		createViewerOpenEvent: obj => {
+		createViewerOpenEvent: (obj, internalEvent = null) => {
 			const required = ['visitId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -549,7 +549,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setObject(IRI.getEdAppIRI())
 			caliperEvent.setGenerated(IRI.getVisitIRI(obj.visitId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		},
@@ -560,7 +560,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 		// action: (type: Term, REQUIRED) Created
 		// object: (type: SoftwareApplication, REQUIRED) Obo IRI
 		// generated: (type: Entity, Optional) Visit IRI
-		createVisitCreateEvent: obj => {
+		createVisitCreateEvent: (obj, internalEvent = null) => {
 			const required = ['visitId']
 			validateCaliperEvent({ required }, obj, ACTOR_USER)
 
@@ -574,7 +574,7 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			caliperEvent.setObject(IRI.getEdAppIRI())
 			caliperEvent.setGenerated(IRI.getVisitIRI(obj.visitId))
 
-			Object.assign(caliperEvent.extensions, extensions)
+			Object.assign(caliperEvent.extensions, extensions, { internalEvent })
 
 			return updateEventToVersion1_1(caliperEvent)
 		}
