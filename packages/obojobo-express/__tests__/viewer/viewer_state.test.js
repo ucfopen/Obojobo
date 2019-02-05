@@ -127,13 +127,20 @@ describe('viewer state', () => {
 
 	test('setRedAlert inserts values into red_alert_status', done => {
 		db.none.mockResolvedValueOnce({})
-		Viewer.setRedAlert('mockUserId', 'mockDraftId', 'mockTimestamp', 'mockValue').then(() => {
+		Viewer.setRedAlert(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'mockTimestamp',
+			'mockValue'
+		).then(() => {
 			expect(db.none).toHaveBeenCalledTimes(1)
 			expect(db.none).toHaveBeenCalledWith(
 				expect.stringContaining('INSERT INTO red_alert_status'),
 				{
 					user_id: 'mockUserId',
 					draft_id: 'mockDraftId',
+					draft_content_id: 'mockContentId',
 					actor_time: 'mockTimestamp',
 					red_alert: 'mockValue'
 				}
@@ -144,13 +151,20 @@ describe('viewer state', () => {
 
 	test('setRedAlert fails on db error', done => {
 		db.none.mockRejectedValueOnce('mockDBError')
-		Viewer.setRedAlert('mockUserId', 'mockDraftId', 'mockTimestamp', 'mockValue').then(() => {
+		Viewer.setRedAlert(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'mockTimestamp',
+			'mockValue'
+		).then(() => {
 			expect(db.none).toHaveBeenCalledTimes(1)
 			expect(db.none).toHaveBeenCalledWith(
 				expect.stringContaining('INSERT INTO red_alert_status'),
 				{
 					user_id: 'mockUserId',
 					draft_id: 'mockDraftId',
+					draft_content_id: 'mockContentId',
 					actor_time: 'mockTimestamp',
 					red_alert: 'mockValue'
 				}

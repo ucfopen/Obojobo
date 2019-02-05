@@ -27,13 +27,13 @@ function set(userId, draftId, contentId, key, version, value) {
 		})
 }
 
-function setRedAlert(userId, draftId, timestamp, redAlert) {
+function setRedAlert(userId, draftId, contentId, timestamp, redAlert) {
 	return db
 		.none(
 			`
 		INSERT INTO red_alert_status
-		(user_id, draft_id, creation_time, red_alert)
-		VALUES($[user_id], $[draft_id], $[actor_time], $[red_alert])
+		(user_id, draft_id, creation_time, red_alert, draft_content_id)
+		VALUES($[user_id], $[draft_id], $[actor_time], $[red_alert], $[draft_content_id])
 		ON CONFLICT (user_id, draft_id) DO
 		UPDATE
 		SET	creation_time = $[actor_time], red_alert = $[red_alert]
@@ -43,7 +43,8 @@ function setRedAlert(userId, draftId, timestamp, redAlert) {
 				user_id: userId,
 				draft_id: draftId,
 				actor_time: timestamp,
-				red_alert: redAlert
+				red_alert: redAlert,
+				draft_content_id: contentId
 			}
 		)
 		.catch(error => {

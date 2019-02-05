@@ -26,6 +26,7 @@ oboEvents.on('client:nav:redAlert', event => {
 
 	viewerState.setRedAlert(event.userId, 
 		event.draftId, 
+		event.contentId,
 		event.actor_time, 
 		event.payload.redAlert
 	)

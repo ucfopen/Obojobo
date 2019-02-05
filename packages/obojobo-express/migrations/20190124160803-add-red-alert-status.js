@@ -20,6 +20,7 @@ exports.up = function(db) {
 			id: { type: 'int', primaryKey: true, autoIncrement: true },
 			user_id: 'bigint',
 			draft_id: 'UUID',
+			draft_content_id: 'UUID',
 			creation_time: 'timestamp',
 			red_alert: 'boolean'
 		})
