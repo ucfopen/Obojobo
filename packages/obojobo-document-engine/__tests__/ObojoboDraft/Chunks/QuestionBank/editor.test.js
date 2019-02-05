@@ -133,7 +133,7 @@ describe('QuestionBank editor', () => {
 			removeNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalization = funct => funct(change)
+		change.withoutNormalizing = funct => funct(change)
 
 		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
@@ -151,7 +151,7 @@ describe('QuestionBank editor', () => {
 			removeNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalization = funct => funct(change)
+		change.withoutNormalizing = funct => funct(change)
 
 		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,

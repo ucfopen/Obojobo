@@ -6,7 +6,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.MCAssessment.MCFeedback': {
-			nodes: [{ match: [ { type: 'oboeditor.component' } ], min: 1 }],
+			nodes: [{ match: [{ type: 'oboeditor.component' }], min: 1 }],
 			normalize: (change, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
@@ -34,7 +34,7 @@ const schema = {
 								}
 							]
 						})
-						return change.withoutNormalization(c => {
+						return change.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							return c.insertNodeByKey(node.key, index, block)
 						})

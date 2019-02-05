@@ -480,7 +480,7 @@ describe('List editor', () => {
 		const change = {
 			mergeNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => funct(change))
+		change.withoutNormalizing = jest.fn().mockImplementationOnce(funct => funct(change))
 
 		List.plugins.normalizeNode({
 			object: 'text'
@@ -531,7 +531,7 @@ describe('List editor', () => {
 		const change = {
 			mergeNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => funct(change))
+		change.withoutNormalizing = jest.fn().mockImplementationOnce(funct => funct(change))
 
 		List.plugins.normalizeNode(node)
 
@@ -568,7 +568,7 @@ describe('List editor', () => {
 		const change = {
 			mergeNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => funct(change))
+		change.withoutNormalizing = jest.fn().mockImplementationOnce(funct => funct(change))
 
 		const call = List.plugins.normalizeNode(node)
 		call(change)

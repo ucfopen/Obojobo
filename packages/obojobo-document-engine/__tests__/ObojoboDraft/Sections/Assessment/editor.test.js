@@ -327,7 +327,7 @@ describe('Assessment editor', () => {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = funct => {
+		change.withoutNormalizing = funct => {
 			funct(change)
 		}
 
@@ -346,7 +346,7 @@ describe('Assessment editor', () => {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = funct => {
+		change.withoutNormalizing = funct => {
 			funct(change)
 		}
 

@@ -180,7 +180,7 @@ describe('MCAssessment editor', () => {
 			removeNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalization = funct => funct(change)
+		change.withoutNormalizing = funct => funct(change)
 
 		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
@@ -198,7 +198,7 @@ describe('MCAssessment editor', () => {
 			removeNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalization = funct => funct(change)
+		change.withoutNormalizing = funct => funct(change)
 
 		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,

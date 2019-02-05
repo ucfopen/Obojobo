@@ -77,7 +77,7 @@ const plugins = {
 		if (invalids.size === 0) return
 
 		return change => {
-			change.withoutNormalization(c => {
+			change.withoutNormalizing(c => {
 				// Reverse the list to handle consecutive merges, since the
 				// earlier nodes will always exist after each merge.
 				invalids.forEach(n => {

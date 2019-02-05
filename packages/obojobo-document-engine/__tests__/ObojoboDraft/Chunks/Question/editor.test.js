@@ -43,7 +43,7 @@ describe('Question editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => {
+		change.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
 			funct(change)
 		})
 

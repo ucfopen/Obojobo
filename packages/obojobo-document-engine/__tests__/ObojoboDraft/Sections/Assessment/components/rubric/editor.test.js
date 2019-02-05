@@ -406,7 +406,7 @@ describe('Rubric editor', () => {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = funct => {
+		change.withoutNormalizing = funct => {
 			funct(change)
 		}
 
@@ -425,7 +425,7 @@ describe('Rubric editor', () => {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = funct => {
+		change.withoutNormalizing = funct => {
 			funct(change)
 		}
 
@@ -444,7 +444,7 @@ describe('Rubric editor', () => {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = funct => {
+		change.withoutNormalizing = funct => {
 			funct(change)
 		}
 
@@ -463,7 +463,7 @@ describe('Rubric editor', () => {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = funct => {
+		change.withoutNormalizing = funct => {
 			funct(change)
 		}
 
@@ -572,7 +572,7 @@ describe('Rubric editor', () => {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = funct => {
+		change.withoutNormalizing = funct => {
 			funct(change)
 		}
 
@@ -591,7 +591,7 @@ describe('Rubric editor', () => {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
-		change.withoutNormalization = funct => {
+		change.withoutNormalizing = funct => {
 			funct(change)
 		}
 

@@ -80,7 +80,7 @@ const schema = {
 						return change.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return change.withoutNormalization(c => {
+						return change.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							if (index === 0) {
 								const block = Block.create(
