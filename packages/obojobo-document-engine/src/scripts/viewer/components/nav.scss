@@ -6,6 +6,7 @@
 	$color-nav-hover: darken($color-highlight, 25%);
 	$padding: 2rem;
 
+	overflow: auto;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -89,6 +90,7 @@
 
 		padding-top: 2em;
 		margin-bottom: 1em;
+		position: sticky;
 		z-index: 5;
 		background: $color-nav-bg;
 		top: 0;
