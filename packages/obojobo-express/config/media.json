@@ -20,7 +20,7 @@
 	},
 	"production": {
 		"allowedMimeTypesRegex": "jpeg|jpg|png|gif|svg",
-		"maxUploadSize": 100000,
+		"maxUploadSize": 10000000,
 		"minImageSize": 10,
 		"maxImageSize": 3000,
 		"originalMediaTag": "original",
