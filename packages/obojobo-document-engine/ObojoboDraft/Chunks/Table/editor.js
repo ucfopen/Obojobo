@@ -15,19 +15,19 @@ const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
-const isType = change => {
-	return change.value.blocks.some(block => {
-		return !!change.value.document.getClosest(block.key, parent => {
+const isType = editor => {
+	return editor.value.blocks.some(block => {
+		return !!editor.value.document.getClosest(block.key, parent => {
 			return parent.type === TABLE_NODE
 		})
 	})
 }
 
 const plugins = {
-	onKeyDown(event, change) {
+	onKeyDown(event, editor, next) {
 		// See if any of the selected nodes have a TABLE_NODE parent
-		const isTable = isType(change)
-		if (!isTable) return
+		const isTable = isType(editor)
+		if (!isTable) return next()
 
 		// Disallow enter in tables
 		if (event.key === 'Enter') {
@@ -36,10 +36,10 @@ const plugins = {
 		}
 
 		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return KeyDownUtil.deleteNodeContents(event, change)
+			return KeyDownUtil.deleteNodeContents(event, editor)
 		}
 	},
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case TABLE_NODE:
 				return <Node {...props} {...props.attributes} />
@@ -47,6 +47,8 @@ const plugins = {
 				return <Row {...props} {...props.attributes} />
 			case TABLE_CELL_NODE:
 				return <Cell {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
 	schema: Schema

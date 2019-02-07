@@ -18,21 +18,21 @@ const schema = {
 					max: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
 						const block = Block.create({
 							type: MCANSWER_NODE
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						// extra children will be deleted by slate defaults
 						if (index >= 2) return
 						// multiple answers and feedbacks will be deleted by slate defaults
 						if (index === 1 && child.type !== MCFEEDBACK_NODE) return
-						return change.wrapBlockByKey(child.key, {
+						return editor.wrapBlockByKey(child.key, {
 							type: MCANSWER_NODE
 						})
 					}

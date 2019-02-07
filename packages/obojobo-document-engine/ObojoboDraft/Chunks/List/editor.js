@@ -18,36 +18,36 @@ const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
-const isType = change => {
-	return change.value.blocks.some(block => {
-		return !!change.value.document.getClosest(block.key, parent => {
+const isType = editor => {
+	return editor.value.blocks.some(block => {
+		return !!editor.value.document.getClosest(block.key, parent => {
 			return parent.type === LIST_NODE
 		})
 	})
 }
 
 const plugins = {
-	onKeyDown(event, change) {
+	onKeyDown(event, editor, next) {
 		// See if any of the selected nodes have a CODE_NODE parent
-		const isLine = isType(change)
-		if (!isLine) return
+		const isLine = isType(editor)
+		if (!isLine) return next()
 
 		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return onBackspace(event, change)
+			return onBackspace(event, editor, next)
 		}
 		if (event.key === 'Enter') {
 			// Text lines will be changed to list lines by the schema unless
 			// they are at the end of the list
-			return insertText(event, change)
+			return insertText(event, editor)
 		}
 		if (event.key === 'Tab' && event.shiftKey) {
-			return wrapLevel(event, change)
+			return wrapLevel(event, editor, next)
 		}
 		if (event.key === 'Tab') {
-			return unwrapLevel(event, change)
+			return unwrapLevel(event, editor, next)
 		}
 	},
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case LIST_NODE:
 				return <Node {...props} {...props.attributes} />
@@ -55,33 +55,33 @@ const plugins = {
 				return <Line {...props} {...props.attributes} />
 			case LIST_LEVEL_NODE:
 				return <Level {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
-	normalizeNode(node) {
-		if (node.object !== 'block') return
-		if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return
-		if (node.nodes.size <= 1) return
+	normalizeNode(node, next) {
+		if (node.object !== 'block') return next()
+		if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return next()
+		if (node.nodes.size <= 1) return next()
 
 		// Checks children for two consecutive list levels
 		// If consecutive levels are found, return the second one so it can be
 		// merged into its previous sibling
 		const invalids = node.nodes
 			.map((child, i) => {
-				const next = node.nodes.get(i + 1)
+				const nextNode = node.nodes.get(i + 1)
 				if (child.type !== LIST_LEVEL_NODE) return false
-				if (!next || next.type !== LIST_LEVEL_NODE) return false
-				return next
+				if (!nextNode || nextNode.type !== LIST_LEVEL_NODE) return false
+				return nextNode
 			})
 			.filter(Boolean)
 
-		if (invalids.size === 0) return
+		if (invalids.size === 0) return next()
 
-		return change => {
-			change.withoutNormalizing(c => {
-				// Reverse the list to handle consecutive merges, since the
-				// earlier nodes will always exist after each merge.
+		return editor => {
+			return editor.withoutNormalizing(e => {
 				invalids.forEach(n => {
-					c.mergeNodeByKey(n.key)
+					e.mergeNodeByKey(n.key)
 				})
 			})
 		}

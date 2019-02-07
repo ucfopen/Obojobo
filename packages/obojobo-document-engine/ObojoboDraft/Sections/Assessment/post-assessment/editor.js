@@ -119,19 +119,21 @@ const oboToSlate = node => {
 }
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case SCORE_NODE:
 				return <Score {...props} {...props.attributes} />
 			case ACTIONS_NODE:
 				return <Node {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment.ScoreActions': {
 				nodes: [{ match: [{ type: SCORE_NODE }], min: 1 }],
-				normalize: (change, error) => {
+				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
 						case CHILD_REQUIRED: {
@@ -139,10 +141,10 @@ const plugins = {
 								type: SCORE_NODE,
 								data: { for: '[0,100]' }
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
+							return editor.wrapBlockByKey(child.key, {
 								type: SCORE_NODE,
 								data: { for: '[0,100]' }
 							})
@@ -152,17 +154,17 @@ const plugins = {
 			},
 			'ObojoboDraft.Sections.Assessment.ScoreAction': {
 				nodes: [{ match: [{ type: PAGE_NODE }], min: 1, max: 1 }],
-				normalize: (change, error) => {
+				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
 						case CHILD_REQUIRED: {
 							const block = Block.create({
 								type: PAGE_NODE
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
+							return editor.wrapBlockByKey(child.key, {
 								type: PAGE_NODE
 							})
 						}

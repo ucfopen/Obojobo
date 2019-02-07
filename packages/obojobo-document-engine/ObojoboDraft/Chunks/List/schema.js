@@ -16,7 +16,7 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				// find type and bullet style
 				const type = node.data.get('content').listStyles.type
@@ -27,10 +27,10 @@ const schema = {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
 						if (child.object === 'block' && isAtEdge && child.type !== LIST_LINE_NODE) {
-							return change.unwrapNodeByKey(child.key)
+							return editor.unwrapNodeByKey(child.key)
 						}
 
-						return change.wrapBlockByKey(child.key, {
+						return editor.wrapBlockByKey(child.key, {
 							type: LIST_LEVEL_NODE,
 							data: { content: { type: type, bulletStyle: bulletList[0] } }
 						})
@@ -40,7 +40,7 @@ const schema = {
 							type: LIST_LEVEL_NODE,
 							data: { content: { type: type, bulletStyle: bulletList[0] } }
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}
 			}
@@ -52,17 +52,17 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
 						if (child.object === 'block' && isAtEdge) {
-							return change.unwrapNodeByKey(child.key)
+							return editor.unwrapNodeByKey(child.key)
 						}
 
-						return change
+						return editor
 							.wrapBlockByKey(child.key, {
 								type: LIST_LINE_NODE
 							})
@@ -70,7 +70,7 @@ const schema = {
 					}
 					case CHILD_REQUIRED: {
 						const block = Block.create(LIST_LINE_NODE)
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}
 			}

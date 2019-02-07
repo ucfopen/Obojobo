@@ -13,22 +13,22 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				const header = index === 0 && node.data.get('content').header
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
 						if (child.object === 'block' && index === node.nodes.size - 1) {
-							return change.unwrapNodeByKey(child.key)
+							return editor.unwrapNodeByKey(child.key)
 						}
 
 						// If a block was inserted in the middle, delete it to maintain table shape
 						if (child.object === 'block') {
-							return change.removeNodeByKey(child.key)
+							return editor.removeNodeByKey(child.key)
 						}
 
-						return change.wrapBlockByKey(child.key, {
+						return editor.wrapBlockByKey(child.key, {
 							type: TABLE_ROW_NODE,
 							data: { content: { header } }
 						})
@@ -38,7 +38,7 @@ const schema = {
 							type: TABLE_ROW_NODE,
 							data: { content: { header } }
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}
 			}
@@ -50,22 +50,22 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				const header = node.data.get('content').header
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
 						if (child.object === 'block' && index === node.nodes.size - 1) {
-							return change.unwrapNodeByKey(child.key)
+							return editor.unwrapNodeByKey(child.key)
 						}
 
 						// If a block was inserted in the middle, delete it to maintain table shape
 						if (child.object === 'block') {
-							return change.removeNodeByKey(child.key)
+							return editor.removeNodeByKey(child.key)
 						}
 
-						return change.wrapBlockByKey(child.key, {
+						return editor.wrapBlockByKey(child.key, {
 							type: TABLE_CELL_NODE,
 							data: { content: { header } }
 						})
@@ -75,20 +75,20 @@ const schema = {
 							type: TABLE_CELL_NODE,
 							data: { content: { header } }
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}
 			}
 		},
 		'ObojoboDraft.Chunks.Table.Cell': {
 			nodes: [{ match: [{ object: 'text' }] }],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
 						if (child.object === 'block' && index === node.nodes.size - 1) {
-							return change.unwrapNodeByKey(child.key)
+							return editor.unwrapNodeByKey(child.key)
 						}
 					}
 				}

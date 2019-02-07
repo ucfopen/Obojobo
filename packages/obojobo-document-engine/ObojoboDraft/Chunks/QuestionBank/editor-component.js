@@ -43,6 +43,7 @@ class QuestionBank extends React.Component {
 		editor.onChange(change)
 	}
 	render() {
+		console.log('rendering')
 		return (
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 				<button className={'delete-node'} onClick={() => this.delete()}>

@@ -22,7 +22,7 @@ const schema = {
 					max: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -30,26 +30,26 @@ const schema = {
 							const block = Block.create({
 								type: CHOICE_LIST_NODE
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 
 						const block = Block.create({
 							type: SETTINGS_NODE
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						if (index === 0) {
 							const block = Block.create({
 								type: CHOICE_LIST_NODE
 							})
-							return change.wrapBlockByKey(child.key, block)
+							return editor.wrapBlockByKey(child.key, block)
 						}
 
 						const block = Block.create({
 							type: SETTINGS_NODE
 						})
-						return change.wrapBlockByKey(child.key, block)
+						return editor.wrapBlockByKey(child.key, block)
 					}
 				}
 			}
@@ -61,7 +61,7 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -69,14 +69,14 @@ const schema = {
 							type: MCCHOICE_NODE,
 							data: { content: { score: 0 } }
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						const block = Block.create({
 							type: MCCHOICE_NODE,
 							data: { content: { score: 0 } }
 						})
-						return change.wrapBlockByKey(child.key, block)
+						return editor.wrapBlockByKey(child.key, block)
 					}
 				}
 			}
@@ -89,7 +89,7 @@ const schema = {
 					max: 2
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -102,7 +102,7 @@ const schema = {
 									options: ['pick-one', 'pick-all']
 								})
 							)
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
 							ParameterNode.helpers.oboToSlate({
@@ -112,10 +112,10 @@ const schema = {
 								checked: true
 							})
 						)
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return change.withoutNormalizing(c => {
+						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							if (index === 0) {
 								const block = Block.create(

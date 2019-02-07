@@ -14,7 +14,7 @@ const schema = {
 				{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
 				{ match: [{ type: QUESTION_NODE }, { type: QUESTION_BANK_NODE }], min: 1 }
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -22,21 +22,21 @@ const schema = {
 							const block = Block.create({
 								type: SETTINGS_NODE
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create({
 							type: QUESTION_NODE
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						if (index === 0) {
 							const block = Block.create({
 								type: SETTINGS_NODE
 							})
-							return change.wrapBlockByKey(child.key, block)
+							return editor.wrapBlockByKey(child.key, block)
 						}
-						return change.wrapBlockByKey(child.key, {
+						return editor.wrapBlockByKey(child.key, {
 							type: QUESTION_NODE
 						})
 					}
@@ -55,7 +55,7 @@ const schema = {
 					max: 2
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -67,7 +67,7 @@ const schema = {
 									display: 'Choose'
 								})
 							)
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
 							ParameterNode.helpers.oboToSlate({
@@ -77,10 +77,10 @@ const schema = {
 								options: ['sequential', 'random', 'random-unseen']
 							})
 						)
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return change.withoutNormalizing(c => {
+						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							if (index === 0) {
 								const block = Block.create(

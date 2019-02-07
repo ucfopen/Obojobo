@@ -19,7 +19,7 @@ const schema = {
 				{ match: [{ type: ACTIONS_NODE }], min: 1, max: 1 },
 				{ match: [{ type: RUBRIC_NODE }], max: 1 }
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -47,25 +47,25 @@ const schema = {
 								})
 								break
 						}
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						switch (index) {
 							case 0:
-								return change.wrapBlockByKey(child.key, {
+								return editor.wrapBlockByKey(child.key, {
 									type: SETTINGS_NODE
 								})
 							case 1:
-								return change.wrapBlockByKey(child.key, {
+								return editor.wrapBlockByKey(child.key, {
 									type: PAGE_NODE
 								})
 							case 2:
-								return change.wrapBlockByKey(child.key, {
+								return editor.wrapBlockByKey(child.key, {
 									type: QUESTION_BANK_NODE,
 									data: { content: { choose: 1, select: 'sequential' } }
 								})
 							case 3:
-								return change.wrapBlockByKey(child.key, {
+								return editor.wrapBlockByKey(child.key, {
 									type: ACTIONS_NODE
 								})
 						}
@@ -75,7 +75,7 @@ const schema = {
 		},
 		'ObojoboDraft.Sections.Assessment.Settings': {
 			nodes: [{ match: [{ type: 'Parameter' }], min: 2, max: 2 }],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -87,7 +87,7 @@ const schema = {
 									display: 'Attempts'
 								})
 							)
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
 							ParameterNode.helpers.oboToSlate({
@@ -97,10 +97,10 @@ const schema = {
 								options: ['always', 'never', 'no-attempts-remaining']
 							})
 						)
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return change.withoutNormalizing(c => {
+						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							if (index === 0) {
 								const block = Block.create(

@@ -85,10 +85,9 @@ class ActionButton extends React.Component {
 
 	handleLabelChange(event) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
-		change.setNodeByKey(this.props.node.key, {
+		editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					label: event.target.value,
@@ -96,12 +95,10 @@ class ActionButton extends React.Component {
 				}
 			}
 		})
-		editor.onChange(change)
 	}
 
 	addAction() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const verify = requiresValue[this.state.newTrigger.type]
 		const content = this.props.node.data.get('content')
 
@@ -120,24 +117,21 @@ class ActionButton extends React.Component {
 			}
 		})
 
-		change.setNodeByKey(this.props.node.key, {
+		editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
-
-		editor.onChange(change)
 	}
 
 	removeAction(index) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
 		content.actions.splice(index, 1)
 
-		change.setNodeByKey(this.props.node.key, {
+		editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
-		editor.onChange(change)
+		editor.onChange(editor)
 	}
 
 	renderNew() {

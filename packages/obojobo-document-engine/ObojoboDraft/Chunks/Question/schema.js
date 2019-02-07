@@ -15,7 +15,7 @@ const schema = {
 				{ match: [SOLUTION_NODE], max: 1 }
 			],
 
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -26,7 +26,7 @@ const schema = {
 								type: MCASSESSMENT_NODE,
 								data: { content: { responseType: 'pick-one', shuffle: true } }
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 
 						// Otherwise, just add a text node
@@ -40,7 +40,7 @@ const schema = {
 								}
 							]
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						const block = Block.fromJSON({
@@ -53,7 +53,7 @@ const schema = {
 								}
 							]
 						})
-						return change.withoutNormalizing(c => {
+						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							return c.insertNodeByKey(node.key, index, block)
 						})
@@ -69,17 +69,17 @@ const schema = {
 					max: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
 						const block = Block.create({
 							type: PAGE_NODE
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return change.wrapBlockByKey(child.key, {
+						return editor.wrapBlockByKey(child.key, {
 							type: PAGE_NODE
 						})
 					}

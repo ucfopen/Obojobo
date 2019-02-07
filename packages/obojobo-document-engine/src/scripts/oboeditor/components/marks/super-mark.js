@@ -2,12 +2,12 @@ function superMark(options) {
 	const { type, key, render, modifier } = options
 
 	return {
-		onKeyDown(event, change) {
-			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return
+		onKeyDown(event, editor, next) {
+			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return next()
 
 			event.preventDefault()
 
-			const value = change.value
+			const value = editor.value
 			const hasScript = value.marks.some(mark => {
 				if (mark.type === 'sup') {
 					return mark.data.get('num') === modifier
@@ -16,23 +16,23 @@ function superMark(options) {
 			})
 
 			if (hasScript) {
-				change.removeMark({
+				return editor.removeMark({
 					type: 'sup',
 					data: { num: modifier }
 				})
 			} else {
-				change.addMark({
+				return editor.addMark({
 					type: 'sup',
 					data: { num: modifier }
 				})
 			}
-
-			return true
 		},
-		renderMark(props) {
+		renderMark(props, editor, next) {
 			switch (props.mark.type) {
 				case type:
 					return render(props)
+				default:
+					return next()
 			}
 		}
 	}

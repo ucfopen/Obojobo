@@ -82,8 +82,8 @@ const Node = props => {
 	}
 }
 
-const isType = change => {
-	return change.value.blocks.some(block => {
+const isType = editor => {
+	return editor.value.blocks.some(block => {
 		return block.type === 'Parameter'
 	})
 }
@@ -139,16 +139,18 @@ const oboToSlate = ({ name, value, display, options, checked }) => {
 }
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case 'Parameter':
 				return <Node {...props} />
+			default:
+				return next()
 		}
 	},
-	onKeyDown(event, change) {
+	onKeyDown(event, editor, next) {
 		// See if any of the selected nodes are a parameter
-		const isParameter = isType(change)
-		if (!isParameter) return
+		const isParameter = isType(editor)
+		if (!isParameter) return next()
 
 		// Disallow enter in parameters
 		if (event.key === 'Enter') {
@@ -157,7 +159,7 @@ const plugins = {
 		}
 
 		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return KeyDownUtil.deleteNodeContents(event, change)
+			return KeyDownUtil.deleteNodeContents(event, editor)
 		}
 	}
 }

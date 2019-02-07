@@ -4,17 +4,17 @@ function linkMark(options) {
 	const { type, key, render } = options
 
 	return {
-		onKeyDown(event, change) {
-			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return
+		onKeyDown(event, editor, next) {
+			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return next()
 
 			event.preventDefault()
 
-			const value = change.value
+			const value = editor.value
 			let removedMarks = false
 
 			value.marks.forEach(mark => {
 				if (mark.type === 'a') {
-					change.removeMark({
+					editor.removeMark({
 						type: 'a',
 						data: mark.data.toJSON()
 					})
@@ -26,13 +26,14 @@ function linkMark(options) {
 
 			const href = window.prompt('Link address:') || null
 
-			change.toggleMark({ type, data: { href } })
-			return true
+			return editor.toggleMark({ type, data: { href } })
 		},
-		renderMark(props) {
+		renderMark(props, editor, next) {
 			switch (props.mark.type) {
 				case type:
 					return render(props)
+				default:
+					return next()
 			}
 		}
 	}
