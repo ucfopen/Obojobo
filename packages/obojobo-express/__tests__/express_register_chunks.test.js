@@ -86,10 +86,12 @@ describe('register chunks middleware', () => {
 
 		middleware(mockApp)
 
-		expect(express.static).toHaveBeenCalledWith('./public/compiled/viewer.min.js')
-		expect(express.static).toHaveBeenCalledWith('./public/compiled/viewer.js')
-		expect(express.static).toHaveBeenCalledWith('./public/compiled/viewer.min.css')
-		expect(express.static).toHaveBeenCalledWith('./public/compiled/viewer.css')
+		const path = require('path')
+		const expressPath = path.resolve(__dirname, '..')
+		expect(express.static).toHaveBeenCalledWith(expressPath + '/public/compiled/viewer.min.js')
+		expect(express.static).toHaveBeenCalledWith(expressPath + '/public/compiled/viewer.js')
+		expect(express.static).toHaveBeenCalledWith(expressPath + '/public/compiled/viewer.min.css')
+		expect(express.static).toHaveBeenCalledWith(expressPath + '/public/compiled/viewer.css')
 	})
 
 	test('adds any express applications', () => {

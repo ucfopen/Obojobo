@@ -17,10 +17,15 @@ const controls = props => {
 				isOrNot(controlsOpts.zoom, 'zoomable') +
 				isOrNot(controlsOpts.reload, 'reloadable')
 			}
+			role="toolbar"
 		>
 			{controlsOpts.reload ? (
 				<div className="control-button-container reload">
-					<button className="reload-button" onClick={props.reload}>
+					<button
+						className="reload-button"
+						onClick={props.reload}
+						aria-label="Reload embedded content"
+					>
 						Reload
 					</button>
 					<span className="tool-tip">Reload</span>
@@ -28,7 +33,13 @@ const controls = props => {
 			) : null}
 			{controlsOpts.newWindow ? (
 				<div className="new-window-link">
-					<a target="_blank" rel="noopener noreferrer" href={props.newWindowSrc}>
+					<a
+						target="_blank"
+						rel="noopener noreferrer"
+						href={props.newWindowSrc}
+						aria-label="Open embedded content in a new window or tab"
+						role="button"
+					>
 						View in a new window
 					</a>
 
@@ -38,7 +49,7 @@ const controls = props => {
 			{controlsOpts.zoom ? (
 				<div className="size-controls">
 					<div className="zoom-controls">
-						{props.isZoomAbleToBeReset ? (
+						{props.isZoomResettable ? (
 							<div className="control-button-container zoom-reset">
 								<button className="zoom-reset-button" onClick={props.zoomReset}>
 									Reset zoom
@@ -48,21 +59,30 @@ const controls = props => {
 						) : null}
 						<div className="control-button-container zoom-out">
 							<button
-								disabled={props.isUnableToZoomOut}
+								disabled={props.isZoomOutDisabled}
 								className="zoom-out-button"
 								onClick={props.zoomOut}
+								aria-label="Zoom out embedded content"
 							>
 								Zoom out
 							</button>
 							<span className="tool-tip">
-								{props.isUnableToZoomOut ? "Whoa that's tiny! 😲" : 'Zoom out'}
+								{props.isZoomOutDisabled ? "Whoa that's tiny! 😲" : 'Zoom out'}
 							</span>
 						</div>
 						<div className="control-button-container zoom-in">
-							<button className="zoom-in-button" onClick={props.zoomIn}>
+							<button
+								disabled={props.isZoomInDisabled}
+								className="zoom-in-button"
+								onClick={props.zoomIn}
+								aria-label="Zoom in embedded content"
+							>
 								Zoom in
 							</button>
 							<span className="tool-tip">Zoom in</span>
+							<span className="tool-tip">
+								{props.isZoomInDisabled ? 'At maximum zoom' : 'Zoom in'}
+							</span>
 						</div>
 					</div>
 				</div>

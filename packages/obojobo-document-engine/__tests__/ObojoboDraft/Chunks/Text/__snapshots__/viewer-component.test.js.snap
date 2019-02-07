@@ -8,6 +8,7 @@ exports[`Text Text component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Text"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--single-text pad"

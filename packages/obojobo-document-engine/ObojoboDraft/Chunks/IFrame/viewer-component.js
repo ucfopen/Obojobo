@@ -8,12 +8,17 @@ import Viewer from 'Viewer'
 
 import Controls from './controls'
 import { getRenderSettings } from './render-settings'
+import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 
 const DEFAULT_WIDTH = 710
 const DEFAULT_HEIGHT = 500
 const MIN_SCALE = 0.1
+const MAX_SCALE = 10
+const DECREASE_ZOOM_STEP = -0.1
+const INCREASE_ZOOM_STEP = 0.1
 
-const { OboComponent, Button } = Common.components
+const { OboComponent } = Viewer.components
+const { Button } = Common.components
 const Dispatcher = Common.flux.Dispatcher
 const MediaUtil = Viewer.util.MediaUtil
 const isOrNot = Common.util.isOrNot
@@ -26,11 +31,23 @@ export default class IFrame extends React.Component {
 		this.boundOnZoomReset = this.onClickZoomReset.bind(this)
 		this.boundOnReload = this.onClickReload.bind(this)
 		this.boundOnViewerContentAreaResized = this.onViewerContentAreaResized.bind(this)
+		this.boundSkipToBottom = this.onClickSkipToBottom.bind(this)
+		this.boundSkipToTop = this.onClickSkipToTop.bind(this)
+
+		MediaUtil.setDefaultZoom(this.props.model.get('id'), this.props.model.modelState.initialZoom)
 
 		this.state = {
 			actualWidth: 0,
 			padding: 0
 		}
+	}
+
+	onClickSkipToBottom() {
+		this.refs.buttonSkipToTop.focus()
+	}
+
+	onClickSkipToTop() {
+		this.refs.buttonSkipToBottom.focus()
 	}
 
 	getMeasuredDimensions() {
@@ -55,6 +72,7 @@ export default class IFrame extends React.Component {
 
 	onClickContainer() {
 		MediaUtil.show(this.props.model.get('id'))
+		FocusUtil.focusComponent(this.props.model.get('id'), false)
 	}
 
 	onClickZoomReset() {
@@ -129,12 +147,13 @@ export default class IFrame extends React.Component {
 
 		const {
 			zoomValues,
-			zoom,
 			displayedTitle,
+			ariaRegionLabel,
 			scaleDimensions,
 			isShowing,
 			controlsOpts,
 			isAtMinScale,
+			isAtMaxScale,
 			iframeStyle,
 			afterStyle
 		} = getRenderSettings(
@@ -144,13 +163,20 @@ export default class IFrame extends React.Component {
 			DEFAULT_WIDTH,
 			DEFAULT_HEIGHT,
 			MIN_SCALE,
+			MAX_SCALE,
 			this.props.moduleData.mediaState
 		)
 
 		const src = this.createSrc(ms.src)
 
 		return (
-			<OboComponent model={this.props.model} moduleData={this.props.moduleData} ref="self">
+			<OboComponent
+				model={this.props.model}
+				moduleData={this.props.moduleData}
+				ref="self"
+				role="region"
+				aria-label={ariaRegionLabel}
+			>
 				<div
 					className={
 						'obojobo-draft--chunks--iframe viewer pad' +
@@ -168,10 +194,18 @@ export default class IFrame extends React.Component {
 						onClick={!isShowing && ms.src !== null ? this.boundOnClickContainer : null}
 						style={scaleDimensions.containerStyle}
 					>
+						{isShowing ? (
+							<Button
+								altAction
+								className="button-skip top"
+								ref="buttonSkipToBottom"
+								onClick={this.boundSkipToBottom}
+							>
+								You are at the beginning of this embedded content. Click to skip to the end.
+							</Button>
+						) : null}
 						<div className="iframe-container">
-							{!isShowing ? (
-								<div className="blocker" style={iframeStyle} />
-							) : (
+							{isShowing ? (
 								<iframe
 									ref="iframe"
 									title={ms.title}
@@ -181,25 +215,50 @@ export default class IFrame extends React.Component {
 									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
 									style={iframeStyle}
 								/>
+							) : (
+								<div className="blocker" style={iframeStyle} />
 							)}
 						</div>
 						<div className="after" style={afterStyle} />
 						{isShowing ? null : (
 							<div className="click-to-load">
-								<span className="title">{displayedTitle}</span>
-								{ms.src === null ? null : <Button>View Content</Button>}
+								<span className="title" aria-hidden>
+									{displayedTitle}
+								</span>
+								{ms.src === null ? null : (
+									<Button ariaLabel="Click to load external content">View Content</Button>
+								)}
 							</div>
 						)}
-						<Controls
-							newWindowSrc={src}
-							controlsOptions={controlsOpts}
-							isZoomAbleToBeReset={zoomValues.isZoomDifferentFromInitial}
-							isUnableToZoomOut={isAtMinScale}
-							reload={this.boundOnReload}
-							zoomIn={this.onClickSetZoom.bind(this, parseFloat((zoom + 0.1).toFixed(2)))}
-							zoomOut={this.onClickSetZoom.bind(this, parseFloat((zoom - 0.1).toFixed(2)))}
-							zoomReset={this.boundOnZoomReset}
-						/>
+						{isShowing ? (
+							<Button
+								altAction
+								className="button-skip bottom"
+								ref="buttonSkipToTop"
+								onClick={this.boundSkipToTop}
+							>
+								You are at the end of this embedded content. Click to skip to the beginning.
+							</Button>
+						) : null}
+						{isShowing ? (
+							<Controls
+								newWindowSrc={src}
+								controlsOptions={controlsOpts}
+								isZoomResettable={!zoomValues.isZoomAtDefault}
+								isZoomOutDisabled={isAtMinScale}
+								isZoomInDisabled={isAtMaxScale}
+								reload={this.boundOnReload}
+								zoomIn={this.onClickSetZoom.bind(
+									this,
+									parseFloat((zoomValues.currentZoom + INCREASE_ZOOM_STEP).toFixed(2))
+								)}
+								zoomOut={this.onClickSetZoom.bind(
+									this,
+									parseFloat((zoomValues.currentZoom + DECREASE_ZOOM_STEP).toFixed(2))
+								)}
+								zoomReset={this.boundOnZoomReset}
+							/>
+						) : null}
 					</div>
 				</div>
 			</OboComponent>

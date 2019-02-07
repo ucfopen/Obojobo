@@ -1,10 +1,9 @@
 {
-	"development": {
-		"canPreview": ["Instructor", "Administrator"],
-		"canViewEditor": ["Instructor", "Administrator"],
-		"canEditDrafts": ["Instructor", "Administrator"],
-		"canDeleteDrafts": ["Instructor", "Administrator"],
-		"canCreateDrafts": ["Instructor", "Administrator"],
-		"canViewDrafts": ["Instructor", "Administrator"]
+	"default": {
+		"canViewEditor": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator"],
+		"canEditDrafts": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator"],
+		"canDeleteDrafts": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator"],
+		"canCreateDrafts": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator"],
+		"canViewDrafts": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator"]
 	}
 }

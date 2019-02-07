@@ -6,7 +6,9 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
   style={null}
 >
   <div
+    aria-labelledby="obojobo-draft--components--modal--modal--content"
     className="obojobo-draft--components--modal--modal"
+    role="dialog"
   >
     <input
       className="first-tab"
@@ -15,6 +17,7 @@ exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
     />
     <div
       className="content"
+      id="obojobo-draft--components--modal--modal--content"
     >
       <div
         className="dialog-content"

@@ -13,9 +13,8 @@ const {
 	requireCanViewDrafts
 } = oboRequire('express_validators')
 
-const draftTemplateXML = fs
-	.readFileSync('../../node_modules/obojobo-document-engine/documents/empty.xml')
-	.toString()
+const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
+const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
 
 const tutorialDraft = require('../../../obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
 

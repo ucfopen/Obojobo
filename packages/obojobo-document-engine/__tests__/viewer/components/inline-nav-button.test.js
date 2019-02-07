@@ -9,9 +9,10 @@ jest.mock('src/scripts/viewer/util/nav-util', () => ({
 	goPrev: jest.fn()
 }))
 
-const getProps = (type, disabled = false) => ({
+const getProps = (type, disabled = false, onClick = null) => ({
 	type,
 	disabled,
+	onClick,
 	title: 'testTitle'
 })
 
@@ -51,5 +52,24 @@ describe('Inline Nav Button', () => {
 	test('correctly renders when disabled prop is true', () => {
 		const component = renderer.create(<NavButton {...getProps('goNext', true)} />)
 		expect(component).toMatchSnapshot()
+	})
+
+	test('onClick calls blur on event.target', () => {
+		const blurFn = jest.fn()
+		const el = shallow(<NavButton {...getProps('goNext')} />)
+		el.find('.viewer--components--inline-nav-button').simulate('click', {
+			target: {
+				blur: blurFn
+			}
+		})
+		expect(blurFn).toHaveBeenCalled()
+	})
+
+	test('onClick calls calls prop onClick', () => {
+		const onClick = jest.fn()
+
+		const el = shallow(<NavButton {...getProps('goNext', false, onClick)} />)
+		el.find('.viewer--components--inline-nav-button').simulate('click')
+		expect(onClick).toHaveBeenCalled()
 	})
 })

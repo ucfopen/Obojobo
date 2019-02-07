@@ -2,6 +2,7 @@ import {
 	getIsShowing,
 	getControlsOptions,
 	getDisplayedTitle,
+	getAriaRegionLabel,
 	getSetDimensions,
 	getScaleAmount,
 	getScaleDimensions,
@@ -10,6 +11,8 @@ import {
 	getZoomValues,
 	getRenderSettings
 } from '../../../../ObojoboDraft/Chunks/IFrame/render-settings'
+
+import MediaUtil from '../../../../src/scripts/viewer/util/media-util'
 
 describe('render-settings', () => {
 	test('getIsShowing', () => {
@@ -266,6 +269,15 @@ describe('render-settings', () => {
 		expect(t({ src: false, title: null })).toBe('')
 	})
 
+	test('getAriaRegionLabel', () => {
+		const t = getAriaRegionLabel
+
+		expect(t({ src: 'mock-src', title: 'mock-title' }, 'displayed-title')).toBe(
+			'External content "displayed-title" from mock-src.'
+		)
+		expect(t({ src: 'mock-src' }, 'displayed-title')).toBe('External content from mock-src.')
+	})
+
 	test('getSetDimensions', () => {
 		const d = getSetDimensions
 
@@ -344,28 +356,36 @@ describe('render-settings', () => {
 	})
 
 	test('getZoomValues', () => {
-		const z = getZoomValues
-		const model = {
-			get: () => 'id',
-			modelState: { initialZoom: 'model-zoom' }
-		}
-		expect(z({ zoomById: {} }, model)).toEqual({
-			userZoom: null,
-			initialZoom: 'model-zoom',
-			currentZoom: 'model-zoom',
-			isZoomDifferentFromInitial: false
+		const getZoomSpy = jest.spyOn(MediaUtil, 'getZoom').mockReturnValueOnce('mock-zoom')
+		const getDefaultZoomSpy = jest
+			.spyOn(MediaUtil, 'getDefaultZoom')
+			.mockReturnValueOnce('mock-default-zoom')
+		const isZoomAtDefaultSpy = jest
+			.spyOn(MediaUtil, 'isZoomAtDefault')
+			.mockReturnValueOnce('mock-is-zoom-at-default')
+
+		const mediaState = jest.fn()
+		const model = jest.fn()
+
+		expect(getZoomValues(mediaState, model)).toEqual({
+			currentZoom: 'mock-zoom',
+			defaultZoom: 'mock-default-zoom',
+			isZoomAtDefault: 'mock-is-zoom-at-default'
 		})
-		expect(z({ zoomById: { id: 'user-zoom' } }, model)).toEqual({
-			userZoom: 'user-zoom',
-			initialZoom: 'model-zoom',
-			currentZoom: 'user-zoom',
-			isZoomDifferentFromInitial: true
-		})
+
+		expect(getZoomSpy).toHaveBeenCalledWith(mediaState, model)
+		expect(getDefaultZoomSpy).toHaveBeenCalledWith(mediaState, model)
+		expect(isZoomAtDefaultSpy).toHaveBeenCalledWith(mediaState, model)
+
+		getZoomSpy.mockRestore()
+		getDefaultZoomSpy.mockRestore()
+		isZoomAtDefaultSpy.mockRestore()
 	})
 
 	test('getRenderSettings', () => {
 		const mediaState = {
 			zoomById: {},
+			defaultZoomById: {},
 			shown: {}
 		}
 		const model = {
@@ -376,6 +396,6 @@ describe('render-settings', () => {
 				controls: ''
 			}
 		}
-		expect(getRenderSettings(model, 500, 10, 123, 456, 0.1, mediaState)).toMatchSnapshot()
+		expect(getRenderSettings(model, 500, 10, 123, 456, 0.1, 20, mediaState)).toMatchSnapshot()
 	})
 })

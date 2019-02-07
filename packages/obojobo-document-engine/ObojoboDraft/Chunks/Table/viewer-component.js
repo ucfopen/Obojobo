@@ -3,9 +3,10 @@ import './viewer-component.scss'
 import React from 'react'
 
 import Common from 'Common'
+import Viewer from 'Viewer'
 
 const { TextGroupEl } = Common.chunk.textChunk
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 
 const Table = props => {
 	let header, row

@@ -3,8 +3,9 @@ import './viewer-component.scss'
 import React from 'react'
 import katex from 'katex'
 
-import Common from 'Common'
-const { OboComponent } = Common.components
+import Viewer from 'Viewer'
+
+const { OboComponent } = Viewer.components
 
 const createMarkup = html => {
 	const div = document.createElement('div')

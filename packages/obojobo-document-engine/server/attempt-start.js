@@ -253,7 +253,7 @@ const createChosenQuestionTree = (node, assessmentProperties) => {
 					qbProperties.choose
 				)
 				break
-			case 'random-all':
+			case 'random':
 				node.children = chooseAllQuestionsRandomly(
 					assessmentProperties,
 					node.id,
