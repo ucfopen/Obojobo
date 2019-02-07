@@ -5,7 +5,7 @@ const logger = oboRequire('logger')
 
 const SELECT_SEQUENTIAL = 'sequential'
 const SELECT_RANDOM = 'random'
-const SELECT_RANDOM_UNSEEN = 'random_unseen'
+const SELECT_RANDOM_UNSEEN = 'random-unseen'
 const { getRandom } = require('../../server/util')
 
 jest.mock(

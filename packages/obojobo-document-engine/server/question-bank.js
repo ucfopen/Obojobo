@@ -5,9 +5,9 @@ const { getRandom } = require('./util')
 
 const SELECT_SEQUENTIAL = 'sequential'
 const SELECT_RANDOM = 'random'
-const SELECT_RANDOM_UNSEEN = 'random_unseen'
+const SELECT_RANDOM_UNSEEN = 'random-unseen'
 
-const CHOOSE_ALL = 'all'
+// const CHOOSE_ALL = 'all'
 
 class QuestionBank extends DraftNode {
 	constructor(draftTree, node, initFn) {
@@ -53,15 +53,13 @@ class QuestionBank extends DraftNode {
 	}
 
 	getContentValues() {
-		let choose = this.node.content.choose
-		if (!choose || choose === CHOOSE_ALL) {
-			choose = Infinity
-		}
+		// choose should either be an integer > 0 or "all"
+		// ("all" meaning choose all available questions)
+		// Any other value results in the default of "all".
+		const isValidChoose = Number.isFinite(this.node.content.choose) && this.node.content.choose > 0
+		const choose = isValidChoose ? Math.floor(this.node.content.choose) : Infinity
 
-		let select = this.node.content.select
-		if (!select) {
-			select = SELECT_SEQUENTIAL
-		}
+		const select = this.node.content.select || SELECT_SEQUENTIAL
 
 		return { choose, select }
 	}
