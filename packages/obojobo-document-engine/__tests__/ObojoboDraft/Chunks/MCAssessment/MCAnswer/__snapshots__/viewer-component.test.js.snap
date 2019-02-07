@@ -8,6 +8,7 @@ exports[`MCAnswer MCAnswer component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
   id="obo-choice1-answer"
+  tabIndex={-1}
 >
   <div
     className="component"
@@ -16,6 +17,7 @@ exports[`MCAnswer MCAnswer component 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.Text"
     id="obo-choice1-answer-text"
+    tabIndex={-1}
   >
     <div
       className="text-chunk obojobo-draft--chunks--single-text pad"

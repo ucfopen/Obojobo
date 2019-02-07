@@ -6,10 +6,15 @@ jest.mock('../../../../../../src/scripts/viewer/util/assessment-util')
 jest.mock('../../../../../../src/scripts/viewer/util/nav-util')
 jest.mock('../../../../../../src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('../../../../../../ObojoboDraft/Sections/Assessment/components/full-review/index')
+jest.mock('../../../../../../src/scripts/common/flux/dispatcher')
+jest.mock('../../../../../../src/scripts/common/page/focus')
 
 import PostTest from '../../../../../../ObojoboDraft/Sections/Assessment/components/post-test/index'
 import AssessmentUtil from '../../../../../../src/scripts/viewer/util/assessment-util'
 import OboModel from '../../../../../../__mocks__/_obo-model-with-chunks'
+import focus from '../../../../../../src/scripts/common/page/focus'
+import Dispatcher from '../../../../../../src/scripts/common/flux/dispatcher'
+import { FOCUS_ON_ASSESSMENT_CONTENT } from '../../../../../../ObojoboDraft/Sections/Assessment/assessment-event-constants'
 
 const FULL_REVIEW_ALWAYS = 'always'
 const FULL_REVIEW_AFTER_ALL = 'no-attempts-remaining'
@@ -234,6 +239,10 @@ const scoreActionJSON = {
 }
 
 describe('PostTest', () => {
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
+
 	test('PostTest component', () => {
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
@@ -457,5 +466,56 @@ describe('PostTest', () => {
 			.simulate('click')
 
 		expect(AssessmentUtil.resendLTIScore).toHaveBeenCalled()
+	})
+
+	test('Component listens to FOCUS_ON_ASSESSMENT_CONTENT events when mounted (and stops listening when unmounted)', () => {
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			navState: {
+				context: 'mockContext'
+			},
+			lti: {
+				outcomeServiceHostname: 'mockLTIHost'
+			},
+			focusState: {}
+		}
+		const model = OboModel.create(assessmentJSON)
+		const scoreAction = {
+			page: scoreActionJSON
+		}
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+			{
+				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
+			}
+		])
+
+		expect(Dispatcher.on).not.toHaveBeenCalled()
+		expect(Dispatcher.off).not.toHaveBeenCalled()
+
+		const component = mount(
+			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
+		)
+
+		const boundFocusOnContent = component.instance().boundFocusOnContent
+		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.on).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
+		expect(Dispatcher.off).not.toHaveBeenCalled()
+
+		component.unmount()
+
+		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.off).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.off).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
+	})
+
+	test('focusOnContent calls focus on the h1', () => {
+		const mockH1Ref = {}
+		const postTest = new PostTest()
+		postTest.refs = { h1: mockH1Ref }
+
+		postTest.focusOnContent()
+
+		expect(focus).toHaveBeenCalledWith(mockH1Ref)
 	})
 })

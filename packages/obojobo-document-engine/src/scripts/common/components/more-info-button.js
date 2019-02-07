@@ -43,6 +43,12 @@ class MoreInfoButton extends React.Component {
 		}
 	}
 
+	componentDidUpdate() {
+		if (this.state.mode === 'clicked') {
+			this.refs.dialog.focus()
+		}
+	}
+
 	render() {
 		const isShowing = this.state.mode === 'hover' || this.state.mode === 'clicked'
 
@@ -56,12 +62,21 @@ class MoreInfoButton extends React.Component {
 					onMouseOver={this.boundOnMouseOver}
 					onMouseOut={this.boundOnMouseOut}
 					onClick={this.boundOnClick}
+					aria-label={this.props.ariaLabel || 'More info'}
 				>
 					{this.props.label}
 				</button>
 				{isShowing ? (
-					<div className="info">
-						<div className="container">{this.props.children}</div>
+					<div
+						className="info"
+						role="dialog"
+						tabIndex="-1"
+						ref="dialog"
+						aria-labelledby="obojobo-draft--components--more-info-button--container"
+					>
+						<div id="obojobo-draft--components--more-info-button--container" className="container">
+							{this.props.children}
+						</div>
 					</div>
 				) : null}
 			</div>

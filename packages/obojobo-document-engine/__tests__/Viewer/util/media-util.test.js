@@ -75,10 +75,28 @@ describe('MediaUtil', () => {
 	})
 
 	test('getZoom', () => {
-		expect(MediaUtil.getZoom({ zoomById: {} }, testModel)).toBe(null)
-		expect(MediaUtil.getZoom({ zoomById: { 'mocked-id': 'mocked-zoom' } }, testModel)).toBe(
-			'mocked-zoom'
-		)
+		expect(MediaUtil.getZoom({ zoomById: {}, defaultZoomById: {} }, testModel)).toBe(1)
+		expect(
+			MediaUtil.getZoom(
+				{ zoomById: { 'mocked-id': 'mocked-zoom' }, defaultZoomById: {} },
+				testModel
+			)
+		).toBe('mocked-zoom')
+		expect(
+			MediaUtil.getZoom(
+				{
+					zoomById: { 'mocked-id': 'mocked-zoom' },
+					defaultZoomById: { 'mocked-id': 'mock-default' }
+				},
+				testModel
+			)
+		).toBe('mocked-zoom')
+		expect(
+			MediaUtil.getZoom(
+				{ zoomById: {}, defaultZoomById: { 'mocked-id': 'mock-default' } },
+				testModel
+			)
+		).toBe('mock-default')
 	})
 
 	test('isShowingMedia', () => {

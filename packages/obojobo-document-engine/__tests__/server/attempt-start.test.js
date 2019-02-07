@@ -746,9 +746,9 @@ describe('start attempt route', () => {
 		expect(ids).toEqual(['qA', 'qC', 'qD', 'qG', 'qH'])
 	})
 
-	test('createChosenQuestionTree creates a random-all group with no limit', () => {
+	test('createChosenQuestionTree creates a random group with no limit', () => {
 		const { QB, assessmentProperties } = buildTreeForTest()
-		QB.content.select = 'random-all'
+		QB.content.select = 'random'
 		QB.content.choose = Infinity
 		expect(_.shuffle).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
@@ -786,9 +786,9 @@ describe('start attempt route', () => {
 		expect(ids).toEqual(['qA', 'qC', 'qD'])
 	})
 
-	test('createChosenQuestionTree creates a random-all group with a limit', () => {
+	test('createChosenQuestionTree creates a random group with a limit', () => {
 		const { QB, assessmentProperties } = buildTreeForTest()
-		QB.content.select = 'random-all'
+		QB.content.select = 'random'
 		QB.content.choose = 2
 		expect(_.shuffle).not.toHaveBeenCalled()
 		createChosenQuestionTree(QB, assessmentProperties)
@@ -930,66 +930,4 @@ describe('start attempt route', () => {
 			userId: 'mockUserId'
 		})
 	})
-	// <<<<<<< HEAD
-
-	// 	test('calling startAttempt when no attempts remain rejects with an expected error', () => {
-	// 		mockReq = {
-	// 			requireCurrentUser: jest.fn(() =>
-	// 				Promise.resolve({
-	// 					user: {
-	// 						canViewEditor: true
-	// 					}
-	// 				})
-	// 			),
-	// 			body: {
-	// 				draftId: 'mockDraftId',
-	// 				assessmentId: 'mockAssessmentId'
-	// 			}
-	// 		}
-
-	// 		mockRes = { reject: jest.fn() }
-
-	// 		const mockAssessmentNode = {
-	// 			getChildNodeById: jest.fn(() => ({
-	// 				node: {
-	// 					content: {
-	// 						// Number of attempts the user is allowed (what we're testing here).
-	// 						attempts: 1
-	// 					}
-	// 				},
-	// 				children: [
-	// 					{},
-	// 					{
-	// 						childrenSet: ['test', 'test1'],
-	// 						toObject: jest.fn()
-	// 					}
-	// 				]
-	// 			}))
-	// 		}
-
-	// 		Assessment.getCompletedAssessmentAttemptHistory = jest.fn().mockResolvedValue(new Array(2))
-	// 		Draft.fetchById = jest.fn(() => Promise.resolve(mockAssessmentNode))
-
-	// 		return startAttempt(mockReq, mockRes).then(() => {
-	// 			expect(mockRes.reject).toHaveBeenCalledWith(ERROR_ATTEMPT_LIMIT_REACHED)
-	// 		})
-	// 	})
-
-	// 	test('an unexpected error in startAttempt calls logAndRespondToUnexpected with expected values', () => {
-	// 		mockReq = {
-	// 			requireCurrentUser: jest.fn().mockResolvedValue()
-	// 		}
-
-	// 		mockRes = { unexpected: jest.fn() }
-
-	// 		Draft.fetchById = jest.fn(() => {
-	// 			throw new Error(ERROR_UNEXPECTED_DB_ERROR)
-	// 		})
-
-	// 		return startAttempt(mockReq, mockRes).then(() => {
-	// 			expect(mockRes.unexpected).toHaveBeenCalledWith(ERROR_UNEXPECTED_DB_ERROR)
-	// 		})
-	// 	})
-	// =======
-	// >>>>>>> origin/dev/4-amethyst
 })

@@ -8,6 +8,7 @@ exports[`Figure Figure component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Figure"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"
@@ -60,6 +61,7 @@ exports[`Figure Figure component with no textGroup 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Figure"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="non-editable-chunk obojobo-draft--chunks--figure viewer custom"

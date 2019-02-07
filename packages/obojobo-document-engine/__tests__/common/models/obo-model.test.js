@@ -515,6 +515,11 @@ describe('OboModel', () => {
 		expect(domEl.attributes[4].value).toBe('ObojoboDraft.Chunks.Heading')
 	})
 
+	test('getDomId returns an id for an element', () => {
+		const root = OboModel.create({ id: 'mock-id', type: 'ObojoboDraft.Chunks.Heading' })
+		expect(root.getDomId()).toEqual('obo-mock-id')
+	})
+
 	test('getComponentClass returns the component class of a model', () => {
 		expect.assertions(1)
 		Store.getItems(items => {

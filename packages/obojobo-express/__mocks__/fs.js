@@ -25,6 +25,12 @@ function __setMockFileContents(filePath, contents) {
 	mockFileContents.set(filePath, contents)
 }
 
+function __removeMockFileContents(filePath) {
+	if (mockFileContents.has(filePath)) {
+		mockFileContents.delete(filePath)
+	}
+}
+
 // A custom version of `readdirSync` that reads from the special mocked out
 // file list set via __setMockFiles
 function readdirSync(directoryPath) {
@@ -32,6 +38,9 @@ function readdirSync(directoryPath) {
 }
 
 function readFileSync(filePath) {
+	if (!mockFileContents.has(filePath)) {
+		throw Error(`Mocked FS doesn't have mock file contents for ${filePath}`)
+	}
 	return mockFileContents.get(filePath)
 }
 
@@ -41,6 +50,7 @@ function existsSync(filePath) {
 
 fs.__setMockFiles = __setMockFiles
 fs.__setMockFileContents = __setMockFileContents
+fs.__removeMockFileContents = __removeMockFileContents
 fs.readdirSync = readdirSync
 fs.readFileSync = readFileSync
 fs.existsSync = existsSync
