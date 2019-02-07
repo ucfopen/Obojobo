@@ -3,6 +3,7 @@
   "name": "obojobo-next",
   "repository": "https://github.com/ucfopen/Obojobo.git",
   "homepage":"https://ucfopen.github.io/Obojobo-Docs/",
+  "license": "AGPL-3.0",
   "scripts": {
     "start": "cd node_modules/obojobo-express && node ./bin/www",
     "setup": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn db:rebuild",

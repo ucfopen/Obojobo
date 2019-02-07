@@ -4,7 +4,7 @@
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage":"https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
-	"private": true,
+	"license": "AGPL-3.0",
 	"scripts": {
 		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
 		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",

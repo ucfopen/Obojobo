@@ -3,6 +3,7 @@
   "repository": "https://github.com/ucfopen/Obojobo.git",
   "homepage":"https://ucfopen.github.io/Obojobo-Docs/",
   "description": "Obojobo document XML parser.",
+  "license": "AGPL-3.0",
   "version": "3.4.0",
   "main": "xml2draft.js",
   "devDependencies": {
