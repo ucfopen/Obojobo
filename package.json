@@ -1,6 +1,8 @@
 {
   "private": true,
   "name": "obojobo-next",
+  "repository": "https://github.com/ucfopen/Obojobo.git",
+  "homepage":"https://ucfopen.github.io/Obojobo-Docs/",
   "scripts": {
     "start": "cd node_modules/obojobo-express && node ./bin/www",
     "setup": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn db:rebuild",
@@ -13,7 +15,8 @@
   },
   "devDependencies": {
     "concurrently": "^3.5.0",
-    "husky": "^0.13.3"
+    "husky": "^0.13.3",
+    "lerna": "^3.10.7"
   },
   "workspaces": [
     "packages/obojobo-document-engine",

@@ -1,7 +1,9 @@
 {
 	"name": "obojobo-document-engine",
 	"version": "3.4.0",
-	"description": "",
+	"repository": "https://github.com/ucfopen/Obojobo.git",
+	"homepage":"https://ucfopen.github.io/Obojobo-Docs/",
+	"description": "Core library for Obojobo's modular document engine.",
 	"engines": {
 		"yarn": "^1.0",
 		"node": "^10.4.1"
