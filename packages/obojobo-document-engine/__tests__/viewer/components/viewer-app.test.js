@@ -135,6 +135,28 @@ describe('ViewerApp', () => {
 		})
 	})
 
+	test('focusOnContent calls FocusUtil.focusComponent if component class has no focusOnContent method', done => {
+		expect.assertions(3)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+		const MockComponentClass = {}
+		FocusUtil.focusComponent = jest.fn()
+
+		setTimeout(() => {
+			component.update()
+
+			const mockModel = { getComponentClass: () => MockComponentClass, get: () => 'mocked-id' }
+
+			expect(component.instance().focusOnContent(mockModel)).toBe(true)
+
+			expect(FocusUtil.focusComponent).toHaveBeenCalledTimes(1)
+			expect(FocusUtil.focusComponent).toHaveBeenCalledWith('mocked-id', false)
+
+			component.unmount()
+			done()
+		})
+	})
+
 	test('focusOnContent does not call focus (and returns false) if element cannot be found', done => {
 		expect.assertions(2)
 		mocksForMount()

@@ -27,7 +27,7 @@ export default class Nav extends React.Component {
 				break
 
 			case 'sub-link': {
-				FocusUtil.focusComponent(item.id, false)
+				FocusUtil.focusOnContent(item.id)
 				break
 			}
 		}

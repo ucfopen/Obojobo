@@ -325,7 +325,11 @@ export default class ViewerApp extends React.Component {
 		const Component = model.getComponentClass()
 		if (!Component) return false
 
-		Component.focusOnContent(model)
+		if (Component.focusOnContent) {
+			Component.focusOnContent(model)
+		} else {
+			FocusUtil.focusComponent(model.get('id'), false)
+		}
 
 		return true
 	}

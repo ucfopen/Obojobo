@@ -232,10 +232,10 @@ describe('Nav', () => {
 
 		const el = shallow(<Nav {...props} />)
 
-		expect(FocusUtil.focusComponent).not.toHaveBeenCalled()
+		expect(FocusUtil.focusOnContent).not.toHaveBeenCalled()
 		el.find('li').simulate('click')
-		expect(FocusUtil.focusComponent).toHaveBeenCalledTimes(1)
-		expect(FocusUtil.focusComponent).toHaveBeenCalledWith(5, false)
+		expect(FocusUtil.focusOnContent).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusOnContent).toHaveBeenCalledWith(5)
 	})
 
 	test('onClickSkipNavigation calls FocusUtil.focusOnNavTargetContent', () => {
