@@ -28,13 +28,12 @@ class Heading extends React.Component {
 
 	handleLevelChange(num) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		this.setState(state => {
 			return { isOpen: !state.isOpen }
 		})
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					level: num,
@@ -42,7 +41,6 @@ class Heading extends React.Component {
 				}
 			}
 		})
-		editor.onChange(change)
 	}
 	toggleLevelSelect() {
 		this.setState(state => {

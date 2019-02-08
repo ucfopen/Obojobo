@@ -5,9 +5,8 @@ import KeyDownUtil from '../util/keydown-util'
 const Node = props => {
 	const handleSelectChange = event => {
 		const editor = props.editor
-		const change = editor.value.change()
 
-		change.setNodeByKey(props.node.key, {
+		return editor.setNodeByKey(props.node.key, {
 			data: {
 				current: event.target.value,
 				name: props.node.data.get('name'),
@@ -16,14 +15,12 @@ const Node = props => {
 				type: props.node.data.get('type')
 			}
 		})
-		editor.onChange(change)
 	}
 
 	const handleCheckChange = event => {
 		const editor = props.editor
-		const change = editor.value.change()
 
-		change.setNodeByKey(props.node.key, {
+		return editor.setNodeByKey(props.node.key, {
 			data: {
 				checked: event.target.checked,
 				name: props.node.data.get('name'),
@@ -31,7 +28,6 @@ const Node = props => {
 				type: props.node.data.get('type')
 			}
 		})
-		editor.onChange(change)
 	}
 
 	switch (props.node.data.get('type')) {

@@ -87,7 +87,7 @@ class ActionButton extends React.Component {
 		const editor = this.props.editor
 		const content = this.props.node.data.get('content')
 
-		editor.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					label: event.target.value,
@@ -117,7 +117,7 @@ class ActionButton extends React.Component {
 			}
 		})
 
-		editor.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
 	}
@@ -128,10 +128,9 @@ class ActionButton extends React.Component {
 
 		content.actions.splice(index, 1)
 
-		editor.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
-		editor.onChange(editor)
 	}
 
 	renderNew() {
@@ -160,7 +159,9 @@ class ActionButton extends React.Component {
 						name={'Value'}
 						value={this.state.newTrigger.value}
 						onChange={event => this.handleValueChange(event)}
-						onClick={event => event.stopPropagation()}
+						onClick={event => {
+							event.stopPropagation()
+						}}
 					/>
 				</div>
 				<button onClick={() => this.addAction()}>Save</button>
@@ -189,7 +190,7 @@ class ActionButton extends React.Component {
 	}
 
 	renderButton() {
-		const { isFocused } = this.props
+		const { isSelected } = this.props
 		const content = this.props.node.data.get('content')
 
 		const wrapperStyle = {
@@ -197,7 +198,7 @@ class ActionButton extends React.Component {
 		}
 
 		const maskStyle = {
-			display: isFocused ? 'none' : 'block',
+			display: isSelected ? 'none' : 'block',
 			position: 'absolute',
 			top: '0',
 			left: '0',
@@ -232,8 +233,12 @@ class ActionButton extends React.Component {
 	render() {
 		const { isSelected } = this.props
 
+		console.log(this.props.editor.isVoid(this.props.node))
+
 		return (
-			<div className={'text-chunk obojobo-draft--chunks--action-button pad'}>
+			<div
+				className={'text-chunk obojobo-draft--chunks--action-button pad'}
+				onClick={event => event.stopPropagation()}>
 				{this.renderButton()}
 				{isSelected ? this.renderTriggers() : null}
 			</div>

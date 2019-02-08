@@ -38,8 +38,9 @@ const oboToSlate = node => {
 	node.children.forEach(child => {
 		if (child.type === MCASSESSMENT_NODE) {
 			json.nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
+		} else {
+			json.nodes.push(Component.helpers.oboToSlate(child))
 		}
-		json.nodes.push(Component.helpers.oboToSlate(child))
 	})
 
 	if (json.data.content.solution) {

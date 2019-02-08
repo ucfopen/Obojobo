@@ -2,11 +2,15 @@ import React from 'react'
 
 class Break extends React.Component {
 	toggleSize() {
+		const editor = this.props.editor
 		const content = this.props.node.data.get('content')
+
 		const newSize = content.width === 'normal' ? 'large' : 'normal'
 		content.width = newSize
 
-		this.forceUpdate()
+		return editor.setNodeByKey(this.props.node.key, {
+			data: { content }
+		})
 	}
 
 	render() {

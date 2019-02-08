@@ -32,31 +32,31 @@ const plugins = {
 
 		// Delete empty text node
 		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return deleteEmptyParent(event, editor)
+			return deleteEmptyParent(event, editor, next)
 		}
 
 		// Enter
 		if (event.key === 'Enter') {
 			const last = editor.value.endBlock
-			if (last.text !== '') return
+			if (last.text !== '') return next()
 
 			// Double Enter
-			return splitParent(event, editor)
+			return splitParent(event, editor, next)
 		}
 
 		// Shift+Tab
 		if (event.key === 'Tab' && event.shiftKey) {
-			return decreaseIndent(event, editor)
+			return decreaseIndent(event, editor, next)
 		}
 
 		// Alt+Tab
 		if (event.key === 'Tab' && event.altKey) {
-			return increaseIndent(event, editor)
+			return increaseIndent(event, editor, next)
 		}
 
 		// Tab
 		if (event.key === 'Tab') {
-			return insertTab(event, editor)
+			return insertTab(event, editor, next)
 		}
 	},
 	renderNode(props, editor, next) {

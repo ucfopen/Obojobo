@@ -14,36 +14,25 @@ class QuestionBank extends React.Component {
 	}
 	delete() {
 		const editor = this.props.editor
-		const change = editor.value.change()
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 	addQuestion() {
 		const editor = this.props.editor
-		const change = editor.value.change()
-
 		const newQuestion = Block.create({
 			type: QUESTION_NODE
 		})
-		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
-
-		editor.onChange(change)
+		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 	}
 	addQuestionBank() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		const newQuestion = Block.create({
 			type: QUESTION_BANK_NODE,
 			data: { content: { choose: 1, select: 'sequential' } }
 		})
-		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
-
-		editor.onChange(change)
+		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 	}
 	render() {
-		console.log('rendering')
 		return (
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 				<button className={'delete-node'} onClick={() => this.delete()}>

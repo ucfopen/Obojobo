@@ -13,7 +13,7 @@ const EditorSchema = {
 					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -27,7 +27,7 @@ const EditorSchema = {
 								}
 							]
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						const block = Block.fromJSON({
@@ -40,7 +40,7 @@ const EditorSchema = {
 								}
 							]
 						})
-						return change.withoutNormalizing(c => {
+						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							return c.insertNodeByKey(node.key, index, block)
 						})

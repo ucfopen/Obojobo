@@ -28,19 +28,19 @@ const schema = {
 					max: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
 						const block = Block.create({
 							type: TEXT_NODE
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					// Occurs when multiple valid nodes are found within a
 					// component
 					case CHILD_UNKNOWN: {
-						return change.splitNodeByKey(node.key, 1)
+						return editor.splitNodeByKey(node.key, 1)
 					}
 				}
 			}

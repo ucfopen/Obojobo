@@ -23,19 +23,14 @@ class Score extends React.Component {
 		// TODO Validate range
 
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.setNodeByKey(this.props.node.key, { data: { for: newRange } })
-		editor.onChange(change)
+		return editor.setNodeByKey(this.props.node.key, { data: { for: newRange } })
 	}
 
 	deleteNode() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 
 	render() {
@@ -58,15 +53,12 @@ class Score extends React.Component {
 const Node = props => {
 	const addAction = () => {
 		const editor = props.editor
-		const change = editor.value.change()
 
 		const newScore = Block.create({
 			type: SCORE_NODE,
 			data: { for: '[0,100]' }
 		})
-		change.insertNodeByKey(props.node.key, props.node.nodes.size, newScore)
-
-		editor.onChange(change)
+		return editor.insertNodeByKey(props.node.key, props.node.nodes.size, newScore)
 	}
 
 	return (

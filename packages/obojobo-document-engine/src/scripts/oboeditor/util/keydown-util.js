@@ -1,6 +1,6 @@
 const KeyDownUtil = {
-	deleteNodeContents: (event, change) => {
-		const value = change.value
+	deleteNodeContents: (event, editor) => {
+		const value = editor.value
 		const selection = value.selection
 		const startBlock = value.startBlock
 		const startOffset = selection.start.offset
@@ -10,7 +10,7 @@ const KeyDownUtil = {
 		// If a cursor is collapsed at the start of the first block, do nothing
 		if (startOffset === 0 && isCollapsed) {
 			event.preventDefault()
-			return change
+			return editor
 		}
 
 		// Deletion within a cell
@@ -39,7 +39,7 @@ const KeyDownUtil = {
 		// Clear all the selection
 		cellsToClear.forEach(cell => {
 			cell.nodes.forEach(node => {
-				change.removeNodeByKey(node.key)
+				editor.removeNodeByKey(node.key)
 			})
 		})
 

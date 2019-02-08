@@ -76,6 +76,8 @@ class Node extends React.Component {
 	toggleMark(mark, event) {
 		event.preventDefault()
 
+		const editor = this.props.getEditor()
+
 		if (mark.plugin === alignMark) return this.changeAlign(mark)
 
 		if (mark.name === 'Superscript') return this.toggleScript(1)
@@ -84,16 +86,13 @@ class Node extends React.Component {
 		if (mark.name === 'Indent') return this.indent()
 		if (mark.name === 'Unindent') return this.unindent()
 
-		const value = this.props.value
-		const change = value.change().toggleMark(mark.type)
-		this.props.onChange(change)
+		return editor.toggleMark(mark.type)
 	}
 
 	changeAlign(mark) {
-		const value = this.props.value
-		const change = value.change()
+		const editor = this.props.getEditor()
 
-		value.blocks.forEach(block => {
+		editor.value.blocks.forEach(block => {
 			const dataJSON = block.data.toJSON()
 			if (block.type === TEXT_LINE_NODE) {
 				dataJSON.align = mark.align
@@ -101,16 +100,14 @@ class Node extends React.Component {
 				dataJSON.content.align = mark.align
 			}
 
-			change.setNodeByKey(block.key, { data: dataJSON })
+			editor.setNodeByKey(block.key, { data: dataJSON })
 		})
-
-		this.props.onChange(change)
 	}
 
 	toggleScript(amount) {
-		const value = this.props.value
-		const change = value.change()
-		const hasScript = value.marks.some(mark => {
+		const editor = this.props.getEditor()
+
+		const hasScript = editor.value.marks.some(mark => {
 			if (mark.type === SUPERSCRIPT_MARK) {
 				return mark.data.get('num') === amount
 			}
@@ -118,29 +115,26 @@ class Node extends React.Component {
 		})
 
 		if (hasScript) {
-			change.removeMark({
+			editor.removeMark({
 				type: SUPERSCRIPT_MARK,
 				data: { num: amount }
 			})
 		} else {
-			change.addMark({
+			editor.addMark({
 				type: SUPERSCRIPT_MARK,
 				data: { num: amount }
 			})
 		}
-
-		this.props.onChange(change)
 	}
 
 	toggleLink() {
-		const value = this.props.value
-		const change = value.change()
+		const editor = this.props.getEditor()
 
 		let removedMarks = false
 
-		value.marks.forEach(mark => {
+		editor.value.marks.forEach(mark => {
 			if (mark.type === LINK_MARK) {
-				change.removeMark({
+				editor.removeMark({
 					type: LINK_MARK,
 					data: mark.data.toJSON()
 				})
@@ -150,25 +144,21 @@ class Node extends React.Component {
 
 		// If a mark was removed, don't prompt for a link address
 		if (removedMarks) {
-			this.props.onChange(change)
 			return false
 		}
 
 		const href = window.prompt('Link address:') || null
 
-		change.addMark({
+		editor.addMark({
 			type: LINK_MARK,
 			data: { href }
 		})
-
-		this.props.onChange(change)
 	}
 
 	indent() {
-		const value = this.props.value
-		const change = value.change()
+		const editor = this.props.getEditor()
 
-		value.blocks.forEach(block => {
+		editor.value.blocks.forEach(block => {
 			const dataJSON = block.data.toJSON()
 			if (block.type === TEXT_LINE_NODE) {
 				dataJSON.indent = dataJSON.indent + 1
@@ -183,7 +173,7 @@ class Node extends React.Component {
 				let type = 'unordered'
 
 				// get the bullet and type of the closest parent level
-				const level = value.document.getClosest(block.key, parent => {
+				const level = editor.value.document.getClosest(block.key, parent => {
 					return parent.type === LIST_LEVEL_NODE
 				})
 
@@ -195,23 +185,20 @@ class Node extends React.Component {
 				const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
 				const nextBullet = bulletList[(bulletList.indexOf(bullet) + 1) % bulletList.length]
 
-				return change.wrapBlockByKey(block.key, {
+				return editor.wrapBlockByKey(block.key, {
 					type: LIST_LEVEL_NODE,
 					data: { content: { type: type, bulletStyle: nextBullet } }
 				})
 			}
 
-			change.setNodeByKey(block.key, { data: dataJSON })
+			editor.setNodeByKey(block.key, { data: dataJSON })
 		})
-
-		this.props.onChange(change)
 	}
 
 	unindent() {
-		const value = this.props.value
-		const change = value.change()
+		const editor = this.props.getEditor()
 
-		value.blocks.forEach(block => {
+		editor.value.blocks.forEach(block => {
 			const dataJSON = block.data.toJSON()
 			if (block.type === TEXT_LINE_NODE) {
 				let newIndent = dataJSON.indent - 1
@@ -228,13 +215,11 @@ class Node extends React.Component {
 			}
 
 			if (block.type === LIST_LINE_NODE) {
-				return change.unwrapNodeByKey(block.key, LIST_LEVEL_NODE)
+				return editor.unwrapNodeByKey(block.key, LIST_LEVEL_NODE)
 			}
 
-			change.setNodeByKey(block.key, { data: dataJSON })
+			editor.setNodeByKey(block.key, { data: dataJSON })
 		})
-
-		this.props.onChange(change)
 	}
 
 	render() {

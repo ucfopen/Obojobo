@@ -12,22 +12,17 @@ const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'
 class Mod extends React.Component {
 	deleteNode() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		const parent = editor.value.document.getDescendant(this.props.parent.key)
 
 		const sibling = parent.nodes.get(1)
 
-		// If this is the only row in the table, delete the table
+		// If this is the only row in the list, delete the list
 		if (!sibling) {
-			change.removeNodeByKey(parent.key)
-			editor.onChange(change)
-			return
+			return editor.removeNodeByKey(parent.key)
 		}
 
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 
 	render() {
@@ -59,32 +54,23 @@ class Node extends React.Component {
 
 	addMod() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		// If we are adding the first mod, we need to add a ModList
 		if (this.props.node.nodes.size < 5) {
 			const modlist = Block.create({ type: MOD_LIST_NODE })
-			change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, modlist)
-
-			editor.onChange(change)
-			return
+			return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, modlist)
 		}
 
 		const modlist = this.props.node.nodes.get(4)
 
 		const mod = Block.create({ type: MOD_NODE })
-		change.insertNodeByKey(modlist.key, modlist.nodes.size, mod)
-
-		editor.onChange(change)
+		return editor.insertNodeByKey(modlist.key, modlist.nodes.size, mod)
 	}
 
 	deleteNode() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 
 	render() {

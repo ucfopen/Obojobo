@@ -9,24 +9,18 @@ import './editor-component.scss'
 class Node extends React.Component {
 	insertBlockAtStart(item) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.insertNodeByKey(this.props.node.key, 0, Block.create(item.insertJSON))
-
-		editor.onChange(change)
+		return editor.insertNodeByKey(this.props.node.key, 0, Block.create(item.insertJSON))
 	}
 
 	insertBlockAtEnd(item) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.insertNodeByKey(
+		return editor.insertNodeByKey(
 			this.props.node.key,
 			this.props.node.nodes.size,
 			Block.create(item.insertJSON)
 		)
-
-		editor.onChange(change)
 	}
 
 	convertItemsToArray(items) {

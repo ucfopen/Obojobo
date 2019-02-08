@@ -38,7 +38,7 @@ const plugins = {
 		if (event.key === 'Enter') {
 			// Text lines will be changed to list lines by the schema unless
 			// they are at the end of the list
-			return insertText(event, editor)
+			return insertText(event, editor, next)
 		}
 		if (event.key === 'Tab' && event.shiftKey) {
 			return wrapLevel(event, editor, next)
@@ -59,7 +59,7 @@ const plugins = {
 				return next()
 		}
 	},
-	normalizeNode(node, next) {
+	normalizeNode(node, editor, next) {
 		if (node.object !== 'block') return next()
 		if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return next()
 		if (node.nodes.size <= 1) return next()
