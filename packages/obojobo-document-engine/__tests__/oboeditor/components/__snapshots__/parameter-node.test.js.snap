@@ -74,8 +74,8 @@ exports[`Parameter Node Node component with select changes value 2`] = `"<div cl
 exports[`Parameter Node oboToSlate converts an OboNode to a Slate node 1`] = `
 Object {
   "data": Object {
-    "display": undefined,
-    "name": undefined,
+    "display": "someDisplay",
+    "name": "oboName",
     "options": undefined,
     "type": "type-text",
   },
@@ -83,7 +83,7 @@ Object {
     Object {
       "leaves": Array [
         Object {
-          "text": undefined,
+          "text": "someValue",
         },
       ],
       "object": "text",
@@ -94,24 +94,33 @@ Object {
 }
 `;
 
+exports[`Parameter Node oboToSlate converts an OboNode to a Slate node with checked 1`] = `
+Object {
+  "data": Object {
+    "checked": "someValue",
+    "display": "someDisplay",
+    "name": "oboName",
+    "options": undefined,
+    "type": "type-toggle",
+  },
+  "isVoid": true,
+  "object": "block",
+  "type": "Parameter",
+}
+`;
+
 exports[`Parameter Node oboToSlate converts an OboNode to a Slate node with options 1`] = `
 Object {
   "data": Object {
-    "display": undefined,
-    "name": undefined,
-    "options": undefined,
-    "type": "type-text",
-  },
-  "nodes": Array [
-    Object {
-      "leaves": Array [
-        Object {
-          "text": undefined,
-        },
-      ],
-      "object": "text",
+    "current": "someValue",
+    "display": "someDisplay",
+    "name": "oboName",
+    "options": Object {
+      "someOption": "option",
     },
-  ],
+    "type": "type-select",
+  },
+  "isVoid": true,
   "object": "block",
   "type": "Parameter",
 }

@@ -8,6 +8,7 @@ exports[`OboComponent 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Text"
   id="obo-testId"
+  someOtherProp="otherProp"
 >
   Test
 </div>

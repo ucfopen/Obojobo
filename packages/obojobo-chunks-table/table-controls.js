@@ -1,3 +1,7 @@
+// @TODO
+/* eslint react/no-string-refs: 0 */
+/* eslint react/no-find-dom-node: 0 */
+
 import './table-controls.scss'
 
 import React from 'react'

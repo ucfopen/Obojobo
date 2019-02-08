@@ -35,9 +35,8 @@ export default class GridButton extends React.Component {
 		}, MOUSE_OUT_DELAY_MS))
 	}
 
-	onMouseDown() {
+	onMouseDown(event) {
 		event.preventDefault()
-		// event.stopPropagation()
 
 		this.setState(this.getInitialState())
 		return this.props.commandHandler(this.props.command, {

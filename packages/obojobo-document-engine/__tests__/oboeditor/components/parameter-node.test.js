@@ -174,17 +174,35 @@ describe('Parameter Node', () => {
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const slateNode = ParameterNode.helpers.oboToSlate('mockKey', 'mockValue', 'Mock Display')
+		const slateNode = ParameterNode.helpers.oboToSlate({
+			name: 'oboName',
+			value: 'someValue',
+			display: 'someDisplay'
+		})
 
 		expect(slateNode).toMatchSnapshot()
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node with options', () => {
-		const slateNode = ParameterNode.helpers.oboToSlate('mockKey', 'mockValue', 'Mock Display', [
-			'Mock Option 1',
-			'Mock Option 2',
-			'Mock Option 3'
-		])
+		const slateNode = ParameterNode.helpers.oboToSlate({
+			name: 'oboName',
+			value: 'someValue',
+			display: 'someDisplay',
+			options: {
+				someOption: 'option'
+			}
+		})
+
+		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('oboToSlate converts an OboNode to a Slate node with checked', () => {
+		const slateNode = ParameterNode.helpers.oboToSlate({
+			name: 'oboName',
+			value: 'someValue',
+			display: 'someDisplay',
+			checked: true
+		})
 
 		expect(slateNode).toMatchSnapshot()
 	})

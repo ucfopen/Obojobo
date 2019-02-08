@@ -244,8 +244,7 @@ describe('FullReview', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	// @TODO: question-utils > getViewState has trouble checking state.viewedQuestions[modelId]
-	test.skip('FullReview component with last taken attempt', () => {
+	test('FullReview component with assessment review context', () => {
 		const moduleData = {
 			assessmentState: 'assessmentReview:mockAssessmentState',
 			navState: {
@@ -281,8 +280,7 @@ describe('FullReview', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	// @TODO: question-utils > getViewState has trouble checking state.viewedQuestions[modelId]
-	test.skip('FullReview component with fully displayed attempt', () => {
+	test('FullReview component with fully displayed attempt', () => {
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
@@ -427,8 +425,7 @@ describe('FullReview', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	// @TODO: question-utils > getViewState has trouble checking state.viewedQuestions[modelId]
-	test.skip('FullReview component with two attempts swaps view when clicked', () => {
+	test('FullReview component with two attempts swaps view when clicked', () => {
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {

@@ -14,7 +14,11 @@ test('OboComponent', () => {
 	OboModel.create({ id: 'testId', type: 'ObojoboDraft.Chunks.Text' })
 
 	const component = renderer.create(
-		<OboComponent model={OboModel.models.testId} moduleData={{ focusState: {} }}>
+		<OboComponent
+			model={OboModel.models.testId}
+			moduleData={{ focusState: {} }}
+			someOtherProp="otherProp"
+		>
 			Test
 		</OboComponent>
 	)

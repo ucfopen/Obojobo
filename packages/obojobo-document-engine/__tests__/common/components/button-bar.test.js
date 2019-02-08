@@ -19,7 +19,7 @@ describe('ButtonBar', () => {
 			}
 		]
 		const component = renderer.create(
-			<ButtonBar altAction={jest.fn()} isDangerous={true} disabled={true}>
+			<ButtonBar altAction={jest.fn()} selectedIndex={0} isDangerous={true} disabled={true}>
 				{children}
 			</ButtonBar>
 		)
@@ -41,8 +41,15 @@ describe('ButtonBar', () => {
 			.childAt(0)
 			.find('button')
 			.simulate('click')
+		expect(mockClick).toBeCalledTimes(1)
 
-		expect(mockClick).toHaveBeenCalled
+		// default function coverage for buttonBarOnClick
+		const componentNoClick = mount(<ButtonBar>{children}</ButtonBar>)
+		componentNoClick
+			.childAt(0)
+			.find('button')
+			.simulate('click')
+		expect(mockClick).toBeCalledTimes(1)
 	})
 
 	test('ButtonBar component clicks button but does not fire', () => {
@@ -59,6 +66,6 @@ describe('ButtonBar', () => {
 			.find('button')
 			.simulate('click')
 
-		expect(mockClick).toHaveBeenCalled
+		expect(mockClick).toHaveBeenCalled()
 	})
 })

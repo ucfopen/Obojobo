@@ -66,4 +66,11 @@ describe('TextGroupAdapter', () => {
 
 		expect(json.content.textGroup).toEqual(model.modelState.textGroup.toDescriptor())
 	})
+
+	test('toText', () => {
+		const toText = TextGroupAdapter.toText({
+			modelState: { textGroup: { first: { text: { value: 'test value' } } } }
+		})
+		expect(toText).toEqual('test value')
+	})
 })

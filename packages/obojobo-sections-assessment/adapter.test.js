@@ -12,14 +12,15 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		expect(model.modelState).toMatchSnapshot()
 	})
 
-	test('construct builds with N attempts', () => {
+	test('construct builds with N attempts and runs review transform function', () => {
 		const attrs = {
-			content: { attempts: 6 }
+			content: { attempts: 6, review: 'Always' }
 		}
 		const model = new OboModel(attrs)
 		AssessmentAdapter.construct(model, attrs)
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(6)
+		expect(model.modelState.review).toBe('always')
 	})
 
 	test('construct builds with unlimited attempts', () => {

@@ -5,7 +5,7 @@
 	],
 	"settings": {
 		"react": {
-			"version": "15.6.2"
+			"version": "16.7.0"
 		}
 	},
 	"parser": "babel-eslint",

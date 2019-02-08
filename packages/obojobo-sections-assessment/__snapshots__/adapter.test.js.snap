@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ObojoboDraft.Sections.Assessment adapter construct builds with N attempts 1`] = `
+exports[`ObojoboDraft.Sections.Assessment adapter construct builds with N attempts and runs review transform function 1`] = `
 Object {
   "attempts": 6,
-  "review": "never",
+  "review": "always",
   "rubric": AssessmentRubric {
     "mods": Array [],
     "originalRubric": Object {},

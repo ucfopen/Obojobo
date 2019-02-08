@@ -36,4 +36,4 @@ exports[`IFrame Editor Node IFrame component 1`] = `
 </div>
 `;
 
-exports[`IFrame Editor Node IFrame component changes input 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--iframe viewer\\" style=\\"position: relative; outline: 2px solid blue;\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe is=\\"true\\" frameborder=\\"0\\" allowfullscreen=\\"true\\"></iframe></div><div><input></div></div>"`;
+exports[`IFrame Editor Node IFrame component changes input 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--iframe viewer\\" style=\\"position: relative; outline: 2px solid blue;\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe></div><div><input value=\\"\\"></div></div>"`;

@@ -3,7 +3,7 @@ import Button from '../../../src/scripts/common/components/button'
 import renderer from 'react-test-renderer'
 
 test('Button', () => {
-	const component = renderer.create(<Button>Label</Button>)
+	const component = renderer.create(<Button className="testClassName">Label</Button>)
 	const tree = component.toJSON()
 
 	expect(tree).toMatchSnapshot()

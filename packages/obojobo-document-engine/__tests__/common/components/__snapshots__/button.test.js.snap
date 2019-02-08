@@ -2,7 +2,7 @@
 
 exports[`Button 1`] = `
 <div
-  className="obojobo-draft--components--button is-not-dangerous align-center"
+  className="obojobo-draft--components--button is-not-dangerous align-center testClassName"
 >
   <button>
     Label

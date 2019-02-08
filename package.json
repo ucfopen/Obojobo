@@ -5,11 +5,15 @@
 		"build:docEngine": "cd packages/obojobo-express && yarn build:docEngine",
 		"db:rebuild": "cd packages/obojobo-express && yarn db:rebuild",
 		"delete:node_modules": "rm -rf node_modules && rm -rf packages/*/node_modules",
-		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
+		"dev": "cd packages/obojobo-express && yarn dev",
 		"lint": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn lint); done",
+		"lint:css": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn lint:css); done",
+		"lint:js": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn lint:js); done",
+		"open:coverage": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && open ./coverage/lcov-report/index.html); done",
 		"precommit": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn precommit); done",
 		"setup": "yarn build:docEngine && cd packages/obojobo-express && yarn db:rebuild",
-		"test": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test); done"
+		"test": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test); done",
+		"test:coverage": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test --coverage); done"
 	},
 	"devDependencies": {
 		"concurrently": "^3.5.0",

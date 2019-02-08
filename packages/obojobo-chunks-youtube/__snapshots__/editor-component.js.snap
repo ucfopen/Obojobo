@@ -31,4 +31,4 @@ exports[`YouTube Editor Node YouTube builds the expected component 1`] = `
 </div>
 `;
 
-exports[`YouTube Editor Node YouTube component changes input 1`] = `"<div class=\\"obojobo-draft--chunks--you-tube viewer pad\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe src=\\"https://www.youtube.com/embed/undefined\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><input aria-label=\\"Youtube Video Id\\"></div>"`;
+exports[`YouTube Editor Node YouTube component changes input 1`] = `"<div class=\\"obojobo-draft--chunks--you-tube viewer pad\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe src=\\"https://www.youtube.com/embed/undefined\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><input aria-label=\\"Youtube Video Id\\" value=\\"\\"></div>"`;

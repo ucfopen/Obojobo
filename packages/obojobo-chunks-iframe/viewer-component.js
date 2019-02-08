@@ -1,3 +1,8 @@
+// @TODO
+/* eslint react/no-string-refs: 0 */
+/* eslint react/no-find-dom-node: 0 */
+/* eslint no-undef: 0 */
+
 import './viewer-component.scss'
 
 import React from 'react'

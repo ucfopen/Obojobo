@@ -11,7 +11,7 @@ exports[`ButtonBar ButtonBar component with attributes 1`] = `
   className="obojobo-draft--components--button-bar"
 >
   <div
-    className=""
+    className="is-selected"
   >
     <div
       className="obojobo-draft--components--button alt-action is-dangerous align-center"

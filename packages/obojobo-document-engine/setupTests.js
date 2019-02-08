@@ -1,7 +1,6 @@
-const React = require('react')
 const path = require('path')
 const Enzyme = require('enzyme')
-const EnzymeAdapter = require('enzyme-adapter-react-15')
+const EnzymeAdapter = require('enzyme-adapter-react-16')
 // Setup enzyme's react adapter
 Enzyme.configure({ adapter: new EnzymeAdapter() })
 
@@ -18,10 +17,6 @@ window.ReactDOM = require('react-dom')
 window._ = require('underscore')
 window.Backbone = require('backbone')
 window.katex = require('katex')
-
-React.addons = {
-	CSSTransitionGroup: require('react-transition-group/CSSTransitionGroup')
-}
 
 jest.mock('fs')
 const fs = require('fs')

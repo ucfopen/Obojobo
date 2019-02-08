@@ -283,9 +283,11 @@ describe('QuestionUtil', () => {
 			get: jest.fn().mockReturnValueOnce('testId')
 		}
 
-		const score = QuestionUtil.getScoreForModel(state, model, 'mockContext')
-
+		let score = QuestionUtil.getScoreForModel(state, model, 'mockContext')
 		expect(score).toEqual(100)
+
+		score = QuestionUtil.getScoreForModel(state, model, 'nonExistentContext')
+		expect(score).toEqual(null)
 	})
 
 	test('setScore calls question:scoreSet', () => {

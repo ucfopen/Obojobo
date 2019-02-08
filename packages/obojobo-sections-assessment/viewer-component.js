@@ -56,7 +56,7 @@ class Assessment extends React.Component {
 		return 'pre-test'
 	}
 
-	componentWillReceiveProps() {
+	UNSAFE_componentWillReceiveProps() {
 		const curStep = this.getCurrentStep()
 		if (curStep !== this.state.step) {
 			this.needsScroll = true

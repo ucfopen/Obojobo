@@ -186,7 +186,7 @@ export default class ViewerApp extends React.Component {
 		return !nextState.loading
 	}
 
-	componentWillUpdate(nextProps, nextState) {
+	UNSAFE_componentWillUpdate(nextProps, nextState) {
 		if (this.state.requestStatus === 'ok') {
 			const navTargetId = this.state.navTargetId
 			const nextNavTargetId = this.state.navState.navTargetId

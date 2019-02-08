@@ -21,7 +21,7 @@ exports[`MCAssessment MCAssessment component question with no solution page 1`] 
       Pick the correct answer
     </span>
   </span>
-  <div />
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -42,65 +42,7 @@ exports[`MCAssessment MCAssessment component question with visible explanation 1
       Pick the correct answer
     </span>
   </span>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      />
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Hide Explanation
-        </button>
-      </div>
-      <div>
-        <div
-          className="solution-container"
-        >
-          <div
-            className="component obojobo-draft--pages--page"
-            data-focussed={false}
-            data-id="page-id"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Pages.Page"
-            id="obo-page-id"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="text-id"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-text-id"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example text
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -136,66 +78,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
       </p>
     </div>
   </div>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      >
-        <div
-          className="feedback is-not-pick-all-feedback"
-        >
-          <div
-            className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-            data-choice-label="@"
-            data-focussed={false}
-            data-id="choice1-feedback"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-            id="obo-choice1-feedback"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="choice1-feedback-text"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-choice1-feedback-text"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example Text 2
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -229,66 +112,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
       </p>
     </div>
   </div>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      >
-        <div
-          className="feedback is-not-pick-all-feedback"
-        >
-          <div
-            className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-            data-choice-label="@"
-            data-focussed={false}
-            data-id="choice1-feedback"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-            id="obo-choice1-feedback"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="choice1-feedback-text"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-choice1-feedback-text"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example Text 2
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -423,25 +247,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      />
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -488,66 +294,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
       </p>
     </div>
   </div>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      >
-        <div
-          className="feedback is-not-pick-all-feedback"
-        >
-          <div
-            className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-            data-choice-label="@"
-            data-focussed={false}
-            data-id="choice1-feedback"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-            id="obo-choice1-feedback"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="choice1-feedback-text"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-choice1-feedback-text"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example Text 2
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -590,66 +337,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
       </span>
     </div>
   </div>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      >
-        <div
-          className="feedback is-pick-all-feedback"
-        >
-          <div
-            className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-            data-choice-label="@"
-            data-focussed={false}
-            data-id="choice1-feedback"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-            id="obo-choice1-feedback"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="choice1-feedback-text"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-choice1-feedback-text"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example Text 2
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -683,66 +371,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
       </p>
     </div>
   </div>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      >
-        <div
-          className="feedback is-not-pick-all-feedback"
-        >
-          <div
-            className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-            data-choice-label="@"
-            data-focussed={false}
-            data-id="choice1-feedback"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-            id="obo-choice1-feedback"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="choice1-feedback-text"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-choice1-feedback-text"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example Text 2
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -877,25 +506,7 @@ exports[`MCAssessment MCAssessment component with inverse sortedIds 1`] = `
       </div>
     </div>
   </div>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      />
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -918,102 +529,7 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
       Pick the correct answer
     </span>
   </span>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      >
-        <div
-          className="feedback is-not-pick-all-feedback"
-        >
-          <div
-            className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-            data-choice-label="@"
-            data-focussed={false}
-            data-id="choice1-feedback"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-            id="obo-choice1-feedback"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="choice1-feedback-text"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-choice1-feedback-text"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example Text 2
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div
-            className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
-            data-choice-label="@"
-            data-focussed={false}
-            data-id="choice2-feedback"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-            id="obo-choice2-feedback"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="choice1-feedback-text"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-choice1-feedback-text"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example Text 4
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -1034,66 +550,7 @@ exports[`MCAssessment MCAssessment component with one response 1`] = `
       Pick the correct answer
     </span>
   </span>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      >
-        <div
-          className="feedback is-not-pick-all-feedback"
-        >
-          <div
-            className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
-            data-choice-label="@"
-            data-focussed={false}
-            data-id="choice1-feedback"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-            id="obo-choice1-feedback"
-          >
-            <div
-              className="component"
-              data-focussed={false}
-              data-id="choice1-feedback-text"
-              data-obo-component={true}
-              data-type="ObojoboDraft.Chunks.Text"
-              id="obo-choice1-feedback-text"
-            >
-              <div
-                className="text-chunk obojobo-draft--chunks--single-text pad"
-              >
-                <span
-                  className="text align-left"
-                  data-group-index={0}
-                  data-indent={0}
-                >
-                  <span>
-                    <span>
-                      <span>
-                        Example Text 2
-                      </span>
-                    </span>
-                  </span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -1131,7 +588,7 @@ exports[`MCAssessment MCAssessment component with one response in practice mode 
       </div>
     </div>
   </div>
-  <div />
+  <feedbackAndSolution />
 </form>
 `;
 
@@ -1152,25 +609,7 @@ exports[`MCAssessment MCAssessment component with sortedIds 1`] = `
       Pick the correct answer
     </span>
   </span>
-  <div>
-    <div
-      className="solution"
-    >
-      <div
-        className="score"
-      />
-      <div
-        className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-      >
-        <button
-          onClick={[Function]}
-        >
-          Read an explanation of the answer
-        </button>
-      </div>
-      <div />
-    </div>
-  </div>
+  <feedbackAndSolution />
 </form>
 `;
 
