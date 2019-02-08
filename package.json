@@ -2,7 +2,7 @@
   "private": true,
   "name": "obojobo-next",
   "scripts": {
-    "start": "cd node_modules/obojobo-express && node ./bin/www",
+    "start": "start_obojobo_server",
     "setup": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn db:rebuild",
     "dev": "cd node_modules/obojobo-express && yarn dev",
     "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\"",

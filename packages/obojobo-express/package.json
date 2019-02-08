@@ -3,6 +3,7 @@
 	"version": "3.4.0",
 	"private": true,
 	"scripts": {
+		"start":"./bin/start_obojobo_server",
 		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",
 		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
 		"db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",
@@ -106,6 +107,7 @@
 			"public/picker"
 		]
 	},
+	"bin":{"start_obojobo_server": "./bin/start_obojobo_server"},
 	"jest": {
 		"setupTestFrameworkScriptFile": "./setup_tests.js",
 		"collectCoverageFrom": [
