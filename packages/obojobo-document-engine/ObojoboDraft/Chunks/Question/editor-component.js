@@ -2,6 +2,8 @@ import React from 'react'
 import { Block } from 'slate'
 import Common from 'Common'
 
+import './editor-component.scss'
+
 const { Button } = Common.components
 
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
