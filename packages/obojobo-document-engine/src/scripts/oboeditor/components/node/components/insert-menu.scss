@@ -41,7 +41,7 @@
 			&:focus {
 				background: lighten($color-action, 48%);
 
-				 + span {
+				+ span {
 					opacity: 1;
 				}
 			}
@@ -60,8 +60,6 @@
 			border-radius: $dimension-rounded-radius;
 			font-size: 0.8em;
 		}
-
-
 
 		&:hover {
 			button {

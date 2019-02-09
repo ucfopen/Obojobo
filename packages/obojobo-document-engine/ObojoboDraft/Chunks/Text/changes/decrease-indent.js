@@ -4,7 +4,7 @@ const decreaseIndent = (event, change) => {
 		let newIndent = block.data.get('indent') - 1
 		if (newIndent < 1) newIndent = 0
 
-		return change.setNodeByKey(block.key, {
+		change.setNodeByKey(block.key, {
 			data: { indent: newIndent }
 		})
 	})

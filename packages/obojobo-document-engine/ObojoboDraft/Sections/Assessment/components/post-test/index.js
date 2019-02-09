@@ -45,9 +45,8 @@ class AssessmentPostTest extends React.Component {
 			}
 		}
 
-		const isAssessmentComplete = () => {
-			return !AssessmentUtil.hasAttemptsRemaining(props.moduleData.assessmentState, props.model)
-		}
+		const isAssessmentComplete = () =>
+			!AssessmentUtil.hasAttemptsRemaining(props.moduleData.assessmentState, props.model)
 
 		const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			props.moduleData.assessmentState,

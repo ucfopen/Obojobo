@@ -6,8 +6,6 @@ const MCAssessmentResults = props => {
 	const isForScreenReader = props.isForScreenReader
 	const isCorrect = score === 100
 
-	// return (
-
 	if (isCorrect && isForScreenReader) {
 		return (
 			<div className="result-container">

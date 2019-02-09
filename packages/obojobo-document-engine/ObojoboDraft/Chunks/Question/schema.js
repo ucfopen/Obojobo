@@ -10,7 +10,7 @@ const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.Question': {
 			nodes: [
-				{ match: [ { type: 'oboeditor.component' } ], min: 1 },
+				{ match: [{ type: 'oboeditor.component' }], min: 1 },
 				{ match: [MCASSESSMENT_NODE], min: 1, max: 1 },
 				{ match: [SOLUTION_NODE], max: 1 }
 			],

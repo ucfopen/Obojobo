@@ -8,7 +8,7 @@ import Line from './components/line/editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
-import deleteEmptyParent from './changes/delete-empty-parent'
+import deleteEmptyParent from '../../../src/scripts/common/chunk/util/delete-empty-parent'
 import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
 
@@ -29,7 +29,7 @@ const plugins = {
 		if (!isCode) return
 
 		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return deleteEmptyParent(event, change)
+			return deleteEmptyParent(event, change, CODE_NODE)
 		}
 
 		// Shift Tab

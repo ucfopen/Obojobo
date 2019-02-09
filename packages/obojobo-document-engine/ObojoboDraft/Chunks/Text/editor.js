@@ -8,7 +8,7 @@ import Line from './components/line/editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
-import deleteEmptyParent from './changes/delete-empty-parent'
+import deleteEmptyParent from '../../../src/scripts/common/chunk/util/delete-empty-parent'
 import splitParent from './changes/split-parent'
 import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
@@ -17,13 +17,10 @@ import insertTab from './changes/insert-tab'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
-const isType = change => {
-	return change.value.blocks.some(block => {
-		return !!change.value.document.getClosest(block.key, parent => {
-			return parent.type === TEXT_NODE
-		})
-	})
-}
+const isType = change =>
+	change.value.blocks.some(
+		block => !!change.value.document.getClosest(block.key, parent => parent.type === TEXT_NODE)
+	)
 
 const plugins = {
 	onKeyDown(event, change) {
@@ -32,7 +29,7 @@ const plugins = {
 
 		// Delete empty text node
 		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return deleteEmptyParent(event, change)
+			return deleteEmptyParent(event, change, TEXT_NODE)
 		}
 
 		// Enter
