@@ -19,32 +19,32 @@ describe('Component editor', () => {
 	})
 
 	test('plugins.schema.normalize fixes required children in component', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Component.plugins.schema.blocks[COMPONENT_NODE].normalize(change, {
+		Component.plugins.schema.blocks[COMPONENT_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes extra children in component', () => {
-		const change = {
+		const editor = {
 			splitNodeByKey: jest.fn()
 		}
 
-		Component.plugins.schema.blocks[COMPONENT_NODE].normalize(change, {
+		Component.plugins.schema.blocks[COMPONENT_NODE].normalize(editor, {
 			code: CHILD_UNKNOWN,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
 		})
 
-		expect(change.splitNodeByKey).toHaveBeenCalled()
+		expect(editor.splitNodeByKey).toHaveBeenCalled()
 	})
 })

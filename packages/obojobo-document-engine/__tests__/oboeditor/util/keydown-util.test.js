@@ -2,7 +2,7 @@ import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 
 describe('KeyDown Util', () => {
 	test('deleteNodeContents deals with selection collapsed at start of block', () => {
-		const change = {
+		const editor = {
 			value: {
 				selection: {
 					start: { offset: 0 },
@@ -16,12 +16,12 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, change)
+		KeyDownUtil.deleteNodeContents(event, editor)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with selection inside cell', () => {
-		const change = {
+		const editor = {
 			value: {
 				selection: {
 					start: { offset: 0 },
@@ -35,13 +35,13 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, change)
+		KeyDownUtil.deleteNodeContents(event, editor)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with selection across cells without first cell', () => {
-		const change = {
+		const editor = {
 			value: {
 				startBlock: {
 					key: 'mockStart'
@@ -74,20 +74,20 @@ describe('KeyDown Util', () => {
 				}
 			}
 		}
-		change.removeNodeByKey = jest.fn()
+		editor.removeNodeByKey = jest.fn()
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, change)
+		KeyDownUtil.deleteNodeContents(event, editor)
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with selection across cells without last cell', () => {
-		const change = {
+		const editor = {
 			value: {
 				startBlock: {
 					key: 'mockStart'
@@ -120,15 +120,15 @@ describe('KeyDown Util', () => {
 				}
 			}
 		}
-		change.removeNodeByKey = jest.fn()
+		editor.removeNodeByKey = jest.fn()
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, change)
+		KeyDownUtil.deleteNodeContents(event, editor)
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 })

@@ -79,7 +79,7 @@ describe('Code editor', () => {
 	})
 
 	test('plugins.onKeyDown deals with no code', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -95,20 +95,20 @@ describe('Code editor', () => {
 				}
 			}
 		}
-		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -136,12 +136,12 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Backspace] or [Delete] on empty code', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -163,20 +163,20 @@ describe('Code editor', () => {
 				}
 			}
 		}
-		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
+		editor.removeNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Enter]', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -188,21 +188,21 @@ describe('Code editor', () => {
 				}
 			}
 		}
-		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 
-		expect(change.insertBlock).not.toHaveBeenCalled()
+		expect(editor.insertBlock).not.toHaveBeenCalled()
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -219,7 +219,7 @@ describe('Code editor', () => {
 				}
 			}
 		}
-		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Tab',
@@ -227,14 +227,14 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 
-		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Shift]+[Tab] with indented code', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -251,7 +251,7 @@ describe('Code editor', () => {
 				}
 			}
 		}
-		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Tab',
@@ -259,14 +259,14 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 
-		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Tab]', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -283,21 +283,21 @@ describe('Code editor', () => {
 				}
 			}
 		}
-		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Tab',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 
-		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Tab] in fully indented nodes', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -314,21 +314,21 @@ describe('Code editor', () => {
 				}
 			}
 		}
-		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Tab',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 
-		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with random keys', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -348,89 +348,89 @@ describe('Code editor', () => {
 				}
 			}
 		}
-		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
+		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'e',
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, change)
+		Code.plugins.onKeyDown(event, editor)
 
-		expect(change.setNodeByKey).not.toHaveBeenCalled()
+		expect(editor.setNodeByKey).not.toHaveBeenCalled()
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children in code', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_NODE].normalize(change, {
+		Code.plugins.schema.blocks[CODE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 5 } },
 			child: { key: 'mockKey' },
 			index: null
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid last block in code', () => {
-		const change = {
+		const editor = {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_NODE].normalize(change, {
+		Code.plugins.schema.blocks[CODE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
 			index: 0
 		})
 
-		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes required children in code', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_NODE].normalize(change, {
+		Code.plugins.schema.blocks[CODE_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize does nothing to invalid children in code line', () => {
-		const change = {
+		const editor = {
 			unwrapBlockByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(editor, CHILD_TYPE_INVALID, {
 			node: { nodes: { size: 5 } },
 			child: { key: 'mockKey' },
 			index: null
 		})
 
-		expect(change.unwrapBlockByKey).not.toHaveBeenCalled()
+		expect(editor.unwrapBlockByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid last block in code line', () => {
-		const change = {
+		const editor = {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(change, CHILD_TYPE_INVALID, {
+		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(editor, CHILD_TYPE_INVALID, {
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
 			index: 0
 		})
 
-		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 })
