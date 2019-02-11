@@ -57,7 +57,7 @@
 		padding-right: 1em;
 	}
 
-	.is-type-invalid {
+	.is-not-valid {
 		&::before {
 			content: 'Unable to validate value';
 			display: block;

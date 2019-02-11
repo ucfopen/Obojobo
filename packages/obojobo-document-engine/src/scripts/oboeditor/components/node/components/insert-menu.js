@@ -42,44 +42,37 @@ class DropMenu extends React.Component {
 	}
 
 	onKeyDown(event) {
-		if (event.key === 'Escape') {
-			event.preventDefault()
-			this.setState({
-				isOpen: false
-			})
-			this.mainButton.focus()
-		}
+		switch(event.key) {
+			case 'Escape':
+				event.preventDefault()
+				this.setState({
+					isOpen: false
+				})
+				this.mainButton.focus()
+				break
 
-		// Move right/up through the insert menu
-		if (event.key === 'ArrowRight') {
-			event.preventDefault()
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + 1) % this.menu.length
-			}))
-		}
+			// Move right/down through the insert menu
+			// Right is logical for sighted keyboard users; down is a standard
+			// navigation principle for submenus
+			case 'ArrowRight':
+			case 'ArrowDown':
+				event.preventDefault()
+				this.setState(currentState => ({
+					currentFocus: (currentState.currentFocus + 1) % this.menu.length
+				}))
+				break
 
-		// Move left/down through the insert menu
-		if (event.key === 'ArrowLeft') {
-			event.preventDefault()
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
-			}))
-		}
+			// Move left/up through the insert menu
+			// Left is logical for sighted keyboard users; up is a standard
+			// navigation principle for submenus
+			case 'ArrowLeft':
+			case 'ArrowUp':
+				event.preventDefault()
+				this.setState(currentState => ({
+					currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
+				}))
+				break
 
-		// Move left/down through the insert menu
-		if (event.key === 'ArrowDown') {
-			event.preventDefault()
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + 1) % this.menu.length
-			}))
-		}
-
-		// Move right/up through the insert menu
-		if (event.key === 'ArrowUp') {
-			event.preventDefault()
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
-			}))
 		}
 	}
 
@@ -122,7 +115,9 @@ class DropMenu extends React.Component {
 		return (
 			<div
 				className={
-					'dropdown-menu ' + isOrNot(this.state.isOpen, 'open') + ' ' + this.props.className
+					'editor--component--insert-menu ' +
+					isOrNot(this.state.isOpen, 'open') + ' ' +
+					this.props.className
 				}
 				contentEditable={false}
 				onKeyDown={event => this.onKeyDown(event)}

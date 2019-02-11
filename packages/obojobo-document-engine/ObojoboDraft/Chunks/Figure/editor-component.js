@@ -102,7 +102,7 @@ class Figure extends React.Component {
 					<option value="custom">custom</option>
 				</select>
 				<div>
-					<button className="delete-node" onClick={() => this.deleteNode()}>
+					<button className="delete-node-button" onClick={() => this.deleteNode()}>
 						{'X'}
 					</button>
 				</div>
@@ -113,10 +113,10 @@ class Figure extends React.Component {
 	render() {
 		const content = this.props.node.data.get('content')
 
-		let isCustom = false
+		const isCustom = content.size === 'custom'
 		const imgStyles = {}
 
-		if (content.size === 'custom') {
+		if (isCustom) {
 			if (content.width) {
 				imgStyles.width = content.width + 'px'
 			}
@@ -124,7 +124,6 @@ class Figure extends React.Component {
 			if (content.height) {
 				imgStyles.height = content.height + 'px'
 			}
-			isCustom = true
 		}
 
 		const hasImage = content.url && content.url.length !== 0

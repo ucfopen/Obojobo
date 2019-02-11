@@ -44,32 +44,31 @@ class SubMenu extends React.Component {
 	}
 
 	onKeyDown(event) {
-		// Open the menu and set the first item as the current focus
-		if (event.key === 'ArrowRight') {
-			this.setState({
-				isOpen: true,
-				currentFocus: 0
-			})
-		}
+		switch(event.key) {
+			// Open the menu and set the first item as the current focus
+			case 'ArrowRight':
+				this.setState({ isOpen: true, currentFocus: 0 })
+				break
 
-		// Close the menu and return focus to the link item
-		if (event.key === 'ArrowLeft') {
-			this.setState({ isOpen: false })
-			this.linkButton.focus()
-		}
+			// Close the menu and return focus to the link item
+			case 'ArrowLeft':
+				this.setState({ isOpen: false })
+				this.linkButton.focus()
+				break
 
-		// Move down through the submenu
-		if (event.key === 'ArrowDown') {
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + 1) % this.menu.length
-			}))
-		}
+			// Move down through the submenu
+			case 'ArrowDown':
+				this.setState(currentState => ({
+					currentFocus: (currentState.currentFocus + 1) % this.menu.length
+				}))
+				break
 
-		// Move up through the submenu
-		if (event.key === 'ArrowUp') {
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus - 1) % this.menu.length
-			}))
+			// Move up through the submenu
+			case 'ArrowUp':
+				this.setState(currentState => ({
+					currentFocus: (currentState.currentFocus - 1) % this.menu.length
+				}))
+				break
 		}
 	}
 
@@ -192,7 +191,7 @@ class SubMenu extends React.Component {
 		const isLastInList = !list[index + 1]
 
 		const className =
-			'link' +
+			'editor--editor-nav--submenu link' +
 			isOrNot(isSelected, 'selected') +
 			isOrNot(item.flags.assessment, 'assessment') +
 			isOrNot(isFirstInList, 'first-in-list') +

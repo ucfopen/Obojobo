@@ -44,7 +44,18 @@ const KeyDownUtil = {
 		})
 
 		return true
+	},
+	deleteEmptyParent: (event, change, nodeType) => {
+	const firstBlock = change.value.blocks.get(0)
+
+	const parent = change.value.document.getClosest(firstBlock.key, node => node.type === nodeType)
+
+	if (change.value.endBlock.text === '' && parent.nodes.size === 1) {
+		event.preventDefault()
+		change.removeNodeByKey(parent.key)
+		return true
 	}
+}
 }
 
 export default KeyDownUtil

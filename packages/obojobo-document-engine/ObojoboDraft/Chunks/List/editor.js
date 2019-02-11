@@ -32,19 +32,22 @@ const plugins = {
 		const isLine = isType(change)
 		if (!isLine) return
 
-		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return onBackspace(event, change)
-		}
-		if (event.key === 'Enter') {
-			// Text lines will be changed to list lines by the schema unless
-			// they are at the end of the list
-			return insertText(event, change)
-		}
-		if (event.key === 'Tab' && event.shiftKey) {
-			return wrapLevel(event, change)
-		}
-		if (event.key === 'Tab') {
-			return unwrapLevel(event, change)
+		switch(event.key) {
+			case 'Backspace':
+			case 'Delete':
+				return onBackspace(event, change)
+
+			case 'Enter':
+				// Text lines will be changed to list lines by the schema unless
+				// they are at the end of the list
+				return insertText(event, change)
+
+			case 'Tab':
+				// TAB+SHIFT
+				if(event.shiftKey) return wrapLevel(event, change)
+
+				// TAB
+				return unwrapLevel(event, change)
 		}
 	},
 	renderNode(props) {
@@ -68,8 +71,7 @@ const plugins = {
 		const invalids = node.nodes
 			.map((child, i) => {
 				const next = node.nodes.get(i + 1)
-				if (child.type !== LIST_LEVEL_NODE) return false
-				if (!next || next.type !== LIST_LEVEL_NODE) return false
+				if (child.type !== LIST_LEVEL_NODE || !next || next.type !== LIST_LEVEL_NODE) return false
 				return next
 			})
 			.filter(Boolean)

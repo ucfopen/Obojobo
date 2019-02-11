@@ -1,6 +1,6 @@
 @import '../../../scss/includes';
 
-.editor {
+.editor--page-editor {
 	margin-top: 3em;
 	margin-bottom: 3em;
 
@@ -278,5 +278,13 @@
 		&.align-center {
 			transform: translate(-50%);
 		}
+	}
+
+	.delete-node-button {
+		position: absolute;
+		top: 0;
+		right: 0;
+		border: none;
+		background: inherit;
 	}
 }

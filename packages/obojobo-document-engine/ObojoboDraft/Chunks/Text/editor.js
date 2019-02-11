@@ -8,7 +8,7 @@ import Line from './components/line/editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
-import deleteEmptyParent from '../../../src/scripts/common/chunk/util/delete-empty-parent'
+import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
 import splitParent from './changes/split-parent'
 import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
@@ -27,32 +27,28 @@ const plugins = {
 		const isText = isType(change)
 		if (!isText) return
 
-		// Delete empty text node
-		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return deleteEmptyParent(event, change, TEXT_NODE)
-		}
+		const last = change.value.endBlock
 
-		// Enter
-		if (event.key === 'Enter') {
-			const last = change.value.endBlock
+		switch(event.key) {
+		case 'Backspace':
+		case 'Delete':
+			return KeyDownUtil.deleteEmptyParent(event, change, TEXT_NODE)
+
+		case 'Enter':
+			// Single Enter
 			if (last.text !== '') return
 
 			// Double Enter
 			return splitParent(event, change)
-		}
 
-		// Shift+Tab
-		if (event.key === 'Tab' && event.shiftKey) {
-			return decreaseIndent(event, change)
-		}
+		case 'Tab':
+			// TAB+SHIFT
+			if(event.shiftKey) return decreaseIndent(event, change)
 
-		// Alt+Tab
-		if (event.key === 'Tab' && event.altKey) {
-			return increaseIndent(event, change)
-		}
+			// TAB+ALT
+			if(event.altKey) return increaseIndent(event, change)
 
-		// Tab
-		if (event.key === 'Tab') {
+			// TAB
 			return insertTab(event, change)
 		}
 	},
@@ -66,8 +62,7 @@ const plugins = {
 	},
 	renderPlaceholder(props) {
 		const { node } = props
-		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE) return
-		if (node.text !== '') return
+		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE || node.text !== '') return
 
 		return (
 			<span className={'placeholder align-' + node.data.get('align')} contentEditable={false}>

@@ -33,7 +33,7 @@ class Mod extends React.Component {
 		return (
 			<div className={'mod pad'}>
 				{this.props.children}
-				<button className={'delete-node'} onClick={() => this.deleteNode()}>
+				<button className={'delete-node-button'} onClick={() => this.deleteNode()}>
 					{'X'}
 				</button>
 			</div>
@@ -97,7 +97,7 @@ class Node extends React.Component {
 				<button className={'add-button'} onClick={() => this.addMod()}>
 					{'Add Mod'}
 				</button>
-				<button className={'delete-node'} onClick={() => this.deleteNode()}>
+				<button className={'delete-node-button'} onClick={() => this.deleteNode()}>
 					{'X'}
 				</button>
 			</div>
@@ -232,7 +232,7 @@ const plugins = {
 									block = Block.create(
 										ParameterNode.helpers.oboToSlate({
 											name: 'passingAttemptScore',
-											value: 100 + '',
+											value: '100',
 											display: 'Passing Score'
 										})
 									)
@@ -241,7 +241,7 @@ const plugins = {
 									block = Block.create(
 										ParameterNode.helpers.oboToSlate({
 											name: 'passedResult',
-											value: 100 + '',
+											value: '100',
 											display: 'Passed Result'
 										})
 									)
@@ -250,7 +250,7 @@ const plugins = {
 									block = Block.create(
 										ParameterNode.helpers.oboToSlate({
 											name: 'failedResult',
-											value: 0 + '',
+											value: '0',
 											display: 'Failed Result'
 										})
 									)
@@ -276,7 +276,7 @@ const plugins = {
 										block = Block.create(
 											ParameterNode.helpers.oboToSlate({
 												name: 'passingAttemptScore',
-												value: 100 + '',
+												value: '100',
 												display: 'Passing Score'
 											})
 										)
@@ -285,7 +285,7 @@ const plugins = {
 										block = Block.create(
 											ParameterNode.helpers.oboToSlate({
 												name: 'passedResult',
-												value: 100 + '',
+												value: '100',
 												display: 'Passed Result'
 											})
 										)
@@ -294,7 +294,7 @@ const plugins = {
 										block = Block.create(
 											ParameterNode.helpers.oboToSlate({
 												name: 'failedResult',
-												value: 0 + '',
+												value: '0',
 												display: 'Failed Result'
 											})
 										)
@@ -353,7 +353,7 @@ const plugins = {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({
 									name: 'reward',
-									value: 0 + '',
+									value: '0',
 									display: 'Reward'
 								})
 							)
@@ -375,7 +375,7 @@ const plugins = {
 								const block = Block.create(
 									ParameterNode.helpers.oboToSlate({
 										name: 'reward',
-										value: 0 + '',
+										value: '0',
 										display: 'Reward'
 									})
 								)

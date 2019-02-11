@@ -6,6 +6,8 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
+const SELECT_TYPES = ['sequential', 'random', 'random-unseen']
+
 const slateToObo = node => {
 	const content = node.data.get('content') || {}
 	const children = []
@@ -43,14 +45,14 @@ const oboToSlate = node => {
 			nodes: [
 				ParameterNode.helpers.oboToSlate({
 					name: 'choose',
-					value: node.content.choose + '',
+					value: '' + node.content.choose,
 					display: 'Choose'
 				}),
 				ParameterNode.helpers.oboToSlate({
 					name: 'select',
 					value: node.content.select,
 					display: 'Select',
-					options: ['sequential', 'random', 'random-unseen']
+					options: SELECT_TYPES
 				})
 			]
 		}
