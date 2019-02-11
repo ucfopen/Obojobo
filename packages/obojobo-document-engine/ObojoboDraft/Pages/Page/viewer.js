@@ -11,7 +11,7 @@ Common.Store.registerModel('ObojoboDraft.Pages.Page', {
 		let label
 
 		if (model.title) {
-			label = model.title
+			label = model.title.toString()
 		} else {
 			const pages = model.parent.children.models.filter(
 				child => child.get('type') === 'ObojoboDraft.Pages.Page'

@@ -12,7 +12,7 @@ Common.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 	componentClass: ViewerComponent,
 	selectionHandler: null,
 	getNavItem(model) {
-		const title = model.title || 'Assessment'
+		const title = (model.title || 'Assessment').toString()
 
 		return {
 			type: 'link',

@@ -66,4 +66,20 @@ describe('ObojoboDraft.Pages.Page registration', () => {
 			showChildren: false
 		})
 	})
+
+	test('getNavItem returns link with numeric title', () => {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
+			title: 1
+		}
+
+		const nav = register[1].getNavItem(model)
+		expect(nav).toEqual({
+			type: 'link',
+			label: '1',
+			contentType: 'Page',
+			path: ['1'],
+			showChildren: false
+		})
+	})
 })
