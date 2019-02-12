@@ -8,8 +8,8 @@ exports[`IFrame Editor Node IFrame component 1`] = `
     className="container"
     style={
       Object {
-        "height": "500px",
-        "width": "710px",
+        "height": 500,
+        "width": 710,
       }
     }
   >

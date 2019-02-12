@@ -240,9 +240,14 @@ class IFrame extends React.Component {
 		const content = this.props.node.data.get('content')
 		const controlList = content.controls.split(',')
 
-		const wrapperStyle = {
+		const previewStyle = {
 			width: (content.width || '710') + 'px',
 			height: (content.height || '500') + 'px'
+		}
+
+		const editingStyle = {
+			width: 710,
+			height: 500
 		}
 
 		const className =
@@ -261,7 +266,7 @@ class IFrame extends React.Component {
 
 		return (
 			<div className={className}>
-				<div className={'container'} style={wrapperStyle}>
+				<div className={'container'} style={this.state.isPreviewing ? previewStyle : editingStyle}>
 					{this.state.isPreviewing ? this.renderIFramePreview() : this.renderIFrameEditor()}
 					<Controls newWindowSrc={content.src} controlsOptions={controlsOpts} isEditor />
 				</div>

@@ -1,4 +1,4 @@
-import Converter from '../../../../ObojoboDraft/Chunks/IFrame/converter'
+import Converter from 'ObojoboDraft/Chunks/IFrame/converter'
 
 describe('IFrame Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
@@ -19,18 +19,29 @@ describe('IFrame Converter', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { width: 'large' }
+			content: {}
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test('oboToSlate converts an OboNode to a Slate node with a caption', () => {
+	test('oboToSlate converts an OboNode to a Slate node with media defaults', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: {}
+			content: { type: 'media' }
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('oboToSlate converts an OboNode to a Slate node with webpage defaults', () => {
+		const oboNode = {
+			id: 'mockKey',
+			type: 'mockType',
+			content: { type: 'webpage' }
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
