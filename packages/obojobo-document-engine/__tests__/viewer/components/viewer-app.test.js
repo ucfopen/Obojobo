@@ -811,7 +811,7 @@ describe('ViewerApp', () => {
 			expect(APIUtil.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:returnFromInactive',
 				draftId: undefined,
-				eventVersion: '3.0.0',
+				eventVersion: '2.1.0',
 				payload: {
 					relatedEventId: 'mock-id',
 					lastActiveTime: 999,

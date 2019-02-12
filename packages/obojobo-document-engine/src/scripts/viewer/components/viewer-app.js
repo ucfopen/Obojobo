@@ -447,7 +447,7 @@ export default class ViewerApp extends React.Component {
 		APIUtil.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:returnFromInactive',
-			eventVersion: '3.0.0',
+			eventVersion: '2.1.0',
 			visitId: this.state.navState.visitId,
 			payload: {
 				lastActiveTime: this.lastActiveEpoch,
