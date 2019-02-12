@@ -38,128 +38,128 @@ describe('QuestionBank editor', () => {
 	})
 
 	test('plugins.schema.normalize fixes first invalid child in bank', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, {
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 0
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes second invalid child in bank', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, {
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 1
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing first child in bank', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, {
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing second child in bank', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(change, {
+		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 1
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing first child in setting', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing second child in setting', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 1
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes first invalid child in setting', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn(),
 			removeNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalizing = funct => funct(change)
+		editor.withoutNormalizing = funct => funct(editor)
 
-		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes second invalid child in setting', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn(),
 			removeNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalizing = funct => funct(change)
+		editor.withoutNormalizing = funct => funct(editor)
 
-		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 1
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 })

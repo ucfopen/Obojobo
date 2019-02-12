@@ -15,7 +15,24 @@ describe('Component editor', () => {
 			}
 		}
 
-		expect(Component.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Component.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => ({})
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(Component.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes required children in component', () => {

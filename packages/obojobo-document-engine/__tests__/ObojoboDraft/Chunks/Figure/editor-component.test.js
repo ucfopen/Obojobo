@@ -236,7 +236,7 @@ describe('Figure Editor Node', () => {
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
-	test('Figure component changes size', () => {
+	test('Figure component edits size', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}

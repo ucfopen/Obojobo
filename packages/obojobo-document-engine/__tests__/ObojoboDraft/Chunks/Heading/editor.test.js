@@ -2,7 +2,7 @@ import Heading from '../../../../ObojoboDraft/Chunks/Heading/editor'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 describe('Heading editor', () => {
-	test('plugins.renderNode renders a button when passed', () => {
+	test('plugins.renderNode renders Heading when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
@@ -15,7 +15,26 @@ describe('Heading editor', () => {
 			}
 		}
 
-		expect(Heading.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Heading.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(Heading.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.renderPlaceholder exits when not relevent', () => {
@@ -24,7 +43,7 @@ describe('Heading editor', () => {
 				node: {
 					object: 'text'
 				}
-			})
+			}, null, jest.fn())
 		).toMatchSnapshot()
 
 		expect(
@@ -33,7 +52,7 @@ describe('Heading editor', () => {
 					object: 'block',
 					type: 'mockType'
 				}
-			})
+			}, null, jest.fn())
 		).toMatchSnapshot()
 
 		expect(
@@ -43,7 +62,7 @@ describe('Heading editor', () => {
 					type: HEADING_NODE,
 					text: 'Some text'
 				}
-			})
+			}, null, jest.fn())
 		).toMatchSnapshot()
 	})
 
@@ -56,7 +75,7 @@ describe('Heading editor', () => {
 					text: '',
 					data: { get: () => ({ align: 'left' }) }
 				}
-			})
+			}, null, jest.fn())
 		).toMatchSnapshot()
 	})
 })

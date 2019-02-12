@@ -45,7 +45,7 @@ describe('Parameter Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Node component with select changes value', () => {
+	test('Node component with select edits value', () => {
 		const Node = ParameterNode.components.Node
 
 		const editor = {
@@ -201,7 +201,7 @@ describe('Parameter Node', () => {
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor)
+		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -224,7 +224,7 @@ describe('Parameter Node', () => {
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor)
+		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -240,7 +240,7 @@ describe('Parameter Node', () => {
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor)
+		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -255,7 +255,7 @@ describe('Parameter Node', () => {
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor)
+		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
@@ -272,6 +272,25 @@ describe('Parameter Node', () => {
 			}
 		}
 
-		expect(ParameterNode.plugins.renderNode(props)).toMatchSnapshot()
+		expect(ParameterNode.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(ParameterNode.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 })

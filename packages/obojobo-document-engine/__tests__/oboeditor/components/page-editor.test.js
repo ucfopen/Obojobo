@@ -217,7 +217,7 @@ describe('PageEditor', () => {
 		expect(APIUtil.postDraft).toHaveBeenCalle
 	})
 
-	test('EditorNav component toggles mark', () => {
+	test.skip('EditorNav component toggles mark', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({
 			rangeCount: {
 				nodeType: 'mockType'
@@ -240,7 +240,7 @@ describe('PageEditor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('EditorNav component changes value', () => {
+	test('EditorNav component alters value', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
 			page: {

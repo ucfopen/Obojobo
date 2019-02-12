@@ -21,37 +21,37 @@ describe('MCFeedback editor', () => {
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
-			funct(change)
+		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
+			funct(editor)
 		})
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, {
+		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', object: 'text' },
 			index: null
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, {
+		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 })

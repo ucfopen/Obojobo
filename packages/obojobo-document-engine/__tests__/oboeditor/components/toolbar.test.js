@@ -23,7 +23,7 @@ describe('Editor Toolbar', () => {
 		}
 		const component = shallow(
 			<Node
-				editor={editor}
+				getEditor={() => editor}
 			/>
 		)
 		const tree = component.html()
@@ -53,7 +53,7 @@ describe('Editor Toolbar', () => {
 		}
 		const component = shallow(
 			<Node
-				editor={editor}
+				getEditor={() => editor}
 			/>
 		)
 		const tree = component.html()
@@ -88,7 +88,7 @@ describe('Editor Toolbar', () => {
 		}
 		const component = shallow(
 			<Node
-				editor={editor}
+				getEditor={() => editor}
 			/>
 		)
 		const tree = component.html()
@@ -121,7 +121,7 @@ describe('Editor Toolbar', () => {
 		}
 		const component = shallow(
 			<Node
-				editor={editor}
+				getEditor={() => editor}
 			/>
 		)
 		const tree = component.html()
@@ -149,7 +149,7 @@ describe('Editor Toolbar', () => {
 		}
 		const component = shallow(
 			<Node
-				editor={editor}
+				getEditor={() => editor}
 			/>
 		)
 		const tree = component.html()
@@ -190,7 +190,7 @@ describe('Editor Toolbar', () => {
 		}
 		const component = shallow(
 			<Node
-				editor={editor}
+				getEditor={() => editor}
 			/>
 		)
 		const tree = component.html()
@@ -272,7 +272,7 @@ describe('Editor Toolbar', () => {
 		}
 		const component = shallow(
 			<Node
-				editor={editor}
+				getEditor={() => editor}
 			/>
 		)
 		const tree = component.html()
@@ -333,7 +333,7 @@ describe('Editor Toolbar', () => {
 		}
 		const component = shallow(
 			<Node
-				editor={editor}
+				getEditor={() => editor}
 			/>
 		)
 		const tree = component.html()

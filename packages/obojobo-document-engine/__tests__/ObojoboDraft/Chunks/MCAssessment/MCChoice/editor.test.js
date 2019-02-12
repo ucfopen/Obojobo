@@ -22,62 +22,62 @@ describe('MCChoice editor', () => {
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', type: MCFEEDBACK_NODE },
 			index: 1
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes too many children', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 3
 		})
 
-		expect(change.wrapBlockByKey).not.toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes extra children', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', type: 'wrongType' },
 			index: 1
 		})
 
-		expect(change.wrapBlockByKey).not.toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 })

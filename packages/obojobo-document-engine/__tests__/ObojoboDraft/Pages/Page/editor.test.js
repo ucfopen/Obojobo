@@ -22,37 +22,37 @@ describe('Page editor', () => {
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
-			funct(change)
+		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
+			funct(editor)
 		})
 
-		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, {
+		Page.plugins.schema.blocks[PAGE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockNode' },
 			child: { key: 'mockKey' },
 			index: null
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds required children', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Page.plugins.schema.blocks[PAGE_NODE].normalize(change, {
+		Page.plugins.schema.blocks[PAGE_NODE].normalize(editor, {
 			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 })

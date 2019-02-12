@@ -18,7 +18,26 @@ describe('Code editor', () => {
 			}
 		}
 
-		expect(Code.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Code.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(Code.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders a line when passed', () => {
@@ -34,7 +53,7 @@ describe('Code editor', () => {
 			}
 		}
 
-		expect(Code.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Code.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderPlaceholder exits when not relevent', () => {
@@ -43,7 +62,7 @@ describe('Code editor', () => {
 				node: {
 					object: 'text'
 				}
-			})
+			}, null, jest.fn())
 		).toMatchSnapshot()
 
 		expect(
@@ -52,7 +71,7 @@ describe('Code editor', () => {
 					object: 'block',
 					type: 'mockType'
 				}
-			})
+			}, null, jest.fn())
 		).toMatchSnapshot()
 
 		expect(
@@ -62,7 +81,7 @@ describe('Code editor', () => {
 					type: CODE_LINE_NODE,
 					text: 'Some text'
 				}
-			})
+			}, null, jest.fn())
 		).toMatchSnapshot()
 	})
 
@@ -74,7 +93,7 @@ describe('Code editor', () => {
 					type: CODE_LINE_NODE,
 					text: ''
 				}
-			})
+			}, null, jest.fn())
 		).toMatchSnapshot()
 	})
 
@@ -102,7 +121,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -136,7 +155,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
@@ -170,7 +189,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
@@ -195,7 +214,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(editor.insertBlock).not.toHaveBeenCalled()
 		expect(event.preventDefault).not.toHaveBeenCalled()
@@ -227,7 +246,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
@@ -259,7 +278,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
@@ -290,7 +309,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
@@ -321,7 +340,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
@@ -355,7 +374,7 @@ describe('Code editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Code.plugins.onKeyDown(event, editor)
+		Code.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(editor.setNodeByKey).not.toHaveBeenCalled()
 		expect(event.preventDefault).not.toHaveBeenCalled()
@@ -411,7 +430,8 @@ describe('Code editor', () => {
 			unwrapBlockByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(editor, CHILD_TYPE_INVALID, {
+		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 5 } },
 			child: { key: 'mockKey' },
 			index: null
@@ -425,7 +445,8 @@ describe('Code editor', () => {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(editor, CHILD_TYPE_INVALID, {
+		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
 			index: 0

@@ -233,8 +233,6 @@ class ActionButton extends React.Component {
 	render() {
 		const { isSelected } = this.props
 
-		console.log(this.props.editor.isVoid(this.props.node))
-
 		return (
 			<div
 				className={'text-chunk obojobo-draft--chunks--action-button pad'}
