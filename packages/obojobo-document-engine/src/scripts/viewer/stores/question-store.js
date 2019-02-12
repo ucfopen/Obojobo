@@ -2,13 +2,13 @@ import Common from 'Common'
 
 import APIUtil from '../../viewer/util/api-util'
 import QuestionUtil from '../../viewer/util/question-util'
+import FocusUtil from '../../viewer/util/focus-util'
 
 import NavStore from '../../viewer/stores/nav-store'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
-const { FocusUtil } = Common.util
 const { uuid } = Common.util
 
 class QuestionStore extends Store {
@@ -187,7 +187,7 @@ class QuestionStore extends Store {
 				}
 
 				if (payload.value.score === 100) {
-					FocusUtil.unfocus()
+					FocusUtil.clearVisualFocus()
 				}
 
 				this.triggerChange()

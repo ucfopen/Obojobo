@@ -9,18 +9,28 @@ import Common from 'Common'
 import Viewer from 'Viewer'
 import isOrNot from '../../../src/scripts/common/isornot'
 
-const { OboComponent } = Common.components
-const { Button } = Common.components
+import MCAssessmentAnswerChoices from './mc-assessment-answer-choices'
+import MCAssessmentSubmitAndResultsFooter from './mc-assessment-submit-and-results-footer'
+import MCAssessmentExplanation from './mc-assessment-explanation'
+
+const { OboComponent } = Viewer.components
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { DOMUtil } = Common.page
-// FocusUtil = Common.util.FocusUtil
-
+const { FocusUtil } = Viewer.util
 const { QuestionUtil } = Viewer.util
 
 const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
 const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
 const DEFAULT_INCORRECT_LABELS = ['Incorrect']
+const PICK_ALL_INCORRECT_MESSAGE =
+	'You have either missed some correct answers or selected some incorrect answers.'
+
+const ANIMATION_TRANSITION_TIME_MS = 800
+
+const FOCUS_TARGET_EXPLANATION = 'explanation'
+const FOCUS_TARGET_RESULTS = 'results'
+const FOCUS_TARGET_QUESTION = 'question'
 
 export default class MCAssessment extends React.Component {
 	constructor(props) {
@@ -30,9 +40,9 @@ export default class MCAssessment extends React.Component {
 
 		this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
-		this.onClickSubmit = this.onClickSubmit.bind(this)
 		this.onClickReset = this.onClickReset.bind(this)
-		this.onClick = this.onClick.bind(this)
+		this.onFormChange = this.onFormChange.bind(this)
+		this.onFormSubmit = this.onFormSubmit.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 		if (correctLabels) {
@@ -111,13 +121,6 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	isShowingExplanation() {
-		return QuestionUtil.isShowingExplanation(
-			this.props.moduleData.questionState,
-			this.getQuestionModel()
-		)
-	}
-
 	retry() {
 		QuestionUtil.retryQuestion(
 			this.getQuestionModel().get('id'),
@@ -132,24 +135,15 @@ export default class MCAssessment extends React.Component {
 	onClickReset(event) {
 		event.preventDefault()
 
+		this.nextFocus = FOCUS_TARGET_QUESTION
+
 		this.retry()
-	}
-
-	onClickSubmit(event) {
-		event.preventDefault()
-
-		QuestionUtil.setScore(
-			this.getQuestionModel().get('id'),
-			this.calculateScore(),
-			this.props.moduleData.navState.context
-		)
-		// ScoreUtil.setScore(this.getQuestionModel().get('id'), this.calculateScore())
-		this.updateFeedbackLabels()
-		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 	}
 
 	onClickShowExplanation(event) {
 		event.preventDefault()
+
+		this.nextFocus = FOCUS_TARGET_EXPLANATION
 
 		QuestionUtil.showExplanation(this.getQuestionModel().get('id'))
 	}
@@ -160,7 +154,7 @@ export default class MCAssessment extends React.Component {
 		this.hideExplanation()
 	}
 
-	onClick(event) {
+	onFormChange(event) {
 		let response
 		const questionModel = this.getQuestionModel()
 		const mcChoiceEl = DOMUtil.findParentWithAttr(
@@ -197,6 +191,7 @@ export default class MCAssessment extends React.Component {
 				} else {
 					response.ids.splice(responseIndex, 1)
 				}
+
 				break
 			}
 
@@ -207,6 +202,8 @@ export default class MCAssessment extends React.Component {
 				break
 		}
 
+		this.nextFocus = FOCUS_TARGET_RESULTS
+
 		QuestionUtil.setResponse(
 			questionModel.get('id'),
 			response,
@@ -215,6 +212,18 @@ export default class MCAssessment extends React.Component {
 			this.props.moduleData.navState.context.split(':')[1],
 			this.props.moduleData.navState.context.split(':')[2]
 		)
+	}
+
+	onFormSubmit(event) {
+		event.preventDefault()
+
+		QuestionUtil.setScore(
+			this.getQuestionModel().get('id'),
+			this.calculateScore(),
+			this.props.moduleData.navState.context
+		)
+		this.updateFeedbackLabels()
+		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
 	}
 
 	getScore() {
@@ -231,6 +240,27 @@ export default class MCAssessment extends React.Component {
 
 	componentDidMount() {
 		Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
+	}
+
+	componentDidUpdate() {
+		switch (this.nextFocus) {
+			case FOCUS_TARGET_EXPLANATION:
+				delete this.nextFocus
+				this.refExplanation.focusOnExplanation()
+				break
+
+			case FOCUS_TARGET_RESULTS:
+				if (this.getScore() !== null) {
+					delete this.nextFocus
+					this.refs.answerChoices.focusOnResults()
+				}
+				break
+
+			case FOCUS_TARGET_QUESTION:
+				delete this.nextFocus
+				FocusUtil.focusOnContent(this.getQuestionModel().get('id'), false)
+				break
+		}
 	}
 
 	componentWillUnmount() {
@@ -253,14 +283,6 @@ export default class MCAssessment extends React.Component {
 		this.sortIds()
 	}
 
-	sortIds() {
-		if (!QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds')) {
-			let ids = this.props.model.children.models.map(model => model.get('id'))
-			if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
-			QuestionUtil.setData(this.props.model.get('id'), 'sortedIds', ids)
-		}
-	}
-
 	updateFeedbackLabels() {
 		this.correctLabelToShow = this.getRandomItem(this.correctLabels)
 		this.incorrectLabelToShow = this.getRandomItem(this.incorrectLabels)
@@ -270,7 +292,42 @@ export default class MCAssessment extends React.Component {
 		return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
 	}
 
-	createInstructions(responseType) {
+	sortIds() {
+		if (!this.getSortedIds()) {
+			let ids = this.props.model.children.models.map(model => model.get('id'))
+			if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
+			QuestionUtil.setData(this.props.model.get('id'), 'sortedIds', ids)
+		}
+	}
+
+	getSortedIds() {
+		return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds')
+	}
+
+	getSortedChoiceModels() {
+		const sortedIds = this.getSortedIds()
+		if (!sortedIds) return []
+
+		return sortedIds
+			.map(mcChoiceId => OboModel.models[mcChoiceId])
+			.filter(model => model.get('type') === 'ObojoboDraft.Chunks.MCAssessment.MCChoice')
+	}
+
+	isShowingExplanationButton() {
+		const isAnswerScored = this.getScore() !== null
+		const solution = this.props.model.parent.modelState.solution
+
+		return isAnswerScored && solution
+	}
+
+	isShowingExplanation() {
+		return QuestionUtil.isShowingExplanation(
+			this.props.moduleData.questionState,
+			this.getQuestionModel()
+		)
+	}
+
+	getInstructions(responseType) {
 		switch (responseType) {
 			case 'pick-one':
 				return <span>Pick the correct answer</span>
@@ -285,131 +342,22 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	renderSubmitFooter(isAnswerSelected, isAnswerScored) {
-		return (
-			<div className="submit">
-				{isAnswerScored ? (
-					<Button altAction onClick={this.onClickReset} value="Try Again" />
-				) : (
-					<Button
-						onClick={this.onClickSubmit}
-						value="Check Your Answer"
-						disabled={!isAnswerSelected}
-					/>
-				)}
-			</div>
-		)
-	}
-
-	renderSubmittedResultsFooter(isCorrect, isPickAll) {
-		if (isCorrect) {
-			return (
-				<div className="result-container">
-					<p className="result correct">{this.correctLabelToShow}</p>
-				</div>
-			)
-		}
-
-		return (
-			<div className="result-container">
-				<p className="result incorrect">{this.incorrectLabelToShow}</p>
-				{isPickAll ? (
-					<span className="pick-all-instructions">
-						You have either missed some correct answers or selected some incorrect answers
-					</span>
-				) : null}
-			</div>
-		)
-	}
-
 	render() {
-		let SolutionComponent = null
-		const sortedIds = QuestionUtil.getData(
-			this.props.moduleData.questionState,
-			this.props.model,
-			'sortedIds'
-		)
-		if (!sortedIds) return null
-
 		const responseType = this.props.model.modelState.responseType
+		const isTypePickAll = responseType === 'pick-all'
 		const isShowingExplanation = this.isShowingExplanation()
+		const isShowingExplanationButton = this.isShowingExplanationButton()
 		const score = this.getScore()
-		const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
-		const isAnswerSelected = this.getResponseData().responses.size >= 1 // An answer choice was selected
-
-		const feedbacks = Array.from(this.getResponseData().responses)
-			.filter(mcChoiceId => OboModel.models[mcChoiceId].children.length > 1)
-			.sort((id1, id2) => sortedIds.indexOf(id1) - sortedIds.indexOf(id2))
-			.map(mcChoiceId => OboModel.models[mcChoiceId].children.at(1))
-
-		const { solution } = this.props.model.parent.modelState
-		if (solution !== null && typeof solution !== 'undefined') {
-			SolutionComponent = solution.getComponentClass()
-		}
-
-		let explanationFooter = null
-		if (isShowingExplanation) {
-			explanationFooter = (
-				<Button altAction onClick={this.onClickHideExplanation} value="Hide Explanation" />
-			)
-		} else if (solution) {
-			explanationFooter = (
-				<Button
-					className="show-explanation-button"
-					altAction
-					onClick={this.onClickShowExplanation}
-					value="Read an explanation of the answer"
-				/>
-			)
-		}
-
-		let feedbackAndSolution = null
-		if (isAnswerScored && (feedbacks.length > 0 || solution)) {
-			feedbackAndSolution = (
-				<div className="solution" key="solution">
-					<div className="score">
-						{feedbacks.length === 0 ? null : (
-							<div
-								className={`feedback${isOrNot(responseType === 'pick-all', 'pick-all-feedback')}`}
-							>
-								{feedbacks.map(model => {
-									const Component = model.getComponentClass()
-									return (
-										<Component
-											key={model.get('id')}
-											model={model}
-											moduleData={this.props.moduleData}
-											responseType={responseType}
-											isShowingExplanation
-											questionSubmitted
-											label={String.fromCharCode(sortedIds.indexOf(model.parent.get('id')) + 65)}
-										/>
-									)
-								})}
-							</div>
-						)}
-					</div>
-					{explanationFooter}
-					<ReactCSSTransitionGroup
-						component="div"
-						transitionName="solution"
-						transitionEnterTimeout={800}
-						transitionLeaveTimeout={800}
-					>
-						{isShowingExplanation ? (
-							<div className="solution-container" key="solution-component">
-								<SolutionComponent model={solution} moduleData={this.props.moduleData} />
-							</div>
-						) : null}
-					</ReactCSSTransitionGroup>
-				</div>
-			)
-		}
+		const sortedChoiceModels = this.getSortedChoiceModels()
+		const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
+		const isPractice = this.props.mode === 'practice'
+		const isReview = this.props.mode === 'review'
 
 		const className =
 			'obojobo-draft--chunks--mc-assessment' +
 			` is-response-type-${this.props.model.modelState.responseType}` +
 			` is-mode-${this.props.mode}` +
+			isOrNot(score === 100, 'correct') +
 			isOrNot(isShowingExplanation, 'showing-explanation') +
 			isOrNot(score !== null, 'scored')
 
@@ -417,49 +365,62 @@ export default class MCAssessment extends React.Component {
 			<OboComponent
 				model={this.props.model}
 				moduleData={this.props.moduleData}
-				onClick={this.props.mode !== 'review' ? this.onClick : null}
+				onChange={!isReview ? this.onFormChange : null}
+				onSubmit={this.onFormSubmit}
 				tag="form"
 				className={className}
 			>
-				<span className="instructions">{this.createInstructions(responseType)}</span>
-				{sortedIds.map((id, index) => {
-					const child = OboModel.models[id]
-					if (child.get('type') !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice') {
-						return null
-					}
-
-					const Component = child.getComponentClass()
-					return (
-						<Component
-							key={child.get('id')}
-							model={child}
-							moduleData={this.props.moduleData}
-							responseType={responseType}
-							isShowingExplanation
-							mode={this.props.mode}
-							questionSubmitted={isAnswerScored}
-							label={String.fromCharCode(index + 65)}
+				<fieldset>
+					<legend className="instructions">
+						<span className="for-screen-reader-only">{`Multiple choice form with ${
+							sortedChoiceModels.length
+						} choices. `}</span>
+						{this.getInstructions(responseType)}
+					</legend>
+					<MCAssessmentAnswerChoices
+						ref="answerChoices"
+						models={sortedChoiceModels}
+						responseType={responseType}
+						score={score}
+						mode={this.props.mode}
+						moduleData={this.props.moduleData}
+						correctLabel={this.correctLabelToShow}
+						incorrectLabel={this.incorrectLabelToShow}
+						pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
+					/>
+					{isPractice || isReview ? (
+						<MCAssessmentSubmitAndResultsFooter
+							score={score}
+							isAnAnswerChosen={isAnAnswerChosen}
+							isPractice={isPractice}
+							isTypePickAll={isTypePickAll}
+							correctLabel={this.correctLabelToShow}
+							incorrectLabel={this.incorrectLabelToShow}
+							pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
+							onClickReset={this.onClickReset}
 						/>
-					)
-				})}
-				{this.props.mode === 'practice' || this.props.mode === 'review' ? (
-					<div className="submit-and-result-container">
-						{this.props.mode === 'practice'
-							? this.renderSubmitFooter(isAnswerSelected, isAnswerScored)
-							: null}
-						{isAnswerScored
-							? this.renderSubmittedResultsFooter(score === 100, responseType === 'pick-all')
-							: null}
-					</div>
-				) : null}
-				<ReactCSSTransitionGroup
-					component="div"
-					transitionName="submit"
-					transitionEnterTimeout={800}
-					transitionLeaveTimeout={800}
-				>
-					{feedbackAndSolution}
-				</ReactCSSTransitionGroup>
+					) : null}
+					<ReactCSSTransitionGroup
+						component="div"
+						transitionName="submit"
+						transitionEnterTimeout={ANIMATION_TRANSITION_TIME_MS}
+						transitionLeaveTimeout={ANIMATION_TRANSITION_TIME_MS}
+					>
+						{isShowingExplanationButton ? (
+							<MCAssessmentExplanation
+								ref={component => {
+									this.refExplanation = component
+								}}
+								isShowingExplanation={isShowingExplanation}
+								solutionModel={this.props.model.parent.modelState.solution}
+								moduleData={this.props.moduleData}
+								animationTransitionTime={ANIMATION_TRANSITION_TIME_MS}
+								onClickShowExplanation={this.onClickShowExplanation}
+								onClickHideExplanation={this.onClickHideExplanation}
+							/>
+						) : null}
+					</ReactCSSTransitionGroup>
+				</fieldset>
 			</OboComponent>
 		)
 	}

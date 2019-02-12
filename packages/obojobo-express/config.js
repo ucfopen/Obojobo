@@ -1,8 +1,9 @@
 const fs = require('fs')
+const path = require('path')
 const logger = require('./logger')
 const configuration = {}
 
-const CONFIG_DIR = './config'
+const CONFIG_DIR = path.resolve(__dirname, 'config')
 
 let env = 'development'
 
@@ -77,5 +78,6 @@ configuration.lti = getConfigFileData(`${CONFIG_DIR}/lti.json`, env)
 configuration.permissions = getConfigFileData(`${CONFIG_DIR}/permission_groups.json`, env)
 configuration.draft = getConfigFileData(`${CONFIG_DIR}/draft.json`, env)
 configuration.general = getConfigFileData(`${CONFIG_DIR}/general.json`, env)
+configuration.media = getConfigFileData(`${CONFIG_DIR}/media.json`, env)
 
 module.exports = configuration

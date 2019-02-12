@@ -33,7 +33,6 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			opacity: 1;
 			background: $color-bg;
 			cursor: pointer;
 			border-radius: $dimension-rounded-radius;
@@ -66,6 +65,7 @@
 
 		> .content-back {
 			transform: rotateY(180deg);
+			visibility: hidden;
 
 			> .responses-hidden {
 				font-family: $font-default;
@@ -88,8 +88,12 @@
 			transform: rotateY(-180deg);
 
 			> .blocker-front {
-				opacity: 0;
+				visibility: hidden;
 				pointer-events: none;
+			}
+
+			> .content-back {
+				visibility: visible;
 			}
 		}
 	}

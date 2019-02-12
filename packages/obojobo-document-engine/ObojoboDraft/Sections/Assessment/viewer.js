@@ -12,11 +12,12 @@ Common.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 	componentClass: ViewerComponent,
 	selectionHandler: null,
 	getNavItem(model) {
-		const title = model.title || 'Assessment'
+		const title = (model.title || 'Assessment').toString()
 
 		return {
 			type: 'link',
 			label: title,
+			contentType: 'Assessment Section',
 			path: [title.toLowerCase().replace(/ /g, '-')],
 			showChildren: false,
 			showChildrenOnNavigation: false
@@ -40,16 +41,4 @@ Common.Store.registerModel('ObojoboDraft.Sections.Assessment', {
 			return assessmentModel.modelState.attempts
 		}
 	}
-
-	// generateNav: (model) ->
-	// 	[
-	// 		{
-	// 			type: 'link',
-	// 			label: model.title ||= 'Assessment',
-	// 			id: model.get('id')
-	// 		},
-	// 		{
-	// 			type: 'seperator'
-	// 		}
-	// 	]
 })

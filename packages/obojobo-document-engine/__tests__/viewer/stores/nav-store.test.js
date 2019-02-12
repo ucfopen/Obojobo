@@ -16,9 +16,14 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	getNavTargetModel: jest.fn()
 }))
 
+jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
+	clearVisualFocus: jest.fn()
+}))
+
 const Common = require('../../../src/scripts/common/index').default
 const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
 const APIUtil = require('../../../src/scripts/viewer/util/api-util')
+const FocusUtil = require('../../../src/scripts/viewer/util/focus-util')
 
 // spy on dispatcher before loading navstore
 const Dispatcher = Common.flux.Dispatcher
@@ -507,10 +512,10 @@ describe('NavStore', () => {
 		expect(NavStore.gotoItem(newNavItem)).toBe(true)
 		const after = NavStore.getState()
 		expect(after).toMatchSnapshot()
+		expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(1)
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:unfocus')
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 	})
 
@@ -538,9 +543,9 @@ describe('NavStore', () => {
 		expect(NavStore.gotoItem(newNavItem)).toBe(true)
 		const after = NavStore.getState()
 		expect(after).toMatchSnapshot()
+		expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(1)
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
-		expect(Dispatcher.trigger).toHaveBeenCalledTimes(2)
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:unfocus')
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')
 	})
 
@@ -567,6 +572,7 @@ describe('NavStore', () => {
 
 		expect(NavStore.generateNav(model)).toEqual({
 			children: [],
+			parent: null,
 			flags: { complete: false, correct: false, visited: false },
 			fullPath: [],
 			id: 'testId',

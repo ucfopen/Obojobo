@@ -1,22 +1,20 @@
-let parseTg = (el) => {
+let parseTg = el => {
 	// console.log('pTg', el)
 
 	let tg = []
 
-	for(let i in el.elements)
-	{
+	for (let i in el.elements) {
 		tg.push(parseT(el.elements[i]))
 	}
 
 	// console.log('=', tg)
 
-	return tg;
+	return tg
 }
 
-let parseT = (el) => {
+let parseT = el => {
 	// let data = (el.attributes && el.attributes.data) ? el.attributes.data : {};
 	// el.attributes = data;
-
 
 	let t = {
 		text: {
@@ -28,8 +26,7 @@ let parseT = (el) => {
 
 	// let foundText = false;
 	// let lastTextNode = null;
-	for(let i in el.value)
-	{
+	for (let i in el.value) {
 		// console.log('call pt', el.elements, i, el.elements[i], t.text)
 		parseText(el.value[i], t.text) //, foundText, lastTextNode)
 	}
@@ -38,20 +35,16 @@ let parseT = (el) => {
 
 	// console.log('parseT result', t);
 
-	return t;
+	return t
 }
 
 let parseText = (node, textItem, foundText, lastTextNode) => {
-	// console.log('parseText', node)
-	if(node.type === 'text')
-	{
-		if(!foundText && typeof node.text === 'string')
-		{
-			foundText = true;
-			// node.text = node.text.replace(/^\s+/, '');
+	if (node.type === 'text') {
+		if (!foundText && typeof node.text === 'string') {
+			foundText = true
 		}
 
-		lastTextNode = node;
+		lastTextNode = node
 		textItem.value += node.text
 		return
 	}
@@ -59,30 +52,33 @@ let parseText = (node, textItem, foundText, lastTextNode) => {
 	let styleRange
 	let type = node.name
 	let data = {}
-	switch(node.name)
-	{
+
+	switch (node.name) {
 		case 'latex':
 			type = '_latex'
-			break;
+			if (node.attributes && node.attributes.alt) {
+				data = { alt: node.attributes.alt }
+			}
+			break
 
 		case 'a':
 			data = {
 				href: node.attributes.href
 			}
-			break;
+			break
 
 		case 'sup':
-			data = 1;
-			break;
+			data = 1
+			break
 
 		case 'sub':
-			type = 'sup';
-			data = -1;
-			break;
+			type = 'sup'
+			data = -1
+			break
 
 		case 'code':
-			type = 'monospace';
-			break;
+			type = 'monospace'
+			break
 	}
 
 	styleRange = {
@@ -94,12 +90,11 @@ let parseText = (node, textItem, foundText, lastTextNode) => {
 
 	textItem.styleList.push(styleRange)
 
-	for(let i in node.value)
-	{
-		parseText(node.value[i], textItem)//, foundText, lastTextNode)
+	for (let i in node.value) {
+		parseText(node.value[i], textItem) //, foundText, lastTextNode)
 	}
 
 	styleRange.end = textItem.value.length
 }
 
-module.exports = parseTg;
+module.exports = parseTg

@@ -6,7 +6,6 @@
 	$color-nav-hover: darken($color-highlight, 25%);
 	$padding: 2rem;
 
-	overflow: auto;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -22,6 +21,10 @@
 	box-sizing: border-box;
 	transition: left $duration-animation-default $duration-animation-default;
 	border-right: 1px solid transparentize($color-shadow, 0.1);
+
+	&:focus {
+		outline: none;
+	}
 
 	@media screen and (max-width: $breakpoint-nav-small) {
 		width: $dimension-nav-menu-small;
@@ -44,6 +47,10 @@
 		padding: 0;
 		margin: 0;
 		z-index: 5; // used to position between the footer logo and the toggle-button
+
+		&:focus {
+			outline: none;
+		}
 	}
 
 	li {
@@ -82,7 +89,6 @@
 
 		padding-top: 2em;
 		margin-bottom: 1em;
-		position: sticky;
 		z-index: 5;
 		background: $color-nav-bg;
 		top: 0;
@@ -164,6 +170,15 @@
 				background: $color-nav-bg;
 			}
 		}
+
+		&::after {
+			top: 0;
+			left: -0.55em;
+			width: 0.8em;
+			height: 0.8em;
+			background: $color-bg;
+			border: solid 2px $color-text-minor;
+		}
 	}
 
 	.link,
@@ -182,13 +197,7 @@
 			content: '';
 			position: absolute;
 			display: inline-block;
-			top: 0;
-			left: -0.55em;
-			width: 0.8em;
-			height: 0.8em;
-			border: solid 2px $color-text-minor;
 			border-radius: 0.8em;
-			background: $color-bg;
 		}
 
 		&:hover {
@@ -215,6 +224,19 @@
 					height: 2em;
 				}
 			}
+		}
+
+		> button {
+			border: none;
+			font-size: 1em;
+			background: transparent;
+			font-family: $font-default;
+			cursor: pointer;
+			padding: 0;
+			margin: 0;
+			color: inherit;
+			font-weight: inherit;
+			text-align: left;
 		}
 	}
 
@@ -279,9 +301,25 @@
 		width: 1.5rem;
 		z-index: 6;
 		transform: none;
+	}
 
-		&:focus {
-			outline: none;
+	.skip-nav-button {
+		position: absolute;
+		z-index: 6;
+		left: 2.6em;
+		top: 0.55em;
+		font-size: 0.8em;
+
+		> button {
+			position: absolute;
+			left: -20em;
+			top: 0;
+			padding: 0.5em 1em;
+			white-space: nowrap;
+
+			&:focus {
+				left: 0;
+			}
 		}
 	}
 

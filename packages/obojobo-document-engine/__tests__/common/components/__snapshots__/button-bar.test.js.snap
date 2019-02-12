@@ -17,6 +17,7 @@ exports[`ButtonBar ButtonBar component with attributes 1`] = `
       className="obojobo-draft--components--button alt-action is-dangerous align-center"
     >
       <button
+        aria-selected={false}
         disabled={true}
         onClick={[Function]}
       />
