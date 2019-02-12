@@ -41,7 +41,7 @@ class Question extends React.Component {
 						)}
 					</div>
 				</div>
-				<button className={'delete-node'} onClick={() => this.delete()}>
+				<button className={'delete-node-button'} onClick={() => this.delete()}>
 					X
 				</button>
 			</div>

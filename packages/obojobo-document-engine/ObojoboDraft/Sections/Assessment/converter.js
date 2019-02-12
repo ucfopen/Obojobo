@@ -12,83 +12,79 @@ import Rubric from './components/rubric/editor'
 import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
 
 const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = node.data.get('content')
-	json.children = []
-
+	const content = node.data.get('content')
 	// Remove rubric if it has been deleted
-	delete json.content.rubric
+	delete content.rubric
 
+	const children = []
 	node.nodes.forEach(child => {
 		switch (child.type) {
 			case PAGE_NODE:
-				json.children.push(Page.helpers.slateToObo(child))
+				children.push(Page.helpers.slateToObo(child))
 				break
 			case QUESTION_BANK_NODE:
-				json.children.push(QuestionBank.helpers.slateToObo(child))
+				children.push(QuestionBank.helpers.slateToObo(child))
 				break
 			case ACTIONS_NODE:
-				json.content.scoreActions = ScoreActions.helpers.slateToObo(child)
+				content.scoreActions = ScoreActions.helpers.slateToObo(child)
 				break
 			case RUBRIC_NODE:
-				json.content.rubric = Rubric.helpers.slateToObo(child)
+				content.rubric = Rubric.helpers.slateToObo(child)
 				break
 			case SETTINGS_NODE:
-				json.content.attempts = child.nodes.get(0).text
-				json.content.review = child.nodes.get(1).data.get('current')
+				content.attempts = child.nodes.get(0).text
+				content.review = child.nodes.get(1).data.get('current')
 		}
 	})
 
-	return json
+	return {
+		id: node.key,
+		type: node.type,
+		content,
+		children
+	}
 }
 
 const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = ASSESSMENT_NODE
-	json.data = { content: node.get('content') }
-	json.nodes = []
-
-	const settings = {
-		object: 'block',
-		type: SETTINGS_NODE,
-		nodes: []
-	}
-
-	settings.nodes.push(
-		ParameterNode.helpers.oboToSlate({
-			name: 'attempts',
-			value: json.data.content.attempts + '',
-			display: 'Attempts'
-		})
-	)
-
-	settings.nodes.push(
-		ParameterNode.helpers.oboToSlate({
-			name: 'review',
-			value: json.data.content.review,
-			display: 'Review',
-			options: ['always', 'never', 'no-attempts-remaining']
-		})
-	)
-
-	json.nodes.push(settings)
+	const content = node.get('content')
+	const nodes = [
+		{
+			object: 'block',
+			type: SETTINGS_NODE,
+			nodes: [
+				ParameterNode.helpers.oboToSlate({
+					name: 'attempts',
+					value: content.attempts + '',
+					display: 'Attempts'
+				}),
+				ParameterNode.helpers.oboToSlate({
+					name: 'review',
+					value: content.review,
+					display: 'Review',
+					options: ['always', 'never', 'no-attempts-remaining']
+				})
+			]
+		}
+	]
 
 	node.attributes.children.forEach(child => {
 		if (child.type === PAGE_NODE) {
-			json.nodes.push(Page.helpers.oboToSlate(child))
+			nodes.push(Page.helpers.oboToSlate(child))
 		} else {
-			json.nodes.push(QuestionBank.helpers.oboToSlate(child))
+			nodes.push(QuestionBank.helpers.oboToSlate(child))
 		}
 	})
 
-	json.nodes.push(ScoreActions.helpers.oboToSlate(json.data.content.scoreActions))
-	if (json.data.content.rubric) json.nodes.push(Rubric.helpers.oboToSlate(json.data.content.rubric))
+	nodes.push(ScoreActions.helpers.oboToSlate(content.scoreActions))
+	if (content.rubric) nodes.push(Rubric.helpers.oboToSlate(content.rubric))
 
-	return json
+	return {
+		object: 'block',
+		key: node.id,
+		type: ASSESSMENT_NODE,
+		data: { content },
+		nodes
+	}
 }
 
 export default { slateToObo, oboToSlate }

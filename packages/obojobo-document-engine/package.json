@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-document-engine",
-	"version": "1.0.3",
+	"version": "3.4.0",
 	"description": "",
 	"engines": {
 		"yarn": "^1.0",

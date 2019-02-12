@@ -15,13 +15,10 @@ const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
-const isType = change => {
-	return change.value.blocks.some(block => {
-		return !!change.value.document.getClosest(block.key, parent => {
-			return parent.type === TABLE_NODE
-		})
-	})
-}
+const isType = change =>
+	change.value.blocks.some(
+		block => !!change.value.document.getClosest(block.key, parent => parent.type === TABLE_NODE)
+	)
 
 const plugins = {
 	onKeyDown(event, change) {
@@ -29,14 +26,15 @@ const plugins = {
 		const isTable = isType(change)
 		if (!isTable) return
 
-		// Disallow enter in tables
-		if (event.key === 'Enter') {
-			event.preventDefault()
-			return false
-		}
+		switch (event.key) {
+			case 'Backspace':
+			case 'Delete':
+				return KeyDownUtil.deleteNodeContents(event, change)
 
-		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return KeyDownUtil.deleteNodeContents(event, change)
+			case 'Enter':
+				// Disallows enter
+				event.preventDefault()
+				return true
 		}
 	},
 	renderNode(props) {

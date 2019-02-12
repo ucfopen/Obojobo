@@ -110,11 +110,10 @@ describe('Code editor', () => {
 	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
 		const change = {
 			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
+				blocks: {
+					get: () => ({ key: 'mockBlockKey' }),
+					some: () => true
+				},
 				document: {
 					getClosest: (num, funct) => {
 						funct({ key: 'mockKey' })
@@ -143,11 +142,10 @@ describe('Code editor', () => {
 	test('plugins.onKeyDown deals with [Backspace] or [Delete] on empty code', () => {
 		const change = {
 			value: {
-				blocks: [
-					{
-						key: 'mockBlockKey'
-					}
-				],
+				blocks: {
+					get: () => ({ key: 'mockBlockKey' }),
+					some: () => true
+				},
 				document: {
 					getClosest: (num, funct) => {
 						funct({ key: 'mockKey' })
@@ -166,7 +164,7 @@ describe('Code editor', () => {
 		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
-			key: 'Delete',
+			key: 'Backspace',
 			preventDefault: jest.fn()
 		}
 

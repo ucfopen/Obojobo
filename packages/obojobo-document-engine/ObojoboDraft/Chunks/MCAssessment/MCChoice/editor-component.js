@@ -54,7 +54,7 @@ class MCChoice extends React.Component {
 			isOrNot(score === 100, 'correct')
 		return (
 			<div className={className}>
-				<button className={'delete-node'} onClick={event => this.delete(event)}>
+				<button className={'delete-node-button'} onClick={event => this.delete(event)}>
 					X
 				</button>
 				<button className={'correct-button'} onClick={event => this.handleScoreChange(event)}>

@@ -13,7 +13,7 @@ class MCFeedback extends React.Component {
 			<div
 				className={'component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback'}
 			>
-				<button className={'delete-node'} onClick={() => this.delete()}>
+				<button className={'delete-node-button'} onClick={() => this.delete()}>
 					X
 				</button>
 				<span className={'label'} contentEditable={false}>
