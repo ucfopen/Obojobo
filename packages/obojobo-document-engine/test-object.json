@@ -4271,7 +4271,9 @@
 															"styleList": [
 																{
 																	"type": "_latex",
-																	"data": {},
+																	"data": {
+																		"alt": "2 plus 2"
+																	},
 																	"start": 8,
 																	"end": 11
 																}
@@ -4446,7 +4448,9 @@
 															"styleList": [
 																{
 																	"type": "_latex",
-																	"data": {},
+																	"data": {
+																		"alt": "3 minus 0"
+																	},
 																	"start": 8,
 																	"end": 11
 																}
@@ -4621,7 +4625,9 @@
 															"styleList": [
 																{
 																	"type": "_latex",
-																	"data": {},
+																	"data": {
+																		"alt": "9 minus 4"
+																	},
 																	"start": 8,
 																	"end": 11
 																}
