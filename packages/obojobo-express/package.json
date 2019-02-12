@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-express",
-	"version": "3.3.4",
+	"version": "3.4.0",
 	"private": true,
 	"scripts": {
 		"dev": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info IS_WEBPACK=true nodemon ./node_modules/.bin/webpack-dev-server",

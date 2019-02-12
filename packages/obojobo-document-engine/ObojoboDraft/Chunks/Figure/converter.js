@@ -1,12 +1,6 @@
 import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
 
 const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = node.data.get('content')
-
-	json.content.textGroup = []
 	const captionLine = {
 		text: { value: node.text, styleList: [] },
 		data: null
@@ -16,44 +10,43 @@ const slateToObo = node => {
 		TextUtil.slateToOboText(text, captionLine)
 	})
 
-	json.content.textGroup.push(captionLine)
-	json.children = []
+	const content = node.data.get('content')
+	content.textGroup = [captionLine]
 
-	return json
+	return {
+		id: node.key,
+		type: node.type,
+		children: [],
+		content
+	}
 }
 
 const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-	json.data = { content: node.content }
-
-	json.nodes = []
-	// If there is currently no caption, add one
+	let nodes
 	if (!node.content.textGroup) {
-		const caption = {
-			object: 'text',
-			leaves: [
-				{
-					text: ''
-				}
-			]
-		}
-		json.nodes.push(caption)
-		return json
-	}
-
-	node.content.textGroup.forEach(line => {
-		const caption = {
+		// If there is currently no caption, add one
+		nodes = [
+			{
+				object: 'text',
+				leaves: [{ text: '' }]
+			}
+		]
+	} else {
+		nodes = node.content.textGroup.map(line => ({
 			object: 'text',
 			leaves: TextUtil.parseMarkings(line)
+		}))
+	}
+
+	return {
+		object: 'block',
+		key: node.id,
+		type: node.type,
+		nodes,
+		data: {
+			content: node.content
 		}
-
-		json.nodes.push(caption)
-	})
-
-	return json
+	}
 }
 
 export default { slateToObo, oboToSlate }

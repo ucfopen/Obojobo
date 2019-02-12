@@ -1,56 +1,8 @@
 @import '../../../scss/includes';
 
-.editor {
+.editor--page-editor {
 	margin-top: 3em;
 	margin-bottom: 3em;
-
-	.toolbar {
-		text-align: center;
-		position: fixed;
-		top: 0;
-		z-index: 999;
-		margin: 0 auto;
-		padding-right: 3em;
-		padding-left: 3em;
-		left: $dimension-nav-menu;
-		right: 0;
-		background-color: $color-bg2;
-		border-bottom: 1px solid $color-shadow;
-
-		button {
-			font-size: 1em;
-			width: 2.5em;
-			height: 2.5em;
-			padding: 0.4em;
-			box-sizing: border-box;
-			margin: 0;
-			border: none;
-			background: transparent;
-			cursor: pointer;
-			opacity: 0.6;
-
-			svg path {
-				fill: $color-text;
-			}
-
-			svg line {
-				stroke: $color-text;
-			}
-
-			&:hover {
-				opacity: 1;
-				background: lighten($color-action, 48%);
-
-				svg path {
-					fill: $color-action;
-				}
-
-				svg line {
-					stroke: $color-action;
-				}
-			}
-		}
-	}
 
 	.footer-menu {
 		text-align: center;
@@ -111,6 +63,54 @@
 			margin-top: 0.2em;
 			background-color: $color-preview;
 			color: $color-bg;
+		}
+	}
+
+	.toolbar {
+		text-align: center;
+		position: fixed;
+		top: 0;
+		z-index: 999;
+		margin: 0 auto;
+		padding-right: 3em;
+		padding-left: 3em;
+		left: $dimension-nav-menu;
+		right: 0;
+		background-color: $color-bg2;
+		border-bottom: 1px solid $color-shadow;
+
+		button {
+			font-size: 1em;
+			width: 2.5em;
+			height: 2.5em;
+			padding: 0.4em;
+			box-sizing: border-box;
+			margin: 0;
+			border: none;
+			background: transparent;
+			cursor: pointer;
+			opacity: 0.6;
+
+			svg path {
+				fill: $color-text;
+			}
+
+			svg line {
+				stroke: $color-text;
+			}
+
+			&:hover {
+				opacity: 1;
+				background: lighten($color-action, 48%);
+
+				svg path {
+					fill: $color-action;
+				}
+
+				svg line {
+					stroke: $color-action;
+				}
+			}
 		}
 	}
 
@@ -213,5 +213,13 @@
 		&.align-center {
 			transform: translate(-50%);
 		}
+	}
+
+	.delete-node-button {
+		position: absolute;
+		top: 0;
+		right: 0;
+		border: none;
+		background: inherit;
 	}
 }

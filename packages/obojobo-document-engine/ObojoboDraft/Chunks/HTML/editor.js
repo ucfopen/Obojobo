@@ -20,17 +20,14 @@ const plugins = {
 		const isHTML = change.value.blocks.some(block => block.type === HTML_NODE)
 		if (!isHTML) return
 
-		// Insert a softbreak on enter
-		if (event.key === 'Enter') {
-			event.preventDefault()
-			return change.insertText('\n')
-		}
+		switch (event.key) {
+			case 'Enter':
+				event.preventDefault()
+				return change.insertText('\n')
 
-		// Tab insert
-		if (event.key === 'Tab') {
-			event.preventDefault()
-			change.insertText('\t')
-			return true
+			case 'Tab':
+				event.preventDefault()
+				return change.insertText('\t')
 		}
 	},
 	schema: Schema

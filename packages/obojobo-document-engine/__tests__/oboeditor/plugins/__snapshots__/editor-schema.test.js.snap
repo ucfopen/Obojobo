@@ -9,6 +9,9 @@ Object {
           Object {
             "type": "oboeditor.component",
           },
+          Object {
+            "type": "ObojoboDraft.Sections.Assessment",
+          },
         ],
         "min": 1,
       },

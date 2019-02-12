@@ -7,6 +7,8 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
+const SELECT_TYPES = ['sequential', 'random', 'random-unseen']
+
 const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.QuestionBank': {
@@ -63,7 +65,7 @@ const schema = {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({
 									name: 'choose',
-									value: Infinity + '',
+									value: 'Infinity',
 									display: 'Choose'
 								})
 							)
@@ -74,7 +76,7 @@ const schema = {
 								name: 'select',
 								value: 'sequential',
 								display: 'Select',
-								options: ['sequential', 'random', 'random-unseen']
+								options: SELECT_TYPES
 							})
 						)
 						return change.insertNodeByKey(node.key, index, block)
@@ -86,7 +88,7 @@ const schema = {
 								const block = Block.create(
 									ParameterNode.helpers.oboToSlate({
 										name: 'choose',
-										value: Infinity + '',
+										value: 'Infinity',
 										display: 'Choose'
 									})
 								)
@@ -97,7 +99,7 @@ const schema = {
 									name: 'select',
 									value: 'sequential',
 									display: 'Select',
-									options: ['sequential', 'random', 'random-unseen']
+									options: SELECT_TYPES
 								})
 							)
 							return c.insertNodeByKey(node.key, index, block)

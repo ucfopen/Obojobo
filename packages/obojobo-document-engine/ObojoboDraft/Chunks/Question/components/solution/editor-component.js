@@ -12,7 +12,7 @@ const Solution = props => {
 	return (
 		<div className={'solution-editor'}>
 			{props.children}
-			<button className={'delete-node'} onClick={() => deleteNode()}>
+			<button className={'delete-node-button'} onClick={() => deleteNode()}>
 				X
 			</button>
 		</div>

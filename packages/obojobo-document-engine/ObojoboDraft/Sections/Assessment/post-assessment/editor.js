@@ -20,8 +20,6 @@ class Score extends React.Component {
 		const dataFor = this.props.node.data.get('for')
 		const newRange = window.prompt('Enter the new range:', dataFor) || dataFor
 
-		// TODO Validate range
-
 		const editor = this.props.editor
 		const change = editor.value.change()
 
@@ -47,7 +45,7 @@ class Score extends React.Component {
 					{'Score Range: ' + dataFor + ' '}
 					<button onClick={() => this.changeRange()}>Edit Range</button>
 				</div>
-				<button className={'delete-node'} onClick={() => this.deleteNode()}>
+				<button className={'delete-node-button'} onClick={() => this.deleteNode()}>
 					{'X'}
 				</button>
 			</div>
