@@ -1,19 +1,25 @@
 const attemptStart = require('./attempt-start')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
+const VisitModel = oboRequire('models/visit')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 const resumeAttempt = (req, res) => {
-	const attempt = req.body
+	const attempt = req.body.attempt
 	let draftDocument = null
 	let currentUser = null
 	let assessmentNode
+	let isPreview
 
 	return req
 		.requireCurrentUser()
 		.then(user => {
 			currentUser = user
+			return VisitModel.fetchById(req.body.visitId)
+		})
+		.then(visit => {
+			isPreview = visit.is_preview
 			return req.requireCurrentDocument()
 		})
 		.then(currentDocument => {
@@ -39,7 +45,7 @@ const resumeAttempt = (req, res) => {
 				attempt.assessmentId,
 				attempt.id,
 				attempt.number,
-				false,
+				isPreview,
 				req.hostname,
 				req.connection.remoteAddress
 			)

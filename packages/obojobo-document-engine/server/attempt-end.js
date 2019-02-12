@@ -5,7 +5,6 @@ const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
 const lti = oboRequire('lti')
 const logger = oboRequire('logger')
-const attemptStart = require('./attempt-start')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
@@ -96,8 +95,7 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 		})
 		.then(ltiRequestResult => {
 			logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
-
-			insertAttemptScoredEvents(
+			return insertAttemptScoredEvents(
 				user,
 				draftDocument,
 				attempt.assessmentId,

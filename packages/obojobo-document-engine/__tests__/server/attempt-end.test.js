@@ -96,7 +96,7 @@ describe('Attempt End', () => {
 		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
 		Assessment.getAttempt.mockResolvedValueOnce({
 			assessment_id: 'mockAssessmentId',
-			state: { chosen: [{}] },
+			state: { chosen: [{ score: 100 }] },
 			draft_id: 'mockDraftId',
 			result: {
 				attemptScore: 50
