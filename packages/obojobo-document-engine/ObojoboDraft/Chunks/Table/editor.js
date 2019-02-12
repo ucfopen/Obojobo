@@ -26,7 +26,7 @@ const plugins = {
 		const isTable = isType(change)
 		if (!isTable) return
 
-		switch(event.key) {
+		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
 				return KeyDownUtil.deleteNodeContents(event, change)

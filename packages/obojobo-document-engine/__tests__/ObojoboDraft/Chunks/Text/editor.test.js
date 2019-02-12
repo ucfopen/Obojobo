@@ -134,7 +134,7 @@ describe('Text editor', () => {
 		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
-			key: 'Delete',
+			key: 'Backspace',
 			preventDefault: jest.fn()
 		}
 

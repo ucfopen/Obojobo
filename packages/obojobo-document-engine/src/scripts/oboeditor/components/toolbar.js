@@ -194,7 +194,7 @@ class Node extends React.Component {
 		value.blocks.forEach(block => {
 			const dataJSON = block.data.toJSON()
 
-			switch(block.type) {
+			switch (block.type) {
 				case TEXT_LINE_NODE:
 					dataJSON.indent = Math.min(dataJSON.indent + 1, 20)
 					return change.setNodeByKey(block.key, { data: dataJSON })
@@ -218,7 +218,7 @@ class Node extends React.Component {
 		value.blocks.forEach(block => {
 			const dataJSON = block.data.toJSON()
 
-			switch(block.type) {
+			switch (block.type) {
 				case TEXT_LINE_NODE:
 					dataJSON.indent = Math.max(dataJSON.indent - 1, 0)
 					return change.setNodeByKey(block.key, { data: dataJSON })

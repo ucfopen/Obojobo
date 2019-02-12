@@ -29,14 +29,14 @@ const plugins = {
 		const isCode = isType(change)
 		if (!isCode) return
 
-		switch(event.key) {
+		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
 				return KeyDownUtil.deleteEmptyParent(event, change, CODE_NODE)
 
 			case 'Tab':
 				// TAB+SHIFT
-				if(event.shiftKey) return decreaseIndent(event, change)
+				if (event.shiftKey) return decreaseIndent(event, change)
 
 				// TAB
 				return increaseIndent(event, change)

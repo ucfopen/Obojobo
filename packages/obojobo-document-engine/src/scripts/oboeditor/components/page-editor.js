@@ -99,8 +99,7 @@ class PageEditor extends React.Component {
 		if (this.props.page === null) return this.renderEmpty()
 
 		return (
-			<div
-				className={'editor--page-editor'}>
+			<div className={'editor--page-editor'}>
 				<div className={'toolbar'}>
 					<MarkToolbar.components.Node
 						value={this.state.value}
@@ -181,7 +180,7 @@ class PageEditor extends React.Component {
 		this.props.model.children.forEach(child => {
 			let contentJSON = {}
 
-			switch(child.get('type')){
+			switch (child.get('type')) {
 				case CONTENT_NODE:
 					contentJSON = child.flatJSON()
 

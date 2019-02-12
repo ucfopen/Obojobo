@@ -250,7 +250,22 @@ describe('Parameter Node', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
+	test('plugins.onKeyDown deals with [Backspace]', () => {
+		const change = {
+			value: {
+				blocks: [{ key: 'mockKey', type: 'Parameter' }]
+			}
+		}
+		const event = {
+			key: 'Backspace',
+			preventDefault: jest.fn()
+		}
+
+		ParameterNode.plugins.onKeyDown(event, change)
+		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Delete]', () => {
 		const change = {
 			value: {
 				blocks: [{ key: 'mockKey', type: 'Parameter' }]

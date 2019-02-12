@@ -42,7 +42,7 @@ class DropMenu extends React.Component {
 	}
 
 	onKeyDown(event) {
-		switch(event.key) {
+		switch (event.key) {
 			case 'Escape':
 				event.preventDefault()
 				this.setState({
@@ -72,7 +72,6 @@ class DropMenu extends React.Component {
 					currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
 				}))
 				break
-
 		}
 	}
 
@@ -116,7 +115,8 @@ class DropMenu extends React.Component {
 			<div
 				className={
 					'editor--component--insert-menu ' +
-					isOrNot(this.state.isOpen, 'open') + ' ' +
+					isOrNot(this.state.isOpen, 'open') +
+					' ' +
 					this.props.className
 				}
 				contentEditable={false}

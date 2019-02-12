@@ -44,7 +44,7 @@ class SubMenu extends React.Component {
 	}
 
 	onKeyDown(event) {
-		switch(event.key) {
+		switch (event.key) {
 			// Open the menu and set the first item as the current focus
 			case 'ArrowRight':
 				this.setState({ isOpen: true, currentFocus: 0 })

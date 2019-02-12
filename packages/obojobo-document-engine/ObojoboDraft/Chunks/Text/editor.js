@@ -29,27 +29,27 @@ const plugins = {
 
 		const last = change.value.endBlock
 
-		switch(event.key) {
-		case 'Backspace':
-		case 'Delete':
-			return KeyDownUtil.deleteEmptyParent(event, change, TEXT_NODE)
+		switch (event.key) {
+			case 'Backspace':
+			case 'Delete':
+				return KeyDownUtil.deleteEmptyParent(event, change, TEXT_NODE)
 
-		case 'Enter':
-			// Single Enter
-			if (last.text !== '') return
+			case 'Enter':
+				// Single Enter
+				if (last.text !== '') return
 
-			// Double Enter
-			return splitParent(event, change)
+				// Double Enter
+				return splitParent(event, change)
 
-		case 'Tab':
-			// TAB+SHIFT
-			if(event.shiftKey) return decreaseIndent(event, change)
+			case 'Tab':
+				// TAB+SHIFT
+				if (event.shiftKey) return decreaseIndent(event, change)
 
-			// TAB+ALT
-			if(event.altKey) return increaseIndent(event, change)
+				// TAB+ALT
+				if (event.altKey) return increaseIndent(event, change)
 
-			// TAB
-			return insertTab(event, change)
+				// TAB
+				return insertTab(event, change)
 		}
 	},
 	renderNode(props) {

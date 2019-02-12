@@ -20,7 +20,7 @@ const plugins = {
 		const isHTML = change.value.blocks.some(block => block.type === HTML_NODE)
 		if (!isHTML) return
 
-		switch(event.key) {
+		switch (event.key) {
 			case 'Enter':
 				event.preventDefault()
 				return change.insertText('\n')

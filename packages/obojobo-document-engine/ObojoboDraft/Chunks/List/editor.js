@@ -32,7 +32,7 @@ const plugins = {
 		const isLine = isType(change)
 		if (!isLine) return
 
-		switch(event.key) {
+		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
 				return onBackspace(event, change)
@@ -44,7 +44,7 @@ const plugins = {
 
 			case 'Tab':
 				// TAB+SHIFT
-				if(event.shiftKey) return wrapLevel(event, change)
+				if (event.shiftKey) return wrapLevel(event, change)
 
 				// TAB
 				return unwrapLevel(event, change)

@@ -150,7 +150,7 @@ const plugins = {
 		const isParameter = isType(change)
 		if (!isParameter) return
 
-		switch(event.key) {
+		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
 				return KeyDownUtil.deleteNodeContents(event, change)
