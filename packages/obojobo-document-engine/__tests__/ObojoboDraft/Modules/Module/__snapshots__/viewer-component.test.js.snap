@@ -4,10 +4,10 @@ exports[`Module Module component 1`] = `
 <div
   className="component obojobo-draft--modules--module"
   data-focussed={false}
-  data-id="b0c22727-16df-4f8f-9ec3-1b24109c11d7"
+  data-id="17706702-3ba4-44ac-84f0-87d2ee23316e"
   data-obo-component={true}
   data-type="ObojoboDraft.Modules.Module"
-  id="obo-b0c22727-16df-4f8f-9ec3-1b24109c11d7"
+  id="obo-17706702-3ba4-44ac-84f0-87d2ee23316e"
   role="main"
   tabIndex={-1}
 >
@@ -19,10 +19,10 @@ exports[`Module Module component with child 1`] = `
 <div
   className="component obojobo-draft--modules--module"
   data-focussed={false}
-  data-id="b0c22727-16df-4f8f-9ec3-1b24109c11d7"
+  data-id="17706702-3ba4-44ac-84f0-87d2ee23316e"
   data-obo-component={true}
   data-type="ObojoboDraft.Modules.Module"
-  id="obo-b0c22727-16df-4f8f-9ec3-1b24109c11d7"
+  id="obo-17706702-3ba4-44ac-84f0-87d2ee23316e"
   role="main"
   tabIndex={-1}
 >
