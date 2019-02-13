@@ -5,7 +5,7 @@ exports[`Solution Editor Node Solution component 1`] = `
   className="solution-editor"
 >
   <button
-    className="delete-node"
+    className="delete-node-button"
     onClick={[Function]}
   >
     X
@@ -13,4 +13,4 @@ exports[`Solution Editor Node Solution component 1`] = `
 </div>
 `;
 
-exports[`Solution Editor Node Solution component deletes self 1`] = `"<div class=\\"solution-editor\\"><button class=\\"delete-node\\">X</button></div>"`;
+exports[`Solution Editor Node Solution component deletes self 1`] = `"<div class=\\"solution-editor\\"><button class=\\"delete-node-button\\">X</button></div>"`;

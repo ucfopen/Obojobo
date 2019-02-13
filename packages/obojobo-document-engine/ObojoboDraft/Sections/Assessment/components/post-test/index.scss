@@ -24,6 +24,10 @@
 			padding: 1em 0;
 			padding-top: 0;
 			box-sizing: border-box;
+
+			&:focus {
+				outline: none;
+			}
 		}
 
 		> .recorded-score {
@@ -45,6 +49,15 @@
 				display: inline-block;
 				position: relative;
 				margin-bottom: 0.5em;
+			}
+
+			.for-screen-reader-only.percent-label {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				width: 0;
+				height: 0;
+				overflow: hidden;
 			}
 
 			.from-attempt {

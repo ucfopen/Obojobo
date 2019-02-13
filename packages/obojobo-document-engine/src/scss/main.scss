@@ -104,7 +104,7 @@ body {
 	}
 }
 
-.component {
+.component[data-obo-component='true'] {
 	box-sizing: border-box;
 	color: $color-text;
 	display: block;
@@ -125,6 +125,21 @@ body {
 
 	&.last {
 		padding-bottom: 0;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	.for-screen-reader-only {
+		width: 0;
+		height: 0;
+		overflow: hidden;
+		pointer-events: none;
+		display: inline-block;
+		position: absolute;
+		left: 0;
+		top: 0;
 	}
 
 	.pad {
@@ -194,12 +209,4 @@ body {
 			text-align: center;
 		}
 	}
-}
-
-.delete-node {
-	position: absolute;
-	top: 0;
-	right: 0;
-	border: none;
-	background: inherit;
 }

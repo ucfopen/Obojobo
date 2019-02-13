@@ -128,7 +128,7 @@ class Table extends React.Component {
 						</tbody>
 					</table>
 				</div>
-				<div className={'table-editor'}>
+				<div className={'table-editor-buttons'}>
 					<button onClick={() => this.addRow()}>{'Add Row'}</button>
 					<button onClick={() => this.addCol()}>{'Add Column'}</button>
 					<button onClick={() => this.toggleHeader()}>{'Toggle Header'}</button>

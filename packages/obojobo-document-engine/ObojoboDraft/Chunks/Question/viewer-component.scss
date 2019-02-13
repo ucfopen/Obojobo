@@ -23,6 +23,42 @@
 			width: 100%;
 			backface-visibility: hidden;
 			-ms-backface-visibility: visible;
+
+			> .solution-editor {
+				background: $color-bg2;
+				border-top: 1px solid $color-shadow;
+				position: relative;
+				border-bottom-left-radius: 0.3em;
+				border-bottom-right-radius: 0.3em;
+				padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
+
+				.page-editor {
+					margin: $dimension-padding / 3;
+					background: $color-bg;
+					border: 1px solid $color-shadow;
+
+					&::before {
+						content: 'Full explanation:';
+						font-family: $font-default;
+						font-size: 1em;
+						font-weight: bold;
+						color: $color-text-minor;
+						margin-top: 1em;
+						margin-left: 2em;
+						margin-bottom: -1em;
+						display: block;
+						transform: scale(0.7);
+						transform-origin: top left;
+					}
+				}
+			}
+
+			.add-solution {
+				left: 50%;
+				transform: translate(-50%, 0);
+				position: relative;
+				margin: $dimension-padding / 3;
+			}
 		}
 
 		> .blocker-front {
@@ -33,7 +69,6 @@
 			left: 0;
 			right: 0;
 			bottom: 0;
-			opacity: 1;
 			background: $color-bg;
 			cursor: pointer;
 			border-radius: $dimension-rounded-radius;
@@ -66,6 +101,7 @@
 
 		> .content-back {
 			transform: rotateY(180deg);
+			visibility: hidden;
 
 			> .responses-hidden {
 				font-family: $font-default;
@@ -92,8 +128,12 @@
 			transform: rotateY(-180deg);
 
 			> .blocker-front {
-				opacity: 0;
+				visibility: hidden;
 				pointer-events: none;
+			}
+
+			> .content-back {
+				visibility: visible;
 			}
 		}
 	}
@@ -119,40 +159,4 @@
 			border: 1.25px solid $color-incorrect;
 		}
 	}
-}
-
-.solution-editor {
-	background: $color-bg2;
-	border-top: 1px solid $color-shadow;
-	position: relative;
-	border-bottom-left-radius: 0.3em;
-	border-bottom-right-radius: 0.3em;
-	padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
-
-	.page-editor {
-		margin: $dimension-padding / 3;
-		background: $color-bg;
-		border: 1px solid $color-shadow;
-
-		&::before {
-			content: 'Full explanation:';
-			font-family: $font-default;
-			font-size: 1em;
-			font-weight: bold;
-			color: $color-text-minor;
-			margin-top: 1em;
-			margin-left: 2em;
-			margin-bottom: -1em;
-			display: block;
-			transform: scale(0.7);
-			transform-origin: top left;
-		}
-	}
-}
-
-.add-solution {
-	left: 50%;
-	transform: translate(-50%, 0);
-	position: relative;
-	margin: $dimension-padding / 3;
 }

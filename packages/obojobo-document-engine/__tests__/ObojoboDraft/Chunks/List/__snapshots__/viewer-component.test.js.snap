@@ -8,6 +8,7 @@ exports[`List List component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.List"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
@@ -42,6 +43,7 @@ exports[`List List component with ascending indents 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.List"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
@@ -251,6 +253,7 @@ exports[`List List component with inverse indentation 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.List"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--list pad"
@@ -364,6 +367,7 @@ exports[`List List component with irregular indentation 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.List"
   id="obo-id"
+  tabIndex={-1}
 >
   <div
     className="text-chunk obojobo-draft--chunks--list pad"

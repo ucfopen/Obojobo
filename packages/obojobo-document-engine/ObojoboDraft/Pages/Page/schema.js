@@ -6,7 +6,7 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const schema = {
 	blocks: {
 		'ObojoboDraft.Pages.Page': {
-			nodes: [{ match: [ { type: 'oboeditor.component' } ], min: 1 }],
+			nodes: [{ match: [{ type: 'oboeditor.component' }], min: 1 }],
 			normalize: (change, error) => {
 				const { node, child, index } = error
 				switch (error.code) {

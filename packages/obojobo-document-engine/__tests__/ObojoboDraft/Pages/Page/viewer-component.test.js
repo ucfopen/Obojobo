@@ -4,10 +4,12 @@ import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
 
 jest.mock('../../../../src/scripts/viewer/util/nav-util')
+jest.mock('../../../../src/scripts/common/page/focus')
 
 import Page from '../../../../ObojoboDraft/Pages/Page/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import NavUtil from '../../../../src/scripts/viewer/util/nav-util'
+import focus from '../../../../src/scripts/common/page/focus'
 
 describe('Page', () => {
 	beforeEach(() => {
@@ -94,5 +96,28 @@ describe('Page', () => {
 		component.setProps({ moduleData: newModuleData })
 
 		expect(NavUtil.setFlag).toHaveBeenCalledWith('mockId', 'visited', true)
+	})
+
+	test("focusOnContent calls focus on the first child model's DOM element", () => {
+		const mockDomEl = jest.fn()
+		const model = {
+			children: {
+				at: () => ({
+					getDomEl: () => mockDomEl
+				})
+			}
+		}
+
+		expect(focus).not.toHaveBeenCalled()
+		Page.focusOnContent(model)
+		expect(focus).toHaveBeenCalledWith(mockDomEl)
+	})
+
+	test('focusOnContent does nothing if no child models exist', () => {
+		const model = { children: { at: () => null } }
+
+		expect(focus).not.toHaveBeenCalled()
+		Page.focusOnContent(model)
+		expect(focus).not.toHaveBeenCalled()
 	})
 })

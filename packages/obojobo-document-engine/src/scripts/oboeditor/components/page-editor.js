@@ -105,7 +105,7 @@ class PageEditor extends React.Component {
 		if (this.props.page === null) return this.renderEmpty()
 
 		return (
-			<div className={'editor'}>
+			<div className={'editor--page-editor'}>
 				<div className={'toolbar'}>
 					<MarkToolbar.components.Node
 						value={this.state.value}
@@ -187,22 +187,26 @@ class PageEditor extends React.Component {
 		this.props.model.children.forEach(child => {
 			let contentJSON = {}
 
-			if (child.get('type') === CONTENT_NODE) {
-				contentJSON = child.flatJSON()
+			switch (child.get('type')) {
+				case CONTENT_NODE:
+					contentJSON = child.flatJSON()
 
-				for (const item of Array.from(child.children.models)) {
-					contentJSON.children.push({
-						id: item.get('id'),
-						type: item.get('type'),
-						content: item.get('content'),
-						children: item.get('children')
-					})
-				}
-			} else if (child.get('type') === ASSESSMENT_NODE) {
-				contentJSON.id = child.get('id')
-				contentJSON.type = child.get('type')
-				contentJSON.children = child.get('children')
-				contentJSON.content = child.get('content')
+					for (const item of Array.from(child.children.models)) {
+						contentJSON.children.push({
+							id: item.get('id'),
+							type: item.get('type'),
+							content: item.get('content'),
+							children: item.get('children')
+						})
+					}
+					break
+
+				case ASSESSMENT_NODE:
+					contentJSON.id = child.get('id')
+					contentJSON.type = child.get('type')
+					contentJSON.children = child.get('children')
+					contentJSON.content = child.get('content')
+					break
 			}
 
 			json.children.push(contentJSON)

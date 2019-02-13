@@ -2,8 +2,9 @@ import './viewer-component.scss'
 
 import React from 'react'
 
-import Common from 'Common'
-const { OboComponent } = Common.components
+import Viewer from 'Viewer'
+
+const { OboComponent } = Viewer.components
 
 const QuestionBank = props => (
 	<OboComponent
@@ -14,7 +15,15 @@ const QuestionBank = props => (
 		{props.model.children.models.map((child, index) => {
 			const Component = child.getComponentClass()
 
-			return <Component key={index} model={child} moduleData={props.moduleData} />
+			return (
+				<Component
+					key={index}
+					model={child}
+					moduleData={props.moduleData}
+					questionIndex={index}
+					numQuestionsInBank={props.model.children.models.length}
+				/>
+			)
 		})}
 	</OboComponent>
 )

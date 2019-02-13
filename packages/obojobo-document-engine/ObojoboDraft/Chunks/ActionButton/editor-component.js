@@ -1,4 +1,7 @@
 import React from 'react'
+import Common from 'Common'
+
+const isOrNot = Common.util.isOrNot
 
 // TODO could probably be registered by Obojobo Nodes
 const allowedActions = [
@@ -47,7 +50,7 @@ const Trigger = props => {
 			<div>
 				<p>{props.value}</p>
 			</div>
-			<button className={'delete-node'} onClick={props.update}>
+			<button className={'delete-node-button'} onClick={props.update}>
 				x
 			</button>
 		</div>
@@ -59,7 +62,7 @@ class ActionButton extends React.Component {
 		super(props)
 		this.state = {
 			newTrigger: { type: allowedActions[0], value: '' },
-			isValid: 'valid'
+			isValid: true
 		}
 	}
 
@@ -106,14 +109,14 @@ class ActionButton extends React.Component {
 		const content = this.props.node.data.get('content')
 
 		if (verify && !verify(this.state.newTrigger.value)) {
-			this.setState({ isValid: 'invalid' })
+			this.setState({ isValid: false })
 			return
 		}
 
 		content.actions.push(this.state.newTrigger)
 
 		this.setState({
-			isValid: 'valid',
+			isValid: true,
 			newTrigger: {
 				type: allowedActions[0],
 				value: ''
@@ -142,7 +145,7 @@ class ActionButton extends React.Component {
 
 	renderNew() {
 		return (
-			<div className={`trigger new-trigger is-type-${this.state.isValid}`}>
+			<div className={`trigger new-trigger` + isOrNot(this.state.isValid, 'valid')}>
 				<div className={'trigger-name'}>
 					<p>Action</p>
 					<select

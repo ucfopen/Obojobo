@@ -1,8 +1,13 @@
 @import '../../../scss/includes';
 
-.editor {
+.editor--page-editor {
 	margin-top: 3em;
 	margin-bottom: 3em;
+
+	.parameter-node {
+		padding-right: 1em;
+		display: inline;
+	}
 
 	.toolbar {
 		text-align: center;
@@ -36,46 +41,7 @@
 			svg line {
 				stroke: $color-text;
 			}
-
-			&:hover {
-				opacity: 1;
-				background: lighten($color-action, 48%);
-
-				svg path {
-					fill: $color-action;
-				}
-
-				svg line {
-					stroke: $color-action;
-				}
-			}
 		}
-	}
-
-	.footer-menu {
-		text-align: center;
-		position: fixed;
-		bottom: 0;
-		z-index: 999;
-		margin: 0 auto;
-		padding-right: 3em;
-		padding-left: 3em;
-		left: $dimension-nav-menu;
-		right: 0;
-		background-color: $color-bg2;
-		border-top: 1px solid $color-shadow;
-
-		.exporter {
-			font-size: inherit;
-			background: $color-obojobo-blue;
-			border-radius: $dimension-rounded-radius;
-			color: $color-bg;
-		}
-	}
-
-	.parameter-node {
-		padding-right: 1em;
-		display: inline;
 	}
 
 	.rubric {
@@ -153,7 +119,26 @@
 		}
 	}
 
+	.footer-menu {
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		z-index: 999;
+		margin: 0 auto;
+		padding-right: 3em;
+		padding-left: 3em;
+		left: $dimension-nav-menu;
+		right: 0;
+		background-color: $color-bg2;
+		border-top: 1px solid $color-shadow;
 
+		.exporter {
+			font-size: inherit;
+			background: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			color: $color-bg;
+		}
+	}
 
 	.settings {
 		font-size: 0.8em;
@@ -266,7 +251,24 @@
 		}
 	}
 
-	label {
-		display: block;
+	.delete-node-button {
+		position: absolute;
+		top: 0;
+		right: 0;
+		border: none;
+		background: inherit;
+	}
+
+	.toolbar button:hover {
+		opacity: 1;
+		background: lighten($color-action, 48%);
+
+		svg path {
+			fill: $color-action;
+		}
+
+		svg line {
+			stroke: $color-action;
+		}
 	}
 }
