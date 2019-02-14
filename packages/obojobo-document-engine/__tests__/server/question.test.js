@@ -68,4 +68,17 @@ describe('Question', () => {
 			question.onAttemptEnd({}, {}, mockAssessment, responseHistory, currentAttempt)
 		}).toThrowError('Impossible response to MCAssessment question')
 	})
+
+	test('buildAssessment returns itself as an object', () => {
+		const object = question.buildAssessment()
+
+		expect(object).toEqual(
+			expect.objectContaining({
+				children: [],
+				content: undefined,
+				id: undefined,
+				type: undefined
+			})
+		)
+	})
 })
