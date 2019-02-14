@@ -19,7 +19,7 @@ describe('MCAssessment editor', () => {
 			}
 		}
 
-		expect(MCAssessment.plugins.renderNode(props)).toMatchSnapshot()
+		expect(MCAssessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a Setting when passed', () => {
@@ -35,7 +35,7 @@ describe('MCAssessment editor', () => {
 			}
 		}
 
-		expect(MCAssessment.plugins.renderNode(props)).toMatchSnapshot()
+		expect(MCAssessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a ChoiceList when passed', () => {
@@ -51,7 +51,26 @@ describe('MCAssessment editor', () => {
 			}
 		}
 
-		expect(MCAssessment.plugins.renderNode(props)).toMatchSnapshot()
+		expect(MCAssessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			node: {
+				attributes: { dummy: 'dummyData' },
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(MCAssessment.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid first child in MCAssessment', () => {

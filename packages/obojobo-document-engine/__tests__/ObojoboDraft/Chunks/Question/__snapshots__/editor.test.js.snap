@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Question editor plugins.renderNode calls next 1`] = `undefined`;
+
 exports[`Question editor plugins.renderNode renders a question when passed 1`] = `
 <Question
   attributes={

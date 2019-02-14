@@ -214,7 +214,7 @@ describe('Actions editor', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
-				type: SCORE_NODE,
+				type: 'mockNode',
 				data: {
 					get: () => {
 						return {}

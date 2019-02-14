@@ -125,7 +125,7 @@ describe('Row Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test.skip('Row component deletes itself and passes header status to sibling', () => {
+	test('Row component deletes itself and passes header status to sibling', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			setNodeByKey: jest.fn(),

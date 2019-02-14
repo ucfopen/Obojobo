@@ -117,6 +117,8 @@ Object {
 }
 `;
 
+exports[`Parameter Node plugins.renderNode calls next 1`] = `undefined`;
+
 exports[`Parameter Node plugins.renderNode renders a Parameter when passed 1`] = `
 <Node
   attributes={

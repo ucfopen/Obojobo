@@ -335,7 +335,7 @@ describe('Rubric editor', () => {
 			}
 		}
 
-		expect(Rubric.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Rubric.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a modlist when passed', () => {
@@ -351,7 +351,7 @@ describe('Rubric editor', () => {
 			}
 		}
 
-		expect(Rubric.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Rubric.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a modlist when passed', () => {
@@ -367,7 +367,7 @@ describe('Rubric editor', () => {
 			}
 		}
 
-		expect(Rubric.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Rubric.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a modlist when passed', () => {
@@ -383,7 +383,26 @@ describe('Rubric editor', () => {
 			}
 		}
 
-		expect(Rubric.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Rubric.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(Rubric.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid first child in rubric', () => {

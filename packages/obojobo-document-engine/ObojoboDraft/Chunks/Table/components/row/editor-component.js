@@ -18,10 +18,11 @@ class Row extends React.Component {
 				return editor.removeNodeByKey(parent.key)
 			}
 
+			// Set sibling as new header
 			sibling.nodes.forEach(cell => {
-				return editor.setNodeByKey(cell.key, { data: { content: { header: content.header } } })
+				editor.setNodeByKey(cell.key, { data: { content: { header: content.header } } })
 			})
-			return editor.setNodeByKey(sibling.key, { data: { content: { header: content.header } } })
+			editor.setNodeByKey(sibling.key, { data: { content: { header: content.header } } })
 		}
 
 		return editor.removeNodeByKey(this.props.node.key)

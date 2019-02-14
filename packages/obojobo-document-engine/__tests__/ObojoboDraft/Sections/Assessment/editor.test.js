@@ -180,7 +180,7 @@ describe('Assessment editor', () => {
 			}
 		}
 
-		expect(Assessment.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Assessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders Settings when passed', () => {
@@ -196,7 +196,26 @@ describe('Assessment editor', () => {
 			}
 		}
 
-		expect(Assessment.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Assessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(Assessment.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid first child in Assessment', () => {
