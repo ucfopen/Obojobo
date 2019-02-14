@@ -55,7 +55,7 @@
 		"immutable": "^3.8.2",
 		"react": "15.6.2",
 		"react-dom": "15.6.2",
-		"slate": "0.43.0",
+		"slate": "0.44.0",
 		"slate-react": "0.20.0",
 		"slate-schema-violations": "^0.1.39",
 		"underscore": "1.5.1"

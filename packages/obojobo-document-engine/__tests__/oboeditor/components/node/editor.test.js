@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_UNKNOWN } from 'slate-schema-violations'
+import { CHILD_REQUIRED } from 'slate-schema-violations'
 
 import Component from 'src/scripts/oboeditor/components/node/editor'
 const COMPONENT_NODE = 'oboeditor.component'
@@ -56,7 +56,7 @@ describe('Component editor', () => {
 		}
 
 		Component.plugins.schema.blocks[COMPONENT_NODE].normalize(editor, {
-			code: CHILD_UNKNOWN,
+			code: 'child_max_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0

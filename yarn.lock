@@ -8418,9 +8418,9 @@ slate-schema-violations@^0.1.39:
   version "0.1.39"
   resolved "https://registry.yarnpkg.com/slate-schema-violations/-/slate-schema-violations-0.1.39.tgz#854ab5624136419cef4c803b1823acabe11f1c15"
 
-slate@0.43.0:
-  version "0.43.0"
-  resolved "https://registry.yarnpkg.com/slate/-/slate-0.43.0.tgz#f5bf8b94efc0c3f65262d9bbdbfcaba404c861d7"
+slate@0.44.0:
+  version "0.44.0"
+  resolved "https://registry.yarnpkg.com/slate/-/slate-0.44.0.tgz#551527a2f4c357158087d4f33b5f90c8b0c6e5cc"
   dependencies:
     debug "^3.1.0"
     direction "^0.1.5"

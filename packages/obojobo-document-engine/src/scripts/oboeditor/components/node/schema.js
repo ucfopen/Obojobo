@@ -1,5 +1,5 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_UNKNOWN } from 'slate-schema-violations'
+import { CHILD_REQUIRED } from 'slate-schema-violations'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -37,9 +37,8 @@ const schema = {
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
-					// Occurs when multiple valid nodes are found within a
-					// component
-					case CHILD_UNKNOWN: {
+					// Change to a constant when slate-schema-violations updates
+					case 'child_max_invalid': {
 						return editor.splitNodeByKey(node.key, 1)
 					}
 				}
