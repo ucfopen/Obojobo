@@ -102,8 +102,11 @@ class Figure extends React.Component {
 					<option value="custom">custom</option>
 				</select>
 				<div>
-					<button className="delete-node-button" onClick={() => this.deleteNode()}>
-						{'X'}
+					<button
+						className="editor--page-editor--delete-node-button"
+						onClick={() => this.deleteNode()}
+					>
+						X
 					</button>
 				</div>
 			</div>
@@ -130,9 +133,9 @@ class Figure extends React.Component {
 		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
-			<div className={`obojobo-draft--chunks--figure viewer ` + content.size}>
+			<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
 				{this.renderEditToolbar()}
-				<div className={'container'}>
+				<div className="container">
 					{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
 
 					{hasImage ? null : <div>No Image Selected, Please Add an Image URL</div>}

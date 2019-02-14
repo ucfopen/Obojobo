@@ -45,8 +45,11 @@ class Score extends React.Component {
 					{'Score Range: ' + dataFor + ' '}
 					<button onClick={() => this.changeRange()}>Edit Range</button>
 				</div>
-				<button className={'delete-node-button'} onClick={() => this.deleteNode()}>
-					{'X'}
+				<button
+					className={'editor--page-editor--delete-node-button'}
+					onClick={() => this.deleteNode()}
+				>
+					X
 				</button>
 			</div>
 		)

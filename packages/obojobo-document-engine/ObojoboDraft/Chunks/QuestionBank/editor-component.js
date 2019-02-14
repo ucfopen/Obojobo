@@ -45,7 +45,7 @@ class QuestionBank extends React.Component {
 	render() {
 		return (
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-				<button className={'delete-node-button'} onClick={() => this.delete()}>
+				<button className="editor--page-editor--delete-node-button" onClick={() => this.delete()}>
 					X
 				</button>
 				{this.props.children}

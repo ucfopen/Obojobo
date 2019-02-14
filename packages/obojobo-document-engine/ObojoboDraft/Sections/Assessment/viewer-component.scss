@@ -5,7 +5,7 @@
 	@import './components/post-test/index';
 	@import './components/full-review/index';
 
-	.pre-test {
+	> .pre-test {
 		padding-top: 1em;
 
 		> h1 {
@@ -21,7 +21,7 @@
 	}
 
 	// Editor scss
-	.add-rubric {
+	> .add-rubric {
 		font-family: $font-default;
 		line-height: 1em;
 		font-size: 1em;

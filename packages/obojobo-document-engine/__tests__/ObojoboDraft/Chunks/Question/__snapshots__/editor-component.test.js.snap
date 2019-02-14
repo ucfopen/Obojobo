@@ -22,7 +22,7 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
     </div>
   </div>
   <button
-    className="delete-node-button"
+    className="editor--page-editor--delete-node-button"
     onClick={[Function]}
   >
     X
@@ -30,6 +30,6 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
 </div>
 `;
 
-exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button>Add Solution</button></div></div></div><button class=\\"delete-node-button\\">X</button></div>"`;
+exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button>Add Solution</button></div></div></div><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
 
-exports[`Question Editor Node Question component deletes self 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"></div></div><button class=\\"delete-node-button\\">X</button></div>"`;
+exports[`Question Editor Node Question component deletes self 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"></div></div><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;

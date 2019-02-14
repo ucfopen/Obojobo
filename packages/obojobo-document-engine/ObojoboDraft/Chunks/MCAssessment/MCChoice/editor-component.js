@@ -54,18 +54,21 @@ class MCChoice extends React.Component {
 			isOrNot(score === 100, 'correct')
 		return (
 			<div className={className}>
-				<button className={'delete-node-button'} onClick={event => this.delete(event)}>
+				<button
+					className="editor--page-editor--delete-node-button"
+					onClick={event => this.delete(event)}
+				>
 					X
 				</button>
-				<button className={'correct-button'} onClick={event => this.handleScoreChange(event)}>
+				<button className="correct-button" onClick={event => this.handleScoreChange(event)}>
 					{score === 100 ? '✔' : '✖'}
 				</button>
-				<div className={'children'}>
+				<div className="children">
 					<div>{this.props.children}</div>
 				</div>
 				{!hasFeedback ? (
-					<button className={'add-feedback'} onClick={() => this.addFeedback()}>
-						{'Add Feedback'}
+					<button className="add-feedback" onClick={() => this.addFeedback()}>
+						Add Feedback
 					</button>
 				) : null}
 			</div>

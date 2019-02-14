@@ -231,12 +231,13 @@
 			transform: translate(-50%);
 		}
 	}
+}
 
-	.delete-node-button {
-		position: absolute;
-		top: 0;
-		right: 0;
-		border: none;
-		background: inherit;
-	}
+.editor--page-editor--delete-node-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	background: inherit;
+	cursor: pointer;
 }

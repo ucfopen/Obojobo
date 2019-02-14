@@ -37,7 +37,7 @@ class Row extends React.Component {
 			<tr>
 				{this.props.children}
 				<td className={'delete-cell'}>
-					<button onClick={() => this.deleteRow()}>{'X'}</button>
+					<button onClick={() => this.deleteRow()}>X</button>
 				</td>
 			</tr>
 		)
