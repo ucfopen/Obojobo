@@ -7,6 +7,7 @@
 	&.align-left {
 		left: 0;
 	}
+
 	&.align-right {
 		right: 0;
 	}
@@ -28,6 +29,26 @@
 		z-index: 99;
 		background-color: $color-bg;
 
+		span {
+			display: block;
+			position: absolute;
+			left: 50%;
+			text-align: center;
+			opacity: 0;
+			background-color: $color-bg;
+			transform: translate(-50%, 0);
+			padding-left: 0.5em;
+			padding-right: 0.5em;
+			border-radius: $dimension-rounded-radius;
+			font-size: 0.8em;
+		}
+
+		&:hover {
+			span {
+				opacity: 1;
+			}
+		}
+
 		button {
 			display: block;
 			background-color: $color-bg2;
@@ -45,29 +66,9 @@
 					opacity: 1;
 				}
 			}
-		}
 
-		span {
-			display: block;
-			position: absolute;
-			left: 50%;
-			text-align: center;
-			opacity: 0;
-			background-color: $color-bg;
-			transform: translate(-50%, 0);
-			padding-left: 0.5em;
-			padding-right: 0.5em;
-			border-radius: $dimension-rounded-radius;
-			font-size: 0.8em;
-		}
-
-		&:hover {
-			button {
+			&:hover {
 				background: lighten($color-action, 48%);
-			}
-
-			span {
-				opacity: 1;
 			}
 		}
 	}

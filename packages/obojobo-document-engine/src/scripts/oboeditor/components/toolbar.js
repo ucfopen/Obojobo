@@ -21,6 +21,8 @@ import RightIcon from '../assets/right-icon'
 import CenterIcon from '../assets/center-icon'
 import UnindentIcon from '../assets/unindent-icon'
 
+import './toolbar.scss'
+
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
 const STRIKE_MARK = 'del'
