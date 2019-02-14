@@ -1,18 +1,74 @@
 import React from 'react'
 
-const Icon = () => {
-	return (
-		<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-			<defs>
-				<style>{`.cls-2{opacity:0.55;}`}</style>
-			</defs>
-			<g id="Layer_6" data-name="Layer 6">
-				<g className="cls-2">
-					<path d="M12.08,6.84A3.41,3.41,0,0,0,9.62,8.19a1,1,0,0,1-1.35.33L7.13,8a.82.82,0,0,1-.4-1.33,7.59,7.59,0,0,1,1.94-2.1,5.58,5.58,0,0,1,3.4-1.17,5.71,5.71,0,0,1,3.12.88A4.31,4.31,0,0,1,16.61,10,6.18,6.18,0,0,1,15,11.81a5.91,5.91,0,0,0-1.64,1.7c-.24.47-.35.89-1,.89H10.69c-.64,0-1-.16-1-.77,0-1.17,1-2.41,2.54-3.73l.4-.33a3.12,3.12,0,0,0,.88-1,1.08,1.08,0,0,0-.35-1.32A1.49,1.49,0,0,0,12.08,6.84ZM14,18.11a2.3,2.3,0,0,1-.68,1.63,2.26,2.26,0,0,1-1.66.69,2.34,2.34,0,0,1-2.32-2.32A2.27,2.27,0,0,1,10,16.45a2.33,2.33,0,0,1,4,1.66Z" />
-				</g>
-			</g>
-		</svg>
-	)
-}
+const Icon = () => (
+	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+		<rect
+			x="4.94"
+			y="5.23"
+			width="22.12"
+			height="21.58"
+			rx="1.09"
+			ry="1.09"
+			fill="none"
+			className="stroke"
+			strokeLinecap="round"
+			strokeMiterlimit="10"
+		/>
+		<line
+			x1="10.71"
+			y1="24.33"
+			x2="14.61"
+			y2="20.43"
+			fill="none"
+			className="stroke"
+			strokeLinecap="round"
+			strokeMiterlimit="10"
+		/>
+		<line
+			x1="8.76"
+			y1="22.38"
+			x2="10.71"
+			y2="24.33"
+			fill="none"
+			className="stroke"
+			strokeLinecap="round"
+			strokeMiterlimit="10"
+		/>
+		<line
+			x1="18.9"
+			y1="24.33"
+			x2="22.8"
+			y2="20.43"
+			fill="none"
+			className="stroke"
+			strokeLinecap="round"
+			strokeMiterlimit="10"
+		/>
+		<line
+			x1="18.9"
+			y1="20.43"
+			x2="22.8"
+			y2="24.33"
+			fill="none"
+			className="stroke"
+			strokeLinecap="round"
+			strokeMiterlimit="10"
+		/>
+		<line
+			x1="4.94"
+			y1="17.81"
+			x2="27.06"
+			y2="17.81"
+			fill="none"
+			className="stroke"
+			strokeLinecap="round"
+			strokeMiterlimit="10"
+		/>
+		<path
+			d="M13.34,8.63A2.81,2.81,0,0,1,16.06,7c1.59,0,2.62.85,2.62,1.93,0,1.79-2.2,2.07-2.2,3.77a.18.18,0,0,1-.19.18h-.78c-.12,0-.19-.07-.19-.22,0-2,1.93-2.44,1.93-3.65,0-.61-.49-1-1.2-1a1.71,1.71,0,0,0-1.51,1c0,.09-.08.11-.19.09l-.94-.25C13.31,8.81,13.3,8.72,13.34,8.63Zm3.35,7c0,.17-.08.23-.26.23H15.3c-.15,0-.2-.06-.2-.2V14.44c0-.12.05-.17.15-.17h1.3c.09,0,.14,0,.14.15Z"
+			className="fill"
+		/>
+	</svg>
+)
 
 export default Icon
