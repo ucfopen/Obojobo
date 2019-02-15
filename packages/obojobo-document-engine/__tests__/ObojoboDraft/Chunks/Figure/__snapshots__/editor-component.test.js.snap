@@ -1,0 +1,285 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Figure Editor Node Figure component 1`] = `
+<div
+  className="obojobo-draft--chunks--figure viewer mockSize"
+>
+  <div
+    className="image-toolbar"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Edit Alt Text
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Edit URL
+    </button>
+    <select
+      name="Size"
+      onChange={[Function]}
+      onClick={[Function]}
+      value="mockSize"
+    >
+      <option
+        value="small"
+      >
+        small
+      </option>
+      <option
+        value="medium"
+      >
+        medium
+      </option>
+      <option
+        value="large"
+      >
+        large
+      </option>
+      <option
+        value="custom"
+      >
+        custom
+      </option>
+    </select>
+    <div>
+      <button
+        className="editor--page-editor--delete-node-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <img
+      alt="mockAlt"
+      src="mockUrl"
+      title="mockAlt"
+      unselectable="on"
+    />
+    <figcaption />
+  </div>
+</div>
+`;
+
+exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
+<div
+  className="obojobo-draft--chunks--figure viewer custom"
+>
+  <div
+    className="image-toolbar"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Edit Alt Text
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Edit URL
+    </button>
+    <select
+      name="Size"
+      onChange={[Function]}
+      onClick={[Function]}
+      value="custom"
+    >
+      <option
+        value="small"
+      >
+        small
+      </option>
+      <option
+        value="medium"
+      >
+        medium
+      </option>
+      <option
+        value="large"
+      >
+        large
+      </option>
+      <option
+        value="custom"
+      >
+        custom
+      </option>
+    </select>
+    <div>
+      <button
+        className="editor--page-editor--delete-node-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <img
+      alt="mockAlt"
+      src="mockUrl"
+      style={
+        Object {
+          "height": "customHeightpx",
+          "width": "customWidthpx",
+        }
+      }
+      title="mockAlt"
+      unselectable="on"
+    />
+    <figcaption />
+  </div>
+</div>
+`;
+
+exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
+<div
+  className="obojobo-draft--chunks--figure viewer custom"
+>
+  <div
+    className="image-toolbar"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Edit Alt Text
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Edit URL
+    </button>
+    <select
+      name="Size"
+      onChange={[Function]}
+      onClick={[Function]}
+      value="custom"
+    >
+      <option
+        value="small"
+      >
+        small
+      </option>
+      <option
+        value="medium"
+      >
+        medium
+      </option>
+      <option
+        value="large"
+      >
+        large
+      </option>
+      <option
+        value="custom"
+      >
+        custom
+      </option>
+    </select>
+    <div>
+      <button
+        className="editor--page-editor--delete-node-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <img
+      alt="mockAlt"
+      src="mockUrl"
+      style={
+        Object {
+          "height": "customHeightpx",
+        }
+      }
+      title="mockAlt"
+      unselectable="on"
+    />
+    <figcaption />
+  </div>
+</div>
+`;
+
+exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
+<div
+  className="obojobo-draft--chunks--figure viewer custom"
+>
+  <div
+    className="image-toolbar"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Edit Alt Text
+    </button>
+    <button
+      onClick={[Function]}
+    >
+      Edit URL
+    </button>
+    <select
+      name="Size"
+      onChange={[Function]}
+      onClick={[Function]}
+      value="custom"
+    >
+      <option
+        value="small"
+      >
+        small
+      </option>
+      <option
+        value="medium"
+      >
+        medium
+      </option>
+      <option
+        value="large"
+      >
+        large
+      </option>
+      <option
+        value="custom"
+      >
+        custom
+      </option>
+    </select>
+    <div>
+      <button
+        className="editor--page-editor--delete-node-button"
+        onClick={[Function]}
+      >
+        X
+      </button>
+    </div>
+  </div>
+  <div
+    className="container"
+  >
+    <img
+      alt="mockAlt"
+      src="mockUrl"
+      style={
+        Object {
+          "width": "mockWidthpx",
+        }
+      }
+      title="mockAlt"
+      unselectable="on"
+    />
+    <figcaption />
+  </div>
+</div>
+`;

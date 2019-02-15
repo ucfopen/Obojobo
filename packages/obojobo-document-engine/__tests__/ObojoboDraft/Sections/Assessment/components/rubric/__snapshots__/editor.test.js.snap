@@ -1,0 +1,411 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rubric editor Mod component 1`] = `
+<div
+  className="mod pad"
+>
+  <button
+    className="editor--page-editor--delete-node-button"
+    onClick={[Function]}
+  >
+    X
+  </button>
+</div>
+`;
+
+exports[`Rubric editor Mod component deletes self 1`] = `"<div class=\\"mod pad\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
+
+exports[`Rubric editor Mod component deletes self and parent 1`] = `"<div class=\\"mod pad\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
+
+exports[`Rubric editor ModList component 1`] = `
+<div>
+  <p
+    contentEditable={false}
+  >
+    Mods:
+  </p>
+</div>
+`;
+
+exports[`Rubric editor Node component 1`] = `
+<div
+  className="rubric pad"
+>
+  <h1
+    contentEditable={false}
+  >
+    Rubric
+  </h1>
+  <div
+    className="parameter-node"
+    contentEditable={false}
+  >
+    Type: undefined
+  </div>
+  <button
+    className="add-button"
+    onClick={[Function]}
+  >
+    Add Mod
+  </button>
+  <button
+    className="editor--page-editor--delete-node-button"
+    onClick={[Function]}
+  >
+    X
+  </button>
+</div>
+`;
+
+exports[`Rubric editor Node component adds child 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
+
+exports[`Rubric editor Node component adds child to existing mod list 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
+
+exports[`Rubric editor Rubric component deletes self 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
+
+exports[`Rubric editor oboToSlate converts an OboComponent to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "failedResult": 0,
+      "mods": Array [
+        Object {
+          "attemptCondition": 1,
+          "reward": 10,
+        },
+      ],
+      "passedResult": 100,
+      "passingAttemptScore": 0,
+      "unableToPassResult": 0,
+    },
+  },
+  "nodes": Array [
+    Object {
+      "data": Object {
+        "display": "Passing Score",
+        "name": "passingAttemptScore",
+        "options": undefined,
+        "type": "type-text",
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "text": 0,
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "Parameter",
+    },
+    Object {
+      "data": Object {
+        "display": "Passed Result",
+        "name": "passedResult",
+        "options": undefined,
+        "type": "type-text",
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "text": 100,
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "Parameter",
+    },
+    Object {
+      "data": Object {
+        "display": "Failed Result",
+        "name": "failedResult",
+        "options": undefined,
+        "type": "type-text",
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "text": 0,
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "Parameter",
+    },
+    Object {
+      "data": Object {
+        "display": "Unable to Pass Result",
+        "name": "unableToPassResult",
+        "options": undefined,
+        "type": "type-text",
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "text": 0,
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "Parameter",
+    },
+    Object {
+      "nodes": Array [
+        Object {
+          "nodes": Array [
+            Object {
+              "data": Object {
+                "display": "Attempt Condition",
+                "name": "attemptCondition",
+                "options": undefined,
+                "type": "type-text",
+              },
+              "nodes": Array [
+                Object {
+                  "leaves": Array [
+                    Object {
+                      "text": 1,
+                    },
+                  ],
+                  "object": "text",
+                },
+              ],
+              "object": "block",
+              "type": "Parameter",
+            },
+            Object {
+              "data": Object {
+                "display": "Reward",
+                "name": "reward",
+                "options": undefined,
+                "type": "type-text",
+              },
+              "nodes": Array [
+                Object {
+                  "leaves": Array [
+                    Object {
+                      "text": 10,
+                    },
+                  ],
+                  "object": "text",
+                },
+              ],
+              "object": "block",
+              "type": "Parameter",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Sections.Assessment.Rubric.Mod",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
+    },
+  ],
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.Rubric",
+}
+`;
+
+exports[`Rubric editor oboToSlate converts an OboComponent to a Slate node without mods 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "failedResult": 0,
+      "passedResult": 100,
+      "passingAttemptScore": 0,
+      "unableToPassResult": 0,
+    },
+  },
+  "nodes": Array [
+    Object {
+      "data": Object {
+        "display": "Passing Score",
+        "name": "passingAttemptScore",
+        "options": undefined,
+        "type": "type-text",
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "text": 0,
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "Parameter",
+    },
+    Object {
+      "data": Object {
+        "display": "Passed Result",
+        "name": "passedResult",
+        "options": undefined,
+        "type": "type-text",
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "text": 100,
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "Parameter",
+    },
+    Object {
+      "data": Object {
+        "display": "Failed Result",
+        "name": "failedResult",
+        "options": undefined,
+        "type": "type-text",
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "text": 0,
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "Parameter",
+    },
+    Object {
+      "data": Object {
+        "display": "Unable to Pass Result",
+        "name": "unableToPassResult",
+        "options": undefined,
+        "type": "type-text",
+      },
+      "nodes": Array [
+        Object {
+          "leaves": Array [
+            Object {
+              "text": 0,
+            },
+          ],
+          "object": "text",
+        },
+      ],
+      "object": "block",
+      "type": "Parameter",
+    },
+  ],
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.Rubric",
+}
+`;
+
+exports[`Rubric editor plugins.renderNode renders a modlist when passed 1`] = `
+<ModList
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
+    }
+  }
+/>
+`;
+
+exports[`Rubric editor plugins.renderNode renders a modlist when passed 2`] = `
+<ModList
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
+    }
+  }
+/>
+`;
+
+exports[`Rubric editor plugins.renderNode renders a modlist when passed 3`] = `
+<Mod
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Rubric.Mod",
+    }
+  }
+/>
+`;
+
+exports[`Rubric editor plugins.renderNode renders the rubric when passed 1`] = `
+<Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Rubric",
+    }
+  }
+/>
+`;
+
+exports[`Rubric editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "[object Object]": undefined,
+  "mods": Array [
+    Object {
+      "attemptCondition": "mockParameter",
+      "reward": "mockParameter",
+    },
+  ],
+  "type": "pass-fail",
+}
+`;
+
+exports[`Rubric editor slateToObo converts a Slate node to an OboNode with no mods 1`] = `
+Object {
+  "type": "pass-fail",
+}
+`;

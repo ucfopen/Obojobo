@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HTML Icon Icon 1`] = `
+<svg
+  data-name="Layer 1"
+  id="Layer_1"
+  viewBox="0 0 16.09 12.79"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <style>
+      .cls-1{opacity:0.55;}.cls-2{fill:#231f20;}.cls-3{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;}
+    </style>
+  </defs>
+  <title>
+    insert-icon
+  </title>
+  <g
+    className="cls-1"
+  >
+    <rect
+      className="cls-2"
+      height="0.84"
+      width="10.54"
+      x="5.55"
+      y="0.59"
+    />
+    <rect
+      className="cls-2"
+      height="0.84"
+      width="15.98"
+      x="0.11"
+      y="6.28"
+    />
+    <rect
+      className="cls-2"
+      height="0.84"
+      width="15.98"
+      x="0.11"
+      y="11.96"
+    />
+    <polyline
+      className="cls-3"
+      points="0.5 0.5 2.98 2.38 0.5 4.27"
+    />
+    <rect
+      className="cls-2"
+      height="0.84"
+      width="10.54"
+      x="5.55"
+      y="3.43"
+    />
+    <rect
+      className="cls-2"
+      height="0.84"
+      width="15.98"
+      x="0.11"
+      y="9.12"
+    />
+  </g>
+</svg>
+`;

@@ -1,0 +1,8 @@
+{
+	"object":"block",
+	"type":"ObojoboDraft.Chunks.MathEquation",
+	"isVoid":true,
+	"data":{
+		"content": { "latex": "", "label": "" }
+	}
+}

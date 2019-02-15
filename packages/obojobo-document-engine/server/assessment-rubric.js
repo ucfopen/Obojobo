@@ -1,13 +1,10 @@
 /*
-
 * = Optional
-
 Expected input for type 'attempt':
 {
 	type: 'attempt',
 	*mods: Array<Mod> (Default = [])
 }
-
 Expected input for type 'pass-fail':
 {
 	type: 'pass-file',
@@ -17,19 +14,14 @@ Expected input for type 'pass-fail':
 	*unableToPassResult: (0-100 | 'no-score' | '$attempt_score' | '$highest_attempt_score' | null) [Default = null],
 	*mods: Array<Mod> (Default = [])
 }
-
 Mod:
-
 {
 	attemptCondition: (Number | AttemptRange) [Default = '[1-$last_attempt]'],
 	reward: Number
 }
-
 AttemptRange:
 	("[" | "(") + (>=1 | '$last_attempt') + "," + (>=1 | '$last_attempt') + ("]" | ")")
-
 (Mods are only applied if PASSING. Mods must contain at least one condition)
-
 */
 
 const {

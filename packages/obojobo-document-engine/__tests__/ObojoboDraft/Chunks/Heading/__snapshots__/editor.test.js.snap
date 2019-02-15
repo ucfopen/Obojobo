@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading editor plugins.renderNode renders a button when passed 1`] = `
+<Heading
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Heading",
+    }
+  }
+/>
+`;
+
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Heading editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-left"
+  contentEditable={false}
+>
+  Type Your Heading Here
+</span>
+`;
