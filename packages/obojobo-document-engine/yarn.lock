@@ -7617,9 +7617,9 @@ stylelint-config-standard@^18.2.0:
   dependencies:
     stylelint-config-recommended "^2.1.0"
 
-stylelint-declaration-use-variable@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/stylelint-declaration-use-variable/-/stylelint-declaration-use-variable-1.6.1.tgz#3c975e7e5abb9bf4723f390314162ebc636dbe53"
+stylelint-declaration-use-variable@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/stylelint-declaration-use-variable/-/stylelint-declaration-use-variable-1.7.0.tgz#cf64c6a9837003fc226872899ad099791c5ae546"
   dependencies:
     stylelint "^9.1.1"
 

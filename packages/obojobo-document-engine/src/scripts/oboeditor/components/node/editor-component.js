@@ -29,7 +29,7 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div className={'oboeditor-component component'}>
+			<div className={'oboeditor-component component'} data-obo-component="true">
 				{this.props.isSelected ? (
 					<div className={'component-toolbar'}>
 						<DropMenu

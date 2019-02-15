@@ -10,9 +10,10 @@ const unwrapLevel = (event, editor) => {
 
 	// get the bullet and type of the closest parent level
 	editor.value.blocks.forEach(block => {
-		const level = editor.value.document.getClosest(block.key, parent => {
-			return parent.type === LIST_LEVEL_NODE
-		})
+		const level = editor.value.document.getClosest(
+			block.key,
+			parent => parent.type === LIST_LEVEL_NODE
+		)
 		const content = level.data.get('content')
 		bullet = content.bulletStyle
 		type = content.type

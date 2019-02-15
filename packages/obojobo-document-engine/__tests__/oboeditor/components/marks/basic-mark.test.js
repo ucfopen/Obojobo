@@ -2,7 +2,7 @@ import markHotKey from '../../../../src/scripts/oboeditor/components/marks/basic
 
 describe('HotKey', () => {
 	test('HotKey registers a type and key', () => {
-		const keyDown = markHotKey({type: 'bold', key: 'B', render: () => 'a'})
+		const keyDown = markHotKey({ type: 'bold', key: 'B', render: () => 'a' })
 
 		const mockChange = {
 			toggleMark: jest.fn()

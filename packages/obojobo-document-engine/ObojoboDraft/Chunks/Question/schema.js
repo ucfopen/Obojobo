@@ -11,12 +11,15 @@ const schema = {
 		'ObojoboDraft.Chunks.Question': {
 			nodes: [
 				{ match: [{ type: 'oboeditor.component' }], min: 1 },
-				{ match: [MCASSESSMENT_NODE], min: 1, max: 1 },
-				{ match: [SOLUTION_NODE], max: 1 }
+				{ match: [MCASSESSMENT_NODE], min: 1 },
+				{ match: [SOLUTION_NODE] }
 			],
 
 			normalize: (editor, error) => {
-				const { node, child, index } = error
+				console.log('in question')
+				const { node, child, index, count, limit } = error
+				console.log(error)
+				console.log(node.toJSON())
 				switch (error.code) {
 					case CHILD_REQUIRED: {
 						// If we are missing the last node,
@@ -65,8 +68,7 @@ const schema = {
 			nodes: [
 				{
 					match: [{ type: PAGE_NODE }],
-					min: 1,
-					max: 1
+					min: 1
 				}
 			],
 			normalize: (editor, error) => {

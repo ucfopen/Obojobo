@@ -9,10 +9,9 @@ function superMark(options) {
 
 			const value = editor.value
 			const hasScript = value.marks.some(mark => {
-				if (mark.type === 'sup') {
-					return mark.data.get('num') === modifier
-				}
-				return false
+				if (mark.type !== 'sup') return false
+
+				return mark.data.get('num') === modifier
 			})
 
 			if (hasScript) {

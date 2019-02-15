@@ -8,7 +8,7 @@ import Line from './components/line/editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
-import deleteEmptyParent from './changes/delete-empty-parent'
+import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
 import splitParent from './changes/split-parent'
 import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
@@ -17,46 +17,39 @@ import insertTab from './changes/insert-tab'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
-const isType = editor => {
-	return editor.value.blocks.some(block => {
-		return !!editor.value.document.getClosest(block.key, parent => {
-			return parent.type === TEXT_NODE
-		})
-	})
-}
+const isType = editor => editor.value.blocks.some(block => block.type === TEXT_LINE_NODE)
 
 const plugins = {
 	onKeyDown(event, editor, next) {
 		const isText = isType(editor)
 		if (!isText) return next()
 
-		// Delete empty text node
-		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return deleteEmptyParent(event, editor, next)
-		}
+		const last = editor.value.endBlock
 
-		// Enter
-		if (event.key === 'Enter') {
-			const last = editor.value.endBlock
-			if (last.text !== '') return next()
+		switch (event.key) {
+			case 'Backspace':
+			case 'Delete':
+				return KeyDownUtil.deleteEmptyParent(event, editor, next, TEXT_NODE)
 
-			// Double Enter
-			return splitParent(event, editor, next)
-		}
+			case 'Enter':
+				// Single Enter
+				if (last.text !== '') return next()
 
-		// Shift+Tab
-		if (event.key === 'Tab' && event.shiftKey) {
-			return decreaseIndent(event, editor, next)
-		}
+				// Double Enter
+				return splitParent(event, editor, next)
 
-		// Alt+Tab
-		if (event.key === 'Tab' && event.altKey) {
-			return increaseIndent(event, editor, next)
-		}
+			case 'Tab':
+				// TAB+SHIFT
+				if (event.shiftKey) return decreaseIndent(event, editor, next)
 
-		// Tab
-		if (event.key === 'Tab') {
-			return insertTab(event, editor, next)
+				// TAB+ALT
+				if (event.altKey) return increaseIndent(event, editor, next)
+
+				// TAB
+				return insertTab(event, editor, next)
+
+			default:
+				return next()
 		}
 	},
 	renderNode(props, editor, next) {
@@ -71,8 +64,7 @@ const plugins = {
 	},
 	renderPlaceholder(props, editor, next) {
 		const { node } = props
-		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE) return next()
-		if (node.text !== '') return next()
+		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE || node.text !== '') return next()
 
 		return (
 			<span className={'placeholder align-' + node.data.get('align')} contentEditable={false}>

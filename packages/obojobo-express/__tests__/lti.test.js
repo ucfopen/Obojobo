@@ -2062,7 +2062,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2075,10 +2075,7 @@ describe('lti', () => {
 				'LTI launch with id:"launch-id" retrieved!',
 				logId
 			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI not sending preview score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
+			expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
 			expect(logger.info.mock.calls[4]).toEqual([
 				'LTI gradebook status is "ok_preview_mode"',
 				logId
@@ -2139,7 +2136,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2149,10 +2146,7 @@ describe('lti', () => {
 				logId
 			])
 			expect(logger.error.mock.calls[0]).toEqual(['LTI error attempting to retrieve launch', logId])
-			expect(logger.info.mock.calls[2]).toEqual([
-				'LTI not sending preview score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
+			expect(logger.info.mock.calls[2]).toEqual(['LTI not sending preview score', logId])
 			expect(logger.info.mock.calls[3]).toEqual([
 				'LTI gradebook status is "ok_preview_mode"',
 				logId
@@ -2213,7 +2207,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2226,10 +2220,7 @@ describe('lti', () => {
 				'LTI launch with id:"launch-id" retrieved!',
 				logId
 			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI not sending preview score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
+			expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
 			expect(logger.info.mock.calls[4]).toEqual([
 				'LTI gradebook status is "ok_preview_mode"',
 				logId
@@ -2290,7 +2281,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2303,10 +2294,7 @@ describe('lti', () => {
 				'LTI launch with id:"launch-id" retrieved!',
 				logId
 			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI not sending preview score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
+			expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
 			expect(logger.info.mock.calls[4]).toEqual([
 				'LTI gradebook status is "ok_preview_mode"',
 				logId
@@ -2369,7 +2357,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(() => {
+		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2382,10 +2370,7 @@ describe('lti', () => {
 				'LTI launch with id:"launch-id" retrieved!',
 				logId
 			])
-			expect(logger.info.mock.calls[3]).toEqual([
-				'LTI not sending preview score for user:"user-id" on draft:"draft-id"',
-				logId
-			])
+			expect(logger.info.mock.calls[3]).toEqual(['LTI not sending preview score', logId])
 			expect(logger.info.mock.calls[4]).toEqual([
 				'LTI gradebook status is "ok_preview_mode"',
 				logId

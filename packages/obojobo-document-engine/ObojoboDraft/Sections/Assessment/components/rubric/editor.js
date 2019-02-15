@@ -29,8 +29,11 @@ class Mod extends React.Component {
 		return (
 			<div className={'mod pad'}>
 				{this.props.children}
-				<button className={'delete-node'} onClick={() => this.deleteNode()}>
-					{'X'}
+				<button
+					className={'editor--page-editor--delete-node-button'}
+					onClick={() => this.deleteNode()}
+				>
+					X
 				</button>
 			</div>
 		)
@@ -84,8 +87,11 @@ class Node extends React.Component {
 				<button className={'add-button'} onClick={() => this.addMod()}>
 					{'Add Mod'}
 				</button>
-				<button className={'delete-node'} onClick={() => this.deleteNode()}>
-					{'X'}
+				<button
+					className={'editor--page-editor--delete-node-button'}
+					onClick={() => this.deleteNode()}
+				>
+					X
 				</button>
 			</div>
 		)

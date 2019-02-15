@@ -6,6 +6,7 @@ import AssessmentUtil from '../../viewer/util/assessment-util'
 import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
 import NavUtil from '../../viewer/util/nav-util'
+import FocusUtil from '../../viewer/util/focus-util'
 import NavStore from '../../viewer/stores/nav-store'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
@@ -16,9 +17,8 @@ import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
-const { ErrorUtil } = Common.util
+const { ErrorUtil, ModalUtil } = Common.util
 const { SimpleDialog, Dialog } = Common.components.modal
-const { ModalUtil } = Common.util
 
 const getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
@@ -132,7 +132,7 @@ class AssessmentStore extends Store {
 					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
 				>
 					<p>
-						It looks like you were in the middle of an attempt. We&amp;ll resume you where you left
+						It looks like you were in the middle of an attempt. We&apos;ll resume where you left
 						off.
 					</p>
 				</SimpleDialog>,
@@ -224,6 +224,11 @@ class AssessmentStore extends Store {
 			})
 	}
 
+	onCloseResultsDialog() {
+		ModalUtil.hide()
+		FocusUtil.focusOnNavTargetContent()
+	}
+
 	endAttempt(endAttemptResp, context) {
 		const assessId = endAttemptResp.assessmentId
 		const assessment = this.state.assessments[assessId]
@@ -257,7 +262,7 @@ class AssessmentStore extends Store {
 				buttons={[
 					{
 						value: `Show ${assessmentLabel} Overview`,
-						onClick: ModalUtil.hide,
+						onClick: this.onCloseResultsDialog.bind(this),
 						default: true
 					}
 				]}

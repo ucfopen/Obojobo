@@ -4,12 +4,14 @@ import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
 
 jest.mock('../../../../src/scripts/viewer/util/question-util')
-jest.mock('../../../../src/scripts/common/util/focus-util')
+jest.mock('../../../../src/scripts/viewer/util/focus-util')
+jest.mock('../../../../src/scripts/common/page/focus')
 
 import Question from '../../../../ObojoboDraft/Chunks/Question/viewer-component'
-import FocusUtil from '../../../../src/scripts/common/util/focus-util'
+import FocusUtil from '../../../../src/scripts/viewer/util/focus-util'
 import QuestionUtil from '../../../../src/scripts/viewer/util/question-util'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
+import focus from '../../../../src/scripts/common/page/focus'
 
 const MODE_REVIEW = 'review'
 const MODE_PRACTICE = 'practice'
@@ -148,6 +150,10 @@ const questionJSON = {
 describe('MCAssessment', () => {
 	beforeAll(() => {
 		_.shuffle = a => a
+	})
+
+	beforeEach(() => {
+		jest.resetAllMocks()
 	})
 
 	test('Question component', () => {
@@ -316,7 +322,7 @@ describe('MCAssessment', () => {
 		expect(value).toEqual(undefined) //eslint-disable-line
 	})
 
-	test('onClickBlocker returns FocusUtil.focusComponent in practice mode', () => {
+	test('onClickBlocker calls FocusUtil.focusOnContent in practice mode', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
@@ -326,16 +332,85 @@ describe('MCAssessment', () => {
 		}
 		const model = OboModel.create(questionJSON)
 
-		FocusUtil.focusComponent.mockReturnValueOnce('mockFocusCall')
-
 		const component = shallow(
 			<Question model={model} moduleData={moduleData} showContentOnly={true} />
 		)
 
-		const value = component.instance().onClickBlocker()
+		component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
-		expect(FocusUtil.focusComponent).toHaveBeenCalled()
-		expect(value).toEqual('mockFocusCall')
+		expect(FocusUtil.focusOnContent).toHaveBeenCalled()
+	})
+
+	test('focusOnContent focuses on the first child component (when question is being shown)', () => {
+		const mockFirstChildEl = jest.fn()
+
+		const didFocus = Question.focusOnContent({
+			getDomEl: () => ({
+				classList: {
+					contains: () => false
+				}
+			}),
+			children: {
+				at: () => ({
+					getDomEl: () => mockFirstChildEl
+				})
+			}
+		})
+
+		expect(didFocus).toBe(true)
+		expect(focus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledWith(mockFirstChildEl)
+	})
+
+	test('focusOnContent does nothing when question is being shown and the first child component element can not be found', () => {
+		const didFocus = Question.focusOnContent({
+			getDomEl: () => ({
+				classList: {
+					contains: () => false
+				}
+			}),
+			children: {
+				at: () => ({
+					getDomEl: () => null
+				})
+			}
+		})
+
+		expect(didFocus).toBe(false)
+		expect(focus).toHaveBeenCalledTimes(0)
+	})
+
+	test('focusOnContent does nothing when question is being shown but has no child components', () => {
+		const didFocus = Question.focusOnContent({
+			getDomEl: () => ({
+				classList: {
+					contains: () => false
+				}
+			}),
+			children: {
+				at: () => null
+			}
+		})
+
+		expect(didFocus).toBe(false)
+		expect(focus).toHaveBeenCalledTimes(0)
+	})
+
+	test('focusOnContent focuses on the button (when question is still un-opened)', () => {
+		const mockButtonEl = jest.fn()
+
+		const didFocus = Question.focusOnContent({
+			getDomEl: () => ({
+				classList: {
+					contains: () => true
+				},
+				querySelector: () => mockButtonEl
+			})
+		})
+
+		expect(didFocus).toBe(true)
+		expect(focus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledWith(mockButtonEl)
 	})
 })

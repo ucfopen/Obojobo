@@ -1,51 +1,53 @@
 const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = {}
-	const nodeContent = node.data.get('content')
-	json.content.label = nodeContent.label || ''
-	json.content.triggers = [
-		{
-			type: 'onClick',
-			actions: nodeContent.actions.map(action => {
-				return {
-					type: action.type,
-					value: action.value !== '' ? JSON.parse(action.value) : {}
-				}
-			})
-		}
-	]
+	const content = node.data.get('content')
+	const actions = content.actions.map(action => ({
+		type: action.type,
+		value: action.value === '' ? {} : JSON.parse(action.value)
+	}))
 
-	json.children = []
-	return json
+	return {
+		id: node.key,
+		type: node.type,
+		children: [],
+		content: {
+			label: content.label || '',
+			triggers: [
+				{
+					type: 'onClick',
+					actions
+				}
+			]
+		}
+	}
 }
 
 const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-
-	json.data = { content: {} }
-	json.data.content.label = node.content.label
-	if (!json.data.content.label && node.content.textGroup) {
+	let label = node.content.label
+	if (!label && node.content.textGroup) {
 		node.content.textGroup.forEach(line => {
-			json.data.content.label = line.text.value
+			label = line.text.value
 		})
 	}
 
-	json.data.content.actions = []
+	let actions = []
 	if (node.content.triggers) {
-		json.data.content.actions = node.content.triggers[0].actions.map(action => {
-			return {
-				type: action.type,
-				value: action.value ? JSON.stringify(action.value) : ''
-			}
-		})
+		actions = node.content.triggers[0].actions.map(action => ({
+			type: action.type,
+			value: action.value ? JSON.stringify(action.value) : ''
+		}))
 	}
 
-	return json
+	return {
+		object: 'block',
+		key: node.id,
+		type: node.type,
+		data: {
+			content: {
+				label,
+				actions
+			}
+		}
+	}
 }
 
 export default { slateToObo, oboToSlate }

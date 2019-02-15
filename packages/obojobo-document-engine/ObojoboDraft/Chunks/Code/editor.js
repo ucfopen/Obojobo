@@ -8,7 +8,8 @@ import Line from './components/line/editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
-import deleteEmptyParent from './changes/delete-empty-parent'
+import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
+
 import decreaseIndent from './changes/decrease-indent'
 import increaseIndent from './changes/increase-indent'
 
@@ -28,18 +29,20 @@ const plugins = {
 		const isCode = isType(editor)
 		if (!isCode) return next()
 
-		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return deleteEmptyParent(event, editor, next)
-		}
+		switch (event.key) {
+			case 'Backspace':
+			case 'Delete':
+				return KeyDownUtil.deleteEmptyParent(event, editor, next, CODE_NODE)
 
-		// Shift Tab
-		if (event.key === 'Tab' && event.shiftKey) {
-			return decreaseIndent(event, editor, next)
-		}
+			case 'Tab':
+				// TAB+SHIFT
+				if (event.shiftKey) return decreaseIndent(event, editor, next)
 
-		// Tab indent
-		if (event.key === 'Tab') {
-			return increaseIndent(event, editor, next)
+				// TAB
+				return increaseIndent(event, editor, next)
+
+			default:
+				return next()
 		}
 	},
 	renderPlaceholder(props, editor, next) {

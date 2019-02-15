@@ -6,9 +6,7 @@ const insertText = (event, editor, next) => {
 	const last = editor.value.endBlock
 
 	// Get the deepest level that contains this line
-	const listLevel = editor.value.document.getClosest(last.key, par => {
-		return par.type === LIST_LEVEL_NODE
-	})
+	const listLevel = editor.value.document.getClosest(last.key, par => par.type === LIST_LEVEL_NODE)
 
 	// Double enter on last node
 	if (

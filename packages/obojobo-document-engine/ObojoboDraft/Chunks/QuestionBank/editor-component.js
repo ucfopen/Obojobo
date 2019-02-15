@@ -2,10 +2,10 @@ import React from 'react'
 import { Block } from 'slate'
 import Common from 'Common'
 
-const { Button } = Common.components
+import emptyQB from './empty-node.json'
+import emptyQuestion from '../Question/empty-node.json'
 
-const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const { Button } = Common.components
 
 class QuestionBank extends React.Component {
 	constructor(props) {
@@ -18,24 +18,20 @@ class QuestionBank extends React.Component {
 	}
 	addQuestion() {
 		const editor = this.props.editor
-		const newQuestion = Block.create({
-			type: QUESTION_NODE
-		})
+		const newQuestion = Block.create(emptyQuestion)
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 	}
 	addQuestionBank() {
 		const editor = this.props.editor
 
-		const newQuestion = Block.create({
-			type: QUESTION_BANK_NODE,
-			data: { content: { choose: 1, select: 'sequential' } }
-		})
+		const newQuestion = Block.create(emptyQB)
+
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 	}
 	render() {
 		return (
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-				<button className={'delete-node'} onClick={() => this.delete()}>
+				<button className="editor--page-editor--delete-node-button" onClick={() => this.delete()}>
 					X
 				</button>
 				{this.props.children}

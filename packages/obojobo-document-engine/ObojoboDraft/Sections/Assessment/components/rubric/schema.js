@@ -10,8 +10,8 @@ const schema = {
 	blocks: {
 		'ObojoboDraft.Sections.Assessment.Rubric': {
 			nodes: [
-				{ match: [{ type: 'Parameter' }], min: 4, max: 4 },
-				{ match: [{ type: MOD_LIST_NODE }], max: 1 }
+				{ match: [{ type: 'Parameter' }], min: 4},
+				{ match: [{ type: MOD_LIST_NODE }]}
 			],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
@@ -23,7 +23,7 @@ const schema = {
 								block = Block.create(
 									ParameterNode.helpers.oboToSlate({
 										name: 'passingAttemptScore',
-										value: 100 + '',
+										value: '100',
 										display: 'Passing Score'
 									})
 								)
@@ -32,7 +32,7 @@ const schema = {
 								block = Block.create(
 									ParameterNode.helpers.oboToSlate({
 										name: 'passedResult',
-										value: 100 + '',
+										value: '100',
 										display: 'Passed Result'
 									})
 								)
@@ -41,7 +41,7 @@ const schema = {
 								block = Block.create(
 									ParameterNode.helpers.oboToSlate({
 										name: 'failedResult',
-										value: 0 + '',
+										value: '0',
 										display: 'Failed Result'
 									})
 								)
@@ -67,7 +67,7 @@ const schema = {
 									block = Block.create(
 										ParameterNode.helpers.oboToSlate({
 											name: 'passingAttemptScore',
-											value: 100 + '',
+											value: '100',
 											display: 'Passing Score'
 										})
 									)
@@ -76,7 +76,7 @@ const schema = {
 									block = Block.create(
 										ParameterNode.helpers.oboToSlate({
 											name: 'passedResult',
-											value: 100 + '',
+											value: '100',
 											display: 'Passed Result'
 										})
 									)
@@ -85,7 +85,7 @@ const schema = {
 									block = Block.create(
 										ParameterNode.helpers.oboToSlate({
 											name: 'failedResult',
-											value: 0 + '',
+											value: '0',
 											display: 'Failed Result'
 										})
 									)
@@ -107,7 +107,7 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Sections.Assessment.Rubric.ModList': {
-			nodes: [{ match: [{ type: MOD_NODE }], min: 1, max: 20 }],
+			nodes: [{ match: [{ type: MOD_NODE }], min: 1 }],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
@@ -126,7 +126,7 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Sections.Assessment.Rubric.Mod': {
-			nodes: [{ match: [{ type: 'Parameter' }], min: 2, max: 2 }],
+			nodes: [{ match: [{ type: 'Parameter' }], min: 2 }],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
@@ -144,7 +144,7 @@ const schema = {
 						const block = Block.create(
 							ParameterNode.helpers.oboToSlate({
 								name: 'reward',
-								value: 0 + '',
+								value: '0',
 								display: 'Reward'
 							})
 						)
@@ -166,7 +166,7 @@ const schema = {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({
 									name: 'reward',
-									value: 0 + '',
+									value: '0',
 									display: 'Reward'
 								})
 							)

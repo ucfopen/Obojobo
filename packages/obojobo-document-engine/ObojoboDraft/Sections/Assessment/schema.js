@@ -13,11 +13,11 @@ const schema = {
 	blocks: {
 		'ObojoboDraft.Sections.Assessment': {
 			nodes: [
-				{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
-				{ match: [{ type: PAGE_NODE }], min: 1, max: 1 },
-				{ match: [{ type: QUESTION_BANK_NODE }], min: 1, max: 1 },
-				{ match: [{ type: ACTIONS_NODE }], min: 1, max: 1 },
-				{ match: [{ type: RUBRIC_NODE }], max: 1 }
+				{ match: [{ type: SETTINGS_NODE }], min: 1 },
+				{ match: [{ type: PAGE_NODE }], min: 1 },
+				{ match: [{ type: QUESTION_BANK_NODE }], min: 1 },
+				{ match: [{ type: ACTIONS_NODE }], min: 1 },
+				{ match: [{ type: RUBRIC_NODE }] }
 			],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
@@ -74,7 +74,7 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Sections.Assessment.Settings': {
-			nodes: [{ match: [{ type: 'Parameter' }], min: 2, max: 2 }],
+			nodes: [{ match: [{ type: 'Parameter' }], min: 2 }],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {

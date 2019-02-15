@@ -167,7 +167,7 @@ describe('List editor', () => {
 		editor.removeNodeByKey = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
-			key: 'Delete',
+			key: 'Backspace',
 			preventDefault: jest.fn()
 		}
 

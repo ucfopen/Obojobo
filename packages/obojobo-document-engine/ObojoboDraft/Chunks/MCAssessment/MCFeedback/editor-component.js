@@ -7,14 +7,12 @@ class MCFeedback extends React.Component {
 	}
 	render() {
 		return (
-			<div
-				className={'component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback'}
-			>
-				<button className={'delete-node'} onClick={() => this.delete()}>
+			<div className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback">
+				<button className="editor--page-editor--delete-node-button" onClick={() => this.delete()}>
 					X
 				</button>
-				<span className={'label'} contentEditable={false}>
-					{'Feedback'}
+				<span className="label" contentEditable={false}>
+					Feedback
 				</span>
 				{this.props.children}
 			</div>

@@ -7,14 +7,17 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
+const SELECT_TYPES = ['sequential', 'random', 'random-unseen']
+
 const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.QuestionBank': {
 			nodes: [
-				{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
+				{ match: [{ type: SETTINGS_NODE }], min: 1 },
 				{ match: [{ type: QUESTION_NODE }, { type: QUESTION_BANK_NODE }], min: 1 }
 			],
 			normalize: (editor, error) => {
+				console.log('in qb')
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -51,8 +54,7 @@ const schema = {
 							type: 'Parameter'
 						}
 					],
-					min: 2,
-					max: 2
+					min: 2
 				}
 			],
 			normalize: (editor, error) => {
@@ -63,7 +65,7 @@ const schema = {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({
 									name: 'choose',
-									value: Infinity + '',
+									value: 'Infinity',
 									display: 'Choose'
 								})
 							)
@@ -74,7 +76,7 @@ const schema = {
 								name: 'select',
 								value: 'sequential',
 								display: 'Select',
-								options: ['sequential', 'random', 'random-unseen']
+								options: SELECT_TYPES
 							})
 						)
 						return editor.insertNodeByKey(node.key, index, block)
@@ -86,7 +88,7 @@ const schema = {
 								const block = Block.create(
 									ParameterNode.helpers.oboToSlate({
 										name: 'choose',
-										value: Infinity + '',
+										value: 'Infinity',
 										display: 'Choose'
 									})
 								)
@@ -97,7 +99,7 @@ const schema = {
 									name: 'select',
 									value: 'sequential',
 									display: 'Select',
-									options: ['sequential', 'random', 'random-unseen']
+									options: SELECT_TYPES
 								})
 							)
 							return c.insertNodeByKey(node.key, index, block)

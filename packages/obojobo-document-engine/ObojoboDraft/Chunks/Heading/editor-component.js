@@ -20,8 +20,7 @@ class Heading extends React.Component {
 	}
 
 	handleClick(event) {
-		if (!this.node) return
-		if (this.node.contains(event.target)) return
+		if (!this.node || this.node.contains(event.target)) return
 
 		this.handleOutsideClick()
 	}
@@ -29,9 +28,7 @@ class Heading extends React.Component {
 	handleLevelChange(num) {
 		const editor = this.props.editor
 
-		this.setState(state => {
-			return { isOpen: !state.isOpen }
-		})
+		this.setState({ isOpen: false })
 
 		return editor.setNodeByKey(this.props.node.key, {
 			data: {
@@ -55,14 +52,15 @@ class Heading extends React.Component {
 		const content = this.props.node.data.get('content')
 		const HTag = `h${content.level || 1}`
 		const text = this.props.node.text
-		let dropText = text.length > 15 ? text.slice(0, 15) : text
-		dropText = dropText.length === 0 ? 'Your Heading' : dropText
+		const dropText = text.slice(0, 15) || 'Your Heading'
+
 		return (
 			<div
 				className={'text-chunk obojobo-draft--chunks--heading pad'}
-					ref={node => {
+				ref={node => {
 					this.node = node
-				}}>
+				}}
+			>
 				<HTag>
 					<span className={'text align-' + content.align}>{this.props.children}</span>
 				</HTag>

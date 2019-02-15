@@ -80,7 +80,25 @@ describe('Table editor', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
-	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
+	test('plugins.onKeyDown deals with [Backspace]', () => {
+		const editor = {
+			value: {
+				document: {
+					getClosest: () => true
+				},
+				blocks: [{ key: 'mockKey' }]
+			}
+		}
+		const event = {
+			key: 'Backspace',
+			preventDefault: jest.fn()
+		}
+
+		Table.plugins.onKeyDown(event, editor, jest.fn())
+		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
+	})
+
+	test('plugins.onKeyDown deals with [Delete]', () => {
 		const editor = {
 			value: {
 				document: {

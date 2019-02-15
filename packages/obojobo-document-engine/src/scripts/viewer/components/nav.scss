@@ -6,7 +6,6 @@
 	$color-nav-hover: darken($color-highlight, 25%);
 	$padding: 2rem;
 
-	overflow: auto;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -22,6 +21,10 @@
 	box-sizing: border-box;
 	transition: left $duration-animation-default $duration-animation-default;
 	border-right: 1px solid transparentize($color-shadow, 0.1);
+
+	&:focus {
+		outline: none;
+	}
 
 	@media screen and (max-width: $breakpoint-nav-small) {
 		width: $dimension-nav-menu-small;
@@ -86,7 +89,6 @@
 
 		padding-top: 2em;
 		margin-bottom: 1em;
-		position: sticky;
 		z-index: 5;
 		background: $color-nav-bg;
 		top: 0;
@@ -232,7 +234,7 @@
 			cursor: pointer;
 			padding: 0;
 			margin: 0;
-			color: inherit;
+			color: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
 			font-weight: inherit;
 			text-align: left;
 		}

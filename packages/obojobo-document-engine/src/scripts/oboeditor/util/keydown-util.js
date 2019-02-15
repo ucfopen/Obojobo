@@ -44,6 +44,19 @@ const KeyDownUtil = {
 		})
 
 		return true
+	},
+	deleteEmptyParent: (event, editor, next, nodeType) => {
+		const firstBlock = editor.value.blocks.get(0)
+
+		const parent = editor.value.document.getClosest(firstBlock.key, node => node.type === nodeType)
+
+		if (editor.value.endBlock.text === '' && parent.nodes.size === 1) {
+			event.preventDefault()
+			editor.removeNodeByKey(parent.key)
+			return true
+		}
+
+		return next()
 	}
 }
 

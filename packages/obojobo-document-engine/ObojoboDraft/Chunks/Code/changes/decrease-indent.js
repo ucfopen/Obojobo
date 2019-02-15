@@ -1,8 +1,7 @@
 const decreaseIndent = (event, editor) => {
 	event.preventDefault()
 	editor.value.blocks.forEach(block => {
-		let newIndent = block.data.get('content').indent - 1
-		if (newIndent < 1) newIndent = 0
+		const newIndent = Math.max(block.data.get('content').indent - 1, 0)
 
 		return editor.setNodeByKey(block.key, {
 			data: { content: { indent: newIndent } }

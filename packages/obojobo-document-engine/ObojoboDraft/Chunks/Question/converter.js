@@ -6,57 +6,66 @@ const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = node.data.get('content') || {}
-	json.children = []
-
-	delete json.content.solution
+	const children = []
+	const content = node.data.get('content') || {}
+	delete content.solution
 
 	node.nodes.forEach(child => {
-		if (child.type === SOLUTION_NODE) {
-			json.content.solution = Common.Store.getItemForType(PAGE_NODE).slateToObo(child.nodes.get(0))
-		} else if (child.type === MCASSESSMENT_NODE) {
-			json.children.push(Common.Store.getItemForType(child.type).slateToObo(child))
-		} else {
-			json.children.push(Component.helpers.slateToObo(child))
+		switch (child.type) {
+			case SOLUTION_NODE:
+				content.solution = Common.Store.getItemForType(PAGE_NODE).slateToObo(child.nodes.get(0))
+				break
+
+			case MCASSESSMENT_NODE:
+				children.push(Common.Store.getItemForType(child.type).slateToObo(child))
+				break
+
+			default:
+				children.push(Component.helpers.slateToObo(child))
+				break
 		}
 	})
 
-	return json
+	return {
+		id: node.key,
+		type: node.type,
+		children,
+		content
+	}
 }
 
 const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-	json.data = { content: node.content }
-	json.nodes = []
+	const nodes = []
+	const content = node.content
 
 	node.children.forEach(child => {
 		if (child.type === MCASSESSMENT_NODE) {
-			json.nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
+			nodes.push(Common.Store.getItemForType(child.type).oboToSlate(child))
 		} else {
-			json.nodes.push(Component.helpers.oboToSlate(child))
+			nodes.push(Component.helpers.oboToSlate(child))
 		}
 	})
 
-	if (json.data.content.solution) {
+	if (content.solution) {
 		const solution = {
 			object: 'block',
 			type: SOLUTION_NODE,
 			nodes: []
 		}
 
-		solution.nodes.push(
-			Common.Store.getItemForType(PAGE_NODE).oboToSlate(json.data.content.solution)
-		)
-		json.nodes.push(solution)
+		solution.nodes.push(Common.Store.getItemForType(PAGE_NODE).oboToSlate(content.solution))
+		nodes.push(solution)
 	}
 
-	return json
+	return {
+		object: 'block',
+		key: node.id,
+		type: node.type,
+		nodes,
+		data: {
+			content
+		}
+	}
 }
 
 export default { slateToObo, oboToSlate }

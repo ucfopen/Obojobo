@@ -22,17 +22,18 @@ const plugins = {
 		const isHTML = editor.value.blocks.some(block => block.type === HTML_NODE)
 		if (!isHTML) return next()
 
-		// Insert a softbreak on enter
-		if (event.key === 'Enter') {
-			event.preventDefault()
-			return editor.insertText('\n')
-		}
+		switch (event.key) {
+			// Insert a softbreak on enter
+			case 'Enter':
+				event.preventDefault()
+				return editor.insertText('\n')
 
-		// Tab insert
-		if (event.key === 'Tab') {
-			event.preventDefault()
-			editor.insertText('\t')
-			return true
+			case 'Tab':
+				event.preventDefault()
+				return editor.insertText('\t')
+
+			default:
+				return next()
 		}
 	},
 	schema: Schema

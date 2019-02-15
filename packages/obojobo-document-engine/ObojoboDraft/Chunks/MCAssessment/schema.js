@@ -13,18 +13,36 @@ const schema = {
 			nodes: [
 				{
 					match: [{ type: CHOICE_LIST_NODE }],
-					min: 1,
-					max: 1
+					min: 1
 				},
 				{
 					match: [{ type: SETTINGS_NODE }],
-					min: 1,
-					max: 1
+					min: 1
 				}
 			],
 			normalize: (editor, error) => {
+				console.log('MCAssessment', error)
 				const { node, child, index } = error
 				switch (error.code) {
+					case 'child_max_invalid': {
+						const { index, count, limit, node, rule } = error
+						console.log('details to follow ', index, count, limit,
+							JSON.stringify(node.toJSON()), rule)
+						break;
+					}
+					case 'child_min_invalid': {
+						if (index === 0) {
+							const block = Block.create({
+								type: CHOICE_LIST_NODE
+							})
+							return editor.insertNodeByKey(node.key, index, block)
+						}
+
+						const block = Block.create({
+							type: SETTINGS_NODE
+						})
+						return editor.insertNodeByKey(node.key, index, block)
+					}
 					case CHILD_REQUIRED: {
 						if (index === 0) {
 							const block = Block.create({
@@ -62,6 +80,7 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
+				console.log('MCChoiceList', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {
@@ -85,11 +104,11 @@ const schema = {
 			nodes: [
 				{
 					match: [{ type: 'Parameter' }],
-					min: 2,
-					max: 2
+					min: 2
 				}
 			],
 			normalize: (editor, error) => {
+				console.log('MCSettings', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {

@@ -1,12 +1,13 @@
 @import '../../../../../scss/includes';
 
-.dropdown-menu {
+.editor--component--insert-menu {
 	position: absolute;
 	z-index: 2;
 
 	&.align-left {
 		left: 0;
 	}
+
 	&.align-right {
 		right: 0;
 	}
@@ -28,25 +29,6 @@
 		z-index: 99;
 		background-color: $color-bg;
 
-		button {
-			display: block;
-			background-color: $color-bg2;
-			border-radius: $dimension-rounded-radius;
-			font-size: 1.3em;
-			min-width: 1.5em;
-			color: $color-text;
-			text-align: center;
-			box-sizing: border-box;
-
-			&:focus {
-				background: lighten($color-action, 48%);
-
-				 + span {
-					opacity: 1;
-				}
-			}
-		}
-
 		span {
 			display: block;
 			position: absolute;
@@ -61,15 +43,32 @@
 			font-size: 0.8em;
 		}
 
-
-
 		&:hover {
-			button {
-				background: lighten($color-action, 48%);
-			}
-
 			span {
 				opacity: 1;
+			}
+		}
+
+		button {
+			display: block;
+			background-color: $color-bg2;
+			border-radius: $dimension-rounded-radius;
+			font-size: 1.3em;
+			min-width: 1.5em;
+			color: $color-text;
+			text-align: center;
+			box-sizing: border-box;
+
+			&:focus {
+				background: lighten($color-action, 48%);
+
+				+ span {
+					opacity: 1;
+				}
+			}
+
+			&:hover {
+				background: lighten($color-action, 48%);
 			}
 		}
 	}

@@ -32,19 +32,25 @@ const plugins = {
 		const isLine = isType(editor)
 		if (!isLine) return next()
 
-		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return onBackspace(event, editor, next)
-		}
-		if (event.key === 'Enter') {
-			// Text lines will be changed to list lines by the schema unless
-			// they are at the end of the list
-			return insertText(event, editor, next)
-		}
-		if (event.key === 'Tab' && event.shiftKey) {
-			return wrapLevel(event, editor, next)
-		}
-		if (event.key === 'Tab') {
-			return unwrapLevel(event, editor, next)
+		switch (event.key) {
+			case 'Backspace':
+			case 'Delete':
+				return onBackspace(event, editor, next)
+
+			case 'Enter':
+				// Text lines will be changed to list lines by the schema unless
+				// they are at the end of the list
+				return insertText(event, editor, next)
+
+			case 'Tab':
+				// TAB+SHIFT
+				if (event.shiftKey) return wrapLevel(event, editor, next)
+
+				// TAB
+				return unwrapLevel(event, editor, next)
+
+			default:
+				return next()
 		}
 	},
 	renderNode(props, editor, next) {
@@ -59,6 +65,16 @@ const plugins = {
 				return next()
 		}
 	},
+	renderPlaceholder(props, editor, next) {
+		const { node } = props
+		if (node.object !== 'block' || node.type !== LIST_LINE_NODE || node.text !== '') return next()
+
+		return (
+			<span className={'placeholder align-' + node.data.get('align')} contentEditable={false}>
+				{'Type Your Text Here'}
+			</span>
+		)
+	},
 	normalizeNode(node, editor, next) {
 		if (node.object !== 'block') return next()
 		if (node.type !== LIST_NODE && node.type !== LIST_LEVEL_NODE) return next()
@@ -70,8 +86,7 @@ const plugins = {
 		const invalids = node.nodes
 			.map((child, i) => {
 				const nextNode = node.nodes.get(i + 1)
-				if (child.type !== LIST_LEVEL_NODE) return false
-				if (!nextNode || nextNode.type !== LIST_LEVEL_NODE) return false
+				if (child.type !== LIST_LEVEL_NODE || !nextNode || nextNode.type !== LIST_LEVEL_NODE) return false
 				return nextNode
 			})
 			.filter(Boolean)

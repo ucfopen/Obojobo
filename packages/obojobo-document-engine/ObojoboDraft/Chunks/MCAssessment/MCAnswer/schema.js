@@ -8,6 +8,7 @@ const schema = {
 		'ObojoboDraft.Chunks.MCAssessment.MCAnswer': {
 			nodes: [{ match: [{ type: 'oboeditor.component' }], min: 1 }],
 			normalize: (editor, error) => {
+				console.log('MCAnswer', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {

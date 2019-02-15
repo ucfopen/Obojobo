@@ -12,7 +12,6 @@ import TextGroupAdapter from './chunk/text-chunk/text-group-adapter'
 import ChunkUtil from './chunk/util/chunk-util'
 import Insert from './chunk/util/insert'
 import InsertWithText from './chunk/util/insert-with-text'
-import OboComponent from './components/obo-component'
 import Anchor from './components/anchor'
 import DeleteButton from './components/delete-button'
 import EditButton from './components/edit-button'
@@ -45,11 +44,11 @@ import VirtualCursor from './selection/virtual-cursor'
 import VirtualCursorData from './selection/virtual-cursor-data'
 import VirtualSelection from './selection/virtual-selection'
 import ModalStore from './stores/modal-store'
-import FocusStore from './stores/focus-store'
 import DOMUtil from './page/dom-util'
 import Head from './page/head'
 import Keyboard from './page/keyboard'
 import Screen from './page/screen'
+import focus from './page/focus'
 import ChunkStyleList from './text/chunk-style-list'
 import StyleableText from './text/styleable-text'
 import StyleableTextComponent from './text/styleable-text-component'
@@ -65,7 +64,6 @@ import TextGroupUtil from './text-group/text-group-util'
 import Console from './util/console'
 import HtmlUtil from './util/html-util'
 import ModalUtil from './util/modal-util'
-import FocusUtil from './util/focus-util'
 import ErrorUtil from './util/error-util'
 import uuid from './util/uuid'
 import RangeParsing from './util/range-parsing'
@@ -99,7 +97,6 @@ export default {
 	},
 
 	components: {
-		OboComponent,
 		Anchor,
 		DeleteButton,
 		EditButton,
@@ -150,15 +147,15 @@ export default {
 	},
 
 	stores: {
-		ModalStore,
-		FocusStore
+		ModalStore
 	},
 
 	page: {
 		DOMUtil,
 		Head,
 		Keyboard,
-		Screen
+		Screen,
+		focus
 	},
 
 	text: {
@@ -183,7 +180,6 @@ export default {
 		Console,
 		HtmlUtil,
 		ModalUtil,
-		FocusUtil,
 		ErrorUtil,
 		uuid,
 		RangeParsing,

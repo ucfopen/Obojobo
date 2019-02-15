@@ -1,21 +1,17 @@
-const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = {}
-	json.content.html = node.text
-	json.children = []
+const slateToObo = node => ({
+	id: node.key,
+	type: node.type,
+	children: [],
+	content: {
+		html: node.text
+	}
+})
 
-	return json
-}
-
-const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-
-	json.nodes = [
+const oboToSlate = node => ({
+	object: 'block',
+	key: node.id,
+	type: node.type,
+	nodes: [
 		{
 			object: 'text',
 			leaves: [
@@ -25,8 +21,6 @@ const oboToSlate = node => {
 			]
 		}
 	]
-
-	return json
-}
+})
 
 export default { slateToObo, oboToSlate }

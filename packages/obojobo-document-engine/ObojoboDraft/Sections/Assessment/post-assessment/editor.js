@@ -20,8 +20,6 @@ class Score extends React.Component {
 		const dataFor = this.props.node.data.get('for')
 		const newRange = window.prompt('Enter the new range:', dataFor) || dataFor
 
-		// TODO Validate range
-
 		const editor = this.props.editor
 
 		return editor.setNodeByKey(this.props.node.key, { data: { for: newRange } })
@@ -42,8 +40,11 @@ class Score extends React.Component {
 					{'Score Range: ' + dataFor + ' '}
 					<button onClick={() => this.changeRange()}>Edit Range</button>
 				</div>
-				<button className={'delete-node'} onClick={() => this.deleteNode()}>
-					{'X'}
+				<button
+					className={'editor--page-editor--delete-node-button'}
+					onClick={() => this.deleteNode()}
+				>
+					X
 				</button>
 			</div>
 		)
@@ -145,7 +146,7 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.ScoreAction': {
-				nodes: [{ match: [{ type: PAGE_NODE }], min: 1, max: 1 }],
+				nodes: [{ match: [{ type: PAGE_NODE }], min: 1 }],
 				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {

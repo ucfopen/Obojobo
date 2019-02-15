@@ -10,15 +10,14 @@ const schema = {
 			nodes: [
 				{
 					match: [{ type: MCANSWER_NODE }],
-					min: 1,
-					max: 1
+					min: 1
 				},
 				{
-					match: [{ type: MCFEEDBACK_NODE }],
-					max: 1
+					match: [{ type: MCFEEDBACK_NODE }]
 				}
 			],
 			normalize: (editor, error) => {
+				console.log('MCChoice', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_REQUIRED: {

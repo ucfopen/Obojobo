@@ -22,7 +22,7 @@ class Assessment extends React.Component {
 	render() {
 		const hasRubric = this.props.node.nodes.size === 5
 		return (
-			<div className={'assessment'}>
+			<div className={'obojobo-draft--sections--assessment'}>
 				{this.props.children}
 				{!hasRubric ? (
 					<button className={'add-rubric'} onClick={() => this.addRubric()}>
