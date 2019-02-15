@@ -15,17 +15,15 @@ const Table = props => {
 	const { numCols } = data.textGroup
 
 	if (data.header) {
-		row = data.textGroup.items.slice(0, numCols).map((textGroupItem, index) => {
-			return (
-				<th
-					key={index}
-					className={`cell row-0 col-${index}`}
-					data-table-position={model.get('id') + ',0,' + index}
-				>
-					<TextGroupEl parentModel={props.model} textItem={textGroupItem} groupIndex={index} />
-				</th>
-			)
-		})
+		row = data.textGroup.items.slice(0, numCols).map((textGroupItem, index) => (
+			<th
+				key={index}
+				className={`cell row-0 col-${index}`}
+				data-table-position={model.get('id') + ',0,' + index}
+			>
+				<TextGroupEl parentModel={props.model} textItem={textGroupItem} groupIndex={index} />
+			</th>
+		))
 
 		header = <tr key="header">{row}</tr>
 	} else {
@@ -36,21 +34,19 @@ const Table = props => {
 	const rows = __range__(startIndex, data.textGroup.numRows, false).map(rowNum => {
 		row = data.textGroup.items
 			.slice(rowNum * numCols, (rowNum + 1) * numCols)
-			.map((textGroupItem, index) => {
-				return (
-					<td
-						key={index}
-						className={`cell row-${rowNum} col-${index}`}
-						data-table-position={model.get('id') + ',' + rowNum + ',' + index}
-					>
-						<TextGroupEl
-							parentModel={props.model}
-							textItem={textGroupItem}
-							groupIndex={rowNum * numCols + index}
-						/>
-					</td>
-				)
-			})
+			.map((textGroupItem, index) => (
+				<td
+					key={index}
+					className={`cell row-${rowNum} col-${index}`}
+					data-table-position={model.get('id') + ',' + rowNum + ',' + index}
+				>
+					<TextGroupEl
+						parentModel={props.model}
+						textItem={textGroupItem}
+						groupIndex={rowNum * numCols + index}
+					/>
+				</td>
+			))
 
 		return <tr key={rowNum}>{row}</tr>
 	})

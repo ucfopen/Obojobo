@@ -1,6 +1,19 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--question-bank {
+	position: relative;
+	width: auto;
+	margin: 0.3em;
+	min-width: 9em;
+	padding: 1em;
+	overflow: auto;
+
+	&.editor-bank {
+		background: transparentize($color-action, 0.95);
+		border: 1px solid $color-action;
+		border-radius: $dimension-rounded-radius;
+	}
+
 	.reshuffle {
 		margin: 1rem auto;
 		text-align: center;
@@ -11,5 +24,13 @@
 	.obojobo-draft--chunks--question:first-child:last-child {
 		padding-top: 2em;
 		padding-bottom: 2em;
+	}
+
+	> .qb-settings {
+		div {
+			display: inline;
+		}
+
+		text-align: center;
 	}
 }

@@ -15,6 +15,9 @@ const {
 
 const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
 const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
+
+const tutorialDraft = require('../../../obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
+
 const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 
 // Get a Draft Document Tree
@@ -47,6 +50,18 @@ router
 	.post(requireCanCreateDrafts)
 	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
+			.then(newDraft => {
+				res.success(newDraft)
+			})
+			.catch(res.unexpected)
+	})
+// Create an editable tutorial document
+// mounted as /api/drafts/tutorial
+router
+	.route('/tutorial')
+	.post(requireCanCreateDrafts)
+	.post((req, res) => {
+		return DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
 			.then(newDraft => {
 				res.success(newDraft)
 			})

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCFeedback Editor Node MCFeedback builds the expected component 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback"
+>
+  <button
+    className="editor--page-editor--delete-node-button"
+    onClick={[Function]}
+  >
+    X
+  </button>
+  <span
+    className="label"
+    contentEditable={false}
+  >
+    Feedback
+  </span>
+</div>
+`;
+
+exports[`MCFeedback Editor Node MCFeedback component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button><span class=\\"label\\" contenteditable=\\"false\\">Feedback</span></div>"`;

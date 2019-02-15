@@ -153,6 +153,7 @@ class OboModel extends Backbone.Model {
 
 	onChildAdd(model) {
 		model.parent = this
+		OboModel.models[model.get('id')] = model
 		return model.markDirty()
 	}
 
@@ -198,6 +199,15 @@ class OboModel extends Backbone.Model {
 				json.children.push(child.toJSON())
 			}
 		}
+
+		return json
+	}
+
+	flatJSON() {
+		const json = super.toJSON()
+		this.adapter.toJSON(this, json)
+
+		json.children = []
 
 		return json
 	}

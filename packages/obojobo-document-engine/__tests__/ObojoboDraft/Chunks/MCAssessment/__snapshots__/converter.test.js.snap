@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessment Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {},
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        undefined,
+        undefined,
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.MCAssessment.ChoiceList",
+    },
+    Object {
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "current": undefined,
+            "display": "Response Type",
+            "name": "responseType",
+            "options": Array [
+              "pick-one",
+              "pick-all",
+            ],
+            "type": "type-select",
+          },
+          "isVoid": true,
+          "object": "block",
+          "type": "Parameter",
+        },
+        Object {
+          "data": Object {
+            "checked": undefined,
+            "display": "Shuffle",
+            "name": "shuffle",
+            "options": undefined,
+            "type": "type-toggle",
+          },
+          "isVoid": true,
+          "object": "block",
+          "type": "Parameter",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.MCAssessment.Settings",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`MCAssessment Converter slateToObo converts a Slate node to an OboNode 1`] = `
+Object {
+  "children": Array [
+    undefined,
+  ],
+  "content": Object {
+    "responseType": "pick-one",
+    "shuffle": false,
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`MCAssessment Converter slateToObo converts a Slate node to an OboNode with no content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {},
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`MCAssessment Converter slateToObo converts a Slate node to an OboNode with two correct 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+    undefined,
+  ],
+  "content": Object {
+    "responseType": "pick-one-multiple-correct",
+    "shuffle": false,
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

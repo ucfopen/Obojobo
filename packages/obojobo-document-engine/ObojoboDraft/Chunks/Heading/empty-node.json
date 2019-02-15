@@ -1,0 +1,14 @@
+{
+	"object":"block",
+	"type":"ObojoboDraft.Chunks.Heading",
+	"isVoid":false,
+	"data":{ "content": { "level": 2 } },
+	"nodes":[
+		{
+			"object":"text",
+			"leaves":[
+				{"object":"leaf","text":"","marks":[]}
+			]
+		}
+	]
+}
