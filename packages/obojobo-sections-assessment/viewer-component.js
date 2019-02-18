@@ -19,13 +19,12 @@ import test from './components/test'
 import postTest from './components/post-test'
 
 class Assessment extends React.Component {
-	constructor() {
+	constructor(props) {
 		super()
 		this.state = {
-			isFetching: false,
-			step: null
+			isFetching: false
 		}
-
+		this.curStep = this.getCurrentStep(props)
 		this.onEndAttempt = this.onEndAttempt.bind(this)
 		this.onAttemptEnded = this.onAttemptEnded.bind(this)
 		this.endAttempt = this.endAttempt.bind(this)
@@ -35,10 +34,10 @@ class Assessment extends React.Component {
 		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
-	getCurrentStep() {
+	getCurrentStep(props) {
 		const assessment = AssessmentUtil.getAssessmentForModel(
-			this.props.moduleData.assessmentState,
-			this.props.model
+			props.moduleData.assessmentState,
+			props.model
 		)
 
 		if (assessment === null) {
@@ -56,17 +55,6 @@ class Assessment extends React.Component {
 		return 'pre-test'
 	}
 
-	UNSAFE_componentWillReceiveProps() {
-		const curStep = this.getCurrentStep()
-		if (curStep !== this.state.step) {
-			this.needsScroll = true
-		}
-
-		this.setState({
-			step: curStep
-		})
-	}
-
 	componentWillUnmount() {
 		NavUtil.setContext('practice')
 		Dispatcher.off('assessment:endAttempt', this.onEndAttempt)
@@ -74,9 +62,10 @@ class Assessment extends React.Component {
 	}
 
 	componentDidUpdate() {
-		if (this.needsScroll) {
-			delete this.needsScroll
-			return Dispatcher.trigger('viewer:scrollToTop')
+		const curStep = this.getCurrentStep(this.props)
+		if (curStep !== this.curStep) {
+			this.curStep = curStep
+			Dispatcher.trigger('viewer:scrollToTop')
 		}
 	}
 
@@ -162,7 +151,7 @@ class Assessment extends React.Component {
 
 	render() {
 		const childEl = (() => {
-			switch (this.getCurrentStep()) {
+			switch (this.curStep) {
 				case 'pre-test':
 					return preTest({
 						model: this.props.model.children.at(0),

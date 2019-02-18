@@ -270,7 +270,7 @@ describe('EditorStore', () => {
 
 		expect(EditorStore.generateNav(model)).toEqual({
 			children: [],
-			flags: { complete: false, correct: false, visited: false },
+			flags: { complete: false, correct: false },
 			fullPath: [],
 			id: 'testId',
 			label: '',

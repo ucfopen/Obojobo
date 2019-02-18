@@ -45,6 +45,7 @@ export default class MCAssessment extends React.Component {
 		}
 		this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS
 		this.updateFeedbackLabels()
+		this.sortIds()
 	}
 
 	getQuestionModel() {
@@ -225,7 +226,7 @@ export default class MCAssessment extends React.Component {
 		)
 	}
 
-	UNSAFE_componentWillReceiveProps() {
+	componentDidUpdate() {
 		this.sortIds()
 	}
 
@@ -247,10 +248,6 @@ export default class MCAssessment extends React.Component {
 				this.props.moduleData.navState.context
 			)
 		}
-	}
-
-	UNSAFE_componentWillMount() {
-		this.sortIds()
 	}
 
 	sortIds() {

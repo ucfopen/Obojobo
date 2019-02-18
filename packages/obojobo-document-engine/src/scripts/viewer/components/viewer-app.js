@@ -186,10 +186,10 @@ export default class ViewerApp extends React.Component {
 		return !nextState.loading
 	}
 
-	UNSAFE_componentWillUpdate(nextProps, nextState) {
-		if (this.state.requestStatus === 'ok') {
-			const navTargetId = this.state.navTargetId
-			const nextNavTargetId = this.state.navState.navTargetId
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.requestStatus === 'ok') {
+			const navTargetId = prevState.navTargetId
+			const nextNavTargetId = prevState.navState.navTargetId
 
 			if (navTargetId !== nextNavTargetId) {
 				this.needsScroll = true
@@ -197,17 +197,15 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 
-		if (this.state.loading && !nextState.loading) {
+		if (prevState.loading && !this.state.loading) {
 			this.needsRemoveLoadingElement = true
 		}
-	}
 
-	componentDidUpdate() {
-		if (this.state.requestStatus === 'ok') {
-			if (this.lastCanNavigate !== NavUtil.canNavigate(this.state.navState)) {
+		if (prevState.requestStatus === 'ok') {
+			if (this.lastCanNavigate !== NavUtil.canNavigate(prevState.navState)) {
 				this.needsScroll = true
 			}
-			this.lastCanNavigate = NavUtil.canNavigate(this.state.navState)
+			this.lastCanNavigate = NavUtil.canNavigate(prevState.navState)
 			if (this.needsScroll) {
 				this.scrollToTop()
 

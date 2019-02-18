@@ -13,7 +13,7 @@
 		"precommit": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn precommit); done",
 		"setup": "yarn build:docEngine && cd packages/obojobo-express && yarn db:rebuild",
 		"test": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test); done",
-		"test:coverage": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test --coverage); done"
+		"test:coverage": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test -u --coverage); done"
 	},
 	"devDependencies": {
 		"concurrently": "^3.5.0",

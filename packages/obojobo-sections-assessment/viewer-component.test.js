@@ -73,7 +73,7 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
@@ -89,7 +89,7 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+		AssessmentUtil.getAssessmentForModel.mockReturnValue({
 			current: null,
 			attempts: []
 		})
@@ -176,17 +176,11 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
+		// null means pre-test
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		const stage = component.instance().getCurrentStep()
+		const instance = component.instance()
+		const stage = instance.getCurrentStep(instance.props)
 
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(stage).toEqual('pre-test')
@@ -196,20 +190,16 @@ describe('Assessment', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
-			focusState: {}
+			focusState: {},
+			navState: {}
 		}
 
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
+		// current not null means test
+		AssessmentUtil.getAssessmentForModel.mockReturnValue({ current: 'yes' })
+		AssessmentUtil.isCurrentAttemptComplete.mockReturnValue(true)
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({ current: true })
-
-		const stage = component.instance().getCurrentStep()
+		const instance = component.instance()
+		const stage = instance.getCurrentStep(instance.props)
 
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(stage).toEqual('test')
@@ -219,26 +209,45 @@ describe('Assessment', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
-			focusState: {}
+			focusState: {},
+			navState: {}
 		}
 
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
-			current: null,
-			attempts: [{}]
+		// post-test means assessment.attempts.length > 0
+		AssessmentUtil.getAssessmentForModel.mockReturnValue({
+			attempts: ['something'],
+			current: null
 		})
-
-		const stage = component.instance().getCurrentStep()
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+		const instance = component.instance()
+		const stage = instance.getCurrentStep(instance.props)
 
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(stage).toEqual('post-test')
+	})
+
+	test('this.curStep is updated and Dispatcher viewer:scrollToTop is called in componentDidUpdate', () => {
+		const model = OboModel.create(assessmentJSON)
+		const moduleData = {
+			assessmentState: 'mockAssessmentState',
+			focusState: {},
+			navState: {}
+		}
+
+		// pre-test
+		// constructor
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// render
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		// test
+		// render after componentDidUpdate
+		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({ current: 'yes' })
+		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
+		const instance = component.instance()
+		const stage = instance.getCurrentStep(instance.props)
+		component.setProps({ model, moduleData })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:scrollToTop')
 	})
 
 	test('getCurrentStep returns pre-test when assignment has no attempts', () => {
@@ -252,106 +261,16 @@ describe('Assessment', () => {
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
 		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
 			current: null,
 			attempts: []
 		})
 
-		const stage = component.instance().getCurrentStep()
+		const instance = component.instance()
+		const stage = instance.getCurrentStep(instance.props)
 
 		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
 		expect(stage).toEqual('pre-test')
-	})
-
-	test('componentWillRecieveProps changes the state', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {}
-		}
-
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		const component = shallow(
-			<Assessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-
-		expect(component.instance().state.step).toEqual(null)
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		// mock for second render call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		// calls componentWillRecieveProps()
-		component.setProps({ model: model, moduleData: moduleData })
-
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
-		expect(component.instance().state.step).toEqual('pre-test')
-	})
-
-	test('componentWillRecieveProps remains on the same state', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {}
-		}
-
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		const component = shallow(
-			<Assessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-
-		expect(component.instance().state.step).toEqual(null)
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		// mock for second render call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		// calls componentWillRecieveProps()
-		component.setProps({ model: model, moduleData: moduleData })
-
-		expect(component.instance().state.step).toEqual('pre-test')
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		// mock for second render call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		// calls componentWillRecieveProps()
-		component.setProps({ model: model, moduleData: moduleData })
-
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
-		expect(component.instance().state.step).toEqual('pre-test')
-	})
-
-	test('componentWillMount calls dispatcher', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {}
-		}
-
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		mount(<Assessment model={model} moduleData={moduleData} />)
-
-		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
-		expect(Dispatcher.on).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
 	})
 
 	test('componentWillUnmount calls dispatcher and NavUtil', () => {
@@ -369,78 +288,6 @@ describe('Assessment', () => {
 		expect(NavUtil.setContext).toHaveBeenCalledWith('practice')
 		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
 		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
-	})
-
-	test('componentWillRecieveProps changes the state', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {}
-		}
-
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		const component = shallow(
-			<Assessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-
-		expect(component.instance().state.step).toEqual(null)
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		// mock for second render call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		// calls componentDidUpdate()
-		component.setProps({ model: model, moduleData: moduleData })
-
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
-		expect(component.instance().state.step).toEqual('pre-test')
-	})
-
-	test('componentWillRecieveProps remains on the same state', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {}
-		}
-
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		const component = shallow(
-			<Assessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-
-		expect(component.instance().state.step).toEqual(null)
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		// mock for second render call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		// calls componentDidUpdate()
-		component.setProps({ model: model, moduleData: moduleData })
-
-		expect(component.instance().state.step).toEqual('pre-test')
-
-		// clear out any render calls
-		jest.resetAllMocks()
-		// mock for getCurrentStep call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		// mock for second render call
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		// calls componentDidUpdate()
-		component.setProps({ model: model, moduleData: moduleData })
-
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
-		expect(component.instance().state.step).toEqual('pre-test')
 	})
 
 	test('onEndAttempt alters the state', () => {

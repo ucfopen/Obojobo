@@ -9,12 +9,6 @@ const { OboComponent } = Common.components
 const { NavUtil } = Viewer.util
 
 export default class Page extends React.Component {
-	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (nextProps.moduleData.navState.navTargetId !== this.props.moduleData.navState.navTargetId) {
-			return NavUtil.setFlag(this.props.moduleData.navState.navTargetId, 'visited', true)
-		}
-	}
-
 	render() {
 		return (
 			<OboComponent

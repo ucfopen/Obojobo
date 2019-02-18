@@ -41,7 +41,6 @@ export default class Nav extends React.Component {
 		const className =
 			'link' +
 			isOrNot(isSelected, 'selected') +
-			isOrNot(item.flags.visited, 'visited') +
 			isOrNot(item.flags.complete, 'complete') +
 			isOrNot(item.flags.correct, 'correct') +
 			isOrNot(item.flags.assessment, 'assessment') +

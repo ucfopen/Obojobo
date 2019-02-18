@@ -146,7 +146,6 @@ class EditorStore extends Store {
 		navItem.id = model.get('id')
 		navItem.fullPath = [].concat(navItem.path).filter(item => item !== '')
 		navItem.flags = {
-			visited: false,
 			complete: false,
 			correct: false
 		}

@@ -101,7 +101,6 @@ describe('Nav', () => {
 				type: 'link',
 				label: 'label5',
 				flags: {
-					visited: false,
 					complete: false,
 					correct: false
 				}
@@ -112,7 +111,6 @@ describe('Nav', () => {
 				type: 'link',
 				label: new MockStylableText('mockMe'),
 				flags: {
-					visited: false,
 					complete: false,
 					correct: false
 				}
@@ -123,7 +121,6 @@ describe('Nav', () => {
 				type: 'link',
 				label: 'label56',
 				flags: {
-					visited: true,
 					complete: true,
 					correct: true
 				}
@@ -165,7 +162,6 @@ describe('Nav', () => {
 				label: 'label',
 				fullPath: 'mockFullPath',
 				flags: {
-					visited: false,
 					complete: false,
 					correct: false
 				}
