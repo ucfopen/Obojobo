@@ -1,11 +1,11 @@
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
-const onBackspace = (event, editor) => {
+const onBackspace = (event, editor, next) => {
 	const last = editor.value.endBlock
 
 	// If the block is not empty or we are deleting multiple things, delete normally
-	if (!editor.value.selection.isCollapsed || last.text !== '') return
+	if (!editor.value.selection.isCollapsed || last.text !== '') return next()
 
 	// Get the deepest level that contains this line
 	const listLevel = editor.value.document.getClosest(last.key, par => par.type === LIST_LEVEL_NODE)

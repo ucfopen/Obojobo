@@ -16,7 +16,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor)
+		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
@@ -35,7 +35,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor)
+		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
@@ -80,7 +80,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor)
+		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
@@ -126,7 +126,7 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, editor)
+		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(editor.removeNodeByKey).toHaveBeenCalled()

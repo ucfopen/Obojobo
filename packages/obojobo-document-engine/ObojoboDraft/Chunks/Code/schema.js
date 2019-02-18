@@ -1,5 +1,5 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
@@ -27,7 +27,7 @@ const schema = {
 							data: { content: { indent: 0 } }
 						})
 					}
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						const block = Block.create({
 							type: CODE_LINE_NODE,
 							data: { content: { indent: 0 } }

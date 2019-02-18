@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import MCFeedback from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
@@ -65,7 +65,7 @@ describe('MCFeedback editor', () => {
 		}
 
 		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 0

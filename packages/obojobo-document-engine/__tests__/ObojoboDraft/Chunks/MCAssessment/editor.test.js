@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import MCAssessment from '../../../../ObojoboDraft/Chunks/MCAssessment/editor'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
@@ -109,7 +109,7 @@ describe('MCAssessment editor', () => {
 		}
 
 		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 0
@@ -124,7 +124,7 @@ describe('MCAssessment editor', () => {
 		}
 
 		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 1
@@ -154,7 +154,7 @@ describe('MCAssessment editor', () => {
 		}
 
 		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 0
@@ -169,7 +169,7 @@ describe('MCAssessment editor', () => {
 		}
 
 		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 0
@@ -184,7 +184,7 @@ describe('MCAssessment editor', () => {
 		}
 
 		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 1

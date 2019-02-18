@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import EditorSchema from 'src/scripts/oboeditor/plugins/editor-schema'
 
@@ -12,7 +12,7 @@ describe('EditorSchema', () => {
 		}
 
 		EditorSchema.schema.document.normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0

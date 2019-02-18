@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import MCChoice from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/editor'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
@@ -91,7 +91,7 @@ describe('MCChoice editor', () => {
 		}
 
 		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 0

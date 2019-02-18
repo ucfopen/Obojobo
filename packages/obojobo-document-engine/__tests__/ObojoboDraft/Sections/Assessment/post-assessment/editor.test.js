@@ -3,7 +3,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('../../../../../ObojoboDraft/Pages/Page/editor')
 
@@ -250,7 +250,7 @@ describe('Actions editor', () => {
 		}
 
 		Actions.plugins.schema.blocks[SCORE_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -280,7 +280,7 @@ describe('Actions editor', () => {
 		}
 
 		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0

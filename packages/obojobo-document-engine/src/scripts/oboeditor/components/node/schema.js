@@ -1,5 +1,4 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED } from 'slate-schema-violations'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -31,7 +30,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						const block = Block.create({
 							type: TEXT_NODE
 						})

@@ -3,7 +3,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('../../../../ObojoboDraft/Pages/Page/editor')
 jest.mock('../../../../ObojoboDraft/Chunks/QuestionBank/editor')
@@ -284,7 +284,7 @@ describe('Assessment editor', () => {
 		}
 
 		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -299,7 +299,7 @@ describe('Assessment editor', () => {
 		}
 
 		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1
@@ -314,7 +314,7 @@ describe('Assessment editor', () => {
 		}
 
 		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 2
@@ -329,7 +329,7 @@ describe('Assessment editor', () => {
 		}
 
 		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 3
@@ -382,7 +382,7 @@ describe('Assessment editor', () => {
 		}
 
 		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -397,7 +397,7 @@ describe('Assessment editor', () => {
 		}
 
 		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1

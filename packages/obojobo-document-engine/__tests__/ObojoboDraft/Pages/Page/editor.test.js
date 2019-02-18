@@ -1,6 +1,6 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-import Page from '../../../../ObojoboDraft/Pages/Page/editor'
+import Page from 'ObojoboDraft/Pages/Page/editor'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
@@ -66,7 +66,7 @@ describe('Page editor', () => {
 		}
 
 		Page.plugins.schema.blocks[PAGE_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0

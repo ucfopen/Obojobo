@@ -17,7 +17,13 @@ import insertTab from './changes/insert-tab'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
-const isType = editor => editor.value.blocks.some(block => block.type === TEXT_LINE_NODE)
+const isType = editor => {
+	return editor.value.blocks.some(block => {
+		return !!editor.value.document.getClosest(block.key, parent => {
+			return parent.type === TEXT_NODE
+		})
+	})
+}
 
 const plugins = {
 	onKeyDown(event, editor, next) {

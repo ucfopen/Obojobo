@@ -1,5 +1,5 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
@@ -33,7 +33,7 @@ const schema = {
 							data: { content: { header } }
 						})
 					}
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						const block = Block.create({
 							type: TABLE_ROW_NODE,
 							data: { content: { header } }
@@ -70,7 +70,7 @@ const schema = {
 							data: { content: { header } }
 						})
 					}
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						const block = Block.create({
 							type: TABLE_CELL_NODE,
 							data: { content: { header } }

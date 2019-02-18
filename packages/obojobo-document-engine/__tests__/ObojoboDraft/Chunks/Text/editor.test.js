@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('src/scripts/oboeditor/util/text-util')
 
@@ -58,43 +58,59 @@ describe('Text editor', () => {
 
 	test('plugins.renderPlaceholder exits when not relevent', () => {
 		expect(
-			Text.plugins.renderPlaceholder({
-				node: {
-					object: 'text'
-				}
-			}, null, jest.fn())
+			Text.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'text'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 
 		expect(
-			Text.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: 'mockType'
-				}
-			}, null, jest.fn())
+			Text.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: 'mockType'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 
 		expect(
-			Text.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: TEXT_LINE_NODE,
-					text: 'Some text'
-				}
-			}, null, jest.fn())
+			Text.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: TEXT_LINE_NODE,
+						text: 'Some text'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 	})
 
 	test('plugins.renderPlaceholder renders a placeholder', () => {
 		expect(
-			Text.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: TEXT_LINE_NODE,
-					text: '',
-					data: { get: () => 'left' }
-				}
-			}, null, jest.fn())
+			Text.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: TEXT_LINE_NODE,
+						text: '',
+						data: { get: () => 'left' }
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 	})
 
@@ -466,7 +482,7 @@ describe('Text editor', () => {
 		}
 
 		Text.plugins.schema.blocks[TEXT_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0

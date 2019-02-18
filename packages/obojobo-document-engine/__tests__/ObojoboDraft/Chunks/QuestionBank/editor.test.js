@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import QuestionBank from '../../../../ObojoboDraft/Chunks/QuestionBank/editor'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
@@ -91,7 +91,7 @@ describe('QuestionBank editor', () => {
 		}
 
 		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 0
@@ -106,7 +106,7 @@ describe('QuestionBank editor', () => {
 		}
 
 		QuestionBank.plugins.schema.blocks[QUESTION_BANK_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 1
@@ -121,7 +121,7 @@ describe('QuestionBank editor', () => {
 		}
 
 		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 0
@@ -136,7 +136,7 @@ describe('QuestionBank editor', () => {
 		}
 
 		QuestionBank.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 1

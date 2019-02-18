@@ -1,7 +1,7 @@
 /* eslint no-alert: 0 */
 import React from 'react'
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 // A single score action
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
@@ -129,7 +129,7 @@ const plugins = {
 				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
-						case CHILD_REQUIRED: {
+						case 'child_min_invalid': {
 							const block = Block.create({
 								type: SCORE_NODE,
 								data: { for: '[0,100]' }
@@ -150,7 +150,7 @@ const plugins = {
 				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
-						case CHILD_REQUIRED: {
+						case 'child_min_invalid': {
 							const block = Block.create({
 								type: PAGE_NODE
 							})

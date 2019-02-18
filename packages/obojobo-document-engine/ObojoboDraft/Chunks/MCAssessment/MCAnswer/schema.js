@@ -1,5 +1,5 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -8,10 +8,9 @@ const schema = {
 		'ObojoboDraft.Chunks.MCAssessment.MCAnswer': {
 			nodes: [{ match: [{ type: 'oboeditor.component' }], min: 1 }],
 			normalize: (editor, error) => {
-				console.log('MCAnswer', error)
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						const block = Block.create({
 							object: 'block',
 							type: 'oboeditor.component',

@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import List from '../../../../ObojoboDraft/Chunks/List/editor'
 const LIST_NODE = 'ObojoboDraft.Chunks.List'
@@ -52,6 +52,64 @@ describe('List editor', () => {
 		}
 
 		expect(List.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			List.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'text'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+
+		expect(
+			List.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: 'mockType'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+
+		expect(
+			List.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: LIST_LINE_NODE,
+						text: 'Some text'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			List.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: LIST_LINE_NODE,
+						text: '',
+						data: { get: () => 'left' }
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode calls next', () => {
@@ -501,24 +559,36 @@ describe('List editor', () => {
 		}
 		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => funct(editor))
 
-		List.plugins.normalizeNode({
-			object: 'text'
-		}, editor, jest.fn())
+		List.plugins.normalizeNode(
+			{
+				object: 'text'
+			},
+			editor,
+			jest.fn()
+		)
 
 		expect(editor.mergeNodeByKey).not.toHaveBeenCalled()
 
-		List.plugins.normalizeNode({
-			object: 'block',
-			type: 'mockNode'
-		}, editor, jest.fn())
+		List.plugins.normalizeNode(
+			{
+				object: 'block',
+				type: 'mockNode'
+			},
+			editor,
+			jest.fn()
+		)
 
 		expect(editor.mergeNodeByKey).not.toHaveBeenCalled()
 
-		List.plugins.normalizeNode({
-			object: 'block',
-			type: LIST_NODE,
-			nodes: { size: 1 }
-		}, editor, jest.fn())
+		List.plugins.normalizeNode(
+			{
+				object: 'block',
+				type: LIST_NODE,
+				nodes: { size: 1 }
+			},
+			editor,
+			jest.fn()
+		)
 
 		expect(editor.mergeNodeByKey).not.toHaveBeenCalled()
 	})
@@ -653,7 +723,7 @@ describe('List editor', () => {
 		}
 
 		List.plugins.schema.blocks[LIST_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {
 				data: {
 					get: () => {
@@ -711,7 +781,7 @@ describe('List editor', () => {
 		}
 
 		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: { object: 'block' },
 			index: 0

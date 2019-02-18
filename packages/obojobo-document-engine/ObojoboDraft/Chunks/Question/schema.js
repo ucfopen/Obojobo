@@ -1,5 +1,5 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -16,12 +16,9 @@ const schema = {
 			],
 
 			normalize: (editor, error) => {
-				console.log('in question')
-				const { node, child, index, count, limit } = error
-				console.log(error)
-				console.log(node.toJSON())
+				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						// If we are missing the last node,
 						// it should be a MCAssessment
 						if (index === node.nodes.size) {
@@ -74,7 +71,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						const block = Block.create({
 							type: PAGE_NODE
 						})

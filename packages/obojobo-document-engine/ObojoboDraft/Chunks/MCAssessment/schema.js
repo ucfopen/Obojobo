@@ -1,5 +1,5 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
 
@@ -21,29 +21,9 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('MCAssessment', error)
 				const { node, child, index } = error
 				switch (error.code) {
-					case 'child_max_invalid': {
-						const { index, count, limit, node, rule } = error
-						console.log('details to follow ', index, count, limit,
-							JSON.stringify(node.toJSON()), rule)
-						break;
-					}
 					case 'child_min_invalid': {
-						if (index === 0) {
-							const block = Block.create({
-								type: CHOICE_LIST_NODE
-							})
-							return editor.insertNodeByKey(node.key, index, block)
-						}
-
-						const block = Block.create({
-							type: SETTINGS_NODE
-						})
-						return editor.insertNodeByKey(node.key, index, block)
-					}
-					case CHILD_REQUIRED: {
 						if (index === 0) {
 							const block = Block.create({
 								type: CHOICE_LIST_NODE
@@ -80,10 +60,9 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('MCChoiceList', error)
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						const block = Block.create({
 							type: MCCHOICE_NODE,
 							data: { content: { score: 0 } }
@@ -108,10 +87,9 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('MCSettings', error)
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						if (index === 0) {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({

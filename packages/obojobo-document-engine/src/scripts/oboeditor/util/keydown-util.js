@@ -1,5 +1,5 @@
 const KeyDownUtil = {
-	deleteNodeContents: (event, editor) => {
+	deleteNodeContents: (event, editor, next) => {
 		const value = editor.value
 		const selection = value.selection
 		const startBlock = value.startBlock
@@ -10,12 +10,12 @@ const KeyDownUtil = {
 		// If a cursor is collapsed at the start of the first block, do nothing
 		if (startOffset === 0 && isCollapsed) {
 			event.preventDefault()
-			return editor
+			return true
 		}
 
 		// Deletion within a cell
 		if (startBlock === endBlock) {
-			return
+			return next()
 		}
 
 		// Deletion across cells

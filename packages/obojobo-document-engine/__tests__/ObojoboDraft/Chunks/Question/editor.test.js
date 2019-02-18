@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import Question from '../../../../ObojoboDraft/Chunks/Question/editor'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
@@ -86,7 +86,7 @@ describe('Question editor', () => {
 		}
 
 		Question.plugins.schema.blocks[QUESTION_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {
 				nodes: { size: 0 }
 			},
@@ -103,7 +103,7 @@ describe('Question editor', () => {
 		}
 
 		Question.plugins.schema.blocks[QUESTION_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {
 				nodes: { size: 1 }
 			},
@@ -120,7 +120,7 @@ describe('Question editor', () => {
 		}
 
 		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {
 				nodes: { size: 0 }
 			},

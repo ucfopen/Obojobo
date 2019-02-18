@@ -28,7 +28,7 @@ const isType = editor => {
 
 const plugins = {
 	onKeyDown(event, editor, next) {
-		// See if any of the selected nodes have a CODE_NODE parent
+		// See if any of the selected nodes have a LIST_NODE parent
 		const isLine = isType(editor)
 		if (!isLine) return next()
 
@@ -86,7 +86,9 @@ const plugins = {
 		const invalids = node.nodes
 			.map((child, i) => {
 				const nextNode = node.nodes.get(i + 1)
-				if (child.type !== LIST_LEVEL_NODE || !nextNode || nextNode.type !== LIST_LEVEL_NODE) return false
+				if (child.type !== LIST_LEVEL_NODE || !nextNode || nextNode.type !== LIST_LEVEL_NODE) {
+					return false
+				}
 				return nextNode
 			})
 			.filter(Boolean)

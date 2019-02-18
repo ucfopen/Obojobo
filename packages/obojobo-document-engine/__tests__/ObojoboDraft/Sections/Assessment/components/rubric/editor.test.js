@@ -3,7 +3,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import Rubric from '../../../../../../ObojoboDraft/Sections/Assessment/components/rubric/editor'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
@@ -487,7 +487,7 @@ describe('Rubric editor', () => {
 		}
 
 		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -502,7 +502,7 @@ describe('Rubric editor', () => {
 		}
 
 		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1
@@ -517,7 +517,7 @@ describe('Rubric editor', () => {
 		}
 
 		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 2
@@ -532,7 +532,7 @@ describe('Rubric editor', () => {
 		}
 
 		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 3
@@ -562,7 +562,7 @@ describe('Rubric editor', () => {
 		}
 
 		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -615,7 +615,7 @@ describe('Rubric editor', () => {
 		}
 
 		Rubric.plugins.schema.blocks[MOD_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
@@ -630,7 +630,7 @@ describe('Rubric editor', () => {
 		}
 
 		Rubric.plugins.schema.blocks[MOD_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 1

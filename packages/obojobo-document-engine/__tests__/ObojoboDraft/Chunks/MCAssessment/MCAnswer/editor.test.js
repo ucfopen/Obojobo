@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import MCAnswer from 'ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
@@ -65,7 +65,7 @@ describe('MCAnswer editor', () => {
 		}
 
 		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {},
 			child: null,
 			index: 0

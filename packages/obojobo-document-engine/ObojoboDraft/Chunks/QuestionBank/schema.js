@@ -1,11 +1,13 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+
+import emptyQuestion from '../Question/empty-node.json'
 
 const SELECT_TYPES = ['sequential', 'random', 'random-unseen']
 
@@ -17,19 +19,16 @@ const schema = {
 				{ match: [{ type: QUESTION_NODE }, { type: QUESTION_BANK_NODE }], min: 1 }
 			],
 			normalize: (editor, error) => {
-				console.log('in qb')
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						if (index === 0) {
 							const block = Block.create({
 								type: SETTINGS_NODE
 							})
 							return editor.insertNodeByKey(node.key, index, block)
 						}
-						const block = Block.create({
-							type: QUESTION_NODE
-						})
+						const block = Block.create(emptyQuestion)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
@@ -60,7 +59,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						if (index === 0) {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({

@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('src/scripts/oboeditor/util/keydown-util')
 
@@ -253,7 +253,7 @@ describe('Table editor', () => {
 		}
 
 		Table.plugins.schema.blocks[TABLE_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {
 				data: {
 					get: () => {
@@ -339,7 +339,7 @@ describe('Table editor', () => {
 		}
 
 		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: {
 				data: {
 					get: () => {

@@ -1,5 +1,5 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ParameterNode from '../../../../../src/scripts/oboeditor/components/parameter-node'
 
@@ -9,14 +9,11 @@ const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'
 const schema = {
 	blocks: {
 		'ObojoboDraft.Sections.Assessment.Rubric': {
-			nodes: [
-				{ match: [{ type: 'Parameter' }], min: 4},
-				{ match: [{ type: MOD_LIST_NODE }]}
-			],
+			nodes: [{ match: [{ type: 'Parameter' }], min: 4 }, { match: [{ type: MOD_LIST_NODE }] }],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						let block
 						switch (index) {
 							case 0:
@@ -111,7 +108,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						const block = Block.create({
 							type: MOD_NODE
 						})
@@ -130,7 +127,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case 'child_min_invalid': {
 						if (index === 0) {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({

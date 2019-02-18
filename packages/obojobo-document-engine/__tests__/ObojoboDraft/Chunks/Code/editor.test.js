@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import Code from 'ObojoboDraft/Chunks/Code/editor'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -58,42 +58,58 @@ describe('Code editor', () => {
 
 	test('plugins.renderPlaceholder exits when not relevent', () => {
 		expect(
-			Code.plugins.renderPlaceholder({
-				node: {
-					object: 'text'
-				}
-			}, null, jest.fn())
+			Code.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'text'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 
 		expect(
-			Code.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: 'mockType'
-				}
-			}, null, jest.fn())
+			Code.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: 'mockType'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 
 		expect(
-			Code.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: CODE_LINE_NODE,
-					text: 'Some text'
-				}
-			}, null, jest.fn())
+			Code.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: CODE_LINE_NODE,
+						text: 'Some text'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 	})
 
 	test('plugins.renderPlaceholder renders a placeholder', () => {
 		expect(
-			Code.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: CODE_LINE_NODE,
-					text: ''
-				}
-			}, null, jest.fn())
+			Code.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: CODE_LINE_NODE,
+						text: ''
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 	})
 
@@ -414,7 +430,7 @@ describe('Code editor', () => {
 		}
 
 		Code.plugins.schema.blocks[CODE_NODE].normalize(editor, {
-			code: CHILD_REQUIRED,
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
