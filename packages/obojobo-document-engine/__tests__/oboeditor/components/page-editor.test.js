@@ -3,10 +3,12 @@ import React from 'react'
 import { Value } from 'slate'
 
 jest.mock('slate-react')
-jest.mock('src/scripts/viewer/util/api-util')
 
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import APIUtil from 'src/scripts/viewer/util/api-util'
+jest.mock('src/scripts/viewer/util/api-util')
+import ModalUtil from 'src/scripts/common/util/modal-util'
+jest.mock('src/scripts/common/util/modal-util')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -14,6 +16,10 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 describe('PageEditor', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('EditorNav component', () => {
 		const props = {
 			page: {
@@ -254,5 +260,89 @@ describe('PageEditor', () => {
 		component.find('.obojobo-draft--pages--page').simulate('change', { value: Value.create({}) })
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+		const component = shallow(<PageEditor {...props} />)
+
+		component.find('.obojobo-draft--pages--page').simulate('keyDown', { key: 'R', metaKey: true })
+
+		expect(ModalUtil.show).not.toHaveBeenCalled()
+	})
+
+	test('onKeyDown does not toggle mark if CTRL/CMD + k key is pressed', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+		const component = shallow(<PageEditor {...props} />)
+
+		component
+			.find('.obojobo-draft--pages--page')
+			.simulate('keyDown', { key: 'k', metaKey: true, preventDefault: jest.fn() })
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('changeLinkValue doesnt add link if href is empty', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+		const component = shallow(<PageEditor {...props} />)
+		const change = {
+			removeMark: jest.fn(),
+			addMark: jest.fn()
+		}
+		component.setState({
+			value: {
+				change: () => change,
+				marks: [
+					{ type: 'a', data: { toJSON: jest.fn() } },
+					{ type: 'mock mark', data: { toJSON: jest.fn() } }
+				]
+			}
+		})
+
+		component.instance().changeLinkValue(' ')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+	})
+
+	test('changeLinkValue adds link', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+		const component = shallow(<PageEditor {...props} />)
+		const change = {
+			removeMark: jest.fn(),
+			addMark: jest.fn()
+		}
+		component.setState({
+			value: {
+				change: () => change,
+				marks: [
+					{ type: 'a', data: { toJSON: jest.fn() } },
+					{ type: 'mock mark', data: { toJSON: jest.fn() } }
+				]
+			}
+		})
+
+		component.instance().changeLinkValue('mock link')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
 	})
 })

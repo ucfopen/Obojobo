@@ -1,10 +1,12 @@
-/* eslint no-alert: 0 */
-
 import React from 'react'
+import Common from 'Common'
+
 import basicMark from './marks/basic-mark'
 import linkMark from './marks/link-mark'
 import superMark from './marks/super-mark'
 import alignMark from './marks/align-mark'
+
+import LinkNode from './marks/link'
 
 import BoldIcon from '../assets/bold-icon'
 import ItalicIcon from '../assets/italic-icon'
@@ -20,6 +22,9 @@ import LeftIcon from '../assets/left-icon'
 import RightIcon from '../assets/right-icon'
 import CenterIcon from '../assets/center-icon'
 import UnindentIcon from '../assets/unindent-icon'
+
+const { Prompt } = Common.components.modal
+const { ModalUtil } = Common.util
 
 const BOLD_MARK = 'b'
 const ITALIC_MARK = 'i'
@@ -58,12 +63,23 @@ const Quote = props => {
 const Monospace = props => {
 	return <code>{props.children}</code>
 }
+const Link = props => {
+	return (
+		<LinkNode
+			mark={props.mark}
+			node={props.node}
+			offset={props.offset}
+			editor={props.editor}
+			text={props.text}
+		>
+			{props.children}
+		</LinkNode>
+	)
+}
 const Latex = props => {
 	return <span className={'latex-editor'}>{props.children}</span>
 }
-const Link = props => {
-	return <a href={props.mark.data.get('href')}>{props.children}</a>
-}
+
 const Superscript = props => {
 	if (props.mark.data.get('num') === 1) {
 		return <sup>{props.children}</sup>
@@ -132,36 +148,41 @@ class Node extends React.Component {
 		this.props.onChange(change)
 	}
 
-	toggleLink() {
+	changeLinkValue(href) {
+		ModalUtil.hide()
+
 		const value = this.props.value
 		const change = value.change()
 
-		let removedMarks = false
-
+		// remove existing links
 		value.marks.forEach(mark => {
 			if (mark.type === LINK_MARK) {
 				change.removeMark({
 					type: LINK_MARK,
 					data: mark.data.toJSON()
 				})
-				removedMarks = true
 			}
 		})
 
-		// If a mark was removed, don't prompt for a link address
-		if (removedMarks) {
-			this.props.onChange(change)
-			return false
-		}
-
-		const href = window.prompt('Link address:') || null
+		// If href is empty, don't add a link
+		if (!href || !/[^\s]/.test(href)) return this.props.onChange(change)
 
 		change.addMark({
 			type: LINK_MARK,
 			data: { href }
 		})
 
-		this.props.onChange(change)
+		return this.props.onChange(change)
+	}
+
+	toggleLink() {
+		ModalUtil.show(
+			<Prompt
+				title="Insert Link"
+				message="Enter the link url:"
+				onConfirm={this.changeLinkValue.bind(this)}
+			/>
+		)
 	}
 
 	indentList(value, block, change) {

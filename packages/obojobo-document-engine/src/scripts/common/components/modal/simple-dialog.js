@@ -5,64 +5,78 @@ import React from 'react'
 import ModalUtil from '../../../common/util/modal-util'
 import Dialog from '../../../common/components/modal/dialog'
 
-const SimpleDialog = props => {
-	let buttons
-	if (props.ok) {
-		buttons = [
-			{
-				value: 'OK',
-				onClick: props.onConfirm,
-				default: true
-			}
-		]
-	} else if (props.noOrYes) {
-		buttons = [
-			{
-				value: 'No',
-				onClick: props.onCancel
-			},
-			'or',
-			{
-				value: 'Yes',
-				onClick: props.onConfirm,
-				default: true
-			}
-		]
-	} else if (props.yesOrNo) {
-		buttons = [
-			{
-				value: 'Yes',
-				onClick: props.onConfirm
-			},
-			'or',
-			{
-				value: 'No',
-				onClick: props.onCancel,
-				default: true
-			}
-		]
-	} else {
-		buttons = [
-			{
-				value: 'Cancel',
-				altAction: true,
-				onClick: props.onCancel
-			},
-			{
-				value: 'OK',
-				onClick: props.onConfirm,
-				default: true
-			}
-		]
+class SimpleDialog extends React.Component {
+	focusOnFirstElement() {
+		if (this.props.focusOnFirstElement) {
+			return this.props.focusOnFirstElement()
+		}
 	}
 
-	return (
-		<div className="obojobo-draft--components--modal--simple-dialog">
-			<Dialog centered buttons={buttons} title={props.title} width={props.width}>
-				{props.children}
-			</Dialog>
-		</div>
-	)
+	render() {
+		let buttons
+		if (this.props.ok) {
+			buttons = [
+				{
+					value: 'OK',
+					onClick: this.props.onConfirm,
+					default: true
+				}
+			]
+		} else if (this.props.noOrYes) {
+			buttons = [
+				{
+					value: 'No',
+					onClick: this.props.onCancel
+				},
+				'or',
+				{
+					value: 'Yes',
+					onClick: this.props.onConfirm,
+					default: true
+				}
+			]
+		} else if (this.props.yesOrNo) {
+			buttons = [
+				{
+					value: 'Yes',
+					onClick: this.props.onConfirm
+				},
+				'or',
+				{
+					value: 'No',
+					onClick: this.props.onCancel,
+					default: true
+				}
+			]
+		} else {
+			buttons = [
+				{
+					value: 'Cancel',
+					altAction: true,
+					onClick: this.props.onCancel
+				},
+				{
+					value: 'OK',
+					onClick: this.props.onConfirm,
+					default: true
+				}
+			]
+		}
+
+		return (
+			<div className="obojobo-draft--components--modal--simple-dialog">
+				<Dialog
+					centered
+					buttons={buttons}
+					title={this.props.title}
+					width={this.props.width}
+					focusOnFirstElement={this.focusOnFirstElement.bind(this)}
+				>
+					{this.props.children}
+				</Dialog>
+			</div>
+		)
+	}
 }
 
 SimpleDialog.defaultProps = {

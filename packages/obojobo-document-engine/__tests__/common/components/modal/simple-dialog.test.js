@@ -167,4 +167,21 @@ describe('SimpleDialog', () => {
 
 		expect(ModalUtil.hide).toHaveBeenCalledTimes(2)
 	})
+
+	test('focusOnFirstElement with props', () => {
+		const focusFirst = jest.fn()
+		const component = mount(<SimpleDialog focusOnFirstElement={focusFirst}>Content</SimpleDialog>)
+
+		component.instance().focusOnFirstElement()
+
+		expect(focusFirst).toHaveBeenCalled()
+	})
+
+	test('focusOnFirstElement without props', () => {
+		const component = mount(<SimpleDialog cancelOk>Content</SimpleDialog>)
+
+		component.instance().focusOnFirstElement()
+
+		expect(component.html()).toMatchSnapshot()
+	})
 })

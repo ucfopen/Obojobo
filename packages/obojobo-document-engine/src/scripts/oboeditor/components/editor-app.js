@@ -8,11 +8,12 @@ import EditorNav from './editor-nav'
 import APIUtil from '../../viewer/util/api-util'
 import EditorStore from '../stores/editor-store'
 
-import generateId from '../generate-ids'
-
-import './editor-app.scss'
-
+const { ModalContainer } = Common.components
+const { ModalUtil } = Common.util
+const { ModalStore } = Common.stores
 const { OboModel } = Common.models
+
+import generateId from '../generate-ids'
 
 class EditorApp extends React.Component {
 	constructor(props) {
@@ -31,6 +32,11 @@ class EditorApp extends React.Component {
 		KeyUtils.setGenerator(generateId)
 
 		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
+		this.onModalStoreChange = () => this.setState({ modalState: ModalStore.getState() })
+
+		// === SET UP DATA STORES ===
+		EditorStore.onChange(this.onEditorStoreChange)
+		ModalStore.onChange(this.onModalStoreChange)
 	}
 
 	componentDidMount() {
@@ -39,6 +45,8 @@ class EditorApp extends React.Component {
 
 		return APIUtil.getDraft(draftId)
 			.then(response => {
+				ModalStore.init()
+
 				if (response.status === 'error') throw response.value
 				return response
 			})
@@ -47,7 +55,8 @@ class EditorApp extends React.Component {
 
 				EditorStore.init(obomodel, obomodel.modelState.start, window.location.pathname)
 
-				this.setState({
+				return this.setState({
+					modalState: ModalStore.getState(),
 					editorState: EditorStore.getState(),
 					draftId,
 					model: obomodel,
@@ -57,17 +66,13 @@ class EditorApp extends React.Component {
 			.catch(err => {
 				// eslint-disable-next-line
 				console.log(err)
-				this.setState({ requestStatus: 'invalid', requestError: err })
+				return this.setState({ requestStatus: 'invalid', requestError: err })
 			})
-	}
-
-	componentWillMount() {
-		// === SET UP DATA STORES ===
-		EditorStore.onChange(this.onEditorStoreChange)
 	}
 
 	componentWillUnmount() {
 		EditorStore.offChange(this.onEditorStoreChange)
+		ModalStore.offChange(this.onModalStoreChange)
 	}
 
 	render() {
@@ -82,10 +87,12 @@ class EditorApp extends React.Component {
 		}
 
 		if (this.state.loading) return <p>Loading</p>
+
+		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div
 				className={
-					'viewer--viewer-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
+					'viewer--viewer-app editor--editor-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
 				}
 			>
 				<EditorNav
@@ -101,6 +108,9 @@ class EditorApp extends React.Component {
 						draftId={this.state.draftId}
 					/>
 				</div>
+				{modalItem && modalItem.component ? (
+					<ModalContainer>{modalItem.component}</ModalContainer>
+				) : null}
 			</div>
 		)
 	}

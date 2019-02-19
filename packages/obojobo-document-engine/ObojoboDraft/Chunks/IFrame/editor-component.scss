@@ -1,40 +1,24 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--iframe {
-	&.is-not-showing {
-		> .container {
-			max-height: none;
-		}
+	position: relative;
+
+	.obojobo-draft--components--button {
+		display: block;
 	}
 
-	.container {
-		position: relative;
-
-		.blocker {
-			.form {
-				padding: 0.5em;
-				text-align: left;
-
-				label {
-					padding-right: 0.2em;
-				}
-
-				.controls {
-					padding-left: 1em;
-
-					.obojobo-draft--components--slider {
-						display: inline;
-						padding-right: 4em;
-					}
-				}
-			}
-		}
+	.iframe-toolbar {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		transform: translate(0, -50%);
+		z-index: 3;
 
 		.obojobo-draft--components--button {
-			position: absolute;
-			top: 0.5em;
-			right: 0.5em;
-			z-index: 3;
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+
 			button {
 				border: 1px solid $color-bg;
 			}

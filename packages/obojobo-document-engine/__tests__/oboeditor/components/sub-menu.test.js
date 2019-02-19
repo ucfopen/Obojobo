@@ -9,6 +9,8 @@ import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 jest.mock('src/scripts/oboeditor/util/editor-util')
 import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
 jest.mock('src/scripts/oboeditor/util/clipboard-util')
+import ModalUtil from 'src/scripts/common/util/modal-util'
+jest.mock('src/scripts/common/util/modal-util')
 
 jest.useFakeTimers()
 
@@ -143,9 +145,6 @@ describe('SubMenu', () => {
 	})
 
 	test('SubMenu component edits page name', () => {
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-
 		const itemList = [
 			{
 				id: 7,
@@ -166,6 +165,50 @@ describe('SubMenu', () => {
 			.at(3)
 			.simulate('click')
 
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('renamePage edits page name with empty label', () => {
+		const itemList = [
+			{
+				id: 7,
+				type: 'link',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
+			}
+		]
+		const parentOnClick = jest.fn()
+		const component = mount(
+			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+		)
+
+		component.instance().renamePage(7, '  ')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(EditorUtil.renamePage).toHaveBeenCalled()
+	})
+
+	test('renamePage edits page name', () => {
+		const itemList = [
+			{
+				id: 7,
+				type: 'link',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
+			}
+		]
+		const parentOnClick = jest.fn()
+		const component = mount(
+			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+		)
+
+		component.instance().renamePage(7, 'mock title')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.renamePage).toHaveBeenCalled()
 	})
 

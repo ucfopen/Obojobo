@@ -1,5 +1,7 @@
 import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
 
+jest.mock('src/scripts/common/util/modal-util')
+
 describe('Clipboard Util', () => {
 	beforeAll(() => {
 		document.execCommand = jest.fn()

@@ -153,21 +153,7 @@
 		}
 	}
 
-	.scoreactions {
-		font-family: $font-default;
-		background-color: $color-bg2;
-		border-radius: $dimension-rounded-radius;
-		padding: 2em 3em;
-		margin-bottom: 3em;
-		margin-top: 3em;
 
-		.score-actions-page {
-			background-color: $color-bg;
-			margin: 2em;
-			position: relative;
-			width: auto;
-		}
-	}
 
 	.settings {
 		font-size: 0.8em;
@@ -215,11 +201,7 @@
 		}
 	}
 
-	.delete-node-button {
-		position: absolute;
-		top: 0;
-		right: 0;
-		border: none;
-		background: inherit;
+	label {
+		display: block;
 	}
 }

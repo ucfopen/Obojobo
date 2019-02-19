@@ -2,317 +2,80 @@
 
 exports[`IFrame Editor Node IFrame component 1`] = `
 <div
-  className="obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  className="obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected"
 >
   <div
     className="container"
     style={
       Object {
-        "height": 500,
-        "width": 710,
+        "height": "200px",
+        "width": "200px",
       }
     }
   >
     <div
-      className="iframe-container"
+      className="iframe-toolbar"
     >
-      <div
-        className="blocker"
-        style={
-          Object {
-            "height": "100%",
-            "transform": "scale(1)",
-            "width": "100%",
-          }
-        }
-      >
-        <div
-          className="form"
-        >
-          <div>
-            <label
-              htmlFor="titleInput"
-            >
-              Title:
-            </label>
-            <input
-              id="titleInput"
-              onChange={[Function]}
-              onClick={[Function]}
-              placeholder="IFrame Title"
-              type="text"
-              value=""
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="srcInput"
-            >
-              Source:
-            </label>
-            <input
-              id="srcInput"
-              onChange={[Function]}
-              onClick={[Function]}
-              placeholder="Web Address"
-              type="text"
-              value=""
-            />
-          </div>
-          <div>
-            <div
-              className="obojobo-draft--components--slider"
-            >
-              <span
-                contentEditable={false}
-              >
-                Border: 
-              </span>
-              <label
-                className="switch"
-              >
-                <input
-                  checked={false}
-                  className="slider"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <div
-                  className="slider round"
-                />
-              </label>
-            </div>
-          </div>
-          <div>
-            <label
-              htmlFor="fitInput"
-            >
-              Fit:
-            </label>
-            <select
-              id="fitInput"
-              onChange={[Function]}
-              onClick={[Function]}
-              value="scale"
-            >
-              <option
-                value="scale"
-              >
-                Scale
-              </option>
-              <option
-                value="scroll"
-              >
-                Scroll
-              </option>
-            </select>
-          </div>
-          <div>
-            <label>
-              Dimensions:
-            </label>
-            <input
-              aria-label="Width"
-              id="custom-width"
-              max="20000"
-              min="1"
-              name="custom-width"
-              onChange={[Function]}
-              onClick={[Function]}
-              placeholder="Width"
-              step="1"
-              type="number"
-            />
-            <span>
-              px ×
-            </span>
-            <input
-              aria-label="Height"
-              id="custom-height"
-              max="200000"
-              min="1"
-              onChange={[Function]}
-              onClick={[Function]}
-              placeholder="Height"
-              step="1"
-              type="number"
-            />
-            <span>
-              px
-            </span>
-          </div>
-          <div>
-            <label
-              htmlFor="zoomInput"
-            >
-              Inital Zoom:
-            </label>
-            <input
-              id="zoomInput"
-              max="1000"
-              min="0.01"
-              onChange={[Function]}
-              onClick={[Function]}
-              placeholder="Decimal Value"
-              step=".01"
-              type="number"
-            />
-          </div>
-          <div>
-            <div
-              className="obojobo-draft--components--slider"
-            >
-              <span
-                contentEditable={false}
-              >
-                Autoload: 
-              </span>
-              <label
-                className="switch"
-              >
-                <input
-                  checked={false}
-                  className="slider"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <div
-                  className="slider round"
-                />
-              </label>
-            </div>
-          </div>
-          <span>
-            IFrame Controls:
-          </span>
-          <div
-            className="controls"
-          >
-            <div
-              className="obojobo-draft--components--slider"
-            >
-              <span
-                contentEditable={false}
-              >
-                Reload: 
-              </span>
-              <label
-                className="switch"
-              >
-                <input
-                  checked={false}
-                  className="slider"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <div
-                  className="slider round"
-                />
-              </label>
-            </div>
-            <div
-              className="obojobo-draft--components--slider"
-            >
-              <span
-                contentEditable={false}
-              >
-                New Window: 
-              </span>
-              <label
-                className="switch"
-              >
-                <input
-                  checked={false}
-                  className="slider"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <div
-                  className="slider round"
-                />
-              </label>
-            </div>
-            <div
-              className="obojobo-draft--components--slider"
-            >
-              <span
-                contentEditable={false}
-              >
-                Zoom: 
-              </span>
-              <label
-                className="switch"
-              >
-                <input
-                  checked={false}
-                  className="slider"
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <div
-                  className="slider round"
-                />
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
       <div
         className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
           onClick={[Function]}
         >
-          Preview
+          Toggle Preview
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+      >
+        <button
+          onClick={[Function]}
+        >
+          IFrame Properties
         </button>
       </div>
     </div>
-    <div
-      className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      role="toolbar"
-    />
   </div>
 </div>
 `;
 
-exports[`IFrame Editor Node IFrame component changes fit 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
+exports[`IFrame Editor Node IFrame component toggles preview 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Toggle Preview</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button>IFrame Properties</button></div></div><div class=\\"iframe-container\\"><iframe is=\\"true\\" frameborder=\\"0\\" allow=\\"geolocation; microphone; camera; midi; encrypted-media; vr\\" style=\\"transform: scale(undefined);\\"></iframe></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
 
-exports[`IFrame Editor Node IFrame component changes height 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width:710px;height:500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height:100%;width:100%;transform:scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"/></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option selected=\\"\\" value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"/><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"/><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component changes input 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width:710px;height:500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height:100%;width:100%;transform:scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"/></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option selected=\\"\\" value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"/><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"/><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component changes source 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width:710px;height:500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height:100%;width:100%;transform:scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"/></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option selected=\\"\\" value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"/><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"/><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component changes width 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width:710px;height:500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height:100%;width:100%;transform:scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"/></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option selected=\\"\\" value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"/><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"/><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component changes zoom 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width:710px;height:500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height:100%;width:100%;transform:scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"/></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option selected=\\"\\" value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"/><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"/><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"/></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles autoload 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles border 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles new-window with no other controls 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles new-window with no other controls 2`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles new-window with other controls 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable\\" role=\\"toolbar\\"><div class=\\"control-button-container reload\\"><button disabled=\\"\\" class=\\"reload-button\\" aria-label=\\"Reload embedded content\\">Reload</button><span class=\\"tool-tip\\">Reload</span></div><div class=\\"size-controls\\"><div class=\\"zoom-controls\\"><div class=\\"control-button-container zoom-out\\"><button disabled=\\"\\" class=\\"zoom-out-button\\" aria-label=\\"Zoom out embedded content\\">Zoom out</button><span class=\\"tool-tip\\">Zoom out</span></div><div class=\\"control-button-container zoom-in\\"><button disabled=\\"\\" class=\\"zoom-in-button\\" aria-label=\\"Zoom in embedded content\\">Zoom in</button><span class=\\"tool-tip\\">Zoom in</span><span class=\\"tool-tip\\">Zoom in</span></div></div></div></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles new-window with other controls 2`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-zoomable is-reloadable\\" role=\\"toolbar\\"><div class=\\"control-button-container reload\\"><button disabled=\\"\\" class=\\"reload-button\\" aria-label=\\"Reload embedded content\\">Reload</button><span class=\\"tool-tip\\">Reload</span></div><div class=\\"size-controls\\"><div class=\\"zoom-controls\\"><div class=\\"control-button-container zoom-out\\"><button disabled=\\"\\" class=\\"zoom-out-button\\" aria-label=\\"Zoom out embedded content\\">Zoom out</button><span class=\\"tool-tip\\">Zoom out</span></div><div class=\\"control-button-container zoom-in\\"><button disabled=\\"\\" class=\\"zoom-in-button\\" aria-label=\\"Zoom in embedded content\\">Zoom in</button><span class=\\"tool-tip\\">Zoom in</span><span class=\\"tool-tip\\">Zoom in</span></div></div></div></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles previewing 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><iframe title=\\"banana\\" is=\\"true\\" frameborder=\\"0\\" allow=\\"geolocation; microphone; camera; midi; encrypted-media; vr\\" style=\\"transform: scale(undefined);\\"></iframe><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Edit</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles reload with no other controls 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles reload with no other controls 2`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles reload with other controls 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable\\" role=\\"toolbar\\"><div class=\\"new-window-link\\"><a target=\\"_blank\\" rel=\\"noopener noreferrer\\" aria-label=\\"Open embedded content in a new window or tab\\" role=\\"button\\">View in a new window</a><span class=\\"tool-tip\\">localhost</span></div><div class=\\"size-controls\\"><div class=\\"zoom-controls\\"><div class=\\"control-button-container zoom-out\\"><button disabled=\\"\\" class=\\"zoom-out-button\\" aria-label=\\"Zoom out embedded content\\">Zoom out</button><span class=\\"tool-tip\\">Zoom out</span></div><div class=\\"control-button-container zoom-in\\"><button disabled=\\"\\" class=\\"zoom-in-button\\" aria-label=\\"Zoom in embedded content\\">Zoom in</button><span class=\\"tool-tip\\">Zoom in</span><span class=\\"tool-tip\\">Zoom in</span></div></div></div></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles reload with other controls 2`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-zoomable is-not-reloadable\\" role=\\"toolbar\\"><div class=\\"new-window-link\\"><a target=\\"_blank\\" rel=\\"noopener noreferrer\\" aria-label=\\"Open embedded content in a new window or tab\\" role=\\"button\\">View in a new window</a><span class=\\"tool-tip\\">localhost</span></div><div class=\\"size-controls\\"><div class=\\"zoom-controls\\"><div class=\\"control-button-container zoom-out\\"><button disabled=\\"\\" class=\\"zoom-out-button\\" aria-label=\\"Zoom out embedded content\\">Zoom out</button><span class=\\"tool-tip\\">Zoom out</span></div><div class=\\"control-button-container zoom-in\\"><button disabled=\\"\\" class=\\"zoom-in-button\\" aria-label=\\"Zoom in embedded content\\">Zoom in</button><span class=\\"tool-tip\\">Zoom in</span><span class=\\"tool-tip\\">Zoom in</span></div></div></div></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles zoom with no other controls 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles zoom with no other controls 2`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles zoom with other controls 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable\\" role=\\"toolbar\\"><div class=\\"control-button-container reload\\"><button disabled=\\"\\" class=\\"reload-button\\" aria-label=\\"Reload embedded content\\">Reload</button><span class=\\"tool-tip\\">Reload</span></div><div class=\\"new-window-link\\"><a target=\\"_blank\\" rel=\\"noopener noreferrer\\" aria-label=\\"Open embedded content in a new window or tab\\" role=\\"button\\">View in a new window</a><span class=\\"tool-tip\\">localhost</span></div></div></div></div>"`;
-
-exports[`IFrame Editor Node IFrame component toggles zoom with other controls 2`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-container\\"><div class=\\"blocker\\" style=\\"height: 100%; width: 100%; transform: scale(1);\\"><div class=\\"form\\"><div><label for=\\"titleInput\\">Title:</label><input type=\\"text\\" id=\\"titleInput\\" value=\\"\\" placeholder=\\"IFrame Title\\"></div><div><label for=\\"srcInput\\">Source:</label><input type=\\"text\\" id=\\"srcInput\\" value=\\"\\" placeholder=\\"Web Address\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"fitInput\\">Fit:</label><select id=\\"fitInput\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label>Dimensions:</label><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"20000\\" id=\\"custom-width\\" name=\\"custom-width\\" placeholder=\\"Width\\" aria-label=\\"Width\\"><span>px ×</span><input type=\\"number\\" step=\\"1\\" min=\\"1\\" max=\\"200000\\" id=\\"custom-height\\" placeholder=\\"Height\\" aria-label=\\"Height\\"><span>px</span></div><div><label for=\\"zoomInput\\">Inital Zoom:</label><input type=\\"number\\" step=\\".01\\" min=\\"0.01\\" max=\\"1000\\" id=\\"zoomInput\\" placeholder=\\"Decimal Value\\"></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div><span>IFrame Controls:</span><div class=\\"controls\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\" value=\\"on\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Preview</button></div></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-reloadable\\" role=\\"toolbar\\"><div class=\\"control-button-container reload\\"><button disabled=\\"\\" class=\\"reload-button\\" aria-label=\\"Reload embedded content\\">Reload</button><span class=\\"tool-tip\\">Reload</span></div><div class=\\"new-window-link\\"><a target=\\"_blank\\" rel=\\"noopener noreferrer\\" aria-label=\\"Open embedded content in a new window or tab\\" role=\\"button\\">View in a new window</a><span class=\\"tool-tip\\">localhost</span></div></div></div></div>"`;
+exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
+<div
+  className="obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected"
+>
+  <div
+    className="container"
+    style={
+      Object {
+        "height": "500px",
+        "width": "710px",
+      }
+    }
+  >
+    <div
+      className="iframe-toolbar"
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center"
+      >
+        <button
+          onClick={[Function]}
+        >
+          Toggle Preview
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+      >
+        <button
+          onClick={[Function]}
+        >
+          IFrame Properties
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

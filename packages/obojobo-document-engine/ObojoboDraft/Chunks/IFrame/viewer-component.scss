@@ -64,7 +64,6 @@
 			top: 0;
 			bottom: 0;
 			right: 0;
-			overflow: hidden;
 			border-radius: $dimension-rounded-radius;
 
 			> iframe {
@@ -179,7 +178,6 @@
 			max-height: 15em;
 			border-radius: $dimension-rounded-radius;
 			background-color: $bg-color;
-			overflow: hidden;
 			cursor: pointer;
 
 			&::before {

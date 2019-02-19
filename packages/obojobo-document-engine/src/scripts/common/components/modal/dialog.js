@@ -26,6 +26,10 @@ export default class Dialog extends React.Component {
 	}
 
 	focusOnFirstElement() {
+		if (this.props.focusOnFirstElement) {
+			return this.props.focusOnFirstElement()
+		}
+
 		return this.refs.button0.focus()
 	}
 

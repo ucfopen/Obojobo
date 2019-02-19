@@ -8,6 +8,8 @@ import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 jest.mock('src/scripts/oboeditor/util/editor-util')
 import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
 jest.mock('src/scripts/oboeditor/util/clipboard-util')
+import ModalUtil from 'src/scripts/common/util/modal-util'
+jest.mock('src/scripts/common/util/modal-util')
 // SubMenu
 jest.mock('src/scripts/oboeditor/components/sub-menu')
 
@@ -106,9 +108,7 @@ describe('EditorNav', () => {
 	})
 
 	test('EditorNav component clicks Add Page button', () => {
-		EditorUtil.getOrderedList.mockReturnValueOnce([]).mockReturnValueOnce([])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
+		EditorUtil.getOrderedList.mockReturnValueOnce([])
 
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
@@ -118,13 +118,11 @@ describe('EditorNav', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(EditorUtil.addPage).toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
 	test('EditorNav component clicks Add Assessment button', () => {
-		EditorUtil.getOrderedList.mockReturnValueOnce([]).mockReturnValueOnce([])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
+		EditorUtil.getOrderedList.mockReturnValueOnce([])
 
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
@@ -134,57 +132,7 @@ describe('EditorNav', () => {
 			.at(1)
 			.simulate('click')
 
-		expect(EditorUtil.addAssessment).toHaveBeenCalled()
-	})
-
-	test('EditorNav component clicks Rename Module button and cancels change', () => {
-		EditorUtil.getOrderedList.mockReturnValueOnce([
-			{
-				id: 6,
-				type: 'heading',
-				label: 'label6',
-				flags: {
-					assessment: true
-				}
-			}
-		])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-
-		const props = { navState: {} }
-		const component = mount(<EditorNav {...props} />)
-
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
-
-		expect(EditorUtil.renamePage).not.toHaveBeenCalled()
-	})
-
-	test('EditorNav component clicks Rename Module button with empty name', () => {
-		EditorUtil.getOrderedList.mockReturnValueOnce([
-			{
-				id: 6,
-				type: 'heading',
-				label: 'label6',
-				flags: {
-					assessment: true
-				}
-			}
-		])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce('   ')
-
-		const props = { navState: {} }
-		const component = mount(<EditorNav {...props} />)
-
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
-
-		expect(EditorUtil.renamePage).toHaveBeenCalledWith(6, '(Unnamed Module)')
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
 	test('EditorNav component clicks Rename Module button', () => {
@@ -198,8 +146,6 @@ describe('EditorNav', () => {
 				}
 			}
 		])
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce('mockNewName')
 
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
@@ -209,7 +155,7 @@ describe('EditorNav', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(EditorUtil.renamePage).toHaveBeenCalledWith(6, 'mockNewName')
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
 	test('EditorNav component clicks Copy URL button', () => {
@@ -224,5 +170,139 @@ describe('EditorNav', () => {
 			.simulate('click')
 
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
+	})
+
+	test('renameModule resets title with empty name', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 6,
+				type: 'heading',
+				label: 'label6',
+				flags: {
+					assessment: true
+				}
+			}
+		])
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component.instance().renameModule('MockID', '  ')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(EditorUtil.renamePage).toHaveBeenCalledWith('MockID', '(Unnamed Module)')
+	})
+
+	test('renameModule resets title', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 6,
+				type: 'heading',
+				label: 'label6',
+				flags: {
+					assessment: true
+				}
+			}
+		])
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component.instance().renameModule('MockID', 'mock title')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(EditorUtil.renamePage).toHaveBeenCalledWith('MockID', 'mock title')
+	})
+
+	test('addPage resets title with empty name', () => {
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 6,
+					type: 'heading',
+					label: 'label6',
+					flags: {
+						assessment: true
+					}
+				}
+			])
+			.mockReturnValueOnce([])
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component.instance().addPage('  ')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(EditorUtil.addPage).toHaveBeenCalled()
+	})
+
+	test('addPage resets title', () => {
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 6,
+					type: 'heading',
+					label: 'label6',
+					flags: {
+						assessment: true
+					}
+				}
+			])
+			.mockReturnValueOnce([])
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component.instance().addPage()
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(EditorUtil.addPage).toHaveBeenCalled()
+	})
+
+	test('addAssessment resets title with empty name', () => {
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 6,
+					type: 'heading',
+					label: 'label6',
+					flags: {
+						assessment: true
+					}
+				}
+			])
+			.mockReturnValueOnce([])
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component.instance().addAssessment('  ')
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(EditorUtil.addAssessment).toHaveBeenCalled()
+	})
+
+	test('addAssessment resets title', () => {
+		EditorUtil.getOrderedList
+			.mockReturnValueOnce([
+				{
+					id: 6,
+					type: 'heading',
+					label: 'label6',
+					flags: {
+						assessment: true
+					}
+				}
+			])
+			.mockReturnValueOnce([])
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component.instance().addAssessment()
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(EditorUtil.addAssessment).toHaveBeenCalled()
 	})
 })

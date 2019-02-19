@@ -1,4 +1,3 @@
-/* eslint no-alert: 0 */
 import React from 'react'
 import isOrNot from '../../../../common/isornot'
 
