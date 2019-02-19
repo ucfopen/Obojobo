@@ -864,6 +864,31 @@ describe('ViewerApp', () => {
 		})
 	})
 
+	test('scrollToTop is called when navTargetId changes', done => {
+		expect.assertions(2)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+		NavUtil.canNavigate.mockReturnValue(false)
+		const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode')
+		// mock for coverage in scrollToTop
+		findDOMNodeSpy.mockReturnValue({ scrollTop: 10, getBoundingClientRect: () => ({ height: 20 }) })
+
+		setTimeout(() => {
+			component.setState({ navState: { navTargetId: null } })
+			// nav ids are different so scrollToTop should have been called
+			expect(findDOMNodeSpy).toHaveBeenCalledTimes(2)
+			findDOMNodeSpy.mockClear()
+			// next time through
+			// nav ids will be same
+			// canNavigate and lastCanNavigate will be same
+			// so scrollToTop won't be called
+			component.setState({})
+			expect(findDOMNodeSpy).toHaveBeenCalledTimes(0)
+
+			done()
+		})
+	})
+
 	test('onDelayResize calls onResize', done => {
 		expect.assertions(1)
 		mocksForMount()

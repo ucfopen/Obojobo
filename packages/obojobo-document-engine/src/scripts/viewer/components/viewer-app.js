@@ -60,7 +60,6 @@ export default class ViewerApp extends React.Component {
 			assessmentState: null,
 			modalState: null,
 			focusState: null,
-			navTargetId: null,
 			loading: true,
 			requestStatus: 'unknown',
 			isPreviewing: false,
@@ -68,6 +67,7 @@ export default class ViewerApp extends React.Component {
 				outcomeServiceHostname: null
 			}
 		}
+		this.navTargetId = null
 		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
 		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
 		this.onAssessmentStoreChange = () =>
@@ -137,19 +137,6 @@ export default class ViewerApp extends React.Component {
 				)
 				AssessmentStore.init(attemptHistory)
 
-				this.setState({
-					model,
-					navState: NavStore.getState(),
-					mediaState: MediaStore.getState(),
-					questionState: QuestionStore.getState(),
-					assessmentState: AssessmentStore.getState(),
-					modalState: ModalStore.getState(),
-					focusState: FocusStore.getState(),
-					lti: Object.assign(this.state.lti, {
-						outcomeServiceHostname: getLTIOutcomeServiceHostname(outcomeServiceURL)
-					})
-				})
-
 				window.onbeforeunload = this.onBeforeWindowClose
 				window.onunload = this.onWindowClose
 				window.onresize = this.onResize.bind(this)
@@ -159,9 +146,24 @@ export default class ViewerApp extends React.Component {
 				Dispatcher.on('nav:close', this.boundOnDelayResize)
 				Dispatcher.on('nav:toggle', this.boundOnDelayResize)
 
-				this.setState({ loading: false, requestStatus: 'ok', isPreviewing }, () => {
-					Dispatcher.trigger('viewer:loaded', true)
-				})
+				this.setState(
+					{
+						model,
+						navState: NavStore.getState(),
+						mediaState: MediaStore.getState(),
+						questionState: QuestionStore.getState(),
+						assessmentState: AssessmentStore.getState(),
+						modalState: ModalStore.getState(),
+						focusState: FocusStore.getState(),
+						lti: Object.assign(this.state.lti, {
+							outcomeServiceHostname: getLTIOutcomeServiceHostname(outcomeServiceURL)
+						}),
+						loading: false,
+						requestStatus: 'ok',
+						isPreviewing
+					},
+					() => Dispatcher.trigger('viewer:loaded', true)
+				)
 			})
 			.catch(err => {
 				console.error(err) /* eslint-disable-line no-console */
@@ -188,38 +190,22 @@ export default class ViewerApp extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.requestStatus === 'ok') {
-			const navTargetId = prevState.navTargetId
-			const nextNavTargetId = prevState.navState.navTargetId
-
-			if (navTargetId !== nextNavTargetId) {
-				this.needsScroll = true
-				return this.setState({ navTargetId: nextNavTargetId })
-			}
-		}
-
-		if (prevState.loading && !this.state.loading) {
-			this.needsRemoveLoadingElement = true
-		}
-
-		if (prevState.requestStatus === 'ok') {
-			if (this.lastCanNavigate !== NavUtil.canNavigate(prevState.navState)) {
-				this.needsScroll = true
-			}
-			this.lastCanNavigate = NavUtil.canNavigate(prevState.navState)
-			if (this.needsScroll) {
+			const nextNavTargetId = this.state.navState.navTargetId
+			const canNavigate = NavUtil.canNavigate(prevState.navState)
+			// if nav target changes or nav becomes locked/unlocked
+			if (this.navTargetId !== nextNavTargetId || this.lastCanNavigate !== canNavigate) {
+				this.navTargetId = nextNavTargetId
 				this.scrollToTop()
-
-				delete this.needsScroll
 			}
+			this.lastCanNavigate = canNavigate
 		}
 
-		if (this.needsRemoveLoadingElement === true) {
+		// remove loading element
+		if (prevState.loading && !this.state.loading) {
 			const loadingEl = document.getElementById('viewer-app-loading')
 			if (loadingEl && loadingEl.parentElement) {
 				document.getElementById('viewer-app').classList.add('is-loaded')
 				loadingEl.parentElement.removeChild(loadingEl)
-
-				delete this.needsRemoveLoadingElement
 			}
 		}
 	}
