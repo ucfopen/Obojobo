@@ -105,9 +105,4 @@ Screen.isElementVisible = function(node) {
 	return !(rect.top > window.innerHeight || rect.bottom < 0)
 }
 
-// Screen.isElementCompletelyVisible = function(node) {
-// 	const rect = node.getBoundingClientRect()
-// 	return rect.top < 0 || rect.bottom < window.innerHeight
-// }
-
 export default Screen

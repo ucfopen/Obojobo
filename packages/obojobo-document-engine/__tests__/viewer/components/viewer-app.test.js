@@ -1032,8 +1032,6 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	// ---------------
-
 	test('updateDOMFocus calls correct method for component type focus', done => {
 		expect.assertions(2)
 		mocksForMount()
@@ -1372,8 +1370,6 @@ describe('ViewerApp', () => {
 			done()
 		})
 	})
-
-	//---------------------------------------------------
 
 	test('focusViewer (with invalid target) does nothing', done => {
 		expect.assertions(1)
