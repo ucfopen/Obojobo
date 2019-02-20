@@ -3,6 +3,9 @@ import renderer from 'react-test-renderer'
 
 import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
+import focus from '../../../../src/scripts/common/page/focus'
+
+jest.mock('../../../../src/scripts/common/page/focus')
 
 describe('ActionButton', () => {
 	test('ActionButton component with textGroup', () => {
@@ -45,5 +48,18 @@ describe('ActionButton', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('ActionButton focusOnContent calls focus on the button element', () => {
+		const mockButtonEl = jest.fn()
+		const model = {
+			getDomEl: () => ({
+				querySelector: () => mockButtonEl
+			})
+		}
+
+		ActionButton.focusOnContent(model)
+
+		expect(focus).toHaveBeenCalledWith(mockButtonEl)
 	})
 })
