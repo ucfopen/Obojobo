@@ -322,7 +322,7 @@ describe('MCAssessment', () => {
 		expect(value).toEqual(undefined) //eslint-disable-line
 	})
 
-	test('onClickBlocker calls FocusUtil.focusOnContent in practice mode', () => {
+	test('onClickBlocker calls FocusUtil.focusComponent in practice mode', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
@@ -339,7 +339,7 @@ describe('MCAssessment', () => {
 		component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
-		expect(FocusUtil.focusOnContent).toHaveBeenCalled()
+		expect(FocusUtil.focusComponent).toHaveBeenCalled()
 	})
 
 	test('focusOnContent focuses on the first child component (when question is being shown)', () => {

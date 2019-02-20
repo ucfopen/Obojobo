@@ -1838,7 +1838,7 @@ describe('MCAssessment', () => {
 		expect(mockFocusOnResults).toHaveBeenCalledTimes(0)
 	})
 
-	test('componentDidUpdate calls FocusUtil.focusOnContent on the question if nextFocus="question"', () => {
+	test('componentDidUpdate calls FocusUtil.focusComponent on the question if nextFocus="question"', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {},
@@ -1854,11 +1854,11 @@ describe('MCAssessment', () => {
 			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
 		)
 
-		FocusUtil.focusOnContent = jest.fn()
+		FocusUtil.focusComponent = jest.fn()
 
 		component.instance().nextFocus = 'question'
 		component.instance().componentDidUpdate()
 		expect(component.instance().nextFocus).not.toBeDefined()
-		expect(FocusUtil.focusOnContent).toHaveBeenCalledWith('parent', false)
+		expect(FocusUtil.focusComponent).toHaveBeenCalledWith('parent')
 	})
 })

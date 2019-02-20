@@ -72,7 +72,7 @@ export default class IFrame extends React.Component {
 
 	onClickContainer() {
 		MediaUtil.show(this.props.model.get('id'))
-		FocusUtil.focusComponent(this.props.model.get('id'), false)
+		FocusUtil.focusComponent(this.props.model.get('id'))
 	}
 
 	onClickZoomReset() {

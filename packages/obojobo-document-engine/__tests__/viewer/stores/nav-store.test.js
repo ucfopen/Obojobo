@@ -17,7 +17,7 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 }))
 
 jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
-	clearVisualFocus: jest.fn()
+	clearFadeEffect: jest.fn()
 }))
 
 const Common = require('../../../src/scripts/common/index').default
@@ -512,7 +512,7 @@ describe('NavStore', () => {
 		expect(NavStore.gotoItem(newNavItem)).toBe(true)
 		const after = NavStore.getState()
 		expect(after).toMatchSnapshot()
-		expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 		expect(oldNavItem.processTrigger).toHaveBeenCalledWith('onNavExit')
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
@@ -543,7 +543,7 @@ describe('NavStore', () => {
 		expect(NavStore.gotoItem(newNavItem)).toBe(true)
 		const after = NavStore.getState()
 		expect(after).toMatchSnapshot()
-		expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 		expect(newNavItem.processTrigger).toHaveBeenCalledWith('onNavEnter')
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('navstore:change')

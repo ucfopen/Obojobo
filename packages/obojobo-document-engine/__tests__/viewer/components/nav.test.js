@@ -232,13 +232,13 @@ describe('Nav', () => {
 
 		const el = shallow(<Nav {...props} />)
 
-		expect(FocusUtil.focusOnContent).not.toHaveBeenCalled()
+		expect(FocusUtil.focusComponent).not.toHaveBeenCalled()
 		el.find('li').simulate('click')
-		expect(FocusUtil.focusOnContent).toHaveBeenCalledTimes(1)
-		expect(FocusUtil.focusOnContent).toHaveBeenCalledWith(5)
+		expect(FocusUtil.focusComponent).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusComponent).toHaveBeenCalledWith(5, { animateScroll: true })
 	})
 
-	test('onClickSkipNavigation calls FocusUtil.focusOnNavTargetContent', () => {
+	test('onClickSkipNavigation calls FocusUtil.focusOnNavTarget', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([
 			{
 				id: 5,
@@ -258,9 +258,9 @@ describe('Nav', () => {
 		}
 		const el = shallow(<Nav {...props} />)
 
-		expect(FocusUtil.focusOnNavTargetContent).not.toHaveBeenCalled()
+		expect(FocusUtil.focusOnNavTarget).not.toHaveBeenCalled()
 		el.find('.skip-nav-button').simulate('click')
-		expect(FocusUtil.focusOnNavTargetContent).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusOnNavTarget).toHaveBeenCalledTimes(1)
 	})
 
 	test('Clicking on a link calls FocusUtil.focusOnNavigation', () => {

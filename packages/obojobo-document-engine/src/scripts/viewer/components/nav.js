@@ -27,14 +27,14 @@ export default class Nav extends React.Component {
 				break
 
 			case 'sub-link': {
-				FocusUtil.focusOnContent(item.id)
+				FocusUtil.focusComponent(item.id, { animateScroll: true })
 				break
 			}
 		}
 	}
 
 	onClickSkipNavigation() {
-		FocusUtil.focusOnNavTargetContent()
+		FocusUtil.focusOnNavTarget()
 	}
 
 	renderLabel(label) {

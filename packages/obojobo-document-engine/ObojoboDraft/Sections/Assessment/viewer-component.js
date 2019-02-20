@@ -88,7 +88,7 @@ class Assessment extends React.Component {
 			delete this.needsScrollToTopAndFocus
 			Dispatcher.trigger('viewer:scrollToTop')
 
-			FocusUtil.focusOnNavTargetContent()
+			FocusUtil.focusOnNavTarget()
 		}
 	}
 

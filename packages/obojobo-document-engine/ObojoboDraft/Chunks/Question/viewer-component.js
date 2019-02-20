@@ -38,7 +38,7 @@ export default class Question extends React.Component {
 		QuestionUtil.viewQuestion(this.props.model.get('id'))
 		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		FocusUtil.focusOnContent(this.props.model.get('id'), mode === 'practice')
+		FocusUtil.focusComponent(this.props.model.get('id'), { fade: mode === 'practice' })
 	}
 
 	render() {

@@ -17,65 +17,86 @@ describe('FocusUtil', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
 			value: {
 				id: 'testId',
-				isVisuallyFocused: true
+				fade: false,
+				animateScroll: false
 			}
 		})
 	})
 
-	test('focusComponent will dispatch the correct event', () => {
-		FocusUtil.focusComponent('testId', true)
+	test('focusComponent will dispatch the correct event with different options', () => {
+		FocusUtil.focusComponent('testId', { fade: true })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
 			value: {
 				id: 'testId',
-				isVisuallyFocused: true
+				fade: true,
+				animateScroll: false
 			}
 		})
 
-		FocusUtil.focusComponent('testId', false)
+		FocusUtil.focusComponent('testId', { animateScroll: true })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
 			value: {
 				id: 'testId',
-				isVisuallyFocused: false
-			}
-		})
-	})
-
-	test('focusOnContent will dispatch the correct event with defaults', () => {
-		FocusUtil.focusOnContent('testId')
-
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
-				id: 'testId',
-				isVisuallyFocused: true
-			}
-		})
-	})
-
-	test('focusOnContent will dispatch the correct event', () => {
-		FocusUtil.focusOnContent('testId', true)
-
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
-			value: {
-				id: 'testId',
-				isVisuallyFocused: true
+				fade: false,
+				animateScroll: true
 			}
 		})
 
-		FocusUtil.focusOnContent('testId', false)
+		FocusUtil.focusComponent('testId', { fade: true, animateScroll: true })
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
 			value: {
 				id: 'testId',
-				isVisuallyFocused: false
+				fade: true,
+				animateScroll: true
 			}
 		})
 	})
 
-	test('focusOnNavTargetContent will dispatch the correct event', () => {
-		FocusUtil.focusOnNavTargetContent('testId')
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:navTargetContent')
+	test('focusOnNavTarget will dispatch the correct event with defaults', () => {
+		FocusUtil.focusOnNavTarget('testId')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				fade: false,
+				animateScroll: false
+			}
+		})
+	})
+
+	test('focusOnNavTarget will dispatch the correct event with different options', () => {
+		FocusUtil.focusOnNavTarget('testId', { fade: true })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				fade: true,
+				animateScroll: false
+			}
+		})
+
+		FocusUtil.focusOnNavTarget('testId', { animateScroll: true })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				fade: false,
+				animateScroll: true
+			}
+		})
+
+		FocusUtil.focusOnNavTarget('testId', { fade: true, animateScroll: true })
+
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:component', {
+			value: {
+				id: 'testId',
+				fade: true,
+				animateScroll: true
+			}
+		})
 	})
 
 	test('focusOnNavigation will dispatch the correct event', () => {
@@ -83,27 +104,29 @@ describe('FocusUtil', () => {
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:navigation')
 	})
 
-	test('clearVisualFocus will dispatch the correct event', () => {
-		FocusUtil.clearVisualFocus('testId')
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:clearVisualFocus')
+	test('clearFadeEffect will dispatch the correct event', () => {
+		FocusUtil.clearFadeEffect('testId')
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('focus:clearFadeEffect')
 	})
 
 	test('getFocussedItem returns an object about the focussed item', () => {
-		const mockState = { type: 'mock-type', target: 'mock-target' }
+		const mockState = { type: 'mock-type', target: 'mock-target', animateScroll: false }
 		expect(FocusUtil.getFocussedItem(mockState)).toEqual({
 			type: 'mock-type',
-			target: 'mock-target'
+			target: 'mock-target',
+			animateScroll: false
 		})
-		expect(mockState).toEqual({ type: 'mock-type', target: 'mock-target' })
+		expect(mockState).toEqual({ type: 'mock-type', target: 'mock-target', animateScroll: false })
 	})
 
 	test('getFocussedItemAndClear returns an object about the focussed item (but also clears the state at the same time)', () => {
-		const mockState = { type: 'mock-type', target: 'mock-target' }
+		const mockState = { type: 'mock-type', target: 'mock-target', animateScroll: false }
 		expect(FocusUtil.getFocussedItemAndClear(mockState)).toEqual({
 			type: 'mock-type',
-			target: 'mock-target'
+			target: 'mock-target',
+			animateScroll: false
 		})
-		expect(mockState).toEqual({ type: null, target: null })
+		expect(mockState).toEqual({ type: null, target: null, animateScroll: false })
 	})
 
 	test('getVisuallyFocussedModel returns on OboModel of the component with visual focus', () => {

@@ -4,34 +4,36 @@ const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
 const FocusUtil = {
-	focusOnContent(id, isVisuallyFocused = false) {
-		Dispatcher.trigger('focus:content', {
-			value: { id, isVisuallyFocused }
-		})
-	},
-
-	focusComponent(id, isVisuallyFocused = true) {
+	focusComponent(id, opts = { fade: false, animateScroll: false }) {
 		Dispatcher.trigger('focus:component', {
-			value: { id, isVisuallyFocused }
+			value: {
+				id,
+				fade: opts.fade || false,
+				animateScroll: opts.animateScroll || false
+			}
 		})
 	},
 
-	focusOnNavTargetContent() {
-		Dispatcher.trigger('focus:navTargetContent')
+	focusOnNavTarget(opts = { fade: false, animateScroll: false }) {
+		Dispatcher.trigger('focus:navTarget', {
+			fade: opts.fade || false,
+			animateScroll: opts.animateScroll || false
+		})
 	},
 
 	focusOnNavigation() {
 		Dispatcher.trigger('focus:navigation')
 	},
 
-	clearVisualFocus() {
-		Dispatcher.trigger('focus:clearVisualFocus')
+	clearFadeEffect() {
+		Dispatcher.trigger('focus:clearFadeEffect')
 	},
 
 	getFocussedItem(state) {
 		return {
 			type: state.type,
-			target: state.target
+			target: state.target,
+			animateScroll: state.animateScroll
 		}
 	},
 
@@ -40,6 +42,7 @@ const FocusUtil = {
 
 		state.type = null
 		state.target = null
+		state.animateScroll = false
 
 		return item
 	},

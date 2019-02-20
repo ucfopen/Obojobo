@@ -236,7 +236,7 @@ export default class ViewerApp extends React.Component {
 			this.isNavTargetChanging(nextState) &&
 			focussedItem.type === null
 		) {
-			FocusUtil.focusOnNavTargetContent()
+			FocusUtil.focusOnNavTarget()
 		}
 	}
 
@@ -271,64 +271,62 @@ export default class ViewerApp extends React.Component {
 
 		switch (focussedItem.type) {
 			case FocusStore.TYPE_COMPONENT: {
-				const model = OboModel.models[focussedItem.target]
-				if (!model) return false
-
-				// Save the current scroll location since focus() will scroll the page (there is a
-				// preventScroll option but it is not widely supported). Once focus is called we'll
-				// quickly reset the scroll location to what it was before the focus. This allows
-				// the smooth scroll to move from where the page was rather than scrolling from an
-				// unexpected location.
-				const currentScrollTop = this.refs.container.scrollTop
-				const el = model.getDomEl()
-				focus(el)
-				this.refs.container.scrollTop = currentScrollTop
-				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-
-				return true
+				return this.focusComponent(OboModel.models[focussedItem.target], focussedItem.animateScroll)
 			}
 
-			case FocusStore.TYPE_NAV_TARGET_CONTENT: {
-				this.focusOnContent(NavUtil.getNavTargetModel(this.state.navState))
-
-				return true
-			}
-
-			case FocusStore.TYPE_CONTENT: {
-				this.focusOnContent(OboModel.models[focussedItem.target])
-
-				return true
+			case FocusStore.TYPE_NAV_TARGET: {
+				return this.focusComponent(
+					NavUtil.getNavTargetModel(this.state.navState),
+					focussedItem.animateScroll
+				)
 			}
 
 			case FocusStore.TYPE_VIEWER: {
-				if (focussedItem.target === FocusStore.VIEWER_TARGET_NAVIGATION) {
-					if (
-						!NavUtil.isNavEnabled(this.state.navState) ||
-						!NavUtil.isNavOpen(this.state.navState)
-					) {
-						return false
-					}
-
-					this.refs.nav.focus()
-					return true
-				}
-
-				return false
+				return this.focusViewer(focussedItem.target)
 			}
 		}
 
 		return false
 	}
 
-	focusOnContent(model) {
-		if (!model) return false
-		const Component = model.getComponentClass()
-		if (!Component) return false
+	focusViewer(viewerFocusTarget) {
+		switch (viewerFocusTarget) {
+			case FocusStore.VIEWER_TARGET_NAVIGATION: {
+				if (!NavUtil.isNavEnabled(this.state.navState) || !NavUtil.isNavOpen(this.state.navState)) {
+					return false
+				}
 
-		if (Component.focusOnContent) {
+				focus(this.refs.nav)
+
+				return true
+			}
+		}
+
+		return false
+	}
+
+	focusComponent(model, animateScroll) {
+		if (!model) return false
+
+		// Save the current scroll location since focus() will scroll the page (there is a
+		// preventScroll option but it is not widely supported). Once focus is called we'll
+		// quickly reset the scroll location to what it was before the focus. This allows
+		// the smooth scroll to move from where the page was rather than scrolling from an
+		// unexpected location.
+		const currentScrollTop = this.refs.container.scrollTop
+		const el = model.getDomEl()
+
+		const Component = model.getComponentClass ? model.getComponentClass() : null
+
+		if (Component && Component.focusOnContent) {
 			Component.focusOnContent(model)
 		} else {
-			FocusUtil.focusComponent(model.get('id'), false)
+			focus(el)
+		}
+
+		if (animateScroll) {
+			this.refs.container.scrollTop = currentScrollTop
+			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 		}
 
 		return true
@@ -379,14 +377,14 @@ export default class ViewerApp extends React.Component {
 	// === NON REACT LIFECYCLE METHODS ===
 
 	onMouseDown(event) {
-		this.clearVisualFocus(event.target)
+		this.clearFadeEffect(event.target)
 	}
 
 	onFocus(event) {
-		this.clearVisualFocus(event.target)
+		this.clearFadeEffect(event.target)
 	}
 
-	clearVisualFocus(el) {
+	clearFadeEffect(el) {
 		// When focusing on another element we want to remove
 		// the focus effect if the element is not part of the focused element
 
@@ -396,7 +394,7 @@ export default class ViewerApp extends React.Component {
 			const focussedElement = visuallyFocussedModel.getDomEl()
 
 			if (!focussedElement || !focussedElement.contains(el)) {
-				FocusUtil.clearVisualFocus()
+				FocusUtil.clearFadeEffect()
 			}
 		}
 	}
@@ -419,7 +417,7 @@ export default class ViewerApp extends React.Component {
 		}
 
 		if (!Screen.isElementVisible(el)) {
-			return FocusUtil.clearVisualFocus()
+			return FocusUtil.clearFadeEffect()
 		}
 	}
 
