@@ -1400,7 +1400,7 @@ describe('ViewerApp', () => {
 			NavUtil.isNavOpen.mockReturnValueOnce(false)
 
 			expect(component.instance().focusViewer('navigation')).toBe(false)
-			expect(Common.page.focus).not.toHaveBeenCalled()
+			expect(component.instance().refs.nav.focus).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -1418,7 +1418,7 @@ describe('ViewerApp', () => {
 			NavUtil.isNavOpen.mockReturnValueOnce(true)
 
 			expect(component.instance().focusViewer('navigation')).toBe(false)
-			expect(Common.page.focus).not.toHaveBeenCalled()
+			expect(component.instance().refs.nav.focus).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -1436,7 +1436,7 @@ describe('ViewerApp', () => {
 			NavUtil.isNavOpen.mockReturnValueOnce(false)
 
 			expect(component.instance().focusViewer('navigation')).toBe(false)
-			expect(Common.page.focus).not.toHaveBeenCalled()
+			expect(component.instance().refs.nav.focus).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -1444,7 +1444,7 @@ describe('ViewerApp', () => {
 	})
 
 	test('focusViewer (with navigation target) calls focus on nav element if nav is enabled and open', done => {
-		expect.assertions(3)
+		expect.assertions(2)
 		mocksForMount()
 
 		const component = mount(<ViewerApp />)
@@ -1454,8 +1454,7 @@ describe('ViewerApp', () => {
 			NavUtil.isNavOpen.mockReturnValueOnce(true)
 
 			expect(component.instance().focusViewer('navigation')).toBe(true)
-			expect(Common.page.focus).toHaveBeenCalledTimes(1)
-			expect(Common.page.focus).toHaveBeenCalledWith(component.instance().refs.nav)
+			expect(component.instance().refs.nav.focus).toHaveBeenCalledTimes(1)
 
 			component.unmount()
 			done()

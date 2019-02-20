@@ -296,7 +296,7 @@ export default class ViewerApp extends React.Component {
 					return false
 				}
 
-				focus(this.refs.nav)
+				this.refs.nav.focus()
 
 				return true
 			}
