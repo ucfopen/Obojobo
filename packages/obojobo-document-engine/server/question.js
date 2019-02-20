@@ -10,6 +10,10 @@ class Question extends DraftNode {
 		})
 	}
 
+	buildAssessment() {
+		return this.toObject()
+	}
+
 	onSendToAssessment() {
 		this.node.content.mode = 'assessment'
 	}

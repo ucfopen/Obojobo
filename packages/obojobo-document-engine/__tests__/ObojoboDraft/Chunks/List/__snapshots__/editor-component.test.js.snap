@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List Editor Node List component 1`] = `
+<div
+  className="text-chunk obojobo-draft--chunks--list pad"
+>
+  <button
+    onClick={[Function]}
+  >
+    Swap to Ordered
+  </button>
+</div>
+`;
+
+exports[`List Editor Node List component toggles type 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Unordered</button></div>"`;
+
+exports[`List Editor Node List component toggles type from unordered to ordered 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--list pad\\"><button>Swap to Ordered</button></div>"`;

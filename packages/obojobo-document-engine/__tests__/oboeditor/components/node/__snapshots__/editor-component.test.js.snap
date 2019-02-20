@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component Editor Node Node builds the expected component 1`] = `
+<div
+  className="oboeditor-component component"
+  data-obo-component="true"
+/>
+`;
+
+exports[`Component Editor Node Node component inserts node above 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"component-toolbar\\"><div class=\\"editor--component--insert-menu  is-not-open align-left top\\" contenteditable=\\"false\\"><button class=\\"drop-icon\\">+</button><div class=\\"insert-button\\"><button tabindex=\\"-1\\">mockItem</button><span>mockItem</span></div></div><div class=\\"editor--component--insert-menu  is-not-open align-left bottom\\" contenteditable=\\"false\\"><button class=\\"drop-icon\\">+</button><div class=\\"insert-button\\"><button tabindex=\\"-1\\">mockItem</button><span>mockItem</span></div></div></div></div>"`;
+
+exports[`Component Editor Node Node component inserts node below 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"component-toolbar\\"><div class=\\"editor--component--insert-menu  is-not-open align-left top\\" contenteditable=\\"false\\"><button class=\\"drop-icon\\">+</button><div class=\\"insert-button\\"><button tabindex=\\"-1\\">mockItem</button><span>mockItem</span></div></div><div class=\\"editor--component--insert-menu  is-not-open align-left bottom\\" contenteditable=\\"false\\"><button class=\\"drop-icon\\">+</button><div class=\\"insert-button\\"><button tabindex=\\"-1\\">mockItem</button><span>mockItem</span></div></div></div></div>"`;

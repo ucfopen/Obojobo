@@ -334,6 +334,8 @@ export default class ViewerApp extends React.Component {
 
 	onVisibilityChange() {
 		if (document.hidden) {
+			this.leftEpoch = new Date()
+
 			APIUtil.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:leave',
@@ -346,13 +348,17 @@ export default class ViewerApp extends React.Component {
 			APIUtil.postEvent({
 				draftId: this.state.model.get('draftId'),
 				action: 'viewer:return',
-				eventVersion: '1.0.0',
+				eventVersion: '2.0.0',
 				visitId: this.state.navState.visitId,
 				payload: {
-					relatedEventId: this.leaveEvent.id
+					relatedEventId: this.leaveEvent.extensions.internalEventId,
+					leftTime: this.leftEpoch,
+					duration: Date.now() - this.leftEpoch
 				}
 			})
+
 			delete this.leaveEvent
+			delete this.leftEpoch
 		}
 	}
 
@@ -439,6 +445,7 @@ export default class ViewerApp extends React.Component {
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:inactive',
 			eventVersion: '3.0.0',
+			visitId: this.state.navState.visitId,
 			payload: {
 				lastActiveTime: this.lastActiveEpoch,
 				inactiveDuration: IDLE_TIMEOUT_DURATION_MS
@@ -452,12 +459,12 @@ export default class ViewerApp extends React.Component {
 		APIUtil.postEvent({
 			draftId: this.state.model.get('draftId'),
 			action: 'viewer:returnFromInactive',
-			eventVersion: '2.0.0',
+			eventVersion: '2.1.0',
 			visitId: this.state.navState.visitId,
 			payload: {
 				lastActiveTime: this.lastActiveEpoch,
 				inactiveDuration: Date.now() - this.lastActiveEpoch,
-				relatedEventId: this.inactiveEvent.id
+				relatedEventId: this.inactiveEvent.extensions.internalEventId
 			}
 		})
 

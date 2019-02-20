@@ -35,7 +35,8 @@
 							"children": []
 						},
 						{
-							"id": "4b28c0ac-f8aa-4e4b-8f9e-9be53f69fa74",
+
+							"id": "f1d8cf21-0233-4f8e-b06c-6c102749eecc",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
 								"headingLevel": 2,
@@ -4307,7 +4308,16 @@
 													{
 														"text": {
 															"value": "What is 2+2?",
-															"styleList": []
+															"styleList": [
+																{
+																	"type": "_latex",
+																	"data": {
+																		"alt": "2 plus 2"
+																	},
+																	"start": 8,
+																	"end": 11
+																}
+															]
 														},
 														"data": null
 													}
@@ -4475,7 +4485,16 @@
 													{
 														"text": {
 															"value": "What is 3-0?",
-															"styleList": []
+															"styleList": [
+																{
+																	"type": "_latex",
+																	"data": {
+																		"alt": "3 minus 0"
+																	},
+																	"start": 8,
+																	"end": 11
+																}
+															]
 														},
 														"data": null
 													}
@@ -4643,7 +4662,16 @@
 													{
 														"text": {
 															"value": "What is 9-4?",
-															"styleList": []
+															"styleList": [
+																{
+																	"type": "_latex",
+																	"data": {
+																		"alt": "9 minus 4"
+																	},
+																	"start": 8,
+																	"end": 11
+																}
+															]
 														},
 														"data": null
 													}

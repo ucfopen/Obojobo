@@ -24,45 +24,48 @@ exports.up = function(db) {
 			// Grab all the current records, which will not have draft_content_ids
 			.then(() => {
 				return db.runSql(`
-					SELECT
-						id,
-						draft_id,
-						created_at
-					FROM launches
-				`)
-			})
-			// Find the correct UUID for each record
-			.then(result => {
-				let updates = []
-				result.rows.forEach(row => {
-					const draftId = row.draft_id
-					const created = row.created_at
-					const rowId = row.id
+					-- make a table with content id's and start/end dates that apply to it
+					CREATE TEMP TABLE tmp_dates AS
+					SELECT * FROM (
+						SELECT
+							id,
+							draft_id,
+							created_at,
+							CASE
+								WHEN lead(draft_id) over wnd = draft_id
+								THEN lead(created_at) over wnd
+								ELSE now()
+							END AS end_date
+						FROM drafts_content
+						WINDOW wnd AS (
+							PARTITION BY draft_id ORDER BY draft_id, created_at asc
+						)
+					) AS S;
 
-					updates.push(`
-						UPDATE
-							launches
-						SET
-							draft_content_id=content.id
-						FROM
-						(
-							SELECT
-								id
-							FROM
-								drafts_content
-							WHERE
-								draft_id='${draftId}'
-								AND created_at<='${created.toISOString()}'
-							ORDER BY
-								created_at DESC
-							LIMIT 1
-						) content
-						WHERE
-							launches.id=${rowId}
-					`)
-				})
-				updates = updates.join(';')
-				return db.runSql(updates)
+					-- use the temp table to populate the table
+					UPDATE
+						launches
+					SET
+						draft_content_id=DC.draft_content_id
+					FROM
+					(
+						SELECT
+							e.id AS launch_id,
+							d.id AS draft_content_id
+						FROM launches AS e
+						LEFT JOIN tmp_dates AS d
+							ON d.draft_id = e.draft_id
+							AND  d.created_at < e.created_at
+							AND  d.end_date > e.created_at
+						WHERE e.draft_id IS NOT null
+					) AS DC
+					WHERE
+						launches.id=launch_id
+						AND launches.draft_id IS NOT null;
+
+					-- drop the tmp table
+					Drop table tmp_dates;
+				`)
 			})
 			// Require notNull after content has all been filled out
 			.then(result => {

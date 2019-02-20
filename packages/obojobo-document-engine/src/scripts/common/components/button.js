@@ -19,7 +19,10 @@ export default class Button extends React.Component {
 
 	render() {
 		let children
-		if (this.props.value) {
+		// if value is empty string
+		// value will still be rendered
+		// eslint-disable-next-line eqeqeq
+		if (this.props.value != null) {
 			children = this.props.value
 		} else {
 			// eslint-disable-next-line no-extra-semi
