@@ -315,7 +315,7 @@ describe('server/express', () => {
 	})
 
 	test('/api/assessments/clear-preview-scores tests previewing state', () => {
-		// expect.assertions(8)
+		expect.assertions(8)
 
 		// grab a ref to expected route & verify it's the route we want
 		const clearPreviewScoresRoute = server.post.mock.calls[4]

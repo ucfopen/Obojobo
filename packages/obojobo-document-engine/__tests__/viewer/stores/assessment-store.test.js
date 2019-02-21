@@ -264,19 +264,14 @@ describe('AssessmentStore', () => {
 		APIUtil.resumeAttempt = jest.fn().mockResolvedValueOnce(unfinishedAttempt)
 
 		AssessmentStore.startAttempt = jest.fn()
-		// const spy = jest.spyOn(AssessmentStore, 'startAttempt')
 		ModalUtil.hide = jest.fn()
 
 		return AssessmentStore.onResumeAttemptConfirm(unfinishedAttempt).then(() => {
 			expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
-			//expect(AssessmentStore.startAttempt).toHaveBeenCalledWith(unfinishedAttempt)
 			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+			expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
 			AssessmentStore.startAttempt = originalStartAttempt
 		})
-
-		// expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
-
-		// spy.mockRestore()
 	})
 
 	test('tryStartAttempt shows an error if no attempts are left and triggers a change', () => {
@@ -542,7 +537,7 @@ describe('AssessmentStore', () => {
 	})
 
 	test('endAttempt hides questions, resets responses, updates state, processes onEndAttempt trigger and triggers a change', () => {
-		// expect.assertions(4)
+		expect.assertions(4)
 		mockValidStartAttempt()
 		OboModel.create(getExampleAssessment())
 
