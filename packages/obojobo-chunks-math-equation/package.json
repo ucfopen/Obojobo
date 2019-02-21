@@ -27,7 +27,7 @@
 		"singleQuote": true
 	},
 	"dependencies":{
-		"obojobo-document-engine": "^1.0.3",
+		"obojobo-document-engine": "^3.4.0",
 		"katex":"^0.9.0",
 		"react": "16.7.0"
 	},
