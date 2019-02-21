@@ -77,6 +77,41 @@ describe('insert_event', () => {
 			})
 	})
 
+	test('inserts the expected values with a caliper event (with extensions)', () => {
+		expect.assertions(5)
+
+		const db = oboRequire('db')
+		const insertEvent = oboRequire('insert_event')
+		const expectedCreatedAt = new Date().toISOString()
+		const insertObject = {
+			action: 'test::testAction',
+			actorTime: new Date().toISOString(),
+			payload: { value: 'test' },
+			userId: 9,
+			ip: '1.2.3.4',
+			metadata: { value: 'test2' },
+			draftId: '999999',
+			caliperPayload: { id: 'mockCaliperPayload', extensions: {} }
+		}
+		// mock insert
+		db.one.mockResolvedValueOnce({ created_at: expectedCreatedAt })
+
+		return insertEvent(insertObject)
+			.then(result => {
+				expect(result).toHaveProperty('created_at')
+				expect(result.created_at).toBe(expectedCreatedAt)
+				expect(db.one).toHaveBeenCalledTimes(1)
+				expect(db.one).toHaveBeenCalledWith(
+					expect.stringContaining('INSERT INTO events'),
+					insertObject
+				)
+				expect(db.none).toHaveBeenCalledTimes(1)
+			})
+			.catch(err => {
+				throw err
+			})
+	})
+
 	test('Returns promise rejection', () => {
 		expect.assertions(1)
 

@@ -2,6 +2,7 @@
 
 exports[`ReviewIcon ReviewIcon component 1`] = `
 <svg
+  aria-hidden={true}
   viewBox="0 0 114.33 114.33"
   xmlns="http://www.w3.org/2000/svg"
 >

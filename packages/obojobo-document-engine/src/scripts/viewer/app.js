@@ -1,6 +1,8 @@
 import Common from 'Common'
 import Viewer from 'Viewer'
 
+import Editor from '../oboeditor'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -40,6 +42,15 @@ window.__oboViewerRender = () => {
 	ReactDOM.render(
 		<div className="root">
 			<Viewer.components.ViewerApp />
+		</div>,
+		document.getElementById('viewer-app')
+	)
+}
+
+window.__oboEditorRender = () => {
+	ReactDOM.render(
+		<div className="root">
+			<Editor.components.EditorApp />
 		</div>,
 		document.getElementById('viewer-app')
 	)

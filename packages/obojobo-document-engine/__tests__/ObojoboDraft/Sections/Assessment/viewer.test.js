@@ -47,6 +47,7 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'Assessment',
+			contentType: 'Assessment Section',
 			path: ['assessment'],
 			showChildren: false,
 			showChildrenOnNavigation: false
@@ -63,12 +64,29 @@ describe('ObojoboDraft.Sections.Assessment registration', () => {
 		expect(nav).toEqual({
 			type: 'link',
 			label: 'mock Title',
+			contentType: 'Assessment Section',
 			path: ['mock-title'],
 			showChildren: false,
 			showChildrenOnNavigation: false
 		})
 	})
 
+	test('getNavItem correctly handles titles that are numbers', () => {
+		const register = Common.Store.registerModel.mock.calls[0]
+		const model = {
+			title: 5
+		}
+
+		const nav = register[1].getNavItem(model)
+		expect(nav).toEqual({
+			type: 'link',
+			label: '5',
+			contentType: 'Assessment Section',
+			path: ['5'],
+			showChildren: false,
+			showChildrenOnNavigation: false
+		})
+	})
 	test('assessment:attemptsRemaining returns unlimited with Infinity attempts', () => {
 		const register = Common.Store.registerModel.mock.calls[0]
 		const model = {

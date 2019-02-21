@@ -8,6 +8,7 @@ exports[`Assessment Assessment component 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Sections.Assessment"
   id="obo-assessment"
+  tabIndex={-1}
 />
 `;
 
@@ -19,6 +20,7 @@ exports[`Assessment Assessment component in post-test stage 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Sections.Assessment"
   id="obo-assessment"
+  tabIndex={-1}
 />
 `;
 
@@ -30,6 +32,7 @@ exports[`Assessment Assessment component in post-test stage with score actions 1
   data-obo-component={true}
   data-type="ObojoboDraft.Sections.Assessment"
   id="obo-assessment"
+  tabIndex={-1}
 />
 `;
 
@@ -41,6 +44,7 @@ exports[`Assessment Assessment component in pre-test stage 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Sections.Assessment"
   id="obo-assessment"
+  tabIndex={-1}
 />
 `;
 
@@ -52,5 +56,6 @@ exports[`Assessment Assessment component in test stage 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Sections.Assessment"
   id="obo-assessment"
+  tabIndex={-1}
 />
 `;

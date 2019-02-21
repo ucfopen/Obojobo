@@ -12,6 +12,7 @@ const exec = require('child_process').exec
 const usageError = new Error(`Usage:
 	node sample_draft.js seed
 	node sample_draft.js watch`)
+
 const defaultId = '00000000-0000-0000-0000-000000000000'
 const sampleJsonPath = path.join(
 	__dirname,
@@ -22,6 +23,7 @@ const sampleJsonPath = path.join(
 	'obojobo-document-engine',
 	'test-object.json'
 )
+
 const writeJsonDraftToDbPath = `${__dirname}/write_json_draft_to_db`
 const db = oboRequire('db')
 
@@ -47,7 +49,6 @@ try {
 
 					exec(cmd, {}, (err, stdout, stderr) => {
 						if (err) {
-							console.error(err.message)
 							throw err
 						}
 
@@ -69,8 +70,7 @@ try {
 					{},
 					(err, stdout, stderr) => {
 						if (err) {
-							console.error(err.message)
-							return
+							throw err
 						}
 
 						console.info('Sample JSON Draft changed, updating...')

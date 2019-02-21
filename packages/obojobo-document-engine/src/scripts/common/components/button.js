@@ -19,7 +19,10 @@ export default class Button extends React.Component {
 
 	render() {
 		let children
-		if (this.props.value) {
+		// if value is empty string
+		// value will still be rendered
+		// eslint-disable-next-line eqeqeq
+		if (this.props.value != null) {
 			children = this.props.value
 		} else {
 			// eslint-disable-next-line no-extra-semi
@@ -40,6 +43,8 @@ export default class Button extends React.Component {
 					onClick={this.props.onClick}
 					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
 					disabled={this.props.disabled || this.props.shouldPreventTab}
+					aria-label={this.props.ariaLabel}
+					aria-selected={this.props.ariaSelected}
 				>
 					{children}
 				</button>

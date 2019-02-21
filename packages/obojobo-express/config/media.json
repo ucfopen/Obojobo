@@ -1,0 +1,40 @@
+{
+	"development": {
+		"allowedMimeTypesRegex": "jpeg|jpg|png|gif|svg",
+		"maxUploadSize": 10000000,
+		"minImageSize": 10,
+		"maxImageSize": 3000,
+		"originalMediaTag": "original",
+		"presetDimensions": {
+			"small": {
+				"width": 332
+			},
+			"medium": {
+				"width": 712
+			},
+			"large": {
+				"width": 836
+			}
+		},
+		"tempUploadDestination": "./tmp/media"
+	},
+	"production": {
+		"allowedMimeTypesRegex": "jpeg|jpg|png|gif|svg",
+		"maxUploadSize": 10000000,
+		"minImageSize": 10,
+		"maxImageSize": 3000,
+		"originalMediaTag": "original",
+		"presetDimensions": {
+			"small": {
+				"width": 332
+			},
+			"medium": {
+				"width": 712
+			},
+			"large": {
+				"width": 836
+			}
+		},
+		"tempUploadDestination": "./tmp/media"
+	}
+}

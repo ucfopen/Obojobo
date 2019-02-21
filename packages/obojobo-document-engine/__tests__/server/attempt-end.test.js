@@ -149,7 +149,8 @@ describe('Attempt End', () => {
 			expect(lti.sendHighestAssessmentScore).toHaveBeenLastCalledWith(
 				'mockUserId',
 				mockDraftDocument,
-				'mockAssessmentId'
+				'mockAssessmentId',
+				true
 			)
 			expect(insertEvent).toHaveBeenCalledTimes(2)
 			expect(insertEvent.mock.calls[0][0]).toEqual({

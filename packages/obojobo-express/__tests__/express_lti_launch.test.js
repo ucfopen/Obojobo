@@ -401,4 +401,20 @@ describe('lti launch middleware', () => {
 			expect(logger.error).toHaveBeenCalledWith('LTI Body', 'No LTI Body')
 		})
 	})
+
+	test('missing lis_person_sourceid errors out', () => {
+		expect.assertions(4)
+		const [origReq, res, mockNext] = mockExpressArgs(true)
+		const req = Object.assign({}, origReq)
+		delete req.lti.body.lis_person_sourcedid
+		User.saveOrCreateCallback.mockImplementationOnce(() => {
+			throw 'this error'
+		})
+		return ltiLaunch.assignmentSelection(req, res, mockNext).then(() => {
+			expect(mockNext).toBeCalledWith(expect.any(Error))
+			expect(logger.error).toHaveBeenCalledTimes(2)
+			expect(logger.error).toHaveBeenCalledWith('LTI Picker Launch Error', 'this error')
+			expect(logger.error).toHaveBeenCalledWith('LTI Body', expect.any(Object))
+		})
+	})
 })

@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Text editor plugins.renderNode renders a line when passed 1`] = `
+<Line
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Text.TextLine",
+    }
+  }
+/>
+`;
+
+exports[`Text editor plugins.renderNode renders text when passed 1`] = `
+<Text
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Text",
+    }
+  }
+/>
+`;
+
+exports[`Text editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`Text editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`Text editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`Text editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-left"
+  contentEditable={false}
+>
+  Type Your Text Here
+</span>
+`;

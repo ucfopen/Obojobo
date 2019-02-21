@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Question Editor Node Question builds the expected component 1`] = `
+<div
+  className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad"
+>
+  <div
+    className="flipper question-editor"
+  >
+    <div
+      className="content-back"
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+      >
+        <button
+          onClick={[Function]}
+        >
+          Add Solution
+        </button>
+      </div>
+    </div>
+  </div>
+  <button
+    className="editor--page-editor--delete-node-button"
+    onClick={[Function]}
+  >
+    X
+  </button>
+</div>
+`;
+
+exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button>Add Solution</button></div></div></div><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
+
+exports[`Question Editor Node Question component deletes self 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"></div></div><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;

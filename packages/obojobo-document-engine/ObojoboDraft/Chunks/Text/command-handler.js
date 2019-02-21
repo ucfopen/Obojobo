@@ -28,8 +28,8 @@ export default class CommandHandler extends TextGroupCommandHandler {
 
 			// If splitting an empty textGroup item that's not a one item paragraph
 			// then split into three paragraphs:
-		} else {
-			return chunk.split()
 		}
+
+		return chunk.split()
 	}
 }

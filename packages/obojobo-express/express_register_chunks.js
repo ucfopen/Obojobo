@@ -30,8 +30,8 @@ module.exports = app => {
 
 	// ===========  ASSETS FROM THE ASSET MANIFEST ===========
 	const registerAssetVersions = (base, ext) => {
-		app.use(`/static/${base}.min${ext}`, express.static(`./public/compiled/${base}.min${ext}`))
-		app.use(`/static/${base}${ext}`, express.static(`./public/compiled/${base}${ext}`))
+		app.use(`/static/${base}.min${ext}`, express.static(`${__dirname}/public/compiled/${base}.min${ext}`))
+		app.use(`/static/${base}${ext}`, express.static(`${__dirname}/public/compiled/${base}${ext}`))
 	}
 
 	registerAssetVersions('viewer', '.js')

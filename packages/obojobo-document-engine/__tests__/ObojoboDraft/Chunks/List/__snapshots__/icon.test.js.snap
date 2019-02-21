@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List Icon Icon 1`] = `
+<svg
+  data-name="Layer 1"
+  id="Layer_1"
+  viewBox="0 0 15.04 14.32"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <style>
+      .cls-1{opacity:0.55;}.cls-2{fill:#231f20;}
+    </style>
+  </defs>
+  <title>
+    list
+  </title>
+  <g
+    className="cls-1"
+  >
+    <circle
+      cx="1.48"
+      cy="1.48"
+      r="1.48"
+    />
+    <circle
+      cx="1.48"
+      cy="7.16"
+      r="1.48"
+    />
+    <circle
+      cx="1.48"
+      cy="12.84"
+      r="1.48"
+    />
+    <rect
+      className="cls-2"
+      height="0.84"
+      width="10.54"
+      x="4.51"
+      y="1.06"
+    />
+    <rect
+      className="cls-2"
+      height="0.84"
+      width="10.54"
+      x="4.51"
+      y="6.74"
+    />
+    <rect
+      className="cls-2"
+      height="0.84"
+      width="10.54"
+      x="4.51"
+      y="12.42"
+    />
+  </g>
+</svg>
+`;

@@ -8,7 +8,13 @@ exports[`MCFeedback MCFeedback component for a correct item 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
   id="obo-feedback"
+  tabIndex={-1}
 >
+  <span
+    className="for-screen-reader-only"
+  >
+    . Feedback for this answer choice:
+  </span>
   <div
     className="component"
     data-focussed={false}
@@ -16,6 +22,7 @@ exports[`MCFeedback MCFeedback component for a correct item 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.Text"
     id="obo-choice1-feedback-text"
+    tabIndex={-1}
   >
     <div
       className="text-chunk obojobo-draft--chunks--single-text pad"
@@ -46,7 +53,13 @@ exports[`MCFeedback MCFeedback component for an incorrect item 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
   id="obo-feedback"
+  tabIndex={-1}
 >
+  <span
+    className="for-screen-reader-only"
+  >
+    . Feedback for this answer choice:
+  </span>
   <div
     className="component"
     data-focussed={false}
@@ -54,6 +67,7 @@ exports[`MCFeedback MCFeedback component for an incorrect item 1`] = `
     data-obo-component={true}
     data-type="ObojoboDraft.Chunks.Text"
     id="obo-choice1-feedback-text"
+    tabIndex={-1}
   >
     <div
       className="text-chunk obojobo-draft--chunks--single-text pad"

@@ -5,7 +5,9 @@ import React from 'react'
 import Image from './image'
 
 import Common from 'Common'
-const { OboComponent } = Common.components
+import Viewer from 'Viewer'
+
+const { OboComponent } = Viewer.components
 const { TextGroupEl } = Common.chunk.textChunk
 const { NonEditableChunk } = Common.chunk
 

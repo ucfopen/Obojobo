@@ -8,6 +8,7 @@
 	font-family: $font-default;
 	padding-bottom: 1em;
 	cursor: pointer;
+	overflow: auto;
 
 	> input {
 		font-size: inherit;
@@ -19,9 +20,62 @@
 	}
 
 	> .children {
-		margin-left: 2em;
+		margin-left: 0;
 		margin-right: 0;
-		pointer-events: none;
+
+		> .feedback-container {
+			> .feedback {
+				border-radius: 0.25em;
+				margin-right: 1em;
+				margin-bottom: 1em;
+				margin-left: 3em;
+				background: rgba(255, 255, 255, 0.5);
+
+				&.feedback-enter {
+					max-height: 0;
+					overflow: hidden;
+					opacity: 0;
+					margin-bottom: 0;
+				}
+
+				&.feedback-enter.feedback-enter-active {
+					max-height: 60em;
+					margin-bottom: 1em;
+					opacity: 1;
+
+					/* prettier-ignore */
+					transition:
+						max-height $duration-animation-default * 2,
+						margin-bottom $duration-animation-default * 2,
+						opacity $duration-animation-default * 2;
+				}
+
+				&.feedback-leave {
+					max-height: 60em;
+					margin-bottom: 1em;
+					overflow: hidden;
+					opacity: 1;
+				}
+
+				&.feedback-leave.feedback-leave-active {
+					max-height: 0;
+					margin-bottom: 0;
+					opacity: 0;
+
+					/* prettier-ignore */
+					transition:
+						max-height $duration-animation-default / 2,
+						margin-bottom $duration-animation-default / 2,
+						opacity $duration-animation-default / 2;
+				}
+
+				> .obojobo-draft--chunks--mc-assessment--mc-feedback {
+					padding-left: 0;
+					padding-right: 0;
+					margin-left: -0.4em;
+				}
+			}
+		}
 	}
 
 	&.is-selected {
@@ -31,14 +85,6 @@
 	&.is-mode-review {
 		cursor: default;
 
-		> input {
-			display: none;
-		}
-
-		> .children {
-			margin-left: 0;
-		}
-
 		&:hover {
 			cursor: default;
 			background: inherit;
@@ -47,5 +93,35 @@
 
 	&:hover {
 		background: transparentize($color-highlight, 0.85);
+	}
+
+	.correct-button {
+		position: relative;
+		top: 2.3em;
+		left: 0.5em;
+		font-size: inherit;
+		background: transparent;
+		border: none;
+	}
+
+	.add-feedback {
+		float: right;
+		font-size: 0.85em;
+		background-color: $color-bg2;
+		border: 1px solid transparentize($color-shadow, 0.2);
+		border-radius: $dimension-rounded-radius;
+		margin: 0.2em;
+	}
+
+	&.is-correct {
+		.correct-button {
+			color: $color-correct;
+		}
+	}
+
+	&.is-not-correct {
+		.correct-button {
+			color: $color-incorrect;
+		}
 	}
 }

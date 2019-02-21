@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorSchema matcher builds oboeditor.component 1`] = `
+Object {
+  "document": Object {
+    "nodes": Array [
+      Object {
+        "match": Array [
+          Object {
+            "type": "oboeditor.component",
+          },
+          Object {
+            "type": "ObojoboDraft.Sections.Assessment",
+          },
+        ],
+        "min": 1,
+      },
+    ],
+    "normalize": [Function],
+  },
+}
+`;

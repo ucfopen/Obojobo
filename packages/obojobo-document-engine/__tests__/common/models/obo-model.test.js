@@ -355,6 +355,23 @@ describe('OboModel', () => {
 		expect(root.toJSON().toJSONWasCalled).toBe(true)
 	})
 
+	test('flatJSON outputs the model to an object without its children', () => {
+		const root = new OboModel(
+			{
+				type: 'nodeType',
+				content: { a: 1 }
+			},
+			{
+				toJSON: (model, json) => {
+					json.toJSONWasCalled = true
+					return json
+				}
+			}
+		)
+
+		expect(root.flatJSON().toJSONWasCalled).toBe(true)
+	})
+
 	test('toText will output the model into a text format', () => {
 		const parent = new OboModel(
 			{
@@ -496,6 +513,11 @@ describe('OboModel', () => {
 		const domEl = model.getDomEl()
 		expect(domEl.attributes[1].value).toBe('obo-testId')
 		expect(domEl.attributes[4].value).toBe('ObojoboDraft.Chunks.Heading')
+	})
+
+	test('getDomId returns an id for an element', () => {
+		const root = OboModel.create({ id: 'mock-id', type: 'ObojoboDraft.Chunks.Heading' })
+		expect(root.getDomId()).toEqual('obo-mock-id')
 	})
 
 	test('getComponentClass returns the component class of a model', () => {

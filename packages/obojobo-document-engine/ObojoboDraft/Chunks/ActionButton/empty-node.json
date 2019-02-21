@@ -1,0 +1,11 @@
+{
+	"object":"block",
+	"type":"ObojoboDraft.Chunks.ActionButton",
+	"isVoid":true,
+	"data":{
+		"content": {
+			"actions": [],
+			"label": ""
+		}
+	}
+}

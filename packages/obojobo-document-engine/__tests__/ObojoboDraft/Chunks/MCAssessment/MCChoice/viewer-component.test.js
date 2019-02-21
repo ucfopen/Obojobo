@@ -86,6 +86,10 @@ const questionJSON = {
 									}
 								}
 							]
+						},
+						{
+							id: 'invalid-item',
+							type: 'ObojoboDraft.Chunks.MCAssessment'
 						}
 					]
 				},
@@ -133,6 +137,10 @@ const questionJSON = {
 									}
 								}
 							]
+						},
+						{
+							id: 'invalid-item',
+							type: 'ObojoboDraft.Chunks.MCAssessment'
 						}
 					]
 				}
@@ -247,6 +255,161 @@ describe('MCChoice viewer-component', () => {
 			responseType: TYPE_PICK_ALL,
 			isShowingExplanation: false,
 			questionSubmitted: false,
+			label: 'mocklabel'
+		}
+
+		const component = renderer.create(<MCChoice {...props} />)
+
+		expect(component).toMatchSnapshot()
+	})
+
+	test('MCChoice that is selected and submitted (Not Pick All, Correct)', () => {
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: ['choice1']
+		})
+
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[0]
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+
+		const props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: TYPE_PICK_ONE,
+			isShowingExplanation: false,
+			questionSubmitted: true,
+			label: 'mocklabel'
+		}
+
+		const component = renderer.create(<MCChoice {...props} />)
+
+		expect(component).toMatchSnapshot()
+	})
+
+	test('MCChoice that is selected and submitted (Not Pick All, Incorrect)', () => {
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: ['choice2']
+		})
+
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[1]
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+
+		const props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: TYPE_PICK_ONE,
+			isShowingExplanation: false,
+			questionSubmitted: true,
+			label: 'mocklabel'
+		}
+
+		const component = renderer.create(<MCChoice {...props} />)
+
+		expect(component).toMatchSnapshot()
+	})
+
+	test('MCChoice that is selected and submitted (Pick All, Correct)', () => {
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: ['choice1']
+		})
+
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[0]
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+
+		const props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: TYPE_PICK_ALL,
+			isShowingExplanation: false,
+			questionSubmitted: true,
+			label: 'mocklabel'
+		}
+
+		const component = renderer.create(<MCChoice {...props} />)
+
+		expect(component).toMatchSnapshot()
+	})
+
+	test('MCChoice that is selected and submitted (Pick All, Incorrect)', () => {
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: ['choice2']
+		})
+
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[1]
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+
+		const props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: TYPE_PICK_ALL,
+			isShowingExplanation: false,
+			questionSubmitted: true,
+			label: 'mocklabel'
+		}
+
+		const component = renderer.create(<MCChoice {...props} />)
+
+		expect(component).toMatchSnapshot()
+	})
+
+	test('MCChoice that is selected and submitted', () => {
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: ['choice1']
+		})
+
+		const question = OboModel.create(questionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[0]
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+
+		const props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: TYPE_PICK_ALL,
+			isShowingExplanation: false,
+			questionSubmitted: true,
 			label: 'mocklabel'
 		}
 
