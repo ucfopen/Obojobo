@@ -13,6 +13,11 @@ class Prompt extends React.Component {
 		}
 	}
 
+	componentDidMount() {
+		this.refs.input.focus()
+		this.refs.input.select()
+	}
+
 	handleTextChange(event) {
 		const text = event.target.value
 
@@ -20,7 +25,8 @@ class Prompt extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.refs.input.focus()
+		this.refs.input.focus()
+		this.refs.input.select()
 	}
 
 	render() {
@@ -32,10 +38,10 @@ class Prompt extends React.Component {
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 				className="prompt"
 			>
-				<label htmlFor="promptInput">{this.props.message}</label>
+				<label htmlFor="common--components--modal--prompt--input">{this.props.message}</label>
 				<input
 					type="text"
-					id="promptInput"
+					id="common--components--modal--prompt--input"
 					value={this.state.text}
 					onChange={this.handleTextChange.bind(this)}
 					ref={'input'}

@@ -1,4 +1,4 @@
-import ActionButton from '../../../../ObojoboDraft/Chunks/ActionButton/editor'
+import ActionButton from 'ObojoboDraft/Chunks/ActionButton/editor'
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 describe('ActionButton editor', () => {

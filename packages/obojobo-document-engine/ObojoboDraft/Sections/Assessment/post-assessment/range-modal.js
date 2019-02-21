@@ -2,6 +2,7 @@ import React from 'react'
 import Common from 'Common'
 
 const { SimpleDialog } = Common.components.modal
+const getParsedRange = Common.util.RangeParsing.getParsedRange
 
 import './range-modal.scss'
 
@@ -9,74 +10,53 @@ class RangeModal extends React.Component {
 	constructor(props) {
 		super(props)
 
-		const splitRange = this.props.for.split(',')
-		const score = this.props.for
-
-		if (splitRange.length === 1) {
-			// Single Score
-			this.state = {
-				type: 'single',
-				for: score,
-				start: score,
-				startInclusive: true,
-				end: score,
-				endInclusive: true
-			}
-		} else {
-			// Range
-			this.state = {
-				type: 'range',
-				for: score,
-				start: splitRange[0].substring(1),
-				startInclusive: score.charAt(0) === '[',
-				end: splitRange[1].substring(0, splitRange[1].length - 1),
-				endInclusive: score.charAt(score.length - 1) === ']'
-			}
-		}
+		this.state = getParsedRange(this.props.for)
+		this.state.type = this.state.min === this.state.max ? 'single' : 'range'
+		this.state.for = this.props.for
 	}
 
 	generateFor(state, opts) {
 		const updatedState = Object.assign(state, opts)
-		const { startInclusive, start, end, endInclusive } = updatedState
+		const { isMinInclusive, min, max, isMaxInclusive } = updatedState
 
-		if (start === end) return start
+		if (min === max) return min
 
-		return (startInclusive ? '[' : '(') + start + ',' + end + (endInclusive ? ']' : ')')
+		return (isMinInclusive ? '[' : '(') + min + ',' + max + (isMaxInclusive ? ']' : ')')
 	}
 
-	handleStartChange(event) {
-		const start = event.target.value
+	handleMinChange(event) {
+		const min = event.target.value
 
 		this.setState(state => ({
-			for: this.generateFor(state, { start }),
-			start
+			for: this.generateFor(state, { min }),
+			min
 		}))
 	}
 
-	handleStartInclusiveChange(event) {
-		const startInclusive = event.target.checked
+	handleMinInclusiveChange(event) {
+		const isMinInclusive = event.target.checked
 
 		this.setState(state => ({
-			for: this.generateFor(state, { startInclusive }),
-			startInclusive
+			for: this.generateFor(state, { isMinInclusive }),
+			isMinInclusive
 		}))
 	}
 
-	handleEndChange(event) {
-		const end = event.target.value
+	handleMaxChange(event) {
+		const max = event.target.value
 
 		this.setState(state => ({
-			for: this.generateFor(state, { end }),
-			end
+			for: this.generateFor(state, { max }),
+			max
 		}))
 	}
 
-	handleEndInclusiveChange(event) {
-		const endInclusive = event.target.checked
+	handleMaxInclusiveChange(event) {
+		const isMaxInclusive = event.target.checked
 
 		this.setState(state => ({
-			for: this.generateFor(state, { endInclusive }),
-			endInclusive
+			for: this.generateFor(state, { isMaxInclusive }),
+			isMaxInclusive
 		}))
 	}
 
@@ -107,24 +87,30 @@ class RangeModal extends React.Component {
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
 				<div className="score-range">
-					<label htmlFor="typeInput">Range Type:</label>
-					<fieldset id="typeInput">
+					<label htmlFor="editor--sections--assessment--post-assessment--range-modal--type">
+						Range Type:
+					</label>
+					<fieldset id="editor--sections--assessment--post-assessment--range-modal--type">
 						<div className="type-input">
 							<input
 								type="radio"
 								name="type"
 								value="single"
-								id="single"
+								id="editor--sections--assessment--post-assessment--range-modal--type"
 								ref={'input'}
 								checked={type === 'single'}
 								onChange={this.onCheckType.bind(this)}
 							/>
-							<label htmlFor="single">Single Score</label>
+							<label htmlFor="editor--sections--assessment--post-assessment--range-modal--type-single">
+								Single Score
+							</label>
 							{type === 'single' ? (
-								<div className="single-type-input" id="single-type-input">
-									<label htmlFor="score">Score:</label>
+								<div className="single-type-input">
+									<label htmlFor="editor--sections--assessment--post-assessment--range-modal--single-input">
+										Score:
+									</label>
 									<input
-										id="score"
+										id="editor--sections--assessment--post-assessment--range-modal--single-input"
 										name="score"
 										min="1"
 										max="100"
@@ -142,49 +128,61 @@ class RangeModal extends React.Component {
 								type="radio"
 								name="type"
 								value="range"
-								id="range"
+								id="editor--sections--assessment--post-assessment--range-modal--type-range"
 								checked={type === 'range'}
 								onChange={this.onCheckType.bind(this)}
 							/>
-							<label htmlFor="range">Range</label>
+							<label htmlFor="editor--sections--assessment--post-assessment--range-modal--type-range">
+								Range
+							</label>
 							{type === 'range' ? (
-								<div className="range-type-input" id="range-type-input">
+								<div className="range-type-input">
 									<div>
-										<label htmlFor="start">Start:</label>
+										<label htmlFor="editor--sections--assessment--post-assessment--range-modal--min">
+											Min:
+										</label>
 										<input
-											id="start"
-											name="start"
+											id="editor--sections--assessment--post-assessment--range-modal--min"
+											name="min"
 											min="1"
 											max="100"
 											step="1"
 											type="number"
-											value={this.state.start}
-											onChange={this.handleStartChange.bind(this)}
+											value={this.state.min}
+											onChange={this.handleMinChange.bind(this)}
 										/>
-										<label htmlFor="start-inclusive">Inclusive?</label>
+										<label htmlFor="editor--sections--assessment--post-assessment--range-modal--min-inclusive">
+											Inclusive?
+										</label>
 										<input
 											type="checkbox"
-											checked={this.state.startInclusive}
-											onChange={this.handleStartInclusiveChange.bind(this)}
+											id="editor--sections--assessment--post-assessment--range-modal--min-inclusive"
+											checked={this.state.isMinInclusive}
+											onChange={this.handleMinInclusiveChange.bind(this)}
 										/>
 									</div>
 									<div>
-										<label htmlFor="urlInput">End:</label>
+										<label htmlFor="editor--sections--assessment--post-assessment--range-modal--max">
+											Max:
+										</label>
 										<input
-											id="custom-height"
-											name="custom-height"
+											id="editor--sections--assessment--post-assessment--range-modal--max"
+											name="max"
 											min="1"
 											max="100"
 											step="1"
 											type="number"
-											value={this.state.end}
-											onChange={this.handleEndChange.bind(this)}
+											value={this.state.max}
+											onChange={this.handleMaxChange.bind(this)}
 										/>
-										<label htmlFor="end-inclusive">Inclusive?</label>
+										<label htmlFor="editor--sections--assessment--post-assessment--range-modal--max-inclusive">
+											Inclusive?
+										</label>
 										<input
 											type="checkbox"
-											checked={this.state.endInclusive}
-											onChange={this.handleEndInclusiveChange.bind(this)}
+											id="editor--sections--assessment--post-assessment--range-modal--max-inclusive"
+											checked={this.state.isMaxInclusive}
+											onChange={this.handleMaxInclusiveChange.bind(this)}
 										/>
 									</div>
 									<div className="range-display">{this.state.for}</div>

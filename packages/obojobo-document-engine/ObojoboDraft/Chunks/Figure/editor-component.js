@@ -29,8 +29,7 @@ class Figure extends React.Component {
 	}
 
 	handleClick(event) {
-		if (!this.node) return
-		if (this.node.contains(event.target)) return
+		if (!this.node || this.node.contains(event.target)) return
 
 		this.setState({ imageIsSelected: false })
 	}
