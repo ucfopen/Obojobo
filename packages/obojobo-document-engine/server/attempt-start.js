@@ -2,7 +2,7 @@ const Assessment = require('./assessment')
 const VisitModel = oboRequire('models/visit')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
-const { logAndRespondToUnexpected } = require('./util')
+const { logAndRespondToUnexpected, getFullQuestionsFromDraftTree } = require('./util')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -61,6 +61,7 @@ const startAttempt = (req, res) => {
 
 			// If we're in preview mode, allow unlimited attempts, else throw an error
 			// when trying to start an assessment with no attempts left.
+
 			if (
 				assessmentProperties.oboNode.node.content.attempts &&
 				assessmentProperties.numAttemptsTaken >= assessmentProperties.oboNode.node.content.attempts
@@ -87,17 +88,10 @@ const startAttempt = (req, res) => {
 			)
 		})
 		.then(result => {
-			// the client needs the full object version of the question nodes to render the
-			// assessment. This information is not kept in the state and must be dynamically generated
-			result.questions = []
-			for (const node of result.state.chosen) {
-				// the client does not need question bank nodes to render the assessment
-				if (node.type === QUESTION_NODE_TYPE) {
-					result.questions.push(
-						assessmentProperties.oboNode.draftTree.getChildNodeById(node.id).toObject()
-					)
-				}
-			}
+			result.questions = getFullQuestionsFromDraftTree(
+				assessmentProperties.oboNode.draftTree,
+				result.state.chosen
+			)
 
 			res.success(result)
 

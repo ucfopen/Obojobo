@@ -1,4 +1,5 @@
 jest.mock('../../server/attempt-start', () => ({ startAttempt: jest.fn() }))
+jest.mock('../../server/attempt-resume', () => ({ resumeAttempt: jest.fn() }))
 jest.mock('../../server/attempt-end', () => ({
 	endAttempt: jest.fn()
 }))
@@ -33,6 +34,7 @@ describe('server/express', () => {
 	const logger = oboRequire('logger')
 	const oboEvents = oboRequire('obo_events')
 	const startAttempt = require('../../server/attempt-start').startAttempt
+	const resumeAttempt = require('../../server/attempt-resume').resumeAttempt
 	const endAttempt = require('../../server/attempt-end').endAttempt
 	const Visit = oboRequire('models/visit')
 
@@ -178,6 +180,18 @@ describe('server/express', () => {
 		// execute
 		startAttemptRoute[1](req, res, {})
 		expect(startAttempt).toHaveBeenCalledWith(req, res)
+	})
+
+	test('/api/assessments/attempt/start calls resumeAttempt', () => {
+		expect.assertions(2)
+
+		// grab a ref to expected route & verify it's the route we want
+		const resumeAttemptRoute = server.post.mock.calls[2]
+		expect(resumeAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/resume')
+
+		// execute
+		resumeAttemptRoute[1](req, res, {})
+		expect(resumeAttempt).toHaveBeenCalledWith(req, res)
 	})
 
 	test('/api/assessments/attempt/:attemptId/end calls endAttempt', () => {

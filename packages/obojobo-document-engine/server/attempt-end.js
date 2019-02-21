@@ -441,23 +441,23 @@ const getNodeQuestion = (nodeId, assessmentNode) => {
 }
 
 // Pulls assessment properties out of the promise flow
-const loadAssessmentProperties = (draftTree, attempt, user, isPreview, attemptHistory) => {
-	const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
+// const loadAssessmentProperties = (draftTree, attempt, user, isPreview, attemptHistory) => {
+// 	const assessmentNode = draftTree.getChildNodeById(attempt.assessmentId)
 
-	return {
-		user: user,
-		isPreview: isPreview,
-		draftTree: draftTree,
-		id: attempt.assessmentId,
-		oboNode: assessmentNode,
-		nodeChildrenIds: assessmentNode.children[1].childrenSet,
-		questionBank: assessmentNode.children[1],
-		assessmentQBTree: assessmentNode.children[1].toObject(),
-		attemptHistory: attemptHistory,
-		numAttemptsTaken: null,
-		childrenMap: null
-	}
-}
+// 	return {
+// 		user: user,
+// 		isPreview: isPreview,
+// 		draftTree: draftTree,
+// 		id: attempt.assessmentId,
+// 		oboNode: assessmentNode,
+// 		nodeChildrenIds: assessmentNode.children[1].childrenSet,
+// 		questionBank: assessmentNode.children[1],
+// 		assessmentQBTree: assessmentNode.children[1].toObject(),
+// 		attemptHistory: attemptHistory,
+// 		numAttemptsTaken: null,
+// 		childrenMap: null
+// 	}
+// }
 
 module.exports = {
 	endAttempt,
@@ -472,6 +472,6 @@ module.exports = {
 	insertAttemptScoredEvents,
 	// reloadAttemptStateIfReviewing,
 	// recreateChosenQuestionTree,
-	getNodeQuestion,
-	loadAssessmentProperties
+	getNodeQuestion
+	// loadAssessmentProperties
 }

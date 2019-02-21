@@ -1,7 +1,6 @@
 const db = oboRequire('db')
 
 module.exports = insertObject => {
-	console.log(insertObject)
 	return db
 		.one(
 			`

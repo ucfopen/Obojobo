@@ -31,7 +31,6 @@ const insertEvent = oboRequire('insert_event')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const originalToISOString = Date.prototype.toISOString
 const AssessmentRubric = require('../../server/assessment-rubric')
-const attemptStart = require('../../server/attempt-start.js')
 import Assessment from '../../server/assessment'
 import testJson from '../../test-object.json'
 
@@ -44,8 +43,6 @@ import {
 	insertAttemptEndEvents,
 	sendLTIHighestAssessmentScore,
 	insertAttemptScoredEvents,
-	reloadAttemptStateIfReviewing,
-	recreateChosenQuestionTree,
 	getNodeQuestion
 } from '../../server/attempt-end'
 
@@ -96,7 +93,12 @@ describe('Attempt End', () => {
 		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
 		Assessment.getAttempt.mockResolvedValueOnce({
 			assessment_id: 'mockAssessmentId',
-			state: { chosen: [{ score: 100 }] },
+			state: {
+				chosen: [
+					{ id: 'mockQuestion', type: QUESTION_NODE_TYPE },
+					{ id: 'mockQuestionBank', type: QUESTION_BANK_NODE_TYPE }
+				]
+			},
 			draft_id: 'mockDraftId',
 			result: {
 				attemptScore: 50
@@ -150,7 +152,23 @@ describe('Attempt End', () => {
 				'mockAssessmentId'
 			)
 			expect(insertEvent).toHaveBeenCalledTimes(2)
-			expect(insertEvent).toHaveBeenCalledWith({
+			expect(insertEvent.mock.calls[0][0]).toEqual({
+				action: 'assessment:attemptEnd',
+				actorTime: 'mockDate',
+				caliperPayload: 'mockCaliperPayload',
+				draftId: 'mockDraftId',
+				contentId: 'mockContentId',
+				eventVersion: '1.1.0',
+				ip: 'mockRemoteAddress',
+				metadata: {},
+				payload: {
+					attemptCount: 6,
+					attemptId: 'mockAttemptId'
+				},
+				userId: 'mockUserId',
+				isPreview: true
+			})
+			expect(insertEvent.mock.calls[1][0]).toEqual({
 				action: 'assessment:attemptScored',
 				actorTime: 'mockDate',
 				caliperPayload: 'mockCaliperPayload',
@@ -172,23 +190,6 @@ describe('Attempt End', () => {
 					ltiScoreSent: 'mockScoreSent',
 					ltiScoreStatus: 'mockStatus',
 					scoreDetails: { assessmentScore: 'mockScoreForAttempt' }
-				},
-				userId: 'mockUserId',
-				isPreview: true
-			})
-
-			expect(insertEvent).toHaveBeenCalledWith({
-				action: 'assessment:attemptEnd',
-				actorTime: 'mockDate',
-				caliperPayload: 'mockCaliperPayload',
-				draftId: 'mockDraftId',
-				contentId: 'mockContentId',
-				eventVersion: '1.1.0',
-				ip: 'mockRemoteAddress',
-				metadata: {},
-				payload: {
-					attemptCount: 6,
-					attemptId: 'mockAttemptId'
 				},
 				userId: 'mockUserId',
 				isPreview: true
@@ -511,6 +512,31 @@ describe('Attempt End', () => {
 			25,
 			62.5
 		])
+	})
+
+	test('calculateScores sets question score to 0 if the question is not in the scoresByQuestionId', () => {
+		expect(AssessmentRubric.mockGetAssessmentScoreInfoForAttempt).toHaveBeenCalledTimes(0)
+		const assessmentModel = { node: { content: { attempts: '2' } } }
+
+		const attemptHistory = [{ result: { attemptScore: 25 } }]
+
+		const scoreInfo = {
+			chosenAssessment: [
+				{ id: 4, type: QUESTION_NODE_TYPE },
+				{ id: 5, type: QUESTION_NODE_TYPE },
+				{ id: 6, type: QUESTION_BANK_NODE_TYPE }
+			],
+			// only question four has a score
+			scoresByQuestionId: { 4: 50 },
+			scores: [50]
+		}
+
+		const result = calculateScores(assessmentModel, attemptHistory, scoreInfo)
+
+		// Question with id 5 is part of the scoreInfo.chosenAssessment, but
+		// is not included in scoreInfo.scoresByQuestionId so its score is
+		// expected to be set to 0
+		expect(result.attempt.questionScores[1].score).toBe(0)
 	})
 
 	test('getCalculatedScores calls calculateScores with expected values', () => {

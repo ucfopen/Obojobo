@@ -13,6 +13,7 @@ jest.mock(
 jest.mock(
 	'../../server/util',
 	() => ({
+		getFullQuestionsFromDraftTree: jest.fn(),
 		getRandom: jest.fn().mockReturnValue(0),
 		logAndRespondToUnexpected: jest.fn()
 	}),
@@ -25,18 +26,17 @@ const {
 	startAttempt,
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
-	getNodeQuestions,
 	getSendToClientPromises,
 	insertAttemptStartCaliperEvent,
 	getState,
 	loadChildren
 } = require('../../server/attempt-start.js')
+
 const _ = require('underscore')
 const testJson = require('../../test-object.json')
 const Assessment = require('../../server/assessment')
 const insertEvent = oboRequire('insert_event')
 const Draft = oboRequire('models/draft')
-const DraftNode = oboRequire('models/draft_node')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const Visit = oboRequire('models/visit')
 
@@ -45,6 +45,8 @@ const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
+
+const Util = require('../../server/util')
 
 describe('start attempt route', () => {
 	let mockDraft
@@ -153,9 +155,11 @@ describe('start attempt route', () => {
 		})
 
 		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockRes.success).toBeCalledTimes(1)
 			expect(mockReq.requireCurrentDocument).toHaveBeenCalled()
 			expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
 			expect(Assessment.insertNewAttempt).toHaveBeenCalled()
+			expect(Util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
 
 			return done()
 		})
