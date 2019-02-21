@@ -1,6 +1,6 @@
 @import '../../../../../scss/includes';
 
-.dropdown-menu {
+.editor--component--insert-menu {
 	position: absolute;
 	z-index: 2;
 
@@ -41,6 +41,12 @@
 			padding-right: 0.5em;
 			border-radius: $dimension-rounded-radius;
 			font-size: 0.8em;
+		}
+
+		&:hover {
+			span {
+				opacity: 1;
+			}
 		}
 
 		button {

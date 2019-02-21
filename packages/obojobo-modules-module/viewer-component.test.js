@@ -1,5 +1,5 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
+import TestRenderer from 'react-test-renderer'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
 
@@ -22,8 +22,8 @@ describe('Module', () => {
 			focusState: {},
 			navState: {}
 		}
-		const component = renderer.create(<Module model={model} moduleData={moduleData} />)
-		const tree = component.toJSON()
+		const renderer = TestRenderer.create(<Module model={model} moduleData={moduleData} />)
+		const tree = renderer.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
@@ -40,8 +40,8 @@ describe('Module', () => {
 			getComponentClass: mockGetComponentClass
 		})
 
-		const component = renderer.create(<Module model={model} moduleData={moduleData} />)
-		const tree = component.toJSON()
+		const renderer = TestRenderer.create(<Module model={model} moduleData={moduleData} />)
+		const tree = renderer.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})

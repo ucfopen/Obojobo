@@ -1,10 +1,9 @@
 import './viewer-component.scss'
 
 import React from 'react'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 
 const MCFeedback = props => (
 	<OboComponent
@@ -15,8 +14,8 @@ const MCFeedback = props => (
 				? ' is-correct-feedback'
 				: ' is-not-correct-feedback'
 		}`}
-		data-choice-label={props.label}
 	>
+		<span className="for-screen-reader-only">. Feedback for this answer choice:</span>
 		{props.model.children.models.map(child => {
 			const Component = child.getComponentClass()
 			return <Component key={child.get('id')} model={child} moduleData={props.moduleData} />

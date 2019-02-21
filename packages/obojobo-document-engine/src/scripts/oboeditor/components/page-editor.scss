@@ -1,26 +1,46 @@
 @import '../../../scss/includes';
 
-.editor {
+.editor--page-editor {
 	margin-top: 3em;
 	margin-bottom: 3em;
 
-	.footer-menu {
-		text-align: center;
-		position: fixed;
-		bottom: 0;
-		z-index: 999;
-		margin: 0 auto;
-		padding-right: 3em;
-		padding-left: 3em;
-		left: $dimension-nav-menu;
-		right: 0;
-		background-color: $color-bg2;
-		border-top: 1px solid $color-shadow;
+	.parameter-node {
+		padding-right: 1em;
+		display: inline;
+	}
 
-		.exporter {
-			font-size: inherit;
-			background: $color-obojobo-blue;
+	.rubric {
+		position: relative;
+		width: auto;
+		border-radius: $dimension-rounded-radius;
+		border: 1px solid $color-preview;
+		padding: 2em 3em;
+		background: transparentize($color-preview, 0.95);
+		margin-bottom: 3em;
+
+		button {
+			font-family: $font-default;
+			line-height: 1em;
+			font-size: 1em;
+			text-align: center;
 			border-radius: $dimension-rounded-radius;
+			padding: 0.4em;
+		}
+
+		.parameter-node {
+			display: block;
+			padding-top: 0.5em;
+		}
+
+		.mod {
+			position: relative;
+			width: auto;
+			border-bottom: 1px solid $color-preview;
+		}
+
+		.add-button {
+			margin-top: 0.2em;
+			background-color: $color-preview;
 			color: $color-bg;
 		}
 	}
@@ -61,6 +81,43 @@
 			.drop-content {
 				display: block;
 			}
+		}
+	}
+
+	.footer-menu {
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		z-index: 999;
+		margin: 0 auto;
+		padding-right: 3em;
+		padding-left: 3em;
+		left: $dimension-nav-menu;
+		right: 0;
+		background-color: $color-bg2;
+		border-top: 1px solid $color-shadow;
+
+		.exporter {
+			font-size: inherit;
+			background: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			color: $color-bg;
+		}
+	}
+
+	.scoreactions {
+		font-family: $font-default;
+		background-color: $color-bg2;
+		border-radius: $dimension-rounded-radius;
+		padding: 2em 3em;
+		margin-bottom: 3em;
+		margin-top: 3em;
+
+		.score-actions-page {
+			background-color: $color-bg;
+			margin: 2em;
+			position: relative;
+			width: auto;
 		}
 	}
 
@@ -174,4 +231,13 @@
 			transform: translate(-50%);
 		}
 	}
+}
+
+.editor--page-editor--delete-node-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	background: inherit;
+	cursor: pointer;
 }

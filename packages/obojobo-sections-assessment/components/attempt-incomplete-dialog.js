@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { Dialog } = Common.components.modal
 const { ModalUtil } = Common.util

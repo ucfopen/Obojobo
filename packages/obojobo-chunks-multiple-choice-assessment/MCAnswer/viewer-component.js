@@ -1,9 +1,9 @@
 import './viewer-component.scss'
 
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 
 const MCAnswer = props => (
 	<OboComponent

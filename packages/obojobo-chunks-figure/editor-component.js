@@ -105,8 +105,11 @@ class Figure extends React.Component {
 					<option value="custom">custom</option>
 				</select>
 				<div>
-					<button className="delete-node" onClick={() => this.deleteNode()}>
-						{'X'}
+					<button
+						className="editor--page-editor--delete-node-button"
+						onClick={() => this.deleteNode()}
+					>
+						X
 					</button>
 				</div>
 			</div>
@@ -116,10 +119,10 @@ class Figure extends React.Component {
 	render() {
 		const content = this.props.node.data.get('content')
 
-		let isCustom = false
+		const isCustom = content.size === 'custom'
 		const imgStyles = {}
 
-		if (content.size === 'custom') {
+		if (isCustom) {
 			if (content.width) {
 				imgStyles.width = content.width + 'px'
 			}
@@ -127,16 +130,15 @@ class Figure extends React.Component {
 			if (content.height) {
 				imgStyles.height = content.height + 'px'
 			}
-			isCustom = true
 		}
 
 		const hasImage = content.url && content.url.length !== 0
 		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
-			<div className={`obojobo-draft--chunks--figure viewer ` + content.size}>
+			<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
 				{this.renderEditToolbar()}
-				<div className={'container'}>
+				<div className="container">
 					{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
 
 					{hasImage ? null : <div>No Image Selected, Please Add an Image URL</div>}

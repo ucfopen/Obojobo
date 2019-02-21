@@ -1,10 +1,10 @@
 import './viewer-component.scss'
 
 import React from 'react'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import katex from 'katex'
 
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 
 const createMarkup = html => {
 	const div = document.createElement('div')

@@ -1,14 +1,14 @@
 import './viewer-component.scss'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-
+const { TextChunk } = Common.chunk
 const { TextGroupEl } = Common.chunk.textChunk
+const { OboComponent } = Viewer.components
 const { MockElement } = Common.mockDOM
 const { MockTextNode } = Common.mockDOM
-const { TextChunk } = Common.chunk
-const { OboComponent } = Common.components
 
 const createMockListElement = (data, indentLevel) => {
 	const style = data.listStyles.get(indentLevel)

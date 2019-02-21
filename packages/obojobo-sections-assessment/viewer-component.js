@@ -1,22 +1,20 @@
 import './viewer-component.scss'
 
+import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import { FOCUS_ON_ASSESSMENT_CONTENT } from './assessment-event-constants'
+import PostTest from './components/post-test'
+import PreTest from './components/pre-test'
 import React from 'react'
+import Test from './components/test'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import Viewer from 'obojobo-document-engine/src/scripts/viewer/index'
-
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 const { Dispatcher } = Common.flux
 const { ModalUtil } = Common.util
 
 const { AssessmentUtil } = Viewer.util
-const { NavUtil } = Viewer.util
-
-import AttemptIncompleteDialog from './components/attempt-incomplete-dialog'
-
-import preTest from './components/pre-test'
-import test from './components/test'
-import postTest from './components/post-test'
+const { NavUtil, FocusUtil } = Viewer.util
 
 class Assessment extends React.Component {
 	constructor(props) {
@@ -32,6 +30,10 @@ class Assessment extends React.Component {
 
 		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
 		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
+	}
+
+	static focusOnContent() {
+		Dispatcher.trigger(FOCUS_ON_ASSESSMENT_CONTENT)
 	}
 
 	getCurrentStep(props) {
@@ -66,6 +68,7 @@ class Assessment extends React.Component {
 		if (curStep !== this.curStep) {
 			this.curStep = curStep
 			Dispatcher.trigger('viewer:scrollToTop')
+			FocusUtil.focusOnNavTargetContent()
 		}
 	}
 
@@ -153,26 +156,30 @@ class Assessment extends React.Component {
 		const childEl = (() => {
 			switch (this.curStep) {
 				case 'pre-test':
-					return preTest({
-						model: this.props.model.children.at(0),
-						moduleData: this.props.moduleData
-					})
+					return (
+						<PreTest model={this.props.model.children.at(0)} moduleData={this.props.moduleData} />
+					)
 
 				case 'test':
-					return test({
-						model: this.props.model.children.at(1),
-						moduleData: this.props.moduleData,
-						onClickSubmit: this.onClickSubmit,
-						isAttemptComplete: this.isAttemptComplete(),
-						isFetching: this.state.isFetching
-					})
+					return (
+						<Test
+							model={this.props.model.children.at(1)}
+							moduleData={this.props.moduleData}
+							onClickSubmit={this.onClickSubmit}
+							isAttemptComplete={this.isAttemptComplete()}
+							isFetching={this.state.isFetching}
+						/>
+					)
 
 				case 'post-test':
-					return postTest({
-						model: this.props.model,
-						moduleData: this.props.moduleData,
-						scoreAction: this.getScoreAction()
-					})
+					return (
+						<PostTest
+							ref="child"
+							model={this.props.model}
+							moduleData={this.props.moduleData}
+							scoreAction={this.getScoreAction()}
+						/>
+					)
 			}
 		})()
 

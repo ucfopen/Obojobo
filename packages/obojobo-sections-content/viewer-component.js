@@ -1,11 +1,9 @@
 import './viewer-component.scss'
 
 import React from 'react'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import Viewer from 'obojobo-document-engine/src/scripts/viewer/index'
-
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 const { NavUtil } = Viewer.util
 
 const Content = props => {

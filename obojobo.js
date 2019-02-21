@@ -41,6 +41,10 @@ const oboNodesServer = [
 	{
 		name: 'ObojoboDraft.Chunks.Question',
 		location: 'server/question.js'
+	},
+	{
+		name: 'ObojoboDraft.Chunks.QuestionBank',
+		location: 'server/question-bank.js'
 	}
 ]
 

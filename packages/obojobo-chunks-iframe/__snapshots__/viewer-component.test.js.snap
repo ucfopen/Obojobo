@@ -8,6 +8,8 @@ exports[`IFrame IFrame component renders 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -18,12 +20,20 @@ exports[`IFrame IFrame component renders 1`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -34,7 +44,17 @@ exports[`IFrame IFrame component renders 1`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -49,6 +69,8 @@ exports[`IFrame IFrame component renders 2`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -59,12 +81,20 @@ exports[`IFrame IFrame component renders 2`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -75,7 +105,17 @@ exports[`IFrame IFrame component renders 2`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -90,6 +130,8 @@ exports[`IFrame IFrame component renders 3`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
@@ -100,12 +142,20 @@ exports[`IFrame IFrame component renders 3`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -116,7 +166,17 @@ exports[`IFrame IFrame component renders 3`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -131,6 +191,8 @@ exports[`IFrame IFrame component renders 4`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -141,12 +203,20 @@ exports[`IFrame IFrame component renders 4`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -157,7 +227,17 @@ exports[`IFrame IFrame component renders 4`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -172,6 +252,8 @@ exports[`IFrame IFrame component renders 5`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -182,12 +264,20 @@ exports[`IFrame IFrame component renders 5`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -198,7 +288,17 @@ exports[`IFrame IFrame component renders 5`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -213,6 +313,8 @@ exports[`IFrame IFrame component renders 6`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
@@ -223,12 +325,20 @@ exports[`IFrame IFrame component renders 6`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -239,7 +349,17 @@ exports[`IFrame IFrame component renders 6`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -254,6 +374,8 @@ exports[`IFrame IFrame component renders 7`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -279,6 +401,7 @@ exports[`IFrame IFrame component renders 7`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -286,14 +409,13 @@ exports[`IFrame IFrame component renders 7`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -307,6 +429,8 @@ exports[`IFrame IFrame component renders 8`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -332,6 +456,7 @@ exports[`IFrame IFrame component renders 8`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -339,14 +464,13 @@ exports[`IFrame IFrame component renders 8`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -360,6 +484,8 @@ exports[`IFrame IFrame component renders 9`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
@@ -385,6 +511,7 @@ exports[`IFrame IFrame component renders 9`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -392,14 +519,13 @@ exports[`IFrame IFrame component renders 9`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -413,6 +539,8 @@ exports[`IFrame IFrame component renders 10`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -438,6 +566,7 @@ exports[`IFrame IFrame component renders 10`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -445,14 +574,13 @@ exports[`IFrame IFrame component renders 10`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -466,6 +594,8 @@ exports[`IFrame IFrame component renders 11`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -491,6 +621,7 @@ exports[`IFrame IFrame component renders 11`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -498,14 +629,13 @@ exports[`IFrame IFrame component renders 11`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -519,6 +649,8 @@ exports[`IFrame IFrame component renders 12`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
@@ -544,6 +676,7 @@ exports[`IFrame IFrame component renders 12`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -551,14 +684,13 @@ exports[`IFrame IFrame component renders 12`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -572,6 +704,8 @@ exports[`IFrame IFrame component renders 13`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -582,12 +716,20 @@ exports[`IFrame IFrame component renders 13`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -598,7 +740,17 @@ exports[`IFrame IFrame component renders 13`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -613,6 +765,8 @@ exports[`IFrame IFrame component renders 14`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -623,12 +777,20 @@ exports[`IFrame IFrame component renders 14`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -639,7 +801,17 @@ exports[`IFrame IFrame component renders 14`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -654,6 +826,8 @@ exports[`IFrame IFrame component renders 15`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
@@ -664,12 +838,20 @@ exports[`IFrame IFrame component renders 15`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -680,7 +862,17 @@ exports[`IFrame IFrame component renders 15`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -695,6 +887,8 @@ exports[`IFrame IFrame component renders 16`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -705,12 +899,20 @@ exports[`IFrame IFrame component renders 16`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -721,7 +923,17 @@ exports[`IFrame IFrame component renders 16`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -736,6 +948,8 @@ exports[`IFrame IFrame component renders 17`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -746,12 +960,20 @@ exports[`IFrame IFrame component renders 17`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -762,7 +984,17 @@ exports[`IFrame IFrame component renders 17`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -777,6 +1009,8 @@ exports[`IFrame IFrame component renders 18`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
@@ -787,12 +1021,20 @@ exports[`IFrame IFrame component renders 18`] = `
       style={Object {}}
     >
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
         className="iframe-container"
       >
         <iframe
           allow="geolocation; microphone; camera; midi; encrypted-media; vr"
           frameBorder="0"
-          is={true}
           src="http://www.example.com"
           style={Object {}}
           title={null}
@@ -803,7 +1045,17 @@ exports[`IFrame IFrame component renders 18`] = `
         style={Object {}}
       />
       <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
         className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
       />
     </div>
   </div>
@@ -818,6 +1070,8 @@ exports[`IFrame IFrame component renders 19`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -843,6 +1097,7 @@ exports[`IFrame IFrame component renders 19`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -850,14 +1105,13 @@ exports[`IFrame IFrame component renders 19`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -871,6 +1125,8 @@ exports[`IFrame IFrame component renders 20`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -896,6 +1152,7 @@ exports[`IFrame IFrame component renders 20`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -903,14 +1160,13 @@ exports[`IFrame IFrame component renders 20`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -924,6 +1180,8 @@ exports[`IFrame IFrame component renders 21`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
@@ -949,6 +1207,7 @@ exports[`IFrame IFrame component renders 21`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -956,14 +1215,13 @@ exports[`IFrame IFrame component renders 21`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -977,6 +1235,8 @@ exports[`IFrame IFrame component renders 22`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -1002,6 +1262,7 @@ exports[`IFrame IFrame component renders 22`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -1009,14 +1270,13 @@ exports[`IFrame IFrame component renders 22`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -1030,6 +1290,8 @@ exports[`IFrame IFrame component renders 23`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
@@ -1055,6 +1317,7 @@ exports[`IFrame IFrame component renders 23`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -1062,14 +1325,13 @@ exports[`IFrame IFrame component renders 23`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -1083,6 +1345,8 @@ exports[`IFrame IFrame component renders 24`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
@@ -1108,6 +1372,7 @@ exports[`IFrame IFrame component renders 24`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
@@ -1115,14 +1380,13 @@ exports[`IFrame IFrame component renders 24`] = `
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            aria-label="Click to load external content"
+          >
             View Content
           </button>
         </div>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>
@@ -1136,6 +1400,8 @@ exports[`IFrame IFrame component renders 25`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.IFrame"
   id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
 >
   <div
     className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-missing-src is-scaled-up"
@@ -1161,14 +1427,12 @@ exports[`IFrame IFrame component renders 25`] = `
         className="click-to-load"
       >
         <span
+          aria-hidden={true}
           className="title"
         >
           displayed-title
         </span>
       </div>
-      <div
-        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
-      />
     </div>
   </div>
 </div>

@@ -4,3 +4,4 @@ tmp/
 /coverage/
 yarn-error.log
 build/*
+.vscode

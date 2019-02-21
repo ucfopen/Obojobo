@@ -1,4 +1,4 @@
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import IFrameMediaTypes from './iframe-media-types'
 import IFrameFitTypes from './iframe-fit-types'

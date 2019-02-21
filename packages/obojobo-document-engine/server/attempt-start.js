@@ -2,8 +2,7 @@ const Assessment = require('./assessment')
 const VisitModel = oboRequire('models/visit')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
-const { getRandom, logAndRespondToUnexpected } = require('./util')
-const _ = require('underscore')
+const { logAndRespondToUnexpected } = require('./util')
 
 const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -20,7 +19,7 @@ const startAttempt = (req, res) => {
 		id: null,
 		node: null,
 		nodeChildrenIds: null,
-		assessmentQBTree: null,
+		questionBank: null,
 		attemptHistory: null,
 		numAttemptsTaken: null,
 		questionUsesMap: null
@@ -47,7 +46,7 @@ const startAttempt = (req, res) => {
 			assessmentProperties.id = req.body.assessmentId
 			assessmentProperties.oboNode = assessmentNode
 			assessmentProperties.nodeChildrenIds = assessmentNode.children[1].childrenSet
-			assessmentProperties.assessmentQBTree = assessmentNode.children[1].toObject()
+			assessmentProperties.questionBank = assessmentNode.children[1]
 
 			return Assessment.getCompletedAssessmentAttemptHistory(
 				assessmentProperties.user.id,
@@ -83,7 +82,7 @@ const startAttempt = (req, res) => {
 				{
 					questions: questionObjects,
 					data: attemptState.data,
-					qb: assessmentProperties.assessmentQBTree
+					qb: attemptState.qb
 				},
 				assessmentProperties.isPreview
 			)
@@ -114,15 +113,12 @@ const startAttempt = (req, res) => {
 const getState = assessmentProperties => {
 	assessmentProperties.questionUsesMap = loadChildren(assessmentProperties)
 
-	createChosenQuestionTree(assessmentProperties.assessmentQBTree, assessmentProperties)
-
+	const tree = assessmentProperties.questionBank.buildAssessment(
+		assessmentProperties.questionUsesMap
+	)
 	return {
-		qb: assessmentProperties.assessmentQBTree,
-		questions: getNodeQuestions(
-			assessmentProperties.assessmentQBTree,
-			assessmentProperties.oboNode,
-			[]
-		),
+		qb: tree,
+		questions: getNodeQuestions(tree, assessmentProperties.oboNode, []),
 		data: {}
 	}
 }
@@ -138,12 +134,6 @@ const loadChildren = assessmentProperties => {
 	}
 	return childrenMap
 }
-
-// Choose is the number of questions to show per attempt, select indicates how to display them.
-const getQuestionBankProperties = questionBankNode => ({
-	choose: parseInt(questionBankNode.content.choose, 10) || Infinity,
-	select: questionBankNode.content.select || 'sequential'
-})
 
 // Maps an assessment's questions id's to the amount of times
 // the questions have been used (0 until initAssessmentUsedQuestions is called).
@@ -165,114 +155,6 @@ const initAssessmentUsedQuestions = (node, usedQuestionMap) => {
 	if (usedQuestionMap.has(node.id)) usedQuestionMap.set(node.id, usedQuestionMap.get(node.id) + 1)
 
 	for (const child of node.children) initAssessmentUsedQuestions(child, usedQuestionMap)
-}
-
-// Choose questions in order, Prioritizing less used questions first
-// questions are first grouped by number of uses
-// but within those groups, questions are kept in order
-// only return up to the desired amount of questions per attempt.
-const chooseUnseenQuestionsSequentially = (
-	assessmentProperties,
-	rootId, // the root id of the question bank
-	numQuestionsPerAttempt
-) => {
-	const { oboNode, questionUsesMap } = assessmentProperties
-
-	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
-	return (
-		[...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-			// sort those ids based on the number of time's the've been used
-			.sort((id1, id2) => questionUsesMap.get(id1) - questionUsesMap.get(id2))
-			// reduce the array to the number of questions in attempt
-			.slice(0, numQuestionsPerAttempt)
-			// return plain objects using DraftNode.toObject
-			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
-	)
-}
-
-// Randomly choose from all questions
-// Ignores the number of times a question is used
-// only return up to the desired amount of questions per attempt.
-const chooseAllQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
-	const { oboNode } = assessmentProperties
-	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
-	const oboNodeQuestionIds = [...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-	// shuffle the array
-	return (
-		_.shuffle(oboNodeQuestionIds)
-			// reduce the array to the number of questions in attempt
-			.slice(0, numQuestionsPerAttempt)
-			// return the node objects using DraftNode.toObject
-			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
-	)
-}
-
-// Randomly chooses unseen questions to display.
-// prioritizes questions that have been seen less
-// will still return questions that have been seen
-const chooseUnseenQuestionsRandomly = (assessmentProperties, rootId, numQuestionsPerAttempt) => {
-	const { oboNode, questionUsesMap } = assessmentProperties
-	// convert this questionBank's (via rootId) set of direct children *IDs* to an array
-	return (
-		[...oboNode.draftTree.getChildNodeById(rootId).immediateChildrenSet]
-			// sort, prioritizing unseen questions
-			.sort((id1, id2) => {
-				// these questions have been seen the same number of times
-				// randomize their order relative to each other [a, b] or [b, a]
-				if (questionUsesMap.get(id1) === questionUsesMap.get(id2)) {
-					return getRandom() - 0.5
-				}
-				// these questions have not been seen the same number of times
-				// place the lesser seen one first
-				return questionUsesMap.get(id1) - questionUsesMap.get(id2)
-			})
-			// reduce the array to the number of questions in attempt
-			.slice(0, numQuestionsPerAttempt)
-			// return plain objects using DraftNode.toObject
-			.map(id => oboNode.draftTree.getChildNodeById(id).toObject())
-	)
-}
-
-/*
-This reduce a tree of nodes to those nodes selected for an attempt
-node is probably initially a QuestionBank Node (or higher up tree)
-expects all `.children` of question banks to be questions or question banks
-alters `.children` of questionbank nodes
-SEE the `createChosenQuestionTree` tests in attempt-start.test.js for
-details on exactly what to expect from this
-*/
-const createChosenQuestionTree = (node, assessmentProperties) => {
-	if (node.type === QUESTION_BANK_NODE_TYPE) {
-		const qbProperties = getQuestionBankProperties(node)
-
-		switch (qbProperties.select) {
-			case 'random-unseen':
-				node.children = chooseUnseenQuestionsRandomly(
-					assessmentProperties,
-					node.id,
-					qbProperties.choose
-				)
-				break
-			case 'random-all':
-				node.children = chooseAllQuestionsRandomly(
-					assessmentProperties,
-					node.id,
-					qbProperties.choose
-				)
-				break
-			case 'sequential':
-			default:
-				node.children = chooseUnseenQuestionsSequentially(
-					assessmentProperties,
-					node.id,
-					qbProperties.choose
-				)
-				break
-		}
-	}
-
-	// Continue recursively through children
-	for (const child of node.children) createChosenQuestionTree(child, assessmentProperties)
 }
 
 // Return an array of question type nodes from a node tree.
@@ -341,13 +223,8 @@ const insertAttemptStartCaliperEvent = (
 
 module.exports = {
 	startAttempt,
-	getQuestionBankProperties,
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
-	chooseUnseenQuestionsSequentially,
-	chooseAllQuestionsRandomly,
-	chooseUnseenQuestionsRandomly,
-	createChosenQuestionTree,
 	getNodeQuestions,
 	getSendToClientPromises,
 	insertAttemptStartCaliperEvent,

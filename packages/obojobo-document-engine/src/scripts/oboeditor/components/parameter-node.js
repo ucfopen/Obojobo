@@ -152,14 +152,15 @@ const plugins = {
 		const isParameter = isType(change)
 		if (!isParameter) return
 
-		// Disallow enter in parameters
-		if (event.key === 'Enter') {
-			event.preventDefault()
-			return false
-		}
+		switch (event.key) {
+			case 'Backspace':
+			case 'Delete':
+				return KeyDownUtil.deleteNodeContents(event, change)
 
-		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return KeyDownUtil.deleteNodeContents(event, change)
+			case 'Enter':
+				// Disallows enter
+				event.preventDefault()
+				return true
 		}
 	}
 }

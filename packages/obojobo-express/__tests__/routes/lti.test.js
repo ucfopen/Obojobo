@@ -35,6 +35,8 @@ const addMockPropsToReq = (req, res, next) => {
 		req.currentUser = mockCurrentUser
 		return Promise.resolve(mockCurrentUser)
 	}
+	req.getCurrentUser = jest.fn()
+	req.get = () => 'mock-hostname' // used to mock req.get('host')
 	next()
 }
 
@@ -68,7 +70,7 @@ describe('lti route', () => {
 				expect(response.statusCode).toBe(200)
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.text).toContain('Obojobo LTI Launch')
-				expect(response.text).toContain('https://mock-hostname/lti/config.xml')
+				expect(response.text).toContain('http://mock-hostname/lti/config.xml')
 			})
 	})
 
@@ -83,7 +85,7 @@ describe('lti route', () => {
 				expect(response.header['content-type']).toContain('application/xml')
 				expect(response.text).toContain('<?xml version="1.0" encoding="UTF-8"?>')
 				expect(response.text).toContain(
-					'<blti:launch_url>https://mock-hostname/lti</blti:launch_url>'
+					'<blti:launch_url>http://mock-hostname/lti</blti:launch_url>'
 				)
 				expect(response.text).toContain(
 					'<lticm:property name="domain">mock-hostname</lticm:property>'

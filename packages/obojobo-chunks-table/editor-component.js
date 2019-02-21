@@ -1,8 +1,8 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import React from 'react'
 import { Block } from 'slate'
+import React from 'react'
 
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
@@ -131,7 +131,7 @@ class Table extends React.Component {
 						</tbody>
 					</table>
 				</div>
-				<div className={'table-settings'}>
+				<div className={'table-editor-buttons'}>
 					<button onClick={() => this.addRow()}>{'Add Row'}</button>
 					<button onClick={() => this.addCol()}>{'Add Column'}</button>
 					<button onClick={() => this.toggleHeader()}>{'Toggle Header'}</button>

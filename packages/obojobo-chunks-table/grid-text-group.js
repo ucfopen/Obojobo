@@ -1,4 +1,4 @@
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { TextGroup } = Common.textGroup
 const { TextGroupItem } = Common.textGroup

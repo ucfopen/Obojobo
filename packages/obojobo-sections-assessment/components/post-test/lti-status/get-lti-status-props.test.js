@@ -1,7 +1,7 @@
 import * as LTIStatus from './index'
 
 describe('LTIStatus getLTIStatusProps', () => {
-	const p = LTIStatus.getLTIStatusProps
+	const p = LTIStatus.default.prototype.getLTIStatusProps
 
 	test('getLTIStatusProps transforms LTIStatus props into a flat structure', () => {
 		expect(

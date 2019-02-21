@@ -1,15 +1,17 @@
 jest.mock('react-dom')
 
-import React from 'react'
-import ReactDOM from 'react-dom'
-import renderer from 'react-test-renderer'
-import { shallow, mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
 
+import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 import IFrame from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
-import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
-import Viewer from 'obojobo-document-engine/src/scripts/viewer/index'
-const MediaUtil = Viewer.util.MediaUtil
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import renderer from 'react-test-renderer'
+
+const { FocusUtil, MediaUtil } = Viewer.util
+const { FocusStore, MediaStore } = Viewer.stores
 
 const renderSettingsModule = require('./render-settings')
 const originalGetRenderSettingsFn = renderSettingsModule.getRenderSettings
@@ -63,6 +65,9 @@ describe('IFrame', () => {
 
 		OboModel.models.navTarget = {}
 
+		MediaStore.init()
+		FocusStore.init()
+
 		moduleData = {
 			model: {
 				title: 'mocked-module-title'
@@ -72,10 +77,7 @@ describe('IFrame', () => {
 				navTargetId: 'navTarget'
 			},
 			focusState: {},
-			mediaState: {
-				shown: {},
-				zoomById: {}
-			}
+			mediaState: MediaStore.getState()
 		}
 
 		ReactDOM.findDOMNode = jest.fn(() => fakeDOMNode)
@@ -218,15 +220,18 @@ describe('IFrame', () => {
 		})
 	})
 
-	test('onClickContainer calls MediaUtil.show', () => {
+	test('onClickContainer calls MediaUtil.show and FocusUtil.focusComponent', () => {
 		const component = shallow(<IFrame model={model} moduleData={moduleData} />)
 
 		MediaUtil.show = jest.fn()
+		FocusUtil.focusComponent = jest.fn()
 
 		component.instance().onClickContainer()
 
 		expect(MediaUtil.show).toHaveBeenCalledTimes(1)
 		expect(MediaUtil.show).toHaveBeenCalledWith('mock-obo-id')
+		expect(FocusUtil.focusComponent).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusComponent).toHaveBeenCalledWith('mock-obo-id', false)
 	})
 
 	test('onClickContainer called when container is clicked on (and iframe is not loaded the src is set)', () => {
@@ -271,6 +276,42 @@ describe('IFrame', () => {
 		component.find('.container').simulate('click')
 
 		expect(spy).toHaveBeenCalledTimes(0)
+	})
+
+	test('onClickSkipToBottom focuses on the buttonSkipToTop button', () => {
+		model = OboModel.create({
+			id: 'mock-obo-id',
+			type: 'ObojoboDraft.Chunks.IFrame',
+			content: {
+				src: 'http://www.example.com/',
+				autoload: true
+			}
+		})
+
+		const component = mount(<IFrame model={model} moduleData={moduleData} />)
+		const buttonSkipToTopComponent = component.ref('buttonSkipToTop')
+
+		buttonSkipToTopComponent.focus = jest.fn()
+		component.instance().onClickSkipToBottom()
+		expect(buttonSkipToTopComponent.focus).toHaveBeenCalledTimes(1)
+	})
+
+	test('onClickSkipToTop focuses on the buttonSkipToBottom button', () => {
+		model = OboModel.create({
+			id: 'mock-obo-id',
+			type: 'ObojoboDraft.Chunks.IFrame',
+			content: {
+				src: 'http://www.example.com/',
+				autoload: true
+			}
+		})
+
+		const component = mount(<IFrame model={model} moduleData={moduleData} />)
+		const buttonSkipToBottomComponent = component.ref('buttonSkipToBottom')
+
+		buttonSkipToBottomComponent.focus = jest.fn()
+		component.instance().onClickSkipToTop()
+		expect(buttonSkipToBottomComponent.focus).toHaveBeenCalledTimes(1)
 	})
 
 	test('onClickZoomReset calls MediaUtil.resetZoom', () => {

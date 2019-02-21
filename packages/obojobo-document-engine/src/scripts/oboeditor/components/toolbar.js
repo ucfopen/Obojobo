@@ -165,44 +165,48 @@ class Node extends React.Component {
 		this.props.onChange(change)
 	}
 
+	indentList(value, block, change) {
+		let bullet = 'disc'
+		let type = 'unordered'
+
+		// get the bullet and type of the closest parent level
+		const level = value.document.getClosest(block.key, parent => {
+			return parent.type === LIST_LEVEL_NODE
+		})
+
+		const content = level.data.get('content')
+		bullet = content.bulletStyle
+		type = content.type
+
+		// get the proper bullet for the next level
+		const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
+		const nextBullet = bulletList[(bulletList.indexOf(bullet) + 1) % bulletList.length]
+
+		return change.wrapBlockByKey(block.key, {
+			type: LIST_LEVEL_NODE,
+			data: { content: { type: type, bulletStyle: nextBullet } }
+		})
+	}
+
 	indent() {
 		const value = this.props.value
 		const change = value.change()
 
 		value.blocks.forEach(block => {
 			const dataJSON = block.data.toJSON()
-			if (block.type === TEXT_LINE_NODE) {
-				dataJSON.indent = dataJSON.indent + 1
+
+			switch (block.type) {
+				case TEXT_LINE_NODE:
+					dataJSON.indent = Math.min(dataJSON.indent + 1, 20)
+					return change.setNodeByKey(block.key, { data: dataJSON })
+
+				case CODE_LINE_NODE:
+					dataJSON.content.indent = dataJSON.content.indent + 1
+					return change.setNodeByKey(block.key, { data: dataJSON })
+
+				case LIST_LINE_NODE:
+					return this.indentList(value, block, change)
 			}
-
-			if (block.type === CODE_LINE_NODE) {
-				dataJSON.content.indent = dataJSON.content.indent + 1
-			}
-
-			if (block.type === LIST_LINE_NODE) {
-				let bullet = 'disc'
-				let type = 'unordered'
-
-				// get the bullet and type of the closest parent level
-				const level = value.document.getClosest(block.key, parent => {
-					return parent.type === LIST_LEVEL_NODE
-				})
-
-				const content = level.data.get('content')
-				bullet = content.bulletStyle
-				type = content.type
-
-				// get the proper bullet for the next level
-				const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
-				const nextBullet = bulletList[(bulletList.indexOf(bullet) + 1) % bulletList.length]
-
-				return change.wrapBlockByKey(block.key, {
-					type: LIST_LEVEL_NODE,
-					data: { content: { type: type, bulletStyle: nextBullet } }
-				})
-			}
-
-			change.setNodeByKey(block.key, { data: dataJSON })
 		})
 
 		this.props.onChange(change)
@@ -214,25 +218,19 @@ class Node extends React.Component {
 
 		value.blocks.forEach(block => {
 			const dataJSON = block.data.toJSON()
-			if (block.type === TEXT_LINE_NODE) {
-				let newIndent = dataJSON.indent - 1
-				if (newIndent < 1) newIndent = 0
 
-				dataJSON.indent = newIndent
+			switch (block.type) {
+				case TEXT_LINE_NODE:
+					dataJSON.indent = Math.max(dataJSON.indent - 1, 0)
+					return change.setNodeByKey(block.key, { data: dataJSON })
+
+				case CODE_LINE_NODE:
+					dataJSON.content.indent = Math.max(dataJSON.indent - 1, 0)
+					return change.setNodeByKey(block.key, { data: dataJSON })
+
+				case LIST_LINE_NODE:
+					return change.unwrapNodeByKey(block.key, LIST_LEVEL_NODE)
 			}
-
-			if (block.type === CODE_LINE_NODE) {
-				let newIndent = dataJSON.content.indent - 1
-				if (newIndent < 1) newIndent = 0
-
-				dataJSON.content.indent = newIndent
-			}
-
-			if (block.type === LIST_LINE_NODE) {
-				return change.unwrapNodeByKey(block.key, LIST_LEVEL_NODE)
-			}
-
-			change.setNodeByKey(block.key, { data: dataJSON })
 		})
 
 		this.props.onChange(change)

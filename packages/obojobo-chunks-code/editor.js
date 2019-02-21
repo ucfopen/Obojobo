@@ -1,15 +1,13 @@
-import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-
-import emptyNode from './empty-node.json'
-import Icon from './icon'
-import Node from './editor-component'
-import Line from './components/line/editor-component'
-import Schema from './schema'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
-
-import deleteEmptyParent from './changes/delete-empty-parent'
+import Icon from './icon'
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
+import Line from './components/line/editor-component'
+import Node from './editor-component'
+import React from 'react'
+import Schema from './schema'
 import decreaseIndent from './changes/decrease-indent'
+import emptyNode from './empty-node.json'
 import increaseIndent from './changes/increase-indent'
 
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
@@ -28,18 +26,17 @@ const plugins = {
 		const isCode = isType(change)
 		if (!isCode) return
 
-		if (event.key === 'Backspace' || event.key === 'Delete') {
-			return deleteEmptyParent(event, change)
-		}
+		switch (event.key) {
+			case 'Backspace':
+			case 'Delete':
+				return KeyDownUtil.deleteEmptyParent(event, change, CODE_NODE)
 
-		// Shift Tab
-		if (event.key === 'Tab' && event.shiftKey) {
-			return decreaseIndent(event, change)
-		}
+			case 'Tab':
+				// TAB+SHIFT
+				if (event.shiftKey) return decreaseIndent(event, change)
 
-		// Tab indent
-		if (event.key === 'Tab') {
-			increaseIndent(event, change)
+				// TAB
+				return increaseIndent(event, change)
 		}
 	},
 	renderPlaceholder(props) {

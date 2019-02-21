@@ -28,10 +28,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component', () => {
 		const component = renderer.create(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
 		const tree = component.toJSON()
@@ -41,10 +38,7 @@ describe('InsertMenu', () => {
 	test('InsertMenu component calls parent onClick function', () => {
 		const parentOnClick = jest.fn()
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={parentOnClick} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={parentOnClick} />
 		)
 
 		component
@@ -57,10 +51,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component opens menu', () => {
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
 		const html = component
@@ -74,10 +65,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component closes menu', () => {
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
 		const html = component
@@ -91,10 +79,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component moves down through the menu', () => {
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
 		const html = component
@@ -108,10 +93,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component moves down through the menu', () => {
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
 		const html = component
@@ -125,10 +107,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component moves up through the menu', () => {
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
 		const html = component
@@ -142,10 +121,7 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component moves down through the menu', () => {
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
 		const html = component
@@ -159,15 +135,10 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component closes menu when unfocused', () => {
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
-		const html = component
-			.simulate('blur')
-			.html()
+		const html = component.simulate('blur').html()
 
 		jest.runAllTimers()
 
@@ -176,15 +147,10 @@ describe('InsertMenu', () => {
 
 	test('InsertMenu component cancels menu closure when focused', () => {
 		const component = mount(
-			<InsertMenu
-				dropOptions={testOptions}
-				icon="+"
-				masterOnClick={jest.fn()} />
+			<InsertMenu dropOptions={testOptions} icon="+" masterOnClick={jest.fn()} />
 		)
 
-		const html = component
-			.simulate('focus')
-			.html()
+		const html = component.simulate('focus').html()
 
 		expect(html).toMatchSnapshot()
 	})

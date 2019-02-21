@@ -1,4 +1,4 @@
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { TextGroupAdapter } = Common.chunk.textChunk
 

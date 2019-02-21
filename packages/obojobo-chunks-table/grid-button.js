@@ -30,9 +30,10 @@ export default class GridButton extends React.Component {
 	}
 
 	onMouseOut() {
-		return (this.mouseOutTimeoutId = setTimeout(() => {
-			return this.setState(this.getInitialState())
-		}, MOUSE_OUT_DELAY_MS))
+		return (this.mouseOutTimeoutId = setTimeout(
+			() => this.setState(this.getInitialState()),
+			MOUSE_OUT_DELAY_MS
+		))
 	}
 
 	onMouseDown(event) {

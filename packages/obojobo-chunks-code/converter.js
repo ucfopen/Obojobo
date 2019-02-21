@@ -3,38 +3,36 @@ import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-ut
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = {}
-
-	json.content.textGroup = []
-	node.nodes.forEach(line => {
+	const textGroup = node.nodes.map(line => {
 		const codeLine = {
-			text: { value: line.text, styleList: [] },
-			data: { indent: line.data.get('content').indent }
+			text: {
+				value: line.text,
+				styleList: []
+			},
+			data: {
+				indent: line.data.get('content').indent
+			}
 		}
 
 		line.nodes.forEach(text => {
 			TextUtil.slateToOboText(text, codeLine)
 		})
 
-		json.content.textGroup.push(codeLine)
+		return codeLine
 	})
-	json.children = []
 
-	return json
+	return {
+		id: node.key,
+		type: node.type,
+		children: [],
+		content: {
+			textGroup
+		}
+	}
 }
 
 const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-	json.data = { content: {} }
-
-	json.nodes = []
-	node.content.textGroup.forEach(line => {
+	const nodes = node.content.textGroup.map(line => {
 		const indent = line.data ? line.data.indent : 0
 		const codeLine = {
 			object: 'block',
@@ -48,10 +46,18 @@ const oboToSlate = node => {
 			]
 		}
 
-		json.nodes.push(codeLine)
+		return codeLine
 	})
 
-	return json
+	return {
+		object: 'block',
+		key: node.id,
+		type: node.type,
+		nodes,
+		data: {
+			content: {}
+		}
+	}
 }
 
 export default { slateToObo, oboToSlate }

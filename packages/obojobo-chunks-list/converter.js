@@ -31,19 +31,20 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 }
 
 const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
-	json.content = node.data.get('content')
-	json.content.textGroup = []
-	json.content.listStyles.indents = []
+	const content = node.data.get('content')
+	content.textGroup = []
+	content.listStyles.indents = []
 
 	node.nodes.forEach(level => {
-		flattenLevels(level, 0, json.content.textGroup, json.content.listStyles.indents)
+		flattenLevels(level, 0, content.textGroup, content.listStyles.indents)
 	})
-	json.children = []
 
-	return json
+	return {
+		id: node.key,
+		type: node.type,
+		children: [],
+		content
+	}
 }
 
 const validateJSON = json => {
@@ -67,21 +68,13 @@ const validateJSON = json => {
 }
 
 const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-
-	// make sure that indents exists
-	if (!node.content.listStyles.indents) node.content.listStyles.indents = {}
-	json.data = { content: node.content }
-
-	json.nodes = []
-
 	const type = node.content.listStyles.type
 	const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
 
-	node.content.textGroup.forEach(line => {
+	// make sure that indents exists
+	if (!node.content.listStyles.indents) node.content.listStyles.indents = {}
+
+	const nodes = node.content.textGroup.map(line => {
 		let indent = line.data ? line.data.indent : 0
 		let style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
 		let listLine = {
@@ -114,12 +107,18 @@ const oboToSlate = node => {
 			}
 		}
 
-		json.nodes.push(listLine)
+		return listLine
 	})
 
-	validateJSON(json)
-
-	return json
+	return validateJSON({
+		object: 'block',
+		key: node.id,
+		type: node.type,
+		data: {
+			content: node.content
+		},
+		nodes
+	})
 }
 
 export default { slateToObo, oboToSlate }

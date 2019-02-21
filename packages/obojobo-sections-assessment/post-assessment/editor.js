@@ -1,10 +1,12 @@
-/* eslint no-alert: 0 */
-import React from 'react'
-import Common from 'Common'
-import { Block } from 'slate'
+import './editor-component.scss'
+
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-import './editor-component.scss'
+import { Block } from 'slate'
+import Common from 'Common'
+import Page from 'obojobo-pages-page/editor'
+/* eslint no-alert: 0 */
+import React from 'react'
 
 const { Button } = Common.components
 
@@ -14,7 +16,6 @@ const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
-import Page from 'obojobo-pages-page/editor'
 
 class Score extends React.Component {
 	constructor(props) {
@@ -24,8 +25,6 @@ class Score extends React.Component {
 	changeRange() {
 		const dataFor = this.props.node.data.get('for')
 		const newRange = window.prompt('Enter the new range:', dataFor) || dataFor
-
-		// TODO Validate range
 
 		const editor = this.props.editor
 		const change = editor.value.change()
@@ -63,6 +62,12 @@ class Score extends React.Component {
 						×
 					</Button>
 				</div>
+				<button
+					className={'editor--page-editor--delete-node-button'}
+					onClick={() => this.deleteNode()}
+				>
+					X
+				</button>
 			</div>
 		)
 	}

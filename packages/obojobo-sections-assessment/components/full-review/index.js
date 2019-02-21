@@ -1,7 +1,7 @@
 import React from 'react'
 
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import Viewer from 'obojobo-document-engine/src/scripts/viewer/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 import ReviewIcon from '../review-icon'
 import formatDate from 'date-fns/format'
@@ -42,7 +42,10 @@ class AssessmentReviewView extends React.Component {
 		})
 
 		const attemptReviewComponent = (attempt, assessment, isAHighestScoringNonNullAttempt) => {
-			const dateString = formatDate(new Date(attempt.finishTime), 'M/D/YY [at] h:mma')
+			const date = new Date(attempt.finishTime)
+			const dateString = formatDate(date, 'M/D/YY [at] h:mma')
+			const machineDateString = formatDate(date)
+			const ariaDateString = formatDate(date, 'MMMM Do YYYY [at] h:mma')
 			const numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
 
 			const report = scoreReporter.getReportFor(attempt.attemptNumber)
@@ -65,22 +68,28 @@ class AssessmentReviewView extends React.Component {
 								<h4>
 									<strong>{`Attempt ${attempt.attemptNumber}`}</strong>
 									{isAHighestScoringNonNullAttempt ? (
-										<span className="highest-attempt">★ Highest Attempt</span>
+										<span className="highest-attempt">
+											<span aria-hidden>★</span> Highest Attempt
+										</span>
 									) : null}
 								</h4>
 								<div className="attempt-info-content">
-									<ul>
-										<li>{dateString}</li>
-										<li>
-											{numCorrect} out of {attempt.questionScores.length} questions correct
-										</li>
-										<li>
-											Attempt Score: <strong>{attemptScoreSummary}</strong>
-											<MoreInfoButton>
-												<AssessmentScoreReportView report={report} />
-											</MoreInfoButton>
-										</li>
-									</ul>
+									<div>
+										Submitted{' '}
+										<time dateTime={machineDateString} aria-hidden="true">
+											{dateString}
+										</time>
+										<span className="for-screen-reader-only">{ariaDateString}</span>
+									</div>
+									<div>
+										{numCorrect} out of {attempt.questionScores.length} questions correct
+									</div>
+									<div>
+										Attempt Score: <strong>{attemptScoreSummary}</strong>
+										<MoreInfoButton ariaLabel="Click to explain attempt score in detail">
+											<AssessmentScoreReportView report={report} />
+										</MoreInfoButton>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -127,6 +136,7 @@ class AssessmentReviewView extends React.Component {
 				<Button
 					onClick={() => NavUtil.setContext(`assessmentReview:${attempt.attemptId}`)}
 					key={index}
+					ariaLabel={'Attempt ' + attempt.attemptNumber}
 				>
 					{attempt.attemptNumber}
 				</Button>

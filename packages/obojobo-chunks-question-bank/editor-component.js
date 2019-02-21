@@ -3,7 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import { Block } from 'slate'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { Button } = Common.components
 
@@ -48,7 +48,7 @@ class QuestionBank extends React.Component {
 	render() {
 		return (
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-				<button className={'delete-node'} onClick={() => this.delete()}>
+				<button className="editor--page-editor--delete-node-button" onClick={() => this.delete()}>
 					X
 				</button>
 				{this.props.children}

@@ -1,5 +1,5 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'

@@ -2,6 +2,9 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
+import Common from 'Common'
+
+const isOrNot = Common.util.isOrNot
 
 // TODO could probably be registered by Obojobo Nodes
 const allowedActions = [
@@ -43,14 +46,14 @@ const requiresValue = {
 
 const Trigger = props => {
 	return (
-		<div className={'trigger'} key={props.type}>
+		<div className="trigger" key={props.type}>
 			<div>
 				<p>{props.type}</p>
 			</div>
 			<div>
 				<p>{props.value}</p>
 			</div>
-			<button className={'delete-node'} onClick={props.update}>
+			<button className="editor--page-editor--delete-node-button" onClick={props.update}>
 				x
 			</button>
 		</div>
@@ -62,7 +65,7 @@ class ActionButton extends React.Component {
 		super(props)
 		this.state = {
 			newTrigger: { type: allowedActions[0], value: '' },
-			isValid: 'valid'
+			isValid: true
 		}
 	}
 
@@ -109,14 +112,14 @@ class ActionButton extends React.Component {
 		const content = this.props.node.data.get('content')
 
 		if (verify && !verify(this.state.newTrigger.value)) {
-			this.setState({ isValid: 'invalid' })
+			this.setState({ isValid: false })
 			return
 		}
 
 		content.actions.push(this.state.newTrigger)
 
 		this.setState({
-			isValid: 'valid',
+			isValid: true,
 			newTrigger: {
 				type: allowedActions[0],
 				value: ''
@@ -145,11 +148,11 @@ class ActionButton extends React.Component {
 
 	renderNew() {
 		return (
-			<div className={`trigger new-trigger is-type-${this.state.isValid}`}>
-				<div className={'trigger-name'}>
+			<div className={`trigger new-trigger` + isOrNot(this.state.isValid, 'valid')}>
+				<div className="trigger-name">
 					<p>Action</p>
 					<select
-						name={'Action'}
+						name="Action"
 						value={this.state.newTrigger.type}
 						onChange={event => this.handleActionChange(event)}
 						onClick={event => event.stopPropagation()}
@@ -163,10 +166,10 @@ class ActionButton extends React.Component {
 						})}
 					</select>
 				</div>
-				<div className={'trigger-value'}>
+				<div className="trigger-value">
 					<p>Value:</p>
 					<textarea
-						name={'Value'}
+						name="Value"
 						value={this.state.newTrigger.value}
 						onChange={event => this.handleValueChange(event)}
 						onClick={event => event.stopPropagation()}
@@ -180,7 +183,7 @@ class ActionButton extends React.Component {
 	renderTriggers() {
 		const content = this.props.node.data.get('content')
 		return (
-			<div className={'trigger-box'}>
+			<div className="trigger-box">
 				{content.actions.map((action, index) => {
 					return (
 						<Trigger
@@ -221,15 +224,15 @@ class ActionButton extends React.Component {
 		}
 
 		return (
-			<div style={wrapperStyle} className={'obojobo-draft--components--button'}>
+			<div style={wrapperStyle} className="obojobo-draft--components--button">
 				<div style={maskStyle} />
 				<div className={'button'}>
 					<input
-						name={'Button Name'}
+						name="Button Name"
 						value={content.label}
 						onChange={event => this.handleLabelChange(event)}
 						onClick={event => event.stopPropagation()}
-						placeholder={'Button Label'}
+						placeholder="Button Label"
 						frameBorder="0"
 						style={iframeStyle}
 					/>
@@ -242,7 +245,7 @@ class ActionButton extends React.Component {
 		const { isSelected } = this.props
 
 		return (
-			<div className={'text-chunk obojobo-draft--chunks--action-button pad'}>
+			<div className="text-chunk obojobo-draft--chunks--action-button pad">
 				{this.renderButton()}
 				{isSelected ? this.renderTriggers() : null}
 			</div>

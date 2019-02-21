@@ -1,30 +1,170 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Nav renders all list item types 1`] = `
-<div
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+exports[`Nav renders all list item types (locked=false) 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
 >
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+  >
+    <button
+      disabled={true}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
   <button
     className="toggle-button"
     onClick={[MockFunction]}
   >
     Toggle Navigation Menu
   </button>
-  <ul>
+  <ul
+    aria-hidden={true}
+    tabIndex="-1"
+  >
     <li
       className="heading is-not-selected"
     >
-      <a>
-        label4
-      </a>
+      label4
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to label5"
+      >
+        label5
+      </button>
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to Mock Content Type label300"
+      >
+        label300
+      </button>
+    </li>
+    <li
+      className="sub-link is-not-selected is-not-correct is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Jump to label301 inside Parent Label"
+      >
+        label301
+      </button>
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to mockMe"
+      >
+        <div
+          className="mockStylableText"
+          text={
+            MockStylableText {
+              "value": "mockMe",
+            }
+          }
+        />
+      </button>
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to "
+      />
+    </li>
+    <li
+      className="link is-selected is-visited is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Currently on label56"
+      >
+        label56
+      </button>
+    </li>
+    <li
+      className="sub-link is-not-selected is-not-correct is-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Jump to label6"
+      >
+        label6
+      </button>
+    </li>
+  </ul>
+  <div
+    className="viewer--components--logo is-not-inverted"
+  >
+    Obojobo
+  </div>
+</nav>
+`;
+
+exports[`Nav renders all list item types (locked=true) 1`] = `
+<nav
+  aria-label="Navigation"
+  className="viewer--components--nav is-locked is-not-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
+>
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+  >
+    <button
+      disabled={true}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
+  <button
+    className="toggle-button"
+    onClick={[MockFunction]}
+  >
+    Toggle Navigation Menu
+  </button>
+  <ul
+    aria-hidden={true}
+    tabIndex="-1"
+  >
+    <li
+      className="heading is-not-selected"
+    >
+      label4
     </li>
     <li
       className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
-      <a>
+      <button
+        aria-disabled={true}
+        aria-label="Go to label5"
+      >
         label5
-      </a>
+      </button>
       <div
         className="lock-icon"
       />
@@ -33,13 +173,58 @@ exports[`Nav renders all list item types 1`] = `
       className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
+      <button
+        aria-disabled={true}
+        aria-label="Go to Mock Content Type label300"
+      >
+        label300
+      </button>
       <div
-        className="mockStylableText"
-        text={
-          MockStylableText {
-            "value": "mockMe",
+        className="lock-icon"
+      />
+    </li>
+    <li
+      className="sub-link is-not-selected is-not-correct is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Jump to label301 inside Parent Label"
+      >
+        label301
+      </button>
+      <div
+        className="lock-icon"
+      />
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to mockMe"
+      >
+        <div
+          className="mockStylableText"
+          text={
+            MockStylableText {
+              "value": "mockMe",
+            }
           }
-        }
+        />
+      </button>
+      <div
+        className="lock-icon"
+      />
+    </li>
+    <li
+      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      onClick={[Function]}
+    >
+      <button
+        aria-disabled={true}
+        aria-label="Go to "
       />
       <div
         className="lock-icon"
@@ -49,9 +234,12 @@ exports[`Nav renders all list item types 1`] = `
       className="link is-selected is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
-      <a>
+      <button
+        aria-disabled={true}
+        aria-label="Currently on label56"
+      >
         label56
-      </a>
+      </button>
       <div
         className="lock-icon"
       />
@@ -60,9 +248,12 @@ exports[`Nav renders all list item types 1`] = `
       className="sub-link is-not-selected is-not-correct is-last-in-list"
       onClick={[Function]}
     >
-      <a>
+      <button
+        aria-disabled={true}
+        aria-label="Jump to label6"
+      >
         label6
-      </a>
+      </button>
       <div
         className="lock-icon"
       />
@@ -73,62 +264,109 @@ exports[`Nav renders all list item types 1`] = `
   >
     Obojobo
   </div>
-</div>
+</nav>
 `;
 
 exports[`Nav renders closed 1`] = `
-<div
+<nav
+  aria-label="Navigation"
   className="viewer--components--nav is-locked is-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
 >
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+  >
+    <button
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
   <button
     className="toggle-button"
     onClick={[MockFunction]}
   >
     Toggle Navigation Menu
   </button>
-  <ul />
+  <ul
+    aria-hidden={false}
+    tabIndex="-1"
+  />
   <div
     className="viewer--components--logo is-not-inverted"
   >
     Obojobo
   </div>
-</div>
+</nav>
 `;
 
 exports[`Nav renders opened 1`] = `
-<div
+<nav
+  aria-label="Navigation"
   className="viewer--components--nav is-locked is-not-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
 >
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+  >
+    <button
+      disabled={true}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
   <button
     className="toggle-button"
     onClick={[MockFunction]}
   >
     Toggle Navigation Menu
   </button>
-  <ul />
+  <ul
+    aria-hidden={true}
+    tabIndex="-1"
+  />
   <div
     className="viewer--components--logo is-not-inverted"
   >
     Obojobo
   </div>
-</div>
+</nav>
 `;
 
 exports[`Nav renders unlocked 1`] = `
-<div
+<nav
+  aria-label="Navigation"
   className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  role="navigation"
+  tabIndex="-1"
 >
+  <div
+    className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
+  >
+    <button
+      disabled={true}
+      onClick={[Function]}
+    >
+      Skip Navigation
+    </button>
+  </div>
   <button
     className="toggle-button"
     onClick={[MockFunction]}
   >
     Toggle Navigation Menu
   </button>
-  <ul />
+  <ul
+    aria-hidden={true}
+    tabIndex="-1"
+  />
   <div
     className="viewer--components--logo is-not-inverted"
   >
     Obojobo
   </div>
-</div>
+</nav>
 `;

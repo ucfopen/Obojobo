@@ -28,7 +28,7 @@ const {
 	getParsedRange,
 	tryGetParsedFloat,
 	isValueInRange
-} = require('../src/scripts/common/util/range-parsing')
+} = require('obojobo-document-engine/src/scripts/common/util/range-parsing')
 
 const MOD_AMOUNT_LIMIT = 20
 

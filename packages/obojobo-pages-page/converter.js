@@ -1,32 +1,23 @@
 import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor'
 
 const slateToObo = node => {
-	const json = {}
-	json.id = node.key
-	json.type = node.type
+	const json = {
+		id: node.key,
+		type: node.type,
+		children: node.nodes.map(child => Component.helpers.slateToObo(child))
+	}
+
 	if (node.data) json.content = node.data.get('content') || {}
-	json.children = []
-
-	node.nodes.forEach(child => {
-		json.children.push(Component.helpers.slateToObo(child))
-	})
 
 	return json
 }
 
-const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.key = node.id
-	json.type = node.type
-	json.data = { content: node.content }
-	json.nodes = []
-
-	node.children.forEach(child => {
-		json.nodes.push(Component.helpers.oboToSlate(child))
-	})
-
-	return json
-}
+const oboToSlate = node => ({
+	object: 'block',
+	key: node.id,
+	type: node.type,
+	data: { content: node.content },
+	nodes: node.children.map(child => Component.helpers.oboToSlate(child))
+})
 
 export default { slateToObo, oboToSlate }

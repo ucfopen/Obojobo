@@ -46,7 +46,7 @@ exports[`Figure Editor Node Figure component 1`] = `
     </select>
     <div>
       <button
-        className="delete-node"
+        className="editor--page-editor--delete-node-button"
         onClick={[Function]}
       >
         X
@@ -113,7 +113,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
     </select>
     <div>
       <button
-        className="delete-node"
+        className="editor--page-editor--delete-node-button"
         onClick={[Function]}
       >
         X
@@ -186,7 +186,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
     </select>
     <div>
       <button
-        className="delete-node"
+        className="editor--page-editor--delete-node-button"
         onClick={[Function]}
       >
         X
@@ -258,7 +258,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
     </select>
     <div>
       <button
-        className="delete-node"
+        className="editor--page-editor--delete-node-button"
         onClick={[Function]}
       >
         X

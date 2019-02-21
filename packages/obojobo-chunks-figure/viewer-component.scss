@@ -11,14 +11,14 @@
 	.container {
 		display: inline-block;
 		height: auto;
+		width: 100%;
 		position: relative;
 
 		img {
 			background: $color-bg;
 			display: block;
-			border: 0.3em solid $color-bg;
+			border: 5px solid $color-bg;
 			border-radius: $dimension-rounded-radius;
-			box-sizing: border-box;
 		}
 
 		.img-placeholder {
@@ -36,11 +36,9 @@
 		@include pad();
 
 		.container {
-			width: 100%;
-
 			img {
 				margin: 0 auto;
-				max-width: 100%;
+				max-width: calc(100% - 10px); //stylelint-disable-line unit-blacklist
 			}
 		}
 	}
@@ -49,10 +47,11 @@
 		@include pad();
 
 		.container {
-			width: 18em;
+			max-width: 18em;
 
 			img {
 				width: 100%;
+				box-sizing: border-box;
 			}
 		}
 	}
@@ -61,21 +60,20 @@
 		@include pad();
 
 		.container {
-			width: 100%;
-
 			img {
 				width: 100%;
+				box-sizing: border-box;
 			}
 		}
 	}
 
 	&.large {
 		.container {
-			width: 100%;
-
 			img {
 				width: 100%;
+				border: none;
 				border-radius: 0;
+				box-sizing: border-box;
 			}
 		}
 	}

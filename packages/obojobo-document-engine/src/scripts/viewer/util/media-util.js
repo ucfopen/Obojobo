@@ -1,5 +1,7 @@
 import Common from 'Common'
 
+import { DEFAULT_ZOOM } from '../stores/media-store/media-constants'
+
 const { Dispatcher } = Common.flux
 
 const MediaUtil = {
@@ -16,6 +18,15 @@ const MediaUtil = {
 			value: {
 				id,
 				actor
+			}
+		})
+	},
+
+	setDefaultZoom(id, zoom) {
+		return Dispatcher.trigger('media:setDefaultZoom', {
+			value: {
+				id,
+				zoom
 			}
 		})
 	},
@@ -37,8 +48,20 @@ const MediaUtil = {
 		})
 	},
 
+	isZoomAtDefault(state, model) {
+		return MediaUtil.getDefaultZoom(state, model) === MediaUtil.getZoom(state, model)
+	},
+
+	getDefaultZoom(state, model) {
+		if (typeof state.defaultZoomById[model.get('id')] === 'undefined') return DEFAULT_ZOOM
+		return state.defaultZoomById[model.get('id')]
+	},
+
 	getZoom(state, model) {
-		if (typeof state.zoomById[model.get('id')] === 'undefined') return null
+		if (typeof state.zoomById[model.get('id')] === 'undefined') {
+			return MediaUtil.getDefaultZoom(state, model)
+		}
+
 		return state.zoomById[model.get('id')]
 	},
 

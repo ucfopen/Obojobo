@@ -1,5 +1,5 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'

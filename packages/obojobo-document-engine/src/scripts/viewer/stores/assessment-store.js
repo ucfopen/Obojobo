@@ -1,24 +1,21 @@
-import React from 'react'
-
-import Common from 'Common'
-
-import AssessmentUtil from '../../viewer/util/assessment-util'
-import QuestionUtil from '../../viewer/util/question-util'
 import APIUtil from '../../viewer/util/api-util'
-import NavUtil from '../../viewer/util/nav-util'
-import NavStore from '../../viewer/stores/nav-store'
+import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-report-view'
+import AssessmentScoreReporter from '../../viewer/assessment/assessment-score-reporter'
+import AssessmentUtil from '../../viewer/util/assessment-util'
+import Common from 'Common'
+import FocusUtil from '../../viewer/util/focus-util'
 import LTINetworkStates from './assessment-store/lti-network-states'
 import LTIResyncStates from './assessment-store/lti-resync-states'
+import NavStore from '../../viewer/stores/nav-store'
+import NavUtil from '../../viewer/util/nav-util'
 import QuestionStore from './question-store'
-import AssessmentScoreReporter from '../../viewer/assessment/assessment-score-reporter'
-import AssessmentScoreReportView from '../../viewer/assessment/assessment-score-report-view'
+import QuestionUtil from '../../viewer/util/question-util'
+import React from 'react'
 
-const { Store } = Common.flux
-const { Dispatcher } = Common.flux
+const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
-const { ErrorUtil } = Common.util
+const { ErrorUtil, ModalUtil } = Common.util
 const { SimpleDialog, Dialog } = Common.components.modal
-const { ModalUtil } = Common.util
 
 const getNewAssessmentObject = assessmentId => ({
 	id: assessmentId,
@@ -132,7 +129,7 @@ class AssessmentStore extends Store {
 					onConfirm={this.onResumeAttemptConfirm.bind(this, unfinishedAttempt)}
 				>
 					<p>
-						It looks like you were in the middle of an attempt. We&amp;ll resume you where you left
+						It looks like you were in the middle of an attempt. We&apos;ll resume where you left
 						off.
 					</p>
 				</SimpleDialog>,
@@ -224,6 +221,11 @@ class AssessmentStore extends Store {
 			})
 	}
 
+	onCloseResultsDialog() {
+		ModalUtil.hide()
+		FocusUtil.focusOnNavTargetContent()
+	}
+
 	endAttempt(endAttemptResp, context) {
 		const assessId = endAttemptResp.assessmentId
 		const assessment = this.state.assessments[assessId]
@@ -257,7 +259,7 @@ class AssessmentStore extends Store {
 				buttons={[
 					{
 						value: `Show ${assessmentLabel} Overview`,
-						onClick: ModalUtil.hide,
+						onClick: this.onCloseResultsDialog.bind(this),
 						default: true
 					}
 				]}

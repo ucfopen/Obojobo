@@ -1,5 +1,5 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import Node from './editor-component'
 import Schema from './schema'

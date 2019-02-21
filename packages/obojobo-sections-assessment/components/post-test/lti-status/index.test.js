@@ -1,10 +1,12 @@
-import Viewer from 'Viewer'
-
-import React from 'react'
-import renderer from 'react-test-renderer'
-import { mount } from 'enzyme'
-
 import LTIStatus from './index'
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Viewer from 'Viewer'
+import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
+import { mount } from 'enzyme'
+import renderer from 'react-test-renderer'
+
+jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 
 const { LTINetworkStates, LTIResyncStates } = Viewer.stores.assessmentStore
 
@@ -167,5 +169,40 @@ describe('LTIStatus', () => {
 			.at(0)
 			.simulate('click')
 		expect(onClickResendScore).toHaveBeenCalled()
+	})
+
+	test('componentWillReceiveProps updates nextFocusEl', () => {
+		const component = mount(<LTIStatus />)
+		component.instance().getNextFocusTarget = jest.fn(() => 'mock-focus-target')
+		component.instance().getCurrentAndNextLTIStates = jest.fn()
+
+		expect(component.instance().nextFocusTarget).toBe(null)
+		component.instance().componentWillReceiveProps()
+		expect(component.instance().getNextFocusTarget).toHaveBeenCalledTimes(1)
+		expect(component.instance().nextFocusTarget).toBe('mock-focus-target')
+	})
+
+	test('componentDidUpdate calls focus', () => {
+		jest.spyOn(ReactDOM, 'findDOMNode')
+		ReactDOM.findDOMNode.mockReturnValueOnce('mock-dom-node')
+
+		const component = mount(<LTIStatus />)
+
+		component.instance().nextFocusTarget = null
+		component.instance().componentDidUpdate()
+		expect(focus).not.toHaveBeenCalled()
+		expect(component.instance().nextFocusTarget).toBe(null)
+
+		component.instance().nextFocusTarget = 'resyncFailed'
+		component.instance().componentDidUpdate()
+		expect(focus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledWith(component.instance().refs.resyncFailed)
+		expect(component.instance().nextFocusTarget).toBe(null)
+
+		component.instance().nextFocusTarget = 'component'
+		component.instance().componentDidUpdate()
+		expect(focus).toHaveBeenCalledTimes(2)
+		expect(focus).toHaveBeenCalledWith('mock-dom-node')
+		expect(component.instance().nextFocusTarget).toBe(null)
 	})
 })

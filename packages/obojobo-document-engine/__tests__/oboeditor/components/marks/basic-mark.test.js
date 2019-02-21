@@ -2,15 +2,15 @@ import markHotKey from '../../../../src/scripts/oboeditor/components/marks/basic
 
 describe('HotKey', () => {
 	test('HotKey registers a type and key', () => {
-		const keyDown = markHotKey({type: 'bold', key: 'B', render: () => 'a'})
+		const keyDown = markHotKey({ type: 'bold', key: 'B', render: () => 'a' })
 
 		const mockChange = {
 			toggleMark: jest.fn()
 		}
 
 		keyDown.onKeyDown({}, mockChange)
-		expect(keyDown.renderMark({ mark: {type: 'bold'} })).toMatchSnapshot()
-		expect(keyDown.renderMark({ mark: {type: 'fake'} })).toMatchSnapshot()
+		expect(keyDown.renderMark({ mark: { type: 'bold' } })).toMatchSnapshot()
+		expect(keyDown.renderMark({ mark: { type: 'fake' } })).toMatchSnapshot()
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})

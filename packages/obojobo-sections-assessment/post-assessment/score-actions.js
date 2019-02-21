@@ -1,4 +1,4 @@
-import Common from 'obojobo-document-engine/src/scripts/common/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const getParsedRange = Common.util.RangeParsing.getParsedRange
 const isValueInRange = Common.util.RangeParsing.isValueInRange

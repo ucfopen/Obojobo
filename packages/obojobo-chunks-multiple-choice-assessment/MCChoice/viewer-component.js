@@ -1,12 +1,11 @@
 import './viewer-component.scss'
 
+import { CSSTransition } from 'react-transition-group'
 import React from 'react'
-
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import Viewer from 'obojobo-document-engine/src/scripts/viewer/index'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/isornot'
 
-const { OboComponent } = Common.components
+const { OboComponent } = Viewer.components
 const { QuestionUtil } = Viewer.util
 
 const QUESTION_TYPE = 'ObojoboDraft.Chunks.Question'
@@ -15,6 +14,8 @@ const SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen'
 const COULD_HAVE_CHOSEN = 'could-have-chosen'
 const SHOULD_HAVE_CHOSEN = 'should-have-chosen'
 const UNCHOSEN_CORRECTLY = 'unchosen-correctly'
+
+const TRANSITION_TIME_MS = 800
 
 const getInputType = responseType => {
 	switch (responseType) {
@@ -27,7 +28,7 @@ const getInputType = responseType => {
 	}
 }
 
-const questionIsSelected = (questionState, model, navStateContext) => {
+const choiceIsSelected = (questionState, model, navStateContext) => {
 	const response = QuestionUtil.getResponse(
 		questionState,
 		model.getParentOfType(QUESTION_TYPE),
@@ -43,7 +44,7 @@ const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 	let score
 	if (mode === 'review') {
 		// no score data for this context? no idea what to do, throw an error
-		if (!questionState.scores[navStateContext]) throw 'Unkown Question State'
+		if (!questionState.scores[navStateContext]) throw 'Unknown Question State'
 
 		score = QuestionUtil.getScoreForModel(questionState, getQuestionModel(model), navStateContext)
 	} else {
@@ -52,7 +53,7 @@ const answerIsCorrect = (model, mode, questionState, navStateContext) => {
 	return score === 100
 }
 
-const renderAnsFlag = type => {
+const renderAnswerFlag = type => {
 	let flagEl
 
 	switch (type) {
@@ -65,10 +66,10 @@ const renderAnsFlag = type => {
 			flagEl = <p>Your Answer (Incorrect)</p>
 			break
 		case COULD_HAVE_CHOSEN:
-			flagEl = <p>Another Correct Answer</p>
+			flagEl = <p>Also Correct Answer</p>
 			break
 		case SHOULD_HAVE_CHOSEN:
-			flagEl = <p> Correct Answer </p>
+			flagEl = <p>Correct Answer</p>
 			break
 	}
 
@@ -98,6 +99,13 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	return UNCHOSEN_CORRECTLY
 }
 
+const getChoiceText = (isCorrect, isTypePickAll) => {
+	if (isTypePickAll && isCorrect) return 'A correct response:'
+	if (isTypePickAll && !isCorrect) return 'An incorrect response:'
+	if (!isTypePickAll && isCorrect) return 'Your correct response:'
+	/*if (!isTypePickAll && !isCorrect)*/ return 'Your incorrect response:'
+}
+
 const MCChoice = props => {
 	let isCorrect
 
@@ -115,17 +123,18 @@ const MCChoice = props => {
 		return <div />
 	}
 
-	const isSelected = questionIsSelected(
+	const isSelected = choiceIsSelected(
 		props.moduleData.questionState,
 		props.model,
 		props.moduleData.navState.context
 	)
 
 	const ansType = getAnsType(props.model, isCorrect, isSelected)
+	const inputType = getInputType(props.responseType)
 
 	let flag
 	if (props.mode === 'review') {
-		flag = renderAnsFlag(ansType)
+		flag = renderAnswerFlag(ansType)
 	}
 
 	const className =
@@ -140,28 +149,50 @@ const MCChoice = props => {
 			model={props.model}
 			moduleData={props.moduleData}
 			className={className}
-			data-choice-label={props.label}
+			tag="label"
 		>
 			<input
-				type={getInputType(props.responseType)}
+				type={inputType}
 				value={props.model.get('id')}
 				checked={isSelected}
+				onChange={() => {}} // for react to not complain
 				name={props.model.parent.get('id')}
+				role={inputType}
+				aria-checked={isSelected}
+				disabled={props.mode === 'review'}
 			/>
+			{isSelected && props.questionSubmitted && props.mode !== 'review' ? (
+				<span className="for-screen-reader-only">
+					{getChoiceText(isCorrect, props.responseType === 'pick-all')}
+				</span>
+			) : null}
 			<div className="children">
 				{props.model.children.map(child => {
 					const type = child.get('type')
-					const isAnswerItem = type === 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 					const id = child.get('id')
+					const Component = child.getComponentClass()
 
-					if (isAnswerItem) {
-						const Component = child.getComponentClass()
-						return (
-							<div key={id}>
-								{flag}
-								<Component key={id} model={child} moduleData={props.moduleData} />
-							</div>
-						)
+					switch (type) {
+						case 'ObojoboDraft.Chunks.MCAssessment.MCAnswer':
+							return (
+								<div key={id}>
+									{flag}
+									<Component key={id} model={child} moduleData={props.moduleData} />
+								</div>
+							)
+
+						case 'ObojoboDraft.Chunks.MCAssessment.MCFeedback':
+							return (
+								<CSSTransition key={id} classNames="feedback" timeout={TRANSITION_TIME_MS}>
+									{isSelected && props.questionSubmitted ? (
+										<div className="feedback">
+											<Component model={child} moduleData={props.moduleData} />
+										</div>
+									) : (
+										<span />
+									)}
+								</CSSTransition>
+							)
 					}
 
 					return null

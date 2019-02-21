@@ -2,11 +2,11 @@ import Common from 'Common'
 
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
+import FocusUtil from '../../viewer/util/focus-util'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
-const { FocusUtil } = Common.util
 
 class NavStore extends Store {
 	constructor() {
@@ -224,7 +224,7 @@ class NavStore extends Store {
 			navItem.showChildren = true
 		}
 
-		FocusUtil.unfocus()
+		FocusUtil.clearVisualFocus()
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
 		NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter')
@@ -255,7 +255,8 @@ class NavStore extends Store {
 				label: '',
 				path: '',
 				showChildren: true,
-				showChildrenOnNavigation: true
+				showChildrenOnNavigation: true,
+				parent: null
 			},
 			navItem
 		)
@@ -271,6 +272,7 @@ class NavStore extends Store {
 
 		for (const child of Array.from(model.children.models)) {
 			const childNavItem = this.generateNav(child, indent + '_')
+			childNavItem.parent = navItem
 			navItem.children.push(childNavItem)
 			childNavItem.fullPath = navItem.fullPath
 				.concat(childNavItem.fullPath)

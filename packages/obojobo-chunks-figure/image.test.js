@@ -1,24 +1,31 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import renderer from 'react-test-renderer'
+
 import Image from './image'
 
 describe('Image', () => {
 	let imageSm
-	let imageSmUrl
+	let imageSmNoUrl
+	let imageMed
+	let imageLarge
 	let imageCustom
 	let imageHeightOnly
 	let imageWidthOnly
+	let imageNoWidthNoHeight
+	const uuidUrl = '52727a4f-0970-4b2c-941a-ce8027078b40'
 	beforeEach(() => {
-		imageSm = <Image chunk={{ modelState: { size: 'small', alt: 'alt text' } }} />
-		imageSmUrl = <Image chunk={{ modelState: { url: 'url', size: 'small', alt: 'alt text' } }} />
+		imageSmNoUrl = <Image chunk={{ modelState: { size: 'small', alt: 'alt text' } }} />
+		imageSm = <Image chunk={{ modelState: { url: uuidUrl, size: 'small', alt: 'alt text' } }} />
+		imageMed = <Image chunk={{ modelState: { url: uuidUrl, size: 'medium', alt: 'alt text' } }} />
+		imageLarge = <Image chunk={{ modelState: { url: uuidUrl, size: 'large', alt: 'alt text' } }} />
 		imageCustom = (
 			<Image
 				chunk={{
 					modelState: {
-						url: 'url',
+						url: uuidUrl,
 						size: 'custom',
 						height: 100,
-						width: 100
+						width: 200
 					}
 				}}
 			/>
@@ -27,7 +34,7 @@ describe('Image', () => {
 			<Image
 				chunk={{
 					modelState: {
-						url: 'url',
+						url: uuidUrl,
 						size: 'custom',
 						height: 100
 					}
@@ -38,28 +45,54 @@ describe('Image', () => {
 			<Image
 				chunk={{
 					modelState: {
-						url: 'url',
+						url: uuidUrl,
 						size: 'custom',
 						width: 100
 					}
 				}}
 			/>
 		)
+		imageNoWidthNoHeight = (
+			<Image
+				chunk={{
+					modelState: {
+						url: uuidUrl,
+						size: 'custom'
+					}
+				}}
+			/>
+		)
 	})
-	test('Image component without error', () => {
-		expect(shallow(imageSm)).toMatchSnapshot()
+
+	test('Image component with no url', () => {
+		expect(renderer.create(imageSmNoUrl)).toMatchSnapshot()
 	})
-	test('Image component with a custom url of a preset size', () => {
-		expect(shallow(imageSmUrl)).toMatchSnapshot()
+
+	test('Small image component', () => {
+		expect(renderer.create(imageSm)).toMatchSnapshot()
+	})
+
+	test('Medium image component', () => {
+		expect(renderer.create(imageMed)).toMatchSnapshot()
+	})
+
+	test('Large image component', () => {
+		expect(renderer.create(imageLarge)).toMatchSnapshot()
 	})
 
 	test('Image component with a custom url of a custom size', () => {
-		expect(shallow(imageCustom)).toMatchSnapshot()
+		expect(renderer.create(imageCustom)).toMatchSnapshot()
 	})
+
 	test('Image component with height only', () => {
-		expect(shallow(imageHeightOnly)).toMatchSnapshot()
+		expect(renderer.create(imageHeightOnly)).toMatchSnapshot()
 	})
+
 	test('Image component with width only', () => {
-		expect(shallow(imageWidthOnly)).toMatchSnapshot()
+		expect(renderer.create(imageWidthOnly)).toMatchSnapshot()
+	})
+
+	test('Image component with no width and no height', () => {
+		expect(renderer.create(imageNoWidthNoHeight)).toMatchSnapshot()
 	})
 })

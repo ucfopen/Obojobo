@@ -1,7 +1,7 @@
-import adapter from './adapter'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import Viewer from 'obojobo-document-engine/src/scripts/viewer/index'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import ViewerComponent from './viewer-component'
+import adapter from './adapter'
 
 const { AssessmentUtil } = Viewer.util
 
@@ -10,11 +10,12 @@ Common.Registry.registerModel('ObojoboDraft.Sections.Assessment', {
 	componentClass: ViewerComponent,
 	type: 'section',
 	getNavItem(model) {
-		const title = model.title || 'Assessment'
+		const title = (model.title || 'Assessment').toString()
 
 		return {
 			type: 'link',
 			label: title,
+			contentType: 'Assessment Section',
 			path: [title.toLowerCase().replace(/ /g, '-')],
 			showChildren: false,
 			showChildrenOnNavigation: false

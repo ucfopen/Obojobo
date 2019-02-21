@@ -260,6 +260,10 @@ class OboModel extends Backbone.Model {
 		}
 	}
 
+	getDomId() {
+		return 'obo-' + this.get('id')
+	}
+
 	getDomEl() {
 		return DOMUtil.getComponentElementById(this.get('id'))
 	}

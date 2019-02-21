@@ -1,5 +1,3 @@
-const path = require('path')
-
 // Global for loading specialized Obojobo stuff
 // use oboRequire('models/draft') to load draft models from any context
 global.oboRequire = name => {
@@ -8,41 +6,55 @@ global.oboRequire = name => {
 
 global.validUUID = () => '00000000-0000-0000-0000-000000000000'
 
-jest.mock('fs')
-const fs = require('fs')
-const dbJson = {
-	test: {
-		host: 'hostVal',
-		port: 'portVal',
-		database: 'databaseVal',
-		user: 'userVal',
-		password: 'pwVal'
-	},
-	development: {
-		host: 'itsdev!'
+global.oboJestMockConfig = () => {
+	jest.mock('fs')
+	const path = require('path')
+	const fs = require('fs')
+	const dbJson = {
+		default: {
+			driver: 'driverVal',
+			host: 'hostVal',
+			port: 'portVal',
+			database: 'databaseVal',
+			user: 'userVal',
+			password: 'pwVal'
+		},
+		// adds a simple config for testing environment switching
+		development: {
+			host: 'itsdev!'
+		}
 	}
+
+	// get the actual empty.xml
+	const realFs = require.requireActual('fs')
+	const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
+	const configPath = path.resolve(__dirname, 'config')
+	const emptyXmlStream = realFs.readFileSync(emptyXmlPath)
+	fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(dbJson))
+	fs.__setMockFileContents(
+		configPath + '/lti.json',
+		'{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}'
+	)
+	fs.__setMockFileContents(
+		configPath + '/draft.json',
+		'{"test":{"excludeModules":["mockModule:mockExclude"]},"default":{"excludeModules":[]}}'
+	)
+	fs.__setMockFileContents(
+		configPath + '/permission_groups.json',
+		'{"test":{"canDoThing":["roleName"]}}'
+	)
+	fs.__setMockFileContents(
+		configPath + '/media.json',
+		'{"test":{"maxUploadSize":100000,"minImageSize": 10,"maxImageSize": 8000,"originalMediaTag":"original","presetDimensions":[]}}'
+	)
+	fs.__setMockFileContents(
+		configPath + '/general.json',
+		'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
+	)
+	fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
 }
 
-// get the actual empty.xml
-const realFs = require.requireActual('fs')
-const emptyXmlPath = path.resolve('../obojobo-document-engine/documents/empty.xml')
-const emptyXmlStream = realFs.readFileSync(emptyXmlPath)
-
-fs.__setMockFileContents(`${__dirname}/config/db.json`, JSON.stringify(dbJson))
-fs.__setMockFileContents(
-	`${__dirname}/config/lti.json`,
-	'{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}'
-)
-fs.__setMockFileContents(`${__dirname}/config/draft.json`, '{"test":{"paths":[]}}')
-fs.__setMockFileContents(
-	`${__dirname}/config/permission_groups.json`,
-	'{"test":{"canDoThing":["roleName"]}}'
-)
-fs.__setMockFileContents(
-	`${__dirname}/config/general.json`,
-	'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
-)
-fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
+global.oboJestMockConfig()
 
 // mockVirtual is used when you don't want jest to
 // acknowledge any existing mock in the system
