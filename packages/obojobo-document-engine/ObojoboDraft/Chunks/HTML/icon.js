@@ -2,25 +2,41 @@ import React from 'react'
 
 const Icon = () => {
 	return (
-		<svg
-			id="Layer_1"
-			data-name="Layer 1"
-			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 16.09 12.79"
-		>
-			<defs>
-				<style
-				>{`.cls-1{opacity:0.55;}.cls-2{fill:#231f20;}.cls-3{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;}`}</style>
-			</defs>
-			<title>insert-icon</title>
-			<g className="cls-1">
-				<rect className="cls-2" x="5.55" y="0.59" width="10.54" height="0.84" />
-				<rect className="cls-2" x="0.11" y="6.28" width="15.98" height="0.84" />
-				<rect className="cls-2" x="0.11" y="11.96" width="15.98" height="0.84" />
-				<polyline className="cls-3" points="0.5 0.5 2.98 2.38 0.5 4.27" />
-				<rect className="cls-2" x="5.55" y="3.43" width="10.54" height="0.84" />
-				<rect className="cls-2" x="0.11" y="9.12" width="15.98" height="0.84" />
-			</g>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+			<line
+				x1="4.94"
+				y1="9.07"
+				x2="27.06"
+				y2="9.07"
+				fill="none"
+				className="stroke"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+				strokeWidth="0.75"
+			/>
+			<path
+				d="M27.06,19.39V6.33A1.09,1.09,0,0,0,26,5.23H6a1.09,1.09,0,0,0-1.09,1.1V19.39"
+				fill="none"
+				className="stroke"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+			/>
+			<path
+				d="M7.91,25.52a.07.07,0,0,0-.08.07v1.93c0,.09,0,.13-.15.13H7c-.1,0-.12,0-.12-.12v-4.6c0-.08,0-.11.1-.11h.77c.06,0,.09,0,.09.11v1.74c0,.08,0,.11.09.11H9.64a.09.09,0,0,0,.09-.1V22.93c0-.07,0-.11.09-.11h.77c.06,0,.1,0,.1.11v4.6c0,.08,0,.12-.12.12H9.88c-.11,0-.15,0-.15-.13V25.59a.07.07,0,0,0-.08-.07Z"
+				className="fill"
+			/>
+			<path
+				d="M11.44,22.93a.1.1,0,0,1,.11-.11H15.2a.1.1,0,0,1,.11.11v.5c0,.07,0,.09-.1.09H14c-.05,0-.07,0-.07.07v3.95a.1.1,0,0,1-.1.11H13c-.06,0-.09,0-.09-.11V23.6c0-.06,0-.08-.08-.08h-1.3c-.07,0-.11,0-.11-.09Z"
+				className="fill"
+			/>
+			<path
+				d="M16.06,27.52V22.93c0-.08,0-.11.11-.11h1.1c.08,0,.11,0,.13.09L18.55,26c0,.07.06.07.09,0l1.11-3c0-.08.06-.13.13-.13H21c.06,0,.09,0,.09.11v4.58c0,.1,0,.14-.14.14h-.7c-.09,0-.12,0-.12-.12v-3.4c0-.05,0-.05,0,0l-1.24,3.41a.14.14,0,0,1-.13.1h-.46a.13.13,0,0,1-.14-.1L16.9,24.17c0-.06,0-.05,0,0v3.36c0,.08,0,.11-.11.11h-.55A.13.13,0,0,1,16.06,27.52Z"
+				className="fill"
+			/>
+			<path
+				d="M22.23,22.82H23c.06,0,.09,0,.09.11v3.92c0,.07,0,.08.07.08H25.3c.07,0,.11,0,.11.09v.53a.1.1,0,0,1-.11.1h-3c-.1,0-.12,0-.12-.12v-4.6C22.14,22.85,22.18,22.82,22.23,22.82Z"
+				className="fill"
+			/>
 		</svg>
 	)
 }
