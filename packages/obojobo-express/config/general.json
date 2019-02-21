@@ -18,6 +18,6 @@
 		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET"
 	},
 	"production": {
-		"cookieSecret": {"ENV": "OBO_COOKIE_SECRET"}
+		"cookieSecret": { "ENV": "OBO_COOKIE_SECRET" }
 	}
 }

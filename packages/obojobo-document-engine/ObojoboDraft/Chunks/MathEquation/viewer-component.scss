@@ -46,4 +46,11 @@
 			position: static;
 		}
 	}
+
+	.for-screen-reader-only {
+		right: inherit;
+		bottom: inherit;
+		left: 0;
+		top: 0;
+	}
 }

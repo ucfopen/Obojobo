@@ -1,5 +1,7 @@
 jest.mock('glob')
 jest.mock('../logger')
+const path = require('path')
+const configPath = path.resolve(__dirname + '/../config')
 
 describe('Get Installed Modules', () => {
 	let logger
@@ -43,7 +45,7 @@ describe('Get Installed Modules', () => {
 			]
 		}
 		fs.__setMockFileContents(
-			'./config/draft.json',
+			configPath + '/draft.json',
 			'{"test":{"excludeModules":' + excludeModules + '}}'
 		)
 		fs.__setMockFileContents('/node_modules/mockModule/obojobo.json', JSON.stringify(mockOboModule))
@@ -71,7 +73,7 @@ describe('Get Installed Modules', () => {
 	})
 
 	test('getInstalledModules runs without an error', () => {
-		fs.__setMockFileContents('./config/draft.json', '{"test1":{}}')
+		fs.__setMockFileContents(configPath + '/draft.json', '{"test1":{}}')
 		glob.sync.mockReturnValueOnce([])
 
 		const getInstalledModules = require('../obo_get_installed_modules')
@@ -81,7 +83,7 @@ describe('Get Installed Modules', () => {
 	})
 
 	test('getInstalledModules returns memoized values', () => {
-		fs.__setMockFileContents('./config/draft.json', '{"test2":{}}')
+		fs.__setMockFileContents(configPath + '/draft.json', '{"test2":{}}')
 		glob.sync.mockReturnValueOnce([])
 
 		const getInstalledModules = require('../obo_get_installed_modules')

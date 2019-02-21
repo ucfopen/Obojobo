@@ -1,11 +1,7 @@
 const Adapter = {
 	construct(model) {
 		model.setStateProp('choose', Infinity, p => parseInt(p, 10) || Infinity)
-		model.setStateProp('select', 'sequential', p => p, [
-			'sequential',
-			'random-all',
-			'random-unseen'
-		])
+		model.setStateProp('select', 'sequential', p => p, ['sequential', 'random', 'random-unseen'])
 	},
 
 	clone(model, clone) {

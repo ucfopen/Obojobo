@@ -17,7 +17,7 @@ class DropMenu extends React.Component {
 		this.timeOutId = null
 	}
 
-	openMenu(){
+	openMenu() {
 		this.setState({
 			isOpen: true,
 			currentFocus: 0
@@ -31,7 +31,7 @@ class DropMenu extends React.Component {
 		// accessed via up and down arrows
 		this.menu = []
 		this.props.dropOptions.forEach(item => {
-			if(item.isInsertable) this.menu.push(this[item.name])
+			if (item.isInsertable) this.menu.push(this[item.name])
 		})
 
 		// When the menu is open, focus on the current dropdown item
@@ -41,44 +41,36 @@ class DropMenu extends React.Component {
 	}
 
 	onKeyDown(event) {
-		if(event.key === 'Escape') {
-			event.preventDefault()
-			this.setState({
-				isOpen: false
-			})
-			this.mainButton.focus()
-		}
+		switch (event.key) {
+			case 'Escape':
+				event.preventDefault()
+				this.setState({
+					isOpen: false
+				})
+				this.mainButton.focus()
+				break
 
-		// Move right/up through the insert menu
-		if (event.key === 'ArrowRight') {
-			event.preventDefault()
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + 1) % this.menu.length
-			}))
-		}
+			// Move right/down through the insert menu
+			// Right is logical for sighted keyboard users; down is a standard
+			// navigation principle for submenus
+			case 'ArrowRight':
+			case 'ArrowDown':
+				event.preventDefault()
+				this.setState(currentState => ({
+					currentFocus: (currentState.currentFocus + 1) % this.menu.length
+				}))
+				break
 
-		// Move left/down through the insert menu
-		if (event.key === 'ArrowLeft') {
-			event.preventDefault()
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
-			}))
-		}
-
-		// Move left/down through the insert menu
-		if (event.key === 'ArrowDown') {
-			event.preventDefault()
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + 1) % this.menu.length
-			}))
-		}
-
-		// Move right/up through the insert menu
-		if (event.key === 'ArrowUp') {
-			event.preventDefault()
-			this.setState(currentState => ({
-				currentFocus: (currentState.currentFocus + this.menu.length  - 1) % this.menu.length
-			}))
+			// Move left/up through the insert menu
+			// Left is logical for sighted keyboard users; up is a standard
+			// navigation principle for submenus
+			case 'ArrowLeft':
+			case 'ArrowUp':
+				event.preventDefault()
+				this.setState(currentState => ({
+					currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
+				}))
+				break
 		}
 	}
 
@@ -108,8 +100,9 @@ class DropMenu extends React.Component {
 					}}
 					onClick={() => {
 						this.props.masterOnClick(item)
-					}}>
-					{Icon ? <Icon/> : item.name}
+					}}
+				>
+					{Icon ? <Icon /> : item.name}
 				</button>
 				<span>{item.name}</span>
 			</div>
@@ -119,22 +112,29 @@ class DropMenu extends React.Component {
 	render() {
 		return (
 			<div
-				className={'dropdown-menu ' + isOrNot(this.state.isOpen, 'open') + ' ' + this.props.className}
+				className={
+					'editor--component--insert-menu ' +
+					isOrNot(this.state.isOpen, 'open') +
+					' ' +
+					this.props.className
+				}
 				contentEditable={false}
 				onKeyDown={event => this.onKeyDown(event)}
 				onBlur={() => this.onBlurHandler()}
-				onFocus={() => this.onFocusHandler()}>
+				onFocus={() => this.onFocusHandler()}
+			>
 				<button
 					className={'drop-icon'}
 					ref={button => {
 						this.mainButton = button
 					}}
-					onClick={() => this.openMenu()}>
+					onClick={() => this.openMenu()}
+				>
 					{this.props.icon}
 				</button>
 				{this.props.dropOptions.map(item => {
-						return this.renderItem(item)
-					})}
+					return this.renderItem(item)
+				})}
 			</div>
 		)
 	}

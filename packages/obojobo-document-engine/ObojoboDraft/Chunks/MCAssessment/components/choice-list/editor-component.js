@@ -31,5 +31,4 @@ const ChoiceList = props => {
 	)
 }
 
-
 export default ChoiceList

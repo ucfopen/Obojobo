@@ -10,9 +10,9 @@ const Solution = props => {
 	}
 
 	return (
-		<div className={'solution-editor'}>
+		<div className="solution-editor">
 			{props.children}
-			<button className={'delete-node'} onClick={() => deleteNode()}>
+			<button className="editor--page-editor--delete-node-button" onClick={() => deleteNode()}>
 				X
 			</button>
 		</div>

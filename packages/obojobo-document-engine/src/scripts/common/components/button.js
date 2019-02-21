@@ -43,6 +43,8 @@ export default class Button extends React.Component {
 					onClick={this.props.onClick}
 					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
 					disabled={this.props.disabled || this.props.shouldPreventTab}
+					aria-label={this.props.ariaLabel}
+					aria-selected={this.props.ariaSelected}
 				>
 					{children}
 				</button>

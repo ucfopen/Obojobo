@@ -99,10 +99,10 @@ class Figure extends React.Component {
 		const content = this.props.node.data.get('content')
 		const isSelected = this.props.isSelected
 
-		let isCustom = false
+		const isCustom = content.size === 'custom'
 		const imgStyles = {}
 
-		if (content.size === 'custom') {
+		if (isCustom) {
 			if (content.width) {
 				imgStyles.width = content.width + 'px'
 			}
@@ -110,20 +110,14 @@ class Figure extends React.Component {
 			if (content.height) {
 				imgStyles.height = content.height + 'px'
 			}
-			isCustom = true
 		}
 
 		const hasImage = content.url && content.url.length !== 0
 		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
-			<div
-				className={`obojobo-draft--chunks--figure viewer ` + content.size}
-				ref={node => {
-					this.node = node
-				}}
-			>
-				<div className={'container'}>
+			<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
+				<div className="container">
 					{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
 					<div
 						className={

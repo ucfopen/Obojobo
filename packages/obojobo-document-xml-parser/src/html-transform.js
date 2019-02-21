@@ -114,6 +114,10 @@ let htmlTransform = (node) => {
 				break;
 
 			case 'figure':
+			// when there is no figcaption
+			// node.elements will be an empty array
+			// so img is not processed again later
+			let newElements = []
 				node.name = 'ObojoboDraft.Chunks.Figure'
 				for(let i in node.elements)
 				{
@@ -124,10 +128,11 @@ let htmlTransform = (node) => {
 							break;
 
 						case 'figcaption':
-							node.elements = createTextGroup(node.elements[i].elements);
+							newElements = createTextGroup(node.elements[i].elements);
 							break;
 					}
 				}
+				node.elements = newElements
 				if(!node.attributes.size) node.attributes.size = 'custom'
 				node.attributes.url = node.attributes.src
 				delete node.attributes.src

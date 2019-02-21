@@ -92,7 +92,7 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 			//
 			logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-			return lti.sendHighestAssessmentScore(user.id, draftDocument, attempt.assessmentId)
+			return lti.sendHighestAssessmentScore(user.id, draftDocument, attempt.assessmentId, isPreview)
 		})
 		.then(ltiRequestResult => {
 			logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
@@ -440,6 +440,7 @@ const loadAssessmentProperties = (draftTree, attempt, user, isPreview, attemptHi
 		id: attempt.assessmentId,
 		oboNode: assessmentNode,
 		nodeChildrenIds: assessmentNode.children[1].childrenSet,
+		questionBank: assessmentNode.children[1],
 		assessmentQBTree: assessmentNode.children[1].toObject(),
 		attemptHistory: attemptHistory,
 		numAttemptsTaken: null,
