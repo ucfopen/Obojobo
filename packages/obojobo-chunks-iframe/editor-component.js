@@ -57,7 +57,6 @@ class IFrame extends React.Component {
 			<div className={'obojobo-draft--chunks--iframe viewer'} style={wrapperStyle}>
 				<div style={maskStyle} />
 				<iframe
-					is
 					src={this.props.node.data.get('content').src}
 					frameBorder="0"
 					allowFullScreen="true"
