@@ -8,7 +8,7 @@ It doesn't modify any DOM focus and relies on the ViewerApp or OboNode component
 Additionally you can visually focus a component which will fade away all content except the
 component to focus on.
 
-The state has three values: `type`, `target`, `animateScroll` and `visualFocusTarget`
+The state has four possible values: `type`, `target`, `animateScroll` and `visualFocusTarget`
 
 *	`type` is the type of focus.
 *	`target` is the item to focus on.
