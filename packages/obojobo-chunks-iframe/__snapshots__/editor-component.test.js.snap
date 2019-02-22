@@ -30,7 +30,6 @@ exports[`IFrame Editor Node IFrame component 1`] = `
     <iframe
       allowFullScreen="true"
       frameBorder="0"
-      is={true}
     />
   </div>
 </div>

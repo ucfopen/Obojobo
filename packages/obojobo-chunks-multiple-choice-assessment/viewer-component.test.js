@@ -895,7 +895,7 @@ describe('MCAssessment', () => {
 		const parent = OboModel.create(questionJSON)
 		const model = parent.children.models[0]
 
-		QuestionUtil.isShowingExplanation.mockReturnValueOnce('mockShowing')
+		QuestionUtil.isShowingExplanation.mockReturnValue('mockShowing')
 
 		const component = shallow(
 			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />

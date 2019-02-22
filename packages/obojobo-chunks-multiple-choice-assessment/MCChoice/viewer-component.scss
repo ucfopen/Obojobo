@@ -23,57 +23,55 @@
 		margin-left: 0;
 		margin-right: 0;
 
-		> .feedback-container {
-			> .feedback {
-				border-radius: 0.25em;
-				margin-right: 1em;
+		> .feedback {
+			border-radius: 0.25em;
+			margin-right: 1em;
+			margin-bottom: 1em;
+			margin-left: 3em;
+			background: rgba(255, 255, 255, 0.5);
+
+			&.feedback-enter {
+				max-height: 0;
+				overflow: hidden;
+				opacity: 0;
+				margin-bottom: 0;
+			}
+
+			&.feedback-enter.feedback-enter-active {
+				max-height: 60em;
 				margin-bottom: 1em;
-				margin-left: 3em;
-				background: rgba(255, 255, 255, 0.5);
+				opacity: 1;
 
-				&.feedback-enter {
-					max-height: 0;
-					overflow: hidden;
-					opacity: 0;
-					margin-bottom: 0;
-				}
+				/* prettier-ignore */
+				transition:
+					max-height $duration-animation-default * 2,
+					margin-bottom $duration-animation-default * 2,
+					opacity $duration-animation-default * 2;
+			}
 
-				&.feedback-enter.feedback-enter-active {
-					max-height: 60em;
-					margin-bottom: 1em;
-					opacity: 1;
+			&.feedback-leave {
+				max-height: 60em;
+				margin-bottom: 1em;
+				overflow: hidden;
+				opacity: 1;
+			}
 
-					/* prettier-ignore */
-					transition:
-						max-height $duration-animation-default * 2,
-						margin-bottom $duration-animation-default * 2,
-						opacity $duration-animation-default * 2;
-				}
+			&.feedback-leave.feedback-exit-active {
+				max-height: 0;
+				margin-bottom: 0;
+				opacity: 0;
 
-				&.feedback-leave {
-					max-height: 60em;
-					margin-bottom: 1em;
-					overflow: hidden;
-					opacity: 1;
-				}
+				/* prettier-ignore */
+				transition:
+					max-height $duration-animation-default / 2,
+					margin-bottom $duration-animation-default / 2,
+					opacity $duration-animation-default / 2;
+			}
 
-				&.feedback-leave.feedback-exit-active {
-					max-height: 0;
-					margin-bottom: 0;
-					opacity: 0;
-
-					/* prettier-ignore */
-					transition:
-						max-height $duration-animation-default / 2,
-						margin-bottom $duration-animation-default / 2,
-						opacity $duration-animation-default / 2;
-				}
-
-				> .obojobo-draft--chunks--mc-assessment--mc-feedback {
-					padding-left: 0;
-					padding-right: 0;
-					margin-left: -0.4em;
-				}
+			> .obojobo-draft--chunks--mc-assessment--mc-feedback {
+				padding-left: 0;
+				padding-right: 0;
+				margin-left: -0.4em;
 			}
 		}
 	}

@@ -2,12 +2,15 @@
 
 exports[`MathEquation MathEquation component 1`] = `
 <div
+  aria-label="y=\\\\frac{1}{x}"
   className="component obojobo-draft--chunks--math-equation pad align-center"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.MathEquation"
   id="obo-id"
+  role="math"
+  tabIndex={-1}
 >
   <div
     className="non-editable-chunk"

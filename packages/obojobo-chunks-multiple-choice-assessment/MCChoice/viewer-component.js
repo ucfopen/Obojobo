@@ -183,7 +183,13 @@ const MCChoice = props => {
 
 						case 'ObojoboDraft.Chunks.MCAssessment.MCFeedback':
 							return (
-								<CSSTransition key={id} classNames="feedback" timeout={TRANSITION_TIME_MS}>
+								<CSSTransition
+									key={id}
+									in={isSelected && props.questionSubmitted}
+									classNames="feedback"
+									timeout={TRANSITION_TIME_MS}
+									>
+
 									{isSelected && props.questionSubmitted ? (
 										<div className="feedback">
 											<Component model={child} moduleData={props.moduleData} />

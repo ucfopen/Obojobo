@@ -6,6 +6,7 @@
 		"db:rebuild": "cd packages/obojobo-express && yarn db:rebuild",
 		"delete:node_modules": "rm -rf node_modules && rm -rf packages/*/node_modules",
 		"dev": "cd packages/obojobo-express && yarn dev",
+		"dev:docEngine": "concurrently \"yarn dev\" \" cd node_modules/obojobo-document-engine && yarn dev\"",
 		"lint": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn lint); done",
 		"lint:css": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn lint:css); done",
 		"lint:js": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn lint:js); done",
