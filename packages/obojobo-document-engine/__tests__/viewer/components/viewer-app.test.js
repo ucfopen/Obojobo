@@ -91,26 +91,6 @@ describe('ViewerApp', () => {
 		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('viewer:scrollTo calls ModalUtil', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			component.update()
-			const spy = jest.spyOn(ReactDOM, 'findDOMNode')
-			ReactDOM.findDOMNode.mockReturnValueOnce({ scrollTop: null })
-
-			Dispatcher.trigger('viewer:scrollTo', { value: null })
-
-			expect(ReactDOM.findDOMNode).toHaveBeenCalled()
-
-			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
 	test('ViewerApp component', done => {
 		expect.assertions(1)
 		mocksForMount()
@@ -518,21 +498,36 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('scrollToTop returns with no container', done => {
-		expect.assertions(1)
+	test('ViewerApp calls scrollToTop when event is heard', done => {
+		expect.assertions(10)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			const spy = jest.spyOn(ReactDOM, 'findDOMNode')
-			ReactDOM.findDOMNode.mockReturnValueOnce(null)
-			ReactDOM.findDOMNode.mockReturnValueOnce(null)
-
+			const spy = jest.spyOn(Common.Store, 'getTextForVariable')
 			component.update()
 
-			component.instance().scrollToTop()
+			component.instance().scrollToTop = jest.fn()
 
-			expect(ReactDOM.findDOMNode).toHaveBeenCalledTimes(2)
+			Dispatcher.trigger('viewer:scrollToTop')
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(1)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
+
+			Dispatcher.trigger('viewer:scrollToTop', {})
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(2)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
+
+			Dispatcher.trigger('viewer:scrollToTop', { value: {} })
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(3)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
+
+			Dispatcher.trigger('viewer:scrollToTop', { value: { animateScroll: false } })
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(4)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
+
+			Dispatcher.trigger('viewer:scrollToTop', { value: { animateScroll: true } })
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(5)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(true)
 
 			component.unmount()
 			spy.mockRestore()
@@ -540,33 +535,50 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('scrollToTop sets container.scrollTop', done => {
-		expect.assertions(1)
+	test('scrollToTop returns false if no Module dom element', done => {
+		expect.assertions(3)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
-
-		const mockEl = {
-			getBoundingClientRect: () => ({
-				height: 'mock-height'
-			})
-		}
-		const containerEl = {
-			scrollTop: 0
-		}
 
 		setTimeout(() => {
 			component.update()
 
-			const spy = jest.spyOn(ReactDOM, 'findDOMNode')
-			ReactDOM.findDOMNode.mockReturnValueOnce(mockEl)
-			ReactDOM.findDOMNode.mockReturnValueOnce(containerEl)
+			component.instance().state.model = null
+			expect(component.instance().scrollToTop()).toBe(false)
 
-			component.instance().scrollToTop()
+			component.instance().state.model = {}
+			expect(component.instance().scrollToTop()).toBe(false)
 
-			expect(containerEl.scrollTop).toBe('mock-height')
+			component.instance().state.model = { getDomEl: () => null }
+			expect(component.instance().scrollToTop()).toBe(false)
 
 			component.unmount()
-			spy.mockRestore()
+			done()
+		})
+	})
+
+	test('scrollToTop calls scrollIntoView on Module dom element', done => {
+		expect.assertions(4)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const mockScrollIntoView = jest.fn()
+			component.instance().state.model = {
+				getDomEl: () => ({
+					scrollIntoView: mockScrollIntoView
+				})
+			}
+
+			expect(component.instance().scrollToTop()).toBe(true)
+			expect(mockScrollIntoView).toHaveBeenCalledWith()
+
+			expect(component.instance().scrollToTop(true)).toBe(true)
+			expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+
+			component.unmount()
 			done()
 		})
 	})
@@ -1074,12 +1086,18 @@ describe('ViewerApp', () => {
 			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
 				type: 'component',
 				target: 'mock-id',
-				animateScroll: 'mock-animate-scroll'
+				options: {
+					animateScroll: 'mock-animate-scroll',
+					fade: false
+				}
 			})
 
 			// Expect updateDOMFocus to call focusComponent and return its value
 			expect(component.instance().updateDOMFocus()).toBe('mock-return-value')
-			expect(spy).toHaveBeenCalledWith('mock-model', 'mock-animate-scroll')
+			expect(spy).toHaveBeenCalledWith('mock-model', {
+				animateScroll: 'mock-animate-scroll',
+				fade: false
+			})
 
 			// Undo our mocks and spies
 			component.unmount()
@@ -1115,12 +1133,18 @@ describe('ViewerApp', () => {
 			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
 				type: 'navTarget',
 				target: 'mock-id',
-				animateScroll: 'mock-animate-scroll'
+				options: {
+					animateScroll: 'mock-animate-scroll',
+					fade: false
+				}
 			})
 
 			// Expect updateDOMFocus to call focusComponent and return its value
 			expect(component.instance().updateDOMFocus()).toBe('mock-return-value')
-			expect(spy).toHaveBeenCalledWith('mock-model', 'mock-animate-scroll')
+			expect(spy).toHaveBeenCalledWith('mock-model', {
+				animateScroll: 'mock-animate-scroll',
+				fade: false
+			})
 
 			// Undo our mocks and spies
 			component.unmount()
@@ -1296,6 +1320,7 @@ describe('ViewerApp', () => {
 					focusOnContent: mockFocusOnContent
 				})
 			}
+			const mockOpts = jest.fn()
 
 			// Force focus() to modify the container scrollTop value (to fake browser focus)
 			component.instance().refs.container.scrollTop = 0
@@ -1304,10 +1329,10 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().refs.container.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(component.instance().focusComponent(model, mockOpts)).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(0)
 			expect(mockFocusOnContent).toHaveBeenCalledTimes(1)
-			expect(mockFocusOnContent).toHaveBeenCalledWith(model)
+			expect(mockFocusOnContent).toHaveBeenCalledWith(model, mockOpts)
 			expect(mockScrollIntoView).not.toHaveBeenCalled()
 			expect(component.instance().refs.container.scrollTop).toBe(0)
 
@@ -1340,7 +1365,7 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().refs.container.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, true)).toBe(true)
+			expect(component.instance().focusComponent(model, { animateScroll: true })).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(1)
 			expect(focus).toHaveBeenCalledWith(mockDomEl)
 			expect(mockScrollIntoView).toHaveBeenCalledTimes(1)
@@ -1379,10 +1404,12 @@ describe('ViewerApp', () => {
 			})
 
 			expect(component.instance().refs.container.scrollTop).not.toBe(9999)
-			expect(component.instance().focusComponent(model, true)).toBe(true)
+			expect(component.instance().focusComponent(model, { animateScroll: true })).toBe(true)
 			expect(focus).toHaveBeenCalledTimes(0)
 			expect(mockFocusOnContent).toHaveBeenCalledTimes(1)
-			expect(mockFocusOnContent).toHaveBeenCalledWith(model)
+			expect(mockFocusOnContent).toHaveBeenCalledWith(model, {
+				animateScroll: true
+			})
 			expect(mockScrollIntoView).toHaveBeenCalledTimes(1)
 			expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
 			expect(component.instance().refs.container.scrollTop).toBe(0)

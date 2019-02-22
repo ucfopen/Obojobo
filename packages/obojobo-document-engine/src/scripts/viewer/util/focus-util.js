@@ -33,7 +33,10 @@ const FocusUtil = {
 		return {
 			type: state.type,
 			target: state.target,
-			animateScroll: state.animateScroll
+			options: {
+				animateScroll: state.animateScroll,
+				fade: state.visualFocusTarget === state.target
+			}
 		}
 	},
 

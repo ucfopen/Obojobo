@@ -110,23 +110,49 @@ describe('FocusUtil', () => {
 	})
 
 	test('getFocussedItem returns an object about the focussed item', () => {
-		const mockState = { type: 'mock-type', target: 'mock-target', animateScroll: false }
+		const mockState = {
+			type: 'mock-type',
+			target: 'mock-target',
+			animateScroll: false,
+			visualFocusTarget: 'mock-target'
+		}
 		expect(FocusUtil.getFocussedItem(mockState)).toEqual({
 			type: 'mock-type',
 			target: 'mock-target',
-			animateScroll: false
+			options: {
+				animateScroll: false,
+				fade: true
+			}
 		})
-		expect(mockState).toEqual({ type: 'mock-type', target: 'mock-target', animateScroll: false })
+		expect(mockState).toEqual({
+			type: 'mock-type',
+			target: 'mock-target',
+			animateScroll: false,
+			visualFocusTarget: 'mock-target'
+		})
 	})
 
-	test('getFocussedItemAndClear returns an object about the focussed item (but also clears the state at the same time)', () => {
-		const mockState = { type: 'mock-type', target: 'mock-target', animateScroll: false }
+	test('getFocussedItemAndClear returns an object about the focussed item (but also clears the state at the same time - except for visualFocusTarget)', () => {
+		const mockState = {
+			type: 'mock-type',
+			target: 'mock-target',
+			animateScroll: false,
+			visualFocusTarget: 'some-target'
+		}
 		expect(FocusUtil.getFocussedItemAndClear(mockState)).toEqual({
 			type: 'mock-type',
 			target: 'mock-target',
-			animateScroll: false
+			options: {
+				animateScroll: false,
+				fade: false
+			}
 		})
-		expect(mockState).toEqual({ type: null, target: null, animateScroll: false })
+		expect(mockState).toEqual({
+			type: null,
+			target: null,
+			animateScroll: false,
+			visualFocusTarget: 'some-target'
+		})
 	})
 
 	test('getVisuallyFocussedModel returns on OboModel of the component with visual focus', () => {

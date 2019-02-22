@@ -46,10 +46,9 @@ export default class ViewerApp extends React.Component {
 	constructor(props) {
 		super(props)
 
-		Dispatcher.on('viewer:scrollTo', payload => {
-			ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value
+		Dispatcher.on('viewer:scrollToTop', payload => {
+			this.scrollToTop(payload && payload.value ? payload.value.animateScroll : false)
 		})
-		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
 
 		const state = {
@@ -271,13 +270,13 @@ export default class ViewerApp extends React.Component {
 
 		switch (focussedItem.type) {
 			case FocusStore.TYPE_COMPONENT: {
-				return this.focusComponent(OboModel.models[focussedItem.target], focussedItem.animateScroll)
+				return this.focusComponent(OboModel.models[focussedItem.target], focussedItem.options)
 			}
 
 			case FocusStore.TYPE_NAV_TARGET: {
 				return this.focusComponent(
 					NavUtil.getNavTargetModel(this.state.navState),
-					focussedItem.animateScroll
+					focussedItem.options
 				)
 			}
 
@@ -305,7 +304,7 @@ export default class ViewerApp extends React.Component {
 		return false
 	}
 
-	focusComponent(model, animateScroll) {
+	focusComponent(model, opts) {
 		if (!model) return false
 
 		// Save the current scroll location since focus() will scroll the page (there is a
@@ -319,12 +318,12 @@ export default class ViewerApp extends React.Component {
 		const Component = model.getComponentClass ? model.getComponentClass() : null
 
 		if (Component && Component.focusOnContent) {
-			Component.focusOnContent(model)
+			Component.focusOnContent(model, opts)
 		} else {
 			focus(el)
 		}
 
-		if (animateScroll) {
+		if (opts.animateScroll) {
 			this.refs.container.scrollTop = currentScrollTop
 			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
 		}
@@ -366,18 +365,18 @@ export default class ViewerApp extends React.Component {
 		return (event.text = Common.Store.getTextForVariable(variable, textModel, this.state))
 	}
 
-	scrollToTop() {
-		const el = ReactDOM.findDOMNode(this.refs.prev)
-		const container = ReactDOM.findDOMNode(this.refs.container)
-
-		if (!container) return
-
-		if (el) {
-			container.scrollTop = el.getBoundingClientRect().height
-			return
+	scrollToTop(animateScroll = false) {
+		if (!this.state.model || !this.state.model.getDomEl || !this.state.model.getDomEl()) {
+			return false
 		}
 
-		container.scrollTop = 0
+		if (animateScroll) {
+			this.state.model.getDomEl().scrollIntoView({ behavior: 'smooth', block: 'start' })
+		} else {
+			this.state.model.getDomEl().scrollIntoView()
+		}
+
+		return true
 	}
 
 	// === NON REACT LIFECYCLE METHODS ===

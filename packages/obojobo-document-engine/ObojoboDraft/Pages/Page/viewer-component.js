@@ -2,19 +2,17 @@ import './viewer-component.scss'
 
 import React from 'react'
 
-import Common from 'Common'
 import Viewer from 'Viewer'
 
 const { OboComponent } = Viewer.components
-const { focus } = Common.page
-const { NavUtil } = Viewer.util
+const { NavUtil, FocusUtil } = Viewer.util
 
 export default class Page extends React.Component {
-	static focusOnContent(model) {
+	static focusOnContent(model, opts) {
 		const firstModel = model.children.at(0)
 		if (!firstModel) return
 
-		focus(firstModel.getDomEl())
+		FocusUtil.focusComponent(firstModel.get('id'), opts)
 	}
 
 	componentWillReceiveProps(nextProps) {

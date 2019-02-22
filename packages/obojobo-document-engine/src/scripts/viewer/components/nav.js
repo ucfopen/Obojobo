@@ -11,6 +11,7 @@ import FocusUtil from '../util/focus-util'
 const { StyleableText } = Common.text
 const { StyleableTextComponent } = Common.text
 const { Button } = Common.components
+const { Dispatcher } = Common.flux
 
 const getLabelTextFromLabel = label => {
 	if (!label) return ''
@@ -20,11 +21,23 @@ const getLabelTextFromLabel = label => {
 export default class Nav extends React.Component {
 	onClick(item) {
 		switch (item.type) {
-			case 'link':
+			case 'link': {
 				if (!NavUtil.canNavigate(this.props.navState)) return
-				NavUtil.gotoPath(item.fullPath)
-				FocusUtil.focusOnNavigation()
+
+				const navTargetId = NavUtil.getNavTarget(this.props.navState).id
+
+				// If clicking on the section link for a section you're already on then simply
+				// scroll page to the top, otherwise navigate to that section
+				if (navTargetId === item.id) {
+					Dispatcher.trigger('viewer:scrollToTop', {
+						value: { animateScroll: true }
+					})
+				} else {
+					NavUtil.gotoPath(item.fullPath)
+					FocusUtil.focusOnNavigation()
+				}
 				break
+			}
 
 			case 'sub-link': {
 				FocusUtil.focusComponent(item.id, { animateScroll: true })

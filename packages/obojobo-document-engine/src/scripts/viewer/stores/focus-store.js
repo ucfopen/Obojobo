@@ -63,6 +63,7 @@ class FocusStore extends Store {
 		this.state.type = type
 		this.state.target = target
 		this.state.animateScroll = !!animateScroll
+		this.state.visualFocusTarget = null
 	}
 
 	_focusOnNavTarget() {

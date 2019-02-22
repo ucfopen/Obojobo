@@ -4,12 +4,12 @@ import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
 
 jest.mock('../../../../src/scripts/viewer/util/nav-util')
-jest.mock('../../../../src/scripts/common/page/focus')
+jest.mock('../../../../src/scripts/viewer/util/focus-util')
 
 import Page from '../../../../ObojoboDraft/Pages/Page/viewer-component'
 import OboModel from '../../../../__mocks__/_obo-model-with-chunks'
 import NavUtil from '../../../../src/scripts/viewer/util/nav-util'
-import focus from '../../../../src/scripts/common/page/focus'
+import FocusUtil from '../../../../src/scripts/viewer/util/focus-util'
 
 describe('Page', () => {
 	beforeEach(() => {
@@ -98,26 +98,26 @@ describe('Page', () => {
 		expect(NavUtil.setFlag).toHaveBeenCalledWith('mockId', 'visited', true)
 	})
 
-	test("focusOnContent calls focus on the first child model's DOM element", () => {
-		const mockDomEl = jest.fn()
+	test("focusOnContent calls FocusUtil.focusComponent on the first child's model", () => {
 		const model = {
 			children: {
 				at: () => ({
-					getDomEl: () => mockDomEl
+					get: () => 'mock-id'
 				})
 			}
 		}
+		const mockOpts = jest.fn()
 
-		expect(focus).not.toHaveBeenCalled()
-		Page.focusOnContent(model)
-		expect(focus).toHaveBeenCalledWith(mockDomEl)
+		expect(FocusUtil.focusComponent).not.toHaveBeenCalled()
+		Page.focusOnContent(model, mockOpts)
+		expect(FocusUtil.focusComponent).toHaveBeenCalledWith('mock-id', mockOpts)
 	})
 
 	test('focusOnContent does nothing if no child models exist', () => {
 		const model = { children: { at: () => null } }
 
-		expect(focus).not.toHaveBeenCalled()
+		expect(FocusUtil.focusComponent).not.toHaveBeenCalled()
 		Page.focusOnContent(model)
-		expect(focus).not.toHaveBeenCalled()
+		expect(FocusUtil.focusComponent).not.toHaveBeenCalled()
 	})
 })
