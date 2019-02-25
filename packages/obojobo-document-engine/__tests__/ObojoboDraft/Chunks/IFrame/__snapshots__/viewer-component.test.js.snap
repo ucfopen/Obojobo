@@ -23,6 +23,7 @@ exports[`IFrame IFrame component renders 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -48,6 +49,7 @@ exports[`IFrame IFrame component renders 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -85,6 +87,7 @@ exports[`IFrame IFrame component renders 2`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -110,6 +113,7 @@ exports[`IFrame IFrame component renders 2`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -147,6 +151,7 @@ exports[`IFrame IFrame component renders 3`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -172,6 +177,7 @@ exports[`IFrame IFrame component renders 3`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -209,6 +215,7 @@ exports[`IFrame IFrame component renders 4`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -234,6 +241,7 @@ exports[`IFrame IFrame component renders 4`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -271,6 +279,7 @@ exports[`IFrame IFrame component renders 5`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -296,6 +305,7 @@ exports[`IFrame IFrame component renders 5`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -333,6 +343,7 @@ exports[`IFrame IFrame component renders 6`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -358,6 +369,7 @@ exports[`IFrame IFrame component renders 6`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -417,6 +429,7 @@ exports[`IFrame IFrame component renders 7`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -472,6 +485,7 @@ exports[`IFrame IFrame component renders 8`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -527,6 +541,7 @@ exports[`IFrame IFrame component renders 9`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -582,6 +597,7 @@ exports[`IFrame IFrame component renders 10`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -637,6 +653,7 @@ exports[`IFrame IFrame component renders 11`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -692,6 +709,7 @@ exports[`IFrame IFrame component renders 12`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -725,6 +743,7 @@ exports[`IFrame IFrame component renders 13`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -750,6 +769,7 @@ exports[`IFrame IFrame component renders 13`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -787,6 +807,7 @@ exports[`IFrame IFrame component renders 14`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -812,6 +833,7 @@ exports[`IFrame IFrame component renders 14`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -849,6 +871,7 @@ exports[`IFrame IFrame component renders 15`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -874,6 +897,7 @@ exports[`IFrame IFrame component renders 15`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -911,6 +935,7 @@ exports[`IFrame IFrame component renders 16`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -936,6 +961,7 @@ exports[`IFrame IFrame component renders 16`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -973,6 +999,7 @@ exports[`IFrame IFrame component renders 17`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -998,6 +1025,7 @@ exports[`IFrame IFrame component renders 17`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -1035,6 +1063,7 @@ exports[`IFrame IFrame component renders 18`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the beginning of this embedded content. Click to skip to the end.
@@ -1060,6 +1089,7 @@ exports[`IFrame IFrame component renders 18`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           You are at the end of this embedded content. Click to skip to the beginning.
@@ -1119,6 +1149,7 @@ exports[`IFrame IFrame component renders 19`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -1174,6 +1205,7 @@ exports[`IFrame IFrame component renders 20`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -1229,6 +1261,7 @@ exports[`IFrame IFrame component renders 21`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -1284,6 +1317,7 @@ exports[`IFrame IFrame component renders 22`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -1339,6 +1373,7 @@ exports[`IFrame IFrame component renders 23`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>
@@ -1394,6 +1429,7 @@ exports[`IFrame IFrame component renders 24`] = `
         >
           <button
             aria-label="Click to load external content"
+            className="button"
           >
             View Content
           </button>

@@ -33,6 +33,7 @@ exports[`FullReview FullReview component with attempt 1`] = `
           <button
             aria-label="Attempt undefined"
             aria-selected={true}
+            className="button"
             onClick={[Function]}
           />
         </div>
@@ -61,6 +62,7 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
           <button
             aria-label="Attempt undefined"
             aria-selected={true}
+            className="button"
             onClick={[Function]}
           />
         </div>
@@ -89,6 +91,7 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
           <button
             aria-label="Attempt undefined"
             aria-selected={true}
+            className="button"
             onClick={[Function]}
           />
         </div>
@@ -117,6 +120,7 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
           <button
             aria-label="Attempt undefined"
             aria-selected={true}
+            className="button"
             onClick={[Function]}
           />
         </div>
@@ -333,6 +337,7 @@ exports[`FullReview FullReview component with non-passing attempt 1`] = `
           <button
             aria-label="Attempt undefined"
             aria-selected={true}
+            className="button"
             onClick={[Function]}
           />
         </div>
@@ -361,6 +366,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
           <button
             aria-label="Attempt undefined"
             aria-selected={false}
+            className="button"
             onClick={[Function]}
           />
         </div>
@@ -374,6 +380,7 @@ exports[`FullReview FullReview component with two attempts 1`] = `
           <button
             aria-label="Attempt undefined"
             aria-selected={true}
+            className="button"
             onClick={[Function]}
           />
         </div>

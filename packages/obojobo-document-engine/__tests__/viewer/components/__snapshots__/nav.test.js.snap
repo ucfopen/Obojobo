@@ -11,6 +11,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      className="button"
       disabled={true}
       onClick={[Function]}
     >
@@ -134,6 +135,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      className="button"
       disabled={true}
       onClick={[Function]}
     >
@@ -278,6 +280,7 @@ exports[`Nav renders closed 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      className="button"
       onClick={[Function]}
     >
       Skip Navigation
@@ -312,6 +315,7 @@ exports[`Nav renders opened 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      className="button"
       disabled={true}
       onClick={[Function]}
     >
@@ -347,6 +351,7 @@ exports[`Nav renders unlocked 1`] = `
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center skip-nav-button"
   >
     <button
+      className="button"
       disabled={true}
       onClick={[Function]}
     >

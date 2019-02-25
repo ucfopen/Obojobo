@@ -16,6 +16,17 @@ const plugins = {
 				return <Node {...props} {...props.attributes} />
 		}
 	},
+	renderPlaceholder(props) {
+		const { node } = props
+		if (node.object !== 'block' || node.type !== BUTTON_NODE) return
+		if (node.text !== '') return
+
+		return (
+			<span className={'placeholder align-center'} contentEditable={false}>
+				{'Your Label Here'}
+			</span>
+		)
+	},
 	schema: Schema
 }
 

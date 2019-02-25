@@ -1,32 +1,51 @@
+import TextUtil from '../../../src/scripts/oboeditor/util/text-util'
+
 const slateToObo = node => {
 	const content = node.data.get('content')
+
 	const actions = content.actions.map(action => ({
 		type: action.type,
 		value: action.value === '' ? {} : JSON.parse(action.value)
 	}))
+	content.triggers = [
+		{
+			type: 'onClick',
+			actions
+		}
+	]
+
+	const labelLine = {
+		text: { value: node.text, styleList: [] },
+		data: null
+	}
+	node.nodes.forEach(text => {
+		TextUtil.slateToOboText(text, labelLine)
+	})
+	content.textGroup = [labelLine]
 
 	return {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content: {
-			label: content.label || '',
-			triggers: [
-				{
-					type: 'onClick',
-					actions
-				}
-			]
-		}
+		content
 	}
 }
 
 const oboToSlate = node => {
-	let label = node.content.label
-	if (!label && node.content.textGroup) {
-		node.content.textGroup.forEach(line => {
-			label = line.text.value
-		})
+	let nodes
+	if (!node.content.textGroup) {
+		// If there is currently no caption, add one
+		nodes = [
+			{
+				object: 'text',
+				leaves: [{ text: node.content.label }]
+			}
+		]
+	} else {
+		nodes = node.content.textGroup.map(line => ({
+			object: 'text',
+			leaves: TextUtil.parseMarkings(line)
+		}))
 	}
 
 	let actions = []
@@ -43,10 +62,10 @@ const oboToSlate = node => {
 		type: node.type,
 		data: {
 			content: {
-				label,
 				actions
 			}
-		}
+		},
+		nodes
 	}
 }
 

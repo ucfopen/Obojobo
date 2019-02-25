@@ -1,3 +1,5 @@
+jest.mock('src/scripts/oboeditor/util/text-util')
+
 import Converter from 'ObojoboDraft/Chunks/ActionButton/converter'
 
 describe('ActionButton Converter', () => {
@@ -9,18 +11,28 @@ describe('ActionButton Converter', () => {
 				get: () => {
 					return {
 						actions: [
-							{
-								type: 'mockType',
-								value: ''
-							},
-							{
-								type: 'mockOtherType',
-								value: '{"id": "mockId"}'
-							}
+							{ type: 'mockType', value: '{"id":"mockId"}' },
+							{ type: 'mockType', value: '' }
 						]
 					}
 				}
-			}
+			},
+			text: 'mockText',
+			nodes: [
+				{
+					leaves: [
+						{
+							text: 'mockText',
+							marks: [
+								{
+									type: 'b',
+									data: {}
+								}
+							]
+						}
+					]
+				}
+			]
 		}
 		const oboNode = Converter.slateToObo(slateNode)
 

@@ -7,7 +7,9 @@ exports[`MCAssessmentExplanation MCAssessmentExplanation renders with isShowingE
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
   >
-    <button>
+    <button
+      className="button"
+    >
       Read an explanation of the answer
     </button>
   </div>
@@ -22,7 +24,9 @@ exports[`MCAssessmentExplanation MCAssessmentExplanation renders with isShowingE
   <div
     className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
   >
-    <button>
+    <button
+      className="button"
+    >
       Hide Explanation
     </button>
   </div>

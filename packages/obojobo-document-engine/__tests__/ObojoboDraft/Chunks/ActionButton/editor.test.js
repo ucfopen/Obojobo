@@ -17,4 +17,45 @@ describe('ActionButton editor', () => {
 
 		expect(ActionButton.plugins.renderNode(props)).toMatchSnapshot()
 	})
+
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			ActionButton.plugins.renderPlaceholder({
+				node: {
+					object: 'text'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			ActionButton.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: 'mockType'
+				}
+			})
+		).toMatchSnapshot()
+
+		expect(
+			ActionButton.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: BUTTON_NODE,
+					text: 'Some text'
+				}
+			})
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			ActionButton.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: BUTTON_NODE,
+					text: ''
+				}
+			})
+		).toMatchSnapshot()
+	})
 })

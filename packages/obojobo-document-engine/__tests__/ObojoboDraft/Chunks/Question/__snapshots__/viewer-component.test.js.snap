@@ -74,6 +74,7 @@ exports[`MCAssessment Question component 1`] = `
               >
                 <button
                   aria-label="Try Question Again"
+                  className="button"
                   onClick={[Function]}
                 >
                   Try Again
@@ -99,6 +100,7 @@ exports[`MCAssessment Question component 1`] = `
                 className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
               >
                 <button
+                  className="button"
                   onClick={[Function]}
                 >
                   Read an explanation of the answer
@@ -119,6 +121,7 @@ exports[`MCAssessment Question component 1`] = `
       >
         <button
           aria-label="Try Question"
+          className="button"
           disabled={true}
         >
           Try Question
@@ -203,6 +206,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
               >
                 <button
                   aria-label="Try Question Again"
+                  className="button"
                   onClick={[Function]}
                 >
                   Try Again
@@ -228,6 +232,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
                 className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
               >
                 <button
+                  className="button"
                   onClick={[Function]}
                 >
                   Read an explanation of the answer
@@ -248,6 +253,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
       >
         <button
           aria-label="Try Question"
+          className="button"
           disabled={true}
         >
           Try Question
@@ -332,6 +338,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
               >
                 <button
                   aria-label="Try Question Again"
+                  className="button"
                   onClick={[Function]}
                 >
                   Try Again
@@ -357,6 +364,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
                 className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
               >
                 <button
+                  className="button"
                   onClick={[Function]}
                 >
                   Read an explanation of the answer
@@ -377,6 +385,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
       >
         <button
           aria-label="Try Question"
+          className="button"
           disabled={true}
         >
           Try Question
@@ -461,6 +470,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
               >
                 <button
                   aria-label="Try Question Again"
+                  className="button"
                   onClick={[Function]}
                 >
                   Try Again
@@ -486,6 +496,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
                 className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
               >
                 <button
+                  className="button"
                   onClick={[Function]}
                 >
                   Read an explanation of the answer
@@ -506,6 +517,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
       >
         <button
           aria-label="Try Question"
+          className="button"
           disabled={true}
         >
           Try Question
@@ -601,6 +613,7 @@ exports[`MCAssessment Question component in review mode 1`] = `
                 className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
               >
                 <button
+                  className="button"
                   onClick={[Function]}
                 >
                   Read an explanation of the answer
@@ -621,6 +634,7 @@ exports[`MCAssessment Question component in review mode 1`] = `
       >
         <button
           aria-label="Start Question NaN of undefined"
+          className="button"
           disabled={true}
         >
           Start Question

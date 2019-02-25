@@ -1,0 +1,86 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--action-button {
+	position: relative;
+
+	.button {
+		min-width: 10em;
+		display: inline-block;
+	}
+
+	.trigger-box {
+		position: absolute;
+		text-align: center;
+		border-radius: $dimension-rounded-radius;
+		font-size: 0.75em;
+		top: 4.5em;
+		left: 50%;
+		transform: translate(-50%, 0);
+		font-family: $font-default;
+		box-shadow: 0 1px 1px $color-shadow;
+		padding: 1em;
+		box-sizing: border-box;
+		min-height: 2.5em;
+		z-index: 5;
+		background: $color-bg;
+		border: 1px solid lighten($color-action, 9%);
+		width: 25em;
+
+		@mixin point() {
+			content: ' ';
+			position: absolute;
+			left: 50%;
+			transform: translate(-50%, -110%) rotate(45deg);
+			width: 1.72em;
+			height: 1.72em;
+			border-radius: $dimension-rounded-radius 0;
+		}
+
+		&::before {
+			$color-obo-border: lighten($color-action, 9%);
+
+			@include point();
+
+			background: $color-bg;
+			border-style: solid;
+			border-color: $color-obo-border;
+			border-width: 1px 0 0 1px;
+		}
+
+		&::after {
+			@include point();
+		}
+
+		.trigger {
+			padding-left: 2em;
+			padding-right: 2em;
+			padding-bottom: 0.5em;
+			margin-bottom: 1em;
+			border: 1px solid lighten($color-action, 9%);
+			border-radius: 0.2em;
+			position: relative;
+			display: inline-block;
+			width: 80%;
+
+			.delete-button {
+				position: absolute;
+				right: 0;
+				top: 0;
+				transform: translate(50%, -50%);
+				z-index: 3;
+
+				button {
+					font-size: 1.2em;
+					padding: 0;
+					min-width: 1.4em;
+					border-radius: 50%;
+				}
+			}
+
+			> span {
+				display: inline;
+				padding: 0.5em;
+			}
+		}
+	}
+}

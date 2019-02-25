@@ -45,6 +45,27 @@
 		}
 	}
 
+	.footer-menu {
+		text-align: center;
+		position: fixed;
+		bottom: 0;
+		z-index: 999;
+		margin: 0 auto;
+		padding-right: 3em;
+		padding-left: 3em;
+		left: $dimension-nav-menu;
+		right: 0;
+		background-color: $color-bg2;
+		border-top: 1px solid $color-shadow;
+
+		.exporter {
+			font-size: inherit;
+			background: $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			color: $color-bg;
+		}
+	}
+
 	.dropdown {
 		position: absolute;
 		right: 3em;

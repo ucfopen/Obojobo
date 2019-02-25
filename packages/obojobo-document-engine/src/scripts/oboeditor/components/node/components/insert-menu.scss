@@ -2,7 +2,7 @@
 
 .editor--component--insert-menu {
 	position: absolute;
-	z-index: 2;
+	z-index: 999;
 
 	&.align-left {
 		left: 0;
@@ -26,7 +26,6 @@
 	.insert-button {
 		position: relative;
 		display: none;
-		z-index: 99;
 		background-color: $color-bg;
 
 		span {
