@@ -4,6 +4,9 @@ import renderer from 'react-test-renderer'
 
 import MathEquation from 'ObojoboDraft/Chunks/MathEquation/editor-component'
 
+import ModalUtil from 'src/scripts/common/util/modal-util'
+jest.mock('src/scripts/common/util/modal-util')
+
 describe('MathEquation Editor Node', () => {
 	test('MathEquation component', () => {
 		const component = renderer.create(
@@ -11,7 +14,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: '1' }
+							return { latex: null }
 						}
 					}
 				}}
@@ -28,7 +31,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: null }
+							return { latex: 'x_0_0' }
 						}
 					}
 				}}
@@ -56,85 +59,50 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component changes input', () => {
-		const change = {
-			setNodeByKey: jest.fn()
-		}
-
+	test('MathEquation component edits properties', () => {
 		const component = mount(
 			<MathEquation
 				node={{
 					data: {
 						get: () => {
-							return {}
+							return { latex: '1', label: '1.1' }
 						}
 					}
-				}}
-				isFocused={true}
-				isSelected={true}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
 				}}
 			/>
 		)
 		const tree = component.html()
 
 		component
-			.find('input')
+			.find('button')
 			.at(0)
-			.simulate('click', {
-				stopPropagation: () => true
-			})
+			.simulate('click')
 
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', {
-				target: { value: 'mockInput' }
-			})
-
+		expect(ModalUtil.show).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component changes label', () => {
-		const change = {
-			setNodeByKey: jest.fn()
-		}
-
+	test('MathEquation component edits properties', () => {
 		const component = mount(
 			<MathEquation
 				node={{
 					data: {
 						get: () => {
-							return {}
+							return { latex: '1', label: '' }
 						}
 					}
 				}}
-				isFocused={true}
-				isSelected={true}
 				editor={{
-					value: { change: () => change },
+					value: {
+						change: () => ({ setNodeByKey: jest.fn() })
+					},
 					onChange: jest.fn()
 				}}
 			/>
 		)
-		const tree = component.html()
 
-		component
-			.find('input')
-			.at(1)
-			.simulate('click', {
-				stopPropagation: () => true
-			})
+		component.instance().changeProperties({ mockProperties: 'mock value' })
 
-		component
-			.find('input')
-			.at(1)
-			.simulate('change', {
-				target: { value: 'mockInput' }
-			})
-
-		expect(tree).toMatchSnapshot()
+		expect(ModalUtil.hide).toHaveBeenCalled()
 	})
 })

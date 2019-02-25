@@ -91,7 +91,7 @@ const allowedActions = {
 	}
 }
 
-class ImageProperties extends React.Component {
+class AddActionModal extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -188,4 +188,4 @@ class ImageProperties extends React.Component {
 	}
 }
 
-export default ImageProperties
+export default AddActionModal

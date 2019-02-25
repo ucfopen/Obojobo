@@ -228,7 +228,7 @@ describe('ActionButton Properties Modal', () => {
 		expect(onConfirm).toHaveBeenCalled()
 	})
 
-	test('ImageProperties component focuses on first element', () => {
+	test('AddActionModal component focuses on first element', () => {
 		const component = mount(<AddActionModal content={{}} />)
 
 		component.instance().focusOnFirstElement()
