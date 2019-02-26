@@ -1,8 +1,6 @@
-import React from 'react'
-
 import Common from 'Common'
-
 import { FOCUS_ON_ASSESSMENT_CONTENT } from '../../assessment-event-constants'
+import React from 'react'
 
 const Dispatcher = Common.flux.Dispatcher
 
@@ -12,7 +10,7 @@ class AssessmentPreTest extends React.Component {
 		this.boundFocusOnContent = this.focusOnContent.bind(this)
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		Dispatcher.on(FOCUS_ON_ASSESSMENT_CONTENT, this.boundFocusOnContent)
 	}
 

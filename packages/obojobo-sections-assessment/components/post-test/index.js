@@ -1,25 +1,25 @@
-import React from 'react'
-
 import Common from 'Common'
-import Viewer from 'Viewer'
-
 import { FOCUS_ON_ASSESSMENT_CONTENT } from '../../assessment-event-constants'
+import FullReview from '../full-review'
+import LTIStatus from './lti-status'
+import React from 'react'
+import Viewer from 'Viewer'
 
 const { OboModel } = Common.models
 const { focus } = Common.page
 const { AssessmentUtil, NavUtil } = Viewer.util
 const { Dispatcher } = Common.flux
 
-import LTIStatus from './lti-status'
-import FullReview from '../full-review'
-
 class AssessmentPostTest extends React.Component {
 	constructor() {
 		super()
 		this.boundFocusOnContent = this.focusOnContent.bind(this)
+
+		this.h1Ref = React.createRef()
+		this.ltiStatusRef = React.createRef()
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		Dispatcher.on(FOCUS_ON_ASSESSMENT_CONTENT, this.boundFocusOnContent)
 	}
 
@@ -28,7 +28,7 @@ class AssessmentPostTest extends React.Component {
 	}
 
 	focusOnContent() {
-		focus(this.refs.h1)
+		focus(this.h1Ref)
 	}
 
 	render() {
@@ -92,7 +92,7 @@ class AssessmentPostTest extends React.Component {
 		return (
 			<div className="score unlock">
 				<div className="overview">
-					<h1 ref="h1" tabIndex="-1">
+					<h1 ref={this.h1Ref} tabIndex="-1">
 						{assessmentLabel} Overview
 					</h1>
 					{assessmentScore === null ? (
@@ -114,7 +114,7 @@ class AssessmentPostTest extends React.Component {
 					)}
 
 					<LTIStatus
-						ref="ltiStatus"
+						ref={this.ltiStatusRef}
 						ltiState={ltiState}
 						isPreviewing={props.moduleData.isPreviewing}
 						externalSystemLabel={externalSystemLabel}

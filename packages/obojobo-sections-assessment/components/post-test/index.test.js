@@ -520,12 +520,11 @@ describe('PostTest', () => {
 	})
 
 	test('focusOnContent calls focus on the h1', () => {
-		const mockH1Ref = {}
 		const postTest = new PostTest()
-		postTest.refs = { h1: mockH1Ref }
+		postTest.h1Ref = 'mockH1Ref'
 
 		postTest.focusOnContent()
 
-		expect(focus).toHaveBeenCalledWith(mockH1Ref)
+		expect(focus).toHaveBeenCalledWith('mockH1Ref')
 	})
 })

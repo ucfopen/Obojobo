@@ -1,15 +1,14 @@
+import AssessmentUtil from 'obojobo-document-engine/src/scripts/viewer/util/assessment-util'
+import FullReview from './index'
+import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import React from 'react'
-import renderer from 'react-test-renderer'
 import { mount } from 'enzyme'
+import renderer from 'react-test-renderer'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/assessment/assessment-score-reporter')
-
-import FullReview from './index'
-import AssessmentUtil from 'obojobo-document-engine/src/scripts/viewer/util/assessment-util'
-import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
-import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
 // register the modules required for this test
 require('../../viewer')
@@ -220,13 +219,16 @@ describe('FullReview', () => {
 		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({
+			attemptId: 'mockAttemptId'
+		})
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([{ id: 'mockId' }])
 		// mock attempt taken
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
 			{
 				attemptId: 'mockAttemptId',
+				attemptNumber: 3,
 				assessmentScore: 80,
 				attemptScore: 80.34,
 				finishTime: '2018-06-05 20:28:11.228294+00',
@@ -263,6 +265,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
 			{
 				attemptId: 'mockAttemptId',
+				attemptNumber: 3,
 				assessmentScore: 80,
 				attemptScore: 80.34,
 				finishTime: '2018-06-05 20:28:11.228294+00',
@@ -291,13 +294,18 @@ describe('FullReview', () => {
 		const model = OboModel.create(assessmentJSON)
 
 		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({
+			attemptId: 'lastAttemptMockAttemptId'
+		})
 		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([])
+		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([
+			{ id: 'highestMockAttemptId' }
+		])
 		// mock attempt taken
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
 			{
-				attemptId: 'mockAttemptId',
+				attemptId: 'mockAttemptId_1',
+				attemptNumber: 3,
 				assessmentScore: 80,
 				attemptScore: 80.34,
 				finishTime: '2018-06-05 20:28:11.228294+00',
@@ -335,6 +343,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
 			{
 				attemptId: 'mockAttemptId',
+				attemptNumber: 3,
 				assessmentScore: null, // student did not pass
 				attemptScore: 80.34,
 				finishTime: '2018-06-05 20:28:11.228294+00',
@@ -359,6 +368,7 @@ describe('FullReview', () => {
 		const model = OboModel.create(assessmentJSON)
 		const mockAttempt = {
 			attemptId: 'mockAttemptId',
+			attemptNumber: 3,
 			assessmentScore: 80.34,
 			attemptScore: 80.34,
 			finishTime: '2018-06-05 20:28:11.228294+00',
@@ -397,6 +407,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
 			{
 				attemptId: 'mockAttemptId',
+				attemptNumber: 3,
 				assessmentScore: 80,
 				attemptScore: 80.34,
 				finishTime: '2018-06-05 20:28:11.228294+00',
@@ -444,7 +455,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
 			{
 				attemptId: 'mockAttemptId',
-				attemptNumber: 1,
+				attemptNumber: 3,
 				assessmentScore: 80,
 				attemptScore: 80.34,
 				finishTime: '2018-06-05 20:28:11.228294+00',
