@@ -1,5 +1,8 @@
 import { Block } from 'slate'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -18,7 +21,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						// If we are missing the last node,
 						// it should be a MCAssessment
 						if (index === node.nodes.size) {
@@ -71,7 +74,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: PAGE_NODE
 						})

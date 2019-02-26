@@ -1,5 +1,7 @@
 import { Block } from 'slate'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
@@ -35,7 +37,7 @@ const schema = {
 							data: { content: { type: type, bulletStyle: bulletList[0] } }
 						})
 					}
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: LIST_LEVEL_NODE,
 							data: { content: { type: type, bulletStyle: bulletList[0] } }
@@ -68,7 +70,7 @@ const schema = {
 							})
 							.moveToStartOfNextText()
 					}
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create(LIST_LINE_NODE)
 						return editor.insertNodeByKey(node.key, index, block)
 					}

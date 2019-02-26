@@ -1,7 +1,9 @@
 import { Block } from 'slate'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
+import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
 const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
@@ -23,7 +25,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create({
 								type: CHOICE_LIST_NODE
@@ -62,7 +64,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: MCCHOICE_NODE,
 							data: { content: { score: 0 } }
@@ -89,7 +91,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({

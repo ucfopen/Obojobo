@@ -1,6 +1,8 @@
 import { Block } from 'slate'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
+import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 const schema = {
@@ -27,7 +29,7 @@ const schema = {
 							data: { content: { indent: 0 } }
 						})
 					}
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: CODE_LINE_NODE,
 							data: { content: { indent: 0 } }

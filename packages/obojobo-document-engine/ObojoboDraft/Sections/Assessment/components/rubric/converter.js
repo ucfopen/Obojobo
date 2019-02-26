@@ -5,9 +5,10 @@ const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
 const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'
 
 const slateToObo = node => {
-	const json = {}
-	json.type = 'pass-fail'
-	json.mods = []
+	const json = {
+		type: 'pass-fail',
+		mods: []
+	}
 
 	node.nodes.forEach(parameter => {
 		if (parameter.type === MOD_LIST_NODE) {
@@ -30,41 +31,28 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
-	const json = {}
-	json.object = 'block'
-	json.type = RUBRIC_NODE
-	json.data = { content: node }
-
-	json.nodes = []
-
-	json.nodes.push(
+	const nodes = [
 		ParameterNode.helpers.oboToSlate({
 			name: 'passingAttemptScore',
 			value: node.passingAttemptScore,
 			display: 'Passing Score'
-		})
-	)
-	json.nodes.push(
+		}),
 		ParameterNode.helpers.oboToSlate({
 			name: 'passedResult',
 			value: node.passedResult,
 			display: 'Passed Result'
-		})
-	)
-	json.nodes.push(
+		}),
 		ParameterNode.helpers.oboToSlate({
 			name: 'failedResult',
 			value: node.failedResult,
 			display: 'Failed Result'
-		})
-	)
-	json.nodes.push(
+		}),
 		ParameterNode.helpers.oboToSlate({
 			name: 'unableToPassResult',
 			value: node.unableToPassResult,
 			display: 'Unable to Pass Result'
 		})
-	)
+	]
 
 	if (node.mods) {
 		const modList = {
@@ -98,9 +86,15 @@ const oboToSlate = node => {
 			modList.nodes.push(slateMod)
 		})
 
-		json.nodes.push(modList)
+		nodes.push(modList)
 	}
-	return json
+
+	return {
+		object: 'block',
+		type: RUBRIC_NODE,
+		data: { content: node },
+		nodes
+	}
 }
 
 export default { slateToObo, oboToSlate }

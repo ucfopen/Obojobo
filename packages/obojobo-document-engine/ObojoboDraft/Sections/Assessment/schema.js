@@ -1,13 +1,15 @@
 import { Block } from 'slate'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
+import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
-import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
 
 const schema = {
 	blocks: {
@@ -22,7 +24,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						let block
 						switch (index) {
 							case 0:
@@ -78,7 +80,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({

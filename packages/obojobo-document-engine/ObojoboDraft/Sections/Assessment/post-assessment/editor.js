@@ -1,15 +1,17 @@
 /* eslint no-alert: 0 */
 import React from 'react'
 import { Block } from 'slate'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import Page from '../../../Pages/Page/editor'
+import SchemaViolations from '../../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 // A single score action
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 // The whole array of score actions
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
-import Page from '../../../Pages/Page/editor'
 
 class Score extends React.Component {
 	constructor(props) {
@@ -129,7 +131,7 @@ const plugins = {
 				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
-						case 'child_min_invalid': {
+						case CHILD_MIN_INVALID: {
 							const block = Block.create({
 								type: SCORE_NODE,
 								data: { for: '[0,100]' }
@@ -150,7 +152,7 @@ const plugins = {
 				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
-						case 'child_min_invalid': {
+						case CHILD_MIN_INVALID: {
 							const block = Block.create({
 								type: PAGE_NODE
 							})

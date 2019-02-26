@@ -1,5 +1,8 @@
 import { Block } from 'slate'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
@@ -33,7 +36,7 @@ const schema = {
 							data: { content: { header } }
 						})
 					}
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: TABLE_ROW_NODE,
 							data: { content: { header } }
@@ -70,7 +73,7 @@ const schema = {
 							data: { content: { header } }
 						})
 					}
-					case 'child_min_invalid': {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: TABLE_CELL_NODE,
 							data: { content: { header } }
