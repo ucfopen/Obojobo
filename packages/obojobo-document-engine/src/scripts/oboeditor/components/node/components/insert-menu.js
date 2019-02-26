@@ -104,7 +104,7 @@ class DropMenu extends React.Component {
 				>
 					{Icon ? <Icon /> : item.name}
 				</button>
-				<span>{item.name}</span>
+				<span>+ {item.name}</span>
 			</div>
 		)
 	}
