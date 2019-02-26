@@ -35,6 +35,7 @@
 			top: 0;
 			transform: translate(50%, -50%);
 			z-index: 3;
+
 			button {
 				font-size: 1.2em;
 				padding: 0;
@@ -44,12 +45,14 @@
 		}
 	}
 
-	.range-edit{
+	.range-edit {
+		$range-edit-background: #00000000;
+
 		transform: scaleX(-1);
 		display: inline;
 		font-size: 1.5em;
 		color: $color-action;
-		background-color: #0000;
+		background-color: $range-edit-background;
 		border: none;
 
 		&:hover {

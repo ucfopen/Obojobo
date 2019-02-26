@@ -59,15 +59,16 @@
 			box-sizing: border-box;
 
 			&:focus {
+				opacity: 1;
 				background: lighten($color-action, 48%);
-
-				+ span {
-					opacity: 1;
-				}
 			}
 
 			&:hover {
-				background: lighten($color-action, 48%);
+				opacity: 1;
+
+				button {
+					background: lighten($color-action, 48%);
+				}
 			}
 		}
 	}
