@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`YouTube Editor Node YouTube builds the expected component 1`] = `
+<div
+  className="obojobo-draft--chunks--you-tube viewer pad"
+>
+  <div
+    className="empty-frame"
+  >
+    <div>
+      No Video Id.
+    </div>
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center"
+  >
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      Edit
+    </button>
+  </div>
+</div>
+`;
+
+exports[`YouTube Editor Node YouTube component changes input 1`] = `"<div class=\\"obojobo-draft--chunks--you-tube viewer pad\\"><iframe src=\\"https://www.youtube.com/embed/mockId\\" frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Edit</button></div></div>"`;
