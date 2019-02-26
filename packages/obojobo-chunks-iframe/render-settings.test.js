@@ -12,7 +12,7 @@ import {
 	getRenderSettings
 } from './render-settings'
 
-import MediaUtil from '../../../../src/scripts/viewer/util/media-util'
+import MediaUtil from 'obojobo-document-engine/src/scripts/viewer/util/media-util'
 
 describe('render-settings', () => {
 	test('getIsShowing', () => {

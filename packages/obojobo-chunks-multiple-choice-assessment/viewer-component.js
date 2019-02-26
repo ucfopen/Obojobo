@@ -306,9 +306,9 @@ export default class MCAssessment extends React.Component {
 
 	isShowingExplanationButton() {
 		const isAnswerScored = this.getScore() !== null
-		const solution = this.props.model.parent.modelState.solution
+		const hasSolution = this.props.model.parent.modelState.solution !== null
 
-		return isAnswerScored && solution
+		return isAnswerScored && hasSolution
 	}
 
 	isShowingExplanation() {
@@ -335,8 +335,8 @@ export default class MCAssessment extends React.Component {
 	render() {
 		const responseType = this.props.model.modelState.responseType
 		const isTypePickAll = responseType === 'pick-all'
-		const isShowingExplanation = this.isShowingExplanation()
-		const isShowingExplanationButton = this.isShowingExplanationButton()
+		const isShowingExplanationValue = this.isShowingExplanation()
+		const isShowingExplanationButtonValue = this.isShowingExplanationButton()
 		const score = this.getScore()
 		const sortedChoiceModels = this.getSortedChoiceModels()
 		const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
@@ -348,7 +348,7 @@ export default class MCAssessment extends React.Component {
 			` is-response-type-${this.props.model.modelState.responseType}` +
 			` is-mode-${this.props.mode}` +
 			isOrNot(score === 100, 'correct') +
-			isOrNot(isShowingExplanation, 'showing-explanation') +
+			isOrNot(isShowingExplanationValue, 'showing-explanation') +
 			isOrNot(score !== null, 'scored')
 
 		return (
@@ -390,13 +390,17 @@ export default class MCAssessment extends React.Component {
 							onClickReset={this.onClickReset}
 						/>
 					) : null}
-					<CSSTransition classNames="submit" timeout={ANIMATION_TRANSITION_TIME_MS}>
-						{isShowingExplanationButton ? (
+					<CSSTransition
+						in={isShowingExplanationButtonValue}
+						classNames="solution"
+						timeout={ANIMATION_TRANSITION_TIME_MS}
+						>
+						{isShowingExplanationButtonValue ? (
 							<MCAssessmentExplanation
 								ref={component => {
 									this.refExplanation = component
 								}}
-								isShowingExplanation={isShowingExplanation}
+								isShowingExplanation={isShowingExplanationValue}
 								solutionModel={this.props.model.parent.modelState.solution}
 								moduleData={this.props.moduleData}
 								animationTransitionTime={ANIMATION_TRANSITION_TIME_MS}

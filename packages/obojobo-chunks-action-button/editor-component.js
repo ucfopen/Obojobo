@@ -2,7 +2,7 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const isOrNot = Common.util.isOrNot
 

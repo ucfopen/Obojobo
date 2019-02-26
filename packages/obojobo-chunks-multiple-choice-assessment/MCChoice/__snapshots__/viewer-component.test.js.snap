@@ -15,6 +15,7 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
     checked={false}
     disabled={false}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice1"
@@ -61,9 +62,7 @@ exports[`MCChoice viewer-component MCChoice component 1`] = `
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -83,6 +82,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
     checked={true}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice1"
@@ -136,9 +136,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - chosen co
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -158,6 +156,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
     checked={false}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice1"
@@ -211,9 +210,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - could hav
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -233,6 +230,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
     checked={false}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice1"
@@ -286,9 +284,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should ha
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -308,6 +304,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
     checked={false}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice2"
@@ -355,9 +352,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - should no
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -377,6 +372,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
     checked={false}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice2"
@@ -424,9 +420,7 @@ exports[`MCChoice viewer-component MCChoice component in review mode - unchosen 
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -448,6 +442,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
     checked={true}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="checkbox"
     type="checkbox"
     value="choice1"
@@ -501,9 +496,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -523,6 +516,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
     checked={false}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="checkbox"
     type="checkbox"
     value="choice1"
@@ -576,9 +570,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -598,6 +590,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
     checked={true}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="checkbox"
     type="checkbox"
     value="choice2"
@@ -651,9 +644,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -673,6 +664,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
     checked={false}
     disabled={true}
     name="id"
+    onChange={[Function]}
     role="checkbox"
     type="checkbox"
     value="choice2"
@@ -720,9 +712,7 @@ exports[`MCChoice viewer-component MCChoice component pick-all in review mode - 
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -742,6 +732,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
     checked={false}
     disabled={false}
     name="id"
+    onChange={[Function]}
     role="checkbox"
     type="checkbox"
     value="choice1"
@@ -788,9 +779,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-all 1`] = `
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -810,6 +799,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
     checked={false}
     disabled={false}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice1"
@@ -856,9 +846,7 @@ exports[`MCChoice viewer-component MCChoice component type pick-one-multiple-cor
         </div>
       </div>
     </div>
-    <div
-      className="feedback-container"
-    />
+    <span />
   </div>
 </label>
 `;
@@ -878,6 +866,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
     checked={true}
     disabled={false}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice1"
@@ -930,51 +919,47 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
       </div>
     </div>
     <div
-      className="feedback-container"
+      className="feedback"
     >
       <div
-        className="feedback"
+        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
+        data-focussed={false}
+        data-id="choice1-feedback"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
+        id="obo-choice1-feedback"
+        tabIndex={-1}
       >
+        <span
+          className="for-screen-reader-only"
+        >
+          . Feedback for this answer choice:
+        </span>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
+          className="component"
           data-focussed={false}
-          data-id="choice1-feedback"
+          data-id="choice1-feedback-text"
           data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-          id="obo-choice1-feedback"
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-choice1-feedback-text"
           tabIndex={-1}
         >
-          <span
-            className="for-screen-reader-only"
-          >
-            . Feedback for this answer choice:
-          </span>
           <div
-            className="component"
-            data-focussed={false}
-            data-id="choice1-feedback-text"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.Text"
-            id="obo-choice1-feedback-text"
-            tabIndex={-1}
+            className="text-chunk obojobo-draft--chunks--single-text pad"
           >
-            <div
-              className="text-chunk obojobo-draft--chunks--single-text pad"
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
             >
-              <span
-                className="text align-left"
-                data-group-index={0}
-                data-indent={0}
-              >
+              <span>
                 <span>
                   <span>
-                    <span>
-                      Example Text 2
-                    </span>
+                    Example Text 2
                   </span>
                 </span>
               </span>
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -998,6 +983,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
     checked={true}
     disabled={false}
     name="id"
+    onChange={[Function]}
     role="radio"
     type="radio"
     value="choice2"
@@ -1050,51 +1036,47 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Not 
       </div>
     </div>
     <div
-      className="feedback-container"
+      className="feedback"
     >
       <div
-        className="feedback"
+        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
+        data-focussed={false}
+        data-id="choice2-feedback"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
+        id="obo-choice2-feedback"
+        tabIndex={-1}
       >
+        <span
+          className="for-screen-reader-only"
+        >
+          . Feedback for this answer choice:
+        </span>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
+          className="component"
           data-focussed={false}
-          data-id="choice2-feedback"
+          data-id="choice1-feedback-text"
           data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-          id="obo-choice2-feedback"
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-choice1-feedback-text"
           tabIndex={-1}
         >
-          <span
-            className="for-screen-reader-only"
-          >
-            . Feedback for this answer choice:
-          </span>
           <div
-            className="component"
-            data-focussed={false}
-            data-id="choice1-feedback-text"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.Text"
-            id="obo-choice1-feedback-text"
-            tabIndex={-1}
+            className="text-chunk obojobo-draft--chunks--single-text pad"
           >
-            <div
-              className="text-chunk obojobo-draft--chunks--single-text pad"
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
             >
-              <span
-                className="text align-left"
-                data-group-index={0}
-                data-indent={0}
-              >
+              <span>
                 <span>
                   <span>
-                    <span>
-                      Example Text 4
-                    </span>
+                    Example Text 4
                   </span>
                 </span>
               </span>
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -1118,6 +1100,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
     checked={true}
     disabled={false}
     name="id"
+    onChange={[Function]}
     role="checkbox"
     type="checkbox"
     value="choice1"
@@ -1170,51 +1153,47 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
       </div>
     </div>
     <div
-      className="feedback-container"
+      className="feedback"
     >
       <div
-        className="feedback"
+        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
+        data-focussed={false}
+        data-id="choice1-feedback"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
+        id="obo-choice1-feedback"
+        tabIndex={-1}
       >
+        <span
+          className="for-screen-reader-only"
+        >
+          . Feedback for this answer choice:
+        </span>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
+          className="component"
           data-focussed={false}
-          data-id="choice1-feedback"
+          data-id="choice1-feedback-text"
           data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-          id="obo-choice1-feedback"
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-choice1-feedback-text"
           tabIndex={-1}
         >
-          <span
-            className="for-screen-reader-only"
-          >
-            . Feedback for this answer choice:
-          </span>
           <div
-            className="component"
-            data-focussed={false}
-            data-id="choice1-feedback-text"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.Text"
-            id="obo-choice1-feedback-text"
-            tabIndex={-1}
+            className="text-chunk obojobo-draft--chunks--single-text pad"
           >
-            <div
-              className="text-chunk obojobo-draft--chunks--single-text pad"
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
             >
-              <span
-                className="text align-left"
-                data-group-index={0}
-                data-indent={0}
-              >
+              <span>
                 <span>
                   <span>
-                    <span>
-                      Example Text 2
-                    </span>
+                    Example Text 2
                   </span>
                 </span>
               </span>
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -1238,6 +1217,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
     checked={true}
     disabled={false}
     name="id"
+    onChange={[Function]}
     role="checkbox"
     type="checkbox"
     value="choice2"
@@ -1290,51 +1270,47 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
       </div>
     </div>
     <div
-      className="feedback-container"
+      className="feedback"
     >
       <div
-        className="feedback"
+        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
+        data-focussed={false}
+        data-id="choice2-feedback"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
+        id="obo-choice2-feedback"
+        tabIndex={-1}
       >
+        <span
+          className="for-screen-reader-only"
+        >
+          . Feedback for this answer choice:
+        </span>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-not-correct-feedback"
+          className="component"
           data-focussed={false}
-          data-id="choice2-feedback"
+          data-id="choice1-feedback-text"
           data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-          id="obo-choice2-feedback"
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-choice1-feedback-text"
           tabIndex={-1}
         >
-          <span
-            className="for-screen-reader-only"
-          >
-            . Feedback for this answer choice:
-          </span>
           <div
-            className="component"
-            data-focussed={false}
-            data-id="choice1-feedback-text"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.Text"
-            id="obo-choice1-feedback-text"
-            tabIndex={-1}
+            className="text-chunk obojobo-draft--chunks--single-text pad"
           >
-            <div
-              className="text-chunk obojobo-draft--chunks--single-text pad"
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
             >
-              <span
-                className="text align-left"
-                data-group-index={0}
-                data-indent={0}
-              >
+              <span>
                 <span>
                   <span>
-                    <span>
-                      Example Text 4
-                    </span>
+                    Example Text 4
                   </span>
                 </span>
               </span>
-            </div>
+            </span>
           </div>
         </div>
       </div>
@@ -1358,6 +1334,7 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] =
     checked={true}
     disabled={false}
     name="id"
+    onChange={[Function]}
     role="checkbox"
     type="checkbox"
     value="choice1"
@@ -1410,51 +1387,47 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] =
       </div>
     </div>
     <div
-      className="feedback-container"
+      className="feedback"
     >
       <div
-        className="feedback"
+        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
+        data-focussed={false}
+        data-id="choice1-feedback"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
+        id="obo-choice1-feedback"
+        tabIndex={-1}
       >
+        <span
+          className="for-screen-reader-only"
+        >
+          . Feedback for this answer choice:
+        </span>
         <div
-          className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
+          className="component"
           data-focussed={false}
-          data-id="choice1-feedback"
+          data-id="choice1-feedback-text"
           data-obo-component={true}
-          data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
-          id="obo-choice1-feedback"
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-choice1-feedback-text"
           tabIndex={-1}
         >
-          <span
-            className="for-screen-reader-only"
-          >
-            . Feedback for this answer choice:
-          </span>
           <div
-            className="component"
-            data-focussed={false}
-            data-id="choice1-feedback-text"
-            data-obo-component={true}
-            data-type="ObojoboDraft.Chunks.Text"
-            id="obo-choice1-feedback-text"
-            tabIndex={-1}
+            className="text-chunk obojobo-draft--chunks--single-text pad"
           >
-            <div
-              className="text-chunk obojobo-draft--chunks--single-text pad"
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
             >
-              <span
-                className="text align-left"
-                data-group-index={0}
-                data-indent={0}
-              >
+              <span>
                 <span>
                   <span>
-                    <span>
-                      Example Text 2
-                    </span>
+                    Example Text 2
                   </span>
                 </span>
               </span>
-            </div>
+            </span>
           </div>
         </div>
       </div>

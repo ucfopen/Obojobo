@@ -35,7 +35,11 @@ export default class MCAssessmentExplanation extends React.Component {
 						value="Read an explanation of the answer"
 					/>
 				)}
-				<CSSTransition classNames="solution" timeout={this.props.animationTransitionTime}>
+				<CSSTransition
+					in={isShowingExplanation}
+					classNames="solution"
+					timeout={this.props.animationTransitionTime}
+					>
 					{isShowingExplanation ? (
 						<div
 							ref={node => {

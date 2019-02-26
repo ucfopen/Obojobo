@@ -187,13 +187,13 @@
 			}
 		}
 
-		&.submit-enter {
+		&.solution-enter {
 			opacity: 0;
 			max-height: 0;
 			overflow: hidden;
 		}
 
-		&.submit-enter.submit-enter-active {
+		&.solution-enter.solution-enter-active {
 			opacity: 1;
 			max-height: 16em;
 
@@ -204,13 +204,13 @@
 			// transition-delay: $duration-animation-default * 2;
 		}
 
-		&.submit-leave {
+		&.solution-leave {
 			opacity: 1;
 			max-height: 16em;
 			overflow: hidden;
 		}
 
-		&.submit-leave.submit-exit-active {
+		&.solution-leave.solution-exit-active {
 			opacity: 0;
 			max-height: 0;
 
