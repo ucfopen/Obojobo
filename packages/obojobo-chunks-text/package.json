@@ -59,6 +59,8 @@
 		"coverageReporters": ["text", "lcov"],
 		"coveragePathIgnorePatterns": ["setupTests.js", "node_modules"],
 		"moduleNameMapper": {
+			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",
+			"^Viewer(.*)$": "obojobo-document-engine/src/scripts/viewer$1",
 			"\\.(svg|scss)$": "<rootDir>/__mocks__/ignore-file-stub.js"
 		},
 		"coverageThreshold": {
