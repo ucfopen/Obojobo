@@ -33,7 +33,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       label4
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
@@ -44,7 +44,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       </button>
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
@@ -66,7 +66,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       </button>
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
@@ -84,7 +84,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       </button>
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
@@ -93,7 +93,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
       />
     </li>
     <li
-      className="link is-selected is-visited is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      className="link is-selected is-complete is-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
@@ -198,7 +198,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
       />
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
@@ -219,7 +219,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
       />
     </li>
     <li
-      className="link is-not-selected is-not-visited is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
+      className="link is-not-selected is-not-complete is-not-correct is-not-assessment is-not-first-in-list is-not-last-in-list"
       onClick={[Function]}
     >
       <button
