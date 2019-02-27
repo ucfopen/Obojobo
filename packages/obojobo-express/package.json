@@ -1,5 +1,6 @@
 {
 	"name": "obojobo-express",
+	"license": "AGPL-3.0-only",
 	"version": "3.4.0",
 	"private": true,
 	"scripts": {

@@ -1,6 +1,7 @@
 {
 	"name": "obojobo-chunks-multiple-choice-assessment",
 	"version": "1.0.0",
+	"license": "AGPL-3.0-only",
 	"description": "MCAssessment chunk for Obojobo",
 	"scripts": {
 		"test": "TZ='America/New_York' jest --verbose",
