@@ -19,19 +19,6 @@ window.Backbone = require('backbone')
 window.katex = require('katex')
 
 jest.mock('fs')
-const fs = require('fs')
-const dbJson = {
-	test: {
-		host: 'hostVal',
-		port: 'portVal',
-		database: 'databaseVal',
-		user: 'userVal',
-		password: 'pwVal'
-	},
-	development: {
-		host: 'itsdev!'
-	}
-}
 
 global.mockStaticDate = () => {
 	const RealDate = Date
