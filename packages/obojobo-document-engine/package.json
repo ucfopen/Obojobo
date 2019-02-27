@@ -107,8 +107,8 @@
 		"moduleNameMapper": {
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
 			"^Viewer(.*)$": "<rootDir>/src/scripts/viewer$1",
-			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
-			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
+			"\\.scss$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
+			"\\.svg$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
 		},
 		"moduleDirectories": ["<rootDir>", "node_modules"],
 		"collectCoverageFrom": ["src/scripts/**", "server/**"],

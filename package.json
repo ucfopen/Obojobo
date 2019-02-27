@@ -1,6 +1,7 @@
 {
 	"private": true,
 	"name": "obojobo-next",
+	"license": "AGPL-3.0-only",
 	"scripts": {
 		"build:docEngine": "cd packages/obojobo-express && yarn build:docEngine",
 		"db:rebuild": "cd packages/obojobo-express && yarn db:rebuild",
@@ -21,6 +22,11 @@
 		"husky": "^0.13.3",
 		"nodemon": "^1.18.8"
 	},
+	"jest": {
+		"transformIgnorePatterns": [
+			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
+		]
+	},
 	"workspaces": [
 		"packages/obojobo-chunks-action-button",
 		"packages/obojobo-chunks-break",
@@ -37,12 +43,13 @@
 		"packages/obojobo-chunks-table",
 		"packages/obojobo-chunks-text",
 		"packages/obojobo-chunks-youtube",
+		"packages/obojobo-document-engine",
+		"packages/obojobo-document-xml-parser",
+		"packages/obojobo-express",
+		"packages/obojobo-lib-utils",
 		"packages/obojobo-modules-module",
 		"packages/obojobo-pages-page",
 		"packages/obojobo-sections-assessment",
-		"packages/obojobo-sections-content",
-		"packages/obojobo-document-engine",
-		"packages/obojobo-document-xml-parser",
-		"packages/obojobo-express"
+		"packages/obojobo-sections-content"
 	]
 }

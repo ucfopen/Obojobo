@@ -1,0 +1,14 @@
+{
+	"name": "obojobo-lib-utils",
+	"version": "1.0.0",
+	"license": "AGPL-3.0-only",
+	"description": "Assortment of reusable parts for obojobo libraries.",
+	"scripts": {
+		"test": "echo 'not implemented'",
+		"test:ci": "echo 'not implemented'",
+		"lint": "echo 'not implemented'",
+		"lint:js": "echo 'not implemented'",
+		"lint:css": "echo 'not implemented'",
+		"prettier:run": "echo 'not implemented'"
+	}
+}
