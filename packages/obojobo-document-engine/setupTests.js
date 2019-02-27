@@ -1,8 +1,5 @@
+require('obojobo-lib-utils/test-setup-chunks') // setup enzyme
 const path = require('path')
-const Enzyme = require('enzyme')
-const EnzymeAdapter = require('enzyme-adapter-react-16')
-// Setup enzyme's react adapter
-Enzyme.configure({ adapter: new EnzymeAdapter() })
 
 // Hack to get LaTeX to not warn about quirks mode:
 document.write(

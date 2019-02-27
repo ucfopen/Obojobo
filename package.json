@@ -15,6 +15,7 @@
 		"precommit": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn precommit); done",
 		"setup": "yarn build:docEngine && cd packages/obojobo-express && yarn db:rebuild",
 		"test": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test); done",
+		"test:ci": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura); done",
 		"test:coverage": "for d in ./packages/*/ ; do (cd \"$d\" && echo ================== && basename \"$d\" && yarn test -u --coverage); done"
 	},
 	"devDependencies": {
