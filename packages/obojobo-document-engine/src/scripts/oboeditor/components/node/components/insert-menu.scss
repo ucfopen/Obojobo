@@ -2,8 +2,8 @@
 
 .editor--component--insert-menu {
 	position: absolute;
-	z-index: 999;
 	white-space: nowrap;
+	z-index: 2;
 
 	&.align-left {
 		left: 0;
@@ -30,6 +30,7 @@
 
 		position: relative;
 		display: none;
+		z-index: 99;
 		background-color: $color-bg;
 
 		span {
@@ -62,10 +63,6 @@
 			width: 1.6em;
 			height: 1.4em;
 			cursor: pointer;
-
-			&:focus {
-				opacity: 1;
-				background: lighten($color-action, 48%);
 
 			&:not(:first-child) {
 				border-left: none;
@@ -112,12 +109,6 @@
 		button:focus {
 			background: $color-highlight-bg;
 
-			&:hover {
-				opacity: 1;
-
-				button {
-					background: lighten($color-action, 48%);
-				}
 			+ span {
 				opacity: 1;
 			}
