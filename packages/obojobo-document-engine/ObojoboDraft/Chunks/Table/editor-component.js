@@ -25,7 +25,7 @@ class Table extends React.Component {
 
 		// Insert the cells for the new row, minus the cell that was inserted by normalization
 		for (let i = 0; i < content.textGroup.numCols - 1; i++) {
-			return editor.insertNodeByKey(
+			editor.insertNodeByKey(
 				newRow.key,
 				i,
 				Block.create({
