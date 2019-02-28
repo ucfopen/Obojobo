@@ -15,6 +15,8 @@ window._ = require('underscore')
 window.Backbone = require('backbone')
 window.katex = require('katex')
 
+window.focus = () => ({})
+
 jest.mock('fs')
 
 global.mockStaticDate = () => {
