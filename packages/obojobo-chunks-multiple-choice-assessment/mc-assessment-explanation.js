@@ -6,6 +6,11 @@ const { Button } = Common.components
 const { focus } = Common.page
 
 export default class MCAssessmentExplanation extends React.Component {
+	constructor(props) {
+		super(props)
+		this.solutionLabelRef = React.createRef()
+	}
+
 	focusOnExplanation() {
 		// Attempt to call focusOnContent on the solution component
 		try {
@@ -14,7 +19,7 @@ export default class MCAssessmentExplanation extends React.Component {
 			SolutionComponent.focusOnContent(solutionModel)
 		} catch (e) {
 			// If that fails, simply focus on the label as a work-around:
-			focus(this.refs.label)
+			focus(this.solutionLabelRef.current)
 		}
 	}
 
@@ -42,9 +47,6 @@ export default class MCAssessmentExplanation extends React.Component {
 					>
 					{isShowingExplanation ? (
 						<div
-							ref={node => {
-								this.refSolutionContainer = node
-							}}
 							tabIndex="-1"
 							role="region"
 							className="solution-container"
@@ -54,7 +56,7 @@ export default class MCAssessmentExplanation extends React.Component {
 							<span
 								id="obojobo-draft--chunks--mc-assessment--solution-label"
 								className="for-screen-reader-only"
-								ref="label"
+								ref={this.solutionLabelRef}
 							>
 								Explanation of the answer:
 							</span>

@@ -14,7 +14,7 @@ exports[`FullReview FullReview component 1`] = `
 </div>
 `;
 
-exports[`FullReview FullReview component with attempt 1`] = `
+exports[`FullReview FullReview component with assessment review context 1`] = `
 <div
   className="attempt-review-container"
 >
@@ -31,94 +31,12 @@ exports[`FullReview FullReview component with attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
-            aria-label="Attempt undefined"
+            aria-label="Attempt 3"
             aria-selected={true}
             onClick={[Function]}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`FullReview FullReview component with fully displayed attempt 1`] = `
-<div
-  className="attempt-review-container"
->
-  <div
-    className="attempt-button-container is-showing-one-item"
-  >
-    <div
-      className="obojobo-draft--components--button-bar"
-    >
-      <div
-        className="is-selected"
-      >
-        <div
-          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-        >
-          <button
-            aria-label="Attempt undefined"
-            aria-selected={true}
-            onClick={[Function]}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`FullReview FullReview component with highest attempt 1`] = `
-<div
-  className="attempt-review-container"
->
-  <div
-    className="attempt-button-container is-showing-one-item"
-  >
-    <div
-      className="obojobo-draft--components--button-bar"
-    >
-      <div
-        className="is-selected"
-      >
-        <div
-          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-        >
-          <button
-            aria-label="Attempt undefined"
-            aria-selected={true}
-            onClick={[Function]}
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
-exports[`FullReview FullReview component with last taken attempt 1`] = `
-<div
-  className="attempt-review-container"
->
-  <div
-    className="attempt-button-container is-showing-one-item"
-  >
-    <div
-      className="obojobo-draft--components--button-bar"
-    >
-      <div
-        className="is-selected"
-      >
-        <div
-          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-        >
-          <button
-            aria-label="Attempt undefined"
-            aria-selected={true}
-            onClick={[Function]}
-          />
+          >
+            3
+          </button>
         </div>
       </div>
     </div>
@@ -223,7 +141,7 @@ exports[`FullReview FullReview component with last taken attempt 1`] = `
         >
           <h4>
             <strong>
-              Attempt undefined
+              Attempt 3
             </strong>
           </h4>
           <div
@@ -331,8 +249,12 @@ exports[`FullReview FullReview component with attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt 3"
+            aria-selected={true}
             onClick={[Function]}
-          />
+          >
+            3
+          </button>
         </div>
       </div>
     </div>
@@ -357,8 +279,12 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt 3"
+            aria-selected={true}
             onClick={[Function]}
-          />
+          >
+            3
+          </button>
         </div>
       </div>
     </div>
@@ -383,8 +309,12 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
+            aria-label="Attempt 3"
+            aria-selected={true}
             onClick={[Function]}
-          />
+          >
+            3
+          </button>
         </div>
       </div>
     </div>
@@ -409,10 +339,12 @@ exports[`FullReview FullReview component with non-passing attempt 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
-            aria-label="Attempt undefined"
+            aria-label="Attempt 3"
             aria-selected={true}
             onClick={[Function]}
-          />
+          >
+            3
+          </button>
         </div>
       </div>
     </div>
@@ -437,10 +369,12 @@ exports[`FullReview FullReview component with two attempts 1`] = `
           className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
         >
           <button
-            aria-label="Attempt undefined"
+            aria-label="Attempt 3"
             aria-selected={false}
             onClick={[Function]}
-          />
+          >
+            3
+          </button>
         </div>
       </div>
       <div

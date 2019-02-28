@@ -91,21 +91,19 @@ exports[`MCAssessment Question component 1`] = `
               </p>
             </div>
           </div>
-          <div>
+          <div
+            className="solution"
+          >
             <div
-              className="solution"
+              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
             >
-              <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+              <button
+                onClick={[Function]}
               >
-                <button
-                  onClick={[Function]}
-                >
-                  Read an explanation of the answer
-                </button>
-              </div>
-              <div />
+                Read an explanation of the answer
+              </button>
             </div>
+            <span />
           </div>
         </fieldset>
       </form>
@@ -220,21 +218,19 @@ exports[`MCAssessment Question component answered correctly 1`] = `
               </p>
             </div>
           </div>
-          <div>
+          <div
+            className="solution"
+          >
             <div
-              className="solution"
+              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
             >
-              <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+              <button
+                onClick={[Function]}
               >
-                <button
-                  onClick={[Function]}
-                >
-                  Read an explanation of the answer
-                </button>
-              </div>
-              <div />
+                Read an explanation of the answer
+              </button>
             </div>
+            <span />
           </div>
         </fieldset>
       </form>
@@ -349,21 +345,19 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
               </p>
             </div>
           </div>
-          <div>
+          <div
+            className="solution"
+          >
             <div
-              className="solution"
+              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
             >
-              <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+              <button
+                onClick={[Function]}
               >
-                <button
-                  onClick={[Function]}
-                >
-                  Read an explanation of the answer
-                </button>
-              </div>
-              <div />
+                Read an explanation of the answer
+              </button>
             </div>
+            <span />
           </div>
         </fieldset>
       </form>
@@ -478,21 +472,19 @@ exports[`MCAssessment Question component in practice mode 1`] = `
               </p>
             </div>
           </div>
-          <div>
+          <div
+            className="solution"
+          >
             <div
-              className="solution"
+              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
             >
-              <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+              <button
+                onClick={[Function]}
               >
-                <button
-                  onClick={[Function]}
-                >
-                  Read an explanation of the answer
-                </button>
-              </div>
-              <div />
+                Read an explanation of the answer
+              </button>
             </div>
+            <span />
           </div>
         </fieldset>
       </form>
@@ -593,21 +585,19 @@ exports[`MCAssessment Question component in review mode 1`] = `
               </p>
             </div>
           </div>
-          <div>
+          <div
+            className="solution"
+          >
             <div
-              className="solution"
+              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
             >
-              <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
+              <button
+                onClick={[Function]}
               >
-                <button
-                  onClick={[Function]}
-                >
-                  Read an explanation of the answer
-                </button>
-              </div>
-              <div />
+                Read an explanation of the answer
+              </button>
             </div>
+            <span />
           </div>
         </fieldset>
       </form>

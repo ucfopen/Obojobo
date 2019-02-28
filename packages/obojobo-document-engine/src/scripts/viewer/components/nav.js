@@ -35,10 +35,6 @@ export default class Nav extends React.Component {
 		}
 	}
 
-	focus() {
-		Common.page.focus(this.refs.self)
-	}
-
 	onClickSkipNavigation() {
 		FocusUtil.focusOnNavTargetContent()
 	}

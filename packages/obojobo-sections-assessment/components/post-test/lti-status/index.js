@@ -1,9 +1,7 @@
 import './index.scss'
 
-import React from 'react'
-import ReactDOM from 'react-dom'
-
 import Common from 'Common'
+import React from 'react'
 import Viewer from 'Viewer'
 
 const { Button } = Common.components
@@ -46,14 +44,20 @@ const renderResyncedSuccessfully = (assessmentScore, externalSystemLabel) => (
 	</div>
 )
 
-const renderError = (ltiResyncState, ltiNetworkState, systemLabel, onClickResendScore) => (
+const renderError = (
+	ltiResyncState,
+	ltiNetworkState,
+	systemLabel,
+	onClickResendScore,
+	providedRef
+) => (
 	<div className="is-not-synced">
 		<h2>{`There was a problem sending your score to ${systemLabel}.`}</h2>
 		<p>
 			{`Don’t worry - your score is safely recorded here. We just weren’t able to send it to ${systemLabel}. Click the button below to resend your score:`}
 		</p>
 		<div
-			ref="resyncFailed"
+			ref={providedRef}
 			tabIndex="-1"
 			className={
 				'is-not-synced-additional ' +
@@ -81,6 +85,8 @@ class LTIStatus extends React.Component {
 		super()
 
 		this.nextFocusTarget = null
+		this.resyncFailedRef = React.createRef()
+		this.componentRef = React.createRef()
 	}
 
 	getLTIStatusProps(props) {
@@ -163,28 +169,24 @@ class LTIStatus extends React.Component {
 
 				default:
 					nextFocusTarget = FocusTargets.COMPONENT
-					break
 			}
 		}
 
 		return nextFocusTarget
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentDidUpdate(prevProps) {
 		this.nextFocusTarget = this.getNextFocusTarget(
-			this.getCurrentAndNextLTIStates(this.props, nextProps)
+			this.getCurrentAndNextLTIStates(prevProps, this.props)
 		)
-	}
 
-	componentDidUpdate() {
 		switch (this.nextFocusTarget) {
 			case FocusTargets.RESYNC_FAILED_DIALOG:
-				focus(this.refs.resyncFailed)
+				focus(this.resyncFailedRef)
 				break
 
 			case FocusTargets.COMPONENT:
-				focus(ReactDOM.findDOMNode(this))
-				break
+				focus(this.componentRef)
 		}
 
 		this.nextFocusTarget = null
@@ -219,14 +221,19 @@ class LTIStatus extends React.Component {
 					ltiProps.resyncState,
 					ltiProps.networkState,
 					ltiProps.externalSystemLabel,
-					this.props.onClickResendScore
+					this.props.onClickResendScore,
+					this.resyncFailedRef
 				)
-				break
 			}
 		}
 
 		return (
-			<div role="dialog" tabIndex="-1" className="obojobo-draft--sections--assessment--lti-status">
+			<div
+				ref={this.componentRef}
+				role="dialog"
+				tabIndex="-1"
+				className="obojobo-draft--sections--assessment--lti-status"
+			>
 				{child}
 			</div>
 		)

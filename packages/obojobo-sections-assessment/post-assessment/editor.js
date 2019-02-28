@@ -3,19 +3,15 @@ import './editor-component.scss'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import { Block } from 'slate'
-import Common from 'Common'
 import Page from 'obojobo-pages-page/editor'
 /* eslint no-alert: 0 */
 import React from 'react'
-
-const { Button } = Common.components
 
 // A single score action
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 // The whole array of score actions
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
 
 class Score extends React.Component {
 	constructor(props) {
@@ -45,7 +41,8 @@ class Score extends React.Component {
 	render() {
 		const dataFor = this.props.node.data.get('for')
 		return (
-			<div>
+			<div className={'score-actions-page pad'}>
+				{this.props.children}
 				<div className={'action-data'}>
 					<h2>{'Score Range: ' + dataFor + ' '}</h2>
 					<button
@@ -55,12 +52,6 @@ class Score extends React.Component {
 					>
 						✎
 					</button>
-				</div>
-				<div className={'score-actions-page pad'}>
-					{this.props.children}
-					<Button className={'delete-button'} onClick={() => this.deleteNode()}>
-						×
-					</Button>
 				</div>
 				<button
 					className={'editor--page-editor--delete-node-button'}

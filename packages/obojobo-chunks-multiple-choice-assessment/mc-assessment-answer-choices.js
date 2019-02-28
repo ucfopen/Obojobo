@@ -8,10 +8,11 @@ const { focus } = Common.page
 export default class MCAssessmentAnswerChoices extends React.Component {
 	constructor(props) {
 		super(props)
+		this.resultsRef = React.createRef()
 	}
 
 	focusOnResults() {
-		focus(this.refs.results)
+		focus(this.resultsRef.current)
 	}
 
 	render() {
@@ -21,7 +22,7 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 
 		return (
 			<div role={isTypePickAll ? null : 'radiogroup'}>
-				<div className="for-screen-reader-only" ref="results" tabIndex="-1">
+				<div className="for-screen-reader-only" ref={this.resultsRef} tabIndex="-1">
 					{isAnswerScored ? (
 						<MCAssessmentResults
 							score={this.props.score}

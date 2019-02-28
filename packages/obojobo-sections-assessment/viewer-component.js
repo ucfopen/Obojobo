@@ -28,6 +28,8 @@ class Assessment extends React.Component {
 		this.endAttempt = this.endAttempt.bind(this)
 		this.onClickSubmit = this.onClickSubmit.bind(this)
 
+		this.childRef = React.createRef()
+
 		Dispatcher.on('assessment:endAttempt', this.onEndAttempt)
 		Dispatcher.on('assessment:attemptEnded', this.onAttemptEnded)
 	}
@@ -174,7 +176,7 @@ class Assessment extends React.Component {
 				case 'post-test':
 					return (
 						<PostTest
-							ref="child"
+							ref={this.childRef}
 							model={this.props.model}
 							moduleData={this.props.moduleData}
 							scoreAction={this.getScoreAction()}

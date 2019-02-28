@@ -1,13 +1,14 @@
 /* eslint no-undefined: 0 */
 
-import React from 'react'
-import { shallow } from 'enzyme'
-import renderer from 'react-test-renderer'
 import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import Actions from './editor'
+import React from 'react'
+import renderer from 'react-test-renderer'
+import { shallow } from 'enzyme'
 
 jest.mock('obojobo-pages-page/editor')
 
-import Actions from './editor'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 
@@ -137,7 +138,7 @@ describe('Actions editor', () => {
 		)
 		const tree = component.html()
 
-		component.find('.delete-button').simulate('click')
+		component.find('.editor--page-editor--delete-node-button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(change.removeNodeByKey).toHaveBeenCalled()

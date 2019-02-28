@@ -1799,19 +1799,15 @@ describe('MCAssessment', () => {
 
 		QuestionUtil.getScoreForModel.mockReturnValue(0)
 
-		const component = shallow(
+		const component = mount(
 			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
 		)
-
+		const componentInst = component.instance()
 		const mockFocusOnResults = jest.fn()
-		component.instance().refs = {
-			answerChoices: {
-				focusOnResults: mockFocusOnResults
-			}
-		}
-		component.instance().nextFocus = 'results'
-		component.instance().componentDidUpdate()
-		expect(component.instance().nextFocus).not.toBeDefined()
+		componentInst.answerChoicesRef.current.focusOnResults= mockFocusOnResults
+		componentInst.nextFocus = 'results'
+		componentInst.componentDidUpdate()
+		expect(componentInst.nextFocus).not.toBeDefined()
 		expect(mockFocusOnResults).toHaveBeenCalledTimes(1)
 	})
 
@@ -1828,19 +1824,16 @@ describe('MCAssessment', () => {
 
 		QuestionUtil.getScoreForModel.mockReturnValue(null)
 
-		const component = shallow(
+		const component = mount(
 			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
 		)
 
+		const componentInst = component.instance()
 		const mockFocusOnResults = jest.fn()
-		component.instance().refs = {
-			answerChoices: {
-				focusOnResults: mockFocusOnResults
-			}
-		}
-		component.instance().nextFocus = 'results'
-		component.instance().componentDidUpdate()
-		expect(component.instance().nextFocus).toBe('results')
+		componentInst.answerChoicesRef.current.focusOnResults = mockFocusOnResults
+		componentInst.nextFocus = 'results'
+		componentInst.componentDidUpdate()
+		expect(componentInst.nextFocus).toBe('results')
 		expect(mockFocusOnResults).toHaveBeenCalledTimes(0)
 	})
 
