@@ -43,8 +43,15 @@ export default class ViewerApp extends React.Component {
 	constructor(props) {
 		super(props)
 
+		this.navRef = React.createRef()
+		this.nextRef = React.createRef()
+		this.prevRef = React.createRef()
+		this.containerRef = React.createRef()
+		this.idleTimerRef = React.createRef()
+
 		Dispatcher.on('viewer:scrollTo', payload => {
-			ReactDOM.findDOMNode(this.refs.container).scrollTop = payload.value
+			/* eslint-disable-next-line */
+			ReactDOM.findDOMNode(this.containerRef.current).scrollTop = payload.value
 		})
 		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
@@ -194,6 +201,14 @@ export default class ViewerApp extends React.Component {
 		return !nextState.loading
 	}
 
+	isDOMFocusInsideNav() {
+		if (!this.navRef.current) {
+			return false
+		}
+		/* eslint-disable-next-line */
+		return ReactDOM.findDOMNode(this.navRef.current).contains(document.activeElement)
+	}
+
 	componentDidUpdate(prevProps, prevState) {
 		if (prevState.requestStatus === 'ok') {
 			const nextNavTargetId = this.state.navState.navTargetId
@@ -215,6 +230,18 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 
+		// updates Focus Store
+		const focussedItem = FocusUtil.getFocussedItem(this.state.focusState)
+		if (
+			!this.isDOMFocusInsideNav() &&
+			// nav target changed
+			NavUtil.getNavTarget(prevState.navState) !== NavUtil.getNavTarget(this.state.navState) &&
+			focussedItem.type === null
+		) {
+			FocusUtil.focusOnNavTargetContent()
+		}
+
+		// use Focus Store values to update DOM Focus
 		this.updateDOMFocus()
 	}
 
@@ -225,7 +252,7 @@ export default class ViewerApp extends React.Component {
 			case FocusStore.TYPE_COMPONENT: {
 				const model = OboModel.models[focussedItem.target]
 				if (!model) return false
-				focus(model.getDomEl())
+				window.focus(model.getDomEl())
 
 				return true
 			}
@@ -251,7 +278,7 @@ export default class ViewerApp extends React.Component {
 						return false
 					}
 
-					this.refs.nav.focus()
+					this.navRef.current.focus()
 					return true
 				}
 
@@ -283,7 +310,6 @@ export default class ViewerApp extends React.Component {
 				visitId: this.state.navState.visitId
 			}).then(res => {
 				this.leaveEvent = res.value
-				console.log('this.leaveEvent ', this.leaveEvent)
 			})
 		} else {
 			APIUtil.postEvent({
@@ -308,8 +334,10 @@ export default class ViewerApp extends React.Component {
 	}
 
 	scrollToTop() {
-		const el = ReactDOM.findDOMNode(this.refs.prev)
-		const container = ReactDOM.findDOMNode(this.refs.container)
+		/* eslint-disable-next-line */
+		const el = ReactDOM.findDOMNode(this.prevRef.current)
+		/* eslint-disable-next-line */
+		const container = ReactDOM.findDOMNode(this.containerRef.current)
 
 		if (!container) return
 
@@ -370,7 +398,8 @@ export default class ViewerApp extends React.Component {
 	onResize() {
 		Dispatcher.trigger(
 			'viewer:contentAreaResized',
-			ReactDOM.findDOMNode(this.refs.container).getBoundingClientRect().width
+			/* eslint-disable-next-line */
+			ReactDOM.findDOMNode(this.containerRef.current).getBoundingClientRect().width
 		)
 	}
 
@@ -379,7 +408,7 @@ export default class ViewerApp extends React.Component {
 	}
 
 	onIdle() {
-		this.lastActiveEpoch = new Date(this.refs.idleTimer.getLastActiveTime())
+		this.lastActiveEpoch = new Date(this.idleTimerRef.current.getLastActiveTime())
 
 		APIUtil.postEvent({
 			draftId: this.state.model.get('draftId'),
@@ -511,7 +540,7 @@ export default class ViewerApp extends React.Component {
 				const navLabel = prevItem.label ? 'Go back to ' + prevItem.label : 'Go back'
 				prevComp = (
 					<InlineNavButton
-						ref="prev"
+						ref={this.prevRef}
 						type="prev"
 						title={navText}
 						ariaLabel={navLabel}
@@ -521,7 +550,7 @@ export default class ViewerApp extends React.Component {
 			} else {
 				prevComp = (
 					<InlineNavButton
-						ref="prev"
+						ref={this.prevRef}
 						type="prev"
 						title={`Start of ${this.state.model.title}`}
 						ariaLabel={`This is the start of ${this.state.model.title}.`}
@@ -536,7 +565,7 @@ export default class ViewerApp extends React.Component {
 				const navLabel = nextItem.label ? 'Go forward to ' + nextItem.label : 'Go forward'
 				nextComp = (
 					<InlineNavButton
-						ref="next"
+						ref={this.nextRef}
 						type="next"
 						title={navText}
 						ariaLabel={navLabel}
@@ -546,7 +575,7 @@ export default class ViewerApp extends React.Component {
 			} else {
 				nextComp = (
 					<InlineNavButton
-						ref="next"
+						ref={this.nextRef}
 						type="next"
 						title={`End of ${this.state.model.title}`}
 						ariaLabel={`You have reached the end of ${this.state.model.title}.`}
@@ -570,14 +599,14 @@ export default class ViewerApp extends React.Component {
 
 		return (
 			<IdleTimer
-				ref="idleTimer"
+				ref={this.idleTimerRef}
 				element={window}
 				timeout={IDLE_TIMEOUT_DURATION_MS}
 				idleAction={this.onIdle}
 				activeAction={this.onReturnFromIdle}
 			>
 				<div
-					ref="container"
+					ref={this.containerRef}
 					onMouseDown={this.onMouseDown.bind(this)}
 					onFocus={this.onFocus.bind(this)}
 					onScroll={this.onScroll.bind(this)}
@@ -586,7 +615,7 @@ export default class ViewerApp extends React.Component {
 					{hideViewer ? null : (
 						<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
 					)}
-					{hideViewer ? null : <Nav ref="nav" navState={this.state.navState} />}
+					{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
 					{hideViewer ? null : prevComp}
 					{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
 					{hideViewer ? null : nextComp}

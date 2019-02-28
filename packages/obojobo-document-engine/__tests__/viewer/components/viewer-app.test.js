@@ -1,41 +1,43 @@
 /* eslint-disable no-undefined */
 /* eslint-disable no-console */
 
-import APIUtil from '../../../src/scripts/viewer/util/api-util'
-import AssessmentStore from '../../../src/scripts/viewer/stores/assessment-store'
-import Common from '../../../src/scripts/common'
-import DOMUtil from '../../../src/scripts/common/page/dom-util'
-import Dispatcher from '../../../src/scripts/common/flux/dispatcher'
-import FocusStore from '../../../src/scripts/viewer/stores/focus-store'
-import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
-import Header from '../../../src/scripts/viewer/components/header'
-import MediaStore from '../../../src/scripts/viewer/stores/media-store'
-import ModalStore from '../../../src/scripts/common/stores/modal-store'
-import ModalUtil from '../../../src/scripts/common/util/modal-util'
-import NavStore from '../../../src/scripts/viewer/stores/nav-store'
-import NavUtil from '../../../src/scripts/viewer/util/nav-util'
-import OboModel from '../../../__mocks__/_obo-model-with-chunks'
-import QuestionStore from '../../../src/scripts/viewer/stores/question-store'
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import AssessmentStore from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import DOMUtil from 'obojobo-document-engine/src/scripts/common/page/dom-util'
+import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
+import FocusStore from 'obojobo-document-engine/src/scripts/viewer/stores/focus-store'
+import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
+import Header from 'obojobo-document-engine/src/scripts/viewer/components/header'
+import MediaStore from 'obojobo-document-engine/src/scripts/viewer/stores/media-store'
+import ModalStore from 'obojobo-document-engine/src/scripts/common/stores/modal-store'
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+import NavStore from 'obojobo-document-engine/src/scripts/viewer/stores/nav-store'
+import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
+import OboModel from 'obojobo-document-engine/__mocks__/_obo-model-with-chunks'
+import QuestionStore from 'obojobo-document-engine/src/scripts/viewer/stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import ViewerApp from '../../../src/scripts/viewer/components/viewer-app'
+import ViewerApp from 'obojobo-document-engine/src/scripts/viewer/components/viewer-app'
 import { mount } from 'enzyme'
-import testObject from '../../../test-object.json'
+import testObject from 'obojobo-document-engine/test-object.json'
 
-jest.mock('../../../src/scripts/viewer/util/api-util')
-jest.mock('../../../src/scripts/viewer/stores/question-store')
-jest.mock('../../../src/scripts/common/stores/modal-store')
-jest.mock('../../../src/scripts/common/util/modal-util')
-jest.mock('../../../src/scripts/viewer/stores/focus-store')
-jest.mock('../../../src/scripts/viewer/stores/media-store')
-jest.mock('../../../src/scripts/viewer/stores/nav-store')
-jest.mock('../../../src/scripts/viewer/util/nav-util')
-jest.mock('../../../src/scripts/viewer/stores/assessment-store')
-jest.mock('../../../src/scripts/viewer/components/nav')
-jest.mock('../../../src/scripts/common/page/dom-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
+jest.mock('obojobo-document-engine/src/scripts/common/stores/modal-store')
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/stores/focus-store')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/stores/media-store')
+jest.mock('obojobo-document-engine/src/scripts/viewer/stores/nav-store')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/stores/assessment-store')
+jest.mock('obojobo-document-engine/src/scripts/viewer/components/nav')
+jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
 
 describe('ViewerApp', () => {
 	let isDOMFocusInsideNavSpy
+	const isDOMFocusInsideNavOriginal = ViewerApp.prototype.isDOMFocusInsideNav
 
 	const mocksForMount = (status = 'ok') => {
 		APIUtil.requestStart.mockResolvedValueOnce({
@@ -571,7 +573,6 @@ describe('ViewerApp', () => {
 			expect(Common.Registry.getTextForVariable).toHaveBeenCalled()
 
 			component.unmount()
-			spy.mockRestore()
 			done()
 		})
 	})
@@ -654,8 +655,6 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.update()
-
 			const mockTarget = jest.fn()
 			component.instance().clearVisualFocus = jest.fn()
 			component.instance().onFocus({ target: mockTarget })
@@ -673,57 +672,47 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.update()
-
 			component.instance().state.focusState.visualFocusTarget = null
-
 			component.instance().onScroll()
 
 			expect(FocusUtil.clearVisualFocus).not.toHaveBeenCalled()
-
 			component.unmount()
 			done()
 		})
 	})
 
 	test('onScroll does nothing if no visually focused component', done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.update()
-
 			component.instance().state.focusState.visualFocusTarget = 'invalid-id'
-			FocusUtil.getVisuallyFocussedModel = jest.fn()
-
+			component.instance().getDomEl = jest.fn()
+			FocusUtil.getVisuallyFocussedModel.mockReturnValue(null)
 			component.instance().onScroll()
 
-			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
+			expect(component.instance().getDomEl).not.toHaveBeenCalled()
 			expect(DOMUtil.isElementVisible).not.toHaveBeenCalled()
-
 			component.unmount()
 			done()
 		})
 	})
 
 	test('onScroll does nothing if no element found for component', done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.update()
-
 			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel = () => ({
-				getDomEl: jest.fn()
+			const getDomElMock = jest.fn()
+			FocusUtil.getVisuallyFocussedModel.mockReturnValue({
+				getDomEl: getDomElMock
 			})
-
 			component.instance().onScroll()
 
-			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
-			expect(mockFocused.getDomEl).toHaveBeenCalled()
+			expect(getDomElMock).toHaveBeenCalled()
 			expect(DOMUtil.isElementVisible).not.toHaveBeenCalled()
 
 			component.unmount()
@@ -732,24 +721,18 @@ describe('ViewerApp', () => {
 	})
 
 	test('onScroll does nothing if element is visible', done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.update()
-			component.instance().state.focusState = { focussedId: 'mockFocused' }
-			FocusUtil.getFocussedComponent
-				.mockReturnValueOnce(mockFocused)
-				.mockReturnValueOnce(mockFocused)
+			component.instance().state.focusState.visualFocusTarget = 'id'
+			FocusUtil.getVisuallyFocussedModel.mockReturnValue({ getDomEl: () => true })
 			DOMUtil.isElementVisible.mockReturnValueOnce(true)
-
 			component.instance().onScroll()
 
-			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
-			expect(mockFocused.getDomEl).toHaveBeenCalled()
 			expect(DOMUtil.isElementVisible).toHaveBeenCalled()
-			expect(FocusUtil.unfocus).not.toHaveBeenCalled()
+			expect(FocusUtil.clearVisualFocus).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -757,24 +740,18 @@ describe('ViewerApp', () => {
 	})
 
 	test('onScroll calls FocusUtil.clearVisualFocus if a visually focused component is no longer visible', done => {
-		expect.assertions(1)
+		expect.assertions(2)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.update()
-			component.instance().state.focusState = { focussedId: 'mockFocused' }
-			FocusUtil.getFocussedComponent
-				.mockReturnValueOnce(mockFocused)
-				.mockReturnValueOnce(mockFocused)
+			component.instance().state.focusState.visualFocusTarget = 'id'
+			FocusUtil.getVisuallyFocussedModel.mockReturnValue({ getDomEl: () => true })
 			DOMUtil.isElementVisible.mockReturnValueOnce(false)
-
 			component.instance().onScroll()
 
-			expect(FocusUtil.getFocussedComponent).toHaveBeenCalledTimes(2)
-			expect(mockFocused.getDomEl).toHaveBeenCalled()
 			expect(DOMUtil.isElementVisible).toHaveBeenCalled()
-			expect(FocusUtil.unfocus).toHaveBeenCalled()
+			expect(FocusUtil.clearVisualFocus).toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -787,9 +764,7 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.update()
 			APIUtil.postEvent.mockResolvedValueOnce({ value: {} })
-
 			component.instance().onIdle()
 
 			expect(APIUtil.postEvent).toHaveBeenCalled()
@@ -1078,12 +1053,12 @@ describe('ViewerApp', () => {
 
 		expect.assertions(1)
 		mocksForMount()
-		isDOMFocusInsideNavSpy.mockRestore()
 
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.instance().refs = {}
+			component.instance().navRef = { current: false }
+			component.instance().isDOMFocusInsideNav = isDOMFocusInsideNavOriginal
 			expect(component.instance().isDOMFocusInsideNav()).toBe(false)
 
 			component.unmount()
@@ -1096,16 +1071,15 @@ describe('ViewerApp', () => {
 
 		expect.assertions(1)
 		mocksForMount()
-		isDOMFocusInsideNavSpy.mockRestore()
 
-		const spy = jest.spyOn(ReactDOM, 'findDOMNode')
-		ReactDOM.findDOMNode.mockReturnValue({ contains: () => true })
+		jest.spyOn(ReactDOM, 'findDOMNode').mockReturnValue({ contains: () => true })
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			component.instance().isDOMFocusInsideNav = isDOMFocusInsideNavOriginal
+			component.instance().navRef = { current: true }
 			expect(component.instance().isDOMFocusInsideNav()).toBe(true)
 
-			spy.mockRestore()
 			component.unmount()
 			done()
 		})
@@ -1116,7 +1090,6 @@ describe('ViewerApp', () => {
 
 		expect.assertions(1)
 		mocksForMount()
-		isDOMFocusInsideNavSpy.mockRestore()
 
 		const spy = jest.spyOn(ReactDOM, 'findDOMNode')
 		ReactDOM.findDOMNode.mockReturnValue({ contains: () => false })
@@ -1169,14 +1142,14 @@ describe('ViewerApp', () => {
 	test('updateDOMFocus for component type focus calls focus on dom element of found model', done => {
 		expect.assertions(2)
 		mocksForMount()
+		jest.spyOn(window, 'focus')
 
 		const component = mount(<ViewerApp />)
 		const mockDomEl = jest.fn()
 		OboModel.models = { mockModelId: { getDomEl: () => mockDomEl } }
 
 		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
+			FocusUtil.getFocussedItemAndClear = jest.fn().mockReturnValueOnce({
 				type: 'component',
 				target: 'mockModelId'
 			})
@@ -1333,8 +1306,8 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
+			component.setProps({})
+			FocusUtil.getFocussedItemAndClear = jest.fn().mockReturnValue({
 				type: 'viewer',
 				target: 'navigation'
 			})
@@ -1342,8 +1315,8 @@ describe('ViewerApp', () => {
 			NavUtil.isNavOpen.mockReturnValueOnce(true)
 			const spy = jest.spyOn(component.instance(), 'focusOnContent').mockImplementation(jest.fn())
 			const mockFocus = jest.fn()
-			component.instance().refs = {
-				nav: {
+			component.instance().navRef = {
+				current: {
 					focus: mockFocus
 				}
 			}

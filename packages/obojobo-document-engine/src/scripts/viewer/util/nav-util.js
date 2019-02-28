@@ -51,6 +51,7 @@ const NavUtil = {
 			}
 		})
 	},
+
 	goPrev() {
 		return Dispatcher.trigger('nav:prev')
 	},

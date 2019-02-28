@@ -126,10 +126,6 @@ export default class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
-	focus() {
-		Common.page.focus(this.refs.self)
-	}
-
 	render() {
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
