@@ -1783,7 +1783,7 @@ describe('MCAssessment', () => {
 
 		// make sure focus was called with the MCAssessmentExplanation.ref.label
 		expect(focus).toHaveBeenCalledTimes(1)
-		expect(focus).toHaveBeenCalledWith(explanationComponent.refs.label)
+		expect(focus).toHaveBeenCalledWith(explanationComponent.solutionLabelRef.current)
 	})
 
 	test('componentDidUpdate calls focusOnResults if nextFocus="results"', () => {
