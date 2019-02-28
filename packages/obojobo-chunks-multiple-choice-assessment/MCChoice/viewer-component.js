@@ -155,7 +155,7 @@ const MCChoice = props => {
 				type={inputType}
 				value={props.model.get('id')}
 				checked={isSelected}
-				onChange={() => {}} // for react to not complain
+				onChange={/* istanbul ignore next */() => {}} // for react to not complain
 				name={props.model.parent.get('id')}
 				role={inputType}
 				aria-checked={isSelected}

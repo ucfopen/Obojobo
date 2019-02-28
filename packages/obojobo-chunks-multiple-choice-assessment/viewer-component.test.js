@@ -9,11 +9,13 @@ import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/questi
 import React from 'react'
 import _ from 'underscore'
 import renderer from 'react-test-renderer'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')
 jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
+jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 
 const MCCHOICE_NODE_TYPE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 const TYPE_PICK_ONE = 'pick-one'
@@ -1708,6 +1710,82 @@ describe('MCAssessment', () => {
 		expect(mockFocusOnExplanation).toHaveBeenCalledTimes(1)
 	})
 
+	// TODO: should be in a new file called mc-assessment-explanation.test.js
+	test('MCAssessmentExplanation::focusOnExplanation calls focusOnContent', () => {
+		// setup the test
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {},
+			focusState: {}
+		}
+		const parent = OboModel.create(questionJSON)
+		const model = parent.children.models[0]
+		const component = mount(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+
+		// get a reference to the solution Page
+		const solutionClass = model.parent.modelState.solution.getComponentClass()
+		// mock the function we're expecting focusOnExplanation to call
+		solutionClass.focusOnContent = jest.fn()
+
+		// after rendering - get use the component's ref to the MCAssessmentExplanation
+		const explanationComponent = component.instance().refExplanation
+
+		// make sure it hasn't been called
+		expect(solutionClass.focusOnContent).toHaveBeenCalledTimes(0)
+
+		// execute focusOnExplanation
+		explanationComponent.focusOnExplanation()
+
+		// make sure it's been called 1 time
+		expect(solutionClass.focusOnContent).toHaveBeenCalledTimes(1)
+		// make sure it was passed the modelState.solution
+		expect(solutionClass.focusOnContent).toHaveBeenCalledWith(model.parent.modelState.solution)
+	})
+
+	// TODO: should be in a new file called mc-assessment-explanation.test.js
+	test('MCAssessmentExplanation::focusOnExplanation calls falls back to the label', () => {
+		// setup the test
+		const { focus } = Common.page
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {},
+			focusState: {}
+		}
+		const parent = OboModel.create(questionJSON)
+		const model = parent.children.models[0]
+
+		// get a reference to the solution Page
+		const solutionClass = model.parent.modelState.solution.getComponentClass()
+		// mock the function we're expecting focusOnExplanation to call
+		solutionClass.focusOnContent = jest.fn()
+
+		// throw en error to force the code into the catch path within MCAssessmentExplanation.focusOnExplanation
+		solutionClass.focusOnContent.mockImplementationOnce(() => {throw 'mock-error'})
+
+		// make sure MCAssessmentExplanation.props.isShowingExplanation is true
+		// so that the ref.label is rendered
+		QuestionUtil.isShowingExplanation.mockReturnValueOnce(true)
+
+		const component = mount(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+
+		// after rendering - get use the component's ref to the MCAssessmentExplanation
+		const explanationComponent = component.instance().refExplanation
+
+		// make sure focus hasn't been called
+		expect(focus).toHaveBeenCalledTimes(0)
+
+		// execute focusOnExplanation
+		explanationComponent.focusOnExplanation()
+
+		// make sure focus was called with the MCAssessmentExplanation.ref.label
+		expect(focus).toHaveBeenCalledTimes(1)
+		expect(focus).toHaveBeenCalledWith(explanationComponent.solutionLabelRef.current)
+	})
+
 	test('componentDidUpdate calls focusOnResults if nextFocus="results"', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
@@ -1721,19 +1799,15 @@ describe('MCAssessment', () => {
 
 		QuestionUtil.getScoreForModel.mockReturnValue(0)
 
-		const component = shallow(
+		const component = mount(
 			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
 		)
-
+		const componentInst = component.instance()
 		const mockFocusOnResults = jest.fn()
-		component.instance().refs = {
-			answerChoices: {
-				focusOnResults: mockFocusOnResults
-			}
-		}
-		component.instance().nextFocus = 'results'
-		component.instance().componentDidUpdate()
-		expect(component.instance().nextFocus).not.toBeDefined()
+		componentInst.answerChoicesRef.current.focusOnResults= mockFocusOnResults
+		componentInst.nextFocus = 'results'
+		componentInst.componentDidUpdate()
+		expect(componentInst.nextFocus).not.toBeDefined()
 		expect(mockFocusOnResults).toHaveBeenCalledTimes(1)
 	})
 
@@ -1750,19 +1824,16 @@ describe('MCAssessment', () => {
 
 		QuestionUtil.getScoreForModel.mockReturnValue(null)
 
-		const component = shallow(
+		const component = mount(
 			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
 		)
 
+		const componentInst = component.instance()
 		const mockFocusOnResults = jest.fn()
-		component.instance().refs = {
-			answerChoices: {
-				focusOnResults: mockFocusOnResults
-			}
-		}
-		component.instance().nextFocus = 'results'
-		component.instance().componentDidUpdate()
-		expect(component.instance().nextFocus).toBe('results')
+		componentInst.answerChoicesRef.current.focusOnResults = mockFocusOnResults
+		componentInst.nextFocus = 'results'
+		componentInst.componentDidUpdate()
+		expect(componentInst.nextFocus).toBe('results')
 		expect(mockFocusOnResults).toHaveBeenCalledTimes(0)
 	})
 

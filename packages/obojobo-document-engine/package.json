@@ -1,6 +1,7 @@
 {
 	"name": "obojobo-document-engine",
 	"version": "3.4.0",
+	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
 		"yarn": "^1.0",
@@ -21,6 +22,7 @@
 		"prettier:run": "prettier --write '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
 		"prettier:debug": "prettier -l '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
 		"precommit": "lint-staged && yarn lint:js && yarn test:ci",
+		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss"
 	},
@@ -57,7 +59,8 @@
 		"slate-react": "^0.17.0",
 		"slate-schema-violations": "^0.1.39",
 		"underscore": "1.5.1",
-		"url-parse": "^1.4.1"
+		"url-parse": "^1.4.1",
+		"obojobo-lib-utils": "1.0.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.0.0-0",
@@ -105,8 +108,8 @@
 		"moduleNameMapper": {
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
 			"^Viewer(.*)$": "<rootDir>/src/scripts/viewer$1",
-			"\\.scss$": "<rootDir>/__mocks__/ignore-file-stub.js",
-			"\\.svg$": "<rootDir>/__mocks__/ignore-file-stub.js"
+			"\\.scss$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
+			"\\.svg$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
 		},
 		"moduleDirectories": ["<rootDir>", "node_modules"],
 		"collectCoverageFrom": ["src/scripts/**", "server/**"],

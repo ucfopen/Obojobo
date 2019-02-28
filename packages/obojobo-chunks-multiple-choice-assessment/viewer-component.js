@@ -31,7 +31,7 @@ const FOCUS_TARGET_QUESTION = 'question'
 export default class MCAssessment extends React.Component {
 	constructor(props) {
 		super(props)
-
+		this.answerChoicesRef = React.createRef()
 		const { correctLabels, incorrectLabels } = this.props.model.modelState
 
 		this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
@@ -247,7 +247,7 @@ export default class MCAssessment extends React.Component {
 			case FOCUS_TARGET_RESULTS:
 				if (this.getScore() !== null) {
 					delete this.nextFocus
-					this.refs.answerChoices.focusOnResults()
+					this.answerChoicesRef.current.focusOnResults()
 				}
 				break
 
@@ -368,7 +368,7 @@ export default class MCAssessment extends React.Component {
 						{this.getInstructions(responseType)}
 					</legend>
 					<MCAssessmentAnswerChoices
-						ref="answerChoices"
+						ref={this.answerChoicesRef}
 						models={sortedChoiceModels}
 						responseType={responseType}
 						score={score}

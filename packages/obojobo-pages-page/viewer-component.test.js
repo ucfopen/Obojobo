@@ -8,7 +8,6 @@ jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 
 import Page from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
-import NavUtil from 'obojobo-document-engine/src/scripts/viewer/util/nav-util'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 
 require('./viewer') // used to register this oboModel
@@ -55,12 +54,13 @@ describe('Page', () => {
 		const moduleData = {
 			focusState: {}
 		}
-		const component = shallow(<Page model={model} moduleData={moduleData} />)
+
+		shallow(<Page model={model} moduleData={moduleData} />)
 
 		// mock the first child's method for getDomEl
 		model.children.at(0).getDomEl = jest.fn().mockReturnValue('mock-dom-element')
 
-		expect(Page.focusOnContent(model)).toBe(undefined) // there's no return
+		expect(Page.focusOnContent(model)).toBeUndefined() // there's no return
 		expect(focus).toHaveBeenCalledWith('mock-dom-element') // but it should have called focus with the return of our mocked getDomEl
 	})
 
@@ -73,9 +73,9 @@ describe('Page', () => {
 		const moduleData = {
 			focusState: {}
 		}
-		const component = shallow(<Page model={model} moduleData={moduleData} />)
 
-		expect(Page.focusOnContent(model)).toBe(undefined) // there's no return
+		shallow(<Page model={model} moduleData={moduleData} />)
+		expect(Page.focusOnContent(model)).toBeUndefined() // there's no return
 		expect(focus).not.toHaveBeenCalled()
 	})
 })
