@@ -3,7 +3,7 @@ const express = require('express')
 const draftNodeStore = oboRequire('draft_node_store')
 const logger = oboRequire('logger')
 
-const { oboNodesServer, oboExpress } = require(path.resolve(__dirname, '../../obojobo.js'))
+const { oboNodesServer, oboExpress } = require(path.resolve(__dirname, '..', '..', '..', 'obojobo.js'))
 module.exports = app => {
 	// =========== REGISTER CUSTOM EXPRESS MIDDLEWARE ===========
 	oboExpress.forEach(expressFile => {

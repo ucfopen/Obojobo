@@ -4,7 +4,7 @@
 	"version": "3.4.0",
 	"private": true,
 	"scripts": {
-		"build:docEngine": "DEBUG=obojobo_server:error,obojobo_server:warn,obojobo_server:info webpack",
+		"build": "webpack",
 		"start:server": "pm2 start pm2_prod.yaml",
 		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
 		"db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",

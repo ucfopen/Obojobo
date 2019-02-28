@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /* eslint-disable no-console */
-
-global.oboRequire = name => require(`${__dirname}/../${name}`)
+const path = require('path')
 const fs = require('fs')
+global.oboRequire = name => require(path.resolve(__dirname, '..', name))
 const db = oboRequire('db')
 const DraftModel = oboRequire('models/draft')
 const usageError = new Error(`Usage:

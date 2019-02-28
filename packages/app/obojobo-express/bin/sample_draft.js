@@ -6,7 +6,6 @@ global.oboRequire = name => {
 	return require(`${__dirname}/../${name}`)
 }
 const fs = require('fs')
-const path = require('path')
 const exec = require('child_process').exec
 
 const usageError = new Error(`Usage:
@@ -14,15 +13,7 @@ const usageError = new Error(`Usage:
 	node sample_draft.js watch`)
 
 const defaultId = '00000000-0000-0000-0000-000000000000'
-const sampleJsonPath = path.join(
-	__dirname,
-	'..',
-	'..',
-	'..',
-	'node_modules',
-	'obojobo-document-engine',
-	'test-object.json'
-)
+const sampleJsonPath = require.resolve('obojobo-document-engine/test-object.json')
 
 const writeJsonDraftToDbPath = `${__dirname}/write_json_draft_to_db`
 const db = oboRequire('db')
