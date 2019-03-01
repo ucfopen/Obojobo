@@ -3,7 +3,7 @@
 	"name": "obojobo-next",
 	"license": "AGPL-3.0-only",
 	"scripts": {
-		"build:docEngine": "cd node_modules/obojobo-express && yarn build:docEngine",
+		"build": "cd node_modules/obojobo-express && yarn build",
 		"db:rebuild": "cd node_modules/obojobo-express && yarn db:rebuild",
 		"delete:node_modules": "rm -rf node_modules && rm -rf ./packages/*/*/node_modules",
 		"dev": "cd node_modules/obojobo-express && yarn dev",
@@ -13,7 +13,7 @@
 		"lint:js": "for d in ./packages/*/* ; do (cd \"$d\" && echo \"\n==================\" && basename \"$d\" && yarn lint:js); done",
 		"open:coverage": "for d in ./packages/*/* ; do (cd \"$d\" && echo \"\n==================\" && basename \"$d\" && open ./coverage/lcov-report/index.html); done",
 		"precommit": "for d in ./packages/*/* ; do (cd \"$d\" && echo \"\n==================\" && basename \"$d\" && yarn precommit); done",
-		"setup": "yarn build:docEngine && cd node_modules/obojobo-express && yarn db:rebuild",
+		"setup": "yarn build --mode=production && cd node_modules/obojobo-express && yarn db:rebuild",
 		"test": "for d in ./packages/*/* ; do (cd \"$d\" && echo \"\n==================\" && basename \"$d\" && yarn test); done",
 		"test:ci": "for d in ./packages/*/* ; do (cd \"$d\" && echo \"\n==================\" && basename \"$d\" && TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura); done",
 		"test:coverage": "for d in ./packages/*/* ; do (cd \"$d\" && echo \"\n==================\" && basename \"$d\" && yarn test -u --coverage); done"

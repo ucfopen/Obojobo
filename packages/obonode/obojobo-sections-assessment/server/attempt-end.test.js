@@ -1,7 +1,7 @@
 /* eslint no-undefined: 0 */
 /* eslint no-extend-native: 0 */
 
-jest.mock('../../server/assessment-rubric')
+jest.mock('../assessment-rubric')
 jest.mock('../../server/assessment', () => ({
 	getAttempt: jest.fn().mockResolvedValue({
 		assessment_id: 'mockAssessmentId',

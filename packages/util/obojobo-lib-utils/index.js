@@ -7,25 +7,51 @@ const flattenArray = (array) => {
 	return result
 }
 
-const getOboNodeScriptPathsByType = (oboNodePackage, type) => {
-	const registration = require(oboNodePackage) // load package index index.js
+const { oboNodePackages } = require('../../../obojobo') // load obojob.js from main repo
+
+
+const cachedOboNodeList = []
+const searchNodeModulesForOboNodes = (forceReload = false) => {
+	if(cachedOboNodeList.length > 0 && !forceReload) return cachedOboNodeList
+	cachedOboNodeList.length = 0 // clear the array
+	// use yarn to get a list of obojobo-* node_modules
+	const packageSearchOut = require('child_process').execSync('yarn list --pattern obojobo-')
+	const pattern = /obojobo-[^@]+/ig
+	const packages = packageSearchOut.toString().match(pattern)
+
+	packages.forEach(package => {
+		try{
+			const manifest = require(package)
+			if(manifest.obojobo) cachedOboNodeList.push(package)
+		} catch(error){
+			// do nothing - it's ok if one of these packages has no index.js
+		}
+	})
+
+
+	return [... cachedOboNodeList]
+}
+
+const getOboNodeScriptPathsFromPackageByType = (oboNodePackage, type) => {
+	const manifest = require(oboNodePackage) // load package index index.js
+	if(!manifest.obojobo) return null
 	let scripts
 
 	switch(type){
 		case 'viewer':
-			scripts = registration.obojoboViewerScripts
+			scripts = manifest.obojobo.viewerScripts
 			break;
 
 		case 'editor':
-			scripts = registration.obojoboEditorScripts
+			scripts = manifest.obojobo.editorScripts
 			break;
 
 		case 'server':
-			scripts = registration.obojoboServerScripts
+			scripts = manifest.obojobo.serverScripts
 			break;
 
 		case 'middleware':
-			scripts = registration.obojoboExpressMiddleware
+			scripts = manifest.obojobo.expressMiddleware
 			break;
 	}
 
@@ -41,14 +67,17 @@ const getOboNodeScriptPathsByType = (oboNodePackage, type) => {
 	return scripts.map(s => require.resolve(`${oboNodePackage}${path.sep}${s}`))
 }
 
-const getAllOboNodeScriptPathsByType = (oboNodePackages, type) => {
-	const scripts = oboNodePackages.map(node => getOboNodeScriptPathsByType(node, type))
+
+const getAllOboNodeScriptPathsByType = (type) => {
+	const nodes = searchNodeModulesForOboNodes()
+	const scripts = nodes.map(node => getOboNodeScriptPathsFromPackageByType(node, type))
 	const flat =  flattenArray(scripts)
 	return flat.filter(a => a != null)
 }
 
 
 module.exports = {
-	getOboNodeScriptPathsByType,
+	getOboNodeScriptPathsFromPackageByType,
+	searchNodeModulesForOboNodes,
 	getAllOboNodeScriptPathsByType
 }

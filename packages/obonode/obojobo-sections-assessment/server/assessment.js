@@ -5,6 +5,10 @@ const lti = oboRequire('lti')
 const logger = oboRequire('logger')
 
 class Assessment extends DraftNode {
+	static get nodeName(){
+		return 'ObojoboDraft.Sections.Assessment'
+	}
+
 	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, isPreview) {
 		return db.manyOrNone(
 			`

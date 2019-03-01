@@ -1,6 +1,8 @@
 const DraftNode = oboRequire('models/draft_node')
 
 class MCAssessment extends DraftNode {
+	static nodeName = 'ObojoboDraft.Chunks.MCAssessment'
+
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({

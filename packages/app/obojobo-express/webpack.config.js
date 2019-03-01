@@ -3,10 +3,9 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
-const { oboNodePackages } = require('../../../obojobo') // load obojob.js from main repo
-
-const viewerOboNodeScripts = getAllOboNodeScriptPathsByType(oboNodePackages, 'viewer')
-const editorOboNodeScripts = getAllOboNodeScriptPathsByType(oboNodePackages, 'editor')
+const viewerOboNodeScripts = getAllOboNodeScriptPathsByType('viewer')
+const editorOboNodeScripts = getAllOboNodeScriptPathsByType('editor')
+const docEnginePath = path.dirname(require.resolve('obojobo-document-engine'))
 
 module.exports =
 	// built client files
@@ -23,9 +22,11 @@ module.exports =
 			'dist.js'
 		)
 
-		console.log(`Building assets for ${is_production ? 'production' : 'development'}`)
-
+		console.log(`OboNode client scripts to build | viewer: ${viewerOboNodeScripts.length}, editor: ${editorOboNodeScripts.length}`)
 		return {
+			stats: {children: false, modules: false},
+			optimization: {minimize: true},
+			performance: {hints: false},
 			mode: is_production ? 'production' : 'development',
 			target: 'web',
 			devServer: {
@@ -39,7 +40,7 @@ module.exports =
 				watchOptions: {
 					ignored: '/node_modules/'
 				},
-				stats: { children: false }
+				stats: {children: false, modules: false}
 			},
 			entry: {
 				viewer: [
@@ -48,9 +49,7 @@ module.exports =
 					commonPath,
 					// the application logic
 					path.join(
-						__dirname,
-						'..',
-						'obojobo-document-engine',
+						docEnginePath,
 						'src',
 						'scripts',
 						'viewer',
@@ -58,9 +57,7 @@ module.exports =
 					),
 					// where window and document variables are set and rendering is done
 					path.join(
-						__dirname,
-						'..',
-						'obojobo-document-engine',
+						docEnginePath,
 						'src',
 						'scripts',
 						'viewer',
@@ -76,9 +73,7 @@ module.exports =
 					// where window and document variables are set and rendering is done
 					// and application logic
 					path.join(
-						__dirname,
-						'..',
-						'obojobo-document-engine',
+						docEnginePath,
 						'src',
 						'scripts',
 						'oboeditor',
@@ -89,7 +84,7 @@ module.exports =
 				]
 			},
 			output: {
-				path: path.join(__dirname, '..', 'obojobo-express', 'public', 'compiled'),
+				path: path.join(__dirname, 'public', 'compiled'),
 				filename: `${filename_with_min}.js`
 			},
 			module: {
@@ -146,7 +141,7 @@ module.exports =
 			plugins: [new MiniCssExtractPlugin()],
 			resolve: {
 				alias: {
-					styles: path.join(__dirname, '..', 'obojobo-document-engine', 'src', 'scss')
+					styles: path.join(docEnginePath, 'src', 'scss')
 				}
 			}
 		}

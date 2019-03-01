@@ -1,6 +1,6 @@
 import ScoreActions from './post-assessment/score-actions'
 // @TODO: Importing from the server code, we shouldn't do this:
-import AssessmentRubric from 'obojobo-document-engine/server/assessment-rubric'
+import AssessmentRubric from './assessment-rubric'
 
 const Adapter = {
 	construct(model, attrs) {

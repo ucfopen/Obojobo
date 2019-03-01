@@ -8,6 +8,10 @@ const SELECT_RANDOM = 'random'
 const SELECT_RANDOM_UNSEEN = 'random-unseen'
 
 class QuestionBank extends DraftNode {
+	static get nodeName(){
+		return 'ObojoboDraft.Chunks.QuestionBank'
+	}
+
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 

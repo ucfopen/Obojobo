@@ -1,6 +1,6 @@
 const DraftDocument = oboRequire('models/draft')
 const Assessment = require('./assessment')
-const AssessmentRubric = require('./assessment-rubric')
+const AssessmentRubric = require('../assessment-rubric')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const insertEvent = oboRequire('insert_event')
 const lti = oboRequire('lti')
