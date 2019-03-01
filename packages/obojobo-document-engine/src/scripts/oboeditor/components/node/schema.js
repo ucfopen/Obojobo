@@ -2,7 +2,7 @@ import { Block } from 'slate'
 
 import SchemaViolations from '../../util/schema-violations'
 
-const { CHILD_MAX_INVALID, CHILD_MIN_INVALID } = SchemaViolations
+const { CHILD_MAX_INVALID, CHILD_MIN_INVALID, CHILD_UNKNOWN, CHILD_TYPE_INVALID } = SchemaViolations
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -32,8 +32,15 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				const { node, index } = error
+				console.log(error)
+				const { node, child, index } = error
 				switch (error.code) {
+					case CHILD_UNKNOWN: {
+						return editor.unwrapNodeByKey(child.key)
+					}
+					case CHILD_TYPE_INVALID: {
+						return editor.unwrapNodeByKey(child.key)
+					}
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: TEXT_NODE

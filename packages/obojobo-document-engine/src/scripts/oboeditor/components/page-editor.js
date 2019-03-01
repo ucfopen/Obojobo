@@ -31,6 +31,7 @@ import ParameterNode from './parameter-node'
 import Component from './node/editor'
 import MarkToolbar from './toolbar'
 import EditorSchema from '../plugins/editor-schema'
+import ClipboardPlugin from '../plugins/clipboard-plugin'
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -61,7 +62,7 @@ const plugins = [
 	Rubric.plugins,
 	ParameterNode.plugins,
 	Assessment.plugins,
-	EditorSchema
+	EditorSchema,
 ]
 
 class PageEditor extends React.Component {
