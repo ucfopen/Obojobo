@@ -21,6 +21,7 @@
 	box-sizing: border-box;
 	transition: left $duration-animation-default $duration-animation-default;
 	border-right: 1px solid transparentize($color-shadow, 0.1);
+	overflow-y: auto;
 
 	&:focus {
 		outline: none;
