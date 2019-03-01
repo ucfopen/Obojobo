@@ -1,17 +1,15 @@
-// this file can be updated to be more uniform
-// list for viewer/editor js and css files
-const oboNodesClient = [
-	'obojobo-chunks-multiple-choice-assessment'
-]
-
-// list for server node js files
-const oboNodesServer = []
-
-// list for express files middleware
-const oboExpress = []
-
 module.exports = {
-	oboNodesClient,
-	oboNodesServer,
-	oboExpress
+	obojoboViewerScripts: 'viewer.js',
+	obojoboEditorScripts: 'editor.js',
+	obojoboServerScripts: [
+		{
+			name: 'ObojoboDraft.Chunks.MCAssessment',
+			location: 'server/mcassessment.js'
+		},
+		{
+			name: 'ObojoboDraft.Chunks.MCChoice',
+			location: 'server/mcchoice.js'
+		}
+	],
+	obojoboExpressMiddleware: null
 }

@@ -2,7 +2,7 @@
 // like the old obojobo.json (and eventually itself can become a json file)
 
 // list for viewer/editor js and css files
-const oboNodesClient = [
+const oboNodePackages = [
 	'obojobo-chunks-action-button',
 	'obojobo-chunks-break',
 	'obojobo-chunks-code',
@@ -25,34 +25,13 @@ const oboNodesClient = [
 ]
 
 // list for server node js files
-const oboNodesServer = [
-	{
-		name: 'ObojoboDraft.Sections.Assessment',
-		location: 'server/assessment.js'
-	},
-	{
-		name: 'ObojoboDraft.Chunks.MCAssessment',
-		location: 'server/mcassessment.js'
-	},
-	{
-		name: 'ObojoboDraft.Chunks.MCChoice',
-		location: 'server/mcchoice.js'
-	},
-	{
-		name: 'ObojoboDraft.Chunks.Question',
-		location: 'server/question.js'
-	},
-	{
-		name: 'ObojoboDraft.Chunks.QuestionBank',
-		location: 'server/question-bank.js'
-	}
-]
+const oboNodesServer = []
 
 // list for express files (located in obojobo-document-engine/server)
 const oboExpress = ['express.js']
 
 module.exports = {
-	oboNodesClient,
+	oboNodePackages,
 	oboNodesServer,
 	oboExpress
 }

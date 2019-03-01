@@ -2,17 +2,11 @@
 
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
+const { oboNodePackages } = require('../../../obojobo') // load obojob.js from main repo
 
-const { oboNodesClient } = require('../../../obojobo') // load obojob.js from main repo
-
-const createClientPathArray = (arr, type) => arr.map(node => {
-	// node is just a string name, convert it to a full path
-	return require.resolve(`${node}${path.sep}${type}.js`)
-})
-
-// Takes an array of strings of OboNodes
-const viewerOboNodes = createClientPathArray(oboNodesClient, 'viewer')
-const editorOboNodes = createClientPathArray(oboNodesClient, 'editor')
+const viewerOboNodeScripts = getAllOboNodeScriptPathsByType(oboNodePackages, 'viewer')
+const editorOboNodeScripts = getAllOboNodeScriptPathsByType(oboNodePackages, 'editor')
 
 module.exports =
 	// built client files
@@ -73,7 +67,7 @@ module.exports =
 						'app.js'
 					),
 					// all viewer nodes that were registered in obojobo.js
-					...viewerOboNodes
+					...viewerOboNodeScripts
 				],
 				editor: [
 					'whatwg-fetch',
@@ -91,7 +85,7 @@ module.exports =
 						'app.js'
 					),
 					// all editor nodes that were registered in obojobo.js
-					...editorOboNodes
+					...editorOboNodeScripts
 				]
 			},
 			output: {
