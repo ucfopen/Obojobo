@@ -19,9 +19,11 @@ const schema = {
 			],
 
 			normalize: (editor, error) => {
+				console.log('question?', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
+						console.log(node.toJSON())
 						// If we are missing the last node,
 						// it should be a MCAssessment
 						if (index === node.nodes.size) {

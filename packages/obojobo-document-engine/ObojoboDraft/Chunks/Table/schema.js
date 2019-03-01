@@ -21,6 +21,11 @@ const schema = {
 				const header = index === 0 && node.data.get('content').header
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
+						// Deal with Paste insertion of top-level nodes
+						if(child.type === 'oboeditor.component'){
+							return editor.unwrapNodeByKey(child.key)
+						}
+
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
 						if (child.object === 'block' && index === node.nodes.size - 1) {
 							return editor.unwrapNodeByKey(child.key)
@@ -58,6 +63,11 @@ const schema = {
 				const header = node.data.get('content').header
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
+						// Deal with Paste insertion of top-level nodes
+						if(child.type === 'oboeditor.component'){
+							return editor.unwrapNodeByKey(child.key)
+						}
+
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
 						if (child.object === 'block' && index === node.nodes.size - 1) {
 							return editor.unwrapNodeByKey(child.key)

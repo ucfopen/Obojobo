@@ -63,6 +63,7 @@ const plugins = [
 	ParameterNode.plugins,
 	Assessment.plugins,
 	EditorSchema,
+	ClipboardPlugin
 ]
 
 class PageEditor extends React.Component {
