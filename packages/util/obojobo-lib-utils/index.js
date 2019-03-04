@@ -19,10 +19,10 @@ const searchNodeModulesForOboNodes = (forceReload = false) => {
 	const pattern = /obojobo-[^@]+/ig
 	const packages = packageSearchOut.toString().match(pattern)
 
-	packages.forEach(package => {
+	packages.forEach(pkg => {
 		try{
-			const manifest = require(package)
-			if(manifest.obojobo) cachedOboNodeList.push(package)
+			const manifest = require(pkg)
+			if(manifest.obojobo) cachedOboNodeList.push(pkg)
 		} catch(error){
 			// do nothing - it's ok if one of these packages has no index.js
 		}
@@ -46,7 +46,7 @@ const getOboNodeScriptPathsFromPackageByType = (oboNodePackage, type) => {
 			scripts = manifest.obojobo.editorScripts
 			break;
 
-		case 'server':
+		case 'obonodes':
 			scripts = manifest.obojobo.serverScripts
 			break;
 

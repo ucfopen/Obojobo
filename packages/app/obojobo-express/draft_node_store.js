@@ -2,7 +2,14 @@ const DraftNode = global.oboRequire('models/draft_node')
 const draftNodeStorage = new Map()
 
 const add = nodeClass => {
-	if (draftNodeStorage.has(nodeClass.nodeName)) return
+	if(!nodeClass.nodeName){
+		throw new Error('Unable to add node class to store, object is missing nodeName property')
+	}
+
+	if (draftNodeStorage.has(nodeClass.nodeName)){
+		throw new Error(`Unable to add node class to store, ${nodeClass.nodeName} is already registered`)
+	}
+
 	draftNodeStorage.set(nodeClass.nodeName, nodeClass)
 }
 
