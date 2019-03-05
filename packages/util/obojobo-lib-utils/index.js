@@ -13,11 +13,11 @@ const searchNodeModulesForOboNodes = (forceReload = false) => {
 	cachedOboNodeList.length = 0 // clear the array
 	// use yarn to get a list of obojobo-* node_modules
 	const packageSearchOut = require('child_process').execSync('yarn list --pattern obojobo-')
-	const pattern = /(?<=\s+)obojobo-[^@]+/ig
+	const pattern = /obojobo-[^@]+/ig
 	const packages = packageSearchOut.toString().match(pattern)
-
 	packages.forEach(pkg => {
 		try{
+			pkg = pkg.trim()
 			const manifest = require(pkg)
 			if(manifest.obojobo) cachedOboNodeList.push(pkg)
 		} catch(error){
