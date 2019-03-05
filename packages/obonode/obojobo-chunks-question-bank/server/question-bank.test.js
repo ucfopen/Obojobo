@@ -1,20 +1,21 @@
-import QuestionBank from './question-bank'
-
-const _ = require('underscore')
-const logger = require('obojobo-express/logger')
-
-const SELECT_SEQUENTIAL = 'sequential'
-const SELECT_RANDOM = 'random'
-const SELECT_RANDOM_UNSEEN = 'random-unseen'
-const { getRandom } = require('../../server/util')
-
+jest.mock('obojobo-express/logger')
 jest.mock(
-	'../../server/util',
+	'./util',
 	() => ({
 		getRandom: jest.fn().mockReturnValue(0)
 	}),
 	{ virtual: false }
 )
+
+jest.setMock('obojobo-express/models/draft_node', require('obojobo-document-engine/__mocks__/models/draft_node'))
+
+const QuestionBank = require('./question-bank')
+const _ = require('underscore')
+const logger = require('obojobo-express/logger')
+const { getRandom } = require('./util')
+const SELECT_SEQUENTIAL = 'sequential'
+const SELECT_RANDOM = 'random'
+const SELECT_RANDOM_UNSEEN = 'random-unseen'
 
 describe('QuestionBank', () => {
 	/*
@@ -81,6 +82,10 @@ describe('QuestionBank', () => {
 
 	beforeEach(() => {
 		jest.resetAllMocks()
+	})
+
+	test('nodeName is expected value', () => {
+		expect(QuestionBank.nodeName).toBe('ObojoboDraft.Chunks.QuestionBank')
 	})
 
 	test('removes children on sendToClient', () => {

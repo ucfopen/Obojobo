@@ -43,7 +43,6 @@ describe('register chunks middleware', () => {
 	})
 
 	test('registers all middleware as expected', () => {
-		const dns = oboRequire('draft_node_store')
 		const middleware = oboRequire('express_register_chunks')
 		const MockMiddleware = require('mock-obo-middleware')
 
