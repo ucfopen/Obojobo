@@ -1,4 +1,3 @@
-const path = require('path')
 const express = require('express')
 const draftNodeStore = oboRequire('draft_node_store')
 const logger = oboRequire('logger')

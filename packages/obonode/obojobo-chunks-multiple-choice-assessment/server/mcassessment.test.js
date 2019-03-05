@@ -1,4 +1,6 @@
-import MCAssessment from './mcassessment'
+jest.setMock('obojobo-express/models/draft_node', require('obojobo-document-engine/__mocks__/models/draft_node'))
+
+let MCAssessment
 
 const DraftNode = require('obojobo-express/models/draft_node')
 
@@ -8,9 +10,11 @@ describe('MCAssessment', () => {
 
 	beforeEach(() => {
 		jest.resetAllMocks()
+		MCAssessment = require('./mcassessment')
 		const getChildNodeByIdMock = id => mcAssessment.children.filter(i => i.node.id === id)[0]
 
 		mcAssessment = new MCAssessment({ getChildNodeById: getChildNodeByIdMock }, { id: 'test' })
+
 		mcAssessment.children = [
 			new DraftNode({}, { id: 'test', content: { score: 100 } }, {}),
 			new DraftNode({}, { id: 'test1', content: { score: 100 } }, {}),
@@ -24,9 +28,14 @@ describe('MCAssessment', () => {
 		})
 	})
 
+	test('nodeName is expected value', () => {
+		expect(MCAssessment.nodeName).toBe('ObojoboDraft.Chunks.MCAssessment')
+	})
+
 	test('constructor registers the expected events', () => {
-		expect(mcAssessment.registerEvents).toHaveBeenCalled()
-		expect(mcAssessment.registerEvents.mock.calls[0]).toMatchSnapshot()
+		expect(mcAssessment.registerEvents).toHaveBeenCalledWith({
+			'ObojoboDraft.Chunks.Question:calculateScore': mcAssessment.onCalculateScore
+		})
 	})
 
 	test("onCalculateScore stops if question doesn't contain 'this' node", () => {

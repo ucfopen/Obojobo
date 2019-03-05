@@ -1,15 +1,24 @@
-import MCChoice from './mcchoice'
+jest.setMock('obojobo-express/models/draft_node', require('obojobo-document-engine/__mocks__/models/draft_node'))
+
+let MCChoice
+let mcChoice
 
 describe('MCChoice', () => {
-	const mcChoice = new MCChoice()
+
+	beforeEach(() => {
+		MCChoice = require('./mcchoice')
+		mcChoice = new MCChoice()
+	})
+
+	test('nodeName is expected value', () => {
+		expect(MCChoice.nodeName).toBe('ObojoboDraft.Chunks.MCChoice')
+	})
 
 	test('registers expected events', () => {
-		expect(mcChoice.registerEvents).toHaveBeenCalledTimes(1)
-		const register = mcChoice.registerEvents.mock.calls[0]
-		expect(register).toMatchSnapshot()
-		expect(register[0]['ObojoboDraft.Sections.Assessment:sendToAssessment']).toBe(
-			mcChoice.onSendToAssessment
-		)
+		expect(mcChoice.registerEvents).toHaveBeenCalledWith({
+			'ObojoboDraft.Sections.Assessment:sendToAssessment': mcChoice.onSendToAssessment
+		})
+
 	})
 
 	test('onSendToAssessment sets score to 0', () => {

@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessment Answer Choices focusOnResults renders 1`] = `
+<div
+  role="radiogroup"
+>
+  <div
+    className="for-screen-reader-only"
+    tabIndex="-1"
+  >
+    <div
+      className="result-container"
+    >
+      <p
+        className="result incorrect"
+      >
+         - You received a % on this question.
+      </p>
+    </div>
+  </div>
+</div>
+`;
