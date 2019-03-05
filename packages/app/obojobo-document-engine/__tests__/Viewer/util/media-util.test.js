@@ -51,6 +51,28 @@ describe('MediaUtil', () => {
 		})
 	})
 
+	test('setDefaultZoom', () => {
+		MediaUtil.setDefaultZoom('mocked-id', 2)
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:setDefaultZoom', {
+			value: {
+				id: 'mocked-id',
+				zoom: 2
+			}
+		})
+	})
+
+	test('isZoomAtDefault', () => {
+		const state = { defaultZoomById: { 'mocked-id': 1 }, zoomById: { 'mocked-id': 2 } }
+		// is not at default
+		expect(MediaUtil.isZoomAtDefault(state, testModel)).toBe(false)
+
+		// is at default
+		state.zoomById['mocked-id'] = 1
+		expect(MediaUtil.isZoomAtDefault(state, testModel)).toBe(true)
+	})
+
 	test('setZoom', () => {
 		MediaUtil.setZoom('mocked-id', 'mock-zoom')
 

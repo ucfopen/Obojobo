@@ -3,7 +3,7 @@ import './viewer-component.scss'
 import { CSSTransition } from 'react-transition-group'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { OboComponent } = Viewer.components
 const { QuestionUtil } = Viewer.util

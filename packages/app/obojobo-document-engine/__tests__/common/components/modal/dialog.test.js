@@ -1,7 +1,7 @@
-import React from 'react'
-import renderer from 'react-test-renderer'
-import { mount } from 'enzyme'
 import Dialog from '../../../../src/scripts/common/components/modal/dialog'
+import React from 'react'
+import { mount } from 'enzyme'
+import renderer from 'react-test-renderer'
 
 describe('Dialog', () => {
 	test('Dialog component', () => {
@@ -32,7 +32,7 @@ describe('Dialog', () => {
 			</Dialog>
 		)
 
-		const spy = jest.spyOn(component.instance().refs.button0, 'focus')
+		const spy = jest.spyOn(component.instance().buttonRefs[0], 'focus')
 
 		component
 			.find('input')

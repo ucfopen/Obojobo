@@ -2,7 +2,7 @@ import './insert-menu.scss'
 
 /* eslint no-alert: 0 */
 import React from 'react'
-import isOrNot from '../../../../common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 class DropMenu extends React.Component {
 	constructor(props) {

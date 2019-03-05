@@ -1,16 +1,15 @@
 import './nav.scss'
 
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import FocusUtil from '../util/focus-util'
-import Logo from '../../viewer/components/logo'
-import NavUtil from '../../viewer/util/nav-util'
+import Logo from './logo'
+import NavUtil from '../util/nav-util'
 import React from 'react'
-import isOrNot from '../../common/isornot'
 
-const { OboModel } = Common.models
-const { StyleableText } = Common.text
-const { StyleableTextComponent } = Common.text
 const { Button } = Common.components
+const { OboModel } = Common.models
+const { StyleableText, StyleableTextComponent } = Common.text
+const { isOrNot } = Common.util
 
 const getLabelTextFromLabel = label => {
 	if (!label) return ''
@@ -18,6 +17,11 @@ const getLabelTextFromLabel = label => {
 }
 
 export default class Nav extends React.Component {
+	constructor(props) {
+		super(props)
+		this.selfRef = React.createRef()
+	}
+
 	onClick(item) {
 		switch (item.type) {
 			case 'link':
@@ -29,10 +33,14 @@ export default class Nav extends React.Component {
 			case 'sub-link': {
 				const el = OboModel.models[item.id].getDomEl()
 				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-				focus(el)
+				Common.page.focus(el)
 				break
 			}
 		}
+	}
+
+	focus() {
+		Common.page.focus(this.selfRef)
 	}
 
 	onClickSkipNavigation() {
@@ -134,7 +142,13 @@ export default class Nav extends React.Component {
 			isOrNot(!navState.disabled, 'enabled')
 
 		return (
-			<nav className={className} tabIndex="-1" ref="self" role="navigation" aria-label="Navigation">
+			<nav
+				className={className}
+				tabIndex="-1"
+				ref={this.selfRef}
+				role="navigation"
+				aria-label="Navigation"
+			>
 				<Button
 					altAction
 					className="skip-nav-button"
@@ -147,7 +161,7 @@ export default class Nav extends React.Component {
 				<button className="toggle-button" onClick={NavUtil.toggle}>
 					Toggle Navigation Menu
 				</button>
-				<ul aria-hidden={isNavInaccessible} tabIndex="-1" ref="list">
+				<ul aria-hidden={isNavInaccessible} tabIndex="-1">
 					{list.map((item, index) => {
 						switch (item.type) {
 							case 'heading':

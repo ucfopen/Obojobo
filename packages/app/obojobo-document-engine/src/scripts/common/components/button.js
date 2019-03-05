@@ -1,9 +1,14 @@
 import './button.scss'
-import isOrNot from '../isornot'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 
 export default class Button extends React.Component {
+	constructor(props) {
+		super(props)
+		this.buttonRef = React.createRef()
+	}
+
 	static get defaultProps() {
 		return {
 			value: null,
@@ -13,8 +18,7 @@ export default class Button extends React.Component {
 	}
 
 	focus() {
-		const el = this.refs.button
-		if (el) el.focus()
+		Common.page.focus(this.buttonRef)
 	}
 
 	render() {
@@ -32,14 +36,14 @@ export default class Button extends React.Component {
 		const className =
 			'obojobo-draft--components--button' +
 			(this.props.altAction ? ' alt-action' : '') +
-			isOrNot(this.props.isDangerous, 'dangerous') +
+			Common.util.isOrNot(this.props.isDangerous, 'dangerous') +
 			` align-${this.props.align}` +
 			(this.props.className ? ` ${this.props.className}` : '')
 
 		return (
 			<div className={className}>
 				<button
-					ref="button"
+					ref={this.buttonRef}
 					onClick={this.props.onClick}
 					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
 					disabled={this.props.disabled || this.props.shouldPreventTab}

@@ -1,10 +1,14 @@
 import './single-input-bubble.scss'
 
+import Bubble from './bubble'
 import React from 'react'
 
-import Bubble from './bubble'
-
 class SingleInputBubble extends React.Component {
+	constructor(props) {
+		super(props)
+		this.inputRef = React.createRef()
+	}
+
 	onChange(event) {
 		return this.props.onChange(event.target.value)
 	}
@@ -23,7 +27,7 @@ class SingleInputBubble extends React.Component {
 
 	componentDidMount() {
 		return setTimeout(() => {
-			return this.refs.input.select()
+			return this.inputRef.current.select()
 		})
 	}
 
@@ -33,7 +37,7 @@ class SingleInputBubble extends React.Component {
 				<label className="single-input-bubble">
 					<form className="interactable" onSubmit={this.onSubmit.bind(this)}>
 						<input
-							ref="input"
+							ref={this.inputRef}
 							type="text"
 							value={this.props.value}
 							onChange={this.onChange.bind(this)}

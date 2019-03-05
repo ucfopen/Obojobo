@@ -1,5 +1,4 @@
 import Common from 'Common'
-
 import { DEFAULT_ZOOM } from '../stores/media-store/media-constants'
 
 const { Dispatcher } = Common.flux

@@ -1,7 +1,7 @@
 import React from 'react'
+import SingleInputBubble from '../../../../../src/scripts/common/components/modal/bubble/single-input-bubble'
 import { mount } from 'enzyme'
 
-import SingleInputBubble from '../../../../../src/scripts/common/components/modal/bubble/single-input-bubble'
 jest.useFakeTimers()
 
 describe('SingleInputBubble', () => {
@@ -38,7 +38,7 @@ describe('SingleInputBubble', () => {
 			/>
 		)
 
-		const spy = jest.spyOn(el.instance().refs.input, 'select')
+		const spy = jest.spyOn(el.instance().inputRef.current, 'select')
 
 		jest.runAllTimers()
 

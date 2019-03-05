@@ -3,7 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import { Block } from 'slate'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 

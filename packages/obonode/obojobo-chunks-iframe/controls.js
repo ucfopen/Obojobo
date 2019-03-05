@@ -3,7 +3,7 @@ import './controls.scss'
 import React from 'react'
 import parseURL from 'url-parse'
 
-import isOrNot from 'obojobo-document-engine/src/scripts/common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const controls = props => {
 	const controlsOpts = props.controlsOptions

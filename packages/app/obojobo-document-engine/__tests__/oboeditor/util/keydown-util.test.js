@@ -1,6 +1,39 @@
 import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 
 describe('KeyDown Util', () => {
+	test('deleteEmptyParent', () => {
+		const change = {
+			value: {
+				endBlock: {
+					text: ''
+				},
+				document: {
+					getClosest: (key, fn) => {
+						// some
+						fn({ type: 'someType' })
+						return { nodes: { size: 1 } }
+					}
+				},
+				blocks: { get: () => ({ key: 'mockKey' }) }
+			},
+			removeNodeByKey: jest.fn()
+		}
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		expect(KeyDownUtil.deleteEmptyParent(event, change, 'someType')).toBe(true)
+		expect(event.preventDefault).toHaveBeenCalledTimes(1)
+		expect(change.removeNodeByKey).toHaveBeenCalledTimes(1)
+
+		change.value.endBlock.text = 'someText'
+		/* eslint-disable-next-line */
+		expect(KeyDownUtil.deleteEmptyParent(event, change, 'someType')).toBe(undefined)
+		expect(event.preventDefault).toHaveBeenCalledTimes(1)
+		expect(change.removeNodeByKey).toHaveBeenCalledTimes(1)
+	})
+
 	test('deleteNodeContents deals with selection collapsed at start of block', () => {
 		const change = {
 			value: {

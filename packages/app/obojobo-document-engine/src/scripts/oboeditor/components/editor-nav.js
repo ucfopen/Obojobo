@@ -5,7 +5,7 @@ import EditorUtil from '../util/editor-util'
 import ClipboardUtil from '../util/clipboard-util'
 import SubMenu from './sub-menu'
 import generateId from '../generate-ids'
-import isOrNot from '../../common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 import './editor-nav.scss'
 // relies on styles from viewer
