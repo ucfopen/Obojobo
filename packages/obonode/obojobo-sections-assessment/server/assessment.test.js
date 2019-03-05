@@ -1,5 +1,5 @@
-const db = oboRequire('db')
-const lti = oboRequire('lti')
+const db = require('obojobo-express/db')
+const lti = require('obojobo-express/lti')
 const Assessment = require('../../server/assessment')
 
 jest.mock(

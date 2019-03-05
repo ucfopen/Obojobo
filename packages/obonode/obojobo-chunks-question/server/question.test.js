@@ -1,6 +1,6 @@
 /* eslint no-undefined: 0 */
 
-import Question from '../../server/question'
+import Question from './question'
 
 describe('Question', () => {
 	const question = new Question({}, { id: 'mockQuestion' }, {})

@@ -1,7 +1,7 @@
-import QuestionBank from '../../server/question-bank'
+import QuestionBank from './question-bank'
 
 const _ = require('underscore')
-const logger = oboRequire('logger')
+const logger = require('obojobo-express/logger')
 
 const SELECT_SEQUENTIAL = 'sequential'
 const SELECT_RANDOM = 'random'

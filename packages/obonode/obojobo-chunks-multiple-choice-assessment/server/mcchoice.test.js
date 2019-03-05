@@ -1,4 +1,4 @@
-import MCChoice from '../../server/mcchoice'
+import MCChoice from './mcchoice'
 
 describe('MCChoice', () => {
 	const mcChoice = new MCChoice()

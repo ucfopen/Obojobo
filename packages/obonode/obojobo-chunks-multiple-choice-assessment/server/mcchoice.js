@@ -1,7 +1,9 @@
-const DraftNode = oboRequire('models/draft_node')
+const DraftNode = require('obojobo-express/models/draft_node')
 
 class MCChoice extends DraftNode {
-	static nodeName = 'ObojoboDraft.Chunks.MCChoice'
+	static get nodeName(){
+		return 'ObojoboDraft.Chunks.MCChoice'
+	}
 
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)

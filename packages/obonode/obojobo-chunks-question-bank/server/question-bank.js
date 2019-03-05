@@ -1,6 +1,6 @@
-const DraftNode = oboRequire('models/draft_node')
+const DraftNode = require('obojobo-express/models/draft_node')
 const _ = require('underscore')
-const logger = oboRequire('logger')
+const logger = require('obojobo-express/logger')
 const { getRandom } = require('./util')
 
 const SELECT_SEQUENTIAL = 'sequential'

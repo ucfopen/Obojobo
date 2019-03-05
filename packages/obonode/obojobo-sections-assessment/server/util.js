@@ -1,4 +1,4 @@
-const logger = oboRequire('logger')
+const logger = require('obojobo-express/logger')
 
 const logAndRespondToUnexpected = (errorMessage, res, req, jsError) => {
 	logger.error('logAndRespondToUnexpected', errorMessage, jsError)

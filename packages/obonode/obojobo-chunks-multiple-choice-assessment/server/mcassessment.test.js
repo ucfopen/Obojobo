@@ -1,6 +1,6 @@
-import MCAssessment from '../../server/mcassessment'
+import MCAssessment from './mcassessment'
 
-const DraftNode = oboRequire('models/draft_node')
+const DraftNode = require('obojobo-express/models/draft_node')
 
 describe('MCAssessment', () => {
 	let mcAssessment

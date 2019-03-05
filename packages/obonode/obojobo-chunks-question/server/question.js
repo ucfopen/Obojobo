@@ -1,5 +1,4 @@
-const DraftNode = oboRequire('models/draft_node')
-// import DraftNode from '../../../models/draft_node'
+const DraftNode = require('obojobo-express/models/draft_node')
 
 class Question extends DraftNode {
 	static get nodeName(){

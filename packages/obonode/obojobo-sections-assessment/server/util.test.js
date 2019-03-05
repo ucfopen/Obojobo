@@ -1,5 +1,5 @@
-const Util = require('../../server/util')
-const logger = oboRequire('logger')
+const Util = require('./util')
+const logger = require('obojobo-express/logger')
 
 describe('Util', () => {
 	beforeEach(() => {

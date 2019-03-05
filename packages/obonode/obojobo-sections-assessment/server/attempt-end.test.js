@@ -24,11 +24,11 @@ jest.mock(
 	{ virtual: true }
 )
 
-const logger = oboRequire('logger')
-const DraftDocument = oboRequire('models/draft')
-const lti = oboRequire('lti')
-const insertEvent = oboRequire('insert_event')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const logger = require('obojobo-express/logger')
+const DraftDocument = require('obojobo-express/models/draft')
+const lti = require('obojobo-express/lti')
+const insertEvent = require('obojobo-express/insert_event')
+const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
 const originalToISOString = Date.prototype.toISOString
 const AssessmentRubric = require('../../server/assessment-rubric')
 const attemptStart = require('../../server/attempt-start.js')

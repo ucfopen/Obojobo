@@ -1,10 +1,10 @@
-const DraftDocument = oboRequire('models/draft')
+const DraftDocument = require('obojobo-express/models/draft')
 const Assessment = require('./assessment')
 const AssessmentRubric = require('../assessment-rubric')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-const insertEvent = oboRequire('insert_event')
-const lti = oboRequire('lti')
-const logger = oboRequire('logger')
+const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
+const insertEvent = require('obojobo-express/insert_event')
+const lti = require('obojobo-express/lti')
+const logger = require('obojobo-express/logger')
 const attemptStart = require('./attempt-start')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 

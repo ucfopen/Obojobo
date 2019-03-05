@@ -4,10 +4,10 @@
 	"license": "AGPL-3.0-only",
 	"description": "Assortment of reusable parts for obojobo libraries.",
 	"scripts": {
-		"test": "echo 'not implemented'",
-		"test:ci": "echo 'not implemented'",
-		"lint": "echo 'not implemented'",
-		"lint:js": "echo 'not implemented'",
+		"test": "TZ='America/New_York' jest",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"lint": "yarn lint:js && yarn lint:css",
+		"lint:js": "eslint .",
 		"lint:css": "echo 'not implemented'",
 		"prettier:run": "echo 'not implemented'"
 	},
@@ -32,5 +32,26 @@
 		"react-dom": "16.7.0",
 		"react-test-renderer": "16.7.0",
 		"stylelint": "^9.4.0"
+	},
+	"jest": {
+		"coveragePathIgnorePatterns": [
+			"<rootDir>/node_modules",
+			"<rootDir>/test-setup-chunks.js",
+			"<rootDir>/mock-virtual.js"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
+		"testPathIgnorePatterns": [],
+		"modulePathIgnorePatterns": [],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
 	}
 }
