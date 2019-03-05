@@ -1,4 +1,4 @@
-import AssessmentRubric from '../../server/assessment-rubric'
+import AssessmentRubric from './assessment-rubric'
 
 describe('AssessmentRubric', () => {
 	beforeEach(() => {

@@ -1,19 +1,28 @@
 /* eslint no-undefined: 0 */
+jest.setMock('obojobo-express/models/draft_node', require('obojobo-document-engine/__mocks__/models/draft_node'))
 
-import Question from '../../server/question'
+let question
+let currentAttempt
+let Question
 
 describe('Question', () => {
-	const question = new Question({}, { id: 'mockQuestion' }, {})
-	const currentAttempt = { addScore: jest.fn() }
+	beforeEach(() => {
+		Question = require('./question')
+		question = new Question({}, { id: 'mockQuestion' }, {})
+		currentAttempt = { addScore: jest.fn() }
+	})
+
+	test('nodeName is expected value', () => {
+		expect(Question.nodeName).toBe('ObojoboDraft.Chunks.Question')
+	})
 
 	test('registers expected events', () => {
 		expect(question.registerEvents).toHaveBeenCalledTimes(1)
-		const events = question.registerEvents.mock.calls[0][0]
 		expect(question.registerEvents.mock.calls[0]).toMatchSnapshot()
-		expect(events['ObojoboDraft.Sections.Assessment:sendToAssessment']).toBe(
-			question.onSendToAssessment
-		)
-		expect(events['ObojoboDraft.Sections.Assessment:attemptEnd']).toBe(question.onAttemptEnd)
+		expect(question.registerEvents).toHaveBeenCalledWith({
+			'ObojoboDraft.Sections.Assessment:sendToAssessment': question.onSendToAssessment,
+			'ObojoboDraft.Sections.Assessment:attemptEnd': question.onAttemptEnd
+		})
 	})
 
 	test('disables practice on send to assessment', () => {
@@ -38,6 +47,7 @@ describe('Question', () => {
 	})
 
 	test('emits calculate score event when necessary', () => {
+		question.node.content = { mode: 'assessment' }
 		const mockAssessment = { contains: () => true }
 		const responseHistory = [{ question_id: question.node.id }]
 

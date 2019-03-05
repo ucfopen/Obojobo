@@ -34,11 +34,11 @@ const {
 const _ = require('underscore')
 const testJson = require('../../test-object.json')
 const Assessment = require('../../server/assessment')
-const insertEvent = oboRequire('insert_event')
-const Draft = oboRequire('models/draft')
-const DraftNode = oboRequire('models/draft_node')
-const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-const Visit = oboRequire('models/visit')
+const insertEvent = require('obojobo-express/insert_event')
+const Draft = require('obojobo-express/models/draft')
+const DraftNode = require('obojobo-express/models/draft_node')
+const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
+const Visit = require('obojobo-express/models/visit')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'

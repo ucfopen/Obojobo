@@ -1,10 +1,14 @@
-const DraftNode = oboRequire('models/draft_node')
-const Visit = oboRequire('models/visit')
-const db = oboRequire('db')
-const lti = oboRequire('lti')
-const logger = oboRequire('logger')
+const DraftNode = require('obojobo-express/models/draft_node')
+const Visit = require('obojobo-express/models/visit')
+const db = require('obojobo-express/db')
+const lti = require('obojobo-express/lti')
+const logger = require('obojobo-express/logger')
 
 class Assessment extends DraftNode {
+	static get nodeName(){
+		return 'ObojoboDraft.Sections.Assessment'
+	}
+
 	static getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, isPreview) {
 		return db.manyOrNone(
 			`

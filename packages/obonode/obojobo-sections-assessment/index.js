@@ -1,12 +1,8 @@
 module.exports = {
-	obojoboViewerScripts: 'viewer.js',
-	obojoboEditorScripts: 'editor.js',
-	obojoboServerScripts: [
-		{
-			name: 'ObojoboDraft.Sections.Assessment',
-			location: 'server/assessment.js'
-		}
-	],
-	obojoboExpressMiddleware: null
+	obojobo: {
+		viewerScripts: 'viewer.js',
+		editorScripts: 'editor.js',
+		serverScripts: 'server/assessment.js',
+		expressMiddleware: 'server/express.js'
+	}
 }
-

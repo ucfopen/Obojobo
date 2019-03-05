@@ -1,10 +1,7 @@
 module.exports = {
-	obojoboViewerScripts: 'viewer.js',
-	obojoboEditorScripts: 'editor.js',
-	obojoboServerScripts: [{
-		name: 'ObojoboDraft.Chunks.QuestionBank',
-		location: 'server/question-bank.js'
-	}],
-	obojoboExpressMiddleware: null
+	obojobo: {
+		viewerScripts: 'viewer.js',
+		editorScripts: 'editor.js',
+		serverScripts: 'server/question-bank.js'
+	}
 }
-

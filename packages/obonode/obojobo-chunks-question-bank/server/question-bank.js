@@ -1,6 +1,6 @@
-const DraftNode = oboRequire('models/draft_node')
+const DraftNode = require('obojobo-express/models/draft_node')
 const _ = require('underscore')
-const logger = oboRequire('logger')
+const logger = require('obojobo-express/logger')
 const { getRandom } = require('./util')
 
 const SELECT_SEQUENTIAL = 'sequential'
@@ -8,6 +8,10 @@ const SELECT_RANDOM = 'random'
 const SELECT_RANDOM_UNSEEN = 'random-unseen'
 
 class QuestionBank extends DraftNode {
+	static get nodeName(){
+		return 'ObojoboDraft.Chunks.QuestionBank'
+	}
+
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 
