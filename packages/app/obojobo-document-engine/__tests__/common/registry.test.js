@@ -1,4 +1,4 @@
-import { Registry } from '../../src/scripts/common/Registry'
+import { Registry } from '../../src/scripts/common/registry'
 
 describe('Registry', () => {
 	beforeEach(() => {
