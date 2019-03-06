@@ -3,10 +3,7 @@ import React from 'react'
 const Solution = props => {
 	const deleteNode = () => {
 		const editor = props.editor
-		const change = editor.value.change()
-		change.removeNodeByKey(props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(props.node.key)
 	}
 
 	return (

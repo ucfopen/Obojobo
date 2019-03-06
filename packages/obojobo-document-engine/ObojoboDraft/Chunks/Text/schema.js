@@ -1,5 +1,8 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
@@ -12,41 +15,41 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
 						if (child.object === 'block' && isAtEdge) {
-							return change.unwrapNodeByKey(child.key)
+							return editor.unwrapNodeByKey(child.key)
 						}
 
-						return change.wrapBlockByKey(child.key, {
+						return editor.wrapBlockByKey(child.key, {
 							type: TEXT_LINE_NODE,
 							data: { indent: 0 }
 						})
 					}
-					case CHILD_REQUIRED: {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: TEXT_LINE_NODE,
 							data: { indent: 0 }
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}
 			}
 		},
 		'ObojoboDraft.Chunks.Text.TextLine': {
 			nodes: [{ match: [{ object: 'text' }] }],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
 						if (child.object === 'block' && isAtEdge) {
-							return change.unwrapNodeByKey(child.key)
+							return editor.unwrapNodeByKey(child.key)
 						}
 					}
 				}

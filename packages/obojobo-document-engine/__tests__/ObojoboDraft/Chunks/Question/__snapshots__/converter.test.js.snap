@@ -22,13 +22,6 @@ Object {
         undefined,
       ],
       "object": "block",
-      "type": "oboeditor.component",
-    },
-    Object {
-      "nodes": Array [
-        undefined,
-      ],
-      "object": "block",
       "type": "ObojoboDraft.Chunks.Question.Solution",
     },
   ],
@@ -52,13 +45,6 @@ Object {
       "type": "oboeditor.component",
     },
     undefined,
-    Object {
-      "nodes": Array [
-        undefined,
-      ],
-      "object": "block",
-      "type": "oboeditor.component",
-    },
   ],
   "object": "block",
   "type": "mockType",

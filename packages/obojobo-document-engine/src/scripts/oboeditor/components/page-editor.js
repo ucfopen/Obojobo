@@ -37,7 +37,7 @@ const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 const plugins = [
 	Component.plugins,
-	...MarkToolbar.plugins,
+	MarkToolbar.plugins,
 	ActionButton.plugins,
 	Break.plugins,
 	Code.plugins,
@@ -95,6 +95,10 @@ class PageEditor extends React.Component {
 		return <p>No content available, click on a page to start editing</p>
 	}
 
+	ref(editor){
+		this.editor = editor
+	}
+
 	render() {
 		if (this.props.page === null) return this.renderEmpty()
 
@@ -102,19 +106,23 @@ class PageEditor extends React.Component {
 			<div className={'editor--page-editor'}>
 				<div className={'toolbar'}>
 					<MarkToolbar.components.Node
-						value={this.state.value}
-						onChange={change => this.onChange(change)}
+						getEditor={this.getEditor.bind(this)}
 					/>
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
 					value={this.state.value}
+					ref={this.ref.bind(this)}
 					onChange={change => this.onChange(change)}
 					plugins={plugins}
 				/>
 				{this.renderExportButton()}
 			</div>
 		)
+	}
+
+	getEditor() {
+		return this.editor
 	}
 
 	onChange({ value }) {

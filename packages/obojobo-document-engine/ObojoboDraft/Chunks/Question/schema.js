@@ -1,5 +1,8 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
@@ -11,14 +14,14 @@ const schema = {
 		'ObojoboDraft.Chunks.Question': {
 			nodes: [
 				{ match: [{ type: 'oboeditor.component' }], min: 1 },
-				{ match: [MCASSESSMENT_NODE], min: 1, max: 1 },
-				{ match: [SOLUTION_NODE], max: 1 }
+				{ match: [MCASSESSMENT_NODE], min: 1 },
+				{ match: [SOLUTION_NODE] }
 			],
 
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case CHILD_MIN_INVALID: {
 						// If we are missing the last node,
 						// it should be a MCAssessment
 						if (index === node.nodes.size) {
@@ -26,7 +29,7 @@ const schema = {
 								type: MCASSESSMENT_NODE,
 								data: { content: { responseType: 'pick-one', shuffle: true } }
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 
 						// Otherwise, just add a text node
@@ -40,7 +43,7 @@ const schema = {
 								}
 							]
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						const block = Block.fromJSON({
@@ -53,7 +56,7 @@ const schema = {
 								}
 							]
 						})
-						return change.withoutNormalization(c => {
+						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							return c.insertNodeByKey(node.key, index, block)
 						})
@@ -65,21 +68,20 @@ const schema = {
 			nodes: [
 				{
 					match: [{ type: PAGE_NODE }],
-					min: 1,
-					max: 1
+					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: PAGE_NODE
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return change.wrapBlockByKey(child.key, {
+						return editor.wrapBlockByKey(child.key, {
 							type: PAGE_NODE
 						})
 					}

@@ -7,10 +7,12 @@ import Converter from './converter'
 const COMPONENT_NODE = 'oboeditor.component'
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case COMPONENT_NODE:
 				return <Node {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
 	schema: Schema
