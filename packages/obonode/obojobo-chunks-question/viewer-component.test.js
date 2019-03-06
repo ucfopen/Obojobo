@@ -320,9 +320,12 @@ describe('MCAssessment', () => {
 			<Question model={model} moduleData={moduleData} showContentOnly={true} mode={MODE_REVIEW} />
 		)
 
+		component.instance().applyFlipCSS = jest.fn()
+
 		const value = component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
+		expect(component.instance().applyFlipCSS).toHaveBeenCalled()
 		expect(value).toEqual(undefined) //eslint-disable-line
 	})
 
@@ -340,10 +343,35 @@ describe('MCAssessment', () => {
 			<Question model={model} moduleData={moduleData} showContentOnly={true} />
 		)
 
+		component.instance().applyFlipCSS = jest.fn()
+
 		component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
 		expect(FocusUtil.focusOnContent).toHaveBeenCalled()
+		expect(component.instance().applyFlipCSS).toHaveBeenCalled()
+	})
+
+	test('applyFlipCSS temporarily sets state.isFlipping to true', () => {
+		jest.useFakeTimers()
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+		const model = OboModel.create(questionJSON)
+
+		const component = shallow(
+			<Question model={model} moduleData={moduleData} showContentOnly={true} />
+		)
+
+		expect(component.state()).toEqual({ isFlipping: false })
+		component.instance().applyFlipCSS()
+		expect(component.state()).toEqual({ isFlipping: true })
+		jest.runAllTimers()
+		expect(component.state()).toEqual({ isFlipping: false })
 	})
 
 	test('focusOnContent focuses on the first child component (when question is being shown)', () => {
