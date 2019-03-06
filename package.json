@@ -15,7 +15,7 @@
 		"precommit": "./run_in_all_packages.sh yarn precommit",
 		"setup": "yarn build --mode=production && cd node_modules/obojobo-express && yarn db:rebuild",
 		"test": "./run_in_all_packages.sh yarn test",
-		"test:ci": "./run_in_all_packages.sh yarn:ci",
+		"test:ci": "./run_in_all_packages.sh yarn test:ci",
 		"test:coverage": "./run_in_all_packages.sh yarn test -u --coverage"
 	},
 	"devDependencies": {
