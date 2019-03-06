@@ -1,9 +1,20 @@
-jest.mock('../../server/assessment')
+// Global for loading specialized Obojobo stuff
+// use oboRequire('models/draft') to load draft models from any context
+global.oboRequire = name => {
+	return require(`obojobo-express/${name}`)
+}
+
+jest.setMock('obojobo-express/logger', require('obojobo-express/__mocks__/logger'))
+jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
+jest.setMock('obojobo-express/insert_event', require('obojobo-express/__mocks__/insert_event'))
+jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/db')
+jest.mock('obojobo-express/models/draft')
+jest.mock('obojobo-express/routes/api/events/create_caliper_event')
 jest.mock('underscore')
-jest.mock('../../server/util')
 
 jest.mock(
-	'../../__mocks__/models/visit',
+	'obojobo-express/models/visit',
 	() => ({
 		fetchById: jest.fn()
 	}),
@@ -11,7 +22,7 @@ jest.mock(
 )
 
 jest.mock(
-	'../../server/util',
+	'./util',
 	() => ({
 		getRandom: jest.fn().mockReturnValue(0),
 		logAndRespondToUnexpected: jest.fn()
@@ -19,7 +30,7 @@ jest.mock(
 	{ virtual: false }
 )
 
-const { getRandom, logAndRespondToUnexpected } = require('../../server/util')
+const { getRandom, logAndRespondToUnexpected } = require('./util')
 
 const {
 	startAttempt,
@@ -30,10 +41,10 @@ const {
 	insertAttemptStartCaliperEvent,
 	getState,
 	loadChildren
-} = require('../../server/attempt-start.js')
+} = require('./attempt-start.js')
 const _ = require('underscore')
-const testJson = require('../../test-object.json')
-const Assessment = require('../../server/assessment')
+const testJson = require('obojobo-document-engine/test-object.json')
+const Assessment = require('./assessment')
 const insertEvent = require('obojobo-express/insert_event')
 const Draft = require('obojobo-express/models/draft')
 const DraftNode = require('obojobo-express/models/draft_node')

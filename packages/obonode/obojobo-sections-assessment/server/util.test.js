@@ -1,15 +1,12 @@
+
+jest.mock('obojobo-express/logger')
+
 const Util = require('./util')
 const logger = require('obojobo-express/logger')
 
 describe('Util', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
-	})
-
-	test('getRandom calls Math.random', () => {
-		jest.spyOn(Math, 'random')
-		Util.getRandom()
-		expect(Math.random).toHaveBeenCalled()
 	})
 
 	test('logAndRespondToUnexpected calls res.unexpected and logs error', () => {

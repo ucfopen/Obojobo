@@ -1,44 +1,59 @@
-jest.mock('../../server/attempt-start', () => ({ startAttempt: jest.fn() }))
-jest.mock('../../server/attempt-end', () => ({
+// Global for loading specialized Obojobo stuff
+// use oboRequire('models/draft') to load draft models from any context
+global.oboRequire = name => {
+	return require(`obojobo-express/${name}`)
+}
+
+jest.setMock('obojobo-express/logger', require('obojobo-express/__mocks__/logger'))
+jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
+jest.setMock('obojobo-express/insert_event', require('obojobo-express/__mocks__/insert_event'))
+jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/db')
+jest.mock('obojobo-express/obo_events')
+jest.mock('obojobo-express/lti')
+jest.mock('./util')
+jest.mock('./attempt-start', () => ({ startAttempt: jest.fn() }))
+jest.mock('./attempt-end', () => ({
 	endAttempt: jest.fn()
 }))
-jest.mock('../../server/assessment', () => ({
+jest.mock('./assessment', () => ({
 	getAttempt: jest.fn(),
 	getAttempts: jest.fn()
 }))
-jest.mock('../../server/util')
-
-const logAndRespondToUnexpected = require('../../server/util').logAndRespondToUnexpected
 
 jest.mock(
-	'../../__mocks__/models/visit',
+	'obojobo-express/models/visit',
 	() => ({
 		fetchById: jest.fn().mockReturnValue({ is_preview: false })
 	}),
 	{ virtual: true }
 )
+require('obojobo-express/__mocks__/__mock_express')
+
 
 describe('server/express', () => {
+
 	const db = require('obojobo-express/db')
-	require('__mocks__/__mock_express')
 	const mockUser = { id: 1 }
 	const mockDocument = { draftId: 3, contentId: 12 }
-	const Assessment = require('../../server/assessment')
+	const Assessment = require('./assessment')
+	const server = require('./express')
+	const lti = require('obojobo-express/lti')
+	const logger = require('obojobo-express/logger')
+	const oboEvents = require('obojobo-express/obo_events')
+	const startAttempt = require('./attempt-start').startAttempt
+	const endAttempt = require('./attempt-end').endAttempt
+	const Visit = require('obojobo-express/models/visit')
+	const { logAndRespondToUnexpected } = require('./util')
 	// build the req info
 	let req
 	let res
 
-	const server = require('../../server/express')
-	const lti = oboRequire('lti')
-	const logger = oboRequire('logger')
-	const oboEvents = oboRequire('obo_events')
-	const startAttempt = require('../../server/attempt-start').startAttempt
-	const endAttempt = require('../../server/attempt-end').endAttempt
-	const Visit = oboRequire('models/visit')
-
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
+		// @TODO
+		// jest.resetAllMocks()
 		req = {
 			requireCurrentUser: jest.fn().mockResolvedValue(mockUser),
 			requireCurrentDocument: jest.fn().mockResolvedValue(mockDocument),
@@ -183,7 +198,7 @@ describe('server/express', () => {
 		const endAttemptRoute = server.post.mock.calls[2]
 		expect(endAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/end')
 
-		endAttempt.mockReturnValueOnce(Promise.resolve('endAttemptResult'))
+		endAttempt.mockResolvedValue('endAttemptResult')
 
 		// execute
 		return endAttemptRoute[1](req, res, {}).then(() => {

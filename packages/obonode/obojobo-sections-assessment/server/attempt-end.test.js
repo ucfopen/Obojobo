@@ -1,8 +1,17 @@
 /* eslint no-undefined: 0 */
 /* eslint no-extend-native: 0 */
+global.oboRequire = name => {
+	return require(`obojobo-express/${name}`)
+}
 
+jest.setMock('obojobo-express/insert_event', require('obojobo-express/__mocks__/insert_event'))
+jest.mock('obojobo-express/models/draft')
+jest.mock('obojobo-express/db')
+jest.mock('obojobo-express/lti')
+jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/routes/api/events/create_caliper_event')
 jest.mock('../assessment-rubric')
-jest.mock('../../server/assessment', () => ({
+jest.mock('./assessment', () => ({
 	getAttempt: jest.fn().mockResolvedValue({
 		assessment_id: 'mockAssessmentId',
 		attemptNumber: 'mockAttemptNumber',
@@ -16,8 +25,9 @@ jest.mock('../../server/assessment', () => ({
 	completeAttempt: jest.fn().mockReturnValue('mockCompleteAttemptResult')
 }))
 
+
 jest.mock(
-	'../../__mocks__/models/visit',
+	'obojobo-express/models/visit',
 	() => ({
 		fetchById: jest.fn().mockReturnValue({ is_preview: false })
 	}),
@@ -30,12 +40,12 @@ const lti = require('obojobo-express/lti')
 const insertEvent = require('obojobo-express/insert_event')
 const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
 const originalToISOString = Date.prototype.toISOString
-const AssessmentRubric = require('../../server/assessment-rubric')
-const attemptStart = require('../../server/attempt-start.js')
-import Assessment from '../../server/assessment'
-import testJson from '../../test-object.json'
+const AssessmentRubric = require('../assessment-rubric')
+const attemptStart = require('./attempt-start.js')
+const Assessment = require('./assessment')
+const testJson = require('obojobo-document-engine/test-object.json')
 
-import {
+const {
 	endAttempt,
 	getAttempt,
 	getCalculatedScores,
@@ -47,7 +57,7 @@ import {
 	reloadAttemptStateIfReviewing,
 	recreateChosenQuestionTree,
 	getNodeQuestion
-} from '../../server/attempt-end'
+} = require('./attempt-end')
 
 describe('Attempt End', () => {
 	beforeAll(() => {

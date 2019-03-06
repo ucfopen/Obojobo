@@ -1,7 +1,16 @@
-const db = require('obojobo-express/db')
-const lti = require('obojobo-express/lti')
-const Assessment = require('../../server/assessment')
+// Global for loading specialized Obojobo stuff
+// use oboRequire('models/draft') to load draft models from any context
+global.oboRequire = name => {
+	return require(`obojobo-express/${name}`)
+}
 
+jest.setMock('obojobo-express/logger', require('obojobo-express/__mocks__/logger'))
+jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
+jest.setMock('ims-lti/src/extensions/outcomes', require('obojobo-express/__mocks__/ims-lti/src/extensions/outcomes'))
+jest.mock('obojobo-express/logger')
+jest.mock('obojobo-express/db')
+jest.mock('ims-lti/src/extensions/outcomes')
+jest.mock('obojobo-express/lti')
 jest.mock(
 	'../../__mocks__/models/visit',
 	() => ({
@@ -9,11 +18,19 @@ jest.mock(
 	}),
 	{ virtual: true }
 )
-const logger = oboRequire('logger')
+
+let db
+let lti
+let Assessment
+let logger
 
 describe('Assessment', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
+		db = require('obojobo-express/db')
+		lti = require('obojobo-express/lti')
+		Assessment = require('./assessment')
+		logger = require('obojobo-express/logger')
 		db.one.mockReset()
 		db.manyOrNone.mockReset()
 	})
@@ -33,6 +50,10 @@ describe('Assessment', () => {
 		score_details: 'mockScoreDetails',
 		assessment_score_id: 'scoreId',
 		attempt_number: '12'
+	})
+
+	test('nodeName is expected value', () => {
+		expect(Assessment.nodeName).toBe('ObojoboDraft.Sections.Assessment')
 	})
 
 	test('getCompletedAssessmentAttemptHistory calls db', () => {
@@ -703,7 +724,7 @@ describe('Assessment', () => {
 			},
 			jest.fn()
 		)
-
+		db.one.mockResolvedValueOnce('attemptData')
 		return assessment.onStartVisit(req, {}, 'mockDraftId', '', extensionsProps).then(() => {
 			expect(extensionsProps[':ObojoboDraft.Sections.Assessment:attemptHistory']).toEqual(
 				'mockAttempts'

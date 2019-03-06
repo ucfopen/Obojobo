@@ -6,9 +6,9 @@ const Assessment = require('./assessment')
 const VisitModel = require('obojobo-express/models/visit')
 const lti = require('obojobo-express/lti')
 const logger = require('obojobo-express/logger')
-const startAttempt = require('./attempt-start').startAttempt
-const endAttempt = require('./attempt-end').endAttempt
-const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
+const { startAttempt } = require('./attempt-start')
+const { endAttempt } = require('./attempt-end')
+const { logAndRespondToUnexpected } = require('./util')
 
 app.get('/api/lti/state/draft/:draftId', (req, res) => {
 	let currentUser
