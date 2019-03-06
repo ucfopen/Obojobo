@@ -1,11 +1,15 @@
 import './dialog.scss'
 
-import React from 'react'
-
 import Button from '../../../common/components/button'
 import Modal from './modal'
+import React from 'react'
 
 export default class Dialog extends React.Component {
+	constructor(props) {
+		super(props)
+		this.buttonRefs = []
+	}
+
 	static get defaultProps() {
 		return { centered: true }
 	}
@@ -17,7 +21,7 @@ export default class Dialog extends React.Component {
 				const button = this.props.buttons[index]
 				let item
 				if (button.default) {
-					item = this.refs[`button${index}`].focus()
+					item = this.buttonRefs[index].focus()
 				}
 				result.push(item)
 			}
@@ -26,10 +30,13 @@ export default class Dialog extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.refs.button0.focus()
+		return this.buttonRefs[0].focus()
 	}
 
 	render() {
+		// clear ref array
+		this.buttonRefs.slice(0)
+
 		let styles = null
 		if (this.props.width) {
 			styles = { width: this.props.width }
@@ -63,7 +70,15 @@ export default class Dialog extends React.Component {
 								)
 							}
 							buttonPropsOrText.key = index
-							return <Button key={index} ref={`button${index}`} {...buttonPropsOrText} />
+							return (
+								<Button
+									key={index}
+									ref={el => {
+										this.buttonRefs[index] = el
+									}}
+									{...buttonPropsOrText}
+								/>
+							)
 						})}
 					</div>
 				</Modal>

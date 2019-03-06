@@ -1,6 +1,5 @@
-import React from 'react'
-
 import FocusUtil from '../util/focus-util'
+import React from 'react'
 
 class OboComponent extends React.Component {
 	static get defaultProps() {
@@ -53,7 +52,6 @@ class OboComponent extends React.Component {
 				data-type={this.props.model.get('type')}
 				data-focussed={isFocussed}
 				tabIndex={this.props.tabIndex || this.props.tabIndex === 0 ? this.props.tabIndex : -1}
-				ref="el"
 			>
 				{this.props.children}
 			</Tag>

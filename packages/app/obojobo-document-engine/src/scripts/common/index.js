@@ -40,7 +40,7 @@ import TextGroupUtil from './text-group/text-group-util'
 import TextMenu from './components/text-menu'
 import cloneProps from './util/clone-props'
 import focus from './page/focus'
-import isOrNot from './isornot'
+import isOrNot from './util/isornot'
 import setProp from './util/set-prop'
 import uuid from './util/uuid'
 

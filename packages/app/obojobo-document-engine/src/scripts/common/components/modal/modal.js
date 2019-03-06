@@ -1,14 +1,14 @@
 import './modal.scss'
 
-import React from 'react'
-
 import DeleteButton from '../../../common/components/delete-button'
 import ModalUtil from '../../../common/util/modal-util'
+import React from 'react'
 
 class Modal extends React.Component {
 	constructor() {
 		super()
 		this.boundKeyUp = this.onKeyUp.bind(this)
+		this.deleteButtonRef = React.createRef()
 	}
 
 	componentDidMount() {
@@ -32,7 +32,7 @@ class Modal extends React.Component {
 
 	onTabTrapFocus() {
 		if (this.props.onClose) {
-			return this.refs.closeButton.focus()
+			return this.deleteButtonRef.current.focus()
 		} else if (this.props.focusOnFirstElement) {
 			return this.props.focusOnFirstElement()
 		}
@@ -48,24 +48,14 @@ class Modal extends React.Component {
 				role="dialog"
 				aria-labelledby="obojobo-draft--components--modal--modal--content"
 			>
-				<input
-					className="first-tab"
-					ref="firstTab"
-					type="text"
-					onFocus={this.onTabTrapFocus.bind(this)}
-				/>
+				<input className="first-tab" type="text" onFocus={this.onTabTrapFocus.bind(this)} />
 				{this.props.onClose ? (
-					<DeleteButton ref="closeButton" onClick={this.props.onClose} />
+					<DeleteButton ref={this.deleteButtonRef} onClick={this.props.onClose} />
 				) : null}
 				<div className="content" id="obojobo-draft--components--modal--modal--content">
 					{this.props.children}
 				</div>
-				<input
-					className="last-tab"
-					ref="lastTab"
-					type="text"
-					onFocus={this.onTabTrapFocus.bind(this)}
-				/>
+				<input className="last-tab" type="text" onFocus={this.onTabTrapFocus.bind(this)} />
 			</div>
 		)
 	}

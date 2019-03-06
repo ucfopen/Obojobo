@@ -4,7 +4,6 @@ import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-jest.mock('../../../src/scripts/common/page/focus')
 jest.mock('../../../src/scripts/viewer/util/focus-util')
 
 class MockStylableText {
@@ -16,7 +15,7 @@ const mockStylableComponent = props => <div {...props} className={'mockStylableT
 const mockScrollIntoView = jest.fn()
 const mockFocus = jest.fn()
 // Common
-jest.mock('../../../src/scripts/common/index', () => ({
+jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	models: {
 		OboModel: {
 			models: {
@@ -29,7 +28,8 @@ jest.mock('../../../src/scripts/common/index', () => ({
 		}
 	},
 	util: {
-		getBackgroundImage: jest.fn()
+		getBackgroundImage: jest.fn(),
+		isOrNot: require('obojobo-document-engine/src/scripts/common/util/isornot').default
 	},
 	text: {
 		StyleableText: MockStylableText,
@@ -307,7 +307,7 @@ describe('Nav', () => {
 		const component = renderer.create(<Nav {...props} />)
 
 		const mockSelfRef = jest.fn()
-		component.getInstance().refs.self = mockSelfRef
+		component.getInstance().selfRef = mockSelfRef
 		component.getInstance().focus()
 		expect(mockFocus).toHaveBeenCalledWith(mockSelfRef)
 	})

@@ -8,7 +8,7 @@ import MCAssessmentSubmitAndResultsFooter from './mc-assessment-submit-and-resul
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import _ from 'underscore'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models

@@ -2,7 +2,7 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 class Heading extends React.Component {
 	constructor(props) {

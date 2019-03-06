@@ -16,10 +16,9 @@ describe('draft_node_store', () => {
 		expect(g).toBe(DraftNode)
 	})
 
-
 	test('add accepts a new node and returns it', () => {
-		const testNodeOne = {nodeName: 'test-node-one'}
-		const testNodeTwo = {nodeName: 'test-node-two'}
+		const testNodeOne = { nodeName: 'test-node-one' }
+		const testNodeTwo = { nodeName: 'test-node-two' }
 
 		draft_node_store.add(testNodeOne)
 		draft_node_store.add(testNodeTwo)
@@ -35,8 +34,8 @@ describe('draft_node_store', () => {
 	})
 
 	test('add throws error when registering an oboNode with a name thats already registered', () => {
-		const testNode = {nodeName: 'test-node-one'}
-		const testNodeImposter = {nodeName: 'test-node-one'} // node name is a duplicate of testNode
+		const testNode = { nodeName: 'test-node-one' }
+		const testNodeImposter = { nodeName: 'test-node-one' } // node name is a duplicate of testNode
 
 		draft_node_store.add(testNode)
 

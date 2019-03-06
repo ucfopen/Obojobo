@@ -1,7 +1,7 @@
-import { mount } from 'enzyme'
-import React from 'react'
 import Modal from '../../../../src/scripts/common/components/modal/modal'
 import ModalUtil from '../../../../src/scripts/common/util/modal-util'
+import React from 'react'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 jest.mock('../../../../src/scripts/common/util/modal-util')
@@ -126,7 +126,7 @@ describe('Modal', () => {
 				<textarea />
 			</Modal>
 		)
-
+		const deleteButtonFocus = jest.spyOn(component.instance().deleteButtonRef.current, 'focus')
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
 
 		component
@@ -136,9 +136,7 @@ describe('Modal', () => {
 			.simulate('focus')
 
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
-		expect(document.activeElement.parentElement.className).toBe(
-			'obojobo-draft--components--delete-button'
-		)
+		expect(deleteButtonFocus).toHaveBeenCalledTimes(1)
 	})
 
 	test('Unmounts with onClose function', () => {

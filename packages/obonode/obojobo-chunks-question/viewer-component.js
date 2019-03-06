@@ -4,7 +4,7 @@ import React from 'react'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { OboComponent } = Viewer.components
 const { FocusUtil, QuestionUtil } = Viewer.util

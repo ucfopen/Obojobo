@@ -21,6 +21,8 @@ class MoreInfoButton extends React.Component {
 		this.state = {
 			mode: 'hidden'
 		}
+
+		this.dialogRef = React.createRef()
 	}
 
 	onMouseOver() {
@@ -45,7 +47,7 @@ class MoreInfoButton extends React.Component {
 
 	componentDidUpdate() {
 		if (this.state.mode === 'clicked') {
-			this.refs.dialog.focus()
+			this.dialogRef.current.focus()
 		}
 	}
 
@@ -71,7 +73,7 @@ class MoreInfoButton extends React.Component {
 						className="info"
 						role="dialog"
 						tabIndex="-1"
-						ref="dialog"
+						ref={this.dialogRef}
 						aria-labelledby="obojobo-draft--components--more-info-button--container"
 					>
 						<div id="obojobo-draft--components--more-info-button--container" className="container">

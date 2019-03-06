@@ -60,7 +60,7 @@ describe('register chunks middleware', () => {
 		const MockOboNode = require('mock-obo-node')
 
 		getAllOboNodeScriptPathsByType.mockReturnValueOnce([]) // 'mock request for middleware
-		getAllOboNodeScriptPathsByType.mockReturnValueOnce(['mock-obo-node'])// mock request for obonodes
+		getAllOboNodeScriptPathsByType.mockReturnValueOnce(['mock-obo-node']) // mock request for obonodes
 		middleware(mockApp)
 
 		// expect middleware to require the string we send it and call dns.add with it
@@ -79,13 +79,13 @@ describe('register chunks middleware', () => {
 		middleware(mockApp)
 		const compiledDir = realPath.resolve(__dirname, '..', 'public', 'compiled')
 
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/viewer.min.js')
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/viewer.js')
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/viewer.min.css')
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/viewer.css')
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/editor.min.js')
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/editor.js')
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/editor.min.css')
-		expect(express.static).toHaveBeenCalledWith(compiledDir+'/editor.css')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/viewer.min.js')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/viewer.js')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/viewer.min.css')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/viewer.css')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.min.js')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.js')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.min.css')
+		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.css')
 	})
 })

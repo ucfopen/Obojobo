@@ -3,7 +3,7 @@ import React from 'react'
 import Common from 'Common'
 import EditorUtil from '../util/editor-util'
 import ClipboardUtil from '../util/clipboard-util'
-import isOrNot from '../../common/isornot'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 import './sub-menu.scss'
 

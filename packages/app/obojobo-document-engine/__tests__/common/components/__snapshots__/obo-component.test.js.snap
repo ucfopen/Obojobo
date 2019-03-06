@@ -23,7 +23,7 @@ exports[`OboComponent tag 1`] = `
   data-obo-component={true}
   data-type="ObojoboDraft.Chunks.Text"
   id="obo-testId"
-  tabIndex={-1}
+  tabIndex={1}
 >
   Test
 </pre>
