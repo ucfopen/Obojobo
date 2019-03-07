@@ -17,26 +17,7 @@ describe('Figure editor', () => {
 			}
 		}
 
-		expect(Figure.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Figure.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(Figure.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderPlaceholder exits when not relevent', () => {
@@ -45,7 +26,7 @@ describe('Figure editor', () => {
 				node: {
 					object: 'text'
 				}
-			}, null, jest.fn())
+			})
 		).toMatchSnapshot()
 
 		expect(
@@ -54,7 +35,7 @@ describe('Figure editor', () => {
 					object: 'block',
 					type: 'mockType'
 				}
-			}, null, jest.fn())
+			})
 		).toMatchSnapshot()
 
 		expect(
@@ -64,7 +45,7 @@ describe('Figure editor', () => {
 					type: FIGURE_NODE,
 					text: 'Some text'
 				}
-			}, null, jest.fn())
+			})
 		).toMatchSnapshot()
 	})
 
@@ -76,7 +57,7 @@ describe('Figure editor', () => {
 					type: FIGURE_NODE,
 					text: ''
 				}
-			}, null, jest.fn())
+			})
 		).toMatchSnapshot()
 	})
 })

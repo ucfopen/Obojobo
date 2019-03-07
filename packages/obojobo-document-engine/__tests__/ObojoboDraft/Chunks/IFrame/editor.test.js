@@ -1,4 +1,4 @@
-import IFrame from 'ObojoboDraft/Chunks/IFrame/editor'
+import IFrame from '../../../../ObojoboDraft/Chunks/IFrame/editor'
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
 describe('IFrame editor', () => {
@@ -15,25 +15,6 @@ describe('IFrame editor', () => {
 			}
 		}
 
-		expect(IFrame.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(IFrame.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(IFrame.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })

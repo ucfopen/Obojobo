@@ -17,9 +17,10 @@ class MathEquation extends React.Component {
 
 	handleLatexChange(event) {
 		const editor = this.props.editor
+		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
-		return editor.setNodeByKey(this.props.node.key, {
+		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					label: content.label,
@@ -28,13 +29,15 @@ class MathEquation extends React.Component {
 				}
 			}
 		})
+		editor.onChange(change)
 	}
 
 	handleLabelChange(event) {
 		const editor = this.props.editor
+		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
-		return editor.setNodeByKey(this.props.node.key, {
+		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					label: event.target.value,
@@ -43,6 +46,7 @@ class MathEquation extends React.Component {
 				}
 			}
 		})
+		editor.onChange(change)
 	}
 
 	renderLatex() {

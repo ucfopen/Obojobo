@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Figure editor plugins.renderNode calls next 1`] = `undefined`;
-
 exports[`Figure editor plugins.renderNode renders a button when passed 1`] = `
 <Figure
   attributes={

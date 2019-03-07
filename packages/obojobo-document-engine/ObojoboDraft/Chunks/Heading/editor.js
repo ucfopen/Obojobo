@@ -10,10 +10,10 @@ import Converter from './converter'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 const plugins = {
-	renderPlaceholder(props, editor, next) {
+	renderPlaceholder(props) {
 		const { node } = props
-		if (node.object !== 'block' || node.type !== HEADING_NODE) return next()
-		if (node.text !== '') return next()
+		if (node.object !== 'block' || node.type !== HEADING_NODE) return
+		if (node.text !== '') return
 
 		return (
 			<span
@@ -24,12 +24,10 @@ const plugins = {
 			</span>
 		)
 	},
-	renderNode(props, editor, next) {
+	renderNode(props) {
 		switch (props.node.type) {
 			case HEADING_NODE:
 				return <Node {...props} {...props.attributes} />
-			default:
-				return next()
 		}
 	},
 	schema: Schema

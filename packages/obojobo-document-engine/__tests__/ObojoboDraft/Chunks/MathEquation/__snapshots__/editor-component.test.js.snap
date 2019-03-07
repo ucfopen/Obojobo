@@ -49,9 +49,9 @@ exports[`MathEquation Editor Node MathEquation component 1`] = `
 </div>
 `;
 
-exports[`MathEquation Editor Node MathEquation component edits input 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
+exports[`MathEquation Editor Node MathEquation component changes input 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
 
-exports[`MathEquation Editor Node MathEquation component edits label 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
+exports[`MathEquation Editor Node MathEquation component changes label 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>Cannot read property 'length' of undefined</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\"></div></div></div>"`;
 
 exports[`MathEquation Editor Node MathEquation component with error 1`] = `
 <div

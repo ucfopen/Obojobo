@@ -9,12 +9,15 @@ const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 const ChoiceList = props => {
 	const addChoice = () => {
 		const editor = props.editor
+		const change = editor.value.change()
 
 		const newChoice = Block.create({
 			type: MCCHOICE_NODE,
 			data: { content: { score: 0 } }
 		})
-		return editor.insertNodeByKey(props.node.key, props.node.nodes.size, newChoice)
+		change.insertNodeByKey(props.node.key, props.node.nodes.size, newChoice)
+
+		editor.onChange(change)
 	}
 
 	return (

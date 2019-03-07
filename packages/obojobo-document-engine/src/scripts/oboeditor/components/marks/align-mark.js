@@ -4,12 +4,12 @@ function alignMark(options) {
 	const { align, key } = options
 
 	return {
-		onKeyDown(event, editor, next) {
-			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return next()
+		onKeyDown(event, change) {
+			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return
 
 			event.preventDefault()
 
-			const value = editor.value
+			const value = change.value
 
 			value.blocks.forEach(block => {
 				const dataJSON = block.data.toJSON()
@@ -19,8 +19,9 @@ function alignMark(options) {
 					dataJSON.content.align = align
 				}
 
-				editor.setNodeByKey(block.key, { data: dataJSON })
+				change.setNodeByKey(block.key, { data: dataJSON })
 			})
+			return true
 		}
 	}
 }

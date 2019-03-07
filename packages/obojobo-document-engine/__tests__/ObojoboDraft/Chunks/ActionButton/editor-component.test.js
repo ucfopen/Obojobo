@@ -61,7 +61,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -70,7 +70,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -91,7 +94,7 @@ describe('ActionButton Editor Node', () => {
 			})
 
 		expect(tree).toMatchSnapshot()
-		expect(editor.setNodeByKey).toHaveBeenCalledWith(undefined, {
+		expect(change.setNodeByKey).toHaveBeenCalledWith(undefined, {
 			data: {
 				content: {
 					actions: [
@@ -121,7 +124,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -130,7 +133,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -168,7 +174,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -177,7 +183,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -215,7 +224,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -224,7 +233,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -262,7 +274,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -271,7 +283,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -319,7 +334,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -328,7 +343,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -376,7 +394,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -385,7 +403,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -433,7 +454,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -442,7 +463,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -490,7 +514,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -499,7 +523,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -527,7 +554,7 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -536,7 +563,10 @@ describe('ActionButton Editor Node', () => {
 				node={nodeData}
 				isSelected={true}
 				isFocused={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()

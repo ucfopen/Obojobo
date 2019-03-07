@@ -1,4 +1,4 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import MCAssessment from '../../../../ObojoboDraft/Chunks/MCAssessment/editor'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
@@ -19,7 +19,7 @@ describe('MCAssessment editor', () => {
 			}
 		}
 
-		expect(MCAssessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(MCAssessment.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a Setting when passed', () => {
@@ -35,7 +35,7 @@ describe('MCAssessment editor', () => {
 			}
 		}
 
-		expect(MCAssessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(MCAssessment.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a ChoiceList when passed', () => {
@@ -51,181 +51,162 @@ describe('MCAssessment editor', () => {
 			}
 		}
 
-		expect(MCAssessment.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			node: {
-				attributes: { dummy: 'dummyData' },
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(MCAssessment.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(MCAssessment.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.schema.normalize fixes invalid first child in MCAssessment', () => {
-		const editor = {
+		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
+		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 0
 		})
 
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid second child in MCAssessment', () => {
-		const editor = {
+		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
+		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 1
 		})
 
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds required first child in MCAssessment', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds required first child in MCAssessment', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		MCAssessment.plugins.schema.blocks[MCASSESSMENT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 1
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children in ChoiceList', () => {
-		const editor = {
+		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(editor, {
+		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: null
 		})
 
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds required children in ChoiceList', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		MCAssessment.plugins.schema.blocks[CHOICE_LIST_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing first child in setting', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing second child in setting', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 1
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes first invalid child in setting', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn(),
 			removeNodeByKey: jest.fn()
 		}
 
-		editor.withoutNormalizing = funct => funct(editor)
+		change.withoutNormalization = funct => funct(change)
 
-		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
+		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes second invalid child in setting', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn(),
 			removeNodeByKey: jest.fn()
 		}
 
-		editor.withoutNormalizing = funct => funct(editor)
+		change.withoutNormalization = funct => funct(change)
 
-		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
+		MCAssessment.plugins.schema.blocks[SETTINGS_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 1
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 })

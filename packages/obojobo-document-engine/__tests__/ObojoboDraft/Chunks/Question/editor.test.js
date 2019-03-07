@@ -1,4 +1,4 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import Question from '../../../../ObojoboDraft/Chunks/Question/editor'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
@@ -18,7 +18,7 @@ describe('Question editor', () => {
 			}
 		}
 
-		expect(Question.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(Question.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a solution when passed', () => {
@@ -34,39 +34,20 @@ describe('Question editor', () => {
 			}
 		}
 
-		expect(Question.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Question.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(Question.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const editor = {
+		const change = {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
 
-		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
-			funct(editor)
+		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => {
+			funct(change)
 		})
 
-		Question.plugins.schema.blocks[QUESTION_NODE].normalize(editor, {
+		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: {
@@ -76,17 +57,17 @@ describe('Question editor', () => {
 			index: null
 		})
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[QUESTION_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				nodes: { size: 0 }
 			},
@@ -94,16 +75,16 @@ describe('Question editor', () => {
 			index: 1
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children at last node', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[QUESTION_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		Question.plugins.schema.blocks[QUESTION_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				nodes: { size: 1 }
 			},
@@ -111,16 +92,16 @@ describe('Question editor', () => {
 			index: 1
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children in solution', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {
 				nodes: { size: 0 }
 			},
@@ -128,15 +109,15 @@ describe('Question editor', () => {
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children in solution', () => {
-		const editor = {
+		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(editor, {
+		Question.plugins.schema.blocks[SOLUTION_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: {
@@ -146,6 +127,6 @@ describe('Question editor', () => {
 			index: null
 		})
 
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 })

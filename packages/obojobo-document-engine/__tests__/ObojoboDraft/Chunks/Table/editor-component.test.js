@@ -23,7 +23,7 @@ describe('Table Editor Node', () => {
 	})
 
 	test('Table component removes col', () => {
-		const editor = {
+		const change = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -47,7 +47,10 @@ describe('Table Editor Node', () => {
 						}
 					]
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -57,12 +60,12 @@ describe('Table Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Table component adds row', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -75,7 +78,10 @@ describe('Table Editor Node', () => {
 						}
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -85,12 +91,12 @@ describe('Table Editor Node', () => {
 			.at(2) // Need to skip an extra button for the extra column
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Table component toggles header', () => {
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -120,7 +126,10 @@ describe('Table Editor Node', () => {
 						}
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -130,12 +139,12 @@ describe('Table Editor Node', () => {
 			.at(3)
 			.simulate('click')
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(change.setNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Table component adds col', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -159,7 +168,10 @@ describe('Table Editor Node', () => {
 						}
 					]
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -169,7 +181,7 @@ describe('Table Editor Node', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 })

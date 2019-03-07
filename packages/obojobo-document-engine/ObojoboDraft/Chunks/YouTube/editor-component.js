@@ -7,14 +7,16 @@ class YouTube extends React.Component {
 
 	handleSourceChange(event) {
 		const editor = this.props.editor
+		const change = editor.value.change()
 
-		return editor.setNodeByKey(this.props.node.key, {
+		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					videoId: event.target.value
 				}
 			}
 		})
+		editor.onChange(change)
 	}
 
 	render() {

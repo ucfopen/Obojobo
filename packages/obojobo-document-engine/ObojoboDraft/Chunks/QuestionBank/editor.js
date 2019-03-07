@@ -12,14 +12,12 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 
 const plugins = {
-	renderNode(props, editor, next) {
+	renderNode(props) {
 		switch (props.node.type) {
 			case QUESTION_BANK_NODE:
 				return <Node {...props} {...props.attributes} />
 			case SETTINGS_NODE:
 				return <Settings {...props} {...props.attributes} />
-			default:
-				return next()
 		}
 	},
 	schema: Schema

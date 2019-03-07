@@ -1,4 +1,4 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import MCChoice from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCChoice/editor'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
@@ -18,85 +18,66 @@ describe('MCChoice editor', () => {
 			}
 		}
 
-		expect(MCChoice.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(MCChoice.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(MCChoice.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const editor = {
+		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', type: MCFEEDBACK_NODE },
 			index: 1
 		})
 
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes too many children', () => {
-		const editor = {
+		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey' },
 			index: 3
 		})
 
-		expect(editor.wrapBlockByKey).not.toHaveBeenCalled()
+		expect(change.wrapBlockByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes extra children', () => {
-		const editor = {
+		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', type: 'wrongType' },
 			index: 1
 		})
 
-		expect(editor.wrapBlockByKey).not.toHaveBeenCalled()
+		expect(change.wrapBlockByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		MCChoice.plugins.schema.blocks[MCCHOICE_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 })

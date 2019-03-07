@@ -10,12 +10,10 @@ import Converter from './converter'
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 const plugins = {
-	renderNode(props, editor, next) {
+	renderNode(props) {
 		switch (props.node.type) {
 			case BUTTON_NODE:
 				return <Node {...props} {...props.attributes} />
-			default:
-				return next()
 		}
 	},
 	schema: Schema

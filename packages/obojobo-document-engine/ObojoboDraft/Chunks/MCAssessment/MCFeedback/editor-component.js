@@ -3,7 +3,10 @@ import React from 'react'
 class MCFeedback extends React.Component {
 	delete() {
 		const editor = this.props.editor
-		return editor.removeNodeByKey(this.props.node.key)
+		const change = editor.value.change()
+		change.removeNodeByKey(this.props.node.key)
+
+		editor.onChange(change)
 	}
 	render() {
 		return (

@@ -23,7 +23,7 @@ describe('ChoiceList Editor Node', () => {
 	})
 
 	test('ChoiceList component adds choice', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -38,7 +38,10 @@ describe('ChoiceList Editor Node', () => {
 						}
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -48,7 +51,7 @@ describe('ChoiceList Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 })

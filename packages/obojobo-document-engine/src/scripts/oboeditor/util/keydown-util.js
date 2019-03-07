@@ -1,6 +1,6 @@
 const KeyDownUtil = {
-	deleteNodeContents: (event, editor, next) => {
-		const value = editor.value
+	deleteNodeContents: (event, change) => {
+		const value = change.value
 		const selection = value.selection
 		const startBlock = value.startBlock
 		const startOffset = selection.start.offset
@@ -10,12 +10,12 @@ const KeyDownUtil = {
 		// If a cursor is collapsed at the start of the first block, do nothing
 		if (startOffset === 0 && isCollapsed) {
 			event.preventDefault()
-			return true
+			return change
 		}
 
 		// Deletion within a cell
 		if (startBlock === endBlock) {
-			return next()
+			return
 		}
 
 		// Deletion across cells
@@ -39,24 +39,22 @@ const KeyDownUtil = {
 		// Clear all the selection
 		cellsToClear.forEach(cell => {
 			cell.nodes.forEach(node => {
-				editor.removeNodeByKey(node.key)
+				change.removeNodeByKey(node.key)
 			})
 		})
 
 		return true
 	},
-	deleteEmptyParent: (event, editor, next, nodeType) => {
-		const firstBlock = editor.value.blocks.get(0)
+	deleteEmptyParent: (event, change, nodeType) => {
+		const firstBlock = change.value.blocks.get(0)
 
-		const parent = editor.value.document.getClosest(firstBlock.key, node => node.type === nodeType)
+		const parent = change.value.document.getClosest(firstBlock.key, node => node.type === nodeType)
 
-		if (editor.value.endBlock.text === '' && parent.nodes.size === 1) {
+		if (change.value.endBlock.text === '' && parent.nodes.size === 1) {
 			event.preventDefault()
-			editor.removeNodeByKey(parent.key)
+			change.removeNodeByKey(parent.key)
 			return true
 		}
-
-		return next()
 	}
 }
 

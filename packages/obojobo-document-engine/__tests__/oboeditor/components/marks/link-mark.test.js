@@ -8,9 +8,9 @@ describe('LinkMark', () => {
 			toggleMark: jest.fn()
 		}
 
-		keyDown.onKeyDown({}, mockChange, jest.fn())
-		expect(keyDown.renderMark({ mark:{ type: 'a' }}, null, jest.fn())).toMatchSnapshot()
-		expect(keyDown.renderMark({ mark:{type: 'fake' }}, null, jest.fn())).toMatchSnapshot()
+		keyDown.onKeyDown({}, mockChange)
+		expect(keyDown.renderMark({ mark: { type: 'a' } })).toMatchSnapshot()
+		expect(keyDown.renderMark({ mark: { type: 'fake' } })).toMatchSnapshot()
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
@@ -21,7 +21,7 @@ describe('LinkMark', () => {
 		const mockChange = {
 			toggleMark: jest.fn()
 		}
-		keyDown.onKeyDown({ key: 'R' }, mockChange, jest.fn())
+		keyDown.onKeyDown({ key: 'R' }, mockChange)
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
@@ -47,7 +47,7 @@ describe('LinkMark', () => {
 			preventDefault: jest.fn()
 		}
 
-		keyDown.onKeyDown(mockEvent, mockChange, jest.fn())
+		keyDown.onKeyDown(mockEvent, mockChange)
 
 		expect(mockChange.toggleMark).toHaveBeenCalled()
 	})
@@ -81,7 +81,7 @@ describe('LinkMark', () => {
 			preventDefault: jest.fn()
 		}
 
-		keyDown.onKeyDown(mockEvent, mockChange, jest.fn())
+		keyDown.onKeyDown(mockEvent, mockChange)
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})

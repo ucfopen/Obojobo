@@ -8,14 +8,16 @@ class IFrame extends React.Component {
 
 	handleSourceChange(event) {
 		const editor = this.props.editor
+		const change = editor.value.change()
 
-		return editor.setNodeByKey(this.props.node.key, {
+		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					src: event.target.value
 				}
 			}
 		})
+		editor.onChange(change)
 	}
 
 	renderInput() {

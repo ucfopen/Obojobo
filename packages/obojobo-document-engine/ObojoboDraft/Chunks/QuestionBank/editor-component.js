@@ -2,10 +2,10 @@ import React from 'react'
 import { Block } from 'slate'
 import Common from 'Common'
 
-import emptyQB from './empty-node.json'
-import emptyQuestion from '../Question/empty-node.json'
-
 const { Button } = Common.components
+
+const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 class QuestionBank extends React.Component {
 	constructor(props) {
@@ -14,19 +14,33 @@ class QuestionBank extends React.Component {
 	}
 	delete() {
 		const editor = this.props.editor
-		return editor.removeNodeByKey(this.props.node.key)
+		const change = editor.value.change()
+		change.removeNodeByKey(this.props.node.key)
+
+		editor.onChange(change)
 	}
 	addQuestion() {
 		const editor = this.props.editor
-		const newQuestion = Block.create(emptyQuestion)
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
+		const change = editor.value.change()
+
+		const newQuestion = Block.create({
+			type: QUESTION_NODE
+		})
+		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
+
+		editor.onChange(change)
 	}
 	addQuestionBank() {
 		const editor = this.props.editor
+		const change = editor.value.change()
 
-		const newQuestion = Block.create(emptyQB)
+		const newQuestion = Block.create({
+			type: QUESTION_BANK_NODE,
+			data: { content: { choose: 1, select: 'sequential' } }
+		})
+		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
+		editor.onChange(change)
 	}
 	render() {
 		return (

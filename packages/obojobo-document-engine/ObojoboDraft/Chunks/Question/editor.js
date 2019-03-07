@@ -12,14 +12,12 @@ import Schema from './schema'
 import Converter from './converter'
 
 const plugins = {
-	renderNode(props, editor, next) {
+	renderNode(props) {
 		switch (props.node.type) {
 			case QUESTION_NODE:
 				return <Node {...props} {...props.attributes} />
 			case SOLUTION_NODE:
 				return <Solution {...props} {...props.attributes} />
-			default:
-				return next()
 		}
 	},
 	schema: Schema

@@ -1,4 +1,4 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import MCFeedback from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCFeedback/editor'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
@@ -17,60 +17,41 @@ describe('MCFeedback editor', () => {
 			}
 		}
 
-		expect(MCFeedback.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(MCFeedback.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(MCFeedback.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const editor = {
+		const change = {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
 
-		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
-			funct(editor)
+		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => {
+			funct(change)
 		})
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(editor, {
+		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', object: 'text' },
 			index: null
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 })

@@ -56,8 +56,8 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component edits input', () => {
-		const editor = {
+	test('MathEquation component changes input', () => {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -72,7 +72,10 @@ describe('MathEquation Editor Node', () => {
 				}}
 				isFocused={true}
 				isSelected={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -94,8 +97,8 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component edits label', () => {
-		const editor = {
+	test('MathEquation component changes label', () => {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -110,7 +113,10 @@ describe('MathEquation Editor Node', () => {
 				}}
 				isFocused={true}
 				isSelected={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()

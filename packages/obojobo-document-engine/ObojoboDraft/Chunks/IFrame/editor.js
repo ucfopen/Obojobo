@@ -10,12 +10,10 @@ import Converter from './converter'
 const IFRAME_NODE = 'ObojoboDraft.Chunks.IFrame'
 
 const plugins = {
-	renderNode(props, editor, next) {
+	renderNode(props) {
 		switch (props.node.type) {
 			case IFRAME_NODE:
 				return <Node {...props} {...props.attributes} />
-			default:
-				return next()
 		}
 	},
 	schema: Schema

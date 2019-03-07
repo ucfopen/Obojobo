@@ -45,10 +45,10 @@ describe('Parameter Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Node component with select edits value', () => {
+	test('Node component with select changes value', () => {
 		const Node = ParameterNode.components.Node
 
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -64,7 +64,10 @@ describe('Parameter Node', () => {
 							.mockReturnValueOnce(['Option 1', 'Option 2'])
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: () => false
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -73,7 +76,7 @@ describe('Parameter Node', () => {
 		component.find('select').simulate('change', { target: { value: 'Option 2' } })
 
 		expect(tree).toMatchSnapshot()
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(change.setNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Node component with checkbox', () => {
@@ -99,7 +102,7 @@ describe('Parameter Node', () => {
 	test('Node component with select changes value', () => {
 		const Node = ParameterNode.components.Node
 
-		const editor = {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -114,7 +117,10 @@ describe('Parameter Node', () => {
 							.mockReturnValueOnce(false)
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: () => false
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -122,7 +128,7 @@ describe('Parameter Node', () => {
 		component.find('input').simulate('change', { target: { checked: true } })
 
 		expect(tree).toMatchSnapshot()
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(change.setNodeByKey).toHaveBeenCalled()
 	})
 
 	test('slateToObo converts a Slate node to an OboNode', () => {
@@ -184,7 +190,7 @@ describe('Parameter Node', () => {
 	})
 
 	test('plugins.onKeyDown deals with no parameter', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -194,20 +200,20 @@ describe('Parameter Node', () => {
 				]
 			}
 		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
+		ParameterNode.plugins.onKeyDown(event, change)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with random key press', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -217,20 +223,20 @@ describe('Parameter Node', () => {
 				]
 			}
 		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'K',
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
+		ParameterNode.plugins.onKeyDown(event, change)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Enter]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [{ key: 'mockKey', type: 'Parameter' }]
 			}
@@ -240,12 +246,12 @@ describe('Parameter Node', () => {
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
+		ParameterNode.plugins.onKeyDown(event, change)
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Backspace]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [{ key: 'mockKey', type: 'Parameter' }]
 			}
@@ -255,12 +261,12 @@ describe('Parameter Node', () => {
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
+		ParameterNode.plugins.onKeyDown(event, change)
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Delete]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [{ key: 'mockKey', type: 'Parameter' }]
 			}
@@ -270,7 +276,7 @@ describe('Parameter Node', () => {
 			preventDefault: jest.fn()
 		}
 
-		ParameterNode.plugins.onKeyDown(event, editor, jest.fn())
+		ParameterNode.plugins.onKeyDown(event, change)
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
@@ -287,25 +293,6 @@ describe('Parameter Node', () => {
 			}
 		}
 
-		expect(ParameterNode.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(ParameterNode.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(ParameterNode.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })

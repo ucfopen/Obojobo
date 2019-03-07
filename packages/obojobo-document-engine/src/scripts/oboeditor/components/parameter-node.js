@@ -5,8 +5,9 @@ import KeyDownUtil from '../util/keydown-util'
 const Node = props => {
 	const handleSelectChange = event => {
 		const editor = props.editor
+		const change = editor.value.change()
 
-		return editor.setNodeByKey(props.node.key, {
+		change.setNodeByKey(props.node.key, {
 			data: {
 				current: event.target.value,
 				name: props.node.data.get('name'),
@@ -15,12 +16,14 @@ const Node = props => {
 				type: props.node.data.get('type')
 			}
 		})
+		editor.onChange(change)
 	}
 
 	const handleCheckChange = event => {
 		const editor = props.editor
+		const change = editor.value.change()
 
-		return editor.setNodeByKey(props.node.key, {
+		change.setNodeByKey(props.node.key, {
 			data: {
 				checked: event.target.checked,
 				name: props.node.data.get('name'),
@@ -28,6 +31,7 @@ const Node = props => {
 				type: props.node.data.get('type')
 			}
 		})
+		editor.onChange(change)
 	}
 
 	switch (props.node.data.get('type')) {
@@ -78,8 +82,8 @@ const Node = props => {
 	}
 }
 
-const isType = editor => {
-	return editor.value.blocks.some(block => {
+const isType = change => {
+	return change.value.blocks.some(block => {
 		return block.type === 'Parameter'
 	})
 }
@@ -135,31 +139,26 @@ const oboToSlate = ({ name, value, display, options, checked }) => {
 }
 
 const plugins = {
-	renderNode(props, editor, next) {
+	renderNode(props) {
 		switch (props.node.type) {
 			case 'Parameter':
 				return <Node {...props} />
-			default:
-				return next()
 		}
 	},
-	onKeyDown(event, editor, next) {
+	onKeyDown(event, change) {
 		// See if any of the selected nodes are a parameter
-		const isParameter = isType(editor)
-		if (!isParameter) return next()
+		const isParameter = isType(change)
+		if (!isParameter) return
 
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
-				return KeyDownUtil.deleteNodeContents(event, editor, next)
+				return KeyDownUtil.deleteNodeContents(event, change)
 
 			case 'Enter':
 				// Disallows enter
 				event.preventDefault()
 				return true
-
-			default:
-				return next()
 		}
 	}
 }

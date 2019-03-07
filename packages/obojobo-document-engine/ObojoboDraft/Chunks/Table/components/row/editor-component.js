@@ -3,6 +3,7 @@ import React from 'react'
 class Row extends React.Component {
 	deleteRow() {
 		const editor = this.props.editor
+		const change = editor.value.change()
 
 		const parent = editor.value.document.getDescendant(this.props.parent.key)
 		// get reference to content (which will be mutated)
@@ -15,17 +16,20 @@ class Row extends React.Component {
 
 			// If this is the only row in the table, delete the table
 			if (!sibling) {
-				return editor.removeNodeByKey(parent.key)
+				change.removeNodeByKey(parent.key)
+				editor.onChange(change)
+				return
 			}
 
-			// Set sibling as new header
 			sibling.nodes.forEach(cell => {
-				editor.setNodeByKey(cell.key, { data: { content: { header: content.header } } })
+				change.setNodeByKey(cell.key, { data: { content: { header: content.header } } })
 			})
-			editor.setNodeByKey(sibling.key, { data: { content: { header: content.header } } })
+			change.setNodeByKey(sibling.key, { data: { content: { header: content.header } } })
 		}
 
-		return editor.removeNodeByKey(this.props.node.key)
+		change.removeNodeByKey(this.props.node.key)
+
+		editor.onChange(change)
 	}
 
 	render() {

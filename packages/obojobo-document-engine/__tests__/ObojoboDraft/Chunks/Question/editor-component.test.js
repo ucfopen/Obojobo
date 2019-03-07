@@ -28,7 +28,7 @@ describe('Question Editor Node', () => {
 	})
 
 	test('Question component deletes self', () => {
-		const editor = {
+		const change = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -42,19 +42,22 @@ describe('Question Editor Node', () => {
 						last: () => ({ type: SOLUTION_NODE })
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
 
 		component.find('button').simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component adds Solution', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -68,7 +71,10 @@ describe('Question Editor Node', () => {
 						last: () => ({ type: BREAK_NODE })
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -78,7 +84,7 @@ describe('Question Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 })

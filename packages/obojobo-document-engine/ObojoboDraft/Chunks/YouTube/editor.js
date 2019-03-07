@@ -10,12 +10,10 @@ import Converter from './converter'
 const YOUTUBE_NODE = 'ObojoboDraft.Chunks.YouTube'
 
 const plugins = {
-	renderNode(props, editor, next) {
+	renderNode(props) {
 		switch (props.node.type) {
 			case YOUTUBE_NODE:
 				return <Node {...props} {...props.attributes} />
-			default:
-				return next()
 		}
 	},
 	schema: Schema

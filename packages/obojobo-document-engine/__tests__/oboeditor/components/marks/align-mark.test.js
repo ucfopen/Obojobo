@@ -9,7 +9,7 @@ describe('AlignMark', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		keyDown.onKeyDown({}, mockChange, jest.fn())
+		keyDown.onKeyDown({}, mockChange)
 
 		expect(mockChange.setNodeByKey).not.toHaveBeenCalled()
 	})
@@ -21,7 +21,7 @@ describe('AlignMark', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		keyDown.onKeyDown({ key: 'R' }, mockChange, jest.fn())
+		keyDown.onKeyDown({ key: 'R' }, mockChange)
 
 		expect(mockChange.setNodeByKey).not.toHaveBeenCalled()
 	})
@@ -53,7 +53,7 @@ describe('AlignMark', () => {
 			preventDefault: jest.fn()
 		}
 
-		keyDown.onKeyDown(mockEvent, mockChange, jest.fn())
+		keyDown.onKeyDown(mockEvent, mockChange)
 
 		expect(mockChange.setNodeByKey).toHaveBeenCalled()
 	})

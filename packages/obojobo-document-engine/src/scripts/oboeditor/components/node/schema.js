@@ -1,8 +1,5 @@
 import { Block } from 'slate'
-
-import SchemaViolations from '../../util/schema-violations'
-
-const { CHILD_MAX_INVALID, CHILD_MIN_INVALID } = SchemaViolations
+import { CHILD_REQUIRED, CHILD_UNKNOWN } from 'slate-schema-violations'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -31,18 +28,19 @@ const schema = {
 					max: 1
 				}
 			],
-			normalize: (editor, error) => {
+			normalize: (change, error) => {
 				const { node, index } = error
 				switch (error.code) {
-					case CHILD_MIN_INVALID: {
+					case CHILD_REQUIRED: {
 						const block = Block.create({
 							type: TEXT_NODE
 						})
-						return editor.insertNodeByKey(node.key, index, block)
+						return change.insertNodeByKey(node.key, index, block)
 					}
-					// Change to a constant when slate-schema-violations updates
-					case CHILD_MAX_INVALID: {
-						return editor.splitNodeByKey(node.key, 1)
+					// Occurs when multiple valid nodes are found within a
+					// component
+					case CHILD_UNKNOWN: {
+						return change.splitNodeByKey(node.key, 1)
 					}
 				}
 			}

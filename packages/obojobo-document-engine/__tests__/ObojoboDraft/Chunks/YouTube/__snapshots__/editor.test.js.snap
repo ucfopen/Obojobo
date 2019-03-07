@@ -24,8 +24,6 @@ Object {
 }
 `;
 
-exports[`YouTube editor plugins.renderNode calls next 1`] = `undefined`;
-
 exports[`YouTube editor plugins.renderNode renders a button when passed 1`] = `
 <YouTube
   attributes={

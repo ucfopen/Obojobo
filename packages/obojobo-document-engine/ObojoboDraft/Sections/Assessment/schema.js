@@ -1,9 +1,5 @@
 import { Block } from 'slate'
-
-import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
-import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
-
-const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
@@ -11,20 +7,22 @@ const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
+import ParameterNode from '../../../src/scripts/oboeditor/components/parameter-node'
+
 const schema = {
 	blocks: {
 		'ObojoboDraft.Sections.Assessment': {
 			nodes: [
-				{ match: [{ type: SETTINGS_NODE }], min: 1 },
-				{ match: [{ type: PAGE_NODE }], min: 1 },
-				{ match: [{ type: QUESTION_BANK_NODE }], min: 1 },
-				{ match: [{ type: ACTIONS_NODE }], min: 1 },
-				{ match: [{ type: RUBRIC_NODE }] }
+				{ match: [{ type: SETTINGS_NODE }], min: 1, max: 1 },
+				{ match: [{ type: PAGE_NODE }], min: 1, max: 1 },
+				{ match: [{ type: QUESTION_BANK_NODE }], min: 1, max: 1 },
+				{ match: [{ type: ACTIONS_NODE }], min: 1, max: 1 },
+				{ match: [{ type: RUBRIC_NODE }], max: 1 }
 			],
-			normalize: (editor, error) => {
+			normalize: (change, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_MIN_INVALID: {
+					case CHILD_REQUIRED: {
 						let block
 						switch (index) {
 							case 0:
@@ -49,25 +47,25 @@ const schema = {
 								})
 								break
 						}
-						return editor.insertNodeByKey(node.key, index, block)
+						return change.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						switch (index) {
 							case 0:
-								return editor.wrapBlockByKey(child.key, {
+								return change.wrapBlockByKey(child.key, {
 									type: SETTINGS_NODE
 								})
 							case 1:
-								return editor.wrapBlockByKey(child.key, {
+								return change.wrapBlockByKey(child.key, {
 									type: PAGE_NODE
 								})
 							case 2:
-								return editor.wrapBlockByKey(child.key, {
+								return change.wrapBlockByKey(child.key, {
 									type: QUESTION_BANK_NODE,
 									data: { content: { choose: 1, select: 'sequential' } }
 								})
 							case 3:
-								return editor.wrapBlockByKey(child.key, {
+								return change.wrapBlockByKey(child.key, {
 									type: ACTIONS_NODE
 								})
 						}
@@ -76,11 +74,11 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Sections.Assessment.Settings': {
-			nodes: [{ match: [{ type: 'Parameter' }], min: 2 }],
-			normalize: (editor, error) => {
+			nodes: [{ match: [{ type: 'Parameter' }], min: 2, max: 2 }],
+			normalize: (change, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_MIN_INVALID: {
+					case CHILD_REQUIRED: {
 						if (index === 0) {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({
@@ -89,7 +87,7 @@ const schema = {
 									display: 'Attempts'
 								})
 							)
-							return editor.insertNodeByKey(node.key, index, block)
+							return change.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
 							ParameterNode.helpers.oboToSlate({
@@ -99,10 +97,10 @@ const schema = {
 								options: ['always', 'never', 'no-attempts-remaining']
 							})
 						)
-						return editor.insertNodeByKey(node.key, index, block)
+						return change.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return editor.withoutNormalizing(c => {
+						return change.withoutNormalization(c => {
 							c.removeNodeByKey(child.key)
 							if (index === 0) {
 								const block = Block.create(

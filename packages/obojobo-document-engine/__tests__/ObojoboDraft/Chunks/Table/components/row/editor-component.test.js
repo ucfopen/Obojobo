@@ -23,33 +23,8 @@ describe('Row Editor Node', () => {
 	})
 
 	test('Row component deletes itself and its table', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			value: {
-				document: {
-					getDescendant: () => {
-						return {
-							data: {
-								get: () => {
-									return {
-										textGroup: {
-											numRows: 2
-										}
-									}
-								}
-							},
-							nodes: {
-								get: num => {
-									if (num === 1) return null
-									return {
-										key: 'thisRow'
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+		const change = {
+			removeNodeByKey: jest.fn()
 		}
 
 		const component = shallow(
@@ -60,7 +35,35 @@ describe('Row Editor Node', () => {
 				parent={{
 					key: 'table'
 				}}
-				editor={editor}
+				editor={{
+					value: {
+						change: () => change,
+						document: {
+							getDescendant: () => {
+								return {
+									data: {
+										get: () => {
+											return {
+												textGroup: {
+													numRows: 2
+												}
+											}
+										}
+									},
+									nodes: {
+										get: num => {
+											if (num === 1) return null
+											return {
+												key: 'thisRow'
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -70,37 +73,13 @@ describe('Row Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Row component deletes itself', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			value: {
-				document: {
-					getDescendant: () => {
-						return {
-							data: {
-								get: () => {
-									return {
-										textGroup: {
-											numRows: 2
-										}
-									}
-								}
-							},
-							nodes: {
-								get: () => {
-									return {
-										key: 'notThisRow'
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+		const change = {
+			removeNodeByKey: jest.fn()
 		}
 
 		const component = shallow(
@@ -111,7 +90,34 @@ describe('Row Editor Node', () => {
 				parent={{
 					key: 'table'
 				}}
-				editor={editor}
+				editor={{
+					value: {
+						change: () => change,
+						document: {
+							getDescendant: () => {
+								return {
+									data: {
+										get: () => {
+											return {
+												textGroup: {
+													numRows: 2
+												}
+											}
+										}
+									},
+									nodes: {
+										get: () => {
+											return {
+												key: 'notThisRow'
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -121,45 +127,14 @@ describe('Row Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('Row component deletes itself and passes header status to sibling', () => {
-		const editor = {
+		const change = {
 			removeNodeByKey: jest.fn(),
-			setNodeByKey: jest.fn(),
-			value: {
-				document: {
-					getDescendant: () => {
-						return {
-							// parent
-							data: {
-								get: () => {
-									return {
-										header: true,
-										textGroup: {
-											numRows: 2
-										}
-									}
-								}
-							},
-							nodes: {
-								get: () => {
-									return {
-										key: 'thisRow',
-										nodes: [
-											{
-												key: 'siblingCell'
-											}
-										]
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			setNodeByKey: jest.fn()
 		}
 
 		const component = shallow(
@@ -170,7 +145,41 @@ describe('Row Editor Node', () => {
 				parent={{
 					key: 'table'
 				}}
-				editor={editor}
+				editor={{
+					value: {
+						change: () => change,
+						document: {
+							getDescendant: () => {
+								return {
+									// parent
+									data: {
+										get: () => {
+											return {
+												header: true,
+												textGroup: {
+													numRows: 2
+												}
+											}
+										}
+									},
+									nodes: {
+										get: () => {
+											return {
+												key: 'thisRow',
+												nodes: [
+													{
+														key: 'siblingCell'
+													}
+												]
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -180,8 +189,8 @@ describe('Row Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 })

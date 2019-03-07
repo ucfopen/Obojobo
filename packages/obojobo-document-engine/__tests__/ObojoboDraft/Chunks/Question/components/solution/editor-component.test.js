@@ -13,7 +13,7 @@ describe('Solution Editor Node', () => {
 	})
 
 	test('Solution component deletes self', () => {
-		const editor = {
+		const change = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -24,14 +24,17 @@ describe('Solution Editor Node', () => {
 						get: () => null
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
 
 		component.find('button').simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 })

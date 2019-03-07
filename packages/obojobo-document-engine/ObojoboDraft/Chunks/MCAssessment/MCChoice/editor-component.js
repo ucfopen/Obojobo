@@ -12,30 +12,38 @@ class MCChoice extends React.Component {
 	delete(event) {
 		event.stopPropagation()
 		const editor = this.props.editor
-		return editor.removeNodeByKey(this.props.node.key)
+		const change = editor.value.change()
+		change.removeNodeByKey(this.props.node.key)
+
+		editor.onChange(change)
 	}
 
 	handleScoreChange(event) {
 		event.stopPropagation()
 		const editor = this.props.editor
+		const change = editor.value.change()
 		const newScore = this.props.node.data.get('content').score === 100 ? 0 : 100
 
-		return editor.setNodeByKey(this.props.node.key, {
+		change.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					score: newScore
 				}
 			}
 		})
+		editor.onChange(change)
 	}
 
 	addFeedback() {
 		const editor = this.props.editor
+		const change = editor.value.change()
 
 		const newFeedback = Block.create({
 			type: MCFEEDBACK_NODE
 		})
-		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newFeedback)
+		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newFeedback)
+
+		editor.onChange(change)
 	}
 
 	render() {

@@ -1,6 +1,6 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-import MCAnswer from 'ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
+import MCAnswer from '../../../../../ObojoboDraft/Chunks/MCAssessment/MCAnswer/editor'
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 
 describe('MCAnswer editor', () => {
@@ -17,60 +17,41 @@ describe('MCAnswer editor', () => {
 			}
 		}
 
-		expect(MCAnswer.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(MCAnswer.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(MCAnswer.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const editor = {
+		const change = {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
 
-		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
-			funct(editor)
+		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => {
+			funct(change)
 		})
 
-		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(editor, {
+		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', object: 'text' },
 			index: null
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		MCAnswer.plugins.schema.blocks[MCANSWER_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: {},
 			child: null,
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 })

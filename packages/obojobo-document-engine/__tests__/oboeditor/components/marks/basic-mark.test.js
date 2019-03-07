@@ -8,9 +8,9 @@ describe('HotKey', () => {
 			toggleMark: jest.fn()
 		}
 
-		keyDown.onKeyDown({}, mockChange, jest.fn())
-		expect(keyDown.renderMark({ mark: {type: 'bold'} }, null, jest.fn())).toMatchSnapshot()
-		expect(keyDown.renderMark({ mark: {type: 'fake'} }, null, jest.fn())).toMatchSnapshot()
+		keyDown.onKeyDown({}, mockChange)
+		expect(keyDown.renderMark({ mark: { type: 'bold' } })).toMatchSnapshot()
+		expect(keyDown.renderMark({ mark: { type: 'fake' } })).toMatchSnapshot()
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
@@ -22,7 +22,7 @@ describe('HotKey', () => {
 			toggleMark: jest.fn()
 		}
 
-		keyDown.onKeyDown({ key: 'R' }, mockChange, jest.fn())
+		keyDown.onKeyDown({ key: 'R' }, mockChange)
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
@@ -39,7 +39,7 @@ describe('HotKey', () => {
 			preventDefault: jest.fn()
 		}
 
-		keyDown.onKeyDown(mockEvent, mockChange, jest.fn())
+		keyDown.onKeyDown(mockEvent, mockChange)
 
 		expect(mockChange.toggleMark).toHaveBeenCalledWith('bold')
 	})

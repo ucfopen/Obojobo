@@ -1,4 +1,4 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('src/scripts/oboeditor/util/text-util')
 
@@ -19,25 +19,7 @@ describe('Text editor', () => {
 			}
 		}
 
-		expect(Text.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => {
-						return {}
-					}
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Text.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(Text.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a line when passed', () => {
@@ -53,69 +35,53 @@ describe('Text editor', () => {
 			}
 		}
 
-		expect(Text.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(Text.plugins.renderNode(props)).toMatchSnapshot()
 	})
 
 	test('plugins.renderPlaceholder exits when not relevent', () => {
 		expect(
-			Text.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'text'
-					}
-				},
-				null,
-				jest.fn()
-			)
+			Text.plugins.renderPlaceholder({
+				node: {
+					object: 'text'
+				}
+			})
 		).toMatchSnapshot()
 
 		expect(
-			Text.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: 'mockType'
-					}
-				},
-				null,
-				jest.fn()
-			)
+			Text.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: 'mockType'
+				}
+			})
 		).toMatchSnapshot()
 
 		expect(
-			Text.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: TEXT_LINE_NODE,
-						text: 'Some text'
-					}
-				},
-				null,
-				jest.fn()
-			)
+			Text.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: TEXT_LINE_NODE,
+					text: 'Some text'
+				}
+			})
 		).toMatchSnapshot()
 	})
 
 	test('plugins.renderPlaceholder renders a placeholder', () => {
 		expect(
-			Text.plugins.renderPlaceholder(
-				{
-					node: {
-						object: 'block',
-						type: TEXT_LINE_NODE,
-						text: '',
-						data: { get: () => 'left' }
-					}
-				},
-				null,
-				jest.fn()
-			)
+			Text.plugins.renderPlaceholder({
+				node: {
+					object: 'block',
+					type: TEXT_LINE_NODE,
+					text: '',
+					data: { get: () => 'left' }
+				}
+			})
 		).toMatchSnapshot()
 	})
 
 	test('plugins.onKeyDown deals with no text', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -131,20 +97,20 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Backspace] or [Delete]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: {
 					get: () => ({ key: 'mockBlockKey' }),
@@ -165,21 +131,21 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.removeNodeByKey = jest.fn().mockReturnValueOnce(editor)
+		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Backspace',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
+		expect(change.removeNodeByKey).not.toHaveBeenCalled()
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Backspace] or [Delete] deletes empty text node', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: {
 					get: () => ({ key: 'mockBlockKey' }),
@@ -200,21 +166,21 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.removeNodeByKey = jest.fn().mockReturnValueOnce(editor)
+		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Delete',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with first [Enter]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -230,20 +196,20 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+		change.insertBlock = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.insertBlock).not.toHaveBeenCalled()
+		expect(change.insertBlock).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with second [Enter]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -259,22 +225,22 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.removeNodeByKey = jest.fn().mockReturnValueOnce(editor)
-		editor.splitBlock = jest.fn().mockReturnValueOnce(editor)
+		change.removeNodeByKey = jest.fn().mockReturnValueOnce(change)
+		change.splitBlock = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Shift]+[Tab]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -287,7 +253,7 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Tab',
@@ -295,14 +261,14 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(change.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Shift]+[Tab] with indented text', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -315,7 +281,7 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Tab',
@@ -323,14 +289,14 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(change.setNodeByKey).toHaveBeenCalled()
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Alt]+[Tab]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -343,7 +309,7 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			altKey: true,
@@ -351,16 +317,16 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockBlockKey', {
+		expect(change.setNodeByKey).toHaveBeenCalledWith('mockBlockKey', {
 			data: { indent: 1 }
 		})
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Alt]+[Tab] with 20 indents', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -373,7 +339,7 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			altKey: true,
@@ -381,16 +347,16 @@ describe('Text editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockBlockKey', {
+		expect(change.setNodeByKey).toHaveBeenCalledWith('mockBlockKey', {
 			data: { indent: 20 }
 		})
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Tab]', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -403,21 +369,21 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.insertText = jest.fn().mockReturnValueOnce(editor)
+		change.insertText = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'Tab',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.insertText).toHaveBeenCalledWith('\t')
+		expect(change.insertText).toHaveBeenCalledWith('\t')
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with random keys', () => {
-		const editor = {
+		const change = {
 			value: {
 				blocks: [
 					{
@@ -433,91 +399,91 @@ describe('Text editor', () => {
 				}
 			}
 		}
-		editor.setNodeByKey = jest.fn().mockReturnValueOnce(editor)
+		change.setNodeByKey = jest.fn().mockReturnValueOnce(change)
 
 		const event = {
 			key: 'e',
 			preventDefault: jest.fn()
 		}
 
-		Text.plugins.onKeyDown(event, editor, jest.fn())
+		Text.plugins.onKeyDown(event, change)
 
-		expect(editor.setNodeByKey).not.toHaveBeenCalled()
+		expect(change.setNodeByKey).not.toHaveBeenCalled()
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children in text', () => {
-		const editor = {
+		const change = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_NODE].normalize(editor, {
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 5 } },
 			child: { key: 'mockKey' },
 			index: null
 		})
 
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+		expect(change.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid block in text', () => {
-		const editor = {
+		const change = {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_NODE].normalize(editor, {
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
 			index: 0
 		})
 
-		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes required children in text', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(change, {
+			code: CHILD_REQUIRED,
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
 		})
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children in text line', () => {
-		const editor = {
+		const change = {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(editor, {
+		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 5 } },
 			child: { key: 'mockKey' },
 			index: null
 		})
 
-		expect(editor.unwrapNodeByKey).not.toHaveBeenCalled()
+		expect(change.unwrapNodeByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid block in text line', () => {
-		const editor = {
+		const change = {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(editor, {
+		Text.plugins.schema.blocks[TEXT_LINE_NODE].normalize(change, {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
 			index: 0
 		})
 
-		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+		expect(change.unwrapNodeByKey).toHaveBeenCalled()
 	})
 })

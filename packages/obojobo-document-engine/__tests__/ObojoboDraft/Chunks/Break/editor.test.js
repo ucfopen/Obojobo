@@ -1,4 +1,4 @@
-import Break from 'ObojoboDraft/Chunks/Break/editor'
+import Break from '../../../../ObojoboDraft/Chunks/Break/editor'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 describe('Break editor', () => {
@@ -13,23 +13,6 @@ describe('Break editor', () => {
 			}
 		}
 
-		expect(Break.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
-	})
-
-	test('plugins.renderNode calls next', () => {
-		const props = {
-			attributes: { dummy: 'dummyData' },
-			node: {
-				type: 'mockNode',
-				data: {
-					get: () => ({})
-				}
-			}
-		}
-
-		const next = jest.fn()
-
-		expect(Break.plugins.renderNode(props, null, next)).toMatchSnapshot()
-		expect(next).toHaveBeenCalled()
+		expect(Break.plugins.renderNode(props)).toMatchSnapshot()
 	})
 })

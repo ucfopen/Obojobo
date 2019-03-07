@@ -42,7 +42,7 @@ describe('MCChoice Editor Node', () => {
 	})
 
 	test('MCChoice component deletes itself', () => {
-		const editor = {
+		const change = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -57,7 +57,10 @@ describe('MCChoice Editor Node', () => {
 						}
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()
@@ -67,12 +70,12 @@ describe('MCChoice Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(change.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MCChoice component edits score', () => {
-		const editor = {
+	test('MCChoice component changes score', () => {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -87,7 +90,10 @@ describe('MCChoice Editor Node', () => {
 						})
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 
@@ -96,7 +102,7 @@ describe('MCChoice Editor Node', () => {
 			.at(1)
 			.simulate('click')
 
-		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockKey', {
+		expect(change.setNodeByKey).toHaveBeenCalledWith('mockKey', {
 			data: { content: { score: 100 } }
 		})
 
@@ -113,7 +119,10 @@ describe('MCChoice Editor Node', () => {
 						}
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 
@@ -122,13 +131,13 @@ describe('MCChoice Editor Node', () => {
 			.at(1)
 			.simulate('click')
 
-		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockKey', {
+		expect(change.setNodeByKey).toHaveBeenCalledWith('mockKey', {
 			data: { content: { score: 0 } }
 		})
 	})
 
 	test('MCChoice component adds feedback', () => {
-		const editor = {
+		const change = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -143,7 +152,10 @@ describe('MCChoice Editor Node', () => {
 						}
 					}
 				}}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 
@@ -152,6 +164,6 @@ describe('MCChoice Editor Node', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(change.insertNodeByKey).toHaveBeenCalled()
 	})
 })

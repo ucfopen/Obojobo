@@ -1,8 +1,5 @@
 import { Block } from 'slate'
-
-import SchemaViolations from '../../../../src/scripts/oboeditor/util/schema-violations'
-
-const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const MCANSWER_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCAnswer'
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
@@ -13,27 +10,29 @@ const schema = {
 			nodes: [
 				{
 					match: [{ type: MCANSWER_NODE }],
-					min: 1
+					min: 1,
+					max: 1
 				},
 				{
-					match: [{ type: MCFEEDBACK_NODE }]
+					match: [{ type: MCFEEDBACK_NODE }],
+					max: 1
 				}
 			],
-			normalize: (editor, error) => {
+			normalize: (change, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_MIN_INVALID: {
+					case CHILD_REQUIRED: {
 						const block = Block.create({
 							type: MCANSWER_NODE
 						})
-						return editor.insertNodeByKey(node.key, index, block)
+						return change.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						// extra children will be deleted by slate defaults
 						if (index >= 2) return
 						// multiple answers and feedbacks will be deleted by slate defaults
 						if (index === 1 && child.type !== MCFEEDBACK_NODE) return
-						return editor.wrapBlockByKey(child.key, {
+						return change.wrapBlockByKey(child.key, {
 							type: MCANSWER_NODE
 						})
 					}

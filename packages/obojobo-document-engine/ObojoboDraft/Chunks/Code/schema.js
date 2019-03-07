@@ -1,8 +1,6 @@
 import { Block } from 'slate'
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-import SchemaViolations from '../../../src/scripts/oboeditor/util/schema-violations'
-
-const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 const schema = {
@@ -14,27 +12,27 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (editor, error) => {
+			normalize: (change, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
 						if (child.object === 'block' && isAtEdge) {
-							return editor.unwrapNodeByKey(child.key)
+							return change.unwrapNodeByKey(child.key)
 						}
 
-						return editor.wrapBlockByKey(child.key, {
+						return change.wrapBlockByKey(child.key, {
 							type: CODE_LINE_NODE,
 							data: { content: { indent: 0 } }
 						})
 					}
-					case CHILD_MIN_INVALID: {
+					case CHILD_REQUIRED: {
 						const block = Block.create({
 							type: CODE_LINE_NODE,
 							data: { content: { indent: 0 } }
 						})
-						return editor.insertNodeByKey(node.key, index, block)
+						return change.insertNodeByKey(node.key, index, block)
 					}
 				}
 			}
@@ -46,14 +44,13 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (editor, error) => {
-				const { node, child, index } = error
-				switch (error.code) {
+			normalize: (change, violation, { node, child, index }) => {
+				switch (violation) {
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
 						if (child.object === 'block' && isAtEdge) {
-							return editor.unwrapNodeByKey(child.key)
+							return change.unwrapNodeByKey(child.key)
 						}
 					}
 				}

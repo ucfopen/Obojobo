@@ -141,8 +141,6 @@ Object {
 }
 `;
 
-exports[`Assessment editor plugins.renderNode calls next 1`] = `undefined`;
-
 exports[`Assessment editor plugins.renderNode renders Settings when passed 1`] = `
 <Settings
   attributes={

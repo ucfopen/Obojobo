@@ -1,7 +1,9 @@
-const splitParent = (event, editor) => {
-	const last = editor.value.endBlock
+const splitParent = (event, change) => {
+	const last = change.value.endBlock
 	event.preventDefault()
-	return editor.removeNodeByKey(last.key).splitBlock(2)
+	change.removeNodeByKey(last.key)
+	change.splitBlock(2)
+	return true
 }
 
 export default splitParent

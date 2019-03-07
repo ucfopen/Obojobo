@@ -22,8 +22,8 @@ describe('IFrame Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('IFrame component edits input', () => {
-		const editor = {
+	test('IFrame component changes input', () => {
+		const change = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -38,7 +38,10 @@ describe('IFrame Editor Node', () => {
 				}}
 				isFocused={true}
 				isSelected={true}
-				editor={editor}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
 			/>
 		)
 		const tree = component.html()

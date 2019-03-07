@@ -1,8 +1,5 @@
 import { Block } from 'slate'
-
-import SchemaViolations from '../../../../src/scripts/oboeditor/util/schema-violations'
-
-const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
+import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 
@@ -10,10 +7,10 @@ const schema = {
 	blocks: {
 		'ObojoboDraft.Chunks.MCAssessment.MCFeedback': {
 			nodes: [{ match: [{ type: 'oboeditor.component' }], min: 1 }],
-			normalize: (editor, error) => {
+			normalize: (change, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_MIN_INVALID: {
+					case CHILD_REQUIRED: {
 						const block = Block.create({
 							object: 'block',
 							type: 'oboeditor.component',
@@ -24,7 +21,7 @@ const schema = {
 								}
 							]
 						})
-						return editor.insertNodeByKey(node.key, index, block)
+						return change.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						const block = Block.fromJSON({
@@ -37,7 +34,7 @@ const schema = {
 								}
 							]
 						})
-						return editor.withoutNormalizing(c => {
+						return change.withoutNormalization(c => {
 							c.removeNodeByKey(child.key)
 							return c.insertNodeByKey(node.key, index, block)
 						})

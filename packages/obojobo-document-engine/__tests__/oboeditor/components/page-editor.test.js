@@ -217,7 +217,30 @@ describe('PageEditor', () => {
 		expect(APIUtil.postDraft).toHaveBeenCalle
 	})
 
-	test('EditorNav component alters value', () => {
+	test('EditorNav component toggles mark', () => {
+		window.getSelection = jest.fn().mockReturnValueOnce({
+			rangeCount: {
+				nodeType: 'mockType'
+			}
+		})
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+		const component = mount(<PageEditor {...props} />)
+		const tree = component.html()
+
+		component
+			.find('button')
+			.at(2)
+			.simulate('click')
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('EditorNav component changes value', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
 			page: {
@@ -231,22 +254,5 @@ describe('PageEditor', () => {
 		component.find('.obojobo-draft--pages--page').simulate('change', { value: Value.create({}) })
 
 		expect(tree).toMatchSnapshot()
-	})
-
-	test('EditorNav component stores refrence', () => {
-		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = mount(<PageEditor {...props} />)
-
-		const instance = component.instance()
-
-		instance.ref('mockEditor')
-
-		expect(instance.getEditor()).toEqual('mockEditor')
 	})
 })

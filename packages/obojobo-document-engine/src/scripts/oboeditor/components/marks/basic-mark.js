@@ -2,19 +2,18 @@ function MarkHotkey(options) {
 	const { type, key, render } = options
 
 	return {
-		onKeyDown(event, editor, next) {
-			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return next()
+		onKeyDown(event, change) {
+			if (!(event.ctrlKey || event.metaKey) || event.key !== key) return
 
 			event.preventDefault()
 
-			return editor.toggleMark(type)
+			change.toggleMark(type)
+			return true
 		},
-		renderMark(props, editor, next) {
+		renderMark(props) {
 			switch (props.mark.type) {
 				case type:
 					return render(props)
-				default:
-					return next()
 			}
 		}
 	}
