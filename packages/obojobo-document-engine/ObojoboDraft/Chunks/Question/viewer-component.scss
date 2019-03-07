@@ -7,9 +7,6 @@
 	> .flipper {
 		$color-sep: rgba(0, 0, 0, 0.1);
 
-		transition: 0.4s;
-		-ms-transition: none;
-		transform-style: preserve-3d;
 		position: relative;
 		border-radius: $dimension-rounded-radius;
 		padding: 0;
@@ -17,12 +14,11 @@
 		margin-bottom: 1em;
 		border: 1px solid transparentize($color-shadow, 0.2);
 		max-width: $dimension-column-width;
+		background: $color-bg;
 
 		> .blocker-front,
 		> .content-back {
 			width: 100%;
-			backface-visibility: hidden;
-			-ms-backface-visibility: visible;
 
 			> .solution-editor {
 				background: $color-bg2;
@@ -63,7 +59,6 @@
 
 		> .blocker-front {
 			z-index: 2;
-			transform: rotateY(0deg);
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -100,7 +95,6 @@
 		}
 
 		> .content-back {
-			transform: rotateY(180deg);
 			visibility: hidden;
 
 			> .responses-hidden {
@@ -121,8 +115,6 @@
 	&.is-active,
 	&.is-viewed {
 		> .flipper {
-			transform: rotateY(-180deg);
-
 			> .blocker-front {
 				visibility: hidden;
 				pointer-events: none;
@@ -130,6 +122,28 @@
 
 			> .content-back {
 				visibility: visible;
+			}
+		}
+	}
+
+	&.is-flipping {
+		> .flipper {
+			transition: 0.4s;
+			-ms-transition: none;
+			transform-style: preserve-3d;
+
+			> .blocker-front,
+			> .content-back {
+				backface-visibility: hidden;
+				-ms-backface-visibility: visible;
+			}
+
+			> .blocker-front {
+				transform: rotateY(0deg);
+			}
+
+			> .content-back {
+				transform: rotateY(180deg);
 			}
 		}
 	}
@@ -142,7 +156,7 @@
 			font-family: $font-default;
 			position: absolute;
 			left: 3.15em;
-			top: -0.5em;
+			top: 0.5em;
 			transform: scale(0.7);
 			transform-origin: top left;
 		}
@@ -153,6 +167,19 @@
 
 		&.is-not-correct .flipper {
 			border: 1.25px solid $color-incorrect;
+		}
+	}
+
+	&.is-flipping.is-active,
+	&.is-flipping.is-viewed {
+		> .flipper {
+			transform: rotateY(-180deg);
+		}
+	}
+
+	&.is-flipping.is-mode-practice {
+		> .flipper > .content-back::before {
+			top: -0.5em;
 		}
 	}
 }

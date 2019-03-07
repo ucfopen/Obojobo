@@ -537,7 +537,9 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			component.instance().leaveEvent = { id: 'mockId' }
+			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
+			component.instance().leaveEvent = { extensions: { internalEventId: 'mock-id' } }
+			component.instance().leftEpoch = 999
 			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
 
@@ -546,11 +548,16 @@ describe('ViewerApp', () => {
 			expect(APIUtil.postEvent).toHaveBeenCalledWith({
 				action: 'viewer:return',
 				draftId: undefined,
-				eventVersion: '1.0.0',
-				payload: { relatedEventId: 'mockId' },
+				eventVersion: '2.0.0',
+				payload: {
+					relatedEventId: 'mock-id',
+					leftTime: 999,
+					duration: 1
+				},
 				visitId: undefined
 			})
 
+			dateSpy.mockRestore()
 			component.unmount()
 			done()
 		})
@@ -793,13 +800,27 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
+			component.instance().inactiveEvent = { extensions: { internalEventId: 'mock-id' } }
+			component.instance().lastActiveEpoch = 999
+			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
-			component.instance().inactiveEvent = { id: 'mockEventId' }
 
 			component.instance().onReturnFromIdle()
 
-			expect(APIUtil.postEvent).toHaveBeenCalled()
+			expect(APIUtil.postEvent).toHaveBeenCalledWith({
+				action: 'viewer:returnFromInactive',
+				draftId: undefined,
+				eventVersion: '2.1.0',
+				payload: {
+					relatedEventId: 'mock-id',
+					lastActiveTime: 999,
+					inactiveDuration: 1
+				},
+				visitId: undefined
+			})
 
+			dateSpy.mockRestore()
 			component.unmount()
 			done()
 		})
