@@ -8,7 +8,10 @@ const TextGroupAdapter = {
 				align: 'left'
 			})
 		} else {
-			model.modelState.textGroup = TextGroup.create(Infinity, { indent: 0, align: 'left' })
+			model.modelState.textGroup = TextGroup.create(Infinity, {
+				indent: 0,
+				align: 'left'
+			})
 		}
 	},
 

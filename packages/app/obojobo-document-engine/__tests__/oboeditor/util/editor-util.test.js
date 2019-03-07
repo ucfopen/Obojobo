@@ -208,7 +208,12 @@ describe('EditorUtil', () => {
 		expect(items).toEqual([
 			{ id: 1, showChildren: false, type: 'not-link' },
 			{ id: 2, showChildren: false, type: 'link' },
-			{ flags: { assessment: true }, id: 'mockAssessment', showChildren: false, type: 'link' }
+			{
+				flags: { assessment: true },
+				id: 'mockAssessment',
+				showChildren: false,
+				type: 'link'
+			}
 		])
 	})
 

@@ -21,36 +21,21 @@
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
-		"precommit": "lint-staged && yarn test:ci",
-		"prettier:run": "prettier --write '{__{tests,mocks}__,bin,config,migrations,models,routes,viewer,views}/**/*.{js,scss}'",
-		"prettier:debug": "prettier -l '{__{tests,mocks}__,bin,config,migrations,models,routes,viewer,views}/**/*.{js,scss}'"
+		"prettier:run": "prettier --write '**/*.{js,scss}'"
 	},
 	"engines": {
 		"yarn": "^1.0",
 		"node": "^10.4.1"
 	},
 	"lint-staged": {
-		"{__{tests,mocks}__,bin,config,migrations,models,routes,viewer,views}/**/*.{js,scss}": [
-			"yarn prettier:run",
+		"**/*.{js,scss}": [
+			"prettier --write",
 			"eslint",
 			"stylelint",
 			"git add"
 		]
 	},
-	"prettier": {
-		"printWidth": 100,
-		"semi": false,
-		"useTabs": true,
-		"singleQuote": true
-	},
 	"dependencies": {
-		"@babel/core": "^7.0.0-0",
-		"@babel/polyfill": "7.0.0",
-		"@babel/preset-env": "^7.2.0",
-		"@babel/preset-react": "^7.0.0",
-		"babel-core": "^7.0.0-bridge",
-		"babel-eslint": "^8.2.3",
-		"babel-jest": "^23.6.0",
 		"babel-loader": "^8.0.4",
 		"babel-polyfill": "^6.26.0",
 		"body-parser": "^1.17.1",
@@ -86,17 +71,10 @@
 		"webpack-dev-server": "^3.1.4"
 	},
 	"devDependencies": {
-		"eslint": "^4.19.1",
-		"jest": "23.4.2",
-		"lint-staged": "^6.1.1",
-		"prettier": "1.11.1",
-		"stylelint": "^9.4.0",
-		"stylelint-config-standard": "^18.2.0",
-		"stylelint-declaration-use-variable": "^1.7.0",
-		"supertest": "^3.1.0"
+		"lint-staged": "^6.1.1"
 	},
 	"jest": {
-		"setupTestFrameworkScriptFile": "./setup_tests.js",
+		"setupFilesAfterEnv": ["./setup_tests.js"],
 		"collectCoverageFrom": [
 			"*.js",
 			"models/**/*.js",

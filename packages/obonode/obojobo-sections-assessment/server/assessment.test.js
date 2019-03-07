@@ -6,7 +6,10 @@ global.oboRequire = name => {
 
 jest.setMock('obojobo-express/logger', require('obojobo-express/__mocks__/logger'))
 jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
-jest.setMock('ims-lti/src/extensions/outcomes', require('obojobo-express/__mocks__/ims-lti/src/extensions/outcomes'))
+jest.setMock(
+	'ims-lti/src/extensions/outcomes',
+	require('obojobo-express/__mocks__/ims-lti/src/extensions/outcomes')
+)
 jest.mock('obojobo-express/logger')
 jest.mock('obojobo-express/db')
 jest.mock('ims-lti/src/extensions/outcomes')

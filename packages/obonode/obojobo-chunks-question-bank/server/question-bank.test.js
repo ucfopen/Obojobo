@@ -7,7 +7,10 @@ jest.mock(
 	{ virtual: false }
 )
 
-jest.setMock('obojobo-express/models/draft_node', require('obojobo-document-engine/__mocks__/models/draft_node'))
+jest.setMock(
+	'obojobo-express/models/draft_node',
+	require('obojobo-document-engine/__mocks__/models/draft_node')
+)
 
 const QuestionBank = require('./question-bank')
 const _ = require('underscore')

@@ -72,7 +72,11 @@ describe('api visits route', () => {
 		caliperEvent().createViewerSessionLoggedInEvent.mockReset()
 		ltiUtil.retrieveLtiLaunch = jest.fn()
 		viewerState.get = jest.fn()
-		mockCurrentVisit = { id: validUUID(), is_preview: false, draft_content_id: validUUID() }
+		mockCurrentVisit = {
+			id: validUUID(),
+			is_preview: false,
+			draft_content_id: validUUID()
+		}
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
 	})
 	afterEach(() => {})

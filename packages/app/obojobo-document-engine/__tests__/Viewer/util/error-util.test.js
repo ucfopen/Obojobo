@@ -25,7 +25,9 @@ describe('ErrorUtil', () => {
 	})
 
 	test('errorResponse will show a modal dialog with expected error responses', () => {
-		ErrorUtil.errorResponse({ value: { type: 'input', message: 'The Message' } })
+		ErrorUtil.errorResponse({
+			value: { type: 'input', message: 'The Message' }
+		})
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('modal:show', {
 			value: {
@@ -33,7 +35,9 @@ describe('ErrorUtil', () => {
 			}
 		})
 
-		ErrorUtil.errorResponse({ value: { type: 'unexpected', message: 'The Message' } })
+		ErrorUtil.errorResponse({
+			value: { type: 'unexpected', message: 'The Message' }
+		})
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('modal:show', {
 			value: {
@@ -41,7 +45,9 @@ describe('ErrorUtil', () => {
 			}
 		})
 
-		ErrorUtil.errorResponse({ value: { type: 'reject', message: 'The Message' } })
+		ErrorUtil.errorResponse({
+			value: { type: 'reject', message: 'The Message' }
+		})
 
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('modal:show', {
 			value: {

@@ -22,11 +22,15 @@ module.exports =
 			'dist.js'
 		)
 
-		console.log(`OboNode client scripts to build | viewer: ${viewerOboNodeScripts.length}, editor: ${editorOboNodeScripts.length}`)
+		console.log(
+			`OboNode client scripts to build | viewer: ${viewerOboNodeScripts.length}, editor: ${
+				editorOboNodeScripts.length
+			}`
+		)
 		return {
-			stats: {children: false, modules: false},
-			optimization: {minimize: true},
-			performance: {hints: false},
+			stats: { children: false, modules: false },
+			optimization: { minimize: true },
+			performance: { hints: false },
 			mode: is_production ? 'production' : 'development',
 			target: 'web',
 			devServer: {
@@ -40,7 +44,7 @@ module.exports =
 				watchOptions: {
 					ignored: '/node_modules/'
 				},
-				stats: {children: false, modules: false}
+				stats: { children: false, modules: false }
 			},
 			entry: {
 				viewer: [
@@ -48,21 +52,9 @@ module.exports =
 					// common (to both viewer and editor)
 					commonPath,
 					// the application logic
-					path.join(
-						docEnginePath,
-						'src',
-						'scripts',
-						'viewer',
-						'dist.js'
-					),
+					path.join(docEnginePath, 'src', 'scripts', 'viewer', 'dist.js'),
 					// where window and document variables are set and rendering is done
-					path.join(
-						docEnginePath,
-						'src',
-						'scripts',
-						'viewer',
-						'app.js'
-					),
+					path.join(docEnginePath, 'src', 'scripts', 'viewer', 'app.js'),
 					// all viewer nodes that were registered in obojobo.js
 					...viewerOboNodeScripts
 				],
@@ -72,13 +64,7 @@ module.exports =
 					commonPath,
 					// where window and document variables are set and rendering is done
 					// and application logic
-					path.join(
-						docEnginePath,
-						'src',
-						'scripts',
-						'oboeditor',
-						'app.js'
-					),
+					path.join(docEnginePath, 'src', 'scripts', 'oboeditor', 'app.js'),
 					// all editor nodes that were registered in obojobo.js
 					...editorOboNodeScripts
 				]

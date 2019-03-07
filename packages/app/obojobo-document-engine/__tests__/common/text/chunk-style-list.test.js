@@ -268,7 +268,9 @@ describe('ChunkStyleList', function() {
 	})
 
 	test("doesn't normalize dis-similar ranges", function() {
-		const newStyleRange = new StyleRange(0, 20, 'a', { href: 'new-website.com' })
+		const newStyleRange = new StyleRange(0, 20, 'a', {
+			href: 'new-website.com'
+		})
 		styleList.add(newStyleRange)
 		styleList.normalize()
 

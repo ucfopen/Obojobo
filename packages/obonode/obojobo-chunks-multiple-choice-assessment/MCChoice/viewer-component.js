@@ -155,7 +155,7 @@ const MCChoice = props => {
 				type={inputType}
 				value={props.model.get('id')}
 				checked={isSelected}
-				onChange={/* istanbul ignore next */() => {}} // for react to not complain
+				onChange={/* istanbul ignore next */ () => {}} // for react to not complain
 				name={props.model.parent.get('id')}
 				role={inputType}
 				aria-checked={isSelected}
@@ -188,8 +188,7 @@ const MCChoice = props => {
 									in={isSelected && props.questionSubmitted}
 									classNames="feedback"
 									timeout={TRANSITION_TIME_MS}
-									>
-
+								>
 									{isSelected && props.questionSubmitted ? (
 										<div className="feedback">
 											<Component model={child} moduleData={props.moduleData} />

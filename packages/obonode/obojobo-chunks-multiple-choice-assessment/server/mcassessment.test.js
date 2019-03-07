@@ -1,4 +1,7 @@
-jest.setMock('obojobo-express/models/draft_node', require('obojobo-document-engine/__mocks__/models/draft_node'))
+jest.setMock(
+	'obojobo-express/models/draft_node',
+	require('obojobo-document-engine/__mocks__/models/draft_node')
+)
 
 let MCAssessment
 

@@ -92,7 +92,10 @@ describe('Store', () => {
 		store.setState(state)
 		store.updateStateByContext({ a: 1, b: 2 }, 'mockContext')
 
-		expect(store.state).toEqual({ a: { mockContext: 1 }, b: { mockContext: 2 } })
+		expect(store.state).toEqual({
+			a: { mockContext: 1 },
+			b: { mockContext: 2 }
+		})
 	})
 
 	test('updateStateByContext sets states that dont exist', () => {
@@ -101,6 +104,9 @@ describe('Store', () => {
 		store.init()
 		store.updateStateByContext({ a: 1, b: 2 }, 'mockContext')
 
-		expect(store.state).toEqual({ a: { mockContext: 1 }, b: { mockContext: 2 } })
+		expect(store.state).toEqual({
+			a: { mockContext: 1 },
+			b: { mockContext: 2 }
+		})
 	})
 })

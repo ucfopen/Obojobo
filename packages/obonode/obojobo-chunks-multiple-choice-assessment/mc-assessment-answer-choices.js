@@ -4,7 +4,6 @@ import React from 'react'
 
 const { focus } = Common.page
 
-
 export default class MCAssessmentAnswerChoices extends React.Component {
 	constructor(props) {
 		super(props)

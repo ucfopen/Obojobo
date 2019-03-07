@@ -516,7 +516,10 @@ describe('OboModel', () => {
 	})
 
 	test('getDomId returns an id for an element', () => {
-		const root = OboModel.create({ id: 'mock-id', type: 'ObojoboDraft.Chunks.Heading' })
+		const root = OboModel.create({
+			id: 'mock-id',
+			type: 'ObojoboDraft.Chunks.Heading'
+		})
 		expect(root.getDomId()).toEqual('obo-mock-id')
 	})
 

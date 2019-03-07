@@ -3,7 +3,6 @@ import IFrameFitTypes from './iframe-fit-types'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 const MediaUtil = Viewer.util.MediaUtil
 
-
 const getIsShowing = (mediaState, model) => {
 	return (
 		(model.modelState.autoload || MediaUtil.isShowingMedia(mediaState, model)) &&

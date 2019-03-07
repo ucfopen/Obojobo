@@ -11,4 +11,7 @@ const mockOboNodesServer = [
 
 const mockOboExpress = ['testExpress.js', 'otherTestExpress.js']
 
-module.exports = { oboNodesServer: mockOboNodesServer, oboExpress: mockOboExpress }
+module.exports = {
+	oboNodesServer: mockOboNodesServer,
+	oboExpress: mockOboExpress
+}

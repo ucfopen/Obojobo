@@ -1,7 +1,7 @@
 const DraftNode = require('obojobo-express/models/draft_node')
 
 class MCAssessment extends DraftNode {
-	static get nodeName(){
+	static get nodeName() {
 		return 'ObojoboDraft.Chunks.MCAssessment'
 	}
 

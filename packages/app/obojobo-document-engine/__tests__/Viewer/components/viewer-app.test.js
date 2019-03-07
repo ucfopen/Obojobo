@@ -392,7 +392,9 @@ describe('ViewerApp', () => {
 			component.update()
 			component.instance().onNavStoreChange()
 
-			expect(component.instance().setState).toHaveBeenCalledWith({ navState: {} })
+			expect(component.instance().setState).toHaveBeenCalledWith({
+				navState: {}
+			})
 
 			spy.mockRestore()
 			component.unmount()
@@ -412,7 +414,9 @@ describe('ViewerApp', () => {
 			component.update()
 			component.instance().onQuestionStoreChange()
 
-			expect(component.instance().setState).toHaveBeenCalledWith({ questionState: {} })
+			expect(component.instance().setState).toHaveBeenCalledWith({
+				questionState: {}
+			})
 
 			component.unmount()
 			spy.mockRestore()
@@ -432,7 +436,9 @@ describe('ViewerApp', () => {
 			component.update()
 			component.instance().onAssessmentStoreChange()
 
-			expect(component.instance().setState).toHaveBeenCalledWith({ assessmentState: {} })
+			expect(component.instance().setState).toHaveBeenCalledWith({
+				assessmentState: {}
+			})
 
 			component.unmount()
 			spy.mockRestore()
@@ -452,7 +458,9 @@ describe('ViewerApp', () => {
 			component.update()
 			component.instance().onModalStoreChange()
 
-			expect(component.instance().setState).toHaveBeenCalledWith({ modalState: {} })
+			expect(component.instance().setState).toHaveBeenCalledWith({
+				modalState: {}
+			})
 
 			component.unmount()
 			spy.mockRestore()
@@ -472,7 +480,9 @@ describe('ViewerApp', () => {
 			component.update()
 			component.instance().onFocusStoreChange()
 
-			expect(component.instance().setState).toHaveBeenCalledWith({ focusState: {} })
+			expect(component.instance().setState).toHaveBeenCalledWith({
+				focusState: {}
+			})
 
 			component.unmount()
 			spy.mockRestore()
@@ -492,7 +502,9 @@ describe('ViewerApp', () => {
 			component.update()
 			component.instance().onMediaStoreChange()
 
-			expect(component.instance().setState).toHaveBeenCalledWith({ mediaState: {} })
+			expect(component.instance().setState).toHaveBeenCalledWith({
+				mediaState: {}
+			})
 
 			component.unmount()
 			spy.mockRestore()
@@ -534,7 +546,9 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
-			component.instance().leaveEvent = { extensions: { internalEventId: 'mock-id' } }
+			component.instance().leaveEvent = {
+				extensions: { internalEventId: 'mock-id' }
+			}
 			component.instance().leftEpoch = 999
 			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
@@ -727,7 +741,9 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel.mockReturnValue({ getDomEl: () => true })
+			FocusUtil.getVisuallyFocussedModel.mockReturnValue({
+				getDomEl: () => true
+			})
 			DOMUtil.isElementVisible.mockReturnValueOnce(true)
 			component.instance().onScroll()
 
@@ -746,7 +762,9 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel.mockReturnValue({ getDomEl: () => true })
+			FocusUtil.getVisuallyFocussedModel.mockReturnValue({
+				getDomEl: () => true
+			})
 			DOMUtil.isElementVisible.mockReturnValueOnce(false)
 			component.instance().onScroll()
 
@@ -781,7 +799,9 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			const dateSpy = jest.spyOn(Date, 'now').mockReturnValueOnce(1000)
-			component.instance().inactiveEvent = { extensions: { internalEventId: 'mock-id' } }
+			component.instance().inactiveEvent = {
+				extensions: { internalEventId: 'mock-id' }
+			}
 			component.instance().lastActiveEpoch = 999
 			APIUtil.postEvent.mockResolvedValueOnce({ value: null })
 			component.update()
@@ -979,7 +999,10 @@ describe('ViewerApp', () => {
 		NavUtil.canNavigate.mockReturnValue(false)
 		const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode')
 		// mock for coverage in scrollToTop
-		findDOMNodeSpy.mockReturnValue({ scrollTop: 10, getBoundingClientRect: () => ({ height: 20 }) })
+		findDOMNodeSpy.mockReturnValue({
+			scrollTop: 10,
+			getBoundingClientRect: () => ({ height: 20 })
+		})
 
 		setTimeout(() => {
 			component.setState({ navState: { navTargetId: null } })
@@ -1112,7 +1135,9 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({ type: 'garbage' })
+			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
+				type: 'garbage'
+			})
 			expect(component.instance().updateDOMFocus()).toBe(false)
 
 			component.unmount()

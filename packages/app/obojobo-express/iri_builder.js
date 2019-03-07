@@ -11,7 +11,9 @@ const createIRI = (host, path, hash, query) => {
 }
 
 const iriFactory = (req, providedHost) => {
-	if (!req && !providedHost) {throw Error('IRI - Must provide a request object with hostname or provide a host')}
+	if (!req && !providedHost) {
+		throw Error('IRI - Must provide a request object with hostname or provide a host')
+	}
 
 	const host = providedHost ? providedHost : req.hostname
 
@@ -21,8 +23,15 @@ const iriFactory = (req, providedHost) => {
 		getEdAppIRI: () => createIRI(host, '/api/system'),
 
 		getViewerClientIRI: (draftId, contentId, element) => {
-			if (element && draftId && contentId) {return createIRI(host, `/api/viewer/client/${element}?draftId=${draftId}&contentId=${contentId}`)}
-			if (draftId && contentId) return createIRI(host, `/api/viewer/client?draftId=${draftId}&contentId=${contentId}`)
+			if (element && draftId && contentId) {
+				return createIRI(
+					host,
+					`/api/viewer/client/${element}?draftId=${draftId}&contentId=${contentId}`
+				)
+			}
+			if (draftId && contentId) {
+				return createIRI(host, `/api/viewer/client?draftId=${draftId}&contentId=${contentId}`)
+			}
 			if (draftId) return createIRI(host, `/api/viewer/client?draftId=${draftId}`)
 			else return createIRI(host, '/api/viewer/client')
 		},
@@ -42,12 +51,16 @@ const iriFactory = (req, providedHost) => {
 			if (contextName === null) {
 				return createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`)
 			}
-			return createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`, { context: contextName })
+			return createIRI(host, `/api/draft-content/${contentId}`, `#${oboNodeId}`, {
+				context: contextName
+			})
 		},
 
-		getPracticeQuestionAttemptIRI: (contentId, oboNodeId) => createIRI(host, `/api/draft-content/${contentId}/practice/${oboNodeId}`),
+		getPracticeQuestionAttemptIRI: (contentId, oboNodeId) =>
+			createIRI(host, `/api/draft-content/${contentId}/practice/${oboNodeId}`),
 
-		getAssessmentIRI: (contentId, assessmentId) => createIRI(host, `/api/draft-content/${contentId}/assessment/${assessmentId}`),
+		getAssessmentIRI: (contentId, assessmentId) =>
+			createIRI(host, `/api/draft-content/${contentId}/assessment/${assessmentId}`),
 
 		getAssessmentAttemptIRI: attemptId => createIRI(host, `/api/attempt/${attemptId}`),
 

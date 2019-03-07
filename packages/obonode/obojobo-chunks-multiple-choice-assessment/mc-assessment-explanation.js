@@ -44,7 +44,7 @@ export default class MCAssessmentExplanation extends React.Component {
 					in={isShowingExplanation}
 					classNames="solution"
 					timeout={this.props.animationTransitionTime}
-					>
+				>
 					{isShowingExplanation ? (
 						<div
 							tabIndex="-1"

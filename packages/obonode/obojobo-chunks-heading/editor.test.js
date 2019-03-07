@@ -9,7 +9,6 @@ import Common from 'obojobo-document-engine/src/scripts/common/index'
 
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
-
 describe('Heading editor', () => {
 	test('plugins.renderNode renders a button when passed', () => {
 		const props = {

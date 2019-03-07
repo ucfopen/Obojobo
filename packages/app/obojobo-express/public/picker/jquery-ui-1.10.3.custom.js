@@ -52,7 +52,7 @@
 									fn.call(elem)
 								}
 							}, delay)
-						})
+					  })
 					: orig.apply(this, arguments)
 			}
 		})($.fn.focus),
@@ -176,11 +176,11 @@
 					return function(elem) {
 						return !!$.data(elem, dataName)
 					}
-				})
+			  })
 			: // support: jQuery <1.8
-				function(elem, i, match) {
+			  function(elem, i, match) {
 					return !!$.data(elem, match[3])
-				},
+			  },
 
 		focusable: function(element) {
 			return focusable(element, !isNaN($.attr(element, 'tabindex')))
@@ -492,7 +492,7 @@
 						target[key] = $.isPlainObject(target[key])
 							? $.widget.extend({}, target[key], value)
 							: // Don't extend strings, arrays, etc. with objects
-								$.widget.extend({}, value)
+							  $.widget.extend({}, value)
 						// Copy everything else by reference
 					} else {
 						target[key] = value
@@ -591,9 +591,9 @@
 				this.document = $(
 					element.style
 						? // element within the document
-							element.ownerDocument
+						  element.ownerDocument
 						: // element is window or document
-							element.document || element
+						  element.document || element
 				)
 				this.window = $(this.document[0].defaultView || this.document[0].parentWindow)
 			}
@@ -2106,7 +2106,7 @@
 						: this.originalPageY
 					pageY = containment
 						? top - this.offset.click.top >= containment[1] ||
-							top - this.offset.click.top > containment[3]
+						  top - this.offset.click.top > containment[3]
 							? top
 							: top - this.offset.click.top >= containment[1] ? top - o.grid[1] : top + o.grid[1]
 						: top
@@ -2116,7 +2116,7 @@
 						: this.originalPageX
 					pageX = containment
 						? left - this.offset.click.left >= containment[0] ||
-							left - this.offset.click.left > containment[2]
+						  left - this.offset.click.left > containment[2]
 							? left
 							: left - this.offset.click.left >= containment[0]
 								? left - o.grid[0]
@@ -2429,21 +2429,21 @@
 
 			i.snapElements = []
 
-			$(
-				o.snap.constructor !== String ? o.snap.items || ':data(ui-draggable)' : o.snap
-			).each(function() {
-				var $t = $(this),
-					$o = $t.offset()
-				if (this !== i.element[0]) {
-					i.snapElements.push({
-						item: this,
-						width: $t.outerWidth(),
-						height: $t.outerHeight(),
-						top: $o.top,
-						left: $o.left
-					})
+			$(o.snap.constructor !== String ? o.snap.items || ':data(ui-draggable)' : o.snap).each(
+				function() {
+					var $t = $(this),
+						$o = $t.offset()
+					if (this !== i.element[0]) {
+						i.snapElements.push({
+							item: this,
+							width: $t.outerWidth(),
+							height: $t.outerHeight(),
+							top: $o.top,
+							left: $o.left
+						})
+					}
 				}
-			})
+			)
 		},
 		drag: function(event, ui) {
 			var ts,
@@ -2634,7 +2634,7 @@
 				? accept
 				: function(d) {
 						return d.is(accept)
-					}
+				  }
 
 			//Store the droppable's proportions
 			this.proportions = {
@@ -2668,7 +2668,7 @@
 					? value
 					: function(d) {
 							return d.is(value)
-						}
+					  }
 			}
 			$.Widget.prototype._setOption.apply(this, arguments)
 		},
@@ -3087,7 +3087,7 @@
 							sw: '.ui-resizable-sw',
 							ne: '.ui-resizable-ne',
 							nw: '.ui-resizable-nw'
-						})
+					  })
 			if (this.handles.constructor === String) {
 				if (this.handles === 'all') {
 					this.handles = 'n,e,s,w,se,sw,ne,nw'

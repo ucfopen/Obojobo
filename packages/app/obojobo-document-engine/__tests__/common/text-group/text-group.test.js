@@ -375,7 +375,10 @@ describe('TextGroup', () => {
 		tgDataTemplate.add(new StyleableText('my'), { a: 'my', b: 100 })
 		tgDataTemplate.add(new StyleableText('hot'), { a: 'hot', b: 200 })
 		tgDataTemplate.add(new StyleableText('dog'), { a: 'dog', b: 300 })
-		tgDataTemplate.add(new StyleableText('is tasty'), { a: 'is tasty', b: 400 })
+		tgDataTemplate.add(new StyleableText('is tasty'), {
+			a: 'is tasty',
+			b: 400
+		})
 
 		tgDataTemplate.merge(1)
 
@@ -393,7 +396,10 @@ describe('TextGroup', () => {
 		tgDataTemplate.add(new StyleableText('my'), { a: 'my', b: 100 })
 		tgDataTemplate.add(new StyleableText('hot'), { a: 'hot', b: 200 })
 		tgDataTemplate.add(new StyleableText('dog'), { a: 'dog', b: 300 })
-		tgDataTemplate.add(new StyleableText('is tasty'), { a: 'is tasty', b: 400 })
+		tgDataTemplate.add(new StyleableText('is tasty'), {
+			a: 'is tasty',
+			b: 400
+		})
 
 		tgDataTemplate.merge(8)
 

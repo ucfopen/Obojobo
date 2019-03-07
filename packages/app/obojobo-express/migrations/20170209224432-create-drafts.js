@@ -17,7 +17,11 @@ exports.setup = function(options, seedLink) {
 exports.up = function(db) {
 	return db
 		.createTable('drafts', {
-			id: { type: 'UUID', primaryKey: true, defaultValue: new String('uuid_generate_v4()') },
+			id: {
+				type: 'UUID',
+				primaryKey: true,
+				defaultValue: new String('uuid_generate_v4()')
+			},
 			user_id: { type: 'bigint', notNull: true },
 			created_at: {
 				type: 'timestamp WITH TIME ZONE',

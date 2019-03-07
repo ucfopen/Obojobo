@@ -1,5 +1,6 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
+import renderer from 'react-test-renderer'
 import TableMenu from './table-menu.js'
 
 describe('TableMenu', () => {
@@ -20,7 +21,8 @@ describe('TableMenu', () => {
 	})
 
 	test('renders without error', () => {
-		expect(shallow(tableMenuRow)).toMatchSnapshot()
+		const component = renderer.create(tableMenuRow)
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('inserts a row above', () => {
@@ -48,6 +50,9 @@ describe('TableMenu', () => {
 	})
 
 	test('render unhandled type as nothing', () => {
-		expect(shallow(<TableMenu onMenuCommand={onMenuCommandMock} row={0} col={0} />)).toMatchSnapshot()
+		const component = renderer.create(
+			<TableMenu onMenuCommand={onMenuCommandMock} row={0} col={0} />
+		)
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 })

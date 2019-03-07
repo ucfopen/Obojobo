@@ -123,7 +123,9 @@ describe('QuestionStore', () => {
 
 	test('question:setResponse calls triggerChange and postEvent', () => {
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
+		Common.models.OboModel.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
 
 		__mockTrigger('question:setResponse', {
 			value: {
@@ -152,7 +154,9 @@ describe('QuestionStore', () => {
 
 	test('question:setResponse calls triggerChange and postEvent', () => {
 		jest.spyOn(Common.models.OboModel, 'getRoot')
-		Common.models.OboModel.getRoot.mockReturnValueOnce({ get: () => 'mockDraftId' })
+		Common.models.OboModel.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
 
 		QuestionStore.setState({ responses: { mockContext: {} } })
 

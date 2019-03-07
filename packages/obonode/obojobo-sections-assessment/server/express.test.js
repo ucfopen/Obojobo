@@ -30,9 +30,7 @@ jest.mock(
 )
 require('obojobo-express/__mocks__/__mock_express')
 
-
 describe('server/express', () => {
-
 	const db = require('obojobo-express/db')
 	const mockUser = { id: 1 }
 	const mockDocument = { draftId: 3, contentId: 12 }

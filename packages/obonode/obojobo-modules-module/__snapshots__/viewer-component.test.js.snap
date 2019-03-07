@@ -36,7 +36,7 @@ exports[`Module Module component with child 1`] = `
             ],
             "results": Array [
               Object {
-                "isThrow": false,
+                "type": "return",
                 "value": "MockComponent",
               },
             ],

@@ -1,10 +1,12 @@
-jest.setMock('obojobo-express/models/draft_node', require('obojobo-document-engine/__mocks__/models/draft_node'))
+jest.setMock(
+	'obojobo-express/models/draft_node',
+	require('obojobo-document-engine/__mocks__/models/draft_node')
+)
 
 let MCChoice
 let mcChoice
 
 describe('MCChoice', () => {
-
 	beforeEach(() => {
 		MCChoice = require('./mcchoice')
 		mcChoice = new MCChoice()
@@ -18,7 +20,6 @@ describe('MCChoice', () => {
 		expect(mcChoice.registerEvents).toHaveBeenCalledWith({
 			'ObojoboDraft.Sections.Assessment:sendToAssessment': mcChoice.onSendToAssessment
 		})
-
 	})
 
 	test('onSendToAssessment sets score to 0', () => {

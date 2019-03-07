@@ -1,4 +1,3 @@
-
 jest.mock('obojobo-express/logger')
 
 const Util = require('./util')

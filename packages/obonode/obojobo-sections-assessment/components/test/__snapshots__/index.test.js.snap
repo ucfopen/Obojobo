@@ -13,7 +13,7 @@ exports[`Test Test component 1`] = `
           ],
           "results": Array [
             Object {
-              "isThrow": false,
+              "type": "return",
               "value": "MockComponent",
             },
           ],
@@ -53,7 +53,7 @@ exports[`Test Test component fetching score 1`] = `
           ],
           "results": Array [
             Object {
-              "isThrow": false,
+              "type": "return",
               "value": "MockComponent",
             },
           ],
@@ -95,7 +95,7 @@ exports[`Test Test component with completeAttempt 1`] = `
           ],
           "results": Array [
             Object {
-              "isThrow": false,
+              "type": "return",
               "value": "MockComponent",
             },
           ],

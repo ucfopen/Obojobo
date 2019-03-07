@@ -70,7 +70,10 @@ describe('models draft', () => {
 
 	test('get childrenSet builds childrenSet as expected', () => {
 		const d = new DraftNode({}, mockRawDraft.content, jest.fn())
-		d.children.push({ node: { id: 999 }, children: [{ node: { id: 777 }, children: [] }] })
+		d.children.push({
+			node: { id: 999 },
+			children: [{ node: { id: 777 }, children: [] }]
+		})
 		d.children.push({ node: { id: 888 }, children: [] })
 
 		const childrenSet = d.childrenSet
@@ -82,7 +85,10 @@ describe('models draft', () => {
 
 	test('get childrenSet throws error if child has no id', () => {
 		const d = new DraftNode({}, mockRawDraft.content, jest.fn())
-		d.children.push({ node: { id: 999 }, children: [{ node: { id: 777 }, children: [] }] })
+		d.children.push({
+			node: { id: 999 },
+			children: [{ node: { id: 777 }, children: [] }]
+		})
 		d.children.push({ node: { id: null }, children: [] })
 
 		const getChildrenIds = () => d.childrenSet
@@ -91,7 +97,10 @@ describe('models draft', () => {
 
 	test('get immediateChildrenSet builds immediateChildrenSet as expected', () => {
 		const d = new DraftNode({}, mockRawDraft.content, jest.fn())
-		d.children.push({ node: { id: 999 }, children: [{ node: { id: 777 }, children: [] }] })
+		d.children.push({
+			node: { id: 999 },
+			children: [{ node: { id: 777 }, children: [] }]
+		})
 		d.children.push({ node: { id: 888 }, children: [] })
 		const iChildrenSet = d.immediateChildrenSet
 		expect(iChildrenSet.has(999)).toBe(true)

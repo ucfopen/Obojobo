@@ -509,7 +509,10 @@ describe('media model', () => {
 
 		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'some-size').then(imageData => {
 			// An image's binary data is returned to the editor when an image is requested
-			expect(imageData).toEqual({ binaryData: mockFileBinaryData, mimeType: 'mockMimeType' })
+			expect(imageData).toEqual({
+				binaryData: mockFileBinaryData,
+				mimeType: 'mockMimeType'
+			})
 			expect(spy).not.toHaveBeenCalled()
 			spy.mockRestore()
 		})
@@ -532,7 +535,10 @@ describe('media model', () => {
 
 		return MediaModel.fetchByIdAndDimensions('SOME_UUID').then(imageData => {
 			// An image's binary data is returned to the editor when an image is requested
-			expect(imageData).toEqual({ binaryData: mockFileBinaryData, mimeType: 'mockMimeType' })
+			expect(imageData).toEqual({
+				binaryData: mockFileBinaryData,
+				mimeType: 'mockMimeType'
+			})
 			expect(spy).not.toHaveBeenCalled()
 			spy.mockRestore()
 		})
@@ -554,7 +560,10 @@ describe('media model', () => {
 
 		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'some-size').then(imageData => {
 			// An image's binary data is returned to the editor when an image is requested
-			expect(imageData).toEqual({ binaryData: mockFileBinaryData, mimeType: 'image/svg+xml' })
+			expect(imageData).toEqual({
+				binaryData: mockFileBinaryData,
+				mimeType: 'image/svg+xml'
+			})
 			expect(spy).not.toHaveBeenCalled()
 			spy.mockRestore()
 		})
@@ -579,7 +588,10 @@ describe('media model', () => {
 
 		return MediaModel.fetchByIdAndDimensions('SOME_UUID', 'some-size').then(imageData => {
 			// An image's binary data is returned to the editor when an image is requested
-			expect(imageData).toEqual({ binaryData: mockFileBinaryData, mimeType: 'mockMimeType' })
+			expect(imageData).toEqual({
+				binaryData: mockFileBinaryData,
+				mimeType: 'mockMimeType'
+			})
 			expect(saveImageAtNewSizeSpy).not.toHaveBeenCalled()
 			shouldResizeMediaSpy.mockRestore()
 			saveImageAtNewSizeSpy.mockRestore()
@@ -820,7 +832,10 @@ describe('media model', () => {
 		expect(MediaModel.getDimensionValues('small')).toEqual({ width: 332 })
 		expect(MediaModel.getDimensionValues('medium')).toEqual({ width: 712 })
 		expect(MediaModel.getDimensionValues('large')).toEqual({ width: 836 })
-		expect(MediaModel.getDimensionValues('200x100')).toEqual({ width: 200, height: 100 })
+		expect(MediaModel.getDimensionValues('200x100')).toEqual({
+			width: 200,
+			height: 100
+		})
 		expect(MediaModel.getDimensionValues('200x*')).toEqual({ width: 200 })
 		expect(MediaModel.getDimensionValues('*x100')).toEqual({ height: 100 })
 	})

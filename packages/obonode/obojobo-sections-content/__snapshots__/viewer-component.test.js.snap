@@ -34,7 +34,7 @@ exports[`Content Content component with nav model 1`] = `
             ],
             "results": Array [
               Object {
-                "isThrow": false,
+                "type": "return",
                 "value": "MockComponent",
               },
             ],

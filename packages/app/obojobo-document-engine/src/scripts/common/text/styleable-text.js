@@ -56,7 +56,10 @@ class StyleableText {
 		switch (el.tagName.toLowerCase()) {
 			case 'a':
 				if (el.getAttribute('href')) {
-					styles.push({ type: StyleType.LINK, data: { href: el.getAttribute('href') } })
+					styles.push({
+						type: StyleType.LINK,
+						data: { href: el.getAttribute('href') }
+					})
 				}
 				break
 			case 'q':

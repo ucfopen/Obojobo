@@ -17,7 +17,9 @@ import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 import LTINetworkStates from '../../../src/scripts/viewer/stores/assessment-store/lti-network-states'
 import LTIResyncStates from '../../../src/scripts/viewer/stores/assessment-store/lti-resync-states'
 
-jest.mock('../../../src/scripts/common/util/modal-util', () => ({ show: jest.fn() }))
+jest.mock('../../../src/scripts/common/util/modal-util', () => ({
+	show: jest.fn()
+}))
 
 jest.mock('../../../src/scripts/common/util/error-util', () => ({
 	show: jest.fn(),
@@ -514,7 +516,9 @@ describe('AssessmentStore', () => {
 			}
 		})
 
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptNumber: 1 })
+		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({
+			attemptNumber: 1
+		})
 
 		return AssessmentStore.tryStartAttempt('assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }))
@@ -589,7 +593,9 @@ describe('AssessmentStore', () => {
 			}
 		})
 
-		Dispatcher.trigger('assessment:endAttempt', { value: { id: 'assessmentId' } })
+		Dispatcher.trigger('assessment:endAttempt', {
+			value: { id: 'assessmentId' }
+		})
 
 		expect(AssessmentStore.tryEndAttempt).toHaveBeenCalled()
 	})
@@ -610,7 +616,9 @@ describe('AssessmentStore', () => {
 			}
 		})
 
-		Dispatcher.trigger('assessment:resendLTIScore', { value: { id: 'assessmentId' } })
+		Dispatcher.trigger('assessment:resendLTIScore', {
+			value: { id: 'assessmentId' }
+		})
 
 		expect(AssessmentStore.tryResendLTIScore).toHaveBeenCalled()
 	})

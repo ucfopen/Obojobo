@@ -1762,7 +1762,9 @@ describe('MCAssessment', () => {
 		solutionClass.focusOnContent = jest.fn()
 
 		// throw en error to force the code into the catch path within MCAssessmentExplanation.focusOnExplanation
-		solutionClass.focusOnContent.mockImplementationOnce(() => {throw 'mock-error'})
+		solutionClass.focusOnContent.mockImplementationOnce(() => {
+			throw 'mock-error'
+		})
 
 		// make sure MCAssessmentExplanation.props.isShowingExplanation is true
 		// so that the ref.label is rendered
@@ -1804,7 +1806,7 @@ describe('MCAssessment', () => {
 		)
 		const componentInst = component.instance()
 		const mockFocusOnResults = jest.fn()
-		componentInst.answerChoicesRef.current.focusOnResults= mockFocusOnResults
+		componentInst.answerChoicesRef.current.focusOnResults = mockFocusOnResults
 		componentInst.nextFocus = 'results'
 		componentInst.componentDidUpdate()
 		expect(componentInst.nextFocus).not.toBeDefined()

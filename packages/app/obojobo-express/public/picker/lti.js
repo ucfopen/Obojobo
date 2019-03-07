@@ -86,7 +86,8 @@ obo.lti = (function() {
 			item = items[i]
 			key = item.draftId
 			if (typeof searchStrings[key] === 'undefined') {
-				searchStrings[key] = ((typeof item.title !== 'undefined' ? item.title : 'Untitled') +
+				searchStrings[key] = (
+					(typeof item.title !== 'undefined' ? item.title : 'Untitled') +
 					(typeof item.draftId !== 'undefined' ? ' draftId:' + item.draftId : '')
 				).toLowerCase()
 			}
@@ -396,10 +397,7 @@ obo.lti = (function() {
 		gotoSection('create-instance')
 		$('#instance-name').val($oboItem.find('.title').text())
 
-		if (
-			typeof $oboItem.attr('data-lo-id') === 'undefined' ||
-			$oboItem.attr('data-lo-id') === '0'
-		) {
+		if (typeof $oboItem.attr('data-lo-id') === 'undefined' || $oboItem.attr('data-lo-id') === '0') {
 			$('.instance-copy-note').hide()
 		} else {
 			$('.instance-copy-note').show()

@@ -8,6 +8,7 @@ export default class TableMenu extends React.Component {
 			row: null,
 			col: null,
 			type: null,
+			/* istanbul ignore next */
 			onMenuCommand() {}
 		}
 	}

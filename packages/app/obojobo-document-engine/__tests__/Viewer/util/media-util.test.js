@@ -64,7 +64,10 @@ describe('MediaUtil', () => {
 	})
 
 	test('isZoomAtDefault', () => {
-		const state = { defaultZoomById: { 'mocked-id': 1 }, zoomById: { 'mocked-id': 2 } }
+		const state = {
+			defaultZoomById: { 'mocked-id': 1 },
+			zoomById: { 'mocked-id': 2 }
+		}
 		// is not at default
 		expect(MediaUtil.isZoomAtDefault(state, testModel)).toBe(false)
 

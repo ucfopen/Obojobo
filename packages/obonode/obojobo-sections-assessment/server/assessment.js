@@ -5,7 +5,7 @@ const lti = require('obojobo-express/lti')
 const logger = require('obojobo-express/logger')
 
 class Assessment extends DraftNode {
-	static get nodeName(){
+	static get nodeName() {
 		return 'ObojoboDraft.Sections.Assessment'
 	}
 

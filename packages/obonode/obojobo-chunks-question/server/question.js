@@ -1,7 +1,7 @@
 const DraftNode = require('obojobo-express/models/draft_node')
 
 class Question extends DraftNode {
-	static get nodeName(){
+	static get nodeName() {
 		return 'ObojoboDraft.Chunks.Question'
 	}
 

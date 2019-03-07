@@ -78,9 +78,10 @@ const APIUtil = {
 	},
 
 	endAttempt({ attemptId, draftId, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
-			processJsonResults
-		)
+		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, {
+			draftId,
+			visitId
+		}).then(processJsonResults)
 	},
 
 	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
@@ -92,9 +93,10 @@ const APIUtil = {
 	},
 
 	clearPreviewScores({ draftId, visitId }) {
-		return APIUtil.post('/api/assessments/clear-preview-scores', { draftId, visitId }).then(
-			processJsonResults
-		)
+		return APIUtil.post('/api/assessments/clear-preview-scores', {
+			draftId,
+			visitId
+		}).then(processJsonResults)
 	},
 
 	postDraft(id, draftJSON) {

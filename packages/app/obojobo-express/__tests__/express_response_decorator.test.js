@@ -184,7 +184,10 @@ describe('api response middleware', () => {
 		const { res, mockJson } = mockArgs
 
 		const input = { top_value: { bottom_value: 'leave_me_alone' } }
-		const expected = { status: 'ok', value: { topValue: { bottomValue: 'leave_me_alone' } } }
+		const expected = {
+			status: 'ok',
+			value: { topValue: { bottomValue: 'leave_me_alone' } }
+		}
 
 		res.success(input)
 		expect(mockJson).toBeCalledWith(expected)

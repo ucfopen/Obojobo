@@ -153,7 +153,10 @@ class TextGroup {
 		const desc = []
 
 		for (const item of this.items) {
-			desc.push({ text: item.text.getExportedObject(), data: Util.defaultCloneFn(item.data) })
+			desc.push({
+				text: item.text.getExportedObject(),
+				data: Util.defaultCloneFn(item.data)
+			})
 		}
 
 		return desc

@@ -84,7 +84,9 @@ describe('Media Store', () => {
 				id: 'mocked-id'
 			}
 		})
-		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:shown', { id: 'mocked-id' })
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('media:shown', {
+			id: 'mocked-id'
+		})
 	})
 
 	test('hide', () => {
@@ -189,7 +191,11 @@ describe('Media Store', () => {
 			value: { id: 'mocked-id', zoom: 0 }
 		})
 
-		expect(MediaStore.state).toEqual({ shown: {}, zoomById: {}, defaultZoomById: {} })
+		expect(MediaStore.state).toEqual({
+			shown: {},
+			zoomById: {},
+			defaultZoomById: {}
+		})
 		expect(APIUtil.postEvent).not.toHaveBeenCalled()
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})
@@ -197,7 +203,11 @@ describe('Media Store', () => {
 	test('setZoom (to an invalid value)', () => {
 		MediaStore.setZoom({ value: { id: 'mocked-id', zoom: 'invalid-value' } })
 
-		expect(MediaStore.state).toEqual({ shown: {}, zoomById: {}, defaultZoomById: {} })
+		expect(MediaStore.state).toEqual({
+			shown: {},
+			zoomById: {},
+			defaultZoomById: {}
+		})
 		expect(APIUtil.postEvent).not.toHaveBeenCalled()
 		expect(Dispatcher.trigger).not.toHaveBeenCalled()
 	})

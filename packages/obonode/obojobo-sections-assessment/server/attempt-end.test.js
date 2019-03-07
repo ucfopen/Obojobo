@@ -25,7 +25,6 @@ jest.mock('./assessment', () => ({
 	completeAttempt: jest.fn().mockReturnValue('mockCompleteAttemptResult')
 }))
 
-
 jest.mock(
 	'obojobo-express/models/visit',
 	() => ({

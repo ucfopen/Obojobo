@@ -89,7 +89,9 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'addAssessment')
 		EditorStore.addAssessment.mockReturnValueOnce(false)
 
-		eventCallbacks['editor:addAssessment']({ value: { newAssessment: 'mockAssessment' } })
+		eventCallbacks['editor:addAssessment']({
+			value: { newAssessment: 'mockAssessment' }
+		})
 
 		expect(EditorStore.addAssessment).toHaveBeenCalledWith('mockAssessment')
 	})
@@ -107,7 +109,9 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'movePage')
 		EditorStore.movePage.mockReturnValueOnce(false)
 
-		eventCallbacks['editor:movePage']({ value: { pageId: 'mockId', index: 1 } })
+		eventCallbacks['editor:movePage']({
+			value: { pageId: 'mockId', index: 1 }
+		})
 
 		expect(EditorStore.movePage).toHaveBeenCalledWith('mockId', 1)
 	})
@@ -116,7 +120,9 @@ describe('EditorStore', () => {
 		jest.spyOn(EditorStore, 'renamePage')
 		EditorStore.renamePage.mockReturnValueOnce(false)
 
-		eventCallbacks['editor:renamePage']({ value: { pageId: 'mockId', name: 'mockName' } })
+		eventCallbacks['editor:renamePage']({
+			value: { pageId: 'mockId', name: 'mockName' }
+		})
 
 		expect(EditorStore.renamePage).toHaveBeenCalledWith('mockId', 'mockName')
 	})

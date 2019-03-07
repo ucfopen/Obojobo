@@ -1,17 +1,17 @@
-let createTextGroup = (els) => {
-	return (
-		[{
-			type: "element",
-			name: "textGroup",
+let createTextGroup = els => {
+	return [
+		{
+			type: 'element',
+			name: 'textGroup',
 			elements: [
 				{
-					type: "element",
-					name: "t",
+					type: 'element',
+					name: 't',
 					elements: els
 				}
 			]
-		}]
-	);
+		}
+	]
 }
 
-module.exports = createTextGroup;
+module.exports = createTextGroup

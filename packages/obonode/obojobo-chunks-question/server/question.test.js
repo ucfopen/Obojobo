@@ -1,5 +1,8 @@
 /* eslint no-undefined: 0 */
-jest.setMock('obojobo-express/models/draft_node', require('obojobo-document-engine/__mocks__/models/draft_node'))
+jest.setMock(
+	'obojobo-express/models/draft_node',
+	require('obojobo-document-engine/__mocks__/models/draft_node')
+)
 
 let question
 let currentAttempt

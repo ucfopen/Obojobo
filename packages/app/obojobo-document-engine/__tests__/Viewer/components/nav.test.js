@@ -97,14 +97,23 @@ describe('Nav', () => {
 			label: new MockStylableText('mockMe'),
 			flags: { visited: false, complete: false, correct: false }
 		}, // no label
-		{ id: 6, type: 'link', flags: { visited: false, complete: false, correct: false } }, // flip the flags
+		{
+			id: 6,
+			type: 'link',
+			flags: { visited: false, complete: false, correct: false }
+		}, // flip the flags
 		{
 			id: 56,
 			type: 'link',
 			label: 'label56',
 			flags: { visited: true, complete: true, correct: true }
 		},
-		{ id: 678, type: 'non-existant-type', label: 'label678', flags: { correct: false } },
+		{
+			id: 678,
+			type: 'non-existant-type',
+			label: 'label678',
+			flags: { correct: false }
+		},
 		{ id: 6, type: 'sub-link', label: 'label6', flags: { correct: false } }
 	]
 
@@ -237,7 +246,10 @@ describe('Nav', () => {
 		const el = shallow(<Nav {...props} />)
 
 		el.find('li').simulate('click')
-		expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+		expect(mockScrollIntoView).toHaveBeenCalledWith({
+			behavior: 'smooth',
+			block: 'start'
+		})
 	})
 
 	test('onClickSkipNavigation calls FocusUtil.focusOnNavTargetContent', () => {

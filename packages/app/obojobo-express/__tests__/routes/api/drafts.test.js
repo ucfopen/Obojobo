@@ -221,7 +221,9 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockUpdatedContentId' })
+				expect(response.body).toHaveProperty('value', {
+					id: 'mockUpdatedContentId'
+				})
 				expect(xml).toHaveBeenCalledWith(basicXML, true)
 			})
 	})
@@ -237,7 +239,9 @@ describe('api draft route', () => {
 			.then(response => {
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', { id: 'mockUpdatedContentId' })
+				expect(response.body).toHaveProperty('value', {
+					id: 'mockUpdatedContentId'
+				})
 			})
 	})
 
@@ -358,7 +362,9 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value', { type: 'notAuthorized' })
+				expect(response.body).toHaveProperty('value', {
+					type: 'notAuthorized'
+				})
 			})
 	})
 
@@ -418,7 +424,9 @@ describe('api draft route', () => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
 				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value', { type: 'notAuthorized' })
+				expect(response.body).toHaveProperty('value', {
+					type: 'notAuthorized'
+				})
 			})
 	})
 

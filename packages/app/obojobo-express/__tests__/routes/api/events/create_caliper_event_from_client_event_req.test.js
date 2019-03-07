@@ -62,7 +62,11 @@ describe('Caliper event from req', () => {
 		'media:setZoom': { id, zoom: 1.1, previousZoom: 1 },
 		'media:resetZoom': { id, previousZoom: 2 },
 		'viewer:inactive': { inactiveDuration, lastActiveTime },
-		'viewer:returnFromInactive': { inactiveDuration, lastActiveTime, relatedEventId },
+		'viewer:returnFromInactive': {
+			inactiveDuration,
+			lastActiveTime,
+			relatedEventId
+		},
 		'viewer:close': {},
 		'viewer:leave': {},
 		'viewer:return': { relatedEventId }

@@ -33,10 +33,14 @@ describe('FocusStore', () => {
 		const focusOnContentSpy = jest.spyOn(FocusStore, '_focusOnContent')
 		const focusComponentSpy = jest.spyOn(FocusStore, '_focusComponent')
 
-		focusContentHandler({ value: { id: 'mock-id', isVisuallyFocused: 'mock-visually' } })
+		focusContentHandler({
+			value: { id: 'mock-id', isVisuallyFocused: 'mock-visually' }
+		})
 		expect(focusOnContentSpy).toHaveBeenCalledWith('mock-id', 'mock-visually')
 
-		focusComponentHandler({ value: { id: 'mock-id', isVisuallyFocused: 'mock-visually' } })
+		focusComponentHandler({
+			value: { id: 'mock-id', isVisuallyFocused: 'mock-visually' }
+		})
 		expect(focusComponentSpy).toHaveBeenCalledWith('mock-id', 'mock-visually')
 
 		focusOnContentSpy.mockRestore()

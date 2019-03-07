@@ -19,27 +19,20 @@
 		"build:minifysvg":
 			"find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
-		"prettier:run": "prettier --write '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
-		"prettier:debug": "prettier -l '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
-		"precommit": "lint-staged && yarn lint:js && yarn test:ci",
+		"prettier:run": "prettier --write '{__{tests,mocks}__,src}/**/*.{js,scss}'",
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss"
 	},
-	"prettier": {
-		"printWidth": 100,
-		"semi": false,
-		"useTabs": true,
-		"singleQuote": true
-	},
-	"browserslist": ["> 1%", "last 2 versions", "not dead"],
 	"lint-staged": {
-		"{__{tests,mocks}__,src,server}/**/*.{js,scss}": [
-			"yarn prettier --write",
+		"{__{tests,mocks}__,src}/**/*.{js,scss}": [
+			"prettier --write",
+			"eslint ",
 			"stylelint",
 			"git add"
 		]
 	},
+	"browserslist": ["> 1%", "last 2 versions", "not dead"],
 	"postcss": {
 		"parser": "postcss-scss",
 		"plugins": {}
@@ -63,47 +56,15 @@
 		"obojobo-lib-utils": "1.0.0"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.0.0-0",
-		"@babel/polyfill": "7.0.0",
-		"@babel/preset-env": "^7.2.0",
-		"@babel/preset-react": "^7.0.0",
-		"autoprefixer": "^9.4.2",
-		"babel-core": "^7.0.0-bridge",
-		"babel-eslint": "^8.2.3",
-		"babel-jest": "^23.6.0",
-		"babel-loader": "^8.0.4",
-		"babel-polyfill": "^6.26.0",
-		"concurrently": "^3.5.0",
-		"css-loader": "^2.0.0",
-		"enzyme": "^3.8.0",
-		"enzyme-adapter-react-16": "^1.8.0",
-		"eslint": "^4.19.1",
-		"eslint-plugin-react": "7.9.1",
-		"husky": "^0.13.3",
-		"jest": "23.4.2",
-		"json-loader": "^0.5.4",
 		"lint-staged": "^6.1.1",
-		"mini-css-extract-plugin": "^0.5.0",
-		"node-sass": "^4.9.0",
 		"obojobo-document-engine": "*",
 		"obojobo-document-xml-parser": "*",
-		"postcss-loader": "^3.0.0",
-		"prettier": "1.11.1",
-		"react-test-renderer": "^16.7.0",
-		"sass-loader": "^7.1.0",
-		"smoothscroll-polyfill": "^0.3.4",
-		"style-loader": "^0.21.0",
-		"stylelint": "^9.2.0",
-		"stylelint-config-standard": "^18.2.0",
-		"stylelint-declaration-use-variable": "^1.7.0",
-		"svg-url-loader": "^2.3.2",
-		"webpack": "^4.12.0",
-		"whatwg-fetch": "^3.0.0"
+		"smoothscroll-polyfill": "^0.3.4"
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
 		"testMatch": ["**/__tests__/**/*.js?(x)"],
-		"setupTestFrameworkScriptFile": "./setupTests.js",
+		"setupFilesAfterEnv": ["./setupTests.js"],
 		"verbose": false,
 		"moduleNameMapper": {
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
@@ -112,11 +73,10 @@
 			"\\.svg$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
 		},
 		"moduleDirectories": ["<rootDir>", "node_modules"],
-		"collectCoverageFrom": ["src/scripts/**", "server/**"],
+		"collectCoverageFrom": ["src/scripts/**"],
 		"coverageReporters": ["text", "lcov"],
 		"coveragePathIgnorePatterns": [
-			"====THESE DONT NEED TESTS====",
-			"<rootDir>/src/scripts/viewer.js",
+			"<rootDir>/src/scripts/viewer/index.js",
 			"<rootDir>/src/scripts/viewer/app.js",
 			"<rootDir>/src/scripts/viewer/dist.js",
 			"<rootDir>/src/scripts/oboeditor/index.js",
@@ -125,16 +85,11 @@
 			"<rootDir>/src/scripts/oboeditor/documents/",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
 			".json",
-			"====THESE ARE NOT USED RIGHT NOW====",
-			"selection-handler.js",
-			"<rootDir>/src/scripts/common/util/console.js",
-			"====THESE ARE FOR THE EDITOR====",
-			"command-handler.js",
+			"<rootDir>/src/scripts/common/index.js",
 			"<rootDir>/src/scripts/common/dist.js",
-			"<rootDir>/src/scripts/common/chunk/util",
 			"<rootDir>/src/scripts/common/models/chunk.js",
-			"<rootDir>/src/scripts/common/chunk/text-chunk/text-group-el-util.js",
-			"<rootDir>/src/scripts/common/text-group/text-group-cursor.js"
+			"<rootDir>/src/scripts/viewer/stores/assessment-store/lti-network-states.js",
+			"<rootDir>/src/scripts/viewer/stores/assessment-store/lti-resync-states.js"
 		],
 		"coverageThreshold": {
 			"global": {

@@ -1,66 +1,76 @@
-let toHTML = (el) => {
+let toHTML = el => {
 	// console.log('eth', el);
-	
-	if(el instanceof Array)
-	{
-		return el.map( (childEl) => { return toHTML(childEl) } ).join('')
+
+	if (el instanceof Array) {
+		return el
+			.map(childEl => {
+				return toHTML(childEl)
+			})
+			.join('')
 	}
 
-	if(el.type === 'text')
-	{
+	if (el.type === 'text') {
 		return el.text
 	}
 
-	return '<' + el.name + '>' + el.elements.map( (childEl) => { return toHTML(childEl) } ).join('') + '</' + el.name + '>';
+	return (
+		'<' +
+		el.name +
+		'>' +
+		el.elements
+			.map(childEl => {
+				return toHTML(childEl)
+			})
+			.join('') +
+		'</' +
+		el.name +
+		'>'
+	)
 }
 
-let extensionTransform = (node) => {
+let extensionTransform = node => {
 	// console.log('node', node)
-	if(node.name === 'extension')
-	{
-		switch(node.attributes.type)
-		{
+	if (node.name === 'extension') {
+		switch (node.attributes.type) {
 			case 'edX:multipleChoiceQuestion':
 				let problem = node.elements[0]
 				let multiplechoiceresponse, demandhint, label, description, choicegroup, solution
 
-				problem.elements.forEach( (childEl) => {
-					switch(childEl.name)
-					{
+				problem.elements.forEach(childEl => {
+					switch (childEl.name) {
 						case 'multiplechoiceresponse':
 							// console.log('set', childEl);
-							multiplechoiceresponse = childEl;
-							break;
-						
+							multiplechoiceresponse = childEl
+							break
+
 						case 'demandhint':
-							demandhint = childEl;
-							break;
+							demandhint = childEl
+							break
 					}
 				})
 
 				// console.log('mcr', multiplechoiceresponse);
 
-				multiplechoiceresponse.elements.forEach( (childEl) => {
-					switch(childEl.name)
-					{
+				multiplechoiceresponse.elements.forEach(childEl => {
+					switch (childEl.name) {
 						case 'label':
-							label = childEl;
-							break;
-						
+							label = childEl
+							break
+
 						case 'description':
-							description = childEl;
-							break;
-						
+							description = childEl
+							break
+
 						case 'choicegroup':
-							choicegroup = childEl;
-							break;
-						
+							choicegroup = childEl
+							break
+
 						case 'solution':
-							solution = childEl;
-							break;
+							solution = childEl
+							break
 					}
 				})
-				
+
 				let question = {
 					type: 'element',
 					name: 'ObojoboDraft.Chunks.Question',
@@ -76,8 +86,7 @@ let extensionTransform = (node) => {
 					]
 				}
 
-				if(description)
-				{
+				if (description) {
 					question.elements.push({
 						type: 'element',
 						name: 'ObojoboDraft.Chunks.HTML',
@@ -87,8 +96,7 @@ let extensionTransform = (node) => {
 					})
 				}
 
-				if(solution)
-				{
+				if (solution) {
 					question.elements.push({
 						type: 'element',
 						name: 'solution',
@@ -113,13 +121,12 @@ let extensionTransform = (node) => {
 				question.elements.push({
 					type: 'element',
 					name: 'ObojoboDraft.Chunks.MCAssessment',
-					elements: choicegroup.elements.map( (choiceEl) => {
+					elements: choicegroup.elements.map(choiceEl => {
 						let choicehint
-						choiceEl.elements.forEach( (childEl, index) => {
-							if(childEl.name === 'choicehint')
-							{
-								choicehint = childEl;
-								choiceEl.elements.splice(index, 1);
+						choiceEl.elements.forEach((childEl, index) => {
+							if (childEl.name === 'choicehint') {
+								choicehint = childEl
+								choiceEl.elements.splice(index, 1)
 							}
 						})
 
@@ -137,18 +144,16 @@ let extensionTransform = (node) => {
 										{
 											type: 'element',
 											name: 'ObojoboDraft.Chunks.HTML',
-											attributes: { html:toHTML(choiceEl.elements).trim() }
+											attributes: { html: toHTML(choiceEl.elements).trim() }
 										}
 									]
 								}
 							]
 						}
 
-						if(choicehint)
-						{
+						if (choicehint) {
 							let prefix = ''
-							if(choicehint.attributes && choicehint.attributes.label)
-							{
+							if (choicehint.attributes && choicehint.attributes.label) {
 								prefix = choicehint.attributes.label + ': '
 							}
 
@@ -159,31 +164,30 @@ let extensionTransform = (node) => {
 									{
 										type: 'element',
 										name: 'ObojoboDraft.Chunks.HTML',
-										attributes: { html:prefix + toHTML(choicehint.elements).trim() }
+										attributes: {
+											html: prefix + toHTML(choicehint.elements).trim()
+										}
 									}
 								]
 							})
 						}
 
-						return choice;
+						return choice
 					})
 				})
 
-				node.type = 'element';
-				node.name = question.name;
-				node.elements = question.elements;
-				node.attributes = question.attributes;
+				node.type = 'element'
+				node.name = question.name
+				node.elements = question.elements
+				node.attributes = question.attributes
 
-				break;
+				break
 		}
-	}
-	else if(node.elements)
-	{
-		for(let i in node.elements)
-		{
+	} else if (node.elements) {
+		for (let i in node.elements) {
 			extensionTransform(node.elements[i])
 		}
 	}
 }
 
-module.exports = extensionTransform;
+module.exports = extensionTransform

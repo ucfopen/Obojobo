@@ -321,27 +321,28 @@ describe('apiutil', () => {
 			})
 		})
 
-		return APIUtil.clearPreviewScores({ draftId: 'mockDraftId', visitId: 'mockVisitId' }).then(
-			() => {
-				expect(fetch).toHaveBeenCalled()
-				const calledEndpoint = fetch.mock.calls[0][0]
-				const calledOptions = fetch.mock.calls[0][1]
-				expect(calledEndpoint).toBe('/api/assessments/clear-preview-scores')
-				expect(calledOptions).toEqual({
-					body: expect.anything(),
-					credentials: 'include',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json'
-					},
-					method: 'POST'
-				})
-				expect(JSON.parse(calledOptions.body)).toEqual({
-					draftId: 'mockDraftId',
-					visitId: 'mockVisitId'
-				})
-			}
-		)
+		return APIUtil.clearPreviewScores({
+			draftId: 'mockDraftId',
+			visitId: 'mockVisitId'
+		}).then(() => {
+			expect(fetch).toHaveBeenCalled()
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
+			expect(calledEndpoint).toBe('/api/assessments/clear-preview-scores')
+			expect(calledOptions).toEqual({
+				body: expect.anything(),
+				credentials: 'include',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'POST'
+			})
+			expect(JSON.parse(calledOptions.body)).toEqual({
+				draftId: 'mockDraftId',
+				visitId: 'mockVisitId'
+			})
+		})
 	})
 
 	test('requestStart handles json parsing error', () => {

@@ -38,10 +38,26 @@ describe('Registry', () => {
 
 	test('registers default', () => {
 		expect.assertions(2)
-		Registry.registerModel('chunk', { type: 'chunk', default: false, __testValue: 1 })
-		Registry.registerModel('chunk-default', { type: 'chunk', default: true, __testValue: 2 })
-		Registry.registerModel('page', { type: 'page', default: false, __testValue: 3 })
-		Registry.registerModel('page-default', { type: 'page', default: true, __testValue: 4 })
+		Registry.registerModel('chunk', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1
+		})
+		Registry.registerModel('chunk-default', {
+			type: 'chunk',
+			default: true,
+			__testValue: 2
+		})
+		Registry.registerModel('page', {
+			type: 'page',
+			default: false,
+			__testValue: 3
+		})
+		Registry.registerModel('page-default', {
+			type: 'page',
+			default: true,
+			__testValue: 4
+		})
 
 		Registry.getItems(() => {
 			expect(Registry.getDefaultItemForModelType('chunk').__testValue).toBe(2)
@@ -51,10 +67,26 @@ describe('Registry', () => {
 
 	test('gets item by type', () => {
 		expect.assertions(4)
-		Registry.registerModel('chunk', { type: 'chunk', default: false, __testValue: 1 })
-		Registry.registerModel('chunk-default', { type: 'chunk', default: true, __testValue: 2 })
-		Registry.registerModel('page', { type: 'page', default: false, __testValue: 3 })
-		Registry.registerModel('page-default', { type: 'page', default: true, __testValue: 4 })
+		Registry.registerModel('chunk', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1
+		})
+		Registry.registerModel('chunk-default', {
+			type: 'chunk',
+			default: true,
+			__testValue: 2
+		})
+		Registry.registerModel('page', {
+			type: 'page',
+			default: false,
+			__testValue: 3
+		})
+		Registry.registerModel('page-default', {
+			type: 'page',
+			default: true,
+			__testValue: 4
+		})
 
 		Registry.getItems(() => {
 			expect(Registry.getItemForType('chunk').__testValue).toBe(1)

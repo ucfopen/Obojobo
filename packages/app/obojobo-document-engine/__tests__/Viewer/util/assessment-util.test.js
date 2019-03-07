@@ -211,7 +211,9 @@ describe('AssessmentUtil', () => {
 		}
 		const state = {
 			assessments: {
-				testId: { highestAssessmentScoreAttempts: [{ assessmentScore: 'mockScore' }] }
+				testId: {
+					highestAssessmentScoreAttempts: [{ assessmentScore: 'mockScore' }]
+				}
 			}
 		}
 

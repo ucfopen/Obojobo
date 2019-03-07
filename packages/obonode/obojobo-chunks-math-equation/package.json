@@ -9,13 +9,11 @@
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
-		"precommit": "lint-staged && yarn test:ci",
-		"prettier:run": "prettier --write './**/*.{js,scss}'",
-		"prettier:debug": "prettier -l './**/*.{js,scss}'"
+		"prettier:run": "prettier --write '**/*.{js,scss}'"
 	},
 	"lint-staged": {
-		"./**/*.{js,scss}": [
-			"yarn prettier:run",
+		"**/*.{js,scss}": [
+			"prettier --write",
 			"eslint",
 			"stylelint",
 			"git add"
@@ -31,12 +29,15 @@
 		"katex":"^0.9.0",
 		"obojobo-lib-utils": "1.0.0"
 	},
+	"devDependencies":{
+		"lint-staged": "^6.1.1"
+	},
 	"jest": {
 		"testMatch": ["**/*.test.js"],
-		"setupTestFrameworkScriptFile": "obojobo-lib-utils/test-setup-chunks.js",
+		"setupFilesAfterEnv": ["obojobo-lib-utils/test-setup-chunks.js"],
 		"verbose": false,
 		"coverageReporters": ["text", "lcov"],
-		"coveragePathIgnorePatterns": ["setupTests.js", "node_modules"],
+		"coveragePathIgnorePatterns": ["node_modules"],
 		"moduleNameMapper": {
 			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",
 			"\\.(svg|scss)$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"

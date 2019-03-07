@@ -10,7 +10,6 @@ const yarnList = `yarn list v1.13.0
 └─ obojobo-sections-content@33.33.33
 ✨  Done in 698.89s.`
 
-
 describe('obojobo lib utils', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -79,7 +78,6 @@ describe('obojobo lib utils', () => {
 		expect(results).toHaveLength(0)
 	})
 
-
 	test('getOboNodeScriptPathsFromPackageByType ignores packages without obojobo property', () => {
 		const { getOboNodeScriptPathsFromPackageByType } = require('obojobo-lib-utils')
 		getOboNodeScriptPathsFromPackageByType('not-obojobo-chunks-thing', 'viewer')
@@ -120,7 +118,6 @@ describe('obojobo lib utils', () => {
 		expect(result).toHaveLength(1)
 		expect(result[0]).toContain('obojobo-lib-utils/__mocks__/mock-obonode-script.js')
 	})
-
 
 	test('getOboNodeScriptPathsFromPackageByType loads editor scripts', () => {
 		// this test is a little weird to work around a require.resolve in the implementation
@@ -221,5 +218,4 @@ describe('obojobo lib utils', () => {
 		const result = flattenArray([1, [2, 3]])
 		expect(result).toEqual([1, 2, 3])
 	})
-
 })

@@ -4,7 +4,10 @@ const { getSessionIds } = require('./caliper_utils')
 module.exports = req => {
 	const caliperEvents = require('./create_caliper_event')(req, null, true)
 	const currentUser = req.currentUser || { id: null }
-	const currentDocument = req.currentDocument || { draftId: null, contentId: null }
+	const currentDocument = req.currentDocument || {
+		draftId: null,
+		contentId: null
+	}
 	const clientEvent = req.body.event
 	const sessionIds = getSessionIds(req.session)
 

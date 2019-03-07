@@ -54,7 +54,6 @@ global.oboJestMockConfig = () => {
 	fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
 }
 
-
 global.oboJestMockConfig()
 
 // mockVirtual is used when you don't want jest to
@@ -72,7 +71,6 @@ global.mockVirtual = mock => {
 	)
 	return mockFunction
 }
-
 
 // make sure all Date objects use a static date
 global.mockStaticDate = () => {

@@ -136,7 +136,11 @@ class MediaStore extends Store {
 			}
 		})
 
-		Dispatcher.trigger('media:zoomResetted', { id, previousZoom, zoom: defaultZoom })
+		Dispatcher.trigger('media:zoomResetted', {
+			id,
+			previousZoom,
+			zoom: defaultZoom
+		})
 	}
 
 	init() {

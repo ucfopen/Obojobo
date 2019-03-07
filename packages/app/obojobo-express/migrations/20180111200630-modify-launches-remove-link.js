@@ -19,7 +19,11 @@ exports.up = function(db) {
 }
 
 exports.down = function(db) {
-	return db.addColumn('launches', 'link', { type: 'varchar', length: 500, notNull: false })
+	return db.addColumn('launches', 'link', {
+		type: 'varchar',
+		length: 500,
+		notNull: false
+	})
 }
 
 exports._meta = {

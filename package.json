@@ -7,16 +7,16 @@
 		"db:rebuild": "cd node_modules/obojobo-express && yarn db:rebuild",
 		"delete:node_modules": "rm -rf node_modules && rm -rf ./packages/*/*/node_modules",
 		"dev": "cd node_modules/obojobo-express && yarn dev",
-		"dev:docEngine": "concurrently \"yarn dev\" \" cd node_modules/obojobo-document-engine && yarn dev\"",
 		"lint": "./run_in_all_packages.sh yarn lint",
 		"lint:css": "./run_in_all_packages.sh yarn lint:css",
 		"lint:js": "./run_in_all_packages.sh yarn lint:js",
 		"open:coverage": "./run_in_all_packages.sh open ./coverage/lcov-report/index.html",
-		"precommit": "./run_in_all_packages.sh yarn precommit",
+		"precommit": "./run_in_all_packages.sh yarn lint-staged && yarn test:ci",
 		"setup": "yarn build --mode=production && cd node_modules/obojobo-express && yarn db:rebuild",
-		"test": "./run_in_all_packages.sh yarn test",
-		"test:ci": "./run_in_all_packages.sh yarn test:ci",
-		"test:coverage": "./run_in_all_packages.sh yarn test -u --coverage"
+		"test": "TZ='America/New_York' jest --verbose",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"test:all": "./run_in_all_packages.sh yarn test",
+		"test:ci:all": "./run_in_all_packages.sh yarn test:ci"
 	},
 	"devDependencies": {
 		"concurrently": "^3.5.0",
@@ -24,9 +24,18 @@
 		"nodemon": "^1.18.8"
 	},
 	"jest": {
+		"projects": ["<rootDir>/packages/*/*"],
 		"transformIgnorePatterns": [
 			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
-		]
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
 	},
 	"workspaces": [
 		"packages/app/obojobo-document-engine",

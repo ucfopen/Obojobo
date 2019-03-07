@@ -17,7 +17,6 @@ const { focus } = Common.page
 let defaultProps
 
 describe('MCAssessment Answer Choices', () => {
-
 	beforeEach(() => {
 		defaultProps = {
 			responseType: '',
@@ -42,5 +41,4 @@ describe('MCAssessment Answer Choices', () => {
 		component.instance().focusOnResults()
 		expect(focus).toHaveBeenCalledWith(component.instance().resultsRef.current)
 	})
-
 })

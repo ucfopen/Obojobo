@@ -394,7 +394,7 @@ export default class MCAssessment extends React.Component {
 						in={isShowingExplanationButtonValue}
 						classNames="solution"
 						timeout={ANIMATION_TRANSITION_TIME_MS}
-						>
+					>
 						{isShowingExplanationButtonValue ? (
 							<MCAssessmentExplanation
 								ref={component => {
