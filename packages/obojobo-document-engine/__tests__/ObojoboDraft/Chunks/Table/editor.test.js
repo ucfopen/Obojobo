@@ -225,6 +225,28 @@ describe('Table editor', () => {
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid oboeditor.component block in table', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {
+				data: {
+					get: () => {
+						return { header: 'mockHeader' }
+					}
+				},
+				nodes: { size: 3 }
+			},
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize fixes invalid block at end of table', () => {
 		const editor = {
 			unwrapNodeByKey: jest.fn()
@@ -311,6 +333,28 @@ describe('Table editor', () => {
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid oboeditor.component block in Row', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {
+				data: {
+					get: () => {
+						return { header: 'mockHeader' }
+					}
+				},
+				nodes: { size: 3 }
+			},
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize fixes invalid block at end of Row', () => {
 		const editor = {
 			unwrapNodeByKey: jest.fn()
@@ -356,7 +400,7 @@ describe('Table editor', () => {
 
 	test('plugins.schema.normalize fixes invalid children in Cell', () => {
 		const editor = {
-			unwrapBlockByKey: jest.fn()
+			unwrapNodeByKey: jest.fn()
 		}
 
 		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(editor, {
@@ -372,7 +416,7 @@ describe('Table editor', () => {
 			index: null
 		})
 
-		expect(editor.unwrapBlockByKey).not.toHaveBeenCalled()
+		expect(editor.unwrapNodeByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid block at end of Cell', () => {

@@ -717,6 +717,32 @@ describe('List editor', () => {
 		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid oboeditor.component block in list', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {
+				data: {
+					get: () => {
+						return {
+							listStyles: {
+								type: 'ordered'
+							}
+						}
+					}
+				},
+				nodes: { size: 10 }
+			},
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize adds missing child in list', () => {
 		const editor = {
 			insertNodeByKey: jest.fn()
@@ -752,6 +778,21 @@ describe('List editor', () => {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid oboeditor.component block in Level', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
 			index: 0
 		})
 

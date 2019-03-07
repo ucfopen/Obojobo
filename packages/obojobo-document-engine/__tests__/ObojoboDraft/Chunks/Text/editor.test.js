@@ -182,7 +182,7 @@ describe('Text editor', () => {
 		const editor = {
 			value: {
 				blocks: {
-					get: () => ({ key: 'mockBlockKey' }),
+					get: () => ({ key: 'mockBlockKey', text: '' }),
 					some: () => true
 				},
 				document: {
@@ -193,10 +193,6 @@ describe('Text editor', () => {
 							nodes: { size: 1 }
 						}
 					}
-				},
-				endBlock: {
-					key: 'mockKey',
-					text: ''
 				}
 			}
 		}
@@ -470,6 +466,21 @@ describe('Text editor', () => {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid oboeditor.component block in text', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
 			index: 0
 		})
 

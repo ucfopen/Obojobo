@@ -33,6 +33,51 @@ describe('Component editor', () => {
 		expect(next).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes unknown children in component', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Component.plugins.schema.blocks[COMPONENT_NODE].normalize(editor, {
+			code: 'child_unknown',
+			node: { key: 'mockKey' },
+			child: { object: 'block' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid children in component', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Component.plugins.schema.blocks[COMPONENT_NODE].normalize(editor, {
+			code: 'child_type_invalid',
+			node: { key: 'mockKey' },
+			child: { object: 'text' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).not.toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid block in component', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Component.plugins.schema.blocks[COMPONENT_NODE].normalize(editor, {
+			code: 'child_type_invalid',
+			node: { key: 'mockKey' },
+			child: { object: 'block' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize fixes required children in component', () => {
 		const editor = {
 			insertNodeByKey: jest.fn()

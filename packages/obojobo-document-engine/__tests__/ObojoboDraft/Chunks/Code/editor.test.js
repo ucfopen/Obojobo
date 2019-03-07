@@ -178,7 +178,7 @@ describe('Code editor', () => {
 		const editor = {
 			value: {
 				blocks: {
-					get: () => ({ key: 'mockBlockKey' }),
+					get: () => ({ key: 'mockBlockKey', text: '' }),
 					some: () => true
 				},
 				document: {
@@ -189,10 +189,6 @@ describe('Code editor', () => {
 							nodes: { size: 1 }
 						}
 					}
-				},
-				endBlock: {
-					key: 'mockKey',
-					text: ''
 				}
 			}
 		}
@@ -418,6 +414,21 @@ describe('Code editor', () => {
 			code: CHILD_TYPE_INVALID,
 			node: { nodes: { size: 10 } },
 			child: { object: 'block', key: 'mockKey' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.schema.normalize fixes invalid oboeditor.component in code', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Code.plugins.schema.blocks[CODE_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
 			index: 0
 		})
 

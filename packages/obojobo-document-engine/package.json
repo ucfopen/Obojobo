@@ -56,7 +56,7 @@
 		"react": "15.6.2",
 		"react-dom": "15.6.2",
 		"slate": "0.44.10",
-		"slate-react": "0.20.0",
+		"slate-react": "0.20.8",
 		"slate-schema-violations": "^0.1.39",
 		"underscore": "1.5.1"
 	},

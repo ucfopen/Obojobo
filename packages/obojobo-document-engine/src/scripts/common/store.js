@@ -94,7 +94,8 @@ class _Store {
 				isInsertable: false,
 				slateToObo: null,
 				oboToSlate: null,
-				plugins: null
+				plugins: null,
+				supportsChildren: false
 			},
 			opts
 		)

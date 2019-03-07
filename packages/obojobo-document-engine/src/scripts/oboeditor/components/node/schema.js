@@ -32,14 +32,13 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('obonode', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_UNKNOWN: {
 						return editor.unwrapNodeByKey(child.key)
 					}
 					case CHILD_TYPE_INVALID: {
-						if(child.object === 'block') return editor.unwrapNodeByKey(child.key)
+						if (child.object === 'block') return editor.unwrapNodeByKey(child.key)
 						break
 					}
 					case CHILD_MIN_INVALID: {

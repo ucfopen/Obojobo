@@ -28,6 +28,7 @@ Common.Store.registerEditorModel(ASSESSMENT_NODE, {
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
+	supportsChildren: true,
 	plugins
 })
 

@@ -32,6 +32,7 @@ Common.Store.registerEditorModel('ObojoboDraft.Chunks.MCAssessment', {
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
+	supportsChildren: true,
 	plugins
 })
 

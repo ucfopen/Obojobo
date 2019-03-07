@@ -32,6 +32,7 @@ Common.Store.registerEditorModel('ObojoboDraft.Chunks.Question', {
 	insertJSON: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
+	supportsChildren: true,
 	plugins
 })
 

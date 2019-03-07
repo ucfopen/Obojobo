@@ -24,6 +24,7 @@ Common.Store.registerEditorModel('ObojoboDraft.Pages.Page', {
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
+	supportsChildren: true,
 	plugins
 })
 
