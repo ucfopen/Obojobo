@@ -1,6 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HTML editor plugins.renderNode renders a button when passed 1`] = `
+exports[`HTML editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`HTML editor plugins.renderNode renders HTML when passed 1`] = `
 <HTML
   attributes={
     Object {

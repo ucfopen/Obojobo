@@ -88,10 +88,9 @@ class ActionButton extends React.Component {
 
 	handleLabelChange(event) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					label: event.target.value,
@@ -99,12 +98,10 @@ class ActionButton extends React.Component {
 				}
 			}
 		})
-		editor.onChange(change)
 	}
 
 	addAction() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const verify = requiresValue[this.state.newTrigger.type]
 		const content = this.props.node.data.get('content')
 
@@ -123,24 +120,20 @@ class ActionButton extends React.Component {
 			}
 		})
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
-
-		editor.onChange(change)
 	}
 
 	removeAction(index) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
 		content.actions.splice(index, 1)
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
-		editor.onChange(change)
 	}
 
 	renderNew() {
@@ -169,7 +162,9 @@ class ActionButton extends React.Component {
 						name="Value"
 						value={this.state.newTrigger.value}
 						onChange={event => this.handleValueChange(event)}
-						onClick={event => event.stopPropagation()}
+						onClick={event => {
+							event.stopPropagation()
+						}}
 					/>
 				</div>
 				<button onClick={() => this.addAction()}>Save</button>
@@ -198,7 +193,7 @@ class ActionButton extends React.Component {
 	}
 
 	renderButton() {
-		const { isFocused } = this.props
+		const { isSelected } = this.props
 		const content = this.props.node.data.get('content')
 
 		const wrapperStyle = {
@@ -206,7 +201,7 @@ class ActionButton extends React.Component {
 		}
 
 		const maskStyle = {
-			display: isFocused ? 'none' : 'block',
+			display: isSelected ? 'none' : 'block',
 			position: 'absolute',
 			top: '0',
 			left: '0',
@@ -242,7 +237,9 @@ class ActionButton extends React.Component {
 		const { isSelected } = this.props
 
 		return (
-			<div className="text-chunk obojobo-draft--chunks--action-button pad">
+			<div
+				className="text-chunk obojobo-draft--chunks--action-button pad"
+				onClick={event => event.stopPropagation()}>
 				{this.renderButton()}
 				{isSelected ? this.renderTriggers() : null}
 			</div>

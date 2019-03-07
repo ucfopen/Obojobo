@@ -17,52 +17,60 @@ import insertTab from './changes/insert-tab'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
-const isType = change =>
-	change.value.blocks.some(
-		block => !!change.value.document.getClosest(block.key, parent => parent.type === TEXT_NODE)
-	)
+const isType = editor => {
+	return editor.value.blocks.some(block => {
+		return !!editor.value.document.getClosest(block.key, parent => {
+			return parent.type === TEXT_NODE
+		})
+	})
+}
 
 const plugins = {
-	onKeyDown(event, change) {
-		const isText = isType(change)
-		if (!isText) return
+	onKeyDown(event, editor, next) {
+		const isText = isType(editor)
+		if (!isText) return next()
 
-		const last = change.value.endBlock
+		const last = editor.value.endBlock
 
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
-				return KeyDownUtil.deleteEmptyParent(event, change, TEXT_NODE)
+				return KeyDownUtil.deleteEmptyParent(event, editor, next, TEXT_NODE)
 
 			case 'Enter':
 				// Single Enter
-				if (last.text !== '') return
+				if (last.text !== '') return next()
 
 				// Double Enter
-				return splitParent(event, change)
+				return splitParent(event, editor, next)
 
 			case 'Tab':
 				// TAB+SHIFT
-				if (event.shiftKey) return decreaseIndent(event, change)
+				if (event.shiftKey) return decreaseIndent(event, editor, next)
 
 				// TAB+ALT
-				if (event.altKey) return increaseIndent(event, change)
+				if (event.altKey) return increaseIndent(event, editor, next)
 
 				// TAB
-				return insertTab(event, change)
+				return insertTab(event, editor, next)
+
+			default:
+				return next()
 		}
 	},
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case TEXT_NODE:
 				return <Node {...props} {...props.attributes} />
 			case TEXT_LINE_NODE:
 				return <Line {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
-	renderPlaceholder(props) {
+	renderPlaceholder(props, editor, next) {
 		const { node } = props
-		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE || node.text !== '') return
+		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE || node.text !== '') return next()
 
 		return (
 			<span className={'placeholder align-' + node.data.get('align')} contentEditable={false}>

@@ -11,21 +11,15 @@ const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 class Question extends React.Component {
 	delete() {
 		const editor = this.props.editor
-		const change = editor.value.change()
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 	addSolution() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		const newQuestion = Block.create({
 			type: SOLUTION_NODE
 		})
-		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
-
-		editor.onChange(change)
+		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 	}
 	render() {
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE

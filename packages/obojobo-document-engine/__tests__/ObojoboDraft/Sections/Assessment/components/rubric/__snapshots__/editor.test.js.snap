@@ -315,6 +315,8 @@ Object {
 }
 `;
 
+exports[`Rubric editor plugins.renderNode calls next 1`] = `undefined`;
+
 exports[`Rubric editor plugins.renderNode renders a modlist when passed 1`] = `
 <ModList
   attributes={

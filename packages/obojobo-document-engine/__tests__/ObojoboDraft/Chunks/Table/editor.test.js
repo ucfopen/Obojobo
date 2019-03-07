@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('src/scripts/oboeditor/util/keydown-util')
 
@@ -10,7 +10,7 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 describe('Table editor', () => {
 	test('plugins.onKeyDown deals with no table', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -22,20 +22,20 @@ describe('Table editor', () => {
 				}
 			}
 		}
-		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, change)
+		Table.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with random key press', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -50,20 +50,20 @@ describe('Table editor', () => {
 				}
 			}
 		}
-		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'K',
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, change)
+		Table.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Enter]', () => {
-		const change = {
+		const editor = {
 			value: {
 				document: {
 					getClosest: () => true
@@ -76,12 +76,12 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, change)
+		Table.plugins.onKeyDown(event, editor, jest.fn())
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Backspace]', () => {
-		const change = {
+		const editor = {
 			value: {
 				document: {
 					getClosest: () => true
@@ -94,12 +94,12 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, change)
+		Table.plugins.onKeyDown(event, editor, jest.fn())
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Delete]', () => {
-		const change = {
+		const editor = {
 			value: {
 				document: {
 					getClosest: () => true
@@ -112,7 +112,7 @@ describe('Table editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		Table.plugins.onKeyDown(event, change)
+		Table.plugins.onKeyDown(event, editor, jest.fn())
 		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
 	})
 
@@ -129,7 +129,7 @@ describe('Table editor', () => {
 			}
 		}
 
-		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Table.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a row when passed', () => {
@@ -145,7 +145,7 @@ describe('Table editor', () => {
 			}
 		}
 
-		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Table.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a cell when passed', () => {
@@ -161,15 +161,33 @@ describe('Table editor', () => {
 			}
 		}
 
-		expect(Table.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Table.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(Table.plugins.renderNode(props, null, next)).toMatchSnapshot()
 	})
 
 	test('plugins.schema.normalize fixes invalid children in table', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, {
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
@@ -182,15 +200,15 @@ describe('Table editor', () => {
 			index: null
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid block in table', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, {
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
@@ -204,15 +222,15 @@ describe('Table editor', () => {
 			index: 0
 		})
 
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid block at end of table', () => {
-		const change = {
+		const editor = {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, {
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
@@ -226,16 +244,16 @@ describe('Table editor', () => {
 			index: 9
 		})
 
-		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children in table', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_NODE].normalize(change, {
-			code: CHILD_REQUIRED,
+		Table.plugins.schema.blocks[TABLE_NODE].normalize(editor, {
+			code: 'child_min_invalid',
 			node: {
 				data: {
 					get: () => {
@@ -247,15 +265,15 @@ describe('Table editor', () => {
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children in Row', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, {
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
@@ -268,15 +286,15 @@ describe('Table editor', () => {
 			index: null
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid block in Row', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, {
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
@@ -290,15 +308,15 @@ describe('Table editor', () => {
 			index: 0
 		})
 
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid block at end of Row', () => {
-		const change = {
+		const editor = {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, {
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
@@ -312,16 +330,16 @@ describe('Table editor', () => {
 			index: 9
 		})
 
-		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children in Row', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(change, {
-			code: CHILD_REQUIRED,
+		Table.plugins.schema.blocks[TABLE_ROW_NODE].normalize(editor, {
+			code: 'child_min_invalid',
 			node: {
 				data: {
 					get: () => {
@@ -333,15 +351,15 @@ describe('Table editor', () => {
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children in Cell', () => {
-		const change = {
+		const editor = {
 			unwrapBlockByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(change, {
+		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
@@ -354,15 +372,15 @@ describe('Table editor', () => {
 			index: null
 		})
 
-		expect(change.unwrapBlockByKey).not.toHaveBeenCalled()
+		expect(editor.unwrapBlockByKey).not.toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid block at end of Cell', () => {
-		const change = {
+		const editor = {
 			unwrapNodeByKey: jest.fn()
 		}
 
-		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(change, {
+		Table.plugins.schema.blocks[TABLE_CELL_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {
 				data: {
@@ -376,6 +394,6 @@ describe('Table editor', () => {
 			index: 9
 		})
 
-		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 })

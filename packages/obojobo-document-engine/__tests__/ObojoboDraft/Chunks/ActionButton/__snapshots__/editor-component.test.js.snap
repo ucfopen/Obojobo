@@ -13,6 +13,7 @@ exports[`ActionButton Editor Node ActionButton adds viewer:alert 1`] = `"<div cl
 exports[`ActionButton Editor Node ActionButton builds the expected component 1`] = `
 <div
   className="text-chunk obojobo-draft--chunks--action-button pad"
+  onClick={[Function]}
 >
   <div
     className="obojobo-draft--components--button"
@@ -59,6 +60,7 @@ exports[`ActionButton Editor Node ActionButton builds the expected component 1`]
 exports[`ActionButton Editor Node ActionButton builds the expected component when selected 1`] = `
 <div
   className="text-chunk obojobo-draft--chunks--action-button pad"
+  onClick={[Function]}
 >
   <div
     className="obojobo-draft--components--button"
