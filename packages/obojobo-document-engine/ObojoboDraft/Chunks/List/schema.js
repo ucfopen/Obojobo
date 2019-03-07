@@ -19,7 +19,6 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('list error', error)
 				const { node, child, index } = error
 				// find type and bullet style
 				const type = node.data.get('content').listStyles.type
@@ -28,7 +27,7 @@ const schema = {
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Deal with Paste insertion of top-level nodes
-						if(child.type === 'oboeditor.component'){
+						if (child.type === 'oboeditor.component') {
 							return editor.unwrapNodeByKey(child.key)
 						}
 
@@ -65,7 +64,7 @@ const schema = {
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Deal with Paste insertion of top-level nodes
-						if(child.type === 'oboeditor.component'){
+						if (child.type === 'oboeditor.component') {
 							return editor.unwrapNodeByKey(child.key)
 						}
 

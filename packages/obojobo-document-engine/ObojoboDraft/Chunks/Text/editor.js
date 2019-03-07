@@ -1,6 +1,5 @@
 import React from 'react'
 import Common from 'Common'
-import { getEventTransfer } from 'slate-react'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
