@@ -2,7 +2,7 @@
 
 exports[`MathEquation Editor Node MathEquation component 1`] = `
 <div
-  className="component obojobo-draft--chunks--math-equation pad align-right"
+  className="component obojobo-draft--chunks--math-equation pad align-undefined"
 >
   <div
     className="non-editable-chunk"
@@ -17,9 +17,7 @@ exports[`MathEquation Editor Node MathEquation component 1`] = `
     />
     <div
       className="equation-label"
-    >
-      flower
-    </div>
+    />
   </div>
   <div
     className="equation-editor"
@@ -45,16 +43,60 @@ exports[`MathEquation Editor Node MathEquation component 1`] = `
         name="Equation Label"
         onChange={[Function]}
         onClick={[Function]}
-        value="flower"
       />
     </div>
   </div>
 </div>
 `;
 
-exports[`MathEquation Editor Node MathEquation component with empty label 1`] = `
+exports[`MathEquation Editor Node MathEquation component edits input 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>KaTeX can only parse string typed expression</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\" value=\\"\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\" value=\\"\\"></div></div></div>"`;
+
+exports[`MathEquation Editor Node MathEquation component edits label 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-undefined\\"><div class=\\"katex-container katex-error\\"><p>KaTeX can only parse string typed expression</p></div><div class=\\"equation-editor\\"><div><p>Latex Equation</p><input name=\\"Latex Equation\\" frameborder=\\"0\\" value=\\"\\"></div><div><p>Equation Label</p><input name=\\"Equation Label\\" frameborder=\\"0\\" value=\\"\\"></div></div></div>"`;
+
+exports[`MathEquation Editor Node MathEquation component with error 1`] = `
 <div
-  className="component obojobo-draft--chunks--math-equation pad align-left"
+  className="component obojobo-draft--chunks--math-equation pad align-undefined"
+>
+  <div
+    className="katex-container katex-error"
+  >
+    <p>
+      KaTeX can only parse string typed expression
+    </p>
+  </div>
+  <div
+    className="equation-editor"
+  >
+    <div>
+      <p>
+        Latex Equation
+      </p>
+      <input
+        frameBorder="0"
+        name="Latex Equation"
+        onChange={[Function]}
+        onClick={[Function]}
+        value={null}
+      />
+    </div>
+    <div>
+      <p>
+        Equation Label
+      </p>
+      <input
+        frameBorder="0"
+        name="Equation Label"
+        onChange={[Function]}
+        onClick={[Function]}
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MathEquation Editor Node MathEquation component with label 1`] = `
+<div
+  className="component obojobo-draft--chunks--math-equation pad align-undefined"
 >
   <div
     className="non-editable-chunk"
@@ -93,47 +135,6 @@ exports[`MathEquation Editor Node MathEquation component with empty label 1`] = 
         onChange={[Function]}
         onClick={[Function]}
         value=""
-      />
-    </div>
-  </div>
-</div>
-`;
-
-exports[`MathEquation Editor Node MathEquation component with error 1`] = `
-<div
-  className="component obojobo-draft--chunks--math-equation pad align-undefined"
->
-  <div
-    className="katex-container katex-error"
-  >
-    <p>
-      KaTeX can only parse string typed expression
-    </p>
-  </div>
-  <div
-    className="equation-editor"
-  >
-    <div>
-      <p>
-        Latex Equation
-      </p>
-      <input
-        frameBorder="0"
-        name="Latex Equation"
-        onChange={[Function]}
-        onClick={[Function]}
-        value={null}
-      />
-    </div>
-    <div>
-      <p>
-        Equation Label
-      </p>
-      <input
-        frameBorder="0"
-        name="Equation Label"
-        onChange={[Function]}
-        onClick={[Function]}
       />
     </div>
   </div>

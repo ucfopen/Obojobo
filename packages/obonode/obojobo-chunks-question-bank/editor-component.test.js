@@ -40,7 +40,7 @@ describe('QuestionBank editor', () => {
 	})
 
 	test('QuestionBank component deletes self', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -53,10 +53,7 @@ describe('QuestionBank editor', () => {
 						}
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -66,12 +63,12 @@ describe('QuestionBank editor', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('QuestionBank component adds question', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -83,10 +80,7 @@ describe('QuestionBank editor', () => {
 					},
 					nodes: []
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -96,12 +90,12 @@ describe('QuestionBank editor', () => {
 			.at(1)
 			.simulate('click')
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('QuestionBank component adds question bank', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -115,10 +109,7 @@ describe('QuestionBank editor', () => {
 					},
 					nodes: []
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -128,7 +119,7 @@ describe('QuestionBank editor', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 })

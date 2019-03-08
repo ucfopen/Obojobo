@@ -10,16 +10,14 @@ class IFrame extends React.Component {
 
 	handleSourceChange(event) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					src: event.target.value
 				}
 			}
 		})
-		editor.onChange(change)
 	}
 
 	renderInput() {
@@ -59,7 +57,7 @@ class IFrame extends React.Component {
 				<iframe
 					src={this.props.node.data.get('content').src}
 					frameBorder="0"
-					allowFullScreen="true"
+					allowFullScreen={true}
 				/>
 			</div>
 		)

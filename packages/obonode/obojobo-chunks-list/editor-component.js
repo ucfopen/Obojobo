@@ -19,7 +19,6 @@ class List extends React.Component {
 		const levels = this.props.node.filterDescendants(desc => desc.type === LIST_LEVEL_NODE)
 
 		const { editor } = this.props
-		const change = editor.value.change()
 
 		levels.forEach(levelNode => {
 			const levelContent = levelNode.data.get('content')
@@ -34,11 +33,10 @@ class List extends React.Component {
 				bulletList[previousBulletList.indexOf(levelContent.bulletStyle) % bulletList.length]
 
 			// modify the level node
-			change.setNodeByKey(levelNode.key, {
+			return editor.setNodeByKey(levelNode.key, {
 				data: { content: levelContent }
 			})
 		})
-		editor.onChange(change)
 	}
 
 	render() {

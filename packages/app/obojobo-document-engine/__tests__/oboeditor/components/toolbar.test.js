@@ -18,17 +18,10 @@ describe('Editor Toolbar', () => {
 	test('Node component toggles Basic Mark', () => {
 		window.prompt = jest.fn().mockReturnValueOnce(null)
 		const Node = Toolbar.components.Node
-		const change = {
+		const editor = {
 			toggleMark: jest.fn()
 		}
-		const component = shallow(
-			<Node
-				value={{
-					change: () => change
-				}}
-				onChange={jest.fn()}
-			/>
-		)
+		const component = shallow(<Node getEditor={() => editor} />)
 		const tree = component.html()
 
 		component
@@ -37,29 +30,24 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.toggleMark).toHaveBeenCalled()
+		expect(editor.toggleMark).toHaveBeenCalled()
 	})
 
 	test('Node component toggles Link on', () => {
 		window.prompt = jest.fn().mockReturnValueOnce(null)
 		const Node = Toolbar.components.Node
-		const change = {
+		const editor = {
 			addMark: jest.fn(),
-			removeMark: jest.fn()
+			removeMark: jest.fn(),
+			value: {
+				marks: [
+					{
+						type: 'b'
+					}
+				]
+			}
 		}
-		const component = shallow(
-			<Node
-				value={{
-					change: () => change,
-					marks: [
-						{
-							type: 'b'
-						}
-					]
-				}}
-				onChange={jest.fn()}
-			/>
-		)
+		const component = shallow(<Node getEditor={() => editor} />)
 		const tree = component.html()
 
 		component
@@ -68,34 +56,29 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.addMark).toHaveBeenCalled()
-		expect(change.removeMark).not.toHaveBeenCalled()
+		expect(editor.addMark).toHaveBeenCalled()
+		expect(editor.removeMark).not.toHaveBeenCalled()
 	})
 
 	test('Node component toggles Link off', () => {
 		window.prompt = jest.fn().mockReturnValueOnce(null)
 		const Node = Toolbar.components.Node
-		const change = {
+		const editor = {
 			addMark: jest.fn(),
-			removeMark: jest.fn()
-		}
-		const component = shallow(
-			<Node
-				value={{
-					change: () => change,
-					marks: {
-						forEach: funct => {
-							const mark = {
-								type: 'a',
-								data: { get: () => 1, toJSON: () => ({}) }
-							}
-							return funct({ type: 'mockMark' }) || funct(mark)
+			removeMark: jest.fn(),
+			value: {
+				marks: {
+					forEach: funct => {
+						const mark = {
+							type: 'a',
+							data: { get: () => 1, toJSON: () => ({}) }
 						}
+						return funct({ type: 'mockMark' }) || funct(mark)
 					}
-				}}
-				onChange={jest.fn()}
-			/>
-		)
+				}
+			}
+		}
+		const component = shallow(<Node getEditor={() => editor} />)
 		const tree = component.html()
 
 		component
@@ -104,32 +87,27 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.addMark).not.toHaveBeenCalled()
-		expect(change.removeMark).toHaveBeenCalled()
+		expect(editor.addMark).not.toHaveBeenCalled()
+		expect(editor.removeMark).toHaveBeenCalled()
 	})
 
 	test('Node component toggles Superscript', () => {
 		const Node = Toolbar.components.Node
-		const change = {
-			removeMark: jest.fn()
-		}
-		const component = shallow(
-			<Node
-				value={{
-					change: () => change,
-					marks: {
-						some: funct => {
-							const mark = {
-								type: 'sup',
-								data: { get: () => 1 }
-							}
-							return funct({ type: 'mockMark' }) || funct(mark)
+		const editor = {
+			removeMark: jest.fn(),
+			value: {
+				marks: {
+					some: funct => {
+						const mark = {
+							type: 'sup',
+							data: { get: () => 1 }
 						}
+						return funct({ type: 'mockMark' }) || funct(mark)
 					}
-				}}
-				onChange={jest.fn()}
-			/>
-		)
+				}
+			}
+		}
+		const component = shallow(<Node getEditor={() => editor} />)
 		const tree = component.html()
 
 		component
@@ -138,27 +116,22 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.removeMark).toHaveBeenCalled()
+		expect(editor.removeMark).toHaveBeenCalled()
 	})
 
 	test('Node component toggles Subscript', () => {
 		const Node = Toolbar.components.Node
-		const change = {
-			addMark: jest.fn()
-		}
-		const component = shallow(
-			<Node
-				value={{
-					change: () => change,
-					marks: {
-						some: funct => {
-							return funct({ type: 'mockMark' })
-						}
+		const editor = {
+			addMark: jest.fn(),
+			value: {
+				marks: {
+					some: funct => {
+						return funct({ type: 'mockMark' })
 					}
-				}}
-				onChange={jest.fn()}
-			/>
-		)
+				}
+			}
+		}
+		const component = shallow(<Node getEditor={() => editor} />)
 		const tree = component.html()
 
 		component
@@ -167,40 +140,35 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.addMark).toHaveBeenCalled()
+		expect(editor.addMark).toHaveBeenCalled()
 	})
 
 	test('Node component toggles left align', () => {
 		const Node = Toolbar.components.Node
-		const change = {
-			setNodeByKey: jest.fn()
-		}
-		const component = shallow(
-			<Node
-				value={{
-					change: () => change,
-					marks: {
-						some: funct => {
-							return funct({ type: 'mockMark' })
-						}
-					},
-					blocks: {
-						forEach: funct => {
-							funct({
-								data: { toJSON: () => ({}) },
-								type: TEXT_LINE_NODE
-							})
-
-							funct({
-								data: { toJSON: () => ({ content: {} }) },
-								type: 'mockNode'
-							})
-						}
+		const editor = {
+			setNodeByKey: jest.fn(),
+			value: {
+				marks: {
+					some: funct => {
+						return funct({ type: 'mockMark' })
 					}
-				}}
-				onChange={jest.fn()}
-			/>
-		)
+				},
+				blocks: {
+					forEach: funct => {
+						funct({
+							data: { toJSON: () => ({}) },
+							type: TEXT_LINE_NODE
+						})
+
+						funct({
+							data: { toJSON: () => ({ content: {} }) },
+							type: 'mockNode'
+						})
+					}
+				}
+			}
+		}
+		const component = shallow(<Node getEditor={() => editor} />)
 		const tree = component.html()
 
 		component
@@ -209,81 +177,76 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Node component toggles indent', () => {
 		const Node = Toolbar.components.Node
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn(),
-			wrapBlockByKey: jest.fn()
-		}
-		const component = shallow(
-			<Node
-				value={{
-					change: () => change,
-					marks: {
-						some: funct => {
-							return funct({ type: 'mockMark' })
-						}
-					},
-					blocks: {
-						forEach: funct => {
-							funct({
-								data: { toJSON: () => ({}) },
-								type: TEXT_LINE_NODE
-							})
+			wrapBlockByKey: jest.fn(),
+			value: {
+				marks: {
+					some: funct => {
+						return funct({ type: 'mockMark' })
+					}
+				},
+				blocks: {
+					forEach: funct => {
+						funct({
+							data: { toJSON: () => ({}) },
+							type: TEXT_LINE_NODE
+						})
 
-							funct({
-								data: { toJSON: () => ({ content: {} }) },
-								type: CODE_LINE_NODE
-							})
+						funct({
+							data: { toJSON: () => ({ content: {} }) },
+							type: CODE_LINE_NODE
+						})
 
-							// unordered list
-							funct({
-								data: { toJSON: () => ({}) },
-								type: LIST_LINE_NODE
-							})
+						// unordered list
+						funct({
+							data: { toJSON: () => ({}) },
+							type: LIST_LINE_NODE
+						})
 
-							// ordered list
-							funct({
-								data: { toJSON: () => ({}) },
-								type: LIST_LINE_NODE
-							})
+						// ordered list
+						funct({
+							data: { toJSON: () => ({}) },
+							type: LIST_LINE_NODE
+						})
 
-							funct({
-								data: { toJSON: () => ({ content: {} }) },
-								type: 'mockNode'
-							})
-						}
-					},
-					document: {
-						getClosest: jest
-							.fn()
-							.mockImplementationOnce((key, funct) => {
-								funct({ type: LIST_LEVEL_NODE })
-								return {
-									data: {
-										get: () => ({
-											bulletStyle: 'disc',
-											type: 'unordered'
-										})
-									}
-								}
-							})
-							.mockReturnValueOnce({
+						funct({
+							data: { toJSON: () => ({ content: {} }) },
+							type: 'mockNode'
+						})
+					}
+				},
+				document: {
+					getClosest: jest
+						.fn()
+						.mockImplementationOnce((key, funct) => {
+							funct({ type: LIST_LEVEL_NODE })
+							return {
 								data: {
 									get: () => ({
-										bulletStyle: 'decimal',
-										type: 'ordered'
+										bulletStyle: 'disc',
+										type: 'unordered'
 									})
 								}
-							})
-					}
-				}}
-				onChange={jest.fn()}
-			/>
-		)
+							}
+						})
+						.mockReturnValueOnce({
+							data: {
+								get: () => ({
+									bulletStyle: 'decimal',
+									type: 'ordered'
+								})
+							}
+						})
+				}
+			}
+		}
+		const component = shallow(<Node getEditor={() => editor} />)
 		const tree = component.html()
 
 		component
@@ -292,60 +255,55 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.setNodeByKey).toHaveBeenCalled()
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('Node component toggles unindent', () => {
 		const Node = Toolbar.components.Node
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn(),
-			unwrapNodeByKey: jest.fn()
-		}
-		const component = shallow(
-			<Node
-				value={{
-					change: () => change,
-					marks: {
-						some: funct => {
-							return funct({ type: 'mockMark' })
-						}
-					},
-					blocks: {
-						forEach: funct => {
-							funct({
-								data: { toJSON: () => ({ indent: 2 }) },
-								type: TEXT_LINE_NODE
-							})
-							funct({
-								data: { toJSON: () => ({ indent: 0 }) },
-								type: TEXT_LINE_NODE
-							})
-
-							funct({
-								data: { toJSON: () => ({ content: { indent: 2 } }) },
-								type: CODE_LINE_NODE
-							})
-							funct({
-								data: { toJSON: () => ({ content: { indent: 0 } }) },
-								type: CODE_LINE_NODE
-							})
-
-							funct({
-								data: { toJSON: () => ({ content: { indent: 0 } }) },
-								type: LIST_LINE_NODE
-							})
-
-							funct({
-								data: { toJSON: () => ({ content: {} }) },
-								type: 'mockNode'
-							})
-						}
+			unwrapNodeByKey: jest.fn(),
+			value: {
+				marks: {
+					some: funct => {
+						return funct({ type: 'mockMark' })
 					}
-				}}
-				onChange={jest.fn()}
-			/>
-		)
+				},
+				blocks: {
+					forEach: funct => {
+						funct({
+							data: { toJSON: () => ({ indent: 2 }) },
+							type: TEXT_LINE_NODE
+						})
+						funct({
+							data: { toJSON: () => ({ indent: 0 }) },
+							type: TEXT_LINE_NODE
+						})
+
+						funct({
+							data: { toJSON: () => ({ content: { indent: 2 } }) },
+							type: CODE_LINE_NODE
+						})
+						funct({
+							data: { toJSON: () => ({ content: { indent: 0 } }) },
+							type: CODE_LINE_NODE
+						})
+
+						funct({
+							data: { toJSON: () => ({ content: { indent: 0 } }) },
+							type: LIST_LINE_NODE
+						})
+
+						funct({
+							data: { toJSON: () => ({ content: {} }) },
+							type: 'mockNode'
+						})
+					}
+				}
+			}
+		}
+		const component = shallow(<Node getEditor={() => editor} />)
 		const tree = component.html()
 
 		component
@@ -354,8 +312,8 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(change.setNodeByKey).toHaveBeenCalled()
-		expect(change.unwrapNodeByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Bold component', () => {

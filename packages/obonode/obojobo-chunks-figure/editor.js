@@ -10,10 +10,10 @@ import Converter from './converter'
 const FIGURE_NODE = 'ObojoboDraft.Chunks.Figure'
 
 const plugins = {
-	renderPlaceholder(props) {
+	renderPlaceholder(props, editor, next) {
 		const { node } = props
-		if (node.object !== 'block' || node.type !== FIGURE_NODE) return
-		if (node.text !== '') return
+		if (node.object !== 'block' || node.type !== FIGURE_NODE) return next()
+		if (node.text !== '') return next()
 
 		return (
 			<span className={'placeholder align-center'} contentEditable={false}>
@@ -21,10 +21,12 @@ const plugins = {
 			</span>
 		)
 	},
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case FIGURE_NODE:
 				return <Node {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
 	schema: Schema

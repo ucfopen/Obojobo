@@ -23,19 +23,19 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		expect(KeyDownUtil.deleteEmptyParent(event, change, 'someType')).toBe(true)
+		expect(KeyDownUtil.deleteEmptyParent(event, change, jest.fn(), 'someType')).toBe(true)
 		expect(event.preventDefault).toHaveBeenCalledTimes(1)
 		expect(change.removeNodeByKey).toHaveBeenCalledTimes(1)
 
 		change.value.endBlock.text = 'someText'
 		/* eslint-disable-next-line */
-		expect(KeyDownUtil.deleteEmptyParent(event, change, 'someType')).toBe(undefined)
+		expect(KeyDownUtil.deleteEmptyParent(event, change, jest.fn(), 'someType')).toBe(undefined)
 		expect(event.preventDefault).toHaveBeenCalledTimes(1)
 		expect(change.removeNodeByKey).toHaveBeenCalledTimes(1)
 	})
 
 	test('deleteNodeContents deals with selection collapsed at start of block', () => {
-		const change = {
+		const editor = {
 			value: {
 				selection: {
 					start: { offset: 0 },
@@ -49,12 +49,12 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, change)
+		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
 		expect(event.preventDefault).toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with selection inside cell', () => {
-		const change = {
+		const editor = {
 			value: {
 				selection: {
 					start: { offset: 0 },
@@ -68,13 +68,13 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, change)
+		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with selection across cells without first cell', () => {
-		const change = {
+		const editor = {
 			value: {
 				startBlock: {
 					key: 'mockStart'
@@ -107,20 +107,20 @@ describe('KeyDown Util', () => {
 				}
 			}
 		}
-		change.removeNodeByKey = jest.fn()
+		editor.removeNodeByKey = jest.fn()
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, change)
+		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('deleteNodeContents deals with selection across cells without last cell', () => {
-		const change = {
+		const editor = {
 			value: {
 				startBlock: {
 					key: 'mockStart'
@@ -153,15 +153,15 @@ describe('KeyDown Util', () => {
 				}
 			}
 		}
-		change.removeNodeByKey = jest.fn()
+		editor.removeNodeByKey = jest.fn()
 
 		const event = {
 			preventDefault: jest.fn()
 		}
 
-		KeyDownUtil.deleteNodeContents(event, change)
+		KeyDownUtil.deleteNodeContents(event, editor, jest.fn())
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 })

@@ -23,7 +23,7 @@ describe('List Editor Node', () => {
 	})
 
 	test('List component toggles type', () => {
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -48,10 +48,7 @@ describe('List Editor Node', () => {
 						]
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -62,7 +59,7 @@ describe('List Editor Node', () => {
 	})
 
 	test('List component toggles type from unordered to ordered', () => {
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -87,10 +84,7 @@ describe('List Editor Node', () => {
 						]
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()

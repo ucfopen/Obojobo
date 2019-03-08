@@ -27,7 +27,8 @@ class EditorApp extends React.Component {
 			modalState: null,
 			navTargetId: null,
 			loading: true,
-			draftId: null
+			draftId: null,
+			draft: null
 		}
 
 		// Make Slate nodes generate with UUIDs
@@ -58,6 +59,7 @@ class EditorApp extends React.Component {
 				this.setState({
 					editorState: EditorStore.getState(),
 					draftId,
+					draft: draftModel,
 					model: obomodel,
 					loading: false
 				})
@@ -101,6 +103,7 @@ class EditorApp extends React.Component {
 						page={this.state.editorState.currentModel}
 						context={this.state.editorState.context}
 						model={this.state.model}
+						draft={this.state.draft}
 						draftId={this.state.draftId}
 					/>
 				</div>

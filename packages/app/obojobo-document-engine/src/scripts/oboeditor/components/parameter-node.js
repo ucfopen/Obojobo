@@ -7,9 +7,8 @@ import './parameter-node.scss'
 const Node = props => {
 	const handleSelectChange = event => {
 		const editor = props.editor
-		const change = editor.value.change()
 
-		change.setNodeByKey(props.node.key, {
+		return editor.setNodeByKey(props.node.key, {
 			data: {
 				current: event.target.value,
 				name: props.node.data.get('name'),
@@ -18,14 +17,12 @@ const Node = props => {
 				type: props.node.data.get('type')
 			}
 		})
-		editor.onChange(change)
 	}
 
 	const handleCheckChange = event => {
 		const editor = props.editor
-		const change = editor.value.change()
 
-		change.setNodeByKey(props.node.key, {
+		return editor.setNodeByKey(props.node.key, {
 			data: {
 				checked: event.target.checked,
 				name: props.node.data.get('name'),
@@ -33,7 +30,6 @@ const Node = props => {
 				type: props.node.data.get('type')
 			}
 		})
-		editor.onChange(change)
 	}
 
 	switch (props.node.data.get('type')) {
@@ -84,8 +80,8 @@ const Node = props => {
 	}
 }
 
-const isType = change => {
-	return change.value.blocks.some(block => {
+const isType = editor => {
+	return editor.value.blocks.some(block => {
 		return block.type === 'Parameter'
 	})
 }
@@ -141,26 +137,31 @@ const oboToSlate = ({ name, value, display, options, checked }) => {
 }
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case 'Parameter':
 				return <Node {...props} />
+			default:
+				return next()
 		}
 	},
-	onKeyDown(event, change) {
+	onKeyDown(event, editor, next) {
 		// See if any of the selected nodes are a parameter
-		const isParameter = isType(change)
-		if (!isParameter) return
+		const isParameter = isType(editor)
+		if (!isParameter) return next()
 
 		switch (event.key) {
 			case 'Backspace':
 			case 'Delete':
-				return KeyDownUtil.deleteNodeContents(event, change)
+				return KeyDownUtil.deleteNodeContents(event, editor, next)
 
 			case 'Enter':
 				// Disallows enter
 				event.preventDefault()
 				return true
+
+			default:
+				return next()
 		}
 	}
 }

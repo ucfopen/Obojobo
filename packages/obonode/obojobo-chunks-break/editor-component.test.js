@@ -21,6 +21,10 @@ describe('Break Editor Node', () => {
 	})
 
 	test('Node component toggles size to large', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
 		const component = mount(
 			<Break
 				isSelected={true}
@@ -29,6 +33,7 @@ describe('Break Editor Node', () => {
 						get: () => ({ width: 'normal' })
 					}
 				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -38,7 +43,11 @@ describe('Break Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Node component toggles size to large', () => {
+	test('Node component toggles size to normal', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
 		const component = mount(
 			<Break
 				isSelected={true}
@@ -47,6 +56,7 @@ describe('Break Editor Node', () => {
 						get: () => ({ width: 'large' })
 					}
 				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()

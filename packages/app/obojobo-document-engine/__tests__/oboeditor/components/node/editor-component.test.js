@@ -38,7 +38,7 @@ describe('Component Editor Node', () => {
 	})
 
 	test('Node component inserts node above', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -50,10 +50,7 @@ describe('Component Editor Node', () => {
 						get: () => ({ width: 'normal' })
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -67,7 +64,7 @@ describe('Component Editor Node', () => {
 	})
 
 	test('Node component inserts node below', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -80,10 +77,7 @@ describe('Component Editor Node', () => {
 					},
 					nodes: { size: 0 }
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()

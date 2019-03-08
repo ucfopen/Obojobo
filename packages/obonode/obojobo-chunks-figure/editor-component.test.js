@@ -85,7 +85,7 @@ describe('Figure Editor Node', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce('mockAltText')
 
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -97,10 +97,7 @@ describe('Figure Editor Node', () => {
 						get: () => ({})
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -109,7 +106,7 @@ describe('Figure Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(change.setNodeByKey).toBeCalledWith(
+		expect(editor.setNodeByKey).toBeCalledWith(
 			'mockKey',
 			expect.objectContaining({ data: { content: { alt: 'mockAltText' } } })
 		)
@@ -119,7 +116,7 @@ describe('Figure Editor Node', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -131,10 +128,7 @@ describe('Figure Editor Node', () => {
 						get: () => ({ alt: 'contentAlt' })
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -143,7 +137,7 @@ describe('Figure Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(change.setNodeByKey).toBeCalledWith(
+		expect(editor.setNodeByKey).toBeCalledWith(
 			'mockKey',
 			expect.objectContaining({ data: { content: { alt: 'contentAlt' } } })
 		)
@@ -153,7 +147,7 @@ describe('Figure Editor Node', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce('mockUrl')
 
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -167,10 +161,7 @@ describe('Figure Editor Node', () => {
 						}
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -179,7 +170,7 @@ describe('Figure Editor Node', () => {
 			.at(1)
 			.simulate('click')
 
-		expect(change.setNodeByKey).toBeCalledWith(
+		expect(editor.setNodeByKey).toBeCalledWith(
 			'mockKey',
 			expect.objectContaining({ data: { content: { url: 'mockUrl' } } })
 		)
@@ -189,7 +180,7 @@ describe('Figure Editor Node', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -203,10 +194,7 @@ describe('Figure Editor Node', () => {
 						})
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -215,14 +203,14 @@ describe('Figure Editor Node', () => {
 			.at(1)
 			.simulate('click')
 
-		expect(change.setNodeByKey).toBeCalledWith(
+		expect(editor.setNodeByKey).toBeCalledWith(
 			'mockKey',
 			expect.objectContaining({ data: { content: { url: 'contentUrl' } } })
 		)
 	})
 
 	test('Figure component deletes self', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -236,10 +224,7 @@ describe('Figure Editor Node', () => {
 						}
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -248,11 +233,11 @@ describe('Figure Editor Node', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
-	test('Figure component changes size', () => {
-		const change = {
+	test('Figure component edits size', () => {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -266,10 +251,7 @@ describe('Figure Editor Node', () => {
 						}
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -282,7 +264,7 @@ describe('Figure Editor Node', () => {
 			target: { value: 'small' }
 		})
 
-		expect(change.setNodeByKey).toBeCalledWith(
+		expect(editor.setNodeByKey).toBeCalledWith(
 			'mockKey',
 			expect.objectContaining({
 				data: {
@@ -296,7 +278,7 @@ describe('Figure Editor Node', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(100).mockReturnValueOnce(200)
 
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -310,10 +292,7 @@ describe('Figure Editor Node', () => {
 						}
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -321,7 +300,7 @@ describe('Figure Editor Node', () => {
 			target: { value: 'custom' }
 		})
 
-		expect(change.setNodeByKey).toBeCalledWith(
+		expect(editor.setNodeByKey).toBeCalledWith(
 			'mockKey',
 			expect.objectContaining({
 				data: {

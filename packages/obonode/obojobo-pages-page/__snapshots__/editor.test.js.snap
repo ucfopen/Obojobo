@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Page editor plugins.renderNode calls next 1`] = `undefined`;
+
 exports[`Page editor plugins.renderNode renders a solution when passed 1`] = `
 <Page
   attributes={

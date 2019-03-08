@@ -8,10 +8,12 @@ import Converter from './converter'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case MCCHOICE_NODE:
 				return <Node {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
 	schema: Schema

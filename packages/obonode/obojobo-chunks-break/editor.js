@@ -10,10 +10,12 @@ import Converter from './converter'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case BREAK_NODE:
 				return <Node {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
 	schema: Schema

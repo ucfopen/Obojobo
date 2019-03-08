@@ -10,24 +10,30 @@ import Converter from './converter'
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case HTML_NODE:
 				return <Node {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
-	onKeyDown(event, change) {
-		const isHTML = change.value.blocks.some(block => block.type === HTML_NODE)
-		if (!isHTML) return
+	onKeyDown(event, editor, next) {
+		const isHTML = editor.value.blocks.some(block => block.type === HTML_NODE)
+		if (!isHTML) return next()
 
 		switch (event.key) {
+			// Insert a softbreak on enter
 			case 'Enter':
 				event.preventDefault()
-				return change.insertText('\n')
+				return editor.insertText('\n')
 
 			case 'Tab':
 				event.preventDefault()
-				return change.insertText('\t')
+				return editor.insertText('\t')
+
+			default:
+				return next()
 		}
 	},
 	schema: Schema

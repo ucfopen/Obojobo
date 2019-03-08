@@ -1,7 +1,9 @@
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
+import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
+
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
 const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
@@ -13,43 +15,41 @@ const schema = {
 			nodes: [
 				{
 					match: [{ type: CHOICE_LIST_NODE }],
-					min: 1,
-					max: 1
+					min: 1
 				},
 				{
 					match: [{ type: SETTINGS_NODE }],
-					min: 1,
-					max: 1
+					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create({
 								type: CHOICE_LIST_NODE
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 
 						const block = Block.create({
 							type: SETTINGS_NODE
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						if (index === 0) {
 							const block = Block.create({
 								type: CHOICE_LIST_NODE
 							})
-							return change.wrapBlockByKey(child.key, block)
+							return editor.wrapBlockByKey(child.key, block)
 						}
 
 						const block = Block.create({
 							type: SETTINGS_NODE
 						})
-						return change.wrapBlockByKey(child.key, block)
+						return editor.wrapBlockByKey(child.key, block)
 					}
 				}
 			}
@@ -61,22 +61,22 @@ const schema = {
 					min: 1
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: MCCHOICE_NODE,
 							data: { content: { score: 0 } }
 						})
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						const block = Block.create({
 							type: MCCHOICE_NODE,
 							data: { content: { score: 0 } }
 						})
-						return change.wrapBlockByKey(child.key, block)
+						return editor.wrapBlockByKey(child.key, block)
 					}
 				}
 			}
@@ -85,14 +85,13 @@ const schema = {
 			nodes: [
 				{
 					match: [{ type: 'Parameter' }],
-					min: 2,
-					max: 2
+					min: 2
 				}
 			],
-			normalize: (change, error) => {
+			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
-					case CHILD_REQUIRED: {
+					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
 								ParameterNode.helpers.oboToSlate({
@@ -102,7 +101,7 @@ const schema = {
 									options: ['pick-one', 'pick-all']
 								})
 							)
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
 							ParameterNode.helpers.oboToSlate({
@@ -112,10 +111,10 @@ const schema = {
 								checked: true
 							})
 						)
-						return change.insertNodeByKey(node.key, index, block)
+						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return change.withoutNormalization(c => {
+						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)
 							if (index === 0) {
 								const block = Block.create(

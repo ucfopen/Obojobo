@@ -17,47 +17,82 @@ describe('Figure editor', () => {
 			}
 		}
 
-		expect(Figure.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Figure.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(Figure.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.renderPlaceholder exits when not relevent', () => {
 		expect(
-			Figure.plugins.renderPlaceholder({
-				node: {
-					object: 'text'
-				}
-			})
+			Figure.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'text'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 
 		expect(
-			Figure.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: 'mockType'
-				}
-			})
+			Figure.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: 'mockType'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 
 		expect(
-			Figure.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: FIGURE_NODE,
-					text: 'Some text'
-				}
-			})
+			Figure.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: FIGURE_NODE,
+						text: 'Some text'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 	})
 
 	test('plugins.renderPlaceholder renders a placeholder', () => {
 		expect(
-			Figure.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: FIGURE_NODE,
-					text: ''
-				}
-			})
+			Figure.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: FIGURE_NODE,
+						text: ''
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 	})
 })

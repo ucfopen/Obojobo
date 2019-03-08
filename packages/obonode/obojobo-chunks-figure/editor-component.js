@@ -11,12 +11,11 @@ class Figure extends React.Component {
 
 	handleAltChange() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
 		const newAltText = window.prompt('Enter the new alt text:', content.alt) || content.alt
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					alt: newAltText,
@@ -27,17 +26,15 @@ class Figure extends React.Component {
 				}
 			}
 		})
-		editor.onChange(change)
 	}
 
 	handleURLChange() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
 		const newURL = window.prompt('Enter the new URL:', content.url) || content.url
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					url: newURL,
@@ -48,7 +45,6 @@ class Figure extends React.Component {
 				}
 			}
 		})
-		editor.onChange(change)
 	}
 
 	handleSizeChange(event) {
@@ -63,9 +59,8 @@ class Figure extends React.Component {
 		}
 
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					url: content.url,
@@ -76,16 +71,12 @@ class Figure extends React.Component {
 				}
 			}
 		})
-		editor.onChange(change)
 	}
 
 	deleteNode() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 
 	renderEditToolbar() {
