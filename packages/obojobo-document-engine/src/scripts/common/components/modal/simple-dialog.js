@@ -6,9 +6,28 @@ import ModalUtil from '../../../common/util/modal-util'
 import Dialog from '../../../common/components/modal/dialog'
 
 class SimpleDialog extends React.Component {
+	constructor() {
+		super()
+		this.boundKeyUp = this.onKeyUp.bind(this)
+	}
+
+	componentDidMount() {
+		document.addEventListener('keyup', this.boundKeyUp)
+	}
+
+	componentWillUnmount() {
+		document.removeEventListener('keyup', this.boundKeyUp)
+	}
+
 	focusOnFirstElement() {
 		if (this.props.focusOnFirstElement) {
 			return this.props.focusOnFirstElement()
+		}
+	}
+
+	onKeyUp(event) {
+		if (event.key === 'Enter') {
+			this.props.onConfirm()
 		}
 	}
 

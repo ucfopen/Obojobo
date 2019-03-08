@@ -96,7 +96,7 @@ class RangeModal extends React.Component {
 								type="radio"
 								name="type"
 								value="single"
-								id="editor--sections--assessment--post-assessment--range-modal--type"
+								id="editor--sections--assessment--post-assessment--range-modal--type-single"
 								ref={'input'}
 								checked={type === 'single'}
 								onChange={this.onCheckType.bind(this)}
