@@ -34,16 +34,14 @@ class MathEquation extends React.Component {
 
 	changeProperties(content) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		ModalUtil.hide()
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content
 			}
 		})
-		editor.onChange(change)
 	}
 
 	renderEmptyEquation() {

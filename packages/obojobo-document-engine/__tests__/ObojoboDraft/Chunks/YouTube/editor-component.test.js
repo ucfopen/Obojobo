@@ -25,8 +25,8 @@ describe('YouTube Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('YouTube component changes input', () => {
-		const change = {
+	test('YouTube component edits input', () => {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -35,16 +35,13 @@ describe('YouTube Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { videoId: 'mockId'}
+							return { videoId: 'mockId' }
 						}
 					}
 				}}
 				isFocused={true}
 				isSelected={true}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -60,7 +57,7 @@ describe('YouTube Editor Node', () => {
 	})
 
 	test('handleSourceChange sets the nodes content', () => {
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -75,10 +72,7 @@ describe('YouTube Editor Node', () => {
 				}}
 				isFocused={true}
 				isSelected={true}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 

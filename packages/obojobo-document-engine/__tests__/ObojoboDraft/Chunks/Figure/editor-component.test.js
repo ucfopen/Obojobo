@@ -85,8 +85,8 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('Figure component edits properties', () => {
-		const change = {
-			removeNodeByKey: jest.fn()
+		const editor = {
+			setNodeByKey: jest.fn()
 		}
 
 		const component = mount(
@@ -97,10 +97,7 @@ describe('Figure Editor Node', () => {
 						get: () => ({})
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -150,7 +147,7 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('changeProperties sets the nodes content', () => {
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -162,10 +159,7 @@ describe('Figure Editor Node', () => {
 						get: () => ({})
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -175,7 +169,7 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('Figure component deletes self', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -189,10 +183,7 @@ describe('Figure Editor Node', () => {
 						}
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
@@ -201,6 +192,6 @@ describe('Figure Editor Node', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 })

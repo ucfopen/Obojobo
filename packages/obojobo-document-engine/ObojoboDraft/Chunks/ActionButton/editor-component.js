@@ -33,29 +33,24 @@ class ActionButton extends React.Component {
 		ModalUtil.hide()
 
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
 		content.actions.push(newAction)
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
-
-		editor.onChange(change)
 	}
 
 	removeAction(index) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 		const content = this.props.node.data.get('content')
 
 		content.actions.splice(index, 1)
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
-		editor.onChange(change)
 	}
 
 	renderTriggers() {

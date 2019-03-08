@@ -3,7 +3,7 @@
 exports[`MCAssessment Question component 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-mockViewState is-mode-practice"
+  className="component obojobo-draft--chunks--question is-mockViewState is-mode-practice is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -135,7 +135,7 @@ exports[`MCAssessment Question component 1`] = `
 exports[`MCAssessment Question component answered correctly 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-mode-practice"
+  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-mode-practice is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -267,7 +267,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
 exports[`MCAssessment Question component answered incorrectly 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-mode-practice"
+  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-mode-practice is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -399,7 +399,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
 exports[`MCAssessment Question component in practice mode 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-mockViewState is-mode-practice"
+  className="component obojobo-draft--chunks--question is-mockViewState is-mode-practice is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -531,7 +531,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
 exports[`MCAssessment Question component in review mode 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-active is-mode-review"
+  className="component obojobo-draft--chunks--question is-active is-mode-review is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}

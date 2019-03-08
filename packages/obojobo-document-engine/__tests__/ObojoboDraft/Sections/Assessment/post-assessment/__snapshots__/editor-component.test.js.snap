@@ -77,6 +77,8 @@ Object {
 }
 `;
 
+exports[`Actions editor plugins.renderNode calls next 1`] = `undefined`;
+
 exports[`Actions editor plugins.renderNode renders a score action when passed 1`] = `
 <Score
   attributes={

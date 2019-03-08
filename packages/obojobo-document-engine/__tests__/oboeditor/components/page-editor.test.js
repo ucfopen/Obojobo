@@ -7,8 +7,6 @@ jest.mock('slate-react')
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import APIUtil from 'src/scripts/viewer/util/api-util'
 jest.mock('src/scripts/viewer/util/api-util')
-import ModalUtil from 'src/scripts/common/util/modal-util'
-jest.mock('src/scripts/common/util/modal-util')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -223,30 +221,7 @@ describe('PageEditor', () => {
 		expect(APIUtil.postDraft).toHaveBeenCalle
 	})
 
-	test('EditorNav component toggles mark', () => {
-		window.getSelection = jest.fn().mockReturnValueOnce({
-			rangeCount: {
-				nodeType: 'mockType'
-			}
-		})
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = mount(<PageEditor {...props} />)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(2)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('EditorNav component changes value', () => {
+	test('EditorNav component alters value', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
 			page: {
@@ -262,87 +237,20 @@ describe('PageEditor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('onKeyDown does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
+	test('EditorNav component stores refrence', () => {
+		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
 			page: {
 				attributes: { children: [] },
 				get: jest.fn()
 			}
 		}
-		const component = shallow(<PageEditor {...props} />)
+		const component = mount(<PageEditor {...props} />)
 
-		component.find('.obojobo-draft--pages--page').simulate('keyDown', { key: 'R', metaKey: true })
+		const instance = component.instance()
 
-		expect(ModalUtil.show).not.toHaveBeenCalled()
-	})
+		instance.ref('mockEditor')
 
-	test('onKeyDown does not toggle mark if CTRL/CMD + k key is pressed', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = shallow(<PageEditor {...props} />)
-
-		component
-			.find('.obojobo-draft--pages--page')
-			.simulate('keyDown', { key: 'k', metaKey: true, preventDefault: jest.fn() })
-
-		expect(ModalUtil.show).toHaveBeenCalled()
-	})
-
-	test('changeLinkValue doesnt add link if href is empty', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = shallow(<PageEditor {...props} />)
-		const change = {
-			removeMark: jest.fn(),
-			addMark: jest.fn()
-		}
-		component.setState({
-			value: {
-				change: () => change,
-				marks: [
-					{ type: 'a', data: { toJSON: jest.fn() } },
-					{ type: 'mock mark', data: { toJSON: jest.fn() } }
-				]
-			}
-		})
-
-		component.instance().changeLinkValue(' ')
-
-		expect(ModalUtil.hide).toHaveBeenCalled()
-	})
-
-	test('changeLinkValue adds link', () => {
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = shallow(<PageEditor {...props} />)
-		const change = {
-			removeMark: jest.fn(),
-			addMark: jest.fn()
-		}
-		component.setState({
-			value: {
-				change: () => change,
-				marks: [
-					{ type: 'a', data: { toJSON: jest.fn() } },
-					{ type: 'mock mark', data: { toJSON: jest.fn() } }
-				]
-			}
-		})
-
-		component.instance().changeLinkValue('mock link')
-
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(instance.getEditor()).toEqual('mockEditor')
 	})
 })

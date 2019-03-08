@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`QuestionBank editor plugins.renderNode calls next 1`] = `undefined`;
+
 exports[`QuestionBank editor plugins.renderNode renders a question bank when passed 1`] = `
 <QuestionBank
   attributes={

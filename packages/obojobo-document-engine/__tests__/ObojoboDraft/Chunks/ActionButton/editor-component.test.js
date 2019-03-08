@@ -64,24 +64,14 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
 		const component = mount(
-			<ActionButton
-				node={nodeData}
-				isSelected={true}
-				isFocused={true}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
+			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
 		)
 		const tree = component.html()
-
-		//expect(tree).toEqual(false)
 
 		component
 			.find('button')
@@ -107,20 +97,12 @@ describe('ActionButton Editor Node', () => {
 				}
 			}
 		}
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
 		const component = mount(
-			<ActionButton
-				node={nodeData}
-				isSelected={true}
-				isFocused={true}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
+			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
 		)
 		const tree = component.html()
 
@@ -148,18 +130,40 @@ describe('ActionButton Editor Node', () => {
 			}
 		}
 
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
 		const component = mount(
-			<ActionButton
-				node={nodeData}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
+			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
+		)
+
+		component.instance().addAction({ mockProperties: 'mock value' })
+
+		expect(ModalUtil.hide).toHaveBeenCalled()
+	})
+
+	test('ActionButton deletes a trigger', () => {
+		const nodeData = {
+			data: {
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
+					}
+				}
+			}
+		}
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
 		)
 
 		component.instance().addAction({ mockProperties: 'mock value' })

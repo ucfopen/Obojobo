@@ -26,18 +26,16 @@ class YouTube extends React.Component {
 
 	handleSourceChange(videoId) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		ModalUtil.hide()
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content: {
 					videoId: videoId
 				}
 			}
 		})
-		editor.onChange(change)
 	}
 
 	renderNoVideo() {

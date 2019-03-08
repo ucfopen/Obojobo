@@ -1,9 +1,9 @@
 import React from 'react'
 import Common from 'Common'
 import { Block } from 'slate'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import Page from '../../../Pages/Page/editor'
+import SchemaViolations from '../../../../src/scripts/oboeditor/util/schema-violations'
 import RangeModal from './range-modal'
 
 // A single score action
@@ -12,6 +12,7 @@ const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
+const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 
@@ -32,19 +33,14 @@ class Score extends React.Component {
 		ModalUtil.hide()
 
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.setNodeByKey(this.props.node.key, { data: { for: range } })
-		editor.onChange(change)
+		return editor.setNodeByKey(this.props.node.key, { data: { for: range } })
 	}
 
 	deleteNode() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 
 	render() {
@@ -73,6 +69,10 @@ class Score extends React.Component {
 }
 
 class Node extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+
 	showRangeModal() {
 		ModalUtil.show(<RangeModal for={'100'} onConfirm={this.addAction.bind(this)} />)
 	}
@@ -81,15 +81,13 @@ class Node extends React.Component {
 		ModalUtil.hide()
 
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		const newScore = Block.create({
 			type: SCORE_NODE,
 			data: { for: range }
 		})
-		change.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newScore)
 
-		editor.onChange(change)
+		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newScore)
 	}
 
 	render() {
@@ -144,30 +142,32 @@ const oboToSlate = node => {
 }
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case SCORE_NODE:
 				return <Score {...props} {...props.attributes} />
 			case ACTIONS_NODE:
 				return <Node {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
 	schema: {
 		blocks: {
 			'ObojoboDraft.Sections.Assessment.ScoreActions': {
 				nodes: [{ match: [{ type: SCORE_NODE }], min: 1 }],
-				normalize: (change, error) => {
+				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
-						case CHILD_REQUIRED: {
+						case CHILD_MIN_INVALID: {
 							const block = Block.create({
 								type: SCORE_NODE,
 								data: { for: '[0,100]' }
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
+							return editor.wrapBlockByKey(child.key, {
 								type: SCORE_NODE,
 								data: { for: '[0,100]' }
 							})
@@ -176,18 +176,18 @@ const plugins = {
 				}
 			},
 			'ObojoboDraft.Sections.Assessment.ScoreAction': {
-				nodes: [{ match: [{ type: PAGE_NODE }], min: 1, max: 1 }],
-				normalize: (change, error) => {
+				nodes: [{ match: [{ type: PAGE_NODE }], min: 1 }],
+				normalize: (editor, error) => {
 					const { node, child, index } = error
 					switch (error.code) {
-						case CHILD_REQUIRED: {
+						case CHILD_MIN_INVALID: {
 							const block = Block.create({
 								type: PAGE_NODE
 							})
-							return change.insertNodeByKey(node.key, index, block)
+							return editor.insertNodeByKey(node.key, index, block)
 						}
 						case CHILD_TYPE_INVALID: {
-							return change.wrapBlockByKey(child.key, {
+							return editor.wrapBlockByKey(child.key, {
 								type: PAGE_NODE
 							})
 						}

@@ -12,7 +12,7 @@ const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
 const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case MCASSESSMENT_NODE:
 				return <Node {...props} {...props.attributes} />
@@ -20,6 +20,8 @@ const plugins = {
 				return <Settings {...props} {...props.attributes} />
 			case CHOICE_LIST_NODE:
 				return <ChoiceList {...props} {...props.attributes} />
+			default:
+				return next()
 		}
 	},
 	schema: Schema

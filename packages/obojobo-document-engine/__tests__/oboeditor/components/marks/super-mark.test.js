@@ -8,9 +8,9 @@ describe('SuperMark', () => {
 			toggleMark: jest.fn()
 		}
 
-		keyDown.onKeyDown({}, mockChange)
-		expect(keyDown.renderMark({ mark: { type: 'sup' } })).toMatchSnapshot()
-		expect(keyDown.renderMark({ mark: { type: 'fake' } })).toMatchSnapshot()
+		keyDown.onKeyDown({}, mockChange, jest.fn())
+		expect(keyDown.renderMark({ mark: { type: 'sup' } }, null, jest.fn())).toMatchSnapshot()
+		expect(keyDown.renderMark({ mark: { type: 'fake' } }, null, jest.fn())).toMatchSnapshot()
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
@@ -21,7 +21,7 @@ describe('SuperMark', () => {
 		const mockChange = {
 			toggleMark: jest.fn()
 		}
-		keyDown.onKeyDown({ key: 'R' }, mockChange)
+		keyDown.onKeyDown({ key: 'R' }, mockChange, jest.fn())
 
 		expect(mockChange.toggleMark).not.toHaveBeenCalled()
 	})
@@ -55,7 +55,7 @@ describe('SuperMark', () => {
 			preventDefault: jest.fn()
 		}
 
-		keyDown.onKeyDown(mockEvent, mockChange)
+		keyDown.onKeyDown(mockEvent, mockChange, jest.fn())
 
 		expect(mockChange.removeMark).toHaveBeenCalled()
 	})
@@ -83,7 +83,7 @@ describe('SuperMark', () => {
 			preventDefault: jest.fn()
 		}
 
-		keyDown.onKeyDown(mockEvent, mockChange)
+		keyDown.onKeyDown(mockEvent, mockChange, jest.fn())
 
 		expect(mockChange.addMark).toHaveBeenCalled()
 	})

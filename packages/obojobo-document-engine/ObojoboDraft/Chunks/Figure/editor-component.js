@@ -30,7 +30,6 @@ class Figure extends React.Component {
 
 	handleClick(event) {
 		if (!this.node || this.node.contains(event.target)) return
-
 		this.setState({ imageIsSelected: false })
 	}
 
@@ -49,25 +48,20 @@ class Figure extends React.Component {
 
 	changeProperties(content) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		ModalUtil.hide()
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content
 			}
 		})
-		editor.onChange(change)
 	}
 
 	deleteNode() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 
 	renderEditToolbar() {
