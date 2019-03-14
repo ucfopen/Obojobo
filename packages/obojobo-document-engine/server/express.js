@@ -9,6 +9,7 @@ const logger = oboRequire('logger')
 const startAttempt = require('./attempt-start').startAttempt
 const resumeAttempt = require('./attempt-resume').resumeAttempt
 const endAttempt = require('./attempt-end').endAttempt
+const reviewAttempt = require('./attempt-review').reviewAttempt
 const logAndRespondToUnexpected = require('./util').logAndRespondToUnexpected
 
 app.get('/api/lti/state/draft/:draftId', (req, res) => {
@@ -100,6 +101,8 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res) => {
 			logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, error)
 		})
 })
+
+app.post('/api/assessments/attempt/review', (req, res) => reviewAttempt(req, res))
 
 app.post('/api/assessments/clear-preview-scores', (req, res) => {
 	let assessmentScoreIds

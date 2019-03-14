@@ -3,6 +3,8 @@ import React from 'react'
 import Common from 'Common'
 import Viewer from 'Viewer'
 
+import APIUtil from '../../../../../src/scripts/viewer/util/api-util'
+
 import { FOCUS_ON_ASSESSMENT_CONTENT } from '../../assessment-event-constants'
 
 const { OboModel } = Common.models
@@ -14,9 +16,17 @@ import LTIStatus from './lti-status'
 import FullReview from '../full-review'
 
 class AssessmentPostTest extends React.Component {
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			attempts: null,
+			isFetching: true
+		}
+
 		this.boundFocusOnContent = this.focusOnContent.bind(this)
+
+		this.fetchAttemptReviews()
 	}
 
 	componentWillMount() {
@@ -29,6 +39,30 @@ class AssessmentPostTest extends React.Component {
 
 	focusOnContent() {
 		focus(this.refs.h1)
+	}
+
+	fetchAttemptReviews() {
+		const attemptIds = []
+
+		const attempts = AssessmentUtil.getAllAttempts(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+
+		attempts.forEach(attempt => {
+			attemptIds.push(attempt.attemptId)
+		})
+
+		return APIUtil.reviewAttempt(attemptIds).then(result => {
+			attempts.forEach(attempt => {
+				attempt.state.questionModels = result[attempt.attemptId]
+			})
+
+			this.setState({
+				attempts,
+				isFetching: false
+			})
+		})
 	}
 
 	render() {
@@ -125,7 +159,9 @@ class AssessmentPostTest extends React.Component {
 				</div>
 				<div className="attempt-history">
 					<h1>Attempt History:</h1>
-					<FullReview {...props} showFullReview={showFullReview} />
+					{this.state.isFetching ? null : (
+						<FullReview {...props} showFullReview={showFullReview} attempts={this.state.attempts} />
+					)}
 				</div>
 			</div>
 		)

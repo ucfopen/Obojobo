@@ -89,6 +89,10 @@ const APIUtil = {
 		)
 	},
 
+	reviewAttempt(attemptIds) {
+		return APIUtil.post(`/api/assessments/attempt/review`, { attemptIds }).then(processJsonResults)
+	},
+
 	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
 		return APIUtil.post('/api/lti/sendAssessmentScore', {
 			draftId,

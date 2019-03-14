@@ -27,10 +27,7 @@ class AssessmentReviewView extends React.Component {
 	render() {
 		const attemptReviewComponents = {}
 
-		const attempts = AssessmentUtil.getAllAttempts(
-			this.props.moduleData.assessmentState,
-			this.props.model
-		)
+		const attempts = this.props.attempts
 		const highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(
 			this.props.moduleData.assessmentState,
 			this.props.model
@@ -98,7 +95,8 @@ class AssessmentReviewView extends React.Component {
 						className={`review ${this.props.showFullReview ? 'is-full-review' : 'is-basic-review'}`}
 					>
 						{attempt.questionScores.map((scoreObj, index) => {
-							const questionModel = OboModel.models[scoreObj.id]
+							const questionModel = OboModel.create(attempt.state.questionModels[scoreObj.id])
+
 							const QuestionComponent = questionModel.getComponentClass()
 
 							return this.props.showFullReview ? (

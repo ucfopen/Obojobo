@@ -14,6 +14,7 @@ const getRandom = () => Math.random()
 // a client requests to start an attempt, so the client can load the questions.
 const getFullQuestionsFromDraftTree = (draftTree, questionMetadata) => {
 	const questions = []
+
 	for (const question of questionMetadata) {
 		// the client does not need question bank nodes to render the assessment
 		if (question.type === QUESTION_NODE_TYPE) {
