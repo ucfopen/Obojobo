@@ -5,52 +5,45 @@ const VisitModel = oboRequire('models/visit')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
-const resumeAttempt = (req, res) => {
-	const attempt = req.body.attempt
-	let draftDocument = null
-	let currentUser = null
-	let assessmentNode
-	let isPreview
+const resumeAttempt = async (req, res) => {
+	try {
+		const attempt = req.body.attempt
 
-	return req
-		.requireCurrentUser()
-		.then(user => {
-			currentUser = user
-			return VisitModel.fetchById(req.body.visitId)
-		})
-		.then(visit => {
-			isPreview = visit.is_preview
-			return req.requireCurrentDocument()
-		})
-		.then(currentDocument => {
-			draftDocument = currentDocument
-			assessmentNode = currentDocument.getChildNodeById(attempt.assessmentId)
+		const currentUser = await req.requireCurrentUser()
 
-			return Promise.all(
-				attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res)
-			)
-		})
-		.then(() => {
-			attempt.questions = []
-			for (const node of attempt.state.chosen) {
-				if (node.type === QUESTION_NODE_TYPE) {
-					attempt.questions.push(assessmentNode.draftTree.getChildNodeById(node.id).toObject())
-				}
+		const visit = await VisitModel.fetchById(req.body.visitId)
+
+		const isPreview = visit.is_preview
+
+		const draftDocument = await req.requireCurrentDocument()
+
+		const assessmentNode = draftDocument.getChildNodeById(attempt.assessmentId)
+
+		await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
+
+		attempt.questions = []
+
+		for (const node of attempt.state.chosen) {
+			if (node.type === QUESTION_NODE_TYPE) {
+				attempt.questions.push(assessmentNode.draftTree.getChildNodeById(node.id).toObject())
 			}
-		})
-		.then(() => {
-			return insertAttemptResumeEvents(
-				currentUser,
-				draftDocument,
-				attempt.assessmentId,
-				attempt.id,
-				attempt.number,
-				isPreview,
-				req.hostname,
-				req.connection.remoteAddress
-			)
-		})
-		.then(() => res.success(attempt))
+		}
+
+		await insertAttemptResumeEvents(
+			currentUser,
+			draftDocument,
+			attempt.assessmentId,
+			attempt.id,
+			attempt.number,
+			isPreview,
+			req.hostname,
+			req.connection.remoteAddress
+		)
+
+		res.success(attempt)
+	} catch (ex) {
+		console.log(ex)
+	}
 }
 
 const insertAttemptResumeEvents = (
