@@ -103,7 +103,9 @@ exports[`MCAssessment Question component 1`] = `
                 Read an explanation of the answer
               </button>
             </div>
-            <span />
+            <div
+              className="solution-container-animation-placeholder"
+            />
           </div>
         </fieldset>
       </form>
@@ -230,7 +232,9 @@ exports[`MCAssessment Question component answered correctly 1`] = `
                 Read an explanation of the answer
               </button>
             </div>
-            <span />
+            <div
+              className="solution-container-animation-placeholder"
+            />
           </div>
         </fieldset>
       </form>
@@ -357,7 +361,9 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
                 Read an explanation of the answer
               </button>
             </div>
-            <span />
+            <div
+              className="solution-container-animation-placeholder"
+            />
           </div>
         </fieldset>
       </form>
@@ -484,7 +490,9 @@ exports[`MCAssessment Question component in practice mode 1`] = `
                 Read an explanation of the answer
               </button>
             </div>
-            <span />
+            <div
+              className="solution-container-animation-placeholder"
+            />
           </div>
         </fieldset>
       </form>
@@ -597,7 +605,9 @@ exports[`MCAssessment Question component in review mode 1`] = `
                 Read an explanation of the answer
               </button>
             </div>
-            <span />
+            <div
+              className="solution-container-animation-placeholder"
+            />
           </div>
         </fieldset>
       </form>

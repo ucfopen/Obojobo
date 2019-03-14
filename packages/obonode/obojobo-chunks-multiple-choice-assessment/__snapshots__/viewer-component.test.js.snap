@@ -183,7 +183,9 @@ exports[`MCAssessment MCAssessment component 1`] = `
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -372,7 +374,9 @@ exports[`MCAssessment MCAssessment component not shuffled 1`] = `
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -607,7 +611,9 @@ exports[`MCAssessment MCAssessment component review mode 1`] = `
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -682,7 +688,9 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -757,7 +765,9 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -946,7 +956,9 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -1035,7 +1047,9 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -1124,7 +1138,9 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -1199,7 +1215,9 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -1388,7 +1406,9 @@ exports[`MCAssessment MCAssessment component with labels 1`] = `
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -1449,7 +1469,9 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -1688,7 +1710,9 @@ exports[`MCAssessment MCAssessment component with one response 1`] = `
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>
@@ -1930,7 +1954,9 @@ exports[`MCAssessment MCAssessment component with sortedIds 1`] = `
           Read an explanation of the answer
         </button>
       </div>
-      <span />
+      <div
+        className="solution-container-animation-placeholder"
+      />
     </div>
   </fieldset>
 </form>

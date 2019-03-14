@@ -48,14 +48,14 @@
 					opacity $duration-animation-default * 2;
 			}
 
-			&.feedback-leave {
+			&.feedback-exit {
 				max-height: 60em;
 				margin-bottom: 1em;
 				overflow: hidden;
 				opacity: 1;
 			}
 
-			&.feedback-leave.feedback-exit-active {
+			&.feedback-exit.feedback-exit-active {
 				max-height: 0;
 				margin-bottom: 0;
 				opacity: 0;

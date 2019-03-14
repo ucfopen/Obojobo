@@ -1,5 +1,6 @@
 import { mount, shallow } from 'enzyme'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
 import DOMUtil from 'obojobo-document-engine/src/scripts/common/page/dom-util'
 import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
@@ -9,7 +10,6 @@ import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/questi
 import React from 'react'
 import _ from 'underscore'
 import renderer from 'react-test-renderer'
-import Common from 'obojobo-document-engine/src/scripts/common'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
@@ -1860,5 +1860,69 @@ describe('MCAssessment', () => {
 		component.instance().componentDidUpdate()
 		expect(component.instance().nextFocus).not.toBeDefined()
 		expect(FocusUtil.focusOnContent).toHaveBeenCalledWith('parent', false)
+	})
+
+	test('animationOnEntered sets solution container height', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {},
+			focusState: {}
+		}
+		const parent = OboModel.create(questionJSON)
+		const model = parent.children.models[0]
+
+		QuestionUtil.getData.mockReturnValueOnce(false)
+
+		const component = shallow(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+		component.instance().solutionContainerRef = {
+			getBoundingClientRect: () => ({
+				height: 52
+			})
+		}
+		component.instance().animationOnEntered()
+		expect(component.instance().solutionContainerHeight).toBe('52px')
+	})
+
+	test('animationOnExit sets height of given element', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {},
+			focusState: {}
+		}
+		const parent = OboModel.create(questionJSON)
+		const model = parent.children.models[0]
+
+		QuestionUtil.getData.mockReturnValueOnce(false)
+
+		const component = shallow(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+		const el = { style: { height: null } }
+		component.instance().solutionContainerHeight = '20px'
+		component.instance().animationOnExit(el)
+
+		expect(el.style.height).toBe('20px')
+	})
+
+	test('animationOnExiting sets height of given element to 0', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {},
+			focusState: {}
+		}
+		const parent = OboModel.create(questionJSON)
+		const model = parent.children.models[0]
+
+		QuestionUtil.getData.mockReturnValueOnce(false)
+
+		const component = shallow(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+		)
+		const el = { style: { height: null } }
+		component.instance().animationOnExiting(el)
+
+		expect(el.style.height).toBe(0)
 	})
 })

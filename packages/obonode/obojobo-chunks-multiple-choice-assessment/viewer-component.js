@@ -332,6 +332,19 @@ export default class MCAssessment extends React.Component {
 				)
 		}
 	}
+
+	animationOnEntered() {
+		this.solutionContainerHeight = `${this.solutionContainerRef.getBoundingClientRect().height}px`
+	}
+
+	animationOnExit(el) {
+		el.style.height = this.solutionContainerHeight
+	}
+
+	animationOnExiting(el) {
+		el.style.height = 0
+	}
+
 	render() {
 		const responseType = this.props.model.modelState.responseType
 		const isTypePickAll = responseType === 'pick-all'
@@ -391,19 +404,20 @@ export default class MCAssessment extends React.Component {
 						/>
 					) : null}
 					<CSSTransition
-						in={isShowingExplanationButtonValue}
-						classNames="solution"
+						in={isShowingExplanationButtonValue && true}
+						classNames="submit"
 						timeout={ANIMATION_TRANSITION_TIME_MS}
 					>
 						{isShowingExplanationButtonValue ? (
 							<MCAssessmentExplanation
-								ref={component => {
-									this.refExplanation = component
-								}}
-								isShowingExplanation={isShowingExplanationValue}
+								ref={component => (this.refExplanation = component)}
+								isShowingExplanation={isShowingExplanationValue && true}
 								solutionModel={this.props.model.parent.modelState.solution}
 								moduleData={this.props.moduleData}
 								animationTransitionTime={ANIMATION_TRANSITION_TIME_MS}
+								animationOnEntered={this.animationOnEntered}
+								animationOnExit={this.animationOnExit}
+								animationOnExiting={this.animationOnExiting}
 								onClickShowExplanation={this.onClickShowExplanation}
 								onClickHideExplanation={this.onClickHideExplanation}
 							/>

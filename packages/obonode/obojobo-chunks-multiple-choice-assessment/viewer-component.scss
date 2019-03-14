@@ -187,13 +187,13 @@
 			}
 		}
 
-		&.solution-enter {
+		&.submit-enter {
 			opacity: 0;
 			max-height: 0;
 			overflow: hidden;
 		}
 
-		&.solution-enter.solution-enter-active {
+		&.submit-enter.submit-enter-active {
 			opacity: 1;
 			max-height: 16em;
 
@@ -204,13 +204,13 @@
 			// transition-delay: $duration-animation-default * 2;
 		}
 
-		&.solution-leave {
+		&.submit-leave {
 			opacity: 1;
 			max-height: 16em;
 			overflow: hidden;
 		}
 
-		&.solution-leave.solution-exit-active {
+		&.submit-leave.submit-exit-active {
 			opacity: 0;
 			max-height: 0;
 
@@ -218,6 +218,10 @@
 			transition:
 				opacity $duration-animation-default * 2,
 				max-height $duration-animation-default * 2;
+		}
+
+		> .solution-container-animation-placeholder {
+			transition: height $duration-animation-default * 2;
 		}
 
 		.solution-container {
@@ -272,7 +276,7 @@
 					opacity $duration-animation-default * 2;
 			}
 
-			&.solution-leave {
+			&.solution-exit {
 				max-height: 60em;
 				margin-bottom: 1em;
 				border: 1px solid $color-shadow;
@@ -280,7 +284,7 @@
 				opacity: 1;
 			}
 
-			&.solution-leave.solution-exit-active {
+			&.solution-exit.solution-exit-active {
 				max-height: 0;
 				margin-bottom: 0;
 				border: 0 solid $color-transparent;
