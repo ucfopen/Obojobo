@@ -10,14 +10,12 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "TZ='America/New_York' jest --verbose",
-		"test:ci":
-			"TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"start": "webpack --watch",
 		"dev": "webpack-dev-server --colors --port 8090 --host 0.0.0.0",
 		"build": "webpack --mode production --optimize-minimize",
 		"build:dev": "webpack --mode development",
-		"build:minifysvg":
-			"find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
+		"build:minifysvg": "find ./ ! -path node_modules -type f -name '*.svg' ! -name '*.min.svg' -exec svgo {} --multipass --pretty --precision=2 \\;",
 		"generateModuleManifest": "node ./bin/generate_module_manifest.js",
 		"prettier:run": "prettier --write '{__{tests,mocks}__,src}/**/*.{js,scss}'",
 		"lint": "yarn lint:js && yarn lint:css",
@@ -25,14 +23,22 @@
 		"lint:css": "stylelint **/*.scss"
 	},
 	"lint-staged": {
+		"{__{tests,mocks}__,src}/**/*.js": [
+			"eslint"
+		],
+		"{__{tests,mocks}__,src}/**/*.scss": [
+			"stylelint"
+		],
 		"{__{tests,mocks}__,src}/**/*.{js,scss}": [
 			"prettier --write",
-			"eslint ",
-			"stylelint",
 			"git add"
 		]
 	},
-	"browserslist": ["> 1%", "last 2 versions", "not dead"],
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead"
+	],
 	"postcss": {
 		"parser": "postcss-scss",
 		"plugins": {}
@@ -63,8 +69,12 @@
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
-		"testMatch": ["**/__tests__/**/*.js?(x)"],
-		"setupFilesAfterEnv": ["./setupTests.js"],
+		"testMatch": [
+			"**/__tests__/**/*.js?(x)"
+		],
+		"setupFilesAfterEnv": [
+			"./setupTests.js"
+		],
 		"verbose": false,
 		"moduleNameMapper": {
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
@@ -72,9 +82,17 @@
 			"\\.scss$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
 		},
-		"moduleDirectories": ["<rootDir>", "node_modules"],
-		"collectCoverageFrom": ["src/scripts/**"],
-		"coverageReporters": ["text", "lcov"],
+		"moduleDirectories": [
+			"<rootDir>",
+			"node_modules"
+		],
+		"collectCoverageFrom": [
+			"src/scripts/**"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
 		"coveragePathIgnorePatterns": [
 			"<rootDir>/src/scripts/viewer/index.js",
 			"<rootDir>/src/scripts/viewer/app.js",

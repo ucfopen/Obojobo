@@ -28,10 +28,14 @@
 		"node": "^10.4.1"
 	},
 	"lint-staged": {
+		"**/*.js": [
+			"eslint"
+		],
+		"**/*.scss": [
+			"stylelint"
+		],
 		"**/*.{js,scss}": [
 			"prettier --write",
-			"eslint",
-			"stylelint",
 			"git add"
 		]
 	},
@@ -82,7 +86,9 @@
 		"lint-staged": "^6.1.1"
 	},
 	"jest": {
-		"setupFilesAfterEnv": ["./setup_tests.js"],
+		"setupFilesAfterEnv": [
+			"./setup_tests.js"
+		],
 		"collectCoverageFrom": [
 			"*.js",
 			"models/**/*.js",

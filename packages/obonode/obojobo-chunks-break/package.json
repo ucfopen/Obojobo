@@ -5,33 +5,45 @@
 	"description": "Break content chunk for Obojobo",
 	"scripts": {
 		"test": "TZ='America/New_York' jest --verbose",
-		"test:ci":
-			"TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
 		"prettier:run": "prettier --write '**/*.{js,scss}'"
 	},
 	"lint-staged": {
+		"**/*.js": [
+			"eslint"
+		],
+		"**/*.scss": [
+			"stylelint"
+		],
 		"**/*.{js,scss}": [
 			"prettier --write",
-			"eslint",
-			"stylelint",
 			"git add"
 		]
 	},
-	"dependencies":{
+	"dependencies": {
 		"obojobo-lib-utils": "1.0.0"
 	},
-	"devDependencies":{
+	"devDependencies": {
 		"lint-staged": "^6.1.1"
 	},
 	"jest": {
-		"testMatch": ["**/*.test.js"],
-		"setupFilesAfterEnv": ["obojobo-lib-utils/test-setup-chunks.js"],
+		"testMatch": [
+			"**/*.test.js"
+		],
+		"setupFilesAfterEnv": [
+			"obojobo-lib-utils/test-setup-chunks.js"
+		],
 		"verbose": false,
-		"coverageReporters": ["text", "lcov"],
-		"coveragePathIgnorePatterns": ["node_modules"],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
+		"coveragePathIgnorePatterns": [
+			"node_modules"
+		],
 		"moduleNameMapper": {
 			"^Common(.*)$": "obojobo-document-engine/src/scripts/common$1",
 			"\\.(svg|scss)$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
