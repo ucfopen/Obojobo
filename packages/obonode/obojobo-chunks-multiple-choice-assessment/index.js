@@ -2,6 +2,6 @@ module.exports = {
 	obojobo: {
 		viewerScripts: 'viewer.js',
 		editorScripts: 'editor.js',
-		serverOboNodes: ['server/mcassessment.js', 'server/mcchoice.js']
+		serverScripts: ['server/mcassessment.js', 'server/mcchoice.js']
 	}
 }
