@@ -1,12 +1,16 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--mc-assessment--mc-choice {
+	$color-border: transparentize($color-shadow, 0.25);
+
+	border-bottom: 1px solid $color-border;
+	padding-top: 0;
+	padding-bottom: 0;
 	list-style-type: none;
 	min-height: 3.5em;
 	position: relative;
 	transition: background 0.1s ease;
 	font-family: $font-default;
-	padding-bottom: 1em;
 	cursor: pointer;
 
 	> input {
@@ -92,35 +96,5 @@
 
 	&:hover {
 		background: transparentize($color-highlight, 0.85);
-	}
-
-	.correct-button {
-		position: relative;
-		top: 2.3em;
-		left: 0.5em;
-		font-size: inherit;
-		background: transparent;
-		border: none;
-	}
-
-	.add-feedback {
-		float: right;
-		font-size: 0.85em;
-		background-color: $color-bg2;
-		border: 1px solid transparentize($color-shadow, 0.2);
-		border-radius: $dimension-rounded-radius;
-		margin: 0.2em;
-	}
-
-	&.is-correct {
-		.correct-button {
-			color: $color-correct;
-		}
-	}
-
-	&.is-not-correct {
-		.correct-button {
-			color: $color-incorrect;
-		}
 	}
 }
