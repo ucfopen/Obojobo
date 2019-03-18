@@ -161,6 +161,50 @@ describe('api draft route', () => {
 			})
 	})
 
+	// new tutorial
+
+	test('new tutorial returns success', () => {
+		expect.assertions(4)
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/tutorial')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', { id: 'mockDraftId' })
+			})
+	})
+
+	test('new tutorial requires a login', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canCreateDrafts: false } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/tutorial')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+			})
+	})
+
+	test('new draft 500s when createWithContent fails', () => {
+		expect.assertions(5)
+		DraftModel.createWithContent.mockRejectedValueOnce()
+		mockCurrentUser = { id: 99, canCreateDrafts: true } // mock current logged in user
+		return request(app)
+			.post('/api/drafts/tutorial')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body).toHaveProperty('value')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+			})
+	})
+
 	// update draft
 
 	test('updating a draft with xml returns successfully', () => {

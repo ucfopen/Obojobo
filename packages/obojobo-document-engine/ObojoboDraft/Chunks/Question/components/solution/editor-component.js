@@ -3,16 +3,13 @@ import React from 'react'
 const Solution = props => {
 	const deleteNode = () => {
 		const editor = props.editor
-		const change = editor.value.change()
-		change.removeNodeByKey(props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(props.node.key)
 	}
 
 	return (
-		<div className={'solution-editor'}>
+		<div className="solution-editor">
 			{props.children}
-			<button className={'delete-node-button'} onClick={() => deleteNode()}>
+			<button className="editor--page-editor--delete-node-button" onClick={() => deleteNode()}>
 				X
 			</button>
 		</div>

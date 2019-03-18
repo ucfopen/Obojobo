@@ -29,9 +29,7 @@ class Figure extends React.Component {
 	}
 
 	handleClick(event) {
-		if (!this.node) return
-		if (this.node.contains(event.target)) return
-
+		if (!this.node || this.node.contains(event.target)) return
 		this.setState({ imageIsSelected: false })
 	}
 
@@ -50,25 +48,20 @@ class Figure extends React.Component {
 
 	changeProperties(content) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		ModalUtil.hide()
 
-		change.setNodeByKey(this.props.node.key, {
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content
 			}
 		})
-		editor.onChange(change)
 	}
 
 	deleteNode() {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
-		change.removeNodeByKey(this.props.node.key)
-
-		editor.onChange(change)
+		return editor.removeNodeByKey(this.props.node.key)
 	}
 
 	renderEditToolbar() {
@@ -117,13 +110,8 @@ class Figure extends React.Component {
 		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
-			<div
-				className={`obojobo-draft--chunks--figure viewer ` + content.size}
-				ref={node => {
-					this.node = node
-				}}
-			>
-				<div className={'container'}>
+			<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
+				<div className="container">
 					{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
 					<div
 						className={

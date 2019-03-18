@@ -33,17 +33,15 @@ import EditorSchema from '../plugins/editor-schema'
 
 import './page-editor.scss'
 
-const { SimpleDialog, Prompt } = Common.components.modal
+const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
-const LINK_MARK = 'a'
-
 const plugins = [
 	Component.plugins,
-	...MarkToolbar.plugins,
+	MarkToolbar.plugins,
 	ActionButton.plugins,
 	Break.plugins,
 	Code.plugins,
@@ -101,27 +99,32 @@ class PageEditor extends React.Component {
 		return <p>No content available, click on a page to start editing</p>
 	}
 
+	ref(editor) {
+		this.editor = editor
+	}
+
 	render() {
 		if (this.props.page === null) return this.renderEmpty()
 
 		return (
 			<div className={'editor--page-editor'}>
 				<div className={'toolbar'}>
-					<MarkToolbar.components.Node
-						value={this.state.value}
-						onChange={change => this.onChange(change)}
-					/>
+					<MarkToolbar.components.Node getEditor={this.getEditor.bind(this)} />
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
 					value={this.state.value}
+					ref={this.ref.bind(this)}
 					onChange={change => this.onChange(change)}
 					plugins={plugins}
-					onKeyDown={this.onKeyDown.bind(this)}
 				/>
 				{this.renderExportButton()}
 			</div>
 		)
+	}
+
+	getEditor() {
+		return this.editor
 	}
 
 	onChange({ value }) {
@@ -219,52 +222,6 @@ class PageEditor extends React.Component {
 				ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
 			}
 		})
-	}
-
-	// This is the onKeyDown plugin for links, but it was moved to
-	// page-editor.js to curcumvent Slate's synchronous keyDown system.
-	// When we upgrade Slate to 0.43+, the keyDown event should be moved
-	// back to link-mark.js for consistency
-	onKeyDown(event, change) {
-		if (!(event.ctrlKey || event.metaKey) || event.key !== 'k') return
-
-		event.preventDefault()
-		return this.toggleLink(change)
-	}
-	toggleLink() {
-		ModalUtil.show(
-			<Prompt
-				title="Insert Link"
-				message="Enter the link url:"
-				onConfirm={this.changeLinkValue.bind(this)}
-			/>
-		)
-	}
-	changeLinkValue(href) {
-		ModalUtil.hide()
-
-		const value = this.state.value
-		const change = value.change()
-
-		// remove existing links
-		value.marks.forEach(mark => {
-			if (mark.type === LINK_MARK) {
-				change.removeMark({
-					type: LINK_MARK,
-					data: mark.data.toJSON()
-				})
-			}
-		})
-
-		// If href is empty, don't add a link
-		if (!href || !/[^\s]/.test(href)) return this.onChange(change)
-
-		change.addMark({
-			type: LINK_MARK,
-			data: { href }
-		})
-
-		return this.onChange(change)
 	}
 }
 

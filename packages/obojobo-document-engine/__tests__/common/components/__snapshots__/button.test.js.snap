@@ -4,7 +4,9 @@ exports[`Button 1`] = `
 <div
   className="obojobo-draft--components--button is-not-dangerous align-center"
 >
-  <button>
+  <button
+    className="button"
+  >
     Label
   </button>
 </div>
@@ -14,7 +16,9 @@ exports[`Button align 1`] = `
 <div
   className="obojobo-draft--components--button is-not-dangerous align-left"
 >
-  <button>
+  <button
+    className="button"
+  >
     Label
   </button>
 </div>
@@ -24,7 +28,9 @@ exports[`Button altAction 1`] = `
 <div
   className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
 >
-  <button>
+  <button
+    className="button"
+  >
     Label
   </button>
 </div>
@@ -34,7 +40,9 @@ exports[`Button dangerous 1`] = `
 <div
   className="obojobo-draft--components--button is-dangerous align-center"
 >
-  <button>
+  <button
+    className="button"
+  >
     Label
   </button>
 </div>
@@ -45,6 +53,7 @@ exports[`Button disabled 1`] = `
   className="obojobo-draft--components--button is-not-dangerous align-center"
 >
   <button
+    className="button"
     disabled={true}
   >
     Label
@@ -57,6 +66,7 @@ exports[`Button shouldPreventTab 1`] = `
   className="obojobo-draft--components--button is-not-dangerous align-center"
 >
   <button
+    className="button"
     disabled={true}
     tabIndex="-1"
   >

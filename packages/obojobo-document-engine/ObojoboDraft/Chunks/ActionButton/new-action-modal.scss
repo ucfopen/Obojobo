@@ -1,0 +1,27 @@
+@import '~styles/includes';
+
+.new-action {
+	width: 15em;
+
+	.trigger-name {
+		label {
+			display: inline;
+			margin-right: 0.5em;
+		}
+	}
+
+	.trigger-value {
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+
+		textarea {
+			width: 25em;
+			height: 5em;
+		}
+	}
+
+	span {
+		color: $color-error;
+		font-size: 0.8em;
+	}
+}

@@ -13,7 +13,18 @@ const { focus } = Common.page
 
 import QuestionContent from './Content/viewer-component'
 
+// 0.4s Card "flip" time plus an extra 50ms to handle delay
+const DURATION_FLIP_TIME_MS = 450
+
 export default class Question extends React.Component {
+	constructor() {
+		super()
+
+		this.state = {
+			isFlipping: false
+		}
+	}
+
 	static focusOnContent(model) {
 		const el = model.getDomEl()
 		const isHidden = el.classList.contains('is-hidden')
@@ -39,6 +50,16 @@ export default class Question extends React.Component {
 		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
 		FocusUtil.focusOnContent(this.props.model.get('id'), mode === 'practice')
+
+		this.applyFlipCSS()
+	}
+
+	// Temporarily set the state to 'isFlipping', causing the card to play the flip animation.
+	// The flipping state is removed after the flip is completed to be able to remove CSS
+	// transforms, which can cause rendering issues.
+	applyFlipCSS() {
+		this.setState({ isFlipping: true })
+		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
 	}
 
 	render() {
@@ -88,7 +109,8 @@ export default class Question extends React.Component {
 			'obojobo-draft--chunks--question' +
 			scoreClassName +
 			(mode === 'review' ? ' is-active' : ` is-${viewState}`) +
-			` is-mode-${mode}`
+			` is-mode-${mode}` +
+			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
 			<OboComponent

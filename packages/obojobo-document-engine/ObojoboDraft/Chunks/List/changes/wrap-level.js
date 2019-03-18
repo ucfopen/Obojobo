@@ -1,9 +1,8 @@
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
-const wrapLevel = (event, change) => {
+const wrapLevel = (event, editor) => {
 	event.preventDefault()
-	change.unwrapBlock(LIST_LEVEL_NODE)
-	return true
+	return editor.unwrapBlock(LIST_LEVEL_NODE)
 }
 
 export default wrapLevel

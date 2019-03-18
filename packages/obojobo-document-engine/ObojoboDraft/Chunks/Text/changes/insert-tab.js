@@ -1,7 +1,6 @@
-const insertTab = (event, change) => {
+const insertTab = (event, editor) => {
 	event.preventDefault()
-	change.insertText('\t')
-	return true
+	return editor.insertText('\t')
 }
 
 export default insertTab

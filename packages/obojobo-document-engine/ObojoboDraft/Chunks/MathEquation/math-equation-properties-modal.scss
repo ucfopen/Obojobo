@@ -1,0 +1,10 @@
+@import '~styles/includes';
+
+.math-equation-properties {
+	width: 15em;
+
+	span {
+		color: $color-error;
+		font-size: 0.8em;
+	}
+}

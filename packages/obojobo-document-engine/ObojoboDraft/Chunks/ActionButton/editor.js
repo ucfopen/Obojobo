@@ -10,11 +10,24 @@ import Converter from './converter'
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 const plugins = {
-	renderNode(props) {
+	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case BUTTON_NODE:
 				return <Node {...props} {...props.attributes} />
+			default:
+				return next()
 		}
+	},
+	renderPlaceholder(props) {
+		const { node } = props
+		if (node.object !== 'block' || node.type !== BUTTON_NODE) return
+		if (node.text !== '') return
+
+		return (
+			<span className={'placeholder align-center'} contentEditable={false}>
+				{'Your Label Here'}
+			</span>
+		)
 	},
 	schema: Schema
 }

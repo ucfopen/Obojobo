@@ -20,6 +20,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
         className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Toggle Preview
@@ -29,6 +30,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
         className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           IFrame Properties
@@ -39,7 +41,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
 </div>
 `;
 
-exports[`IFrame Editor Node IFrame component toggles preview 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button>Toggle Preview</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button>IFrame Properties</button></div></div><div class=\\"iframe-container\\"><iframe is=\\"true\\" frameborder=\\"0\\" allow=\\"geolocation; microphone; camera; midi; encrypted-media; vr\\" style=\\"transform: scale(undefined);\\"></iframe></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
+exports[`IFrame Editor Node IFrame component edits input 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Toggle Preview</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">IFrame Properties</button></div></div><div class=\\"iframe-container\\"><iframe is=\\"true\\" frameborder=\\"0\\" allow=\\"geolocation; microphone; camera; midi; encrypted-media; vr\\" style=\\"transform: scale(undefined);\\"></iframe></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
 
 exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
 <div
@@ -61,6 +63,7 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
         className="obojobo-draft--components--button is-not-dangerous align-center"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Toggle Preview
@@ -70,6 +73,7 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
         className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           IFrame Properties

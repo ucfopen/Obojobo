@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Text editor plugins.renderNode calls next 1`] = `undefined`;
+
 exports[`Text editor plugins.renderNode renders a line when passed 1`] = `
 <Line
   attributes={

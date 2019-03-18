@@ -3,7 +3,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('ObojoboDraft/Pages/Page/editor')
 
@@ -38,7 +38,7 @@ describe('Actions editor', () => {
 	})
 
 	test('Node component adds child', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -53,10 +53,7 @@ describe('Actions editor', () => {
 					},
 					nodes: { size: 0 }
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -68,7 +65,7 @@ describe('Actions editor', () => {
 	})
 
 	test('addAction adds an action with the given range', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
@@ -83,17 +80,14 @@ describe('Actions editor', () => {
 					},
 					nodes: { size: 0 }
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 
 		component.instance().addAction('mock range')
 
 		expect(ModalUtil.hide).toHaveBeenCalled()
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Score component', () => {
@@ -130,29 +124,22 @@ describe('Actions editor', () => {
 
 	test('changeRange updates the range', () => {
 		const Node = Actions.components.Score
-		const change = {
+
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
-		const component = shallow(
-			<Node
-				node={{ data: { get: () => ({}) } }}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
-			/>
-		)
+		const component = shallow(<Node node={{ data: { get: () => ({}) } }} editor={editor} />)
 		const tree = component.html()
 
 		component.instance().changeRange('mock range')
 
 		expect(tree).toMatchSnapshot()
 		expect(ModalUtil.hide).toHaveBeenCalled()
-		expect(change.setNodeByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Score component deletes self', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn()
 		}
 
@@ -166,10 +153,7 @@ describe('Actions editor', () => {
 						}
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 		const tree = component.html()
@@ -177,7 +161,7 @@ describe('Actions editor', () => {
 		component.find('.delete-button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
-		expect(change.removeNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
@@ -234,7 +218,7 @@ describe('Actions editor', () => {
 			}
 		}
 
-		expect(Actions.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Actions.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode renders a score action when passed', () => {
@@ -250,66 +234,85 @@ describe('Actions editor', () => {
 			}
 		}
 
-		expect(Actions.plugins.renderNode(props)).toMatchSnapshot()
+		expect(Actions.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(Actions.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Actions.plugins.schema.blocks[SCORE_NODE].normalize(change, {
+		Actions.plugins.schema.blocks[SCORE_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: null,
 			child: { key: 'mockKey' },
 			index: null
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Actions.plugins.schema.blocks[SCORE_NODE].normalize(change, {
-			code: CHILD_REQUIRED,
+		Actions.plugins.schema.blocks[SCORE_NODE].normalize(editor, {
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize fixes invalid children', () => {
-		const change = {
+		const editor = {
 			wrapBlockByKey: jest.fn()
 		}
 
-		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(change, {
+		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: null,
 			child: { key: 'mockKey' },
 			index: null
 		})
 
-		expect(change.wrapBlockByKey).toHaveBeenCalled()
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
 	})
 
 	test('plugins.schema.normalize adds missing children', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(change, {
-			code: CHILD_REQUIRED,
+		Actions.plugins.schema.blocks[ACTIONS_NODE].normalize(editor, {
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 })

@@ -40,6 +40,7 @@ export default class Button extends React.Component {
 			<div className={className}>
 				<button
 					ref="button"
+					className="button"
 					onClick={this.props.onClick}
 					tabIndex={this.props.shouldPreventTab ? '-1' : this.props.tabIndex}
 					disabled={this.props.disabled || this.props.shouldPreventTab}

@@ -2,7 +2,7 @@ import HTML from '../../../../ObojoboDraft/Chunks/HTML/editor'
 const HTML_NODE = 'ObojoboDraft.Chunks.HTML'
 
 describe('HTML editor', () => {
-	test('plugins.renderNode renders a button when passed', () => {
+	test('plugins.renderNode renders HTML when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
@@ -15,11 +15,30 @@ describe('HTML editor', () => {
 			}
 		}
 
-		expect(HTML.plugins.renderNode(props)).toMatchSnapshot()
+		expect(HTML.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+	})
+
+	test('plugins.renderNode calls next', () => {
+		const props = {
+			attributes: { dummy: 'dummyData' },
+			node: {
+				type: 'mockNode',
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		expect(HTML.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(next).toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with no html', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -28,20 +47,20 @@ describe('HTML editor', () => {
 				]
 			}
 		}
-		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'Enter',
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown(event, change)
+		HTML.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with random keypress', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -50,20 +69,20 @@ describe('HTML editor', () => {
 				]
 			}
 		}
-		change.insertBlock = jest.fn().mockReturnValueOnce(change)
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
 
 		const event = {
 			key: 'e',
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown(event, change)
+		HTML.plugins.onKeyDown(event, editor, jest.fn())
 
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
 	test('plugins.onKeyDown deals with [Enter]', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -79,13 +98,13 @@ describe('HTML editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown(event, change)
+		HTML.plugins.onKeyDown(event, editor, jest.fn())
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.insertText).toHaveBeenCalledWith('\n')
+		expect(editor.insertText).toHaveBeenCalledWith('\n')
 	})
 
 	test('plugins.onKeyDown deals with [Tab]', () => {
-		const change = {
+		const editor = {
 			value: {
 				blocks: [
 					{
@@ -101,8 +120,8 @@ describe('HTML editor', () => {
 			preventDefault: jest.fn()
 		}
 
-		HTML.plugins.onKeyDown(event, change)
+		HTML.plugins.onKeyDown(event, editor, jest.fn())
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(change.insertText).toHaveBeenCalledWith('\t')
+		expect(editor.insertText).toHaveBeenCalledWith('\t')
 	})
 })

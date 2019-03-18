@@ -50,9 +50,9 @@ describe('IFrame Editor Node', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('IFrame component toggles preview', () => {
-		const change = {
-			removeNodeByKey: jest.fn()
+	test('IFrame component edits input', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
 		}
 
 		const component = mount(
@@ -66,10 +66,9 @@ describe('IFrame Editor Node', () => {
 						})
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				isFocused={true}
+				isSelected={true}
+				editor={editor}
 			/>
 		)
 
@@ -115,7 +114,7 @@ describe('IFrame Editor Node', () => {
 	})
 
 	test('changeProperties sets the nodes content', () => {
-		const change = {
+		const editor = {
 			setNodeByKey: jest.fn()
 		}
 
@@ -130,10 +129,7 @@ describe('IFrame Editor Node', () => {
 						})
 					}
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 			/>
 		)
 

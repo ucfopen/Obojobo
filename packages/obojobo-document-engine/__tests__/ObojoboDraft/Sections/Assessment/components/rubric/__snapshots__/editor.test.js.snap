@@ -5,7 +5,7 @@ exports[`Rubric editor Mod component 1`] = `
   className="mod pad"
 >
   <button
-    className="delete-node-button"
+    className="editor--page-editor--delete-node-button"
     onClick={[Function]}
   >
     X
@@ -13,9 +13,9 @@ exports[`Rubric editor Mod component 1`] = `
 </div>
 `;
 
-exports[`Rubric editor Mod component deletes self 1`] = `"<div class=\\"mod pad\\"><button class=\\"delete-node-button\\">X</button></div>"`;
+exports[`Rubric editor Mod component deletes self 1`] = `"<div class=\\"mod pad\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
 
-exports[`Rubric editor Mod component deletes self and parent 1`] = `"<div class=\\"mod pad\\"><button class=\\"delete-node-button\\">X</button></div>"`;
+exports[`Rubric editor Mod component deletes self and parent 1`] = `"<div class=\\"mod pad\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
 
 exports[`Rubric editor ModList component 1`] = `
 <div>
@@ -49,7 +49,7 @@ exports[`Rubric editor Node component 1`] = `
     Add Mod
   </button>
   <button
-    className="delete-node-button"
+    className="editor--page-editor--delete-node-button"
     onClick={[Function]}
   >
     X
@@ -57,11 +57,11 @@ exports[`Rubric editor Node component 1`] = `
 </div>
 `;
 
-exports[`Rubric editor Node component adds child 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"delete-node-button\\">X</button></div>"`;
+exports[`Rubric editor Node component adds child 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
 
-exports[`Rubric editor Node component adds child to existing mod list 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"delete-node-button\\">X</button></div>"`;
+exports[`Rubric editor Node component adds child to existing mod list 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
 
-exports[`Rubric editor Rubric component deletes self 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"delete-node-button\\">X</button></div>"`;
+exports[`Rubric editor Rubric component deletes self 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
 
 exports[`Rubric editor oboToSlate converts an OboComponent to a Slate node 1`] = `
 Object {
@@ -314,6 +314,8 @@ Object {
   "type": "ObojoboDraft.Sections.Assessment.Rubric",
 }
 `;
+
+exports[`Rubric editor plugins.renderNode calls next 1`] = `undefined`;
 
 exports[`Rubric editor plugins.renderNode renders a modlist when passed 1`] = `
 <ModList

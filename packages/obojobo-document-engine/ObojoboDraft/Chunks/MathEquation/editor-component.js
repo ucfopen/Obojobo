@@ -1,5 +1,13 @@
 import React from 'react'
 import katex from 'katex'
+import Common from 'Common'
+
+import MathEquationProperties from './math-equation-properties-modal'
+
+import './editor-component.scss'
+
+const { ModalUtil } = Common.util
+const { Button } = Common.components
 
 const getLatexHtml = latex => {
 	try {
@@ -15,42 +23,41 @@ class MathEquation extends React.Component {
 		super(props)
 	}
 
-	handleLatexChange(event) {
-		const editor = this.props.editor
-		const change = editor.value.change()
-		const content = this.props.node.data.get('content')
-
-		change.setNodeByKey(this.props.node.key, {
-			data: {
-				content: {
-					label: content.label,
-					latex: event.target.value,
-					align: content.align
-				}
-			}
-		})
-		editor.onChange(change)
+	showMathEquationPropertiesModal() {
+		ModalUtil.show(
+			<MathEquationProperties
+				content={this.props.node.data.get('content')}
+				onConfirm={this.changeProperties.bind(this)}
+			/>
+		)
 	}
 
-	handleLabelChange(event) {
+	changeProperties(content) {
 		const editor = this.props.editor
-		const change = editor.value.change()
-		const content = this.props.node.data.get('content')
 
-		change.setNodeByKey(this.props.node.key, {
+		ModalUtil.hide()
+
+		return editor.setNodeByKey(this.props.node.key, {
 			data: {
-				content: {
-					label: event.target.value,
-					latex: content.latex,
-					align: content.align
-				}
+				content
 			}
 		})
-		editor.onChange(change)
+	}
+
+	renderEmptyEquation() {
+		return (
+			<div className="non-editable-chunk">
+				<div className="katex-display">
+					<span className="placeholder align-center">No Equation</span>
+				</div>
+			</div>
+		)
 	}
 
 	renderLatex() {
 		const content = this.props.node.data.get('content')
+		if (!content.latex && !content.label) return this.renderEmptyEquation()
+
 		let katexHtml = getLatexHtml(content.latex)
 		if (katexHtml.error) {
 			return (
@@ -63,37 +70,9 @@ class MathEquation extends React.Component {
 		katexHtml = katexHtml.html
 
 		return (
-			<div className={'non-editable-chunk'}>
+			<div className="non-editable-chunk">
 				<div className="katex-container" dangerouslySetInnerHTML={{ __html: katexHtml }} />
 				{content.label === '' ? null : <div className="equation-label">{content.label}</div>}
-			</div>
-		)
-	}
-
-	renderEquationEditor() {
-		const content = this.props.node.data.get('content')
-		return (
-			<div className={'equation-editor'}>
-				<div>
-					<p>Latex Equation</p>
-					<input
-						name={'Latex Equation'}
-						value={content.latex}
-						onChange={event => this.handleLatexChange(event)}
-						onClick={event => event.stopPropagation()}
-						frameBorder="0"
-					/>
-				</div>
-				<div>
-					<p>Equation Label</p>
-					<input
-						name={'Equation Label'}
-						value={content.label}
-						onChange={event => this.handleLabelChange(event)}
-						onClick={event => event.stopPropagation()}
-						frameBorder="0"
-					/>
-				</div>
 			</div>
 		)
 	}
@@ -102,10 +81,14 @@ class MathEquation extends React.Component {
 		const content = this.props.node.data.get('content')
 		return (
 			<div
-				className={'component obojobo-draft--chunks--math-equation pad ' + 'align-' + content.align}
+				className={
+					'component obojobo-draft--chunks--math-equation pad ' +
+					'align-' +
+					(content.align || 'center')
+				}
 			>
 				{this.renderLatex()}
-				{this.renderEquationEditor()}
+				<Button onClick={this.showMathEquationPropertiesModal.bind(this)}>Edit</Button>
 			</div>
 		)
 	}

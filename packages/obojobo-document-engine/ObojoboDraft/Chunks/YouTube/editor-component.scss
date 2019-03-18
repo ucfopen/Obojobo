@@ -1,0 +1,25 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--you-tube {
+	.obojobo-draft--components--button {
+		position: absolute;
+		top: 1em;
+		right: 7em;
+
+		button {
+			border: 1px solid $color-bg;
+		}
+	}
+
+	.empty-frame {
+		height: 25em;
+		margin: auto;
+		width: 32em;
+		border: 1px solid lighten($color-action, 9%);
+		border-radius: $dimension-rounded-radius;
+
+		div {
+			line-height: 25em;
+		}
+	}
+}

@@ -57,74 +57,74 @@ class ImageProperties extends React.Component {
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
 				<div className="image-properties">
-					<label htmlFor="urlInput">URL:</label>
+					<label htmlFor="obojobo-draft--chunks--figure--url">URL:</label>
 					<input
 						type="text"
-						id="urlInput"
+						id="obojobo-draft--chunks--figure--url"
 						value={this.state.url || ''}
 						onChange={this.handleURLTextChange.bind(this)}
 						ref={'input'}
 						size="50"
 						placeholder="Web Address of the Image"
 					/>
-					<label htmlFor="altInput">Alt Text:</label>
+					<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
 					<input
 						type="text"
-						id="altInput"
+						id="obojobo-draft--chunks--figure--alt"
 						value={this.state.alt || ''}
 						onChange={this.handleAltTextChange.bind(this)}
 						size="50"
 						placeholder="Describe the Image"
 					/>
-					<label htmlFor="sizeInput">Size:</label>
-					<fieldset>
+					<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
+					<fieldset id="obojobo-draft--chunks--figure--size">
 						<div className="size-input">
 							<input
 								type="radio"
 								name="size"
 								value="large"
-								id="large"
+								id="obojobo-draft--chunks--figure--size-large"
 								checked={size === 'large'}
 								onChange={this.onCheckSize.bind(this)}
 							/>
-							<label htmlFor="large">Large</label>
+							<label htmlFor="obojobo-draft--chunks--figure--size-large">Large</label>
 						</div>
 						<div className="size-input">
 							<input
 								type="radio"
 								name="size"
 								value="medium"
-								id="medium"
+								id="obojobo-draft--chunks--figure--size-medium"
 								checked={size === 'medium'}
 								onChange={this.onCheckSize.bind(this)}
 							/>
-							<label htmlFor="medium">Medium</label>
+							<label htmlFor="obojobo-draft--chunks--figure--size-medium">Medium</label>
 						</div>
 						<div className="size-input">
 							<input
 								type="radio"
 								name="size"
 								value="small"
-								id="small"
+								id="obojobo-draft--chunks--figure--size-small"
 								checked={size === 'small'}
 								onChange={this.onCheckSize.bind(this)}
 							/>
-							<label htmlFor="small">Small</label>
+							<label htmlFor="obojobo-draft--chunks--figure--size-small">Small</label>
 						</div>
 						<div className="size-input">
 							<input
 								type="radio"
 								name="size"
 								value="custom"
-								id="custom"
+								id="obojobo-draft--chunks--figure--size-custom"
 								checked={size === 'custom'}
 								onChange={this.onCheckSize.bind(this)}
 							/>
-							<label htmlFor="custom">Custom</label>
+							<label htmlFor="obojobo-draft--chunks--figure--size-custom">Custom</label>
 							{size === 'custom' ? (
 								<div className="custom-size-inputs" id="custom-size-inputs">
 									<input
-										id="custom-width"
+										id="obojobo-draft--chunks--figure--custom-width"
 										name="custom-width"
 										min="1"
 										max="2000"
@@ -137,7 +137,7 @@ class ImageProperties extends React.Component {
 									/>
 									<span>px ×</span>
 									<input
-										id="custom-height"
+										id="obojobo-draft--chunks--figure--custom-height"
 										name="custom-height"
 										min="1"
 										max="2000"

@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ActionButton editor plugins.renderNode calls next 1`] = `undefined`;
+
 exports[`ActionButton editor plugins.renderNode renders a button when passed 1`] = `
 <ActionButton
   attributes={
@@ -17,4 +19,19 @@ exports[`ActionButton editor plugins.renderNode renders a button when passed 1`]
     }
   }
 />
+`;
+
+exports[`ActionButton editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`ActionButton editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`ActionButton editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`ActionButton editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-center"
+  contentEditable={false}
+>
+  Your Label Here
+</span>
 `;

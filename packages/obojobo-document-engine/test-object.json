@@ -35,6 +35,7 @@
 							"children": []
 						},
 						{
+
 							"id": "f1d8cf21-0233-4f8e-b06c-6c102749eecc",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
@@ -58,8 +59,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
+											"value": "Let the projectile be launched with an initial velocity v_0 which can be expressed as the sum of horizontal and vertical components as follows:",
 											"styleList": [
 												{
 													"type": "_latex",
@@ -93,8 +93,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
+											"value": "The components x_{0_x} and v_{0_y} can be found if the initial launch angle, \\theta, is known:",
 											"styleList": [
 												{
 													"type": "_latex",
@@ -179,8 +178,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"See also the section Parabolic equation for information on finding the initial velocity.",
+											"value": "See also the section Parabolic equation for information on finding the initial velocity.",
 											"styleList": []
 										},
 										"data": null
@@ -213,8 +211,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.",
+											"value": "In projectile motion, the horizontal motion and the vertical motion are independent of each other; that is, neither motion affects the other. This is the principle of compound motion established by Galileo in 1638.",
 											"styleList": []
 										},
 										"data": null
@@ -466,8 +463,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Image with width and height - not recommended as image will not respect aspect ratio (width=\"400\" height=\"100\"):",
+											"value": "Image with width and height - not recommended as image will not respect aspect ratio (width=\"400\" height=\"100\"):",
 											"styleList": [
 												{
 													"type": "monospace",
@@ -536,8 +532,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Native size images are still restricted to the width of the page (at native size this image would be 1080x720 pixels)",
+											"value": "Native size images are still restricted to the width of the page (at native size this image would be 1080x720 pixels)",
 											"styleList": []
 										},
 										"data": null
@@ -628,8 +623,7 @@
 							"type": "ObojoboDraft.Chunks.Figure",
 							"content": {
 								"size": "custom",
-								"url":
-									"data:image/gif;base64,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"
+								"url": "data:image/gif;base64,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"
 							},
 							"children": []
 						},
@@ -690,8 +684,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"This question is a pick-one-multiple-correct type question with feedback and an included solution:",
+											"value": "This question is a pick-one-multiple-correct type question with feedback and an included solution:",
 											"styleList": [
 												{
 													"type": "b",
@@ -730,8 +723,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value":
-																"Here you could provide a long-form solution which would provide a detailed answer to the question.",
+															"value": "Here you could provide a long-form solution which would provide a detailed answer to the question.",
 															"styleList": []
 														},
 														"data": null
@@ -747,8 +739,7 @@
 												"textGroup": [
 													{
 														"text": {
-															"value":
-																"You can also include a button that would link back to the page containing more relevant information. In this example this button will take you back to page 1:",
+															"value": "You can also include a button that would link back to the page containing more relevant information. In this example this button will take you back to page 1:",
 															"styleList": []
 														},
 														"data": null
@@ -790,8 +781,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value":
-														"Which equation describes horizontal displacement of projectile motion?",
+													"value": "Which equation describes horizontal displacement of projectile motion?",
 													"styleList": []
 												},
 												"data": null
@@ -870,8 +860,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value":
-																				"Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:",
+																			"value": "Correct, however horizontal acceleration is zero so you can simplify this equation into the form below:",
 																			"styleList": []
 																		},
 																		"data": null
@@ -930,8 +919,7 @@
 																"textGroup": [
 																	{
 																		"text": {
-																			"value":
-																				"The a_x term representing horizontal acceleration is always 0 so this equation is simply x = 0.",
+																			"value": "The a_x term representing horizontal acceleration is always 0 so this equation is simply x = 0.",
 																			"styleList": [
 																				{
 																					"type": "_latex",
@@ -972,8 +960,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Questions can also contain other content such as video or lists. This question is an example of a pick-all type question:",
+											"value": "Questions can also contain other content such as video or lists. This question is an example of a pick-all type question:",
 											"styleList": [
 												{
 													"type": "b",
@@ -1211,8 +1198,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Here is a pick-one type question. This question has shuffle=\"false\" meaning that the order of the answer choices will never change.",
+											"value": "Here is a pick-one type question. This question has shuffle=\"false\" meaning that the order of the answer choices will never change.",
 											"styleList": [
 												{
 													"type": "b",
@@ -1338,8 +1324,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"This question is using custom correct or incorrect labels. Try answering this question to see the different labels.",
+											"value": "This question is using custom correct or incorrect labels. Try answering this question to see the different labels.",
 											"styleList": []
 										},
 										"data": null
@@ -2544,8 +2529,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"You can also include math inline with other text, such as \\alpha = \\omega t.",
+											"value": "You can also include math inline with other text, such as \\alpha = \\omega t.",
 											"styleList": [
 												{
 													"type": "_latex",
@@ -2587,8 +2571,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.",
+											"value": "In general HTML usage is not recommended since Obojobo cannot easily parse or understand HTML content and text selection is not accurate. However HTML allows you to do things which are not possible with standard Obojobo components.",
 											"styleList": []
 										},
 										"data": null
@@ -2601,8 +2584,7 @@
 							"id": "2f99b9e4-eac4-499c-b8e4-3bedd8f464f6",
 							"type": "ObojoboDraft.Chunks.HTML",
 							"content": {
-								"html":
-									"<div style='background:#f1f1f1;padding:2em;'><h1>Custom HTML</h1><p>Plain HTML code is supported.</p></div>"
+								"html": "<div style='background:#f1f1f1;padding:2em;'><h1>Custom HTML</h1><p>Plain HTML code is supported.</p></div>"
 							},
 							"children": []
 						},
@@ -2908,8 +2890,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Bold, Italic, Superscript2, Subscript2, Links, Strikethrough content, a quotation, monospaced text and in-line math equations: \\frac{dy}{dx}",
+											"value": "Bold, Italic, Superscript2, Subscript2, Links, Strikethrough content, a quotation, monospaced text and in-line math equations: \\frac{dy}{dx}",
 											"styleList": [
 												{
 													"type": "b",
@@ -3001,8 +2982,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"This is an ordered list however the second indent-level is unordered (using square) bullets and the forth indent level is using uppercase letters starting at the 10th letter (J)",
+											"value": "This is an ordered list however the second indent-level is unordered (using square) bullets and the forth indent level is using uppercase letters starting at the 10th letter (J)",
 											"styleList": []
 										},
 										"data": null
@@ -3152,8 +3132,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"\n\n\t\t\t\t\tUnlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.\n\n\t\t\t\t",
+											"value": "\n\n\t\t\t\t\tUnlike HTML whitespace is retained for element content. Note the tab characters at the start and end of this text as well as the extra lines above and below. See the XML source to view the whitespace for this element.\n\n\t\t\t\t",
 											"styleList": []
 										},
 										"data": null
@@ -3212,8 +3191,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Each of these buttons contain an example action that are triggered when the button is clicked. Take a look at the document source to see how they are implemented.",
+											"value": "Each of these buttons contain an example action that are triggered when the button is clicked. Take a look at the document source to see how they are implemented.",
 											"styleList": []
 										},
 										"data": null
@@ -3570,8 +3548,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Click the button below to focus in on this text. Clicking away from this text will remove the focus.",
+											"value": "Click the button below to focus in on this text. Clicking away from this text will remove the focus.",
 											"styleList": []
 										},
 										"data": {
@@ -3642,8 +3619,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"In the above examples each button performs one action, however you can specify more than one. The button below will perform the following actions:",
+											"value": "In the above examples each button performs one action, however you can specify more than one. The button below will perform the following actions:",
 											"styleList": []
 										},
 										"data": null
@@ -3760,8 +3736,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"This page has a few triggers that are commented out. Uncomment them to see them working. onNavEnter trigger will trigger an alert action. When leaving the page a onNavExit trigger will trigger another alert action.",
+											"value": "This page has a few triggers that are commented out. Uncomment them to see them working. onNavEnter trigger will trigger an alert action. When leaving the page a onNavExit trigger will trigger another alert action.",
 											"styleList": [
 												{
 													"type": "b",
@@ -3828,14 +3803,12 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"Here is an edX multiple choice question which is converted to an Obojobo question. Note that hints are not supported and are ignored. With this extension whitespace is not preserved.",
+											"value": "Here is an edX multiple choice question which is converted to an Obojobo question. Note that hints are not supported and are ignored. With this extension whitespace is not preserved.",
 											"styleList": [
 												{
 													"type": "a",
 													"data": {
-														"href":
-															"http://edx.readthedocs.io/projects/edx-open-learning-xml/en/latest/problem-xml/multiple_choice.html"
+														"href": "http://edx.readthedocs.io/projects/edx-open-learning-xml/en/latest/problem-xml/multiple_choice.html"
 													},
 													"start": 11,
 													"end": 39
@@ -3861,8 +3834,7 @@
 											"id": "8df4896b-837d-44f1-bb27-b2b18dd06468",
 											"type": "ObojoboDraft.Chunks.HTML",
 											"content": {
-												"html":
-													"<div><p>Optional header for the explanation or solution</p><p>Optional explanation or solution text</p></div>"
+												"html": "<div><p>Optional header for the explanation or solution</p><p>Optional explanation or solution text</p></div>"
 											},
 											"children": []
 										}
@@ -4035,8 +4007,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value":
-														"Here is where you can congratulate the student for a job well done. If you have other modules or content that you'd like them to look at after having passed this module you can provide links here.",
+													"value": "Here is where you can congratulate the student for a job well done. If you have other modules or content that you'd like them to look at after having passed this module you can provide links here.",
 													"styleList": []
 												},
 												"data": null
@@ -4110,8 +4081,7 @@
 										"textGroup": [
 											{
 												"text": {
-													"value":
-														"Here you could direct students back to the content or provide links to additional information.",
+													"value": "Here you could direct students back to the content or provide links to additional information.",
 													"styleList": []
 												},
 												"data": null
@@ -4184,8 +4154,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt",
+											"value": "This assessment contains two question banks. On each attempt only one question bank will be shown which will be the question bank not shown in the previous attempt. Scoring a 0-99% will take you to one page while scoring 100% will take you to another page. Navigation will be locked when starting and attempt and reopened when ending an attempt",
 											"styleList": []
 										},
 										"data": null
@@ -4201,8 +4170,7 @@
 								"textGroup": [
 									{
 										"text": {
-											"value":
-												"(This paragraph uses variables - view the XML source for formatting details). You have {{assessment:attemptsRemaining}} of {{assessment:attemptsAmount}} attempts remaining - You need a 100% to complete this assignment. Click Review Content to study the content and return to this assessment to retake it.",
+											"value": "(This paragraph uses variables - view the XML source for formatting details). You have {{assessment:attemptsRemaining}} of {{assessment:attemptsAmount}} attempts remaining - You need a 100% to complete this assignment. Click Review Content to study the content and return to this assessment to retake it.",
 											"styleList": [
 												{
 													"type": "b",
@@ -4300,7 +4268,16 @@
 													{
 														"text": {
 															"value": "What is 2+2?",
-															"styleList": []
+															"styleList": [
+																{
+																	"type": "_latex",
+																	"data": {
+																		"alt": "2 plus 2"
+																	},
+																	"start": 8,
+																	"end": 11
+																}
+															]
 														},
 														"data": null
 													}
@@ -4468,7 +4445,16 @@
 													{
 														"text": {
 															"value": "What is 3-0?",
-															"styleList": []
+															"styleList": [
+																{
+																	"type": "_latex",
+																	"data": {
+																		"alt": "3 minus 0"
+																	},
+																	"start": 8,
+																	"end": 11
+																}
+															]
 														},
 														"data": null
 													}
@@ -4636,7 +4622,16 @@
 													{
 														"text": {
 															"value": "What is 9-4?",
-															"styleList": []
+															"styleList": [
+																{
+																	"type": "_latex",
+																	"data": {
+																		"alt": "9 minus 4"
+																	},
+																	"start": 8,
+																	"end": 11
+																}
+															]
 														},
 														"data": null
 													}

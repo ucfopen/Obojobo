@@ -1,4 +1,4 @@
-import { CHILD_REQUIRED, CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import EditorSchema from 'src/scripts/oboeditor/plugins/editor-schema'
 
@@ -7,37 +7,37 @@ describe('EditorSchema', () => {
 		expect(EditorSchema.schema).toMatchSnapshot()
 	})
 	test('schema.normalize fixes required children in editor', () => {
-		const change = {
+		const editor = {
 			insertNodeByKey: jest.fn()
 		}
 
-		EditorSchema.schema.document.normalize(change, {
-			code: CHILD_REQUIRED,
+		EditorSchema.schema.document.normalize(editor, {
+			code: 'child_min_invalid',
 			node: { key: 'mockKey' },
 			child: null,
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('schema.normalize fixes invalid children in editor', () => {
-		const change = {
+		const editor = {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()
 		}
 
-		change.withoutNormalization = jest.fn().mockImplementationOnce(funct => {
-			funct(change)
+		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
+			funct(editor)
 		})
 
-		EditorSchema.schema.document.normalize(change, {
+		EditorSchema.schema.document.normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
 			child: { object: 'text', key: 'mockChild' },
 			index: 0
 		})
 
-		expect(change.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 })

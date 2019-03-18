@@ -98,7 +98,7 @@ describe('Heading Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Heading component changes heading level', () => {
+	test('Heading component edits heading level', () => {
 		const component = mount(
 			<Heading
 				attributes={{ dummy: 'dummyData' }}
@@ -109,12 +109,7 @@ describe('Heading Editor Node', () => {
 					text: 'Your Title Here'
 				}}
 				editor={{
-					value: {
-						change: () => ({
-							setNodeByKey: jest.fn()
-						})
-					},
-					onChange: () => false
+					setNodeByKey: jest.fn()
 				}}
 			/>
 		)

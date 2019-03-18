@@ -10,4 +10,4 @@ exports[`Break Editor Node Node builds the expected component 1`] = `
 
 exports[`Break Editor Node Node component toggles size to large 1`] = `"<div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-normal\\"><hr><button>Toggle Size</button></div>"`;
 
-exports[`Break Editor Node Node component toggles size to large 2`] = `"<div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-large\\"><hr><button>Toggle Size</button></div>"`;
+exports[`Break Editor Node Node component toggles size to normal 1`] = `"<div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-large\\"><hr><button>Toggle Size</button></div>"`;
