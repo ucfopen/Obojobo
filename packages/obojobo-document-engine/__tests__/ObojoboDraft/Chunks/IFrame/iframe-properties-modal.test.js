@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import IFrameProperties from 'ObojoboDraft/Chunks/IFrame/IFrame-properties-modal'
+import IFrameProperties from 'ObojoboDraft/Chunks/IFrame/iframe-properties-modal'
 
 describe('IFrame Properties Modal', () => {
 	beforeEach(() => {
