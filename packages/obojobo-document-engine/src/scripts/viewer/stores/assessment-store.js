@@ -142,12 +142,17 @@ class AssessmentStore extends Store {
 	onResumeAttemptConfirm(unfinishedAttempt) {
 		ModalUtil.hide()
 
+		console.log(unfinishedAttempt)
+
 		const resumeAttemptBody = {
 			attempt: unfinishedAttempt,
 			visitId: NavStore.getState().visitId
 		}
 
-		return APIUtil.resumeAttempt(resumeAttemptBody).then(response => {
+		return APIUtil.resumeAttempt({
+			attemptId: unfinishedAttempt.attemptId,
+			visitId: NavStore.getState().visitId
+		}).then(response => {
 			this.startAttempt(response.value)
 			this.triggerChange()
 		})
@@ -187,6 +192,7 @@ class AssessmentStore extends Store {
 
 	startAttempt(startAttemptResp) {
 		const id = startAttemptResp.assessmentId
+
 		const model = OboModel.models[id]
 
 		model.children.at(1).children.reset()
@@ -213,6 +219,9 @@ class AssessmentStore extends Store {
 	tryEndAttempt(id, context) {
 		const model = OboModel.models[id]
 		const assessment = this.state.assessments[id]
+
+		console.log('Blah', assessment.current)
+
 		return APIUtil.endAttempt({
 			attemptId: assessment.current.attemptId,
 			draftId: model.getRoot().get('draftId'),

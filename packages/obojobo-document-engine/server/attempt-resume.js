@@ -1,5 +1,7 @@
+const Assessment = require('./assessment')
 const attemptStart = require('./attempt-start')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
+const DraftModel = oboRequire('models/draft')
 const insertEvent = oboRequire('insert_event')
 const VisitModel = oboRequire('models/visit')
 
@@ -7,7 +9,10 @@ const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
 const resumeAttempt = async (req, res) => {
 	try {
-		const attempt = req.body.attempt
+		const attempt = await Assessment.getAttempt(req.body.attemptId)
+
+		attempt.attemptId = attempt.id
+		delete attempt.id
 
 		const currentUser = await req.requireCurrentUser()
 
@@ -15,9 +20,12 @@ const resumeAttempt = async (req, res) => {
 
 		const isPreview = visit.is_preview
 
-		const draftDocument = await req.requireCurrentDocument()
+		const draftDocument = await DraftModel.fetchDraftByVersion(
+			attempt.draft_id,
+			attempt.draft_content_id
+		)
 
-		const assessmentNode = draftDocument.getChildNodeById(attempt.assessmentId)
+		const assessmentNode = draftDocument.getChildNodeById(attempt.assessment_id)
 
 		await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
 
@@ -29,16 +37,16 @@ const resumeAttempt = async (req, res) => {
 			}
 		}
 
-		await insertAttemptResumeEvents(
-			currentUser,
-			draftDocument,
-			attempt.assessmentId,
-			attempt.id,
-			attempt.number,
-			isPreview,
-			req.hostname,
-			req.connection.remoteAddress
-		)
+		// await insertAttemptResumeEvents(
+		// 	currentUser,
+		// 	draftDocument,
+		// 	attempt.assessmentId,
+		// 	attempt.id,
+		// 	attempt.number,
+		// 	isPreview,
+		// 	req.hostname,
+		// 	req.connection.remoteAddress
+		// )
 
 		res.success(attempt)
 	} catch (ex) {
