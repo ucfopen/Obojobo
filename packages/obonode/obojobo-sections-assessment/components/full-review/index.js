@@ -1,12 +1,9 @@
-import React from 'react'
-
 import Common from 'obojobo-document-engine/src/scripts/common'
-import Viewer from 'obojobo-document-engine/src/scripts/viewer'
-
+import React from 'react'
 import ReviewIcon from '../review-icon'
-import formatDate from 'date-fns/format'
-
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import basicReview from './basic-review'
+import formatDate from 'date-fns/format'
 
 const { AssessmentScoreReporter, AssessmentScoreReportView } = Viewer.assessment
 const { AssessmentUtil } = Viewer.util

@@ -112,7 +112,7 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({ current: true })
+		AssessmentUtil.getAssessmentForModel.mockReturnValue({ current: true })
 		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(false)
 
 		const component = renderer.create(<Assessment model={model} moduleData={moduleData} />)
@@ -135,7 +135,7 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+		AssessmentUtil.getAssessmentForModel.mockReturnValue({
 			current: null,
 			attempts: [{}]
 		})
@@ -157,7 +157,7 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
+		AssessmentUtil.getAssessmentForModel.mockReturnValue({
 			current: null,
 			attempts: [{}]
 		})
@@ -169,108 +169,25 @@ describe('Assessment', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('getCurrentStep returns pre-test with no assessment', () => {
+	test('Dispatcher viewer:scrollToTop is called appropriately in componentDidUpdate', () => {
 		const model = OboModel.create(assessmentJSON)
 		const moduleData = {
 			assessmentState: 'mockAssessmentState',
-			focusState: {}
+			focusState: {},
+			navState: {}
 		}
 
-		// null means pre-test
 		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 		const instance = component.instance()
-		const stage = instance.getCurrentStep(instance.props)
 
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
-		expect(stage).toEqual('pre-test')
-	})
+		let prevState = { curStep: 'pre-test' }
+		instance.componentDidUpdate(null, prevState)
+		expect(Dispatcher.trigger).not.toHaveBeenCalledWith('viewer:scrollToTop')
 
-	test('getCurrentStep returns test when assignment is current', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {},
-			navState: {}
-		}
-
-		// current not null means test
-		AssessmentUtil.getAssessmentForModel.mockReturnValue({ current: 'yes' })
-		AssessmentUtil.isCurrentAttemptComplete.mockReturnValue(true)
-		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-		const instance = component.instance()
-		const stage = instance.getCurrentStep(instance.props)
-
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
-		expect(stage).toEqual('test')
-	})
-
-	test('getCurrentStep returns post-test when assignment has attempts', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {},
-			navState: {}
-		}
-
-		// post-test means assessment.attempts.length > 0
-		AssessmentUtil.getAssessmentForModel.mockReturnValue({
-			attempts: ['something'],
-			current: null
-		})
-		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-		const instance = component.instance()
-		const stage = instance.getCurrentStep(instance.props)
-
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
-		expect(stage).toEqual('post-test')
-	})
-
-	test('this.curStep is updated and Dispatcher viewer:scrollToTop is called in componentDidUpdate', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {},
-			navState: {}
-		}
-
-		// pre-test
-		// constructor
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		// render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		// test
-		// render after componentDidUpdate
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({ current: 'yes' })
-		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-		const instance = component.instance()
-		instance.getCurrentStep(instance.props)
-		component.setProps({ model, moduleData })
-
+		prevState = { curStep: 'test' }
+		instance.componentDidUpdate(null, prevState)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('viewer:scrollToTop')
-	})
-
-	test('getCurrentStep returns pre-test when assignment has no attempts', () => {
-		const model = OboModel.create(assessmentJSON)
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			focusState: {}
-		}
-
-		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-
-		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce({
-			current: null,
-			attempts: []
-		})
-
-		const instance = component.instance()
-		const stage = instance.getCurrentStep(instance.props)
-
-		expect(AssessmentUtil.getAssessmentForModel).toHaveBeenCalledWith('mockAssessmentState', model)
-		expect(stage).toEqual('pre-test')
 	})
 
 	test('componentWillUnmount calls dispatcher and NavUtil', () => {
@@ -280,7 +197,7 @@ describe('Assessment', () => {
 			focusState: {}
 		}
 
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = mount(<Assessment model={model} moduleData={moduleData} />)
 		component.unmount()
@@ -298,8 +215,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 
@@ -316,9 +232,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 
@@ -341,7 +255,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce('mockComplete')
 
@@ -370,7 +284,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		AssessmentUtil.hasAttemptsRemaining.mockReturnValueOnce(false)
 
@@ -394,7 +308,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(false)
 
@@ -421,7 +335,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 		// Attempt is not complete
 		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(false)
 
@@ -445,7 +359,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 		// Attempt is complete
 		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
 
@@ -469,7 +383,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 		// Attempt is complete
 		AssessmentUtil.isCurrentAttemptComplete.mockReturnValueOnce(true)
 
@@ -495,7 +409,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 
@@ -521,7 +435,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 
@@ -547,7 +461,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 
@@ -571,7 +485,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 
@@ -607,7 +521,7 @@ describe('Assessment', () => {
 		}
 
 		// mock for render
-		AssessmentUtil.getAssessmentForModel.mockReturnValueOnce(null)
+		AssessmentUtil.getAssessmentForModel.mockReturnValue(null)
 
 		const component = shallow(<Assessment model={model} moduleData={moduleData} />)
 

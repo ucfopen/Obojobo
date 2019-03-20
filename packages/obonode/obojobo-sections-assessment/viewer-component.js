@@ -20,9 +20,9 @@ class Assessment extends React.Component {
 	constructor(props) {
 		super()
 		this.state = {
-			isFetching: false
+			isFetching: false,
+			currentStep: Assessment.getCurrentStep(props)
 		}
-		this.curStep = this.getCurrentStep(props)
 		this.onEndAttempt = this.onEndAttempt.bind(this)
 		this.onAttemptEnded = this.onAttemptEnded.bind(this)
 		this.endAttempt = this.endAttempt.bind(this)
@@ -38,7 +38,12 @@ class Assessment extends React.Component {
 		Dispatcher.trigger(FOCUS_ON_ASSESSMENT_CONTENT)
 	}
 
-	getCurrentStep(props) {
+	static getDerivedStateFromProps(nextProps) {
+		const curStep = Assessment.getCurrentStep(nextProps)
+		return { curStep }
+	}
+
+	static getCurrentStep(props) {
 		const assessment = AssessmentUtil.getAssessmentForModel(
 			props.moduleData.assessmentState,
 			props.model
@@ -65,10 +70,8 @@ class Assessment extends React.Component {
 		Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded)
 	}
 
-	componentDidUpdate() {
-		const curStep = this.getCurrentStep(this.props)
-		if (curStep !== this.curStep) {
-			this.curStep = curStep
+	componentDidUpdate(_, prevState) {
+		if (prevState.curStep !== this.state.curStep) {
 			Dispatcher.trigger('viewer:scrollToTop')
 			FocusUtil.focusOnNavTargetContent()
 		}
@@ -156,7 +159,7 @@ class Assessment extends React.Component {
 
 	render() {
 		const childEl = (() => {
-			switch (this.curStep) {
+			switch (this.state.curStep) {
 				case 'pre-test':
 					return (
 						<PreTest model={this.props.model.children.at(0)} moduleData={this.props.moduleData} />
