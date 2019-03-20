@@ -4,17 +4,24 @@
 const TIMEOUT_RESTORE_TAB_INDEX_MS = 1000
 
 export default el => {
-	if (!el || !el.focus || !el.getAttribute || !el.setAttribute) return false
+	const isElement = el && el.focus && el.getAttribute && el.setAttribute
+	// in case we get a ref with current containing the dom element
+	const isRefWithCurrent =
+		el && el.current && el.current.focus && el.current.getAttribute && el.current.setAttribute
 
-	const tabIndex = el.getAttribute('tabindex')
+	if (!isElement && !isRefWithCurrent) return false
+
+	const element = isElement ? el : el.current
+
+	const tabIndex = element.getAttribute('tabindex')
 
 	// VoiceOver requires tabindex of 0 to read the element
-	el.setAttribute('tabindex', '0')
+	element.setAttribute('tabindex', '0')
 
-	el.focus()
+	element.focus()
 
 	setTimeout(() => {
-		el.setAttribute('tabindex', tabIndex)
+		element.setAttribute('tabindex', tabIndex)
 	}, TIMEOUT_RESTORE_TAB_INDEX_MS)
 
 	return true
