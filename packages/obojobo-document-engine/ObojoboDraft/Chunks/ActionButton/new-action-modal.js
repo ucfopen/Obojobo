@@ -87,7 +87,9 @@ const allowedActions = {
 				return false
 			}
 		},
-		placeholder: '{"title":"Title Text", "message":"Message Text"}'
+		placeholder: '{"title":"Title Text", "message":"Message Text"}',
+		errorMessage:
+			'viewer:alert requires a JSON value in the form of {"title":"Dialog title", "message":"Dialog message"}'
 	}
 }
 

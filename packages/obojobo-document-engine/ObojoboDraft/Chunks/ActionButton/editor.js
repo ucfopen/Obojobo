@@ -18,10 +18,10 @@ const plugins = {
 				return next()
 		}
 	},
-	renderPlaceholder(props) {
+	renderPlaceholder(props, editor, next) {
 		const { node } = props
-		if (node.object !== 'block' || node.type !== BUTTON_NODE) return
-		if (node.text !== '') return
+		if (node.object !== 'block' || node.type !== BUTTON_NODE) return next()
+		if (node.text !== '') return next()
 
 		return (
 			<span className={'placeholder align-center'} contentEditable={false}>

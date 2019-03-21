@@ -32,16 +32,19 @@ class MathEquation extends React.Component {
 		)
 	}
 
-	changeProperties(content) {
-		const editor = this.props.editor
-
+	changeProperties(properties) {
 		ModalUtil.hide()
 
-		return editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content
-			}
+		const editor = this.props.editor
+		const content = this.props.node.data.get('content')
+
+		Object.assign(content, properties)
+
+		editor.setNodeByKey(this.props.node.key, {
+			data: { content: properties }
 		})
+
+		this.forceUpdate() // Calls the extra render cycle that Slate needs to update
 	}
 
 	renderEmptyEquation() {

@@ -2,6 +2,7 @@ import React from 'react'
 import Common from 'Common'
 
 import ImageProperties from './image-properties-modal'
+import Image from './image'
 
 import './editor-component.scss'
 
@@ -46,16 +47,19 @@ class Figure extends React.Component {
 		)
 	}
 
-	changeProperties(content) {
-		const editor = this.props.editor
-
+	changeProperties(properties) {
 		ModalUtil.hide()
 
-		return editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content
-			}
+		const editor = this.props.editor
+		const content = this.props.node.data.get('content')
+
+		Object.assign(content, properties)
+
+		editor.setNodeByKey(this.props.node.key, {
+			data: { content: properties }
 		})
+
+		this.forceUpdate() // Calls the extra render cycle that Slate needs to update
 	}
 
 	deleteNode() {
@@ -67,25 +71,10 @@ class Figure extends React.Component {
 	renderEditToolbar() {
 		return (
 			<div className="image-toolbar">
-				<Button className="upload-button">Upload Image</Button>
 				<Button className="properties-button" onClick={this.showImagePropertiesModal.bind(this)}>
 					Image Properties
 				</Button>
 			</div>
-		)
-	}
-
-	renderImage(isCustom, content, imgStyles) {
-		return isCustom ? (
-			<img
-				title={content.alt}
-				src={content.url}
-				unselectable="on"
-				alt={content.alt}
-				style={imgStyles}
-			/>
-		) : (
-			<img title={content.alt} src={content.url} unselectable="on" alt={content.alt} />
 		)
 	}
 
@@ -106,7 +95,6 @@ class Figure extends React.Component {
 			}
 		}
 
-		const hasImage = content.url && content.url.length !== 0
 		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
@@ -123,11 +111,7 @@ class Figure extends React.Component {
 							×
 						</Button>
 						{this.renderEditToolbar()}
-						{hasImage ? (
-							this.renderImage(isCustom, content, imgStyles)
-						) : (
-							<div className="img-placeholder" contentEditable="false" />
-						)}
+						<Image chunk={{ modelState: content }} />
 					</div>
 
 					{/* uses children below because the caption is a textgroup */}
