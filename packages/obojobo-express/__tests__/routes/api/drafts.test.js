@@ -12,6 +12,7 @@ jest.unmock('express')
 // Load an example default Obojobo middleware
 const request = require('supertest')
 const express = require('express')
+const pgp = require('pg-promise')
 const app = express()
 
 const basicXML = `<ObojoboDraftDoc>
@@ -53,12 +54,141 @@ describe('api draft route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockInsertNewDraft.mockReset()
+		DraftModel.fetchById.mockReset()
 		DraftModel.findDuplicateIds.mockReset()
 		db.none.mockReset()
 		db.any.mockReset()
 		xml.mockReset()
 	})
 	afterEach(() => {})
+
+	// get full draft
+
+	test('get full draft returns success if user is the author and and has canViewEditor rights', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+		// mock the document returned by fetchById
+		DraftModel.fetchById.mockResolvedValueOnce({
+			root: { yell: mockYell },
+			document: 'mock-document',
+			authorId: 99
+		})
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(mockYell).not.toHaveBeenCalled()
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-document')
+			})
+	})
+
+	test('get full draft returns 401 if user does not have canViewEditor rights', () => {
+		expect.assertions(4)
+		mockCurrentUser = { id: 99, canViewEditor: false } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+		// mock the document returned by fetchById
+		DraftModel.fetchById.mockResolvedValueOnce({
+			root: { yell: mockYell },
+			document: 'mock-document',
+			authorId: 99
+		})
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+			})
+	})
+
+	test('get full draft returns 401 if user is not the author', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 88, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+		// mock the document returned by fetchById
+		DraftModel.fetchById.mockResolvedValueOnce({
+			root: { yell: mockYell },
+			document: 'mock-document',
+			authorId: 99
+		})
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'You must be the author of this draft to retrieve this information'
+				)
+			})
+	})
+
+	test('get full draft returns 401 if user does not have canViewEditor rights AND is not the author', () => {
+		expect.assertions(4)
+		mockCurrentUser = { id: 88, canViewEditor: false } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+		// mock the document returned by fetchById
+		DraftModel.fetchById.mockResolvedValueOnce({
+			root: { yell: mockYell },
+			document: 'mock-document',
+			authorId: 99
+		})
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+			})
+	})
+
+	test('get full draft returns 404 when no items found', () => {
+		expect.assertions(5)
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a failure to find the draft
+		const mockError = new pgp.errors.QueryResultError(
+			pgp.errors.queryResultErrorCode.noData,
+			{ rows: [] },
+			'mockQuery',
+			'mockValues'
+		)
+		DraftModel.fetchById.mockRejectedValueOnce(mockError)
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(404)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'missing')
+				expect(response.body.value).toHaveProperty('message', 'Draft not found')
+			})
+	})
+
+	test('get full draft returns 500 when an unknown error occurs', () => {
+		expect.assertions(5)
+		// mock a failure to find the draft
+		DraftModel.fetchById.mockRejectedValueOnce('mock-other-error')
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'unexpected')
+				expect(response.body.value).toHaveProperty('message', 'mock-other-error')
+			})
+	})
 
 	// get draft
 
@@ -89,7 +219,12 @@ describe('api draft route', () => {
 	test('get draft returns 404 when no items found', () => {
 		expect.assertions(5)
 		// mock a failure to find the draft
-		const mockError = new db.errors.QueryResultError(db.errors.queryResultErrorCode.noData)
+		const mockError = new pgp.errors.QueryResultError(
+			pgp.errors.queryResultErrorCode.noData,
+			{ rows: [] },
+			'mockQuery',
+			'mockValues'
+		)
 		DraftModel.fetchById.mockRejectedValueOnce(mockError)
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -102,7 +237,7 @@ describe('api draft route', () => {
 			})
 	})
 
-	test('get draft returns 500 when an unkown error occurs', () => {
+	test('get draft returns 500 when an unknown error occurs', () => {
 		expect.assertions(5)
 		// mock a failure to find the draft
 		DraftModel.fetchById.mockRejectedValueOnce('mock-other-error')
