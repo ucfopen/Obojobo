@@ -7,8 +7,6 @@ const { ModalUtil } = Common.util
 const LINK_MARK = 'a'
 
 const changeLinkValue = (editor, href) => {
-	ModalUtil.hide()
-
 	editor.value.marks.forEach(mark => {
 		if (mark.type === LINK_MARK) {
 			editor.removeMark({

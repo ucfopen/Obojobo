@@ -47,19 +47,12 @@ class Figure extends React.Component {
 		)
 	}
 
-	changeProperties(properties) {
-		ModalUtil.hide()
-
+	changeProperties(content) {
 		const editor = this.props.editor
-		const content = this.props.node.data.get('content')
-
-		Object.assign(content, properties)
 
 		editor.setNodeByKey(this.props.node.key, {
-			data: { content: properties }
+			data: { content }
 		})
-
-		this.forceUpdate() // Calls the extra render cycle that Slate needs to update
 	}
 
 	deleteNode() {

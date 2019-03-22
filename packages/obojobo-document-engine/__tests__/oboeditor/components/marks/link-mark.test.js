@@ -84,7 +84,6 @@ describe('LinkMark', () => {
 
 		keyDown.helpers.changeLinkValue(editor, '   ')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(editor.addMark).not.toHaveBeenCalled()
 	})
 
@@ -113,6 +112,6 @@ describe('LinkMark', () => {
 
 		keyDown.helpers.changeLinkValue(editor, 'mockLink')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(editor.addMark).toHaveBeenCalled()
 	})
 })

@@ -30,8 +30,6 @@ class ActionButton extends React.Component {
 	}
 
 	addAction(newAction) {
-		ModalUtil.hide()
-
 		const editor = this.props.editor
 		const content = this.props.node.data.get('content')
 

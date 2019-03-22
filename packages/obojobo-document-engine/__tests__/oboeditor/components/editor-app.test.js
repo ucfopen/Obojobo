@@ -31,7 +31,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
@@ -56,7 +56,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
@@ -78,7 +78,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
@@ -101,7 +101,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 		ModalStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
 
@@ -125,7 +125,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({
+		APIUtil.getDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { type: 'someType', message: 'someMessage' }
 		})
@@ -149,7 +149,7 @@ describe('EditorApp', () => {
 			modelState: { start: 'mockStart' }
 		})
 
-		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		APIUtil.getDraft.mockResolvedValueOnce({ value: testObject })
 		EditorStore.getState.mockReturnValueOnce({})
 
 		ModalUtil.getCurrentModal.mockReturnValueOnce({

@@ -127,8 +127,26 @@ class PageEditor extends React.Component {
 		return this.editor
 	}
 
-	onChange({ value }) {
-		this.setState({ value })
+	onChange(change) {
+		// Check if any nodes have been changed
+		const nodesChanged = change.operations
+			.toJSON()
+			.some(
+				operation =>
+					operation.type === 'set_node' ||
+					operation.type === 'insert_node' ||
+					operation.type === 'add_mark' ||
+					operation.type === 'set_mark'
+			)
+
+		if (nodesChanged) {
+			// Hacky solution: editor changes need an uninterrupted React render cycle
+			// Calling ModalUtil.hide right after Modals are finished interrupts this asyncronously
+			// This hack only works because Modals are not directly a part of the Slate Editor
+			ModalUtil.hide()
+		}
+
+		this.setState({ value: change.value })
 	}
 
 	exportToJSON(page, value) {

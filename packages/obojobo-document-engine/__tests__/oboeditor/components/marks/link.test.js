@@ -65,7 +65,6 @@ describe('EditorNav', () => {
 
 		component.instance().changeLinkValue(' ')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(change.removeMarkByKey).toHaveBeenCalled()
 	})
 
@@ -92,7 +91,6 @@ describe('EditorNav', () => {
 
 		component.instance().changeLinkValue('mock href')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(change.setMarkByKey).toHaveBeenCalled()
 	})
 })

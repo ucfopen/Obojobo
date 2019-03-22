@@ -12,18 +12,16 @@ class Link extends React.Component {
 	}
 
 	changeLinkValue(href) {
-		ModalUtil.hide()
-
 		const editor = this.props.editor
 		const change = editor.value.change()
 
 		// If href is empty, remove the link
-		if(!href || !/[^\s]/.test(href)) {
+		if (!href || !/[^\s]/.test(href)) {
 			change.removeMarkByKey(
 				this.props.node.key,
 				this.props.offset,
 				this.props.text.length,
-				this.props.mark,
+				this.props.mark
 			)
 			return editor.onChange(change)
 		}
@@ -33,7 +31,7 @@ class Link extends React.Component {
 			this.props.offset,
 			this.props.text.length,
 			this.props.mark,
-			{ data: { href }}
+			{ data: { href } }
 		)
 		return editor.onChange(change)
 	}
@@ -44,23 +42,22 @@ class Link extends React.Component {
 				title="Edit Link"
 				message="Enter the link url:"
 				value={this.props.mark.data.get('href')}
-				onConfirm={this.changeLinkValue.bind(this)}/>
+				onConfirm={this.changeLinkValue.bind(this)}
+			/>
 		)
 	}
 
 	render() {
 		return (
-			<span
-				className="editor--components--mark--link">
-				<a
-					href={this.props.mark.data.get('href')}
-					title={this.props.mark.data.get('href')}>
+			<span className="editor--components--mark--link">
+				<a href={this.props.mark.data.get('href')} title={this.props.mark.data.get('href')}>
 					{this.props.children}
 				</a>
 				<button
 					className="link-edit"
 					aria-label="Edit Link"
-					onClick={this.showLinkModal.bind(this)}/>
+					onClick={this.showLinkModal.bind(this)}
+				/>
 			</span>
 		)
 	}

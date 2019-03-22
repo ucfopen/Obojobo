@@ -83,7 +83,7 @@ class RangeModal extends React.Component {
 			<SimpleDialog
 				cancelOk
 				title="Score Range"
-				onConfirm={() => this.props.onConfirm(this.state.for)}
+				onConfirm={() => this.props.onConfirm(this.state)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
 				<div className="score-range">

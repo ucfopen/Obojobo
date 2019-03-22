@@ -25,8 +25,6 @@ class YouTube extends React.Component {
 	}
 
 	handleSourceChange(videoId) {
-		ModalUtil.hide()
-
 		const editor = this.props.editor
 		const content = this.props.node.data.get('content')
 
@@ -35,8 +33,6 @@ class YouTube extends React.Component {
 		editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
-
-		this.forceUpdate() // Calls the extra render cycle that Slate needs to update
 	}
 
 	renderNoVideo() {

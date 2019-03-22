@@ -145,8 +145,6 @@ class Node extends React.Component {
 	}
 
 	changeLinkValue(href) {
-		ModalUtil.hide()
-
 		const editor = this.props.getEditor()
 
 		editor.value.marks.forEach(mark => {
