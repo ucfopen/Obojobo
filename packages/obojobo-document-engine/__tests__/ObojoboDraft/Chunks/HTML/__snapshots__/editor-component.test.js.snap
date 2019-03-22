@@ -2,6 +2,8 @@
 
 exports[`HTML Editor Node HTML builds the expected component 1`] = `
 <div
-  className="obojobo-draft--chunks--html viewer pad"
-/>
+  className="obojobo-draft--chunks--html html-editor viewer pad"
+>
+  <pre />
+</div>
 `;

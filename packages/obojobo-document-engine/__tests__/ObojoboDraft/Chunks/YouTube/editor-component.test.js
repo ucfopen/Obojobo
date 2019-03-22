@@ -78,6 +78,6 @@ describe('YouTube Editor Node', () => {
 
 		component.instance().handleSourceChange('mockId')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 })

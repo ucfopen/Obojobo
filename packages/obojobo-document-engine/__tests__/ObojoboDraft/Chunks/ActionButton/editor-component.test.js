@@ -140,7 +140,7 @@ describe('ActionButton Editor Node', () => {
 
 		component.instance().addAction({ mockProperties: 'mock value' })
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 
 	test('ActionButton deletes a trigger', () => {
@@ -168,6 +168,6 @@ describe('ActionButton Editor Node', () => {
 
 		component.instance().addAction({ mockProperties: 'mock value' })
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 })

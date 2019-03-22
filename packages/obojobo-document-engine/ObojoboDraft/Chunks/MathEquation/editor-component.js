@@ -35,12 +35,8 @@ class MathEquation extends React.Component {
 	changeProperties(content) {
 		const editor = this.props.editor
 
-		ModalUtil.hide()
-
-		return editor.setNodeByKey(this.props.node.key, {
-			data: {
-				content
-			}
+		editor.setNodeByKey(this.props.node.key, {
+			data: { content }
 		})
 	}
 

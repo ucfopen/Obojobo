@@ -12,8 +12,6 @@ class Link extends React.Component {
 	}
 
 	changeLinkValue(href) {
-		ModalUtil.hide()
-
 		const editor = this.props.editor
 		const change = editor.value.change()
 

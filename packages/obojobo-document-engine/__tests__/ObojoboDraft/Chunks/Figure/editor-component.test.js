@@ -18,7 +18,7 @@ describe('Figure Editor Node', () => {
 				node={{
 					data: {
 						get: () => ({
-							size: 'mockSize',
+							size: 'small',
 							url: 'mockUrl',
 							alt: 'mockAlt'
 						})
@@ -103,7 +103,7 @@ describe('Figure Editor Node', () => {
 
 		component
 			.find('button')
-			.at(2)
+			.at(1)
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
@@ -165,7 +165,7 @@ describe('Figure Editor Node', () => {
 
 		component.instance().changeProperties({ mockProperties: 'mock value' })
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Figure component deletes self', () => {

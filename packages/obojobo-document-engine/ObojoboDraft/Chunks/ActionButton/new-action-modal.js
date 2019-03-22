@@ -87,7 +87,9 @@ const allowedActions = {
 				return false
 			}
 		},
-		placeholder: '{"title":"Title Text", "message":"Message Text"}'
+		placeholder: '{"title":"Title Text", "message":"Message Text"}',
+		errorMessage:
+			'viewer:alert requires a JSON value in the form of {"title":"Dialog title", "message":"Dialog message"}'
 	}
 }
 
@@ -95,7 +97,7 @@ class AddActionModal extends React.Component {
 	constructor(props) {
 		super(props)
 
-		const actionTypeArray = Array.from(Object.keys(allowedActions))
+		const actionTypeArray = Object.keys(allowedActions)
 
 		this.state = {
 			type: actionTypeArray[0],
@@ -150,7 +152,7 @@ class AddActionModal extends React.Component {
 	}
 
 	render() {
-		const actionArray = Array.from(Object.entries(allowedActions))
+		const actionArray = Object.entries(allowedActions)
 
 		const currentAction = allowedActions[this.state.type]
 

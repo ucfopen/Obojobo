@@ -85,7 +85,7 @@ describe('Editor Toolbar', () => {
 
 		component.instance().changeLinkValue('   ')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(editor.removeMark).toHaveBeenCalled()
 	})
 
 	test('changeLinkValue calls onChange with href', () => {
@@ -111,7 +111,7 @@ describe('Editor Toolbar', () => {
 
 		component.instance().changeLinkValue('mockHref')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(editor.addMark).toHaveBeenCalled()
 	})
 
 	test('Node component toggles Superscript', () => {

@@ -86,7 +86,6 @@ describe('Actions editor', () => {
 
 		component.instance().addAction('mock range')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
@@ -134,7 +133,6 @@ describe('Actions editor', () => {
 		component.instance().changeRange('mock range')
 
 		expect(tree).toMatchSnapshot()
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 

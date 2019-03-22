@@ -2,7 +2,7 @@
 
 exports[`Figure Editor Node Figure component 1`] = `
 <div
-  className="obojobo-draft--chunks--figure viewer mockSize"
+  className="obojobo-draft--chunks--figure viewer small"
 >
   <div
     className="container"
@@ -25,15 +25,6 @@ exports[`Figure Editor Node Figure component 1`] = `
         className="image-toolbar"
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center upload-button"
-        >
-          <button
-            className="button"
-          >
-            Upload Image
-          </button>
-        </div>
-        <div
           className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
         >
           <button
@@ -47,7 +38,6 @@ exports[`Figure Editor Node Figure component 1`] = `
       <img
         alt="mockAlt"
         src="mockUrl"
-        title="mockAlt"
         unselectable="on"
       />
     </div>
@@ -56,11 +46,11 @@ exports[`Figure Editor Node Figure component 1`] = `
 </div>
 `;
 
-exports[`Figure Editor Node Figure component handles clicks 1`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center upload-button\\"><button class=\\"button\\">Upload Image</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\" contenteditable=\\"false\\"></div></div><figcaption></figcaption></div></div>"`;
+exports[`Figure Editor Node Figure component handles clicks 1`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
 
-exports[`Figure Editor Node Figure component handles clicks 2`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center upload-button\\"><button class=\\"button\\">Upload Image</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\" contenteditable=\\"false\\"></div></div><figcaption></figcaption></div></div>"`;
+exports[`Figure Editor Node Figure component handles clicks 2`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
 
-exports[`Figure Editor Node Figure component handles clicks 3`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center upload-button\\"><button class=\\"button\\">Upload Image</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\" contenteditable=\\"false\\"></div></div><figcaption></figcaption></div></div>"`;
+exports[`Figure Editor Node Figure component handles clicks 3`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
 <div
@@ -87,15 +77,6 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
         className="image-toolbar"
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center upload-button"
-        >
-          <button
-            className="button"
-          >
-            Upload Image
-          </button>
-        </div>
-        <div
           className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
         >
           <button
@@ -115,7 +96,6 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
             "width": "customWidthpx",
           }
         }
-        title="mockAlt"
         unselectable="on"
       />
     </div>
@@ -149,15 +129,6 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
         className="image-toolbar"
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center upload-button"
-        >
-          <button
-            className="button"
-          >
-            Upload Image
-          </button>
-        </div>
-        <div
           className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
         >
           <button
@@ -176,7 +147,6 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
             "height": "customHeightpx",
           }
         }
-        title="mockAlt"
         unselectable="on"
       />
     </div>
@@ -210,15 +180,6 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
         className="image-toolbar"
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center upload-button"
-        >
-          <button
-            className="button"
-          >
-            Upload Image
-          </button>
-        </div>
-        <div
           className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
         >
           <button
@@ -237,7 +198,6 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
             "width": "mockWidthpx",
           }
         }
-        title="mockAlt"
         unselectable="on"
       />
     </div>

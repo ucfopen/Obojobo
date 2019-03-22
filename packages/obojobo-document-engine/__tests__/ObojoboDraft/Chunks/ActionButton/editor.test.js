@@ -39,42 +39,58 @@ describe('ActionButton editor', () => {
 
 	test('plugins.renderPlaceholder exits when not relevent', () => {
 		expect(
-			ActionButton.plugins.renderPlaceholder({
-				node: {
-					object: 'text'
-				}
-			})
+			ActionButton.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'text'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 
 		expect(
-			ActionButton.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: 'mockType'
-				}
-			})
+			ActionButton.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: 'mockType'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 
 		expect(
-			ActionButton.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: BUTTON_NODE,
-					text: 'Some text'
-				}
-			})
+			ActionButton.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: BUTTON_NODE,
+						text: 'Some text'
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 	})
 
 	test('plugins.renderPlaceholder renders a placeholder', () => {
 		expect(
-			ActionButton.plugins.renderPlaceholder({
-				node: {
-					object: 'block',
-					type: BUTTON_NODE,
-					text: ''
-				}
-			})
+			ActionButton.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: BUTTON_NODE,
+						text: ''
+					}
+				},
+				null,
+				jest.fn()
+			)
 		).toMatchSnapshot()
 	})
 })

@@ -189,7 +189,6 @@ describe('EditorNav', () => {
 
 		component.instance().renameModule('MockID', '  ')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.renamePage).toHaveBeenCalledWith('MockID', '(Unnamed Module)')
 	})
 
@@ -210,7 +209,6 @@ describe('EditorNav', () => {
 
 		component.instance().renameModule('MockID', 'mock title')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.renamePage).toHaveBeenCalledWith('MockID', 'mock title')
 	})
 
@@ -233,7 +231,6 @@ describe('EditorNav', () => {
 
 		component.instance().addPage('  ')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addPage).toHaveBeenCalled()
 	})
 
@@ -256,7 +253,6 @@ describe('EditorNav', () => {
 
 		component.instance().addPage()
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addPage).toHaveBeenCalled()
 	})
 
@@ -279,7 +275,6 @@ describe('EditorNav', () => {
 
 		component.instance().addAssessment('  ')
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addAssessment).toHaveBeenCalled()
 	})
 
@@ -302,7 +297,6 @@ describe('EditorNav', () => {
 
 		component.instance().addAssessment()
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
 		expect(EditorUtil.addAssessment).toHaveBeenCalled()
 	})
 })
