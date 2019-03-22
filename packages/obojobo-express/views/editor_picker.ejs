@@ -100,6 +100,7 @@
 							class="link-edit"
 							data-id="<%= draft.draftId %>"
 							data-search-str="<%= draft.draftId %> <% if(draft.content && draft.content.content && draft.content.content.title){ %><%= ('' + draft.content.content.title).toLowerCase() %><% } %>"
+							data-content-type="<%= draft.xml ? 'xml' : 'json' %>"
 							data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content,null,2) %>">
 								<% if(draft.content && draft.content.content && draft.content.content.title){ %>
 									<p class="title"><%= draft.content.content.title %></p>
@@ -118,7 +119,7 @@
 									<span class="draft-id">id: <%= draft.draftId %></span>
 									<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
 									<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
-									<a target="_blank" class="link-preview" href="/editor/<%= draft.draftId %>">Edit with OboEditor (Beta)</a>
+									<a class="link-preview" onclick="openInBetaEditor('<%= draft.draftId %>')">Edit with OboEditor (Beta)</a>
 								</div>
 								<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
 						</li>
@@ -490,6 +491,17 @@
 				let el = document.getElementById(editingDraftId)
 				el.setAttribute('data-content', editor.getValue())
 				el.classList.add('unsaved')
+			}
+			function openInBetaEditor(draftId) {
+				let el = document.getElementById(draftId)
+				let confirm = true
+				if(el.getAttribute('data-content-type') === 'xml') {
+					confirm = window.confirm('Wait! Editing this document in the Beta OboEditor will convert your document from XML to JSON. Are you sure you want to continue?')
+				}
+
+				if(confirm) {
+					window.open("/editor/" + draftId, '_blank')
+				}
 			}
 			if(location.hash.indexOf('#id:') === 0)
 			{
