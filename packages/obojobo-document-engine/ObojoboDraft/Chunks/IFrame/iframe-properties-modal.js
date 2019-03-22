@@ -86,7 +86,7 @@ class ImageProperties extends React.Component {
 		return (
 			<SimpleDialog
 				cancelOk
-				title="Figure Properties"
+				title="IFrame Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>

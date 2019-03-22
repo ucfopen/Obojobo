@@ -5,7 +5,7 @@ exports[`IFrame Editor Node IFrame component 1`] = `
   className="obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected"
 >
   <div
-    className="container"
+    className="editor-container"
     style={
       Object {
         "height": "200px",
@@ -41,14 +41,14 @@ exports[`IFrame Editor Node IFrame component 1`] = `
 </div>
 `;
 
-exports[`IFrame Editor Node IFrame component edits input 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected\\"><div class=\\"container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Toggle Preview</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">IFrame Properties</button></div></div><div class=\\"iframe-container\\"><iframe is=\\"true\\" frameborder=\\"0\\" allow=\\"geolocation; microphone; camera; midi; encrypted-media; vr\\" style=\\"transform: scale(undefined);\\"></iframe></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
+exports[`IFrame Editor Node IFrame component edits input 1`] = `"<div class=\\"obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected\\"><div class=\\"editor-container\\" style=\\"width: 710px; height: 500px;\\"><div class=\\"iframe-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Toggle Preview</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">IFrame Properties</button></div></div><div class=\\"iframe-container\\"><iframe is=\\"true\\" frameborder=\\"0\\" allow=\\"geolocation; microphone; camera; midi; encrypted-media; vr\\" style=\\"transform: scale(undefined);\\"></iframe></div><div class=\\"obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable\\" role=\\"toolbar\\"></div></div></div>"`;
 
 exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
 <div
   className="obojobo-draft--chunks--iframe viewer pad is-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up is-not-selected"
 >
   <div
-    className="container"
+    className="editor-container"
     style={
       Object {
         "height": "500px",

@@ -3,10 +3,14 @@
 .obojobo-draft--components--slider {
 	position: relative;
 
+	> span {
+		padding-right: 0.5em;
+	}
+
 	.switch {
 		position: absolute;
 		display: inline-block;
-		width: 3em;
+		width: 2.5em;
 		height: 1em;
 		top: 50%;
 		transform: translate(0, -50%);

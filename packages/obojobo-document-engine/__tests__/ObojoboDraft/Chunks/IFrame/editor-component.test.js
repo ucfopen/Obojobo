@@ -135,6 +135,6 @@ describe('IFrame Editor Node', () => {
 
 		component.instance().changeProperties({ mockProperties: 'mock value' })
 
-		expect(ModalUtil.hide).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 })

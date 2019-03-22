@@ -32,8 +32,6 @@ class IFrame extends React.Component {
 	changeProperties(content) {
 		const editor = this.props.editor
 
-		ModalUtil.hide()
-
 		return editor.setNodeByKey(this.props.node.key, {
 			data: {
 				content
@@ -107,7 +105,7 @@ class IFrame extends React.Component {
 
 		return (
 			<div className={className}>
-				<div className={'container'} style={previewStyle}>
+				<div className={'editor-container'} style={previewStyle}>
 					{this.renderEditToolbar()}
 					{this.state.isPreviewing ? this.renderIFramePreview() : null}
 					{this.state.isPreviewing ? (
