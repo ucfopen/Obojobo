@@ -2,7 +2,13 @@
 	"object":"block",
 	"type":"ObojoboDraft.Chunks.Table",
 	"isVoid":false,
-	"data":{ "content": { "header": true, "textGroup": { "numRows": 1, "numCols": 1 } } },
+	"data":{
+		"content": {
+			"header": true,
+			"textGroup": { "numRows": 1, "numCols": 1 },
+			"numCols": 1
+		}
+	},
 	"nodes":[
 		{
 			"object":"block",

@@ -78,20 +78,29 @@ const plugins = {
 		if (node.object !== 'block') return next()
 		if (node.type !== TABLE_NODE && node.type !== TABLE_ROW_NODE) return next()
 
-		// Normalize Tables with the wrong number of rows
-		const numRows = node.data.get('content').numRows
-		if(node.type === TABLE_NODE && node.nodes.size !== numRows) {
-			console.log('adjusting', numRows)
-			console.log(node.nodes.size)
-			return
-		}
-
 		// Normalize Rows with the wrong number of cells
 		const numCols = node.data.get('content').numCols
 		if(node.type === TABLE_ROW_NODE && node.nodes.size !== numCols) {
-			console.log('cushioning', numCols)
-			console.log(node.nodes.size)
-			return
+			const header = node.data.get('content').header
+
+			// Insert missing cells at the end of the row
+			return editor => {
+				for(let i = node.nodes.size; i < numCols; i++) {
+					editor.insertNodeByKey(node.key, i, {
+						"object":"block",
+						"type":"ObojoboDraft.Chunks.Table.Cell",
+						"data": { "content": { header } },
+						"nodes":[
+							{
+								"object":"text",
+								"leaves":[
+									{"object":"leaf","text":"","marks":[]}
+								]
+							}
+						]
+					})
+				}
+			}
 		}
 
 		return next()

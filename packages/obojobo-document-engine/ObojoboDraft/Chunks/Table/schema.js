@@ -19,6 +19,7 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				const header = index === 0 && node.data.get('content').header
+				const numCols = node.data.get('content').numCols
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Deal with Paste insertion of top-level nodes
@@ -38,13 +39,13 @@ const schema = {
 
 						return editor.wrapBlockByKey(child.key, {
 							type: TABLE_ROW_NODE,
-							data: { content: { header } }
+							data: { content: { header,  numCols} }
 						})
 					}
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: TABLE_ROW_NODE,
-							data: { content: { header } }
+							data: { content: { header, numCols } }
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
