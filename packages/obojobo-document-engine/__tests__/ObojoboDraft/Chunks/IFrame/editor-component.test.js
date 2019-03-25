@@ -22,7 +22,9 @@ describe('IFrame Editor Node', () => {
 							height: 200,
 							controls: '',
 							border: false,
-							initalZoom: 1
+							initalZoom: 1,
+							src: 'mockSrc',
+							title: 'mockTitle'
 						})
 					}
 				}}
@@ -41,43 +43,14 @@ describe('IFrame Editor Node', () => {
 						get: () => ({
 							controls: '',
 							border: false,
-							initalZoom: 1
+							initalZoom: 1,
+							src: 'mockSrc'
 						})
 					}
 				}}
 			/>
 		)
 		expect(component.toJSON()).toMatchSnapshot()
-	})
-
-	test('IFrame component edits input', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<IFrame
-				node={{
-					data: {
-						get: () => ({
-							controls: '',
-							border: false,
-							initalZoom: 1
-						})
-					}
-				}}
-				isFocused={true}
-				isSelected={true}
-				editor={editor}
-			/>
-		)
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('IFrame component edits properties', () => {
@@ -92,7 +65,8 @@ describe('IFrame Editor Node', () => {
 						get: () => ({
 							controls: '',
 							border: false,
-							initalZoom: 1
+							initalZoom: 1,
+							src: ''
 						})
 					}
 				}}
@@ -105,7 +79,7 @@ describe('IFrame Editor Node', () => {
 
 		component
 			.find('button')
-			.at(1)
+			.at(0)
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()

@@ -14,6 +14,11 @@
 		width: 100%;
 		transform: translate(0, -50%);
 		z-index: 3;
+		color: $color-text;
+		font-family: $font-default;
+		font-size: 1em;
+		font-weight: bold;
+		line-height: 1.3em;
 
 		.obojobo-draft--components--button {
 			margin-top: 0.2em;
@@ -21,6 +26,16 @@
 
 			button {
 				border: 1px solid $color-bg;
+			}
+		}
+	}
+
+	&.is-missing-src {
+		.iframe-toolbar {
+			span {
+				$error-color: lighten($color-error, 65%);
+
+				color: $color-error;
 			}
 		}
 	}
