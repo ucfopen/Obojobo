@@ -8,7 +8,7 @@
 			"object":"block",
 			"type":"ObojoboDraft.Chunks.Table.Row",
 			"isVoid":false,
-			"data": { "content": { "header": true } },
+			"data": { "content": { "header": true, "numCols": 1 } },
 			"nodes":[
 				{
 					"object":"block",

@@ -1,5 +1,6 @@
 import React from 'react'
 import Common from 'Common'
+import { getEventTransfer, cloneFragment } from 'slate-react'
 
 import KeyDownUtil from '../../../src/scripts/oboeditor/util/keydown-util'
 
@@ -21,6 +22,27 @@ const isType = editor =>
 	)
 
 const plugins = {
+	onPaste(event, editor, next) {
+		// See if any of the selected nodes have a TABLE_NODE parent
+		const isTable = isType(editor)
+		if (!isTable) return next()
+
+		// When pasting into a table, paste everything as plain text
+		const transfer = getEventTransfer(event)
+		editor.insertText(transfer.text)
+	},
+	onCut(event, editor, next) {
+		// See if any of the selected nodes have a TABLE_NODE parent
+		const isTable = isType(editor)
+		if (!isTable) return next()
+
+		// Copy the fragment and then delete the contents of the nodes
+		// without deleting the nodes themselves
+		const cutFragment = editor.value.fragment
+		KeyDownUtil.deleteNodeContents(event, editor, next)
+
+		return cloneFragment(event, editor, next, cutFragment)
+	},
 	onKeyDown(event, editor, next) {
 		// See if any of the selected nodes have a TABLE_NODE parent
 		const isTable = isType(editor)
@@ -51,6 +73,28 @@ const plugins = {
 			default:
 				return next()
 		}
+	},
+	normalizeNode(node, editor, next) {
+		if (node.object !== 'block') return next()
+		if (node.type !== TABLE_NODE && node.type !== TABLE_ROW_NODE) return next()
+
+		// Normalize Tables with the wrong number of rows
+		const numRows = node.data.get('content').numRows
+		if(node.type === TABLE_NODE && node.nodes.size !== numRows) {
+			console.log('adjusting', numRows)
+			console.log(node.nodes.size)
+			return
+		}
+
+		// Normalize Rows with the wrong number of cells
+		const numCols = node.data.get('content').numCols
+		if(node.type === TABLE_ROW_NODE && node.nodes.size !== numCols) {
+			console.log('cushioning', numCols)
+			console.log(node.nodes.size)
+			return
+		}
+
+		return next()
 	},
 	schema: Schema
 }

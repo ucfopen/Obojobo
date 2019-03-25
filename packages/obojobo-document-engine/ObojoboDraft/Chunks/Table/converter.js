@@ -42,7 +42,7 @@ const oboToSlate = node => {
 			currRow = {
 				object: 'block',
 				type: TABLE_ROW_NODE,
-				data: { content: { header: hasHeader && nodes.length === 0 } },
+				data: { content: { header: hasHeader && nodes.length === 0, numCols } },
 				nodes: []
 			}
 			nodes.push(currRow)
