@@ -12,7 +12,7 @@ const oboToSlate = node => {
 		type: contentType,
 		border: contentType !== 'media',
 		fit: contentType === 'media' ? 'scale' : 'scroll',
-		initalZoom: 1,
+		initialZoom: 1,
 		autoload: false,
 		controls: contentType === 'media' ? 'reload' : 'zoom,reload,new-window'
 	}

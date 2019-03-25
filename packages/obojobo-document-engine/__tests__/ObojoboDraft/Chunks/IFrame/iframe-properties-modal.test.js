@@ -14,7 +14,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -31,7 +31,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 				onConfirm={onConfirm}
 			/>
@@ -51,7 +51,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -67,7 +67,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -86,7 +86,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -105,7 +105,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -124,7 +124,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -143,7 +143,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -162,7 +162,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -175,13 +175,13 @@ describe('IFrame Properties Modal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('IFrameProperties component changes inital zoom', () => {
+	test('IFrameProperties component changes initial zoom', () => {
 		const component = mount(
 			<IFrameProperties
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -200,7 +200,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)
@@ -219,7 +219,7 @@ describe('IFrame Properties Modal', () => {
 				content={{
 					controls: '',
 					border: false,
-					initalZoom: 1
+					initialZoom: 1
 				}}
 			/>
 		)

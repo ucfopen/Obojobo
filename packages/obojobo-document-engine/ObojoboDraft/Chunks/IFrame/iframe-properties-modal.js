@@ -6,7 +6,7 @@ const { Slider } = Common.components
 
 import './iframe-properties-modal.scss'
 
-class ImageProperties extends React.Component {
+class IFrameProperties extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -53,9 +53,9 @@ class ImageProperties extends React.Component {
 	}
 
 	handleZoomChange(event) {
-		const initalZoom = event.target.value
+		const initialZoom = event.target.value
 
-		return this.setState({ initalZoom })
+		return this.setState({ initialZoom })
 	}
 
 	handleAutoloadChange(checked) {
@@ -160,7 +160,7 @@ class ImageProperties extends React.Component {
 					</div>
 					<div>
 						<label htmlFor={'obojobo-draft--chunks--iframe--properties-modal--zoom'}>
-							Inital Zoom:
+							Initial Zoom:
 						</label>
 						<input
 							id="obojobo-draft--chunks--iframe--properties-modal--zoom"
@@ -169,7 +169,7 @@ class ImageProperties extends React.Component {
 							step=".01"
 							type="number"
 							placeholder="Decimal Value"
-							value={this.state.initalZoom}
+							value={this.state.initialZoom}
 							onChange={this.handleZoomChange.bind(this)}
 						/>
 					</div>
@@ -204,4 +204,4 @@ class ImageProperties extends React.Component {
 	}
 }
 
-export default ImageProperties
+export default IFrameProperties

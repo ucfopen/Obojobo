@@ -22,7 +22,7 @@ describe('IFrame Editor Node', () => {
 							height: 200,
 							controls: '',
 							border: false,
-							initalZoom: 1,
+							initialZoom: 1,
 							src: 'mockSrc',
 							title: 'mockTitle'
 						})
@@ -43,7 +43,7 @@ describe('IFrame Editor Node', () => {
 						get: () => ({
 							controls: '',
 							border: false,
-							initalZoom: 1,
+							initialZoom: 1,
 							src: 'mockSrc'
 						})
 					}
@@ -65,7 +65,7 @@ describe('IFrame Editor Node', () => {
 						get: () => ({
 							controls: '',
 							border: false,
-							initalZoom: 1,
+							initialZoom: 1,
 							src: ''
 						})
 					}
@@ -99,7 +99,7 @@ describe('IFrame Editor Node', () => {
 						get: () => ({
 							controls: '',
 							border: false,
-							initalZoom: 1
+							initialZoom: 1
 						})
 					}
 				}}
