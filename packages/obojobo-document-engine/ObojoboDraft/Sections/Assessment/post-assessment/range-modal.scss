@@ -19,6 +19,11 @@
 		padding-left: 0;
 	}
 
+	span {
+		color: $color-error;
+		font-size: 0.8em;
+	}
+
 	.type-input {
 		display: block;
 

@@ -35,6 +35,67 @@ describe('Range Modal', () => {
 		expect(onConfirm).toHaveBeenCalled()
 	})
 
+	test('RangeModal component calls onConfirm from props with single value', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="100" onConfirm={onConfirm} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onConfirm).toHaveBeenCalled()
+	})
+
+	test('RangeModal component does not call confirm when for is above 100', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="10000" onConfirm={onConfirm} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onConfirm).not.toHaveBeenCalled()
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('RangeModal component does not call confirm when min or max are above 100', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="[0,10000]" onConfirm={onConfirm} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onConfirm).not.toHaveBeenCalled()
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('RangeModal component does not call confirm when min is greater than max', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="[80,30]" onConfirm={onConfirm} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onConfirm).not.toHaveBeenCalled()
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('RangeModal component focuses on first element', () => {
 		const component = mount(<RangeModal for="[0,100]" />)
 
