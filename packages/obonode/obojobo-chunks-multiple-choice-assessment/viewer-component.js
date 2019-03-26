@@ -404,14 +404,14 @@ export default class MCAssessment extends React.Component {
 						/>
 					) : null}
 					<CSSTransition
-						in={isShowingExplanationButtonValue && true}
+						in={isShowingExplanationButtonValue}
 						classNames="submit"
 						timeout={ANIMATION_TRANSITION_TIME_MS}
 					>
 						{isShowingExplanationButtonValue ? (
 							<MCAssessmentExplanation
 								ref={component => (this.refExplanation = component)}
-								isShowingExplanation={isShowingExplanationValue && true}
+								isShowingExplanation={isShowingExplanationValue}
 								solutionModel={this.props.model.parent.modelState.solution}
 								moduleData={this.props.moduleData}
 								animationTransitionTime={ANIMATION_TRANSITION_TIME_MS}

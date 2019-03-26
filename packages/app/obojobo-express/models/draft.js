@@ -32,7 +32,8 @@ const findDuplicateIdsRecursive = (jsonTreeNode, idSet = new Set()) => {
 }
 
 class Draft {
-	constructor(rawDraft) {
+	constructor(authorId, rawDraft) {
+		this.authorId = authorId
 		this.nodesById = new Map()
 		this.nodesByType = new Map()
 		this.draftId = rawDraft.draftId
@@ -76,6 +77,7 @@ class Draft {
 				`
 			SELECT
 				drafts.id AS id,
+				drafts.user_id as author,
 				drafts_content.id AS version,
 				drafts.created_at AS draft_created_at,
 				drafts_content.created_at AS content_created_at,
@@ -95,7 +97,7 @@ class Draft {
 				result.content.contentId = result.version
 				result.content._rev = result.version
 
-				return new Draft(result.content)
+				return new Draft(result.author, result.content)
 			})
 			.catch(error => {
 				logger.error('fetchById Error', error.message)

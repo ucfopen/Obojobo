@@ -176,6 +176,25 @@ describe('apiutil', () => {
 		})
 	})
 
+	test('getFullDraft calls fetch', () => {
+		expect.assertions(3)
+
+		fetch.mockResolvedValueOnce({
+			json: () => ({
+				status: 'ok',
+				value: 'mockValue'
+			})
+		})
+
+		return APIUtil.getFullDraft('mockId').then(() => {
+			expect(fetch).toHaveBeenCalled()
+			const calledEndpoint = fetch.mock.calls[0][0]
+			const calledOptions = fetch.mock.calls[0][1]
+			expect(calledEndpoint).toBe('/api/drafts/mockId/full')
+			expect(calledOptions).toBe()
+		})
+	})
+
 	test('requestStart calls fetch', () => {
 		expect.assertions(4)
 

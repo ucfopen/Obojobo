@@ -4,43 +4,74 @@ const router = express.Router()
 const DraftModel = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
+const pgp = require('pg-promise')
 const xmlToDraftObject = require('obojobo-document-xml-parser/xml-to-draft-object')
+const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
+const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
+const tutorialDraft = require('obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
+const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
 const {
 	checkValidationRules,
 	requireDraftId,
+	requireCanViewEditor,
 	requireCanCreateDrafts,
 	requireCanDeleteDrafts,
 	requireCanViewDrafts
 } = oboRequire('express_validators')
 
-const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
-const draftTemplateXML = fs.readFileSync(emptyXmlPath).toString()
+const isNoDataFromQueryError = e => {
+	return (
+		e instanceof pgp.errors.QueryResultError && e.code === pgp.errors.queryResultErrorCode.noData
+	)
+}
 
-const tutorialDraft = require('obojobo-document-engine/src/scripts/oboeditor/documents/oboeditor-tutorial.json')
+// Get a complete Draft Document Tree (for editing)
+// mounted as /api/drafts/:draftId/full
+router
+	.route('/:draftId/full')
+	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
+	.get(async (req, res) => {
+		try {
+			const draftModel = await DraftModel.fetchById(req.params.draftId)
 
-const draftTemplate = xmlToDraftObject(draftTemplateXML, true)
+			if (draftModel.authorId !== req.currentUser.id) {
+				return res.notAuthorized(
+					'You must be the author of this draft to retrieve this information'
+				)
+			}
 
-// Get a Draft Document Tree
+			return res.success(draftModel.document)
+		} catch (e) {
+			if (isNoDataFromQueryError(e)) {
+				return res.missing('Draft not found')
+			}
+
+			res.unexpected(e)
+		}
+	})
+
+// Get a Draft Document Tree (for viewing by a student)
 // mounted as /api/drafts/:draftId
 router
 	.route('/:draftId')
 	.get([requireDraftId, checkValidationRules])
-	.get((req, res) => {
-		const draftId = req.params.draftId
+	.get(async (req, res) => {
+		try {
+			const draftModel = await DraftModel.fetchById(req.params.draftId)
 
-		return DraftModel.fetchById(draftId)
-			.then(draftTree => {
-				draftTree.root.yell('internal:sendToClient', req, res)
-				res.success(draftTree.document)
-			})
-			.catch(error => {
-				const QueryResultError = db.errors.QueryResultError
-				const qrec = db.errors.queryResultErrorCode
-				if (error instanceof QueryResultError && error.code === qrec.noData) {
-					return res.missing('Draft not found')
-				}
-				res.unexpected(error)
-			})
+			// Dispatch the "internal:sendToClient" event - this allows any installed OboNode to
+			// alter the data before the document is returned (for example, to remove assessment
+			// questions)
+			draftModel.root.yell('internal:sendToClient', req, res)
+
+			return res.success(draftModel.document)
+		} catch (e) {
+			if (isNoDataFromQueryError(e)) {
+				return res.missing('Draft not found')
+			}
+
+			res.unexpected(e)
+		}
 	})
 
 // Create a Draft

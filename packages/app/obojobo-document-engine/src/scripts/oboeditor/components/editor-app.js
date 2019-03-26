@@ -46,7 +46,7 @@ class EditorApp extends React.Component {
 		const urlTokens = document.location.pathname.split('/')
 		const draftId = urlTokens[2] ? urlTokens[2] : null
 
-		return APIUtil.getDraft(draftId)
+		return APIUtil.getFullDraft(draftId)
 			.then(response => {
 				if (response.status === 'error') throw response.value
 				return response

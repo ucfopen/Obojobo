@@ -62,6 +62,10 @@ const APIUtil = {
 		return fetch(`/api/drafts/${id}`).then(processJsonResults)
 	},
 
+	getFullDraft(id) {
+		return fetch(`/api/drafts/${id}/full`).then(processJsonResults)
+	},
+
 	requestStart(visitId, draftId) {
 		return APIUtil.post('/api/visits/start', {
 			visitId,

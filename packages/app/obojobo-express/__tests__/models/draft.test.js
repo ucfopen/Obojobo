@@ -40,10 +40,11 @@ describe('Draft Model', () => {
 	afterEach(() => {})
 
 	test('constructor initializes expected properties', () => {
-		const d = new DraftModel({})
+		const d = new DraftModel('mock-author-id', {})
 		expect(d.nodesById).toBeInstanceOf(Map)
 		expect(d.nodesByType).toBeInstanceOf(Map)
 		expect(d.root).toBeInstanceOf(DraftNode)
+		expect(d.authorId).toBe('mock-author-id')
 	})
 
 	test('yell calls to child nodes', () => {

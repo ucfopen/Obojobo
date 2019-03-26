@@ -123,7 +123,7 @@ describe('models draft', () => {
 	})
 
 	test('contains finds child nodes', () => {
-		const d = new Draft(mockRawDraft.content)
+		const d = new Draft(null, mockRawDraft.content)
 		expect(d.root.contains({ id: 999 })).toBe(true)
 		expect(d.root.contains({ id: 888 })).toBe(true)
 		expect(d.root.contains({ id: 777 })).toBe(true)
@@ -139,7 +139,7 @@ describe('models draft', () => {
 
 	test('yells to children', () => {
 		expect.assertions(3)
-		const d = new Draft(mockRawDraft.content)
+		const d = new Draft(null, mockRawDraft.content)
 
 		const node = d.getChildNodeById(666)
 
