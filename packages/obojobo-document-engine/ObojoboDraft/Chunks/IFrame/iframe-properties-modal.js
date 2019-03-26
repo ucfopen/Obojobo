@@ -164,6 +164,7 @@ class IFrameProperties extends React.Component {
 						</label>
 						<input
 							id="obojobo-draft--chunks--iframe--properties-modal--zoom"
+							className="long-input"
 							min="0.01"
 							max="1000"
 							step=".01"
