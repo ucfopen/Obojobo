@@ -19,6 +19,10 @@ let htmlTransform = node => {
 		switch (node.name) {
 			case 'h1':
 			case 'h2':
+			case 'h3':
+			case 'h4':
+			case 'h5':
+			case 'h6':
 				if (!node.attributes) node.attributes = {}
 				node.attributes.headingLevel = parseInt(node.name.charAt(1), 10)
 				node.name = 'ObojoboDraft.Chunks.Heading'
