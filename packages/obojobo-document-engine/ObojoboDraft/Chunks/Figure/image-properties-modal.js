@@ -135,7 +135,7 @@ class ImageProperties extends React.Component {
 										value={this.state.width}
 										onChange={this.handleWidthTextChange.bind(this)}
 									/>
-									<span>px ×</span>
+									<span>px × </span>
 									<input
 										id="obojobo-draft--chunks--figure--custom-height"
 										name="custom-height"

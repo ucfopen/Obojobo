@@ -15,11 +15,231 @@ describe('Range Modal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('RangeModal component', () => {
+	test('RangeModal component with a range', () => {
 		const component = mount(<RangeModal for="[0,100]" />)
 		const tree = component.html()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('RangeModal component with a non-inclusive range', () => {
+		const component = mount(<RangeModal for="(0,100)" />)
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('RangeModal component with no-score', () => {
+		const component = mount(<RangeModal for="no-score" />)
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('RangeModal component with a no range', () => {
+		const component = mount(<RangeModal />)
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('getValueFromInput returns the element value based on type', () => {
+		expect(
+			RangeModal.prototype.getValueFromInput({
+				type: 'checkbox',
+				checked: 'mock-checked',
+				value: 'mock-value'
+			})
+		).toBe('mock-checked')
+
+		expect(
+			RangeModal.prototype.getValueFromInput({
+				type: 'radio',
+				checked: 'mock-checked',
+				value: 'mock-value'
+			})
+		).toBe('mock-checked')
+
+		expect(
+			RangeModal.prototype.getValueFromInput({
+				type: 'number',
+				checked: 'mock-checked',
+				value: 'mock-value'
+			})
+		).toBe('mock-value')
+
+		expect(
+			RangeModal.prototype.getValueFromInput({
+				type: 'unrecognized-type',
+				checked: 'mock-checked',
+				value: 'mock-value'
+			})
+		).toBe(null)
+	})
+
+	test('updateSingleScoreFromEvent calls updateSingleScore', () => {
+		const spy = jest.spyOn(RangeModal.prototype, 'updateSingleScore').mockImplementation(jest.fn())
+
+		RangeModal.prototype.updateSingleScoreFromEvent({
+			target: { type: 'number', value: 'mock-value' }
+		})
+
+		expect(spy).toHaveBeenLastCalledWith('mock-value')
+
+		spy.mockRestore()
+	})
+
+	test('updateRangeFromEvent calls updateRange', () => {
+		const spy = jest.spyOn(RangeModal.prototype, 'updateRange').mockImplementation(jest.fn())
+
+		RangeModal.prototype.updateRangeFromEvent('propName', {
+			target: { type: 'number', value: 'mock-value' }
+		})
+
+		expect(spy).toHaveBeenLastCalledWith({ propName: 'mock-value' })
+
+		spy.mockRestore()
+	})
+
+	test('updateSingleScore updates the range as expected', () => {
+		const spy = jest.spyOn(RangeModal.prototype, 'updateRange').mockImplementation(jest.fn())
+
+		RangeModal.prototype.updateSingleScore('mock-single-score')
+
+		expect(spy).toHaveBeenLastCalledWith({
+			min: 'mock-single-score',
+			max: 'mock-single-score',
+			isMinInclusive: true,
+			isMaxInclusive: true
+		})
+
+		spy.mockRestore()
+	})
+
+	test('generateRangeString generates expected strings', () => {
+		expect(
+			RangeModal.prototype.generateRangeString({
+				min: '50',
+				max: '50',
+				isMinInclusive: true,
+				isMaxInclusive: true
+			})
+		).toEqual('50')
+		expect(
+			RangeModal.prototype.generateRangeString({
+				min: '50',
+				max: '50',
+				isMinInclusive: false,
+				isMaxInclusive: false
+			})
+		).toEqual('50')
+		expect(
+			RangeModal.prototype.generateRangeString({
+				min: '50',
+				max: '50',
+				isMinInclusive: true,
+				isMaxInclusive: false
+			})
+		).toEqual('50')
+		expect(
+			RangeModal.prototype.generateRangeString({
+				min: '50',
+				max: '50',
+				isMinInclusive: false,
+				isMaxInclusive: true
+			})
+		).toEqual('50')
+		expect(
+			RangeModal.prototype.generateRangeString({
+				min: '0',
+				max: '100',
+				isMinInclusive: true,
+				isMaxInclusive: true
+			})
+		).toEqual('[0,100]')
+		expect(
+			RangeModal.prototype.generateRangeString({
+				min: '0',
+				max: '100',
+				isMinInclusive: false,
+				isMaxInclusive: true
+			})
+		).toEqual('(0,100]')
+		expect(
+			RangeModal.prototype.generateRangeString({
+				min: '0',
+				max: '100',
+				isMinInclusive: true,
+				isMaxInclusive: false
+			})
+		).toEqual('[0,100)')
+		expect(
+			RangeModal.prototype.generateRangeString({
+				min: '0',
+				max: '100',
+				isMinInclusive: false,
+				isMaxInclusive: false
+			})
+		).toEqual('(0,100)')
+	})
+
+	test('updateRange updates state.range and state.rangeString', () => {
+		const component = mount(<RangeModal for="[0,100]" />)
+		component.instance().updateRange({ min: '1', isMinInclusive: false })
+		component.update()
+
+		expect(component.instance().state).toEqual({
+			range: {
+				min: '1',
+				max: '100',
+				isMinInclusive: false,
+				isMaxInclusive: true
+			},
+			rangeString: '(1,100]',
+			type: 'range'
+		})
+	})
+
+	test('onChangeType updates state with defaults', () => {
+		const component = mount(<RangeModal for="(0,100]" />)
+
+		component.instance().onChangeType('single')
+		component.update()
+		expect(component.instance().state).toEqual({
+			range: {
+				min: '100',
+				max: '100',
+				isMinInclusive: true,
+				isMaxInclusive: true
+			},
+			rangeString: '100',
+			type: 'single'
+		})
+
+		component.instance().onChangeType('range')
+		component.update()
+		expect(component.instance().state).toEqual({
+			range: {
+				min: '0',
+				max: '100',
+				isMinInclusive: true,
+				isMaxInclusive: true
+			},
+			rangeString: '[0,100]',
+			type: 'range'
+		})
+	})
+
+	test('onToggleNoScore updates state', () => {
+		const spy = jest.spyOn(RangeModal.prototype, 'updateSingleScore').mockImplementation(jest.fn())
+
+		RangeModal.prototype.onToggleNoScore({ target: { checked: true } })
+		expect(spy).toHaveBeenLastCalledWith('no-score')
+
+		RangeModal.prototype.onToggleNoScore({ target: { checked: false } })
+		expect(spy).toHaveBeenLastCalledWith('')
+
+		spy.mockRestore()
 	})
 
 	test('RangeModal component calls onConfirm from props', () => {
@@ -54,6 +274,13 @@ describe('Range Modal', () => {
 			.simulate('change', { target: { value: 'single' } })
 
 		expect(component.html()).toMatchSnapshot()
+
+		component
+			.find('input')
+			.at(2)
+			.simulate('change', { target: { value: 'range' } })
+
+		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('RangeModal component changes single score', () => {
@@ -65,6 +292,26 @@ describe('Range Modal', () => {
 			.find('input')
 			.at(2)
 			.simulate('change', { target: { value: 'changed' } })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('RangeModal component sets single "no-score" score', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="100" onConfirm={onConfirm} />)
+
+		component
+			.find('input')
+			.at(3)
+			.simulate('change', { target: { checked: true } })
+
+		expect(component.html()).toMatchSnapshot()
+
+		component
+			.find('input')
+			.at(3)
+			.simulate('change', { target: { checked: false } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -90,7 +337,7 @@ describe('Range Modal', () => {
 		component
 			.find('input')
 			.at(4)
-			.simulate('change', { target: { chacked: false } })
+			.simulate('change', { target: { checked: false } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
@@ -116,7 +363,7 @@ describe('Range Modal', () => {
 		component
 			.find('input')
 			.at(6)
-			.simulate('change', { target: { chacked: false } })
+			.simulate('change', { target: { checked: false } })
 
 		expect(component.html()).toMatchSnapshot()
 	})

@@ -29,11 +29,10 @@ class Score extends React.Component {
 		)
 	}
 
-	changeRange(properties) {
+	changeRange(newRangeString) {
 		const editor = this.props.editor
-		const newRange = properties.for
 
-		editor.setNodeByKey(this.props.node.key, { data: { for: newRange } })
+		editor.setNodeByKey(this.props.node.key, { data: { for: newRangeString } })
 	}
 
 	deleteNode() {
@@ -76,13 +75,12 @@ class Node extends React.Component {
 		ModalUtil.show(<RangeModal for={'100'} onConfirm={this.addAction.bind(this)} />)
 	}
 
-	addAction(properties) {
+	addAction(rangeString) {
 		const editor = this.props.editor
-		const newRange = properties.for
 
 		const newScore = Block.create({
 			type: SCORE_NODE,
-			data: { for: newRange }
+			data: { for: rangeString }
 		})
 
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newScore)

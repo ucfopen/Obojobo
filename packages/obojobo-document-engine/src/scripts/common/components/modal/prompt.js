@@ -36,17 +36,18 @@ class Prompt extends React.Component {
 				title={this.props.title}
 				onConfirm={() => this.props.onConfirm(this.state.text)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
-				className="prompt"
 			>
-				<label htmlFor="common--components--modal--prompt--input">{this.props.message}</label>
-				<input
-					type="text"
-					id="common--components--modal--prompt--input"
-					value={this.state.text}
-					onChange={this.handleTextChange.bind(this)}
-					ref={'input'}
-					size="50"
-				/>
+				<div className="prompt">
+					<label htmlFor="common--components--modal--prompt--input">{this.props.message}</label>
+					<input
+						type="text"
+						id="common--components--modal--prompt--input"
+						value={this.state.text}
+						onChange={this.handleTextChange.bind(this)}
+						ref={'input'}
+						size="50"
+					/>
+				</div>
 			</SimpleDialog>
 		)
 	}

@@ -53,7 +53,7 @@ class MathEquationProperties extends React.Component {
 		return (
 			<SimpleDialog
 				cancelOk
-				title="New Action"
+				title="Edit Latex Equation"
 				onConfirm={this.onConfirm.bind(this)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
@@ -66,15 +66,13 @@ class MathEquationProperties extends React.Component {
 							ref={'input'}
 							value={this.state.latex || ''}
 							onChange={this.handleLatexChange.bind(this)}
-							size="50"
 						/>
-						<label>Equation Label:</label>
+						<label>Optional Equation Label:</label>
 						<input
 							type="text"
-							id="obojobo-draft--chunks--math-equation--labal"
+							id="obojobo-draft--chunks--math-equation--label"
 							value={this.state.label || ''}
 							onChange={this.handleLabelChange.bind(this)}
-							size="50"
 						/>
 					</div>
 					<span>{this.state.error}</span>
