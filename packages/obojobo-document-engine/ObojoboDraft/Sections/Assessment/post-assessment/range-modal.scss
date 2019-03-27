@@ -48,6 +48,19 @@
 		}
 	}
 
+	.error {
+		color: $color-error;
+		font-size: 0.8em;
+		font-weight: bold;
+		display: block;
+		position: absolute;
+		bottom: 6em;
+		width: 100%;
+		transform: translate(-50%, 0);
+		left: 50%;
+		text-align: center;
+	}
+
 	.type-input {
 		display: block;
 

@@ -25,7 +25,8 @@ class RangeModal extends React.Component {
 		this.state = {
 			range,
 			type: range.min === range.max ? 'single' : 'range',
-			rangeString: this.props.for
+			rangeString: this.generateRangeString(range),
+			error: null
 		}
 	}
 
@@ -65,7 +66,7 @@ class RangeModal extends React.Component {
 	updateRange(newRangeProps) {
 		const newRange = Object.assign(this.state.range, newRangeProps)
 
-		this.setState({ range: newRange, rangeString: this.generateRangeString(newRange) })
+		this.setState({ range: newRange, rangeString: this.generateRangeString(newRange), error: null })
 	}
 
 	generateRangeString(range) {
@@ -99,6 +100,39 @@ class RangeModal extends React.Component {
 		return this.updateSingleScore(event.target.checked ? 'no-score' : '')
 	}
 
+	getError(range) {
+		if (range.min === range.max && range.min === 'no-score') return null
+
+		const min = parseFloat(range.min)
+		const max = parseFloat(range.max)
+
+		if (
+			min < 0 ||
+			max < 0 ||
+			min > 100 ||
+			max > 100 ||
+			!Number.isFinite(min) ||
+			!Number.isFinite(max)
+		) {
+			return 'Scores must be between 0 and 100'
+		}
+
+		if (min > max) {
+			return "Min can't be larger than max"
+		}
+
+		return null
+	}
+
+	onConfirm() {
+		const error = this.getError(this.state.range)
+		this.setState({ error })
+
+		if (error === null) {
+			return this.props.onConfirm(this.state.rangeString)
+		}
+	}
+
 	focusOnFirstElement() {
 		return this.refs.input.focus()
 	}
@@ -110,7 +144,7 @@ class RangeModal extends React.Component {
 			<SimpleDialog
 				cancelOk
 				title="Score Range"
-				onConfirm={() => this.props.onConfirm(this.state.rangeString)}
+				onConfirm={this.onConfirm.bind(this)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
 				<div className="score-range">
@@ -231,6 +265,7 @@ class RangeModal extends React.Component {
 							) : null}
 						</div>
 					</fieldset>
+					<span className="error">{this.state.error}</span>
 				</div>
 			</SimpleDialog>
 		)

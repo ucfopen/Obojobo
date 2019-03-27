@@ -183,8 +183,22 @@ describe('Range Modal', () => {
 		).toEqual('(0,100)')
 	})
 
-	test('updateRange updates state.range and state.rangeString', () => {
+	test('updateRange updates state.range, state.error and state.rangeString', () => {
 		const component = mount(<RangeModal for="[0,100]" />)
+		component.instance().setState({ error: 'mock-error' })
+		component.update()
+
+		expect(component.instance().state).toEqual({
+			range: {
+				min: '0',
+				max: '100',
+				isMinInclusive: true,
+				isMaxInclusive: true
+			},
+			rangeString: '[0,100]',
+			type: 'range',
+			error: 'mock-error'
+		})
 		component.instance().updateRange({ min: '1', isMinInclusive: false })
 		component.update()
 
@@ -196,7 +210,8 @@ describe('Range Modal', () => {
 				isMaxInclusive: true
 			},
 			rangeString: '(1,100]',
-			type: 'range'
+			type: 'range',
+			error: null
 		})
 	})
 
@@ -213,7 +228,8 @@ describe('Range Modal', () => {
 				isMaxInclusive: true
 			},
 			rangeString: '100',
-			type: 'single'
+			type: 'single',
+			error: null
 		})
 
 		component.instance().onChangeType('range')
@@ -226,7 +242,8 @@ describe('Range Modal', () => {
 				isMaxInclusive: true
 			},
 			rangeString: '[0,100]',
-			type: 'range'
+			type: 'range',
+			error: null
 		})
 	})
 
@@ -242,6 +259,61 @@ describe('Range Modal', () => {
 		spy.mockRestore()
 	})
 
+	test('getError returns expected errors', () => {
+		expect(
+			RangeModal.prototype.getError({
+				min: 'no-score',
+				max: 'no-score'
+			})
+		).toBe(null)
+		expect(RangeModal.prototype.getError({ min: 'no-score', max: 'no-score' })).toBe(null)
+		expect(RangeModal.prototype.getError({ min: '-1', max: '-1' })).toBe(
+			'Scores must be between 0 and 100'
+		)
+		expect(RangeModal.prototype.getError({ min: '101', max: '101' })).toBe(
+			'Scores must be between 0 and 100'
+		)
+		expect(RangeModal.prototype.getError({ min: '0', max: '101' })).toBe(
+			'Scores must be between 0 and 100'
+		)
+		expect(RangeModal.prototype.getError({ min: '-1', max: '100' })).toBe(
+			'Scores must be between 0 and 100'
+		)
+		expect(RangeModal.prototype.getError({ min: '200', max: '-200' })).toBe(
+			'Scores must be between 0 and 100'
+		)
+		expect(RangeModal.prototype.getError({ min: '0', max: 'ABC' })).toBe(
+			'Scores must be between 0 and 100'
+		)
+		expect(RangeModal.prototype.getError({ min: 'false', max: '100' })).toBe(
+			'Scores must be between 0 and 100'
+		)
+		expect(RangeModal.prototype.getError({ min: '50', max: '0' })).toBe(
+			"Min can't be larger than max"
+		)
+		expect(RangeModal.prototype.getError({ min: '0', max: '100' })).toBe(null)
+		expect(RangeModal.prototype.getError({ min: '100', max: '100' })).toBe(null)
+		expect(RangeModal.prototype.getError({ min: '0', max: '100' })).toBe(null)
+	})
+
+	test('onConfirm sets error state and does not call props.onConfirm if there is an error', () => {
+		const mockOnConfirm = jest.fn()
+		const component = mount(<RangeModal for="[100,0]" onConfirm={mockOnConfirm} />)
+		component.instance().onConfirm()
+
+		expect(component.instance().state.error).toBe("Min can't be larger than max")
+		expect(mockOnConfirm).not.toHaveBeenCalled()
+	})
+
+	test('onConfirm calls props.onConfirm if there is no error', () => {
+		const mockOnConfirm = jest.fn()
+		const component = mount(<RangeModal for="[0,100]" onConfirm={mockOnConfirm} />)
+		component.instance().onConfirm()
+
+		expect(component.instance().state.error).toBe(null)
+		expect(mockOnConfirm).toHaveBeenCalled()
+	})
+
 	test('RangeModal component calls onConfirm from props', () => {
 		const onConfirm = jest.fn()
 
@@ -253,6 +325,67 @@ describe('Range Modal', () => {
 			.simulate('click')
 
 		expect(onConfirm).toHaveBeenCalled()
+	})
+
+	test('RangeModal component calls onConfirm from props with single value', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="100" onConfirm={onConfirm} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onConfirm).toHaveBeenCalled()
+	})
+
+	test('RangeModal component does not call confirm when for is above 100', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="10000" onConfirm={onConfirm} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onConfirm).not.toHaveBeenCalled()
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('RangeModal component does not call confirm when min or max are above 100', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="[0,10000]" onConfirm={onConfirm} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onConfirm).not.toHaveBeenCalled()
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('RangeModal component does not call confirm when min is greater than max', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<RangeModal for="[80,30]" onConfirm={onConfirm} />)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onConfirm).not.toHaveBeenCalled()
+		const tree = component.html()
+
+		expect(tree).toMatchSnapshot()
 	})
 
 	test('RangeModal component focuses on first element', () => {

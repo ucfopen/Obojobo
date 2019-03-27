@@ -1,17 +1,13 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--mc-assessment--mc-choice {
-	$color-border: transparentize($color-shadow, 0.25);
-
-	border-bottom: 1px solid $color-border;
-	padding-top: 0;
-	padding-bottom: 0;
 	list-style-type: none;
 	min-height: 3.5em;
 	position: relative;
 	transition: background 0.1s ease;
 	font-family: $font-default;
 	cursor: pointer;
+	padding-bottom: 1em;
 
 	> input {
 		font-size: inherit;
