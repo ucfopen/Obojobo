@@ -22,16 +22,14 @@ let htmlTransform = (node) => {
 		{
 			case 'h1':
 			case 'h2':
+			case 'h3':
+			case 'h4':
+			case 'h5':
+			case 'h6':
 				if(!node.attributes) node.attributes = {};
 				node.attributes.headingLevel = parseInt(node.name.charAt(1), 10);
 				node.name = 'ObojoboDraft.Chunks.Heading'
 				node.elements = createTextGroup(node.elements)
-				// if(node.attributes.align)
-				// {
-				// 	let align = node.attributes.align;
-				// 	delete node.attributes.align;
-				// 	node.elements[0].elements[0].attributes = { align:align }
-				// }
 				applyAlign(node)
 
 
