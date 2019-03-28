@@ -318,6 +318,63 @@ Object {
         "headingLevel": 2,
         "textGroup": Array [
           Object {
+            "data": Object {
+              "align": "center",
+            },
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 3,
+        "textGroup": Array [
+          Object {
+            "data": Object {
+              "align": "left",
+            },
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 4,
+        "textGroup": Array [
+          Object {
+            "data": Object {
+              "align": "right",
+            },
+            "text": Object {
+              "styleList": Array [],
+              "value": "This is a test",
+            },
+          },
+        ],
+      },
+      "id": null,
+      "type": "ObojoboDraft.Chunks.Heading",
+    },
+    Object {
+      "children": Array [],
+      "content": Object {
+        "headingLevel": 5,
+        "textGroup": Array [
+          Object {
             "data": null,
             "text": Object {
               "styleList": Array [],
@@ -332,12 +389,10 @@ Object {
     Object {
       "children": Array [],
       "content": Object {
-        "headingLevel": 2,
+        "headingLevel": 6,
         "textGroup": Array [
           Object {
-            "data": Object {
-              "align": "center",
-            },
+            "data": null,
             "text": Object {
               "styleList": Array [],
               "value": "This is a test",
