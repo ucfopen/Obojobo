@@ -1,10 +1,10 @@
-import React from 'react'
+import './range-modal.scss'
+
 import Common from 'Common'
+import React from 'react'
 
 const { SimpleDialog } = Common.components.modal
 const getParsedRange = Common.util.RangeParsing.getParsedRange
-
-import './range-modal.scss'
 
 class RangeModal extends React.Component {
 	constructor(props) {
@@ -25,7 +25,6 @@ class RangeModal extends React.Component {
 		this.state = {
 			range,
 			type: range.min === range.max ? 'single' : 'range',
-			rangeString: this.generateRangeString(range),
 			error: null
 		}
 	}
@@ -64,9 +63,9 @@ class RangeModal extends React.Component {
 	}
 
 	updateRange(newRangeProps) {
-		const newRange = Object.assign(this.state.range, newRangeProps)
+		const newRange = Object.assign({}, this.state.range, newRangeProps)
 
-		this.setState({ range: newRange, rangeString: this.generateRangeString(newRange), error: null })
+		this.setState({ range: newRange, error: null })
 	}
 
 	generateRangeString(range) {
@@ -129,7 +128,7 @@ class RangeModal extends React.Component {
 		this.setState({ error })
 
 		if (error === null) {
-			return this.props.onConfirm(this.state.rangeString)
+			return this.props.onConfirm(this.generateRangeString(this.state.range))
 		}
 	}
 
@@ -184,7 +183,7 @@ class RangeModal extends React.Component {
 									<input
 										type="checkbox"
 										id="editor--sections--assessment--post-assessment--range-modal--no-score"
-										checked={this.state.rangeString === 'no-score'}
+										checked={this.generateRangeString(this.state.range) === 'no-score'}
 										onChange={this.onToggleNoScore.bind(this)}
 									/>
 									<label
@@ -259,7 +258,7 @@ class RangeModal extends React.Component {
 										</label>
 									</div>
 									<div className="range-display">
-										Range: <code>{this.state.rangeString}</code>
+										Range: <code>{this.generateRangeString(this.state.range)}</code>
 									</div>
 								</div>
 							) : null}

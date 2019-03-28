@@ -1,7 +1,6 @@
+import RangeModal from 'ObojoboDraft/Sections/Assessment/post-assessment/range-modal'
 import React from 'react'
 import { mount } from 'enzyme'
-
-import RangeModal from 'ObojoboDraft/Sections/Assessment/post-assessment/range-modal'
 
 describe('Range Modal', () => {
 	beforeEach(() => {
@@ -195,7 +194,6 @@ describe('Range Modal', () => {
 				isMinInclusive: true,
 				isMaxInclusive: true
 			},
-			rangeString: '[0,100]',
 			type: 'range',
 			error: 'mock-error'
 		})
@@ -209,7 +207,6 @@ describe('Range Modal', () => {
 				isMinInclusive: false,
 				isMaxInclusive: true
 			},
-			rangeString: '(1,100]',
 			type: 'range',
 			error: null
 		})
@@ -227,7 +224,6 @@ describe('Range Modal', () => {
 				isMinInclusive: true,
 				isMaxInclusive: true
 			},
-			rangeString: '100',
 			type: 'single',
 			error: null
 		})
@@ -241,7 +237,6 @@ describe('Range Modal', () => {
 				isMinInclusive: true,
 				isMaxInclusive: true
 			},
-			rangeString: '[0,100]',
 			type: 'range',
 			error: null
 		})
