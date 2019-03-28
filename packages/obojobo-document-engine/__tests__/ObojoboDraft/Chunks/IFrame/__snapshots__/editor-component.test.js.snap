@@ -9,7 +9,6 @@ exports[`IFrame Editor Node IFrame component 1`] = `
     style={
       Object {
         "height": "200px",
-        "width": "200px",
       }
     }
   >
@@ -46,7 +45,6 @@ exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
     style={
       Object {
         "height": "500px",
-        "width": "710px",
       }
     }
   >

@@ -47,7 +47,6 @@ class IFrame extends React.Component {
 		const content = this.props.node.data.get('content')
 
 		const previewStyle = {
-			width: (content.width || '710') + 'px',
 			height: (content.height || '500') + 'px'
 		}
 
