@@ -6,8 +6,5 @@ cache:
   yarn: true
   directories:
   - node_modules
-  - packages/obojobo-document-engine/node_modules
-  - packages/obojobo-document-xml-parser/node_modules
-  - packages/obojobo-express/node_modules
 script:
 - yarn test:ci

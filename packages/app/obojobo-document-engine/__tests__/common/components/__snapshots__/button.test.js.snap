@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center testClassName"
+>
+  <button>
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button align 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-left"
+>
+  <button>
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button altAction 1`] = `
+<div
+  className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+>
+  <button>
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button dangerous 1`] = `
+<div
+  className="obojobo-draft--components--button is-dangerous align-center"
+>
+  <button>
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button disabled 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+>
+  <button
+    disabled={true}
+  >
+    Label
+  </button>
+</div>
+`;
+
+exports[`Button shouldPreventTab 1`] = `
+<div
+  className="obojobo-draft--components--button is-not-dangerous align-center"
+>
+  <button
+    disabled={true}
+    tabIndex="-1"
+  >
+    Label
+  </button>
+</div>
+`;
