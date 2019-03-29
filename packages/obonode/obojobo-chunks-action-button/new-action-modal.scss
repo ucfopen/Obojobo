@@ -1,0 +1,41 @@
+@import '~styles/includes';
+
+.new-action {
+	width: 15em;
+	min-height: 8em;
+	text-align: left;
+
+	.trigger-name {
+		label {
+			display: inline;
+			margin-right: 0.5em;
+			vertical-align: middle;
+		}
+
+		select {
+			vertical-align: middle;
+			font-size: 0.8em;
+		}
+	}
+
+	.trigger-value {
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+
+		label {
+			margin-bottom: 0.3em;
+		}
+
+		textarea {
+			@include text-input();
+
+			width: 100%;
+			height: 5em;
+		}
+	}
+
+	span {
+		color: $color-error;
+		font-size: 0.8em;
+	}
+}

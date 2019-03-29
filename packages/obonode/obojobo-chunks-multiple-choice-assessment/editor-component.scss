@@ -1,0 +1,18 @@
+@import '~styles/includes';
+
+.component.obojobo-draft--chunks--mc-assessment {
+	// Work around for the tangled scss in MCAssessment
+	.obojobo-draft--chunks--mc-assessment--mc-choice {
+		&.editor-mc-choice {
+			padding-bottom: 1em;
+
+			&.is-selected {
+				border: 1px solid $color-action;
+
+				.obojobo-draft--components--button {
+					display: block;
+				}
+			}
+		}
+	}
+}

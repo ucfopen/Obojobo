@@ -1,0 +1,6 @@
+{
+	"extends": "eslint-config-obojobo",
+	"env": {
+		"browser": true
+	}
+}
