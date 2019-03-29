@@ -1,0 +1,16 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--question {
+	> .flipper {
+		&.question-editor {
+			background: $color-bg;
+		}
+	}
+
+	.add-solution {
+		left: 50%;
+		transform: translate(-50%, 0);
+		position: relative;
+		margin: $dimension-padding / 3;
+	}
+}

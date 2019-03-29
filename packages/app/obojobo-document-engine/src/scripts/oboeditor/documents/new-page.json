@@ -1,0 +1,33 @@
+{
+	"type": "ObojoboDraft.Pages.Page",
+	"content": {},
+	"children": [
+		{
+			"type": "ObojoboDraft.Chunks.Heading",
+			"content": {
+				"headingLevel": 1,
+				"textGroup": [
+					{
+						"text": {
+							"value": "Add a Title Here"
+						}
+					}
+				]
+			},
+			"children": []
+		},
+		{
+			"type": "ObojoboDraft.Chunks.Text",
+			"content": {
+				"textGroup": [
+					{
+						"text": {
+							"value": "Add some content here"
+						}
+					}
+				]
+			},
+			"children": []
+		}
+	]
+}

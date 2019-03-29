@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NonEditableChunk renders NonEditableChunk component with className, indent, and children 1`] = `
+<div
+  className="non-editable-chunk testClass"
+  contentEditable={false}
+  data-indent={2}
+>
+  Stuff here
+</div>
+`;
+
+exports[`NonEditableChunk renders NonEditableChunk component without className, indent, and children 1`] = `
+<div
+  className="non-editable-chunk"
+  contentEditable={false}
+  data-indent={0}
+/>
+`;

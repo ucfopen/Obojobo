@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IFrame Editor Node IFrame component 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer"
+    style={
+      Object {
+        "outline": "none",
+        "position": "relative",
+      }
+    }
+  >
+    <div
+      style={
+        Object {
+          "cursor": "cell",
+          "display": "block",
+          "height": "100%",
+          "left": "0",
+          "position": "absolute",
+          "top": "0",
+          "width": "100%",
+          "zIndex": 1,
+        }
+      }
+    />
+    <iframe
+      allowFullScreen={true}
+      frameBorder="0"
+    />
+  </div>
+</div>
+`;
+
+exports[`IFrame Editor Node IFrame component edits input 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--iframe viewer\\" style=\\"position: relative; outline: 2px solid blue;\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe></div><div><input value=\\"\\"></div></div>"`;

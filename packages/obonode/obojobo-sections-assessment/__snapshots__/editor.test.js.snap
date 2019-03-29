@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assessment editor ModList component 1`] = `
+<div
+  className="settings pad"
+>
+  <span
+    className="label"
+    contentEditable={false}
+  >
+    Assessment Settings
+  </span>
+  <div />
+</div>
+`;
+
+exports[`Assessment editor Node component 1`] = `
+<div
+  className="obojobo-draft--sections--assessment"
+/>
+`;
+
+exports[`Assessment editor Node component adds child 1`] = `"<div class=\\"obojobo-draft--sections--assessment\\"><button class=\\"add-rubric\\">Add Rubric</button></div>"`;
+
+exports[`Assessment editor oboToSlate converts an OboComponent to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {},
+  },
+  "key": undefined,
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "display": "Attempts",
+            "name": "attempts",
+            "options": undefined,
+            "type": "type-text",
+          },
+          "nodes": Array [
+            Object {
+              "leaves": Array [
+                Object {
+                  "text": "undefined",
+                },
+              ],
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "Parameter",
+        },
+        Object {
+          "data": Object {
+            "current": undefined,
+            "display": "Review",
+            "name": "review",
+            "options": Array [
+              "always",
+              "never",
+              "no-attempts-remaining",
+            ],
+            "type": "type-select",
+          },
+          "isVoid": true,
+          "object": "block",
+          "type": "Parameter",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Sections.Assessment.Settings",
+    },
+    undefined,
+    undefined,
+    undefined,
+  ],
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment",
+}
+`;
+
+exports[`Assessment editor oboToSlate converts an OboComponent to a Slate node 2`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "rubric": "mockRubric",
+    },
+  },
+  "key": undefined,
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        Object {
+          "data": Object {
+            "display": "Attempts",
+            "name": "attempts",
+            "options": undefined,
+            "type": "type-text",
+          },
+          "nodes": Array [
+            Object {
+              "leaves": Array [
+                Object {
+                  "text": "undefined",
+                },
+              ],
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "Parameter",
+        },
+        Object {
+          "data": Object {
+            "current": undefined,
+            "display": "Review",
+            "name": "review",
+            "options": Array [
+              "always",
+              "never",
+              "no-attempts-remaining",
+            ],
+            "type": "type-select",
+          },
+          "isVoid": true,
+          "object": "block",
+          "type": "Parameter",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Sections.Assessment.Settings",
+    },
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+  ],
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment",
+}
+`;
+
+exports[`Assessment editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`Assessment editor plugins.renderNode renders Settings when passed 1`] = `
+<Settings
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment.Settings",
+    }
+  }
+/>
+`;
+
+exports[`Assessment editor plugins.renderNode renders the Assessment when passed 1`] = `
+<Assessment
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Sections.Assessment",
+    }
+  }
+/>
+`;
+
+exports[`Assessment editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+  ],
+  "content": Object {
+    "attempts": "mockText",
+    "review": undefined,
+    "rubric": undefined,
+    "scoreActions": undefined,
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
