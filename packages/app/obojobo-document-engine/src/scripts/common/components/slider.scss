@@ -1,0 +1,76 @@
+@import '../../../scss/includes';
+
+.obojobo-draft--components--slider {
+	position: relative;
+
+	> span {
+		padding-right: 0.5em;
+	}
+
+	.switch {
+		position: absolute;
+		display: inline-block;
+		width: 2.5em;
+		height: 1em;
+		top: 50%;
+		transform: translate(0, -50%);
+
+		input {
+			opacity: 0;
+		}
+
+		.slider {
+			border: 1px solid $color-shadow;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: $color-bg2;
+			transition: 0.4s;
+			border-radius: 0.7em;
+
+			// Circle slider
+			&::before {
+				border: 1px solid $color-shadow;
+				position: absolute;
+				content: '';
+				height: 0.7em;
+				width: 0.7em;
+				left: 0.05em;
+				bottom: 0.05em;
+				background-color: $color-bg;
+				transition: 0.4s;
+				border-radius: 50%;
+			}
+
+			&::after {
+				content: 'OFF';
+				color: $color-text;
+				display: block;
+				position: absolute;
+				transform: translate(-50%, -50%);
+				top: 50%;
+				left: 50%;
+				font-size: 0.5em;
+			}
+		}
+
+		input:checked + .slider {
+			background-color: $color-obojobo-blue;
+		}
+
+		input:focus + .slider {
+			box-shadow: 0 0 5px #2196f3;
+		}
+
+		input:checked + .slider::before {
+			transform: translateX(2em);
+		}
+
+		input:checked + .slider::after {
+			content: 'ON';
+			color: $color-bg;
+		}
+	}
+}

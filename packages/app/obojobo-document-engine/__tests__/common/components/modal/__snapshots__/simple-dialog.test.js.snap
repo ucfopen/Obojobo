@@ -1,0 +1,338 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SimpleDialog SimpleDialog cancelOk 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog"
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+    >
+      <input
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Content
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              Cancel
+            </button>
+          </div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SimpleDialog SimpleDialog no type 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog"
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+    >
+      <input
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Content
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              Cancel
+            </button>
+          </div>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SimpleDialog SimpleDialog noOrYes 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog"
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+    >
+      <input
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Content
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              No
+            </button>
+          </div>
+          <span
+            className="text"
+          >
+            or
+          </span>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SimpleDialog SimpleDialog ok 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog"
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+    >
+      <input
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Content
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SimpleDialog SimpleDialog yesOrNo 1`] = `
+<div
+  className="obojobo-draft--components--modal--simple-dialog"
+>
+  <div
+    className="obojobo-draft--components--modal--dialog"
+    style={null}
+  >
+    <div
+      aria-labelledby="obojobo-draft--components--modal--modal--content"
+      className="obojobo-draft--components--modal--modal"
+      role="dialog"
+    >
+      <input
+        className="first-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+      <div
+        className="content"
+        id="obojobo-draft--components--modal--modal--content"
+      >
+        <div
+          className="dialog-content"
+          style={
+            Object {
+              "textAlign": "center",
+            }
+          }
+        >
+          Content
+        </div>
+        <div
+          className="controls"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              Yes
+            </button>
+          </div>
+          <span
+            className="text"
+          >
+            or
+          </span>
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center"
+          >
+            <button
+              className="button"
+              onClick={[MockFunction]}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+      <input
+        className="last-tab"
+        onFocus={[Function]}
+        type="text"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SimpleDialog focusOnFirstElement without props 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><div class=\\"dialog-content\\" style=\\"text-align: center;\\">Content</div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;

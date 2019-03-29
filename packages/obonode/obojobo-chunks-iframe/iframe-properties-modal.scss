@@ -1,0 +1,24 @@
+.iframe-properties {
+	text-align: left;
+
+	label {
+		display: inline;
+		padding-right: 0.5em;
+	}
+
+	> div {
+		margin-bottom: 0.2em;
+	}
+
+	.controls {
+		padding-left: 1em;
+
+		> div {
+			margin-bottom: 0.2em;
+		}
+	}
+
+	.long-input {
+		width: 8em;
+	}
+}

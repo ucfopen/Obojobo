@@ -1,0 +1,15 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--table.viewer {
+	.view {
+		.delete-cell {
+			border: none;
+			width: 1em;
+			text-align: center;
+		}
+	}
+
+	.table-settings {
+		text-align: center;
+	}
+}
