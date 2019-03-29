@@ -1,0 +1,1439 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IFrame IFrame component renders 1`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 2`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 3`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 4`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 5`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 6`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 7`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 8`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 9`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 10`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 11`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 12`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 13`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 14`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 15`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-controls-enabled is-not-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 16`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 17`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 18`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip top"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the beginning of this embedded content. Click to skip to the end.
+        </button>
+      </div>
+      <div
+        className="iframe-container"
+      >
+        <iframe
+          allow="geolocation; microphone; camera; midi; encrypted-media; vr"
+          frameBorder="0"
+          src="http://www.example.com"
+          style={Object {}}
+          title={null}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="obojobo-draft--components--button alt-action is-not-dangerous align-center button-skip bottom"
+      >
+        <button
+          onClick={[Function]}
+        >
+          You are at the end of this embedded content. Click to skip to the beginning.
+        </button>
+      </div>
+      <div
+        className="obojobo-draft--chunks--iframe--controls is-not-zoomable is-not-reloadable"
+        role="toolbar"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 19`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 20`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 21`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-controls-enabled is-not-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 22`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 23`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-not-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 24`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-not-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={[Function]}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Click to load external content"
+          >
+            View Content
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`IFrame IFrame component renders 25`] = `
+<div
+  className="component"
+  data-focussed={false}
+  data-id="mock-obo-id"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.IFrame"
+  id="obo-mock-obo-id"
+  role="region"
+  tabIndex={-1}
+>
+  <div
+    className="obojobo-draft--chunks--iframe viewer pad is-not-previewing is-not-bordered is-not-showing is-not-controls-enabled is-missing-src is-scaled-up"
+  >
+    <div
+      className="container"
+      onClick={null}
+      style={Object {}}
+    >
+      <div
+        className="iframe-container"
+      >
+        <div
+          className="blocker"
+          style={Object {}}
+        />
+      </div>
+      <div
+        className="after"
+        style={Object {}}
+      />
+      <div
+        className="click-to-load"
+      >
+        <span
+          aria-hidden={true}
+          className="title"
+        >
+          displayed-title
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
