@@ -1,0 +1,316 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "listStyles": Object {
+        "indents": Object {},
+      },
+      "textGroup": Array [
+        Object {
+          "text": Object {
+            "value": "mockLine1",
+          },
+        },
+        Object {
+          "data": Object {
+            "indent": 5,
+          },
+          "text": Object {
+            "value": "mockLine1",
+          },
+        },
+        Object {
+          "text": Object {
+            "value": "mockLine2",
+          },
+        },
+      ],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "data": Object {
+        "content": Object {
+          "bulletStyle": "decimal",
+          "type": undefined,
+        },
+      },
+      "nodes": Array [
+        Object {
+          "nodes": Array [
+            Object {
+              "leaves": undefined,
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.List.Line",
+        },
+        Object {
+          "data": Object {
+            "content": Object {
+              "bulletStyle": "upper-alpha",
+              "type": undefined,
+            },
+          },
+          "nodes": Array [
+            Object {
+              "data": Object {
+                "content": Object {
+                  "bulletStyle": "upper-roman",
+                  "type": undefined,
+                },
+              },
+              "nodes": Array [
+                Object {
+                  "data": Object {
+                    "content": Object {
+                      "bulletStyle": "lower-alpha",
+                      "type": undefined,
+                    },
+                  },
+                  "nodes": Array [
+                    Object {
+                      "data": Object {
+                        "content": Object {
+                          "bulletStyle": "lower-roman",
+                          "type": undefined,
+                        },
+                      },
+                      "nodes": Array [
+                        Object {
+                          "data": Object {
+                            "content": Object {
+                              "bulletStyle": undefined,
+                              "type": undefined,
+                            },
+                          },
+                          "nodes": Array [
+                            Object {
+                              "nodes": Array [
+                                Object {
+                                  "leaves": undefined,
+                                  "object": "text",
+                                },
+                              ],
+                              "object": "block",
+                              "type": "ObojoboDraft.Chunks.List.Line",
+                            },
+                          ],
+                          "object": "block",
+                          "type": "ObojoboDraft.Chunks.List.Level",
+                        },
+                      ],
+                      "object": "block",
+                      "type": "ObojoboDraft.Chunks.List.Level",
+                    },
+                  ],
+                  "object": "block",
+                  "type": "ObojoboDraft.Chunks.List.Level",
+                },
+              ],
+              "object": "block",
+              "type": "ObojoboDraft.Chunks.List.Level",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.List.Level",
+        },
+        Object {
+          "nodes": Array [
+            Object {
+              "leaves": undefined,
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.List.Line",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.List.Level",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`List Converter oboToSlate converts an OboNode to a Slate node with a list style 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "listStyles": Object {
+        "indents": Object {},
+        "type": "unordered",
+      },
+      "textGroup": Array [
+        Object {
+          "text": Object {
+            "value": "mockLine1",
+          },
+        },
+        Object {
+          "text": Object {
+            "value": "mockLine2",
+          },
+        },
+        Object {
+          "data": Object {
+            "indent": 5,
+          },
+          "text": Object {
+            "value": "mockLine3",
+          },
+        },
+      ],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "data": Object {
+        "content": Object {
+          "bulletStyle": "disc",
+          "type": "unordered",
+        },
+      },
+      "nodes": Array [
+        Object {
+          "nodes": Array [
+            Object {
+              "leaves": undefined,
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.List.Line",
+        },
+        Object {
+          "nodes": Array [
+            Object {
+              "leaves": undefined,
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.List.Line",
+        },
+        Object {
+          "data": Object {
+            "content": Object {
+              "bulletStyle": "circle",
+              "type": "unordered",
+            },
+          },
+          "nodes": Array [
+            Object {
+              "data": Object {
+                "content": Object {
+                  "bulletStyle": "square",
+                  "type": "unordered",
+                },
+              },
+              "nodes": Array [
+                Object {
+                  "data": Object {
+                    "content": Object {
+                      "bulletStyle": undefined,
+                      "type": "unordered",
+                    },
+                  },
+                  "nodes": Array [
+                    Object {
+                      "data": Object {
+                        "content": Object {
+                          "bulletStyle": undefined,
+                          "type": "unordered",
+                        },
+                      },
+                      "nodes": Array [
+                        Object {
+                          "data": Object {
+                            "content": Object {
+                              "bulletStyle": undefined,
+                              "type": "unordered",
+                            },
+                          },
+                          "nodes": Array [
+                            Object {
+                              "nodes": Array [
+                                Object {
+                                  "leaves": undefined,
+                                  "object": "text",
+                                },
+                              ],
+                              "object": "block",
+                              "type": "ObojoboDraft.Chunks.List.Line",
+                            },
+                          ],
+                          "object": "block",
+                          "type": "ObojoboDraft.Chunks.List.Level",
+                        },
+                      ],
+                      "object": "block",
+                      "type": "ObojoboDraft.Chunks.List.Level",
+                    },
+                  ],
+                  "object": "block",
+                  "type": "ObojoboDraft.Chunks.List.Level",
+                },
+              ],
+              "object": "block",
+              "type": "ObojoboDraft.Chunks.List.Level",
+            },
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Chunks.List.Level",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.List.Level",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`List Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "listStyles": Object {
+      "indents": Array [
+        Object {},
+        Object {},
+      ],
+    },
+    "textGroup": Array [
+      Object {
+        "data": Object {
+          "indent": 0,
+        },
+        "text": Object {
+          "styleList": Array [],
+          "value": "mockText",
+        },
+      },
+      Object {
+        "data": Object {
+          "indent": 1,
+        },
+        "text": Object {
+          "styleList": Array [],
+          "value": "mockText",
+        },
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

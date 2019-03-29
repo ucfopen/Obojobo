@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextUtil parseMarkings converts styleList to leaves 1`] = `
+Array [
+  Object {
+    "marks": Array [
+      Object {
+        "data": undefined,
+        "type": "b",
+      },
+    ],
+    "text": "This",
+  },
+  Object {
+    "marks": Array [
+      Object {
+        "data": undefined,
+        "type": "i",
+      },
+      Object {
+        "data": undefined,
+        "type": "q",
+      },
+    ],
+    "text": "Text",
+  },
+  Object {
+    "marks": Array [
+      Object {
+        "data": undefined,
+        "type": "del",
+      },
+      Object {
+        "data": undefined,
+        "type": "q",
+      },
+      Object {
+        "data": Object {
+          "num": 1,
+        },
+        "type": "sup",
+      },
+    ],
+    "text": "Is",
+  },
+  Object {
+    "marks": Array [
+      Object {
+        "data": Object {
+          "href": "mockLink",
+        },
+        "type": "a",
+      },
+      Object {
+        "data": Object {
+          "num": 1,
+        },
+        "type": "sup",
+      },
+    ],
+    "text": "Form",
+  },
+  Object {
+    "marks": Array [
+      Object {
+        "data": Object {
+          "href": "mockLink",
+        },
+        "type": "a",
+      },
+    ],
+    "text": "atted",
+  },
+]
+`;
+
+exports[`TextUtil parseMarkings converts styleList to leaves 2`] = `
+Array [
+  Object {
+    "marks": Array [
+      Object {
+        "data": undefined,
+        "type": "b",
+      },
+    ],
+    "text": "This",
+  },
+  Object {
+    "marks": Array [
+      Object {
+        "data": undefined,
+        "type": "i",
+      },
+      Object {
+        "data": undefined,
+        "type": "q",
+      },
+    ],
+    "text": "Text",
+  },
+  Object {
+    "marks": Array [
+      Object {
+        "data": undefined,
+        "type": "del",
+      },
+      Object {
+        "data": undefined,
+        "type": "q",
+      },
+      Object {
+        "data": Object {
+          "num": -1,
+        },
+        "type": "sup",
+      },
+    ],
+    "text": "Is",
+  },
+  Object {
+    "marks": Array [
+      Object {
+        "data": Object {
+          "href": "mockLink",
+        },
+        "type": "a",
+      },
+      Object {
+        "data": Object {
+          "num": -1,
+        },
+        "type": "sup",
+      },
+    ],
+    "text": "Form",
+  },
+  Object {
+    "marks": Array [
+      Object {
+        "data": Object {
+          "href": "mockLink",
+        },
+        "type": "a",
+      },
+    ],
+    "text": "atted",
+  },
+]
+`;
+
+exports[`TextUtil parseMarkings creates leaves without styleList 1`] = `
+Array [
+  undefined,
+]
+`;
+
+exports[`TextUtil slateToOboText converts a text node to a textGroup 1`] = `undefined`;

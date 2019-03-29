@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Question editor oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "solution": Object {},
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        undefined,
+      ],
+      "object": "block",
+      "type": "oboeditor.component",
+    },
+    undefined,
+    Object {
+      "nodes": Array [
+        undefined,
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Chunks.Question.Solution",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Question editor oboToSlate converts an OboNode to a Slate node without a solution 1`] = `
+Object {
+  "data": Object {
+    "content": Object {},
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        undefined,
+      ],
+      "object": "block",
+      "type": "oboeditor.component",
+    },
+    undefined,
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`Question editor slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+  ],
+  "content": Object {
+    "solution": undefined,
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

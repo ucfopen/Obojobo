@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PreTest PreTest component 1`] = `
+<div
+  className="pre-test"
+>
+  <MockComponent
+    model={
+      Object {
+        "getComponentClass": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": "MockComponent",
+            },
+          ],
+        },
+      }
+    }
+    moduleData={
+      Object {
+        "focusState": Object {},
+      }
+    }
+  />
+</div>
+`;

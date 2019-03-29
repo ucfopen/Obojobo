@@ -1,31 +1,74 @@
 {
-  "private": true,
-  "name": "obojobo-next",
-  "repository": "https://github.com/ucfopen/Obojobo.git",
+	"private": true,
+	"name": "obojobo-next",
+	"repository": "https://github.com/ucfopen/Obojobo.git",
   "homepage":"https://ucfopen.github.io/Obojobo-Docs/",
-  "license": "AGPL-3.0",
-  "scripts": {
-    "start": "cd node_modules/obojobo-express && node ./bin/www",
-    "setup": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn db:rebuild",
-    "dev": "cd node_modules/obojobo-express && yarn dev",
-    "dev:docEngine": "concurrently \"cd node_modules/obojobo-express && yarn dev\" \" cd node_modules/obojobo-document-engine && yarn start\"",
-    "test": "cd node_modules/obojobo-document-xml-parser && yarn test && cd ../obojobo-express && yarn test && cd ../obojobo-document-engine && yarn test",
-    "test:ci": "cd node_modules/obojobo-document-xml-parser && yarn test:ci && cd ../obojobo-express && yarn test:ci && cd ../obojobo-document-engine && yarn test:ci",
-    "precommit": "cd node_modules/obojobo-express && yarn precommit && cd ../obojobo-document-engine && yarn precommit",
-    "heroku-postbuild": "cd node_modules/obojobo-document-engine && yarn build && cd ../obojobo-express && yarn assets"
-  },
-  "devDependencies": {
-    "concurrently": "^3.5.0",
-    "husky": "^0.13.3",
-    "lerna": "^3.10.7"
-  },
-  "workspaces": [
-    "packages/obojobo-document-engine",
-    "packages/obojobo-document-xml-parser",
-    "packages/obojobo-express"
-  ],
-  "engines": {
-    "yarn": "^1.0",
-    "node": "^10.4.1"
+	"license": "AGPL-3.0-only",
+	"scripts": {
+		"build": "cd node_modules/obojobo-express && yarn build",
+		"db:rebuild": "cd node_modules/obojobo-express && yarn db:rebuild",
+		"delete:node_modules": "rm -rf node_modules && rm -rf ./packages/*/*/node_modules",
+		"dev": "cd node_modules/obojobo-express && yarn dev",
+		"lint": "./run_in_all_packages.sh yarn lint",
+		"lint:css": "./run_in_all_packages.sh yarn lint:css",
+		"lint:js": "./run_in_all_packages.sh yarn lint:js",
+		"open:coverage": "./run_in_all_packages.sh open ./coverage/lcov-report/index.html",
+		"precommit": "./run_in_all_packages.sh yarn lint-staged && yarn test:ci",
+		"setup": "yarn build --mode=production && cd node_modules/obojobo-express && yarn db:rebuild",
+		"test": "TZ='America/New_York' jest --verbose",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
+		"test:all": "./run_in_all_packages.sh yarn test",
+		"test:ci:all": "./run_in_all_packages.sh yarn test:ci"
+	},
+	"devDependencies": {
+		"concurrently": "^3.5.0",
+		"husky": "^0.13.3",
+		"lerna": "^3.10.7",
+		"nodemon": "^1.18.8"
+	},
+	"jest": {
+		"projects": ["<rootDir>/packages/*/*"],
+		"transformIgnorePatterns": [
+			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
+	},
+	"workspaces": [
+		"packages/app/obojobo-document-engine",
+		"packages/app/obojobo-document-xml-parser",
+		"packages/app/obojobo-express",
+		"packages/obonode/obojobo-chunks-action-button",
+		"packages/obonode/obojobo-chunks-break",
+		"packages/obonode/obojobo-chunks-code",
+		"packages/obonode/obojobo-chunks-figure",
+		"packages/obonode/obojobo-chunks-heading",
+		"packages/obonode/obojobo-chunks-html",
+		"packages/obonode/obojobo-chunks-iframe",
+		"packages/obonode/obojobo-chunks-list",
+		"packages/obonode/obojobo-chunks-math-equation",
+		"packages/obonode/obojobo-chunks-multiple-choice-assessment",
+		"packages/obonode/obojobo-chunks-question",
+		"packages/obonode/obojobo-chunks-question-bank",
+		"packages/obonode/obojobo-chunks-table",
+		"packages/obonode/obojobo-chunks-text",
+		"packages/obonode/obojobo-chunks-youtube",
+		"packages/obonode/obojobo-modules-module",
+		"packages/obonode/obojobo-pages-page",
+		"packages/obonode/obojobo-sections-assessment",
+		"packages/obonode/obojobo-sections-content",
+		"packages/util/eslint-config-obojobo",
+		"packages/util/obojobo-lib-utils",
+		"packages/util/stylelint-config-obojobo"
+	],
+	"engines": {
+		"node": "^10.4.1",
+		"yarn": "^1.0"
   }
 }

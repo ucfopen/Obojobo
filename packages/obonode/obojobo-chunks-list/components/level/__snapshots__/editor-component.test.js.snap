@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List editor Level component 1`] = `
+<div>
+  <ul
+    style={
+      Object {
+        "listStyleType": "square",
+      }
+    }
+  />
+</div>
+`;
+
+exports[`List editor Level component ordered 1`] = `
+<div>
+  <ol
+    style={
+      Object {
+        "listStyleType": "alpha",
+      }
+    }
+  />
+</div>
+`;

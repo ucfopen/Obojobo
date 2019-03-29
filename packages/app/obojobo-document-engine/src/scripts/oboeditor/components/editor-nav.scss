@@ -1,0 +1,52 @@
+@import '../../../scss/includes';
+
+.editor--components--nav {
+	$color-nav-bg: #fbfbfb;
+
+	padding-bottom: 17em;
+
+	ul {
+		z-index: auto;
+	}
+
+	&::after {
+		top: 0;
+		left: -0.55em;
+		width: 0.8em;
+		height: 0.8em;
+		background: $color-bg;
+		border: solid 2px $color-text-minor;
+	}
+
+	.nav-modify {
+		margin: 0.5em;
+		padding: 0.2em;
+		border-radius: $dimension-rounded-radius;
+		background: $color-obojobo-blue;
+		color: $color-bg;
+	}
+
+	.button-bar {
+		padding-left: 2rem;
+		padding-bottom: 2rem;
+		position: fixed;
+		background: $color-nav-bg;
+		bottom: 0;
+		z-index: 5;
+		left: 0;
+		font-size: 1em;
+		font-weight: bold;
+		cursor: default;
+		width: 15em;
+
+		button {
+			display: block;
+			background: $color-obojobo-blue;
+			padding: 0.2em;
+			border-radius: $dimension-rounded-radius;
+			margin-bottom: 0.2em;
+			color: $color-bg;
+			font-size: 1rem;
+		}
+	}
+}

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableMenu render unhandled type as nothing 1`] = `null`;
+
+exports[`TableMenu renders without error 1`] = `
+<div
+  className="obojobo-draft--chunks--table--table-menu row"
+>
+  <ul>
+    <li
+      className="insert-above"
+      onClick={[Function]}
+    >
+      Insert 1 row above
+    </li>
+    <li
+      className="insert-below"
+      onClick={[Function]}
+    >
+      Insert 1 row below
+    </li>
+    <li
+      className="delete"
+      onClick={[Function]}
+    >
+      Delete this row
+    </li>
+  </ul>
+</div>
+`;
