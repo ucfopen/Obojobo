@@ -52,7 +52,8 @@ class MCChoice extends React.Component {
 		const className =
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
 			isOrNot(score === 100, 'correct') +
-			isOrNot(isSelected, 'selected')
+			isOrNot(isSelected, 'selected') +
+			' editor-mc-choice'
 
 		return (
 			<div className={className}>
