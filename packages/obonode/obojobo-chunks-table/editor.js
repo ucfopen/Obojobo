@@ -76,26 +76,24 @@ const plugins = {
 	},
 	normalizeNode(node, editor, next) {
 		if (node.object !== 'block') return next()
-		if (node.type !== TABLE_NODE && node.type !== TABLE_ROW_NODE) return next()
+		if (node.type !== TABLE_ROW_NODE) return next()
 
 		// Normalize Rows with the wrong number of cells
 		const numCols = node.data.get('content').numCols
-		if(node.type === TABLE_ROW_NODE && node.nodes.size !== numCols) {
+		if (node.nodes.size !== numCols) {
 			const header = node.data.get('content').header
 
 			// Insert missing cells at the end of the row
 			return editor => {
-				for(let i = node.nodes.size; i < numCols; i++) {
+				for (let i = node.nodes.size; i < numCols; i++) {
 					editor.insertNodeByKey(node.key, i, {
-						"object":"block",
-						"type":"ObojoboDraft.Chunks.Table.Cell",
-						"data": { "content": { header } },
-						"nodes":[
+						object: 'block',
+						type: 'ObojoboDraft.Chunks.Table.Cell',
+						data: { content: { header } },
+						nodes: [
 							{
-								"object":"text",
-								"leaves":[
-									{"object":"leaf","text":"","marks":[]}
-								]
+								object: 'text',
+								leaves: [{ object: 'leaf', text: '', marks: [] }]
 							}
 						]
 					})
