@@ -55,7 +55,7 @@
 		"react-dom": "16.7.0",
 		"react-idle-timer": "^4.2.3",
 		"react-transition-group": "^2.5.3",
-		"slate": "0.44.10",
+		"slate": "0.44.12",
 		"slate-react": "0.20.8",
 		"slate-schema-violations": "^0.1.39",
 		"smoothscroll-polyfill": "^0.3.4",
