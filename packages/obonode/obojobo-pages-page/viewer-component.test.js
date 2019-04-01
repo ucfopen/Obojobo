@@ -2,6 +2,7 @@ import React from 'react'
 import renderer from 'react-test-renderer'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 
 import Page from './viewer-component'

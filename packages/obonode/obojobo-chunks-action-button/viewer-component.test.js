@@ -5,6 +5,8 @@ import ActionButton from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 
+jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
+
 require('./viewer') // used to register this oboModel
 
 describe('ActionButton', () => {
