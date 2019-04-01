@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorStore Regisers events w/ dispatcher 1`] = `
+Object {
+  "editor:addAssessment": [Function],
+  "editor:addPage": [Function],
+  "editor:deletePage": [Function],
+  "editor:goto": [Function],
+  "editor:gotoPath": [Function],
+  "editor:movePage": [Function],
+  "editor:rebuildMenu": [Function],
+  "editor:renamePage": [Function],
+  "editor:setContext": [Function],
+}
+`;
+
+exports[`EditorStore buildMenu should reset menu items 1`] = `
+Object {
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "navItems": "mockModel",
+}
+`;
+
+exports[`EditorStore generateNav builds a navItem 1`] = `
+Object {
+  "children": Array [
+    Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/editor/66/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  ],
+  "flags": Object {
+    "complete": false,
+    "correct": false,
+  },
+  "fullPath": Array [
+    "whatever",
+  ],
+  "id": 11,
+  "label": "",
+  "path": "whatever",
+  "showChildren": true,
+  "showChildrenOnNavigation": true,
+  "type": "hidden",
+}
+`;
+
+exports[`EditorStore generateNav builds a navItem 2`] = `
+Object {
+  "itemsByFullPath": Object {
+    "/editor/66/whatever/whatever2": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/editor/66/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "itemsById": Object {
+    "11": Object {
+      "children": Array [
+        Object {
+          "children": Array [],
+          "flags": Object {
+            "complete": false,
+            "correct": false,
+          },
+          "flatPath": "whatever/whatever2",
+          "fullFlatPath": "/editor/66/whatever/whatever2",
+          "fullPath": Array [
+            "whatever",
+            "whatever2",
+          ],
+          "id": 9,
+          "label": "",
+          "path": "whatever2",
+          "showChildren": true,
+          "showChildrenOnNavigation": true,
+          "type": "hidden",
+        },
+      ],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+      },
+      "fullPath": Array [
+        "whatever",
+      ],
+      "id": 11,
+      "label": "",
+      "path": "whatever",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+    "9": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/editor/66/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "itemsByPath": Object {
+    "whatever/whatever2": Object {
+      "children": Array [],
+      "flags": Object {
+        "complete": false,
+        "correct": false,
+      },
+      "flatPath": "whatever/whatever2",
+      "fullFlatPath": "/editor/66/whatever/whatever2",
+      "fullPath": Array [
+        "whatever",
+        "whatever2",
+      ],
+      "id": 9,
+      "label": "",
+      "path": "whatever2",
+      "showChildren": true,
+      "showChildrenOnNavigation": true,
+      "type": "hidden",
+    },
+  },
+  "visitId": "visitId",
+}
+`;
+
+exports[`EditorStore gotoItem sends triggers events and updates history 1`] = `
+Object {
+  "currentModel": Object {
+    "id": "newItem",
+    "processTrigger": [MockFunction],
+    "showChildren": true,
+    "showChildrenOnNavigation": true,
+  },
+  "itemsById": Object {
+    "mockId": Object {
+      "showChildren": true,
+    },
+  },
+  "navTargetHistory": Array [
+    "mockId",
+  ],
+  "navTargetId": "newItem",
+}
+`;
+
+exports[`EditorStore gotoItem sends updates history with no previous item 1`] = `
+Object {
+  "currentModel": Object {
+    "id": "newItem",
+    "processTrigger": [MockFunction],
+    "showChildren": true,
+    "showChildrenOnNavigation": true,
+  },
+  "itemsById": Object {
+    "mockId": Object {
+      "showChildren": true,
+    },
+  },
+  "navTargetHistory": Array [
+    "mockId",
+  ],
+  "navTargetId": "newItem",
+}
+`;
+
+exports[`EditorStore init builds state locked state 1`] = `
+Object {
+  "context": "editor",
+  "currentModel": null,
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": true,
+  "navItems": Object {},
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+}
+`;
+
+exports[`EditorStore init builds state open state 1`] = `
+Object {
+  "context": "editor",
+  "currentModel": null,
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navItems": Object {},
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+}
+`;
+
+exports[`EditorStore init builds state with basic options 1`] = `
+Object {
+  "context": "editor",
+  "currentModel": null,
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navItems": Object {},
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+}
+`;

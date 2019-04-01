@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCFeedback editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`MCFeedback editor plugins.renderNode renders a node 1`] = `
+<MCFeedback
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.MCAssessment.MCFeedback",
+    }
+  }
+/>
+`;

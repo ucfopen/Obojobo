@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionBank editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`QuestionBank editor plugins.renderNode renders a question bank when passed 1`] = `
+<QuestionBank
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.QuestionBank",
+    }
+  }
+/>
+`;
+
+exports[`QuestionBank editor plugins.renderNode renders settings when passed 1`] = `
+<Settings
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.QuestionBank.Settings",
+    }
+  }
+/>
+`;

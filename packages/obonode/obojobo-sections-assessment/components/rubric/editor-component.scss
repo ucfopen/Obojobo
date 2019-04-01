@@ -1,0 +1,52 @@
+@import '~styles/includes';
+
+.rubric {
+	position: relative;
+	width: auto;
+	border-radius: $dimension-rounded-radius;
+	border: 1px solid $color-preview;
+	padding: 2em 3em;
+	background: transparentize($color-preview, 0.95);
+	margin-bottom: 3em;
+
+	button {
+		font-family: $font-default;
+		line-height: 1em;
+		font-size: 1em;
+		text-align: center;
+		border-radius: $dimension-rounded-radius;
+		padding: 0.4em;
+	}
+
+	.parameter-node {
+		display: block;
+		padding-top: 0.5em;
+	}
+
+	.mod {
+		position: relative;
+		width: auto;
+		border-bottom: 1px solid $color-preview;
+	}
+
+	.add-button {
+		margin-top: 0.2em;
+		background-color: $color-preview;
+		color: $color-bg;
+	}
+
+	.delete-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+
+		button {
+			font-size: 1.2em;
+			padding: 0;
+			min-width: 1.4em;
+			border-radius: 50%;
+		}
+	}
+}

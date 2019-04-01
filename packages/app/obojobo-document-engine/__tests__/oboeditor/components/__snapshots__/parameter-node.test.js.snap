@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parameter Node Node component 1`] = `
+<div
+  className="parameter-node"
+>
+  <span
+    contentEditable={false}
+  >
+    undefined: 
+  </span>
+  <span />
+</div>
+`;
+
+exports[`Parameter Node Node component with checkbox 1`] = `
+<div
+  className="parameter-node"
+>
+  <span
+    contentEditable={false}
+  >
+    mockType: 
+  </span>
+  <label
+    className="switch"
+  >
+    <input
+      checked={false}
+      className="slider"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <div
+      className="slider round"
+    />
+  </label>
+</div>
+`;
+
+exports[`Parameter Node Node component with select 1`] = `
+<div
+  className="parameter-node"
+>
+  <span
+    contentEditable={false}
+  >
+    mockType: 
+  </span>
+  <select
+    name="Select"
+    onChange={[Function]}
+    onClick={[Function]}
+    value="Option 1"
+  >
+    <option
+      value="Option 1"
+    >
+      Option 1
+    </option>
+    <option
+      value="Option 2"
+    >
+      Option 2
+    </option>
+  </select>
+</div>
+`;
+
+exports[`Parameter Node Node component with select changes value 1`] = `"<div class=\\"parameter-node\\"><span contenteditable=\\"false\\">mockType: </span><label class=\\"switch\\"><input type=\\"checkbox\\" class=\\"slider\\"/><div class=\\"slider round\\"></div></label></div>"`;
+
+exports[`Parameter Node Node component with select edits value 1`] = `"<div class=\\"parameter-node\\"><span contenteditable=\\"false\\">mockType: </span><select name=\\"Select\\"><option selected=\\"\\" value=\\"Option 1\\">Option 1</option><option value=\\"Option 2\\">Option 2</option></select></div>"`;
+
+exports[`Parameter Node oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "display": "someDisplay",
+    "name": "oboName",
+    "options": undefined,
+    "type": "type-text",
+  },
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "someValue",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "Parameter",
+}
+`;
+
+exports[`Parameter Node oboToSlate converts an OboNode to a Slate node with checked 1`] = `
+Object {
+  "data": Object {
+    "checked": "someValue",
+    "display": "someDisplay",
+    "name": "oboName",
+    "options": undefined,
+    "type": "type-toggle",
+  },
+  "isVoid": true,
+  "object": "block",
+  "type": "Parameter",
+}
+`;
+
+exports[`Parameter Node oboToSlate converts an OboNode to a Slate node with options 1`] = `
+Object {
+  "data": Object {
+    "current": "someValue",
+    "display": "someDisplay",
+    "name": "oboName",
+    "options": Object {
+      "someOption": "option",
+    },
+    "type": "type-select",
+  },
+  "isVoid": true,
+  "object": "block",
+  "type": "Parameter",
+}
+`;
+
+exports[`Parameter Node plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`Parameter Node plugins.renderNode renders a Parameter when passed 1`] = `
+<Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "Parameter",
+    }
+  }
+/>
+`;
+
+exports[`Parameter Node slateToObo converts a Slate node to an OboNode 1`] = `
+Object {
+  "undefined": "mockValue",
+}
+`;
+
+exports[`Parameter Node slateToObo converts a Slate node to an OboNode with select 1`] = `
+Object {
+  "undefined": undefined,
+}
+`;
+
+exports[`Parameter Node slateToObo converts a Slate node to an OboNode with select 2`] = `
+Object {
+  "undefined": undefined,
+}
+`;

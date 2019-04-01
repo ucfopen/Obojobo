@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MCAssessment editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`MCAssessment editor plugins.renderNode renders a ChoiceList when passed 1`] = `
+<ChoiceList
+  node={
+    Object {
+      "attributes": Object {
+        "dummy": "dummyData",
+      },
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.MCAssessment.ChoiceList",
+    }
+  }
+/>
+`;
+
+exports[`MCAssessment editor plugins.renderNode renders a MCAssessment when passed 1`] = `
+<MCAssessment
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.MCAssessment",
+    }
+  }
+/>
+`;
+
+exports[`MCAssessment editor plugins.renderNode renders a Setting when passed 1`] = `
+<Settings
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.MCAssessment.Settings",
+    }
+  }
+/>
+`;

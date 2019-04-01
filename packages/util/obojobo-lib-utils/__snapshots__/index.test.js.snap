@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`obojobo lib utils searchNodeModulesForOboNodes attempts to load all yarn packages 1`] = `
+Array [
+  "obojobo-chunks-action-button",
+  "obojobo-modules-module",
+  "obojobo-pages-page",
+  "obojobo-sections-content",
+]
+`;
