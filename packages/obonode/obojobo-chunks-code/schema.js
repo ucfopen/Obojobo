@@ -2,7 +2,7 @@ import { Block } from 'slate'
 
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 
-const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
+const { NODE_DATA_INVALID, CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 const schema = {
@@ -45,6 +45,9 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Chunks.Code.CodeLine': {
+			data: {
+				content: c => !!c
+			},
 			nodes: [
 				{
 					match: [{ object: 'text' }],
@@ -54,6 +57,15 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
+					case NODE_DATA_INVALID: {
+						return editor.setNodeByKey(node.key, {
+							data: {
+								content: {
+									indent: 0
+								}
+							}
+						})
+					}
 					case CHILD_TYPE_INVALID: {
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
 						const isAtEdge = index === node.nodes.size - 1 || index === 0
