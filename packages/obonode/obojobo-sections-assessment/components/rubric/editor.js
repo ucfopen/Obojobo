@@ -1,5 +1,6 @@
 import React from 'react'
 import { Block } from 'slate'
+import { getEventTransfer } from 'slate-react'
 
 import './editor-component.scss'
 
@@ -100,7 +101,21 @@ class Node extends React.Component {
 	}
 }
 
+const isType = editor =>
+	editor.value.blocks.some(
+		block => !!editor.value.document.getClosest(block.key, parent => parent.type === RUBRIC_NODE)
+	)
+
 const plugins = {
+	onPaste(event, editor, next) {
+		// See if any of the selected nodes have a TABLE_NODE parent
+		const isRubric = isType(editor)
+		if (!isRubric) return next()
+
+		// When pasting into a rubric, paste everything as plain text
+		const transfer = getEventTransfer(event)
+		editor.insertText(transfer.text)
+	},
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case MOD_NODE:

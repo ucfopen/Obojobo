@@ -5,6 +5,9 @@ import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
+import SlateReact from 'slate-react'
+jest.mock('slate-react')
+
 import Rubric from './editor'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
@@ -320,6 +323,59 @@ describe('Rubric editor', () => {
 		const slateNode = Rubric.helpers.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('plugins.onPaste deals with no rubric', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				}
+			}
+		}
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		Rubric.plugins.onPaste(event, editor, jest.fn())
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onPaste deals with pasting into rubric', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (key, funct) => {
+						funct({ type: 'mockType'})
+						return true
+					}
+				}
+			}
+		}
+		editor.insertText = jest.fn().mockReturnValueOnce(editor)
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ text: 'mock text' })
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		Rubric.plugins.onPaste(event, editor, jest.fn())
+
+		expect(editor.insertText).toHaveBeenCalled()
 	})
 
 	test('plugins.renderNode renders the rubric when passed', () => {
