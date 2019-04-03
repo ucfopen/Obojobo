@@ -3,6 +3,9 @@ import renderer from 'react-test-renderer'
 
 import ActionButton from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
+
+jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 
 require('./viewer') // used to register this oboModel
 
@@ -47,5 +50,18 @@ describe('ActionButton', () => {
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('ActionButton focusOnContent calls focus on the button element', () => {
+		const mockButtonEl = jest.fn()
+		const model = {
+			getDomEl: () => ({
+				querySelector: () => mockButtonEl
+			})
+		}
+
+		ActionButton.focusOnContent(model)
+
+		expect(focus).toHaveBeenCalledWith(mockButtonEl)
 	})
 })

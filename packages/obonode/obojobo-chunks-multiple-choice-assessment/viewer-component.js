@@ -253,7 +253,7 @@ export default class MCAssessment extends React.Component {
 
 			case FOCUS_TARGET_QUESTION:
 				delete this.nextFocus
-				FocusUtil.focusOnContent(this.getQuestionModel().get('id'), false)
+				FocusUtil.focusComponent(this.getQuestionModel().get('id'))
 				break
 		}
 	}
