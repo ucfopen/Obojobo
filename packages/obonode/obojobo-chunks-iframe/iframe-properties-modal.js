@@ -11,11 +11,12 @@ class IFrameProperties extends React.Component {
 		super(props)
 
 		this.state = this.props.content
+		this.inputRef = React.createRef()
 	}
 
 	componentDidMount() {
-		this.refs.input.focus()
-		this.refs.input.select()
+		this.inputRef.current.focus()
+		this.inputRef.current.select()
 	}
 
 	handleTitleChange(event) {
@@ -59,7 +60,7 @@ class IFrameProperties extends React.Component {
 	}
 
 	handleAutoloadChange(checked) {
-		return this.setState({ border: checked })
+		return this.setState({ autoload: checked })
 	}
 
 	handleControlChange(property, checked) {
@@ -77,7 +78,7 @@ class IFrameProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.refs.input.focus()
+		return this.inputRef.current.focus()
 	}
 
 	render() {
@@ -96,7 +97,7 @@ class IFrameProperties extends React.Component {
 						<input
 							type="text"
 							id="obojobo-draft--chunks--iframe--properties-modal--title"
-							ref={'input'}
+							ref={this.inputRef}
 							value={this.state.title || ''}
 							placeholder="IFrame Title"
 							onChange={this.handleTitleChange.bind(this)}
