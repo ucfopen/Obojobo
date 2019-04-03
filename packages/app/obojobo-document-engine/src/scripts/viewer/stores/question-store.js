@@ -187,7 +187,7 @@ class QuestionStore extends Store {
 				}
 
 				if (payload.value.score === 100) {
-					FocusUtil.clearVisualFocus()
+					FocusUtil.clearFadeEffect()
 				}
 
 				this.triggerChange()
