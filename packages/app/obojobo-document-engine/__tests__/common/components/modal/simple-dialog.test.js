@@ -63,6 +63,40 @@ describe('SimpleDialog', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('Enter closes modal', () => {
+		const onConfirm = jest.fn()
+		const component = mount(
+			<SimpleDialog onCancel={jest.fn()} onConfirm={onConfirm}>
+				Content
+			</SimpleDialog>
+		)
+
+		expect(onConfirm).toHaveBeenCalledTimes(0)
+
+		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
+
+		expect(onConfirm).toHaveBeenCalledTimes(1)
+
+		component.unmount()
+	})
+
+	test('Other keys dont close modal', () => {
+		const onConfirm = jest.fn()
+		const component = mount(
+			<SimpleDialog onCancel={jest.fn()} onConfirm={onConfirm}>
+				Content
+			</SimpleDialog>
+		)
+
+		expect(onConfirm).toHaveBeenCalledTimes(0)
+
+		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'r' }))
+
+		expect(onConfirm).toHaveBeenCalledTimes(0)
+
+		component.unmount()
+	})
+
 	test('SimpleDialog ok click', () => {
 		const onCancel = jest.fn()
 		const onConfirm = jest.fn()
@@ -166,5 +200,22 @@ describe('SimpleDialog', () => {
 		rightButton.simulate('click')
 
 		expect(ModalUtil.hide).toHaveBeenCalledTimes(2)
+	})
+
+	test('focusOnFirstElement with props', () => {
+		const focusFirst = jest.fn()
+		const component = mount(<SimpleDialog focusOnFirstElement={focusFirst}>Content</SimpleDialog>)
+
+		component.instance().focusOnFirstElement()
+
+		expect(focusFirst).toHaveBeenCalled()
+	})
+
+	test('focusOnFirstElement without props', () => {
+		const component = mount(<SimpleDialog cancelOk>Content</SimpleDialog>)
+
+		component.instance().focusOnFirstElement()
+
+		expect(component.html()).toMatchSnapshot()
 	})
 })

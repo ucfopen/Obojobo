@@ -1,0 +1,107 @@
+@import '~styles/includes';
+
+.score-range {
+	text-align: left;
+	min-height: 12.3em;
+	min-width: 19em;
+
+	input {
+		@include text-input();
+
+		vertical-align: middle;
+	}
+
+	label {
+		vertical-align: middle;
+		margin-right: 0.5em;
+	}
+
+	label:first-child {
+		margin-bottom: 0.2em;
+	}
+
+	input[type='number'] {
+		min-width: 6em;
+		margin-right: 0.5em;
+	}
+
+	fieldset {
+		text-align: left;
+		border: none;
+		padding-left: 0;
+	}
+
+	.single-type-input {
+		input[type='number'] {
+			margin-right: 0.5em;
+		}
+
+		> span {
+			vertical-align: middle;
+			font-size: 0.8em;
+			margin: 0.5em;
+		}
+
+		.null-label {
+			font-family: $font-monospace;
+			font-size: 0.8em;
+		}
+	}
+
+	.error {
+		color: $color-error;
+		font-size: 0.8em;
+		font-weight: bold;
+		display: block;
+		position: absolute;
+		bottom: 6em;
+		width: 100%;
+		transform: translate(-50%, 0);
+		left: 50%;
+		text-align: center;
+	}
+
+	.type-input {
+		display: block;
+
+		.single-type-input {
+			padding-left: 2em;
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+		}
+
+		label {
+			display: inline;
+		}
+
+		> label {
+			margin-bottom: 0.2em;
+			margin-top: 0.2em;
+			padding-left: 0.2em;
+			display: inline-block;
+		}
+
+		.range-display {
+			width: 100%;
+			text-align: left;
+			margin-top: 1em;
+			font-size: 0.7em;
+			color: $color-text-minor;
+		}
+
+		.range-type-input {
+			padding-left: 2em;
+			margin-top: 0.5em;
+			margin-bottom: 0.5em;
+
+			> div {
+				margin-bottom: 0.3em;
+			}
+
+			label {
+				width: 2.2em;
+				display: inline-block;
+			}
+		}
+	}
+}

@@ -1,9 +1,8 @@
-/* eslint no-alert: 0 */
 import React from 'react'
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import { Value } from 'slate'
 import { Editor } from 'slate-react'
-import APIUtil from '../../viewer/util/api-util'
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 
 import ActionButton from 'obojobo-chunks-action-button/editor'
 import Break from 'obojobo-chunks-break/editor'
@@ -25,7 +24,7 @@ import MCAnswer from 'obojobo-chunks-multiple-choice-assessment/MCAnswer/editor'
 import MCFeedback from 'obojobo-chunks-multiple-choice-assessment/MCFeedback/editor'
 import Page from 'obojobo-pages-page/editor'
 import Assessment from 'obojobo-sections-assessment/editor'
-import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor'
+import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-component'
 import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
 import ParameterNode from './parameter-node'
 import Component from './node/editor'
@@ -33,6 +32,9 @@ import MarkToolbar from './toolbar'
 import EditorSchema from '../plugins/editor-schema'
 
 import './page-editor.scss'
+
+const { SimpleDialog } = Common.components.modal
+const { ModalUtil } = Common.util
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -125,8 +127,26 @@ class PageEditor extends React.Component {
 		return this.editor
 	}
 
-	onChange({ value }) {
-		this.setState({ value })
+	onChange(change) {
+		// Check if any nodes have been changed
+		const nodesChanged = change.operations
+			.toJSON()
+			.some(
+				operation =>
+					operation.type === 'set_node' ||
+					operation.type === 'insert_node' ||
+					operation.type === 'add_mark' ||
+					operation.type === 'set_mark'
+			)
+
+		if (nodesChanged) {
+			// Hacky solution: editor changes need an uninterrupted React render cycle
+			// Calling ModalUtil.hide right after Modals are finished interrupts this asyncronously
+			// This hack only works because Modals are not directly a part of the Slate Editor
+			ModalUtil.hide()
+		}
+
+		this.setState({ value: change.value })
 	}
 
 	exportToJSON(page, value) {
@@ -163,7 +183,6 @@ class PageEditor extends React.Component {
 			json.document.nodes.push(Assessment.helpers.oboToSlate(page))
 		} else {
 			page.attributes.children.forEach(child => {
-				// wraps each node with oboeditor-component
 				json.document.nodes.push(Component.helpers.oboToSlate(child))
 			})
 		}
@@ -216,7 +235,9 @@ class PageEditor extends React.Component {
 
 		APIUtil.postDraft(this.props.draftId, json).then(result => {
 			if (result.status === 'ok') {
-				window.alert('Successfully saved draft')
+				ModalUtil.show(<SimpleDialog ok title={'Successfully saved draft'} />)
+			} else {
+				ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
 			}
 		})
 	}

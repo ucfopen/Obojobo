@@ -1,16 +1,22 @@
-/* eslint no-undefined: 0 */
-import Actions from './editor'
 import React from 'react'
-import renderer from 'react-test-renderer'
 import { shallow } from 'enzyme'
+import renderer from 'react-test-renderer'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 jest.mock('obojobo-pages-page/editor')
 
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+
+import Actions from './editor-component'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 
 describe('Actions editor', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('Node component', () => {
 		const Node = Actions.components.Node
 		const component = renderer.create(
@@ -30,9 +36,6 @@ describe('Actions editor', () => {
 	})
 
 	test('Node component adds child', () => {
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-
 		const editor = {
 			insertNodeByKey: jest.fn()
 		}
@@ -56,6 +59,32 @@ describe('Actions editor', () => {
 		component.find('button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('addAction adds an action with the given range', () => {
+		const editor = {
+			insertNodeByKey: jest.fn()
+		}
+
+		const Node = Actions.components.Node
+		const component = shallow(
+			<Node
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					},
+					nodes: { size: 0 }
+				}}
+				editor={editor}
+			/>
+		)
+
+		component.instance().addAction('mock range')
+
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Score component', () => {
@@ -76,27 +105,9 @@ describe('Actions editor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Score component edits range', () => {
-		jest.spyOn(window, 'prompt')
-		window.prompt.mockReturnValueOnce(null)
-
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+	test('Score component changes range', () => {
 		const Node = Actions.components.Score
-		const component = shallow(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={editor}
-			/>
-		)
+		const component = shallow(<Node node={{ data: { get: () => ({}) } }} />)
 		const tree = component.html()
 
 		component
@@ -105,6 +116,22 @@ describe('Actions editor', () => {
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
+		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('changeRange updates the range', () => {
+		const Node = Actions.components.Score
+
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+		const component = shallow(<Node node={{ data: { get: () => ({}) } }} editor={editor} />)
+		const tree = component.html()
+
+		component.instance().changeRange('mock range')
+
+		expect(tree).toMatchSnapshot()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 
 	test('Score component deletes self', () => {
@@ -127,7 +154,7 @@ describe('Actions editor', () => {
 		)
 		const tree = component.html()
 
-		component.find('.editor--page-editor--delete-node-button').simulate('click')
+		component.find('.delete-button').simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(editor.removeNodeByKey).toHaveBeenCalled()

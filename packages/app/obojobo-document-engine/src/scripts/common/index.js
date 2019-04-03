@@ -20,6 +20,7 @@ import ModalUtil from './util/modal-util'
 import MoreInfoButton from './components/more-info-button'
 import NonEditableChunk from './chunk/non-editable-chunk'
 import OboModel from './models/obo-model'
+import Prompt from './components/modal/prompt'
 import Question from './components/modal/question'
 import RangeParsing from './util/range-parsing'
 import { Registry } from './registry'
@@ -68,6 +69,7 @@ export default {
 				SingleInputBubble
 			},
 			Question,
+			Prompt,
 			SimpleMessage,
 			Modal,
 			Dialog,

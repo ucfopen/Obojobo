@@ -46,11 +46,13 @@
 	}
 
 	.range-edit {
+		$range-edit-background: #00000000;
+
 		transform: scaleX(-1);
 		display: inline;
 		font-size: 1.5em;
 		color: $color-action;
-		background-color: $color-text;
+		background-color: $range-edit-background;
 		border: none;
 
 		&:hover {

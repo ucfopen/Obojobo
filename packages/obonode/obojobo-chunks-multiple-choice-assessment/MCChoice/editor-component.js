@@ -2,8 +2,11 @@ import './viewer-component.scss'
 import './editor-component.scss'
 
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import { Block } from 'slate'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+
+const { Button } = Common.components
 
 const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 
@@ -42,19 +45,21 @@ class MCChoice extends React.Component {
 	}
 
 	render() {
+		const isSelected = this.props.isSelected
 		const score = this.props.node.data.get('content').score
 		const hasFeedback = this.props.node.nodes.size === 2
+
 		const className =
 			'component obojobo-draft--chunks--mc-assessment--mc-choice' +
-			isOrNot(score === 100, 'correct')
+			isOrNot(score === 100, 'correct') +
+			isOrNot(isSelected, 'selected') +
+			' editor-mc-choice'
+
 		return (
 			<div className={className}>
-				<button
-					className="editor--page-editor--delete-node-button"
-					onClick={event => this.delete(event)}
-				>
-					X
-				</button>
+				<Button className="delete-button" onClick={event => this.delete(event)}>
+					×
+				</Button>
 				<button className="correct-button" onClick={event => this.handleScoreChange(event)}>
 					{score === 100 ? '✔' : '✖'}
 				</button>

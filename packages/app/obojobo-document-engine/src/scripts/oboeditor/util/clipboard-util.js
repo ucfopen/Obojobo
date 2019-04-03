@@ -1,4 +1,9 @@
-/* eslint no-alert: 0 */
+import React from 'react'
+import Common from 'Common'
+
+const { SimpleDialog } = Common.components.modal
+const { ModalUtil } = Common.util
+
 const ClipboardUtil = {
 	copyToClipboard(str) {
 		// Loads the url into an invisible textarea
@@ -12,7 +17,12 @@ const ClipboardUtil = {
 		el.select()
 		document.execCommand('copy')
 		document.body.removeChild(el)
-		window.alert('Copied ' + str + ' to the clipboard')
+
+		ModalUtil.show(
+			<SimpleDialog ok>
+				{'Copied ' + str + ' to the clipboard'}
+			</SimpleDialog>
+		)
 	}
 }
 

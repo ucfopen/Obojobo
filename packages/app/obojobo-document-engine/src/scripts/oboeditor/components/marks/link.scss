@@ -1,0 +1,26 @@
+@import '../../../../scss/includes';
+
+.editor--components--mark--link {
+	position: relative;
+	display: inline;
+
+	.link-tooltip {
+		position: absolute;
+		transform: translate(-50%, -200%);
+		left: 50%;
+		z-index: 3;
+		background-color: $color-bg2;
+		border-radius: $dimension-rounded-radius;
+		padding: 0.2em;
+	}
+
+	.link-edit {
+		display: inline;
+		background-image: url('./edit.svg');
+		border: none;
+		height: 2em;
+		width: 1.5em;
+		background-position: left top;
+		padding: 0;
+	}
+}
