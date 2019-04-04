@@ -49,4 +49,10 @@
 			font-size: 1rem;
 		}
 	}
+
+	.link {
+		&.is-selected {
+			z-index: $z-index-above-most;
+		}
+	}
 }
