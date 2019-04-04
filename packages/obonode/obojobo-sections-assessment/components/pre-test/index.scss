@@ -1,0 +1,90 @@
+.score {
+	> .attempt-history {
+		> h1 {
+			border-bottom: 1px solid $color-shadow;
+			text-align: center;
+			margin-bottom: 1em;
+			padding-bottom: 0.5em;
+			font-size: 1.5em;
+		}
+	}
+
+	> .overview {
+		font-family: $font-default;
+		text-align: center;
+		background-color: $color-bg2;
+		border-radius: $dimension-rounded-radius;
+		padding: 2em 3em;
+		margin-bottom: 3em;
+
+		> h1 {
+			width: 100%;
+			display: inline-block;
+			font-size: 1.35em;
+			padding: 1em 0;
+			padding-top: 0;
+			box-sizing: border-box;
+		}
+
+		> .recorded-score {
+			width: 48%;
+			margin: 0 auto;
+			margin-bottom: 0.5em;
+			background-color: $color-bg;
+			border-radius: $dimension-rounded-radius;
+			padding: 0.8em 2em;
+			padding-bottom: 0.5em;
+
+			h2 {
+				// color: #a20e83;
+				font-size: 1em;
+				margin-bottom: 1em;
+			}
+
+			.value {
+				display: inline-block;
+				position: relative;
+				margin-bottom: 0.5em;
+			}
+
+			.from-attempt {
+				border-top: 1px solid transparentize($color-shadow, 0.2);
+				display: block;
+				font-size: 0.7em;
+				padding-top: 0.5em;
+			}
+
+			&.is-null {
+				.value {
+					font-size: 1.5em;
+				}
+			}
+
+			&.is-not-null {
+				.value {
+					font-size: 2em;
+
+					&::after {
+						position: absolute;
+						right: 0;
+						top: 50%;
+						content: '%';
+						display: block;
+						transform: translate(1em, -50%);
+						font-size: 0.6em;
+					}
+				}
+			}
+		}
+
+		> .score-actions-page {
+			background: $color-bg;
+			border-radius: $dimension-rounded-radius;
+
+			h1 {
+				font-weight: normal;
+				font-size: 1.5em;
+			}
+		}
+	}
+}

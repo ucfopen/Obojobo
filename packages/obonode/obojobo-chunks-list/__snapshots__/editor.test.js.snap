@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`List editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`List editor plugins.renderNode renders List 1`] = `
+<List
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.List",
+    }
+  }
+/>
+`;
+
+exports[`List editor plugins.renderNode renders a List level 1`] = `
+<Level
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.List.Level",
+    }
+  }
+/>
+`;
+
+exports[`List editor plugins.renderNode renders a list line 1`] = `
+<Line
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.List.Line",
+    }
+  }
+/>
+`;
+
+exports[`List editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`List editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`List editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`List editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder align-left"
+  contentEditable={false}
+>
+  Type Your Text Here
+</span>
+`;

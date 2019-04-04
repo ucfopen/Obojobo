@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Heading Editor Node Heading component 1`] = `
+<div
+  className="text-chunk obojobo-draft--chunks--heading pad"
+>
+  <h1>
+    <span
+      className="text align-undefined"
+    />
+  </h1>
+  <div
+    className="dropdown-heading"
+  >
+    <button
+      onClick={[Function]}
+    >
+      ▼
+    </button>
+    <div
+      className="drop-content-heading  is-not-open"
+    >
+      <button
+        onClick={[Function]}
+      >
+        <h1>
+          Your Heading
+        </h1>
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        <h2>
+          Your Heading
+        </h2>
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        <h3>
+          Your Heading
+        </h3>
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        <h4>
+          Your Heading
+        </h4>
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        <h5>
+          Your Heading
+        </h5>
+      </button>
+      <button
+        onClick={[Function]}
+      >
+        <h6>
+          Your Heading
+        </h6>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Heading Editor Node Heading component edits heading level 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component edits heading level 2`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component edits heading level 3`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component edits heading level 4`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component edits heading level 5`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component edits heading level 6`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component handles clicks 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component handles clicks 2`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component handles clicks 3`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component mounts and unmounts properly 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-not-open\\"><button><h1>Your Title Goes</h1></button><button><h2>Your Title Goes</h2></button><button><h3>Your Title Goes</h3></button><button><h4>Your Title Goes</h4></button><button><h5>Your Title Goes</h5></button><button><h6>Your Title Goes</h6></button></div></div></div>"`;
+
+exports[`Heading Editor Node Heading component toggles level select 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--heading pad\\"><h1><span class=\\"text align-undefined\\"></span></h1><div class=\\"dropdown-heading\\"><button>▼</button><div class=\\"drop-content-heading  is-open\\"><button><h1>Your Title Here</h1></button><button><h2>Your Title Here</h2></button><button><h3>Your Title Here</h3></button><button><h4>Your Title Here</h4></button><button><h5>Your Title Here</h5></button><button><h6>Your Title Here</h6></button></div></div></div>"`;

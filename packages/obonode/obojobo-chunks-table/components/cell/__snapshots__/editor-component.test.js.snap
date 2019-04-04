@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cell Editor Node Cell component 1`] = `<td />`;
+
+exports[`Cell Editor Node Cell component as header 1`] = `<th />`;

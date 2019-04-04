@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ObojoboDraftDoc>
+    <Module>
+        <h1>This is a test</h1>
+        <h2 align="center">This is a test</h2>
+        <h3 align="left">This is a test</h3>
+        <h4 align="right">This is a test</h4>
+        <h5>This is a test</h5>
+        <h6>This is a test</h6>
+    </Module>
+</ObojoboDraftDoc>
