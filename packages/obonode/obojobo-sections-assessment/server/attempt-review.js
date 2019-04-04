@@ -1,6 +1,5 @@
 const Assessment = require('./assessment')
 const attemptStart = require('./attempt-start')
-const VisitModel = oboRequire('models/visit')
 const DraftModel = oboRequire('models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
 

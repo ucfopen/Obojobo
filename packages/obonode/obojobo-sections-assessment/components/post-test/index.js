@@ -7,7 +7,7 @@ import Viewer from 'Viewer'
 
 const { OboModel } = Common.models
 const { focus } = Common.page
-const { AssessmentUtil, NavUtil } = Viewer.util
+const { AssessmentUtil, NavUtil, APIUtil } = Viewer.util
 const { Dispatcher } = Common.flux
 
 class AssessmentPostTest extends React.Component {
