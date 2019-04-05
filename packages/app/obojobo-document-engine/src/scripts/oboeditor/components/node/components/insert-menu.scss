@@ -21,6 +21,7 @@
 		text-decoration: none;
 		font-weight: bold;
 		background-color: $color-bg2;
+		border: solid 1px $color-shadow;
 		border-radius: $dimension-rounded-radius;
 	}
 
@@ -63,6 +64,7 @@
 			width: 1.6em;
 			height: 1.4em;
 			cursor: pointer;
+			border: solid 1px $color-shadow;
 
 			&:not(:first-child) {
 				border-left: none;

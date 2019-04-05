@@ -1,5 +1,5 @@
 import React from 'react'
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import Question from './editor-component'
@@ -32,7 +32,7 @@ describe('Question Editor Node', () => {
 			removeNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<Question
 				node={{
 					data: {

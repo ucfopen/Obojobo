@@ -36,9 +36,9 @@ class Question extends React.Component {
 						)}
 					</div>
 				</div>
-				<button className="editor--page-editor--delete-node-button" onClick={() => this.delete()}>
-					X
-				</button>
+				<Button className="delete-button" onClick={() => this.delete()}>
+					×
+				</Button>
 			</div>
 		)
 	}

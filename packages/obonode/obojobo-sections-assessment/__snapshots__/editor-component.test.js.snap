@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assessment editor Node component 1`] = `
+<div
+  className="obojobo-draft--sections--assessment"
+/>
+`;
+
+exports[`Assessment editor Node component adds child 1`] = `"<div class=\\"obojobo-draft--sections--assessment\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-rubric\\"><button class=\\"button\\">Add Rubric</button></div></div>"`;

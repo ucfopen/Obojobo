@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import Solution from './editor-component'
@@ -17,7 +17,7 @@ describe('Solution Editor Node', () => {
 			removeNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<Solution
 				node={{
 					data: {

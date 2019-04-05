@@ -6,43 +6,6 @@
 
 	.parameter-node {
 		padding-right: 1em;
-		display: inline;
-	}
-
-	.rubric {
-		position: relative;
-		width: auto;
-		border-radius: $dimension-rounded-radius;
-		border: 1px solid $color-preview;
-		padding: 2em 3em;
-		background: transparentize($color-preview, 0.95);
-		margin-bottom: 3em;
-
-		button {
-			font-family: $font-default;
-			line-height: 1em;
-			font-size: 1em;
-			text-align: center;
-			border-radius: $dimension-rounded-radius;
-			padding: 0.4em;
-		}
-
-		.parameter-node {
-			display: block;
-			padding-top: 0.5em;
-		}
-
-		.mod {
-			position: relative;
-			width: auto;
-			border-bottom: 1px solid $color-preview;
-		}
-
-		.add-button {
-			margin-top: 0.2em;
-			background-color: $color-preview;
-			color: $color-bg;
-		}
 	}
 
 	.footer-menu {
@@ -59,48 +22,10 @@
 		border-top: 1px solid $color-shadow;
 
 		.exporter {
-			font-size: inherit;
-			background: $color-obojobo-blue;
-			border-radius: $dimension-rounded-radius;
-			color: $color-bg;
-		}
-	}
-
-	.dropdown {
-		position: absolute;
-		right: 3em;
-
-		button {
-			display: block;
-			background-color: $color-obojobo-blue;
-			border-radius: $dimension-rounded-radius;
-			margin: 0.1em;
-			font-size: 1em;
-			color: $color-bg;
-		}
-
-		.drop-content {
-			display: none;
-			position: absolute;
-			right: 0.1em;
-			z-index: 9999;
-			background-color: $color-bg;
-			border-radius: $dimension-rounded-radius;
-
-			button {
-				display: block;
-				background-color: $color-obojobo-blue;
-				border-radius: $dimension-rounded-radius;
-				margin: 0.1em;
-				font-size: 1em;
-				width: 100%;
-				color: $color-bg;
-			}
-		}
-
-		&:hover {
-			.drop-content {
-				display: block;
+			margin: 0.3em;
+			.button {
+				background: $color-obojobo-blue;
+				padding: 0.3em;
 			}
 		}
 	}
