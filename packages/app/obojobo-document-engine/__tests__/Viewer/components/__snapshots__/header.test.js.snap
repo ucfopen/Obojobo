@@ -17,6 +17,7 @@ exports[`Header renders correctly with title, left position 1`] = `
     />
     <div
       className="viewer--components--logo is-not-inverted"
+      onClick={[Function]}
     >
       Obojobo
     </div>
@@ -41,6 +42,7 @@ exports[`Header renders correctly with title, no position 1`] = `
     />
     <div
       className="viewer--components--logo is-not-inverted"
+      onClick={[Function]}
     >
       Obojobo
     </div>
@@ -65,6 +67,7 @@ exports[`Header renders correctly with title, right position 1`] = `
     />
     <div
       className="viewer--components--logo is-not-inverted"
+      onClick={[Function]}
     >
       Obojobo
     </div>
@@ -87,6 +90,7 @@ exports[`Header renders correctly without title, left position 1`] = `
     />
     <div
       className="viewer--components--logo is-not-inverted"
+      onClick={[Function]}
     >
       Obojobo
     </div>
@@ -109,6 +113,7 @@ exports[`Header renders correctly without title, no position 1`] = `
     />
     <div
       className="viewer--components--logo is-not-inverted"
+      onClick={[Function]}
     >
       Obojobo
     </div>
@@ -131,6 +136,7 @@ exports[`Header renders correctly without title, right position 1`] = `
     />
     <div
       className="viewer--components--logo is-not-inverted"
+      onClick={[Function]}
     >
       Obojobo
     </div>
