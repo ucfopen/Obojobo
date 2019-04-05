@@ -231,7 +231,7 @@ describe('IFrame', () => {
 		expect(MediaUtil.show).toHaveBeenCalledTimes(1)
 		expect(MediaUtil.show).toHaveBeenCalledWith('mock-obo-id')
 		expect(FocusUtil.focusComponent).toHaveBeenCalledTimes(1)
-		expect(FocusUtil.focusComponent).toHaveBeenCalledWith('mock-obo-id', false)
+		expect(FocusUtil.focusComponent).toHaveBeenCalledWith('mock-obo-id')
 	})
 
 	test('onClickContainer called when container is clicked on (and iframe is not loaded the src is set)', () => {

@@ -21,7 +21,7 @@ import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-serv
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
 
-const { DOMUtil } = Common.page
+const { DOMUtil, focus } = Common.page
 const { OboModel } = Common.models
 const { Dispatcher } = Common.flux
 const { FocusBlocker, ModalContainer } = Common.components
@@ -49,11 +49,9 @@ export default class ViewerApp extends React.Component {
 		this.containerRef = React.createRef()
 		this.idleTimerRef = React.createRef()
 
-		Dispatcher.on('viewer:scrollTo', payload => {
-			/* eslint-disable-next-line */
-			ReactDOM.findDOMNode(this.containerRef.current).scrollTop = payload.value
+		Dispatcher.on('viewer:scrollToTop', payload => {
+			this.scrollToTop(payload && payload.value ? payload.value.animateScroll : false)
 		})
-		Dispatcher.on('viewer:scrollToTop', this.scrollToTop.bind(this))
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
 
 		const state = {
@@ -209,37 +207,41 @@ export default class ViewerApp extends React.Component {
 		return ReactDOM.findDOMNode(this.navRef.current).contains(document.activeElement)
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.requestStatus === 'ok') {
-			const nextNavTargetId = this.state.navState.navTargetId
-			const canNavigate = NavUtil.canNavigate(prevState.navState)
-			// if nav target changes or nav becomes locked/unlocked
-			if (this.navTargetId !== nextNavTargetId || this.lastCanNavigate !== canNavigate) {
-				this.navTargetId = nextNavTargetId
-				this.scrollToTop()
-			}
-			this.lastCanNavigate = canNavigate
-		}
+	isNavTargetChanging(prevState) {
+		return NavUtil.getNavTarget(prevState.navState) !== NavUtil.getNavTarget(this.state.navState)
+	}
 
+	scrollToTopIfNavTargetChanging(prevState) {
+		if (this.isNavTargetChanging(prevState)) {
+			this.scrollToTop()
+		}
+	}
+
+	focusOnContentIfNavTargetChanging(prevState) {
+		const focussedItem = FocusUtil.getFocussedItem(this.state.focusState)
+
+		if (
+			!this.isDOMFocusInsideNav() &&
+			this.isNavTargetChanging(prevState) &&
+			focussedItem.type === null
+		) {
+			FocusUtil.focusOnNavTarget()
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
 		// remove loading element
 		if (prevState.loading && !this.state.loading) {
 			const loadingEl = document.getElementById('viewer-app-loading')
 			if (loadingEl && loadingEl.parentElement) {
 				document.getElementById('viewer-app').classList.add('is-loaded')
 				loadingEl.parentElement.removeChild(loadingEl)
+				this.scrollToTop()
 			}
 		}
 
-		// updates Focus Store
-		const focussedItem = FocusUtil.getFocussedItem(this.state.focusState)
-		if (
-			!this.isDOMFocusInsideNav() &&
-			// nav target changed
-			NavUtil.getNavTarget(prevState.navState) !== NavUtil.getNavTarget(this.state.navState) &&
-			focussedItem.type === null
-		) {
-			FocusUtil.focusOnNavTargetContent()
-		}
+		this.focusOnContentIfNavTargetChanging(prevState)
+		this.scrollToTopIfNavTargetChanging(prevState)
 
 		// use Focus Store values to update DOM Focus
 		this.updateDOMFocus()
@@ -250,51 +252,63 @@ export default class ViewerApp extends React.Component {
 
 		switch (focussedItem.type) {
 			case FocusStore.TYPE_COMPONENT: {
-				const model = OboModel.models[focussedItem.target]
-				if (!model) return false
-				window.focus(model.getDomEl())
-
-				return true
+				return this.focusComponent(OboModel.models[focussedItem.target], focussedItem.options)
 			}
 
-			case FocusStore.TYPE_NAV_TARGET_CONTENT: {
-				this.focusOnContent(NavUtil.getNavTargetModel(this.state.navState))
-
-				return true
-			}
-
-			case FocusStore.TYPE_CONTENT: {
-				this.focusOnContent(OboModel.models[focussedItem.target])
-
-				return true
+			case FocusStore.TYPE_NAV_TARGET: {
+				return this.focusComponent(
+					NavUtil.getNavTargetModel(this.state.navState),
+					focussedItem.options
+				)
 			}
 
 			case FocusStore.TYPE_VIEWER: {
-				if (focussedItem.target === FocusStore.VIEWER_TARGET_NAVIGATION) {
-					if (
-						!NavUtil.isNavEnabled(this.state.navState) ||
-						!NavUtil.isNavOpen(this.state.navState)
-					) {
-						return false
-					}
-
-					this.navRef.current.focus()
-					return true
-				}
-
-				return false
+				return this.focusViewer(focussedItem.target)
 			}
 		}
 
 		return false
 	}
 
-	focusOnContent(model) {
-		if (!model) return false
-		const Component = model.getComponentClass()
-		if (!Component) return false
+	focusViewer(viewerFocusTarget) {
+		switch (viewerFocusTarget) {
+			case FocusStore.VIEWER_TARGET_NAVIGATION: {
+				if (!NavUtil.isNavEnabled(this.state.navState) || !NavUtil.isNavOpen(this.state.navState)) {
+					return false
+				}
 
-		Component.focusOnContent(model)
+				this.navRef.current.focus()
+
+				return true
+			}
+		}
+
+		return false
+	}
+
+	focusComponent(model, opts) {
+		if (!model) return false
+
+		// Save the current scroll location since focus() will scroll the page (there is a
+		// preventScroll option but it is not widely supported). Once focus is called we'll
+		// quickly reset the scroll location to what it was before the focus. This allows
+		// the smooth scroll to move from where the page was rather than scrolling from an
+		// unexpected location.
+		const currentScrollTop = this.containerRef.current.scrollTop
+		const el = model.getDomEl()
+
+		const Component = model.getComponentClass ? model.getComponentClass() : null
+
+		if (Component && Component.focusOnContent) {
+			Component.focusOnContent(model, opts)
+		} else {
+			focus(el)
+		}
+
+		if (opts.animateScroll) {
+			this.containerRef.current.scrollTop = currentScrollTop
+			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+		}
 
 		return true
 	}
@@ -333,33 +347,31 @@ export default class ViewerApp extends React.Component {
 		return (event.text = Common.Registry.getTextForVariable(variable, textModel, this.state))
 	}
 
-	scrollToTop() {
-		/* eslint-disable-next-line */
-		const el = ReactDOM.findDOMNode(this.prevRef.current)
-		/* eslint-disable-next-line */
-		const container = ReactDOM.findDOMNode(this.containerRef.current)
-
-		if (!container) return
-
-		if (el) {
-			container.scrollTop = el.getBoundingClientRect().height
-			return
+	scrollToTop(animateScroll = false) {
+		if (!this.state.model || !this.state.model.getDomEl || !this.state.model.getDomEl()) {
+			return false
 		}
 
-		container.scrollTop = 0
+		if (animateScroll) {
+			this.state.model.getDomEl().scrollIntoView({ behavior: 'smooth', block: 'start' })
+		} else {
+			this.state.model.getDomEl().scrollIntoView()
+		}
+
+		return true
 	}
 
 	// === NON REACT LIFECYCLE METHODS ===
 
 	onMouseDown(event) {
-		this.clearVisualFocus(event.target)
+		this.clearFadeEffect(event.target)
 	}
 
 	onFocus(event) {
-		this.clearVisualFocus(event.target)
+		this.clearFadeEffect(event.target)
 	}
 
-	clearVisualFocus(el) {
+	clearFadeEffect(el) {
 		// When focusing on another element we want to remove
 		// the focus effect if the element is not part of the focused element
 
@@ -369,7 +381,7 @@ export default class ViewerApp extends React.Component {
 			const focussedElement = visuallyFocussedModel.getDomEl()
 
 			if (!focussedElement || !focussedElement.contains(el)) {
-				FocusUtil.clearVisualFocus()
+				FocusUtil.clearFadeEffect()
 			}
 		}
 	}
@@ -391,7 +403,7 @@ export default class ViewerApp extends React.Component {
 			return
 		}
 		if (!DOMUtil.isElementVisible(el)) {
-			return FocusUtil.clearVisualFocus()
+			return FocusUtil.clearFadeEffect()
 		}
 	}
 
