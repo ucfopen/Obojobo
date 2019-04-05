@@ -1,6 +1,8 @@
 {
 	"private": true,
 	"name": "obojobo-next",
+	"repository": "https://github.com/ucfopen/Obojobo.git",
+  "homepage":"https://ucfopen.github.io/Obojobo-Docs/",
 	"license": "AGPL-3.0-only",
 	"scripts": {
 		"build": "cd node_modules/obojobo-express && yarn build",
@@ -21,6 +23,7 @@
 	"devDependencies": {
 		"concurrently": "^3.5.0",
 		"husky": "^0.13.3",
+		"lerna": "^3.10.7",
 		"nodemon": "^1.18.8"
 	},
 	"jest": {
@@ -63,5 +66,9 @@
 		"packages/util/eslint-config-obojobo",
 		"packages/util/obojobo-lib-utils",
 		"packages/util/stylelint-config-obojobo"
-	]
+	],
+	"engines": {
+		"node": "^10.4.1",
+		"yarn": "^1.0"
+  }
 }

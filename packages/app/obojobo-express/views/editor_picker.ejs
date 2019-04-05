@@ -124,44 +124,45 @@
 			</div>
 			<ul id="list">
 				<% drafts.sort(function(a, b) {
-						let aTime = (new Date(a.createdAt)).getTime()
-						let bTime = (new Date(b.createdAt)).getTime()
-						let aTitle = a.content && a.content.content ? '' + a.content.content.title : null
-						let bTitle = b.content && b.content.content ? '' + b.content.content.title : null
-						if(aTitle.toLowerCase() < bTitle.toLowerCase()) return -1;
-						if(aTitle.toLowerCase() > bTitle.toLowerCase()) return 1;
-						if(aTitle < bTitle) return 1;
-						if(aTitle > bTitle) return -1;
-						return bTime - aTime
-					}).forEach(function(draft){ %>
+					let aTime = (new Date(a.createdAt)).getTime()
+					let bTime = (new Date(b.createdAt)).getTime()
+					let aTitle = a.content && a.content.content ? '' + a.content.content.title : null
+					let bTitle = b.content && b.content.content ? '' + b.content.content.title : null
+					if(aTitle.toLowerCase() < bTitle.toLowerCase()) return -1;
+					if(aTitle.toLowerCase() > bTitle.toLowerCase()) return 1;
+					if(aTitle < bTitle) return 1;
+					if(aTitle > bTitle) return -1;
+					return bTime - aTime
+				}).forEach(function(draft){ %>
 					<li
 						id="<%= draft.draftId %>"
 						class="link-edit"
 						data-id="<%= draft.draftId %>"
 						data-search-str="<%= draft.draftId %> <% if(draft.content && draft.content.content && draft.content.content.title){ %><%= ('' + draft.content.content.title).toLowerCase() %><% } %>"
-					 	data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content, null, 2)  %>">
-						<% if(draft.content && draft.content.content && draft.content.content.title){ %>
-							<p class="title"><%= draft.content.content.title %></p>
+						data-content-type="<%= draft.xml ? 'xml' : 'json' %>"
+						data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content,null,2) %>">
+							<% if(draft.content && draft.content.content && draft.content.content.title){ %>
+								<p class="title"><%= draft.content.content.title %></p>
 							<% } else { %>
 								<p class="title"><%= draft.draftId %></p>
-								<% } %>
-									<%
-									var date = new Date(draft.createdAt)
-									var isPm = date.getHours() > 12
-									var hours = isPm ? date.getHours() - 12 : date.getHours()
-									var minutes = '' + date.getMinutes()
-									if(minutes.length === 1) minutes = '0' + minutes
-								%>
-										<span class="date"><%= date.toDateString() + ' ' + hours + ':' + minutes + ' ' + (isPm ? 'pm' : 'am') %></span>
-										<div class="controls">
-											<span class="draft-id">id: <%= draft.draftId %></span>
-											<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
-											<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
-											<a target="_blank" class="link-preview" href="/editor/<%= draft.draftId %>">Edit with OboEditor (Beta)</a>
-										</div>
-										<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
+							<% } %>
+								<%
+								var date = new Date(draft.createdAt)
+								var isPm = date.getHours() > 12
+								var hours = isPm ? date.getHours() - 12 : date.getHours()
+								var minutes = '' + date.getMinutes()
+								if(minutes.length === 1) minutes = '0' + minutes
+							%>
+							<span class="date"><%= date.toDateString() + ' ' + hours + ':' + minutes + ' ' + (isPm ? 'pm' : 'am') %></span>
+							<div class="controls">
+								<span class="draft-id">id: <%= draft.draftId %></span>
+								<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
+								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
+								<a class="link-preview" onclick="openInBetaEditor('<%= draft.draftId %>')">Edit with OboEditor (Beta)</a>
+							</div>
+							<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
 					</li>
-					<% }) %>
+				<% }) %>
 			</ul>
 		</div>
 		<div id="editor-container">
@@ -676,13 +677,25 @@
 				}
 			} catch(e) {
 				// Do nothing
+				return null
 			}
+
 			return null
 		}
 		function onEditorChange(event) {
 			let el = document.getElementById(editingDraftId)
 			el.setAttribute('data-content', editor.getValue())
 			el.classList.add('unsaved')
+		}
+		function openInBetaEditor(draftId) {
+			let el = document.getElementById(draftId)
+			let confirm = true
+			if(el.getAttribute('data-content-type') === 'xml') {
+				confirm = window.confirm('Wait! Editing this document in the Beta OboEditor will convert your document from XML to JSON. Are you sure you want to continue?')
+			}
+			if(confirm) {
+				window.open("/editor/" + draftId, '_blank')
+			}
 		}
 		if(location.hash.indexOf('#id:') === 0)
 		{
