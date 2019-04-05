@@ -28,6 +28,8 @@ class RangeModal extends React.Component {
 			type: range.min === range.max ? 'single' : 'range',
 			error: null
 		}
+
+		this.inputRef = React.createRef()
 	}
 
 	getValueFromInput(el) {
@@ -134,7 +136,7 @@ class RangeModal extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.refs.input.focus()
+		return Common.page.focus(this.inputRef)
 	}
 
 	render() {
@@ -158,7 +160,7 @@ class RangeModal extends React.Component {
 								name="type"
 								value="single"
 								id="editor--sections--assessment--post-assessment--range-modal--type-single"
-								ref={'input'}
+								ref={this.inputRef}
 								checked={type === 'single'}
 								onChange={this.onChangeType.bind(this, 'single')}
 							/>
