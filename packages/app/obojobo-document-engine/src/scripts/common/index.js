@@ -27,6 +27,7 @@ import { Registry } from './registry'
 import SimpleDialog from './components/modal/simple-dialog'
 import SimpleMessage from './components/modal/simple-message'
 import SingleInputBubble from './components/modal/bubble/single-input-bubble'
+import Slider from './components/slider'
 import StyleRange from './text/style-range'
 import StyleType from './text/style-type'
 import StyleableText from './text/styleable-text'
@@ -63,6 +64,7 @@ export default {
 		Button,
 		ButtonBar,
 		MoreInfoButton,
+		Slider,
 		modal: {
 			bubble: {
 				Bubble,

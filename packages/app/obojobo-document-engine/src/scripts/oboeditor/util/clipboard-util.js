@@ -18,11 +18,7 @@ const ClipboardUtil = {
 		document.execCommand('copy')
 		document.body.removeChild(el)
 
-		ModalUtil.show(
-			<SimpleDialog ok>
-				{'Copied ' + str + ' to the clipboard'}
-			</SimpleDialog>
-		)
+		ModalUtil.show(<SimpleDialog ok>{'Copied ' + str + ' to the clipboard'}</SimpleDialog>)
 	}
 }
 

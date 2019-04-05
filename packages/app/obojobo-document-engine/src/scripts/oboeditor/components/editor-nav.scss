@@ -51,4 +51,10 @@
 			}
 		}
 	}
+
+	.link {
+		&.is-selected {
+			z-index: $z-index-above-most;
+		}
+	}
 }
