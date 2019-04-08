@@ -118,6 +118,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
   </ul>
   <div
     className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
   >
     Obojobo
   </div>
@@ -263,6 +264,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
   </ul>
   <div
     className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
   >
     Obojobo
   </div>
@@ -298,6 +300,7 @@ exports[`Nav renders closed 1`] = `
   />
   <div
     className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
   >
     Obojobo
   </div>
@@ -334,6 +337,7 @@ exports[`Nav renders opened 1`] = `
   />
   <div
     className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
   >
     Obojobo
   </div>
@@ -370,6 +374,7 @@ exports[`Nav renders unlocked 1`] = `
   />
   <div
     className="viewer--components--logo is-not-inverted"
+    onClick={[Function]}
   >
     Obojobo
   </div>

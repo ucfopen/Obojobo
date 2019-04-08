@@ -2,7 +2,10 @@
 	"name": "obojobo-express",
 	"license": "AGPL-3.0-only",
 	"version": "3.4.0",
-	"private": true,
+	"repository": "https://github.com/ucfopen/Obojobo.git",
+	"homepage":"https://ucfopen.github.io/Obojobo-Docs/",
+	"description": "Obojobo express server middleware.",
+	"license": "AGPL-3.0",
 	"scripts": {
 		"build": "webpack",
 		"start:server": "pm2 start pm2_prod.yaml",

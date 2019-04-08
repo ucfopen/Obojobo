@@ -10,16 +10,19 @@
 	.switch {
 		position: absolute;
 		display: inline-block;
-		width: 2.5em;
+		width: 2.6em;
 		height: 1em;
 		top: 50%;
 		transform: translate(0, -50%);
+		font-size: 1.2em;
 
 		input {
 			opacity: 0;
 		}
 
 		.slider {
+			$color-slider-text: lighten($color-text, 20%);
+
 			border: 1px solid $color-shadow;
 			position: absolute;
 			top: 0;
@@ -29,6 +32,7 @@
 			background-color: $color-bg2;
 			transition: 0.4s;
 			border-radius: 0.7em;
+			cursor: pointer;
 
 			// Circle slider
 			&::before {
@@ -38,20 +42,23 @@
 				height: 0.7em;
 				width: 0.7em;
 				left: 0.05em;
-				bottom: 0.05em;
 				background-color: $color-bg;
 				transition: 0.4s;
 				border-radius: 50%;
+				z-index: 1;
+				top: 0.05em;
 			}
 
 			&::after {
 				content: 'OFF';
-				color: $color-text;
+				font-family: $font-default;
+				color: $color-slider-text;
+				font-weight: bold;
 				display: block;
 				position: absolute;
 				transform: translate(-50%, -50%);
 				top: 50%;
-				left: 50%;
+				left: 62%;
 				font-size: 0.5em;
 			}
 		}
@@ -65,12 +72,15 @@
 		}
 
 		input:checked + .slider::before {
-			transform: translateX(2em);
+			transform: translateX(1.6em);
+			background-color: $color-bg;
+			border: 1px solid $color-bg;
 		}
 
 		input:checked + .slider::after {
 			content: 'ON';
 			color: $color-bg;
+			left: 37%;
 		}
 	}
 }
