@@ -20,7 +20,7 @@
 					"id": "b64fdc8e-48c1-43c1-9644-747519ad14ef",
 					"type": "ObojoboDraft.Pages.Page",
 					"content": {
-						"title": "Welcome to OboEditor"
+						"title": "Welcome to the Obojobo Visual Editor"
 					},
 					"children": [
 						{
@@ -33,7 +33,7 @@
 											"align": "left"
 										},
 										"text": {
-											"value": "Welcome to OboEditor",
+											"value": "Welcome to the Obojobo Visual Editor",
 											"styleList": []
 										}
 									}
@@ -53,7 +53,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "OboEditor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by OboEditor to rapidly build your own custom Obojobo Modules.",
+											"value": "The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.",
 											"styleList": []
 										}
 									}
@@ -106,7 +106,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "Clicking on a page or assessment name navigates to that item and loads its content into the editor. Any altered content on the current page is temporarily saved and can be viewed again by clicking back to that page. If the OboEditor is reloaded without clicking the Save Document button, the temporary changes will be deleted.",
+											"value": "Clicking on a page or assessment name navigates to that item and loads its content into the editor. Any altered content on the current page is temporarily saved and can be viewed again by clicking back to that page. If the Obojobo Visual Editor is reloaded without clicking the Save Document button, the temporary changes will be deleted.",
 											"styleList": [
 												{
 													"end": 281,
@@ -487,7 +487,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "The most basic component of the OboEditor is the text node. Text nodes allow you to insert the main content of your Modules in paragraph form.",
+											"value": "The most basic component of the Obojobo Visual Editor is the text node. Text nodes allow you to insert the main content of your Modules in paragraph form.",
 											"styleList": []
 										}
 									}
@@ -3412,7 +3412,7 @@
 											"indent": 0
 										},
 										"text": {
-											"value": "To add an action to an Action Button, click the Add New Action button. A dialog will appear; select the desired action name from the dropdown menu and fill out any value that is needed for that action (see Action Details) before clicking the Save button. The OboEditor will validate the value, and then save the action into the Action Button if the value was valid. If the value was not valid, it will display an error message.",
+											"value": "To add an action to an Action Button, click the Add New Action button. A dialog will appear; select the desired action name from the dropdown menu and fill out any value that is needed for that action (see Action Details) before clicking the Save button. The Obojobo Visual Editor will validate the value, and then save the action into the Action Button if the value was valid. If the value was not valid, it will display an error message.",
 											"styleList": [
 												{
 													"end": 220,
