@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MCAssessment Question component 1`] = `
+exports[`Question Question component 1`] = `
 <div
   aria-label="Question"
   className="component obojobo-draft--chunks--question is-mockViewState is-mode-practice is-not-flipping"
@@ -132,7 +132,7 @@ exports[`MCAssessment Question component 1`] = `
 </div>
 `;
 
-exports[`MCAssessment Question component answered correctly 1`] = `
+exports[`Question Question component answered correctly 1`] = `
 <div
   aria-label="Question"
   className="component obojobo-draft--chunks--question is-correct is-mockViewState is-mode-practice is-not-flipping"
@@ -264,7 +264,7 @@ exports[`MCAssessment Question component answered correctly 1`] = `
 </div>
 `;
 
-exports[`MCAssessment Question component answered incorrectly 1`] = `
+exports[`Question Question component answered incorrectly 1`] = `
 <div
   aria-label="Question"
   className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-mode-practice is-not-flipping"
@@ -396,7 +396,7 @@ exports[`MCAssessment Question component answered incorrectly 1`] = `
 </div>
 `;
 
-exports[`MCAssessment Question component in practice mode 1`] = `
+exports[`Question Question component in practice mode 1`] = `
 <div
   aria-label="Question"
   className="component obojobo-draft--chunks--question is-mockViewState is-mode-practice is-not-flipping"
@@ -528,7 +528,7 @@ exports[`MCAssessment Question component in practice mode 1`] = `
 </div>
 `;
 
-exports[`MCAssessment Question component in review mode 1`] = `
+exports[`Question Question component in review mode 1`] = `
 <div
   aria-label="Question"
   className="component obojobo-draft--chunks--question is-active is-mode-review is-not-flipping"
@@ -645,7 +645,7 @@ exports[`MCAssessment Question component in review mode 1`] = `
 </div>
 `;
 
-exports[`MCAssessment Question component with content only 1`] = `
+exports[`Question Question component with content only 1`] = `
 <div
   aria-label="Question"
   className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice"
@@ -676,7 +676,7 @@ exports[`MCAssessment Question component with content only 1`] = `
 </div>
 `;
 
-exports[`MCAssessment Question component with content only in review mode 1`] = `
+exports[`Question Question component with content only in review mode 1`] = `
 <div
   aria-label="Question"
   className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-review"

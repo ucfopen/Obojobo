@@ -7,9 +7,9 @@ import NavUtil from '../util/nav-util'
 import React from 'react'
 
 const { Button } = Common.components
-const { OboModel } = Common.models
 const { StyleableText, StyleableTextComponent } = Common.text
 const { isOrNot } = Common.util
+const { Dispatcher } = Common.flux
 
 const getLabelTextFromLabel = label => {
 	if (!label) return ''
@@ -24,16 +24,26 @@ export default class Nav extends React.Component {
 
 	onClick(item) {
 		switch (item.type) {
-			case 'link':
+			case 'link': {
 				if (!NavUtil.canNavigate(this.props.navState)) return
-				NavUtil.gotoPath(item.fullPath)
-				FocusUtil.focusOnNavigation()
+
+				const navTargetId = NavUtil.getNavTarget(this.props.navState).id
+
+				// If clicking on the section link for a section you're already on then simply
+				// scroll page to the top, otherwise navigate to that section
+				if (navTargetId === item.id) {
+					Dispatcher.trigger('viewer:scrollToTop', {
+						value: { animateScroll: true }
+					})
+				} else {
+					NavUtil.gotoPath(item.fullPath)
+					FocusUtil.focusOnNavigation()
+				}
 				break
+			}
 
 			case 'sub-link': {
-				const el = OboModel.models[item.id].getDomEl()
-				el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-				Common.page.focus(el)
+				FocusUtil.focusComponent(item.id, { animateScroll: true })
 				break
 			}
 		}
@@ -44,7 +54,7 @@ export default class Nav extends React.Component {
 	}
 
 	onClickSkipNavigation() {
-		FocusUtil.focusOnNavTargetContent()
+		FocusUtil.focusOnNavTarget()
 	}
 
 	renderLabel(label) {
