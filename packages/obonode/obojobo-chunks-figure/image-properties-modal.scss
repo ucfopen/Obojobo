@@ -1,0 +1,54 @@
+@import '~styles/includes';
+
+.image-properties {
+	text-align: left;
+	width: 22em;
+
+	> label {
+		margin-bottom: 0.3em;
+	}
+
+	input {
+		margin-bottom: 0.5em;
+	}
+
+	input[type='text'] {
+		@include text-input();
+
+		width: 100%;
+		margin-bottom: 1em;
+	}
+
+	input[type='number'] {
+		@include text-input();
+
+		width: 6em;
+		margin-right: 0.5em;
+	}
+
+	fieldset {
+		text-align: left;
+		border: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.size-input {
+		display: block;
+
+		.custom-size-inputs {
+			display: inline;
+			padding-left: 0.5em;
+		}
+
+		input[type='radio'] {
+			vertical-align: middle;
+		}
+
+		label {
+			display: inline;
+			vertical-align: middle;
+			padding-left: 0.3em;
+		}
+	}
+}

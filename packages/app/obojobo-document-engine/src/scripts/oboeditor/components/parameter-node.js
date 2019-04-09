@@ -2,6 +2,10 @@ import React from 'react'
 
 import KeyDownUtil from '../util/keydown-util'
 
+import Common from 'Common'
+
+const { Slider } = Common.components
+
 import './parameter-node.scss'
 
 const Node = props => {
@@ -19,12 +23,12 @@ const Node = props => {
 		})
 	}
 
-	const handleCheckChange = event => {
+	const handleCheckChange = checked => {
 		const editor = props.editor
 
 		return editor.setNodeByKey(props.node.key, {
 			data: {
-				checked: event.target.checked,
+				checked,
 				name: props.node.data.get('name'),
 				display: props.node.data.get('display'),
 				type: props.node.data.get('type')
@@ -56,18 +60,12 @@ const Node = props => {
 			)
 		case 'type-toggle':
 			return (
-				<div className={'parameter-node'} {...props.attributes}>
-					<span contentEditable={false}>{props.node.data.get('display') + ': '}</span>
-					<label className={'switch'}>
-						<input
-							className={'slider'}
-							type={'checkbox'}
-							checked={props.node.data.get('checked')}
-							onChange={event => handleCheckChange(event)}
-						/>
-						<div className="slider round" />
-					</label>
-					<span className="invisible-children">{props.children}</span>
+				<div className={'parameter-node'} {...props.attributes} contentEditable={false}>
+					<Slider
+						title={props.node.data.get('display')}
+						initialChecked={props.node.data.get('checked')}
+						handleCheckChange={event => handleCheckChange(event)}
+					/>
 				</div>
 			)
 

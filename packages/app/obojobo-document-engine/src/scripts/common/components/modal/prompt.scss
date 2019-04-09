@@ -1,0 +1,14 @@
+@import '../../../../scss/includes';
+
+.prompt {
+	label {
+		display: block;
+		margin-bottom: 0.3em;
+	}
+
+	input {
+		@include text-input();
+
+		width: 18em;
+	}
+}

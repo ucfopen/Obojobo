@@ -223,7 +223,7 @@ class AssessmentStore extends Store {
 
 	onCloseResultsDialog() {
 		ModalUtil.hide()
-		FocusUtil.focusOnNavTargetContent()
+		FocusUtil.focusOnNavTarget()
 	}
 
 	endAttempt(endAttemptResp, context) {

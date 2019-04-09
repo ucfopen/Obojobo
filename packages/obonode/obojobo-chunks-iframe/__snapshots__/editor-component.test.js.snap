@@ -2,37 +2,72 @@
 
 exports[`IFrame Editor Node IFrame component 1`] = `
 <div
-  className="component"
+  className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
 >
   <div
-    className="obojobo-draft--chunks--iframe viewer"
+    className="editor-container"
     style={
       Object {
-        "outline": "none",
-        "position": "relative",
+        "height": "200px",
       }
     }
   >
     <div
-      style={
-        Object {
-          "cursor": "cell",
-          "display": "block",
-          "height": "100%",
-          "left": "0",
-          "position": "absolute",
-          "top": "0",
-          "width": "100%",
-          "zIndex": 1,
-        }
-      }
-    />
-    <iframe
-      allowFullScreen={true}
-      frameBorder="0"
-    />
+      className="iframe-toolbar"
+    >
+      <span
+        aria-hidden={true}
+        className="title"
+      >
+        mockTitle
+      </span>
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          IFrame Properties
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 `;
 
-exports[`IFrame Editor Node IFrame component edits input 1`] = `"<div class=\\"component\\"><div class=\\"obojobo-draft--chunks--iframe viewer\\" style=\\"position: relative; outline: 2px solid blue;\\"><div style=\\"display: none; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; cursor: cell; z-index: 1;\\"></div><iframe frameborder=\\"0\\" allowfullscreen=\\"\\"></iframe></div><div><input value=\\"\\"></div></div>"`;
+exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
+<div
+  className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
+>
+  <div
+    className="editor-container"
+    style={
+      Object {
+        "height": "500px",
+      }
+    }
+  >
+    <div
+      className="iframe-toolbar"
+    >
+      <span
+        aria-hidden={true}
+        className="title"
+      >
+        mockSrc
+      </span>
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          IFrame Properties
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

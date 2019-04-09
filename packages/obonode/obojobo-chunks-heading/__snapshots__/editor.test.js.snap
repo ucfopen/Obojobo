@@ -21,11 +21,11 @@ exports[`Heading editor plugins.renderNode renders Heading when passed 1`] = `
 />
 `;
 
-exports[`Heading editor plugins.renderPlaceholder exits when not relevant 1`] = `undefined`;
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
 
-exports[`Heading editor plugins.renderPlaceholder exits when not relevant 2`] = `undefined`;
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
 
-exports[`Heading editor plugins.renderPlaceholder exits when not relevant 3`] = `undefined`;
+exports[`Heading editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
 
 exports[`Heading editor plugins.renderPlaceholder renders a placeholder 1`] = `
 <span

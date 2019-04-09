@@ -2,23 +2,89 @@ import React from 'react'
 
 const Icon = () => {
 	return (
-		<svg
-			id="Layer_1"
-			data-name="Layer 1"
-			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 19.5 14.75"
-		>
-			<defs>
-				<style
-				>{`.table{opacity:0.55;}.line{fill:none;stroke:#231f20;stroke-miterlimit:10;}`}</style>
-			</defs>
-			<title>table</title>
-			<g className="table">
-				<rect className="line" x="0.5" y="0.5" width="18.5" height="13.75" />
-				<line className="line" x1="9.75" y1="0.5" x2="9.75" y2="14.25" />
-				<line className="line" x1="0.5" y1="9.67" x2="19" y2="9.67" />
-				<line className="line" x1="0.5" y1="5.08" x2="19" y2="5.08" />
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+			<g opacity="0.25">
+				<rect
+					x="4.94"
+					y="5.21"
+					width="11.06"
+					height="7.19"
+					className="fill"
+					strokeLinecap="round"
+					strokeMiterlimit="10"
+				/>
 			</g>
+			<rect
+				x="4.94"
+				y="5.21"
+				width="22.12"
+				height="21.58"
+				fill="none"
+				className="stroke"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+			/>
+			<rect
+				x="4.94"
+				y="12.4"
+				width="11.06"
+				height="7.19"
+				fill="none"
+				className="stroke"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+			/>
+			<rect
+				x="4.94"
+				y="19.6"
+				width="11.06"
+				height="7.19"
+				fill="none"
+				className="stroke"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+			/>
+			<g opacity="0.25">
+				<rect
+					x="16"
+					y="5.21"
+					width="11.06"
+					height="7.19"
+					className="fill"
+					strokeLinecap="round"
+					strokeMiterlimit="10"
+				/>
+			</g>
+			<rect
+				x="16"
+				y="12.4"
+				width="11.06"
+				height="7.19"
+				fill="none"
+				className="stroke"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+			/>
+			<rect
+				x="16"
+				y="19.6"
+				width="11.06"
+				height="7.19"
+				fill="none"
+				className="stroke"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+			/>
+			<line
+				x1="16"
+				y1="5.21"
+				x2="16"
+				y2="26.79"
+				fill="none"
+				className="stroke"
+				strokeLinecap="round"
+				strokeMiterlimit="10"
+			/>
 		</svg>
 	)
 }

@@ -1,12 +1,17 @@
 import { KeyUtils } from 'slate'
 import React from 'react'
 
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import PageEditor from './page-editor'
 import EditorNav from './editor-nav'
 
-import APIUtil from '../../viewer/util/api-util'
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorStore from '../stores/editor-store'
+
+const { ModalContainer } = Common.components
+const { ModalUtil } = Common.util
+const { ModalStore } = Common.stores
+const { OboModel } = Common.models
 
 import generateId from '../generate-ids'
 
@@ -14,8 +19,6 @@ import '../../../scss/main.scss'
 // uses viewer css for styling
 import '../../../scripts/viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
-
-const { OboModel } = Common.models
 
 class EditorApp extends React.Component {
 	constructor(props) {
@@ -34,12 +37,12 @@ class EditorApp extends React.Component {
 		// Make Slate nodes generate with UUIDs
 		KeyUtils.setGenerator(generateId)
 
-		this.onEditorStoreChange = () => {
-			this.setState({ editorState: EditorStore.getState() })
-		}
+		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
+		this.onModalStoreChange = () => this.setState({ modalState: ModalStore.getState() })
 
 		// === SET UP DATA STORES ===
 		EditorStore.onChange(this.onEditorStoreChange)
+		ModalStore.onChange(this.onModalStoreChange)
 	}
 
 	componentDidMount() {
@@ -48,6 +51,8 @@ class EditorApp extends React.Component {
 
 		return APIUtil.getFullDraft(draftId)
 			.then(response => {
+				ModalStore.init()
+
 				if (response.status === 'error') throw response.value
 				return response
 			})
@@ -56,7 +61,8 @@ class EditorApp extends React.Component {
 
 				EditorStore.init(obomodel, obomodel.modelState.start, window.location.pathname)
 
-				this.setState({
+				return this.setState({
+					modalState: ModalStore.getState(),
 					editorState: EditorStore.getState(),
 					draftId,
 					draft: draftModel,
@@ -67,12 +73,13 @@ class EditorApp extends React.Component {
 			.catch(err => {
 				// eslint-disable-next-line
 				console.log(err)
-				this.setState({ requestStatus: 'invalid', requestError: err })
+				return this.setState({ requestStatus: 'invalid', requestError: err })
 			})
 	}
 
 	componentWillUnmount() {
 		EditorStore.offChange(this.onEditorStoreChange)
+		ModalStore.offChange(this.onModalStoreChange)
 	}
 
 	render() {
@@ -87,10 +94,12 @@ class EditorApp extends React.Component {
 		}
 
 		if (this.state.loading) return <p>Loading</p>
+
+		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div
 				className={
-					'viewer--viewer-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
+					'viewer--viewer-app editor--editor-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
 				}
 			>
 				<EditorNav
@@ -107,6 +116,9 @@ class EditorApp extends React.Component {
 						draftId={this.state.draftId}
 					/>
 				</div>
+				{modalItem && modalItem.component ? (
+					<ModalContainer>{modalItem.component}</ModalContainer>
+				) : null}
 			</div>
 		)
 	}

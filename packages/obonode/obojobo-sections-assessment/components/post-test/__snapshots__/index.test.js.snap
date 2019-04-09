@@ -52,6 +52,7 @@ exports[`PostTest PostTest component 1`] = `
           className="obojobo-draft--components--button is-dangerous align-center"
         >
           <button
+            className="button"
             onClick={[Function]}
           >
             Try again anyway
@@ -139,6 +140,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
           className="obojobo-draft--components--button is-dangerous align-center"
         >
           <button
+            className="button"
             onClick={[Function]}
           >
             Try again anyway
@@ -203,6 +205,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
+                className="button"
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -298,6 +301,7 @@ exports[`PostTest PostTest component with review 1`] = `
           className="obojobo-draft--components--button is-dangerous align-center"
         >
           <button
+            className="button"
             onClick={[Function]}
           >
             Try again anyway
@@ -362,6 +366,7 @@ exports[`PostTest PostTest component with review 1`] = `
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
+                className="button"
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -457,6 +462,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
           className="obojobo-draft--components--button is-dangerous align-center"
         >
           <button
+            className="button"
             onClick={[Function]}
           >
             Try again anyway
@@ -521,6 +527,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
+                className="button"
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -616,6 +623,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
           className="obojobo-draft--components--button is-dangerous align-center"
         >
           <button
+            className="button"
             onClick={[Function]}
           >
             Try again anyway
@@ -680,6 +688,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
+                className="button"
                 onClick={[Function]}
                 tabIndex="0"
               >
@@ -765,6 +774,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
           className="obojobo-draft--components--button is-dangerous align-center"
         >
           <button
+            className="button"
             onClick={[Function]}
           >
             Try again anyway
@@ -829,6 +839,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
               className="obojobo-draft--components--button is-not-dangerous align-center"
             >
               <button
+                className="button"
                 onClick={[Function]}
                 tabIndex="0"
               >

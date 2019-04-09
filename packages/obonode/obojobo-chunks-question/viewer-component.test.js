@@ -151,7 +151,7 @@ const questionJSON = {
 	]
 }
 
-describe('MCAssessment', () => {
+describe('Question', () => {
 	beforeAll(() => {
 		_.shuffle = a => a
 	})
@@ -329,7 +329,7 @@ describe('MCAssessment', () => {
 		expect(value).toEqual(undefined) //eslint-disable-line
 	})
 
-	test('onClickBlocker calls FocusUtil.focusOnContent in practice mode', () => {
+	test('onClickBlocker calls FocusUtil.focusComponent in practice mode', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
@@ -348,7 +348,7 @@ describe('MCAssessment', () => {
 		component.instance().onClickBlocker()
 
 		expect(QuestionUtil.viewQuestion).toHaveBeenCalled()
-		expect(FocusUtil.focusOnContent).toHaveBeenCalled()
+		expect(FocusUtil.focusComponent).toHaveBeenCalled()
 		expect(component.instance().applyFlipCSS).toHaveBeenCalled()
 	})
 
