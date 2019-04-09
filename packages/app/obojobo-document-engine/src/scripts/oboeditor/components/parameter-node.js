@@ -51,6 +51,7 @@ const Node = props => {
 							)
 						})}
 					</select>
+					<span className="invisible-children">{props.children}</span>
 				</div>
 			)
 		case 'type-toggle':
@@ -66,6 +67,7 @@ const Node = props => {
 						/>
 						<div className="slider round" />
 					</label>
+					<span className="invisible-children">{props.children}</span>
 				</div>
 			)
 

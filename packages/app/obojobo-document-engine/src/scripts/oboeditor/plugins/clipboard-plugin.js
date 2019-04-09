@@ -15,6 +15,7 @@ const ClipboardPlugin = {
 
 		// Pasting in OboEditor nodes
 		if (transfer.type === 'fragment') {
+			console.log(transfer.fragment.toJSON())
 			// Save a list of the blocks in the selection
 			const saveBlocks = editor.value.blocks
 

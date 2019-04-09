@@ -16,17 +16,12 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
+				console.log('text?', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
-						// Deal with Paste insertion of top-level nodes
-						if (child.type === 'oboeditor.component') {
-							return editor.unwrapNodeByKey(child.key)
-						}
-
-						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
-						const isAtEdge = index === node.nodes.size - 1 || index === 0
-						if (child.object === 'block' && isAtEdge) {
+						// Allow inserting of new nodes by unwrapping unexpected blocks
+						if (child.object === 'block') {
 							return editor.unwrapNodeByKey(child.key)
 						}
 
@@ -48,12 +43,10 @@ const schema = {
 		'ObojoboDraft.Chunks.Text.TextLine': {
 			nodes: [{ match: [{ object: 'text' }] }],
 			normalize: (editor, error) => {
-				const { node, child, index } = error
+				const { child } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
-						// Allow inserting of new nodes by unwrapping unexpected blocks at end and beginning
-						const isAtEdge = index === node.nodes.size - 1 || index === 0
-						if (child.object === 'block' && isAtEdge) {
+						if (child.object === 'block') {
 							return editor.unwrapNodeByKey(child.key)
 						}
 					}

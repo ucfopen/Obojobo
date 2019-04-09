@@ -5,6 +5,7 @@ import SchemaViolations from '../../util/schema-violations'
 const { CHILD_MAX_INVALID, CHILD_MIN_INVALID, CHILD_UNKNOWN, CHILD_TYPE_INVALID } = SchemaViolations
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 const schema = {
 	blocks: {
@@ -32,14 +33,24 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
+				console.log('oboeditor', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_UNKNOWN: {
 						return editor.unwrapNodeByKey(child.key)
 					}
 					case CHILD_TYPE_INVALID: {
-						if (child.object === 'block') return editor.unwrapNodeByKey(child.key)
-						break
+						if(child.object === 'text') {
+							return editor.removeNodeByKey(node.key)
+						}
+
+						if(child.type === 'oboeditor.component') {
+							return editor.unwrapNodeByKey(child.key)
+						}
+
+						return editor.withoutNormalizing(e => {
+							return child.nodes.forEach(grandchild => e.unwrapNodeByKey(grandchild.key))
+						})
 					}
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
@@ -49,6 +60,7 @@ const schema = {
 					}
 					// Change to a constant when slate-schema-violations updates
 					case CHILD_MAX_INVALID: {
+						console.log(node.toJSON())
 						return editor.splitNodeByKey(node.key, 1)
 					}
 				}
