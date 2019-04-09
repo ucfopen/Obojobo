@@ -6,6 +6,18 @@ import KeyDownUtil from '../util/keydown-util'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
+const printKeys = node => {
+	console.log(node.key, node.object === 'block' ? node.type : node.object)
+
+	if(node.object === 'block' || node.object === 'document') {
+		node.nodes.forEach(child => printKeys(child))
+	}
+
+	if(node.object === 'text') {
+		console.log(node)
+	}
+}
+
 const ClipboardPlugin = {
 	onPaste(event, editor, next) {
 		const transfer = getEventTransfer(event)
@@ -34,20 +46,11 @@ const ClipboardPlugin = {
 			if (supportsChildren) {
 				editor.getLeafMostComponents(transfer.fragment).forEach(block => editor.insertBlock(block))
 
-				// If pasting into OboNodes that do not support children, paste
-				// normally
+			// If pasting into OboNodes that do not support children, paste
+			// normally
 			} else {
-				try {
-					next()
-
-					// If copying a partial question or assesment, normal pasting
-					// will cause errors.  In this case, undo the attempted paste
-					// and paste only the leaf-most oboeditor.component nodes
-				} catch (e) {
-					editor
-						.getLeafMostComponents(transfer.fragment)
-						.forEach(block => editor.insertBlock(block))
-				}
+				printKeys(transfer.fragment)
+				next()
 			}
 
 			// Delete empty text nodes in the original selection
