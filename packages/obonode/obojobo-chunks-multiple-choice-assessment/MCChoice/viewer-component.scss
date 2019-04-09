@@ -6,8 +6,8 @@
 	position: relative;
 	transition: background 0.1s ease;
 	font-family: $font-default;
-	padding-bottom: 1em;
 	cursor: pointer;
+	padding-bottom: 1em;
 
 	> input {
 		font-size: inherit;
@@ -48,14 +48,14 @@
 					opacity $duration-animation-default * 2;
 			}
 
-			&.feedback-exit {
+			&.feedback-leave {
 				max-height: 60em;
 				margin-bottom: 1em;
 				overflow: hidden;
 				opacity: 1;
 			}
 
-			&.feedback-exit.feedback-exit-active {
+			&.feedback-leave.feedback-leave-active {
 				max-height: 0;
 				margin-bottom: 0;
 				opacity: 0;
@@ -90,35 +90,5 @@
 
 	&:hover {
 		background: transparentize($color-highlight, 0.85);
-	}
-
-	.correct-button {
-		position: relative;
-		top: 2.3em;
-		left: 0.5em;
-		font-size: inherit;
-		background: transparent;
-		border: none;
-	}
-
-	.add-feedback {
-		float: right;
-		font-size: 0.85em;
-		background-color: $color-bg2;
-		border: 1px solid transparentize($color-shadow, 0.2);
-		border-radius: $dimension-rounded-radius;
-		margin: 0.2em;
-	}
-
-	&.is-correct {
-		.correct-button {
-			color: $color-correct;
-		}
-	}
-
-	&.is-not-correct {
-		.correct-button {
-			color: $color-incorrect;
-		}
 	}
 }

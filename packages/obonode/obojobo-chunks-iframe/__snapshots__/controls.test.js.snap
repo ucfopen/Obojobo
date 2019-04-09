@@ -47,7 +47,6 @@ exports[`IFrame controls IFrame controls component renders 3`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -63,7 +62,6 @@ exports[`IFrame controls IFrame controls component renders 3`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -115,7 +113,6 @@ exports[`IFrame controls IFrame controls component renders 4`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -131,7 +128,6 @@ exports[`IFrame controls IFrame controls component renders 4`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -198,7 +194,6 @@ exports[`IFrame controls IFrame controls component renders 7`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -214,7 +209,6 @@ exports[`IFrame controls IFrame controls component renders 7`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -266,7 +260,6 @@ exports[`IFrame controls IFrame controls component renders 8`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -282,7 +275,6 @@ exports[`IFrame controls IFrame controls component renders 8`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -665,7 +657,6 @@ exports[`IFrame controls IFrame controls component renders 19`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -681,7 +672,6 @@ exports[`IFrame controls IFrame controls component renders 19`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -747,7 +737,6 @@ exports[`IFrame controls IFrame controls component renders 20`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -763,7 +752,6 @@ exports[`IFrame controls IFrame controls component renders 20`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -844,7 +832,6 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -860,7 +847,6 @@ exports[`IFrame controls IFrame controls component renders 23`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -926,7 +912,6 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -942,7 +927,6 @@ exports[`IFrame controls IFrame controls component renders 24`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -1419,7 +1403,6 @@ exports[`IFrame controls IFrame controls component renders 35`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -1435,7 +1418,6 @@ exports[`IFrame controls IFrame controls component renders 35`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -1504,7 +1486,6 @@ exports[`IFrame controls IFrame controls component renders 36`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -1520,7 +1501,6 @@ exports[`IFrame controls IFrame controls component renders 36`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -1639,7 +1619,6 @@ exports[`IFrame controls IFrame controls component renders 39`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -1655,7 +1634,6 @@ exports[`IFrame controls IFrame controls component renders 39`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -1724,7 +1702,6 @@ exports[`IFrame controls IFrame controls component renders 40`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -1740,7 +1717,6 @@ exports[`IFrame controls IFrame controls component renders 40`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -2313,7 +2289,6 @@ exports[`IFrame controls IFrame controls component renders 51`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -2329,7 +2304,6 @@ exports[`IFrame controls IFrame controls component renders 51`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -2412,7 +2386,6 @@ exports[`IFrame controls IFrame controls component renders 52`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -2428,7 +2401,6 @@ exports[`IFrame controls IFrame controls component renders 52`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -2561,7 +2533,6 @@ exports[`IFrame controls IFrame controls component renders 55`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -2577,7 +2548,6 @@ exports[`IFrame controls IFrame controls component renders 55`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>
@@ -2660,7 +2630,6 @@ exports[`IFrame controls IFrame controls component renders 56`] = `
         <button
           aria-label="Zoom out embedded content"
           className="zoom-out-button"
-          disabled={false}
         >
           Zoom out
         </button>
@@ -2676,7 +2645,6 @@ exports[`IFrame controls IFrame controls component renders 56`] = `
         <button
           aria-label="Zoom in embedded content"
           className="zoom-in-button"
-          disabled={false}
         >
           Zoom in
         </button>

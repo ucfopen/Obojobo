@@ -330,7 +330,7 @@ int Fibonacci(int n)
 
 				<p>Each of these buttons contain an example action that are triggered when the button is clicked. Take a look at the document source to see how they are implemented.</p>
 
-				<ActionButton label="Lock navigation (nav:lock)">
+				<ActionButton id="scroll-to-me" label="Lock navigation (nav:lock)">
 					<textGroup>
 						<t>Lock navigation (<code>nav:lock</code>)</t>
 					</textGroup>
@@ -465,7 +465,22 @@ int Fibonacci(int n)
 						<trigger type="onClick">
 							<actions>
 								<action type="focus:component">
-									<value id="focus-on-me" />
+									<value id="focus-on-me" fade="true" />
+								</action>
+							</actions>
+						</trigger>
+					</triggers>
+				</ActionButton>
+				<p align="center">Click the button below to focus on and scroll up to the first button on this page</p>
+				<ActionButton>
+					<textGroup>
+						<t>Focus (<code>focus:component</code>)</t>
+					</textGroup>
+					<triggers>
+						<trigger type="onClick">
+							<actions>
+								<action type="focus:component">
+									<value id="scroll-to-me" animateScroll="true" />
 								</action>
 							</actions>
 						</trigger>
@@ -488,7 +503,7 @@ int Fibonacci(int n)
 									<value id="page-1" />
 								</action>
 								<action type="focus:component">
-									<value id="my-math-equation" />
+									<value id="my-math-equation" fade="true" />
 								</action>
 							</actions>
 						</trigger>

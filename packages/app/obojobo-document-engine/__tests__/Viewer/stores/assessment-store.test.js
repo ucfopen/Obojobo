@@ -737,6 +737,6 @@ describe('AssessmentStore', () => {
 		AssessmentStore.onCloseResultsDialog()
 
 		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
-		expect(FocusUtil.focusOnNavTargetContent).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusOnNavTarget).toHaveBeenCalledTimes(1)
 	})
 })

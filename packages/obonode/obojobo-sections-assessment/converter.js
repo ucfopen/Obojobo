@@ -7,7 +7,7 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 import Page from 'obojobo-pages-page/editor'
 import QuestionBank from 'obojobo-chunks-question-bank/editor'
-import ScoreActions from './post-assessment/editor'
+import ScoreActions from './post-assessment/editor-component'
 import Rubric from './components/rubric/editor'
 import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
 

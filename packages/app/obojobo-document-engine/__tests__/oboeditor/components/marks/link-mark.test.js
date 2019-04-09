@@ -1,8 +1,15 @@
-import markHotKey from '../../../../src/scripts/oboeditor/components/marks/link-mark'
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+
+import markHotKey from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/link-mark'
 
 describe('LinkMark', () => {
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
+
 	test('LinkMark registers a type and key', () => {
-		const keyDown = markHotKey({ type: 'a', key: 'k', render: () => 'a' })
+		const keyDown = markHotKey({ type: 'a', render: () => 'a' })
 
 		const mockChange = {
 			toggleMark: jest.fn()
@@ -12,7 +19,7 @@ describe('LinkMark', () => {
 		expect(keyDown.renderMark({ mark: { type: 'a' } }, null, jest.fn())).toMatchSnapshot()
 		expect(keyDown.renderMark({ mark: { type: 'fake' } }, null, jest.fn())).toMatchSnapshot()
 
-		expect(mockChange.toggleMark).not.toHaveBeenCalled()
+		expect(ModalUtil.show).not.toHaveBeenCalled()
 	})
 
 	test('LinkMark does not toggle mark if CTRL/CMD + wrong key is pressed', () => {
@@ -23,7 +30,7 @@ describe('LinkMark', () => {
 		}
 		keyDown.onKeyDown({ key: 'R' }, mockChange, jest.fn())
 
-		expect(mockChange.toggleMark).not.toHaveBeenCalled()
+		expect(ModalUtil.show).not.toHaveBeenCalled()
 	})
 
 	test('LinkMark does toggles mark on if CTRL/CMD + key is pressed', () => {
@@ -49,40 +56,62 @@ describe('LinkMark', () => {
 
 		keyDown.onKeyDown(mockEvent, mockChange, jest.fn())
 
-		expect(mockChange.toggleMark).toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('LinkMark does toggles mark off if CTRL/CMD + key is pressed', () => {
+	test('changeLinkValue does not add link', () => {
 		window.prompt = jest.fn().mockReturnValueOnce(null)
 		const keyDown = markHotKey({ type: 'a', key: 'k' })
 
-		const mockChange = {
+		const editor = {
 			toggleMark: jest.fn(),
 			removeMark: jest.fn(),
+			addMark: jest.fn(),
 			value: {
-				marks: {
-					forEach: funct => {
-						funct({
-							type: 'a',
-							data: { toJSON: () => 'mockJSON' }
-						})
-
-						funct({
-							type: 'fake',
-							data: { toJSON: () => 'mockJSON' }
-						})
+				marks: [
+					{
+						type: 'a',
+						data: {
+							toJSON: jest.fn()
+						}
+					},
+					{
+						type: 'b'
 					}
-				}
+				]
 			}
 		}
-		const mockEvent = {
-			ctrlKey: true,
-			key: 'k',
-			preventDefault: jest.fn()
+
+		keyDown.helpers.changeLinkValue(editor, '   ')
+
+		expect(editor.addMark).not.toHaveBeenCalled()
+	})
+
+	test('changeLinkValue adds link', () => {
+		window.prompt = jest.fn().mockReturnValueOnce(null)
+		const keyDown = markHotKey({ type: 'a', key: 'k' })
+
+		const editor = {
+			toggleMark: jest.fn(),
+			removeMark: jest.fn(),
+			addMark: jest.fn(),
+			value: {
+				marks: [
+					{
+						type: 'a',
+						data: {
+							toJSON: jest.fn()
+						}
+					},
+					{
+						type: 'b'
+					}
+				]
+			}
 		}
 
-		keyDown.onKeyDown(mockEvent, mockChange, jest.fn())
+		keyDown.helpers.changeLinkValue(editor, 'mockLink')
 
-		expect(mockChange.toggleMark).not.toHaveBeenCalled()
+		expect(editor.addMark).toHaveBeenCalled()
 	})
 })

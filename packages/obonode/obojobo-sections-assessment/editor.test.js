@@ -1,23 +1,29 @@
-/* eslint no-undefined: 0 */
-
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		registerModel: jest.fn()
 	},
 	components: {
-		Button: jest.fn()
+		Button: jest.fn(),
+		modal: {
+			SimpleDialog: jest.fn()
+		}
+	},
+	util: {
+		RangeParsing: {
+			getParsedRange: jest.fn()
+		}
 	}
 }))
 jest.mock('obojobo-pages-page/editor')
 jest.mock('obojobo-chunks-question-bank/editor')
 jest.mock('./components/rubric/editor')
-jest.mock('./post-assessment/editor')
+jest.mock('./post-assessment/editor-component')
 
 import Assessment from './editor'
 

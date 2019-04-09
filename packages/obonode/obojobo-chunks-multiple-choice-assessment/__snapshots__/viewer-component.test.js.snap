@@ -178,6 +178,7 @@ exports[`MCAssessment MCAssessment component 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -369,6 +370,7 @@ exports[`MCAssessment MCAssessment component not shuffled 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -480,6 +482,7 @@ exports[`MCAssessment MCAssessment component question with visible explanation 1
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Hide Explanation
@@ -606,6 +609,7 @@ exports[`MCAssessment MCAssessment component review mode 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -683,6 +687,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -760,6 +765,7 @@ exports[`MCAssessment MCAssessment component with correct response in review mod
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -951,6 +957,7 @@ exports[`MCAssessment MCAssessment component with feedback in sortedIds 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -1018,6 +1025,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
         >
           <button
             aria-label="Try Question Again"
+            className="button"
             onClick={[Function]}
           >
             Try Again
@@ -1042,6 +1050,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in practice
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -1133,6 +1142,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -1210,6 +1220,7 @@ exports[`MCAssessment MCAssessment component with incorrect response in review m
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -1401,6 +1412,7 @@ exports[`MCAssessment MCAssessment component with labels 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -1464,6 +1476,7 @@ exports[`MCAssessment MCAssessment component with multiple responses 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -1705,6 +1718,7 @@ exports[`MCAssessment MCAssessment component with one response 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer
@@ -1760,7 +1774,9 @@ exports[`MCAssessment MCAssessment component with one response in practice mode 
         <div
           className="obojobo-draft--components--button is-not-dangerous align-center"
         >
-          <button>
+          <button
+            className="button"
+          >
             Check Your Answer
           </button>
         </div>
@@ -1949,6 +1965,7 @@ exports[`MCAssessment MCAssessment component with sortedIds 1`] = `
         className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
       >
         <button
+          className="button"
           onClick={[Function]}
         >
           Read an explanation of the answer

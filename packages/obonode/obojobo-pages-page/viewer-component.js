@@ -1,18 +1,17 @@
 import './viewer-component.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 
 const { OboComponent } = Viewer.components
-const { focus } = Common.page
+const { FocusUtil } = Viewer.util
 
 export default class Page extends React.Component {
-	static focusOnContent(model) {
+	static focusOnContent(model, opts) {
 		const firstModel = model.children.at(0)
 		if (!firstModel) return
 
-		focus(firstModel.getDomEl())
+		FocusUtil.focusComponent(firstModel.get('id'), opts)
 	}
 
 	render() {

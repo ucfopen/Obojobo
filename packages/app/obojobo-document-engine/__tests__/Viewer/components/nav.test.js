@@ -1,6 +1,7 @@
 import { mount, shallow } from 'enzyme'
 
 import FocusUtil from '../../../src/scripts/viewer/util/focus-util'
+import NavUtil from '../../../src/scripts/viewer/util/nav-util'
 import React from 'react'
 import renderer from 'react-test-renderer'
 
@@ -12,18 +13,15 @@ class MockStylableText {
 	}
 }
 const mockStylableComponent = props => <div {...props} className={'mockStylableText'} />
-const mockScrollIntoView = jest.fn()
+const mockDispatcherTrigger = jest.fn()
 const mockFocus = jest.fn()
+
 // Common
 jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	models: {
 		OboModel: {
 			models: {
-				5: {
-					getDomEl: jest.fn(() => ({
-						scrollIntoView: mockScrollIntoView
-					}))
-				}
+				5: {}
 			}
 		}
 	},
@@ -40,7 +38,7 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	},
 	flux: {
 		Dispatcher: {
-			trigger: jest.fn()
+			trigger: mockDispatcherTrigger
 		}
 	},
 	page: {
@@ -53,13 +51,13 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	canNavigate: jest.fn(),
 	gotoPath: jest.fn(),
 	toggle: jest.fn(),
-	getOrderedList: jest.fn()
+	getOrderedList: jest.fn(),
+	getNavTarget: jest.fn()
 }))
 
 // NavStore
 jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({}))
 
-const NavUtil = require('../../../src/scripts/viewer/util/nav-util')
 const Nav = require('../../../src/scripts/viewer/components/nav').default
 
 describe('Nav', () => {
@@ -211,6 +209,7 @@ describe('Nav', () => {
 		const el = shallow(<Nav {...props} />)
 
 		NavUtil.canNavigate.mockReturnValueOnce(false)
+		NavUtil.getNavTarget.mockReturnValue({ id: 4 })
 		expect(NavUtil.canNavigate).not.toHaveBeenCalled()
 		el.find('li').simulate('click')
 		expect(NavUtil.canNavigate).toHaveBeenCalledWith(props.navState)
@@ -245,14 +244,13 @@ describe('Nav', () => {
 
 		const el = shallow(<Nav {...props} />)
 
+		expect(FocusUtil.focusComponent).not.toHaveBeenCalled()
 		el.find('li').simulate('click')
-		expect(mockScrollIntoView).toHaveBeenCalledWith({
-			behavior: 'smooth',
-			block: 'start'
-		})
+		expect(FocusUtil.focusComponent).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusComponent).toHaveBeenCalledWith(5, { animateScroll: true })
 	})
 
-	test('onClickSkipNavigation calls FocusUtil.focusOnNavTargetContent', () => {
+	test('onClickSkipNavigation calls FocusUtil.focusOnNavTarget', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([
 			{
 				id: 5,
@@ -272,12 +270,12 @@ describe('Nav', () => {
 		}
 		const el = shallow(<Nav {...props} />)
 
-		expect(FocusUtil.focusOnNavTargetContent).not.toHaveBeenCalled()
+		expect(FocusUtil.focusOnNavTarget).not.toHaveBeenCalled()
 		el.find('.skip-nav-button').simulate('click')
-		expect(FocusUtil.focusOnNavTargetContent).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusOnNavTarget).toHaveBeenCalledTimes(1)
 	})
 
-	test('Clicking on a link calls FocusUtil.focusOnNavigation', () => {
+	test('Clicking on a link calls NavUtil.gotoPath and FocusUtil.focusOnNavigation', () => {
 		NavUtil.getOrderedList.mockReturnValue([
 			{
 				id: 'mock-id',
@@ -291,6 +289,44 @@ describe('Nav', () => {
 				}
 			}
 		])
+		NavUtil.getNavTarget.mockReturnValue({ id: 'mock-target-id' })
+		const props = {
+			navState: {
+				open: false,
+				locked: false,
+				navTargetId: 'mock-target-id'
+			}
+		}
+		const el = mount(<Nav {...props} />)
+
+		NavUtil.canNavigate.mockReturnValueOnce(true)
+		const li = el.find('li')
+
+		expect(FocusUtil.focusOnNavigation).not.toHaveBeenCalled()
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(mockDispatcherTrigger).not.toHaveBeenCalled()
+		li.simulate('click')
+		expect(FocusUtil.focusOnNavigation).toHaveBeenCalledTimes(1)
+		expect(NavUtil.gotoPath).toHaveBeenCalledTimes(1)
+		expect(NavUtil.gotoPath).toHaveBeenCalledWith('mockFullPath')
+		expect(mockDispatcherTrigger).not.toHaveBeenCalled()
+	})
+
+	test('Clicking on a link for a page you are already on fires viewer:scrollToTop', () => {
+		NavUtil.getOrderedList.mockReturnValue([
+			{
+				id: 'mock-id',
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					visited: false,
+					complete: false,
+					correct: false
+				}
+			}
+		])
+		NavUtil.getNavTarget.mockReturnValue({ id: 'mock-id' })
 		const props = {
 			navState: {
 				open: false,
@@ -304,8 +340,15 @@ describe('Nav', () => {
 		const li = el.find('li')
 
 		expect(FocusUtil.focusOnNavigation).not.toHaveBeenCalled()
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(mockDispatcherTrigger).not.toHaveBeenCalled()
 		li.simulate('click')
-		expect(FocusUtil.focusOnNavigation).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.focusOnNavigation).not.toHaveBeenCalled()
+		expect(NavUtil.gotoPath).not.toHaveBeenCalled()
+		expect(mockDispatcherTrigger).toHaveBeenCalledTimes(1)
+		expect(mockDispatcherTrigger).toHaveBeenCalledWith('viewer:scrollToTop', {
+			value: { animateScroll: true }
+		})
 	})
 
 	test('focus calls focus ', () => {

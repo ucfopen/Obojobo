@@ -1,9 +1,11 @@
-/* eslint no-alert: 0 */
 import React from 'react'
 import Common from 'Common'
 import EditorUtil from '../util/editor-util'
 import ClipboardUtil from '../util/clipboard-util'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+
+const { Prompt } = Common.components.modal
+const { ModalUtil } = Common.util
 
 import './sub-menu.scss'
 
@@ -27,8 +29,24 @@ class SubMenu extends React.Component {
 		EditorUtil.deletePage(pageId)
 	}
 
-	renamePage(pageId) {
-		const label = window.prompt('Enter the new title:') || pageId
+	showRenamePageModal(page) {
+		ModalUtil.show(
+			<Prompt
+				cancelOk
+				title="Rename Page"
+				message="Enter the new title for the page:"
+				value={page.label}
+				onConfirm={this.renamePage.bind(this, page.id)}
+			/>
+		)
+	}
+
+	renamePage(pageId, label) {
+		ModalUtil.hide()
+
+		// Fix page titles that are whitespace strings
+		if (!/[^\s]/.test(label)) label = null
+
 		EditorUtil.renamePage(pageId, label)
 	}
 
@@ -138,7 +156,7 @@ class SubMenu extends React.Component {
 				)}
 				<li>
 					<button
-						onClick={() => this.renamePage(item.id)}
+						onClick={this.showRenamePageModal.bind(this, item)}
 						tabIndex="-1"
 						ref={item => {
 							this.editName = item

@@ -21,7 +21,7 @@ jest.mock('../../../src/scripts/viewer/util/question-util', () => ({
 }))
 
 jest.mock('../../../src/scripts/viewer/util/focus-util', () => ({
-	clearVisualFocus: jest.fn()
+	clearFadeEffect: jest.fn()
 }))
 
 const Common = require('../../../src/scripts/common/index').default
@@ -547,7 +547,7 @@ describe('QuestionStore', () => {
 	test('question:scoreSet blurs focus if correct', () => {
 		__createModels()
 
-		expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(0)
+		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(0)
 
 		__mockTrigger('question:scoreSet', {
 			value: {
@@ -557,7 +557,7 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(1)
+		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 	})
 
 	test('question:scoreSet doesnt blur if incorrect', () => {
@@ -571,7 +571,7 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(FocusUtil.clearVisualFocus).not.toHaveBeenCalled()
+		expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
 	})
 
 	test('question:scoreSet updates the state', () => {

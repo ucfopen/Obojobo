@@ -2,139 +2,103 @@
 
 exports[`Figure Editor Node Figure component 1`] = `
 <div
-  className="obojobo-draft--chunks--figure viewer mockSize"
+  className="obojobo-draft--chunks--figure viewer small"
 >
-  <div
-    className="image-toolbar"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Edit Alt Text
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Edit URL
-    </button>
-    <select
-      name="Size"
-      onChange={[Function]}
-      onClick={[Function]}
-      value="mockSize"
-    >
-      <option
-        value="small"
-      >
-        small
-      </option>
-      <option
-        value="medium"
-      >
-        medium
-      </option>
-      <option
-        value="large"
-      >
-        large
-      </option>
-      <option
-        value="custom"
-      >
-        custom
-      </option>
-    </select>
-    <div>
-      <button
-        className="editor--page-editor--delete-node-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-  </div>
   <div
     className="container"
   >
-    <img
-      alt="mockAlt"
-      src="mockUrl"
-      title="mockAlt"
-      unselectable="on"
-    />
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        unselectable="on"
+      />
+    </div>
     <figcaption />
   </div>
 </div>
 `;
+
+exports[`Figure Editor Node Figure component handles clicks 1`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
+
+exports[`Figure Editor Node Figure component handles clicks 2`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
+
+exports[`Figure Editor Node Figure component handles clicks 3`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
 <div
   className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="image-toolbar"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Edit Alt Text
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Edit URL
-    </button>
-    <select
-      name="Size"
-      onChange={[Function]}
-      onClick={[Function]}
-      value="custom"
-    >
-      <option
-        value="small"
-      >
-        small
-      </option>
-      <option
-        value="medium"
-      >
-        medium
-      </option>
-      <option
-        value="large"
-      >
-        large
-      </option>
-      <option
-        value="custom"
-      >
-        custom
-      </option>
-    </select>
-    <div>
-      <button
-        className="editor--page-editor--delete-node-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-  </div>
-  <div
     className="container"
   >
-    <img
-      alt="mockAlt"
-      src="mockUrl"
-      style={
-        Object {
-          "height": "customHeightpx",
-          "width": "customWidthpx",
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "height": "customHeightpx",
+            "width": "customWidthpx",
+          }
         }
-      }
-      title="mockAlt"
-      unselectable="on"
-    />
+        unselectable="on"
+      />
+    </div>
     <figcaption />
   </div>
 </div>
@@ -145,68 +109,47 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
   className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="image-toolbar"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Edit Alt Text
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Edit URL
-    </button>
-    <select
-      name="Size"
-      onChange={[Function]}
-      onClick={[Function]}
-      value="custom"
-    >
-      <option
-        value="small"
-      >
-        small
-      </option>
-      <option
-        value="medium"
-      >
-        medium
-      </option>
-      <option
-        value="large"
-      >
-        large
-      </option>
-      <option
-        value="custom"
-      >
-        custom
-      </option>
-    </select>
-    <div>
-      <button
-        className="editor--page-editor--delete-node-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-  </div>
-  <div
     className="container"
   >
-    <img
-      alt="mockAlt"
-      src="mockUrl"
-      style={
-        Object {
-          "height": "customHeightpx",
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "height": "customHeightpx",
+          }
         }
-      }
-      title="mockAlt"
-      unselectable="on"
-    />
+        unselectable="on"
+      />
+    </div>
     <figcaption />
   </div>
 </div>
@@ -217,68 +160,47 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
   className="obojobo-draft--chunks--figure viewer custom"
 >
   <div
-    className="image-toolbar"
-  >
-    <button
-      onClick={[Function]}
-    >
-      Edit Alt Text
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Edit URL
-    </button>
-    <select
-      name="Size"
-      onChange={[Function]}
-      onClick={[Function]}
-      value="custom"
-    >
-      <option
-        value="small"
-      >
-        small
-      </option>
-      <option
-        value="medium"
-      >
-        medium
-      </option>
-      <option
-        value="large"
-      >
-        large
-      </option>
-      <option
-        value="custom"
-      >
-        custom
-      </option>
-    </select>
-    <div>
-      <button
-        className="editor--page-editor--delete-node-button"
-        onClick={[Function]}
-      >
-        X
-      </button>
-    </div>
-  </div>
-  <div
     className="container"
   >
-    <img
-      alt="mockAlt"
-      src="mockUrl"
-      style={
-        Object {
-          "width": "mockWidthpx",
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "width": "mockWidthpx",
+          }
         }
-      }
-      title="mockAlt"
-      unselectable="on"
-    />
+        unselectable="on"
+      />
+    </div>
     <figcaption />
   </div>
 </div>

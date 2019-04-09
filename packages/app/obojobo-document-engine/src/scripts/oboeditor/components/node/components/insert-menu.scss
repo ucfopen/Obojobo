@@ -2,6 +2,7 @@
 
 .editor--component--insert-menu {
 	position: absolute;
+	white-space: nowrap;
 	z-index: 2;
 
 	&.align-left {
@@ -24,6 +25,9 @@
 	}
 
 	.insert-button {
+		$color-highlight-bg: lighten($color-action, 50%);
+		$color-highlight-fg: darken($color-action, 10%);
+
 		position: relative;
 		display: none;
 		z-index: 99;
@@ -35,44 +39,78 @@
 			left: 50%;
 			text-align: center;
 			opacity: 0;
-			background-color: $color-bg;
-			transform: translate(-50%, 0);
+			background: $color-highlight-bg;
+			color: $color-highlight-fg;
+			transform: translate(-50%, 2px);
 			padding-left: 0.5em;
 			padding-right: 0.5em;
 			border-radius: $dimension-rounded-radius;
 			font-size: 0.8em;
+			font-family: $font-default;
+			font-weight: bold;
+			pointer-events: none;
+		}
+
+		button {
+			display: block;
+			background-color: $color-bg2;
+			font-size: 1.3em;
+			color: $color-text;
+			text-align: center;
+			box-sizing: border-box;
+			padding: 0;
+			margin: 0;
+			width: 1.6em;
+			height: 1.4em;
+			cursor: pointer;
+
+			&:not(:first-child) {
+				border-left: none;
+			}
+
+			svg {
+				vertical-align: top;
+				width: 32px; //stylelint-disable-line unit-blacklist
+				height: 32px; //stylelint-disable-line unit-blacklist
+				opacity: 0.7;
+
+				.fill {
+					fill: $color-text;
+				}
+
+				.stroke {
+					stroke: $color-text;
+				}
+			}
 		}
 
 		&:hover {
 			span {
 				opacity: 1;
 			}
-		}
 
-		button {
-			display: block;
-			background-color: $color-bg2;
-			border-radius: $dimension-rounded-radius;
-			font-size: 1.3em;
-			min-width: 1.5em;
-			color: $color-text;
-			text-align: center;
-			box-sizing: border-box;
+			button {
+				background: $color-highlight-bg;
 
-			&:focus {
-				background: lighten($color-action, 48%);
-
-				+ span {
+				svg {
 					opacity: 1;
+				}
+
+				.fill {
+					fill: $color-highlight-fg;
+				}
+
+				.stroke {
+					stroke: $color-highlight-fg;
 				}
 			}
+		}
 
-			&:hover {
-				background: lighten($color-action, 48%);
+		button:focus {
+			background: $color-highlight-bg;
 
-				+ span {
-					opacity: 1;
-				}
+			+ span {
+				opacity: 1;
 			}
 		}
 	}

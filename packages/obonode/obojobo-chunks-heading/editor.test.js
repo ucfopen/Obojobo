@@ -6,7 +6,6 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 
 import Heading from './editor'
 import Common from 'obojobo-document-engine/src/scripts/common/index'
-
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 describe('Heading editor', () => {
@@ -45,7 +44,7 @@ describe('Heading editor', () => {
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.renderPlaceholder exits when not relevant', () => {
+	test('plugins.renderPlaceholder exits when not relevent', () => {
 		expect(
 			Heading.plugins.renderPlaceholder(
 				{

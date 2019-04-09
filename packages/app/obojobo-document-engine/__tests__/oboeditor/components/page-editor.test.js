@@ -3,10 +3,11 @@ import React from 'react'
 import { Value } from 'slate'
 
 jest.mock('slate-react')
-jest.mock('src/scripts/viewer/util/api-util')
 
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import APIUtil from 'src/scripts/viewer/util/api-util'
+jest.mock('src/scripts/viewer/util/api-util')
+jest.mock('src/scripts/common/util/modal-util')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -14,6 +15,10 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 describe('PageEditor', () => {
+	beforeEach(() => {
+		jest.clearAllMocks()
+	})
+
 	test('EditorNav component', () => {
 		const props = {
 			page: {
@@ -217,7 +222,7 @@ describe('PageEditor', () => {
 		expect(APIUtil.postDraft).toHaveBeenCalle
 	})
 
-	test('EditorNav component alters value', () => {
+	test('EditorNav component alters value majorly', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
 			page: {
@@ -228,7 +233,45 @@ describe('PageEditor', () => {
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
 
-		component.find('.obojobo-draft--pages--page').simulate('change', { value: Value.create({}) })
+		const change = {
+			value: Value.create({}),
+			operations: {
+				toJSON: () => [
+					{
+						type: 'set_mark'
+					}
+				]
+			}
+		}
+
+		component.find('.obojobo-draft--pages--page').simulate('change', change)
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('EditorNav component alters value minorly', () => {
+		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+		const component = shallow(<PageEditor {...props} />)
+		const tree = component.html()
+
+		const change = {
+			value: Value.create({}),
+			operations: {
+				toJSON: () => [
+					{
+						type: 'set_selection'
+					}
+				]
+			}
+		}
+
+		component.find('.obojobo-draft--pages--page').simulate('change', change)
 
 		expect(tree).toMatchSnapshot()
 	})

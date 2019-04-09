@@ -224,7 +224,7 @@ class NavStore extends Store {
 			navItem.showChildren = true
 		}
 
-		FocusUtil.clearVisualFocus()
+		FocusUtil.clearFadeEffect()
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
 		NavUtil.getNavTargetModel(this.state).processTrigger('onNavEnter')

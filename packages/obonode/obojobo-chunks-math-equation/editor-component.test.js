@@ -4,6 +4,9 @@ import renderer from 'react-test-renderer'
 
 import MathEquation from './editor-component'
 
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+
 describe('MathEquation Editor Node', () => {
 	test('MathEquation component', () => {
 		const component = renderer.create(
@@ -11,7 +14,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: '1' }
+							return { latex: null }
 						}
 					}
 				}}
@@ -28,7 +31,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: null }
+							return { latex: 'x_0_0' }
 						}
 					}
 				}}
@@ -56,7 +59,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component edits input', () => {
+	test('MathEquation component edits properties', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
@@ -66,7 +69,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return {}
+							return { latex: '1', label: '1.1' }
 						}
 					}
 				}}
@@ -78,23 +81,15 @@ describe('MathEquation Editor Node', () => {
 		const tree = component.html()
 
 		component
-			.find('input')
+			.find('button')
 			.at(0)
-			.simulate('click', {
-				stopPropagation: () => true
-			})
+			.simulate('click')
 
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', {
-				target: { value: 'mockInput' }
-			})
-
+		expect(ModalUtil.show).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MathEquation component edits label', () => {
+	test('changeProperties edits properties', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
@@ -104,7 +99,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return {}
+							return { latex: '1', label: '' }
 						}
 					}
 				}}
@@ -113,22 +108,9 @@ describe('MathEquation Editor Node', () => {
 				editor={editor}
 			/>
 		)
-		const tree = component.html()
 
-		component
-			.find('input')
-			.at(1)
-			.simulate('click', {
-				stopPropagation: () => true
-			})
+		component.instance().changeProperties({ mockProperties: 'mock value' })
 
-		component
-			.find('input')
-			.at(1)
-			.simulate('change', {
-				target: { value: 'mockInput' }
-			})
-
-		expect(tree).toMatchSnapshot()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 })

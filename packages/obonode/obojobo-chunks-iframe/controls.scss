@@ -69,6 +69,10 @@
 		> .reload-button {
 			background-image: url('./reload.svg');
 			background-size: 75%;
+
+			&:disabled {
+				opacity: 0.4;
+			}
 		}
 
 		> .tool-tip {

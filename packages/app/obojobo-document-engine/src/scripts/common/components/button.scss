@@ -12,7 +12,7 @@
 
 	display: inline-block;
 
-	button {
+	.button {
 		$color-button-bg: lighten($color-action, 9%);
 
 		user-select: none;

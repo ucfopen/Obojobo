@@ -71,3 +71,10 @@ $z-index-preview: 999999;
 	padding-top: $height / 2;
 	text-align: center;
 }
+
+@mixin text-input() {
+	box-sizing: border-box;
+	font-family: $font-monospace;
+	font-size: 0.8em;
+	padding: 0.4em;
+}

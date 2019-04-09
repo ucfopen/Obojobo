@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 jest.mock('src/scripts/oboeditor/util/keydown-util')
@@ -103,7 +103,7 @@ describe('Parameter Node', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {

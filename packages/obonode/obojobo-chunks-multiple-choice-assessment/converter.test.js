@@ -4,6 +4,9 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 			slateToObo: jest.fn(),
 			oboToSlate: jest.fn()
 		})
+	},
+	components: {
+		Slider: jest.fn()
 	}
 }))
 

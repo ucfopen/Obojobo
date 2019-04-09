@@ -1,8 +1,11 @@
 {
-	"object":"block",
-	"type":"ObojoboDraft.Chunks.IFrame",
-	"isVoid":true,
-	"data":{
-		"content": { "src": "https://www.youtube.com/embed/gJ390e5sjHk" }
+	"object": "block",
+	"type": "ObojoboDraft.Chunks.IFrame",
+	"isVoid": true,
+	"data": {
+		"content": {
+			"autoload": false,
+			"controls": "reload"
+		}
 	}
 }

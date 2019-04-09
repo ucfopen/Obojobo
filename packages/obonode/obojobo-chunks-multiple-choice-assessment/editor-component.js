@@ -1,7 +1,6 @@
-import './viewer-component.scss'
-import './editor-component.scss'
-
 import React from 'react'
+
+import './editor-component.scss'
 
 class MCAssessment extends React.Component {
 	constructor(props) {

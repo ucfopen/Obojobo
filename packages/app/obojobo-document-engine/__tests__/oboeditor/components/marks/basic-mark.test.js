@@ -1,4 +1,4 @@
-import markHotKey from '../../../../src/scripts/oboeditor/components/marks/basic-mark'
+import markHotKey from 'obojobo-document-engine/src/scripts/oboeditor/components/marks/basic-mark'
 
 describe('HotKey', () => {
 	test('HotKey registers a type and key', () => {
