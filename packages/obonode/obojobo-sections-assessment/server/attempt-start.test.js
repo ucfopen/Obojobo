@@ -48,7 +48,6 @@ const testJson = require('obojobo-document-engine/test-object.json')
 const Assessment = require('./assessment')
 const insertEvent = require('obojobo-express/insert_event')
 const Draft = require('obojobo-express/models/draft')
-const DraftNode = require('obojobo-express/models/draft_node')
 const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
 const Visit = require('obojobo-express/models/visit')
 
@@ -168,7 +167,7 @@ describe('start attempt route', () => {
 			expect(mockReq.requireCurrentDocument).toHaveBeenCalled()
 			expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
 			expect(Assessment.insertNewAttempt).toHaveBeenCalled()
-			expect(Util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
+			expect(getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
 
 			return done()
 		})

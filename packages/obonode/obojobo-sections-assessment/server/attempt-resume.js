@@ -1,8 +1,8 @@
 const Assessment = require('./assessment')
 const attemptStart = require('./attempt-start')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
-const DraftModel = oboRequire('models/draft')
-const insertEvent = oboRequire('insert_event')
+const DraftModel = require('obojobo-express/models/draft')
+const insertEvent = require('obojobo-express/insert_event')
 const VisitModel = oboRequire('models/visit')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'

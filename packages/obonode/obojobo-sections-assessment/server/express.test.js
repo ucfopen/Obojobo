@@ -90,7 +90,7 @@ describe('server/express', () => {
 		expect.assertions(11)
 
 		expect(server.get).toHaveBeenCalledTimes(4)
-		expect(server.post).toHaveBeenCalledTimes(5)
+		expect(server.post).toHaveBeenCalledTimes(6)
 		expect(server.delete).toHaveBeenCalledTimes(0)
 		expect(server.put).toHaveBeenCalledTimes(0)
 		expect(server.post).toBeCalledWith('/api/lti/sendAssessmentScore', expect.anything())
@@ -256,7 +256,7 @@ describe('server/express', () => {
 		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
 
 		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[4]
+		const clearPreviewScoresRoute = server.post.mock.calls[5]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		db.manyOrNone
@@ -295,7 +295,7 @@ describe('server/express', () => {
 		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
 
 		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[4]
+		const clearPreviewScoresRoute = server.post.mock.calls[5]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		db.manyOrNone
@@ -331,7 +331,7 @@ describe('server/express', () => {
 		expect.assertions(8)
 
 		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[4]
+		const clearPreviewScoresRoute = server.post.mock.calls[5]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		// user that can't preview
@@ -354,7 +354,7 @@ describe('server/express', () => {
 		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
 
 		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[4]
+		const clearPreviewScoresRoute = server.post.mock.calls[5]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		db.manyOrNone.mockImplementationOnce(() => {
