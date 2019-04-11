@@ -19,13 +19,15 @@
 	}
 
 	.correct-button {
+		$correct-font: Arial, sans-serif;
+
 		position: relative;
 		top: 2.3em;
 		left: 0.5em;
 		font-size: inherit;
 		background: transparent;
 		border: none;
-		font-family: 'Libre Franklin', Arial, sans-serif;
+		font-family: $correct-font;
 	}
 
 	.add-feedback {

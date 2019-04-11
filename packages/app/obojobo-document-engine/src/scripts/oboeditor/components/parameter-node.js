@@ -49,7 +49,7 @@ const Node = props => {
 					>
 						{props.node.data.get('options').map(item => {
 							return (
-								<option value={item} key={item}>
+								<option value={item} label={item} key={item}>
 									{item}
 								</option>
 							)
