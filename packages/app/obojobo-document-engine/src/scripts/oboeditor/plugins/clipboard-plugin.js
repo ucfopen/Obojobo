@@ -27,7 +27,6 @@ const ClipboardPlugin = {
 
 		// Pasting in OboEditor nodes
 		if (transfer.type === 'fragment') {
-			console.log(transfer.fragment.toJSON())
 			// Save a list of the blocks in the selection
 			const saveBlocks = editor.value.blocks
 
@@ -44,13 +43,12 @@ const ClipboardPlugin = {
 			// If pasting into OboNodes that support children, insert only the
 			// leaf-most oboeditor.component nodes
 			if (supportsChildren) {
-				editor.getLeafMostComponents(transfer.fragment).forEach(block => editor.insertBlock(block))
+				editor.getComponents(transfer.fragment, true).forEach(block => editor.insertBlock(block))
 
 			// If pasting into OboNodes that do not support children, paste
-			// normally
+			// the root-most components
 			} else {
-				printKeys(transfer.fragment)
-				next()
+				editor.getComponents(transfer.fragment, false).forEach(block => editor.insertBlock(block))
 			}
 
 			// Delete empty text nodes in the original selection
@@ -77,21 +75,47 @@ const ClipboardPlugin = {
 		// Gets the oboeditor.component nodes that are closest to the leaves in
 		// the given fragment
 		// O(number of leaf nodes)
-		getLeafMostComponents(editor, fragment) {
+		getComponents(editor, fragment, leafmost) {
 			// Get all leaf nodes in fragment
 			const blocks = fragment.getBlocks()
 
 			// Get the oboeditor.components that are the closest ancestor to the leaf nodes
 			// This will contain duplicates, as each leaf node will return their parent, and
 			// some leaves may share the same oboeditor.component (Text, Code, List, etc.)
-			const leafMostComponents = blocks.map(node => {
-				return fragment.getClosest(node.key, parent => parent.type === 'oboeditor.component')
+			const components = blocks.map(node => {
+				if(leafmost) return fragment.getClosest(node.key, parent => parent.type === 'oboeditor.component')
+
+				return fragment.getFurthest(node.key, parent => parent.type === 'oboeditor.component')
 			})
 
 			// Remove duplicate parents based on keys - Duplicates will always be adjacent
-			return leafMostComponents
+			return components
 				.map((component, i) => {
-					const nextNode = leafMostComponents.get(i + 1)
+					const nextNode = components.get(i + 1)
+					if (nextNode && nextNode.key === component.key) {
+						return false
+					}
+					return component
+				})
+				.filter(Boolean)
+		},
+		getRootMostComponents(editor, fragment) {
+			// Get all leaf nodes in fragment
+			const blocks = fragment.getBlocks()
+
+			// Get the oboeditor.components that are the closest ancestor to the leaf nodes
+			// This will contain duplicates, as each leaf node will return their parent, and
+			// some leaves may share the same oboeditor.component (Text, Code, List, etc.)
+			const rootMostComponents = blocks.map(node => {
+				const roto = fragment.getFurthest(node.key, parent => parent.type === 'oboeditor.component')
+				console.log(roto.toJSON())
+				return roto
+			})
+
+			// Remove duplicate parents based on keys - Duplicates will always be adjacent
+			return rootMostComponents
+				.map((component, i) => {
+					const nextNode = rootMostComponents.get(i + 1)
 					if (nextNode && nextNode.key === component.key) {
 						return false
 					}

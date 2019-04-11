@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Settings Editor Node Settings builds the expected component 1`] = `
-<div
-  className="mc-settings"
->
-  <div />
-</div>
-`;
