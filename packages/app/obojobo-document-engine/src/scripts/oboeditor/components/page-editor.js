@@ -26,7 +26,9 @@ import Page from 'obojobo-pages-page/editor'
 import Assessment from 'obojobo-sections-assessment/editor'
 import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-component'
 import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
-import ParameterNode from './parameter-node'
+import TextParameter from './parameter-node/text-parameter'
+import SelectParameter from './parameter-node/select-parameter'
+import ToggleParameter from './parameter-node/toggle-parameter'
 import Component from './node/editor'
 import MarkToolbar from './toolbar'
 import EditorSchema from '../plugins/editor-schema'
@@ -64,7 +66,9 @@ const plugins = [
 	ScoreActions.plugins,
 	Page.plugins,
 	Rubric.plugins,
-	ParameterNode.plugins,
+	ToggleParameter.plugins,
+	SelectParameter.plugins,
+	TextParameter.plugins,
 	Assessment.plugins,
 	EditorSchema,
 	ClipboardPlugin
