@@ -91,13 +91,6 @@ class Heading extends React.Component {
 						</button>
 					</div>
 				</div>
-				<div>
-					<select>
-						<option value="banana">Banana</option>
-						<option value="top">Top</option>
-						<option value="grr">Grr</option>
-					</select>
-				</div>
 			</div>
 		)
 	}
