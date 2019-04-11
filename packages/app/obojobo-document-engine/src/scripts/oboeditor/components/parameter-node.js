@@ -45,7 +45,7 @@ const Node = props => {
 						name={'Select'}
 						value={props.node.data.get('current')}
 						onChange={event => handleSelectChange(event)}
-						onClick={event => event.stopPropagation()}
+						contentEditable={false}
 					>
 						{props.node.data.get('options').map(item => {
 							return (
