@@ -35,6 +35,7 @@ import './page-editor.scss'
 
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
+const { Button } = Common.components
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -193,9 +194,9 @@ class PageEditor extends React.Component {
 	renderExportButton() {
 		return (
 			<div className="footer-menu">
-				<button className={'exporter'} onClick={() => this.saveDraft()}>
+				<Button className={'exporter'} onClick={() => this.saveDraft()}>
 					{'Save Document'}
-				</button>
+				</Button>
 			</div>
 		)
 	}

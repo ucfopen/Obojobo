@@ -1,7 +1,7 @@
 /* eslint no-undefined: 0 */
 
 import React from 'react'
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
@@ -38,7 +38,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Node
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -70,7 +70,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Node
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -105,7 +105,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Node
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -169,7 +169,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Mod
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -205,7 +205,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Mod
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {

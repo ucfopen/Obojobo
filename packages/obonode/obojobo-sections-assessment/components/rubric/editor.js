@@ -1,11 +1,14 @@
 import React from 'react'
 import { Block } from 'slate'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import './editor-component.scss'
 
 //import Node from './editor-component'
 import Schema from './schema'
 import Converter from './converter'
+
+const { Button } = Common.components
 
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
@@ -31,12 +34,9 @@ class Mod extends React.Component {
 		return (
 			<div className={'mod pad'}>
 				{this.props.children}
-				<button
-					className={'editor--page-editor--delete-node-button'}
-					onClick={() => this.deleteNode()}
-				>
-					X
-				</button>
+				<Button className={'delete-button'} onClick={() => this.deleteNode()}>
+					×
+				</Button>
 			</div>
 		)
 	}
@@ -86,15 +86,12 @@ class Node extends React.Component {
 					{'Type: ' + this.state.type}
 				</div>
 				{this.props.children}
-				<button className={'add-button'} onClick={() => this.addMod()}>
+				<Button className={'add-button'} onClick={() => this.addMod()}>
 					{'Add Mod'}
-				</button>
-				<button
-					className={'editor--page-editor--delete-node-button'}
-					onClick={() => this.deleteNode()}
-				>
-					X
-				</button>
+				</Button>
+				<Button className={'delete-button'} onClick={() => this.deleteNode()}>
+					×
+				</Button>
 			</div>
 		)
 	}

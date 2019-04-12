@@ -16,6 +16,7 @@ import assessmentTemplate from '../documents/new-assessment.json'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
+const { Button } = Common.components
 
 class EditorNav extends React.Component {
 	constructor(props) {
@@ -112,7 +113,7 @@ class EditorNav extends React.Component {
 	render() {
 		const className =
 			'viewer--components--nav ' +
-			'editor--components--nav ' +
+			' editor--components--nav ' +
 			isOrNot(this.state.locked, 'locked') +
 			isOrNot(this.state.open, 'open') +
 			isOrNot(!this.state.disabled, 'enabled')
@@ -140,27 +141,34 @@ class EditorNav extends React.Component {
 						}
 						return null
 					})}
+					<li className="button-bar-buffer" />
 				</ul>
 				<div className="button-bar">
-					<button className={'content-add-button'} onClick={this.showAddPageModal.bind(this)}>
+					<Button
+						className={'content-add-button align-left'}
+						onClick={this.showAddPageModal.bind(this)}
+					>
 						+ Add Page
-					</button>
-					<button className={'content-add-button'} onClick={this.showAddAssessmentModal.bind(this)}>
+					</Button>
+					<Button
+						className={'content-add-button align-left'}
+						onClick={this.showAddAssessmentModal.bind(this)}
+					>
 						+ Add Assessment
-					</button>
+					</Button>
 					<br />
-					<button
-						className={'content-add-button'}
+					<Button
+						className={'content-add-button align-left'}
 						onClick={this.showRenameModuleModal.bind(this, moduleItem)}
 					>
 						Rename Module
-					</button>
-					<button
-						className={'content-add-button'}
+					</Button>
+					<Button
+						className={'content-add-button align-left'}
 						onClick={() => ClipboardUtil.copyToClipboard(url)}
 					>
 						Copy Module URL
-					</button>
+					</Button>
 				</div>
 			</div>
 		)

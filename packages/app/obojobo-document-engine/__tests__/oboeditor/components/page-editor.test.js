@@ -106,8 +106,6 @@ describe('PageEditor', () => {
 	})
 
 	test('EditorNav component with content exports to database', () => {
-		jest.spyOn(window, 'alert')
-		window.alert.mockReturnValueOnce(null)
 		APIUtil.postDraft.mockResolvedValueOnce({ status: 'ok' })
 
 		const props = {
@@ -172,12 +170,12 @@ describe('PageEditor', () => {
 				}
 			}
 		}
-		const component = shallow(<PageEditor {...props} />)
+		const component = mount(<PageEditor {...props} />)
 		const tree = component.html()
 
 		component
 			.find('button')
-			.at(0)
+			.at(14)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
@@ -210,12 +208,12 @@ describe('PageEditor', () => {
 				}
 			}
 		}
-		const component = shallow(<PageEditor {...props} />)
+		const component = mount(<PageEditor {...props} />)
 		const tree = component.html()
 
 		component
 			.find('button')
-			.at(0)
+			.at(14)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()

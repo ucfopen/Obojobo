@@ -91,7 +91,7 @@ class Node extends React.Component {
 			<div className={'scoreactions'}>
 				<h1 contentEditable={false}>Score Actions</h1>
 				{this.props.children}
-				<button onClick={this.showRangeModal.bind(this)}>Add Action</button>
+				<Button onClick={this.showRangeModal.bind(this)}>Add Action</Button>
 			</div>
 		)
 	}

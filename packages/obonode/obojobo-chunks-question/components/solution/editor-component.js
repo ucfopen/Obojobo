@@ -1,6 +1,9 @@
 import './editor-component.scss'
 
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
+
+const { Button } = Common.components
 
 const Solution = props => {
 	const deleteNode = () => {
@@ -11,9 +14,9 @@ const Solution = props => {
 	return (
 		<div className="solution-editor">
 			{props.children}
-			<button className="editor--page-editor--delete-node-button" onClick={() => deleteNode()}>
-				X
-			</button>
+			<Button className="delete-button" onClick={() => deleteNode()}>
+				×
+			</Button>
 		</div>
 	)
 }

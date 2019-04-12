@@ -4,4 +4,20 @@
 	background: transparentize($color-action, 0.95);
 	border: 1px solid $color-action;
 	border-radius: $dimension-rounded-radius;
+	overflow: visible;
+
+	.delete-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+
+		button {
+			font-size: 1.2em;
+			padding: 0;
+			min-width: 1.4em;
+			border-radius: 50%;
+		}
+	}
 }
