@@ -3,6 +3,8 @@ import { Block } from 'slate'
 import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 
+import emptyMod from './empty-mod.json'
+
 const { CHILD_MIN_INVALID } = SchemaViolations
 
 const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
@@ -23,6 +25,7 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
+				console.log('error?', error)
 				const { node, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
@@ -79,17 +82,11 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
+				console.log('modlist', error)
 				const { node, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
-						const block = Block.create({
-							type: MOD_NODE,
-							nodes: [
-								{
-
-								}
-							]
-						})
+						const block = Block.create(emptyMod)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}
@@ -100,6 +97,7 @@ const schema = {
 				{ match: [{ type:  TEXT_PARAMETER }], min: 2 }
 			],
 			normalize: (editor, error) => {
+				console.log('mod', error)
 				const { node, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {

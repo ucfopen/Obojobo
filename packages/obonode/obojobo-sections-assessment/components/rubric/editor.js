@@ -1,12 +1,16 @@
 import React from 'react'
 import { Block } from 'slate'
-import { getEventTransfer } from 'slate-react'
+import { getEventTransfer, cloneFragment } from 'slate-react'
+
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
 import './editor-component.scss'
 
 //import Node from './editor-component'
 import Schema from './schema'
 import Converter from './converter'
+
+import emptyMod from './empty-mod.json'
 
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
@@ -63,13 +67,16 @@ class Node extends React.Component {
 
 		// If we are adding the first mod, we need to add a ModList
 		if (this.props.node.nodes.size < 5) {
-			const modlist = Block.create({ type: MOD_LIST_NODE })
+			const modlist = Block.create({
+				type: MOD_LIST_NODE,
+				nodes: [emptyMod]
+			})
 			return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, modlist)
 		}
 
 		const modlist = this.props.node.nodes.get(4)
 
-		const mod = Block.create({ type: MOD_NODE })
+		const mod = Block.create(emptyMod)
 		return editor.insertNodeByKey(modlist.key, modlist.nodes.size, mod)
 	}
 
@@ -116,6 +123,18 @@ const plugins = {
 		const transfer = getEventTransfer(event)
 		editor.insertText(transfer.text)
 	},
+	onCut(event, editor, next) {
+		// See if any of the selected nodes have a TABLE_NODE parent
+		const isRubric = isType(editor)
+		if (!isRubric) return next()
+
+		// Copy the fragment and then delete the contents of the nodes
+		// without deleting the nodes themselves
+		const textFragment = editor.extractTextToFragment()
+		KeyDownUtil.deleteNodeContents(event, editor, next)
+
+		return cloneFragment(event, editor, next, textFragment)
+	},
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case MOD_NODE:
@@ -128,7 +147,43 @@ const plugins = {
 				return next()
 		}
 	},
-	schema: Schema
+	schema: Schema,
+	queries: {
+		extractTextToFragment(editor) {
+			const cutText = editor.value.fagment.text
+
+			return Block.create({
+				object: 'document',
+				nodes: [
+					{
+						object: 'block',
+						type: 'oboeditor.component',
+						nodes: [
+							{
+								object: 'block',
+								type: 'ObojoboDraft.Chunks.Text',
+								"nodes":[
+									{
+										object: 'block',
+										type:"ObojoboDraft.Chunks.Text.TextLine",
+										data:{ "indent":0 },
+										nodes:[
+											{
+												object:"text",
+												leaves:[
+													{"object":"leaf","text":cutText,"marks":[]}
+												]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			})
+		}
+	}
 }
 
 const Rubric = {
