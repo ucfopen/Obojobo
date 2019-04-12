@@ -1,8 +1,7 @@
-import './insert-menu.scss'
-
-/* eslint no-alert: 0 */
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+
+import './insert-menu.scss'
 
 class DropMenu extends React.Component {
 	constructor(props) {
@@ -105,7 +104,7 @@ class DropMenu extends React.Component {
 				>
 					{Icon ? <Icon /> : item.name}
 				</button>
-				<span>{item.name}</span>
+				<span>+ {item.name}</span>
 			</div>
 		)
 	}

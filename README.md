@@ -37,7 +37,7 @@ We added Heroku support as an easy way to give Obojobo a **free test drive** (or
 
 1. Clone this repo
 2. Run `yarn install` to install dependencies
-3. Run `yarn setup` runs a basic setup script to build assets and setup a docker database container
+3. Run `yarn db:rebuild` to setup the database in a Docker container
 4. Run `yarn dev` to start the development express server
 5. Visit [https://127.0.0.1:8080](https://127.0.0.1:8080) - You should see "Welcome to Obojobo Next"
 

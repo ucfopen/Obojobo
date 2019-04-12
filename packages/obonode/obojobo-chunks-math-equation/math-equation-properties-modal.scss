@@ -1,0 +1,29 @@
+@import '~styles/includes';
+
+.math-equation-properties {
+	width: 15em;
+	text-align: left;
+
+	span {
+		color: $color-error;
+		font-size: 0.8em;
+	}
+
+	label {
+		margin-bottom: 0.3em;
+	}
+
+	input {
+		@include text-input();
+
+		width: 100%;
+
+		&#obojobo-draft--chunks--math-equation--latex {
+			margin-bottom: 1em;
+		}
+
+		&#obojobo-draft--chunks--math-equation--label {
+			font-family: $font-text;
+		}
+	}
+}

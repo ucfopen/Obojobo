@@ -1,17 +1,21 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import EditorApp from '../../../src/scripts/oboeditor/components/editor-app'
+import EditorApp from 'src/scripts/oboeditor/components/editor-app'
 
-jest.mock('../../../src/scripts/viewer/util/api-util')
-jest.mock('../../../src/scripts/oboeditor/stores/editor-store')
-jest.mock('../../../src/scripts/oboeditor/components/editor-nav')
-jest.mock('../../../src/scripts/oboeditor/components/page-editor')
+jest.mock('src/scripts/oboeditor/components/editor-nav')
+jest.mock('src/scripts/oboeditor/components/page-editor')
 
-import APIUtil from '../../../src/scripts/viewer/util/api-util'
-import EditorStore from '../../../src/scripts/oboeditor/stores/editor-store'
-import Common from '../../../src/scripts/common'
-import testObject from '../../../test-object.json'
+import APIUtil from 'src/scripts/viewer/util/api-util'
+jest.mock('src/scripts/viewer/util/api-util')
+import EditorStore from 'src/scripts/oboeditor/stores/editor-store'
+jest.mock('src/scripts/oboeditor/stores/editor-store')
+import ModalStore from 'src/scripts/common/stores/modal-store'
+jest.mock('src/scripts/common/stores/modal-store')
+import ModalUtil from 'src/scripts/common/util/modal-util'
+jest.mock('src/scripts/common/util/modal-util')
+import Common from 'src/scripts/common'
+import testObject from 'test-object.json'
 
 describe('EditorApp', () => {
 	beforeEach(() => {
@@ -89,6 +93,30 @@ describe('EditorApp', () => {
 		})
 	})
 
+	test('onModalStoreChange calls ModalStore.getState', done => {
+		expect.assertions(1)
+
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		EditorStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
+		ModalStore.getState.mockReturnValueOnce({}).mockReturnValueOnce({})
+
+		const component = mount(<EditorApp />)
+		setTimeout(() => {
+			component.update()
+
+			component.instance().onModalStoreChange()
+			expect(ModalStore.getState).toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
 	test('EditorApp component renders error messsage', done => {
 		expect.assertions(1)
 
@@ -100,6 +128,32 @@ describe('EditorApp', () => {
 		APIUtil.getFullDraft.mockResolvedValueOnce({
 			status: 'error',
 			value: { type: 'someType', message: 'someMessage' }
+		})
+
+		const component = mount(<EditorApp />)
+		setTimeout(() => {
+			component.update()
+
+			expect(component.html()).toMatchSnapshot()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('EditorApp component renders modal', done => {
+		expect.assertions(1)
+
+		jest.spyOn(Common.models.OboModel, 'create')
+		Common.models.OboModel.create.mockReturnValueOnce({
+			modelState: { start: 'mockStart' }
+		})
+
+		APIUtil.getFullDraft.mockResolvedValueOnce({ value: testObject })
+		EditorStore.getState.mockReturnValueOnce({})
+
+		ModalUtil.getCurrentModal.mockReturnValueOnce({
+			component: 'mock component'
 		})
 
 		const component = mount(<EditorApp />)

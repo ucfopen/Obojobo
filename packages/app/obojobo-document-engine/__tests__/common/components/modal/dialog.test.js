@@ -41,4 +41,23 @@ describe('Dialog', () => {
 
 		expect(spy).toHaveBeenCalled()
 	})
+
+	test('Dialog component focuses with prop', () => {
+		const button = {
+			default: true
+		}
+		const focusFirst = jest.fn()
+		const component = mount(
+			<Dialog title="Title" buttons={[button]} centered={true} focusOnFirstElement={focusFirst}>
+				Content
+			</Dialog>
+		)
+
+		component
+			.find('input')
+			.first()
+			.simulate('focus')
+
+		expect(focusFirst).toHaveBeenCalled()
+	})
 })

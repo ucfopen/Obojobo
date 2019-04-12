@@ -4,9 +4,11 @@
 	"isVoid":false,
 	"data":{
 		"content": {
-			"size": "medium",
+			"size": "small",
 			"alt": null,
-			"url": null
+			"url": null,
+			"height": null,
+			"width": null
 		}
 	},
 	"nodes":[

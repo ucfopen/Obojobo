@@ -18,6 +18,7 @@ exports[`ButtonBar ButtonBar component with attributes 1`] = `
     >
       <button
         aria-selected={true}
+        className="button"
         disabled={true}
         onClick={[Function]}
       />

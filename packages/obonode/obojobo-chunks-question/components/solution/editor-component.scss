@@ -27,11 +27,19 @@
 			transform-origin: top left;
 		}
 	}
-}
 
-.add-solution {
-	left: 50%;
-	transform: translate(-50%, 0);
-	position: relative;
-	margin: $dimension-padding / 3;
+	.delete-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+
+		button {
+			font-size: 1.2em;
+			padding: 0;
+			min-width: 1.4em;
+			border-radius: 50%;
+		}
+	}
 }

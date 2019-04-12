@@ -11,10 +11,10 @@
 
 		li {
 			display: none;
-			z-index: 99;
 			padding: 0;
 			margin: 0;
 			border: 0;
+			z-index: 99;
 
 			button {
 				width: 100%;
@@ -22,6 +22,7 @@
 				height: 100%;
 				display: block;
 				background: $color-obojobo-blue;
+				border: solid 1px $color-bg2;
 				border-radius: $dimension-rounded-radius;
 				color: $color-bg;
 				font-size: 1rem;
@@ -38,6 +39,7 @@
 			li {
 				display: block;
 				width: 10em;
+				margin-right: 1em;
 			}
 		}
 
@@ -46,6 +48,7 @@
 			li {
 				display: block;
 				width: 10em;
+				margin-right: 1em;
 			}
 		}
 	}

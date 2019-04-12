@@ -1,9 +1,12 @@
 /* eslint-disable no-undefined */
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import ActionButton from './editor-component'
+
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
@@ -46,7 +49,7 @@ describe('ActionButton Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('ActionButton with changing label', () => {
+	test('ActionButton adds action', () => {
 		const nodeData = {
 			data: {
 				get: () => {
@@ -65,377 +68,21 @@ describe('ActionButton Editor Node', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
 		)
 		const tree = component.html()
-
-		component
-			.find('input')
-			.at(0)
-			.simulate('click', { stopPropagation: () => true })
-
-		component
-			.find('input')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: 'mockLabel'
-				}
-			})
-
-		expect(tree).toMatchSnapshot()
-		expect(editor.setNodeByKey).toHaveBeenCalledWith(undefined, {
-			data: {
-				content: {
-					actions: [
-						{
-							type: 'mockType',
-							value: 'mockValue'
-						}
-					],
-					label: 'mockLabel'
-				}
-			}
-		})
-	})
-
-	test('ActionButton with changing new action type', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('select')
-			.at(0)
-			.simulate('click', { stopPropagation: () => true })
-
-		component
-			.find('select')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: 'mockNewType'
-				}
-			})
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('ActionButton with changing new action type', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('textarea')
-			.at(0)
-			.simulate('click', { stopPropagation: () => true })
-
-		component
-			.find('textarea')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: 'mockNewType'
-				}
-			})
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('ActionButton adds nav:goto', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('textarea')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: '{ "id": "mockId" }'
-				}
-			})
 
 		component
 			.find('button')
-			.at(0)
+			.at(1)
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('ActionButton adds nav:openExternalLink', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('select')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: 'nav:openExternalLink'
-				}
-			})
-
-		component
-			.find('textarea')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: '{ "url": "mockURL" }'
-				}
-			})
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('ActionButton adds assessment:startAttempt', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('select')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: 'assessment:startAttempt'
-				}
-			})
-
-		component
-			.find('textarea')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: '{ "id": "mockId" }'
-				}
-			})
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('ActionButton adds assessment:endAttempt', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('select')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: 'assessment:endAttempt'
-				}
-			})
-
-		component
-			.find('textarea')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: '{ "id": "mockId" }'
-				}
-			})
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('ActionButton adds viewer:alert', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = shallow(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('select')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: 'viewer:alert'
-				}
-			})
-
-		component
-			.find('textarea')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: '{ "title": "mockTitle", "message": "mockMessage" }'
-				}
-			})
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('ActionButton deletes a trigger', () => {
+	test('ActionButton deletes an action', () => {
 		const nodeData = {
 			data: {
 				get: () => {
@@ -467,7 +114,36 @@ describe('ActionButton Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('ActionButton fails to add new action', () => {
+	test('changeProperties sets the nodes content', () => {
+		const nodeData = {
+			data: {
+				get: () => {
+					return {
+						actions: [
+							{
+								type: 'mockType',
+								value: 'mockValue'
+							}
+						]
+					}
+				}
+			}
+		}
+
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
+		)
+
+		component.instance().addAction({ mockProperties: 'mock value' })
+
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+	})
+
+	test('ActionButton deletes a trigger', () => {
 		const nodeData = {
 			data: {
 				get: () => {
@@ -486,26 +162,12 @@ describe('ActionButton Editor Node', () => {
 			setNodeByKey: jest.fn()
 		}
 
-		const component = shallow(
+		const component = mount(
 			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
 		)
-		const tree = component.html()
 
-		component
-			.find('textarea')
-			.at(0)
-			.simulate('change', {
-				stopPropagation: () => true,
-				target: {
-					value: '{}'
-				}
-			})
+		component.instance().addAction({ mockProperties: 'mock value' })
 
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 })

@@ -4,13 +4,17 @@ exports[`Solution Editor Node Solution component 1`] = `
 <div
   className="solution-editor"
 >
-  <button
-    className="editor--page-editor--delete-node-button"
-    onClick={[Function]}
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
   >
-    X
-  </button>
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
 </div>
 `;
 
-exports[`Solution Editor Node Solution component deletes self 1`] = `"<div class=\\"solution-editor\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
+exports[`Solution Editor Node Solution component deletes self 1`] = `"<div class=\\"solution-editor\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;

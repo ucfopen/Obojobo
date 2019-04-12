@@ -1,5 +1,4 @@
 import ActionButton from './editor'
-
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 describe('ActionButton editor', () => {
@@ -36,5 +35,62 @@ describe('ActionButton editor', () => {
 
 		expect(ActionButton.plugins.renderNode(props, null, next)).toMatchSnapshot()
 		expect(next).toHaveBeenCalled()
+	})
+
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			ActionButton.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'text'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+
+		expect(
+			ActionButton.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: 'mockType'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+
+		expect(
+			ActionButton.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: BUTTON_NODE,
+						text: 'Some text'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			ActionButton.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: BUTTON_NODE,
+						text: ''
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
 	})
 })

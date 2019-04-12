@@ -4,15 +4,28 @@ import renderer from 'react-test-renderer'
 
 import IFrame from './editor-component'
 
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+
 describe('IFrame Editor Node', () => {
+	beforeEach(() => {
+		jest.restoreAllMocks()
+		jest.resetAllMocks()
+	})
 	test('IFrame component', () => {
 		const component = renderer.create(
 			<IFrame
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({
+							width: 200,
+							height: 200,
+							controls: '',
+							border: false,
+							initialZoom: 1,
+							src: 'mockSrc',
+							title: 'mockTitle'
+						})
 					}
 				}}
 			/>
@@ -22,7 +35,59 @@ describe('IFrame Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('IFrame component edits input', () => {
+	test('IFrame renders with no size correctly', () => {
+		const component = renderer.create(
+			<IFrame
+				node={{
+					data: {
+						get: () => ({
+							controls: '',
+							border: false,
+							initialZoom: 1,
+							src: 'mockSrc'
+						})
+					}
+				}}
+			/>
+		)
+		expect(component.toJSON()).toMatchSnapshot()
+	})
+
+	test('IFrame component edits properties', () => {
+		const change = {
+			removeNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<IFrame
+				node={{
+					data: {
+						get: () => ({
+							controls: '',
+							border: false,
+							initialZoom: 1,
+							src: ''
+						})
+					}
+				}}
+				editor={{
+					value: { change: () => change },
+					onChange: jest.fn()
+				}}
+			/>
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(ModalUtil.show).toHaveBeenCalled()
+
+		component.unmount()
+	})
+
+	test('changeProperties sets the nodes content', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
@@ -31,26 +96,19 @@ describe('IFrame Editor Node', () => {
 			<IFrame
 				node={{
 					data: {
-						get: () => {
-							return {}
-						}
+						get: () => ({
+							controls: '',
+							border: false,
+							initialZoom: 1
+						})
 					}
 				}}
-				isFocused={true}
-				isSelected={true}
 				editor={editor}
 			/>
 		)
-		const tree = component.html()
 
-		component.find('input').simulate('click', {
-			stopPropagation: () => true
-		})
+		component.instance().changeProperties({ mockProperties: 'mock value' })
 
-		component.find('input').simulate('change', {
-			target: { value: 'mockInput' }
-		})
-
-		expect(tree).toMatchSnapshot()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 })

@@ -2,31 +2,30 @@
 
 exports[`Figure Icon Icon 1`] = `
 <svg
-  data-name="Layer 1"
-  id="Layer_1"
-  viewBox="0 0 21.61 16.3"
+  viewBox="0 0 32 32"
   xmlns="http://www.w3.org/2000/svg"
 >
-  <defs>
-    <style>
-      .cls-1{opacity:0.55;}
-    </style>
-  </defs>
-  <title>
-    figure
-  </title>
-  <g
-    className="cls-1"
-  >
-    <path
-      d="M1.2,3.85v16.3H22.8V3.85H1.2ZM21.91,19.26H18.55A1.65,1.65,0,0,0,18.38,19l-4.72-4.72a1.68,1.68,0,0,0-2.37,0L10.61,15,6.68,11.08a1.67,1.67,0,0,0-2.37,0L2.09,13.31V4.74H21.91V19.26Z"
-      transform="translate(-1.2 -3.85)"
-    />
-    <circle
-      cx="15.55"
-      cy="5.98"
-      r="2.49"
-    />
-  </g>
+  <path
+    className="stroke"
+    d="M26,5.21H6A1.09,1.09,0,0,0,4.94,6.3V17l2-2a1.08,1.08,0,0,1,1.54,0l7.41,7.41L17.28,21a1.08,1.08,0,0,1,1.54,0l5.41,5.4a1.07,1.07,0,0,1,.25.42H26a1.09,1.09,0,0,0,1.09-1.09V6.3A1.09,1.09,0,0,0,26,5.21Z"
+    fill="none"
+    fillOpacity="0"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+  />
+  <circle
+    className="fill"
+    cx="19.74"
+    cy="11.75"
+    r="3.25"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+  />
+  <path
+    className="fill stroke"
+    d="M18.82,21a1.08,1.08,0,0,0-1.54,0l-1.41,1.41L8.46,15a1.08,1.08,0,0,0-1.54,0l-2,2V25.7A1.09,1.09,0,0,0,6,26.79H24.48a1.07,1.07,0,0,0-.25-.42Z"
+    strokeLinecap="round"
+    strokeMiterlimit="10"
+  />
 </svg>
 `;

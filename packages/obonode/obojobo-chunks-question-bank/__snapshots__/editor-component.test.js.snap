@@ -4,16 +4,21 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
 <div
   className="obojobo-draft--chunks--question-bank editor-bank"
 >
-  <button
-    className="editor--page-editor--delete-node-button"
-    onClick={[Function]}
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
   >
-    X
-  </button>
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center buffer"
   >
     <button
+      className="button"
       onClick={[Function]}
     >
       Add Question
@@ -23,6 +28,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component 1`] = `
     className="obojobo-draft--components--button is-not-dangerous align-center buffer"
   >
     <button
+      className="button"
       onClick={[Function]}
     >
       Add Question Bank
@@ -35,16 +41,21 @@ exports[`QuestionBank editor QuestionBank builds the expected component 2`] = `
 <div
   className="obojobo-draft--chunks--question-bank editor-bank"
 >
-  <button
-    className="editor--page-editor--delete-node-button"
-    onClick={[Function]}
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
   >
-    X
-  </button>
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center buffer"
   >
     <button
+      className="button"
       onClick={[Function]}
     >
       Add Question
@@ -54,6 +65,7 @@ exports[`QuestionBank editor QuestionBank builds the expected component 2`] = `
     className="obojobo-draft--components--button is-not-dangerous align-center buffer"
   >
     <button
+      className="button"
       onClick={[Function]}
     >
       Add Question Bank
@@ -62,8 +74,8 @@ exports[`QuestionBank editor QuestionBank builds the expected component 2`] = `
 </div>
 `;
 
-exports[`QuestionBank editor QuestionBank component adds question 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
+exports[`QuestionBank editor QuestionBank component adds question 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button class=\\"button\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button class=\\"button\\">Add Question Bank</button></div></div>"`;
 
-exports[`QuestionBank editor QuestionBank component adds question bank 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
+exports[`QuestionBank editor QuestionBank component adds question bank 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button class=\\"button\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button class=\\"button\\">Add Question Bank</button></div></div>"`;
 
-exports[`QuestionBank editor QuestionBank component deletes self 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button>Add Question Bank</button></div></div>"`;
+exports[`QuestionBank editor QuestionBank component deletes self 1`] = `"<div class=\\"obojobo-draft--chunks--question-bank editor-bank\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button class=\\"button\\">Add Question</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center buffer\\"><button class=\\"button\\">Add Question Bank</button></div></div>"`;

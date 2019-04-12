@@ -1,5 +1,5 @@
-/* eslint no-alert: 0 */
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import EditorUtil from '../util/editor-util'
 import ClipboardUtil from '../util/clipboard-util'
@@ -14,6 +14,10 @@ import '../../viewer/components/nav.scss'
 import pageTemplate from '../documents/new-page.json'
 import assessmentTemplate from '../documents/new-assessment.json'
 
+const { Prompt } = Common.components.modal
+const { ModalUtil } = Common.util
+const { Button } = Common.components
+
 class EditorNav extends React.Component {
 	constructor(props) {
 		super(props)
@@ -25,38 +29,73 @@ class EditorNav extends React.Component {
 		this.setState({ navTargetId: item.id })
 	}
 
-	addAssessment() {
-		const label = window.prompt('Enter the title for the new Assessment:') || 'Assessment'
+	showAddAssessmentModal() {
+		ModalUtil.show(
+			<Prompt
+				title="Add Assessment"
+				message="Enter the title for the new assessment:"
+				onConfirm={this.addAssessment.bind(this)}
+			/>
+		)
+	}
+
+	addAssessment(name = 'Assessment') {
+		ModalUtil.hide()
+
+		// Fix assessment titles that are whitespace strings
+		if (!/[^\s]/.test(name)) name = 'Assessment'
 
 		const newAssessment = Object.assign({}, assessmentTemplate)
 		newAssessment.id = generateId()
-		newAssessment.content.title = label
+		newAssessment.content.title = name
 
 		EditorUtil.addAssessment(newAssessment)
-		this.setState({ navTargetId: newAssessment.id })
+		return this.setState({ navTargetId: newAssessment.id })
 	}
 
-	addPage() {
-		const label = window.prompt('Enter the title for the new page:') || 'Default Page'
+	showAddPageModal() {
+		ModalUtil.show(
+			<Prompt
+				title="Add Page"
+				message="Enter the title for the new page:"
+				onConfirm={this.addPage.bind(this)}
+			/>
+		)
+	}
+
+	addPage(title = null) {
+		ModalUtil.hide()
 
 		const newPage = Object.assign({}, pageTemplate)
 		newPage.id = generateId()
-		newPage.content.title = label
+
+		// Fix page titles that are whitespace strings
+		if (!/[^\s]/.test(title)) title = null
+
+		newPage.content.title = title
 
 		EditorUtil.addPage(newPage)
 		this.setState({ navTargetId: newPage.id })
 	}
 
-	renameModule(module) {
-		let label = window.prompt('Enter the new title:', module.label)
+	showRenameModuleModal(module) {
+		ModalUtil.show(
+			<Prompt
+				title="Rename Module"
+				message="Enter the new title for the module:"
+				value={module.label}
+				onConfirm={this.renameModule.bind(this, module.id)}
+			/>
+		)
+	}
 
-		// null means the user canceled without changing the value
-		if (label === null) return
+	renameModule(moduleId, label) {
+		ModalUtil.hide()
 
 		// If the module name is empty or just whitespace, provide a default value
-		if (!label || /\s/.test(label)) label = '(Unnamed Module)'
+		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 
-		EditorUtil.renamePage(module.id, label)
+		EditorUtil.renamePage(moduleId, label)
 	}
 
 	renderLabel(label) {
@@ -74,7 +113,7 @@ class EditorNav extends React.Component {
 	render() {
 		const className =
 			'viewer--components--nav ' +
-			'editor--components--nav ' +
+			' editor--components--nav ' +
 			isOrNot(this.state.locked, 'locked') +
 			isOrNot(this.state.open, 'open') +
 			isOrNot(!this.state.disabled, 'enabled')
@@ -102,24 +141,34 @@ class EditorNav extends React.Component {
 						}
 						return null
 					})}
+					<li className="button-bar-buffer" />
 				</ul>
 				<div className="button-bar">
-					<button className={'content-add-button'} onClick={() => this.addPage()}>
+					<Button
+						className={'content-add-button align-left'}
+						onClick={this.showAddPageModal.bind(this)}
+					>
 						+ Add Page
-					</button>
-					<button className={'content-add-button'} onClick={() => this.addAssessment()}>
+					</Button>
+					<Button
+						className={'content-add-button align-left'}
+						onClick={this.showAddAssessmentModal.bind(this)}
+					>
 						+ Add Assessment
-					</button>
+					</Button>
 					<br />
-					<button className={'content-add-button'} onClick={() => this.renameModule(moduleItem)}>
+					<Button
+						className={'content-add-button align-left'}
+						onClick={this.showRenameModuleModal.bind(this, moduleItem)}
+					>
 						Rename Module
-					</button>
-					<button
-						className={'content-add-button'}
+					</Button>
+					<Button
+						className={'content-add-button align-left'}
 						onClick={() => ClipboardUtil.copyToClipboard(url)}
 					>
 						Copy Module URL
-					</button>
+					</Button>
 				</div>
 			</div>
 		)

@@ -21,6 +21,7 @@ const controls = props => {
 			{controlsOpts.reload ? (
 				<div className="control-button-container reload">
 					<button
+						disabled={props.isEditor}
 						className="reload-button"
 						onClick={props.reload}
 						aria-label="Reload embedded content"
@@ -50,7 +51,11 @@ const controls = props => {
 					<div className="zoom-controls">
 						{props.isZoomResettable ? (
 							<div className="control-button-container zoom-reset">
-								<button className="zoom-reset-button" onClick={props.zoomReset}>
+								<button
+									disabled={props.isEditor}
+									className="zoom-reset-button"
+									onClick={props.zoomReset}
+								>
 									Reset zoom
 								</button>
 								<span className="tool-tip">Reset zoom</span>
@@ -58,7 +63,7 @@ const controls = props => {
 						) : null}
 						<div className="control-button-container zoom-out">
 							<button
-								disabled={props.isZoomOutDisabled}
+								disabled={props.isZoomOutDisabled || props.isEditor}
 								className="zoom-out-button"
 								onClick={props.zoomOut}
 								aria-label="Zoom out embedded content"
@@ -71,7 +76,7 @@ const controls = props => {
 						</div>
 						<div className="control-button-container zoom-in">
 							<button
-								disabled={props.isZoomInDisabled}
+								disabled={props.isZoomInDisabled || props.isEditor}
 								className="zoom-in-button"
 								onClick={props.zoomIn}
 								aria-label="Zoom in embedded content"

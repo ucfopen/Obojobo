@@ -3,10 +3,14 @@
 .editor--components--nav {
 	$color-nav-bg: #fbfbfb;
 
-	padding-bottom: 17em;
-
 	ul {
 		z-index: auto;
+
+		.button-bar-buffer {
+			height: 15em;
+			border: none;
+			background: none;
+		}
 	}
 
 	&::after {
@@ -34,19 +38,18 @@
 		bottom: 0;
 		z-index: 5;
 		left: 0;
-		font-size: 1em;
 		font-weight: bold;
 		cursor: default;
 		width: 15em;
 
-		button {
-			display: block;
-			background: $color-obojobo-blue;
-			padding: 0.2em;
-			border-radius: $dimension-rounded-radius;
-			margin-bottom: 0.2em;
-			color: $color-bg;
-			font-size: 1rem;
+		.content-add-button {
+			padding: 0.1em;
+			font-size: 1.2em;
+
+			.button {
+				background: $color-obojobo-blue;
+				padding: 0.3em;
+			}
 		}
 	}
 }

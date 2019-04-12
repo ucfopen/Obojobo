@@ -4,6 +4,7 @@
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import AssessmentStore from 'obojobo-document-engine/src/scripts/viewer/stores/assessment-store'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 import DOMUtil from 'obojobo-document-engine/src/scripts/common/page/dom-util'
 import Dispatcher from 'obojobo-document-engine/src/scripts/common/flux/dispatcher'
 import FocusStore from 'obojobo-document-engine/src/scripts/viewer/stores/focus-store'
@@ -24,6 +25,7 @@ import testObject from 'obojobo-document-engine/test-object.json'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
+jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
 jest.mock('obojobo-document-engine/src/scripts/common/stores/modal-store')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/focus-store')
@@ -85,90 +87,6 @@ describe('ViewerApp', () => {
 		})
 
 		expect(ModalUtil.show).toHaveBeenCalled()
-	})
-
-	test('viewer:scrollTo calls ModalUtil', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			component.update()
-			const spy = jest.spyOn(ReactDOM, 'findDOMNode')
-			ReactDOM.findDOMNode.mockReturnValueOnce({ scrollTop: null })
-
-			Dispatcher.trigger('viewer:scrollTo', { value: null })
-
-			expect(ReactDOM.findDOMNode).toHaveBeenCalled()
-
-			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test("focusOnContent calls a passed in model's component class' focusOnContent method and returns true", done => {
-		expect.assertions(3)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-		const mockComponentFocusOnContent = jest.fn()
-		const MockComponentClass = { focusOnContent: mockComponentFocusOnContent }
-
-		setTimeout(() => {
-			component.update()
-
-			const mockModel = {
-				getComponentClass: () => MockComponentClass
-			}
-
-			expect(component.instance().focusOnContent(mockModel)).toBe(true)
-
-			expect(MockComponentClass.focusOnContent).toHaveBeenCalledTimes(1)
-			expect(MockComponentClass.focusOnContent).toHaveBeenCalledWith(mockModel)
-
-			component.unmount()
-			done()
-		})
-	})
-
-	test('focusOnContent does not call focus (and returns false) if element cannot be found', done => {
-		expect.assertions(2)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			component.update()
-
-			const mockFocus = jest.fn()
-			const origGetElementById = document.getElementById
-			document.getElementById = jest.fn()
-			document.getElementById.mockReturnValueOnce(null)
-
-			expect(component.instance().focusOnContent()).toBe(false)
-
-			expect(mockFocus).not.toHaveBeenCalled()
-
-			component.unmount()
-			document.getElementById = origGetElementById
-			done()
-		})
-	})
-
-	test('focusOnContent returns false if a model has no component class', done => {
-		expect.assertions(1)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			component.update()
-
-			const mockModel = { getComponentClass: () => null }
-
-			expect(component.instance().focusOnContent(mockModel)).toBe(false)
-
-			component.unmount()
-			done()
-		})
 	})
 
 	test('ViewerApp component', done => {
@@ -591,21 +509,36 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('scrollToTop returns with no container', done => {
-		expect.assertions(1)
+	test('ViewerApp calls scrollToTop when event is heard', done => {
+		expect.assertions(10)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
-			const spy = jest.spyOn(ReactDOM, 'findDOMNode')
-			ReactDOM.findDOMNode.mockReturnValueOnce(null)
-			ReactDOM.findDOMNode.mockReturnValueOnce(null)
-
+			const spy = jest.spyOn(Common.Registry, 'getTextForVariable')
 			component.update()
 
-			component.instance().scrollToTop()
+			component.instance().scrollToTop = jest.fn()
 
-			expect(ReactDOM.findDOMNode).toHaveBeenCalledTimes(2)
+			Dispatcher.trigger('viewer:scrollToTop')
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(1)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
+
+			Dispatcher.trigger('viewer:scrollToTop', {})
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(2)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
+
+			Dispatcher.trigger('viewer:scrollToTop', { value: {} })
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(3)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
+
+			Dispatcher.trigger('viewer:scrollToTop', { value: { animateScroll: false } })
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(4)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(false)
+
+			Dispatcher.trigger('viewer:scrollToTop', { value: { animateScroll: true } })
+			expect(component.instance().scrollToTop).toHaveBeenCalledTimes(5)
+			expect(component.instance().scrollToTop).toHaveBeenCalledWith(true)
 
 			component.unmount()
 			spy.mockRestore()
@@ -613,38 +546,84 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('scrollToTop sets container.scrollTop', done => {
-		expect.assertions(1)
+	test('scrollToTop returns false if no Module dom element', done => {
+		expect.assertions(3)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
-
-		const mockEl = {
-			getBoundingClientRect: () => ({
-				height: 'mock-height'
-			})
-		}
-		const containerEl = {
-			scrollTop: 0
-		}
 
 		setTimeout(() => {
 			component.update()
 
-			const spy = jest.spyOn(ReactDOM, 'findDOMNode')
-			ReactDOM.findDOMNode.mockReturnValueOnce(mockEl)
-			ReactDOM.findDOMNode.mockReturnValueOnce(containerEl)
+			component.instance().state.model = null
+			expect(component.instance().scrollToTop()).toBe(false)
 
-			component.instance().scrollToTop()
+			component.instance().state.model = {}
+			expect(component.instance().scrollToTop()).toBe(false)
 
-			expect(containerEl.scrollTop).toBe('mock-height')
+			component.instance().state.model = { getDomEl: () => null }
+			expect(component.instance().scrollToTop()).toBe(false)
 
 			component.unmount()
-			spy.mockRestore()
 			done()
 		})
 	})
 
-	test('onMouseDown calls clearVisualFocus', done => {
+	test('scrollToTop calls scrollIntoView on Module dom element', done => {
+		expect.assertions(4)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const mockScrollIntoView = jest.fn()
+			component.instance().state.model = {
+				getDomEl: () => ({
+					scrollIntoView: mockScrollIntoView
+				})
+			}
+
+			expect(component.instance().scrollToTop()).toBe(true)
+			expect(mockScrollIntoView).toHaveBeenCalledWith()
+
+			expect(component.instance().scrollToTop(true)).toBe(true)
+			expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('scrollToTopIfNavTargetChanging calls scrollToTop if navTarget changes', done => {
+		expect.assertions(2)
+		mocksForMount()
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			component.update()
+
+			const scrollToTopSpy = jest
+				.spyOn(component.instance(), 'scrollToTop')
+				.mockImplementation(jest.fn())
+
+			const isNavTargetChangingSpy = jest
+				.spyOn(component.instance(), 'isNavTargetChanging')
+				.mockReturnValue(false)
+			component.instance().scrollToTopIfNavTargetChanging({})
+			expect(scrollToTopSpy).not.toHaveBeenCalled()
+
+			isNavTargetChangingSpy.mockReturnValue(true)
+			component.instance().scrollToTopIfNavTargetChanging({})
+			expect(scrollToTopSpy).toHaveBeenCalledTimes(1)
+
+			scrollToTopSpy.mockRestore()
+			isNavTargetChangingSpy.mockRestore()
+
+			done()
+		})
+	})
+
+	test('onMouseDown calls clearFadeEffect', done => {
 		expect.assertions(2)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -653,27 +632,29 @@ describe('ViewerApp', () => {
 			component.update()
 
 			const mockTarget = jest.fn()
-			component.instance().clearVisualFocus = jest.fn()
+			component.instance().clearFadeEffect = jest.fn()
 			component.instance().onMouseDown({ target: mockTarget })
-			expect(component.instance().clearVisualFocus).toHaveBeenCalledTimes(1)
-			expect(component.instance().clearVisualFocus).toHaveBeenCalledWith(mockTarget)
+			expect(component.instance().clearFadeEffect).toHaveBeenCalledTimes(1)
+			expect(component.instance().clearFadeEffect).toHaveBeenCalledWith(mockTarget)
 
 			component.unmount()
 			done()
 		})
 	})
 
-	test('onFocus calls clearVisualFocus', done => {
+	test('onFocus calls clearFadeEffect', done => {
 		expect.assertions(2)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			component.update()
+
 			const mockTarget = jest.fn()
-			component.instance().clearVisualFocus = jest.fn()
+			component.instance().clearFadeEffect = jest.fn()
 			component.instance().onFocus({ target: mockTarget })
-			expect(component.instance().clearVisualFocus).toHaveBeenCalledTimes(1)
-			expect(component.instance().clearVisualFocus).toHaveBeenCalledWith(mockTarget)
+			expect(component.instance().clearFadeEffect).toHaveBeenCalledTimes(1)
+			expect(component.instance().clearFadeEffect).toHaveBeenCalledWith(mockTarget)
 
 			component.unmount()
 			done()
@@ -686,48 +667,55 @@ describe('ViewerApp', () => {
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			component.update()
+
 			component.instance().state.focusState.visualFocusTarget = null
+
 			component.instance().onScroll()
 
-			expect(FocusUtil.clearVisualFocus).not.toHaveBeenCalled()
+			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
+
 			component.unmount()
 			done()
 		})
 	})
 
 	test('onScroll does nothing if no visually focused component', done => {
-		expect.assertions(2)
+		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			component.update()
+
 			component.instance().state.focusState.visualFocusTarget = 'invalid-id'
-			component.instance().getDomEl = jest.fn()
-			FocusUtil.getVisuallyFocussedModel.mockReturnValue(null)
+			FocusUtil.getVisuallyFocussedModel = jest.fn()
+
 			component.instance().onScroll()
 
-			expect(component.instance().getDomEl).not.toHaveBeenCalled()
-			expect(DOMUtil.isElementVisible).not.toHaveBeenCalled()
+			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
+
 			component.unmount()
 			done()
 		})
 	})
 
 	test('onScroll does nothing if no element found for component', done => {
-		expect.assertions(2)
+		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			component.update()
+
 			component.instance().state.focusState.visualFocusTarget = 'id'
-			const getDomElMock = jest.fn()
-			FocusUtil.getVisuallyFocussedModel.mockReturnValue({
-				getDomEl: getDomElMock
+			FocusUtil.getVisuallyFocussedModel = () => ({
+				getDomEl: jest.fn()
 			})
+
 			component.instance().onScroll()
 
-			expect(getDomElMock).toHaveBeenCalled()
-			expect(DOMUtil.isElementVisible).not.toHaveBeenCalled()
+			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
@@ -735,41 +723,41 @@ describe('ViewerApp', () => {
 	})
 
 	test('onScroll does nothing if element is visible', done => {
-		expect.assertions(2)
+		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			component.update()
+
 			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel.mockReturnValue({
-				getDomEl: () => true
-			})
+			FocusUtil.getVisuallyFocussedModel = () => ({ getDomEl: () => true })
 			DOMUtil.isElementVisible.mockReturnValueOnce(true)
+
 			component.instance().onScroll()
 
-			expect(DOMUtil.isElementVisible).toHaveBeenCalled()
-			expect(FocusUtil.clearVisualFocus).not.toHaveBeenCalled()
+			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
 		})
 	})
 
-	test('onScroll calls FocusUtil.clearVisualFocus if a visually focused component is no longer visible', done => {
-		expect.assertions(2)
+	test('onScroll calls FocusUtil.clearFadeEffect if a visually focused component is no longer visible', done => {
+		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			component.update()
+
 			component.instance().state.focusState.visualFocusTarget = 'id'
-			FocusUtil.getVisuallyFocussedModel.mockReturnValue({
-				getDomEl: () => true
-			})
+			FocusUtil.getVisuallyFocussedModel = () => ({ getDomEl: () => true })
 			DOMUtil.isElementVisible.mockReturnValueOnce(false)
+
 			component.instance().onScroll()
 
-			expect(DOMUtil.isElementVisible).toHaveBeenCalled()
-			expect(FocusUtil.clearVisualFocus).toHaveBeenCalled()
+			expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 
 			component.unmount()
 			done()
@@ -992,34 +980,6 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('scrollToTop is called when navTargetId changes', done => {
-		expect.assertions(2)
-		mocksForMount()
-		const component = mount(<ViewerApp />)
-		NavUtil.canNavigate.mockReturnValue(false)
-		const findDOMNodeSpy = jest.spyOn(ReactDOM, 'findDOMNode')
-		// mock for coverage in scrollToTop
-		findDOMNodeSpy.mockReturnValue({
-			scrollTop: 10,
-			getBoundingClientRect: () => ({ height: 20 })
-		})
-
-		setTimeout(() => {
-			component.setState({ navState: { navTargetId: null } })
-			// nav ids are different so scrollToTop should have been called
-			expect(findDOMNodeSpy).toHaveBeenCalledTimes(2)
-			findDOMNodeSpy.mockClear()
-			// next time through
-			// nav ids will be same
-			// canNavigate and lastCanNavigate will be same
-			// so scrollToTop won't be called
-			component.setState({})
-			expect(findDOMNodeSpy).toHaveBeenCalledTimes(0)
-
-			done()
-		})
-	})
-
 	test('onDelayResize calls onResize', done => {
 		expect.assertions(1)
 		mocksForMount()
@@ -1135,9 +1095,7 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
-				type: 'garbage'
-			})
+			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({ type: 'garbage' })
 			expect(component.instance().updateDOMFocus()).toBe(false)
 
 			component.unmount()
@@ -1145,216 +1103,447 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('updateDOMFocus for component type focus does nothing if target model not found', done => {
-		expect.assertions(1)
+	test('updateDOMFocus calls correct method for component type focus', done => {
+		expect.assertions(2)
 		mocksForMount()
 
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
+			// Put in our fake model in the OboModel.models global array:
+			const oboModelModels = OboModel.models
+			OboModel.models['mock-id'] = 'mock-model'
+
+			// Force a return value of ViewerApp's focusComponent method:
+			const spy = jest
+				.spyOn(component.instance(), 'focusComponent')
+				.mockImplementation(() => 'mock-return-value')
+
+			// Mock return of getFocussedItemAndClear
 			FocusUtil.getFocussedItemAndClear = jest.fn()
 			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
 				type: 'component',
-				target: 'nothing-here'
-			})
-			expect(component.instance().updateDOMFocus()).toBe(false)
-
-			component.unmount()
-			done()
-		})
-	})
-
-	test('updateDOMFocus for component type focus calls focus on dom element of found model', done => {
-		expect.assertions(2)
-		mocksForMount()
-		jest.spyOn(window, 'focus')
-
-		const component = mount(<ViewerApp />)
-		const mockDomEl = jest.fn()
-		OboModel.models = { mockModelId: { getDomEl: () => mockDomEl } }
-
-		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn().mockReturnValueOnce({
-				type: 'component',
-				target: 'mockModelId'
-			})
-			expect(component.instance().updateDOMFocus()).toBe(true)
-			expect(focus).toHaveBeenCalledWith(mockDomEl)
-
-			component.unmount()
-			done()
-		})
-	})
-
-	test('updateDOMFocus for navTargetContent type calls focusOnContent with the current nav target model', done => {
-		expect.assertions(2)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-		// const mockDomEl = jest.fn()
-		// OboModel.models = { mockModelId: { getDomEl: () => mockDomEl } }
-		NavUtil.getNavTargetModel = jest.fn(() => 'mock-nav-target')
-
-		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
-				type: 'navTargetContent'
-			})
-			const spy = jest.spyOn(component.instance(), 'focusOnContent').mockImplementation(jest.fn())
-			expect(component.instance().updateDOMFocus()).toBe(true)
-			expect(spy).toHaveBeenCalledWith('mock-nav-target')
-
-			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('updateDOMFocus for content type focus calls focusOnContent for found model', done => {
-		expect.assertions(2)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-		const mockModel = jest.fn()
-		OboModel.models = { mockModelId: mockModel }
-
-		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
-				type: 'content',
-				target: 'mockModelId'
-			})
-			const spy = jest.spyOn(component.instance(), 'focusOnContent').mockImplementation(jest.fn())
-			expect(component.instance().updateDOMFocus()).toBe(true)
-			expect(spy).toHaveBeenCalledWith(mockModel)
-
-			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('updateDOMFocus for viewer type does nothing if target is not understood', done => {
-		expect.assertions(1)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
-				type: 'viewer',
-				target: 'some-target'
-			})
-			const spy = jest.spyOn(component.instance(), 'focusOnContent').mockImplementation(jest.fn())
-			expect(component.instance().updateDOMFocus()).toBe(false)
-
-			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('updateDOMFocus for viewer type (with navigation target) does nothing if nav is disabled and closed', done => {
-		expect.assertions(1)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
-				type: 'viewer',
-				target: 'navigation'
-			})
-			NavUtil.isNavEnabled.mockReturnValueOnce(false)
-			NavUtil.isNavOpen.mockReturnValueOnce(false)
-			const spy = jest.spyOn(component.instance(), 'focusOnContent').mockImplementation(jest.fn())
-			expect(component.instance().updateDOMFocus()).toBe(false)
-
-			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('updateDOMFocus for viewer type (with navigation target) does nothing if nav is disabled', done => {
-		expect.assertions(1)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
-				type: 'viewer',
-				target: 'navigation'
-			})
-			NavUtil.isNavEnabled.mockReturnValueOnce(false)
-			NavUtil.isNavOpen.mockReturnValueOnce(true)
-			const spy = jest.spyOn(component.instance(), 'focusOnContent').mockImplementation(jest.fn())
-			expect(component.instance().updateDOMFocus()).toBe(false)
-
-			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('updateDOMFocus for viewer type (with navigation target) does nothing if nav is closed', done => {
-		expect.assertions(1)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			FocusUtil.getFocussedItemAndClear = jest.fn()
-			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
-				type: 'viewer',
-				target: 'navigation'
-			})
-			NavUtil.isNavEnabled.mockReturnValueOnce(true)
-			NavUtil.isNavOpen.mockReturnValueOnce(false)
-			const spy = jest.spyOn(component.instance(), 'focusOnContent').mockImplementation(jest.fn())
-			expect(component.instance().updateDOMFocus()).toBe(false)
-
-			spy.mockRestore()
-			component.unmount()
-			done()
-		})
-	})
-
-	test('updateDOMFocus for viewer type (with navigation target) focuses on the nav if nav is open and enabled', done => {
-		expect.assertions(2)
-		mocksForMount()
-
-		const component = mount(<ViewerApp />)
-
-		setTimeout(() => {
-			component.setProps({})
-			FocusUtil.getFocussedItemAndClear = jest.fn().mockReturnValue({
-				type: 'viewer',
-				target: 'navigation'
-			})
-			NavUtil.isNavEnabled.mockReturnValueOnce(true)
-			NavUtil.isNavOpen.mockReturnValueOnce(true)
-			const spy = jest.spyOn(component.instance(), 'focusOnContent').mockImplementation(jest.fn())
-			const mockFocus = jest.fn()
-			component.instance().navRef = {
-				current: {
-					focus: mockFocus
+				target: 'mock-id',
+				options: {
+					animateScroll: 'mock-animate-scroll',
+					fade: false
 				}
+			})
+
+			// Expect updateDOMFocus to call focusComponent and return its value
+			expect(component.instance().updateDOMFocus()).toBe('mock-return-value')
+			expect(spy).toHaveBeenCalledWith('mock-model', {
+				animateScroll: 'mock-animate-scroll',
+				fade: false
+			})
+
+			// Undo our mocks and spies
+			component.unmount()
+			spy.mockRestore()
+			OboModel.models = oboModelModels
+			done()
+		})
+	})
+
+	test('updateDOMFocus calls correct method for navTarget type focus', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			// Put in our fake model in the OboModel.models global array:
+			const oboModelModels = OboModel.models
+			OboModel.models['mock-id'] = 'mock-model'
+
+			// Force a return value of ViewerApp's focusComponent method:
+			const spy = jest
+				.spyOn(component.instance(), 'focusComponent')
+				.mockImplementation(() => 'mock-return-value')
+
+			// Force a return value of NavUtil.getNavTargetModel
+			const navTargetSpy = jest
+				.spyOn(NavUtil, 'getNavTargetModel')
+				.mockImplementation(() => 'mock-model')
+
+			// Mock return of getFocussedItemAndClear
+			FocusUtil.getFocussedItemAndClear = jest.fn()
+			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
+				type: 'navTarget',
+				target: 'mock-id',
+				options: {
+					animateScroll: 'mock-animate-scroll',
+					fade: false
+				}
+			})
+
+			// Expect updateDOMFocus to call focusComponent and return its value
+			expect(component.instance().updateDOMFocus()).toBe('mock-return-value')
+			expect(spy).toHaveBeenCalledWith('mock-model', {
+				animateScroll: 'mock-animate-scroll',
+				fade: false
+			})
+
+			// Undo our mocks and spies
+			component.unmount()
+			spy.mockRestore()
+			navTargetSpy.mockRestore()
+			OboModel.models = oboModelModels
+			done()
+		})
+	})
+
+	test('updateDOMFocus for viewer type focus calls focusViewer', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			// Force a return value of ViewerApp's focusViewer method:
+			const spy = jest
+				.spyOn(component.instance(), 'focusViewer')
+				.mockImplementation(() => 'mock-return-value')
+
+			// Mock return of getFocussedItemAndClear
+			FocusUtil.getFocussedItemAndClear = jest.fn()
+			FocusUtil.getFocussedItemAndClear.mockReturnValueOnce({
+				type: 'viewer',
+				target: 'mock-target'
+			})
+
+			// Expect updateDOMFocus to call focusViewer and return its value
+			expect(component.instance().updateDOMFocus()).toBe('mock-return-value')
+			expect(spy).toHaveBeenCalledWith('mock-target')
+
+			// Undo our mocks and spies
+			component.unmount()
+			spy.mockRestore()
+			done()
+		})
+	})
+
+	test('focusComponent does nothing if no model given', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			expect(component.instance().focusComponent()).toBe(false)
+			done()
+		})
+	})
+
+	test('focusComponent calls focus on component element if model.getComponentClass is not defined', done => {
+		expect.assertions(6)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			// Mock component dom elements:
+			const mockScrollIntoView = jest.fn()
+			const mockDomEl = {
+				scrollIntoView: mockScrollIntoView
 			}
-			expect(component.instance().updateDOMFocus()).toBe(true)
-			expect(mockFocus).toHaveBeenCalledTimes(1)
+			const model = {
+				getDomEl: () => mockDomEl
+			}
+
+			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			component.instance().containerRef.current.scrollTop = 0
+			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
+				component.instance().containerRef.current.scrollTop = 9999
+			})
+
+			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
+			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(focus).toHaveBeenCalledTimes(1)
+			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(mockScrollIntoView).not.toHaveBeenCalled()
+			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
 
 			spy.mockRestore()
+			done()
+		})
+	})
+
+	test('focusComponent calls focus on component element if model.getComponentClass returns nothing', done => {
+		expect.assertions(6)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			// Mock component dom elements:
+			const mockScrollIntoView = jest.fn()
+			const mockDomEl = {
+				scrollIntoView: mockScrollIntoView
+			}
+			const model = {
+				getDomEl: () => mockDomEl,
+				getComponentClass: () => null
+			}
+
+			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			component.instance().containerRef.current.scrollTop = 0
+			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
+				component.instance().containerRef.current.scrollTop = 9999
+			})
+
+			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
+			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(focus).toHaveBeenCalledTimes(1)
+			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(mockScrollIntoView).not.toHaveBeenCalled()
+			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
+
+			spy.mockRestore()
+			done()
+		})
+	})
+
+	test('focusComponent calls focus on component element if models ComponentClass does not have a focusOnContent method', done => {
+		expect.assertions(6)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			// Mock component dom elements:
+			const mockScrollIntoView = jest.fn()
+			const mockDomEl = {
+				scrollIntoView: mockScrollIntoView
+			}
+			const model = {
+				getDomEl: () => mockDomEl,
+				getComponentClass: () => jest.fn()
+			}
+
+			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			component.instance().containerRef.current.scrollTop = 0
+			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
+				component.instance().containerRef.current.scrollTop = 9999
+			})
+
+			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
+			expect(component.instance().focusComponent(model, false)).toBe(true)
+			expect(focus).toHaveBeenCalledTimes(1)
+			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(mockScrollIntoView).not.toHaveBeenCalled()
+			expect(component.instance().containerRef.current.scrollTop).toBe(9999)
+
+			spy.mockRestore()
+			done()
+		})
+	})
+
+	test('focusComponent calls model ComponentClass focusOnContent method if it exists', done => {
+		expect.assertions(7)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			// Mock component dom elements:
+			const mockScrollIntoView = jest.fn()
+			const mockFocusOnContent = jest.fn()
+			const mockDomEl = {
+				scrollIntoView: mockScrollIntoView
+			}
+			const model = {
+				getDomEl: () => mockDomEl,
+				getComponentClass: () => ({
+					focusOnContent: mockFocusOnContent
+				})
+			}
+			const mockOpts = jest.fn()
+
+			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			component.instance().containerRef.current.scrollTop = 0
+			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
+				component.instance().containerRef.current.scrollTop = 9999
+			})
+
+			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
+			expect(component.instance().focusComponent(model, mockOpts)).toBe(true)
+			expect(focus).toHaveBeenCalledTimes(0)
+			expect(mockFocusOnContent).toHaveBeenCalledTimes(1)
+			expect(mockFocusOnContent).toHaveBeenCalledWith(model, mockOpts)
+			expect(mockScrollIntoView).not.toHaveBeenCalled()
+			expect(component.instance().containerRef.current.scrollTop).toBe(0)
+
+			spy.mockRestore()
+			done()
+		})
+	})
+
+	test('focusComponent calls focus on component element if models ComponentClass does not have a focusOnContent method (and calls scrollIntoView if animateScroll=true)', done => {
+		expect.assertions(7)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			// Mock component dom elements:
+			const mockScrollIntoView = jest.fn()
+			const mockDomEl = {
+				scrollIntoView: mockScrollIntoView
+			}
+			const model = {
+				getDomEl: () => mockDomEl,
+				getComponentClass: () => jest.fn()
+			}
+
+			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			component.instance().containerRef.current.scrollTop = 0
+			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
+				component.instance().containerRef.current.scrollTop = 9999
+			})
+
+			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
+			expect(component.instance().focusComponent(model, { animateScroll: true })).toBe(true)
+			expect(focus).toHaveBeenCalledTimes(1)
+			expect(focus).toHaveBeenCalledWith(mockDomEl)
+			expect(mockScrollIntoView).toHaveBeenCalledTimes(1)
+			expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+			expect(component.instance().containerRef.current.scrollTop).toBe(0)
+
+			spy.mockRestore()
+			done()
+		})
+	})
+
+	test('focusComponent calls model ComponentClass focusOnContent method if it exists (and calls scrollIntoView if animateScroll=true)', done => {
+		expect.assertions(8)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			// Mock component dom elements:
+			const mockScrollIntoView = jest.fn()
+			const mockFocusOnContent = jest.fn()
+			const mockDomEl = {
+				scrollIntoView: mockScrollIntoView
+			}
+			const model = {
+				getDomEl: () => mockDomEl,
+				getComponentClass: () => ({
+					focusOnContent: mockFocusOnContent
+				})
+			}
+
+			// Force focus() to modify the container scrollTop value (to fake browser focus)
+			component.instance().containerRef.current.scrollTop = 0
+			const spy = jest.spyOn(Common.page, 'focus').mockImplementation(() => {
+				component.instance().containerRef.current.scrollTop = 9999
+			})
+
+			expect(component.instance().containerRef.current.scrollTop).not.toBe(9999)
+			expect(component.instance().focusComponent(model, { animateScroll: true })).toBe(true)
+			expect(focus).toHaveBeenCalledTimes(0)
+			expect(mockFocusOnContent).toHaveBeenCalledTimes(1)
+			expect(mockFocusOnContent).toHaveBeenCalledWith(model, {
+				animateScroll: true
+			})
+			expect(mockScrollIntoView).toHaveBeenCalledTimes(1)
+			expect(mockScrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+			expect(component.instance().containerRef.current.scrollTop).toBe(0)
+
+			spy.mockRestore()
+			done()
+		})
+	})
+
+	test('focusViewer (with invalid target) does nothing', done => {
+		expect.assertions(1)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			expect(component.instance().focusViewer('invalid-target')).toBe(false)
+
 			component.unmount()
 			done()
 		})
 	})
 
-	test('clearVisualFocus calls FocusUtil.clearVisualFocus if a component has visual focus and the passed in element is not contained by the component', done => {
+	test('focusViewer (with navigation target) does nothing if nav is disabled and closed', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			NavUtil.isNavEnabled.mockReturnValueOnce(false)
+			NavUtil.isNavOpen.mockReturnValueOnce(false)
+
+			expect(component.instance().focusViewer('navigation')).toBe(false)
+			expect(component.instance().navRef.current.focus).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('focusViewer (with navigation target) does nothing if nav is disabled and open', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			NavUtil.isNavEnabled.mockReturnValueOnce(false)
+			NavUtil.isNavOpen.mockReturnValueOnce(true)
+
+			expect(component.instance().focusViewer('navigation')).toBe(false)
+			expect(component.instance().navRef.current.focus).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('focusViewer (with navigation target) does nothing if nav is enabled and closed', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			NavUtil.isNavEnabled.mockReturnValueOnce(true)
+			NavUtil.isNavOpen.mockReturnValueOnce(false)
+
+			expect(component.instance().focusViewer('navigation')).toBe(false)
+			expect(component.instance().navRef.current.focus).not.toHaveBeenCalled()
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('focusViewer (with navigation target) calls focus on nav element if nav is enabled and open', done => {
+		expect.assertions(2)
+		mocksForMount()
+
+		const component = mount(<ViewerApp />)
+
+		setTimeout(() => {
+			NavUtil.isNavEnabled.mockReturnValueOnce(true)
+			NavUtil.isNavOpen.mockReturnValueOnce(true)
+
+			expect(component.instance().focusViewer('navigation')).toBe(true)
+			expect(component.instance().navRef.current.focus).toHaveBeenCalledTimes(1)
+
+			component.unmount()
+			done()
+		})
+	})
+
+	test('clearFadeEffect calls FocusUtil.clearFadeEffect if a component has visual focus and the passed in element is not contained by the component', done => {
 		expect.assertions(1)
 		mocksForMount()
 
@@ -1366,17 +1555,17 @@ describe('ViewerApp', () => {
 					contains: () => false
 				})
 			}))
-			FocusUtil.clearVisualFocus = jest.fn()
+			FocusUtil.clearFadeEffect = jest.fn()
 
-			component.instance().clearVisualFocus(jest.fn())
-			expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(1)
+			component.instance().clearFadeEffect(jest.fn())
+			expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 
 			component.unmount()
 			done()
 		})
 	})
 
-	test("clearVisualFocus calls FocusUtil.clearVisualFocus if a component has visual focus but the component's dom element does not exist", done => {
+	test("clearFadeEffect calls FocusUtil.clearFadeEffect if a component has visual focus but the component's dom element does not exist", done => {
 		expect.assertions(1)
 		mocksForMount()
 
@@ -1386,17 +1575,17 @@ describe('ViewerApp', () => {
 			FocusUtil.getVisuallyFocussedModel = jest.fn(() => ({
 				getDomEl: () => null
 			}))
-			FocusUtil.clearVisualFocus = jest.fn()
+			FocusUtil.clearFadeEffect = jest.fn()
 
-			component.instance().clearVisualFocus(jest.fn())
-			expect(FocusUtil.clearVisualFocus).toHaveBeenCalledTimes(1)
+			component.instance().clearFadeEffect(jest.fn())
+			expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
 
 			component.unmount()
 			done()
 		})
 	})
 
-	test('clearVisualFocus does nothing if a component has visual focus but the passed in element IS contained by the component', done => {
+	test('clearFadeEffect does nothing if a component has visual focus but the passed in element IS contained by the component', done => {
 		expect.assertions(1)
 		mocksForMount()
 
@@ -1408,17 +1597,17 @@ describe('ViewerApp', () => {
 					contains: () => true
 				})
 			}))
-			FocusUtil.clearVisualFocus = jest.fn()
+			FocusUtil.clearFadeEffect = jest.fn()
 
-			component.instance().clearVisualFocus(jest.fn())
-			expect(FocusUtil.clearVisualFocus).not.toHaveBeenCalled()
+			component.instance().clearFadeEffect(jest.fn())
+			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()
 		})
 	})
 
-	test('clearVisualFocus does nothing if nothing has visual focus', done => {
+	test('clearFadeEffect does nothing if nothing has visual focus', done => {
 		expect.assertions(1)
 		mocksForMount()
 
@@ -1426,10 +1615,10 @@ describe('ViewerApp', () => {
 
 		setTimeout(() => {
 			FocusUtil.getVisuallyFocussedModel = jest.fn(() => false)
-			FocusUtil.clearVisualFocus = jest.fn()
+			FocusUtil.clearFadeEffect = jest.fn()
 
-			component.instance().clearVisualFocus(jest.fn())
-			expect(FocusUtil.clearVisualFocus).not.toHaveBeenCalled()
+			component.instance().clearFadeEffect(jest.fn())
+			expect(FocusUtil.clearFadeEffect).not.toHaveBeenCalled()
 
 			component.unmount()
 			done()

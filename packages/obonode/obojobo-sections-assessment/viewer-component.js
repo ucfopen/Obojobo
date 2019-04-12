@@ -73,7 +73,7 @@ class Assessment extends React.Component {
 	componentDidUpdate(_, prevState) {
 		if (prevState.curStep !== this.state.curStep) {
 			Dispatcher.trigger('viewer:scrollToTop')
-			FocusUtil.focusOnNavTargetContent()
+			FocusUtil.focusOnNavTarget()
 		}
 	}
 

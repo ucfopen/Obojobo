@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Slider Slider calls handleCheckChange 1`] = `"<div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">mocktitle: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div>"`;
+
+exports[`Slider Slider renders correctly 1`] = `
+<div
+  className="obojobo-draft--components--slider"
+>
+  <span
+    contentEditable={false}
+  >
+    mocktitle: 
+  </span>
+  <label
+    className="switch"
+  >
+    <input
+      checked={false}
+      className="slider"
+      onChange={[Function]}
+      type="checkbox"
+    />
+    <div
+      className="slider round"
+    />
+  </label>
+</div>
+`;

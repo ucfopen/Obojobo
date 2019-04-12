@@ -1,7 +1,11 @@
 import { shallow } from 'enzyme'
 import React from 'react'
 
-import Toolbar from '../../../src/scripts/oboeditor/components/toolbar'
+import Toolbar from 'obojobo-document-engine/src/scripts/oboeditor/components/toolbar'
+
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
@@ -33,8 +37,7 @@ describe('Editor Toolbar', () => {
 		expect(editor.toggleMark).toHaveBeenCalled()
 	})
 
-	test('Node component toggles Link on', () => {
-		window.prompt = jest.fn().mockReturnValueOnce(null)
+	test('Node component toggles link', () => {
 		const Node = Toolbar.components.Node
 		const editor = {
 			addMark: jest.fn(),
@@ -56,11 +59,10 @@ describe('Editor Toolbar', () => {
 			.simulate('click', { preventDefault: jest.fn() })
 
 		expect(tree).toMatchSnapshot()
-		expect(editor.addMark).toHaveBeenCalled()
-		expect(editor.removeMark).not.toHaveBeenCalled()
+		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test('Node component toggles Link off', () => {
+	test('changeLinkValue calls onChange with empty href', () => {
 		window.prompt = jest.fn().mockReturnValueOnce(null)
 		const Node = Toolbar.components.Node
 		const editor = {
@@ -78,17 +80,38 @@ describe('Editor Toolbar', () => {
 				}
 			}
 		}
+
 		const component = shallow(<Node getEditor={() => editor} />)
-		const tree = component.html()
 
-		component
-			.find('button')
-			.at(6)
-			.simulate('click', { preventDefault: jest.fn() })
+		component.instance().changeLinkValue('   ')
 
-		expect(tree).toMatchSnapshot()
-		expect(editor.addMark).not.toHaveBeenCalled()
 		expect(editor.removeMark).toHaveBeenCalled()
+	})
+
+	test('changeLinkValue calls onChange with href', () => {
+		window.prompt = jest.fn().mockReturnValueOnce(null)
+		const Node = Toolbar.components.Node
+		const editor = {
+			addMark: jest.fn(),
+			removeMark: jest.fn(),
+			value: {
+				marks: {
+					forEach: funct => {
+						const mark = {
+							type: 'a',
+							data: { get: () => 1, toJSON: () => ({}) }
+						}
+						return funct({ type: 'mockMark' }) || funct(mark)
+					}
+				}
+			}
+		}
+
+		const component = shallow(<Node getEditor={() => editor} />)
+
+		component.instance().changeLinkValue('mockHref')
+
+		expect(editor.addMark).toHaveBeenCalled()
 	})
 
 	test('Node component toggles Superscript', () => {

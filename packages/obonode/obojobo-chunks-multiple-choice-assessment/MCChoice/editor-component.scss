@@ -1,17 +1,39 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--mc-assessment--mc-choice {
+	$color-border: transparentize($color-shadow, 0.25);
+
+	border: 1px solid $color-border;
+	padding-bottom: 1em;
+
+	.obojobo-draft--components--button {
+		display: none;
+	}
+
+	&.is-selected {
+		border: 1px solid $color-action;
+
+		.obojobo-draft--components--button {
+			display: block;
+		}
+	}
+
 	.correct-button {
+		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
+
 		position: relative;
 		top: 2.3em;
 		left: 0.5em;
 		font-size: inherit;
 		background: transparent;
 		border: none;
+		font-family: $correct-font;
 	}
 
 	.add-feedback {
-		float: right;
+		position: absolute;
+		bottom: 0;
+		right: 0;
 		font-size: 0.85em;
 		background-color: $color-bg2;
 		border: 1px solid transparentize($color-shadow, 0.2);
@@ -28,6 +50,21 @@
 	&.is-not-correct {
 		.correct-button {
 			color: $color-incorrect;
+		}
+	}
+
+	.delete-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+
+		button {
+			font-size: 1.2em;
+			padding: 0;
+			min-width: 1.4em;
+			border-radius: 50%;
 		}
 	}
 }
