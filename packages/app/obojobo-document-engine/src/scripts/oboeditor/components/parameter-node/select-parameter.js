@@ -18,10 +18,8 @@ const Node = props => {
 		})
 	}
 
-	console.log(props.node.toJSON())
-
 	return (
-		<div className={'parameter-node'} {...props.attributes}>
+		<div className={'parameter-node'}>
 			<span contentEditable={false}>{props.node.data.get('display') + ': '}</span>
 			<select
 				name={'Select'}
@@ -63,7 +61,7 @@ const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case SELECT_PARAMETER:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes}/>
 			default:
 				return next()
 		}

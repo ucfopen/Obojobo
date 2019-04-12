@@ -21,10 +21,8 @@ const Node = props => {
 		})
 	}
 
-	console.log(props.node.toJSON())
-
 	return (
-		<div className={'parameter-node'} {...props.attributes} contentEditable={false}>
+		<div className={'parameter-node'} contentEditable={false}>
 			<Slider
 				title={props.node.data.get('display')}
 				initialChecked={props.node.data.get('checked')}
@@ -55,7 +53,7 @@ const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case TOGGLE_PARAMETER:
-				return <Node {...props} />
+				return <Node {...props} {...props.attributes}/>
 			default:
 				return next()
 		}

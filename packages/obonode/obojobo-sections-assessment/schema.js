@@ -92,7 +92,7 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				const { node, index } = error
+				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
 						if (index === 0) {
@@ -114,6 +114,33 @@ const schema = {
 							)
 						)
 						return editor.insertNodeByKey(node.key, index, block)
+					}
+					case CHILD_TYPE_INVALID: {
+						if (index === 0) {
+							const block = Block.create(
+								TextParameter.helpers.oboToSlate(
+									'attempts',
+									'unlimited',
+									'Attempts'
+								)
+							)
+							return editor.withoutNormalizing(e => {
+								e.removeNodeByKey(child.key)
+								return e.insertNodeByKey(node.key, index, block)
+							})
+						}
+						const block = Block.create(
+							SelectParameter.helpers.oboToSlate(
+								'review',
+								'never',
+								'Review',
+								['always', 'never', 'no-attempts-remaining']
+							)
+						)
+						return editor.withoutNormalizing(e => {
+							e.removeNodeByKey(child.key)
+							return e.insertNodeByKey(node.key, index, block)
+						})
 					}
 				}
 			}
