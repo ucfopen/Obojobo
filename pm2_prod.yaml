@@ -1,5 +1,5 @@
 apps:
-  - script: ./packages/obojobo-express/bin/www
+  - script: ./packages/app/obojobo-express/bin/www
     name: obojobo
     exec_mode: cluster
     instances: 2
@@ -9,7 +9,7 @@ apps:
     env:
       NODE_ENV: production
       DEBUG: obojobo_server:error,obojobo_server:warn
-      DB_HOST: "127.0.0.1"
+      DB_HOST: '127.0.0.1'
       DB_USER: postgres
       DB_PASS: mysecretpassword
       DB_PORT: 5432

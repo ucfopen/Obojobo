@@ -2,9 +2,10 @@
 	"private": true,
 	"name": "obojobo-next",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
-  "homepage":"https://ucfopen.github.io/Obojobo-Docs/",
+	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"license": "AGPL-3.0-only",
 	"scripts": {
+		"start": "node node_modules/obojobo-express/bin/www",
 		"build": "cd node_modules/obojobo-express && yarn build",
 		"db:rebuild": "cd node_modules/obojobo-express && yarn db:rebuild",
 		"delete:node_modules": "rm -rf node_modules && rm -rf ./packages/*/*/node_modules",
@@ -27,7 +28,9 @@
 		"nodemon": "^1.18.8"
 	},
 	"jest": {
-		"projects": ["<rootDir>/packages/*/*"],
+		"projects": [
+			"<rootDir>/packages/*/*"
+		],
 		"transformIgnorePatterns": [
 			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
 		],
@@ -70,5 +73,5 @@
 	"engines": {
 		"node": "^10.4.1",
 		"yarn": "^1.0"
-  }
+	}
 }
