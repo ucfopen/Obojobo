@@ -14,14 +14,6 @@ exports[`Assessment editor ModList component 1`] = `
 </div>
 `;
 
-exports[`Assessment editor Node component 1`] = `
-<div
-  className="obojobo-draft--sections--assessment"
-/>
-`;
-
-exports[`Assessment editor Node component adds child 1`] = `"<div class=\\"obojobo-draft--sections--assessment\\"><button class=\\"add-rubric\\">Add Rubric</button></div>"`;
-
 exports[`Assessment editor oboToSlate converts an OboComponent to a Slate node 1`] = `
 Object {
   "data": Object {

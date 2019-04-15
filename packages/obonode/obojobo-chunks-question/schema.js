@@ -20,7 +20,6 @@ const schema = {
 			],
 
 			normalize: (editor, error) => {
-				console.log("question error", error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {

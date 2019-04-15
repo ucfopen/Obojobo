@@ -1,6 +1,7 @@
 import React from 'react'
 import { Block, Document } from 'slate'
 import { getEventTransfer, cloneFragment } from 'slate-react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
@@ -11,6 +12,8 @@ import Schema from './schema'
 import Converter from './converter'
 
 import emptyMod from './empty-mod.json'
+
+const { Button } = Common.components
 
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
@@ -36,12 +39,9 @@ class Mod extends React.Component {
 		return (
 			<div className={'mod pad'}>
 				{this.props.children}
-				<button
-					className={'editor--page-editor--delete-node-button'}
-					onClick={() => this.deleteNode()}
-				>
-					X
-				</button>
+				<Button className={'delete-button'} onClick={() => this.deleteNode()}>
+					×
+				</Button>
 			</div>
 		)
 	}
@@ -94,15 +94,12 @@ class Node extends React.Component {
 					{'Type: ' + this.state.type}
 				</div>
 				{this.props.children}
-				<button className={'add-button'} onClick={() => this.addMod()}>
+				<Button className={'add-button'} onClick={() => this.addMod()}>
 					{'Add Mod'}
-				</button>
-				<button
-					className={'editor--page-editor--delete-node-button'}
-					onClick={() => this.deleteNode()}
-				>
-					X
-				</button>
+				</Button>
+				<Button className={'delete-button'} onClick={() => this.deleteNode()}>
+					×
+				</Button>
 			</div>
 		)
 	}
@@ -171,17 +168,15 @@ const plugins = {
 							{
 								object: 'block',
 								type: 'ObojoboDraft.Chunks.Text',
-								"nodes":[
+								nodes: [
 									{
 										object: 'block',
-										type:"ObojoboDraft.Chunks.Text.TextLine",
-										data:{ "indent":0 },
-										nodes:[
+										type: 'ObojoboDraft.Chunks.Text.TextLine',
+										data: { indent: 0 },
+										nodes: [
 											{
-												object:"text",
-												leaves:[
-													{"object":"leaf","text":cutText,"marks":[]}
-												]
+												object: 'text',
+												leaves: [{ object: 'leaf', text: cutText, marks: [] }]
 											}
 										]
 									}

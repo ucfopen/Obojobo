@@ -16,7 +16,6 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('text?', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {

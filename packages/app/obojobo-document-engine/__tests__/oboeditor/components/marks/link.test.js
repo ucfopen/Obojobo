@@ -43,8 +43,9 @@ describe('EditorNav', () => {
 	})
 
 	test('changeLinkValue edits the href with empty href', () => {
-		const change = {
-			removeMarkByKey: jest.fn()
+		const editor = {
+			removeMarkByKey: jest.fn(),
+			setMarkByKey: jest.fn()
 		}
 
 		const component = mount(
@@ -52,10 +53,7 @@ describe('EditorNav', () => {
 				mark={{
 					data: { get: () => 'mock href' }
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 				node={{
 					key: 'mockKey'
 				}}
@@ -65,11 +63,11 @@ describe('EditorNav', () => {
 
 		component.instance().changeLinkValue(' ')
 
-		expect(change.removeMarkByKey).toHaveBeenCalled()
+		expect(editor.removeMarkByKey).toHaveBeenCalled()
 	})
 
 	test('changeLinkValue edits the href', () => {
-		const change = {
+		const editor = {
 			setMarkByKey: jest.fn()
 		}
 
@@ -78,10 +76,7 @@ describe('EditorNav', () => {
 				mark={{
 					data: { get: () => 'mock href' }
 				}}
-				editor={{
-					value: { change: () => change },
-					onChange: jest.fn()
-				}}
+				editor={editor}
 				node={{
 					key: 'mockKey'
 				}}
@@ -91,6 +86,6 @@ describe('EditorNav', () => {
 
 		component.instance().changeLinkValue('mock href')
 
-		expect(change.setMarkByKey).toHaveBeenCalled()
+		expect(editor.setMarkByKey).toHaveBeenCalled()
 	})
 })

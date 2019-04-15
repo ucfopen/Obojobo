@@ -1,7 +1,7 @@
 /* eslint no-undefined: 0 */
 
 import React from 'react'
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -42,7 +42,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Node
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -74,7 +74,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Node
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -109,7 +109,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Node
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -173,7 +173,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Mod
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -209,7 +209,7 @@ describe('Rubric editor', () => {
 		}
 
 		const Node = Rubric.components.Mod
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {
@@ -360,7 +360,7 @@ describe('Rubric editor', () => {
 				],
 				document: {
 					getClosest: (key, funct) => {
-						funct({ type: 'mockType'})
+						funct({ type: 'mockType' })
 						return true
 					}
 				}
@@ -415,7 +415,7 @@ describe('Rubric editor', () => {
 				],
 				document: {
 					getClosest: (key, funct) => {
-						funct({ type: 'mockType'})
+						funct({ type: 'mockType' })
 						return true
 					}
 				},
@@ -468,7 +468,7 @@ describe('Rubric editor', () => {
 				],
 				document: {
 					getClosest: (key, funct) => {
-						funct({ type: 'mockType'})
+						funct({ type: 'mockType' })
 						return true
 					}
 				},

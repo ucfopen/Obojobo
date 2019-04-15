@@ -3,12 +3,12 @@
 	"license": "AGPL-3.0-only",
 	"version": "3.4.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
-	"homepage":"https://ucfopen.github.io/Obojobo-Docs/",
+	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
 	"license": "AGPL-3.0",
 	"scripts": {
-		"build": "webpack",
-		"start:server": "pm2 start pm2_prod.yaml",
+		"start": "./bin/start_obojobo_server",
+		"build": "webpack --mode production --optimize-minimize",
 		"db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
 		"db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",
 		"db:migrateup": "node_modules/.bin/db-migrate up --config config/db.json",
@@ -87,6 +87,9 @@
 	},
 	"devDependencies": {
 		"lint-staged": "^6.1.1"
+	},
+	"bin": {
+		"start_obojobo_server": "./bin/start_obojobo_server"
 	},
 	"jest": {
 		"setupFilesAfterEnv": [

@@ -25,8 +25,6 @@ const slateToObo = node => {
 		})
 	})
 
-	console.log('exporting',content)
-
 	return {
 		id: node.key,
 		type: node.type,

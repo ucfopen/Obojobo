@@ -2,7 +2,7 @@ import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util
 
 import Schema from './schema'
 
-const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
+const { CHILD_MIN_INVALID } = SchemaViolations
 
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'

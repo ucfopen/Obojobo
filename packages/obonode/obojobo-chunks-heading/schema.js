@@ -16,7 +16,6 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log("heading error", error)
 				const { node } = error
 				switch (error.code) {
 					case NODE_DATA_INVALID: {

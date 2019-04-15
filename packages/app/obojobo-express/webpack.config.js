@@ -124,7 +124,7 @@ module.exports =
 				'slate-react': 'SlateReact',
 				immutable: 'Immutable'
 			},
-			plugins: [new MiniCssExtractPlugin()],
+			plugins: [new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` })],
 			resolve: {
 				alias: {
 					styles: path.join(docEnginePath, 'src', 'scss')

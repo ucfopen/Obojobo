@@ -2,10 +2,11 @@
 	"private": true,
 	"name": "obojobo-next",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
-  "homepage":"https://ucfopen.github.io/Obojobo-Docs/",
+	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"license": "AGPL-3.0-only",
 	"scripts": {
 		"build": "cd node_modules/obojobo-express && yarn build",
+		"heroku-postbuild": "yarn build",
 		"db:rebuild": "cd node_modules/obojobo-express && yarn db:rebuild",
 		"delete:node_modules": "rm -rf node_modules && rm -rf ./packages/*/*/node_modules",
 		"dev": "cd node_modules/obojobo-express && yarn dev",
@@ -14,7 +15,8 @@
 		"lint:js": "./run_in_all_packages.sh yarn lint:js",
 		"open:coverage": "./run_in_all_packages.sh open ./coverage/lcov-report/index.html",
 		"precommit": "./run_in_all_packages.sh yarn lint-staged && yarn test:ci",
-		"setup": "yarn build --mode=production && cd node_modules/obojobo-express && yarn db:rebuild",
+		"db:rebuild": "cd node_modules/obojobo-express && yarn db:rebuild",
+		"start": "start_obojobo_server",
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
 		"test:all": "./run_in_all_packages.sh yarn test",
@@ -27,7 +29,9 @@
 		"nodemon": "^1.18.8"
 	},
 	"jest": {
-		"projects": ["<rootDir>/packages/*/*"],
+		"projects": [
+			"<rootDir>/packages/*/*"
+		],
 		"transformIgnorePatterns": [
 			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
 		],
@@ -68,7 +72,7 @@
 		"packages/util/stylelint-config-obojobo"
 	],
 	"engines": {
-		"node": "^10.4.1",
-		"yarn": "^1.0"
-  }
+		"yarn": "^1.0",
+		"node": "^10.4.1"
+	}
 }

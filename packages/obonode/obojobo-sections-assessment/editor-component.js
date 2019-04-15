@@ -2,10 +2,11 @@ import './editor-component.scss'
 
 import React from 'react'
 import { Block } from 'slate'
+import Common from 'obojobo-document-engine/src/scripts/common'
+
+const { Button } = Common.components
 
 import emptyRubric from './components/rubric/empty-node.json'
-
-const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 
 class Assessment extends React.Component {
 	constructor(props) {
@@ -26,9 +27,9 @@ class Assessment extends React.Component {
 			<div className={'obojobo-draft--sections--assessment'}>
 				{this.props.children}
 				{!hasRubric ? (
-					<button className={'add-rubric'} onClick={() => this.addRubric()}>
+					<Button className={'add-rubric'} onClick={() => this.addRubric()}>
 						{'Add Rubric'}
-					</button>
+					</Button>
 				) : null}
 			</div>
 		)
