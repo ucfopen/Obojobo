@@ -24,10 +24,6 @@
 			min-width: 1.4em;
 			border-radius: 50%;
 			background-color: $color-preview;
-
-			&:hover {
-				background-color: $color-preview-hover;
-			}
 		}
 	}
 
@@ -51,10 +47,14 @@
 
 		.button {
 			background-color: $color-preview;
-
-			&:hover {
-				background-color: $color-preview-hover;
-			}
 		}
+	}
+
+	.delete-button .button:hover {
+		background-color: $color-preview-hover;
+	}
+
+	.add-button .button:hover {
+		background-color: $color-preview-hover;
 	}
 }

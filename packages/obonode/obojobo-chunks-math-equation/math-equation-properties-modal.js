@@ -19,6 +19,8 @@ class MathEquationProperties extends React.Component {
 	constructor(props) {
 		super(props)
 
+		this.inputRef = React.createRef()
+
 		this.state = this.props.content
 		this.state.error = ''
 	}
@@ -36,7 +38,7 @@ class MathEquationProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.refs.input.focus()
+		return this.inputRef.current.focus()
 	}
 
 	onConfirm() {
@@ -63,7 +65,7 @@ class MathEquationProperties extends React.Component {
 						<input
 							type="text"
 							id="obojobo-draft--chunks--math-equation--latex"
-							ref={'input'}
+							ref={this.inputRef}
 							value={this.state.latex || ''}
 							onChange={this.handleLatexChange.bind(this)}
 						/>

@@ -9,6 +9,7 @@ class ImageProperties extends React.Component {
 	constructor(props) {
 		super(props)
 
+		this.inputRef = React.createRef()
 		this.state = this.props.content
 	}
 
@@ -43,7 +44,7 @@ class ImageProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.refs.input.focus()
+		return this.inputRef.current.focus()
 	}
 
 	render() {
@@ -63,7 +64,7 @@ class ImageProperties extends React.Component {
 						id="obojobo-draft--chunks--figure--url"
 						value={this.state.url || ''}
 						onChange={this.handleURLTextChange.bind(this)}
-						ref={'input'}
+						ref={this.inputRef}
 						size="50"
 						placeholder="Web Address of the Image"
 					/>

@@ -7579,7 +7579,7 @@
 													"indent": 0
 												},
 												"text": {
-													"value": "",
+													"value": "Here is an example question inside of an Assessment's question bank.",
 													"styleList": []
 												}
 											}
@@ -7617,7 +7617,7 @@
 																			"indent": 0
 																		},
 																		"text": {
-																			"value": "",
+																			"value": "Incorrect answer",
 																			"styleList": []
 																		}
 																	}
@@ -7651,7 +7651,7 @@
 																			"indent": 0
 																		},
 																		"text": {
-																			"value": "",
+																			"value": "Correct answer",
 																			"styleList": []
 																		}
 																	}

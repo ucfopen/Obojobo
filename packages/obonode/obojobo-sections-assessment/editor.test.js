@@ -1,6 +1,5 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 

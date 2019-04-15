@@ -8,14 +8,16 @@ class Prompt extends React.Component {
 	constructor(props) {
 		super(props)
 
+		this.inputRef = React.createRef()
+
 		this.state = {
 			text: this.props.value || ''
 		}
 	}
 
 	componentDidMount() {
-		this.refs.input.focus()
-		this.refs.input.select()
+		this.inputRef.current.focus()
+		this.inputRef.current.select()
 	}
 
 	handleTextChange(event) {
@@ -25,8 +27,8 @@ class Prompt extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		this.refs.input.focus()
-		this.refs.input.select()
+		this.inputRef.current.focus()
+		this.inputRef.current.select()
 	}
 
 	render() {
@@ -44,7 +46,7 @@ class Prompt extends React.Component {
 						id="common--components--modal--prompt--input"
 						value={this.state.text}
 						onChange={this.handleTextChange.bind(this)}
-						ref={'input'}
+						ref={this.inputRef}
 						size="50"
 					/>
 				</div>
