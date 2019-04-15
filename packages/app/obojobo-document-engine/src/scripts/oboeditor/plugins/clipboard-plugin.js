@@ -6,18 +6,6 @@ import KeyDownUtil from '../util/keydown-util'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
-const printKeys = node => {
-	console.log(node.key, node.object === 'block' ? node.type : node.object)
-
-	if(node.object === 'block' || node.object === 'document') {
-		node.nodes.forEach(child => printKeys(child))
-	}
-
-	if(node.object === 'text') {
-		console.log(node)
-	}
-}
-
 const ClipboardPlugin = {
 	onPaste(event, editor, next) {
 		const transfer = getEventTransfer(event)
@@ -92,30 +80,6 @@ const ClipboardPlugin = {
 			return components
 				.map((component, i) => {
 					const nextNode = components.get(i + 1)
-					if (nextNode && nextNode.key === component.key) {
-						return false
-					}
-					return component
-				})
-				.filter(Boolean)
-		},
-		getRootMostComponents(editor, fragment) {
-			// Get all leaf nodes in fragment
-			const blocks = fragment.getBlocks()
-
-			// Get the oboeditor.components that are the closest ancestor to the leaf nodes
-			// This will contain duplicates, as each leaf node will return their parent, and
-			// some leaves may share the same oboeditor.component (Text, Code, List, etc.)
-			const rootMostComponents = blocks.map(node => {
-				const roto = fragment.getFurthest(node.key, parent => parent.type === 'oboeditor.component')
-				console.log(roto.toJSON())
-				return roto
-			})
-
-			// Remove duplicate parents based on keys - Duplicates will always be adjacent
-			return rootMostComponents
-				.map((component, i) => {
-					const nextNode = rootMostComponents.get(i + 1)
 					if (nextNode && nextNode.key === component.key) {
 						return false
 					}

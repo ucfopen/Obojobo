@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component editor plugins.renderNode calls next 1`] = `undefined`;
+exports[`Component editor renderNode calls next 1`] = `undefined`;
 
-exports[`Component editor plugins.renderNode renders a component when passed 1`] = `
+exports[`Component editor renderNode renders a component when passed 1`] = `
 <Node
   attributes={
     Object {

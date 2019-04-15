@@ -35,8 +35,6 @@ Object {
           "data": Object {
             "display": "Attempts",
             "name": "attempts",
-            "options": undefined,
-            "type": "type-text",
           },
           "nodes": Array [
             Object {
@@ -49,7 +47,7 @@ Object {
             },
           ],
           "object": "block",
-          "type": "Parameter",
+          "type": "oboeditor.text-parameter",
         },
         Object {
           "data": Object {
@@ -61,11 +59,9 @@ Object {
               "never",
               "no-attempts-remaining",
             ],
-            "type": "type-select",
           },
-          "isVoid": true,
           "object": "block",
-          "type": "Parameter",
+          "type": "oboeditor.select-parameter",
         },
       ],
       "object": "block",
@@ -95,8 +91,6 @@ Object {
           "data": Object {
             "display": "Attempts",
             "name": "attempts",
-            "options": undefined,
-            "type": "type-text",
           },
           "nodes": Array [
             Object {
@@ -109,7 +103,7 @@ Object {
             },
           ],
           "object": "block",
-          "type": "Parameter",
+          "type": "oboeditor.text-parameter",
         },
         Object {
           "data": Object {
@@ -121,11 +115,9 @@ Object {
               "never",
               "no-attempts-remaining",
             ],
-            "type": "type-select",
           },
-          "isVoid": true,
           "object": "block",
-          "type": "Parameter",
+          "type": "oboeditor.select-parameter",
         },
       ],
       "object": "block",

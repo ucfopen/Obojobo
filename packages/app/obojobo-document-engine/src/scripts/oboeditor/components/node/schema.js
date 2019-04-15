@@ -5,7 +5,6 @@ import SchemaViolations from '../../util/schema-violations'
 const { CHILD_MAX_INVALID, CHILD_MIN_INVALID, CHILD_UNKNOWN, CHILD_TYPE_INVALID } = SchemaViolations
 
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 const schema = {
 	blocks: {
@@ -33,7 +32,6 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('oboeditor', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_UNKNOWN: {
@@ -48,6 +46,10 @@ const schema = {
 							return editor.unwrapNodeByKey(child.key)
 						}
 
+						// If not a recognized block, it is probably an invalid node
+						// that contains valid children (Pages, ScoreActions, etc.)
+						// Unwrapping all of the children of the invalid node will
+						// remove the invalid node while maintaining it's valid children
 						return editor.withoutNormalizing(e => {
 							return child.nodes.forEach(grandchild => e.unwrapNodeByKey(grandchild.key))
 						})
@@ -58,9 +60,7 @@ const schema = {
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
-					// Change to a constant when slate-schema-violations updates
 					case CHILD_MAX_INVALID: {
-						console.log(node.toJSON())
 						return editor.splitNodeByKey(node.key, 1)
 					}
 				}

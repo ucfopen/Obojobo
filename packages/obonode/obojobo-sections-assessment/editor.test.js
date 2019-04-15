@@ -2,7 +2,9 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import SlateReact from 'slate-react'
+jest.mock('slate-react')
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
@@ -183,6 +185,46 @@ describe('Assessment editor', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
+	test('plugins.onPaste pastes anything other than an Assessment', () => {
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'fragment',
+			fragment: {
+				nodes: {
+					get: () => ({ type: 'mockNode'})
+				}
+			}
+		})
+		const next = jest.fn()
+
+		Assessment.plugins.onPaste(null, null, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('plugins.onPaste pastes an Assessment', () => {
+		const assessmentMock = {
+			type: ASSESSMENT_NODE,
+			toJSON: jest.fn().mockReturnValueOnce('mock assessment')
+		}
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'fragment',
+			fragment: {
+				nodes: {
+					get: () => (assessmentMock)
+				}
+			}
+		})
+
+		const editor = {
+			insertFragment: jest.fn()
+		}
+
+		Assessment.plugins.onPaste(null, editor, jest.fn())
+
+		expect(editor.insertFragment).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders the Assessment when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -232,194 +274,6 @@ describe('Assessment editor', () => {
 
 		expect(Assessment.plugins.renderNode(props, null, next)).toMatchSnapshot()
 		expect(next).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid first child in Assessment', () => {
-		const editor = {
-			wrapBlockByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 0
-		})
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid second child in Assessment', () => {
-		const editor = {
-			wrapBlockByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 1
-		})
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid third child in Assessment', () => {
-		const editor = {
-			wrapBlockByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 2
-		})
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid fourth child in Assessment', () => {
-		const editor = {
-			wrapBlockByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 3
-		})
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing first child in Assessment', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing second child in Assessment', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing third child in Assessment', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 2
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing fourth child in Assessment', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[ASSESSMENT_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 3
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid second child in Settings', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
-		}
-		editor.withoutNormalizing = funct => {
-			funct(editor)
-		}
-
-		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid first child in mod', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
-		}
-		editor.withoutNormalizing = funct => {
-			funct(editor)
-		}
-
-		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing first child in mod', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing second child in Settings', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Assessment.plugins.schema.blocks[SETTINGS_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
 	test('getNavItem returns expected object', () => {

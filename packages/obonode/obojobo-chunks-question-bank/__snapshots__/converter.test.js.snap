@@ -4,7 +4,7 @@ exports[`QuestionBank editor oboToSlate converts an OboNode to a Slate node 1`] 
 Object {
   "data": Object {
     "content": Object {
-      "choose": Infinity,
+      "choose": null,
     },
   },
   "nodes": Array [
@@ -14,8 +14,6 @@ Object {
           "data": Object {
             "display": "Choose",
             "name": "choose",
-            "options": undefined,
-            "type": "type-text",
           },
           "nodes": Array [
             Object {
@@ -28,7 +26,7 @@ Object {
             },
           ],
           "object": "block",
-          "type": "Parameter",
+          "type": "oboeditor.text-parameter",
         },
         Object {
           "data": Object {
@@ -40,11 +38,9 @@ Object {
               "random",
               "random-unseen",
             ],
-            "type": "type-select",
           },
-          "isVoid": true,
           "object": "block",
-          "type": "Parameter",
+          "type": "oboeditor.select-parameter",
         },
       ],
       "object": "block",
@@ -63,8 +59,6 @@ Object {
               "data": Object {
                 "display": "Choose",
                 "name": "choose",
-                "options": undefined,
-                "type": "type-text",
               },
               "nodes": Array [
                 Object {
@@ -77,7 +71,7 @@ Object {
                 },
               ],
               "object": "block",
-              "type": "Parameter",
+              "type": "oboeditor.text-parameter",
             },
             Object {
               "data": Object {
@@ -89,11 +83,9 @@ Object {
                   "random",
                   "random-unseen",
                 ],
-                "type": "type-select",
               },
-              "isVoid": true,
               "object": "block",
-              "type": "Parameter",
+              "type": "oboeditor.select-parameter",
             },
           ],
           "object": "block",

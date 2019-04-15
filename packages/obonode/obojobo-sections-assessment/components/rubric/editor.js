@@ -1,5 +1,5 @@
 import React from 'react'
-import { Block } from 'slate'
+import { Block, Document } from 'slate'
 import { getEventTransfer, cloneFragment } from 'slate-react'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -115,7 +115,7 @@ const isType = editor =>
 
 const plugins = {
 	onPaste(event, editor, next) {
-		// See if any of the selected nodes have a TABLE_NODE parent
+		// See if any of the selected nodes have a Rubric parent
 		const isRubric = isType(editor)
 		if (!isRubric) return next()
 
@@ -124,14 +124,23 @@ const plugins = {
 		editor.insertText(transfer.text)
 	},
 	onCut(event, editor, next) {
-		// See if any of the selected nodes have a TABLE_NODE parent
+		// See if any of the selected nodes have a Rubric parent
 		const isRubric = isType(editor)
 		if (!isRubric) return next()
 
-		// Copy the fragment and then delete the contents of the nodes
-		// without deleting the nodes themselves
+		// Cut out just the text, and then delete the text but not the parameter nodes
 		const textFragment = editor.extractTextToFragment()
 		KeyDownUtil.deleteNodeContents(event, editor, next)
+
+		return cloneFragment(event, editor, next, textFragment)
+	},
+	onCopy(event, editor, next) {
+		// See if any of the selected nodes have a Rubric parent
+		const isRubric = isType(editor)
+		if (!isRubric) return next()
+
+		// Copy just the text
+		const textFragment = editor.extractTextToFragment()
 
 		return cloneFragment(event, editor, next, textFragment)
 	},
@@ -150,9 +159,9 @@ const plugins = {
 	schema: Schema,
 	queries: {
 		extractTextToFragment(editor) {
-			const cutText = editor.value.fagment.text
+			const cutText = editor.value.fragment.text
 
-			return Block.create({
+			return Document.create({
 				object: 'document',
 				nodes: [
 					{

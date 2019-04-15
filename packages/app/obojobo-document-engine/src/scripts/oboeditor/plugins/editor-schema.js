@@ -17,7 +17,6 @@ const EditorSchema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('editor', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {

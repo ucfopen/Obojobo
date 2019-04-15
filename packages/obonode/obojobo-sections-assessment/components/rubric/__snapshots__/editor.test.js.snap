@@ -63,6 +63,47 @@ exports[`Rubric editor Node component adds child to existing mod list 1`] = `"<d
 
 exports[`Rubric editor Rubric component deletes self 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><button class=\\"add-button\\">Add Mod</button><button class=\\"editor--page-editor--delete-node-button\\">X</button></div>"`;
 
+exports[`Rubric editor extractTextToFragment copies the current text 1`] = `
+Immutable.Record {
+  "data": Immutable.Map {},
+  "key": "11",
+  "nodes": Immutable.List [
+    Immutable.Record {
+      "data": Immutable.Map {},
+      "key": "12",
+      "nodes": Immutable.List [
+        Immutable.Record {
+          "data": Immutable.Map {},
+          "key": "13",
+          "nodes": Immutable.List [
+            Immutable.Record {
+              "data": Immutable.Map {
+                "indent": 0,
+              },
+              "key": "14",
+              "nodes": Immutable.List [
+                Immutable.Record {
+                  "leaves": Immutable.List [
+                    Immutable.Record {
+                      "marks": Immutable.Set [],
+                      "text": "selected text",
+                    },
+                  ],
+                  "key": "15",
+                },
+              ],
+              "type": "ObojoboDraft.Chunks.Text.TextLine",
+            },
+          ],
+          "type": "ObojoboDraft.Chunks.Text",
+        },
+      ],
+      "type": "oboeditor.component",
+    },
+  ],
+}
+`;
+
 exports[`Rubric editor oboToSlate converts an OboComponent to a Slate node 1`] = `
 Object {
   "data": Object {
@@ -84,8 +125,6 @@ Object {
       "data": Object {
         "display": "Passing Score",
         "name": "passingAttemptScore",
-        "options": undefined,
-        "type": "type-text",
       },
       "nodes": Array [
         Object {
@@ -98,14 +137,12 @@ Object {
         },
       ],
       "object": "block",
-      "type": "Parameter",
+      "type": "oboeditor.text-parameter",
     },
     Object {
       "data": Object {
         "display": "Passed Result",
         "name": "passedResult",
-        "options": undefined,
-        "type": "type-text",
       },
       "nodes": Array [
         Object {
@@ -118,14 +155,12 @@ Object {
         },
       ],
       "object": "block",
-      "type": "Parameter",
+      "type": "oboeditor.text-parameter",
     },
     Object {
       "data": Object {
         "display": "Failed Result",
         "name": "failedResult",
-        "options": undefined,
-        "type": "type-text",
       },
       "nodes": Array [
         Object {
@@ -138,14 +173,12 @@ Object {
         },
       ],
       "object": "block",
-      "type": "Parameter",
+      "type": "oboeditor.text-parameter",
     },
     Object {
       "data": Object {
         "display": "Unable to Pass Result",
         "name": "unableToPassResult",
-        "options": undefined,
-        "type": "type-text",
       },
       "nodes": Array [
         Object {
@@ -158,7 +191,7 @@ Object {
         },
       ],
       "object": "block",
-      "type": "Parameter",
+      "type": "oboeditor.text-parameter",
     },
     Object {
       "nodes": Array [
@@ -168,8 +201,6 @@ Object {
               "data": Object {
                 "display": "Attempt Condition",
                 "name": "attemptCondition",
-                "options": undefined,
-                "type": "type-text",
               },
               "nodes": Array [
                 Object {
@@ -182,14 +213,12 @@ Object {
                 },
               ],
               "object": "block",
-              "type": "Parameter",
+              "type": "oboeditor.text-parameter",
             },
             Object {
               "data": Object {
                 "display": "Reward",
                 "name": "reward",
-                "options": undefined,
-                "type": "type-text",
               },
               "nodes": Array [
                 Object {
@@ -202,7 +231,7 @@ Object {
                 },
               ],
               "object": "block",
-              "type": "Parameter",
+              "type": "oboeditor.text-parameter",
             },
           ],
           "object": "block",
@@ -233,8 +262,6 @@ Object {
       "data": Object {
         "display": "Passing Score",
         "name": "passingAttemptScore",
-        "options": undefined,
-        "type": "type-text",
       },
       "nodes": Array [
         Object {
@@ -247,14 +274,12 @@ Object {
         },
       ],
       "object": "block",
-      "type": "Parameter",
+      "type": "oboeditor.text-parameter",
     },
     Object {
       "data": Object {
         "display": "Passed Result",
         "name": "passedResult",
-        "options": undefined,
-        "type": "type-text",
       },
       "nodes": Array [
         Object {
@@ -267,14 +292,12 @@ Object {
         },
       ],
       "object": "block",
-      "type": "Parameter",
+      "type": "oboeditor.text-parameter",
     },
     Object {
       "data": Object {
         "display": "Failed Result",
         "name": "failedResult",
-        "options": undefined,
-        "type": "type-text",
       },
       "nodes": Array [
         Object {
@@ -287,14 +310,12 @@ Object {
         },
       ],
       "object": "block",
-      "type": "Parameter",
+      "type": "oboeditor.text-parameter",
     },
     Object {
       "data": Object {
         "display": "Unable to Pass Result",
         "name": "unableToPassResult",
-        "options": undefined,
-        "type": "type-text",
       },
       "nodes": Array [
         Object {
@@ -307,7 +328,7 @@ Object {
         },
       ],
       "object": "block",
-      "type": "Parameter",
+      "type": "oboeditor.text-parameter",
     },
   ],
   "object": "block",

@@ -25,7 +25,6 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('error?', error)
 				const { node, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
@@ -82,7 +81,6 @@ const schema = {
 				}
 			],
 			normalize: (editor, error) => {
-				console.log('modlist', error)
 				const { node, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
@@ -97,7 +95,6 @@ const schema = {
 				{ match: [{ type:  TEXT_PARAMETER }], min: 2 }
 			],
 			normalize: (editor, error) => {
-				console.log('mod', error)
 				const { node, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {

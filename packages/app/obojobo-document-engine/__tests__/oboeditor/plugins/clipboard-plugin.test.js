@@ -20,20 +20,21 @@ describe('ClipboardPlugin', () => {
 
 		const mockEvent = {}
 		const editor = {
-			getLeafMostComponents: jest.fn()
+			getComponents: jest.fn()
 		}
 		const next = jest.fn()
 
 		ClipboardPlugin.onPaste(mockEvent, editor, next)
 
 		expect(next).toHaveBeenCalled()
-		expect(editor.getLeafMostComponents).not.toHaveBeenCalled()
+		expect(editor.getComponents).not.toHaveBeenCalled()
 		expect(KeyDownUtil.deleteEmptyParent).not.toHaveBeenCalled()
 	})
 
 	test('onPaste inserts slate nodes into nodes that support children', () => {
 		getEventTransfer.mockReturnValueOnce({
-			type: 'fragment'
+			type: 'fragment',
+			fragment: 'mockFragment'
 		})
 
 		const mockEvent = {}
@@ -55,7 +56,7 @@ describe('ClipboardPlugin', () => {
 					]
 				}
 			},
-			getLeafMostComponents: jest.fn().mockReturnValueOnce([
+			getComponents: jest.fn().mockReturnValueOnce([
 				{
 					type: 'oboeditor.component' // block to paste in
 				}
@@ -71,14 +72,15 @@ describe('ClipboardPlugin', () => {
 		ClipboardPlugin.onPaste(mockEvent, editor, next)
 
 		expect(next).not.toHaveBeenCalled()
-		expect(editor.getLeafMostComponents).toHaveBeenCalled()
+		expect(editor.getComponents).toHaveBeenCalledWith('mockFragment', true)
 		expect(editor.insertBlock).toHaveBeenCalled()
 		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalled()
 	})
 
 	test('onPaste inserts slate nodes into nodes that do not support children', () => {
 		getEventTransfer.mockReturnValueOnce({
-			type: 'fragment'
+			type: 'fragment',
+			fragment: 'mockFragment'
 		})
 
 		const mockEvent = {}
@@ -99,7 +101,7 @@ describe('ClipboardPlugin', () => {
 					]
 				}
 			},
-			getLeafMostComponents: jest.fn().mockReturnValueOnce([
+			getComponents: jest.fn().mockReturnValueOnce([
 				{
 					type: 'oboeditor.component' // block to paste in
 				}
@@ -120,59 +122,13 @@ describe('ClipboardPlugin', () => {
 
 		ClipboardPlugin.onPaste(mockEvent, editor, next)
 
-		expect(next).toHaveBeenCalled()
-		expect(editor.getLeafMostComponents).not.toHaveBeenCalled()
-		expect(editor.insertBlock).not.toHaveBeenCalled()
-		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalled()
-	})
-
-	test('onPaste inserts partial slate nodes into nodes that do not support children', () => {
-		getEventTransfer.mockReturnValueOnce({
-			type: 'fragment'
-		})
-
-		const mockEvent = {}
-		const editor = {
-			value: {
-				blocks: {
-					get: () => ({ key: 'mockBlock' }), // current selection
-					forEach: fun => {
-						fun({ text: '', type: TEXT_LINE_NODE })
-						fun({ text: 'mock text', type: TEXT_LINE_NODE })
-					}
-				},
-				document: {
-					getAncestors: () => [
-						{
-							type: TEXT_LINE_NODE // ancestor that supports children
-						}
-					]
-				}
-			},
-			getLeafMostComponents: jest.fn().mockReturnValueOnce([
-				{
-					type: 'oboeditor.component' // block to paste in
-				}
-			]),
-			insertBlock: jest.fn()
-		}
-		const next = jest.fn().mockImplementation(() => {
-			throw new Error()
-		})
-
-		// Ensure that the TEXT_NODE does not support Children
-		jest.spyOn(Common.Registry, 'getItemForType')
-		Common.Registry.getItemForType.mockReturnValueOnce(null)
-
-		ClipboardPlugin.onPaste(mockEvent, editor, next)
-
-		expect(next).toHaveBeenCalled()
-		expect(editor.getLeafMostComponents).toHaveBeenCalled()
+		expect(next).not.toHaveBeenCalled()
+		expect(editor.getComponents).toHaveBeenCalledWith('mockFragment', false)
 		expect(editor.insertBlock).toHaveBeenCalled()
 		expect(KeyDownUtil.deleteEmptyParent).toHaveBeenCalled()
 	})
 
-	test('getLeafMostComponents returns a list of oboeditor.components', () => {
+	test('getComponents returns a list of leaf-most oboeditor.components', () => {
 		const editor = {}
 		const fragment = {
 			getBlocks: () => ({
@@ -194,8 +150,43 @@ describe('ClipboardPlugin', () => {
 					}
 				}
 			}),
-			getClosest: (key, fun) => fun('oboeditor.component')
+			getClosest: jest.fn().mockImplementationOnce((key, fun) => fun('oboeditor.component')),
+			getFurthest: jest.fn().mockImplementationOnce((key, fun) => fun('oboeditor.component'))
 		}
-		ClipboardPlugin.queries.getLeafMostComponents(editor, fragment)
+		ClipboardPlugin.queries.getComponents(editor, fragment, true)
+
+		expect(fragment.getFurthest).not.toHaveBeenCalled()
+		expect(fragment.getClosest).toHaveBeenCalled()
+	})
+
+	test('getComponents returns a list of root-most oboeditor.components', () => {
+		const editor = {}
+		const fragment = {
+			getBlocks: () => ({
+				map: fun => {
+					fun({ type: 'oboeditor.component', key: 'mockKey' })
+					fun({ type: 'oboeditor.component', key: 'differentNode' })
+					fun({ type: 'mockNode' })
+
+					return {
+						get: () => ({ key: 'mockKey' }),
+						map: fun => {
+							fun({ key: 'mockKey' })
+							fun({ key: 'differentNode' })
+
+							return {
+								filter: () => [{ type: 'oboeditor.component' }]
+							}
+						}
+					}
+				}
+			}),
+			getClosest: jest.fn().mockImplementationOnce((key, fun) => fun('oboeditor.component')),
+			getFurthest: jest.fn().mockImplementationOnce((key, fun) => fun('oboeditor.component'))
+		}
+		ClipboardPlugin.queries.getComponents(editor, fragment, false)
+
+		expect(fragment.getFurthest).toHaveBeenCalled()
+		expect(fragment.getClosest).not.toHaveBeenCalled()
 	})
 })
