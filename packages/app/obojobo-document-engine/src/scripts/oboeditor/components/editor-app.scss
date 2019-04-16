@@ -1,0 +1,27 @@
+@import '../../../scss/includes';
+
+.visual-editor--editor-app {
+	.draft-toolbars {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: $z-index-above-all;
+		background-color: $color-bg;
+
+		.draft-title {
+			font-size: 1.2em;
+			padding-left: 0.7em;
+			padding-top: 0.5em;
+		}
+	}
+
+	.draft-content {
+		display: flex;
+		margin: 2em;
+		margin-top: 8em;
+		border: 1px solid $color-text;
+		background-color: $color-bg;
+		border-radius: $dimension-rounded-radius;
+	}
+}

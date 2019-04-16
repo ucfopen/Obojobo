@@ -36,6 +36,7 @@ import './page-editor.scss'
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { Button } = Common.components
+const { Dispatcher } = Common.flux
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -77,6 +78,14 @@ class PageEditor extends React.Component {
 		this.state = {
 			value: Value.fromJSON(json)
 		}
+
+
+		Dispatcher.on('editor:toggleMark', payload => {
+			event.preventDefault()
+			console.log(payload.name)
+
+			return this.editor.toggleMark(payload.name)
+		})
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -108,10 +117,8 @@ class PageEditor extends React.Component {
 		if (this.props.page === null) return this.renderEmpty()
 
 		return (
-			<div className={'editor--page-editor'}>
-				<div className={'toolbar'}>
-					<MarkToolbar.components.Node getEditor={this.getEditor.bind(this)} />
-				</div>
+			<div
+				className={'component obojobo-draft--modules--module editor--page-editor'} role="main">
 				<Editor
 					className={'component obojobo-draft--pages--page'}
 					value={this.state.value}
@@ -119,7 +126,6 @@ class PageEditor extends React.Component {
 					onChange={change => this.onChange(change)}
 					plugins={plugins}
 				/>
-				{this.renderExportButton()}
 			</div>
 		)
 	}
@@ -129,6 +135,7 @@ class PageEditor extends React.Component {
 	}
 
 	onChange(change) {
+		console.log(change.operations.toJSON())
 		// Check if any nodes have been changed
 		const nodesChanged = change.operations
 			.toJSON()

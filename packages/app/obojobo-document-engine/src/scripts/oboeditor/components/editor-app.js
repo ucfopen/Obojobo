@@ -4,6 +4,8 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import PageEditor from './page-editor'
 import EditorNav from './editor-nav'
+import FileToolbar from './file-toolbar'
+import ContentToolbar from './content-toolbar'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorStore from '../stores/editor-store'
@@ -17,6 +19,7 @@ import generateId from '../generate-ids'
 
 import '../../../scss/main.scss'
 // uses viewer css for styling
+import './editor-app.scss'
 import '../../../scripts/viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
 
@@ -97,17 +100,19 @@ class EditorApp extends React.Component {
 
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
-			<div
-				className={
-					'viewer--viewer-app editor--editor-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
-				}
-			>
-				<EditorNav
-					navState={this.state.editorState}
-					model={this.state.model}
-					draftId={this.state.draftId}
-				/>
-				<div className={'component obojobo-draft--modules--module'} role="main" data-obo-component>
+			<div className="visual-editor--editor-app">
+				<div className="draft-toolbars">
+					<div className="draft-title">Draft Name</div>
+					<FileToolbar />
+					<ContentToolbar />
+				</div>
+				<div className="draft-content">
+					<EditorNav
+						navState={this.state.editorState}
+						model={this.state.model}
+						draftId={this.state.draftId}
+					/>
+
 					<PageEditor
 						page={this.state.editorState.currentModel}
 						context={this.state.editorState.context}

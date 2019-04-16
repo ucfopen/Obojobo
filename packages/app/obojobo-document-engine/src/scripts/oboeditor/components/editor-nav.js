@@ -112,16 +112,12 @@ class EditorNav extends React.Component {
 
 	render() {
 		const className =
-			'viewer--components--nav ' +
-			' editor--components--nav ' +
+			'visual-editor--draft-nav ' +
 			isOrNot(this.state.locked, 'locked') +
 			isOrNot(this.state.open, 'open') +
 			isOrNot(!this.state.disabled, 'enabled')
 
 		const list = EditorUtil.getOrderedList(this.props.navState)
-
-		const url = window.location.origin + '/view/' + this.props.draftId
-		const moduleItem = list[0]
 
 		return (
 			<div className={className}>
@@ -141,35 +137,7 @@ class EditorNav extends React.Component {
 						}
 						return null
 					})}
-					<li className="button-bar-buffer" />
 				</ul>
-				<div className="button-bar">
-					<Button
-						className={'content-add-button align-left'}
-						onClick={this.showAddPageModal.bind(this)}
-					>
-						+ Add Page
-					</Button>
-					<Button
-						className={'content-add-button align-left'}
-						onClick={this.showAddAssessmentModal.bind(this)}
-					>
-						+ Add Assessment
-					</Button>
-					<br />
-					<Button
-						className={'content-add-button align-left'}
-						onClick={this.showRenameModuleModal.bind(this, moduleItem)}
-					>
-						Rename Module
-					</Button>
-					<Button
-						className={'content-add-button align-left'}
-						onClick={() => ClipboardUtil.copyToClipboard(url)}
-					>
-						Copy Module URL
-					</Button>
-				</div>
 			</div>
 		)
 	}

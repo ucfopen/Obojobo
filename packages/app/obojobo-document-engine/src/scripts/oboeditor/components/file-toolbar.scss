@@ -1,0 +1,25 @@
+@import '../../../scss/includes';
+
+.visual-editor--file-toolbar {
+	z-index: $z-index-above-all;
+	margin: 0 auto;
+	padding-right: 0.5em;
+	padding-left: 0.5em;
+	background-color: $color-bg;
+	border-bottom: 1px solid $color-shadow;
+	font-size: 0.8em;
+
+	button {
+		font-size: 1em;
+		padding: 0.5em;
+		margin: 0;
+		border: none;
+		background: transparent;
+		cursor: pointer;
+
+		&:hover {
+			opacity: 1;
+			background: lighten($color-action, 48%);
+		}
+	}
+}

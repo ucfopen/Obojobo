@@ -1,113 +1,11 @@
 @import '../../../scss/includes';
 
 .editor--page-editor {
-	margin-top: 3em;
-	margin-bottom: 3em;
+	margin: 3em auto;
+	width: 100%;
+	display: table-cell;
 
 	.parameter-node {
 		padding-right: 1em;
 	}
-
-	.footer-menu {
-		text-align: center;
-		position: fixed;
-		bottom: 0;
-		z-index: 999;
-		margin: 0 auto;
-		padding-right: 3em;
-		padding-left: 3em;
-		left: $dimension-nav-menu;
-		right: 0;
-		background-color: $color-bg2;
-		border-top: 1px solid $color-shadow;
-
-		.exporter {
-			margin: 0.3em;
-
-			.button {
-				background: $color-obojobo-blue;
-				padding: 0.3em;
-			}
-		}
-	}
-
-	.settings {
-		font-size: 0.8em;
-		padding-left: $dimension-padding * 0.2333333333;
-		padding-right: $dimension-padding * 0.2333333333;
-		background: transparentize($color-preview, 0.95);
-		border-radius: $dimension-rounded-radius;
-		border: 1px solid $color-preview;
-
-		div {
-			div {
-				display: inline;
-			}
-		}
-
-		.label {
-			color: $color-text-minor;
-			transform: scale(0.7);
-			transform-origin: top left;
-			font-family: $font-default;
-		}
-	}
-
-	.buffer {
-		margin: $dimension-padding / 3;
-	}
-
-	.latex-editor {
-		background-color: $color-bg2;
-	}
-
-	.placeholder {
-		display: inline-block;
-		position: absolute;
-		pointer-events: none;
-		white-space: nowrap;
-		opacity: 0.33;
-
-		&.align-right {
-			transform: translate(-100%);
-		}
-
-		&.align-center {
-			transform: translate(-50%);
-		}
-	}
-
-	label {
-		display: block;
-	}
-
-	.delete-node-button {
-		position: absolute;
-		top: 0;
-		right: 0;
-		border: none;
-		background: inherit;
-	}
-
-	.toolbar button:hover {
-		opacity: 1;
-		background: lighten($color-action, 48%);
-
-		svg path {
-			fill: $color-action;
-		}
-
-		svg line {
-			stroke: $color-action;
-		}
-	}
-}
-
-.editor--page-editor--delete-node-button {
-	position: absolute;
-	top: 0;
-	right: 0;
-	border: none;
-	background: inherit;
-	cursor: pointer;
 }

@@ -240,21 +240,44 @@ class Node extends React.Component {
 
 	render() {
 		return (
-			<div>
-				{markList.map(mark => {
-					const Icon = mark.icon
-					return (
-						<button
-							key={mark.name}
-							onClick={event => this.toggleMark(mark, event)}
-							title={mark.name}
-						>
-							<Icon />
-						</button>
-					)
-				})}
+			<div className={`visual-editor--content-toolbar`}>
+				<span>Heading 1</span>
+				<span>B</span>
+				<span>I</span>
+				<span>{',/>'}</span>
+				<span>pi</span>
+				<span>link</span>
+				<span>x2</span>
+				<span>x2</span>
+				<span>--</span>
+				<span>--</span>
+				<span>--</span>
+				<span>{'>-'}</span>
+				<span>{'<-'}</span>
+				<span>--</span>
+				<span>--</span>
+				<span>--</span>
+				<span>Insert Item</span>
+				<span>@</span>
+				<span>Visual</span>
 			</div>
 		)
+		// return (
+		// 	<div>
+		// 		{markList.map(mark => {
+		// 			const Icon = mark.icon
+		// 			return (
+		// 				<button
+		// 					key={mark.name}
+		// 					onClick={event => this.toggleMark(mark, event)}
+		// 					title={mark.name}
+		// 				>
+		// 					<Icon />
+		// 				</button>
+		// 			)
+		// 		})}
+		// 	</div>
+		// )
 	}
 }
 

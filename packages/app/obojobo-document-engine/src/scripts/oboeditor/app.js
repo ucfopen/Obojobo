@@ -39,6 +39,6 @@ window.__oboEditorRender = () => {
 		<div className="root">
 			<Editor.components.EditorApp />
 		</div>,
-		document.getElementById('viewer-app')
+		document.getElementById('editor-app')
 	)
 }
