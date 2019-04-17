@@ -6,7 +6,7 @@ const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
 const viewerOboNodeScripts = getAllOboNodeScriptPathsByType('viewer')
 const editorOboNodeScripts = getAllOboNodeScriptPathsByType('editor')
 const docEnginePath = path.dirname(require.resolve('obojobo-document-engine'))
-const ObojoboDevServer = require('./obojobo-dev-server')
+const ObojoboExpressDev = require('./obo_express_dev')
 
 module.exports =
 	// built client files
@@ -45,7 +45,7 @@ module.exports =
 				watchOptions: {
 					ignored: '/node_modules/'
 				},
-				setup: ObojoboDevServer,
+				setup: ObojoboExpressDev,
 				stats: { children: false, modules: false }
 			},
 			entry: {
