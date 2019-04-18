@@ -28,7 +28,13 @@ import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-com
 import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
 import ParameterNode from './parameter-node'
 import Component from './node/editor'
-import MarkToolbar from './toolbar'
+import BasicMarks from './marks/basic-marks'
+import LinkMark from './marks/link-mark'
+import AlignMarks from './marks/align-marks'
+import ScriptMarks from './marks/script-marks'
+import IndentMarks from './marks/indent-marks'
+import FileToolbar from './toolbars/file-toolbar'
+import ContentToolbar from './toolbars/content-toolbar'
 import EditorSchema from '../plugins/editor-schema'
 
 import './page-editor.scss'
@@ -36,14 +42,17 @@ import './page-editor.scss'
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { Button } = Common.components
-const { Dispatcher } = Common.flux
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 const plugins = [
 	Component.plugins,
-	MarkToolbar.plugins,
+	BasicMarks.plugins,
+	LinkMark.plugins,
+	ScriptMarks.plugins,
+	AlignMarks.plugins,
+	IndentMarks.plugins,
 	ActionButton.plugins,
 	Break.plugins,
 	Code.plugins,
@@ -78,14 +87,6 @@ class PageEditor extends React.Component {
 		this.state = {
 			value: Value.fromJSON(json)
 		}
-
-
-		Dispatcher.on('editor:toggleMark', payload => {
-			event.preventDefault()
-			console.log(payload.name)
-
-			return this.editor.toggleMark(payload.name)
-		})
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -119,6 +120,11 @@ class PageEditor extends React.Component {
 		return (
 			<div
 				className={'component obojobo-draft--modules--module editor--page-editor'} role="main">
+				<div className="draft-toolbars">
+					<div className="draft-title">Draft Name</div>
+					<FileToolbar getEditor={this.getEditor.bind(this)}/>
+					<ContentToolbar getEditor={this.getEditor.bind(this)}/>
+				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
 					value={this.state.value}
@@ -135,8 +141,6 @@ class PageEditor extends React.Component {
 	}
 
 	onChange(change) {
-		console.log(change.operations.toJSON())
-		// Check if any nodes have been changed
 		const nodesChanged = change.operations
 			.toJSON()
 			.some(

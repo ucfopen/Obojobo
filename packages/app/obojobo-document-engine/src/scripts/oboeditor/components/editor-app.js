@@ -4,8 +4,6 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import PageEditor from './page-editor'
 import EditorNav from './editor-nav'
-import FileToolbar from './file-toolbar'
-import ContentToolbar from './content-toolbar'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import EditorStore from '../stores/editor-store'
@@ -101,11 +99,6 @@ class EditorApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div className="visual-editor--editor-app">
-				<div className="draft-toolbars">
-					<div className="draft-title">Draft Name</div>
-					<FileToolbar />
-					<ContentToolbar />
-				</div>
 				<div className="draft-content">
 					<EditorNav
 						navState={this.state.editorState}

@@ -9,14 +9,13 @@ const FileToolbar = props => {
 	const fileMenu = {
 		name: 'File',
 		menu: [
-			{ name: 'New', type: 'action'  },
+			{ name: 'New', type: 'action', action: () => console.log('New draft') },
 			{ name: 'Open', type: 'action'  },
 			{ name: 'Make a copy', type: 'action'  },
 			{ name: 'Rename', type: 'action'  },
 			{ name: 'Delete', type: 'action'  },
 			{ name: 'Module Properties', type: 'action'  },
-			{ name: 'New', type: 'action'  },
-			{ name: 'Copy LTI Link', type: 'action'  }
+			{ name: 'Copy LTI Link', type: 'action',   }
 		]
 	}
 

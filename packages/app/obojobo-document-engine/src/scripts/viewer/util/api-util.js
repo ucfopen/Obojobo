@@ -105,6 +105,10 @@ const APIUtil = {
 
 	postDraft(id, draftJSON) {
 		return APIUtil.post(`/api/drafts/${id}`, draftJSON).then(processJsonResults)
+	},
+
+	createNewDraft() {
+		return APIUtil.post(`/api/drafts/new`).then(processJsonResults)
 	}
 }
 
