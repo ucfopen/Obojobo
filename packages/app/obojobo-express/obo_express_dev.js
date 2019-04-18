@@ -53,7 +53,7 @@ module.exports = app => {
 			</body></html>`)
 	})
 
-	// builds a valid course navigation lti launch an submits it
+	// builds a valid course navigation lti launch and submits it
 	app.get('/lti/dev/launch/course_navigation', (req, res) => {
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/course_navigation`
@@ -89,7 +89,7 @@ module.exports = app => {
 		renderLtiLaunch(params, method, endpoint, res)
 	})
 
-	// builds a valid document view lti launch an submits it
+	// builds a valid document view lti launch and submits it
 	app.get('/lti/dev/launch/view', (req, res) => {
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/view/00000000-0000-0000-0000-000000000000`
@@ -112,7 +112,7 @@ module.exports = app => {
 		renderLtiLaunch(params, method, endpoint, res)
 	})
 
-	// builds a valid resourse selection lti launch an submits it
+	// builds a valid resourse selection lti launch and submits it
 	app.get('/lti/dev/launch/resource_selection', (req, res) => {
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/resource_selection`
