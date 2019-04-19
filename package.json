@@ -25,7 +25,7 @@
 	"devDependencies": {
 		"concurrently": "^3.5.0",
 		"husky": "^0.13.3",
-		"lerna": "^3.10.7",
+		"lerna": "^3.13.1",
 		"nodemon": "^1.18.8"
 	},
 	"jest": {
