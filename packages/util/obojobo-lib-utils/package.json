@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-lib-utils",
-	"version": "4.0.0-rc.0",
+	"version": "4.0.0-rc.1",
 	"license": "AGPL-3.0-only",
 	"description": "Assortment of reusable parts for obojobo libraries.",
 	"scripts": {
@@ -24,7 +24,7 @@
 		]
 	},
 	"dependencies": {
-		"obojobo-document-engine": "^4.0.0-rc.0",
+		"obojobo-document-engine": "^4.0.0-rc.1",
 		"prop-types": "15.6.2",
 		"react": "16.7.0",
 		"react-dom": "16.7.0",
