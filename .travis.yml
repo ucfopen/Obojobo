@@ -135,7 +135,7 @@ jobs:
         api_key:
           secure: "en1lFaIHzet1sqqaVfvHlLyGcXnG0qx+1Sa4vGIxC65FrUftOBqBMcGZZNFFAOavZKSLHgQuSXzERc6Oe0QAicbn/OkEoIp9gZUyIaovwHk4SrNI8JFWpTFwywieevcD8MKgbyHjP2HdzhNY5PuG8OXnvKHKudhZal4FTE9x/VG8UhlKfAfuu28fVYia9muAgOGUI/YlEzY9QKMyNoUryo1aP0HOntnm4vBy7JvUW2MUG70YLqJ0tOy5Pp7UuFdDmLP9jq6n/NMovpJyfrnBXil2gvEp8c285H0E6X49PpnX3VwQigv5O7WxD06VbH7ch7ugy6FE7vGPGlaxwGFC3MtTKIP2PCefSv+PZ6tKi/11gEzWFr2o2yZAneO5BkIF7fZCji3tQaPTpIsHmrBdcbrMcamHEB/KCl5MjMTKTMegEOv9YJHvVDzjesjWMkf5aBOgiL4N7F6vdHXNluRrNtm3DPXWnx3jmgURC4yp+l6VsCtW2AGDCjqynT3JU+ThEK4Z8SiNtsNXvzZLJd9MvDu5F5WtSmm+G8ScW7dynK4sdpVyNyAbrmVpX3PDZVeoWkS045jiGrKzcLtnlDEpBzp5LpRLhD9G3JTRAkF78PIXEsCSUsNgR5pkgXhStRrErvUcEnbpB7iIN4HvSYxA10aGT6emlCBO6nlsLtEB4YA="
 
-    - staged obojobo-chunks-code npm release
+    - stage: obojobo-chunks-code npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
       before_deploy:
@@ -180,7 +180,7 @@ jobs:
         api_key:
           secure: "en1lFaIHzet1sqqaVfvHlLyGcXnG0qx+1Sa4vGIxC65FrUftOBqBMcGZZNFFAOavZKSLHgQuSXzERc6Oe0QAicbn/OkEoIp9gZUyIaovwHk4SrNI8JFWpTFwywieevcD8MKgbyHjP2HdzhNY5PuG8OXnvKHKudhZal4FTE9x/VG8UhlKfAfuu28fVYia9muAgOGUI/YlEzY9QKMyNoUryo1aP0HOntnm4vBy7JvUW2MUG70YLqJ0tOy5Pp7UuFdDmLP9jq6n/NMovpJyfrnBXil2gvEp8c285H0E6X49PpnX3VwQigv5O7WxD06VbH7ch7ugy6FE7vGPGlaxwGFC3MtTKIP2PCefSv+PZ6tKi/11gEzWFr2o2yZAneO5BkIF7fZCji3tQaPTpIsHmrBdcbrMcamHEB/KCl5MjMTKTMegEOv9YJHvVDzjesjWMkf5aBOgiL4N7F6vdHXNluRrNtm3DPXWnx3jmgURC4yp+l6VsCtW2AGDCjqynT3JU+ThEK4Z8SiNtsNXvzZLJd9MvDu5F5WtSmm+G8ScW7dynK4sdpVyNyAbrmVpX3PDZVeoWkS045jiGrKzcLtnlDEpBzp5LpRLhD9G3JTRAkF78PIXEsCSUsNgR5pkgXhStRrErvUcEnbpB7iIN4HvSYxA10aGT6emlCBO6nlsLtEB4YA="
 
-    - staged obojobo-chunks-html npm release
+    - stage: obojobo-chunks-html npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
       before_deploy:
@@ -210,7 +210,7 @@ jobs:
         api_key:
           secure: "en1lFaIHzet1sqqaVfvHlLyGcXnG0qx+1Sa4vGIxC65FrUftOBqBMcGZZNFFAOavZKSLHgQuSXzERc6Oe0QAicbn/OkEoIp9gZUyIaovwHk4SrNI8JFWpTFwywieevcD8MKgbyHjP2HdzhNY5PuG8OXnvKHKudhZal4FTE9x/VG8UhlKfAfuu28fVYia9muAgOGUI/YlEzY9QKMyNoUryo1aP0HOntnm4vBy7JvUW2MUG70YLqJ0tOy5Pp7UuFdDmLP9jq6n/NMovpJyfrnBXil2gvEp8c285H0E6X49PpnX3VwQigv5O7WxD06VbH7ch7ugy6FE7vGPGlaxwGFC3MtTKIP2PCefSv+PZ6tKi/11gEzWFr2o2yZAneO5BkIF7fZCji3tQaPTpIsHmrBdcbrMcamHEB/KCl5MjMTKTMegEOv9YJHvVDzjesjWMkf5aBOgiL4N7F6vdHXNluRrNtm3DPXWnx3jmgURC4yp+l6VsCtW2AGDCjqynT3JU+ThEK4Z8SiNtsNXvzZLJd9MvDu5F5WtSmm+G8ScW7dynK4sdpVyNyAbrmVpX3PDZVeoWkS045jiGrKzcLtnlDEpBzp5LpRLhD9G3JTRAkF78PIXEsCSUsNgR5pkgXhStRrErvUcEnbpB7iIN4HvSYxA10aGT6emlCBO6nlsLtEB4YA="
 
-    - staged obojobo-chunks-list npm release
+    - stage: obojobo-chunks-list npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
       before_deploy:
@@ -300,7 +300,7 @@ jobs:
         api_key:
           secure: "en1lFaIHzet1sqqaVfvHlLyGcXnG0qx+1Sa4vGIxC65FrUftOBqBMcGZZNFFAOavZKSLHgQuSXzERc6Oe0QAicbn/OkEoIp9gZUyIaovwHk4SrNI8JFWpTFwywieevcD8MKgbyHjP2HdzhNY5PuG8OXnvKHKudhZal4FTE9x/VG8UhlKfAfuu28fVYia9muAgOGUI/YlEzY9QKMyNoUryo1aP0HOntnm4vBy7JvUW2MUG70YLqJ0tOy5Pp7UuFdDmLP9jq6n/NMovpJyfrnBXil2gvEp8c285H0E6X49PpnX3VwQigv5O7WxD06VbH7ch7ugy6FE7vGPGlaxwGFC3MtTKIP2PCefSv+PZ6tKi/11gEzWFr2o2yZAneO5BkIF7fZCji3tQaPTpIsHmrBdcbrMcamHEB/KCl5MjMTKTMegEOv9YJHvVDzjesjWMkf5aBOgiL4N7F6vdHXNluRrNtm3DPXWnx3jmgURC4yp+l6VsCtW2AGDCjqynT3JU+ThEK4Z8SiNtsNXvzZLJd9MvDu5F5WtSmm+G8ScW7dynK4sdpVyNyAbrmVpX3PDZVeoWkS045jiGrKzcLtnlDEpBzp5LpRLhD9G3JTRAkF78PIXEsCSUsNgR5pkgXhStRrErvUcEnbpB7iIN4HvSYxA10aGT6emlCBO6nlsLtEB4YA="
 
-    - staged obojobo-chunks-text npm release
+    - stage: obojobo-chunks-text npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
       before_deploy:
@@ -345,7 +345,7 @@ jobs:
         api_key:
           secure: "en1lFaIHzet1sqqaVfvHlLyGcXnG0qx+1Sa4vGIxC65FrUftOBqBMcGZZNFFAOavZKSLHgQuSXzERc6Oe0QAicbn/OkEoIp9gZUyIaovwHk4SrNI8JFWpTFwywieevcD8MKgbyHjP2HdzhNY5PuG8OXnvKHKudhZal4FTE9x/VG8UhlKfAfuu28fVYia9muAgOGUI/YlEzY9QKMyNoUryo1aP0HOntnm4vBy7JvUW2MUG70YLqJ0tOy5Pp7UuFdDmLP9jq6n/NMovpJyfrnBXil2gvEp8c285H0E6X49PpnX3VwQigv5O7WxD06VbH7ch7ugy6FE7vGPGlaxwGFC3MtTKIP2PCefSv+PZ6tKi/11gEzWFr2o2yZAneO5BkIF7fZCji3tQaPTpIsHmrBdcbrMcamHEB/KCl5MjMTKTMegEOv9YJHvVDzjesjWMkf5aBOgiL4N7F6vdHXNluRrNtm3DPXWnx3jmgURC4yp+l6VsCtW2AGDCjqynT3JU+ThEK4Z8SiNtsNXvzZLJd9MvDu5F5WtSmm+G8ScW7dynK4sdpVyNyAbrmVpX3PDZVeoWkS045jiGrKzcLtnlDEpBzp5LpRLhD9G3JTRAkF78PIXEsCSUsNgR5pkgXhStRrErvUcEnbpB7iIN4HvSYxA10aGT6emlCBO6nlsLtEB4YA="
 
-    - stagcd obojobo-pages-page npm release
+    - stage: obojobo-pages-page npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
       before_deploy:
