@@ -18,7 +18,7 @@ jobs:
       node_js: '10.4.1'
       # move into the desired package and back out for deploying
       before_deploy:
-        - cd packages/obojobo-express
+        - cd packages/app/obojobo-express
       after_deploy:
         - cd ../../
        # deploy this package to npm
@@ -34,7 +34,7 @@ jobs:
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
       before_deploy:
-        - cd packages/obojobo-document-engine
+        - cd packages/app/obojobo-document-engine
       after_deploy:
         - cd ../../
       deploy:
@@ -49,7 +49,7 @@ jobs:
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
       before_deploy:
-        - cd packages/obojobo-document-xml-parser
+        - cd packages/app/obojobo-document-xml-parser
       after_deploy:
         - cd ../../
       deploy:
