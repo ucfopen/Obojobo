@@ -1,11 +1,10 @@
 {
 	"name": "obojobo-express",
-	"license": "AGPL-3.0-only",
-	"version": "3.4.0",
+	"license": "AGPL-3.0",
+	"version": "4.0.0-rc.0",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
-	"license": "AGPL-3.0",
 	"scripts": {
 		"start": "./bin/start_obojobo_server",
 		"build": "webpack --mode production --optimize-minimize",
@@ -69,7 +68,7 @@
 		"morgan": "~1.7.0",
 		"multer": "^1.4.1",
 		"node-sass": "^4.9.0",
-		"obojobo-lib-utils": "1.0.0",
+		"obojobo-lib-utils": "^4.0.0-rc.0",
 		"pg-promise": "^5.5.0",
 		"postcss-loader": "^3.0.0",
 		"react-transition-group": "^2.5.3",

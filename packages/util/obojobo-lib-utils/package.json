@@ -1,24 +1,30 @@
 {
 	"name": "obojobo-lib-utils",
-	"version": "1.0.0",
+	"version": "4.0.0-rc.0",
 	"license": "AGPL-3.0-only",
 	"description": "Assortment of reusable parts for obojobo libraries.",
 	"scripts": {
 		"test": "TZ='America/New_York' jest",
-		"test:ci":
-			"TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "echo 'not implemented'",
 		"prettier:run": "prettier --write '**/*.{js,scss}'"
 	},
 	"lint-staged": {
-		"**/*.js": ["eslint"],
-		"**/*.scss": ["stylelint"],
-		"**/*.{js,scss}": ["prettier --write", "git add"]
+		"**/*.js": [
+			"eslint"
+		],
+		"**/*.scss": [
+			"stylelint"
+		],
+		"**/*.{js,scss}": [
+			"prettier --write",
+			"git add"
+		]
 	},
 	"dependencies": {
-		"obojobo-document-engine": "^3.4.0",
+		"obojobo-document-engine": "^4.0.0-rc.0",
 		"prop-types": "15.6.2",
 		"react": "16.7.0",
 		"react-dom": "16.7.0",
@@ -26,7 +32,6 @@
 		"react-transition-group": "^2.5.3"
 	},
 	"devDependencies": {
-		"lint-staged": "^6.1.1",
 		"@babel/core": "^7.0.0-0",
 		"@babel/plugin-transform-runtime": "^7.3.4",
 		"@babel/polyfill": "7.0.0",
@@ -41,6 +46,7 @@
 		"eslint": "^4.19.1",
 		"eslint-plugin-react": "7.9.1",
 		"jest": "24.1.0",
+		"lint-staged": "^6.1.1",
 		"prettier": "1.11.1",
 		"react-dom": "16.7.0",
 		"react-test-renderer": "16.7.0",
@@ -54,7 +60,10 @@
 			"<rootDir>/test-setup-chunks.js",
 			"<rootDir>/mock-virtual.js"
 		],
-		"coverageReporters": ["text", "lcov"],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
 		"coverageThreshold": {
 			"global": {
 				"branches": 100,
