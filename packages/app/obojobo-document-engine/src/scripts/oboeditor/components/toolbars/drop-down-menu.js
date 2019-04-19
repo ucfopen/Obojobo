@@ -85,7 +85,13 @@ class SubMenu extends React.Component {
 							case 'sub-menu':
 								return (this.renderSubMenu(item))
 							default:
-								return (<button key={item.name}>{item.name}</button>)
+								return (
+									<button
+										key={item.name}
+										onClick={item.action}>
+										{item.name}
+									</button>
+								)
 						}
 					})}
 				</div>

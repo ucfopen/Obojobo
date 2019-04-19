@@ -121,8 +121,12 @@ class PageEditor extends React.Component {
 			<div
 				className={'component obojobo-draft--modules--module editor--page-editor'} role="main">
 				<div className="draft-toolbars">
-					<div className="draft-title">Draft Name</div>
-					<FileToolbar getEditor={this.getEditor.bind(this)}/>
+					<div className="draft-title">{this.props.model.title}</div>
+					<FileToolbar
+						getEditor={this.getEditor.bind(this)}
+						model={this.props.model}
+						draftId={this.props.draftId}
+						exportToJSON={this.exportToJSON.bind(this, this.props.page, this.state.value)}/>
 					<ContentToolbar getEditor={this.getEditor.bind(this)}/>
 				</div>
 				<Editor
@@ -200,58 +204,6 @@ class PageEditor extends React.Component {
 		}
 
 		return json
-	}
-
-	renderExportButton() {
-		return (
-			<div className="footer-menu">
-				<Button className={'exporter'} onClick={() => this.saveDraft()}>
-					{'Save Document'}
-				</Button>
-			</div>
-		)
-	}
-
-	saveDraft() {
-		this.exportToJSON(this.props.page, this.state.value)
-		const json = this.props.model.flatJSON()
-
-		// deal with content
-		this.props.model.children.forEach(child => {
-			let contentJSON = {}
-
-			switch (child.get('type')) {
-				case CONTENT_NODE:
-					contentJSON = child.flatJSON()
-
-					for (const item of Array.from(child.children.models)) {
-						contentJSON.children.push({
-							id: item.get('id'),
-							type: item.get('type'),
-							content: item.get('content'),
-							children: item.get('children')
-						})
-					}
-					break
-
-				case ASSESSMENT_NODE:
-					contentJSON.id = child.get('id')
-					contentJSON.type = child.get('type')
-					contentJSON.children = child.get('children')
-					contentJSON.content = child.get('content')
-					break
-			}
-
-			json.children.push(contentJSON)
-		})
-
-		APIUtil.postDraft(this.props.draftId, json).then(result => {
-			if (result.status === 'ok') {
-				ModalUtil.show(<SimpleDialog ok title={'Successfully saved draft'} />)
-			} else {
-				ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
-			}
-		})
 	}
 }
 

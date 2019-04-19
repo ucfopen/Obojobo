@@ -34,6 +34,18 @@ const APIUtil = {
 		})
 	},
 
+	delete(endpoint) {
+		return fetch(endpoint, {
+			method: 'DELETE',
+			credentials: 'include',
+			body: '',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			}
+		})
+	},
+
 	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
 		return (
 			APIUtil.post('/api/events', {
@@ -109,7 +121,15 @@ const APIUtil = {
 
 	createNewDraft() {
 		return APIUtil.post(`/api/drafts/new`).then(processJsonResults)
-	}
+	},
+
+	deleteDraft(draftId) {
+		return APIUtil.delete(`/api/drafts/`+draftId).then(processJsonResults)
+	},
+
+	getAllDrafts() {
+		return APIUtil.get(`/api/drafts`).then(processJsonResults)
+	},
 }
 
 export default APIUtil

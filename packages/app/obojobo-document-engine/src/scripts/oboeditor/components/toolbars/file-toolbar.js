@@ -1,24 +1,12 @@
 import React from 'react'
 import Common from 'Common'
 
+import FileMenu from './file-menu'
 import DropDownMenu from './drop-down-menu'
 
 import './file-toolbar.scss'
 
 const FileToolbar = props => {
-	const fileMenu = {
-		name: 'File',
-		menu: [
-			{ name: 'New', type: 'action', action: () => console.log('New draft') },
-			{ name: 'Open', type: 'action'  },
-			{ name: 'Make a copy', type: 'action'  },
-			{ name: 'Rename', type: 'action'  },
-			{ name: 'Delete', type: 'action'  },
-			{ name: 'Module Properties', type: 'action'  },
-			{ name: 'Copy LTI Link', type: 'action',   }
-		]
-	}
-
 	const editMenu = {
 		name: 'Edit',
 		menu: [
@@ -122,8 +110,8 @@ const FileToolbar = props => {
 
 	return (
 		<div className={`visual-editor--file-toolbar`}>
-			<DropDownMenu menu={fileMenu}/>
-			<DropDownMenu menu={editMenu}/>
+			<FileMenu model={props.model} draftId={props.draftId} exportToJSON={props.exportToJSON} />
+			<DropDownMenu menu={editMenu} />
 			<DropDownMenu menu={viewMenu}/>
 			<DropDownMenu menu={insertMenu}/>
 			<DropDownMenu menu={formatMenu}/>
