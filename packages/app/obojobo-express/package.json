@@ -64,6 +64,7 @@
 		"moment": "^2.18.0",
 		"morgan": "~1.7.0",
 		"multer": "^1.4.1",
+		"obojobo-document-engine": "^4.0.0-rc.4",
 		"obojobo-document-xml-parser": "^4.0.0-rc.4",
 		"obojobo-lib-utils": "^4.0.0-rc.4",
 		"pg-promise": "^5.5.0",
