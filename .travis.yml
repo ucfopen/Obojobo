@@ -16,7 +16,7 @@ jobs:
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       # run this on only one node platform (allows us to put multiple platforms above for testing)
       node_js: '10.4.1'
-      # move into the desired package and back out for deploying
+      # move into the desired package build assets, remove node_modules
       before_deploy:
         - cd packages/app/obojobo-express
         - yarn build
@@ -26,6 +26,8 @@ jobs:
        # deploy this package to npm
       deploy:
         provider: npm
+        # don't delete the built assets before deploying
+        skip_cleanup: true
         email: iturgeon+npm@gmail.com
         on:
           tags: true
