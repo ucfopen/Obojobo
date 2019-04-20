@@ -16,11 +16,12 @@ jobs:
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       # run this on only one node platform (allows us to put multiple platforms above for testing)
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       # move into the desired package build assets, remove node_modules
       before_deploy:
         - cd packages/app/obojobo-express
         - yarn build
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
        # deploy this package to npm
@@ -37,9 +38,10 @@ jobs:
     - stage: obojobo-document-engine npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/app/obojobo-document-engine
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -53,9 +55,10 @@ jobs:
     - stage: obojobo-document-xml-parser npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/app/obojobo-document-xml-parser
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -69,9 +72,10 @@ jobs:
     - stage: eslint-config-obojobo npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/util/eslint-config-obojobo
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -85,9 +89,10 @@ jobs:
     - stage: obojobo-lib-utils npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/util/obojobo-lib-utils
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -101,9 +106,10 @@ jobs:
     - stage: stylelint-config-obojobo npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/util/stylelint-config-obojobo
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -117,9 +123,10 @@ jobs:
     - stage: obojobo-chunks-action-button npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-action-button
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -133,9 +140,10 @@ jobs:
     - stage: obojobo-chunks-break npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-break
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -149,9 +157,10 @@ jobs:
     - stage: obojobo-chunks-code npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-code
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -165,9 +174,10 @@ jobs:
     - stage: obojobo-chunks-figure npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-figure
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -181,9 +191,10 @@ jobs:
     - stage: obojobo-chunks-heading npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-heading
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -197,9 +208,10 @@ jobs:
     - stage: obojobo-chunks-html npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-html
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -213,9 +225,10 @@ jobs:
     - stage: obojobo-chunks-iframe npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-iframe
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -229,9 +242,10 @@ jobs:
     - stage: obojobo-chunks-list npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-list
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -245,9 +259,10 @@ jobs:
     - stage: obojobo-chunks-math-equation npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-math-equation
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -261,9 +276,10 @@ jobs:
     - stage: obojobople-choice-assessment npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-multiple-choice-assessment
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -277,9 +293,10 @@ jobs:
     - stage: obojobo-chunks-question npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-question
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -293,9 +310,10 @@ jobs:
     - stage: obojobo-chunks-question-bank npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-question-bank
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -309,9 +327,10 @@ jobs:
     - stage: obojobo-chunks-table npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-table
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -325,9 +344,10 @@ jobs:
     - stage: obojobo-chunks-text npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-text
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -341,9 +361,10 @@ jobs:
     - stage: obojobo-chunks-youtube npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-chunks-youtube
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -357,9 +378,10 @@ jobs:
     - stage: obojobo-modules-module npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-modules-module
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -373,9 +395,10 @@ jobs:
     - stage: obojobo-pages-page npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-pages-page
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -389,9 +412,10 @@ jobs:
     - stage: obojobo-sections-assessment npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-sections-assessment
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
@@ -405,9 +429,10 @@ jobs:
     - stage: obojobo-sections-content npm release
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
       node_js: '10.4.1'
+      # dont bother running the top level script tag (yarn test:ci)
+      script: skip
       before_deploy:
         - cd packages/obonode/obojobo-sections-content
-        - rm -rf node_modules
       after_deploy:
         - cd ../../..
       deploy:
