@@ -19,6 +19,7 @@ jobs:
       # move into the desired package and back out for deploying
       before_deploy:
         - cd packages/app/obojobo-express
+        - yarn build
         - rm -rf node_modules
       after_deploy:
         - cd ../../..
@@ -36,7 +37,6 @@ jobs:
       node_js: '10.4.1'
       before_deploy:
         - cd packages/app/obojobo-document-engine
-        - yarn build
         - rm -rf node_modules
       after_deploy:
         - cd ../../..
