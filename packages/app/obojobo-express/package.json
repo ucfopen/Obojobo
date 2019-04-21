@@ -87,6 +87,7 @@
 	},
 	"devDependencies": {
 		"lint-staged": "^6.1.1",
+		"express-list-endpoints": "^4.0.0",
 		"oauth-signature": "^1.5.0"
 	},
 	"bin": {

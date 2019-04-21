@@ -53,6 +53,25 @@ module.exports = app => {
 			</body></html>`)
 	})
 
+	// json list of every express.js route
+	app.get('/routes', (req, res) => {
+		const listEndpoints = require('express-list-endpoints')
+		const foundPaths = new Set()
+		const simplifiedEndpoints = listEndpoints(app)
+			// remove express's * path
+			.filter(i => i.path != '*')
+			// filter any duplicat paths
+			.filter(i => {
+				if(foundPaths.has(i.path)) return false
+				foundPaths.add(i.path)
+				return true;
+			})
+			// sort the remaining paths
+			.sort((a,b) => a.path.localeCompare(b.path))
+
+		res.json(simplifiedEndpoints)
+	})
+
 	// builds a valid course navigation lti launch an submits it
 	app.get('/lti/dev/launch/course_navigation', (req, res) => {
 		const method = 'POST'

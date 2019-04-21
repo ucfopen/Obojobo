@@ -4519,6 +4519,11 @@ expect@^24.1.0:
   dependencies:
     ims-lti "https://github.com/ChristianMurphy/ims-lti.git#d535b4c4aff8a43775d3d9c1f2069f0593b7779f"
 
+express-list-endpoints@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/express-list-endpoints/-/express-list-endpoints-4.0.0.tgz#c7e8b3e0655e82403ab314292b00945377a7d8e6"
+  integrity sha512-3xkJTUirrozS+6WlaRWgIRI4cKMiLUsAFKO5qADNfwfMv8leFGaCODB3AuAvl0NyUGuitDrGxMtWt/zOaEY4Gg==
+
 express-session@^1.15.1:
   version "1.15.6"
   resolved "https://registry.yarnpkg.com/express-session/-/express-session-1.15.6.tgz#47b4160c88f42ab70fe8a508e31cbff76757ab0a"
