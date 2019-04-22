@@ -24,6 +24,18 @@ if (process.env.DATABASE_URL) {
 	process.env.DB_PORT = dburl.port
 }
 
+const isStringJSON = (name, string) => {
+	try{
+		JSON.parse(string)
+		return true
+	} catch (error){
+		if(name.endsWith('_JSON')){
+			throw new Error(`Expected ENV ${name} to be valid JSON, but it did not parse`)
+		}
+		return false
+	}
+}
+
 const replaceENVsInObject = configObject => {
 	const rawJson = JSON.stringify(configObject) // convert back to string
 
@@ -34,12 +46,15 @@ const replaceENVsInObject = configObject => {
 
 	let replacedJson = rawJson
 	while ((result = pattern.exec(rawJson))) {
-		if (!process.env[result[1]]) {
-			throw new Error(`Expected ENV var ${result[1]} is not set`)
+		const envVar = result[1]
+		if (!process.env[envVar]) {
+			throw new Error(`Expected ENV var ${envVar} is not set`)
 		} else {
-			let replacement = process.env[result[1]]
+			let replacement = process.env[envVar]
+			const isJSON = isStringJSON(envVar, replacement)
+
 			// if the value isnt true, false, or an integer, wrap it with quotes
-			if (replacement !== 'true' && replacement !== 'false' && !/^\d+$/g.test(replacement)) {
+			if (!isJSON && typeof replacement == 'string' && replacement !== 'true' && replacement !== 'false' && !/^\d+$/g.test(replacement)) {
 				replacement = `"${replacement}"`
 			}
 			// replace without changing pattern.exec()'s position in rawJson
