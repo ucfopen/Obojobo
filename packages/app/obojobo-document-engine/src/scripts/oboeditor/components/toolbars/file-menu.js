@@ -102,10 +102,8 @@ class FileMenu extends React.Component {
 				draftId = result.value.id
 				return this.saveModule(draftId)
 			})
-			.then(result => {
-				if(result.status === 'ok'){
-					window.open(window.location.origin + '/editor/' + draftId, '_blank')
-				}
+			.then(() => {
+				window.open(window.location.origin + '/editor/' + draftId, '_blank')
 			})
 	}
 

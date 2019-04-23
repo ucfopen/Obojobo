@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScriptMarks renderMark diplays expected style 1`] = `
+<sup>
+  mockChild
+</sup>
+`;
+
+exports[`ScriptMarks renderMark diplays expected style 2`] = `
+<sub>
+  mockChild
+</sub>
+`;

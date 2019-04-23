@@ -2,64 +2,15 @@
 
 exports[`EditorNav EditorNav component 1`] = `
 <div
-  className="viewer--components--nav  editor--components--nav  is-not-locked is-not-open is-enabled"
+  className="visual-editor--draft-nav  is-not-locked is-not-open is-enabled"
 >
-  <ul>
-    <li
-      className="button-bar-buffer"
-    />
-  </ul>
-  <div
-    className="button-bar"
-  >
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center content-add-button align-left"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        + Add Page
-      </button>
-    </div>
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center content-add-button align-left"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        + Add Assessment
-      </button>
-    </div>
-    <br />
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center content-add-button align-left"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        Rename Module
-      </button>
-    </div>
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center content-add-button align-left"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        Copy Module URL
-      </button>
-    </div>
-  </div>
+  <ul />
 </div>
 `;
 
 exports[`EditorNav EditorNav component with all list item types 1`] = `
 <div
-  className="viewer--components--nav  editor--components--nav  is-locked is-not-open is-enabled"
+  className="visual-editor--draft-nav  is-locked is-not-open is-enabled"
 >
   <ul>
     <li
@@ -69,54 +20,6 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
         label4
       </span>
     </li>
-    <li
-      className="button-bar-buffer"
-    />
   </ul>
-  <div
-    className="button-bar"
-  >
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center content-add-button align-left"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        + Add Page
-      </button>
-    </div>
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center content-add-button align-left"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        + Add Assessment
-      </button>
-    </div>
-    <br />
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center content-add-button align-left"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        Rename Module
-      </button>
-    </div>
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center content-add-button align-left"
-    >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        Copy Module URL
-      </button>
-    </div>
-  </div>
 </div>
 `;

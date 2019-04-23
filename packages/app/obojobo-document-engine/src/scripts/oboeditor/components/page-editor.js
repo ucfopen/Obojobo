@@ -101,6 +101,7 @@ class PageEditor extends React.Component {
 
 		// Save changes when switching pages
 		if (prevProps.page.id !== this.props.page.id) {
+			console.log(this.props.page.id)
 			this.exportToJSON(prevProps.page, prevState.value)
 			this.setState({ value: Value.fromJSON(this.importFromJSON()) })
 		}

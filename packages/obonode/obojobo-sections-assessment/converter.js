@@ -12,6 +12,7 @@ import Rubric from './components/rubric/editor'
 import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
 
 const slateToObo = node => {
+	console.log(node)
 	const content = node.data.get('content')
 	// Remove rubric if it has been deleted
 	delete content.rubric

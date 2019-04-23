@@ -23,6 +23,8 @@ const AlignMarks = {
 				case 'e':
 					event.preventDefault()
 					return editor.setAlign(ALIGN_CENTER)
+				default:
+					next()
 			}
 
 

@@ -74,7 +74,6 @@ const FileToolbar = props => {
 					{ name: 'Left', type: 'action' },
 					{ name: 'Center', type: 'action' },
 					{ name: 'Right', type: 'action' },
-					{ name: 'Quote', type: 'action' },
 					{ name: 'Increase Indent', type: 'action' },
 					{ name: 'Decrease Indent', type: 'action' }
 				]
@@ -110,7 +109,10 @@ const FileToolbar = props => {
 
 	return (
 		<div className={`visual-editor--file-toolbar`}>
-			<FileMenu model={props.model} draftId={props.draftId} exportToJSON={props.exportToJSON} />
+			<FileMenu
+				model={props.model}
+				draftId={props.draftId}
+				exportToJSON={props.exportToJSON}/>
 			<DropDownMenu menu={editMenu} />
 			<DropDownMenu menu={viewMenu}/>
 			<DropDownMenu menu={insertMenu}/>

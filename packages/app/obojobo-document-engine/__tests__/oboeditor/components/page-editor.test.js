@@ -7,6 +7,7 @@ jest.mock('slate-react')
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import APIUtil from 'src/scripts/viewer/util/api-util'
 jest.mock('src/scripts/viewer/util/api-util')
+jest.mock('src/scripts/oboeditor/components/toolbars/file-menu')
 jest.mock('src/scripts/common/util/modal-util')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
@@ -24,7 +25,8 @@ describe('PageEditor', () => {
 			page: {
 				attributes: { children: [] },
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		}
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
@@ -36,7 +38,8 @@ describe('PageEditor', () => {
 			page: {
 				attributes: { children: [] },
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		}
 		const component = shallow(<PageEditor {...props} />)
 		component.setProps({ page: null })
@@ -49,7 +52,8 @@ describe('PageEditor', () => {
 			page: {
 				attributes: { children: [] },
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		}
 		const component = shallow(<PageEditor {...props} />)
 		component.setProps({ page: null })
@@ -58,16 +62,23 @@ describe('PageEditor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('EditorNav component with no page updating to a page', () => {
+	test('EditorNav component with page updating to another page', () => {
 		const props = {
 			page: {
 				id: 1,
 				set: jest.fn(),
 				attributes: {
-					children: []
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
 				},
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		}
 		const component = shallow(<PageEditor {...props} />)
 		component.setProps({
@@ -75,10 +86,17 @@ describe('PageEditor', () => {
 				id: 2,
 				set: jest.fn(),
 				attributes: {
-					children: []
+					children: [
+						{
+							type: BREAK_NODE,
+							content: {},
+							children: []
+						}
+					]
 				},
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		})
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
@@ -98,15 +116,59 @@ describe('PageEditor', () => {
 					]
 				},
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		}
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('EditorNav component with content exports to database', () => {
+	test('EditorNav component displaying Assessment exports toJSON', () => {
 		APIUtil.postDraft.mockResolvedValueOnce({ status: 'ok' })
+
+		const page = {
+			id: 2,
+			set: jest.fn(),
+			attributes: {
+				children: [
+					{
+						type: BREAK_NODE,
+						content: {},
+						children: []
+					}
+				]
+			},
+			get: jest
+				.fn()
+				.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
+				.mockReturnValueOnce({
+					scoreActions: [
+						{
+							for: '100',
+							page: {
+								type: PAGE_NODE,
+								children: [
+									{
+										type: BREAK_NODE,
+										content: {}
+									}
+								]
+							}
+						}
+					]
+				})
+				.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in export
+		}
+
+		const value = {
+			document: {
+				nodes: { get: () => ({
+					data: { get: () => ({}) },
+					nodes: []
+				})}
+			}
+		}
 
 		const props = {
 			page: {
@@ -143,6 +205,7 @@ describe('PageEditor', () => {
 					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in export
 			},
 			model: {
+				title: 'Mock Title',
 				children: [
 					{
 						get: () => ASSESSMENT_NODE,
@@ -171,53 +234,9 @@ describe('PageEditor', () => {
 			}
 		}
 		const component = mount(<PageEditor {...props} />)
-		const tree = component.html()
+		const json = component.instance().exportToJSON(page, value)
 
-		component
-			.find('button')
-			.at(14)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-		expect(APIUtil.postDraft).toHaveBeenCalled()
-	})
-
-	test('EditorNav component with content fails to export to database', () => {
-		jest.spyOn(window, 'alert')
-		window.alert.mockReturnValueOnce(null)
-		APIUtil.postDraft.mockResolvedValueOnce({ status: 'not ok' })
-
-		const props = {
-			page: {
-				id: 2,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: 'ObojoboDraft.Chunks.Break',
-							content: {}
-						}
-					]
-				},
-				get: jest.fn()
-			},
-			model: {
-				children: [],
-				flatJSON: () => {
-					return { children: [] }
-				}
-			}
-		}
-		const component = mount(<PageEditor {...props} />)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(14)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-		expect(APIUtil.postDraft).toHaveBeenCalle
+		expect(json).toMatchSnapshot()
 	})
 
 	test('EditorNav component alters value majorly', () => {
@@ -226,7 +245,8 @@ describe('PageEditor', () => {
 			page: {
 				attributes: { children: [] },
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		}
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
@@ -253,7 +273,8 @@ describe('PageEditor', () => {
 			page: {
 				attributes: { children: [] },
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		}
 		const component = shallow(<PageEditor {...props} />)
 		const tree = component.html()
@@ -280,7 +301,8 @@ describe('PageEditor', () => {
 			page: {
 				attributes: { children: [] },
 				get: jest.fn()
-			}
+			},
+			model: { title: 'Mock Title' }
 		}
 		const component = mount(<PageEditor {...props} />)
 

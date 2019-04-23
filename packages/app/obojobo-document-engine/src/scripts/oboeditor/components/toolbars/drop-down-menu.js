@@ -11,7 +11,7 @@ import './drop-down-menu.scss'
 
 const { OboModel } = Common.models
 
-class SubMenu extends React.Component {
+class DropMenu extends React.Component {
 	constructor(props) {
 		super(props)
 
@@ -77,7 +77,9 @@ class SubMenu extends React.Component {
 
 	renderSubMenu(submenu) {
 		return (
-			<div className={'dropdown ' + isOrNot(this.state.isOpen, 'open')}>
+			<div
+				className={'dropdown ' + isOrNot(this.state.isOpen, 'open')}
+				key={submenu.name}>
 				<button className="menu-title">{submenu.name}</button>
 				<div className="menu-items">
 					{submenu.menu.map(item => {
@@ -124,4 +126,4 @@ class SubMenu extends React.Component {
 	}
 }
 
-export default SubMenu
+export default DropMenu
