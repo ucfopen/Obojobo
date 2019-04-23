@@ -36,16 +36,15 @@ const isStringJSON = (name, string) => {
 	}
 }
 
-const replaceENVsInObject = configObject => {
-	const rawJson = JSON.stringify(configObject) // convert back to string
-
+const replaceENVsInJson = originalJson => {
+	// const originalJson = JSON.stringify(configObject) // convert back to string
 	// replace any "ENV": "CONFIG_VAR" settings with
 	// values from procesess.env
 	const pattern = /\{\s*"ENV"\s*?:\s*?"(.*?)"\s*\}/gi
 	let result
 
-	let replacedJson = rawJson
-	while ((result = pattern.exec(rawJson))) {
+	let replacedJson = originalJson
+	while ((result = pattern.exec(originalJson))) {
 		const envVar = result[1]
 		if (!process.env[envVar]) {
 			throw new Error(`Expected ENV var ${envVar} is not set`)
@@ -53,16 +52,19 @@ const replaceENVsInObject = configObject => {
 			let replacement = process.env[envVar]
 			const isJSON = isStringJSON(envVar, replacement)
 
+			// if JSON, recurse to allow env replacement inside json
+			if(isJSON) replacement = replaceENVsInJson(replacement)
+
 			// if the value isnt true, false, or an integer, wrap it with quotes
 			if (!isJSON && typeof replacement == 'string' && replacement !== 'true' && replacement !== 'false' && !/^\d+$/g.test(replacement)) {
 				replacement = `"${replacement}"`
 			}
-			// replace without changing pattern.exec()'s position in rawJson
+			// replace without changing pattern.exec()'s position in originalJson
 			replacedJson = replacedJson.replace(result[0], replacement)
 		}
 	}
 
-	return JSON.parse(replacedJson) // convert back to object
+	return replacedJson
 }
 
 const getConfigFileData = (configFile, env) => {
@@ -76,7 +78,8 @@ const getConfigFileData = (configFile, env) => {
 		}
 
 		if (config[env]) {
-			envObject = replaceENVsInObject(envObject)
+			const hydratedJson = replaceENVsInJson(JSON.stringify(envObject))
+			envObject = JSON.parse(hydratedJson)
 		}
 
 		return Object.assign({}, defaultObject, envObject) // combine with default if it exists
