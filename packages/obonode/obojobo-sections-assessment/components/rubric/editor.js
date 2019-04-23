@@ -1,6 +1,6 @@
 import React from 'react'
 import { Block, Document } from 'slate'
-import { getEventTransfer, cloneFragment } from 'slate-react'
+import { getEventTransfer, setEventTransfer } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -118,7 +118,7 @@ const plugins = {
 
 		// When pasting into a rubric, paste everything as plain text
 		const transfer = getEventTransfer(event)
-		editor.insertText(transfer.text)
+		return editor.insertText(transfer.text)
 	},
 	onCut(event, editor, next) {
 		// See if any of the selected nodes have a Rubric parent
@@ -129,7 +129,7 @@ const plugins = {
 		const textFragment = editor.extractTextToFragment()
 		KeyDownUtil.deleteNodeContents(event, editor, next)
 
-		return cloneFragment(event, editor, next, textFragment)
+		return setEventTransfer(event, 'fragment', textFragment)
 	},
 	onCopy(event, editor, next) {
 		// See if any of the selected nodes have a Rubric parent
@@ -139,7 +139,7 @@ const plugins = {
 		// Copy just the text
 		const textFragment = editor.extractTextToFragment()
 
-		return cloneFragment(event, editor, next, textFragment)
+		return setEventTransfer(event, 'fragment', textFragment)
 	},
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
