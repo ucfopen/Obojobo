@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-break",
-	"version": "4.0.0-rc.8",
+	"version": "4.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "Break content chunk for Obojobo",
 	"scripts": {
@@ -24,7 +24,7 @@
 		]
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^4.0.0-rc.8"
+		"obojobo-lib-utils": "^4.0.0"
 	},
 	"devDependencies": {
 		"lint-staged": "^6.1.1"
