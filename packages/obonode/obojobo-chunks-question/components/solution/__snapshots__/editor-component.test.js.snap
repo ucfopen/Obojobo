@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Solution Editor Node Solution component 1`] = `
+<div
+  className="solution-editor"
+>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+  >
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Solution Editor Node Solution component deletes self 1`] = `"<div class=\\"solution-editor\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;

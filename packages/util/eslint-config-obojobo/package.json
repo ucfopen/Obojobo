@@ -1,0 +1,17 @@
+{
+	"name": "eslint-config-obojobo",
+	"version": "4.0.0",
+	"license": "AGPL-3.0-only",
+	"scripts": {
+		"lint": "echo 'not implemented'",
+		"lint:css": "echo 'not implemented'",
+		"lint:js": "echo 'not implemented'",
+		"test": "echo 'not implemented'",
+		"test:ci": "echo 'not implemented'",
+		"test:coverage": "echo 'not implemented'",
+		"lint-staged": "echo 'not implemented'"
+	},
+	"dependencies": {
+		"eslint-plugin-react": "7.9.1"
+	}
+}

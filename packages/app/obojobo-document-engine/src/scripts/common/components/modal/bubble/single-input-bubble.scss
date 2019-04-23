@@ -1,0 +1,41 @@
+@import '../../../../../scss/includes';
+
+.obojobo-draft--components--modal--bubble .single-input-bubble {
+	.interactable {
+		margin-bottom: 0.3em;
+	}
+
+	input {
+		border: 1px solid $color-action;
+		box-sizing: border-box;
+		font-family: $font-monospace;
+		font-size: 0.8em;
+		height: 2em;
+		padding: 0.2em;
+	}
+
+	button {
+		background: $color-action;
+		border: none;
+		border-radius: $dimension-rounded-radius;
+		box-sizing: border-box;
+		color: $color-bg;
+		cursor: pointer;
+		font-family: $font-default;
+		font-size: 0.8em;
+		font-weight: bold;
+		height: 2em;
+		padding: 0.23rem 0.5em;
+		text-transform: uppercase;
+		vertical-align: top;
+	}
+
+	.label {
+		color: $color-text-minor;
+		display: block;
+		font-family: $font-default;
+		font-size: 0.7em;
+		font-weight: bold;
+		text-align: center;
+	}
+}

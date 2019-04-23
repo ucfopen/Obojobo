@@ -1,0 +1,207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Figure Editor Node Figure component 1`] = `
+<div
+  className="obojobo-draft--chunks--figure viewer small"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        unselectable="on"
+      />
+    </div>
+    <figcaption />
+  </div>
+</div>
+`;
+
+exports[`Figure Editor Node Figure component handles clicks 1`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
+
+exports[`Figure Editor Node Figure component handles clicks 2`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
+
+exports[`Figure Editor Node Figure component handles clicks 3`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box  is-not-selected\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
+
+exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
+<div
+  className="obojobo-draft--chunks--figure viewer custom"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "height": "customHeightpx",
+            "width": "customWidthpx",
+          }
+        }
+        unselectable="on"
+      />
+    </div>
+    <figcaption />
+  </div>
+</div>
+`;
+
+exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
+<div
+  className="obojobo-draft--chunks--figure viewer custom"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "height": "customHeightpx",
+          }
+        }
+        unselectable="on"
+      />
+    </div>
+    <figcaption />
+  </div>
+</div>
+`;
+
+exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
+<div
+  className="obojobo-draft--chunks--figure viewer custom"
+>
+  <div
+    className="container"
+  >
+    <div
+      className="figure-box  is-not-selected"
+      onClick={[Function]}
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+      <div
+        className="image-toolbar"
+      >
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Image Properties
+          </button>
+        </div>
+      </div>
+      <img
+        alt="mockAlt"
+        src="mockUrl"
+        style={
+          Object {
+            "width": "mockWidthpx",
+          }
+        }
+        unselectable="on"
+      />
+    </div>
+    <figcaption />
+  </div>
+</div>
+`;

@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionButton Editor Node ActionButton adds action 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div>Button Actions:</div><div class=\\"trigger\\"><span>mockType</span><span>mockValue</span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\"><button class=\\"button\\">+ Add New Action</button></div></div></div>"`;
+
+exports[`ActionButton Editor Node ActionButton builds the expected component 1`] = `
+<div
+  className="text-chunk obojobo-draft--chunks--action-button pad"
+>
+  <div
+    className="obojobo-draft--components--button align-center"
+  >
+    <div
+      className="button"
+    />
+  </div>
+</div>
+`;
+
+exports[`ActionButton Editor Node ActionButton builds the expected component when selected 1`] = `
+<div
+  className="text-chunk obojobo-draft--chunks--action-button pad"
+>
+  <div
+    className="obojobo-draft--components--button align-center"
+  >
+    <div
+      className="button"
+    />
+  </div>
+  <div
+    className="trigger-box"
+    contentEditable={false}
+  >
+    <div>
+      Button Actions:
+    </div>
+    <div
+      className="trigger"
+    >
+      <span>
+        mockType
+      </span>
+      <span>
+        mockValue
+      </span>
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          ×
+        </button>
+      </div>
+    </div>
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center add-action"
+    >
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        + Add New Action
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ActionButton Editor Node ActionButton deletes an action 1`] = `"<div class=\\"text-chunk obojobo-draft--chunks--action-button pad\\"><div class=\\"obojobo-draft--components--button align-center\\"><div class=\\"button\\"></div></div><div class=\\"trigger-box\\" contenteditable=\\"false\\"><div>Button Actions:</div><div class=\\"trigger\\"><span>mockType</span><span>mockValue</span><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-action\\"><button class=\\"button\\">+ Add New Action</button></div></div></div>"`;

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`draft_node_store add throws error adding a class with no nodename 1`] = `"Unable to add node class to store, object is missing nodeName property"`;
+
+exports[`draft_node_store add throws error when registering an oboNode with a name thats already registered 1`] = `"Unable to add node class to store, test-node-one is already registered"`;

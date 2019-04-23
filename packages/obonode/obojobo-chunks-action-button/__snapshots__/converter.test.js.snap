@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "actions": Array [],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "mockLabel",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node using a textGroup 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "actions": Array [],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": undefined,
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node with triggers 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "actions": Array [
+        Object {
+          "type": "mockType",
+          "value": "",
+        },
+        Object {
+          "type": "mockOtherType",
+          "value": "{\\"id\\":\\"mockId\\"}",
+        },
+      ],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "mockLabel",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`ActionButton Converter slateToObo converts a Slate node 1`] = `
+Object {
+  "children": Array [],
+  "content": Object {
+    "actions": Array [
+      Object {
+        "type": "mockType",
+        "value": "{\\"id\\":\\"mockId\\"}",
+      },
+      Object {
+        "type": "mockType",
+        "value": "",
+      },
+    ],
+    "textGroup": Array [
+      Object {
+        "data": null,
+        "text": Object {
+          "styleList": Array [],
+          "value": "mockText",
+        },
+      },
+    ],
+    "triggers": Array [
+      Object {
+        "actions": Array [
+          Object {
+            "type": "mockType",
+            "value": Object {
+              "id": "mockId",
+            },
+          },
+          Object {
+            "type": "mockType",
+            "value": Object {},
+          },
+        ],
+        "type": "onClick",
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

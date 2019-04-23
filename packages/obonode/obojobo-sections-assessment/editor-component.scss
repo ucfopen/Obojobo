@@ -1,0 +1,21 @@
+@import '~styles/includes';
+
+.obojobo-draft--sections--assessment {
+	.add-rubric {
+		.button {
+			$color-preview-hover: darken($color-preview, 9%);
+
+			background-color: $color-preview;
+
+			&:hover {
+				background-color: $color-preview-hover;
+			}
+		}
+	}
+
+	> .obojobo-draft--chunks--question-bank {
+		> .delete-button {
+			display: none;
+		}
+	}
+}

@@ -1,0 +1,68 @@
+@import '~styles/includes';
+
+.obojobo-draft--chunks--iframe {
+	position: relative;
+
+	.obojobo-draft--components--button {
+		display: block;
+	}
+
+	.iframe-toolbar {
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 100%;
+		transform: translate(0, -50%);
+		z-index: 3;
+		color: $color-text;
+		font-family: $font-default;
+		font-size: 1em;
+		font-weight: bold;
+		line-height: 1.3em;
+
+		.obojobo-draft--components--button {
+			margin-top: 0.2em;
+			margin-bottom: 0.2em;
+
+			button {
+				border: 1px solid $color-bg;
+			}
+		}
+	}
+
+	&.is-missing-src {
+		.iframe-toolbar {
+			span {
+				$error-color: lighten($color-error, 65%);
+
+				color: $color-error;
+			}
+		}
+	}
+
+	.editor-container {
+		$bg-color: #fdfdfd;
+		$hover-bg-color: #f9f4ff;
+
+		border: 1px solid transparentize($color-action, 0.8);
+		max-height: 15em;
+		border-radius: $dimension-rounded-radius;
+		background-color: $bg-color;
+		overflow: hidden;
+		margin: 0 auto;
+		cursor: pointer;
+
+		&::before {
+			content: ' ';
+			display: block;
+			background-image: url('./bg.svg');
+			background-size: 38.16px 38.16px; /* stylelint-disable-line unit-blacklist */
+			position: absolute;
+			left: 3.3em;
+			top: 0;
+			right: 3.3em;
+			bottom: 0;
+			transition: transform $duration-animation-default, opacity $duration-animation-default;
+		}
+	}
+}
