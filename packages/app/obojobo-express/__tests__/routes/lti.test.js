@@ -82,7 +82,7 @@ describe('lti route', () => {
 			.get('/config.xml')
 			.then(response => {
 				expect(response.statusCode).toBe(200)
-				expect(response.header['content-type']).toContain('application/xml')
+				expect(response.header['content-type']).toContain('text/xml')
 				expect(response.text).toContain('<?xml version="1.0" encoding="UTF-8"?>')
 				expect(response.text).toContain(
 					'<blti:launch_url>http://mock-hostname/lti</blti:launch_url>'
