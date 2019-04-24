@@ -128,7 +128,7 @@ module.exports =
 				immutable: 'Immutable'
 			},
 			plugins: [
-				new MiniCssExtractPlugin(),
+				new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` }),
 				new CopyPlugin([{
 					from: path.resolve(__dirname, '..', 'obojobo-document-engine', 'src', 'scripts', 'oboeditor', 'draftmanager.js'),
 					to: path.join(__dirname, 'public', 'compiled', filename_with_min+'.js'),

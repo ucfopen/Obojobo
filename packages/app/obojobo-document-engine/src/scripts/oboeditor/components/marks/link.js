@@ -13,27 +13,24 @@ class Link extends React.Component {
 
 	changeLinkValue(href) {
 		const editor = this.props.editor
-		const change = editor.value.change()
 
 		// If href is empty, remove the link
 		if (!href || !/[^\s]/.test(href)) {
-			change.removeMarkByKey(
+			editor.removeMarkByKey(
 				this.props.node.key,
 				this.props.offset,
 				this.props.text.length,
 				this.props.mark
 			)
-			return editor.onChange(change)
 		}
 
-		change.setMarkByKey(
+		return editor.setMarkByKey(
 			this.props.node.key,
 			this.props.offset,
 			this.props.text.length,
 			this.props.mark,
 			{ data: { href } }
 		)
-		return editor.onChange(change)
 	}
 
 	showLinkModal() {

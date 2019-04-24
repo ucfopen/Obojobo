@@ -54,7 +54,8 @@ const controls = props => {
 								<button
 									disabled={props.isEditor}
 									className="zoom-reset-button"
-									onClick={props.zoomReset}>
+									onClick={props.zoomReset}
+								>
 									Reset zoom
 								</button>
 								<span className="tool-tip">Reset zoom</span>

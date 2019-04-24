@@ -99,6 +99,8 @@ class AddActionModal extends React.Component {
 
 		const actionTypeArray = Object.keys(allowedActions)
 
+		this.inputRef = React.createRef()
+
 		this.state = {
 			type: actionTypeArray[0],
 			value: '',
@@ -119,7 +121,7 @@ class AddActionModal extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.refs.input.focus()
+		return this.inputRef.current.focus()
 	}
 
 	onConfirm() {
@@ -171,7 +173,7 @@ class AddActionModal extends React.Component {
 							name="Action"
 							value={this.state.type}
 							onChange={this.handleTypeChange.bind(this)}
-							ref={'input'}
+							ref={this.inputRef}
 						>
 							{actionArray.map(action => {
 								return (

@@ -1,6 +1,8 @@
 @import '~styles/includes';
 
 .rubric {
+	$color-preview-hover: darken($color-preview, 9%);
+
 	position: relative;
 	width: auto;
 	border-radius: $dimension-rounded-radius;
@@ -9,13 +11,20 @@
 	background: transparentize($color-preview, 0.95);
 	margin-bottom: 3em;
 
-	button {
-		font-family: $font-default;
-		line-height: 1em;
-		font-size: 1em;
-		text-align: center;
-		border-radius: $dimension-rounded-radius;
-		padding: 0.4em;
+	.delete-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translate(50%, -50%);
+		z-index: 3;
+
+		.button {
+			font-size: 1.2em;
+			padding: 0;
+			min-width: 1.4em;
+			border-radius: 50%;
+			background-color: $color-preview;
+		}
 	}
 
 	.parameter-node {
@@ -27,26 +36,25 @@
 		position: relative;
 		width: auto;
 		border-bottom: 1px solid $color-preview;
+
+		.delete-button {
+			transform: none;
+		}
 	}
 
 	.add-button {
 		margin-top: 0.2em;
-		background-color: $color-preview;
-		color: $color-bg;
+
+		.button {
+			background-color: $color-preview;
+		}
 	}
 
-	.delete-button {
-		position: absolute;
-		right: 0;
-		top: 0;
-		transform: translate(50%, -50%);
-		z-index: 3;
+	.delete-button .button:hover {
+		background-color: $color-preview-hover;
+	}
 
-		button {
-			font-size: 1.2em;
-			padding: 0;
-			min-width: 1.4em;
-			border-radius: 50%;
-		}
+	.add-button .button:hover {
+		background-color: $color-preview-hover;
 	}
 }

@@ -9,6 +9,8 @@
 		button {
 			display: block;
 			border-radius: $dimension-rounded-radius;
+			background-color: $color-bg;
+			border: solid 1px $color-shadow;
 			margin: 0.3em;
 			font-size: 1em;
 		}

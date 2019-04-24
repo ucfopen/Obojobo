@@ -117,7 +117,7 @@
 		<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
 		<div id="sidebar">
 			<button id="button-create-new-draft">+ Create new draft</button>
-			<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ OboEditor Tutorial</button>
+			<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ Visual Editor Tutorial</button>
 			<div id="search">
 				<input id="search-input" type="text" placeholder="Search..."  />
 				<button id="remove-search">&times;</button>
@@ -158,7 +158,7 @@
 								<span class="draft-id">id: <%= draft.draftId %></span>
 								<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
 								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
-								<a class="link-preview" onclick="openInBetaEditor('<%= draft.draftId %>')">Edit with OboEditor (Beta)</a>
+								<a class="link-preview" onclick="openInBetaEditor('<%= draft.draftId %>')">Edit with Visual Editor (Beta)</a>
 							</div>
 							<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
 					</li>
