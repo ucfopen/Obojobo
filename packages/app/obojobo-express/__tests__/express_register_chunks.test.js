@@ -5,6 +5,7 @@ jest.mock('path')
 jest.mock('obojobo-lib-utils')
 const realPath = require.requireActual('path')
 const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
+const express = require('express')
 mockVirtual('mock-obo-node')
 mockVirtual('mock-obo-middleware')
 
@@ -71,7 +72,7 @@ describe('register chunks middleware', () => {
 		const middleware = oboRequire('express_register_chunks')
 
 		// mock static so it just returns it's argument for the haveBeenCalledWith tests below
-		const express = require('express')
+		express.static.mockReset()
 		express.static.mockImplementation(path => {
 			return path
 		})
@@ -87,5 +88,21 @@ describe('register chunks middleware', () => {
 		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.js')
 		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.min.css')
 		expect(express.static).toHaveBeenCalledWith(compiledDir + '/editor.css')
+	})
+
+	test('IS_WEBPACK = true causes static directions to not be used', () => {
+		console.log('begin')
+		global.process.env.IS_WEBPACK = true
+		const middleware = oboRequire('express_register_chunks')
+
+		// mock static so it just returns it's argument for the haveBeenCalledWith tests below
+		express.static.mockReset()
+		express.static.mockImplementation(path => {
+			return path
+		})
+
+		middleware(mockApp)
+
+		expect(express.static).not.toHaveBeenCalled()
 	})
 })

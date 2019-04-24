@@ -2,7 +2,6 @@ const express = require('express')
 const draftNodeStore = oboRequire('draft_node_store')
 const logger = oboRequire('logger')
 const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
-const IS_WEBPACK = process.env.IS_WEBPACK || false
 
 module.exports = app => {
 	// =========== REGISTER CUSTOM EXPRESS MIDDLEWARE ===========
@@ -24,7 +23,7 @@ module.exports = app => {
 
 	// ===========  ASSETS FROM THE ASSET MANIFEST ===========
 	const registerAssetVersions = (base, ext) => {
-		if (IS_WEBPACK) return
+		if (process.env.IS_WEBPACK) return
 
 		app.use(
 			`/static/${base}.min${ext}`,
