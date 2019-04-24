@@ -91,8 +91,13 @@ describe('register chunks middleware', () => {
 	})
 
 	test('IS_WEBPACK = true causes static directions to not be used', () => {
-		console.log('begin')
-		global.process.env.IS_WEBPACK = true
+		const actualProcess = global.process
+		global.process = {
+			env: {
+				IS_WEBPACK: true
+			}
+		}
+
 		const middleware = oboRequire('express_register_chunks')
 
 		// mock static so it just returns it's argument for the haveBeenCalledWith tests below
@@ -104,5 +109,7 @@ describe('register chunks middleware', () => {
 		middleware(mockApp)
 
 		expect(express.static).not.toHaveBeenCalled()
+
+		global.process = actualProcess
 	})
 })
