@@ -73,3 +73,24 @@ exports[`List editor plugins.renderPlaceholder renders a placeholder 1`] = `
   Type Your Text Here
 </span>
 `;
+
+exports[`List editor queries.createCodeLinesFromText builds text lines 1`] = `
+Array [
+  Immutable.Record {
+    "data": Immutable.Map {},
+    "key": "2",
+    "nodes": Immutable.List [
+      Immutable.Record {
+        "leaves": Immutable.List [
+          Immutable.Record {
+            "marks": Immutable.Set [],
+            "text": "mock text",
+          },
+        ],
+        "key": "3",
+      },
+    ],
+    "type": "ObojoboDraft.Chunks.List.Line",
+  },
+]
+`;

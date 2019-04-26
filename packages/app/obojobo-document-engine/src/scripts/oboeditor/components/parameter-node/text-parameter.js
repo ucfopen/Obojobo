@@ -21,12 +21,7 @@ const isType = editor => {
 	})
 }
 
-const slateToObo = node => {
-	const json = {}
-	json[node.data.get('name')] = node.text
-
-	return json
-}
+const slateToObo = node => ({ [node.data.get('name')]: node.text })
 
 const oboToSlate = (name, value, display) => ({
 	object: 'block',
@@ -51,7 +46,7 @@ const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case TEXT_PARAMETER:
-				return <Node {...props} {...props.attributes}/>
+				return <Node {...props} {...props.attributes} />
 			default:
 				return next()
 		}

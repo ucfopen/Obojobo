@@ -1,8 +1,72 @@
+import SlateReact from 'slate-react'
+jest.mock('slate-react')
+
 import Code from './editor'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 describe('Code editor', () => {
+	test('onPaste calls next if not pasting text into a CODE_NODE', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text' })
+
+		Code.plugins.onPaste(null, editor, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('onPaste calls createTextLinesFromText', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						text: ''
+					},
+					{
+						key: 'mockBlockKey',
+						text: 'mock text'
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			},
+			createCodeLinesFromText: jest.fn().mockReturnValueOnce([
+				{
+					key: 'mockBlockKey'
+				}
+			]),
+			insertBlock: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'text',
+			text: 'mock text'
+		})
+
+		Code.plugins.onPaste(null, editor, next)
+
+		expect(editor.createCodeLinesFromText).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders code when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -386,5 +450,13 @@ describe('Code editor', () => {
 
 		expect(editor.setNodeByKey).not.toHaveBeenCalled()
 		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('queries.createCodeLinesFromText builds text lines', () => {
+		const editor = {}
+
+		const blocks = Code.plugins.queries.createCodeLinesFromText(editor, ['mock text'])
+
+		expect(blocks).toMatchSnapshot()
 	})
 })

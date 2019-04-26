@@ -34,15 +34,17 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
+					// Allows Pasted oboeditor.component nodes to be popped out
+					// as a sibling node
 					case CHILD_UNKNOWN: {
 						return editor.unwrapNodeByKey(child.key)
 					}
 					case CHILD_TYPE_INVALID: {
-						if(child.object === 'text') {
+						if (child.object === 'text') {
 							return editor.removeNodeByKey(node.key)
 						}
 
-						if(child.type === 'oboeditor.component') {
+						if (child.type === 'oboeditor.component') {
 							return editor.unwrapNodeByKey(child.key)
 						}
 

@@ -13,22 +13,43 @@ const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 describe('ClipboardPlugin', () => {
-	test('onPaste calls next only with non-slate content', () => {
+	test('onPaste calls insertText with non-slate content', () => {
 		getEventTransfer.mockReturnValueOnce({
-			type: 'text'
+			type: 'text',
+			text: 'One line of text'
 		})
 
 		const mockEvent = {}
 		const editor = {
-			getComponents: jest.fn()
+			getComponents: jest.fn(),
+			insertText: jest.fn()
 		}
 		const next = jest.fn()
 
 		ClipboardPlugin.onPaste(mockEvent, editor, next)
 
-		expect(next).toHaveBeenCalled()
-		expect(editor.getComponents).not.toHaveBeenCalled()
-		expect(KeyDownUtil.deleteEmptyParent).not.toHaveBeenCalled()
+		expect(editor.insertText).toHaveBeenCalled()
+	})
+
+	test('onPaste calls insertText and insertBlock with non-slate content', () => {
+		getEventTransfer.mockReturnValueOnce({
+			type: 'text',
+			text: 'One line of text \n Another line'
+		})
+
+		const mockEvent = {}
+		const editor = {
+			getComponents: jest.fn(),
+			insertText: jest.fn(),
+			createBlockFromText: jest.fn(),
+			insertBlock: jest.fn()
+		}
+		const next = jest.fn()
+
+		ClipboardPlugin.onPaste(mockEvent, editor, next)
+
+		expect(editor.insertText).toHaveBeenCalled()
+		expect(editor.insertBlock).toHaveBeenCalled()
 	})
 
 	test('onPaste inserts slate nodes into nodes that support children', () => {
@@ -188,5 +209,13 @@ describe('ClipboardPlugin', () => {
 
 		expect(fragment.getFurthest).toHaveBeenCalled()
 		expect(fragment.getClosest).not.toHaveBeenCalled()
+	})
+
+	test('createBlockFromText builds a TEXT_NODE', () => {
+		const editor = {}
+		const textLine = ['First text line', 'Second text line']
+		const blocks = ClipboardPlugin.queries.createBlockFromText(editor, textLine)
+
+		expect(blocks).toMatchSnapshot()
 	})
 })

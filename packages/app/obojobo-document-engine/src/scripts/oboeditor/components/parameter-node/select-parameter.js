@@ -39,21 +39,16 @@ const Node = props => {
 	)
 }
 
-const slateToObo = node => {
-	const json = {}
-	json[node.data.get('name')] = node.data.get('current')
+const slateToObo = node => ({ [node.data.get('name')]: node.data.get('current') })
 
-	return json
-}
-
-const oboToSlate = (name, value, display, options) => ({
+const oboToSlate = (name, current, display, options) => ({
 	object: 'block',
 	type: SELECT_PARAMETER,
 	data: {
-		name: name,
-		display: display,
-		options: options,
-		current: value
+		name,
+		display,
+		options,
+		current
 	}
 })
 
@@ -61,12 +56,12 @@ const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case SELECT_PARAMETER:
-				return <Node {...props} {...props.attributes}/>
+				return <Node {...props} {...props.attributes} />
 			default:
 				return next()
 		}
 	},
-	schema : {
+	schema: {
 		blocks: {
 			'oboeditor.select-parameter': {
 				isVoid: true

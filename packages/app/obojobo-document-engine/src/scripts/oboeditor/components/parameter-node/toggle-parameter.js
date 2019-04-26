@@ -32,20 +32,15 @@ const Node = props => {
 	)
 }
 
-const slateToObo = node => {
-	const json = {}
-	json[node.data.get('name')] = node.data.get('checked')
+const slateToObo = node => ({ [node.data.get('name')]: node.data.get('checked') })
 
-	return json
-}
-
-const oboToSlate = (name, value, display) => ({
+const oboToSlate = (name, checked, display) => ({
 	object: 'block',
 	type: TOGGLE_PARAMETER,
 	data: {
-		name: name,
-		display: display,
-		checked: value
+		name,
+		display,
+		checked
 	}
 })
 
@@ -53,12 +48,12 @@ const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case TOGGLE_PARAMETER:
-				return <Node {...props} {...props.attributes}/>
+				return <Node {...props} {...props.attributes} />
 			default:
 				return next()
 		}
 	},
-	schema : {
+	schema: {
 		blocks: {
 			'oboeditor.toggle-parameter': {
 				isVoid: true
