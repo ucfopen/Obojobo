@@ -23,6 +23,8 @@ const plugins = {
 			nodes: cutAssessment.nodes
 		}
 
+		console.log(jsonFragment)
+
 		return editor.insertFragment(Document.fromJSON(jsonFragment))
 	},
 	renderNode(props, editor, next) {

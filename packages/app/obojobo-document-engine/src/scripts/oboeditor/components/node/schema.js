@@ -37,7 +37,17 @@ const schema = {
 					// Allows Pasted oboeditor.component nodes to be popped out
 					// as a sibling node
 					case CHILD_UNKNOWN: {
-						return editor.unwrapNodeByKey(child.key)
+						if (child.type === 'oboeditor.component') {
+							return editor.unwrapNodeByKey(child.key)
+						}
+
+						// If not a recognized block, it is probably an invalid node
+						// that contains valid children (Pages, ScoreActions, etc.)
+						// Unwrapping all of the children of the invalid node will
+						// remove the invalid node while maintaining it's valid children
+						return editor.withoutNormalizing(e => {
+							return child.nodes.forEach(grandchild => e.unwrapNodeByKey(grandchild.key))
+						})
 					}
 					case CHILD_TYPE_INVALID: {
 						if (child.object === 'text') {

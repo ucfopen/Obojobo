@@ -25,6 +25,7 @@ const schema = {
 				{ match: [{ type: RUBRIC_NODE }] }
 			],
 			normalize: (editor, error) => {
+				console.log('assessment', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
