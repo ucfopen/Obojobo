@@ -198,6 +198,9 @@ export default class Nav extends React.Component {
 
 						return null
 					})}
+					<button onClick={NavUtil.setRedAlert}>
+						Panic
+					</button>
 				</ul>
 				<Logo />
 			</nav>

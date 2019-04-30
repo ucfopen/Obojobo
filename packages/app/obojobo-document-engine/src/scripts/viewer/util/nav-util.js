@@ -52,6 +52,14 @@ const NavUtil = {
 		})
 	},
 
+	setRedAlert(enable) {
+		return Dispatcher.trigger('nav:redAlert', {
+			value: {
+				enable
+			}
+		})
+	},
+
 	goPrev() {
 		return Dispatcher.trigger('nav:prev')
 	},
@@ -243,6 +251,10 @@ const NavUtil = {
 
 	isNavOpen(state) {
 		return state.open
+	},
+
+	isRedAlertEnabled(state) {
+		return state.redAlert
 	}
 }
 

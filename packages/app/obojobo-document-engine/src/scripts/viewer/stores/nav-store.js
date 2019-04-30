@@ -152,6 +152,14 @@ class NavStore extends Store {
 					item.showChildren = false
 					this.triggerChange()
 				},
+				'nav:redAlert': payload => {
+					const redAlertState = { 'redAlert': !this.state.redAlert}
+					APIUtil.postEvent({
+						action: 'nav:redAlert',
+						payload: redAlertState
+					})
+					this.triggerChange()
+				},
 				'question:scoreSet': payload => {
 					const navItem = this.state.itemsById[payload.value.id]
 					if (navItem) {
@@ -171,6 +179,7 @@ class NavStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
+			redAlert: false,
 			locked:
 				viewState['nav:isLocked'] !== null && typeof viewState['nav:isLocked'] !== 'undefined'
 					? viewState['nav:isLocked'].value
