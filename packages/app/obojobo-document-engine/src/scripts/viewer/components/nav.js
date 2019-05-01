@@ -140,6 +140,10 @@ export default class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
+	onPanic(event) {
+		NavUtil.setRedAlert
+	}
+
 	render() {
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
@@ -198,7 +202,7 @@ export default class Nav extends React.Component {
 
 						return null
 					})}
-					<button onClick={NavUtil.setRedAlert}>
+					<button onClick={this.onPanic.bind(this)}>
 						Panic
 					</button>
 				</ul>

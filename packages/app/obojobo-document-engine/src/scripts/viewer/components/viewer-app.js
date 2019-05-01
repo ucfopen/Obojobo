@@ -606,6 +606,7 @@ export default class ViewerApp extends React.Component {
 			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
 			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
 			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
+			this.state.navState.redAlert ? 'is-red-alert' : 'is-not-red-alert',
 			visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive'
 		].join(' ')
 
