@@ -141,7 +141,7 @@ export default class Nav extends React.Component {
 	}
 
 	onPanic(event) {
-		NavUtil.setRedAlert
+		NavUtil.setRedAlert()
 	}
 
 	render() {
