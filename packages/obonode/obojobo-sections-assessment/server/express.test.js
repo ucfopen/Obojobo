@@ -24,7 +24,9 @@ jest.mock('./assessment', () => ({
 jest.mock(
 	'obojobo-express/models/visit',
 	() => ({
-		fetchById: jest.fn().mockReturnValue({ is_preview: false })
+		fetchById: jest
+			.fn()
+			.mockReturnValue({ is_preview: false, resource_link_id: 'mockResourceLinkId' })
 	}),
 	{ virtual: true }
 )
@@ -34,6 +36,7 @@ describe('server/express', () => {
 	const db = require('obojobo-express/db')
 	const mockUser = { id: 1 }
 	const mockDocument = { draftId: 3, contentId: 12 }
+	const mockVisit = { id: 'mockId', resource_link_id: 'mockResourceLinkId', is_preview: false }
 	const Assessment = require('./assessment')
 	const server = require('./express')
 	const lti = require('obojobo-express/lti')
@@ -46,6 +49,9 @@ describe('server/express', () => {
 	// build the req info
 	let req
 	let res
+	let currentVisit
+	let currentUser
+	let currentDocument
 
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -53,8 +59,24 @@ describe('server/express', () => {
 		// @TODO
 		// jest.resetAllMocks()
 		req = {
-			requireCurrentUser: jest.fn().mockResolvedValue(mockUser),
-			requireCurrentDocument: jest.fn().mockResolvedValue(mockDocument),
+			requireCurrentUser: jest.fn(() => {
+				// handles both cases of resolved user being used
+				// and req user being used
+				// @TODO use req user everywhere
+				req.currentUser = mockUser
+				return Promise.resolve(mockUser)
+			}),
+			requireCurrentDocument: jest.fn(() => {
+				// handles both cases of resolved document being used
+				// and req document being used
+				// @TODO use req document everywhere
+				req.currentDocument = mockDocument
+				return Promise.resolve(mockDocument)
+			}),
+			getCurrentVisitFromRequest: jest.fn().mockResolvedValue((currentVisit = mockVisit)),
+			currentDocument,
+			currentUser,
+			currentVisit,
 			params: {
 				draftId: 3,
 				attemptId: 5,
@@ -73,7 +95,7 @@ describe('server/express', () => {
 			notAuthorized: jest.fn()
 		}
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockReset()
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockReset()
 		lti.sendHighestAssessmentScore.mockReset()
 		db.manyOrNone.mockReset()
 		db.none.mockReset()
@@ -99,20 +121,24 @@ describe('server/express', () => {
 		expect(oboEvents.on).toBeCalledWith('client:question:setResponse', expect.anything())
 	})
 
-	test('/api/lti/state/draft/:draftId calls getLTIStatesByAssessmentIdForUserAndDraft', () => {
+	test('/api/lti/state/draft/:draftId calls getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId', () => {
 		expect.assertions(5)
 		// grab a ref to expected route & verify it's the route we want
 		const draftStateRoute = server.get.mock.calls[0]
 		expect(draftStateRoute[0]).toBe('/api/lti/state/draft/:draftId')
 
 		// mock result
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockReturnValueOnce('testresult')
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockReturnValueOnce('testresult')
 
 		// execute
 		return draftStateRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
 			// make sure the lti method is called
-			expect(lti.getLTIStatesByAssessmentIdForUserAndDraft).toHaveBeenCalledWith(1, 3)
+			expect(lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId).toHaveBeenCalledWith(
+				1,
+				3,
+				'mockResourceLinkId'
+			)
 			// make sure the results are passed to res.success
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('testresult')
@@ -139,7 +165,13 @@ describe('server/express', () => {
 		return sendAssessmentScoreRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
 			// make sure the lti method is called
-			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(1, mockDocument, 777)
+			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
+				1,
+				mockDocument,
+				777,
+				false,
+				'mockResourceLinkId'
+			)
 			// make sure the results are passed to res.success
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith({
@@ -201,7 +233,7 @@ describe('server/express', () => {
 		// execute
 		return endAttemptRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDocument, 5, false)
+			expect(endAttempt).toHaveBeenCalledWith(req, res)
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('endAttemptResult')
 		})
@@ -410,7 +442,7 @@ describe('server/express', () => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('attempts')
-			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3)
+			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3, false, 'mockResourceLinkId')
 		})
 	})
 
@@ -467,7 +499,7 @@ describe('server/express', () => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('attempts')
-			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3, 999)
+			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3, false, 'mockResourceLinkId', 999)
 		})
 	})
 

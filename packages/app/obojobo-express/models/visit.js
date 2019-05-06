@@ -19,11 +19,13 @@ const deactivateOldVisitsAndCreateNewVisit = (
 			SET is_active = false
 			WHERE user_id = $[userId]
 			AND draft_id = $[draftId]
+			AND resource_link_id = $[resourceLinkId]
 			AND is_active = true
 			RETURNING id`,
 			{
 				draftId,
-				userId
+				userId,
+				resourceLinkId
 			}
 		)
 		.then(deactivatedVisits => {
@@ -73,7 +75,7 @@ class Visit {
 		return db
 			.one(
 				`
-			SELECT is_active, is_preview, draft_content_id
+			SELECT id, is_active, is_preview, draft_content_id, resource_link_id
 			FROM visits
 			WHERE id = $[visitId]
 			${requireIsActive ? 'AND is_active = true' : ''}
@@ -97,8 +99,8 @@ class Visit {
 
 	// create a preview visit
 	// deactivates all previous visits
-	static createPreviewVisit(userId, draftId) {
-		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, null, null, true)
+	static createPreviewVisit(userId, draftId, resourceLinkId) {
+		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, resourceLinkId, null, true)
 	}
 }
 

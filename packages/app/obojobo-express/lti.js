@@ -119,6 +119,7 @@ const getLatestHighestAssessmentScoreRecord = (
 	userId,
 	draftId,
 	assessmentId,
+	resourceLinkId,
 	isPreview = false
 ) => {
 	const result = {
@@ -147,13 +148,15 @@ const getLatestHighestAssessmentScoreRecord = (
 					T1.attempt_id,
 					T1.score,
 					T1.is_preview,
-					T1.score_details
+					T1.score_details,
+					T1.resource_link_id
 				FROM
 				(
 					SELECT *, COALESCE(score, -1) AS coalesced_score
 					FROM assessment_scores
 					WHERE
 						user_id = $[userId]
+						AND resource_link_id = $[resourceLinkId]
 						AND draft_id = $[draftId]
 						AND assessment_id = $[assessmentId]
 						AND is_preview = $[isPreview]
@@ -166,6 +169,7 @@ const getLatestHighestAssessmentScoreRecord = (
 			{
 				userId,
 				draftId,
+				resourceLinkId,
 				assessmentId,
 				isPreview
 			}
@@ -184,6 +188,7 @@ const getLatestHighestAssessmentScoreRecord = (
 			result.score = dbResult.score
 			result.scoreDetails = dbResult.score_details
 			result.isPreview = dbResult.is_preview
+			result.resourceLinkId = dbResult.resource_link_id
 
 			return result
 		})
@@ -211,7 +216,12 @@ const getLatestSuccessfulLTIAssessmentScoreRecord = assessmentScoreId => {
 	)
 }
 
-const getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAssessmentId) => {
+const getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId = (
+	userId,
+	draftId,
+	resourceLinkId,
+	optionalAssessmentId
+) => {
 	return db
 		.manyOrNone(
 			`
@@ -232,6 +242,7 @@ const getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAsse
 				LEFT JOIN lti_assessment_scores L
 				ON S.id = L.assessment_score_id
 				WHERE S.draft_id = $[draftId]
+				AND S.resource_link_id = $[resourceLinkId]
 				AND S.user_id = $[userId]
 				AND S.is_preview = false
 				${optionalAssessmentId ? "AND S.assessment_id = '" + optionalAssessmentId + "'" : ''}
@@ -243,6 +254,7 @@ const getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAsse
 			{
 				userId,
 				draftId,
+				resourceLinkId,
 				optionalAssessmentId
 			}
 		)
@@ -279,7 +291,13 @@ const getLTIStatesByAssessmentIdForUserAndDraft = (userId, draftId, optionalAsse
 //	* ERROR_FATAL_SCORE_IS_INVALID
 //	* ERROR_FATAL_LAUNCH_EXPIRED
 //	* (Or some unexpected error)
-const getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, logId) {
+const getRequiredDataForReplaceResult = function(
+	userId,
+	draftId,
+	assessmentId,
+	logId,
+	resourceLinkId
+) {
 	// get assess score
 	// get last success
 	// get launch
@@ -293,7 +311,7 @@ const getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, 
 		launch: null
 	}
 
-	return getLatestHighestAssessmentScoreRecord(userId, draftId, assessmentId)
+	return getLatestHighestAssessmentScoreRecord(userId, draftId, assessmentId, resourceLinkId)
 		.then(assessmentScoreResult => {
 			result.assessmentScoreRecord = assessmentScoreResult
 
@@ -330,7 +348,7 @@ const getRequiredDataForReplaceResult = function(userId, draftId, assessmentId, 
 				result.scoreType = SCORE_TYPE_DIFFERENT
 			}
 
-			return retrieveLtiLaunch(scoreRecord.userId, scoreRecord.draftId, logId)
+			return retrieveLtiLaunch(scoreRecord.userId, scoreRecord.draftId, logId, resourceLinkId)
 		})
 		.then(ltiLaunch => {
 			if (ltiLaunch.id !== null) {
@@ -403,7 +421,7 @@ const getOutcomeServiceForLaunch = function(launch) {
 	}
 }
 
-const retrieveLtiLaunch = function(userId, draftId, logId) {
+const retrieveLtiLaunch = function(userId, draftId, logId, resourceLinkId) {
 	const result = {
 		id: null,
 		reqVars: null,
@@ -420,13 +438,15 @@ const retrieveLtiLaunch = function(userId, draftId, logId) {
 		FROM launches
 		WHERE user_id = $[userId]
 		AND draft_id = $[draftId]
+		AND data ->> 'resource_link_id' = $[resourceLinkId]
 		AND type = 'lti'
 		ORDER BY created_at DESC
 		LIMIT 1
 	`,
 			{
 				userId,
-				draftId
+				draftId,
+				resourceLinkId
 			}
 		)
 		.then(dbResult => {
@@ -634,7 +654,13 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 //
 // MAIN METHOD:
 //
-const sendHighestAssessmentScore = (userId, draftDocument, assessmentId, isPreview) => {
+const sendHighestAssessmentScore = (
+	userId,
+	draftDocument,
+	assessmentId,
+	isPreview,
+	resourceLinkId
+) => {
 	const logId = uuid()
 	let requiredData = null
 	let outcomeData = null
@@ -656,7 +682,13 @@ const sendHighestAssessmentScore = (userId, draftDocument, assessmentId, isPrevi
 		logId
 	)
 
-	return getRequiredDataForReplaceResult(userId, draftDocument.draftId, assessmentId, logId)
+	return getRequiredDataForReplaceResult(
+		userId,
+		draftDocument.draftId,
+		assessmentId,
+		logId,
+		resourceLinkId
+	)
 		.then(requiredDataResult => {
 			result.launchId = requiredDataResult.launch ? requiredDataResult.launch.id : null
 
@@ -765,7 +797,7 @@ module.exports = {
 	getGradebookStatus,
 	getLatestHighestAssessmentScoreRecord,
 	getLatestSuccessfulLTIAssessmentScoreRecord,
-	getLTIStatesByAssessmentIdForUserAndDraft,
+	getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId,
 	getRequiredDataForReplaceResult,
 	getOutcomeServiceForLaunch,
 	retrieveLtiLaunch,

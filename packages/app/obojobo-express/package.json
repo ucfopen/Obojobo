@@ -135,7 +135,11 @@
 		"ext": "js ejs",
 		"watch": [
 			"./",
-			"../obojobo-document-engine/server"
+			"../obojobo-document-engine/server",
+			"../../obonode/obojobo-sections-assessment/server",
+			"../../obonode/multiple-choice-assessment/server",
+			"../../obonode/chunks-question/server",
+			"../../obonode/chunks-question-bank/server"
 		]
 	}
 }

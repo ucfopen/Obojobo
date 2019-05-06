@@ -10,24 +10,20 @@ const { startAttempt } = require('./attempt-start')
 const { endAttempt } = require('./attempt-end')
 const { logAndRespondToUnexpected } = require('./util')
 
-app.get('/api/lti/state/draft/:draftId', (req, res) => {
-	let currentUser
-	let currentDocument
-
-	return req
-		.requireCurrentUser()
-		.then(user => {
-			currentUser = user
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
-			return lti.getLTIStatesByAssessmentIdForUserAndDraft(currentUser.id, currentDocument.draftId)
-		})
-		.then(result => {
-			res.success(result)
-		})
-})
+app.get('/api/lti/state/draft/:draftId', (req, res) =>
+	req
+		.getCurrentVisitFromRequest()
+		.then(req.requireCurrentUser)
+		.then(req.requireCurrentDocument)
+		.then(() =>
+			lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.currentVisit.resource_link_id
+			)
+		)
+		.then(res.success)
+)
 
 app.post('/api/lti/sendAssessmentScore', (req, res) => {
 	logger.info('API sendAssessmentScore', req.body)
@@ -38,7 +34,8 @@ app.post('/api/lti/sendAssessmentScore', (req, res) => {
 	const assessmentId = req.body.assessmentId
 
 	return req
-		.requireCurrentUser()
+		.getCurrentVisitFromRequest()
+		.then(() => req.requireCurrentUser())
 		.then(user => {
 			currentUser = user
 			return req.requireCurrentDocument()
@@ -51,7 +48,13 @@ app.post('/api/lti/sendAssessmentScore', (req, res) => {
 				}", assessmentId="${assessmentId}"`
 			)
 
-			return lti.sendHighestAssessmentScore(currentUser.id, currentDocument, assessmentId)
+			return lti.sendHighestAssessmentScore(
+				currentUser.id,
+				currentDocument,
+				assessmentId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
+			)
 		})
 		.then(result => {
 			ltiScoreResult = result
@@ -71,32 +74,17 @@ app.post('/api/lti/sendAssessmentScore', (req, res) => {
 
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 
-app.post('/api/assessments/attempt/:attemptId/end', (req, res) => {
-	let currentUser = null
-	let currentDocument = null
-	let isPreview
-
-	return req
-		.requireCurrentUser()
-		.then(user => {
-			currentUser = user
-			return VisitModel.fetchById(req.body.visitId)
-		})
-		.then(visit => {
-			isPreview = visit.is_preview
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
-			return endAttempt(req, res, currentUser, currentDocument, req.params.attemptId, isPreview)
-		})
-		.then(resp => {
-			res.success(resp)
-		})
-		.catch(error => {
+app.post('/api/assessments/attempt/:attemptId/end', (req, res) =>
+	req
+		.getCurrentVisitFromRequest()
+		.then(req.requireCurrentUser)
+		.then(req.requireCurrentDocument)
+		.then(() => endAttempt(req, res))
+		.then(res.success)
+		.catch(error =>
 			logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, error)
-		})
-})
+		)
+)
 
 app.post('/api/assessments/clear-preview-scores', (req, res) => {
 	let assessmentScoreIds
@@ -104,6 +92,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
 	let isPreview
+	let resourceLinkId
 
 	return req
 		.requireCurrentUser()
@@ -113,6 +102,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 		})
 		.then(visit => {
 			isPreview = visit.is_preview
+			resourceLinkId = visit.resource_link_id
 			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
@@ -125,11 +115,13 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 						FROM assessment_scores
 						WHERE user_id = $[userId]
 						AND draft_id = $[draftId]
+						AND resource_link_id = $[resourceLinkId]
 						AND is_preview = true
 					`,
 				{
 					userId: currentUser.id,
-					draftId: currentDocument.draftId
+					draftId: currentDocument.draftId,
+					resourceLinkId
 				}
 			)
 		})
@@ -142,11 +134,13 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 					FROM attempts
 					WHERE user_id = $[userId]
 					AND draft_id = $[draftId]
+					AND resource_link_id = $[resourceLinkId]
 					AND is_preview = true
 				`,
 				{
 					userId: currentUser.id,
-					draftId: currentDocument.draftId
+					draftId: currentDocument.draftId,
+					resourceLinkId
 				}
 			)
 		})
@@ -186,11 +180,13 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 							DELETE FROM assessment_scores
 							WHERE user_id = $[userId]
 							AND draft_id = $[draftId]
+							AND resource_link_id = $[resourceLinkId]
 							AND is_preview = true
 						`,
 						{
 							userId: currentUser.id,
-							draftId: currentDocument.draftId
+							draftId: currentDocument.draftId,
+							resourceLinkId
 						}
 					),
 					transaction.none(
@@ -198,11 +194,13 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 							DELETE FROM attempts
 							WHERE user_id = $[userId]
 							AND draft_id = $[draftId]
+							AND resource_link_id = $[resourceLinkId]
 							AND is_preview = true
 						`,
 						{
 							userId: currentUser.id,
-							draftId: currentDocument.draftId
+							draftId: currentDocument.draftId,
+							resourceLinkId
 						}
 					)
 				)
@@ -247,21 +245,25 @@ app.get('/api/assessments/:draftId/:assessmentId/attempt/:attemptId', (req, res)
 		})
 })
 
-// @TODO NOT USED
-// update getAttempts to take isPreview
 app.get('/api/assessments/:draftId/attempts', (req, res) => {
 	let currentUser = null
 	let currentDocument = null
 
 	return req
-		.requireCurrentUser()
+		.getCurrentVisitFromRequest()
+		.then(req.requireCurrentUser)
 		.then(user => {
 			currentUser = user
 			return req.requireCurrentDocument()
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			return Assessment.getAttempts(currentUser.id, currentDocument.draftId)
+			return Assessment.getAttempts(
+				currentUser.id,
+				currentDocument.draftId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
+			)
 		})
 		.then(result => {
 			res.success(result)
@@ -282,7 +284,8 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res) => {
 	let currentDocument = null
 
 	return req
-		.requireCurrentUser()
+		.getCurrentVisitFromRequest()
+		.then(() => req.requireCurrentUser())
 		.then(user => {
 			currentUser = user
 			return req.requireCurrentDocument()
@@ -292,6 +295,8 @@ app.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res) => {
 			return Assessment.getAttempts(
 				currentUser.id,
 				currentDocument.draftId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id,
 				req.params.assessmentId
 			)
 		})

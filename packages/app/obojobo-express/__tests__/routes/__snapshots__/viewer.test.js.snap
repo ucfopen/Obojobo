@@ -29,6 +29,7 @@ Array [
       "deactivatedVisitId": "mocked-deactivated-visit-id",
       "visitId": "mocked-visit-id",
     },
+    "resourceLinkId": 3,
     "userId": 4,
   },
 ]
@@ -61,6 +62,7 @@ Array [
       "visitId": "00000000-0000-0000-0000-000000000000",
     },
     "userId": 4,
+    "visitId": "00000000-0000-0000-0000-000000000000",
   },
 ]
 `;

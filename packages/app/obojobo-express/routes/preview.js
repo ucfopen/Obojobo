@@ -19,7 +19,7 @@ router
 	.get([requireCanViewDrafts, requireCurrentDocument, requireDraftId, checkValidationRules])
 	.get((req, res) => {
 		let visitId
-		return Visit.createPreviewVisit(req.currentUser.id, req.currentDocument.draftId)
+		return Visit.createPreviewVisit(req.currentUser.id, req.currentDocument.draftId, 'preview', req)
 			.then(({ visitId: newVisitId, deactivatedVisitId }) => {
 				const { createVisitCreateEvent } = createCaliperEvent(null, req.hostname)
 				visitId = newVisitId

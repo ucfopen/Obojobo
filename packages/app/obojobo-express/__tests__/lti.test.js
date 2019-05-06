@@ -2414,7 +2414,7 @@ describe('lti', () => {
 		})
 	})
 
-	test('getLTIStatesByAssessmentIdForUserAndDraft returns expected values', done => {
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns expected values', done => {
 		db.manyOrNone.mockResolvedValueOnce([
 			{
 				assessment_id: 'assessmentid',
@@ -2427,24 +2427,26 @@ describe('lti', () => {
 			}
 		])
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id').then(result => {
-			expect(result).toEqual({
-				assessmentid: {
-					assessmentId: 'assessmentid',
-					assessmentScoreId: 'assessment-score-id',
-					scoreSent: 'score-sent',
-					sentDate: 'lti-sent-date',
-					status: 'status',
-					gradebookStatus: 'gradebook-status',
-					statusDetails: 'status-details'
-				}
-			})
+		lti
+			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+			.then(result => {
+				expect(result).toEqual({
+					assessmentid: {
+						assessmentId: 'assessmentid',
+						assessmentScoreId: 'assessment-score-id',
+						scoreSent: 'score-sent',
+						sentDate: 'lti-sent-date',
+						status: 'status',
+						gradebookStatus: 'gradebook-status',
+						statusDetails: 'status-details'
+					}
+				})
 
-			done()
-		})
+				done()
+			})
 	})
 
-	test('getLTIStatesByAssessmentIdForUserAndDraft searches on assessment', done => {
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId searches on assessment', done => {
 		db.manyOrNone.mockResolvedValueOnce([
 			{
 				assessment_id: 'assessment-id',
@@ -2458,7 +2460,12 @@ describe('lti', () => {
 		])
 
 		lti
-			.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id', 'assessment-id')
+			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
+				'user-id',
+				'draft-id',
+				'resource-link-id',
+				'assessment-id'
+			)
 			.then(result => {
 				expect(result).toEqual({
 					'assessment-id': {
@@ -2476,14 +2483,16 @@ describe('lti', () => {
 			})
 	})
 
-	test('getLTIStatesByAssessmentIdForUserAndDraft returns empty object when nothing returned from database', done => {
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns empty object when nothing returned from database', done => {
 		db.manyOrNone.mockResolvedValueOnce(null)
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id').then(result => {
-			expect(result).toEqual({})
+		lti
+			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+			.then(result => {
+				expect(result).toEqual({})
 
-			done()
-		})
+				done()
+			})
 	})
 
 	test('getOutcomeServiceForLaunch returns error if unexpected error occurs', () => {
