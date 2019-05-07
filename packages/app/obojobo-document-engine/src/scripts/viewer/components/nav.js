@@ -141,7 +141,8 @@ export default class Nav extends React.Component {
 	}
 
 	onPanic(event) {
-		NavUtil.setRedAlert()
+		var currentRedAlertState = NavUtil.isRedAlertEnabled(this.props.navState)
+		NavUtil.setRedAlert(!currentRedAlertState)
 	}
 
 	render() {
@@ -153,7 +154,8 @@ export default class Nav extends React.Component {
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
-			isOrNot(!navState.disabled, 'enabled')
+			isOrNot(!navState.disabled, 'enabled')+
+			isOrNot(navState.redAlert, 'red-alert')
 
 		return (
 			<nav
