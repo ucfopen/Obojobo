@@ -1,17 +1,22 @@
-import { mount } from 'enzyme'
+import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
+import EditorNav from 'src/scripts/oboeditor/components/editor-nav'
+import EditorStore from 'src/scripts/oboeditor/stores/editor-store'
+import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import ModalUtil from 'src/scripts/common/util/modal-util'
 import React from 'react'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import EditorNav from 'src/scripts/oboeditor/components/editor-nav'
-
-import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 jest.mock('src/scripts/oboeditor/util/editor-util')
-import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
 jest.mock('src/scripts/oboeditor/util/clipboard-util')
-import ModalUtil from 'src/scripts/common/util/modal-util'
 jest.mock('src/scripts/common/util/modal-util')
 // SubMenu
 jest.mock('src/scripts/oboeditor/components/sub-menu')
+
+// Editor Store
+jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
+	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
+}))
 
 describe('EditorNav', () => {
 	beforeAll(() => {
@@ -19,6 +24,7 @@ describe('EditorNav', () => {
 		document.execCommand = jest.fn()
 	})
 	beforeEach(() => {
+		EditorStore.state.startingId = null
 		jest.clearAllMocks()
 	})
 
@@ -119,6 +125,21 @@ describe('EditorNav', () => {
 			.simulate('click')
 
 		expect(ModalUtil.show).toHaveBeenCalled()
+	})
+
+	test('EditorNav component clicks Delete button to remove starting page', () => {
+		EditorUtil.getOrderedList.mockReturnValueOnce([])
+		EditorStore.state.startingId = 'mockStartingId'
+
+		const props = { navState: {} }
+		const component = mount(<EditorNav {...props} />)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(EditorUtil.setStartPage).toHaveBeenCalled()
 	})
 
 	test('EditorNav component clicks Add Assessment button', () => {

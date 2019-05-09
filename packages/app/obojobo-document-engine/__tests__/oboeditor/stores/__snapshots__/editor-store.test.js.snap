@@ -11,6 +11,7 @@ Object {
   "editor:rebuildMenu": [Function],
   "editor:renamePage": [Function],
   "editor:setContext": [Function],
+  "editor:setStartPage": [Function],
 }
 `;
 
@@ -219,6 +220,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "startingId": 12,
 }
 `;
 
@@ -234,6 +236,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "startingId": 12,
 }
 `;
 
@@ -249,5 +252,6 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "startingId": null,
 }
 `;
