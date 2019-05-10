@@ -1,9 +1,9 @@
 jest.mock('obojobo-document-engine/src/scripts/common/models/obo-model', () => {
 	return require('obojobo-document-engine/__mocks__/obo-model-adapter-mock').default
 })
-import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
 import AssessmentAdapter from './adapter'
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
 describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('construct builds without attributes', () => {
@@ -31,6 +31,34 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		AssessmentAdapter.construct(model, attrs)
 		expect(model.modelState).toMatchSnapshot()
 		expect(model.modelState.attempts).toBe(Infinity)
+	})
+
+	test('construct sets triggers when lockAssessment set', () => {
+		const attrs = {
+			content: { lockAssessment: true }
+		}
+		const model = new OboModel(attrs)
+		model.triggers = []
+		AssessmentAdapter.construct(model, attrs)
+		// expect(model.modelState).toMatchSnapshot()
+		expect(model.triggers).toEqual([
+			{
+				type: 'onStartAttempt',
+				actions: [
+					{
+						type: 'nav:lock'
+					}
+				]
+			},
+			{
+				type: 'onEndAttempt',
+				actions: [
+					{
+						type: 'nav:unlock'
+					}
+				]
+			}
+		])
 	})
 
 	test('construct floors decimal attempt integers', () => {

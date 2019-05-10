@@ -1,6 +1,6 @@
-import ScoreActions from './post-assessment/score-actions'
 // @TODO: Importing from the server code, we shouldn't do this:
 import AssessmentRubric from './assessment-rubric'
+import ScoreActions from './post-assessment/score-actions'
 
 const Adapter = {
 	construct(model, attrs) {
@@ -16,10 +16,29 @@ const Adapter = {
 			model.modelState.rubric = new AssessmentRubric()
 		}
 
-		model.setStateProp(
-			'attempts',
-			Infinity,
-			p => (('' + p).toLowerCase() === 'unlimited' ? Infinity : parseInt(p, 10))
+		if (attrs && attrs.content && attrs.content.lockAssessment) {
+			model.triggers.push(
+				{
+					type: 'onStartAttempt',
+					actions: [
+						{
+							type: 'nav:lock'
+						}
+					]
+				},
+				{
+					type: 'onEndAttempt',
+					actions: [
+						{
+							type: 'nav:unlock'
+						}
+					]
+				}
+			)
+		}
+
+		model.setStateProp('attempts', Infinity, p =>
+			('' + p).toLowerCase() === 'unlimited' ? Infinity : parseInt(p, 10)
 		)
 		model.setStateProp('review', 'never', p => p.toLowerCase(), [
 			'never',

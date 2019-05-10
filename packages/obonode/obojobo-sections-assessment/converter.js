@@ -6,10 +6,10 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 import Page from 'obojobo-pages-page/editor'
-import QuestionBank from 'obojobo-chunks-question-bank/editor'
-import ScoreActions from './post-assessment/editor-component'
-import Rubric from './components/rubric/editor'
 import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
+import QuestionBank from 'obojobo-chunks-question-bank/editor'
+import Rubric from './components/rubric/editor'
+import ScoreActions from './post-assessment/editor-component'
 
 const slateToObo = node => {
 	const content = node.data.get('content')
@@ -34,6 +34,7 @@ const slateToObo = node => {
 			case SETTINGS_NODE:
 				content.attempts = child.nodes.get(0).text
 				content.review = child.nodes.get(1).data.get('current')
+				content.lockAssessment = child.nodes.get(2).data.get('checked')
 		}
 	})
 
@@ -54,7 +55,7 @@ const oboToSlate = node => {
 			nodes: [
 				ParameterNode.helpers.oboToSlate({
 					name: 'attempts',
-					value: content.attempts + '',
+					value: `${content.attempts}`,
 					display: 'Attempts'
 				}),
 				ParameterNode.helpers.oboToSlate({
@@ -62,6 +63,12 @@ const oboToSlate = node => {
 					value: content.review,
 					display: 'Review',
 					options: ['always', 'never', 'no-attempts-remaining']
+				}),
+				ParameterNode.helpers.oboToSlate({
+					name: 'assessment lock',
+					value: content.lockAssessment || false,
+					display: 'Lock Assessment on Start',
+					checked: true
 				})
 			]
 		}
