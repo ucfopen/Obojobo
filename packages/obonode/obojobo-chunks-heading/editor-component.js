@@ -68,7 +68,7 @@ class Heading extends React.Component {
 					<span className={'text align-' + content.align}>{this.props.children}</span>
 				</HTag>
 
-				<div className={'dropdown-heading'}>
+				<div className={'dropdown-heading'} contentEditable={false}>
 					<button onClick={() => this.toggleLevelSelect()}>{'▼'}</button>
 					<div className={'drop-content-heading ' + isOrNot(this.state.isOpen, 'open')}>
 						<button onClick={() => this.handleLevelChange(1)}>

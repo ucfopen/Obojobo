@@ -19,12 +19,15 @@
 	}
 
 	.correct-button {
+		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
+
 		position: relative;
 		top: 2.3em;
 		left: 0.5em;
 		font-size: inherit;
 		background: transparent;
 		border: none;
+		font-family: $correct-font;
 	}
 
 	.add-feedback {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
@@ -41,7 +41,7 @@ describe('Actions editor', () => {
 		}
 
 		const Node = Actions.components.Node
-		const component = shallow(
+		const component = mount(
 			<Node
 				node={{
 					data: {

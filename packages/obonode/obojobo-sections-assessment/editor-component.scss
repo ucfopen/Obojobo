@@ -2,13 +2,20 @@
 
 .obojobo-draft--sections--assessment {
 	.add-rubric {
-		font-family: $font-default;
-		line-height: 1em;
-		font-size: 1em;
-		text-align: center;
-		border-radius: $dimension-rounded-radius;
-		padding: 0.4em;
-		background-color: $color-preview;
-		color: $color-bg;
+		.button {
+			$color-preview-hover: darken($color-preview, 9%);
+
+			background-color: $color-preview;
+
+			&:hover {
+				background-color: $color-preview-hover;
+			}
+		}
+	}
+
+	> .obojobo-draft--chunks--question-bank {
+		> .delete-button {
+			display: none;
+		}
 	}
 }

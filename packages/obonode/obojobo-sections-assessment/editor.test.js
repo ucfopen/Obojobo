@@ -1,6 +1,5 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
@@ -35,56 +34,6 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 describe('Assessment editor', () => {
-	test('Node component', () => {
-		const Node = Assessment.components.Node
-		const component = renderer.create(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: {
-						size: 5
-					}
-				}}
-			/>
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('Node component adds child', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		const Node = Assessment.components.Node
-		const component = shallow(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: { size: 0 }
-				}}
-				editor={editor}
-			/>
-		)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-	})
-
 	test('ModList component', () => {
 		const Node = Assessment.components.Settings
 		const component = renderer.create(

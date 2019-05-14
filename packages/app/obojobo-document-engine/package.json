@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-document-engine",
-	"version": "3.4.0",
+	"version": "4.0.1",
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
@@ -49,7 +49,7 @@
 		"date-fns": "^1.29.0",
 		"immutable": "^3.8.2",
 		"katex": "^0.9.0",
-		"obojobo-lib-utils": "1.0.0",
+		"obojobo-lib-utils": "^4.0.1",
 		"prop-types": "15.6.2",
 		"react": "16.7.0",
 		"react-dom": "16.7.0",
@@ -63,9 +63,7 @@
 		"url-parse": "^1.4.1"
 	},
 	"devDependencies": {
-		"lint-staged": "^6.1.1",
-		"obojobo-document-engine": "*",
-		"obojobo-document-xml-parser": "*"
+		"lint-staged": "^6.1.1"
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",
@@ -100,6 +98,7 @@
 			"<rootDir>/src/scripts/oboeditor/index.js",
 			"<rootDir>/src/scripts/oboeditor/app.js",
 			"<rootDir>/src/scripts/oboeditor/dist.js",
+			"<rootDir>/src/scripts/oboeditor/draftmanager.js",
 			"<rootDir>/src/scripts/oboeditor/documents/",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
 			".json",

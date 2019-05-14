@@ -19,7 +19,7 @@ class Slider extends React.Component {
 
 	render() {
 		return (
-			<div className={'obojobo-draft--components--slider'} >
+			<div className={'obojobo-draft--components--slider'}>
 				<span contentEditable={false}>{this.props.title + ': '}</span>
 				<label className={'switch'}>
 					<input
