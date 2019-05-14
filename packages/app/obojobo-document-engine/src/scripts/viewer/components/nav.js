@@ -204,7 +204,7 @@ export default class Nav extends React.Component {
 
 						return null
 					})}
-					<button onClick={this.onPanic.bind(this)}>
+					<button onClick={this.onPanic.bind(this)} class="on-panic">
 						Panic
 					</button>
 				</ul>

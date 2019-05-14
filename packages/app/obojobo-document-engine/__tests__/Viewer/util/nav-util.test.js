@@ -92,6 +92,18 @@ describe('NavUtil', () => {
 		expect(x).toBe('mockTriggerReturn')
 	})
 
+	test('setRedAlert', () => {
+		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+		const x = NavUtil.setRedAlert(true)
+		const expectedValue = {
+			value: {
+				enable: true
+			}
+		}
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert', expectedValue)
+		expect(x).toBe('mockTriggerReturn')
+	})
+
 	test('goPrev', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.goPrev()
@@ -505,5 +517,9 @@ describe('NavUtil', () => {
 
 	test('isNavOpen returns the open value of state', () => {
 		expect(NavUtil.isNavOpen({ open: 'mock-open' })).toBe('mock-open')
+	})
+
+	test('isRedAlertEnabled returns the redAlert value of state', () => {
+		expect(NavUtil.isRedAlertEnabled({redAlert: 'mock-redAlert'})).toBe('mock-redAlert')
 	})
 })

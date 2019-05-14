@@ -250,6 +250,33 @@ describe('Nav', () => {
 		expect(FocusUtil.focusComponent).toHaveBeenCalledWith(5, { animateScroll: true })
 	})
 
+	test('onClick trigger onPanic', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 5,
+				type: 'sub-link',
+				label: 'label',
+				flags: {
+					correct: false
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				redAlert: false,
+				navTargetId: 5 // select this item
+			}
+		}
+
+		const el = shallow(<Nav {...props} />)
+
+		expect(FocusUtil.focusOnNavTarget).not.toHaveBeenCalled()
+		el.find('.on-panic').simulate('click')
+		expect(NavUtil.setRedAlert).toHaveBeenCalledTimes(1)
+	})
+
 	test('onClickSkipNavigation calls FocusUtil.focusOnNavTarget', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([
 			{
