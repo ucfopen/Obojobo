@@ -25,7 +25,6 @@ const schema = {
 				{ match: [{ type: RUBRIC_NODE }] }
 			],
 			normalize: (editor, error) => {
-				console.log('assessment', error)
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
@@ -98,32 +97,23 @@ const schema = {
 					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								TextParameter.helpers.oboToSlate(
-									'attempts',
-									'unlimited',
-									'Attempts'
-								)
+								TextParameter.helpers.oboToSlate('attempts', 'unlimited', 'Attempts')
 							)
 							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
-							SelectParameter.helpers.oboToSlate(
-								'review',
+							SelectParameter.helpers.oboToSlate('review', 'never', 'Review', [
+								'always',
 								'never',
-								'Review',
-								['always', 'never', 'no-attempts-remaining']
-							)
+								'no-attempts-remaining'
+							])
 						)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								TextParameter.helpers.oboToSlate(
-									'attempts',
-									'unlimited',
-									'Attempts'
-								)
+								TextParameter.helpers.oboToSlate('attempts', 'unlimited', 'Attempts')
 							)
 							return editor.withoutNormalizing(e => {
 								e.removeNodeByKey(child.key)
@@ -131,12 +121,11 @@ const schema = {
 							})
 						}
 						const block = Block.create(
-							SelectParameter.helpers.oboToSlate(
-								'review',
+							SelectParameter.helpers.oboToSlate('review', 'never', 'Review', [
+								'always',
 								'never',
-								'Review',
-								['always', 'never', 'no-attempts-remaining']
-							)
+								'no-attempts-remaining'
+							])
 						)
 						return editor.withoutNormalizing(e => {
 							e.removeNodeByKey(child.key)
