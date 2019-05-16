@@ -66,14 +66,23 @@ module.exports = app => {
 	app.use(bodyParser.urlencoded({ extended: false }))
 
 	// index page with links to all the launch types
-	app.get('/lti/dev', (req, res) => {
+	app.get('/dev', (req, res) => {
 		res.set('Content-Type', 'text/html')
-		res.send(`<html><body>
+		res.send(`<html><head><title>Obojobo Next Express Dev Utils</title></head><body>
+			<h1>Obojobo Next Express Dev Utils</h1>
+			<h2>LTI & Auth</h2>
 			<ul>
-				<li><a href="/lti/dev/launch/course_navigation">Course Nav</a></li>
-				<li><a href="/lti/dev/launch/resource_selection">Resource Selection</a></li>
-				<li><a href="/lti/dev/launch/view">View</a></li>
+				<li><a href="/lti">Lti Instructions</a></li>
+				<li><a href="/lti/dev/launch/course_navigation">Course Nav Launch</a></li>
+				<li><a href="/lti/dev/launch/resource_selection">Resource Selection Launch</a></li>
+				<li><a href="/lti/dev/launch/view">Assignment Launch</a></li>
+				<li><a href="/profile">Whoami</a></li>
 				<li><a href="/profile/logout">Logout</a></li>
+			</ul>
+			<h2>Application</h2>
+			<ul>
+				<li><a href="/routes">Express Routes</a></li>
+				<li><a href="/webpack-dev-server">Webpack Dev Server Assets</a></li>
 			</ul>
 			</body></html>`)
 	})
