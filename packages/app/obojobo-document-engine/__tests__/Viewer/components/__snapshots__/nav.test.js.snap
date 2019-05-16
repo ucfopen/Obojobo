@@ -3,7 +3,7 @@
 exports[`Nav renders all list item types (locked=false) 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -115,6 +115,12 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
         label6
       </button>
     </li>
+    <button
+      className="on-panic"
+      onClick={[Function]}
+    >
+      Panic
+    </button>
   </ul>
   <div
     className="viewer--components--logo is-not-inverted"
@@ -128,7 +134,7 @@ exports[`Nav renders all list item types (locked=false) 1`] = `
 exports[`Nav renders all list item types (locked=true) 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -261,6 +267,12 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
         className="lock-icon"
       />
     </li>
+    <button
+      className="on-panic"
+      onClick={[Function]}
+    >
+      Panic
+    </button>
   </ul>
   <div
     className="viewer--components--logo is-not-inverted"
@@ -274,7 +286,7 @@ exports[`Nav renders all list item types (locked=true) 1`] = `
 exports[`Nav renders closed 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-open is-enabled"
+  className="viewer--components--nav is-locked is-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -297,7 +309,14 @@ exports[`Nav renders closed 1`] = `
   <ul
     aria-hidden={false}
     tabIndex="-1"
-  />
+  >
+    <button
+      className="on-panic"
+      onClick={[Function]}
+    >
+      Panic
+    </button>
+  </ul>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}
@@ -310,7 +329,7 @@ exports[`Nav renders closed 1`] = `
 exports[`Nav renders opened 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-locked is-not-open is-enabled"
+  className="viewer--components--nav is-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -334,7 +353,14 @@ exports[`Nav renders opened 1`] = `
   <ul
     aria-hidden={true}
     tabIndex="-1"
-  />
+  >
+    <button
+      className="on-panic"
+      onClick={[Function]}
+    >
+      Panic
+    </button>
+  </ul>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}
@@ -347,7 +373,7 @@ exports[`Nav renders opened 1`] = `
 exports[`Nav renders unlocked 1`] = `
 <nav
   aria-label="Navigation"
-  className="viewer--components--nav is-not-locked is-not-open is-enabled"
+  className="viewer--components--nav is-not-locked is-not-open is-enabled is-not-red-alert"
   role="navigation"
   tabIndex="-1"
 >
@@ -371,7 +397,14 @@ exports[`Nav renders unlocked 1`] = `
   <ul
     aria-hidden={true}
     tabIndex="-1"
-  />
+  >
+    <button
+      className="on-panic"
+      onClick={[Function]}
+    >
+      Panic
+    </button>
+  </ul>
   <div
     className="viewer--components--logo is-not-inverted"
     onClick={[Function]}

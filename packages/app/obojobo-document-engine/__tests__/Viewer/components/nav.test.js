@@ -47,13 +47,7 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 }))
 
 // NavUtil
-jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
-	canNavigate: jest.fn(),
-	gotoPath: jest.fn(),
-	toggle: jest.fn(),
-	getOrderedList: jest.fn(),
-	getNavTarget: jest.fn()
-}))
+jest.mock('../../../src/scripts/viewer/util/nav-util')
 
 // NavStore
 jest.mock('../../../src/scripts/viewer/stores/nav-store', () => ({}))
@@ -254,7 +248,7 @@ describe('Nav', () => {
 		NavUtil.getOrderedList.mockReturnValueOnce([
 			{
 				id: 5,
-				type: 'sub-link',
+				type: 'link',
 				label: 'label',
 				flags: {
 					correct: false

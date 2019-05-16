@@ -12,6 +12,7 @@ Object {
   "nav:openExternalLink": [Function],
   "nav:prev": [Function],
   "nav:rebuildMenu": [Function],
+  "nav:redAlert": [Function],
   "nav:setContext": [Function],
   "nav:setFlag": [Function],
   "nav:showChildren": [Function],
@@ -274,6 +275,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -289,6 +291,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
@@ -304,6 +307,7 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "redAlert": false,
   "visitId": 11,
 }
 `;
