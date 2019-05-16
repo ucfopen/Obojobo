@@ -6,7 +6,8 @@ const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
 const viewerOboNodeScripts = getAllOboNodeScriptPathsByType('viewer')
 const editorOboNodeScripts = getAllOboNodeScriptPathsByType('editor')
 const docEnginePath = path.dirname(require.resolve('obojobo-document-engine'))
-const ObojoboExpressDev = require('./obo_express_dev')
+const obojoboExpress = require('./middleware.default')
+const obojoboExpressDev = require('./obo_express_dev')
 
 module.exports =
 	// built client files
@@ -38,14 +39,14 @@ module.exports =
 				https: true,
 				host: '127.0.0.1',
 				before: app => {
-					require('./middleware.default')(app)
+					obojoboExpressDev(app)
+					obojoboExpress(app)
 				},
 				publicPath: '/static/',
 				watchContentBase: true,
 				watchOptions: {
 					ignored: '/node_modules/'
 				},
-				setup: ObojoboExpressDev,
 				stats: { children: false, modules: false }
 			},
 			entry: {
