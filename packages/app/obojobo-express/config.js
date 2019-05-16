@@ -37,7 +37,6 @@ const isStringJSON = (name, string) => {
 }
 
 const replaceENVsInJson = originalJson => {
-	// const originalJson = JSON.stringify(configObject) // convert back to string
 	// replace any "ENV": "CONFIG_VAR" settings with
 	// values from procesess.env
 	const pattern = /\{\s*"ENV"\s*?:\s*?"(.*?)"\s*\}/gi
