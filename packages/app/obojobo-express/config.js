@@ -25,14 +25,12 @@ if (process.env.DATABASE_URL) {
 }
 
 const isStringJSON = (name, string) => {
+	if(!name.endsWith('_JSON')) return false
 	try{
 		JSON.parse(string)
 		return true
 	} catch (error){
-		if(name.endsWith('_JSON')){
-			throw new Error(`Expected ENV ${name} to be valid JSON, but it did not parse`)
-		}
-		return false
+		throw new Error(`Expected ENV ${name} to be valid JSON, but it did not parse`)
 	}
 }
 
