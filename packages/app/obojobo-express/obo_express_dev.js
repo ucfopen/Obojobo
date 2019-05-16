@@ -3,6 +3,31 @@ const ltiConfig = require('./config/lti.json')
 const oauthKey = Object.keys(ltiConfig.development.keys)[0]
 const oauthSecret = ltiConfig.development.keys[oauthKey]
 
+const ltiPerson = {
+	lis_person_contact_email_primary: 'jbaird@uni.ac.uk',
+	lis_person_name_family: 'Baird',
+	lis_person_name_full: 'John Logie Baird',
+	lis_person_name_given: 'John',
+	lis_person_sourcedid: 'sis:942a8dd9',
+	roles: 'Instructor',
+	user_id: '29123',
+	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
+}
+
+const ltiToolConsumer = {
+	tool_consumer_info_product_family_code: 'obojobo-next',
+	tool_consumer_instance_guid: 'obojobo.ucf.edu',
+	tool_consumer_instance_name: 'University of Central Florida',
+	tool_consumer_instance_url: 'https://obojobo.ucf.edu/'
+}
+
+const ltiContext = {
+	context_id: 'S3294476',
+	context_label: 'OBO4321',
+	context_title: 'Obojobo Local Dev 101',
+	context_type: 'CourseSection'
+}
+
 // constructs a signed lti request and sends it.
 const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
 	// add the required oauth params to the given prams
@@ -59,15 +84,15 @@ module.exports = app => {
 		const foundPaths = new Set()
 		const simplifiedEndpoints = listEndpoints(app)
 			// remove express's * path
-			.filter(i => i.path != '*')
+			.filter(i => i.path !== '*')
 			// filter any duplicat paths
 			.filter(i => {
-				if(foundPaths.has(i.path)) return false
+				if (foundPaths.has(i.path)) return false
 				foundPaths.add(i.path)
-				return true;
+				return true
 			})
 			// sort the remaining paths
-			.sort((a,b) => a.path.localeCompare(b.path))
+			.sort((a, b) => a.path.localeCompare(b.path))
 
 		res.json(simplifiedEndpoints)
 	})
@@ -77,35 +102,25 @@ module.exports = app => {
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/course_navigation`
 		const params = {
-			context_id: 'S3294476',
-			context_label: 'ST101',
-			context_title: 'Telecommuncations 101',
-			context_type: 'CourseSection',
-			launch_presentation_css_url: 'http://lti.tools/saltire/css/tc.css',
+			launch_presentation_css_url: 'https://example.fake/nope.css',
 			launch_presentation_document_target: 'frame',
-			launch_presentation_locale: 'en-GB',
-			launch_presentation_return_url: 'http://lti.tools/saltire/tc-return.php',
+			launch_presentation_locale: 'en-US',
+			launch_presentation_return_url: 'https://example.fake/fake-return.html',
 			lis_course_offering_sourcedid: 'DD-ST101',
 			lis_course_section_sourcedid: 'DD-ST101:C1',
-			lis_outcome_service_url:
-				'http://lti.tools/saltire/tc-outcomes.php/6rd5e8jmvf4tlpgndtg0f2dcl7',
-			lis_person_contact_email_primary: 'jbaird@uni.ac.uk',
-			lis_person_name_family: 'Baird',
-			lis_person_name_full: 'John Logie Baird',
-			lis_person_name_given: 'John',
-			lis_person_sourcedid: 'sis:942a8dd9',
+			lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 			lis_result_sourcedid: 'UzMyOTQ0NzY6Ojo0Mjk3ODUyMjY6OjoyOTEyMw==',
 			lti_message_type: 'basic-lti-launch-request',
 			lti_version: 'LTI-1p0',
 			resource_link_id: '429785226',
-			resource_link_title: 'Phone home',
-			roles: 'Instructor',
-			tool_consumer_info_product_family_code: 'jisc',
-			tool_consumer_instance_guid: 'vle.uni.ac.uk',
-			tool_consumer_instance_name: 'University of Central Florida',
-			user_id: '29123'
+			resource_link_title: 'Phone home'
 		}
-		renderLtiLaunch(params, method, endpoint, res)
+		renderLtiLaunch(
+			{ ...ltiContext, ...ltiPerson, ...ltiToolConsumer, ...params },
+			method,
+			endpoint,
+			res
+		)
 	})
 
 	// builds a valid document view lti launch and submits it
@@ -113,22 +128,12 @@ module.exports = app => {
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/view/00000000-0000-0000-0000-000000000000`
 		const params = {
-			lis_outcome_service_url:
-				'http://lti.tools/saltire/tc-outcomes.php/6rd5e8jmvf4tlpgndtg0f2dcl7',
-			lis_person_contact_email_primary: 'jbaird@uni.ac.uk',
-			lis_person_name_family: 'Baird',
-			lis_person_name_full: 'John Logie Baird',
-			lis_person_name_given: 'John',
-			lis_person_sourcedid: 'sis:942a8dd9',
-			lis_result_sourcedid: 'Ojo6NDI5Nzg1MjI2Ojo6MjkxMjM=',
+			lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 			lti_message_type: 'basic-lti-launch-request',
 			lti_version: 'LTI-1p0',
-			resource_link_id: '429785226',
-			roles: 'Instructor',
-			user_id: '29123',
-			user_image: 'http://lti.tools/saltire/images/lti.gif'
+			resource_link_id: '429785226'
 		}
-		renderLtiLaunch(params, method, endpoint, res)
+		renderLtiLaunch({ ...ltiPerson, ...params }, method, endpoint, res)
 	})
 
 	// builds a valid resourse selection lti launch and submits it
@@ -144,24 +149,17 @@ module.exports = app => {
 			auto_create: 'true',
 			can_confirm: 'false',
 			content_item_return_url: `${baseUrl(req)}/lti/dev/return/resource_selection`,
-			context_id: 'S3294476',
-			context_type: 'CourseSection',
-			launch_presentation_css_url: 'http://lti.tools/saltire/css/tc.css',
-			launch_presentation_locale: 'en-GB',
-			lis_person_contact_email_primary: 'jbaird@uni.ac.uk',
-			lis_person_name_family: 'Baird',
-			lis_person_name_full: 'John Logie Baird',
-			lis_person_name_given: 'John',
-			lis_person_sourcedid: 'sis:942a8dd9',
+			launch_presentation_css_url: 'https://example.fake/nope.css',
+			launch_presentation_locale: 'en-US',
 			lti_message_type: 'ContentItemSelectionRequest',
-			lti_version: 'LTI-1p0',
-			roles: 'Instructor',
-			tool_consumer_instance_guid: 'vle.uni.ac.uk',
-			tool_consumer_instance_url: 'https://vle.uni.ac.uk/',
-			user_id: '29123',
-			user_image: 'http://lti.tools/saltire/images/lti.gif'
+			lti_version: 'LTI-1p0'
 		}
-		renderLtiLaunch(params, method, endpoint, res)
+		renderLtiLaunch(
+			{ ...ltiContext, ...ltiPerson, ...ltiToolConsumer, ...params },
+			method,
+			endpoint,
+			res
+		)
 	})
 
 	// route that resource selections will return to
