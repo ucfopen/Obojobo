@@ -39,10 +39,10 @@ jest.mock('sharp', () => () => {
 	}
 })
 
-import fs from 'fs'
-import fileType from 'file-type'
-import isSvg from 'is-svg'
 import MediaModel from '../../models/media'
+import fileType from 'file-type'
+import fs from 'fs'
+import isSvg from 'is-svg'
 
 require('../../config').media
 
@@ -886,5 +886,17 @@ describe('media model', () => {
 		const shouldResizeMedia = await MediaModel.shouldResizeMedia(jest.fn(), 'some-dimensions')
 
 		expect(shouldResizeMedia).toBe(false)
+	})
+
+	test('fetchFileName calls db with expected values', async () => {
+		await MediaModel.fetchFileName('mockMediaId')
+		expect(db.one.mock.calls[0][0]).toBe(
+			`
+			SELECT file_name
+			FROM media
+			WHERE id = $[mediaId]
+			`
+		)
+		expect(db.one.mock.calls[0][1]).toEqual({ mediaId: 'mockMediaId' })
 	})
 })

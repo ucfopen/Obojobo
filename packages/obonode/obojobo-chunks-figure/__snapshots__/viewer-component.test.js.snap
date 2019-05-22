@@ -23,6 +23,7 @@ exports[`Figure Figure component 1`] = `
       >
         <img
           alt="Alt Text"
+          onError={[Function]}
           src="www.example.com/img.jpg"
           style={
             Object {
@@ -76,6 +77,7 @@ exports[`Figure Figure component with no textGroup 1`] = `
       >
         <img
           alt="Alt Text"
+          onError={[Function]}
           src="www.example.com/img.jpg"
           style={
             Object {

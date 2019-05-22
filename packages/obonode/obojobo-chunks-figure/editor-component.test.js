@@ -1,16 +1,20 @@
+import Figure from './editor-component'
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import Figure from './editor-component'
-
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util', () => ({
+	postMultiPart: jest.fn().mockResolvedValue({ mediaId: 'mockMediaId' }),
+	get: jest
+		.fn()
+		.mockResolvedValue({ json: jest.fn().mockResolvedValue({ filename: 'mock-filename' }) })
+}))
 
 describe('Figure Editor Node', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
-		jest.resetAllMocks()
 	})
 	test('Figure component', () => {
 		const component = renderer.create(
@@ -147,6 +151,12 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('changeProperties sets the nodes content', () => {
+		document.getElementById = jest.fn().mockReturnValue({
+			files: [
+				new window.Blob([JSON.stringify({ name: 'some name' })], { type: 'application/json' })
+			]
+		})
+
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
@@ -163,9 +173,34 @@ describe('Figure Editor Node', () => {
 			/>
 		)
 
-		component.instance().changeProperties({ mockProperties: 'mock value' })
-
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+		return component
+			.instance()
+			.changeProperties({ mockProperties: 'mock value' })
+			.then(() => {
+				expect(editor.setNodeByKey.mock.calls[0][0]).toBe('mockKey')
+				expect(editor.setNodeByKey.mock.calls[0][1]).toEqual({
+					data: {
+						content: {
+							filename: 'mock-filename',
+							mockProperties: 'mock value',
+							url: 'mockMediaId'
+						}
+					}
+				})
+			})
+			.then(() => {
+				// case for no file
+				document.getElementById = jest.fn().mockReturnValue({ files: [null] })
+				component.instance().changeProperties({ mockProperties: 'another mock value' })
+				expect(editor.setNodeByKey.mock.calls[1][0]).toBe('mockKey')
+				expect(editor.setNodeByKey.mock.calls[1][1]).toEqual({
+					data: {
+						content: {
+							mockProperties: 'another mock value'
+						}
+					}
+				})
+			})
 	})
 
 	test('Figure component deletes self', () => {

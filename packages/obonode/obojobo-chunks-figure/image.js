@@ -3,7 +3,6 @@ import './image.scss'
 import React from 'react'
 
 const Image = props => {
-	let imgStyles
 	const data = props.chunk.modelState
 
 	if (!data.url) {
@@ -22,24 +21,30 @@ const Image = props => {
 		src = data.url
 	}
 
-	switch (data.size) {
-		case 'small':
-		case 'medium':
-		case 'large':
-			return <img src={src} unselectable="on" alt={data.alt} />
-		case 'custom':
-			imgStyles = {}
+	const imgStyles = {}
+	if (data.size === 'custom') {
+		if (data.width) {
+			imgStyles.width = data.width + 'px'
+		}
 
-			if (data.width) {
-				imgStyles.width = data.width + 'px'
-			}
-
-			if (data.height) {
-				imgStyles.height = data.height + 'px'
-			}
-
-			return <img src={src} unselectable="on" alt={data.alt} style={imgStyles} />
+		if (data.height) {
+			imgStyles.height = data.height + 'px'
+		}
 	}
+
+	return (
+		<img
+			src={src}
+			unselectable="on"
+			alt={data.alt}
+			style={imgStyles}
+			onError={e => {
+				e.target.onerror = null
+				e.target.src = 'https://via.placeholder.com/150/FF0000/FFF?text=Invalid'
+				e.target.alt = 'Invalid Image'
+			}}
+		/>
+	)
 }
 
 export default Image

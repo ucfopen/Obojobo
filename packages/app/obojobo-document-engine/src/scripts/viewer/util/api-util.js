@@ -34,6 +34,14 @@ const APIUtil = {
 		})
 	},
 
+	postMultiPart(endpoint, formData = new FormData()) {
+		return fetch(endpoint, {
+			method: 'POST',
+			credentials: 'include',
+			body: formData
+		}).then(processJsonResults)
+	},
+
 	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
 		return (
 			APIUtil.post('/api/events', {

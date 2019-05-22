@@ -1,11 +1,11 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import React from 'react'
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
-
-import ImageProperties from './image-properties-modal'
 import Image from './image'
+import ImageProperties from './image-properties-modal'
+import React from 'react'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
@@ -51,7 +51,28 @@ class Figure extends React.Component {
 	changeProperties(content) {
 		const editor = this.props.editor
 
-		editor.setNodeByKey(this.props.node.key, {
+		const fileInput = document.getElementById('image-file-input')
+		// fileInput is input type "file" so will always have FileList
+		const file = fileInput.files[0]
+		if (file) {
+			const formData = new window.FormData()
+			formData.append('userImage', file, file.name)
+
+			return APIUtil.postMultiPart('/api/media/upload', formData).then(({ mediaId }) => {
+				content.url = mediaId
+
+				return APIUtil.get(`/api/media/filename/${mediaId}`).then(res => {
+					res.json().then(({ filename }) => {
+						content.filename = filename
+						editor.setNodeByKey(this.props.node.key, {
+							data: { content }
+						})
+					})
+				})
+			})
+		}
+
+		return editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
 	}

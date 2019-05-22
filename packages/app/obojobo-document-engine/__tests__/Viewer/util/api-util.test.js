@@ -405,4 +405,19 @@ describe('apiutil', () => {
 			expect(JSON.parse(calledOptions.body)).toEqual({})
 		})
 	})
+
+	test('postMultiPart calls fetch and returns json', async () => {
+		fetch.mockResolvedValueOnce({
+			json: jest.fn().mockResolvedValueOnce({ mediaId: 'mockMediaId' })
+		})
+		const response = await APIUtil.postMultiPart('mock/endpoint')
+		expect(fetch).toHaveBeenCalled()
+		expect(fetch.mock.calls[0][0]).toBe('mock/endpoint')
+		expect(fetch.mock.calls[0][1]).toEqual({
+			body: expect.anything(),
+			credentials: 'include',
+			method: 'POST'
+		})
+		expect(response).toEqual({ mediaId: 'mockMediaId' })
+	})
 })

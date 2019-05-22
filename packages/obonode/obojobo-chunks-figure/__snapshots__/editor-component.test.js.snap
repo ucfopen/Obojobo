@@ -37,7 +37,9 @@ exports[`Figure Editor Node Figure component 1`] = `
       </div>
       <img
         alt="mockAlt"
+        onError={[Function]}
         src="mockUrl"
+        style={Object {}}
         unselectable="on"
       />
     </div>
@@ -89,6 +91,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
       </div>
       <img
         alt="mockAlt"
+        onError={[Function]}
         src="mockUrl"
         style={
           Object {
@@ -141,6 +144,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
       </div>
       <img
         alt="mockAlt"
+        onError={[Function]}
         src="mockUrl"
         style={
           Object {
@@ -192,6 +196,7 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
       </div>
       <img
         alt="mockAlt"
+        onError={[Function]}
         src="mockUrl"
         style={
           Object {

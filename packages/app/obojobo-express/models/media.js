@@ -187,7 +187,7 @@ class Media {
 		// size (ignoring whatever the requested size was)
 		if (
 			!Media.isMimeTypeResizable(originalMedia.mime_type) ||
-			!await Media.shouldResizeMedia(originalMedia.blob, targetDimensions)
+			!(await Media.shouldResizeMedia(originalMedia.blob, targetDimensions))
 		) {
 			return {
 				binaryData: originalMedia.blob,
@@ -207,6 +207,17 @@ class Media {
 			binaryData: resizedInfo.binary,
 			mimeType: Media.getMimeTypeFromMetadata(resizedInfo.metadata)
 		}
+	}
+
+	static async fetchFileName(mediaId) {
+		return await db.one(
+			`
+			SELECT file_name
+			FROM media
+			WHERE id = $[mediaId]
+			`,
+			{ mediaId }
+		)
 	}
 
 	static storeImageInDb({ filename, binary, size, mimetype, dimensions, mode, mediaId, userId }) {

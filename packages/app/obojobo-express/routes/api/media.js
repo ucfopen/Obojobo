@@ -43,13 +43,26 @@ router
 				return (
 					MediaModel.createAndSave(req.currentUser.id, req.file)
 						.then(mediaId => {
-							res.send(mediaId)
+							res.send({ mediaId })
 						})
 						// catches errors thrown by Media Model
 						.catch(next)
 				)
 			})
 			// catches errors thrown by upload
+			.catch(next)
+	})
+
+// Get media file name
+// mounted as /api/media/filename/:mediaId
+router
+	.route('/filename/:mediaId')
+	.get([requireCurrentUser])
+	.get((req, res, next) => {
+		MediaModel.fetchFileName(req.params.mediaId)
+			.then(({ file_name }) => {
+				res.send({ filename: file_name })
+			})
 			.catch(next)
 	})
 

@@ -31,7 +31,6 @@ jest.mock('../../../config', () => {
 	}
 })
 
-
 const mediaConfig = require('../../../config').media
 
 const mockMulterUpload = jest.fn().mockImplementation((req, res, cb) => {
@@ -86,7 +85,7 @@ app.use(oboRequire('express_current_user'))
 app.use('/', oboRequire('express_response_decorator'))
 app.use('/api/media', media)
 
-describe('api draft route', () => {
+describe('api media route', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
@@ -119,7 +118,7 @@ describe('api draft route', () => {
 				expect(mockMulterDiskStorage).toBeCalledWith({
 					destination: mediaConfig.tempUploadDestination
 				})
-				expect(response.text).toBe('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
+				expect(response.body).toEqual({ mediaId: '82ecb67a-7d2f-4785-a0b2-61cba30fa6eb' })
 			})
 	})
 
@@ -146,20 +145,30 @@ describe('api draft route', () => {
 				expect(response.text).toContain('An error from multer')
 			})
 	})
-})
 
-test('GET api/media/:id/:dimensions', () => {
-	mockCurrentUser = { id: 99 } // mock current logged in user
+	test('GET api/media/:id/:dimensions', () => {
+		mockCurrentUser = { id: 99 } // mock current logged in user
 
-	MediaModel.fetchByIdAndDimensions = jest.fn().mockResolvedValueOnce({
-		mimeType: 'text/html',
-		binaryData: 'ImageData'
+		MediaModel.fetchByIdAndDimensions = jest.fn().mockResolvedValueOnce({
+			mimeType: 'text/html',
+			binaryData: 'ImageData'
+		})
+
+		return request(app)
+			.get('/api/media/id/100x100')
+			.then(response => {
+				expect(MediaModel.fetchByIdAndDimensions).toBeCalledWith('id', '100x100')
+				expect(response.text).toBe('ImageData')
+			})
 	})
 
-	return request(app)
-		.get('/api/media/id/100x100')
-		.then(response => {
-			expect(MediaModel.fetchByIdAndDimensions).toBeCalledWith('id', '100x100')
-			expect(response.text).toBe('ImageData')
-		})
+	test('GET api/media/filename/:mediaId', () => {
+		MediaModel.fetchFileName = jest.fn().mockResolvedValueOnce({ file_name: 'mockFileName' })
+		return request(app)
+			.get('/api/media/filename/mockMediaId')
+			.then(response => {
+				expect(MediaModel.fetchFileName).toBeCalledWith('mockMediaId')
+				expect(response.body).toEqual({ filename: 'mockFileName' })
+			})
+	})
 })
