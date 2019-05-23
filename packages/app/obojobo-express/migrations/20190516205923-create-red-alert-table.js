@@ -18,16 +18,16 @@ exports.up = function(db) {
   return db
   		.createTable('red_alert_status', {
   			id: {
-  				type: 'bigint',
+  				type: 'bigserial',
   				primaryKey: true,
   				notNull: true 
   			},
   			user_id: {
-  				type: 'bigint',
+  				type: 'UUID',
   				notNull: true
   			},
   			draft_id: {
-  				type: 'bigint',
+  				type: 'UUID',
   				notNull: true
   			},
   			created_at: {
@@ -35,9 +35,7 @@ exports.up = function(db) {
   				notNull: true,
   				defaultValue: new String('now()')
   			},
-  			red_alert: {
-  				type: 'bool'
-  			}
+  			red_alert: { type: 'bool' }
   		})
 };
 

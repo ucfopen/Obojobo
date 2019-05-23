@@ -18,12 +18,20 @@ oboEvents.on('client:nav:close', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, false)
 })
 
+oboEvents.on('client:nav:redAlert', event => {
+	setNavOpen(event.userId, event.draftId, false)
+})
+
 oboEvents.on('client:nav:toggle', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, event.payload.open)
 })
 
 const setNavOpen = (userId, draftId, contentId, value) => {
 	viewerState.set(userId, draftId, contentId, 'nav:isOpen', 1, value)
+}
+
+const setNavRedAlert = (userId, draftId, value) => {
+	viewerState.set(userId, draftId, 'nav:redAlert', value)
 }
 
 // @TODO: Enable this when we're able to restore the user to their last page
