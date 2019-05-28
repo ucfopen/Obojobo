@@ -1,5 +1,6 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
-import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
+import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
+import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
 const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
@@ -51,18 +52,17 @@ const oboToSlate = node => {
 		object: 'block',
 		type: SETTINGS_NODE,
 		nodes: [
-			ParameterNode.helpers.oboToSlate({
-				name: 'responseType',
-				value: node.content.responseType,
-				display: 'Response Type',
-				options: ['pick-one', 'pick-all']
-			}),
-			ParameterNode.helpers.oboToSlate({
-				name: 'shuffle',
-				value: node.content.shuffle,
-				display: 'Shuffle',
-				checked: true
-			})
+			SelectParameter.helpers.oboToSlate(
+				'responseType',
+				node.content.responseType,
+				'Response Type',
+				['pick-one', 'pick-all']
+			),
+			ToggleParameter.helpers.oboToSlate(
+				'shuffle',
+				node.content.shuffle,
+				'Shuffle'
+			)
 		]
 	}
 
