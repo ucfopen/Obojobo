@@ -19,11 +19,45 @@ oboEvents.on('client:nav:close', event => {
 })
 
 oboEvents.on('client:nav:redAlert', event => {
-	setNavOpen(event.userId, event.draftId, false)
+	setNavOpen(event.userId, event.draftId, event.payload.redAlert)
 })
 
 oboEvents.on('client:nav:toggle', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, event.payload.open)
+})
+
+oboEvents.on('client:nav:redAlert', (event, req) => {
+	const eventRecordResponse = 'client:nav:redAlert'
+
+	return Promise.resolve()
+		.then(() => {
+			if (!event.payload.user_id) return
+
+			if (!event.payload.draft_id) throw 'Missing Draft ID'
+			if (!event.payload.red_alert) throw 'Missing Red Alert Status'
+
+			return db.none(
+				`
+			INSERT INTO red_alert_status
+			(user_id, draft_id, red_alert)
+			VALUES($[user_id], $[draft_id], $[red_alert])
+			ON CONFLICT (user_id, draft_id) DO
+				UPDATE
+				SET
+					red_alert = $[red_alert],
+					created_at = now()
+				WHERE red_alert_status.user_id = $[user_id]
+					AND red_alert_status.draft_id = $[draft_id]`,
+				{
+					user_id: event.payload.user_id,
+					draft_id: event.payload.draft_id,
+					red_alert: event.payload.red_alert
+				}
+			)
+		})
+		.catch(error => {
+			logger.error(eventRecordResponse, req, event, error, error.toString())
+		})
 })
 
 const setNavOpen = (userId, draftId, contentId, value) => {
