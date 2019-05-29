@@ -23,7 +23,7 @@ exports.up = function(db) {
   				notNull: true 
   			},
   			user_id: {
-  				type: 'UUID',
+  				type: 'bigint',
   				notNull: true
   			},
   			draft_id: {
@@ -37,6 +37,15 @@ exports.up = function(db) {
   			},
   			red_alert: { type: 'bool' }
   		})
+  		.then(result => {
+			return db.addIndex('red_alert_status', 'user_id', ['user_id'])
+		})
+		.then(result => {
+			return db.addIndex('red_alert_status', 'draft_id', ['draft_id'])
+		})
+		.then(result => {
+			return db.addIndex('red_alert_status', 'user_id_draft_id', ['user_id', 'draft_id'], true)
+		})
 };
 
 exports.down = function(db) {

@@ -1,5 +1,7 @@
 const oboEvents = oboRequire('obo_events')
 const viewerState = oboRequire('viewer/viewer_state')
+const db = require('obojobo-express/db')
+const logger = require('obojobo-express/logger')
 
 // @TODO: Enable this when we're able to restore the user to their last page
 // oboEvents.on('client:nav:lock', (event, req) => {
@@ -18,23 +20,16 @@ oboEvents.on('client:nav:close', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, false)
 })
 
-oboEvents.on('client:nav:redAlert', event => {
-	setNavOpen(event.userId, event.draftId, event.payload.redAlert)
-})
-
 oboEvents.on('client:nav:toggle', event => {
 	setNavOpen(event.userId, event.draftId, event.contentId, event.payload.open)
 })
 
 oboEvents.on('client:nav:redAlert', (event, req) => {
 	const eventRecordResponse = 'client:nav:redAlert'
-
 	return Promise.resolve()
 		.then(() => {
-			if (!event.payload.user_id) return
 
-			if (!event.payload.draft_id) throw 'Missing Draft ID'
-			if (!event.payload.red_alert) throw 'Missing Red Alert Status'
+			if (!event.payload.redAlert) throw Error('Missing Red Alert Status')
 
 			return db.none(
 				`
@@ -49,9 +44,9 @@ oboEvents.on('client:nav:redAlert', (event, req) => {
 				WHERE red_alert_status.user_id = $[user_id]
 					AND red_alert_status.draft_id = $[draft_id]`,
 				{
-					user_id: event.payload.user_id,
-					draft_id: event.payload.draft_id,
-					red_alert: event.payload.red_alert
+					user_id: event.userId,
+					draft_id: event.draftId,
+					red_alert: event.payload.redAlert
 				}
 			)
 		})

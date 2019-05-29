@@ -141,8 +141,9 @@ export default class Nav extends React.Component {
 	}
 
 	onPanic(event) {
-		var currentRedAlertState = NavUtil.isRedAlertEnabled(this.props.navState)
-		NavUtil.setRedAlert(!currentRedAlertState)
+		// const currentRedAlertState = NavUtil.isRedAlertEnabled(this.props.navState)
+		// NavUtil.setRedAlert(!currentRedAlertState)
+		NavUtil.setRedAlert(true)
 	}
 
 	render() {
