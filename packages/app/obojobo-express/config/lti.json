@@ -5,8 +5,6 @@
 		}
 	},
 	"production":{
-		"keys":{
-			"obo-next-production-lti-key": {"ENV": "OBO_LTI_SECRET"}
-		}
+		"keys": {"ENV": "OBO_LTI_KEYS_JSON"}
 	}
 }
