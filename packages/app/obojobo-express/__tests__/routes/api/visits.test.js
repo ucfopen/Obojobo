@@ -78,6 +78,7 @@ describe('api visits route', () => {
 			draft_content_id: validUUID()
 		}
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
+		VisitModel.getRedAlertStatus = jest.fn()
 	})
 	afterEach(() => {})
 

@@ -441,40 +441,60 @@ describe('NavStore', () => {
 		expect(NavUtil.setFlag.mock.calls[0]).toMatchSnapshot()
 	})
 
+	test('nav:redAlert event fires and updates state', () => {
+		NavStore.setState({ locked: 'unchanged', open: 'unchanged' })
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
+
+		// go
+		eventCallbacks['nav:redAlert']({ value: { redAlert: true } })
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
 	test('init builds state with basic options', () => {
-		NavStore.init(null, 12, '', 11)
+		NavStore.init(null, 12, '', 11, false)
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state locked state', () => {
-		NavStore.init(null, 12, '', 11, { 'nav:isLocked': { value: true } })
+		NavStore.init(null, 12, '', 11, { 'nav:isLocked': { value: true } }, false)
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state open state', () => {
-		NavStore.init(null, 12, '', 11, { 'nav:isOpen': { value: true } })
+		NavStore.init(null, 12, '', 11, { 'nav:isOpen': { value: true } }, false)
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds and goes to starting path', () => {
-		NavStore.init(null, 12, 'startingpath', 11)
+		NavStore.init(null, 12, 'startingpath', 11, false)
 		expect(NavUtil.gotoPath).toHaveBeenCalledWith('startingpath')
 	})
 
 	test('init builds and goes to starting id', () => {
-		NavStore.init(null, 12, 'startingpath', 11)
+		NavStore.init(null, 12, 'startingpath', 11, false)
 		expect(NavUtil.goto).toHaveBeenCalledWith(12)
 	})
 
 	test('init builds and goes to first with no starting id', () => {
 		NavUtil.getFirst.mockReturnValueOnce({ id: 'mockFirstId' })
-		NavStore.init(null, null, 'startingpath', 11)
+		NavStore.init(null, null, 'startingpath', 11, false)
 		expect(NavUtil.goto).toHaveBeenCalledWith('mockFirstId')
 	})
 
 	test('init builds with no first', () => {
 		NavUtil.getFirst.mockReturnValueOnce(undefined) //eslint-disable-line
-		NavStore.init(null, null, 'startingpath', 11)
+		NavStore.init(null, null, 'startingpath', 11, false)
 		expect(NavUtil.goto).not.toHaveBeenCalledWith()
 	})
 
@@ -642,7 +662,8 @@ describe('NavStore', () => {
 			itemsByPath: {},
 			itemsByFullPath: {},
 			itemsById: {},
-			visitId: 'visitId'
+			visitId: 'visitId',
+			redAlertStatus: false
 		})
 		expect(NavStore.generateNav(model)).toMatchSnapshot()
 		expect(NavStore.getState()).toMatchSnapshot()

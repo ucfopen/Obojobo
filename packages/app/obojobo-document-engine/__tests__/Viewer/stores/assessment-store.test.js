@@ -98,6 +98,7 @@ describe('AssessmentStore', () => {
 		QuestionStore.init()
 		QuestionStore.triggerChange = jest.fn()
 		NavStore.init()
+		NavStore.triggerChange = jest.fn()
 
 		// Need to make sure all the Obo components are loaded
 		Registry.getItems(() => {

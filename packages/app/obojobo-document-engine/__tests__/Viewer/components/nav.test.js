@@ -275,6 +275,32 @@ describe('Nav', () => {
 		expect(FocusUtil.focusOnNavTarget).toHaveBeenCalledTimes(1)
 	})
 
+	test('onClickRedAlert update red alert', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([
+			{
+				id: 5,
+				type: 'link',
+				label: 'label',
+				fullPath: 'mockFullPath',
+				flags: {
+					complete: false,
+					correct: false
+				}
+			}
+		])
+		const props = {
+			navState: {
+				open: false,
+				locked: true,
+				navTargetId: 5 // select this item
+			}
+		}
+		const el = shallow(<Nav {...props} />)
+
+		NavUtil.setRedAlert = jest.isMockFunction
+		el.find('.red-alert-button').simulate('click')
+	})
+
 	test('Clicking on a link calls NavUtil.gotoPath and FocusUtil.focusOnNavigation', () => {
 		NavUtil.getOrderedList.mockReturnValue([
 			{

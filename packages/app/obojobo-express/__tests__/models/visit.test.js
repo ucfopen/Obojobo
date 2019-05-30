@@ -164,4 +164,16 @@ describe('Visit Model', () => {
 			})
 		})
 	})
+
+	test('getRedAlertStatus calls database and returns red alert status', () => {
+		db.oneOrNone.mockResolvedValueOnce(null)
+		Visit.getRedAlertStatus('mockRedAlertStatus').then(result => {
+			expect(result).toEqual(false)
+		})
+
+		db.oneOrNone.mockResolvedValueOnce({ red_alert: false })
+		Visit.getRedAlertStatus('mockRedAlertStatus').then(result => {
+			expect(result).toEqual(false)
+		})
+	})
 })

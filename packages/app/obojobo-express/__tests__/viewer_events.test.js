@@ -23,7 +23,8 @@ describe('viewer events', () => {
 		expect(oboEvents.on).toBeCalledWith('client:nav:open', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:close', expect.any(Function))
 		expect(oboEvents.on).toBeCalledWith('client:nav:toggle', expect.any(Function))
-		expect(oboEvents.on).toHaveBeenCalledTimes(3)
+		expect(oboEvents.on).toBeCalledWith('client:nav:redAlert', expect.any(Function))
+		expect(oboEvents.on).toHaveBeenCalledTimes(4)
 	})
 
 	test('executes next when included to support express middleware', () => {
@@ -100,4 +101,21 @@ describe('viewer events', () => {
 			'yep'
 		)
 	})
+
+	test('client:nav:redAlert', () => {
+		const clientRedAlert = oboEvents.on.mock.calls[3][1]
+		const mockRedAlert = {
+			userId: 'mockUserId',
+			draftId: 'mockDraftId',
+			payload: { redAlert: true }
+		}
+		clientRedAlert(mockRedAlert)
+		expect(vs.set).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'nav:isOpen',
+			1,
+			true
+		)	})
 })

@@ -506,4 +506,12 @@ describe('NavUtil', () => {
 	test('isNavOpen returns the open value of state', () => {
 		expect(NavUtil.isNavOpen({ open: 'mock-open' })).toBe('mock-open')
 	})
+
+	test('setRedAlert calls Dispatcher.trigger', () => {
+		NavUtil.setRedAlert('mockRedAlert')
+
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert', {
+			value: { redAlert: 'mockRedAlert' }
+		})
+	})
 })
