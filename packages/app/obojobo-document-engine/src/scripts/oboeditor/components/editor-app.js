@@ -1,24 +1,21 @@
-import { KeyUtils } from 'slate'
-import React from 'react'
-
-import Common from 'obojobo-document-engine/src/scripts/common'
-import PageEditor from './page-editor'
-import EditorNav from './editor-nav'
+import '../../../scss/main.scss'
+// uses viewer css for styling
+import '../../../scripts/viewer/components/viewer-app.scss'
+import 'obojobo-modules-module/viewer-component.scss'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import EditorNav from './editor-nav'
 import EditorStore from '../stores/editor-store'
+import { KeyUtils } from 'slate'
+import PageEditor from './page-editor'
+import React from 'react'
+import generateId from '../generate-ids'
 
 const { ModalContainer } = Common.components
 const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
 const { OboModel } = Common.models
-
-import generateId from '../generate-ids'
-
-import '../../../scss/main.scss'
-// uses viewer css for styling
-import '../../../scripts/viewer/components/viewer-app.scss'
-import 'obojobo-modules-module/viewer-component.scss'
 
 class EditorApp extends React.Component {
 	constructor(props) {
@@ -59,7 +56,7 @@ class EditorApp extends React.Component {
 			.then(({ value: draftModel }) => {
 				const obomodel = OboModel.create(draftModel)
 
-				EditorStore.init(obomodel, obomodel.modelState.start, window.location.pathname)
+				EditorStore.init(obomodel, draftModel.content.start, window.location.pathname)
 
 				return this.setState({
 					modalState: ModalStore.getState(),

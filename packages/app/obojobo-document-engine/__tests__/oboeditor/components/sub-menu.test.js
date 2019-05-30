@@ -1,15 +1,22 @@
-import { mount } from 'enzyme'
-import React from 'react'
-import renderer from 'react-test-renderer'
-import Common from 'src/scripts/common'
-
-import SubMenu from 'src/scripts/oboeditor/components/sub-menu'
-
-import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
-jest.mock('src/scripts/oboeditor/util/editor-util')
 import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
-jest.mock('src/scripts/oboeditor/util/clipboard-util')
+import Common from 'src/scripts/common'
+import EditorStore from '../../../src/scripts/oboeditor/stores/editor-store'
+import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 import ModalUtil from 'src/scripts/common/util/modal-util'
+import React from 'react'
+import SubMenu from 'src/scripts/oboeditor/components/sub-menu'
+import { mount } from 'enzyme'
+import renderer from 'react-test-renderer'
+
+jest.mock('src/scripts/oboeditor/util/editor-util')
+
+jest.mock('src/scripts/oboeditor/stores/editor-store', () => {
+	return {
+		state: { startingId: null }
+	}
+})
+
+jest.mock('src/scripts/oboeditor/util/clipboard-util')
 jest.mock('src/scripts/common/util/modal-util')
 
 jest.useFakeTimers()
@@ -89,7 +96,7 @@ describe('SubMenu', () => {
 		)
 
 		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Delete, ID]
+			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
 			.at(0)
 			.simulate('click')
 
@@ -113,7 +120,7 @@ describe('SubMenu', () => {
 		)
 
 		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Delete, ID]
+			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
 			.at(1)
 			.simulate('click')
 
@@ -137,7 +144,7 @@ describe('SubMenu', () => {
 		)
 
 		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Delete, ID]
+			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
 			.at(2)
 			.simulate('click')
 
@@ -161,7 +168,7 @@ describe('SubMenu', () => {
 		)
 
 		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Delete, ID]
+			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
 			.at(3)
 			.simulate('click')
 
@@ -223,6 +230,10 @@ describe('SubMenu', () => {
 				}
 			}
 		]
+		// Don't render Make Start Page
+		// for code coverage
+		EditorStore.state.startingId = 7
+
 		const parentOnClick = jest.fn()
 		const component = mount(
 			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
@@ -234,6 +245,9 @@ describe('SubMenu', () => {
 			.simulate('click')
 
 		expect(EditorUtil.deletePage).toHaveBeenCalled()
+
+		// reset for other tests
+		EditorStore.state.startingId = null
 	})
 
 	test('SubMenu component copies id to clipboard', () => {
@@ -253,11 +267,35 @@ describe('SubMenu', () => {
 		)
 
 		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Delete, ID]
-			.at(5)
+			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
+			.at(6)
 			.simulate('click')
 
 		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
+	})
+
+	test('SubMenu component sets start page', () => {
+		const itemList = [
+			{
+				id: 7,
+				type: 'link',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
+			}
+		]
+		const parentOnClick = jest.fn()
+		const component = mount(
+			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+		)
+
+		component
+			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
+			.at(4)
+			.simulate('click')
+
+		expect(EditorUtil.setStartPage).toHaveBeenCalled()
 	})
 
 	test('SubMenu component opens menu', () => {
