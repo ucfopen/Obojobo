@@ -73,7 +73,8 @@ describe('Table Editor Node', () => {
 						get: () => {
 							return { textGroup: { numRows: 1, numCols: 2 } }
 						}
-					}
+					},
+					nodes: { size: 2 }
 				}}
 				editor={editor}
 			/>
@@ -136,7 +137,7 @@ describe('Table Editor Node', () => {
 
 	test('Table component adds col', () => {
 		const editor = {
-			insertNodeByKey: jest.fn()
+			setNodeByKey: jest.fn()
 		}
 
 		const component = shallow(
@@ -169,7 +170,7 @@ describe('Table Editor Node', () => {
 			.at(2)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 })

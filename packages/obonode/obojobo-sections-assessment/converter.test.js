@@ -40,18 +40,6 @@ jest.mock('./components/rubric/editor', () => ({
 	}
 }))
 
-// ParameterNode
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/parameter-node', () => ({
-	helpers: {
-		oboToSlate: (name, value, display, options) => ({
-			name,
-			value,
-			display,
-			options
-		})
-	}
-}))
-
 describe('Assessment Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode', () => {
 		const createSlateNode = (checkedValue, triggersValue) => ({

@@ -1,4 +1,7 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
+import { getEventTransfer } from 'slate-react'
+import { Block } from 'slate'
+
 import Converter from './converter'
 import Icon from './icon'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -22,6 +25,23 @@ const isType = editor => {
 }
 
 const plugins = {
+	onPaste(event, editor, next) {
+		const isCode = isType(editor)
+		const transfer = getEventTransfer(event)
+		if (transfer.type === 'fragment' || !isCode) return next()
+
+		const saveBlocks = editor.value.blocks
+
+		editor
+			.createCodeLinesFromText(transfer.text.split('\n'))
+			.forEach(line => editor.insertBlock(line))
+
+		saveBlocks.forEach(node => {
+			if (node.text === '') {
+				editor.removeNodeByKey(node.key)
+			}
+		})
+	},
 	onKeyDown(event, editor, next) {
 		const isCode = isType(editor)
 		if (!isCode) return next()
@@ -63,7 +83,24 @@ const plugins = {
 				return next()
 		}
 	},
-	schema: Schema
+	schema: Schema,
+	queries: {
+		createCodeLinesFromText(editor, textList) {
+			return textList.map(textLine =>
+				Block.create({
+					object: 'block',
+					type: 'ObojoboDraft.Chunks.Code.CodeLine',
+					data: { content: { indent: 0 } },
+					nodes: [
+						{
+							object: 'text',
+							leaves: [{ object: 'leaf', text: textLine, marks: [] }]
+						}
+					]
+				})
+			)
+		}
+	}
 }
 
 Common.Registry.registerModel('ObojoboDraft.Chunks.Code', {

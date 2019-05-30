@@ -12,10 +12,12 @@ import {
 } from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
 
 import Page from 'obojobo-pages-page/editor'
-import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
 import QuestionBank from 'obojobo-chunks-question-bank/editor'
 import Rubric from './components/rubric/editor'
 import ScoreActions from './post-assessment/editor-component'
+import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
+import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
+import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
 
 const slateToObo = node => {
 	const content = node.data.get('content')
@@ -85,23 +87,17 @@ const oboToSlate = node => {
 			object: 'block',
 			type: SETTINGS_NODE,
 			nodes: [
-				ParameterNode.helpers.oboToSlate({
-					name: 'attempts',
-					value: `${content.attempts}`,
-					display: 'Attempts'
-				}),
-				ParameterNode.helpers.oboToSlate({
-					name: 'review',
-					value: content.review,
-					display: 'Review',
-					options: ['always', 'never', 'no-attempts-remaining']
-				}),
-				ParameterNode.helpers.oboToSlate({
-					name: 'assessment lock',
-					value: startAttemptLock && endAttemptUnlock,
-					display: 'Lock Assessment on Start',
-					checked: true
-				})
+				TextParameter.helpers.oboToSlate('attempts', content.attempts + '', 'Attempts'),
+				SelectParameter.helpers.oboToSlate('review', content.review, 'Review', [
+					'always',
+					'never',
+					'no-attempts-remaining'
+				]),
+				ToggleParameter.helpers.oboToSlate(
+					'assessment lock',
+					startAttemptLock && endAttemptUnlock,
+					'Lock Assessment on Start'
+				)
 			]
 		}
 	]

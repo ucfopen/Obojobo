@@ -2,7 +2,7 @@ import KeyDownUtil from 'src/scripts/oboeditor/util/keydown-util'
 
 describe('KeyDown Util', () => {
 	test('deleteEmptyParent', () => {
-		const change = {
+		const editor = {
 			value: {
 				endBlock: {
 					text: ''
@@ -14,7 +14,7 @@ describe('KeyDown Util', () => {
 						return { nodes: { size: 1 } }
 					}
 				},
-				blocks: { get: () => ({ key: 'mockKey' }) }
+				blocks: { get: () => ({ key: 'mockKey', text: '' }) }
 			},
 			removeNodeByKey: jest.fn()
 		}
@@ -23,15 +23,15 @@ describe('KeyDown Util', () => {
 			preventDefault: jest.fn()
 		}
 
-		expect(KeyDownUtil.deleteEmptyParent(event, change, jest.fn(), 'someType')).toBe(true)
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, jest.fn(), 'someType')).toBe(true)
 		expect(event.preventDefault).toHaveBeenCalledTimes(1)
-		expect(change.removeNodeByKey).toHaveBeenCalledTimes(1)
+		expect(editor.removeNodeByKey).toHaveBeenCalledTimes(1)
 
-		change.value.endBlock.text = 'someText'
+		editor.value.blocks = { get: () => ({ key: 'mockKey', text: 'mocktext' }) }
 		/* eslint-disable-next-line */
-		expect(KeyDownUtil.deleteEmptyParent(event, change, jest.fn(), 'someType')).toBe(undefined)
+		expect(KeyDownUtil.deleteEmptyParent(event, editor, jest.fn(), 'someType')).toBe(undefined)
 		expect(event.preventDefault).toHaveBeenCalledTimes(1)
-		expect(change.removeNodeByKey).toHaveBeenCalledTimes(1)
+		expect(editor.removeNodeByKey).toHaveBeenCalledTimes(1)
 	})
 
 	test('deleteNodeContents deals with selection collapsed at start of block', () => {

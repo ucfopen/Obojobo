@@ -14,18 +14,26 @@ Object {
     Object {
       "nodes": Array [
         Object {
-          "display": undefined,
-          "name": Object {
+          "data": Object {
             "display": "Attempts",
             "name": "attempts",
-            "value": "undefined",
           },
-          "options": undefined,
-          "value": undefined,
+          "nodes": Array [
+            Object {
+              "leaves": Array [
+                Object {
+                  "text": "undefined",
+                },
+              ],
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "oboeditor.text-parameter",
         },
         Object {
-          "display": undefined,
-          "name": Object {
+          "data": Object {
+            "current": undefined,
             "display": "Review",
             "name": "review",
             "options": Array [
@@ -33,21 +41,18 @@ Object {
               "never",
               "no-attempts-remaining",
             ],
-            "value": undefined,
           },
-          "options": undefined,
-          "value": undefined,
+          "object": "block",
+          "type": "oboeditor.select-parameter",
         },
         Object {
-          "display": undefined,
-          "name": Object {
-            "checked": true,
+          "data": Object {
+            "checked": false,
             "display": "Lock Assessment on Start",
             "name": "assessment lock",
-            "value": false,
           },
-          "options": undefined,
-          "value": undefined,
+          "object": "block",
+          "type": "oboeditor.toggle-parameter",
         },
       ],
       "object": "block",
@@ -94,18 +99,26 @@ Object {
     Object {
       "nodes": Array [
         Object {
-          "display": undefined,
-          "name": Object {
+          "data": Object {
             "display": "Attempts",
             "name": "attempts",
-            "value": "undefined",
           },
-          "options": undefined,
-          "value": undefined,
+          "nodes": Array [
+            Object {
+              "leaves": Array [
+                Object {
+                  "text": "undefined",
+                },
+              ],
+              "object": "text",
+            },
+          ],
+          "object": "block",
+          "type": "oboeditor.text-parameter",
         },
         Object {
-          "display": undefined,
-          "name": Object {
+          "data": Object {
+            "current": undefined,
             "display": "Review",
             "name": "review",
             "options": Array [
@@ -113,21 +126,18 @@ Object {
               "never",
               "no-attempts-remaining",
             ],
-            "value": undefined,
           },
-          "options": undefined,
-          "value": undefined,
+          "object": "block",
+          "type": "oboeditor.select-parameter",
         },
         Object {
-          "display": undefined,
-          "name": Object {
+          "data": Object {
             "checked": true,
             "display": "Lock Assessment on Start",
             "name": "assessment lock",
-            "value": true,
           },
-          "options": undefined,
-          "value": undefined,
+          "object": "block",
+          "type": "oboeditor.toggle-parameter",
         },
       ],
       "object": "block",
