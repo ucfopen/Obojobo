@@ -41,6 +41,7 @@ router
 		let visitStartReturnExtensionsProps
 		let launch
 		let visit
+		let redAlertStatus
 
 		const draftId = req.currentDocument.draftId
 		const visitId = req.body.visitId
@@ -50,12 +51,13 @@ router
 		return Promise.all([
 			VisitModel.fetchById(visitId),
 			viewerState.get(req.currentUser.id, req.currentDocument.contentId),
+			VisitModel.getRedAlertStatus(req.currentUser.id, draftId),
 			getDraftAndStartVisitProps(req, res, req.currentDocument, visitId)
 		])
 			.then(results => {
 				// expand results
 				// eslint-disable-next-line no-extra-semi
-				;[visit, viewState, visitStartReturnExtensionsProps] = results
+				;[visit, viewState, redAlertStatus, visitStartReturnExtensionsProps] = results
 
 				if (visit.is_preview === false) {
 					if (visit.draft_content_id !== req.currentDocument.contentId) {
@@ -109,7 +111,8 @@ router
 					isPreviewing: visit.is_preview,
 					lti,
 					viewState,
-					extensions: visitStartReturnExtensionsProps
+					extensions: visitStartReturnExtensionsProps,
+					redAlertStatus
 				})
 			})
 			.catch(err => {

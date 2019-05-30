@@ -89,6 +89,23 @@ class Visit {
 			})
 	}
 
+	static getRedAlertStatus(userId, draftId) {
+		return db
+			.oneOrNone(
+				`
+				SELECT red_alert
+				FROM red_alert_status
+				WHERE user_id = $[userId] AND draft_id = $[draftId]
+				`,
+				{
+					userId,
+					draftId
+				}
+			)
+			.then(result => result === null ? false : result.red_alert)
+			.catch(false)
+	}
+
 	// create a student visit
 	// deactivates all previous visits
 	static createVisit(userId, draftId, resourceLinkId, launchId) {
