@@ -33,34 +33,6 @@ describe('ObojoboDraft.Sections.Assessment adapter', () => {
 		expect(model.modelState.attempts).toBe(Infinity)
 	})
 
-	test('construct sets triggers when lockAssessment set', () => {
-		const attrs = {
-			content: { lockAssessment: true }
-		}
-		const model = new OboModel(attrs)
-		model.triggers = []
-		AssessmentAdapter.construct(model, attrs)
-		// expect(model.modelState).toMatchSnapshot()
-		expect(model.triggers).toEqual([
-			{
-				type: 'onStartAttempt',
-				actions: [
-					{
-						type: 'nav:lock'
-					}
-				]
-			},
-			{
-				type: 'onEndAttempt',
-				actions: [
-					{
-						type: 'nav:unlock'
-					}
-				]
-			}
-		])
-	})
-
 	test('construct floors decimal attempt integers', () => {
 		const attrs = {
 			content: { attempts: 6.9 }

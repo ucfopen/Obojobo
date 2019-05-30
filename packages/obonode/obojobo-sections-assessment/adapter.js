@@ -16,27 +16,6 @@ const Adapter = {
 			model.modelState.rubric = new AssessmentRubric()
 		}
 
-		if (attrs && attrs.content && attrs.content.lockAssessment) {
-			model.triggers.push(
-				{
-					type: 'onStartAttempt',
-					actions: [
-						{
-							type: 'nav:lock'
-						}
-					]
-				},
-				{
-					type: 'onEndAttempt',
-					actions: [
-						{
-							type: 'nav:unlock'
-						}
-					]
-				}
-			)
-		}
-
 		model.setStateProp('attempts', Infinity, p =>
 			('' + p).toLowerCase() === 'unlimited' ? Infinity : parseInt(p, 10)
 		)

@@ -205,7 +205,6 @@ Object {
   ],
   "content": Object {
     "attempts": "mockText",
-    "lockAssessment": undefined,
     "review": undefined,
     "rubric": undefined,
     "scoreActions": undefined,

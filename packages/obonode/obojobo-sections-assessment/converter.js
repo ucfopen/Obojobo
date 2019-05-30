@@ -5,6 +5,12 @@ const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
+import {
+	addActionsToTriggers,
+	hasTriggerTypeWithActionType,
+	removeActionsFromTriggers
+} from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
+
 import Page from 'obojobo-pages-page/editor'
 import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
 import QuestionBank from 'obojobo-chunks-question-bank/editor'
@@ -31,10 +37,24 @@ const slateToObo = node => {
 			case RUBRIC_NODE:
 				content.rubric = Rubric.helpers.slateToObo(child)
 				break
-			case SETTINGS_NODE:
+			case SETTINGS_NODE: {
 				content.attempts = child.nodes.get(0).text
 				content.review = child.nodes.get(1).data.get('current')
-				content.lockAssessment = child.nodes.get(2).data.get('checked')
+				const shouldLockAssessment = child.nodes.get(2).data.get('checked')
+
+				if (shouldLockAssessment) {
+					if (!content.triggers) content.triggers = []
+					addActionsToTriggers(content.triggers, {
+						onStartAttempt: { type: 'nav:lock' },
+						onEndAttempt: { type: 'nav:unlock' }
+					})
+				} else {
+					removeActionsFromTriggers(content.triggers, {
+						onStartAttempt: 'nav:lock',
+						onEndAttempt: 'nav:unlock'
+					})
+				}
+			}
 		}
 	})
 
@@ -48,6 +68,18 @@ const slateToObo = node => {
 
 const oboToSlate = node => {
 	const content = node.get('content')
+
+	const startAttemptLock = hasTriggerTypeWithActionType(
+		content.triggers,
+		'onStartAttempt',
+		'nav:lock'
+	)
+	const endAttemptUnlock = hasTriggerTypeWithActionType(
+		content.triggers,
+		'onEndAttempt',
+		'nav:unlock'
+	)
+
 	const nodes = [
 		{
 			object: 'block',
@@ -66,7 +98,7 @@ const oboToSlate = node => {
 				}),
 				ParameterNode.helpers.oboToSlate({
 					name: 'assessment lock',
-					value: content.lockAssessment || false,
+					value: startAttemptLock && endAttemptUnlock,
 					display: 'Lock Assessment on Start',
 					checked: true
 				})
