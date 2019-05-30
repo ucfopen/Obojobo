@@ -1,0 +1,10 @@
+@import '../../../../scss/includes';
+
+.parameter-node {
+	padding-right: 1em;
+	display: inline;
+
+	.invisible-children {
+		display: none;
+	}
+}

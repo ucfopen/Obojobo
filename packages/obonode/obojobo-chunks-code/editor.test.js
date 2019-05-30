@@ -1,10 +1,72 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import SlateReact from 'slate-react'
+jest.mock('slate-react')
 
 import Code from './editor'
 const CODE_NODE = 'ObojoboDraft.Chunks.Code'
 const CODE_LINE_NODE = 'ObojoboDraft.Chunks.Code.CodeLine'
 
 describe('Code editor', () => {
+	test('onPaste calls next if not pasting text into a CODE_NODE', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text' })
+
+		Code.plugins.onPaste(null, editor, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('onPaste calls createTextLinesFromText', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						text: ''
+					},
+					{
+						key: 'mockBlockKey',
+						text: 'mock text'
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			},
+			createCodeLinesFromText: jest.fn().mockReturnValueOnce([
+				{
+					key: 'mockBlockKey'
+				}
+			]),
+			insertBlock: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'text',
+			text: 'mock text'
+		})
+
+		Code.plugins.onPaste(null, editor, next)
+
+		expect(editor.createCodeLinesFromText).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders code when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -178,7 +240,7 @@ describe('Code editor', () => {
 		const editor = {
 			value: {
 				blocks: {
-					get: () => ({ key: 'mockBlockKey' }),
+					get: () => ({ key: 'mockBlockKey', text: '' }),
 					some: () => true
 				},
 				document: {
@@ -189,10 +251,6 @@ describe('Code editor', () => {
 							nodes: { size: 1 }
 						}
 					}
-				},
-				endBlock: {
-					key: 'mockKey',
-					text: ''
 				}
 			}
 		}
@@ -394,78 +452,11 @@ describe('Code editor', () => {
 		expect(event.preventDefault).not.toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children in code', () => {
-		const editor = {
-			wrapBlockByKey: jest.fn()
-		}
+	test('queries.createCodeLinesFromText builds text lines', () => {
+		const editor = {}
 
-		Code.plugins.schema.blocks[CODE_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { nodes: { size: 5 } },
-			child: { key: 'mockKey' },
-			index: null
-		})
+		const blocks = Code.plugins.queries.createCodeLinesFromText(editor, ['mock text'])
 
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid last block in code', () => {
-		const editor = {
-			unwrapNodeByKey: jest.fn()
-		}
-
-		Code.plugins.schema.blocks[CODE_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { nodes: { size: 10 } },
-			child: { object: 'block', key: 'mockKey' },
-			index: 0
-		})
-
-		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes required children in code', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Code.plugins.schema.blocks[CODE_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize does nothing to invalid children in code line', () => {
-		const editor = {
-			unwrapBlockByKey: jest.fn()
-		}
-
-		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { nodes: { size: 5 } },
-			child: { key: 'mockKey' },
-			index: null
-		})
-
-		expect(editor.unwrapBlockByKey).not.toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid last block in code line', () => {
-		const editor = {
-			unwrapNodeByKey: jest.fn()
-		}
-
-		Code.plugins.schema.blocks[CODE_LINE_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { nodes: { size: 10 } },
-			child: { object: 'block', key: 'mockKey' },
-			index: 0
-		})
-
-		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+		expect(blocks).toMatchSnapshot()
 	})
 })

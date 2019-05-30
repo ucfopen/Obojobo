@@ -5,7 +5,6 @@ import { Block } from 'slate'
 import React from 'react'
 
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
-const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 
 class Table extends React.Component {
 	constructor(props) {
@@ -14,57 +13,37 @@ class Table extends React.Component {
 
 	addRow() {
 		const editor = this.props.editor
-		// get reference to content (which will be mutated)
 		const content = this.props.node.data.get('content')
-		// mutate
-		content.textGroup.numRows++
 
 		const newRow = Block.create({
 			type: TABLE_ROW_NODE,
-			data: { content: { header: false } }
+			data: { content: { header: false, numCols: content.numCols } }
 		})
 
-		editor.insertNodeByKey(this.props.node.key, content.textGroup.numRows - 1, newRow)
-
-		// Insert the cells for the new row, minus the cell that was inserted by normalization
-		for (let i = 0; i < content.textGroup.numCols - 1; i++) {
-			editor.insertNodeByKey(
-				newRow.key,
-				i,
-				Block.create({
-					type: TABLE_CELL_NODE,
-					data: { content: { header: false } }
-				})
-			)
-		}
+		editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newRow)
 	}
 
 	addCol() {
 		const editor = this.props.editor
-		// get reference to content (which will be mutated)
 		const content = this.props.node.data.get('content')
-		// mutate
-		content.textGroup.numCols++
+
+		content.numCols++
+
+		editor.setNodeByKey(this.props.node.key, { data: { content }})
 
 		this.props.node.nodes.forEach(row => {
-			const header = row.data.get('content').header
-			return editor.insertNodeByKey(
+			const rowContent = row.data.get('content')
+			rowContent.numCols = content.numCols
+
+			return editor.setNodeByKey(
 				row.key,
-				content.textGroup.numCols - 1,
-				Block.create({
-					type: TABLE_CELL_NODE,
-					data: { content: { header } }
-				})
+				{ data: { content: rowContent }}
 			)
 		})
 	}
 
 	deleteCol(index) {
 		const editor = this.props.editor
-		// get reference to content (which will be mutated)
-		const content = this.props.node.data.get('content')
-		// mutate
-		content.textGroup.numCols--
 
 		this.props.node.nodes.forEach(row => {
 			const cell = row.nodes.get(index)
@@ -94,11 +73,14 @@ class Table extends React.Component {
 		const editor = this.props.editor
 
 		const topRow = this.props.node.nodes.get(0)
-		const toggledHeader = !topRow.data.get('content').header
+		const content = topRow.data.get('content')
+		const toggledHeader = !content.header
+
+		content.header = toggledHeader
 
 		// change the header flag on the top row
 		editor.setNodeByKey(topRow.key, {
-			data: { content: { header: toggledHeader } }
+			data: { content }
 		})
 
 		// change the header flag on each cell of the top row

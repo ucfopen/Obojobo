@@ -4,6 +4,7 @@ import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import ActionButton from 'obojobo-chunks-action-button/editor'
 import Assessment from 'obojobo-sections-assessment/editor'
 import Break from 'obojobo-chunks-break/editor'
+import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Code from 'obojobo-chunks-code/editor'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
@@ -22,14 +23,16 @@ import MCFeedback from 'obojobo-chunks-multiple-choice-assessment/MCFeedback/edi
 import MarkToolbar from './toolbar'
 import MathEquation from 'obojobo-chunks-math-equation/editor'
 import Page from 'obojobo-pages-page/editor'
-import ParameterNode from './parameter-node'
 import Question from 'obojobo-chunks-question/editor'
 import QuestionBank from 'obojobo-chunks-question-bank/editor'
 import React from 'react'
 import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
 import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-component'
+import SelectParameter from './parameter-node/select-parameter'
 import Table from 'obojobo-chunks-table/editor'
 import Text from 'obojobo-chunks-text/editor'
+import TextParameter from './parameter-node/text-parameter'
+import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
 import YouTube from 'obojobo-chunks-youtube/editor'
 
@@ -64,9 +67,12 @@ const plugins = [
 	ScoreActions.plugins,
 	Page.plugins,
 	Rubric.plugins,
-	ParameterNode.plugins,
+	ToggleParameter.plugins,
+	SelectParameter.plugins,
+	TextParameter.plugins,
 	Assessment.plugins,
-	EditorSchema
+	EditorSchema,
+	ClipboardPlugin
 ]
 
 class PageEditor extends React.Component {
