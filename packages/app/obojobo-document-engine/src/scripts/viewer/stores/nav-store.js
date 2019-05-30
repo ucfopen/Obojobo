@@ -157,13 +157,25 @@ class NavStore extends Store {
 					if (navItem) {
 						NavUtil.setFlag(payload.value.id, 'correct', payload.value.score === 100)
 					}
+				},
+				'nav:redAlert': payload => {
+					APIUtil.postEvent({
+						draftId: OboModel.getRoot().get('draftId'),
+						action: 'nav:redAlert',
+						eventVersion: '1.0.0',
+						visitId: this.state.visitId,
+						payload: {
+							redAlert: payload.value.redAlert
+						}
+					})
+					this.setAndTrigger({ redAlert: payload.value.redAlert })
 				}
 			},
 			this
 		)
 	}
 
-	init(model, startingId, startingPath, visitId, viewState = {}) {
+	init(model, startingId, startingPath, visitId, viewState = {}, redAlertStatus) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -180,7 +192,8 @@ class NavStore extends Store {
 					? viewState['nav:isOpen'].value
 					: true,
 			context: 'practice',
-			visitId
+			visitId,
+			redAlert: redAlertStatus
 		}
 
 		this.buildMenu(model)

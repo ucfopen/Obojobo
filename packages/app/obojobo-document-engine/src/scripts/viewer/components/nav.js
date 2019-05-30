@@ -57,6 +57,10 @@ export default class Nav extends React.Component {
 		FocusUtil.focusOnNavTarget()
 	}
 
+	// onClickRedAlert(redAlert) {
+	// 	NavUtil.setRedAlert(redAlert)
+	// }
+
 	renderLabel(label) {
 		return label instanceof StyleableText ? <StyleableTextComponent text={label} /> : label
 	}
@@ -149,7 +153,8 @@ export default class Nav extends React.Component {
 			'viewer--components--nav' +
 			isOrNot(navState.locked, 'locked') +
 			isOrNot(navState.open, 'open') +
-			isOrNot(!navState.disabled, 'enabled')
+			isOrNot(!navState.disabled, 'enabled') +
+			isOrNot(this.props.navState.redAlert, 'red-alert')
 
 		return (
 			<nav
@@ -199,6 +204,12 @@ export default class Nav extends React.Component {
 						return null
 					})}
 				</ul>
+				<button 
+					onClick={() => NavUtil.setRedAlert(!this.props.navState.redAlert)}
+					className="red-alert-button"
+				>
+					Red Alert
+				</button>
 				<Logo />
 			</nav>
 		)
