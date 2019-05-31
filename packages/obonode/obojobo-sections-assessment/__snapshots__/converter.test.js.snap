@@ -86,10 +86,26 @@ Object {
         Object {
           "actions": Array [
             Object {
+              "type": "nav:lock",
+            },
+          ],
+          "type": "onNavEnter",
+        },
+        Object {
+          "actions": Array [
+            Object {
               "type": "nav:unlock",
             },
           ],
           "type": "onEndAttempt",
+        },
+        Object {
+          "actions": Array [
+            Object {
+              "type": "nav:unlock",
+            },
+          ],
+          "type": "onNavExit",
         },
       ],
     },
@@ -170,6 +186,14 @@ Object {
             "type": "nav:lock",
           },
         ],
+        "type": "onNavEnter",
+      },
+      Object {
+        "actions": Array [
+          Object {
+            "type": "nav:lock",
+          },
+        ],
         "type": "onStartAttempt",
       },
       Object {
@@ -179,6 +203,14 @@ Object {
           },
         ],
         "type": "onEndAttempt",
+      },
+      Object {
+        "actions": Array [
+          Object {
+            "type": "nav:unlock",
+          },
+        ],
+        "type": "onNavExit",
       },
     ],
   },
@@ -205,6 +237,14 @@ Object {
             "type": "nav:lock",
           },
         ],
+        "type": "onNavEnter",
+      },
+      Object {
+        "actions": Array [
+          Object {
+            "type": "nav:lock",
+          },
+        ],
         "type": "onStartAttempt",
       },
       Object {
@@ -214,6 +254,14 @@ Object {
           },
         ],
         "type": "onEndAttempt",
+      },
+      Object {
+        "actions": Array [
+          Object {
+            "type": "nav:unlock",
+          },
+        ],
+        "type": "onNavExit",
       },
     ],
   },

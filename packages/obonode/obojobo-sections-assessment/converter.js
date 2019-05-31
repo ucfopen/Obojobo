@@ -47,13 +47,17 @@ const slateToObo = node => {
 				if (shouldLockAssessment) {
 					if (!content.triggers) content.triggers = []
 					addActionsToTriggers(content.triggers, {
+						onNavEnter: { type: 'nav:lock' },
 						onStartAttempt: { type: 'nav:lock' },
-						onEndAttempt: { type: 'nav:unlock' }
+						onEndAttempt: { type: 'nav:unlock' },
+						onNavExit: { type: 'nav:unlock' }
 					})
 				} else {
 					removeActionsFromTriggers(content.triggers, {
+						onNavEnter: 'nav:lock',
 						onStartAttempt: 'nav:lock',
-						onEndAttempt: 'nav:unlock'
+						onEndAttempt: 'nav:unlock',
+						onNavExit: 'nav:unlock'
 					})
 				}
 			}
@@ -71,16 +75,12 @@ const slateToObo = node => {
 const oboToSlate = node => {
 	const content = node.get('content')
 
-	const startAttemptLock = hasTriggerTypeWithActionType(
-		content.triggers,
-		'onStartAttempt',
-		'nav:lock'
-	)
-	const endAttemptUnlock = hasTriggerTypeWithActionType(
-		content.triggers,
-		'onEndAttempt',
-		'nav:unlock'
-	)
+	const startAttemptLock =
+		hasTriggerTypeWithActionType(content.triggers, 'onStartAttempt', 'nav:lock') &&
+		hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
+	const endAttemptUnlock =
+		hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
+		hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
 
 	const nodes = [
 		{

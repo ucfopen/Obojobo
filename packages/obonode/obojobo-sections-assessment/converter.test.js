@@ -125,7 +125,9 @@ describe('Assessment Converter', () => {
 		// rubric does not exist
 		oboNode = createOboNode(false, [
 			{ type: 'onStartAttempt', actions: [{ type: 'nav:lock' }] },
-			{ type: 'onEndAttempt', actions: [{ type: 'nav:unlock' }] }
+			{ type: 'onNavEnter', actions: [{ type: 'nav:lock' }] },
+			{ type: 'onEndAttempt', actions: [{ type: 'nav:unlock' }] },
+			{ type: 'onNavExit', actions: [{ type: 'nav:unlock' }] }
 		])
 		slateNode = Converter.oboToSlate(oboNode)
 		expect(slateNode).toMatchSnapshot()
