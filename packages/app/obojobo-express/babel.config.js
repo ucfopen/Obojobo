@@ -6,7 +6,7 @@ module.exports = function(api) {
 			test: {
 				compact: false,
 				presets: ['@babel/preset-env', '@babel/preset-react'],
-				plugins: [['@babel/transform-runtime']]
+				plugins: ['@babel/transform-runtime']
 			}
 		}
 	}

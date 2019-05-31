@@ -99,8 +99,8 @@ class Visit {
 
 	// create a preview visit
 	// deactivates all previous visits
-	static createPreviewVisit(userId, draftId, resourceLinkId) {
-		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, resourceLinkId, null, true)
+	static createPreviewVisit(userId, draftId) {
+		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, 'preview', null, true)
 	}
 }
 

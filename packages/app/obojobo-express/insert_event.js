@@ -1,9 +1,7 @@
 const db = oboRequire('db')
 
 module.exports = insertObject => {
-	if (!insertObject['visitId']) {
-		insertObject.visitId = null
-	}
+	insertObject.visitId = insertObject.visitId || null
 	return db
 		.one(
 			`

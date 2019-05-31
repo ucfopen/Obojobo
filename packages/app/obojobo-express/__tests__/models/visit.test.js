@@ -112,11 +112,11 @@ describe('Visit Model', () => {
 			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
 			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
 
-		return Visit.createPreviewVisit('user-id', 'draft-id', 'resource-link-id').then(result => {
+		return Visit.createPreviewVisit('user-id', 'draft-id').then(result => {
 			expect(db.manyOrNone.mock.calls[0][1]).toEqual({
 				draftId: 'draft-id',
 				userId: 'user-id',
-				resourceLinkId: 'resource-link-id'
+				resourceLinkId: 'preview'
 			})
 			expect(db.one.mock.calls[0][1]).toEqual({
 				draftId: 'draft-id'
@@ -125,7 +125,7 @@ describe('Visit Model', () => {
 				draftId: 'draft-id',
 				draftContentId: 'mocked-draft-content-id',
 				userId: 'user-id',
-				resourceLinkId: 'resource-link-id',
+				resourceLinkId: 'preview',
 				launchId: null,
 				isPreview: true
 			})
@@ -144,11 +144,11 @@ describe('Visit Model', () => {
 			.mockResolvedValueOnce({ id: 'mocked-draft-content-id' })
 			.mockResolvedValueOnce({ id: 'resulting-visit-id' })
 
-		return Visit.createPreviewVisit('user-id', 'draft-id', 'resource-link-id').then(result => {
+		return Visit.createPreviewVisit('user-id', 'draft-id').then(result => {
 			expect(db.manyOrNone.mock.calls[0][1]).toEqual({
 				draftId: 'draft-id',
 				userId: 'user-id',
-				resourceLinkId: 'resource-link-id'
+				resourceLinkId: 'preview'
 			})
 			expect(db.one.mock.calls[0][1]).toEqual({
 				draftId: 'draft-id'
@@ -157,7 +157,7 @@ describe('Visit Model', () => {
 				draftId: 'draft-id',
 				draftContentId: 'mocked-draft-content-id',
 				userId: 'user-id',
-				resourceLinkId: 'resource-link-id',
+				resourceLinkId: 'preview',
 				launchId: null,
 				isPreview: true
 			})
