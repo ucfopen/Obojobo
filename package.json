@@ -55,6 +55,7 @@
 		"packages/obonode/obojobo-chunks-list",
 		"packages/obonode/obojobo-chunks-math-equation",
 		"packages/obonode/obojobo-chunks-multiple-choice-assessment",
+		"packages/obonode/obojobo-chunks-numeric-assessment",
 		"packages/obonode/obojobo-chunks-question",
 		"packages/obonode/obojobo-chunks-question-bank",
 		"packages/obonode/obojobo-chunks-table",
