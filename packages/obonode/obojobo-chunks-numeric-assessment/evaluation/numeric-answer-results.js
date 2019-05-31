@@ -6,8 +6,8 @@ import {
 	INPUT_NOT_SAFE,
 	INPUT_MATCHES_MULTIPLE_TYPES,
 	INPUT_NOT_MATCHED
-} from './numeric-answer-result-statuses.js'
-import { RULE_MATCHED } from './numeric-rule-set-evaluator-statuses.js'
+} from './numeric-answer-result-statuses'
+import { RULE_MATCHED } from './numeric-rule-set-evaluator-statuses'
 
 /**
  * Object representing the evaluation of a student answer

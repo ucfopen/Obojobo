@@ -1,5 +1,5 @@
-import ValueRange from './value-range.js'
-import Big from '../big.js'
+import ValueRange from './value-range'
+import Big from '../big'
 
 /**
  * A type of ValueRange but for Big values instead of numbers.

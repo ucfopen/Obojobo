@@ -3,7 +3,7 @@ import {
 	INPUT_NOT_SAFE,
 	INPUT_NOT_MATCHED,
 	INPUT_INVALID
-} from '../entry/numeric-entry-statuses.js'
+} from '../entry/numeric-entry-statuses'
 
 const FAILED_VALIDATION = 'failedValidation'
 const FAILED = 'failed'

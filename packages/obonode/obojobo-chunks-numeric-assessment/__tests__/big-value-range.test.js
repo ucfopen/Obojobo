@@ -1,4 +1,4 @@
-import BigValueRange from '../numeric-entry-range.js/index.js.js'
+import BigValueRange from '../range/big-value-range'
 import Big from 'big.js'
 
 describe('BigValueRange', () => {
@@ -21,11 +21,5 @@ describe('BigValueRange', () => {
 			isMaxInclusive: true,
 			isClosed: false
 		})
-	})
-
-	test('compareBigValues compares two Big values', () => {
-		expect(BigValueRange.compareBigValues(Big(0), Big(1))).toBe(-1)
-		expect(BigValueRange.compareBigValues(Big(0), Big(0))).toBe(0)
-		expect(BigValueRange.compareBigValues(Big(1), Big(0))).toBe(1)
 	})
 })

@@ -1,9 +1,9 @@
-import { INPUT_TYPE_OCTAL } from './types/input-types.js'
-import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types.js'
-import Numeric from './numeric.js'
-import Decimal from './decimal.js'
-import Big from '../big.js'
-import { OCTAL_TYPE_INFERRED, OCTAL_TYPE_ZERO_O } from './types/octal-types.js'
+import { INPUT_TYPE_OCTAL } from './types/input-types'
+import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
+import Numeric from './numeric'
+import Decimal from './decimal'
+import Big from '../big'
+import { OCTAL_TYPE_INFERRED, OCTAL_TYPE_ZERO_O } from './types/octal-types'
 
 const octalZeroO = /^0o[0-7]+$/
 const octalInferred = /^[0-7]+$/

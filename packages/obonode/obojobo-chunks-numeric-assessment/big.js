@@ -1,5 +1,6 @@
 import Big from 'big.js'
 
 export default s => {
-	return Big(s.replace(/\+/g, ''))
+	s = typeof s === 'string' ? s.replace(/^\+/, '') : s
+	return Big(s)
 }

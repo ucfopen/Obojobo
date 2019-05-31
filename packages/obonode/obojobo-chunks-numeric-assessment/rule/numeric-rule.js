@@ -1,12 +1,8 @@
-import Big from '../big.js'
-import NumericEntryRange from '../range/numeric-entry-range.js'
-import BigValueRange from '../range/big-value-range.js'
-import NumericEntry from '../entry/numeric-entry.js'
-import {
-	ROUND_TYPE_NONE,
-	ROUND_TYPE_ROUND_DIGITS,
-	ROUND_TYPE_ROUND_SIG_FIGS
-} from './round-types.js'
+import Big from '../big'
+import NumericEntryRange from '../range/numeric-entry-range'
+import BigValueRange from '../range/big-value-range'
+import NumericEntry from '../entry/numeric-entry'
+import { ROUND_TYPE_NONE, ROUND_TYPE_ROUND_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } from './round-types'
 import {
 	INPUT_TYPE_SCIENTIFIC,
 	INPUT_TYPE_DECIMAL,
@@ -15,16 +11,16 @@ import {
 	INPUT_TYPE_OCTAL,
 	INPUT_TYPE_HEXADECIMAL,
 	allTypes
-} from '../numerics/types/input-types.js'
+} from '../numerics/types/input-types'
 import {
 	SCIENTIFIC_TYPE_X,
 	SCIENTIFIC_TYPE_E,
 	SCIENTIFIC_TYPE_EE,
 	SCIENTIFIC_TYPE_APOS,
 	SCIENTIFIC_TYPE_ASTERISK
-} from '../numerics/types/scientific-types.js'
-import { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } from './rule-error-types.js'
-import { ANY_UNIT, IGNORE_UNIT, NO_UNIT, MATCHES_UNIT } from './unit-types.js'
+} from '../numerics/types/scientific-types'
+import { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } from './rule-error-types'
+import { ANY_UNIT, IGNORE_UNIT, NO_UNIT, MATCHES_UNIT } from './unit-types'
 
 const SCHEMA = [
 	'percentError',

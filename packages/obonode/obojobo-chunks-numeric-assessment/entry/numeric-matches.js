@@ -7,7 +7,7 @@ import {
 	SINGLE_EXACT,
 	SINGLE_INFERRED,
 	NO_MATCHES
-} from './match-types.js'
+} from './match-types'
 
 /**
  * Organizes and contains Numeric instances based on an input string. Instances are

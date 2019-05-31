@@ -4,12 +4,12 @@ import {
 	SCIENTIFIC_TYPE_EE,
 	SCIENTIFIC_TYPE_APOS,
 	SCIENTIFIC_TYPE_ASTERISK
-} from './types/scientific-types.js'
-import Numeric from './numeric.js'
-import Decimal from './decimal.js'
-import { INPUT_TYPE_SCIENTIFIC } from './types/input-types.js'
-import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types.js'
-import Big from '../big.js'
+} from './types/scientific-types'
+import Numeric from './numeric'
+import Decimal from './decimal'
+import { INPUT_TYPE_SCIENTIFIC } from './types/input-types'
+import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
+import Big from '../big'
 
 const xScientificNotationRegex = /^[-\+]?[0-9]+(\.[0-9]+)?x10\^[-\+]?[0-9]+/
 const asteriskScientificNotationRegex = /^[-\+]?[0-9]+(\.[0-9]+)?\*10\^[-\+]?[0-9]+/

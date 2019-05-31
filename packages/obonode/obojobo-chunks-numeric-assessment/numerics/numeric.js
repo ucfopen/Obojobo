@@ -1,5 +1,5 @@
-import { INPUT_TYPE_INVALID } from './types/input-types.js'
-import { MATCH_NONE } from '../entry/match-types.js'
+import { INPUT_TYPE_INVALID } from './types/input-types'
+import { MATCH_NONE } from '../entry/match-types'
 
 /**
  * The result of parsing a string for a given numeric class

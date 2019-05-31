@@ -4,12 +4,12 @@ import {
 	HEX_TYPE_DOLLAR_SIGN,
 	HEX_TYPE_NO_PREFIX,
 	HEX_TYPE_INFERRED
-} from './types/hexadecimal-types.js'
-import { INPUT_TYPE_HEXADECIMAL } from './types/input-types.js'
-import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types.js'
-import Numeric from './numeric.js'
-import Decimal from './decimal.js'
-import Big from '../big.js'
+} from './types/hexadecimal-types'
+import { INPUT_TYPE_HEXADECIMAL } from './types/input-types'
+import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
+import Numeric from './numeric'
+import Decimal from './decimal'
+import Big from '../big'
 
 const hexZeroX = /^0x[0-9a-fA-F]+$/
 const hexOctothorpe = /^#[0-9a-fA-F]+$/

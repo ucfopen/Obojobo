@@ -1,9 +1,9 @@
-import { BINARY_TYPE_INFERRED, BINARY_TYPE_ZERO_B } from './types/binary-types.js'
-import { INPUT_TYPE_BINARY } from './types/input-types.js'
-import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types.js'
-import Numeric from './numeric.js'
-import Decimal from './decimal.js'
-import Big from '../big.js'
+import { BINARY_TYPE_INFERRED, BINARY_TYPE_ZERO_B } from './types/binary-types'
+import { INPUT_TYPE_BINARY } from './types/input-types'
+import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
+import Numeric from './numeric'
+import Decimal from './decimal'
+import Big from '../big'
 
 const binaryZeroB = /^0b[0-1]+$/
 const binaryInferred = /^[0-1]+$/

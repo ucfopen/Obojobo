@@ -1,5 +1,5 @@
-import NumericClasses from '../numerics/numeric-classes.js'
-import NumericMatches from './numeric-matches.js'
+import NumericClasses from '../numerics/numeric-classes'
+import NumericMatches from './numeric-matches'
 
 import {
 	MATCH_EXACT,
@@ -10,14 +10,14 @@ import {
 	SINGLE_INFERRED,
 	MATCH_INFERRED,
 	NO_MATCHES
-} from './match-types.js'
+} from './match-types'
 import {
 	INPUT_MATCHES_MULTIPLE_TYPES,
 	INPUT_NOT_SAFE,
 	INPUT_NOT_MATCHED,
 	INPUT_INVALID,
 	OK
-} from './numeric-entry-statuses.js'
+} from './numeric-entry-statuses'
 
 /**
  * Represents, processes and validates a numeric value in an accepted format. Used as

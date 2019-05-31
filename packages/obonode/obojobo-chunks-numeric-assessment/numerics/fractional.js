@@ -1,9 +1,9 @@
-import Numeric from './numeric.js'
-import Decimal from './decimal.js'
-import { INPUT_TYPE_FRACTIONAL } from './types/input-types.js'
-import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types.js'
-import Big from '../big.js'
-import getPercentError from '../util/percent-error.js'
+import Numeric from './numeric'
+import Decimal from './decimal'
+import { INPUT_TYPE_FRACTIONAL } from './types/input-types'
+import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
+import Big from '../big'
+import getPercentError from '../util/percent-error'
 
 const DEFAULT_TO_FRACTION_ERROR_VALUE = 0.000001
 
@@ -246,7 +246,6 @@ export default class Fractional extends Numeric {
 	 * Fractional.getTerms("1/2") // {bigNumerator:Big(1), bigDenominator:Big(2), bigValue:Big(0.5)}
 	 */
 	static getTerms(valueString) {
-		console.log('GT', valueString)
 		const tokens = valueString.split('/')
 
 		const bigNumerator = Big(tokens[0])

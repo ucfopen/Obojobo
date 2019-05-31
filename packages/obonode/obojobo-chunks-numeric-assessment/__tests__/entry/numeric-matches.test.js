@@ -1,8 +1,8 @@
-import NumericMatches from '../../entry/numeric-matches.js'
-import NumericClasses from '../../numerics/numeric-classes.js'
-import NumericEntry from '../../entry/numeric-entry.js'
+import NumericMatches from '../../entry/numeric-matches'
+import NumericClasses from '../../numerics/numeric-classes'
+import NumericEntry from '../../entry/numeric-entry'
 
-jest.mock('../../numerics/numeric-classes.js', () => {
+jest.mock('../../numerics/numeric-classes', () => {
 	class MockExactLong {
 		constructor() {
 			this.type = 'typeExactLong'

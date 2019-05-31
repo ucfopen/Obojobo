@@ -1,9 +1,9 @@
-import Decimal from './decimal.js'
-import Scientific from './scientific.js'
-import Fractional from './fractional.js'
-import Hexadecimal from './hexadecimal.js'
-import Octal from './octal.js'
-import Binary from './binary.js'
+import Decimal from './decimal'
+import Scientific from './scientific'
+import Fractional from './fractional'
+import Hexadecimal from './hexadecimal'
+import Octal from './octal'
+import Binary from './binary'
 
 const NumericClasses = {}
 

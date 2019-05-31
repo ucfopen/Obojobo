@@ -1,4 +1,4 @@
-jest.mock('../../numerics/numeric-classes.js', () => {
+jest.mock('../../numerics/numeric-classes', () => {
 	class MockExact {
 		constructor() {
 			this.type = 'typeExact'

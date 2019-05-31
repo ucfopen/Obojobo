@@ -1,5 +1,5 @@
-import ValueRange from './value-range.js'
-import NumericEntry from '../entry/numeric-entry.js'
+import ValueRange from './value-range'
+import NumericEntry from '../entry/numeric-entry'
 
 /**
  * String describing the range for NumericEntryRange.

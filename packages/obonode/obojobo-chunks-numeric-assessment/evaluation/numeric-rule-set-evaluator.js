@@ -1,5 +1,5 @@
-import NumericRuleOutcome from '../rule/numeric-rule-outcome.js'
-import { NO_RULES, RULE_MATCHED, NO_MATCHING_RULES } from './numeric-rule-set-evaluator-statuses.js'
+import NumericRuleOutcome from '../rule/numeric-rule-outcome'
+import { NO_RULES, RULE_MATCHED, NO_MATCHING_RULES } from './numeric-rule-set-evaluator-statuses'
 
 /**
  * @typedef {Object} NumericRuleSetEvaluatorResultObject

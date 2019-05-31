@@ -1,11 +1,11 @@
-import NumericRuleSetEvaluator from './numeric-rule-set-evaluator.js'
-import NumericRule from '../rule/numeric-rule.js'
-import NumericEntry from '../entry/numeric-entry.js'
-import { allTypes } from '../numerics/types/input-types.js'
+import NumericRuleSetEvaluator from './numeric-rule-set-evaluator'
+import NumericRule from '../rule/numeric-rule'
+import NumericEntry from '../entry/numeric-entry'
+import { allTypes } from '../numerics/types/input-types'
 
-import NumericAnswerResults from './numeric-answer-results.js'
-import { OK } from '../entry/numeric-entry-statuses.js'
-import { NO_MATCHING_RULES, RULE_MATCHED } from './numeric-rule-set-evaluator-statuses.js'
+import NumericAnswerResults from './numeric-answer-results'
+import { OK } from '../entry/numeric-entry-statuses'
+import { NO_MATCHING_RULES, RULE_MATCHED } from './numeric-rule-set-evaluator-statuses'
 
 /**
  * @external {Big} http://mikemcl.github.io/big.js/

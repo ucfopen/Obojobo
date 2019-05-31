@@ -1,7 +1,7 @@
-import { INPUT_TYPE_DECIMAL } from './types/input-types.js'
-import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types.js'
-import Numeric from './numeric.js'
-import Big from '../big.js'
+import { INPUT_TYPE_DECIMAL } from './types/input-types'
+import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
+import Numeric from './numeric'
+import Big from '../big'
 
 const decimalRegex = /^[-\+]?([0-9]+|[0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.)+/
 
