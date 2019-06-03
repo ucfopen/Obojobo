@@ -102,7 +102,7 @@ exports[`Question Question component 1`] = `
                 className="button"
                 onClick={[Function]}
               >
-                Read an explanation of the answer
+                Read Explanation
               </button>
             </div>
             <div
@@ -234,7 +234,7 @@ exports[`Question Question component answered correctly 1`] = `
                 className="button"
                 onClick={[Function]}
               >
-                Read an explanation of the answer
+                Read Explanation
               </button>
             </div>
             <div
@@ -366,7 +366,7 @@ exports[`Question Question component answered incorrectly 1`] = `
                 className="button"
                 onClick={[Function]}
               >
-                Read an explanation of the answer
+                Read Explanation
               </button>
             </div>
             <div
@@ -498,7 +498,7 @@ exports[`Question Question component in practice mode 1`] = `
                 className="button"
                 onClick={[Function]}
               >
-                Read an explanation of the answer
+                Read Explanation
               </button>
             </div>
             <div
@@ -615,7 +615,7 @@ exports[`Question Question component in review mode 1`] = `
                 className="button"
                 onClick={[Function]}
               >
-                Read an explanation of the answer
+                Read Explanation
               </button>
             </div>
             <div

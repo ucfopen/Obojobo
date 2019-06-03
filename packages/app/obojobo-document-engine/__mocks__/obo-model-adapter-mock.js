@@ -9,6 +9,7 @@ class OboModel {
 		this._isMocked = true
 		this.modelState = {}
 		this.content = attrs.content || {}
+		console.log('OboModel', this.content)
 	}
 
 	setStateProp(propName, defaultValue, transformValueFn, allowedValues) {
