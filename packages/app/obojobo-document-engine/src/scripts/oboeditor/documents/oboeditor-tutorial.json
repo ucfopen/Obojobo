@@ -5840,7 +5840,10 @@
 								"solution": {
 									"id": "a3427c5e-3ff3-4d19-9800-f2357db8a4d0",
 									"type": "ObojoboDraft.Pages.Page",
-									"content": {},
+									"content": {
+										"readExplanationLabel": "Read Explanation Label",
+										"hideExplanationLabel": "Hide Explanation Label"
+									},
 									"children": [
 										{
 											"id": "f9545376-b4ad-4fa2-8e5f-6049c6b3bf86",

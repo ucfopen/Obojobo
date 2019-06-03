@@ -714,7 +714,10 @@
 								"solution": {
 									"id": "577a3972-72b1-4e9a-831b-ab1d8ebebe1c",
 									"type": "ObojoboDraft.Pages.Page",
-									"content": {},
+									"content": {
+										"readExplanationLabel": "Read Explanation Label",
+										"hideExplanationLabel": "Hide Explanation Label"
+									},
 									"children": [
 										{
 											"id": "00b2c1ed-2fc7-4f28-98e0-4aad4d36eb03",
