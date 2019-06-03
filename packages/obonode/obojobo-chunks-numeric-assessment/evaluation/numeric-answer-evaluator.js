@@ -44,7 +44,7 @@ class NumericAnswerEvaluator {
 			return null
 		}
 
-		const types = types.split(',').map(t => t.trim().toLowerCase())
+		types = types.split(',').map(t => t.trim().toLowerCase())
 
 		if (!NumericRule.isTypesValid(types)) {
 			throw 'Invalid types'
@@ -122,8 +122,6 @@ class NumericAnswerEvaluator {
 		if (validationResult && validationResult.status !== RULE_MATCHED) {
 			scoreResult = this.grader.evaluate(studentEntry)
 		}
-
-		console.log('evaulate', studentEntry, validationResult, scoreResult)
 
 		return NumericAnswerResults.getResult(studentEntry, validationResult, scoreResult)
 	}

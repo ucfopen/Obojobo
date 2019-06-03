@@ -34,8 +34,8 @@ import NumericEntry from '../entry/numeric-entry'
  * they included the correct unit.
  * @example
  * const range = new NumericEntryRange("[9,10]g")
- * range.min // equal to new NumericEntry("9g")
- * range.max // equal to new NumericEntry("10g")
+ * range.min // equal to new NumericEntry("9")
+ * range.max // equal to new NumericEntry("10")
  * range.unit // "g"
  */
 export default class NumericEntryRange extends ValueRange {

@@ -31,7 +31,7 @@ export default class NumericRuleSetEvaluator {
 	 * @param {rules} NumericRule[]
 	 * @return {NumericRuleOutcome[]}
 	 */
-	static getRuleOutcomes = (studentEntry, rules) => {
+	static getRuleOutcomes(studentEntry, rules) {
 		return rules.map(rule => new NumericRuleOutcome(studentEntry, rule))
 	}
 
