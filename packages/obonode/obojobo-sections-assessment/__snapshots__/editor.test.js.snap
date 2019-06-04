@@ -55,6 +55,15 @@ Object {
           "object": "block",
           "type": "oboeditor.select-parameter",
         },
+        Object {
+          "data": Object {
+            "checked": false,
+            "display": "Lock Assessment on Start",
+            "name": "assessment lock",
+          },
+          "object": "block",
+          "type": "oboeditor.toggle-parameter",
+        },
       ],
       "object": "block",
       "type": "ObojoboDraft.Sections.Assessment.Settings",
@@ -110,6 +119,15 @@ Object {
           },
           "object": "block",
           "type": "oboeditor.select-parameter",
+        },
+        Object {
+          "data": Object {
+            "checked": false,
+            "display": "Lock Assessment on Start",
+            "name": "assessment lock",
+          },
+          "object": "block",
+          "type": "oboeditor.toggle-parameter",
         },
       ],
       "object": "block",
