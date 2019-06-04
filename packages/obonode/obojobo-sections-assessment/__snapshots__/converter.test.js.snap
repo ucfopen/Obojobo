@@ -81,14 +81,6 @@ Object {
               "type": "nav:lock",
             },
           ],
-          "type": "onStartAttempt",
-        },
-        Object {
-          "actions": Array [
-            Object {
-              "type": "nav:lock",
-            },
-          ],
           "type": "onNavEnter",
         },
         Object {
@@ -191,14 +183,6 @@ Object {
       Object {
         "actions": Array [
           Object {
-            "type": "nav:lock",
-          },
-        ],
-        "type": "onStartAttempt",
-      },
-      Object {
-        "actions": Array [
-          Object {
             "type": "nav:unlock",
           },
         ],
@@ -242,14 +226,6 @@ Object {
       Object {
         "actions": Array [
           Object {
-            "type": "nav:lock",
-          },
-        ],
-        "type": "onStartAttempt",
-      },
-      Object {
-        "actions": Array [
-          Object {
             "type": "nav:unlock",
           },
         ],
@@ -281,7 +257,46 @@ Object {
     "review": "someReview",
     "rubric": "RubricChild",
     "scoreActions": "ActionsChild",
-    "triggers": Array [],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`Assessment Converter slateToObo converts a Slate node to an OboNode 4`] = `
+Object {
+  "children": Array [
+    "PageChild",
+    "QuestionBankChild",
+  ],
+  "content": Object {
+    "attempts": "someAttemptText",
+    "review": "someReview",
+    "rubric": "RubricChild",
+    "scoreActions": "ActionsChild",
+    "triggers": Array [
+      Object {
+        "type": "someTrigger",
+      },
+    ],
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
+exports[`Assessment Converter slateToObo converts a Slate node to an OboNode 5`] = `
+Object {
+  "children": Array [
+    "PageChild",
+    "QuestionBankChild",
+  ],
+  "content": Object {
+    "attempts": "someAttemptText",
+    "review": "someReview",
+    "rubric": "RubricChild",
+    "scoreActions": "ActionsChild",
+    "triggers": undefined,
   },
   "id": "mockKey",
   "type": "mockType",

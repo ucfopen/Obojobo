@@ -89,8 +89,18 @@ describe('Assessment Converter', () => {
 		oboNode = Converter.slateToObo(slateNode)
 		expect(oboNode).toMatchSnapshot()
 
-		// shouldLockAssessment false
+		// shouldLockAssessment false -- content.triggers deleted
 		slateNode = createSlateNode(false, [])
+		oboNode = Converter.slateToObo(slateNode)
+		expect(oboNode).toMatchSnapshot()
+
+		// shouldLockAssessment false -- content.triggers retained
+		slateNode = createSlateNode(false, [{ type: 'someTrigger' }])
+		oboNode = Converter.slateToObo(slateNode)
+		expect(oboNode).toMatchSnapshot()
+
+		// shouldLockAssessment false -- content.triggers is undefined
+		slateNode = createSlateNode(false, undefined)
 		oboNode = Converter.slateToObo(slateNode)
 		expect(oboNode).toMatchSnapshot()
 	})
@@ -124,7 +134,6 @@ describe('Assessment Converter', () => {
 		// startAttemptLock && endAttemptLock == true
 		// rubric does not exist
 		oboNode = createOboNode(false, [
-			{ type: 'onStartAttempt', actions: [{ type: 'nav:lock' }] },
 			{ type: 'onNavEnter', actions: [{ type: 'nav:lock' }] },
 			{ type: 'onEndAttempt', actions: [{ type: 'nav:unlock' }] },
 			{ type: 'onNavExit', actions: [{ type: 'nav:unlock' }] }

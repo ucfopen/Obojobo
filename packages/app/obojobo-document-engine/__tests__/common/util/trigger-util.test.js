@@ -1,49 +1,41 @@
 /* eslint-disable no-undefined */
 
 import {
-	addActionsToTriggers,
-	hasTriggerTypeWithActionType,
-	removeActionsFromTriggers
+	getTriggersWithActionsAdded,
+	getTriggersWithActionsRemoved,
+	hasTriggerTypeWithActionType
 } from '../../../src/scripts/common/util/trigger-util'
 
 describe('trigger-util', () => {
-	describe('addActionsToTriggers', () => {
-		test('adds action to trigger with existing actions (triggerMap uses object for action)', () => {
+	describe('getTriggersWithActionsAdded', () => {
+		test('adds action to trigger with existing actions (newTriggers uses object for action)', () => {
 			const triggers = [{ type: 'someTrigger', actions: [{ type: 'actionType' }] }]
-			const triggerMap = { someTrigger: { type: 'someOtherType' } }
+			const newTriggers = { someTrigger: { type: 'someOtherType' } }
 
-			addActionsToTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([
+			const updatedTriggers = getTriggersWithActionsAdded(triggers, newTriggers)
+			expect(updatedTriggers).toEqual([
 				{ type: 'someTrigger', actions: [{ type: 'actionType' }, { type: 'someOtherType' }] }
 			])
 		})
 
-		test('adds actions to trigger with existing actions (triggerMap uses array for actions)', () => {
+		test('adds actions to trigger with existing actions (newTriggers uses array for actions)', () => {
 			const triggers = [{ type: 'someTrigger', actions: [{ type: 'actionType' }] }]
-			const triggerMap = { someTrigger: [{ type: 'someOtherType' }] }
+			const newTriggers = { someTrigger: [{ type: 'someOtherType' }] }
 
-			addActionsToTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([
+			const updatedTriggers = getTriggersWithActionsAdded(triggers, newTriggers)
+			expect(updatedTriggers).toEqual([
 				{ type: 'someTrigger', actions: [{ type: 'actionType' }, { type: 'someOtherType' }] }
 			])
-		})
-
-		test('adds action to trigger without existing actions', () => {
-			const triggers = [{ type: 'someTrigger' }]
-			const triggerMap = { someTrigger: { type: 'someOtherType' } }
-
-			addActionsToTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([{ type: 'someTrigger', actions: [{ type: 'someOtherType' }] }])
 		})
 
 		test('creates trigger when it does not exist and adds to triggers', () => {
 			const triggers = [{ type: 'someNotUsedTrigger' }]
-			const triggerMap = {
+			const newTriggers = {
 				someTrigger: { type: 'someActionType', value: 'someValue' }
 			}
 
-			addActionsToTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([
+			const updatedTriggers = getTriggersWithActionsAdded(triggers, newTriggers)
+			expect(updatedTriggers).toEqual([
 				{ type: 'someNotUsedTrigger' },
 				{ type: 'someTrigger', actions: [{ type: 'someActionType', value: 'someValue' }] }
 			])
@@ -51,12 +43,12 @@ describe('trigger-util', () => {
 
 		test('creates trigger when it does not exists and adds to triggers (using array in trigger map)', () => {
 			const triggers = []
-			const triggerMap = {
+			const newTriggers = {
 				someTrigger: [{ type: 'someActionType', value: 'someValue' }]
 			}
 
-			addActionsToTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([
+			const updatedTriggers = getTriggersWithActionsAdded(triggers, newTriggers)
+			expect(updatedTriggers).toEqual([
 				{ type: 'someTrigger', actions: [{ type: 'someActionType', value: 'someValue' }] }
 			])
 		})
@@ -87,14 +79,8 @@ describe('trigger-util', () => {
 		})
 	})
 
-	describe('removeActionsFromTriggers', () => {
-		test('does not affect triggers if triggers is undefined', () => {
-			const triggers = undefined
-			removeActionsFromTriggers(triggers, null)
-			expect(triggers).toBe(undefined)
-		})
-
-		test('removes action from trigger (triggerMap uses string)', () => {
+	describe('getTriggersWithActionsRemoved', () => {
+		test('removes action from trigger (triggersToRemove uses string)', () => {
 			const triggers = [
 				{
 					type: 'someTriggerType',
@@ -102,50 +88,41 @@ describe('trigger-util', () => {
 				},
 				{ type: 'otherTrigger' }
 			]
-			const triggerMap = {
+			const triggersToRemove = {
 				someTriggerType: 'someActionType'
 			}
-			removeActionsFromTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([
+			const updatedTriggers = getTriggersWithActionsRemoved(triggers, triggersToRemove)
+			expect(updatedTriggers).toEqual([
 				{ type: 'someTriggerType', actions: [{ type: 'someOtherType' }] },
 				{ type: 'otherTrigger' }
 			])
 		})
 
-		test('removes action from trigger (triggerMap uses array)', () => {
+		test('removes action from trigger (triggersToRemove uses array) (only removes trigger with matching type and action type)', () => {
 			const triggers = [
 				{
 					type: 'someTriggerType',
 					actions: [{ type: 'someActionType' }, { type: 'someOtherType' }]
 				},
-				{ type: 'otherTrigger' }
+				{ type: 'someTriggerType', actions: [{ type: 'someOtherType' }] }
 			]
-			const triggerMap = {
+			const triggersToRemove = {
 				someTriggerType: ['someActionType']
 			}
-			removeActionsFromTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([
+			const updatedTriggers = getTriggersWithActionsRemoved(triggers, triggersToRemove)
+			expect(updatedTriggers).toEqual([
 				{ type: 'someTriggerType', actions: [{ type: 'someOtherType' }] },
-				{ type: 'otherTrigger' }
+				{ type: 'someTriggerType', actions: [{ type: 'someOtherType' }] }
 			])
-		})
-
-		test('removes trigger that already has no actions', () => {
-			const triggers = [{ type: 'triggerType' }]
-			const triggerMap = {
-				triggerType: 'someAction'
-			}
-			removeActionsFromTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([])
 		})
 
 		test('removes action from trigger and then removes trigger with empty actions array', () => {
 			const triggers = [{ type: 'someTriggerType', actions: [{ type: 'someActionType' }] }]
-			const triggerMap = {
+			const triggersToRemove = {
 				someTriggerType: 'someActionType'
 			}
-			removeActionsFromTriggers(triggers, triggerMap)
-			expect(triggers).toEqual([])
+			const updatedTriggers = getTriggersWithActionsRemoved(triggers, triggersToRemove)
+			expect(updatedTriggers).toEqual([])
 		})
 	})
 })

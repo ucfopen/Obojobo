@@ -6,9 +6,9 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 import {
-	addActionsToTriggers,
-	hasTriggerTypeWithActionType,
-	removeActionsFromTriggers
+	getTriggersWithActionsAdded,
+	getTriggersWithActionsRemoved,
+	hasTriggerTypeWithActionType
 } from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
 
 import Page from 'obojobo-pages-page/editor'
@@ -45,20 +45,19 @@ const slateToObo = node => {
 				const shouldLockAssessment = child.nodes.get(2).data.get('checked')
 
 				if (shouldLockAssessment) {
-					if (!content.triggers) content.triggers = []
-					addActionsToTriggers(content.triggers, {
+					content.triggers = getTriggersWithActionsAdded(content.triggers || [], {
 						onNavEnter: { type: 'nav:lock' },
-						onStartAttempt: { type: 'nav:lock' },
 						onEndAttempt: { type: 'nav:unlock' },
 						onNavExit: { type: 'nav:unlock' }
 					})
-				} else {
-					removeActionsFromTriggers(content.triggers, {
+				} else if (content.triggers) {
+					const updatedTriggers = getTriggersWithActionsRemoved(content.triggers, {
 						onNavEnter: 'nav:lock',
-						onStartAttempt: 'nav:lock',
 						onEndAttempt: 'nav:unlock',
 						onNavExit: 'nav:unlock'
 					})
+					content.triggers = updatedTriggers
+					if (content.triggers.length === 0) delete content.triggers
 				}
 			}
 		}
@@ -75,9 +74,7 @@ const slateToObo = node => {
 const oboToSlate = node => {
 	const content = node.get('content')
 
-	const startAttemptLock =
-		hasTriggerTypeWithActionType(content.triggers, 'onStartAttempt', 'nav:lock') &&
-		hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
+	const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
 	const endAttemptUnlock =
 		hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
 		hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')

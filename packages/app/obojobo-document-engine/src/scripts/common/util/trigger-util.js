@@ -1,43 +1,49 @@
 /*
-	Mutates triggers
-	triggerMap is keyed by trigger type
+	Returns new updated triggers
+	newTriggers is keyed by trigger type
 	with a value of an action (object)
 	or multiple actions (array of objects)
-	Example triggerMap:
-		const triggerMap = {
+	Example newTriggers:
+		{
 			onStartAttempt: { type: 'nav:lock', someValue: 3 },
 			onEndAttempt: [{ type: 'nav:unlock' }, {type: 'someType'}]
 		}
 */
-export const addActionsToTriggers = (triggers, triggerMap) => {
-	const usesMap = { ...triggerMap }
-	for (const type in usesMap) {
-		usesMap[type] = false
-	}
+export const getTriggersWithActionsAdded = (triggers, newTriggers) => {
+	// triggersToAdd will keep track of the new triggers to add from newTriggers
+	// If a trigger already exists we'll remove it from triggersToAdd
+	const triggersToAdd = new Set(Object.keys(newTriggers))
 
-	for (const trigger of triggers) {
-		let actions = triggerMap[trigger.type]
-		if (actions) {
-			if (!trigger.actions) trigger.actions = []
-			// if just an object convert to array
-			if (actions.constructor.name === 'Object') actions = [actions]
-			const actionTypes = actions.map(action => action.type)
-			const filteredActions = trigger.actions.filter(action => !actionTypes.includes(action.type))
-			// due to filtering only one action with type from triggerMap can exist
-			trigger.actions = [...filteredActions, ...actions]
-			usesMap[trigger.type] = true
-		}
-	}
+	const updatedTriggers = triggers.map(trigger => {
+		// the actions to add for this trigger type
+		let newActions = newTriggers[trigger.type]
+		if (!newActions) return trigger
 
-	for (const type in usesMap) {
-		if (!usesMap[type]) {
-			let actions = triggerMap[type]
-			// if just an object convert to array
-			if (actions.constructor.name === 'Object') actions = [actions]
-			triggers.push({ type: type, actions })
-			usesMap[type] = true
+		// if newActions is object, it is converted to array here
+		newActions = [].concat(newActions)
+		// get an array of all action types for given trigger
+		const newActionTypes = newActions.map(action => action.type)
+		// get an array of all actions that are not part of newTriggers
+		const existingActions = trigger.actions.filter(action => !newActionTypes.includes(action.type))
+
+		// can remove from set, knowing the trigger has been used
+		triggersToAdd.delete(trigger.type)
+
+		return {
+			...trigger,
+			actions: [...existingActions, ...newActions]
 		}
-	}
+	})
+
+	// if the trigger type did not exist in triggers
+	// make sure to add it to triggers
+	triggersToAdd.forEach(triggerType => {
+		// if newTriggers[triggerType] is object, it is converted to array here
+		const actions = [].concat(newTriggers[triggerType])
+		updatedTriggers.push({ type: triggerType, actions })
+	})
+
+	return updatedTriggers
 }
 
 /*
@@ -56,41 +62,50 @@ export const hasTriggerTypeWithActionType = (triggers, triggerType, actionType) 
 }
 
 /*
-	Mutates triggers
-	triggerMap is keyed by trigger type
+	Returns new updated triggers
+	triggersToRemove is keyed by trigger type
 	with a value of an action type (string)
 	or multiple action types (array of strings)
-	Example triggerMap:
-		const triggerMap = {
+	Example triggersToRemove:
+		{
 			onStartAttempt: 'nav:lock',
 			onEndAttempt: ['nav:unlock', 'someOtherActionType']
 		}
-	Note: also removes triggers themselves if they have no actions
+	Note: triggers without actions (empty triggers) will not be returned
 */
-export const removeActionsFromTriggers = (triggers, triggerMap) => {
-	if (!triggers) return
-	const triggersToRemove = []
+export const getTriggersWithActionsRemoved = (triggers, triggersToRemove) => {
+	// array of trigger indices that don't have actions
+	const triggersWithNoActions = []
 
-	triggers.forEach((trigger, index) => {
-		let actions = triggerMap[trigger.type]
-		if (actions) {
-			// if we have actions set to remove but the trigger itself
-			// does not have actions or has an empty array of actions
-			// add trigger to removal array
-			// if (!trigger.actions || (Array.isArray(trigger.actions) && !trigger.actions[0])) {
-			if (!trigger.actions || trigger.actions.length === 0) {
-				triggersToRemove.push(index)
-			} else {
-				if (typeof actions === 'string') actions = [actions]
-				const filteredActions = trigger.actions.filter(action => !actions.includes(action.type))
-				trigger.actions = filteredActions
-				// if post-filtered actions is empty add trigger to removal array
-				if (trigger.actions.length === 0) triggersToRemove.push(index)
-			}
+	const updatedTriggers = triggers.map((trigger, triggerIndex) => {
+		// the actions to remove for this trigger type
+		let actionsToRemove = triggersToRemove[trigger.type]
+		if (!actionsToRemove) return trigger
+
+		// if actions is string, it is converted to array here
+		actionsToRemove = [].concat(actionsToRemove)
+		// get all actions that are not part of actionsToRemove
+		const actionsToKeep = trigger.actions.filter(action => {
+			return !actionsToRemove.includes(action.type)
+		})
+		if (actionsToKeep.length === 0) {
+			// if actions is empty after filtering, flag the trigger for removal
+			triggersWithNoActions.push(triggerIndex)
+		}
+		return {
+			...trigger,
+			actions: actionsToKeep
 		}
 	})
-	// remove triggers with no actions
-	triggersToRemove.forEach((current, idx) => {
-		triggers.splice(current - idx, 1)
+
+	// Remove all triggers with no actions.
+	// Splicing indices, instead of filtering by trigger type
+	// allows duplicate trigger types to exist
+	triggersWithNoActions.forEach((current, index) => {
+		// Ensures proper trigger is removed,
+		// as removing a trigger will update indices
+		updatedTriggers.splice(current - index, 1)
 	})
+
+	return updatedTriggers
 }
