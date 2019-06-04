@@ -8,9 +8,23 @@ const basicReview = (moduleData, questionScore, index) => {
 	const questionModel = OboModel.models[questionScore.id]
 	const QuestionComponent = questionModel.getComponentClass()
 
+	let resultLabel
+	if (questionModel.modelState.mode === 'survey') {
+		resultLabel = 'Survey Question'
+	} else if (questionScore.score === 100) {
+		resultLabel = 'Correct'
+	} else {
+		resultLabel = 'Incorrect'
+	}
+
+	const classNames = [
+		`is-mode-${questionModel.modelState.mode}`,
+		questionScore.score === 100 ? 'is-correct' : 'is-not-correct'
+	].join(' ')
+
 	return (
-		<div key={index} className={questionScore.score === 100 ? 'is-correct' : 'is-not-correct'}>
-			<p>{`Question ${index + 1}: ${questionScore.score === 100 ? 'Correct' : 'Incorrect'}`}</p>
+		<div key={index} className={classNames}>
+			<p>{`Question ${index + 1}: ${resultLabel}`}</p>
 			<QuestionComponent model={questionModel} moduleData={moduleData} showContentOnly />
 		</div>
 	)

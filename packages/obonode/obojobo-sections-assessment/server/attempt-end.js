@@ -223,13 +223,70 @@ const getCalculatedScores = (
 	)
 }
 
-const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
+const calculateWeightedScores = (assessmentModel, attemptHistory, scoreInfo) => {
+	logger.info('calc scores')
 	const questionScores = scoreInfo.questions.map(question => ({
 		id: question.id,
 		score: scoreInfo.scoresByQuestionId[question.id] || 0
 	}))
 
-	const attemptScore = scoreInfo.scores.reduce((a, b) => a + b) / scoreInfo.questions.length
+	// scoreInfo.questions.length
+
+	const getMaxPoints = q => {
+		logger.info(q.children[q.children.length - 1].children)
+		logger.info(q.children[q.children.length - 1].children.map(mc => mc.content.score))
+		logger.info(Math.max(...q.children[q.children.length - 1].children.map(mc => mc.content.score)))
+		return Math.max(...q.children[q.children.length - 1].children.map(mc => mc.content.score))
+	}
+
+	const possibleTotal = scoreInfo.questions.reduce((acc, q) => {
+		logger.info('pt1', acc)
+		logger.info('pt2', getMaxPoints(q))
+		return acc + getMaxPoints(q)
+	}, 0)
+	const attemptScore = (scoreInfo.scores.reduce((a, b) => a + b) / possibleTotal) * 100
+	logger.info('possible total', scoreInfo.scores.reduce((a, b) => a + b), possibleTotal)
+
+	const allScores = attemptHistory
+		.map(attempt => parseFloat(attempt.result.attemptScore))
+		.concat(attemptScore)
+
+	const numAttempts =
+		typeof assessmentModel.node.content.attempts === 'undefined' ||
+		assessmentModel.node.content.attempts === 'unlimited'
+			? Infinity
+			: parseInt(assessmentModel.node.content.attempts, 10)
+
+	const rubric = new AssessmentRubric(assessmentModel.node.content.rubric)
+	const assessmentScoreDetails = rubric.getAssessmentScoreInfoForAttempt(numAttempts, allScores)
+
+	return {
+		attempt: {
+			attemptScore,
+			questionScores
+		},
+		assessmentScoreDetails
+	}
+}
+
+const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
+	const gradedQuestions = scoreInfo.questions.filter(q => q.content.mode !== 'survey')
+
+	const questionScores = scoreInfo.questions.map(question => ({
+		id: question.id,
+		score: question.content.mode === 'survey' ? 0 : scoreInfo.scoresByQuestionId[question.id] || 0
+	}))
+
+	const attemptScore = questionScores.reduce((acc, s) => acc + s.score, 0) / gradedQuestions.length
+
+	logger.info('1--')
+	logger.info(scoreInfo.questions)
+	logger.info('2--')
+	logger.info(gradedQuestions)
+	logger.info('3--')
+	logger.info(questionScores)
+	logger.info('4--')
+	logger.info(attemptScore)
 
 	const allScores = attemptHistory
 		.map(attempt => parseFloat(attempt.result.attemptScore))

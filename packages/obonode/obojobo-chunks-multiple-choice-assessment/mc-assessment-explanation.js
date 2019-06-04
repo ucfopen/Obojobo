@@ -31,16 +31,35 @@ export default class MCAssessmentExplanation extends React.Component {
 		const solutionModel = this.props.solutionModel
 		const SolutionComponent = solutionModel.getComponentClass()
 
+		let hideExplanationLabel
+		let showExplanationLabel
+
+		switch (this.props.mode) {
+			case 'survey':
+				hideExplanationLabel = 'Hide About this question'
+				showExplanationLabel = 'About this question'
+				break
+
+			default:
+				hideExplanationLabel = 'Hide Explanation'
+				showExplanationLabel = 'Read an explanation of the answer'
+				break
+		}
+
 		return (
-			<div className="solution" key="solution">
+			<div className={`solution is-mode-${this.props.mode}`} key="solution">
 				{isShowingExplanation ? (
-					<Button altAction onClick={this.props.onClickHideExplanation} value="Hide Explanation" />
+					<Button
+						altAction
+						onClick={this.props.onClickHideExplanation}
+						value={hideExplanationLabel}
+					/>
 				) : (
 					<Button
 						className="show-explanation-button"
 						altAction
 						onClick={this.props.onClickShowExplanation}
-						value="Read an explanation of the answer"
+						value={showExplanationLabel}
 					/>
 				)}
 				<CSSTransition

@@ -1,12 +1,27 @@
 import React from 'react'
 
 const MCAssessmentResults = props => {
+	const isModeSurvey = props.mode === 'survey'
 	const score = props.score
 	const isTypePickAll = props.isTypePickAll
 	const isForScreenReader = props.isForScreenReader
 	const isCorrect = score === 100
 
-	if (isCorrect && isForScreenReader) {
+	if (isModeSurvey && isForScreenReader) {
+		return (
+			<div className="result-container">
+				<p className="result correct">{`${
+					props.correctLabel
+				} - Your response was recorded for this question.`}</p>
+			</div>
+		)
+	} else if (isModeSurvey && !isForScreenReader) {
+		return (
+			<div className="result-container">
+				<p className="result correct">{props.correctLabel}</p>
+			</div>
+		)
+	} else if (isCorrect && isForScreenReader) {
 		return (
 			<div className="result-container">
 				<p className="result correct">{`${

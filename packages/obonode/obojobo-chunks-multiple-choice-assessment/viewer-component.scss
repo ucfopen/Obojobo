@@ -312,6 +312,14 @@
 				margin-right: -1em;
 			}
 		}
+
+		&.is-mode-survey {
+			.solution-container {
+				&::before {
+					content: 'About this question:';
+				}
+			}
+		}
 	}
 
 	.submit .obojobo-draft--components--button:first-child {
@@ -420,7 +428,8 @@
 			top: 50%;
 		}
 
-		&.is-type-chosen-correctly {
+		&.is-type-chosen-correctly,
+		&.is-type-chosen-survey {
 			background-color: $color-correct;
 
 			&::before,
@@ -454,6 +463,16 @@
 			&::before,
 			&::after {
 				background-color: $color-alt-correct;
+			}
+		}
+
+		&.is-type-chosen-survey {
+			background-color: #b1d5ff;
+			color: white;
+
+			&::before,
+			&::after {
+				background-color: #b1d5ff;
 			}
 		}
 	}

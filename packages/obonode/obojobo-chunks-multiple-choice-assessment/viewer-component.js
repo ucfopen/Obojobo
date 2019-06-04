@@ -19,6 +19,7 @@ const { FocusUtil, QuestionUtil } = Viewer.util
 const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
 const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
 const DEFAULT_INCORRECT_LABELS = ['Incorrect']
+const DEFAULT_SURVEY_LABELS = ['Response recorded']
 const PICK_ALL_INCORRECT_MESSAGE =
 	'You have either missed some correct answers or selected some incorrect answers.'
 
@@ -44,10 +45,19 @@ export default class MCAssessment extends React.Component {
 		if (correctLabels) {
 			this.correctLabels = correctLabels
 		} else {
-			this.correctLabels =
-				this.props.mode === 'review'
-					? DEFAULT_CORRECT_REVIEW_LABELS
-					: DEFAULT_CORRECT_PRACTICE_LABELS
+			switch (this.props.mode) {
+				case 'review':
+					this.correctLabels = DEFAULT_CORRECT_REVIEW_LABELS
+					break
+
+				case 'survey':
+					this.correctLabels = DEFAULT_SURVEY_LABELS
+					break
+
+				default:
+					this.correctLabels = DEFAULT_CORRECT_PRACTICE_LABELS
+					break
+			}
 		}
 		this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS
 		this.updateFeedbackLabels()
@@ -318,18 +328,28 @@ export default class MCAssessment extends React.Component {
 		)
 	}
 
-	getInstructions(responseType) {
-		switch (responseType) {
-			case 'pick-one':
-				return <span>Pick the correct answer</span>
-			case 'pick-one-multiple-correct':
-				return <span>Pick one of the correct answers</span>
-			case 'pick-all':
-				return (
-					<span>
-						Pick <b>all</b> of the correct answers
-					</span>
-				)
+	getInstructions(responseType, questionMode) {
+		if (questionMode === 'survey') {
+			switch (responseType) {
+				case 'pick-one':
+				case 'pick-one-multiple-correct':
+					return <span>Choose one</span>
+				case 'pick-all':
+					return <span>Choose one or more</span>
+			}
+		} else {
+			switch (responseType) {
+				case 'pick-one':
+					return <span>Pick the correct answer</span>
+				case 'pick-one-multiple-correct':
+					return <span>Pick one of the correct answers</span>
+				case 'pick-all':
+					return (
+						<span>
+							Pick <b>all</b> of the correct answers
+						</span>
+					)
+			}
 		}
 	}
 
@@ -355,6 +375,8 @@ export default class MCAssessment extends React.Component {
 		const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
 		const isPractice = this.props.mode === 'practice'
 		const isReview = this.props.mode === 'review'
+		const isSurvey = this.props.mode === 'survey'
+		const isInAssessment = this.props.isInAssessment
 
 		const className =
 			'obojobo-draft--chunks--mc-assessment' +
@@ -378,7 +400,7 @@ export default class MCAssessment extends React.Component {
 						<span className="for-screen-reader-only">{`Multiple choice form with ${
 							sortedChoiceModels.length
 						} choices. `}</span>
-						{this.getInstructions(responseType)}
+						{this.getInstructions(responseType, this.props.mode)}
 					</legend>
 					<MCAssessmentAnswerChoices
 						ref={this.answerChoicesRef}
@@ -391,11 +413,11 @@ export default class MCAssessment extends React.Component {
 						incorrectLabel={this.incorrectLabelToShow}
 						pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
 					/>
-					{isPractice || isReview ? (
+					{isPractice || isReview || (isSurvey && !isInAssessment) ? (
 						<MCAssessmentSubmitAndResultsFooter
 							score={score}
 							isAnAnswerChosen={isAnAnswerChosen}
-							isPractice={isPractice}
+							mode={this.props.mode}
 							isTypePickAll={isTypePickAll}
 							correctLabel={this.correctLabelToShow}
 							incorrectLabel={this.incorrectLabelToShow}
@@ -411,6 +433,7 @@ export default class MCAssessment extends React.Component {
 						{isShowingExplanationButtonValue ? (
 							<MCAssessmentExplanation
 								ref={component => (this.refExplanation = component)}
+								mode={this.props.mode}
 								isShowingExplanation={isShowingExplanationValue}
 								solutionModel={this.props.model.parent.modelState.solution}
 								moduleData={this.props.moduleData}

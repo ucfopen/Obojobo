@@ -62,6 +62,11 @@ export default class Question extends React.Component {
 		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
 	}
 
+	isInAssessment() {
+		console.log('---------->', this.props.model.getParentOfType('ObojoboDraft.Sections.Assessment'))
+		return this.props.model.getParentOfType('ObojoboDraft.Sections.Assessment') !== null
+	}
+
 	render() {
 		if (this.props.showContentOnly) {
 			return this.renderContentOnly()
@@ -121,6 +126,7 @@ export default class Question extends React.Component {
 				role="region"
 				aria-label="Question"
 			>
+				{/* <h1>{this.props.model.modelState.mode}</h1> */}
 				<div className="flipper">
 					<div className="content-back">
 						<QuestionContent model={this.props.model} moduleData={this.props.moduleData} />
@@ -129,6 +135,7 @@ export default class Question extends React.Component {
 							model={assessment}
 							moduleData={this.props.moduleData}
 							mode={mode}
+							isInAssessment={this.isInAssessment()}
 						/>
 					</div>
 					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>

@@ -145,6 +145,16 @@
 					color: $color-correct;
 				}
 			}
+
+			.is-mode-survey .obojobo-draft--chunks--question .flipper {
+				position: relative;
+				border: 1px solid $color-shadow;
+				background: transparentize($color-shadow, 0.9);
+
+				.responses-hidden {
+					color: $color-shadow;
+				}
+			}
 		}
 	}
 }

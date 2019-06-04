@@ -170,6 +170,20 @@
 		}
 	}
 
+	&.is-mode-survey {
+		> .flipper > .content-back::before {
+			color: $color-text-minor;
+			content: 'Survey Question';
+			display: block;
+			font-family: $font-default;
+			position: absolute;
+			left: 3.15em;
+			top: 0.5em;
+			transform: scale(0.7);
+			transform-origin: top left;
+		}
+	}
+
 	&.is-flipping.is-active,
 	&.is-flipping.is-viewed {
 		> .flipper {
@@ -177,7 +191,8 @@
 		}
 	}
 
-	&.is-flipping.is-mode-practice {
+	&.is-flipping.is-mode-practice,
+	&.is-flipping.is-mode-survey {
 		> .flipper > .content-back::before {
 			top: -0.5em;
 		}

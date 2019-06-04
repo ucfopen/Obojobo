@@ -10,6 +10,7 @@ const { QuestionUtil } = Viewer.util
 
 const QUESTION_TYPE = 'ObojoboDraft.Chunks.Question'
 const CHOSEN_CORRECTLY = 'chosen-correctly'
+const CHOSEN_SURVEY = 'chosen-survey'
 const SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen'
 const COULD_HAVE_CHOSEN = 'could-have-chosen'
 const SHOULD_HAVE_CHOSEN = 'should-have-chosen'
@@ -59,15 +60,23 @@ const renderAnswerFlag = type => {
 	switch (type) {
 		case UNCHOSEN_CORRECTLY:
 			return <div />
+
 		case CHOSEN_CORRECTLY:
 			flagEl = <p>Your Answer (Correct)</p>
 			break
+
+		case CHOSEN_SURVEY:
+			flagEl = <p>Your Response</p>
+			break
+
 		case SHOULD_NOT_HAVE_CHOSEN:
 			flagEl = <p>Your Answer (Incorrect)</p>
 			break
+
 		case COULD_HAVE_CHOSEN:
 			flagEl = <p>Also Correct Answer</p>
 			break
+
 		case SHOULD_HAVE_CHOSEN:
 			flagEl = <p>Correct Answer</p>
 			break
@@ -86,7 +95,25 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	// Renamed for clarity w/ isACorrectChoice
 	const userIsCorrect = isCorrect
 
+	const isASurveyQuestion = getQuestionModel(model).modelState.mode === 'survey'
 	const isACorrectChoice = model.get('content').score === 100
+
+	console.log(
+		'getAnsType',
+		model,
+		model.get('content'),
+		userIsCorrect,
+		isASurveyQuestion,
+		isACorrectChoice
+	)
+
+	if (isASurveyQuestion) {
+		if (isSelected) {
+			return CHOSEN_SURVEY
+		} else {
+			return UNCHOSEN_CORRECTLY
+		}
+	}
 
 	if (isSelected) {
 		return isACorrectChoice ? CHOSEN_CORRECTLY : SHOULD_NOT_HAVE_CHOSEN
