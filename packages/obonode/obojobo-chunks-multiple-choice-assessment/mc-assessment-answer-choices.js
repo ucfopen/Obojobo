@@ -43,6 +43,7 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 							responseType={responseType}
 							isShowingExplanation
 							mode={this.props.mode}
+							isReview={this.props.isReview}
 							questionSubmitted={isAnswerScored}
 							choiceIndex={index}
 						/>

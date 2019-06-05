@@ -102,7 +102,7 @@ class AssessmentReviewView extends React.Component {
 								<QuestionComponent
 									model={questionModel}
 									moduleData={this.props.moduleData}
-									mode={'review'}
+									isReview
 									key={scoreObj.id}
 								/>
 							) : (

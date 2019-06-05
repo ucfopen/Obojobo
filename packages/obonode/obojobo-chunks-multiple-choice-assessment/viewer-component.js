@@ -44,20 +44,12 @@ export default class MCAssessment extends React.Component {
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
 		if (correctLabels) {
 			this.correctLabels = correctLabels
+		} else if (this.props.isReview) {
+			this.correctLabels = DEFAULT_CORRECT_REVIEW_LABELS
+		} else if (this.props.mode === 'survey') {
+			this.correctLabels = DEFAULT_SURVEY_LABELS
 		} else {
-			switch (this.props.mode) {
-				case 'review':
-					this.correctLabels = DEFAULT_CORRECT_REVIEW_LABELS
-					break
-
-				case 'survey':
-					this.correctLabels = DEFAULT_SURVEY_LABELS
-					break
-
-				default:
-					this.correctLabels = DEFAULT_CORRECT_PRACTICE_LABELS
-					break
-			}
+			this.correctLabels = DEFAULT_CORRECT_PRACTICE_LABELS
 		}
 		this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS
 		this.updateFeedbackLabels()
@@ -317,8 +309,9 @@ export default class MCAssessment extends React.Component {
 	isShowingExplanationButton() {
 		const isAnswerScored = this.getScore() !== null
 		const hasSolution = this.props.model.parent.modelState.solution !== null
+		const isSurvey = this.props.mode === 'survey'
 
-		return isAnswerScored && hasSolution
+		return isAnswerScored && hasSolution && !isSurvey
 	}
 
 	isShowingExplanation() {
@@ -374,8 +367,8 @@ export default class MCAssessment extends React.Component {
 		const sortedChoiceModels = this.getSortedChoiceModels()
 		const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
 		const isPractice = this.props.mode === 'practice'
-		const isReview = this.props.mode === 'review'
-		const isSurvey = this.props.mode === 'survey'
+		const isReview = this.props.isReview
+		const isSurvey = this.props.model.parent.modelState.mode === 'survey'
 		const isInAssessment = this.props.isInAssessment
 
 		const className =
@@ -408,16 +401,22 @@ export default class MCAssessment extends React.Component {
 						responseType={responseType}
 						score={score}
 						mode={this.props.mode}
+						isReview={isReview}
 						moduleData={this.props.moduleData}
 						correctLabel={this.correctLabelToShow}
 						incorrectLabel={this.incorrectLabelToShow}
 						pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
 					/>
-					{isPractice || isReview || (isSurvey && !isInAssessment) ? (
+					<h1>{isPractice ? 'isPractice' : 'notPractice'}</h1>
+					<h1>{isReview ? 'isReview' : 'notReview'}</h1>
+					<h1>{isSurvey ? 'isSurvey' : 'notSurvey'}</h1>
+					<h1>{isInAssessment ? 'isInAssessment' : 'notInAssessment'}</h1>
+					{isPractice || (isReview && !isSurvey && !isInAssessment) || (isSurvey && !isReview) ? (
 						<MCAssessmentSubmitAndResultsFooter
 							score={score}
 							isAnAnswerChosen={isAnAnswerChosen}
 							mode={this.props.mode}
+							isReview={isReview}
 							isTypePickAll={isTypePickAll}
 							correctLabel={this.correctLabelToShow}
 							incorrectLabel={this.incorrectLabelToShow}
@@ -433,7 +432,6 @@ export default class MCAssessment extends React.Component {
 						{isShowingExplanationButtonValue ? (
 							<MCAssessmentExplanation
 								ref={component => (this.refExplanation = component)}
-								mode={this.props.mode}
 								isShowingExplanation={isShowingExplanationValue}
 								solutionModel={this.props.model.parent.modelState.solution}
 								moduleData={this.props.moduleData}

@@ -47,7 +47,7 @@ export default class Question extends React.Component {
 
 	onClickBlocker() {
 		QuestionUtil.viewQuestion(this.props.model.get('id'))
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const mode = this.props.model.modelState.mode
 
 		FocusUtil.focusComponent(this.props.model.get('id'), { fade: mode === 'practice' })
 
@@ -77,16 +77,15 @@ export default class Question extends React.Component {
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-		const viewState = QuestionUtil.getViewState(
-			this.props.moduleData.questionState,
-			this.props.model
-		)
+		const viewState = this.props.isReview
+			? 'active'
+			: QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
 
 		const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
 
 		const AssessmentComponent = assessment.getComponentClass()
 
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const mode = this.props.model.modelState.mode
 
 		let scoreClassName
 		switch (score) {
@@ -114,8 +113,9 @@ export default class Question extends React.Component {
 		const classNames =
 			'obojobo-draft--chunks--question' +
 			scoreClassName +
-			(mode === 'review' ? ' is-active' : ` is-${viewState}`) +
+			` is-${viewState}` +
 			` is-mode-${mode}` +
+			isOrNot(this.props.isReview, 'review') +
 			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
@@ -135,6 +135,7 @@ export default class Question extends React.Component {
 							model={assessment}
 							moduleData={this.props.moduleData}
 							mode={mode}
+							isReview={this.props.isReview}
 							isInAssessment={this.isInAssessment()}
 						/>
 					</div>
@@ -157,7 +158,7 @@ export default class Question extends React.Component {
 			this.props.moduleData.navState.context
 		)
 
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const mode = this.props.model.modelState.mode
 
 		const className =
 			'obojobo-draft--chunks--question' +

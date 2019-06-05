@@ -41,9 +41,9 @@ const choiceIsSelected = (questionState, model, navStateContext) => {
 
 const getQuestionModel = model => model.getParentOfType(QUESTION_TYPE)
 
-const answerIsCorrect = (model, mode, questionState, navStateContext) => {
+const answerIsCorrect = (model, isReview, questionState, navStateContext) => {
 	let score
-	if (mode === 'review') {
+	if (isReview) {
 		// no score data for this context? no idea what to do, throw an error
 		if (!questionState.scores[navStateContext]) throw 'Unknown Question State'
 
@@ -139,7 +139,7 @@ const MCChoice = props => {
 	try {
 		isCorrect = answerIsCorrect(
 			props.model,
-			props.mode,
+			props.isReview,
 			props.moduleData.questionState,
 			props.moduleData.navState.context
 		)
@@ -160,7 +160,7 @@ const MCChoice = props => {
 	const inputType = getInputType(props.responseType)
 
 	let flag
-	if (props.mode === 'review') {
+	if (props.isReview) {
 		flag = renderAnswerFlag(ansType)
 	}
 
@@ -186,9 +186,9 @@ const MCChoice = props => {
 				name={props.model.parent.get('id')}
 				role={inputType}
 				aria-checked={isSelected}
-				disabled={props.mode === 'review'}
+				disabled={props.isReview}
 			/>
-			{isSelected && props.questionSubmitted && props.mode !== 'review' ? (
+			{isSelected && props.questionSubmitted && props.isReview ? (
 				<span className="for-screen-reader-only">
 					{getChoiceText(isCorrect, props.responseType === 'pick-all')}
 				</span>
