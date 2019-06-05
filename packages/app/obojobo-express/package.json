@@ -70,7 +70,8 @@
 		"pg-promise": "^5.5.0",
 		"react-transition-group": "^2.5.3",
 		"serve-favicon": "~2.5.0",
-		"sharp": "0.21.0"
+		"sharp": "0.21.0",
+		"uuid": "^3.3.2"
 	},
 	"devDependencies": {
 		"babel-loader": "^8.0.4",
