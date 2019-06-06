@@ -1,4 +1,4 @@
-import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
+import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
 
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
@@ -32,26 +32,26 @@ const slateToObo = node => {
 
 const oboToSlate = node => {
 	const nodes = [
-		ParameterNode.helpers.oboToSlate({
-			name: 'passingAttemptScore',
-			value: node.passingAttemptScore,
-			display: 'Passing Score'
-		}),
-		ParameterNode.helpers.oboToSlate({
-			name: 'passedResult',
-			value: node.passedResult,
-			display: 'Passed Result'
-		}),
-		ParameterNode.helpers.oboToSlate({
-			name: 'failedResult',
-			value: node.failedResult,
-			display: 'Failed Result'
-		}),
-		ParameterNode.helpers.oboToSlate({
-			name: 'unableToPassResult',
-			value: node.unableToPassResult,
-			display: 'Unable to Pass Result'
-		})
+		TextParameter.helpers.oboToSlate(
+			'passingAttemptScore',
+			node.passingAttemptScore,
+			'Passing Score'
+		),
+		TextParameter.helpers.oboToSlate(
+			'passedResult',
+			node.passedResult,
+			'Passed Result'
+		),
+		TextParameter.helpers.oboToSlate(
+			'failedResult',
+			node.failedResult,
+			'Failed Result'
+		),
+		TextParameter.helpers.oboToSlate(
+			'unableToPassResult',
+			node.unableToPassResult,
+			'Unable to Pass Result'
+		)
 	]
 
 	if (node.mods) {
@@ -69,18 +69,18 @@ const oboToSlate = node => {
 			}
 
 			slateMod.nodes.push(
-				ParameterNode.helpers.oboToSlate({
-					name: 'attemptCondition',
-					value: mod.attemptCondition,
-					display: 'Attempt Condition'
-				})
+				TextParameter.helpers.oboToSlate(
+					'attemptCondition',
+					mod.attemptCondition,
+					'Attempt Condition'
+				)
 			)
 			slateMod.nodes.push(
-				ParameterNode.helpers.oboToSlate({
-					name: 'reward',
-					value: mod.reward,
-					display: 'Reward'
-				})
+				TextParameter.helpers.oboToSlate(
+					'reward',
+					mod.reward,
+					'Reward'
+				)
 			)
 
 			modList.nodes.push(slateMod)

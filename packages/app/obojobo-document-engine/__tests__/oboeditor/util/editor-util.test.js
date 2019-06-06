@@ -1,5 +1,5 @@
-import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 import Common from '../../../src/scripts/common/index'
+import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 
 jest.mock('../../../src/scripts/common/index', () => ({
 	models: {
@@ -57,6 +57,13 @@ describe('EditorUtil', () => {
 		EditorUtil.deletePage('mockId')
 
 		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:deletePage', {
+			value: { pageId: 'mockId' }
+		})
+	})
+	test('setStartPage calls editor:setStartPage', () => {
+		EditorUtil.setStartPage('mockId')
+
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('editor:setStartPage', {
 			value: { pageId: 'mockId' }
 		})
 	})

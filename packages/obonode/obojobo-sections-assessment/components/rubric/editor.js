@@ -1,12 +1,17 @@
 import React from 'react'
-import { Block } from 'slate'
+import { Block, Document } from 'slate'
+import { getEventTransfer, setEventTransfer } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
 import './editor-component.scss'
 
 //import Node from './editor-component'
 import Schema from './schema'
 import Converter from './converter'
+
+import emptyMod from './empty-mod.json'
 
 const { Button } = Common.components
 
@@ -62,13 +67,16 @@ class Node extends React.Component {
 
 		// If we are adding the first mod, we need to add a ModList
 		if (this.props.node.nodes.size < 5) {
-			const modlist = Block.create({ type: MOD_LIST_NODE })
+			const modlist = Block.create({
+				type: MOD_LIST_NODE,
+				nodes: [emptyMod]
+			})
 			return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, modlist)
 		}
 
 		const modlist = this.props.node.nodes.get(4)
 
-		const mod = Block.create({ type: MOD_NODE })
+		const mod = Block.create(emptyMod)
 		return editor.insertNodeByKey(modlist.key, modlist.nodes.size, mod)
 	}
 
@@ -97,7 +105,42 @@ class Node extends React.Component {
 	}
 }
 
+const isType = editor =>
+	editor.value.blocks.some(
+		block => !!editor.value.document.getClosest(block.key, parent => parent.type === RUBRIC_NODE)
+	)
+
 const plugins = {
+	onPaste(event, editor, next) {
+		// See if any of the selected nodes have a Rubric parent
+		const isRubric = isType(editor)
+		if (!isRubric) return next()
+
+		// When pasting into a rubric, paste everything as plain text
+		const transfer = getEventTransfer(event)
+		return editor.insertText(transfer.text)
+	},
+	onCut(event, editor, next) {
+		// See if any of the selected nodes have a Rubric parent
+		const isRubric = isType(editor)
+		if (!isRubric) return next()
+
+		// Cut out just the text, and then delete the text but not the parameter nodes
+		const textFragment = editor.extractTextToFragment()
+		KeyDownUtil.deleteNodeContents(event, editor, next)
+
+		return setEventTransfer(event, 'fragment', textFragment)
+	},
+	onCopy(event, editor, next) {
+		// See if any of the selected nodes have a Rubric parent
+		const isRubric = isType(editor)
+		if (!isRubric) return next()
+
+		// Copy just the text
+		const textFragment = editor.extractTextToFragment()
+
+		return setEventTransfer(event, 'fragment', textFragment)
+	},
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case MOD_NODE:
@@ -110,7 +153,41 @@ const plugins = {
 				return next()
 		}
 	},
-	schema: Schema
+	schema: Schema,
+	queries: {
+		extractTextToFragment(editor) {
+			const cutText = editor.value.fragment.text
+
+			return Document.create({
+				object: 'document',
+				nodes: [
+					{
+						object: 'block',
+						type: 'oboeditor.component',
+						nodes: [
+							{
+								object: 'block',
+								type: 'ObojoboDraft.Chunks.Text',
+								nodes: [
+									{
+										object: 'block',
+										type: 'ObojoboDraft.Chunks.Text.TextLine',
+										data: { indent: 0 },
+										nodes: [
+											{
+												object: 'text',
+												leaves: [{ object: 'leaf', text: cutText, marks: [] }]
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			})
+		}
+	}
 }
 
 const Rubric = {

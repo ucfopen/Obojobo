@@ -6,6 +6,9 @@ const TABLE_CELL_NODE = 'ObojoboDraft.Chunks.Table.Cell'
 const slateToObo = node => {
 	const content = node.data.get('content') || { textGroup: {} }
 	content.header = node.nodes.get(0).data.get('content').header
+
+	content.textGroup.numRows = node.nodes.size
+	content.textGroup.numCols = node.nodes.get(0).data.get('content').numCols
 	content.textGroup.textGroup = []
 
 	node.nodes.forEach(row => {
@@ -32,9 +35,15 @@ const slateToObo = node => {
 
 const oboToSlate = node => {
 	const nodes = []
+	const content = node.content
 	const numCols = node.content.textGroup.numCols
+	const numRows = node.content.textGroup.numRows
 	const hasHeader = node.content.header
 	let currRow
+
+	// Add the numCols and NumRows to the content, for more efficent normalization
+	content.numCols = numCols
+	content.numRows = numRows
 
 	node.content.textGroup.textGroup.forEach((line, index) => {
 		// create a new row every numCols
@@ -42,7 +51,7 @@ const oboToSlate = node => {
 			currRow = {
 				object: 'block',
 				type: TABLE_ROW_NODE,
-				data: { content: { header: hasHeader && nodes.length === 0 } },
+				data: { content: { header: hasHeader && nodes.length === 0, numCols } },
 				nodes: []
 			}
 			nodes.push(currRow)
@@ -68,7 +77,7 @@ const oboToSlate = node => {
 		type: node.type,
 		nodes,
 		data: {
-			content: node.content
+			content
 		}
 	}
 }
