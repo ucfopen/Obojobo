@@ -6,7 +6,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { Button } = Common.components
 
-const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
+import emptyRubric from './components/rubric/empty-node.json'
 
 class Assessment extends React.Component {
 	constructor(props) {
@@ -17,10 +17,7 @@ class Assessment extends React.Component {
 	addRubric() {
 		const editor = this.props.editor
 
-		const newRubric = Block.create({
-			type: RUBRIC_NODE,
-			data: { content: { type: 'pass-fail' } }
-		})
+		const newRubric = Block.create(emptyRubric)
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newRubric)
 	}
 

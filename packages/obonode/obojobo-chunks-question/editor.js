@@ -32,6 +32,7 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.Question', {
 	insertJSON: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
+	supportsChildren: true,
 	plugins,
 	getNavItem(model) {
 		let label

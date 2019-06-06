@@ -1,7 +1,7 @@
 /* eslint no-undefined: 0 */
 
-import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 import Common from '../../../src/scripts/common/index'
+import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 jest.mock('../../../src/scripts/oboeditor/util/editor-util')
 jest.mock('../../../src/scripts/viewer/util/api-util')
 
@@ -116,6 +116,16 @@ describe('EditorStore', () => {
 		expect(EditorStore.movePage).toHaveBeenCalledWith('mockId', 1)
 	})
 
+	test('editor:setStartPage calls setStartPage', () => {
+		jest.spyOn(EditorStore, 'setStartPage')
+
+		eventCallbacks['editor:setStartPage']({
+			value: { pageId: 'mockId' }
+		})
+
+		expect(EditorStore.setStartPage).toHaveBeenCalledWith('mockId')
+	})
+
 	test('editor:renamePage calls renamePage', () => {
 		jest.spyOn(EditorStore, 'renamePage')
 		EditorStore.renamePage.mockReturnValueOnce(false)
@@ -128,7 +138,7 @@ describe('EditorStore', () => {
 	})
 
 	test('init builds state with basic options', () => {
-		EditorStore.init(null, 12, '')
+		EditorStore.init(null, undefined, '')
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 

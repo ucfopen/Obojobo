@@ -1,5 +1,6 @@
 import { Block } from 'slate'
 
+import emptyAssessment from './empty-assessment.json'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
@@ -25,10 +26,7 @@ const schema = {
 						// If we are missing the last node,
 						// it should be a MCAssessment
 						if (index === node.nodes.size) {
-							const block = Block.create({
-								type: MCASSESSMENT_NODE,
-								data: { content: { responseType: 'pick-one', shuffle: true } }
-							})
+							const block = Block.create(emptyAssessment)
 							return editor.insertNodeByKey(node.key, index, block)
 						}
 

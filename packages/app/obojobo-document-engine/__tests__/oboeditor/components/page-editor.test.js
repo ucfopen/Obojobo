@@ -1,13 +1,22 @@
-import { shallow, mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
+
+import APIUtil from 'src/scripts/viewer/util/api-util'
+import EditorStore from '../../../src/scripts/oboeditor/stores/editor-store'
+import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import React from 'react'
 import { Value } from 'slate'
 
 jest.mock('slate-react')
 
-import PageEditor from 'src/scripts/oboeditor/components/page-editor'
-import APIUtil from 'src/scripts/viewer/util/api-util'
 jest.mock('src/scripts/viewer/util/api-util')
 jest.mock('src/scripts/common/util/modal-util')
+
+// Editor Store
+jest.mock('src/scripts/oboeditor/stores/editor-store', () => {
+	return {
+		state: { startingId: null }
+	}
+})
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -151,7 +160,7 @@ describe('PageEditor', () => {
 					{
 						get: () => CONTENT_NODE,
 						flatJSON: () => {
-							return { children: [] }
+							return { content: {}, children: [] }
 						},
 						children: {
 							models: [
@@ -166,7 +175,7 @@ describe('PageEditor', () => {
 					}
 				],
 				flatJSON: () => {
-					return { children: [] }
+					return { content: {}, children: [] }
 				}
 			}
 		}
@@ -187,6 +196,9 @@ describe('PageEditor', () => {
 		window.alert.mockReturnValueOnce(null)
 		APIUtil.postDraft.mockResolvedValueOnce({ status: 'not ok' })
 
+		// remove startingId for test coverage
+		EditorStore.state = {}
+
 		const props = {
 			page: {
 				id: 2,
@@ -204,7 +216,7 @@ describe('PageEditor', () => {
 			model: {
 				children: [],
 				flatJSON: () => {
-					return { children: [] }
+					return { content: {}, children: [] }
 				}
 			}
 		}
@@ -217,7 +229,10 @@ describe('PageEditor', () => {
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
-		expect(APIUtil.postDraft).toHaveBeenCalle
+		expect(APIUtil.postDraft).toHaveBeenCalled()
+
+		// restore startingId
+		EditorStore.state = { startingId: null }
 	})
 
 	test('EditorNav component alters value majorly', () => {
@@ -274,7 +289,7 @@ describe('PageEditor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('EditorNav component stores refrence', () => {
+	test('EditorNav component stores reference', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
 			page: {

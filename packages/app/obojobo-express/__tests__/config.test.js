@@ -4,6 +4,7 @@ let logger
 
 describe('config', () => {
 	beforeEach(() => {
+
 		delete process.env.NODE_ENV
 		jest.resetModules()
 		jest.mock('../logger')
@@ -106,5 +107,62 @@ describe('config', () => {
 		oboRequire('config')
 		expect(logger.error).toHaveBeenCalledTimes(2)
 		expect(logger.error).toHaveBeenCalledWith('Error: Expected ENV var DB_USER is not set')
+	})
+
+	test('processes json env variables by expanding them when found', () => {
+		const fs = require('fs')
+		const mockDBConfig = {
+			development: { ENV: 'DB_CONFIG_JSON'}
+		}
+
+		const configPath = path.resolve(__dirname + '/../config')
+		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
+
+		process.env.DB_CONFIG_JSON = '{"host":"mock-host","port":999}'
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'mock-host')
+		expect(config).toHaveProperty('db.port', 999)
+		delete process.env.DB_CONFIG_JSON
+	})
+
+	test('logs error when env var ending in _JSON doesnt contain valid json', () => {
+		process.env.NODE_ENV = 'test'
+		const fs = require('fs')
+		const mockDBConfig = {
+			test: { ENV: 'DB_CONFIG_JSON'}
+		}
+
+		const configPath = path.resolve(__dirname + '/../config')
+		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
+
+		process.env.DB_CONFIG_JSON = '{invalid-json:"mock-host"}'
+		const config = oboRequire('config')
+
+		expect(config).not.toHaveProperty('db.host', 'mock-host')
+		expect(config).not.toHaveProperty('db.port', 999)
+
+		expect(logger.error).toHaveBeenCalledTimes(2)
+		expect(logger.error).toHaveBeenCalledWith('Error: Expected ENV DB_CONFIG_JSON to be valid JSON, but it did not parse')
+		delete process.env.DB_CONFIG_JSON
+	})
+
+	test('replaces env vars INSIDE json env values', () => {
+		process.env.DB_PORT = 'mock-port'
+		const fs = require('fs')
+		const mockDBConfig = {
+			development: { ENV: 'DB_CONFIG_JSON'}
+		}
+
+		const configPath = path.resolve(__dirname + '/../config')
+		fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(mockDBConfig))
+
+		// NOTE the value of port in this json is another ENV:value key that itself
+		// should be replaced with the actual env var value!!!
+		process.env.DB_CONFIG_JSON = '{"host":"mock-host","port":{"ENV":"DB_PORT"}}'
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'mock-host')
+		expect(config).toHaveProperty('db.port', 'mock-port')
+		delete process.env.DB_CONFIG_JSON
+		delete process.env.DB_PORT
 	})
 })

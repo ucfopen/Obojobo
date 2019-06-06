@@ -1,3 +1,6 @@
+import SlateReact from 'slate-react'
+jest.mock('slate-react')
+
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import List from './editor'
@@ -6,6 +9,67 @@ const LIST_LINE_NODE = 'ObojoboDraft.Chunks.List.Line'
 const LIST_LEVEL_NODE = 'ObojoboDraft.Chunks.List.Level'
 
 describe('List editor', () => {
+	test('onPaste calls next if not pasting text into a LIST_NODE', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text' })
+
+		List.plugins.onPaste(null, editor, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('onPaste calls createTextLinesFromText', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						text: ''
+					},
+					{
+						key: 'mockBlockKey',
+						text: 'mock text'
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			},
+			createListLinesFromText: jest.fn().mockReturnValueOnce([
+				{
+					key: 'mockBlockKey'
+				}
+			]),
+			insertBlock: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'text',
+			text: 'mock text'
+		})
+
+		List.plugins.onPaste(null, editor, next)
+
+		expect(editor.createListLinesFromText).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders List', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -717,6 +781,32 @@ describe('List editor', () => {
 		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid oboeditor.component block in list', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: {
+				data: {
+					get: () => {
+						return {
+							listStyles: {
+								type: 'ordered'
+							}
+						}
+					}
+				},
+				nodes: { size: 10 }
+			},
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize adds missing child in list', () => {
 		const editor = {
 			insertNodeByKey: jest.fn()
@@ -758,6 +848,21 @@ describe('List editor', () => {
 		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid oboeditor.component block in Level', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		List.plugins.schema.blocks[LIST_LEVEL_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize fixes invalid text children in Level', () => {
 		const editor = {
 			moveToStartOfNextText: jest.fn()
@@ -788,5 +893,13 @@ describe('List editor', () => {
 		})
 
 		expect(editor.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('queries.createCodeLinesFromText builds text lines', () => {
+		const editor = {}
+
+		const blocks = List.plugins.queries.createListLinesFromText(editor, ['mock text'])
+
+		expect(blocks).toMatchSnapshot()
 	})
 })

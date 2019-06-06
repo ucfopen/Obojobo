@@ -37,6 +37,9 @@ module.exports =
 				https: true,
 				host: '127.0.0.1',
 				before: app => {
+					// add utilities for dev env (visit /dev)
+					require('./obo_express_dev')(app)
+					// add obojobo express server to webpack
 					require('./middleware.default')(app)
 				},
 				publicPath: '/static/',

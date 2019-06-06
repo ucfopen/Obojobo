@@ -1,37 +1,40 @@
-import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
-import { Value } from 'slate'
-import { Editor } from 'slate-react'
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
+import './page-editor.scss'
 
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import ActionButton from 'obojobo-chunks-action-button/editor'
+import Assessment from 'obojobo-sections-assessment/editor'
 import Break from 'obojobo-chunks-break/editor'
+import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Code from 'obojobo-chunks-code/editor'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import Component from './node/editor'
+import { Editor } from 'slate-react'
+import EditorSchema from '../plugins/editor-schema'
+import EditorStore from '../stores/editor-store'
 import Figure from 'obojobo-chunks-figure/editor'
-import Heading from 'obojobo-chunks-heading/editor'
 import HTML from 'obojobo-chunks-html/editor'
+import Heading from 'obojobo-chunks-heading/editor'
 import IFrame from 'obojobo-chunks-iframe/editor'
 import List from 'obojobo-chunks-list/editor'
-import MathEquation from 'obojobo-chunks-math-equation/editor'
-import Table from 'obojobo-chunks-table/editor'
-import Text from 'obojobo-chunks-text/editor'
-import YouTube from 'obojobo-chunks-youtube/editor'
-import QuestionBank from 'obojobo-chunks-question-bank/editor'
-import Question from 'obojobo-chunks-question/editor'
+import MCAnswer from 'obojobo-chunks-multiple-choice-assessment/MCAnswer/editor'
 import MCAssessment from 'obojobo-chunks-multiple-choice-assessment/editor'
 import MCChoice from 'obojobo-chunks-multiple-choice-assessment/MCChoice/editor'
-import MCAnswer from 'obojobo-chunks-multiple-choice-assessment/MCAnswer/editor'
 import MCFeedback from 'obojobo-chunks-multiple-choice-assessment/MCFeedback/editor'
-import Page from 'obojobo-pages-page/editor'
-import Assessment from 'obojobo-sections-assessment/editor'
-import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-component'
-import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
-import ParameterNode from './parameter-node'
-import Component from './node/editor'
 import MarkToolbar from './toolbar'
-import EditorSchema from '../plugins/editor-schema'
-
-import './page-editor.scss'
+import MathEquation from 'obojobo-chunks-math-equation/editor'
+import Page from 'obojobo-pages-page/editor'
+import Question from 'obojobo-chunks-question/editor'
+import QuestionBank from 'obojobo-chunks-question-bank/editor'
+import React from 'react'
+import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
+import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-component'
+import SelectParameter from './parameter-node/select-parameter'
+import Table from 'obojobo-chunks-table/editor'
+import Text from 'obojobo-chunks-text/editor'
+import TextParameter from './parameter-node/text-parameter'
+import ToggleParameter from './parameter-node/toggle-parameter'
+import { Value } from 'slate'
+import YouTube from 'obojobo-chunks-youtube/editor'
 
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -64,9 +67,12 @@ const plugins = [
 	ScoreActions.plugins,
 	Page.plugins,
 	Rubric.plugins,
-	ParameterNode.plugins,
+	ToggleParameter.plugins,
+	SelectParameter.plugins,
+	TextParameter.plugins,
 	Assessment.plugins,
-	EditorSchema
+	EditorSchema,
+	ClipboardPlugin
 ]
 
 class PageEditor extends React.Component {
@@ -194,16 +200,17 @@ class PageEditor extends React.Component {
 	renderExportButton() {
 		return (
 			<div className="footer-menu">
-				<Button className={'exporter'} onClick={() => this.saveDraft()}>
+				<Button className={'exporter'} onClick={() => this.saveDraft(EditorStore.state.startingId)}>
 					{'Save Document'}
 				</Button>
 			</div>
 		)
 	}
 
-	saveDraft() {
+	saveDraft(startPage = null) {
 		this.exportToJSON(this.props.page, this.state.value)
 		const json = this.props.model.flatJSON()
+		json.content.start = startPage
 
 		// deal with content
 		this.props.model.children.forEach(child => {
