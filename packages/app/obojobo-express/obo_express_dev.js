@@ -1,7 +1,7 @@
 const sig = require('oauth-signature')
-const ltiConfig = require('./config/lti.json')
-const oauthKey = Object.keys(ltiConfig.development.keys)[0]
-const oauthSecret = ltiConfig.development.keys[oauthKey]
+const config = require('./config')
+const oauthKey = Object.keys(config.lti.keys)[0]
+const oauthSecret = config.lti.keys[oauthKey]
 
 const ltiPerson = {
 	lis_person_contact_email_primary: 'jbaird@uni.ac.uk',
@@ -62,8 +62,8 @@ const baseUrl = req => `${req.protocol}://${req.get('host')}`
 
 module.exports = app => {
 	const bodyParser = require('body-parser')
-	app.use(bodyParser.json())
-	app.use(bodyParser.urlencoded({ extended: false }))
+	app.use(bodyParser.json(config.general.bodyParser.jsonOptions))
+	app.use(bodyParser.urlencoded(config.general.bodyParser.urlencodedOptions))
 
 	// index page with links to all the launch types
 	app.get('/dev', (req, res) => {
