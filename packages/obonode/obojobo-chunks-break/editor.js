@@ -22,7 +22,7 @@ const plugins = {
 }
 
 Common.Registry.registerModel('ObojoboDraft.Chunks.Break', {
-	name: 'Horiozonal Line',
+	name: 'Horizontal Line',
 	icon: Icon,
 	isInsertable: true,
 	insertJSON: emptyNode,
