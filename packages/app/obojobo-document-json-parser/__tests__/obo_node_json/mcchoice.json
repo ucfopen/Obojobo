@@ -1,0 +1,34 @@
+{
+	"id": "98f100ac-97d5-4c62-8e4b-5346e1ae0d2d",
+	"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+	"content": {
+		"score": 100
+	},
+	"children": [
+		{
+			"id": "40aacda7-f6a7-4a7c-aabc-6b4e5bed8c31",
+			"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+			"content": {},
+			"children": [
+				{
+					"id": "fedc62b5-31f5-4b89-abfd-f6604208837c",
+					"type": "ObojoboDraft.Chunks.Text",
+					"content": {
+						"textGroup": [
+							{
+								"data": {
+									"indent": 0
+								},
+								"text": {
+									"value": "An answer",
+									"styleList": []
+								}
+							}
+						]
+					},
+					"children": []
+				}
+			]
+		}
+	]
+}

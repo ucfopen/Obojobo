@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JSON to XML Test Converts assessment.json to assessment.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts break.json to break.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts code.json to code.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts content.json to content.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts figure.json to figure.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts heading.json to heading.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts iframe.json to iframe.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts list.json to list.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts mathequation.json to mathequation.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts mcanswer.json to mcanswer.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts mcassessment.json to mcassessment.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts mcchoice.json to mcchoice.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts mcfeedback.json to mcfeedback.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts module.json to module.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts page.json to page.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts question.json to question.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts questionbank.json to questionbank.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts table.json to table.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts text.json to text.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;
+
+exports[`JSON to XML Test Converts youtube.json to youtube.xml 1`] = `
+"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
+<ObojoboDraftDoc>
+</ObojoboDraftDoc>"
+`;

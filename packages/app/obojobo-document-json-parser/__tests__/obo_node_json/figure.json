@@ -1,0 +1,21 @@
+{
+	"id": "74ea47e7-701e-4aba-9b4f-e2498a2efb2d",
+	"type": "ObojoboDraft.Chunks.Figure",
+	"content": {
+		"alt": null,
+		"url": null,
+		"size": "small",
+		"width": null,
+		"height": null,
+		"textGroup": [
+			{
+				"data": null,
+				"text": {
+					"value": "",
+					"styleList": []
+				}
+			}
+		]
+	},
+	"children": []
+}
