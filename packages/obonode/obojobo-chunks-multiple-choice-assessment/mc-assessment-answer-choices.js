@@ -19,6 +19,8 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 		const isTypePickAll = responseType === 'pick-all'
 		const isAnswerScored = this.props.score !== null // Question has been submitted in practice or scored by server in assessment
 
+		console.log('render', this.props.models)
+
 		return (
 			<div role={isTypePickAll ? null : 'radiogroup'}>
 				<div className="for-screen-reader-only" ref={this.resultsRef} tabIndex="-1">
@@ -43,7 +45,7 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 							responseType={responseType}
 							isShowingExplanation
 							mode={this.props.mode}
-							isReview={this.props.isReview}
+							type={this.props.type}
 							questionSubmitted={isAnswerScored}
 							choiceIndex={index}
 						/>

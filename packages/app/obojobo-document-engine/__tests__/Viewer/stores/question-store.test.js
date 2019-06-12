@@ -83,7 +83,7 @@ describe('QuestionStore', () => {
 	}
 
 	beforeAll(() => {
-		// GET a copy of the call to Dispaterh.on that QuestionStore calls in it's constructor
+		// GET a copy of the call to Dispatcher.on that QuestionStore calls in it's constructor
 		// before they're cleared in beforeEach...
 		// the events we want to find are called when Common is loaded
 		// making them sort of annoying to load cleanly. Other stores are initialized too,
@@ -102,11 +102,15 @@ describe('QuestionStore', () => {
 		QuestionStore.init()
 
 		expect(QuestionStore.getState()).toEqual({
-			viewing: null,
-			viewedQuestions: {},
-			responses: {},
-			scores: {},
-			data: {}
+			contexts: {
+				practice: {
+					viewing: null,
+					viewedQuestions: {},
+					responses: {},
+					scores: {},
+					data: {}
+				}
+			}
 		})
 	})
 
@@ -152,13 +156,13 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	test('question:setResponse calls triggerChange and postEvent', () => {
+	test('question:setResponse calls triggerChange and postEvent and updates state', () => {
 		jest.spyOn(Common.models.OboModel, 'getRoot')
 		Common.models.OboModel.getRoot.mockReturnValueOnce({
 			get: () => 'mockDraftId'
 		})
 
-		QuestionStore.setState({ responses: { mockContext: {} } })
+		QuestionStore.setState({ contexts: { mockContext: { responses: {} } } })
 
 		__mockTrigger('question:setResponse', {
 			value: {
@@ -184,10 +188,53 @@ describe('QuestionStore', () => {
 			},
 			visitId: undefined
 		})
+		expect(QuestionStore.getState()).toEqual({
+			contexts: {
+				mockContext: {
+					responses: {
+						questionId: {
+							customResponse: 'responseValue'
+						}
+					}
+				}
+			}
+		})
+	})
+
+	test('question:setResponse creates a new context if one does not exist', () => {
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
+
+		QuestionStore.setState({ contexts: {} })
+
+		__mockTrigger('question:setResponse', {
+			value: {
+				context: 'mockContext',
+				id: 'questionId',
+				response: { customResponse: 'responseValue' }
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(QuestionStore.getState()).toEqual({
+			contexts: {
+				mockContext: {
+					responses: {
+						questionId: { customResponse: 'responseValue' }
+					},
+					data: {},
+					scores: {},
+					viewedQuestions: {},
+					viewing: null
+				}
+			}
+		})
 	})
 
 	test('question:clearResponse calls triggerChange and updates state', () => {
-		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
+		QuestionStore.setState({ contexts: { mockContext: { responses: { mockId: true } } } })
 
 		__mockTrigger('question:clearResponse', {
 			value: {
@@ -198,27 +245,32 @@ describe('QuestionStore', () => {
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			responses: {
-				mockContext: {}
+			contexts: {
+				mockContext: {
+					responses: {}
+				}
 			}
 		})
 	})
 
 	test('question:clearResponse does nothing with no context', () => {
-		QuestionStore.setState({ responses: {} })
+		QuestionStore.setState({ contexts: { mockContext: { responses: { mockId: true } } } })
 
 		__mockTrigger('question:clearResponse', {
 			value: {
-				context: 'mockContext',
+				context: 'mockContext2',
 				id: 'mockId'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
+		expect(QuestionStore.getState()).toEqual({
+			contexts: { mockContext: { responses: { mockId: true } } }
+		})
 	})
 
 	test("question:clearResponse calls triggerChange but doesn't change state", () => {
-		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
+		QuestionStore.setState({ contexts: { mockContext: { responses: { mockId: true } } } })
 
 		__mockTrigger('question:clearResponse', {
 			value: {
@@ -229,14 +281,12 @@ describe('QuestionStore', () => {
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			responses: {
-				mockContext: { mockId: true }
-			}
+			contexts: { mockContext: { responses: { mockId: true } } }
 		})
 	})
 
 	test('assessment:endAttempt calls triggerChange and updates state', () => {
-		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
+		QuestionStore.setState({ contexts: { mockContext: { responses: { mockId: true } } } })
 
 		__mockTrigger('assessment:endAttempt', {
 			value: {
@@ -247,27 +297,28 @@ describe('QuestionStore', () => {
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			responses: {
-				mockContext: {}
-			}
+			contexts: { mockContext: { responses: {} } }
 		})
 	})
 
 	test('assessment:endAttempt does nothing with no context', () => {
-		QuestionStore.setState({ responses: {} })
+		QuestionStore.setState({ contexts: { mockContext: { responses: {} } } })
 
 		__mockTrigger('assessment:endAttempt', {
 			value: {
-				context: 'mockContext',
+				context: 'otherMockContext',
 				id: 'mockId'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
+		expect(QuestionStore.getState()).toEqual({
+			contexts: { mockContext: { responses: {} } }
+		})
 	})
 
 	test("assessment:endAttempt calls triggerChange but doesn't change state", () => {
-		QuestionStore.setState({ responses: { mockContext: { mockId: true } } })
+		QuestionStore.setState({ contexts: { mockContext: { responses: { mockId: true } } } })
 
 		__mockTrigger('assessment:endAttempt', {
 			value: {
@@ -278,68 +329,155 @@ describe('QuestionStore', () => {
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			responses: {
-				mockContext: { mockId: true }
-			}
+			contexts: { mockContext: { responses: { mockId: true } } }
 		})
 	})
 
 	test('question:setData calls triggerChange and updates state', () => {
 		QuestionStore.setState({
-			data: {}
+			contexts: {
+				mockContext: {
+					data: {}
+				}
+			}
 		})
 
 		__mockTrigger('question:setData', {
 			value: {
 				key: 'dataKey',
-				value: 'dataValue'
+				value: 'dataValue',
+				context: 'mockContext'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			data: {
-				dataKey: 'dataValue'
+			contexts: {
+				mockContext: {
+					data: {
+						dataKey: 'dataValue'
+					}
+				}
+			}
+		})
+	})
+
+	test('question:setData creates a new context if none exists', () => {
+		QuestionStore.setState({
+			contexts: {}
+		})
+
+		__mockTrigger('question:setData', {
+			value: {
+				key: 'dataKey',
+				value: 'dataValue',
+				context: 'mockContext'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(QuestionStore.getState()).toEqual({
+			contexts: {
+				mockContext: {
+					data: {
+						dataKey: 'dataValue'
+					},
+					responses: {},
+					scores: {},
+					viewedQuestions: {},
+					viewing: null
+				}
 			}
 		})
 	})
 
 	test('question:clearData calls triggerChange and updates state', () => {
 		QuestionStore.setState({
-			data: {
-				dataKey: 'dataValue'
+			contexts: {
+				mockContext: {
+					data: {
+						dataKey: 'dataValue',
+						dataKey2: 'dataValue2'
+					}
+				}
 			}
 		})
 
 		__mockTrigger('question:clearData', {
 			value: {
-				key: 'dataKey'
+				key: 'dataKey',
+				context: 'mockContext'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			data: {}
+			contexts: {
+				mockContext: {
+					data: {
+						dataKey2: 'dataValue2'
+					}
+				}
+			}
 		})
 	})
 
 	test('question:clearData calls triggerChange even when theres no state change', () => {
 		QuestionStore.setState({
-			data: {
-				dataKey: 'dataValue'
+			contexts: {
+				mockContext: {
+					data: {
+						dataKey: 'dataValue'
+					}
+				}
 			}
 		})
 
 		__mockTrigger('question:clearData', {
 			value: {
-				key: 'someOtherKey'
+				key: 'someOtherKey',
+				context: 'mockContext'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			data: {
-				dataKey: 'dataValue'
+			contexts: {
+				mockContext: {
+					data: {
+						dataKey: 'dataValue'
+					}
+				}
+			}
+		})
+	})
+
+	test('question:clearData does nothing when the context does not exist', () => {
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					data: {
+						dataKey: 'dataValue'
+					}
+				}
+			}
+		})
+
+		__mockTrigger('question:clearData', {
+			value: {
+				key: 'dataKey',
+				context: 'someOtherContext'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
+		expect(QuestionStore.getState()).toEqual({
+			contexts: {
+				mockContext: {
+					data: {
+						dataKey: 'dataValue'
+					}
+				}
 			}
 		})
 	})
@@ -348,21 +486,60 @@ describe('QuestionStore', () => {
 		__createModels()
 
 		QuestionStore.setState({
-			viewing: null,
-			viewedQuestions: {}
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {}
+				}
+			}
 		})
 
 		__mockTrigger('question:view', {
 			value: {
-				id: 'questionId'
+				id: 'questionId',
+				context: 'mockContext'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			viewing: 'questionId',
-			viewedQuestions: {
-				questionId: true
+			contexts: {
+				mockContext: {
+					viewing: 'questionId',
+					viewedQuestions: {
+						questionId: true
+					}
+				}
+			}
+		})
+	})
+
+	test('question:view creates a new context if none exists', () => {
+		__createModels()
+
+		QuestionStore.setState({
+			contexts: {}
+		})
+
+		__mockTrigger('question:view', {
+			value: {
+				id: 'questionId',
+				context: 'mockContext'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(QuestionStore.getState()).toEqual({
+			contexts: {
+				mockContext: {
+					viewing: 'questionId',
+					viewedQuestions: {
+						questionId: true
+					},
+					data: {},
+					responses: {},
+					scores: {}
+				}
 			}
 		})
 	})
@@ -371,107 +548,269 @@ describe('QuestionStore', () => {
 		__createModels()
 
 		QuestionStore.setState({
-			viewing: null,
-			viewedQuestions: {}
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {}
+				}
+			}
 		})
 
 		__mockTrigger('question:view', {
 			value: {
-				id: 'questionId'
+				id: 'questionId',
+				context: 'mockContext'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			viewing: 'questionId',
-			viewedQuestions: {
-				questionId: true
+			contexts: {
+				mockContext: {
+					viewing: 'questionId',
+					viewedQuestions: {
+						questionId: true
+					}
+				}
 			}
 		})
 
 		__mockTrigger('question:view', {
 			value: {
-				id: 'responderId'
+				id: 'responderId',
+				context: 'mockContext'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(2)
 		expect(QuestionStore.getState()).toEqual({
-			viewing: 'responderId',
-			viewedQuestions: {
-				responderId: true,
-				questionId: true
+			contexts: {
+				mockContext: {
+					viewing: 'responderId',
+					viewedQuestions: {
+						responderId: true,
+						questionId: true
+					}
+				}
 			}
 		})
 	})
 
-	test('question:checkAnswer calls APIUtil', () => {
+	test('question:view creates a new context if none exists', () => {
 		__createModels()
 
 		QuestionStore.setState({
-			viewing: null,
-			viewedQuestions: {}
+			contexts: {}
+		})
+
+		__mockTrigger('question:view', {
+			value: {
+				id: 'questionId',
+				context: 'mockContext'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
+		expect(QuestionStore.getState()).toEqual({
+			contexts: {
+				mockContext: {
+					viewing: 'questionId',
+					viewedQuestions: {
+						questionId: true
+					},
+					data: {},
+					responses: {},
+					scores: {}
+				}
+			}
+		})
+	})
+
+	test('question:checkAnswer calls APIUtil.postEvent', () => {
+		jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
+		Common.models.OboModel.prototype.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
+		__createModels()
+
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {},
+					scores: {
+						questionId: { id: 'mockScoreId', score: 'mockScore' }
+					},
+					responses: {
+						questionId: 'mockResponse'
+					}
+				}
+			}
 		})
 
 		__mockTrigger('question:checkAnswer', {
 			value: {
-				id: 'questionId'
+				id: 'questionId',
+				context: 'mockContext'
 			}
 		})
 
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+			action: 'question:checkAnswer',
+			draftId: 'mockDraftId',
+			eventVersion: '1.1.0',
+			payload: {
+				questionId: 'questionId',
+				context: 'mockContext',
+				response: 'mockResponse',
+				scoreId: 'mockScoreId',
+				score: 'mockScore'
+			},
+			visitId: undefined
+		})
+	})
+
+	test('question:checkAnswer does nothing if context does not exist', () => {
+		jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
+		Common.models.OboModel.prototype.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
+		__createModels()
+
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {},
+					scores: {
+						questionId: { id: 'mockScoreId', score: 'mockScore' }
+					},
+					responses: {
+						questionId: 'mockResponse'
+					}
+				}
+			}
+		})
+
+		__mockTrigger('question:checkAnswer', {
+			value: {
+				id: 'questionId',
+				context: 'someOtherContext'
+			}
+		})
+
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(0)
+		expect(QuestionStore.getState()).toEqual({
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {},
+					scores: {
+						questionId: { id: 'mockScoreId', score: 'mockScore' }
+					},
+					responses: {
+						questionId: 'mockResponse'
+					}
+				}
+			}
+		})
 	})
 
 	test('question:hide marks questions as hidden, and clears viewing if it matches', () => {
 		__createModels()
 
 		QuestionStore.setState({
-			viewing: 'responderId',
-			viewedQuestions: {
-				questionId: true,
-				responderId: true
+			contexts: {
+				mockContext: {
+					viewing: 'responderId',
+					viewedQuestions: {
+						questionId: true,
+						responderId: true
+					}
+				}
 			}
 		})
 
 		__mockTrigger('question:hide', {
 			value: {
-				id: 'responderId'
+				id: 'responderId',
+				context: 'mockContext'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			viewing: null,
-			viewedQuestions: {
-				questionId: true
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {
+						questionId: true
+					}
+				}
 			}
 		})
 	})
 
-	test('question:hide marks questions as hidden, and does not clear viewing if it doesnt match', () => {
+	test.only('question:hide marks questions as hidden, and does not clear viewing if it doesnt match', () => {
 		__createModels()
 
 		QuestionStore.setState({
-			viewing: 'responderId',
-			viewedQuestions: {
-				questionId: true,
-				responderId: true
+			contexts: {
+				mockContext: {
+					viewing: 'responderId',
+					viewedQuestions: {
+						questionId: true,
+						responderId: true
+					}
+				}
 			}
 		})
 
 		__mockTrigger('question:hide', {
 			value: {
-				id: 'questionId'
+				id: 'questionId',
+				context: 'mockContext'
 			}
 		})
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(1)
 		expect(QuestionStore.getState()).toEqual({
-			viewing: 'responderId',
-			viewedQuestions: {
-				responderId: true
+			contexts: {
+				mockContext: {
+					viewing: 'responderId',
+					viewedQuestions: {
+						responderId: true
+					}
+				}
 			}
 		})
+	})
+
+	test('question:hide does nothing if given a bad context', () => {
+		__createModels()
+
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					viewing: 'responderId',
+					viewedQuestions: {
+						questionId: true,
+						responderId: true
+					}
+				}
+			}
+		})
+
+		__mockTrigger('question:hide', {
+			value: {
+				id: 'questionId',
+				context: 'someOtherContext'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
+		expect(APIUtil.postEvent).not.toHaveBeenCalled()
 	})
 
 	test('question:showExplanation calls postEvent and sets question data', () => {
@@ -479,7 +818,8 @@ describe('QuestionStore', () => {
 
 		__mockTrigger('question:showExplanation', {
 			value: {
-				id: 'questionId'
+				id: 'questionId',
+				context: 'mockContext'
 			}
 		})
 
@@ -487,18 +827,24 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 
 		expect(QuestionUtil.setData).toHaveBeenCalledTimes(1)
-		expect(QuestionUtil.setData).toHaveBeenCalledWith('questionId', 'showingExplanation', true)
+		expect(QuestionUtil.setData).toHaveBeenCalledWith(
+			'questionId',
+			'mockContext',
+			'showingExplanation',
+			true
+		)
 
 		expect(QuestionUtil.clearData).not.toHaveBeenCalled()
 	})
 
-	test('question:hideExplanation calls triggerChange and updates state', () => {
+	test.only('question:hideExplanation calls triggerChange and updates state', () => {
 		__createModels()
 
 		__mockTrigger('question:hideExplanation', {
 			value: {
 				id: 'questionId',
-				actor: 'testActor'
+				actor: 'testActor',
+				context: 'mockContext'
 			}
 		})
 

@@ -11,6 +11,16 @@ const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 const { uuid } = Common.util
 
+const getNewContextState = () => {
+	return {
+		viewing: null,
+		viewedQuestions: {},
+		scores: {},
+		responses: {},
+		data: {}
+	}
+}
+
 class QuestionStore extends Store {
 	constructor() {
 		let model
@@ -18,11 +28,13 @@ class QuestionStore extends Store {
 
 		Dispatcher.on({
 			'question:setResponse': payload => {
-				const id = payload.value.id
-				const context = payload.value.context
-				if (!this.state.responses[context]) this.state.responses[context] = {}
-				this.state.responses[context][id] = payload.value.response
+				const { context, id } = payload.value
+				const contextState = this.getOrCreateContextState(context)
+
+				contextState.responses[id] = payload.value.response
+
 				this.triggerChange()
+
 				APIUtil.postEvent({
 					draftId: OboModel.getRoot().get('draftId'),
 					action: 'question:setResponse',
@@ -40,42 +52,45 @@ class QuestionStore extends Store {
 			},
 
 			'question:clearResponse': payload => {
-				if (this.state.responses[payload.value.context]) {
-					delete this.state.responses[payload.value.context][payload.value.id]
-					this.triggerChange()
-				}
+				if (!this.clearResponse(payload.value.id, payload.value.context)) return
+				this.triggerChange()
 			},
 
 			'assessment:endAttempt': payload => {
-				if (this.state.responses[payload.value.context]) {
-					delete this.state.responses[payload.value.context][payload.value.id]
-					this.triggerChange()
-				}
+				if (!this.clearResponse(payload.value.id, payload.value.context)) return
+				this.triggerChange()
 			},
 
 			'question:setData': payload => {
-				this.state.data[payload.value.key] = payload.value.value
+				const { context, key, value } = payload.value
+				console.log('sd2', context)
+				const contextState = this.getOrCreateContextState(context)
+
+				contextState.data[key] = value
 				this.triggerChange()
 			},
 
 			'question:showExplanation': payload => {
-				const root = OboModel.models[payload.value.id].getRoot()
+				const { id, context } = payload.value
+				const root = OboModel.models[id].getRoot()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:showExplanation',
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					visitId: NavStore.getState().visitId,
 					payload: {
-						questionId: payload.value.id
+						questionId: id,
+						context
 					}
 				})
 
-				QuestionUtil.setData(payload.value.id, 'showingExplanation', true)
+				QuestionUtil.setData(id, context, 'showingExplanation', true)
 			},
 
 			'question:hideExplanation': payload => {
-				const root = OboModel.models[payload.value.id].getRoot()
+				const { id, context, actor } = payload.value
+				const root = OboModel.models[id].getRoot()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
@@ -83,116 +98,169 @@ class QuestionStore extends Store {
 					eventVersion: '1.1.0',
 					visitId: NavStore.getState().visitId,
 					payload: {
-						questionId: payload.value.id,
-						actor: payload.value.actor
+						questionId: id,
+						actor
 					}
 				})
 
-				QuestionUtil.clearData(payload.value.id, 'showingExplanation')
+				QuestionUtil.clearData(id, context, 'showingExplanation')
 			},
 
 			'question:clearData': payload => {
-				delete this.state.data[payload.value.key]
+				const { context, key } = payload.value
+
+				if (!this.state.contexts[context]) return
+
+				const contextState = this.getOrCreateContextState(context)
+
+				delete contextState.data[key]
 				this.triggerChange()
 			},
 
 			'question:hide': payload => {
+				const { id, context } = payload.value
+
+				if (!this.state.contexts[context]) return
+
+				const contextState = this.getOrCreateContextState(context)
+
 				APIUtil.postEvent({
-					draftId: OboModel.models[payload.value.id].getRoot().get('draftId'),
+					draftId: OboModel.models[id].getRoot().get('draftId'),
 					action: 'question:hide',
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					visitId: NavStore.getState().visitId,
 					payload: {
-						questionId: payload.value.id
+						questionId: id,
+						context
 					}
 				})
 
-				delete this.state.viewedQuestions[payload.value.id]
-
-				if (this.state.viewing === payload.value.id) {
-					this.state.viewing = null
+				delete contextState.viewedQuestions[id]
+				if (contextState.viewing === id) {
+					contextState.viewing = null
 				}
 
 				this.triggerChange()
 			},
 
 			'question:view': payload => {
-				const root = OboModel.models[payload.value.id].getRoot()
+				const { id, context } = payload.value
+				const contextState = this.getOrCreateContextState(context)
+				const root = OboModel.models[id].getRoot()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:view',
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					visitId: NavStore.getState().visitId,
 					payload: {
-						questionId: payload.value.id
+						questionId: id,
+						context
 					}
 				})
 
-				this.state.viewedQuestions[payload.value.id] = true
-				this.state.viewing = payload.value.id
+				contextState.viewedQuestions[id] = true
+				contextState.viewing = id
 
 				this.triggerChange()
 			},
 
 			'question:checkAnswer': payload => {
-				const questionId = payload.value.id
-				const questionModel = OboModel.models[questionId]
+				const { id, context } = payload.value
+				const questionModel = OboModel.models[id]
 				const root = questionModel.getRoot()
+
+				if (!this.state.contexts[context]) return
+
+				const contextState = this.getOrCreateContextState(context)
+				const scoreInfo = contextState.scores[id]
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:checkAnswer',
+					eventVersion: '1.1.0',
+					visitId: NavStore.getState().visitId,
+					payload: {
+						questionId: id,
+						context,
+						response: contextState.responses[id],
+						scoreId: scoreInfo.id,
+						score: scoreInfo.score
+					}
+				})
+			},
+
+			'question:submitResponse': payload => {
+				const { id, context } = payload.value
+				const questionModel = OboModel.models[id]
+				const root = questionModel.getRoot()
+
+				if (!this.state.contexts[context]) return
+
+				const contextState = this.getOrCreateContextState(context)
+
+				APIUtil.postEvent({
+					draftId: root.get('draftId'),
+					action: 'question:submitResponse',
 					eventVersion: '1.0.0',
 					visitId: NavStore.getState().visitId,
 					payload: {
-						questionId: payload.value.id
+						questionId: id,
+						context,
+						response: contextState.responses[id]
 					}
 				})
 			},
 
 			'question:retry': payload => {
-				const questionId = payload.value.id
-				const questionModel = OboModel.models[questionId]
+				const { id, context } = payload.value
+				const questionModel = OboModel.models[id]
 				const root = questionModel.getRoot()
 
-				this.clearResponses(questionId, payload.value.context)
+				if (!this.clearResponses(id, context)) return
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:retry',
-					eventVersion: '1.0.0',
+					eventVersion: '1.1.0',
 					visitId: NavStore.getState().visitId,
 					payload: {
-						questionId: questionId
+						questionId: id,
+						context
 					}
 				})
 
-				if (QuestionUtil.isShowingExplanation(this.state, questionModel)) {
-					QuestionUtil.hideExplanation(questionId, 'viewerClient')
+				if (QuestionUtil.isShowingExplanation(this.state, questionModel, context)) {
+					QuestionUtil.hideExplanation(id, context, 'viewerClient')
 				}
 
-				QuestionUtil.clearScore(questionId, payload.value.context)
+				QuestionUtil.clearScore(id, context)
 			},
 
 			'question:scoreSet': payload => {
 				const scoreId = uuid()
+				const { itemId, context, score } = payload.value
 
-				if (!this.state.scores[payload.value.context]) this.state.scores[payload.value.context] = {}
+				const contextState = this.getOrCreateContextState(context)
 
-				this.state.scores[payload.value.context][payload.value.itemId] = {
+				contextState.scores[itemId] = {
 					id: scoreId,
-					score: payload.value.score,
-					itemId: payload.value.itemId
+					score,
+					itemId
 				}
 
-				if (payload.value.score === 100) {
+				if (score === 100 || score === 'no-score') {
 					FocusUtil.clearFadeEffect()
 				}
 
 				this.triggerChange()
 
-				model = OboModel.models[payload.value.itemId]
+				// Skip sending an event if this is an explicit non-scored result
+				if (score === 'no-score') {
+					return
+				}
+
+				model = OboModel.models[itemId]
 				APIUtil.postEvent({
 					draftId: model.getRoot().get('draftId'),
 					action: 'question:scoreSet',
@@ -200,20 +268,33 @@ class QuestionStore extends Store {
 					visitId: NavStore.getState().visitId,
 					payload: {
 						id: scoreId,
-						itemId: payload.value.itemId,
-						score: payload.value.score,
-						context: payload.value.context
+						itemId: itemId,
+						score: score,
+						context: context
 					}
 				})
 			},
 
 			'question:scoreClear': payload => {
-				const scoreItem = this.state.scores[payload.value.context][payload.value.itemId]
+				const { itemId, context } = payload.value
+				// const questionModel = OboModel.models[id]
+				// const root = questionModel.getRoot()
+
+				if (!this.state.contexts[context]) return
+				////////
+				const contextState = this.getOrCreateContextState(context)
+
+				const scoreItem = contextState.scores[itemId]
 
 				model = OboModel.models[scoreItem.itemId]
 
-				delete this.state.scores[payload.value.context][payload.value.itemId]
+				delete contextState.scores[payload.value.itemId]
 				this.triggerChange()
+
+				// Skip sending an event if this is an explicit non-scored result
+				if (scoreItem.score === 'no-score') {
+					return
+				}
 
 				APIUtil.postEvent({
 					draftId: model.getRoot().get('draftId'),
@@ -226,18 +307,45 @@ class QuestionStore extends Store {
 		})
 	}
 
+	clearResponse(questionId, context) {
+		if (!this.state.contexts[context]) return false
+
+		const contextState = this.getOrCreateContextState(context)
+		delete contextState.responses[questionId]
+
+		return true
+	}
+
 	clearResponses(questionId, context) {
-		delete this.state.responses[context][questionId]
+		if (!this.state.contexts[context]) return false
+
+		const contextState = this.getOrCreateContextState(context)
+		delete contextState.responses[questionId]
+
+		return true
 	}
 
 	init() {
 		this.state = {
-			viewing: null,
-			viewedQuestions: {},
-			scores: {},
-			responses: {},
-			data: {}
+			contexts: {
+				practice: getNewContextState()
+			}
 		}
+	}
+
+	getOrCreateContextState(context) {
+		if (!this.state.contexts[context]) {
+			this.state.contexts[context] = getNewContextState()
+		}
+
+		return this.state.contexts[context]
+	}
+
+	updateStateByContext(stateToUpdate, context) {
+		const contextState = this.getOrCreateContextState(context)
+		Object.keys(stateToUpdate).forEach(k => {
+			contextState[k] = stateToUpdate[k]
+		})
 	}
 
 	getState() {

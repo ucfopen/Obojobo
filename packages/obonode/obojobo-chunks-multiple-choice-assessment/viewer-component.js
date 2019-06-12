@@ -19,7 +19,10 @@ const { FocusUtil, QuestionUtil } = Viewer.util
 const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
 const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
 const DEFAULT_INCORRECT_LABELS = ['Incorrect']
+const DEFAULT_INCORRECT_REVIEW_LABELS = ['Incorrect']
 const DEFAULT_SURVEY_LABELS = ['Response recorded']
+const DEFAULT_SURVEY_REVIEW_LABELS = ['Response recorded']
+const DEFAULT_SURVEY_UNANSWERED_LABELS = ['No response given']
 const PICK_ALL_INCORRECT_MESSAGE =
 	'You have either missed some correct answers or selected some incorrect answers.'
 
@@ -42,16 +45,33 @@ export default class MCAssessment extends React.Component {
 		this.onFormSubmit = this.onFormSubmit.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
+
+		const isReview = this.props.mode === 'review'
+		const isSurvey = this.props.type === 'survey'
+		const isAnswered = this.getResponseData().responses.size >= 1 // An answer choice was selected
+
 		if (correctLabels) {
 			this.correctLabels = correctLabels
-		} else if (this.props.isReview) {
+		} else if (isReview && isSurvey && isAnswered) {
+			this.correctLabels = DEFAULT_SURVEY_REVIEW_LABELS
+		} else if (isReview && isSurvey && !isAnswered) {
+			this.correctLabels = DEFAULT_SURVEY_UNANSWERED_LABELS
+		} else if (isReview && !isSurvey) {
 			this.correctLabels = DEFAULT_CORRECT_REVIEW_LABELS
-		} else if (this.props.mode === 'survey') {
+		} else if (isSurvey) {
 			this.correctLabels = DEFAULT_SURVEY_LABELS
 		} else {
 			this.correctLabels = DEFAULT_CORRECT_PRACTICE_LABELS
 		}
-		this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS
+
+		if (incorrectLabels) {
+			this.incorrectLabels = incorrectLabels
+		} else if (isReview) {
+			this.incorrectLabels = DEFAULT_INCORRECT_REVIEW_LABELS
+		} else {
+			this.incorrectLabels = DEFAULT_INCORRECT_LABELS
+		}
+
 		this.updateFeedbackLabels()
 		this.sortIds()
 	}
@@ -94,6 +114,14 @@ export default class MCAssessment extends React.Component {
 		const { correct } = responseData
 		const { responses } = responseData
 
+		console.log('cs', this.props.model.modelState)
+
+		const questionModel = this.getQuestionModel()
+
+		if (questionModel.modelState.type === 'survey') {
+			return 'no-score'
+		}
+
 		switch (this.props.model.modelState.responseType) {
 			case 'pick-all': {
 				if (correct.size !== responses.size) {
@@ -128,7 +156,11 @@ export default class MCAssessment extends React.Component {
 	}
 
 	hideExplanation() {
-		QuestionUtil.hideExplanation(this.getQuestionModel().get('id'), 'user')
+		QuestionUtil.hideExplanation(
+			this.getQuestionModel().get('id'),
+			this.props.moduleData.navState.context,
+			'user'
+		)
 	}
 
 	onClickReset(event) {
@@ -144,7 +176,10 @@ export default class MCAssessment extends React.Component {
 
 		this.nextFocus = FOCUS_TARGET_EXPLANATION
 
-		QuestionUtil.showExplanation(this.getQuestionModel().get('id'))
+		QuestionUtil.showExplanation(
+			this.getQuestionModel().get('id'),
+			this.props.moduleData.navState.context
+		)
 	}
 
 	onClickHideExplanation(event) {
@@ -154,6 +189,8 @@ export default class MCAssessment extends React.Component {
 	}
 
 	onFormChange(event) {
+		console.log('onFormChange', event)
+
 		let response
 		const questionModel = this.getQuestionModel()
 		const mcChoiceEl = DOMUtil.findParentWithAttr(
@@ -214,15 +251,26 @@ export default class MCAssessment extends React.Component {
 	}
 
 	onFormSubmit(event) {
+		console.log('onFormSubmit', event)
 		event.preventDefault()
 
+		const questionModel = this.getQuestionModel()
+
+		// const questionModel = this.getQuestionModel()
+
 		QuestionUtil.setScore(
-			this.getQuestionModel().get('id'),
+			questionModel.get('id'),
 			this.calculateScore(),
 			this.props.moduleData.navState.context
 		)
+
 		this.updateFeedbackLabels()
-		QuestionUtil.checkAnswer(this.getQuestionModel().get('id'))
+
+		if (questionModel.modelState.type === 'survey') {
+			QuestionUtil.submitResponse(questionModel.get('id'), this.props.moduleData.navState.context)
+		} else {
+			QuestionUtil.checkAnswer(questionModel.get('id'), this.props.moduleData.navState.context)
+		}
 	}
 
 	getScore() {
@@ -289,12 +337,22 @@ export default class MCAssessment extends React.Component {
 		if (!this.getSortedIds()) {
 			let ids = this.props.model.children.models.map(model => model.get('id'))
 			if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
-			QuestionUtil.setData(this.props.model.get('id'), 'sortedIds', ids)
+			QuestionUtil.setData(
+				this.props.model.get('id'),
+				this.props.moduleData.navState.context,
+				'sortedIds',
+				ids
+			)
 		}
 	}
 
 	getSortedIds() {
-		return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds')
+		return QuestionUtil.getData(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context,
+			'sortedIds'
+		)
 	}
 
 	getSortedChoiceModels() {
@@ -309,7 +367,7 @@ export default class MCAssessment extends React.Component {
 	isShowingExplanationButton() {
 		const isAnswerScored = this.getScore() !== null
 		const hasSolution = this.props.model.parent.modelState.solution !== null
-		const isSurvey = this.props.mode === 'survey'
+		const isSurvey = this.props.type === 'survey'
 
 		return isAnswerScored && hasSolution && !isSurvey
 	}
@@ -317,12 +375,13 @@ export default class MCAssessment extends React.Component {
 	isShowingExplanation() {
 		return QuestionUtil.isShowingExplanation(
 			this.props.moduleData.questionState,
-			this.getQuestionModel()
+			this.getQuestionModel(),
+			this.props.moduleData.navState.context
 		)
 	}
 
-	getInstructions(responseType, questionMode) {
-		if (questionMode === 'survey') {
+	getInstructions(responseType, questionType) {
+		if (questionType === 'survey') {
 			switch (responseType) {
 				case 'pick-one':
 				case 'pick-one-multiple-correct':
@@ -365,16 +424,16 @@ export default class MCAssessment extends React.Component {
 		const isShowingExplanationButtonValue = this.isShowingExplanationButton()
 		const score = this.getScore()
 		const sortedChoiceModels = this.getSortedChoiceModels()
-		const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
-		const isPractice = this.props.mode === 'practice'
-		const isReview = this.props.isReview
-		const isSurvey = this.props.model.parent.modelState.mode === 'survey'
-		const isInAssessment = this.props.isInAssessment
+		const isAnswered = this.getResponseData().responses.size >= 1 // An answer choice was selected
+		const isReview = this.props.mode === 'review'
+		const isAssessmentQuestion = this.props.mode === 'assessment'
 
 		const className =
 			'obojobo-draft--chunks--mc-assessment' +
 			` is-response-type-${this.props.model.modelState.responseType}` +
 			` is-mode-${this.props.mode}` +
+			` is-type-${this.props.type}` +
+			isOrNot(isAnswered, 'answered') +
 			isOrNot(score === 100, 'correct') +
 			isOrNot(isShowingExplanationValue, 'showing-explanation') +
 			isOrNot(score !== null, 'scored')
@@ -384,6 +443,7 @@ export default class MCAssessment extends React.Component {
 				model={this.props.model}
 				moduleData={this.props.moduleData}
 				onChange={!isReview ? this.onFormChange : null}
+				// onChange={this.onFormChange}
 				onSubmit={this.onFormSubmit}
 				tag="form"
 				className={className}
@@ -393,7 +453,7 @@ export default class MCAssessment extends React.Component {
 						<span className="for-screen-reader-only">{`Multiple choice form with ${
 							sortedChoiceModels.length
 						} choices. `}</span>
-						{this.getInstructions(responseType, this.props.mode)}
+						{this.getInstructions(responseType, this.props.type)}
 					</legend>
 					<MCAssessmentAnswerChoices
 						ref={this.answerChoicesRef}
@@ -401,22 +461,18 @@ export default class MCAssessment extends React.Component {
 						responseType={responseType}
 						score={score}
 						mode={this.props.mode}
-						isReview={isReview}
+						type={this.props.type}
 						moduleData={this.props.moduleData}
 						correctLabel={this.correctLabelToShow}
 						incorrectLabel={this.incorrectLabelToShow}
 						pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
 					/>
-					<h1>{isPractice ? 'isPractice' : 'notPractice'}</h1>
-					<h1>{isReview ? 'isReview' : 'notReview'}</h1>
-					<h1>{isSurvey ? 'isSurvey' : 'notSurvey'}</h1>
-					<h1>{isInAssessment ? 'isInAssessment' : 'notInAssessment'}</h1>
-					{isPractice || (isReview && !isSurvey && !isInAssessment) || (isSurvey && !isReview) ? (
+					{!isAssessmentQuestion ? (
 						<MCAssessmentSubmitAndResultsFooter
 							score={score}
-							isAnAnswerChosen={isAnAnswerChosen}
+							isAnswered={isAnswered}
 							mode={this.props.mode}
-							isReview={isReview}
+							type={this.props.type}
 							isTypePickAll={isTypePickAll}
 							correctLabel={this.correctLabelToShow}
 							incorrectLabel={this.incorrectLabelToShow}

@@ -9,7 +9,7 @@ const basicReview = (moduleData, questionScore, index) => {
 	const QuestionComponent = questionModel.getComponentClass()
 
 	let resultLabel
-	if (questionModel.modelState.mode === 'survey') {
+	if (questionModel.modelState.type === 'survey') {
 		resultLabel = 'Survey Question'
 	} else if (questionScore.score === 100) {
 		resultLabel = 'Correct'

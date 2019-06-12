@@ -79,8 +79,9 @@ Array [
   Object {
     "action": "question:showExplanation",
     "draftId": undefined,
-    "eventVersion": "1.0.0",
+    "eventVersion": "1.1.0",
     "payload": Object {
+      "context": "mockContext",
       "questionId": "questionId",
     },
     "visitId": undefined,
@@ -102,6 +103,7 @@ Object {
   "question:setData": [Function],
   "question:setResponse": [Function],
   "question:showExplanation": [Function],
+  "question:submitResponse": [Function],
   "question:view": [Function],
 }
 `;

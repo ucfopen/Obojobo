@@ -7,7 +7,7 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { OboComponent } = Viewer.components
-const { FocusUtil, QuestionUtil } = Viewer.util
+const { FocusUtil, QuestionUtil, NavUtil } = Viewer.util
 const { Button } = Common.components
 const { focus } = Common.page
 
@@ -27,6 +27,9 @@ export default class Question extends React.Component {
 
 	static focusOnContent(model) {
 		const el = model.getDomEl()
+
+		if (!el) return false
+
 		const isHidden = el.classList.contains('is-hidden')
 		let focusableEl = null
 
@@ -46,10 +49,11 @@ export default class Question extends React.Component {
 	}
 
 	onClickBlocker() {
-		QuestionUtil.viewQuestion(this.props.model.get('id'))
-		const mode = this.props.model.modelState.mode
+		const context = NavUtil.getContext(this.props.moduleData.navState)
 
-		FocusUtil.focusComponent(this.props.model.get('id'), { fade: mode === 'practice' })
+		QuestionUtil.viewQuestion(this.props.model.get('id'), context)
+
+		FocusUtil.focusComponent(this.props.model.get('id'), { fade: context === 'practice' })
 
 		this.applyFlipCSS()
 	}
@@ -62,9 +66,25 @@ export default class Question extends React.Component {
 		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
 	}
 
-	isInAssessment() {
-		console.log('---------->', this.props.model.getParentOfType('ObojoboDraft.Sections.Assessment'))
-		return this.props.model.getParentOfType('ObojoboDraft.Sections.Assessment') !== null
+	// isInAssessment() {
+	// 	return this.props.model.getParentOfType('ObojoboDraft.Sections.Assessment') !== null
+	// }
+
+	getMode() {
+		const baseContext = this.props.moduleData.navState.context.split(':')[0]
+
+		switch (baseContext) {
+			case 'practice':
+				return 'practice'
+
+			case 'assessment':
+				return 'assessment'
+
+			case 'assessmentReview':
+				return 'review'
+		}
+
+		return null
 	}
 
 	render() {
@@ -72,25 +92,37 @@ export default class Question extends React.Component {
 			return this.renderContentOnly()
 		}
 
+		const mode = this.getMode()
+		const type = this.props.model.modelState.type
+
 		const score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-		const viewState = this.props.isReview
-			? 'active'
-			: QuestionUtil.getViewState(this.props.moduleData.questionState, this.props.model)
+		const viewState =
+			mode === 'review'
+				? 'active'
+				: QuestionUtil.getViewState(
+						this.props.moduleData.questionState,
+						this.props.model,
+						this.props.moduleData.navState.context
+				  )
 
 		const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
 
 		const AssessmentComponent = assessment.getComponentClass()
 
-		const mode = this.props.model.modelState.mode
+		// const mode = this.props.model.modelState.mode
 
 		let scoreClassName
 		switch (score) {
 			case null:
 				scoreClassName = ''
+				break
+
+			case 'no-score':
+				scoreClassName = ' is-no-score'
 				break
 
 			case 100:
@@ -114,8 +146,9 @@ export default class Question extends React.Component {
 			'obojobo-draft--chunks--question' +
 			scoreClassName +
 			` is-${viewState}` +
+			` is-type-${type}` +
 			` is-mode-${mode}` +
-			isOrNot(this.props.isReview, 'review') +
+			// isOrNot(this.props.isReview, 'review') +
 			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
@@ -126,7 +159,6 @@ export default class Question extends React.Component {
 				role="region"
 				aria-label="Question"
 			>
-				{/* <h1>{this.props.model.modelState.mode}</h1> */}
 				<div className="flipper">
 					<div className="content-back">
 						<QuestionContent model={this.props.model} moduleData={this.props.moduleData} />
@@ -135,13 +167,13 @@ export default class Question extends React.Component {
 							model={assessment}
 							moduleData={this.props.moduleData}
 							mode={mode}
+							type={type}
 							isReview={this.props.isReview}
-							isInAssessment={this.isInAssessment()}
 						/>
 					</div>
 					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
 						<Button
-							value={mode === 'practice' ? 'Try Question' : 'Start Question'}
+							value={type === 'practice' ? 'Try Question' : 'Start Question'}
 							ariaLabel={startQuestionAriaLabel}
 							disabled={viewState !== 'hidden'}
 						/>
@@ -158,13 +190,16 @@ export default class Question extends React.Component {
 			this.props.moduleData.navState.context
 		)
 
-		const mode = this.props.model.modelState.mode
+		const isPractice = NavUtil.getContext(this.props.moduleData.navState) === 'practice'
+		const mode = isPractice ? 'practice' : 'assessment'
+		const type = this.props.model.modelState.type
 
 		const className =
 			'obojobo-draft--chunks--question' +
 			isOrNot(score === 100, 'correct') +
 			' is-active' +
-			` is-mode-${mode}`
+			` is-mode-${mode}` +
+			` is-type-${type}`
 
 		return (
 			<OboComponent

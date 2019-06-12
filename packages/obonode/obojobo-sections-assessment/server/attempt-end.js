@@ -200,8 +200,12 @@ const getCalculatedScores = (
 	const scoreInfo = {
 		scores: [0],
 		questions: attemptState.questions,
+		gradedQuestionIds: [],
 		scoresByQuestionId: {}
 	}
+
+	logger.info('assessmentModel')
+	logger.info(assessmentModel.children[1].children)
 
 	const promises = assessmentModel.yell(
 		'ObojoboDraft.Sections.Assessment:attemptEnd',
@@ -211,6 +215,9 @@ const getCalculatedScores = (
 		responseHistory,
 		{
 			getQuestions: () => scoreInfo.questions,
+			addGradedQuestion: questionId => {
+				scoreInfo.gradedQuestionIds.push(questionId)
+			},
 			addScore: (questionId, score) => {
 				scoreInfo.scores.push(score)
 				scoreInfo.scoresByQuestionId[questionId] = score
@@ -270,17 +277,22 @@ const calculateWeightedScores = (assessmentModel, attemptHistory, scoreInfo) => 
 }
 
 const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
-	const gradedQuestions = scoreInfo.questions.filter(q => q.content.mode !== 'survey')
+	// const gradedQuestions = scoreInfo.questions.filter(q => q.content.type !== 'survey')
+	logger.info(assessmentModel)
+
+	const gradedQuestions = scoreInfo.gradedQuestionIds.map(id =>
+		getNodeQuestion(id, assessmentModel.draftTree)
+	)
 
 	const questionScores = scoreInfo.questions.map(question => ({
 		id: question.id,
-		score: question.content.mode === 'survey' ? 0 : scoreInfo.scoresByQuestionId[question.id] || 0
+		score: scoreInfo.scoresByQuestionId[question.id] || 0
 	}))
 
 	const attemptScore = questionScores.reduce((acc, s) => acc + s.score, 0) / gradedQuestions.length
 
 	logger.info('1--')
-	logger.info(scoreInfo.questions)
+	logger.info(scoreInfo)
 	logger.info('2--')
 	logger.info(gradedQuestions)
 	logger.info('3--')

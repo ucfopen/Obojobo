@@ -8,29 +8,29 @@ const MCAssessmentSubmitAndResultsFooter = props => {
 	const isTypePickAll = props.isTypePickAll
 	const score = props.score
 	const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
-	const isAnAnswerChosen = props.isAnAnswerChosen
+	const isAnswered = props.isAnswered
 
 	let buttonSubmitLabel = ''
 	let buttonResetLabel = ''
 	let buttonResetAriaLabel = ''
 
-	switch (props.mode) {
-		case 'practice':
-			buttonSubmitLabel = 'Check Your Answer'
-			buttonResetLabel = 'Try Again'
-			buttonResetAriaLabel = 'Try Question Again'
-			break
-
+	switch (props.type) {
 		case 'survey':
 			buttonSubmitLabel = 'Submit Response'
 			buttonResetLabel = 'Change Response'
 			buttonResetAriaLabel = 'Change Response'
 			break
+
+		default:
+			buttonSubmitLabel = 'Check Your Answer'
+			buttonResetLabel = 'Try Again'
+			buttonResetAriaLabel = 'Try Question Again'
+			break
 	}
 
 	return (
 		<div className="submit-and-result-container">
-			{props.mode === 'practice' || props.mode === 'survey' ? (
+			{props.mode === 'practice' ? (
 				<div className="submit">
 					{isAnswerScored ? (
 						<Button
@@ -40,13 +40,14 @@ const MCAssessmentSubmitAndResultsFooter = props => {
 							ariaLabel={buttonResetAriaLabel}
 						/>
 					) : (
-						<Button value={buttonSubmitLabel} disabled={!isAnAnswerChosen} />
+						<Button value={buttonSubmitLabel} disabled={!isAnswered} />
 					)}
 				</div>
 			) : null}
 			{isAnswerScored ? (
 				<MCAssessmentResults
 					mode={props.mode}
+					type={props.type}
 					score={score}
 					isTypePickAll={isTypePickAll}
 					correctLabel={props.correctLabel}

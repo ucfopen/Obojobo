@@ -25,55 +25,69 @@ const QuestionUtil = {
 		})
 	},
 
-	setData(id, key, value) {
+	setData(id, context, key, value) {
 		return Dispatcher.trigger('question:setData', {
 			value: {
+				context,
 				key: id + ':' + key,
 				value
 			}
 		})
 	},
 
-	clearData(id, key) {
+	clearData(id, context, key) {
 		return Dispatcher.trigger('question:clearData', {
 			value: {
+				context,
 				key: id + ':' + key
 			}
 		})
 	},
 
-	showExplanation(id) {
+	showExplanation(id, context) {
 		return Dispatcher.trigger('question:showExplanation', {
-			value: { id }
+			value: { id, context }
 		})
 	},
 
-	hideExplanation(id, actor) {
+	hideExplanation(id, context, actor) {
 		return Dispatcher.trigger('question:hideExplanation', {
-			value: { id, actor }
+			value: { id, context, actor }
 		})
 	},
 
-	viewQuestion(id) {
+	viewQuestion(id, context) {
 		return Dispatcher.trigger('question:view', {
 			value: {
-				id
+				id,
+				context
 			}
 		})
 	},
 
-	hideQuestion(id) {
+	hideQuestion(id, context) {
 		return Dispatcher.trigger('question:hide', {
 			value: {
-				id
+				id,
+				context
 			}
 		})
 	},
 
-	checkAnswer(id) {
+	submitResponse(id, context) {
+		return Dispatcher.trigger('question:submitResponse', {
+			value: {
+				id,
+				context
+			}
+		})
+	},
+
+	checkAnswer(id, context) {
 		return Dispatcher.trigger('question:checkAnswer', {
 			value: {
-				id
+				id,
+				context
 			}
 		})
 	},
@@ -85,45 +99,6 @@ const QuestionUtil = {
 				context
 			}
 		})
-	},
-
-	getViewState(state, model) {
-		const modelId = model.get('id')
-
-		if (state.viewing === modelId) {
-			return 'active'
-		}
-		if (state.viewedQuestions[modelId]) {
-			return 'viewed'
-		}
-		return 'hidden'
-	},
-
-	getResponse(state, model, context) {
-		if (!state.responses[context]) return null
-		return state.responses[context][model.get('id')] || null
-	},
-
-	getData(state, model, key) {
-		return state.data[model.get('id') + ':' + key] || false
-	},
-
-	isShowingExplanation(state, model) {
-		return state.data[model.get('id') + ':showingExplanation'] || false
-	},
-
-	getScoreForModel(state, model, context) {
-		let scoreItem
-		if (state.scores[context] !== null && typeof state.scores[context] !== 'undefined') {
-			scoreItem = state.scores[context][model.get('id')]
-		}
-
-		return scoreItem === null ||
-			typeof scoreItem === 'undefined' ||
-			scoreItem.score === null ||
-			typeof scoreItem.score === 'undefined'
-			? null
-			: scoreItem.score
 	},
 
 	setScore(itemId, score, context) {
@@ -143,6 +118,55 @@ const QuestionUtil = {
 				context
 			}
 		})
+	},
+
+	getStateForContext(state, context) {
+		return state.contexts[context] || null
+	},
+
+	getViewState(state, model, context) {
+		const contextState = QuestionUtil.getStateForContext(state, context)
+		if (!contextState) return null
+
+		const id = model.get('id')
+
+		if (contextState.viewing === id) {
+			return 'active'
+		}
+		if (contextState.viewedQuestions[id]) {
+			return 'viewed'
+		}
+		return 'hidden'
+	},
+
+	getResponse(state, model, context) {
+		const contextState = QuestionUtil.getStateForContext(state, context)
+		if (!contextState) return null
+
+		return contextState.responses[model.get('id')] || null
+	},
+
+	getData(state, model, context, key) {
+		const contextState = QuestionUtil.getStateForContext(state, context)
+		if (!contextState) return null
+
+		return contextState.data[model.get('id') + ':' + key] || false
+	},
+
+	isShowingExplanation(state, model, context) {
+		const contextState = QuestionUtil.getStateForContext(state, context)
+		if (!contextState) return false
+
+		return contextState.data[model.get('id') + ':showingExplanation'] || false
+	},
+
+	getScoreForModel(state, model, context) {
+		const contextState = QuestionUtil.getStateForContext(state, context)
+		if (!contextState) return null
+
+		const scoreItem = contextState.scores[model.get('id')] || null
+
+		return scoreItem === null ? null : scoreItem.score
 	}
 }
 

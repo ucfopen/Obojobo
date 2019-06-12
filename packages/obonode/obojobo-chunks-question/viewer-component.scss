@@ -4,13 +4,22 @@
 	perspective: 1000px;
 	margin: 0 auto;
 
+	.obojobo-draft--chunks--question--survey-question-icon {
+		width: 1.2em;
+		position: absolute;
+		left: 1em;
+		top: 0.45em;
+		opacity: 0.2;
+		pointer-events: none;
+	}
+
 	> .flipper {
 		$color-sep: rgba(0, 0, 0, 0.1);
 
 		position: relative;
 		border-radius: $dimension-rounded-radius;
 		padding: 0;
-		padding-top: 1em;
+		// padding-top: 1em;
 		margin-bottom: 1em;
 		border: 1px solid transparentize($color-shadow, 0.2);
 		max-width: $dimension-column-width;
@@ -103,6 +112,10 @@
 				text-align: center;
 				margin-bottom: 1em;
 			}
+
+			> .obojobo-draft--chunks--question--content {
+				padding-top: 1em;
+			}
 		}
 	}
 
@@ -170,7 +183,11 @@
 		}
 	}
 
-	&.is-mode-survey {
+	&.is-type-survey {
+		> .flipper > .content-back {
+			background: transparentize($color: $color-bg2, $amount: 0.7);
+		}
+
 		> .flipper > .content-back::before {
 			color: $color-text-minor;
 			content: 'Survey Question';
@@ -191,10 +208,10 @@
 		}
 	}
 
-	&.is-flipping.is-mode-practice,
-	&.is-flipping.is-mode-survey {
-		> .flipper > .content-back::before {
-			top: -0.5em;
-		}
-	}
+	// &.is-flipping.is-mode-practice,
+	// &.is-flipping.is-mode-survey {
+	// 	> .flipper > .content-back::before {
+	// 		top: -0.5em;
+	// 	}
+	// }
 }

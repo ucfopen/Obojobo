@@ -4,17 +4,17 @@ const { OboModel } = Common.models
 
 const Adapter = {
 	construct(model) {
-		model.setStateProp('mode', 'practice', p => p.toLowerCase(), [
-			'practice',
-			'assessment',
-			'survey'
-		])
+		// model.setStateProp('mode', 'practice', p => p.toLowerCase(), [
+		// 	'practice',
+		// 	'assessment',
+		// 	'survey'
+		// ])
+		model.setStateProp('type', 'default', p => p.toLowerCase(), ['default', 'survey'])
 		model.setStateProp('solution', null, p => OboModel.create(p))
 	},
 
 	clone(model, clone) {
 		clone.modelState.type = model.modelState.type
-		clone.modelState.mode = model.modelState.mode
 		clone.modelState.solution = null
 
 		if (model.modelState.solution) {
@@ -24,7 +24,6 @@ const Adapter = {
 
 	toJSON(model, json) {
 		json.content.type = model.modelState.type
-		json.content.mode = model.modelState.mode
 		json.content.solution = null
 
 		if (model.modelState.solution) {

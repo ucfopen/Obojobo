@@ -44,9 +44,6 @@ const getQuestionModel = model => model.getParentOfType(QUESTION_TYPE)
 const answerIsCorrect = (model, isReview, questionState, navStateContext) => {
 	let score
 	if (isReview) {
-		// no score data for this context? no idea what to do, throw an error
-		if (!questionState.scores[navStateContext]) throw 'Unknown Question State'
-
 		score = QuestionUtil.getScoreForModel(questionState, getQuestionModel(model), navStateContext)
 	} else {
 		score = model.modelState.score
@@ -95,17 +92,8 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	// Renamed for clarity w/ isACorrectChoice
 	const userIsCorrect = isCorrect
 
-	const isASurveyQuestion = getQuestionModel(model).modelState.mode === 'survey'
+	const isASurveyQuestion = getQuestionModel(model).modelState.type === 'survey'
 	const isACorrectChoice = model.get('content').score === 100
-
-	console.log(
-		'getAnsType',
-		model,
-		model.get('content'),
-		userIsCorrect,
-		isASurveyQuestion,
-		isACorrectChoice
-	)
 
 	if (isASurveyQuestion) {
 		if (isSelected) {
@@ -139,11 +127,12 @@ const MCChoice = props => {
 	try {
 		isCorrect = answerIsCorrect(
 			props.model,
-			props.isReview,
+			props.mode === 'review',
 			props.moduleData.questionState,
 			props.moduleData.navState.context
 		)
 	} catch (error) {
+		console.error('e', error)
 		// if there's no questionState data for this
 		// or getting the score throws an error
 		// just display a div
@@ -160,7 +149,7 @@ const MCChoice = props => {
 	const inputType = getInputType(props.responseType)
 
 	let flag
-	if (props.isReview) {
+	if (props.mode === 'review') {
 		flag = renderAnswerFlag(ansType)
 	}
 
@@ -170,7 +159,7 @@ const MCChoice = props => {
 		isOrNot(isCorrect, 'correct') +
 		` is-type-${ansType}` +
 		` is-mode-${props.mode}`
-
+	2
 	return (
 		<OboComponent
 			model={props.model}
@@ -186,9 +175,9 @@ const MCChoice = props => {
 				name={props.model.parent.get('id')}
 				role={inputType}
 				aria-checked={isSelected}
-				disabled={props.isReview}
+				disabled={props.mode === 'review'}
 			/>
-			{isSelected && props.questionSubmitted && props.isReview ? (
+			{isSelected && props.questionSubmitted && props.type === 'review' ? (
 				<span className="for-screen-reader-only">
 					{getChoiceText(isCorrect, props.responseType === 'pick-all')}
 				</span>

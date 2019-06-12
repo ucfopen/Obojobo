@@ -1,3 +1,4 @@
+const logger = oboRequire('logger')
 const DraftNode = require('obojobo-express/models/draft_node')
 
 class Question extends DraftNode {
@@ -8,7 +9,6 @@ class Question extends DraftNode {
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
-			'ObojoboDraft.Sections.Assessment:sendToAssessment': this.onSendToAssessment,
 			'ObojoboDraft.Sections.Assessment:attemptEnd': this.onAttemptEnd
 		})
 	}
@@ -17,22 +17,24 @@ class Question extends DraftNode {
 		return this.toObject()
 	}
 
-	onSendToAssessment() {
-		if (!this.node.content.mode || this.node.content.mode === 'practice') {
-			this.node.content.mode = 'assessment'
-		}
-	}
-
 	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {
+		logger.info('OAE', this.node)
+
 		if (!assessment.contains(this.node)) return
+
+		if (this.node.content.type && this.node.content.type.toLowerCase() === 'survey') {
+			return
+		}
 
 		const questionResponses = responseHistory.filter(responseRecord => {
 			return responseRecord.question_id === this.node.id
 		})
 
-		if (questionResponses.length === 0) return
-
 		if (questionResponses.length > 1) throw 'Impossible response to MCAssessment question'
+
+		currentAttempt.addGradedQuestion(this.node.id)
+
+		if (questionResponses.length === 0) return
 
 		return this.yell(
 			'ObojoboDraft.Chunks.Question:calculateScore',
