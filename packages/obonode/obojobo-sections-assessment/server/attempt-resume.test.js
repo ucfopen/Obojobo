@@ -1,11 +1,9 @@
 /* eslint no-extend-native: 0 */
-global.oboRequire = name => {
-	return require(`obojobo-express/${name}`)
-}
 
 jest.setMock('obojobo-express/insert_event', require('obojobo-express/__mocks__/insert_event'))
 jest.mock('obojobo-express/db')
 jest.mock('obojobo-express/routes/api/events/create_caliper_event')
+jest.mock('./assessment')
 
 jest.mock(
 	'obojobo-express/models/visit',
@@ -15,8 +13,8 @@ jest.mock(
 	{ virtual: true }
 )
 
-const resumeAttempt = require('./attempt-resume.js').resumeAttempt
-const attemptStart = require('./attempt-start.js')
+const resumeAttempt = require('./attempt-resume')
+const attemptStart = require('./attempt-start')
 const insertEvent = require('obojobo-express/insert_event')
 const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
 const Visit = require('obojobo-express/models/visit')

@@ -7,8 +7,8 @@ const VisitModel = require('obojobo-express/models/visit')
 const lti = require('obojobo-express/lti')
 const logger = require('obojobo-express/logger')
 const { startAttempt } = require('./attempt-start')
-const { resumeAttempt } = require('./attempt-resume')
-const { endAttempt } = require('./attempt-end')
+const resumeAttempt = require('./attempt-resume')
+const endAttempt = require('./attempt-end/attempt-end')
 const { reviewAttempt } = require('./attempt-review')
 const { logAndRespondToUnexpected } = require('./util')
 
@@ -73,7 +73,13 @@ app.post('/api/lti/sendAssessmentScore', (req, res) => {
 
 app.post('/api/assessments/attempt/start', (req, res) => startAttempt(req, res))
 
-app.post('/api/assessments/attempt/:attemptId/resume', (req, res) => resumeAttempt(req, res))
+app.post('/api/assessments/attempt/:attemptId/resume', async (req, res) => {
+	try {
+		await resumeAttempt(req, res)
+	} catch (error) {
+		logAndRespondToUnexpected('Unexpected error resuming your attempt', res, req, error)
+	}
+})
 
 app.post('/api/assessments/attempt/:attemptId/end', (req, res) => {
 	let currentUser = null
@@ -92,11 +98,16 @@ app.post('/api/assessments/attempt/:attemptId/end', (req, res) => {
 		})
 		.then(draftDocument => {
 			currentDocument = draftDocument
-			return endAttempt(req, res, currentUser, currentDocument, req.params.attemptId, isPreview)
+			return endAttempt({
+				req,
+				res,
+				user: currentUser,
+				draftDocument: currentDocument,
+				attemptId: req.params.attemptId,
+				isPreview
+			})
 		})
-		.then(resp => {
-			res.success(resp)
-		})
+		.then(res.success)
 		.catch(error => {
 			logAndRespondToUnexpected('Unexpected error completing your attempt', res, req, error)
 		})

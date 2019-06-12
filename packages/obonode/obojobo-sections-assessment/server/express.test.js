@@ -13,10 +13,8 @@ jest.mock('obojobo-express/obo_events')
 jest.mock('obojobo-express/lti')
 jest.mock('./util')
 jest.mock('./attempt-start', () => ({ startAttempt: jest.fn() }))
-jest.mock('./attempt-resume', () => ({ resumeAttempt: jest.fn() }))
-jest.mock('./attempt-end', () => ({
-	endAttempt: jest.fn()
-}))
+jest.mock('./attempt-resume')
+jest.mock('./attempt-end/attempt-end')
 jest.mock('./assessment', () => ({
 	getAttempt: jest.fn(),
 	getAttempts: jest.fn()
@@ -41,8 +39,8 @@ describe('server/express', () => {
 	const logger = require('obojobo-express/logger')
 	const oboEvents = require('obojobo-express/obo_events')
 	const startAttempt = require('./attempt-start').startAttempt
-	const resumeAttempt = require('./attempt-resume').resumeAttempt
-	const endAttempt = require('./attempt-end').endAttempt
+	const resumeAttempt = require('./attempt-resume')
+	const endAttempt = require('./attempt-end/attempt-end')
 	const Visit = require('obojobo-express/models/visit')
 	const { logAndRespondToUnexpected } = require('./util')
 	// build the req info
@@ -219,7 +217,14 @@ describe('server/express', () => {
 		// execute
 		return endAttemptRoute[1](req, res, {}).then(() => {
 			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res, mockUser, mockDocument, 5, false)
+			expect(endAttempt).toHaveBeenCalledWith({
+				req,
+				res,
+				user: mockUser,
+				draftDocument: mockDocument,
+				attemptId: 5,
+				isPreview: false
+			})
 			expect(res.success).toHaveBeenCalledTimes(1)
 			expect(res.success).toHaveBeenCalledWith('endAttemptResult')
 		})

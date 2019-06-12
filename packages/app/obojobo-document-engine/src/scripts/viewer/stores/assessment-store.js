@@ -139,11 +139,6 @@ class AssessmentStore extends Store {
 	onResumeAttemptConfirm(unfinishedAttempt) {
 		ModalUtil.hide()
 
-		const resumeAttemptBody = {
-			attempt: unfinishedAttempt,
-			visitId: NavStore.getState().visitId
-		}
-
 		return APIUtil.resumeAttempt({
 			attemptId: unfinishedAttempt.attemptId,
 			visitId: NavStore.getState().visitId
