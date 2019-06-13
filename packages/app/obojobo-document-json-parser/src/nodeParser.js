@@ -50,10 +50,10 @@ const childrenParser = (children, tabs) => {
 
     children.forEach(child => {
         const parser = parsers[child.type];
-        if(parser != undefined){
-            const id = (child.id) 
-                ? ` id="${child.id}"`
-                : ''
+        if (parser != undefined) {
+            const id = (child.id) ?
+                ` id="${child.id}"` :
+                ''
             result += parser(child, id, tabs, childrenParser)
         }
     })
@@ -62,15 +62,15 @@ const childrenParser = (children, tabs) => {
 }
 
 const nodeParser = node => {
-    if(!node) throw Error('Invalid Node')
+    if (!node) throw Error('Invalid Node')
 
     const parser = parsers[node.type];
     let result = ''
 
-    if(parser != undefined){
-        const id = (node.id) 
-            ? ` id="${node.id}"`
-            : ''
+    if (parser != undefined) {
+        const id = (node.id) ?
+            ` id="${node.id}"` :
+            ''
         result += parser(node, id, '\t', childrenParser)
     }
 

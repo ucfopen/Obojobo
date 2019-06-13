@@ -17,7 +17,7 @@ const listStylesParser = (listStyles, tabs) => {
     let intents = '';
     listStyles.indents.forEach(indent => {
         let attrs = ''
-        for(const attr in indent){
+        for (const attr in indent) {
             attrs += ` ${[attr]}="${indent[attr]}"`
         }
         intents += `${tabs+'\t\t'}<indent${attrs} />\n`
@@ -34,7 +34,7 @@ const listStylesParser = (listStyles, tabs) => {
             intents +
         `${tabs}</listStyles>\n`
     )
-    
+
 }
 
 module.exports = listNodeParser

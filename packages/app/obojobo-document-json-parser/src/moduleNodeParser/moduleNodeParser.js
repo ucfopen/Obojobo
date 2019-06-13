@@ -1,10 +1,10 @@
 const moduleNodeParser = (node, id, tabs, childrenParser) => {
     let contentXML = '';
-    for(const c in node.content){
+    for (const c in node.content) {
         contentXML += (
-            node.content[c] != null
-                ? ` ${[c]}="${node.content[c]}"`
-                : ''
+            node.content[c] != null ?
+            ` ${[c]}="${node.content[c]}"` :
+            ''
         )
     }
 

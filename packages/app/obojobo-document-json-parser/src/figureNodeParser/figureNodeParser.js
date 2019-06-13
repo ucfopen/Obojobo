@@ -6,8 +6,8 @@ const figureNodeParser = (node, id, tabs) => {
 
     // Parser content
     let contentXML = ''
-    for(const c in node.content){
-        if(node.content[c] == null || [c] == 'textGroup') continue
+    for (const c in node.content) {
+        if (node.content[c] == null || [c] == 'textGroup') continue
         contentXML += ` ${[c]}="${node.content[c]}"`
     }
 

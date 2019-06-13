@@ -1,6 +1,6 @@
 const questionBankNodeParser = (node, id, tabs, childrenParser) => {
     let contentXML = ''
-    for(const c in node.content){
+    for (const c in node.content) {
         contentXML += ` ${[c]}="${node.content[c]}"`
     }
 

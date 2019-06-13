@@ -1,4 +1,3 @@
-
 const contentNodeParser = (node, id, tabs, childrenParser) => {
     return (
         `${tabs}<Content${id}>\n` +

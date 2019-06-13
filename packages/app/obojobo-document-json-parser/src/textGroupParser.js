@@ -3,7 +3,7 @@ const textGroupParser = (textGroup, tabs) => {
     let textGroupBodyXML = ''
     textGroup.forEach(group => {
         let dataXML = ''
-        for(const d in group.data){
+        for (const d in group.data) {
             dataXML += ` ${d}="${group.data[d]}"`
         }
 
@@ -15,7 +15,7 @@ const textGroupParser = (textGroup, tabs) => {
 
     return (
         `${tabs}<textGroup>\n` +
-            textGroupBodyXML +
+        textGroupBodyXML +
         `${tabs}</textGroup>\n`
     )
 }
@@ -34,7 +34,7 @@ const mapStyleTypeToTag = {
 const textParser = (text, styleList) => {
     const len = text.length
     let arr = []
-    for(let i = 0; i <= len; i++){
+    for (let i = 0; i <= len; i++) {
         arr.push(0)
     }
 
@@ -44,52 +44,52 @@ const textParser = (text, styleList) => {
         const element = mapStyleTypeToTag[style.type]
 
         // Invalid
-        if(start < 0 || start > len || end < 0 || end > len) return
+        if (start < 0 || start > len || end < 0 || end > len) return
 
 
         // Get beginning tag
         let tag = `<${element}>`
-        if(element === 'a'){
+        if (element === 'a') {
             let attrs = ''
-            for(const attr in style.data){
+            for (const attr in style.data) {
                 attrs += ` ${[attr]}="${style.data[attr]}"`
             }
             tag = `<${element}${attrs}>`
-        } else if(element === 'sup'){
+        } else if (element === 'sup') {
             tag = ''
-            if(style.data >= 0){
-                for(let j = 0; j < style.data; j++){
+            if (style.data >= 0) {
+                for (let j = 0; j < style.data; j++) {
                     tag += '<sup>'
                 }
             } else {
-                for(let j = 0; j > style.data; j--){
+                for (let j = 0; j > style.data; j--) {
                     tag += '<sub>'
                 }
             }
         }
 
         text = text.slice(0, start + arr[start]) + tag + text.slice(start + arr[start])
-        for(let i = start+1; i <= len; i++){
+        for (let i = start + 1; i <= len; i++) {
             arr[i] += tag.length
         }
 
         // Get ending tag
         tag = `</${element}>`
-        if(element === 'sup'){
+        if (element === 'sup') {
             tag = ''
-            if(style.data >= 0){
-                for(let j = 0; j < style.data; j++){
+            if (style.data >= 0) {
+                for (let j = 0; j < style.data; j++) {
                     tag += '</sup>'
                 }
             } else {
-                for(let j = 0; j > style.data; j--){
+                for (let j = 0; j > style.data; j--) {
                     tag += '</sub>'
                 }
             }
         }
         // Merge ending tag into string
         text = text.slice(0, end + arr[end]) + tag + text.slice(end + arr[end])
-        for(let i = end; i <= len; i++){
+        for (let i = end; i <= len; i++) {
             arr[i] += tag.length
         }
     })

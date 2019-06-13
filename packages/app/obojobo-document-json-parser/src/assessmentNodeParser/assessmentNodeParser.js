@@ -5,8 +5,8 @@ const assessmentNodeParser = (node, id, tabs, childrenParser) => {
     let scoreActionsBodyXML = ''
     content.scoreActions.forEach(scoreAction => {
         let attrs = ''
-        for(const attr in scoreAction){
-            if([attr] == 'page') continue
+        for (const attr in scoreAction) {
+            if ([attr] == 'page') continue
             attrs += ` ${[attr]}="${scoreAction[attr]}"`
         }
         scoreActionsBodyXML += (
@@ -25,7 +25,7 @@ const assessmentNodeParser = (node, id, tabs, childrenParser) => {
     let modsBodyXML = ''
     content.rubric.mods.forEach(mod => {
         let attrs = ''
-        for(const attr in mod){
+        for (const attr in mod) {
             attrs += ` ${[attr]}="${mod[attr]}"`
         }
         modsBodyXML += `${tabs+'\t\t\t'}<mod${attrs} />\n`
@@ -36,8 +36,8 @@ const assessmentNodeParser = (node, id, tabs, childrenParser) => {
         `${tabs+'\t\t'}</mods>\n`
     )
     let attrs = ''
-    for(const attr in content.rubric){
-        if([attr] == 'mods') continue;
+    for (const attr in content.rubric) {
+        if ([attr] == 'mods') continue;
         attrs += ` ${[attr]}="${content.rubric[attr]}"`
     }
     const rubricXML = (
@@ -47,7 +47,7 @@ const assessmentNodeParser = (node, id, tabs, childrenParser) => {
     )
 
     return (
-        `${tabs}<Assessment${id}>\n` + 
+        `${tabs}<Assessment${id}>\n` +
             childrenParser(node.children, tabs + '\t') +
             scoreActionsXML +
             rubricXML +

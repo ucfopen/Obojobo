@@ -1,6 +1,6 @@
 const iFrameNodeParser = (node, id, tabs) => {
     let contentXML = ''
-    for(const c in node.content){
+    for (const c in node.content) {
         contentXML += ` ${[c]}="${node.content[c]}"`
     }
 

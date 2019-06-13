@@ -1,6 +1,6 @@
 const breakNodeParser = (node, id, tabs) => {
     let attrs = ''
-    for(const attr in node.content){
+    for (const attr in node.content) {
         attrs += ` ${[attr]}="${node.content[attr]}"`
     }
 
