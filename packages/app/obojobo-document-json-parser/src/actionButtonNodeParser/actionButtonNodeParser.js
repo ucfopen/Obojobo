@@ -3,15 +3,17 @@ const xmlEncode = require('../xmlEncode')
 
 const actionButtonNodeParser = (node, id, tabs) => {
 
-    const label =
-        node.content.label ?
-        ` label="${xmlEncode(node.content.label)}"` :
-        ''
+    let contentXML = ''
+    for (const c in node.content) {
+        if ([c] == "triggers" || [c] == "textGroup") continue;
+        contentXML += ` ${[c]}="${xmlEncode(node.content[c])}"`
+    }
+
     const textGroupXML = textGroupParser(node.content.textGroup, tabs + '\t')
     const triggersXML = triggersParser(node.content.triggers, tabs + '\t')
 
     return (
-        `${tabs}<ActionButton${label}${id}>\n` +
+        `${tabs}<ActionButton${contentXML}${id}>\n` +
             textGroupXML +
             triggersXML +
         `${tabs}</ActionButton>\n`
