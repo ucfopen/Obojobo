@@ -1,37 +1,55 @@
 const textGroupParser = require('../textGroupParser')
+const xmlEncode = require('../xmlEncode')
 
 const actionButtonNodeParser = (node, id, tabs) => {
 
+    const label =
+        node.content.label ?
+        ` label="${xmlEncode(node.content.label)}"` :
+        ''
     const textGroupXML = textGroupParser(node.content.textGroup, tabs + '\t')
+    const triggersXML = triggersParser(node.content.triggers, tabs + '\t')
 
-    // Parse triggers
+    return (
+        `${tabs}<ActionButton${label}${id}>\n` +
+            textGroupXML +
+            triggersXML +
+        `${tabs}</ActionButton>\n`
+    )
+}
+
+const triggersParser = (triggers, tabs) => {
+    if (!triggers) return ''
+
     let triggersBodyXML = ''
-    node.content.triggers.forEach(trigger => {
+    triggers.forEach(trigger => {
         let triggerXML = ''
-        let actionsXML = ''
+        let actionsBodyXML = ''
 
         // Parser actions in each trigger
         trigger.actions.forEach(action => {
             let attrs = ''
             for (const attr in action.value) {
-                attrs += ` ${[attr]}="${action.value[attr]}"`
+                attrs += ` ${[attr]}="${xmlEncode(action.value[attr])}"`
             }
-            actionsXML += (
-                `${tabs+'\t\t\t\t'}<action type="${action.type}">\n` +
-                    `${tabs+'\t\t\t\t\t'}<value${attrs} />\n` +
-                `${tabs+'\t\t\t\t'}</action>\n`
+            actionsBodyXML += (
+                `${tabs+'\t\t\t'}<action type="${action.type}">\n` +
+                    `${tabs+'\t\t\t\t'}<value${attrs} />\n` +
+                `${tabs+'\t\t\t'}</action>\n`
             )
         })
-        if (actionsXML !== '') {
+
+        let actionsXML = ''
+        if (actionsBodyXML !== '') {
             actionsXML = (
-                `${tabs+'\t\t\t'}<actions>\n` +
-                    actionsXML +
-                `${tabs+'\t\t\t'}</actions>\n`
+                `${tabs+'\t\t'}<actions>\n` +
+                    actionsBodyXML +
+                `${tabs+'\t\t'}</actions>\n`
             )
             triggerXML = (
-                `${tabs+'\t\t'}<trigger type="${trigger.type}">\n` +
+                `${tabs+'\t'}<trigger type="${xmlEncode(trigger.type)}">\n` +
                     actionsXML +
-                `${tabs+'\t\t'}</trigger>\n`
+                `${tabs+'\t'}</trigger>\n`
             )
         }
 
@@ -40,15 +58,10 @@ const actionButtonNodeParser = (node, id, tabs) => {
 
     const triggersXML =
         triggersBodyXML !== '' ?
-        `${tabs+'\t'}<triggers>\n` + triggersBodyXML + `${tabs+'\t'}</triggers>\n` :
+        `${tabs}<triggers>\n` + triggersBodyXML + `${tabs+'\t'}</triggers>\n` :
         ''
 
-    return (
-        `${tabs}<ActionButton${id}>\n` +
-            textGroupXML +
-            triggersXML +
-        `${tabs}</ActionButton>\n`
-    )
+    return triggersXML
 }
 
 module.exports = actionButtonNodeParser

@@ -1,7 +1,9 @@
+const xmlEncode = require('../xmlEncode')
+
 const mcChoiceNodeParser = (node, id, tabs, childrenParser) => {
     let contentXML = ''
     for (const c in node.content) {
-        contentXML += ` ${[c]}="${node.content[c]}"`
+        contentXML += ` ${[c]}="${xmlEncode(node.content[c])}"`
     }
 
     return (

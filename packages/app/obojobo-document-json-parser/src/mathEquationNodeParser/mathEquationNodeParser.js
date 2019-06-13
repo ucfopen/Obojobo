@@ -1,11 +1,12 @@
+const xmlEncode = require('../xmlEncode')
+
 const mathEquationNodeParser = (node, id, tabs) => {
-    const content = node.content
-    let attrs = ''
-    for (const attr in content) {
-        attrs += ` ${[attr]}="${content[attr]}"`
+    let contentXML = ''
+    for (const c in node.content) {
+        contentXML += ` ${[c]}="${xmlEncode(node.content[c])}"`
     }
 
-    return `${tabs}<MathEquation${attrs}${id} />\n`
+    return `${tabs}<MathEquation${contentXML}${id} />\n`
 }
 
 module.exports = mathEquationNodeParser

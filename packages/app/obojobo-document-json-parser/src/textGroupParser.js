@@ -1,4 +1,6 @@
 const textGroupParser = (textGroup, tabs) => {
+    if (!textGroup) return ''
+    
     // Parser textGroup
     let textGroupBodyXML = ''
     textGroup.forEach(group => {
@@ -15,7 +17,7 @@ const textGroupParser = (textGroup, tabs) => {
 
     return (
         `${tabs}<textGroup>\n` +
-        textGroupBodyXML +
+            textGroupBodyXML +
         `${tabs}</textGroup>\n`
     )
 }

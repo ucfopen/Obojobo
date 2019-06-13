@@ -1,5 +1,8 @@
+const xmlEncode = require('../xmlEncode')
+
 const youTubeNodeParser = (node, id, tabs) => {
-    const videoId = node.content.videoId
+    const videoId = xmlEncode(node.content.videoId)
+    
     return `${tabs}<YouTube videoId="${videoId}"${id}/>\n`
 }
 

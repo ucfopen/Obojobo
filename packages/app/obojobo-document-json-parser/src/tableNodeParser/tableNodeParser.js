@@ -1,7 +1,7 @@
 const textGroupParser = require('../textGroupParser')
 
 const tableNodeParser = (node, id, tabs) => {
-    const header = node.content.header
+    const header = node.content.header ? true : false
     const numRows = node.content.textGroup.numRows
     const numCols = node.content.textGroup.numCols
 

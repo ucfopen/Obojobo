@@ -1,9 +1,11 @@
+const xmlEncode = require('../xmlEncode')
+
 const moduleNodeParser = (node, id, tabs, childrenParser) => {
     let contentXML = '';
     for (const c in node.content) {
         contentXML += (
             node.content[c] != null ?
-            ` ${[c]}="${node.content[c]}"` :
+            ` ${[c]}="${xmlEncode(node.content[c])}"` :
             ''
         )
     }

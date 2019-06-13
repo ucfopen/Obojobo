@@ -1,4 +1,5 @@
 const textGroupParser = require('../textGroupParser')
+const xmlEncode = require('../xmlEncode')
 
 const figureNodeParser = (node, id, tabs) => {
 
@@ -8,7 +9,7 @@ const figureNodeParser = (node, id, tabs) => {
     let contentXML = ''
     for (const c in node.content) {
         if (node.content[c] == null || [c] == 'textGroup') continue
-        contentXML += ` ${[c]}="${node.content[c]}"`
+        contentXML += ` ${[c]}="${xmlEncode(node.content[c])}"`
     }
 
     return (
