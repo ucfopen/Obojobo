@@ -5,6 +5,7 @@ const codeNodeParser = require('./codeNodeParser/codeNodeParser')
 const contentNodeParser = require('./contentNodeParser/contentNodeParser')
 const figureNodeParser = require('./figureNodeParser/figureNodeParser')
 const headingNodeParser = require('./headingNodeParser/headingNodeParser')
+const htmlNodeParser = require('./htmlNodeParser/htmlNodeParser')
 const iFrameNodeParser = require('./iFrameNodeParser/iFrameNodeParser')
 const listNodeParser = require('./listNodeParser/listNodeParser')
 const mathEquationNodeParser = require('./mathEquationNodeParser/mathEquationNodeParser')
@@ -29,6 +30,7 @@ const parsers = {
     "ObojoboDraft.Sections.Content": contentNodeParser,
     "ObojoboDraft.Chunks.Figure": figureNodeParser,
     "ObojoboDraft.Chunks.Heading": headingNodeParser,
+    "ObojoboDraft.Chunks.HTML": htmlNodeParser,
     "ObojoboDraft.Chunks.IFrame": iFrameNodeParser,
     "ObojoboDraft.Chunks.List": listNodeParser,
     "ObojoboDraft.Chunks.MathEquation": mathEquationNodeParser,
