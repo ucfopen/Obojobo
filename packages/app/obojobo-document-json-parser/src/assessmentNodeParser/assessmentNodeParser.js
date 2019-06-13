@@ -2,11 +2,17 @@ const xmlEncode = require('../xmlEncode')
 
 const assessmentNodeParser = (node, id, tabs, childrenParser) => {
 
+    let contentXML = ''
+    for (const c in node.content) {
+        if ([c] == "triggers" || [c] == "scoreActions") continue;
+        contentXML += ` ${[c]}="${xmlEncode(node.content[c])}"`
+    }
+
     const scoreActionsXML = scoreActionsParser(node.content.scoreActions, tabs + '\t', childrenParser)
     const rubricXML = rubricParser(node.content.rubric, tabs + '\t')
 
     return (
-        `${tabs}<Assessment${id}>\n` +
+        `${tabs}<Assessment${contentXML}${id}>\n` +
             childrenParser(node.children, tabs + '\t') +
             scoreActionsXML +
             rubricXML +

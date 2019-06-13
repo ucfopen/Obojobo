@@ -13,7 +13,7 @@ const figureNodeParser = (node, id, tabs) => {
     }
 
     return (
-        `${tabs}<Figure${contentXML}>\n` +
+        `${tabs}<Figure${contentXML}${id}>\n` +
             textGroupXML +
         `${tabs}</Figure>\n`
     )
