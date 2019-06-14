@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>{{ title }}</title>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta id="meta-viewport" name="viewport" content="width=device-width initial-scale=1 minimum-scale=1 user-scalable=yes" />
+	<link rel="stylesheet" media="screen" href="/static/dashboard.css" />
+	<link rel="stylesheet" media="screen" href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i" />
+</head>
+<body class="repository--dashboard">
+
+	<div class="repository--wrapper">
+		<div class="repository--section-wrapper repository--stick-to-top">
+			{% include 'partials/repository-nav.html.njk' %}
+		</div>
+
+		<div class="repository--section-wrapper--full-width repository--section-wrapper--grey">
+			<section class="repository--title-banner repository--info-banner">
+				<h1 class="repository--title-banner--title">{{ title }}</h1>
+				<div class="repository--info-banner--facts">
+					<div class="repository--info-banner--facts--fact">
+						<div class="repository--info-banner--facts--fact--title">Modules</div>
+						<div class="repository--info-banner--facts--fact--value">12</div>
+					</div>
+					<div class="repository--info-banner--facts--fact">
+						<div class="repository--info-banner--facts--fact--title">Students</div>
+						<div class="repository--info-banner--facts--fact--value">196</div>
+					</div>
+					<div class="repository--info-banner--facts--fact">
+						<div class="repository--info-banner--facts--fact--title">Courses</div>
+						<div class="repository--info-banner--facts--fact--value">7</div>
+					</div>
+					<div class="repository--info-banner--facts--fact">
+						<div class="repository--info-banner--facts--fact--title">Assignments</div>
+						<div class="repository--info-banner--facts--fact--value">23</div>
+					</div>
+				</div>
+			</section>
+		</div>
+
+		<div class="repository--section-wrapper">
+			<section class="repository--main-content repository--column-layout">
+				<div class="repository--item-list dashboard--notifications">
+					<div class="repository--item-list--title">Updates and Activity</div>
+
+<!-- 					<div class="repository--item-list--group">
+						<div class="repository--item-list--group--item-wrapper">
+							<div class="repository--item-list--row">
+								<div class="repository--item-list--group--item--date">1 hour ago</div>
+								<div class="repository--item-list--group--title"><b>3</b> students are at risk:</div>
+
+								<div class="repository--item-list--group--item--multi-wrapper">
+									<div class="avatar avatar--warning-state">
+										<div class="avatar--image"><img src="https://randomuser.me/api/portraits/women/19.jpg"></div>
+										<div class="avatar--notice">15</div>
+									</div>
+
+									<div class="avatar avatar--warning-state">
+										<div class="avatar--image"><img src="https://randomuser.me/api/portraits/men/19.jpg"></div>
+										<div class="avatar--notice">45</div>
+									</div>
+
+									<div class="avatar avatar--warning">
+										<div class="avatar--image"><img src="https://randomuser.me/api/portraits/women/16.jpg"></div>
+										<div class="avatar--notice">55</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+
+					<div class="repository--item-list--group">
+						<div class="repository--item-list--group--item-wrapper">
+							<div class="repository--item-list--row">
+								<div class="avatar">
+									<div class="avatar--image avatar--quote"><img src="https://randomuser.me/api/portraits/men/16.jpg"></div>
+								</div>
+								<div class="repository--item-list--group--item--date">1 hour ago</div>
+								<div class="repository--item-list--group--item--text">
+									<a href="/users/33">Buzz Aldrin</a> left feedback for <a href="modules/33-orbital-mechanics-i">Orbital Mechanics I</a>
+								</div>
+								<div class="repository--item-list--group--item--text-detail repository--quote">
+									"It's good, needs more rendezvous"
+								</div>
+							</div>
+							<div class="repository--item-list--row">
+								<div class="repository--module-icon">
+									<div class="repository--module-icon--image repository--module-icon--image--increase">
+										{% set moduleId = 'space' %}
+										{% include 'partials/module-image.svg.njk' %}
+									</div>
+									<div class="repository--module-icon--title">Orbital Mechanics I</div>
+								</div>
+								<div class="repository--item-list--group--item--date">2 hours ago</div>
+								<div class="repository--item-list--group--item--text">
+									<a href="modules/33-orbital-mechanics-i">Orbital Mechanics I</a> has 10 new scores.
+								</div>
+								<div class="repository--item-list--group--item--text-detail repository--fact">
+									Average score <em class="repository--fact--good">increased</em> from <em class="repository--fact--value">55%</em> to <em class="repository--fact--value">67%</em>
+								</div>
+							</div>
+
+
+							<div class="repository--item-list--row">
+								<div class="repository--module-icon">
+									<div class="repository--module-icon--image repository--module-icon--image--decrease">
+										{% set moduleId = 'atmosphere' %}
+										{% include 'partials/module-image.svg.njk' %}
+									</div>
+									<div class="repository--module-icon--title">Exoplanetary Atmospheres</div>
+								</div>
+								<div class="repository--item-list--group--item--date">3 hours ago</div>
+								<div class="repository--item-list--group--item--text">
+									<em>18 new students</em> completed <a href="modules/12-exoplanetary-atmospheres">Exoplanetary Atmospheres</a>.
+								</div>
+								<div class="repository--item-list--group--item--text-detail repository--fact">
+									The average score has <em class="repository--fact--bad">decreased</em> from <em class="repository--fact--value">92%</em> to <em class="repository--fact--value">89%</em>
+								</div>
+							</div>
+
+							<div class="repository--item-list--row">
+								<div class="repository--module-icon">
+									<div class="repository--module-icon--image">
+										{% set moduleId = 'launch' %}
+										{% include 'partials/module-image.svg.njk' %}
+									</div>
+									<div class="repository--module-icon--title">Rocket Propulsion</div>
+								</div>
+								<div class="repository--item-list--group--item--date">1 day ago</div>
+								<div class="repository--item-list--group--item--text">
+									<em>8 new students</em> completed <a href="modules/51-rocket-propulsion">Rocket Propulsion</a>.
+								</div>
+								<div class="repository--item-list--group--item--text-detail repository--fact">
+									The average score has <em class="repository--fact--neutral">not changed</em> from <em class="repository--fact--value">92%</em>
+								</div>
+							</div>
+
+							<div class="repository--item-list--row">
+								<div class="repository--module-icon">
+									<div class="repository--module-icon--image">
+										{% set moduleId = 'mountains' %}
+										{% include 'partials/module-image.svg.njk' %}
+									</div>
+									<div class="repository--module-icon--title">Geological Liquification Mechanics</div>
+								</div>
+								<div class="repository--item-list--group--item--date">1 day ago</div>
+								<div class="repository--item-list--group--item--text">
+									<em>Zach Berry</em> edited <a href="modules/123-geological-liquification-mechanics">Geological Liquification Mechanics</a>.
+								</div>
+								<div class="repository--item-list--group--item--text-detail repository--fact">
+									There are now <em class="repository--fact--value">10</em> pages and <em class="repository--fact--value">10</em> questions
+								</div>
+							</div>
+						</div>
+
+						<div class="repository--item-list--group--item--newline-container">
+							<button class="repository--button">Load more Activity</button>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="repository--item-list dashboard--assignments">
+					<div class="repository--item-list--title">Modules You're Learning</div>
+					<div class="repository--item-list--group">
+						<div class="repository--item-list--group--item-wrapper">
+							<div class="repository--item-list--row">
+								<div class="repository--item-list--group--item--multi-wrapper">
+									<div class="repository--module-icon">
+										<div class="repository--module-icon--image">
+											{% set moduleId = 'sports' %}
+											{% include 'partials/module-image.svg.njk' %}
+										</div>
+										<div class="repository--module-icon--flag repository--flag-details"></div>
+										<div class="repository--module-icon--flag repository--flag-incomplete"></div>
+										<div class="repository--module-icon--title">Sports Therapy</div>
+									</div>
+
+									<div class="repository--module-icon">
+										<div class="repository--module-icon--image">
+											{% set moduleId = 'pottery' %}
+											{% include 'partials/module-image.svg.njk' %}
+										</div>
+										<div class="repository--module-icon--flag repository--flag-details"></div>
+										<div class="repository--module-icon--flag repository--flag-incomplete"></div>
+										<div class="repository--module-icon--title">Advanced 3d Pottery</div>
+									</div>
+
+									<div class="repository--module-icon">
+										<div class="repository--module-icon--image">
+											{% set moduleId = 'gravity' %}
+											{% include 'partials/module-image.svg.njk' %}
+										</div>
+										<div class="repository--module-icon--flag repository--flag-details"></div>
+										<div class="repository--module-icon--flag repository--flag-incomplete"></div>
+										<div class="repository--module-icon--title">Gravitational Forces</div>
+									</div>
+
+									<div class="repository--module-icon">
+										<div class="repository--module-icon--image">
+											{% set moduleId = 'religion' %}
+											{% include 'partials/module-image.svg.njk' %}
+										</div>
+										<div class="repository--module-icon--flag repository--flag-details"></div>
+										<div class="repository--module-icon--flag repository--flag-incomplete"></div>
+										<div class="repository--module-icon--title">World Religions</div>
+									</div>
+
+									<div class="repository--module-icon">
+										<div class="repository--module-icon--image">
+											{% set moduleId = 'hacker' %}
+											{% include 'partials/module-image.svg.njk' %}
+										</div>
+										<div class="repository--module-icon--flag repository--flag-details"></div>
+										<div class="repository--module-icon--flag repository--flag-incomplete"></div>
+										<div class="repository--module-icon--title">Computer Science</div>
+									</div>
+
+									<div class="repository--item-list--group--item--newline-container">
+										<button class="repository--button">See More View History</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="repository--item-list--title">Modules Your Creating</div>
+					<div class="repository--item-list--group">
+						<div class="repository--item-list--group--item-wrapper">
+							<div class="repository--item-list--row">
+								<div class="repository--item-list--group--item--multi-wrapper">
+									<div class="repository--module-icon">
+										<div class="repository--module-icon--image">
+											{% set moduleId = 'sports' %}
+											{% include 'partials/module-image.svg.njk' %}
+										</div>
+										<div class="repository--module-icon--flag repository--flag-details"></div>
+										<div class="repository--module-icon--flag repository--flag-incomplete"></div>
+										<div class="repository--module-icon--title">Sports Therapy</div>
+									</div>
+
+									<div class="repository--module-icon">
+										<div class="repository--module-icon--image">
+											{% set moduleId = 'pottery' %}
+											{% include 'partials/module-image.svg.njk' %}
+										</div>
+										<div class="repository--module-icon--flag repository--flag-details"></div>
+										<div class="repository--module-icon--flag repository--flag-incomplete"></div>
+										<div class="repository--module-icon--title">Advanced 3d Pottery</div>
+									</div>
+
+									<div class="repository--module-icon">
+										<div class="repository--module-icon--image">
+											{% set moduleId = 'gravity' %}
+											{% include 'partials/module-image.svg.njk' %}
+										</div>
+										<div class="repository--module-icon--flag repository--flag-details"></div>
+										<div class="repository--module-icon--flag repository--flag-incomplete"></div>
+										<div class="repository--module-icon--title">Gravitational Forces</div>
+									</div>
+
+									<div class="repository--item-list--group--item--newline-container">
+										<button class="repository--button">View All Your Modules</button>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</section>
+		</div>
+
+	</div>
+
+	<!-- <script src="//unpkg.com/react@16.7.0/umd/react.production.min.js"></script> -->
+	<!-- <script src="//unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js"></script> -->
+	<script src="/static/dashboard.js"></script>
+
+</body>
+
+</html>

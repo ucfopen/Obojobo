@@ -9,6 +9,8 @@ const compression = require('compression')
 const logger = require('./logger')
 const ObojoboDocumentServer = require('./obo_express')
 const IS_WEBPACK = process.env.IS_WEBPACK || false
+const engines = require('consolidate')
+
 
 module.exports = app => {
 	// =========== STATIC ASSET PATHS ================
@@ -16,7 +18,8 @@ module.exports = app => {
 	app.use(compression()) // enable gzip compression
 
 	// =========== VIEW ENGINES ================
-	app.set('view engine', 'ejs')
+	app.engine('ejs', engines.ejs)
+	app.set('view engine', 'ejs') // set the default extension to ejs
 	app.set('views', path.join(__dirname, 'views'))
 
 	// =========== SET UP MIDDLEWARE ================

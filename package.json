@@ -45,6 +45,7 @@
 		"packages/app/obojobo-document-engine",
 		"packages/app/obojobo-document-xml-parser",
 		"packages/app/obojobo-express",
+		"packages/app/obojobo-repository",
 		"packages/obonode/obojobo-chunks-action-button",
 		"packages/obonode/obojobo-chunks-break",
 		"packages/obonode/obojobo-chunks-code",
