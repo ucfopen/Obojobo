@@ -1,0 +1,399 @@
+@import '../../../obojobo-document-engine/src/scss/includes';
+$border-color: #ccc;
+$button-color: #76c7aa;
+$module-icon-size: 90px;
+$avatar-icon-size: 90px;
+
+@mixin with-bottom-border() {
+	position: relative;
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+
+	// border line between items
+	&:after {
+		position: absolute;
+		bottom: 0;
+		left: 8%;
+		margin: 0 auto;
+		border-bottom: 1px solid $border-color;
+		content: '';
+		display: block;
+		width: 84%;
+	}
+
+	// disable border line on last item
+	&:last-child:after{
+		display: none;
+	}
+
+}
+
+
+html,body{
+	margin: 0;
+	padding: 0;
+	font-family: $font-default;
+	font-size: 1.1em;
+}
+
+.avatar{
+	position: relative;
+	height: $avatar-icon-size;
+	width: $avatar-icon-size;
+	margin: 10px;
+}
+
+.avatar--image {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0;
+	right: 0;
+	img {
+		height: 100%;
+		border-radius: 50%;
+	}
+}
+
+.repository--stick-to-top{
+	position: sticky;
+	top: 0px;
+	background: #fff;
+	min-width: 100%;
+	z-index: 100;
+}
+
+.avatar--notice{
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	background: red;
+	border-radius: 50%;
+	color: white;
+	padding: .25em;
+}
+
+
+.repository--section-wrapper{
+	max-width: 800px;
+	margin: 0 auto;
+	border-bottom: 1px solid $border-color;
+}
+
+.repository--section-wrapper--full-width{
+	> section {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+	margin-bottom: 40px;
+}
+
+.repository--section-wrapper--grey{
+	background: #ddd;
+	border-top: 1px solid $border-color;
+	border-bottom: 1px solid $border-color;
+}
+
+
+.repository--nav{
+	width: 800px;
+	margin: 5px auto;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-content: flex-start;
+	align-items: center;
+	font-size: .85em;
+}
+
+.repository--nav a:link,
+.repository--nav a:visited{
+	color: $color-obojobo-blue;
+}
+.repository--nav a:active,
+.repository--nav a:hover{
+	color: $color-highlight;
+}
+
+.repository--nav--logo{
+	background-image: url('/images/obojobo-logo.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	box-sizing: border-box;
+	display: block;
+	height: 35px;
+	overflow: hidden;
+	text-indent: -1000px;
+	width: 130px;
+}
+
+$search-input-height: 15px;
+.repository--nav--links--search {
+	border-bottom: 1px solid $border-color;
+	input{
+		border: 0;
+		padding: 5px;
+		margin: 0;
+		height: $search-input-height;
+		margin-bottom: 6px;
+	}
+}
+
+.repository--nav--links--search--icon{
+	fill: $border-color;
+	vertical-align: middle;
+	display: inline-block;
+	width: $search-input-height;
+	height: $search-input-height;
+	content: '';
+}
+
+.repository--nav--current-user{
+	position: relative;
+	width: 200px;
+	font-size: .9em;
+	height: 65px;
+}
+
+.repository--nav--current-user--avatar{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	height: 60px;
+	width: 60px;
+	margin: 0;
+}
+
+.repository--nav--current-user--name{
+	position: absolute;
+	word-wrap: none;
+	bottom: 40px;
+	right: 70px;
+	max-width: 130px;
+	font-size: .9em;
+}
+
+.repository--nav--current-user--link{
+	position: absolute;
+	word-wrap: none;
+	bottom: 20px;
+	right: 70px;
+	max-width: 130px;
+}
+
+.repository--nav--current-user--menu{
+	display: none;
+}
+
+
+.repository--title-banner{
+	display: flex;
+	padding: 30px 10px;
+	box-sizing: border-box;
+	justify-content: space-between;
+	align-items: center;
+	color: #555;
+}
+
+.repository--title-banner--title{
+	font-family: $font-default;
+	font-weight: 700;
+	font-size: 2.5em;
+
+	white-space: pre-wrap;
+	margin: 0;
+	padding: 0;
+}
+
+.repository--info-banner--facts{
+	display: flex;
+	justify-content: space-between;
+}
+
+.repository--info-banner--facts--fact{
+	padding-left: 40px;
+}
+
+.repository--info-banner--facts--fact--title{
+	font-size: .75em;
+	margin-bottom: 5px;
+}
+
+.repository--info-banner--facts--fact--value{
+	font-size: 1.2em;
+	color: #222;
+}
+
+.repository--column-layout{
+	display: flex;
+
+	> div{
+		margin-left: 25px;
+		margin-right: 25px;
+		width: 50%;
+
+		&:first-child{
+			margin-left: 0;
+		}
+
+		&:last-child{
+			margin-right: 0;
+		}
+	}
+}
+
+.repository--item-list--title {
+	display: table;
+	white-space: nowrap;
+	margin-bottom: 20px;
+
+	&:after {
+		border-top: 1px solid $border-color;
+		content: '';
+		display: table-cell;
+		position: relative;
+		top: 0.6em;
+		width: 100%;
+	}
+	&:after {
+		left: 2%;
+	}
+}
+
+.repository--item-list--group{
+	&:last-child{
+		border-top: 0;
+	}
+}
+
+.repository--item-list--group--item--date{
+	font-size: .8em;
+	color: $color-text-minor;
+}
+
+.repository--item-list--group--title{
+	font-size: .8em;
+	margin-bottom: 10px;
+}
+
+.repository--item-list--row{
+	overflow: auto;
+	font-size: .8em;
+	font-family: $font-text;
+	width: 100%;
+
+	.avatar,
+	> .repository--module-icon{
+		float: left;
+	}
+
+	a{
+		text-decoration: none;
+		color: black;
+		font-weight: 600;
+	}
+
+
+	em{
+		font-style: normal;
+		font-weight: 700;
+	}
+
+	@include with-bottom-border();
+}
+
+.repository--fact--bad{
+	color: red;
+}
+
+.repository--fact--good{
+	color: green;
+}
+
+.repository--fact--neutral{
+	color: inherit;
+}
+
+.repository--fact--value{
+	font-size: 1.1em;
+}
+
+.repository--item-list--group--item--text{
+	margin: 10px;
+
+}
+
+.repository--item-list--group--item--text-detail{
+	font-size: .8em;
+}
+
+.repository--quote{
+	font-style: italic;
+}
+
+.repository--item-list--group--item--multi-wrapper{
+	display: flex;
+	flex-wrap: wrap;
+	box-sizing: border-box;
+	justify-content: flex-start;
+
+	@include with-bottom-border();
+}
+
+.repository--item-list--group--item--newline-container{
+	width: 100%;
+	margin: 20px 10px;
+	text-align: center;
+}
+
+.repository--button{
+	border: 0;
+	background: $color-action;
+	color: white;
+	border-radius: 4px;
+	padding: 10px 20px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.repository--module-icon{
+	font-family: $font-default;
+	width: $module-icon-size;
+	margin: 10px;
+	overflow: hidden;
+	font-size: .75em;
+	text-align: center;
+}
+
+.repository--module-icon--image{
+	svg{
+		height: $module-icon-size;
+	}
+}
+
+
+
+// ==================== LIBRARY
+
+.repository--main-content--title{
+	font-family: $font-default;
+	text-align: center;
+	font-size: 1.2em;
+	display: table;
+	white-space: nowrap;
+	margin-bottom: 20px;
+
+	&:after {
+		border-top: 1px solid $border-color;
+		content: '';
+		display: table-cell;
+		position: relative;
+		top: 0.6em;
+		width: 100%;
+	}
+	&:after {
+		left: 2%;
+	}
+
+}

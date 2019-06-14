@@ -1,0 +1,68 @@
+{
+	"name": "obojobo-repository",
+	"license": "AGPL-3.0-only",
+	"version": "4.1.0-rc1",
+	"repository": "https://github.com/ucfopen/Obojobo.git",
+	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
+	"description": "Obojobo express server middleware.",
+	"scripts": {
+		"test": "TZ='America/New_York' jest",
+		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"lint": "yarn lint:js && yarn lint:css",
+		"lint:js": "eslint .",
+		"lint:css": "stylelint **/*.scss",
+		"prettier:run": "prettier --write '**/*.{js,scss}'"
+	},
+	"engines": {
+		"yarn": "^1.0",
+		"node": "^10.4.1"
+	},
+	"lint-staged": {
+		"**/*.js": [
+			"eslint"
+		],
+		"**/*.scss": [
+			"stylelint"
+		],
+		"**/*.{js,scss}": [
+			"prettier --write",
+			"git add"
+		]
+	},
+	"dependencies": {
+		"debug": "~4.1.1",
+		"debug-logger": "^0.4.1",
+		"nunjucks": "~3.2.0",
+		"express": "~4.16.4",
+		"express-validator": "^5.2.0",
+		"obojobo-express": "^4.1.0-rc1",
+		"obojobo-lib-utils": "^4.1.0-rc1",
+		"whatwg-fetch": "^3.0.0"
+	},
+	"jest": {
+		"setupFilesAfterEnv": [
+			"./setup_tests.js"
+		],
+		"collectCoverageFrom": [
+			"*.js",
+			"models/**/*.js",
+			"routes/**/*.js"
+		],
+		"coveragePathIgnorePatterns": [
+			"<rootDir>/node_modules",
+			"<rootDir>/setup_tests.js"
+		],
+		"coverageReporters": [
+			"text",
+			"lcov"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 100,
+				"functions": 100,
+				"lines": 100,
+				"statements": 100
+			}
+		}
+	}
+}

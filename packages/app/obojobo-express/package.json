@@ -46,9 +46,8 @@
 		"body-parser": "^1.17.1",
 		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js.git#v1.0.0",
 		"compression": "^1.6.2",
+		"consolidate": "^0.15.1",
 		"connect-pg-simple": "^3.1.2",
-		"copy-webpack-plugin": "^5.0.2",
-		"css-loader": "^2.0.0",
 		"db-migrate": "^0.10.0-beta.20",
 		"db-migrate-pg": "^0.1.11",
 		"debug": "~4.1.1",
@@ -78,6 +77,8 @@
 	"devDependencies": {
 		"babel-loader": "^8.0.4",
 		"babel-polyfill": "^6.26.0",
+		"css-loader": "^2.0.0",
+		"copy-webpack-plugin": "^5.0.2",
 		"express-list-endpoints": "^4.0.0",
 		"lint-staged": "^6.1.1",
 		"mini-css-extract-plugin": "^0.5.0",
@@ -105,8 +106,6 @@
 			"*.js",
 			"models/**/*.js",
 			"routes/**/*.js",
-			"routes/**/*.js",
-			"controllers/**/*.js",
 			"viewer/**/*.js"
 		],
 		"coveragePathIgnorePatterns": [
@@ -138,11 +137,12 @@
 		"ext": "js ejs",
 		"watch": [
 			"./",
-			"../obojobo-document-engine/server",
 			"../../obonode/obojobo-sections-assessment/server",
 			"../../obonode/multiple-choice-assessment/server",
 			"../../obonode/chunks-question/server",
 			"../../obonode/chunks-question-bank/server"
+			"../obojobo-document-engine/server",
+			"../obojobo-repository/server"
 		]
 	}
 }
