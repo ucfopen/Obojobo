@@ -1,6 +1,9 @@
+const StyleableText = require('./common/text/styleable-text')
+const StyleableTextRenderer = require('./common/text/styleable-text-renderer')
+
 const textGroupParser = (textGroup, tabs) => {
     if (!textGroup) return ''
-    
+
     // Parser textGroup
     let textGroupBodyXML = ''
     textGroup.forEach(group => {
@@ -9,87 +12,68 @@ const textGroupParser = (textGroup, tabs) => {
             dataXML += ` ${d}="${group.data[d]}"`
         }
 
-        // Parser string value with styleList
-        const value = textParser(group.text.value, group.text.styleList)
+        // Parser text value
+        const value = textParser(group.text)
 
         textGroupBodyXML += `${tabs+'\t'}<t${dataXML}>${value}</t>\n`
     })
 
     return (
         `${tabs}<textGroup>\n` +
-            textGroupBodyXML +
+        textGroupBodyXML +
         `${tabs}</textGroup>\n`
     )
 }
 
-const mapStyleTypeToTag = {
-    "a": "a",
-    "b": "b",
-    "i": "i",
-    "monospace": "code",
-    "del": "del",
-    "q": "q",
-    "_latex": "latex",
-    "sup": "sup"
+const textParser = text => {
+    const s = StyleableText.createFromObject(text)
+    s.normalizeStyles()
+
+    const mockElement = StyleableTextRenderer(s)
+
+    return mockTextNodeParser(mockElement)
 }
 
-const textParser = (text, styleList) => {
-    const len = text.length
+const mockTextNodeParser = mockTextNode => {
+    if (mockTextNode.nodeType == 'text') {
+        const text = (
+            mockTextNode.text ?
+            mockTextNode.text :
+            ''
+        )
 
-    let charArr = text.split('')
+        return mockElementParser(text, mockTextNode.parent)
+    }
 
-    styleList.forEach(style => {
-        let start = style.start
-        let end = style.end
-        const element = mapStyleTypeToTag[style.type]
+    let mockElementChildrenStr = ''
+    if (mockTextNode.children) {
+        mockTextNode.children.forEach(child => {
+            mockElementChildrenStr += mockTextNodeParser(child)
+        })
+    }
 
-        // Invalid
-        if (start < 0 || start > len || end < 0 || end > len) return
+    return mockElementChildrenStr
+}
 
+const mockElementParser = (text, mockElement) => {
+    if (!mockElement) return text
 
-        // Get beginning tag
-        let tag = `<${element}>`
-        if (element === 'a') {
-            let attrs = ''
-            for (const attr in style.data) {
-                attrs += ` ${[attr]}="${style.data[attr]}"`
-            }
-            tag = `<${element}${attrs}>`
-        } else if (element === 'sup') {
-            tag = ''
-            if (style.data >= 0) {
-                for (let j = 0; j < style.data; j++) {
-                    tag += '<sup>'
-                }
-            } else {
-                for (let j = 0; j > style.data; j--) {
-                    tag += '<sub>'
-                }
-            }
-        }
-        // Merge beginning tag into string
-        charArr[start] = tag + charArr[start];
+    const type = mockElement.type
+    let attrs = ''
+    for (const attr in mockElement.attrs) {
+        attrs += ` ${[attr]}="${mockElement.attrs[attr]}"`
 
-        // Get ending tag
-        tag = `</${element}>`
-        if (element === 'sup') {
-            tag = ''
-            if (style.data >= 0) {
-                for (let j = 0; j < style.data; j++) {
-                    tag += '</sup>'
-                }
-            } else {
-                for (let j = 0; j > style.data; j--) {
-                    tag += '</sub>'
-                }
-            }
-        }
-        // Merge ending tag into string
-        charArr[end-1] += tag
+        if ([attr] == "class" && mockElement.attrs[attr] == 'latex')
+            return mockElementParser(`<latex>${text}</latex>`, mockElement.parent)
+    }
 
-    })
+    text = (
+        type != 'span' ?
+        `<${type}${attrs}>${text}</${type}>` :
+        text
+    )
 
-    return charArr.join('')
+    return mockElementParser(text, mockElement.parent)
 }
 
 module.exports = textGroupParser
