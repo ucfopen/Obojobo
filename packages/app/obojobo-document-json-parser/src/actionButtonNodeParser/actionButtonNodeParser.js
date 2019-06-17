@@ -25,7 +25,7 @@ const triggersParser = (triggers, tabs) => {
 
     let triggersBodyXML = ''
     triggers.forEach(trigger => {
-        if(!triggers.actions) return
+        if(!trigger.actions) return
         
         let triggerXML = ''
         let actionsBodyXML = ''
