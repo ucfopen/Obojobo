@@ -11,8 +11,11 @@
 const path = require('path')
 const express = require('express')
 const app = express()
-const nunjucks = require('nunjucks')
-const engines = require('consolidate')
+
+const fs = require('fs');
+require.extensions['.svg'] = function (module, filename) {
+    module.exports = fs.readFileSync(filename, 'utf8');
+};
 // const responseDecorator = oboRequire('obojobo-express/express_response_decorator')
 // const loadBalancerHelperMiddleware = oboRequire('express_load_balancer_helper')
 // const currentUserMiddleware = oboRequire('express_current_user')
@@ -34,9 +37,7 @@ app.on('mount', app => {
 	viewPaths.push(`${__dirname}/views`)
 	app.set('views', viewPaths)
 
-	// register nunjucks template engine
-	engines.requires.nunjucks = nunjucks
-	app.engine('njk', engines.nunjucks)
+	app.engine('jsx', require('express-react-views').createEngine());
 	// nunjucks.configure(`${__dirname}/views/`)
 	// =========== MIDDLEWARE ===========
 	// app.use(loadBalancerHelperMiddleware)
