@@ -150,7 +150,7 @@ const QuestionUtil = {
 		const contextState = QuestionUtil.getStateForContext(state, context)
 		if (!contextState) return null
 
-		return contextState.data[model.get('id') + ':' + key] || false
+		return contextState.data[model.get('id') + ':' + key] || null
 	},
 
 	isShowingExplanation(state, model, context) {
@@ -166,7 +166,7 @@ const QuestionUtil = {
 
 		const scoreItem = contextState.scores[model.get('id')] || null
 
-		return scoreItem === null ? null : scoreItem.score
+		return scoreItem ? scoreItem.score : null
 	}
 }
 

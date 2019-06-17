@@ -506,4 +506,15 @@ describe('NavUtil', () => {
 	test('isNavOpen returns the open value of state', () => {
 		expect(NavUtil.isNavOpen({ open: 'mock-open' })).toBe('mock-open')
 	})
+
+	test('getContext returns the context object', () => {
+		const mockContext = jest.fn()
+		expect(NavUtil.getContext({ context: mockContext })).toBe(mockContext)
+	})
+
+	test('resetContext triggers the nav:resetContext event', () => {
+		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+		NavUtil.resetContext()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:resetContext')
+	})
 })

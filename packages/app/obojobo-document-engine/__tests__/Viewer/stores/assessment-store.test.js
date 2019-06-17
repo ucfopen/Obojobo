@@ -516,12 +516,12 @@ describe('AssessmentStore', () => {
 
 		return AssessmentStore.tryStartAttempt('assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }))
-			.then(() => AssessmentStore.tryEndAttempt('assessmentId'))
+			.then(() => AssessmentStore.tryEndAttempt('assessmentId', 'mockContext'))
 			.then(() => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
 				expect(QuestionUtil.hideQuestion).toHaveBeenCalledTimes(2)
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1')
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2')
+				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1', 'mockContext')
+				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2', 'mockContext')
 			})
 	})
 

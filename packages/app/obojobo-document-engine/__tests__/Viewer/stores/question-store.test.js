@@ -126,7 +126,7 @@ describe('QuestionStore', () => {
 	})
 
 	test('question:setResponse calls triggerChange and postEvent', () => {
-		jest.spyOn(Common.models.OboModel, 'getRoot')
+		const spy = jest.spyOn(Common.models.OboModel, 'getRoot')
 		Common.models.OboModel.getRoot.mockReturnValueOnce({
 			get: () => 'mockDraftId'
 		})
@@ -154,10 +154,12 @@ describe('QuestionStore', () => {
 			},
 			visitId: undefined
 		})
+
+		spy.mockRestore()
 	})
 
 	test('question:setResponse calls triggerChange and postEvent and updates state', () => {
-		jest.spyOn(Common.models.OboModel, 'getRoot')
+		const spy = jest.spyOn(Common.models.OboModel, 'getRoot')
 		Common.models.OboModel.getRoot.mockReturnValueOnce({
 			get: () => 'mockDraftId'
 		})
@@ -199,10 +201,12 @@ describe('QuestionStore', () => {
 				}
 			}
 		})
+
+		spy.mockRestore()
 	})
 
 	test('question:setResponse creates a new context if one does not exist', () => {
-		jest.spyOn(Common.models.OboModel, 'getRoot')
+		const spy = jest.spyOn(Common.models.OboModel, 'getRoot')
 		Common.models.OboModel.getRoot.mockReturnValueOnce({
 			get: () => 'mockDraftId'
 		})
@@ -231,6 +235,8 @@ describe('QuestionStore', () => {
 				}
 			}
 		})
+
+		spy.mockRestore()
 	})
 
 	test('question:clearResponse calls triggerChange and updates state', () => {
@@ -627,7 +633,7 @@ describe('QuestionStore', () => {
 	})
 
 	test('question:checkAnswer calls APIUtil.postEvent', () => {
-		jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
+		const spy = jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
 		Common.models.OboModel.prototype.getRoot.mockReturnValueOnce({
 			get: () => 'mockDraftId'
 		})
@@ -669,10 +675,12 @@ describe('QuestionStore', () => {
 			},
 			visitId: undefined
 		})
+
+		spy.mockRestore()
 	})
 
 	test('question:checkAnswer does nothing if context does not exist', () => {
-		jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
+		const spy = jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
 		Common.models.OboModel.prototype.getRoot.mockReturnValueOnce({
 			get: () => 'mockDraftId'
 		})
@@ -715,6 +723,101 @@ describe('QuestionStore', () => {
 				}
 			}
 		})
+
+		spy.mockRestore()
+	})
+
+	test('question:submitResponse calls APIUtil.postEvent', () => {
+		const spy = jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
+		Common.models.OboModel.prototype.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
+		__createModels()
+
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {},
+					scores: {
+						questionId: { id: 'mockScoreId', score: 'mockScore' }
+					},
+					responses: {
+						questionId: 'mockResponse'
+					}
+				}
+			}
+		})
+
+		__mockTrigger('question:submitResponse', {
+			value: {
+				id: 'questionId',
+				context: 'mockContext'
+			}
+		})
+
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent).toHaveBeenCalledWith({
+			action: 'question:submitResponse',
+			draftId: 'mockDraftId',
+			eventVersion: '1.0.0',
+			payload: {
+				questionId: 'questionId',
+				context: 'mockContext',
+				response: 'mockResponse'
+			},
+			visitId: undefined
+		})
+
+		spy.mockRestore()
+	})
+
+	test('question:submitResponse does nothing if context does not exist', () => {
+		const spy = jest.spyOn(Common.models.OboModel.prototype, 'getRoot')
+		Common.models.OboModel.prototype.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
+		__createModels()
+
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {},
+					scores: {
+						questionId: { id: 'mockScoreId', score: 'mockScore' }
+					},
+					responses: {
+						questionId: 'mockResponse'
+					}
+				}
+			}
+		})
+
+		__mockTrigger('question:submitResponse', {
+			value: {
+				id: 'questionId',
+				context: 'someOtherContext'
+			}
+		})
+
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(0)
+		expect(QuestionStore.getState()).toEqual({
+			contexts: {
+				mockContext: {
+					viewing: null,
+					viewedQuestions: {},
+					scores: {
+						questionId: { id: 'mockScoreId', score: 'mockScore' }
+					},
+					responses: {
+						questionId: 'mockResponse'
+					}
+				}
+			}
+		})
+
+		spy.mockRestore()
 	})
 
 	test('question:hide marks questions as hidden, and clears viewing if it matches', () => {
@@ -752,7 +855,7 @@ describe('QuestionStore', () => {
 		})
 	})
 
-	test.only('question:hide marks questions as hidden, and does not clear viewing if it doesnt match', () => {
+	test('question:hide marks questions as hidden, and does not clear viewing if it doesnt match', () => {
 		__createModels()
 
 		QuestionStore.setState({
@@ -837,7 +940,7 @@ describe('QuestionStore', () => {
 		expect(QuestionUtil.clearData).not.toHaveBeenCalled()
 	})
 
-	test.only('question:hideExplanation calls triggerChange and updates state', () => {
+	test('question:hideExplanation calls triggerChange and updates state', () => {
 		__createModels()
 
 		__mockTrigger('question:hideExplanation', {
@@ -852,7 +955,11 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 
 		expect(QuestionUtil.clearData).toHaveBeenCalledTimes(1)
-		expect(QuestionUtil.clearData).toHaveBeenCalledWith('questionId', 'showingExplanation')
+		expect(QuestionUtil.clearData).toHaveBeenCalledWith(
+			'questionId',
+			'mockContext',
+			'showingExplanation'
+		)
 
 		expect(QuestionUtil.setData).not.toHaveBeenCalled()
 	})
@@ -861,7 +968,7 @@ describe('QuestionStore', () => {
 		__createModels()
 
 		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(0)
-		QuestionStore.setState({ scores: { mockContext: {} } })
+		QuestionStore.setState({ contexts: { mockContext: { scores: {} } } })
 
 		__mockTrigger('question:scoreSet', {
 			value: {
@@ -877,7 +984,8 @@ describe('QuestionStore', () => {
 	test('question:scoreSet initializes context if missing', () => {
 		__createModels()
 
-		expect(QuestionStore.getState().scores).not.toHaveProperty('mockContext')
+		expect(QuestionStore.triggerChange).toHaveBeenCalledTimes(0)
+		QuestionStore.setState({ contexts: {} })
 
 		__mockTrigger('question:scoreSet', {
 			value: {
@@ -887,10 +995,16 @@ describe('QuestionStore', () => {
 			}
 		})
 
-		expect(QuestionStore.getState().scores).toHaveProperty('mockContext')
+		expect(QuestionStore.getState().contexts.mockContext.scores).toEqual({
+			questionId: {
+				id: 'mock-uuid',
+				score: 100,
+				itemId: 'questionId'
+			}
+		})
 	})
 
-	test('question:scoreSet blurs focus if correct', () => {
+	test('question:scoreSet blurs focus if correct (or score is "no-score")', () => {
 		__createModels()
 
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(0)
@@ -904,6 +1018,16 @@ describe('QuestionStore', () => {
 		})
 
 		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(1)
+
+		__mockTrigger('question:scoreSet', {
+			value: {
+				context: 'mockContext',
+				score: 'no-score',
+				itemId: 'questionId'
+			}
+		})
+
+		expect(FocusUtil.clearFadeEffect).toHaveBeenCalledTimes(2)
 	})
 
 	test('question:scoreSet doesnt blur if incorrect', () => {
@@ -954,10 +1078,13 @@ describe('QuestionStore', () => {
 	test('question:scoreClear calls triggerChange', () => {
 		__createModels()
 		QuestionStore.setState({
-			scores: {
+			contexts: {
 				mockContext: {
-					questionId: {
-						itemId: 'questionId'
+					scores: {
+						questionId: {
+							itemId: 'questionId',
+							score: 100
+						}
 					}
 				}
 			}
@@ -966,7 +1093,6 @@ describe('QuestionStore', () => {
 		__mockTrigger('question:scoreClear', {
 			value: {
 				context: 'mockContext',
-				score: 100,
 				itemId: 'questionId'
 			}
 		})
@@ -977,10 +1103,13 @@ describe('QuestionStore', () => {
 	test('question:scoreClear triggers an event', () => {
 		__createModels()
 		QuestionStore.setState({
-			scores: {
+			contexts: {
 				mockContext: {
-					questionId: {
-						itemId: 'questionId'
+					scores: {
+						questionId: {
+							itemId: 'questionId',
+							score: 100
+						}
 					}
 				}
 			}
@@ -990,7 +1119,6 @@ describe('QuestionStore', () => {
 		__mockTrigger('question:scoreClear', {
 			value: {
 				context: 'mockContext',
-				score: 100,
 				itemId: 'questionId'
 			}
 		})
@@ -1000,10 +1128,13 @@ describe('QuestionStore', () => {
 	test('question:scoreClear posts an event', () => {
 		__createModels()
 		QuestionStore.setState({
-			scores: {
+			contexts: {
 				mockContext: {
-					questionId: {
-						itemId: 'questionId'
+					scores: {
+						questionId: {
+							itemId: 'questionId',
+							score: 100
+						}
 					}
 				}
 			}
@@ -1012,7 +1143,6 @@ describe('QuestionStore', () => {
 		__mockTrigger('question:scoreClear', {
 			value: {
 				context: 'mockContext',
-				score: 100,
 				itemId: 'questionId'
 			}
 		})
@@ -1021,15 +1151,71 @@ describe('QuestionStore', () => {
 		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
 	})
 
+	test('question:scoreClear does nothing if no context exists', () => {
+		__createModels()
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					scores: {
+						questionId: {
+							itemId: 'questionId',
+							score: 100
+						}
+					}
+				}
+			}
+		})
+
+		__mockTrigger('question:scoreClear', {
+			value: {
+				context: 'someOtherContext',
+				itemId: 'questionId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).not.toHaveBeenCalled()
+		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+	})
+
+	test('question:scoreClear does not post event if a no-score score is being cleared', () => {
+		__createModels()
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					scores: {
+						questionId: {
+							itemId: 'questionId',
+							score: 'no-score'
+						}
+					}
+				}
+			}
+		})
+
+		__mockTrigger('question:scoreClear', {
+			value: {
+				context: 'mockContext',
+				itemId: 'questionId'
+			}
+		})
+
+		expect(QuestionStore.triggerChange).toHaveBeenCalled()
+		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+	})
+
 	test('question:retry clears responses, hides explanations and clears scores', () => {
 		__createModels()
 
 		QuestionUtil.isShowingExplanation.mockReturnValue(true)
 
 		QuestionStore.setState({
-			viewing: 'questionId',
-			viewedQuestions: { questionId: true },
-			responses: { mockContext: { questionId: 'response' } }
+			contexts: {
+				mockContext: {
+					viewing: 'questionId',
+					viewedQuestions: { questionId: true },
+					responses: { questionId: 'response' }
+				}
+			}
 		})
 
 		__mockTrigger('question:retry', {
@@ -1043,10 +1229,14 @@ describe('QuestionStore', () => {
 		expect(QuestionUtil.clearScore).toHaveBeenCalledWith('questionId', 'mockContext')
 
 		// make sure hideExplanation was called
-		expect(QuestionUtil.hideExplanation).toHaveBeenCalledWith('questionId', 'viewerClient')
+		expect(QuestionUtil.hideExplanation).toHaveBeenCalledWith(
+			'questionId',
+			'mockContext',
+			'viewerClient'
+		)
 
 		// make sure state.responses.mockContext.questionId is wiped out
-		expect(QuestionStore.getState().responses.mockContext).not.toHaveProperty('questionId')
+		expect(QuestionStore.getState().contexts.mockContext.responses).not.toHaveProperty('questionId')
 	})
 
 	test('question:retry clears scores with no explanation', () => {
@@ -1055,9 +1245,13 @@ describe('QuestionStore', () => {
 		QuestionUtil.isShowingExplanation.mockReturnValue(false)
 
 		QuestionStore.setState({
-			viewing: 'questionId',
-			viewedQuestions: { questionId: true },
-			responses: { mockContext: { questionId: 'response' } }
+			contexts: {
+				mockContext: {
+					viewing: 'questionId',
+					viewedQuestions: { questionId: true },
+					responses: { questionId: 'response' }
+				}
+			}
 		})
 
 		__mockTrigger('question:retry', {
@@ -1074,6 +1268,65 @@ describe('QuestionStore', () => {
 		expect(QuestionUtil.hideExplanation).not.toHaveBeenCalled()
 
 		// make sure state.responses.mockContext.questionId is wiped out
-		expect(QuestionStore.getState().responses.mockContext).not.toHaveProperty('questionId')
+		expect(QuestionStore.getState().contexts.mockContext.responses).not.toHaveProperty('questionId')
+	})
+
+	test('question:retry does nothing if no responses were cleared', () => {
+		__createModels()
+
+		QuestionStore.setState({
+			contexts: {
+				mockContext: {
+					viewing: 'questionId',
+					viewedQuestions: { questionId: true },
+					responses: { questionId: 'response' }
+				}
+			}
+		})
+
+		__mockTrigger('question:retry', {
+			value: {
+				context: 'someOtherContext',
+				id: 'questionId'
+			}
+		})
+
+		expect(APIUtil.postEvent).not.toHaveBeenCalled()
+		expect(QuestionUtil.clearScore).not.toHaveBeenCalled()
+		expect(QuestionUtil.hideExplanation).not.toHaveBeenCalled()
+		expect(QuestionUtil.isShowingExplanation).not.toHaveBeenCalled()
+	})
+
+	test('updateStateByContext adds items to a context object', () => {
+		QuestionStore.setState({
+			contexts: {}
+		})
+
+		QuestionStore.updateStateByContext({ a: 1, b: 2 }, 'mockContext')
+
+		expect(
+			QuestionStore.getState({
+				contexts: {
+					mockContext: {
+						a: 1,
+						b: 2
+					}
+				}
+			})
+		)
+
+		QuestionStore.updateStateByContext({ b: 3, c: 4 }, 'mockContext')
+
+		expect(
+			QuestionStore.getState({
+				contexts: {
+					mockContext: {
+						a: 1,
+						b: 3,
+						c: 4
+					}
+				}
+			})
+		)
 	})
 })

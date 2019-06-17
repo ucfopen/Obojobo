@@ -117,6 +117,7 @@ class AssessmentStore extends Store {
 					scores: scoreObject,
 					responses: attempt.responses
 				}
+
 				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
 			})
 		}

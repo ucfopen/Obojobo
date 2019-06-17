@@ -63,7 +63,6 @@ class QuestionStore extends Store {
 
 			'question:setData': payload => {
 				const { context, key, value } = payload.value
-				console.log('sd2', context)
 				const contextState = this.getOrCreateContextState(context)
 
 				contextState.data[key] = value
@@ -277,11 +276,9 @@ class QuestionStore extends Store {
 
 			'question:scoreClear': payload => {
 				const { itemId, context } = payload.value
-				// const questionModel = OboModel.models[id]
-				// const root = questionModel.getRoot()
 
 				if (!this.state.contexts[context]) return
-				////////
+
 				const contextState = this.getOrCreateContextState(context)
 
 				const scoreItem = contextState.scores[itemId]
