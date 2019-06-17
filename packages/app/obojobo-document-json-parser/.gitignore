@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+./test-object.json
+coverage
+__test.js
+out.xml
+test-object.xml
+example.json
+yarn.lock

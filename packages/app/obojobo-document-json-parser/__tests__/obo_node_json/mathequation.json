@@ -1,0 +1,9 @@
+{
+	"id": "66ae62f9-7cde-4a7f-9164-9245e9be1b1e",
+	"type": "ObojoboDraft.Chunks.MathEquation",
+	"content": {
+		"label": "1.1",
+		"latex": "x_1 = x_0 + \\Delta x"
+	},
+	"children": []
+}

@@ -1,0 +1,44 @@
+{
+  "dependencies": {
+  },
+  "devDependencies": {
+    "lint-staged": "^6.1.1"
+  },
+  "name": "json-to-xml-parser",
+  "version": "1.0.0",
+  "license": "AGPL-3.0-only",
+  "main": "",
+  "scripts": {
+    "test": "TZ='America/New_York' jest --verbose",
+    "test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+    "lint": "echo 'not implemented'",
+    "lint:css": "echo 'not implemented'",
+    "lint:js": "echo 'not implemented'"
+  },
+  "lint-staged": {
+    "**/*.{js,scss}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "jest": {
+    "verbose": false,
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  },
+  "author": "",
+  "description": ""
+}
