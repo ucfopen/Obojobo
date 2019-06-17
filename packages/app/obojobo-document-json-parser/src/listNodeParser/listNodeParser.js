@@ -16,28 +16,37 @@ const listNodeParser = (node, id, tabs) => {
 const listStylesParser = (listStyles, tabs) => {
     if (!listStyles) return ''
 
-    const type = `${tabs+'\t'}<type>${listStyles.type}</type>\n`
-    let intents = '';
+    const typeXML = `${tabs+'\t'}<type>${listStyles.type}</type>\n`
+    let intentsXML = '';
     if (Array.isArray(listStyles.indents)) {
         listStyles.indents.forEach(indent => {
             let attrs = ''
             for (const attr in indent) {
                 attrs += ` ${[attr]}="${xmlEncode(indent[attr])}"`
             }
-            intents += `${tabs+'\t\t'}<indent${attrs} />\n`
+            intentsXML += `${tabs+'\t\t'}<indent${attrs} />\n`
         })
+    } else {
+        for (const intent in listStyles.indents) {
+            let attrs = ''
+            attrs += ` level="${[intent]}"`
+            for (const attr in listStyles.indents[intent]) {
+                attrs += ` ${[attr]}="${xmlEncode(listStyles.indents[intent][attr])}"`
+            }
+            intentsXML += `${tabs+'\t\t'}<indent${attrs} />\n`
+        }
     }
 
-    intents = (
+    intentsXML = (
         `${tabs+'\t'}<indents>\n` +
-            intents +
+            intentsXML +
         `${tabs+'\t'}</indents>\n`
     )
 
     return (
         `${tabs}<listStyles>\n` +
-            type +
-            intents +
+            typeXML +
+            intentsXML +
         `${tabs}</listStyles>\n`
     )
 
