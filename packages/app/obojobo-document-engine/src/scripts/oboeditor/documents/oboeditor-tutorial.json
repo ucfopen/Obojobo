@@ -5488,7 +5488,7 @@
 									"type": "ObojoboDraft.Chunks.MCAssessment",
 									"content": {
 										"shuffle": true,
-										"responseType": "Pick One"
+										"responseType": "pick-all"
 									},
 									"children": [
 										{
