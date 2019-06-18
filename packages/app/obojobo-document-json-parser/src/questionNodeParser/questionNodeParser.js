@@ -5,7 +5,7 @@ const questionNodeParser = (node, id, tabs, childrenParser) => {
     if (solution) {
         solutionXML = (
             `${tabs+'\t'}<solution>\n` +
-                childrenParser(solution.children, tabs + '\t\t') +
+                childrenParser([solution], tabs + '\t\t') +
             `${tabs+'\t'}</solution>\n`
         )
     }

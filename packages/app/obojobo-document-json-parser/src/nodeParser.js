@@ -48,8 +48,11 @@ const parsers = {
 }
 
 const childrenParser = (children, tabs) => {
+    if (!children && !Array.isArray(children)) {
+        return ''
+    }
+    
     let result = '';
-
     children.forEach(child => {
         const parser = parsers[child.type];
         if (parser != undefined) {
