@@ -48,10 +48,10 @@ const parsers = {
 }
 
 const childrenParser = (children, tabs) => {
-    if (!children && !Array.isArray(children)) {
+    if (!children || !Array.isArray(children)) {
         return ''
     }
-    
+
     let result = '';
     children.forEach(child => {
         const parser = parsers[child.type];
@@ -67,7 +67,7 @@ const childrenParser = (children, tabs) => {
 }
 
 const nodeParser = node => {
-    if (!node) throw Error('Invalid Node')
+    if (!node) return ''
 
     const parser = parsers[node.type];
     let result = ''
