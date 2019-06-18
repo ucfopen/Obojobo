@@ -5,7 +5,7 @@
     "lint-staged": "^6.1.1"
   },
   "name": "json-to-xml-parser",
-  "version": "1.0.0",
+  "version": "4.0.1",
   "license": "AGPL-3.0-only",
   "main": "",
   "scripts": {
