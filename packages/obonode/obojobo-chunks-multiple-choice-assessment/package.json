@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-multiple-choice-assessment",
-	"version": "4.1.0-rc1",
+	"version": "4.1.0",
 	"license": "AGPL-3.0-only",
 	"description": "MCAssessment chunk for Obojobo",
 	"scripts": {
@@ -30,9 +30,9 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-chunks-question": "^4.1.0-rc1",
-		"obojobo-chunks-text": "^4.1.0-rc1",
-		"obojobo-lib-utils": "^4.1.0-rc1"
+		"obojobo-chunks-question": "^4.1.0",
+		"obojobo-chunks-text": "^4.1.0",
+		"obojobo-lib-utils": "^4.1.0"
 	},
 	"devDependencies": {
 		"lint-staged": "^6.1.1"
