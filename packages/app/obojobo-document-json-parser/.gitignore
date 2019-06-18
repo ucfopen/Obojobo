@@ -1,6 +1,7 @@
 node_modules
 .DS_Store
 ./test-object.json
+./test-object.xml
 coverage
 __test.js
 out.xml
