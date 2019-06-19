@@ -542,8 +542,8 @@ const insertLTIAssessmentScore = (
 				logId
 			}
 		)
-		.then(result => {
-			return result.id
+		.then(insertScoreResult => {
+			return insertScoreResult.id
 		})
 }
 
