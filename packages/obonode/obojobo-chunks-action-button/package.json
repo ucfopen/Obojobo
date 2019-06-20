@@ -8,7 +8,8 @@
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
-		"prettier:run": "prettier --write '**/*.{js,scss}'"
+		"prettier:run": "prettier --write '**/*.{js,scss}'",
+		"precommit": "lint-staged"
 	},
 	"lint-staged": {
 		"**/*.js": [

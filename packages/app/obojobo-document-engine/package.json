@@ -20,7 +20,8 @@
 		"prettier:run": "prettier --write '{__{tests,mocks}__,src}/**/*.{js,scss}'",
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
-		"lint:css": "stylelint **/*.scss"
+		"lint:css": "stylelint **/*.scss",
+		"precommit": "lint-staged"
 	},
 	"lint-staged": {
 		"{__{tests,mocks}__,src}/**/*.js": [

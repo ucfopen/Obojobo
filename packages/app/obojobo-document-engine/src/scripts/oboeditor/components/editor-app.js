@@ -68,7 +68,7 @@ class EditorApp extends React.Component {
 			})
 			.catch(err => {
 				// eslint-disable-next-line no-console
-				console.log(err)
+				console.error(err)
 				return this.setState({ requestStatus: 'invalid', requestError: err })
 			})
 	}

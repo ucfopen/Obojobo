@@ -9,7 +9,8 @@
 		"test": "echo 'not implemented'",
 		"test:ci": "echo 'not implemented'",
 		"test:coverage": "echo 'not implemented'",
-		"lint-staged": "echo 'not implemented'"
+		"precommit": "echo 'not implemented'"
+
 	},
 	"devDependencies": {
 		"stylelint-config-standard": "^18.2.0",

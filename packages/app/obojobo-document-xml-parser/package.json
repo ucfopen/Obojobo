@@ -18,7 +18,8 @@
     "prettier:run": "prettier --write '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
     "lint": "echo 'not implemented'",
     "lint:css": "echo 'not implemented'",
-    "lint:js": "echo 'not implemented'"
+    "lint:js": "echo 'not implemented'",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "**/*.{js,scss}": [

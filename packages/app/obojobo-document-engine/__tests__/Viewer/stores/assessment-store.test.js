@@ -16,6 +16,7 @@ import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 import LTINetworkStates from '../../../src/scripts/viewer/stores/assessment-store/lti-network-states'
 import LTIResyncStates from '../../../src/scripts/viewer/stores/assessment-store/lti-resync-states'
+import mockConsole from 'jest-mock-console';
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({
 	show: jest.fn()
@@ -34,6 +35,7 @@ jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('../../../src/scripts/viewer/util/focus-util')
 
 describe('AssessmentStore', () => {
+	let restoreConsole
 	const getExampleAssessment = () => ({
 		id: 'rootId',
 		type: 'ObojoboDraft.Modules.Module',
@@ -92,7 +94,7 @@ describe('AssessmentStore', () => {
 
 	beforeEach(done => {
 		jest.resetAllMocks()
-
+		restoreConsole = mockConsole('error')
 		AssessmentStore.init()
 		AssessmentStore.triggerChange = jest.fn()
 		QuestionStore.init()
@@ -103,6 +105,10 @@ describe('AssessmentStore', () => {
 		Registry.getItems(() => {
 			done()
 		})
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('init builds state with a specific structure and return it', () => {
@@ -261,14 +267,10 @@ describe('AssessmentStore', () => {
 		ErrorUtil.show.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		const originalError = console.error
-		console.error = jest.fn()
 
 		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
-			const errorMock = console.error
-			console.error = originalError
 			expect(ErrorUtil.show).toHaveBeenCalledTimes(1)
-			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
+			expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		})
 	})
 
@@ -339,14 +341,10 @@ describe('AssessmentStore', () => {
 		ErrorUtil.errorResponse.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		const originalError = console.error
-		console.error = jest.fn()
 
 		return AssessmentStore.tryResendLTIScore('assessmentId').then(() => {
-			const errorMock = console.error
-			console.error = originalError
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
-			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
+			expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		})
 	})
 
@@ -448,14 +446,10 @@ describe('AssessmentStore', () => {
 		ErrorUtil.errorResponse.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		const originalError = console.error
-		console.error = jest.fn()
 
 		return AssessmentStore.tryEndAttempt('assessmentId').then(() => {
-			const errorMock = console.error
-			console.error = originalError
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
-			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
+			expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		})
 	})
 
