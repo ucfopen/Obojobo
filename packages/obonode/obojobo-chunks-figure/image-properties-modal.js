@@ -87,12 +87,13 @@ class ImageProperties extends React.Component {
 								placeholder="Web Address of the Image"
 							/>
 						</div>
-						<div id="flex-item-2">Or</div>
-						<div id="flex-item-3">
-							<label htmlFor="image-file-input">
+						<div className="figure--url--or">Or</div>
+						<div className="figure--url--upload">
+							<label htmlFor="obojobo-draft--chunks--figure--image-file-input">
 								<input
 									type="file"
-									id="image-file-input"
+									id="obojobo-draft--chunks--figure--image-file-input"
+									accept={this.props.allowedUploadTypes}
 									onChange={this.handleFileChange.bind(this)}
 								/>
 								<span className="upload">Upload</span>
@@ -100,19 +101,23 @@ class ImageProperties extends React.Component {
 						</div>
 					</div>
 
-					<div className="flex-container" id="image-container">
-						<Image
-							chunk={{
-								modelState: {
-									url: this.state.url || 'https://via.placeholder.com/140x100?text=Your+Image+Here',
-									width: 140,
-									height: 100,
-									size: 'custom',
-									alt: 'preview image'
-								}
-							}}
-						/>
-						<div id="image-preview">{this.state.filename || 'Image Preview'}</div>
+					<div className="flex-container image-container">
+						{
+							this.state.url ?
+							<Image
+								chunk={{
+									modelState: {
+										url: this.state.url,
+										height: 100,
+										size: 'custom',
+										alt: 'preview image'
+									}
+								}}
+							/>
+							:
+							<span className="image-preview image-preview-placeholder">No Image</span>
+						}
+						<div className="image-preview">{this.state.filename || 'Image Preview'}</div>
 					</div>
 
 					<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
@@ -171,7 +176,7 @@ class ImageProperties extends React.Component {
 							/>
 							<label htmlFor="obojobo-draft--chunks--figure--size-custom">Custom</label>
 							{size === 'custom' ? (
-								<div className="custom-size-inputs" id="custom-size-inputs">
+								<div className="custom-size-inputs" >
 									<input
 										id="obojobo-draft--chunks--figure--custom-width"
 										name="custom-width"

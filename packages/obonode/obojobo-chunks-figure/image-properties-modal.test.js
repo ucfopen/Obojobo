@@ -30,6 +30,12 @@ describe('Image Properties Modal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('ImageProperties component with allowedUploadTypes', () => {
+		const component = mount(<ImageProperties allowedUploadTypes=".mockType1,.mockType2" content={{ size: 'custom' }} />)
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
+	})
+
 	test('ImageProperties component', () => {
 		const component = mount(<ImageProperties content={{}} />)
 		const tree = component.html()
@@ -95,7 +101,7 @@ describe('Image Properties Modal', () => {
 	test('ImageProperties component changes file', () => {
 		const component = mount(<ImageProperties content={{}} onConfirm={jest.fn} />)
 
-		component.find('#image-file-input').simulate('change', {
+		component.find('#obojobo-draft--chunks--figure--image-file-input').simulate('change', {
 			target: {
 				value: 'changed',
 				files: [

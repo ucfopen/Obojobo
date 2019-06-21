@@ -73,7 +73,7 @@
 		margin-bottom: 1em;
 	}
 
-	#image-file-input {
+	#obojobo-draft--chunks--figure--image-file-input {
 		display: none;
 	}
 
@@ -81,23 +81,38 @@
 		display: flex;
 		align-items: center;
 		margin-bottom: 1em;
+
+		&.image-container {
+			justify-content: center;
+			flex-direction: column;
+			max-width: 100%;
+
+			img{
+				border: 1px solid #ddd;
+			}
+		}
 	}
 
-	#image-container {
-		justify-content: center;
-		flex-direction: column;
-	}
-
-	#flex-item-2 {
+	.figure--url--or {
 		padding: 0 1em;
 	}
 
-	#flex-item-3 {
+	.figure--url--upload {
 		max-width: 40%;
 	}
 
-	#image-preview {
+	.image-preview{
 		font-size: 0.8em;
 		margin-top: 0.2em;
+
+		&.image-preview-placeholder{
+			height: 100px;
+			width: 150px;
+			background: #aaa9a9;
+			text-align: center;
+			box-sizing: border-box;
+			line-height: 100px;
+			color: #7d7b7b;
+		}
 	}
 }

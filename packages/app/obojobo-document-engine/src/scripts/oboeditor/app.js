@@ -34,10 +34,10 @@ if (ie) {
 	window.onblur = onBlur
 }
 
-window.__oboEditorRender = () => {
+window.__oboEditorRender = (settings = {}) => {
 	ReactDOM.render(
 		<div className="root">
-			<Editor.components.EditorApp />
+			<Editor.components.EditorApp settings={settings} />
 		</div>,
 		document.getElementById('viewer-app')
 	)

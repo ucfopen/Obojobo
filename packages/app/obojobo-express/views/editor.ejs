@@ -43,7 +43,10 @@
 			<% })
 		}
 	%>
-	<script>window.__oboEditorRender()</script>
+	<script>
+		var settings = <%- JSON.stringify(settings) %>
+		window.__oboEditorRender(settings)
+	</script>
 </body>
 
 </html>

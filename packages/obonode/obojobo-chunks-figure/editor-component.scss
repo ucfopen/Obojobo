@@ -2,18 +2,21 @@
 
 .obojobo-draft--chunks--figure {
 	.figure-box {
+		cursor: default;
 		position: relative;
 		border: 3px solid transparentize($color-action, 0.7);
 
 		.obojobo-draft--components--button {
-			display: none;
+			transition: opacity .2s linear .2s;
+			opacity: 0;
 		}
 
-		&.is-selected {
+		&:hover{
 			border: 3px solid $color-action;
 
 			.obojobo-draft--components--button {
-				display: block;
+				transition: opacity 0s;
+				opacity: 1;
 			}
 		}
 

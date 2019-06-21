@@ -53,7 +53,7 @@ class EditorStore extends Store {
 		)
 	}
 
-	init(model, startingId = null, startingPath, viewState = {}) {
+	init(model, startingId = null, settings, startingPath, viewState = {}) {
 		this.state = {
 			navItems: {},
 			itemsById: {},
@@ -65,6 +65,7 @@ class EditorStore extends Store {
 			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
 			context: 'editor',
 			currentModel: null,
+			settings,
 			startingId
 		}
 
