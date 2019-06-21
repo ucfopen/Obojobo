@@ -1,0 +1,62 @@
+'use strict';
+
+var dbm;
+var type;
+var seed;
+
+/**
+  * We receive the dbmigrate dependency from dbmigrate initially.
+  * This enables us to not have to rely on NODE_PATH.
+  */
+exports.setup = function(options, seedLink) {
+  dbm = options.dbmigrate;
+  type = dbm.dataType;
+  seed = seedLink;
+};
+
+exports.up = function(db) {
+	return db
+		.createTable('repository_groups', {
+			id: {
+				type: 'UUID',
+				primaryKey: true,
+				defaultValue: new String('uuid_generate_v4()')
+			},
+			title: { type: 'varchar', length: 100 },
+			user_id: { type: 'bigint', notNull: false },
+			parent_group_id: { type: 'UUID', notNull: false },
+			created_at: {
+				type: 'timestamp WITH TIME ZONE',
+				notNull: true,
+				defaultValue: new String('now()')
+			},
+			options: { type: 'jsonb' }
+		})
+		.then(result => {
+			return db.addIndex('repository_groups', 'groups_user_id_index', ['user_id'])
+		})
+		.then(result => {
+			return db.addIndex('repository_groups', 'groups_title_index', ['title'])
+		})
+		.then(result => {
+			return db.addIndex('repository_groups', 'groups_created_at_index', ['created_at'])
+		})
+		.then(result => {
+			return db.addIndex('repository_groups', 'groups_parent_group_id_index', ['parent_group_id'])
+		})
+		//
+		.then(() => db.runSql(`
+			INSERT
+			INTO repository_groups
+			(id, title, options)
+			VALUES('00000000-0000-0000-0000-000000000000', 'Public Library', '{}');
+		`))
+}
+
+exports.down = function(db) {
+	return db.dropTable('repository_groups')
+}
+
+exports._meta = {
+  "version": 1
+};

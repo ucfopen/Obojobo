@@ -1,0 +1,75 @@
+#!/usr/bin/env node
+/*
+
+This script is meant to be used as a proxy to db-migrate commands
+It consolidate all the migration files that have been registered
+by any obojobo-* module currently installed (see obojobo-express/index.js)
+
+running: `obojobo-migrate up`
+will execute: `db-migrate up --config /path/to/obojobo-express/config/db.json --migrations-dir /path/to/tmp/dir`
+
+running: `obojobo-migrate create add-a-table`
+will execute: `db-migrate create add-a-table --config /path/to/obojobo-express/config/db.json --migrations-dir /path/to/this/packages/migrations`
+ */
+
+const path = require('path')
+const utils = require('../index')
+const fs = require('fs-extra')
+const os = require('os')
+const { execSync } = require( 'child_process' )
+const dbMigratePath =  require.resolve('db-migrate/bin/db-migrate')
+const configPath = require.resolve('obojobo-express/config/db.json')
+const args = process.argv.slice(2).join(' ')
+const isCreateMode = args.includes('create')
+
+let command
+
+if(!isCreateMode){
+	const tempDir = fs.mkdtempSync(`${os.tmpdir()}/obojobo-migrations-`)
+
+	try{
+		// useful to understand how args are being inserted into the command
+		command = `${dbMigratePath} ${args} --config ${configPath} --migrations-dir ${tempDir}`
+
+		// gather all the migrations into a tmp dir
+		utils.gatherAllMigrations().forEach(dir => fs.copySync(dir, tempDir))
+
+		// log and execute
+		console.log(command)
+
+		const output = execSync(command)
+		console.log(output.toString())
+
+	} catch(error) {
+		console.log(error)
+		process.exit(1)
+	}
+
+	// cleanup
+	fs.removeSync(tempDir)
+	return
+}
+
+// look for my obojobo config - assumes cwd is the root of a project
+const myIndex = require(`${process.cwd()}/index.js`)
+if(!(myIndex.obojobo && myIndex.obojobo.migrations)){
+	/*
+	Look at the package this command is being run in and look for an index.js that looks like
+
+	module.exports = {
+		obojobo: {
+			migrations: 'server/migrations'
+		}
+	}
+	 */
+	console.log("unable to find obojobo.migrations defined in the current working directory")
+}
+
+const localMigrationsDir = `${process.cwd()}/${myIndex.obojobo.migrations}`
+
+command = `${dbMigratePath} ${args} --config ${configPath} --migrations-dir ${localMigrationsDir}`
+
+// log and execute
+console.log(command)
+const output = execSync(command)
+console.log(output.toString())

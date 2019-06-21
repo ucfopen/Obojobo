@@ -1,3 +1,5 @@
+const path = require('path')
+
 const flattenArray = array => {
 	let result = []
 	if (!array) return null
@@ -35,12 +37,11 @@ const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 	if (!manifest.obojobo) return null
 	let scripts
 	if(type =='obonodes') type = 'server'
-
 	if(type == 'middleware') scripts = manifest.obojobo.expressMiddleware
+	if(type == 'migrations') scripts = manifest.obojobo.migrations
 	else if(manifest.obojobo[`${type}Scripts`]){
 		scripts = manifest.obojobo[`${type}Scripts`]
 	}
-
 	if (!scripts) return null
 	return scripts
 }
@@ -70,6 +71,36 @@ const getAllOboNodeScriptPathsByType = type => {
 	return flat.filter(a => a !== null)
 }
 
+const gatherAllMigrations = () => {
+	const modules = searchNodeModulesForOboNodes()
+	const allDirs = []
+	let migrationDirs = modules.map(module => {
+		const dir = getOboNodeScriptPathsFromPackage(module, 'migrations')
+		if(!dir) return
+		const basedir = path.dirname(require.resolve(module))
+		allDirs.push(`${basedir}/${dir}`)
+	})
+	return allDirs
+}
+
+const migrateUp = () => {
+	const { execSync } = require( 'child_process' )
+	const dbMigratePath =  require.resolve('db-migrate/bin/db-migrate')
+	const configPath = require.resolve('obojobo-express/config/db.json')
+	const migrationDirs = gatherAllMigrations()
+		// "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
+		// "db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",
+		// "db:migrateup": "node_modules/.bin/db-migrate up --config config/db.json",
+		// "db:migratedown": "node_modules/.bin/db-migrate down --config config/db.json",
+		// "db:createmigration": "node_modules/.bin/db-migrate create --config config/db.json",
+		// "db:remove": "(docker kill db_postgres || true) && (docker rm db_postgres || true)",
+		// "db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
+	migrationDirs.forEach(dir => {
+		console.log(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
+		let output = execSync(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`);
+		// console.log(output)
+	})
+}
 
 const gatherClientScriptsFromModules = () => {
 	const defaultOrderKey = '500'
@@ -138,5 +169,7 @@ module.exports = {
 	searchNodeModulesForOboNodes,
 	getAllOboNodeScriptPathsByType,
 	flattenArray,
+	gatherAllMigrations,
+	migrateUp,
 	gatherClientScriptsFromModules
 }
