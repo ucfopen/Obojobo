@@ -50,7 +50,7 @@ class Figure extends React.Component {
 
 	changeProperties(content) {
 		const editor = this.props.editor
-		return editor.setNodeByKey(this.props.node.key, {
+		editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
 	}
@@ -58,7 +58,7 @@ class Figure extends React.Component {
 	deleteNode() {
 		const editor = this.props.editor
 
-		return editor.removeNodeByKey(this.props.node.key)
+		editor.removeNodeByKey(this.props.node.key)
 	}
 
 	renderEditToolbar() {

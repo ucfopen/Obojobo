@@ -5,17 +5,12 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
-jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util', () => ({
-	postMultiPart: jest.fn().mockResolvedValue({ mediaId: 'mockMediaId' }),
-	get: jest
-		.fn()
-		.mockResolvedValue({ json: jest.fn().mockResolvedValue({ filename: 'mock-filename' }) })
-}))
 
 describe('Figure Editor Node', () => {
 	beforeEach(() => {
 		jest.restoreAllMocks()
 	})
+
 	test('Figure component', () => {
 		const component = renderer.create(
 			<Figure
@@ -31,7 +26,6 @@ describe('Figure Editor Node', () => {
 			/>
 		)
 		const tree = component.toJSON()
-
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -151,20 +145,31 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('changeProperties sets the nodes content', () => {
-		document.getElementById = jest.fn().mockReturnValue({
-			files: [
-				new window.Blob([JSON.stringify({ name: 'some name' })], { type: 'application/json' })
-			]
-		})
-
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+		const editor = {setNodeByKey: jest.fn()}
+		const mockContent = {mockContent: true}
+		const newMockContent = { newMockContent: 999 }
 		const component = mount(
 			<Figure
 				node={{
 					key: 'mockKey',
+					data: {
+						get: () => mockContent
+					}
+				}}
+				editor={editor}
+			/>
+		)
+
+		component.instance().changeProperties(newMockContent)
+		expect(editor.setNodeByKey).toHaveBeenCalledWith('mockKey', {data: {content: newMockContent}})
+	})
+
+	test('Figure component delete button calls editor.removeNodeByKey', () => {
+		const editor = {removeNodeByKey: jest.fn()}
+
+		const component = mount(
+			<Figure
+				node={{
 					data: {
 						get: () => ({})
 					}
@@ -173,60 +178,11 @@ describe('Figure Editor Node', () => {
 			/>
 		)
 
-		return component
-			.instance()
-			.changeProperties({ mockProperties: 'mock value' })
-			.then(() => {
-				expect(editor.setNodeByKey.mock.calls[0][0]).toBe('mockKey')
-				expect(editor.setNodeByKey.mock.calls[0][1]).toEqual({
-					data: {
-						content: {
-							filename: 'mock-filename',
-							mockProperties: 'mock value',
-							url: 'mockMediaId'
-						}
-					}
-				})
-			})
-			.then(() => {
-				// case for no file
-				document.getElementById = jest.fn().mockReturnValue({ files: [null] })
-				component.instance().changeProperties({ mockProperties: 'another mock value' })
-				expect(editor.setNodeByKey.mock.calls[1][0]).toBe('mockKey')
-				expect(editor.setNodeByKey.mock.calls[1][1]).toEqual({
-					data: {
-						content: {
-							mockProperties: 'another mock value'
-						}
-					}
-				})
-			})
-	})
+		const deleteButton = component.find('button').at(0)
+		expect(deleteButton.props().children).toBe('×')
 
-	test('Figure component deletes self', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<Figure
-				node={{
-					key: 'mockKey',
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={editor}
-			/>
-		)
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
+		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
+		deleteButton.simulate('click')
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
 })
