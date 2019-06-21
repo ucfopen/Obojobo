@@ -209,17 +209,6 @@ class Media {
 		}
 	}
 
-	static async fetchFileName(mediaId) {
-		return await db.one(
-			`
-			SELECT file_name
-			FROM media
-			WHERE id = $[mediaId]
-			`,
-			{ mediaId }
-		)
-	}
-
 	static storeImageInDb({ filename, binary, size, mimetype, dimensions, mode, mediaId, userId }) {
 		let mediaBinaryInfo = null
 
@@ -271,13 +260,14 @@ class Media {
 							RETURNING *`,
 							{ userId, filename }
 						)
+						.then((insertMediaResult) => {
+							// update the mediaId now that we have it
+							// if we're resizing, we already have it
+							mediaId = insertMediaResult.id
+						})
 					}
 				})
 				.then(result => {
-					// If a resized image is being stored, a new media record was not created. The mediaId of the
-					// original image the resized image was derived from must be passed in and used.
-					const mediaRecordId = mode === MODE_INSERT_ORIGINAL_IMAGE ? result.id : mediaId
-
 					// The media_binaries table links media records to their respective binary information. This
 					// query creates that link. Both original and resized images must be linked. Since resized
 					// images have the same id as the original they are derived from, a dimensions field is
@@ -287,12 +277,19 @@ class Media {
 							INSERT INTO media_binaries
 								(media_id, binary_id, dimensions)
 							VALUES
-								($[mediaRecordId], $[mediaBinariesId], $[dimensions])
+								($[mediaId], $[mediaBinariesId], $[dimensions])
 							RETURNING *`,
-						{ mediaRecordId, mediaBinariesId: mediaBinaryInfo.id, dimensions }
+						{ mediaId, mediaBinariesId: mediaBinaryInfo.id, dimensions }
 					)
 				})
 		})
+		.then((insertBinaryResult) => ({
+			media_id: mediaId,
+			filename,
+			mode,
+			mimetype,
+			dimensions
+		}))
 	}
 
 	static async saveImageAtNewSize(originalImageId, originalImageBinary, targetDimensions) {
@@ -364,7 +361,7 @@ class Media {
 				// Delete the temporary media stored by Multer
 				fs.unlinkSync(fileInfo.path)
 				// ID of the user media, not the binary data
-				return mediaRecord.media_id
+				return mediaRecord
 			})
 			.catch(err => {
 				logger.error(err)

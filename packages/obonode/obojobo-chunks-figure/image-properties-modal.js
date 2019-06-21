@@ -24,14 +24,8 @@ class ImageProperties extends React.Component {
 		const file = event.target.files[0]
 		const formData = new window.FormData()
 		formData.append('userImage', file, file.name)
-		APIUtil.postMultiPart('/api/media/upload', formData).then(({ mediaId }) => {
-			this.setState({ url: mediaId, urlInputText: '' }, () => {
-				APIUtil.get(`/api/media/filename/${mediaId}`).then(res => {
-					res.json().then(({ filename }) => {
-						this.setState({ filename })
-					})
-				})
-			})
+		APIUtil.postMultiPart('/api/media/upload', formData).then(mediaData => {
+			this.setState({ url: mediaData.media_id, urlInputText: '', filename: mediaData.filename })
 		})
 	}
 

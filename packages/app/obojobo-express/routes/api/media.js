@@ -42,8 +42,8 @@ router
 			.then(() => {
 				return (
 					MediaModel.createAndSave(req.currentUser.id, req.file)
-						.then(mediaId => {
-							res.send({ mediaId })
+						.then(mediaData => {
+							res.json(mediaData)
 						})
 						// catches errors thrown by Media Model
 						.catch(next)

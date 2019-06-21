@@ -50,28 +50,6 @@ class Figure extends React.Component {
 
 	changeProperties(content) {
 		const editor = this.props.editor
-
-		const fileInput = document.getElementById('image-file-input')
-		// fileInput is input type "file" so will always have FileList
-		const file = fileInput.files[0]
-		if (file) {
-			const formData = new window.FormData()
-			formData.append('userImage', file, file.name)
-
-			return APIUtil.postMultiPart('/api/media/upload', formData).then(({ mediaId }) => {
-				content.url = mediaId
-
-				return APIUtil.get(`/api/media/filename/${mediaId}`).then(res => {
-					res.json().then(({ filename }) => {
-						content.filename = filename
-						editor.setNodeByKey(this.props.node.key, {
-							data: { content }
-						})
-					})
-				})
-			})
-		}
-
 		return editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
