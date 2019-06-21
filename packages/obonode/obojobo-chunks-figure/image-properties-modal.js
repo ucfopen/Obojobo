@@ -8,6 +8,7 @@ import Image from './image'
 import React from 'react'
 
 const { SimpleDialog } = Common.components.modal
+const URL_UPDATE_DELAY = 750
 
 class ImageProperties extends React.Component {
 	constructor(props) {
@@ -32,7 +33,7 @@ class ImageProperties extends React.Component {
 	handleURLTextChange(event) {
 		const urlInputText = event.target.value
 		this.setState({ urlInputText })
-		debounce(750, () => this.setState({ url: urlInputText, filename: null }))
+		debounce(URL_UPDATE_DELAY, () => this.setState({ url: urlInputText, filename: null }))
 	}
 
 	handleAltTextChange(event) {
@@ -110,7 +111,7 @@ class ImageProperties extends React.Component {
 										url: this.state.url,
 										height: 100,
 										size: 'custom',
-										alt: 'preview image'
+										alt: 'Image preview'
 									}
 								}}
 							/>
