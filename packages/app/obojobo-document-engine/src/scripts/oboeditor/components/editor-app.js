@@ -55,7 +55,6 @@ class EditorApp extends React.Component {
 			})
 			.then(({ value: draftModel }) => {
 				const obomodel = OboModel.create(draftModel)
-				console.log(this.props.settings)
 				EditorStore.init(obomodel, draftModel.content.start, this.props.settings, window.location.pathname)
 
 				return this.setState({
@@ -68,7 +67,7 @@ class EditorApp extends React.Component {
 				})
 			})
 			.catch(err => {
-				// eslint-disable-next-line
+				// eslint-disable-next-line no-console
 				console.log(err)
 				return this.setState({ requestStatus: 'invalid', requestError: err })
 			})
