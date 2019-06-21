@@ -96,11 +96,7 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	const isACorrectChoice = model.get('content').score === 100
 
 	if (isASurveyQuestion) {
-		if (isSelected) {
-			return CHOSEN_SURVEY
-		} else {
-			return UNCHOSEN_CORRECTLY
-		}
+		return isSelected ? CHOSEN_SURVEY : UNCHOSEN_CORRECTLY
 	}
 
 	if (isSelected) {
@@ -132,7 +128,6 @@ const MCChoice = props => {
 			props.moduleData.navState.context
 		)
 	} catch (error) {
-		console.error('e', error)
 		// if there's no questionState data for this
 		// or getting the score throws an error
 		// just display a div
@@ -159,7 +154,7 @@ const MCChoice = props => {
 		isOrNot(isCorrect, 'correct') +
 		` is-type-${ansType}` +
 		` is-mode-${props.mode}`
-	2
+
 	return (
 		<OboComponent
 			model={props.model}
@@ -177,7 +172,7 @@ const MCChoice = props => {
 				aria-checked={isSelected}
 				disabled={props.mode === 'review'}
 			/>
-			{isSelected && props.questionSubmitted && props.type === 'review' ? (
+			{isSelected && props.questionSubmitted && props.type !== 'review' ? (
 				<span className="for-screen-reader-only">
 					{getChoiceText(isCorrect, props.responseType === 'pick-all')}
 				</span>

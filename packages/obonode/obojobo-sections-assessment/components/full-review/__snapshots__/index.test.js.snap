@@ -194,14 +194,14 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
       className="review is-basic-review"
     >
       <div
-        className="is-not-correct"
+        className="is-mode-review is-not-correct"
       >
         <p>
           Question 1: Incorrect
         </p>
         <div
           aria-label="Question"
-          className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice"
+          className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-review is-type-default"
           data-focussed={false}
           data-id="question"
           data-obo-component={true}
@@ -217,7 +217,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
               className="content-back"
             >
               <div
-                className="obojobo-draft--chunks--mc-question--content"
+                className="obojobo-draft--chunks--question--content"
               />
               <div
                 className="pad responses-hidden"

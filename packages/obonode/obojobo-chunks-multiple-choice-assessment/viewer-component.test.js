@@ -160,531 +160,801 @@ const questionJSON = {
 	]
 }
 
+const createComponent = ({
+	type = 'default', //'default' | 'survey'
+	mode = 'practice', //'practice' | 'assessment' | 'review'
+	score = null, //null, 0 or 100
+	hasSolution = true,
+	sortedIds = ['choice1', 'choice2'],
+	response = null, //null or { ids: [some array] }
+	correctLabels = null, //not defined or an array
+	incorrectLabels = null, //not defined or an array
+	responseType = 'pick-one', //'pick-one', 'pick-one-multiple-correct' or 'pick-all'
+	shuffle = true, //true or false or not set
+	isShowingExplanation = null //true or false or not set
+}) => {
+	const moduleData = {
+		questionState: 'mockQuestionState',
+		navState: {
+			context: 'mockContext'
+		},
+		focusState: {
+			state: {
+				focussedId: 'id'
+			}
+		}
+	}
+	const parent = OboModel.create(questionJSON)
+	if (!hasSolution) parent.modelState.solution = null
+	const model = parent.children.models[0]
+
+	if (correctLabels) {
+		model.modelState.correctLabels = correctLabels
+	}
+	if (incorrectLabels) {
+		model.modelState.incorrectLabels = incorrectLabels
+	}
+	if (responseType) {
+		model.modelState.responseType = responseType
+	}
+	if (shuffle) {
+		model.modelState.shuffle = shuffle
+	}
+	if (isShowingExplanation) {
+		QuestionUtil.isShowingExplanation.mockReturnValue(true)
+	}
+
+	QuestionUtil.getScoreForModel.mockReturnValue(score)
+	QuestionUtil.getResponse.mockReturnValue(response)
+	QuestionUtil.getData.mockReturnValue(sortedIds)
+
+	return renderer.create(
+		<MCAssessment model={model} moduleData={moduleData} mode={mode} type={type} />
+	)
+}
+
+let originalGetRandomItem
+
 describe('MCAssessment', () => {
 	beforeAll(() => {
 		_.shuffle = a => a
 	})
 	beforeEach(() => {
 		jest.resetAllMocks()
+
+		// Override the getRandomItem method to be deterministic
+		originalGetRandomItem = MCAssessment.prototype.getRandomItem
+		MCAssessment.prototype.getRandomItem = a => a[0]
+	})
+	afterEach(() => {
+		MCAssessment.prototype.getRandomItem = originalGetRandomItem
 	})
 
 	// MCAssessment component tests
 	test('MCAssessment component', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render
-		QuestionUtil.getData.mockReturnValueOnce(['choice1', 'choice2'])
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+		expect(createComponent({}).toJSON()).toMatchSnapshot()
 	})
 
-	test('MCAssessment component review mode', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render
-		QuestionUtil.getData.mockReturnValueOnce(['choice1', 'choice2'])
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="review" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with labels', () => {
+		expect(
+			createComponent({
+				correctLabels: ['mockCorrectLabels'],
+				incorrectLabels: ['mockIncorrectLabels']
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with labels', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-		model.modelState.correctLabels = ['mockCorrectLabels']
-		model.modelState.incorrectLabels = ['mockIncorrectLabels']
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render
-		QuestionUtil.getData.mockReturnValueOnce(['choice1', 'choice2'])
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component not shuffled', () => {
+		expect(
+			createComponent({
+				shuffle: false
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component not shuffled', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-		model.modelState.shuffle = false
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render
-		QuestionUtil.getData.mockReturnValueOnce(['choice1', 'choice2'])
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with sortedIds', () => {
+		expect(
+			createComponent({
+				sortedIds: ['choice2', 'choice1']
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with sortedIds', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// mock for constructor
-		// false meaning call to sort will be made
-		QuestionUtil.getData.mockReturnValueOnce(false)
-		// mock for render
-		QuestionUtil.getData.mockReturnValueOnce(['choice2', 'choice1'])
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component pick-one-multiple-correct', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_MULTI_CORRECT
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with feedback in sortedIds', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render
-		QuestionUtil.getData.mockReturnValueOnce(['choice2', 'choice1', 'choice2-feedback'])
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component pick-all', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_PICK_ALL
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with one response', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render
-		QuestionUtil.getData.mockReturnValueOnce(['choice2', 'choice1', 'choice2-feedback'])
-
-		// Mock for isAnswerSelected - choice1 was selected
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with incorrect score', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with incorrect response in review mode', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// Only one label to prevent Math.random from altering the snapshot
-		model.modelState.incorrectLabels = ['mockIncorrectLabels']
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render()
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		// mock for getScore() - answer was incorrect
-		QuestionUtil.getScoreForModel.mockReturnValue(0)
-
-		// Mock for isAnswerSelected - choice1 was selected
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="review" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with correct score', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with incorrect response in review mode - pick-all', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// Only one label to prevent Math.random from altering the snapshot
-		model.modelState.incorrectLabels = ['mockIncorrectLabels']
-		model.modelState.responseType = TYPE_PICK_ALL
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render()
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		// mock for getScore() - answer was incorrect
-		QuestionUtil.getScoreForModel.mockReturnValue(0)
-
-		// Mock for isAnswerSelected - choice1 was selected
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="review" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with incorrect score, pick-one-multiple-correct', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0,
+				responseType: TYPE_MULTI_CORRECT
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with correct response in review mode', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// Only one label to prevent Math.random from altering the snapshot
-		model.modelState.correctLabels = ['mockCorrectLabels']
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render()
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		// mock for getScore() - answer was correct
-		QuestionUtil.getScoreForModel.mockReturnValue(100)
-
-		// Mock for isAnswerSelected - choice1 was selected
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="review" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with correct score, pick-one-multiple-correct', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				responseType: TYPE_MULTI_CORRECT
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with correct response in review mode - multiple-correct', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-		// Only one label to prevent Math.random from altering the snapshot
-		model.modelState.correctLabels = ['mockCorrectLabels']
-		model.modelState.responseType = TYPE_MULTI_CORRECT
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-
-		// mock for render()
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		// mock for getScore() - answer was correct
-		QuestionUtil.getScoreForModel.mockReturnValue(100)
-
-		// Mock for isAnswerSelected - choice1 was selected
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="review" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with incorrect score, pick-all', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1', 'choice2'] },
+				score: 0,
+				responseType: TYPE_PICK_ALL
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with one response in practice mode', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render() - no ids sorted
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		// mock for getScore - unscored
-		QuestionUtil.getScoreForModel.mockReturnValue(null)
-
-		// Mock for isAnswerSelected - choice1 was selected
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="practice" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with correct score, pick-all', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				responseType: TYPE_PICK_ALL
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with incorrect response in practice mode', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-		// Only one label to prevent Math.random from altering the snapshot
-		model.modelState.incorrectLabels = ['mockIncorrectLabels']
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render() - no ids sorted
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		// mock for getScore - incorrect
-		QuestionUtil.getScoreForModel.mockReturnValue(0)
-
-		// Mock for isAnswerSelected - choice1 was selected
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="practice" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with incorrect score and showing explanation', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0,
+				isShowingExplanation: true
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	test('MCAssessment component with multiple responses', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render()
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		// Mock for isAnswerSelected - choice1 and choice 2 were selected
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1', 'choice2'] })
-		// Mock for feedback
-		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1', 'choice2'] })
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('MCAssessment component question with visible explanation', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render()
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		QuestionUtil.isShowingExplanation.mockReturnValueOnce(true)
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Component with correct score and showing explanation', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				isShowingExplanation: true
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
 	test('MCAssessment component question with no solution page', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {
-				state: {
-					focussedId: 'id'
-				}
-			}
-		}
-		const parent = OboModel.create(questionJSON)
-		const model = parent.children.models[0]
-		model.parent.modelState.solution = null
-
-		// mock for constructor
-		QuestionUtil.getData.mockReturnValueOnce(true)
-		// mock for render()
-		QuestionUtil.getData.mockReturnValueOnce([])
-
-		const component = renderer.create(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				solution: null
+			}).toJSON()
+		).toMatchSnapshot()
 	})
 
-	///////
+	///////////////////////////
+
+	test('MCAssessment component, review', () => {
+		expect(
+			createComponent({
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with labels, review', () => {
+		expect(
+			createComponent({
+				correctLabels: ['mockCorrectLabels'],
+				incorrectLabels: ['mockIncorrectLabels'],
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component not shuffled, review', () => {
+		expect(
+			createComponent({
+				shuffle: false,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with sortedIds, review', () => {
+		expect(
+			createComponent({
+				sortedIds: ['choice2', 'choice1'],
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-one-multiple-correct, review', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-all, review', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_PICK_ALL,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with incorrect score, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with correct score, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with incorrect score, pick-one-multiple-correct, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0,
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with correct score, pick-one-multiple-correct, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with incorrect score, pick-all, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1', 'choice2'] },
+				score: 0,
+				responseType: TYPE_PICK_ALL,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with correct score, pick-all, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				responseType: TYPE_PICK_ALL,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with incorrect score and showing explanation, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0,
+				isShowingExplanation: true,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with correct score and showing explanation, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				isShowingExplanation: true,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('MCAssessment component question with no solution page, review', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				solution: null,
+				mode: 'review'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	////////////////////
+
+	test('MCAssessment component, assessment', () => {
+		expect(
+			createComponent({
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with labels, assessment', () => {
+		expect(
+			createComponent({
+				correctLabels: ['mockCorrectLabels'],
+				incorrectLabels: ['mockIncorrectLabels'],
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component not shuffled, assessment', () => {
+		expect(
+			createComponent({
+				shuffle: false,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with sortedIds, assessment', () => {
+		expect(
+			createComponent({
+				sortedIds: ['choice2', 'choice1'],
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-one-multiple-correct, assessment', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-all, assessment', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_PICK_ALL,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with incorrect score, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with correct score, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with incorrect score, pick-one-multiple-correct, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0,
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with correct score, pick-one-multiple-correct, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with incorrect score, pick-all, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1', 'choice2'] },
+				score: 0,
+				responseType: TYPE_PICK_ALL,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with correct score, pick-all, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				responseType: TYPE_PICK_ALL,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with incorrect score and showing explanation, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 0,
+				isShowingExplanation: true,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with correct score and showing explanation, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				isShowingExplanation: true,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('MCAssessment component question with no solution page, assessment', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1'] },
+				score: 100,
+				solution: null,
+				mode: 'assessment'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	/////////////////
+	///////////////////
+	/////////////////////
+
+	test('MCAssessment component (survey)', () => {
+		expect(
+			createComponent({
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with labels (survey)', () => {
+		expect(
+			createComponent({
+				correctLabels: ['mockCorrectLabels'],
+				incorrectLabels: ['mockIncorrectLabels'],
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component not shuffled (survey)', () => {
+		expect(
+			createComponent({
+				shuffle: false,
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with sortedIds (survey)', () => {
+		expect(
+			createComponent({
+				sortedIds: ['choice2', 'choice1'],
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-one-multiple-correct (survey)', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_MULTI_CORRECT,
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-all (survey)', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_PICK_ALL,
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 'no-score',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted, pick-one-multiple-correct (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 'no-score',
+				responseType: TYPE_MULTI_CORRECT,
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted, pick-all (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1', 'choice2'] },
+				score: 'no-score',
+				responseType: TYPE_PICK_ALL,
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	///////////////////////////
+
+	test('MCAssessment component, review (survey)', () => {
+		expect(
+			createComponent({
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with labels, review (survey)', () => {
+		expect(
+			createComponent({
+				correctLabels: ['mockCorrectLabels'],
+				incorrectLabels: ['mockIncorrectLabels'],
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component not shuffled, review (survey)', () => {
+		expect(
+			createComponent({
+				shuffle: false,
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with sortedIds, review (survey)', () => {
+		expect(
+			createComponent({
+				sortedIds: ['choice2', 'choice1'],
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-one-multiple-correct, review (survey)', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-all, review (survey)', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_PICK_ALL,
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted, review (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 'no-score',
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted, pick-one-multiple-correct, review (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 'no-score',
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted, pick-all, review (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1', 'choice2'] },
+				score: 'no-score',
+				responseType: TYPE_PICK_ALL,
+				mode: 'review',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	////////////////////
+
+	test('MCAssessment component, assessment (survey)', () => {
+		expect(
+			createComponent({
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with labels, assessment (survey)', () => {
+		expect(
+			createComponent({
+				correctLabels: ['mockCorrectLabels'],
+				incorrectLabels: ['mockIncorrectLabels'],
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component not shuffled, assessment (survey)', () => {
+		expect(
+			createComponent({
+				shuffle: false,
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component with sortedIds, assessment (survey)', () => {
+		expect(
+			createComponent({
+				sortedIds: ['choice2', 'choice1'],
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-one-multiple-correct, assessment (survey)', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component pick-all, assessment (survey)', () => {
+		expect(
+			createComponent({
+				responseType: TYPE_PICK_ALL,
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted, assessment (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 'no-score',
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted, pick-one-multiple-correct, assessment (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice2'] },
+				score: 'no-score',
+				responseType: TYPE_MULTI_CORRECT,
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	test('Component submitted, pick-all, assessment (survey)', () => {
+		expect(
+			createComponent({
+				response: { ids: ['choice1', 'choice2'] },
+				score: 'no-score',
+				responseType: TYPE_PICK_ALL,
+				mode: 'assessment',
+				type: 'survey'
+			}).toJSON()
+		).toMatchSnapshot()
+	})
+
+	///////////////////////
 
 	// MCAssessment function tests
 	test('getQuestionModel gets the parent question', () => {
@@ -696,7 +966,7 @@ describe('MCAssessment', () => {
 		const model = parent.children.models[0]
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const retrivedParent = component.instance().getQuestionModel()
 
@@ -722,7 +992,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue(null)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const data = component.instance().getResponseData()
 
@@ -757,7 +1027,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice2'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const data = component.instance().getResponseData()
 
@@ -789,7 +1059,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice2'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const score = component.instance().calculateScore()
 
@@ -812,7 +1082,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const score = component.instance().calculateScore()
 
@@ -835,7 +1105,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1', 'choice2'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const score = component.instance().calculateScore()
 
@@ -858,7 +1128,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice2'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const score = component.instance().calculateScore()
 
@@ -881,17 +1151,42 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const score = component.instance().calculateScore()
 
 		expect(score).toEqual(100)
 	})
 
+	test('calculateScore returns "no-score" with survey question', () => {
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: {}
+		}
+		const parent = OboModel.create(questionJSON)
+		parent.modelState.type = 'survey'
+		const model = parent.children.models[0]
+
+		// choice1 was selected - correct
+		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
+
+		const component = shallow(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
+		)
+		const score = component.instance().calculateScore()
+
+		expect(score).toEqual('no-score')
+	})
+
 	test('isShowingExplanation calls QuestionUtil', () => {
 		const moduleData = {
 			questionState: 'mockQuestionState',
-			navState: {},
+			navState: {
+				context: 'mockContext'
+			},
 			focusState: {}
 		}
 		const parent = OboModel.create(questionJSON)
@@ -900,11 +1195,15 @@ describe('MCAssessment', () => {
 		QuestionUtil.isShowingExplanation.mockReturnValue('mockShowing')
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const showing = component.instance().isShowingExplanation()
 
-		expect(QuestionUtil.isShowingExplanation).toHaveBeenCalledWith('mockQuestionState', parent)
+		expect(QuestionUtil.isShowingExplanation).toHaveBeenCalledWith(
+			'mockQuestionState',
+			parent,
+			'mockContext'
+		)
 		expect(showing).toEqual('mockShowing')
 	})
 
@@ -918,7 +1217,7 @@ describe('MCAssessment', () => {
 		const model = parent.children.models[0]
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().retry()
 
@@ -935,11 +1234,11 @@ describe('MCAssessment', () => {
 		const model = parent.children.models[0]
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().hideExplanation()
 
-		expect(QuestionUtil.hideExplanation).toHaveBeenCalledWith('parent', 'user')
+		expect(QuestionUtil.hideExplanation).toHaveBeenCalledWith('parent', 'mockContext', 'user')
 	})
 
 	test('onClickReset modifies event, updates nextFocus and calls retry', () => {
@@ -953,7 +1252,7 @@ describe('MCAssessment', () => {
 		const event = { preventDefault: jest.fn() }
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		expect(component.instance().nextFocus).not.toBeDefined()
 		component.instance().onClickReset(event)
@@ -978,13 +1277,40 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().onFormSubmit(event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(QuestionUtil.setScore).toHaveBeenCalledWith('parent', 100, 'mockContext')
-		expect(QuestionUtil.checkAnswer).toHaveBeenCalledWith('parent')
+		expect(QuestionUtil.checkAnswer).toHaveBeenCalledWith('parent', 'mockContext')
+		expect(QuestionUtil.submitResponse).not.toHaveBeenCalled()
+	})
+
+	test('onFormSubmit calls QuestionUtil.submitResponse for survey question', () => {
+		const moduleData = {
+			navState: {
+				context: 'mockContext'
+			}
+		}
+		const parent = OboModel.create(questionJSON)
+		parent.modelState.type = 'survey'
+		const model = parent.children.models[0]
+		const event = { preventDefault: jest.fn() }
+
+		// mock for getResponses() (called by calculateScore)
+		// choice1 is correct, so score will be 100
+		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1'] })
+
+		const component = shallow(
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
+		)
+		component.instance().onFormSubmit(event)
+
+		expect(event.preventDefault).toHaveBeenCalled()
+		expect(QuestionUtil.setScore).toHaveBeenCalledWith('parent', 'no-score', 'mockContext')
+		expect(QuestionUtil.checkAnswer).not.toHaveBeenCalled()
+		expect(QuestionUtil.submitResponse).toHaveBeenCalledWith('parent', 'mockContext')
 	})
 
 	test('onClickShowExplanation modifies event, calls QuestionUtil and updates nextFocus', () => {
@@ -998,7 +1324,7 @@ describe('MCAssessment', () => {
 		const event = { preventDefault: jest.fn() }
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		expect(component.instance().nextFocus).not.toBeDefined()
 
@@ -1006,7 +1332,7 @@ describe('MCAssessment', () => {
 
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(component.instance().nextFocus).toBe('explanation')
-		expect(QuestionUtil.showExplanation).toHaveBeenCalledWith('parent')
+		expect(QuestionUtil.showExplanation).toHaveBeenCalledWith('parent', 'mockContext')
 	})
 
 	test('onClickHideExplanation modifies event and calls QuestionUtil', () => {
@@ -1020,12 +1346,12 @@ describe('MCAssessment', () => {
 		const event = { preventDefault: jest.fn() }
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().onClickHideExplanation(event)
 
 		expect(event.preventDefault).toHaveBeenCalled()
-		expect(QuestionUtil.hideExplanation).toHaveBeenCalledWith('parent', 'user')
+		expect(QuestionUtil.hideExplanation).toHaveBeenCalledWith('parent', 'mockContext', 'user')
 	})
 
 	test('onFormChange terminates if clicked item was not an MCChoice', () => {
@@ -1043,7 +1369,7 @@ describe('MCAssessment', () => {
 		DOMUtil.findParentWithAttr.mockReturnValueOnce(null)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().onFormChange(event)
 
@@ -1072,7 +1398,7 @@ describe('MCAssessment', () => {
 		DOMUtil.findParentWithAttr.mockReturnValueOnce(mcChoiceEl)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().onFormChange(event)
 
@@ -1108,7 +1434,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getScoreForModel.mockReturnValue(100)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		expect(component.instance().nextFocus).not.toBeDefined()
 
@@ -1150,7 +1476,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getScoreForModel.mockReturnValue(null)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		expect(component.instance().nextFocus).not.toBeDefined()
 
@@ -1203,7 +1529,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue(null)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		expect(component.instance().nextFocus).not.toBeDefined()
 
@@ -1259,7 +1585,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice2'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		expect(component.instance().nextFocus).not.toBeDefined()
 
@@ -1315,7 +1641,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice1', 'choice2'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		expect(component.instance().nextFocus).not.toBeDefined()
 
@@ -1353,7 +1679,7 @@ describe('MCAssessment', () => {
 		const model = parent.children.models[0]
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().getScore()
 
@@ -1375,7 +1701,7 @@ describe('MCAssessment', () => {
 		// short circuits sortIds
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
-		mount(<MCAssessment model={model} moduleData={moduleData} mode="assessment" />)
+		mount(<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />)
 
 		expect(QuestionUtil.getData).toHaveBeenCalled()
 		expect(Dispatcher.on).toHaveBeenCalledWith(ACTION_CHECK_ANSWER, expect.any(Function))
@@ -1393,7 +1719,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = mount(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		component.unmount()
@@ -1414,7 +1740,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().onCheckAnswer({
 			value: {
@@ -1441,7 +1767,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getResponse.mockReturnValue({ ids: ['choice2'] })
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().onCheckAnswer({
 			value: {
@@ -1465,7 +1791,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = mount(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.setProps({ model, moduleData })
 
@@ -1486,7 +1812,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		// clear out mock data from the componentOnMount() call
@@ -1499,6 +1825,7 @@ describe('MCAssessment', () => {
 		expect(QuestionUtil.getData).toHaveBeenCalledWith(
 			'mockQuestionState',
 			expect.any(OboModel),
+			'mockContext',
 			'sortedIds'
 		)
 	})
@@ -1517,7 +1844,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		// clear out mock data from the componentOnMount() call
@@ -1530,9 +1857,13 @@ describe('MCAssessment', () => {
 		expect(QuestionUtil.getData).toHaveBeenCalledWith(
 			'mockQuestionState',
 			expect.any(OboModel),
+			'mockContext',
 			'sortedIds'
 		)
-		expect(QuestionUtil.setData).toHaveBeenCalledWith('id', 'sortedIds', ['choice1', 'choice2'])
+		expect(QuestionUtil.setData).toHaveBeenCalledWith('id', 'mockContext', 'sortedIds', [
+			'choice1',
+			'choice2'
+		])
 	})
 
 	test('sortIds calls QuestionUtil, and sets ids if unsorted', () => {
@@ -1550,7 +1881,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		// clear out mock data from the componentOnMount() call
@@ -1563,9 +1894,13 @@ describe('MCAssessment', () => {
 		expect(QuestionUtil.getData).toHaveBeenCalledWith(
 			'mockQuestionState',
 			expect.any(OboModel),
+			'mockContext',
 			'sortedIds'
 		)
-		expect(QuestionUtil.setData).toHaveBeenCalledWith('id', 'sortedIds', ['choice1', 'choice2'])
+		expect(QuestionUtil.setData).toHaveBeenCalledWith('id', 'mockContext', 'sortedIds', [
+			'choice1',
+			'choice2'
+		])
 	})
 
 	test('updateFeedbackLabels gets random values for labels', () => {
@@ -1584,7 +1919,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		const object = component.instance()
@@ -1597,6 +1932,8 @@ describe('MCAssessment', () => {
 	})
 
 	test('getRandomItem gets random values from array', () => {
+		MCAssessment.prototype.getRandomItem = originalGetRandomItem
+
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
@@ -1611,7 +1948,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		const item = component.instance().getRandomItem(array)
@@ -1633,7 +1970,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		const span = component.instance().getInstructions(TYPE_PICK_ONE)
@@ -1655,7 +1992,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		const span = component.instance().getInstructions(TYPE_MULTI_CORRECT)
@@ -1677,7 +2014,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		const span = component.instance().getInstructions(TYPE_PICK_ALL)
@@ -1697,7 +2034,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		const mockFocusOnExplanation = jest.fn()
@@ -1721,7 +2058,7 @@ describe('MCAssessment', () => {
 		const parent = OboModel.create(questionJSON)
 		const model = parent.children.models[0]
 		const component = mount(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		// get a reference to the solution Page
@@ -1771,7 +2108,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.isShowingExplanation.mockReturnValueOnce(true)
 
 		const component = mount(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		// after rendering - get use the component's ref to the MCAssessmentExplanation
@@ -1802,7 +2139,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getScoreForModel.mockReturnValue(0)
 
 		const component = mount(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const componentInst = component.instance()
 		const mockFocusOnResults = jest.fn()
@@ -1827,7 +2164,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getScoreForModel.mockReturnValue(null)
 
 		const component = mount(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		const componentInst = component.instance()
@@ -1851,7 +2188,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
 		FocusUtil.focusComponent = jest.fn()
@@ -1874,7 +2211,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		component.instance().solutionContainerRef = {
 			getBoundingClientRect: () => ({
@@ -1897,7 +2234,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const el = { style: { height: null } }
 		component.instance().solutionContainerHeight = '20px'
@@ -1918,7 +2255,7 @@ describe('MCAssessment', () => {
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
 		const component = shallow(
-			<MCAssessment model={model} moduleData={moduleData} mode="assessment" />
+			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 		const el = { style: { height: null } }
 		component.instance().animationOnExiting(el)

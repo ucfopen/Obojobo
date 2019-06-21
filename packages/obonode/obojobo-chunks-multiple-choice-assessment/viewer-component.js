@@ -50,30 +50,47 @@ export default class MCAssessment extends React.Component {
 		const isSurvey = this.props.type === 'survey'
 		const isAnswered = this.getResponseData().responses.size >= 1 // An answer choice was selected
 
-		if (correctLabels) {
-			this.correctLabels = correctLabels
-		} else if (isReview && isSurvey && isAnswered) {
-			this.correctLabels = DEFAULT_SURVEY_REVIEW_LABELS
-		} else if (isReview && isSurvey && !isAnswered) {
-			this.correctLabels = DEFAULT_SURVEY_UNANSWERED_LABELS
-		} else if (isReview && !isSurvey) {
-			this.correctLabels = DEFAULT_CORRECT_REVIEW_LABELS
-		} else if (isSurvey) {
-			this.correctLabels = DEFAULT_SURVEY_LABELS
-		} else {
-			this.correctLabels = DEFAULT_CORRECT_PRACTICE_LABELS
-		}
-
-		if (incorrectLabels) {
-			this.incorrectLabels = incorrectLabels
-		} else if (isReview) {
-			this.incorrectLabels = DEFAULT_INCORRECT_REVIEW_LABELS
-		} else {
-			this.incorrectLabels = DEFAULT_INCORRECT_LABELS
-		}
+		this.correctLabels = this.getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered)
+		this.incorrectLabels = this.getIncorrectLabels(incorrectLabels, isReview)
 
 		this.updateFeedbackLabels()
 		this.sortIds()
+	}
+
+	getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered) {
+		if (correctLabels) {
+			return correctLabels
+		}
+
+		if (isReview && isSurvey && isAnswered) {
+			return DEFAULT_SURVEY_REVIEW_LABELS
+		}
+
+		if (isReview && isSurvey && !isAnswered) {
+			return DEFAULT_SURVEY_UNANSWERED_LABELS
+		}
+
+		if (isReview && !isSurvey) {
+			return DEFAULT_CORRECT_REVIEW_LABELS
+		}
+
+		if (isSurvey) {
+			return DEFAULT_SURVEY_LABELS
+		}
+
+		return DEFAULT_CORRECT_PRACTICE_LABELS
+	}
+
+	getIncorrectLabels(incorrectLabels, isReview) {
+		if (incorrectLabels) {
+			return incorrectLabels
+		}
+
+		if (isReview) {
+			return DEFAULT_INCORRECT_REVIEW_LABELS
+		}
+
+		return DEFAULT_INCORRECT_LABELS
 	}
 
 	getQuestionModel() {
@@ -113,8 +130,6 @@ export default class MCAssessment extends React.Component {
 		const responseData = this.getResponseData()
 		const { correct } = responseData
 		const { responses } = responseData
-
-		console.log('cs', this.props.model.modelState)
 
 		const questionModel = this.getQuestionModel()
 
@@ -189,8 +204,6 @@ export default class MCAssessment extends React.Component {
 	}
 
 	onFormChange(event) {
-		console.log('onFormChange', event)
-
 		let response
 		const questionModel = this.getQuestionModel()
 		const mcChoiceEl = DOMUtil.findParentWithAttr(
@@ -251,7 +264,6 @@ export default class MCAssessment extends React.Component {
 	}
 
 	onFormSubmit(event) {
-		console.log('onFormSubmit', event)
 		event.preventDefault()
 
 		const questionModel = this.getQuestionModel()

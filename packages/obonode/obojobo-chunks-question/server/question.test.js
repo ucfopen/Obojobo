@@ -11,7 +11,7 @@ let Question
 describe('Question', () => {
 	beforeEach(() => {
 		Question = require('./question')
-		question = new Question({}, { id: 'mockQuestion' }, {})
+		question = new Question({}, { id: 'mockQuestion', content: { type: 'default' } }, {})
 		currentAttempt = { addScore: jest.fn() }
 	})
 
@@ -23,15 +23,8 @@ describe('Question', () => {
 		expect(question.registerEvents).toHaveBeenCalledTimes(1)
 		expect(question.registerEvents.mock.calls[0]).toMatchSnapshot()
 		expect(question.registerEvents).toHaveBeenCalledWith({
-			'ObojoboDraft.Sections.Assessment:sendToAssessment': question.onSendToAssessment,
 			'ObojoboDraft.Sections.Assessment:attemptEnd': question.onAttemptEnd
 		})
-	})
-
-	test('disables practice on send to assessment', () => {
-		question.node.content = { mode: 'practice' }
-		question.onSendToAssessment()
-		expect(question.node.content.mode).toBe('assessment')
 	})
 
 	test("returns if assessment doesn't contain 'this' node on attempt end", () => {
@@ -39,6 +32,7 @@ describe('Question', () => {
 		const res = question.onAttemptEnd({}, {}, mockAssessment, {}, currentAttempt)
 		expect(res).toBe(undefined)
 		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).not.toHaveBeenCalled()
 	})
 
 	test('returns if there are no question responses', () => {
@@ -47,6 +41,32 @@ describe('Question', () => {
 		const res = question.onAttemptEnd({}, {}, mockAssessment, [], currentAttempt)
 		expect(res).toEqual(undefined)
 		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).toHaveBeenCalledWith('mockQuestion', 0)
+	})
+
+	test('returns if question is a survey question', () => {
+		question.node.content.type = 'survey'
+		const mockAssessment = { contains: () => true }
+
+		const res = question.onAttemptEnd({}, {}, mockAssessment, [], currentAttempt)
+		expect(res).toEqual(undefined)
+		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).not.toHaveBeenCalled()
+	})
+
+	test('calls addScore to 0 and does not yell if no response found', () => {
+		const mockAssessment = { contains: () => true }
+		const responseHistory = [{ question_id: 'someOtherId' }]
+
+		const res = {
+			app: {}
+		}
+
+		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).not.toHaveBeenCalled()
+		question.onAttemptEnd(res, {}, mockAssessment, responseHistory, currentAttempt)
+		expect(question.yell).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).toHaveBeenCalledWith('mockQuestion', 0)
 	})
 
 	test('emits calculate score event when necessary', () => {

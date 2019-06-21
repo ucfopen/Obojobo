@@ -22,7 +22,7 @@ class NavStore extends Store {
 					this.state.context = payload.value.context
 					return this.triggerChange()
 				},
-				'nav:resetContext': payload => {
+				'nav:resetContext': () => {
 					this.state.context = DEFAULT_CONTEXT
 					return this.triggerChange()
 				},

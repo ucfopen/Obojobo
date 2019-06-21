@@ -94,26 +94,23 @@ export default class Question extends React.Component {
 
 		const mode = this.getMode()
 		const type = this.props.model.modelState.type
-
 		const score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-		const viewState =
-			mode === 'review'
-				? 'active'
-				: QuestionUtil.getViewState(
-						this.props.moduleData.questionState,
-						this.props.model,
-						this.props.moduleData.navState.context
-				  )
-
 		const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
-
 		const AssessmentComponent = assessment.getComponentClass()
-
-		// const mode = this.props.model.modelState.mode
+		let viewState
+		if (mode === 'review') {
+			viewState = 'active'
+		} else {
+			viewState = QuestionUtil.getViewState(
+				this.props.moduleData.questionState,
+				this.props.model,
+				this.props.moduleData.navState.context
+			)
+		}
 
 		let scoreClassName
 		switch (score) {
@@ -173,7 +170,7 @@ export default class Question extends React.Component {
 					</div>
 					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
 						<Button
-							value={type === 'practice' ? 'Try Question' : 'Start Question'}
+							value={mode === 'practice' ? 'Try Question' : 'Start Question'}
 							ariaLabel={startQuestionAriaLabel}
 							disabled={viewState !== 'hidden'}
 						/>
@@ -190,8 +187,8 @@ export default class Question extends React.Component {
 			this.props.moduleData.navState.context
 		)
 
-		const isPractice = NavUtil.getContext(this.props.moduleData.navState) === 'practice'
-		const mode = isPractice ? 'practice' : 'assessment'
+		// const isPractice = NavUtil.getContext(this.props.moduleData.navState) === 'practice'
+		const mode = this.getMode()
 		const type = this.props.model.modelState.type
 
 		const className =

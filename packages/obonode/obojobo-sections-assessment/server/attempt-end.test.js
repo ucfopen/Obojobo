@@ -101,7 +101,7 @@ describe('Attempt End', () => {
 		Assessment.getCompletedAssessmentAttemptHistory.mockResolvedValueOnce([])
 		Assessment.getAttempt.mockResolvedValueOnce({
 			assessment_id: 'mockAssessmentId',
-			state: { questions: [{}] },
+			state: { questions: [{ id: 'q1' }, { id: 'q2' }] },
 			draft_id: 'mockDraftId',
 			result: {
 				attemptScore: 50
@@ -169,7 +169,7 @@ describe('Attempt End', () => {
 			)
 			expect(insertEvent).toHaveBeenCalledTimes(2)
 
-			expect(insertEvent.mock.calls[0][0]).toEqual({
+			expect(insertEvent).toHaveBeenCalledWith({
 				action: 'assessment:attemptEnd',
 				actorTime: 'mockDate',
 				caliperPayload: 'mockCaliperPayload',
@@ -187,7 +187,7 @@ describe('Attempt End', () => {
 				visitId: 'mockVisitId'
 			})
 
-			expect(insertEvent.mock.calls[1][0]).toEqual({
+			expect(insertEvent).toHaveBeenCalledWith({
 				action: 'assessment:attemptScored',
 				actorTime: 'mockDate',
 				caliperPayload: 'mockCaliperPayload',
@@ -201,7 +201,7 @@ describe('Attempt End', () => {
 					assessmentScoreId: undefined,
 					attemptCount: 6,
 					attemptId: 'mockAttemptId',
-					attemptScore: 100,
+					attemptScore: 50,
 					highestAssessmentScore: 75,
 					ltiAssessmentScoreId: 'mockLitScoreId',
 					ltiGradeBookStatus: undefined,

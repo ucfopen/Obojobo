@@ -17,8 +17,6 @@ require('obojobo-pages-page/viewer') // dependency on Obojobo.Pages.Page
 require('obojobo-chunks-text/viewer') // // dependency on Obojobo.Chunks.Text
 require('obojobo-chunks-multiple-choice-assessment/viewer') // // dependency on Obojobo.Chunks.Text
 
-const MODE_REVIEW = 'review'
-const MODE_PRACTICE = 'practice'
 const questionJSON = {
 	id: 'id',
 	type: 'ObojoboDraft.Chunks.Question',
@@ -151,6 +149,49 @@ const questionJSON = {
 	]
 }
 
+// Create one permutation of a Question component.
+// Options are:
+// type = 'default' or 'survey'
+// mode = 'practice', 'assessment' or 'review'
+// score = 100, 0, 'no-score' (survey question) or null (not answered)
+// showContentOnly = true or false
+const createComponent = (type, mode, score, showContentOnly) => {
+	let context
+	switch (mode) {
+		case 'practice':
+			context = 'practice'
+			break
+
+		case 'assessment':
+			context = 'assessment'
+			break
+
+		case 'review':
+			context = 'assessmentReview:mockAttemptId'
+			break
+	}
+
+	const moduleData = {
+		questionState: 'mockQuestionState',
+		navState: {
+			context
+		},
+		focusState: 'mockFocus'
+	}
+
+	questionJSON.content.type = type
+
+	const model = OboModel.create(questionJSON)
+
+	// Question answered correctly
+	QuestionUtil.getScoreForModel.mockReturnValueOnce(score)
+	QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
+
+	return renderer.create(
+		<Question model={model} moduleData={moduleData} showContentOnly={showContentOnly} />
+	)
+}
+
 describe('Question', () => {
 	beforeAll(() => {
 		_.shuffle = a => a
@@ -160,150 +201,124 @@ describe('Question', () => {
 		jest.resetAllMocks()
 	})
 
-	test('Question component', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-		const model = OboModel.create(questionJSON)
-
-		// Question with no score data
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(null)
-		QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
-
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Question in practice not answered', () => {
+		expect(createComponent('default', 'practice', null, false).toJSON()).toMatchSnapshot()
 	})
 
-	test('Question component answered correctly', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-		const model = OboModel.create(questionJSON)
-
-		// Question answered correctly
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(100)
-		QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
-
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Question in practice answered incorrectly', () => {
+		expect(createComponent('default', 'practice', 0, false).toJSON()).toMatchSnapshot()
 	})
 
-	test('Question component answered incorrectly', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-		const model = OboModel.create(questionJSON)
-
-		// Question answered incorrectly
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(0)
-		QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
-
-		const component = renderer.create(<Question model={model} moduleData={moduleData} />)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Question in practice answered correctly', () => {
+		expect(createComponent('default', 'practice', 100, false).toJSON()).toMatchSnapshot()
 	})
 
-	test('Question component in review mode', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-		const model = OboModel.create(questionJSON)
-
-		// Question with no score data
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(null)
-		QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
-
-		const component = renderer.create(
-			<Question model={model} moduleData={moduleData} mode={MODE_REVIEW} />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Survey question in practice not answered', () => {
+		expect(createComponent('survey', 'practice', null, false).toJSON()).toMatchSnapshot()
 	})
 
-	test('Question component in practice mode', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-		const model = OboModel.create(questionJSON)
-
-		// Question with no score data
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(null)
-		QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
-
-		const component = renderer.create(
-			<Question model={model} moduleData={moduleData} mode={MODE_PRACTICE} />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Survey question in practice answered', () => {
+		expect(createComponent('survey', 'practice', 'no-score', false).toJSON()).toMatchSnapshot()
 	})
 
-	test('Question component with content only', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-		const model = OboModel.create(questionJSON)
-
-		// Question answered incorrectly
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(0)
-
-		const component = renderer.create(
-			<Question model={model} moduleData={moduleData} showContentOnly={true} />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
+	test('Question in practice not answered (content only)', () => {
+		expect(createComponent('default', 'practice', null, true).toJSON()).toMatchSnapshot()
 	})
 
-	test('Question component with content only in review mode', () => {
-		const moduleData = {
-			questionState: 'mockQuestionState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: 'mockFocus'
-		}
-		const model = OboModel.create(questionJSON)
+	test('Question in practice answered incorrectly (content only)', () => {
+		expect(createComponent('default', 'practice', 0, true).toJSON()).toMatchSnapshot()
+	})
 
-		// Question answered incorrectly
-		QuestionUtil.getScoreForModel.mockReturnValueOnce(0)
+	test('Question in practice answered correctly (content only)', () => {
+		expect(createComponent('default', 'practice', 100, true).toJSON()).toMatchSnapshot()
+	})
 
-		const component = renderer.create(
-			<Question model={model} moduleData={moduleData} showContentOnly={true} mode={MODE_REVIEW} />
-		)
-		const tree = component.toJSON()
+	test('Survey question in practice not answered (content only)', () => {
+		expect(createComponent('survey', 'practice', null, true).toJSON()).toMatchSnapshot()
+	})
 
-		expect(tree).toMatchSnapshot()
+	test('Survey question in practice answered (content only)', () => {
+		expect(createComponent('survey', 'practice', 'no-score', true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in assessment not answered', () => {
+		expect(createComponent('default', 'assessment', null, false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in assessment answered incorrectly', () => {
+		expect(createComponent('default', 'assessment', 0, false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in assessment answered correctly', () => {
+		expect(createComponent('default', 'assessment', 100, false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Survey question in assessment not answered', () => {
+		expect(createComponent('survey', 'assessment', null, false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Survey question in assessment answered', () => {
+		expect(createComponent('survey', 'assessment', 'no-score', false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in assessment not answered (content only)', () => {
+		expect(createComponent('default', 'assessment', null, true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in assessment answered incorrectly (content only)', () => {
+		expect(createComponent('default', 'assessment', 0, true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in assessment answered correctly (content only)', () => {
+		expect(createComponent('default', 'assessment', 100, true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Survey question in assessment not answered (content only)', () => {
+		expect(createComponent('survey', 'assessment', null, true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Survey question in assessment answered (content only)', () => {
+		expect(createComponent('survey', 'assessment', 'no-score', true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in review not answered', () => {
+		expect(createComponent('default', 'review', null, false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in review answered incorrectly', () => {
+		expect(createComponent('default', 'review', 0, false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in review answered correctly', () => {
+		expect(createComponent('default', 'review', 100, false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Survey question in review not answered', () => {
+		expect(createComponent('survey', 'review', null, false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Survey question in review answered', () => {
+		expect(createComponent('survey', 'review', 'no-score', false).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in review not answered (content only)', () => {
+		expect(createComponent('default', 'review', null, true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in review answered incorrectly (content only)', () => {
+		expect(createComponent('default', 'review', 0, true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Question in review answered correctly (content only)', () => {
+		expect(createComponent('default', 'review', 100, true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Survey question in review not answered (content only)', () => {
+		expect(createComponent('survey', 'review', null, true).toJSON()).toMatchSnapshot()
+	})
+
+	test('Survey question in review answered (content only)', () => {
+		expect(createComponent('survey', 'review', 'no-score', true).toJSON()).toMatchSnapshot()
 	})
 
 	test('onClickBlocker does not return anything when not in practice mode', () => {
@@ -317,7 +332,7 @@ describe('Question', () => {
 		const model = OboModel.create(questionJSON)
 
 		const component = shallow(
-			<Question model={model} moduleData={moduleData} showContentOnly={true} mode={MODE_REVIEW} />
+			<Question model={model} moduleData={moduleData} showContentOnly={true} mode={'review'} />
 		)
 
 		component.instance().applyFlipCSS = jest.fn()
@@ -444,5 +459,14 @@ describe('Question', () => {
 		expect(didFocus).toBe(true)
 		expect(focus).toHaveBeenCalledTimes(1)
 		expect(focus).toHaveBeenCalledWith(mockButtonEl)
+	})
+
+	test('focusOnContent does nothing if no DOM element exists', () => {
+		const didFocus = Question.focusOnContent({
+			getDomEl: () => null
+		})
+
+		expect(didFocus).toBe(false)
+		expect(focus).not.toHaveBeenCalled()
 	})
 })

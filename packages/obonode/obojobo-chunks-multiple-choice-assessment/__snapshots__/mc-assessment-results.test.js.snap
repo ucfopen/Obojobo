@@ -1,0 +1,187 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 1`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result correct"
+  >
+    undefined - You received a 100% on this question.
+  </p>
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 2`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result correct"
+  />
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 3`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result correct"
+  >
+    undefined - You received a 100% on this question.
+  </p>
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 4`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result correct"
+  />
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 5`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    undefined - You received a 0% on this question.
+  </p>
+  <span
+    className="pick-all-instructions"
+  />
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 6`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  />
+  <span
+    className="pick-all-instructions"
+  />
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 7`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  >
+    undefined - You received a 0% on this question.
+  </p>
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 8`] = `
+<div
+  aria-hidden="true"
+  className="result-container"
+>
+  <p
+    className="result incorrect"
+  />
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 9`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result survey"
+  >
+    undefined - Your response was recorded for this question.
+  </p>
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 10`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result survey"
+  />
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 11`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result survey"
+  >
+    undefined - Your response was recorded for this question.
+  </p>
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 12`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result survey"
+  />
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 13`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result survey"
+  >
+    undefined - Your response was recorded for this question.
+  </p>
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 14`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result survey"
+  />
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 15`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result survey"
+  >
+    undefined - Your response was recorded for this question.
+  </p>
+</div>
+`;
+
+exports[`ObojoboDraft.Chunks.MCAssessment mc-assessment-results ... 16`] = `
+<div
+  className="result-container"
+>
+  <p
+    className="result survey"
+  />
+</div>
+`;

@@ -114,7 +114,10 @@
 			"<rootDir>/app.js",
 			"<rootDir>/webpack.config.js",
 			"<rootDir>/dev_nonce_store.js",
-			"<rootDir>/setup_tests.js"
+			"<rootDir>/setup_tests.js",
+			"<rootDir>/babel.config.js",
+			"<rootDir>/prettier.config.js",
+			"<rootDir>/obo_express_dev.js"
 		],
 		"coverageReporters": [
 			"text",

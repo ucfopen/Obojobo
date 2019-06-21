@@ -164,4 +164,19 @@ describe('BasicReview', () => {
 
 		expect(component).toMatchSnapshot()
 	})
+
+	test('Basic component survey', () => {
+		questionJSON.content.type = 'survey'
+		OboModel.create(questionJSON)
+		const moduleData = {
+			focusState: {}
+		}
+		const questionScore = {
+			id: 'parent',
+			score: 0
+		}
+		const component = basicReview(moduleData, questionScore, 0)
+
+		expect(component).toMatchSnapshot()
+	})
 })

@@ -4,11 +4,6 @@ const { OboModel } = Common.models
 
 const Adapter = {
 	construct(model) {
-		// model.setStateProp('mode', 'practice', p => p.toLowerCase(), [
-		// 	'practice',
-		// 	'assessment',
-		// 	'survey'
-		// ])
 		model.setStateProp('type', 'default', p => p.toLowerCase(), ['default', 'survey'])
 		model.setStateProp('solution', null, p => OboModel.create(p))
 	},

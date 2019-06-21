@@ -12,7 +12,7 @@ Object {
 
 exports[`ObojoboDraft.Chunks.Question registration getNavItem returns link for a question in practice mode 1`] = `
 Object {
-  "label": "Practice Question 0",
+  "label": "Question 0",
   "path": Array [
     "#obo-mockQuestion",
   ],

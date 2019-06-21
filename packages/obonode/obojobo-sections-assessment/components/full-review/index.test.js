@@ -252,7 +252,13 @@ describe('FullReview', () => {
 			navState: {
 				context: 'assessmentReview:mockAttemptId'
 			},
-			questionState: { scores: [] },
+			questionState: {
+				contexts: {
+					'assessmentReview:mockAttemptId': {
+						scores: []
+					}
+				}
+			},
 			focusState: {}
 		}
 		const model = OboModel.create(assessmentJSON)
@@ -442,7 +448,13 @@ describe('FullReview', () => {
 			navState: {
 				context: 'assessmentReview:mockAttemptId'
 			},
-			questionState: { scores: {} },
+			questionState: {
+				contexts: {
+					'assessmentReview:mockAttemptId': {
+						scores: {}
+					}
+				}
+			},
 			focusState: {}
 		}
 		const model = OboModel.create(assessmentJSON)
