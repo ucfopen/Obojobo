@@ -7,54 +7,36 @@ import Button from './components/button'
 
 const title = 'Library'
 
-const Dashboard = (props) =>
+const Library = (props) =>
 	<DefaultLayout title={title} className="repository--library">
 		<RepositoryNav/>
 		<RepositoryFactBanner title={title} facts={props.facts} />
 
-		<div class="repository--section-wrapper">
-			<section class="repository--main-content">
+		<div className="repository--section-wrapper">
+			<section className="repository--main-content">
+				{props.groups.map(group =>
+					<span key={group.id}>
+						<div className="repository--main-content--title">{group.title}</div>
+						<div className="repository--item-list--group">
+							<div className="repository--item-list--group--item-wrapper">
+								<div className="repository--item-list--row">
+									<div className="repository--item-list--group--item--multi-wrapper">
+										{group.drafts.map(draft => <Module key={draft.id} {...draft}></Module> )}
+										{
+											props.page < props.pageCount ?
+											<div className="repository--item-list--group--item--newline-container">
+												<Button>Load more..</Button>
+											</div>
+											:
+											null
+										}
 
-				<div class="repository--main-content--title">Most Popular Modules</div>
-
-				<div class="repository--item-list--group">
-					<div class="repository--item-list--group--item-wrapper">
-						<div class="repository--item-list--row">
-							<div class="repository--item-list--group--item--multi-wrapper">
-								{props.popularModules.map(module => <Module {...module} /> )}
-								<div class="repository--item-list--group--item--newline-container">
-									<Button>Load more..</Button>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-
-				<div class="repository--main-content--title">Newly Created Modules</div>
-
-				<div class="repository--item-list--group">
-					<div class="repository--item-list--group--item-wrapper">
-						<div class="repository--item-list--row">
-							<div class="repository--item-list--group--item--multi-wrapper">
-								{props.newModules.map(module => <Module {...module} /> )}
-
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="repository--main-content--title">Recently Updated Modules</div>
-
-				<div class="repository--item-list--group">
-					<div class="repository--item-list--group--item-wrapper">
-						<div class="repository--item-list--row">
-							<div class="repository--item-list--group--item--multi-wrapper">
-								{props.updatedModules.map(module => <Module {...module} /> )}
-							</div>
-						</div>
-					</div>
-				</div>
-
+					</span>
+				)}
 			</section>
 		</div>
 
@@ -62,4 +44,4 @@ const Dashboard = (props) =>
 
 	</DefaultLayout>
 
-module.exports = Dashboard;
+module.exports = Library;

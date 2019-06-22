@@ -1,7 +1,7 @@
 const React = require('react')
 import ModuleImage from './module-image'
 
-const Module = (props) =>
+const Module = props =>
 	<div className="repository--module-icon">
 		<div className="repository--module-icon--image">
 			<ModuleImage id={props.id} />
