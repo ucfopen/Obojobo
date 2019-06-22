@@ -3,7 +3,7 @@ const React = require('react')
 
 const renderFacts = facts => {
 	if(!facts) return null
-	return
+	return (
 		<div className="repository--info-banner--facts">
 			{facts.map((f,i) =>
 				<div key={i} className="repository--info-banner--facts--fact">
@@ -12,6 +12,7 @@ const renderFacts = facts => {
 				</div>
 			)}
 		</div>
+	)
 }
 
 const RepositoryFactBanner = (props) =>
