@@ -1,10 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const assetForEnv = require('obojobo-express/asset_resolver').assetForEnv
 const RepositoryGroup = require('../models/group')
+const RepositoryModule = require('../models/repository-module')
+const {
+	checkValidationRules,
+	requireDraftId
+} = require('obojobo-express/express_validators')
+
 
 router.get('/library', (req, res) => {
-
+	const publicLibGroupId = '00000000-0000-0000-0000-000000000000'
 	const facts = [
 		{ title: 'Your Modules', value: 22 },
 		{ title: 'Open Modules', value: 235 },
@@ -12,7 +17,7 @@ router.get('/library', (req, res) => {
 	]
 
 	return RepositoryGroup
-		.fetchById('00000000-0000-0000-0000-000000000000')
+		.fetchById(publicLibGroupId)
 		.then(group => {
 			return group.loadRelatedDrafts()
 		})
@@ -27,5 +32,27 @@ router.get('/library', (req, res) => {
 		})
 		.catch(res.unexpected)
 })
+
+router
+	.route('/library/:draftId')
+	.get([requireDraftId, checkValidationRules])
+	.get((req, res) => {
+		return RepositoryModule.fetchById(req.params.draftId)
+			.then(module => {
+				const props = {
+					module,
+					user:{
+						name: 'Ian Turgeon'
+					},
+					facts: [
+						{title: 'Rating', value: 4.2},
+						{title: 'Views', value: 102},
+						{title: 'Revisions', value: module.revisionCount}
+					]
+				}
+				res.render('module-page.jsx', props)
+			})
+			.catch(res.unexpected)
+	})
 
 module.exports = router
