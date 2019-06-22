@@ -23,17 +23,18 @@ exports.up = function(db) {
 				defaultValue: new String('uuid_generate_v4()')
 			},
 			title: { type: 'varchar', length: 100 },
+			group_type: { type: 'varchar', length: 20, notNull: true },
 			user_id: { type: 'bigint', notNull: false },
-			parent_group_id: { type: 'UUID', notNull: false },
+			// parent_group_id: { type: 'UUID', notNull: false },
 			created_at: {
 				type: 'timestamp WITH TIME ZONE',
 				notNull: true,
 				defaultValue: new String('now()')
 			},
-			options: { type: 'jsonb' }
+			// options: { type: 'jsonb' }
 		})
 		.then(result => {
-			return db.addIndex('repository_groups', 'groups_user_id_index', ['user_id'])
+			return db.addIndex('repository_groups', 'groups_type_index', ['group_type'])
 		})
 		.then(result => {
 			return db.addIndex('repository_groups', 'groups_title_index', ['title'])
@@ -42,14 +43,17 @@ exports.up = function(db) {
 			return db.addIndex('repository_groups', 'groups_created_at_index', ['created_at'])
 		})
 		.then(result => {
-			return db.addIndex('repository_groups', 'groups_parent_group_id_index', ['parent_group_id'])
+			return db.addIndex('repository_groups', 'groups_user_id_index', ['user_id'])
 		})
+		// .then(result => {
+		// 	return db.addIndex('repository_groups', 'groups_parent_group_id_index', ['parent_group_id'])
+		// })
 		//
 		.then(() => db.runSql(`
 			INSERT
 			INTO repository_groups
-			(id, title, options)
-			VALUES('00000000-0000-0000-0000-000000000000', 'Public Library', '{}');
+			(id, title, group_type)
+			VALUES('00000000-0000-0000-0000-000000000000', 'Public Library', 'tag');
 		`))
 }
 

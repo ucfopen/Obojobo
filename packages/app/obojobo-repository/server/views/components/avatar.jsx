@@ -9,7 +9,7 @@ const Avatar = (props) =>
 		</div>
 		{
 			props.notice
-			? <div class="avatar--notice">{props.notice}</div>
+			? <div className="avatar--notice">{props.notice}</div>
 			: null
 		}
 	</div>

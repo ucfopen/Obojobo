@@ -11,7 +11,7 @@ const DefaultLayout = (props) =>
 			<link rel="stylesheet" media="screen" href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i" />
 		</head>
 		<body className={props.className}>
-			<div class="repository--wrapper">
+			<div className="repository--wrapper">
 				{props.children}
 			</div>
 		</body>
