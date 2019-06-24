@@ -31,6 +31,12 @@ class MathEquationProperties extends React.Component {
 		return this.setState({ latex })
 	}
 
+	handleAltChange(event) {
+		const alt = event.target.value
+
+		return this.setState({ alt })
+	}
+
 	handleLabelChange(event) {
 		const label = event.target.value
 
@@ -68,6 +74,13 @@ class MathEquationProperties extends React.Component {
 							ref={this.inputRef}
 							value={this.state.latex || ''}
 							onChange={this.handleLatexChange.bind(this)}
+						/>
+						<label>Alt:</label>
+						<input
+							type="text"
+							id="obojobo-draft--chunks--math-equation--alt"
+							value={this.state.alt || ''}
+							onChange={this.handleAltChange.bind(this)}
 						/>
 						<label>Optional Equation Label:</label>
 						<input
