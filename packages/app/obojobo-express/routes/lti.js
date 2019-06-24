@@ -1,5 +1,4 @@
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
 const config = oboRequire('config')
 const ltiLaunch = oboRequire('express_lti_launch')
 const { requireCanViewEditor } = oboRequire('express_validators')
@@ -46,42 +45,7 @@ router
 	.post([ltiLaunch.courseNavlaunch, requireCanViewEditor])
 	.post((req, res) => res.redirect('/editor'))
 
-const showModuleSelector = (req, res) => {
-	try {
-		let returnUrl = null
-		let isAssignment = false
-		if (req.lti && req.lti.body) {
-			returnUrl = req.lti.body.content_item_return_url ? req.lti.body.content_item_return_url : null
-
-			returnUrl = req.lti.body.ext_content_return_url
-				? req.lti.body.ext_content_return_url
-				: returnUrl
-
-			if (req.lti.body.ext_lti_assignment_id) {
-				isAssignment = true
-			}
-		}
-
-		if (returnUrl === null) {
-			throw 'Unknown return url for assignment selection'
-		}
-
-		res.render('lti_picker', { returnUrl, isAssignment })
-	} catch (error) {
-		res.unexpected(error)
-	}
-}
-
-// mounted as /lti/canvas/resource_selection
-router
-	.route('/canvas/resource_selection')
-	.post([ltiLaunch.assignmentSelection, requireCanViewEditor])
-	.post(showModuleSelector)
-
-// mounted as /lti/canvas/editor_button
-router
-	.route('/canvas/editor_button')
-	.post([ltiLaunch.assignmentSelection, requireCanViewEditor])
-	.post(showModuleSelector)
+// route /lti/canvas/resource_selection moved to obojobo-module-selector
+// route /lti/canvas/editor_button moved to obojobo-module-selector
 
 module.exports = router

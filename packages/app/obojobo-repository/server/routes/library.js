@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const RepositoryGroup = require('../models/group')
-const RepositoryModule = require('../models/repository-module')
+const DraftSummary = require('../models/draft_summary')
 const {
 	checkValidationRules,
 	requireDraftId
@@ -37,7 +37,7 @@ router
 	.route('/library/:draftId')
 	.get([requireDraftId, checkValidationRules])
 	.get((req, res) => {
-		return RepositoryModule.fetchById(req.params.draftId)
+		return DraftSummary.fetchById(req.params.draftId)
 			.then(module => {
 				const props = {
 					module,

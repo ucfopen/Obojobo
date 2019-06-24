@@ -1,10 +1,10 @@
 {
-	"name": "obojobo-repository",
+	"name": "obojobo-module-selector",
 	"license": "AGPL-3.0-only",
 	"version": "4.1.0-rc1",
 	"repository": "https://github.com/ucfopen/Obojobo.git",
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
-	"description": "Obojobo express server middleware.",
+	"description": "Obojobo package responsible for selecting which module you use in a course.",
 	"scripts": {
 		"test": "TZ='America/New_York' jest",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
@@ -34,6 +34,7 @@
 		"express-react-views": "~0.10.5",
 		"express-validator": "^5.2.0",
 		"obojobo-express": "^4.1.0-rc1",
+		"obojobo-repository": "^4.1.0-rc1",
 		"obojobo-lib-utils": "^4.1.0-rc1",
 		"react": "16.7.0",
 		"react-dom": "16.7.0",

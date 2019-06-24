@@ -132,6 +132,7 @@
 		"watch": [
 			"./",
 			"../obojobo-document-engine/server",
+			"../obojobo-module-selector/server",
 			"../obojobo-repository/server"
 		]
 	}

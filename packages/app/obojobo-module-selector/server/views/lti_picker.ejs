@@ -1,21 +1,33 @@
 <!DOCTYPE html>
-<html class="">
+<html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<title>Pick a Learning Object</title>
-	<link rel="stylesheet" type="text/css" href="/picker/lti.css">
-	<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700' rel='stylesheet' type='text/css'>
+	<%
+		let assetForEnv = oboRequire('asset_resolver').assetForEnv
+		let title = 'Obojobo Module Selector'
+		let css = [
+			assetForEnv('/static/module-selector$[.min].css')
+		]
 
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-	<script src="/picker/jquery-ui-1.10.3.custom.js"></script>
+		let headerJs = [
+			assetForEnv('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'),
+			assetForEnv('/module-selector/jquery-ui-1.10.3.custom.js')
+		]
+
+		let footerJs = [
+			assetForEnv('/static/module-selector$[.min].js')
+		]
+
+		let fonts = ['//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700']
+	%>
+	<%- include ../../../obojobo-express/views/partials/head %>
 </head>
 <body>
 
-	<section id="wizard">
+	<section id="section-module-selection">
 		<header>
 			<div class="heading-container">
 				<h1>
-					<span class="remaining-tagline">Embed an Obojobo&reg; Next Learning Module</span>
+					<span class="remaining-tagline">Embed an Obojobo&reg; Next Module</span>
 				</h1>
 			</div>
 			<div class="blue-flourish"></div>
@@ -32,21 +44,22 @@
 			</p>
 		</a>
 
-		<a role="button" class="disabled wizard-button-container community-library-button-container">
+		<a role="button" class="wizard-button-container community-library-button-container">
 			<div href="#" class="community-library-button wizard-button">
 				Community<br /> Collection
 			</div>
 			<p>
-				<strong>In the future</strong>, you'll be able to choose modules built by other instructors and organizations.
+				Modules from others.
 			</p>
 		</div>
 
 	</section>
 
-	<section id="select-object">
+	<section id="section-select-object">
 		<div id="list-overlay">
 			<a href="#" role="button" class="back-button">Back</a>
 			<a href="/editor" role="button" class="button" target="_blank" id="new-module">Create a new module</a>
+			<div class="select-section-title"></div>
 			<a id="refresh" role="button" href="#">Refresh</a>
 			<input type="text" id="search"></div>
 			<div class="blue-flourish"></div>
@@ -83,7 +96,7 @@
 
 	</section>
 
-	<section id="progress">
+	<section id="section-progress">
 		<header>
 			<div class="heading-container">
 				<h1>
@@ -99,7 +112,7 @@
 		</div>
 	</section>
 
-	<section id="success">
+	<section id="section-success">
 		<header>
 			<span class="logo-text">Obojobo&reg;</span>
 			<div class="blue-flourish"></div>
@@ -120,6 +133,7 @@
 			Sorry, something went wrong. Please try again.
 		</p>
 	</div>
+
 	<div id="confirm-window" title="Are you sure?">
 		<p>
 			Scores will no longer sync to Canvas and you will need to connect to another object.
@@ -136,6 +150,21 @@
 		window.__returnUrl = '<%= returnUrl %>';
 		window.__isAssignment = <%= isAssignment ? 'true' : 'false' %>
 	</script>
-	<script type="text/javascript" src="/picker/lti.js"></script>
+
+	<%
+		if (typeof inlines !== 'undefined')
+		{
+			inlines.forEach(function(inline)
+			{ %>
+		<script><% - js %></script>
+		<% })
+		}
+		if (typeof footerJs !== 'undefined')
+		{
+			footerJs.forEach(function(href) { %>
+			<script src="<%= href %>"></script>
+			<% })
+		}
+	%>
 </body>
 </html>
