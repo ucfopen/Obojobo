@@ -268,8 +268,6 @@ export default class MCAssessment extends React.Component {
 
 		const questionModel = this.getQuestionModel()
 
-		// const questionModel = this.getQuestionModel()
-
 		QuestionUtil.setScore(
 			questionModel.get('id'),
 			this.calculateScore(),
@@ -455,7 +453,6 @@ export default class MCAssessment extends React.Component {
 				model={this.props.model}
 				moduleData={this.props.moduleData}
 				onChange={!isReview ? this.onFormChange : null}
-				// onChange={this.onFormChange}
 				onSubmit={this.onFormSubmit}
 				tag="form"
 				className={className}

@@ -215,8 +215,6 @@ const getCalculatedScores = (
 			addScore: (questionId, score) => {
 				scoreInfo.scores.push(score)
 				scoreInfo.scoresByQuestionId[questionId] = score
-				//@TODO
-				// scoreInfo.gradedQuestionIds.push(questionId)
 			}
 		}
 	)

@@ -364,8 +364,6 @@ describe('MCAssessment', () => {
 		).toMatchSnapshot()
 	})
 
-	///////////////////////////
-
 	test('MCAssessment component, review', () => {
 		expect(
 			createComponent({
@@ -516,8 +514,6 @@ describe('MCAssessment', () => {
 			}).toJSON()
 		).toMatchSnapshot()
 	})
-
-	////////////////////
 
 	test('MCAssessment component, assessment', () => {
 		expect(
@@ -670,10 +666,6 @@ describe('MCAssessment', () => {
 		).toMatchSnapshot()
 	})
 
-	/////////////////
-	///////////////////
-	/////////////////////
-
 	test('MCAssessment component (survey)', () => {
 		expect(
 			createComponent({
@@ -759,8 +751,6 @@ describe('MCAssessment', () => {
 			}).toJSON()
 		).toMatchSnapshot()
 	})
-
-	///////////////////////////
 
 	test('MCAssessment component, review (survey)', () => {
 		expect(
@@ -857,8 +847,6 @@ describe('MCAssessment', () => {
 		).toMatchSnapshot()
 	})
 
-	////////////////////
-
 	test('MCAssessment component, assessment (survey)', () => {
 		expect(
 			createComponent({
@@ -953,8 +941,6 @@ describe('MCAssessment', () => {
 			}).toJSON()
 		).toMatchSnapshot()
 	})
-
-	///////////////////////
 
 	// MCAssessment function tests
 	test('getQuestionModel gets the parent question', () => {

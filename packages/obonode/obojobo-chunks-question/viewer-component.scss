@@ -19,7 +19,6 @@
 		position: relative;
 		border-radius: $dimension-rounded-radius;
 		padding: 0;
-		// padding-top: 1em;
 		margin-bottom: 1em;
 		border: 1px solid transparentize($color-shadow, 0.2);
 		max-width: $dimension-column-width;
@@ -200,11 +199,4 @@
 			transform: rotateY(-180deg);
 		}
 	}
-
-	// &.is-flipping.is-mode-practice,
-	// &.is-flipping.is-mode-survey {
-	// 	> .flipper > .content-back::before {
-	// 		top: -0.5em;
-	// 	}
-	// }
 }

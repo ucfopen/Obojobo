@@ -1,5 +1,3 @@
-// import 'babel-polyfill'
-
 // Global for loading specialized Obojobo stuff
 // use oboRequire('models/draft') to load draft models from any context
 global.oboRequire = name => {

@@ -66,10 +66,6 @@ export default class Question extends React.Component {
 		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
 	}
 
-	// isInAssessment() {
-	// 	return this.props.model.getParentOfType('ObojoboDraft.Sections.Assessment') !== null
-	// }
-
 	getMode() {
 		const baseContext = this.props.moduleData.navState.context.split(':')[0]
 
@@ -145,7 +141,6 @@ export default class Question extends React.Component {
 			` is-${viewState}` +
 			` is-type-${type}` +
 			` is-mode-${mode}` +
-			// isOrNot(this.props.isReview, 'review') +
 			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
@@ -187,7 +182,6 @@ export default class Question extends React.Component {
 			this.props.moduleData.navState.context
 		)
 
-		// const isPractice = NavUtil.getContext(this.props.moduleData.navState) === 'practice'
 		const mode = this.getMode()
 		const type = this.props.model.modelState.type
 
