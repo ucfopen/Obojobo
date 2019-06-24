@@ -2,17 +2,17 @@ const path = require('path')
 const express = require('express')
 const app = express()
 
-// @TODO why is this here?
-const fs = require('fs');
-require.extensions['.svg'] = function (module, filename) {
-    module.exports = fs.readFileSync(filename, 'utf8');
-};
+// const fs = require('fs');
+// require.extensions['.svg'] = function (module, filename) {
+//     module.exports = fs.readFileSync(filename, 'utf8');
+// };
 
-// when the parent app is mounted
 app.on('mount', app => {
-	//  add our static directory
+	// ============= STATIC RESOURCES ===================
+	//  add this package's static directory
 	app.use(express.static(path.join(__dirname, 'public')))
 
+	// ============= VEIW & TEMPLATE SETUP ==============
 	// append our view path to the configured view paths
 	let viewPaths = app.get('views')
 	if(!Array.isArray(viewPaths)) viewPaths = [viewPaths]
@@ -25,9 +25,7 @@ app.on('mount', app => {
 	}
 
 	// =========== ROUTING & CONTROLLERS ===========
-	app.use('/api', require('./routes/api'))
-	app.use('/', require('./routes/dashboard'))
-	app.use('/', require('./routes/library'))
+	app.use('/lti', require('./routes/module-selection'))
 })
 
 module.exports = app

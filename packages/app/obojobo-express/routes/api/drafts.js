@@ -15,8 +15,7 @@ const {
 	requireDraftId,
 	requireCanViewEditor,
 	requireCanCreateDrafts,
-	requireCanDeleteDrafts,
-	requireCanViewDrafts
+	requireCanDeleteDrafts
 } = oboRequire('express_validators')
 
 const isNoDataFromQueryError = e => {
@@ -185,33 +184,5 @@ router
 			.catch(res.unexpected)
 	})
 
-// List drafts
-// mounted as /api/drafts
-router
-	.route('/')
-	.get(requireCanViewDrafts)
-	.get((req, res) => {
-		return db
-			.any(
-				`
-			SELECT DISTINCT ON (draft_id)
-				draft_id AS "draftId",
-				id AS "latestVersion",
-				created_at AS "createdAt",
-				content->'content'->>'title' AS "title"
-			FROM drafts_content
-			WHERE draft_id IN (
-				SELECT id
-				FROM drafts
-				WHERE deleted = FALSE
-				AND user_id = $[userId]
-			)
-			ORDER BY draft_id, id desc
-		`,
-				{ userId: req.currentUser.id }
-			)
-			.then(res.success)
-			.catch(res.unexpected)
-	})
 
 module.exports = router

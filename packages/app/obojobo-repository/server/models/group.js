@@ -1,5 +1,6 @@
 const db = require('obojobo-express/db')
 const logger = require('obojobo-express/logger')
+const DraftSummary = require('./draft_summary')
 
 class RepositoryGroup {
 	constructor({id = null, title = '', user_id, created_at = null}) {
@@ -59,36 +60,19 @@ class RepositoryGroup {
 				return new RepositoryGroup(insertResult)
 			})
 	}
-
 	loadRelatedDrafts() {
-		return db
-			.manyOrNone(
-				`
-				SELECT
-					DISTINCT c.draft_id AS id,
-					last_value(c.created_at) OVER wnd as "updatedAt",
-					first_value(c.created_at) OVER wnd as "createdAt",
-					last_value(c.id) OVER wnd as "latestVersion",
-					count(c.id) OVER wnd as revisionCount,
-					last_value(c.content->'content'->'title') OVER wnd as "title",
-					drafts.user_id AS userId
-				FROM drafts
-				JOIN repository_map_drafts_to_groups AS m
-					ON m.draft_id = drafts.id
-				JOIN repository_groups AS g
-					ON g.id = m.group_id
-				JOIN drafts_content AS c
-					ON c.draft_id = drafts.id
-				WHERE g.id = $[groupId]
-				WINDOW wnd AS (
-					PARTITION BY c.draft_id ORDER BY c.created_at
-					ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
-				)
-			`,
-				{ groupId : this.id }
-			)
-			.then(moduleResults => {
-				this.drafts = moduleResults
+		const joinOn = `
+			JOIN repository_map_drafts_to_groups
+				ON repository_map_drafts_to_groups.draft_id = drafts.id
+			JOIN repository_groups
+				ON repository_groups.id = repository_map_drafts_to_groups.group_id`
+
+		const whereSQL = `repository_groups.id = $[groupId]`
+
+		return DraftSummary
+			.fetchAndJoinWhere(joinOn, whereSQL, { groupId : this.id })
+			.then(draftSummaries => {
+				this.drafts = draftSummaries
 				return this
 			})
 			.catch(error => {

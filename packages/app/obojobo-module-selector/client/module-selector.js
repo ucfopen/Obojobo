@@ -1,29 +1,25 @@
-if (!window.obo) {
-	window.obo = {}
-}
+import './css/module-selector.scss'
 
-obo.lti = (function() {
-	'use strict'
+import 'whatwg-fetch'
 
-	var PROGESS_FAKE_DELAY_MS = 1000
-	var SEARCH_DELAY_MS = 250
-	var CHANGE_SECTION_FADE_DELAY_MS = 250
-	var MAX_ITEMS = 20
-	var VERIFY_TIME_SECONDS = 30
+(function() {
+	const PROGESS_FAKE_DELAY_MS = 1000
+	const SEARCH_DELAY_MS = 250
+	const CHANGE_SECTION_FADE_DELAY_MS = 250
+	const MAX_ITEMS = 20
+	const VERIFY_TIME_SECONDS = 30
+	const MESSAGE_LOGOUT = 'You have been logged out. Please refresh the page and try again.'
 
-	var MESSAGE_LOGOUT = 'You have been logged out. Please refresh the page and try again.'
-
-	var searchIntervalId = -1
-	var data = { items: undefined, allItems: undefined, last: 0 }
-	var searchStrings = {}
-	var selectedItem = null
+	let searchIntervalId = -1
+	let data = { items: undefined, allItems: undefined, last: 0 }
+	let searchStrings = {}
+	let selectedItem = null
 
 	// elements:
-	var $template = $($('.template.obo-item')[0])
-	var $listContainer = $('#list-container')
-	var $createInstanceForm = $('#create-instance')
-	var $search = $('#search')
-	var section = 'My Modules'
+	let $template = $($('.template.obo-item')[0])
+	let $listContainer = $('#list-container')
+	let $search = $('#search')
+	let section = null
 
 	// searching:
 	function search() {
@@ -31,9 +27,9 @@ obo.lti = (function() {
 			return
 		}
 
-		var text = $.trim($search.val())
+		let text = $.trim($search.val())
 		if ($search.attr('data-last-search') !== text) {
-			var className = section.replace(' ', '-').toLowerCase()
+			let className = section.replace(' ', '-').toLowerCase()
 			$('.' + className)
 				.children('ul')
 				.empty()
@@ -45,7 +41,7 @@ obo.lti = (function() {
 	}
 
 	function clearSearch() {
-		var className = section.replace(' ', '-').toLowerCase()
+		let className = section.replace(' ', '-').toLowerCase()
 		$('.' + className)
 			.children('ul')
 			.empty()
@@ -62,27 +58,27 @@ obo.lti = (function() {
 	}
 
 	function filterList(searchTerms) {
-		var $list = $('.' + section.toLowerCase().replace(' ', '-'))
+		let $list = $('.' + section.toLowerCase().replace(' ', '-'))
 		//$lis = $list.find('.obo-item');
-		var items = data.allItems
+		let items = data.allItems
 
 		if (searchTerms.length === 0) {
 			clearSearch()
 			return
 		}
 
-		var terms = searchTerms.toLowerCase().split(' ')
-		var numTerms = terms.length
+		let terms = searchTerms.toLowerCase().split(' ')
+		let numTerms = terms.length
 
-		var len = items.length
-		var item
-		var ss
-		var numMatches
-		var key
+		let len = items.length
+		let item
+		let ss
+		let numMatches
+		let key
 
 		data.items = []
 
-		for (var i = 0; i < len; i++) {
+		for (let i = 0; i < len; i++) {
 			item = items[i]
 			key = item.draftId
 			if (typeof searchStrings[key] === 'undefined') {
@@ -94,7 +90,7 @@ obo.lti = (function() {
 			ss = searchStrings[key]
 
 			numMatches = 0
-			for (var j = 0; j < numTerms; j++) {
+			for (let j = 0; j < numTerms; j++) {
 				if (ss.indexOf(terms[j]) >= 0) {
 					numMatches++
 				}
@@ -109,15 +105,15 @@ obo.lti = (function() {
 
 	// navigation
 	function gotoSection(sectionId, skipFadeAnimation) {
-		if (sectionId === 'create-instance') {
+		if (sectionId === 'progress') {
 			showProgress()
-		} else if (sectionId === 'success') {
+		} else if (sectionId === 'section-success') {
 			$('.selected-instance-title').html(window.repreviousResponse.body.name)
 			$('.preview-link').attr('href', '/preview/' + window.__previousResponse.body.loID)
 		}
 
-		var $shownSection = $('section:not(:hidden)')
-		var $newSection = $('#' + sectionId)
+		let $shownSection = $('section:not(:hidden)')
+		let $newSection = $('#' + sectionId)
 		if ($shownSection.length === 0) {
 			if (skipFadeAnimation) {
 				$newSection.show()
@@ -136,20 +132,21 @@ obo.lti = (function() {
 		}
 	}
 
-	function gotoTab(tab) {
+	function gotoTab(newSection) {
+		section = newSection
 		populateList(section)
-		$('#select-object')
+		$('#section-select-object')
 			.removeClass('community-library-section')
 			.removeClass('my-objects-section')
 			.removeClass('my-instances-section')
 	}
 
 	function showProgress() {
-		$('#progress h1').html(selectedItem.title)
+		$('#section-progress h1').html(selectedItem.title)
 		$('.progressbar').progressbar()
-		gotoSection('progress')
+		gotoSection('section-progress')
 
-		setTimeout(function() {
+		setTimeout(() => {
 			startProgressBar()
 		}, 500)
 	}
@@ -160,13 +157,13 @@ obo.lti = (function() {
 
 	function startProgressBar() {
 		// create a random number of progress bar stops
-		var availStops = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-		var stops = { tick: 0 }
-		for (var i = 0, len = getRandInt(3, 5); i < len; i++) {
+		let availStops = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+		let stops = { tick: 0 }
+		for (let i = 0, len = getRandInt(3, 5); i < len; i++) {
 			stops[availStops.splice(getRandInt(0, availStops.length), 1)] = true
 		}
 
-		var intervalId = setInterval(function() {
+		let intervalId = setInterval(() => {
 			stops.tick++
 			if (typeof stops[stops.tick] !== 'undefined') {
 				$('.progressbar').progressbar('value', stops.tick * 10)
@@ -177,7 +174,7 @@ obo.lti = (function() {
 			}
 		}, 200)
 
-		$(document).on('keyup', function(event) {
+		$(document).on('keyup', event => {
 			if (event.keyCode === 16) {
 				// shift
 				$('.progress-container')
@@ -194,7 +191,7 @@ obo.lti = (function() {
 			.find('span')
 			.html('Success!')
 		$('.progressbar').progressbar('value', 100)
-		setTimeout(function() {
+		setTimeout(() => {
 			let ltiData = buildContentItem(
 				selectedItem.title,
 				buildLaunchUrl(selectedItem.draftId),
@@ -230,13 +227,13 @@ obo.lti = (function() {
 
 	// utility
 	function hasMoreItems() {
-		var d = data
+		let d = data
 		return d.last < d.items.length
 	}
 
 	// list pages
 	function appendListItem(lo, $list) {
-		var $clone = $template.clone()
+		let $clone = $template.clone()
 		$clone.removeClass('template')
 		$clone.find('.title').html(lo.title ? lo.title : 'Untitled')
 		$clone.find('.draft-id').html('id: ' + lo.draftId)
@@ -250,55 +247,83 @@ obo.lti = (function() {
 	}
 
 	function populateList(section) {
+		resetSectionList(section)
+
+		$('.select-section-title').html(section)
+
+		const fetchOptions = { credentials: 'same-origin' }
 		$listContainer.find('.section').hide()
 		$search.val('')
 
 		switch (section) {
+
 			case 'My Modules':
-				if (typeof data.items === 'undefined') {
-					//$listContainer.addClass('loading');
-					$('.my-objects')
-						.show()
-						.addClass('loading')
-					data.items = 'pending'
+				//$listContainer.addClass('loading');
+				$('.my-objects')
+					.show()
+					.addClass('loading')
 
-					fetch('/api/drafts/', { credentials: 'same-origin' })
-						.then(resp => resp.json())
-						.then(respJson => {
-							if (respJson.status != 'ok') throw 'Failed loading drafts'
+				data.items = 'pending'
+				fetch('/api/drafts/', fetchOptions)
+					.then(resp => resp.json())
+					.then(respJson => {
+						if (respJson.status != 'ok') throw 'Failed loading modules'
 
-							data.allItems = data.items = respJson.value
-							populateSection(section)
-							$('.my-objects').removeClass('loading')
+						data.allItems = data.items = respJson.value
+						populateSection(section)
+						$('.my-objects').removeClass('loading')
 
-							if ($search.val() !== '') {
-								search()
-							}
-						})
-						.catch(error => {
-							handleError(error)
-						})
-				} else {
-					showList($('.my-objects'))
-				}
+						if ($search.val() !== '') {
+							search()
+						}
+					})
+					.catch(error => {
+						handleError(error)
+					})
 				break
+
+			case 'Community Library':
+
+				//$listContainer.addClass('loading');
+				$('.my-objects')
+					.show()
+					.addClass('loading')
+
+				data.items = 'pending'
+				fetch('/api/drafts-public', fetchOptions)
+					.then(resp => resp.json())
+					.then(respJson => {
+						if (respJson.status != 'ok') throw 'Failed loading modules'
+
+						data.allItems = data.items = respJson.value
+						populateSection(section)
+						$('.my-objects').removeClass('loading')
+
+						if ($search.val() !== '') {
+							search()
+						}
+					})
+					.catch(error => {
+						handleError(error)
+					})
+
 		}
 	}
 
 	function populateSection(section) {
-		var className = section.replace(' ', '-').toLowerCase()
-		var items = data.items
-		var lastIndex = Math.min(Math.min(items.length, MAX_ITEMS) + data.last, items.length)
-		var $section = $('.' + className)
-		var $list = $section.children('ul')
+		let className = section.replace(' ', '-').toLowerCase()
+		let items = data.items
+		let lastIndex = Math.min(Math.min(items.length, MAX_ITEMS) + data.last, items.length)
+		let $section = $('.' + className)
+		let $list = $section.children('ul')
 
 		if (items.length === 0) {
 			$section.find('.no-items').show()
 		} else {
 			$section.find('.no-items').hide()
 
-			var len = lastIndex
-			for (var i = data.last; i < len; i++) {
+			let len = lastIndex
+			for (let i = data.last; i < len; i++) {
 				appendListItem(items[i], $list)
 			}
 
@@ -315,12 +340,19 @@ obo.lti = (function() {
 		$listContainer.scrollTop(0)
 	}
 
+	function resetSectionList(section){
+		let $list = $('.' + section.toLowerCase().replace(' ', '-'))
+		data.items = undefined
+		data.last = 0
+		$list.find('ul').empty()
+		$list.find('.no-items').hide()
+	}
+
 	// UI:
 	function setupUI() {
 		$listContainer.find('ul.template').remove()
-		$createInstanceForm.remove()
 
-		$search.keyup(function(event) {
+		$search.keyup(event => {
 			clearInterval(searchIntervalId)
 
 			if (event.keyCode === 27) {
@@ -328,16 +360,16 @@ obo.lti = (function() {
 				clearSearch()
 				populateSection(section)
 			} else {
-				searchIntervalId = setInterval(function() {
+				searchIntervalId = setInterval(() => {
 					clearInterval(searchIntervalId)
 					search()
 				}, SEARCH_DELAY_MS)
 			}
 		})
 
-		$('#list-container').scroll(function() {
-			var $this = $(this)
-			var $list = $this.find('.' + section.replace(' ', '-').toLowerCase()).children('ul')
+		$('#list-container').scroll(() => {
+			let $this = $(this)
+			let $list = $this.find('.' + section.replace(' ', '-').toLowerCase()).children('ul')
 			if ($list.height() - $this.scrollTop() <= $this.height()) {
 				if (hasMoreItems() && $list.find('.click-to-expand').length === 0) {
 					populateSection(section)
@@ -345,44 +377,30 @@ obo.lti = (function() {
 			}
 		})
 
-		$('#refresh').click(function(event) {
+		$('#refresh').click(event => {
 			event.preventDefault()
 
 			if (typeof data.items !== 'undefined' && data.items !== 'pending') {
-				var $list = $('.' + section.toLowerCase().replace(' ', '-'))
-				data.items = undefined
-				data.last = 0
-				$list.find('ul').empty()
-				$list.find('.no-items').hide()
-
+				resetSectionList(section)
 				populateList(section)
 			}
 		})
 
-		$('.back-button').click(function(event) {
+		$('.back-button').click(event => {
 			event.preventDefault()
-			gotoSection('wizard')
+			gotoSection('section-module-selection')
 		})
 
-		$('.tab').click(function(event) {
+		// section-module-selection
+		$('.community-library-button-container').click(event => {
+			event.preventDefault();
+			gotoSection('section-select-object');
+			gotoTab('Community Library');
+		});
+
+		$('.personal-library-button-container').click(event => {
 			event.preventDefault()
-			var $this = $(this)
-
-			if (!$this.hasClass('selected')) {
-				gotoTab($this.text())
-			}
-		})
-
-		// wizard
-		// $('.community-library-button-container').click(function(event) {
-		// 	event.preventDefault();
-		// 	gotoSection('select-object');
-		// 	gotoTab('Community Library');
-		// });
-
-		$('.personal-library-button-container').click(function(event) {
-			event.preventDefault()
-			gotoSection('select-object')
+			gotoSection('section-select-object')
 			gotoTab('My Modules')
 		})
 	}
@@ -390,11 +408,11 @@ obo.lti = (function() {
 	function onSelectClick(event) {
 		event.preventDefault()
 
-		var $this = $(this)
-		var $oboItem = $this.parent().parent()
+		let $this = $(this)
+		let $oboItem = $this.parent().parent()
 		selectedItem = getDraftById($oboItem.attr('data-lo-id'))
 
-		gotoSection('create-instance')
+		gotoSection('progress')
 		$('#instance-name').val($oboItem.find('.title').text())
 
 		if (typeof $oboItem.attr('data-lo-id') === 'undefined' || $oboItem.attr('data-lo-id') === '0') {
@@ -404,22 +422,8 @@ obo.lti = (function() {
 		}
 	}
 
-	function successfulResponse(response) {
-		return (
-			typeof response !== 'undefined' &&
-			response !== null &&
-			typeof response.success !== 'undefined' &&
-			response.success === true &&
-			typeof response.body === 'object'
-		)
-	}
-
-	function remotingResultIsError(result) {
-		return typeof result !== 'undefined' && typeof result.errorID !== 'undefined'
-	}
-
 	function handleError(result) {
-		var isErrorObject = remotingResultIsError(result)
+		const isErrorObject = (typeof result !== 'undefined' && typeof result.errorID !== 'undefined')
 		if (isErrorObject && result.errorID === 1) {
 			killPage(MESSAGE_LOGOUT)
 		} else if (isErrorObject) {
@@ -432,7 +436,7 @@ obo.lti = (function() {
 	function showError(errorID) {
 		gotoSection('dead', true)
 
-		var message = 'Sorry, something went wrong. Please try again.'
+		let message = 'Sorry, something went wrong. Please try again.'
 		if (typeof errorID !== 'undefined') {
 			message += ' (' + errorID + ')'
 		}
@@ -440,15 +444,15 @@ obo.lti = (function() {
 		$('#error-window p').html(message)
 		$('#error-window').dialog({
 			modal: true,
-			close: function() {
-				gotoSection('wizard')
+			close: () => {
+				gotoSection('section-module-selection')
 			}
 		})
 	}
 
 	function killPage(message) {
 		gotoSection('dead', true)
-		gotoSection = function(a, b) {}
+		gotoSection = (a, b) => {}
 
 		$('#error-window p').html(message)
 		$('#error-window')
@@ -463,5 +467,5 @@ obo.lti = (function() {
 
 	// initalize:
 	setupUI()
-	gotoSection('wizard')
+	gotoSection('section-module-selection')
 })()
