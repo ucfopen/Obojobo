@@ -1,5 +1,7 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "obojobo-document-engine": "^4.0.1"
+  },
   "devDependencies": {
     "lint-staged": "^6.1.1"
   },

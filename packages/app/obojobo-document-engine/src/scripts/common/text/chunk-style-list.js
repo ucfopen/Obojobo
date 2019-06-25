@@ -1,5 +1,5 @@
-import StyleType from './style-type'
-import StyleRange from './style-range'
+const StyleType = require('./style-type')
+const StyleRange = require('./style-range')
 
 const keySortFn = (a, b) => Number(a) - Number(b)
 
@@ -291,4 +291,4 @@ class ChunkStyleList {
 	}
 }
 
-export default ChunkStyleList
+module.exports = ChunkStyleList

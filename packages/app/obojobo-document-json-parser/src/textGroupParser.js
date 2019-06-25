@@ -1,10 +1,10 @@
-const StyleableText = require('./common/text/styleable-text')
-const StyleableTextRenderer = require('./common/text/styleable-text-renderer')
+const StyleableText = require('obojobo-document-engine/src/scripts/common/text/styleable-text')
+const StyleableTextRenderer = require('obojobo-document-engine/src/scripts/common/text/styleable-text-renderer')
 
 const textGroupParser = (textGroup, tabs) => {
     if (!textGroup) return ''
 
-    // Parser textGroup
+    // Parse textGroup
     let textGroupBodyXML = ''
     textGroup.forEach(group => {
         let dataXML = ''
@@ -12,7 +12,7 @@ const textGroupParser = (textGroup, tabs) => {
             dataXML += ` ${d}="${group.data[d]}"`
         }
 
-        // Parser text value
+        // Parse text value
         const value = textParser(group.text)
 
         textGroupBodyXML += `${tabs+'\t'}<t${dataXML}>${value}</t>\n`
