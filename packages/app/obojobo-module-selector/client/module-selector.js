@@ -104,7 +104,7 @@ import 'whatwg-fetch'
 	}
 
 	// navigation
-	function gotoSection(sectionId, skipFadeAnimation) {
+	function gotoSection(sectionId, skipFadeAnimation = false, addClass = '') {
 		if (sectionId === 'progress') {
 			showProgress()
 		} else if (sectionId === 'section-success') {
@@ -114,6 +114,7 @@ import 'whatwg-fetch'
 
 		let $shownSection = $('section:not(:hidden)')
 		let $newSection = $('#' + sectionId)
+		$newSection.removeClass().addClass(addClass)
 		if ($shownSection.length === 0) {
 			if (skipFadeAnimation) {
 				$newSection.show()
@@ -249,73 +250,61 @@ import 'whatwg-fetch'
 	function populateList(section) {
 		resetSectionList(section)
 
-		$('.select-section-title').html(section)
-
 		const fetchOptions = { credentials: 'same-origin' }
 		$listContainer.find('.section').hide()
 		$search.val('')
 
+		let title = ''
+		let apiUrl = ''
+		let color = ''
+
 		switch (section) {
-
+			default:
 			case 'My Modules':
-				//$listContainer.addClass('loading');
-				$('.my-objects')
-					.show()
-					.addClass('loading')
-
-				data.items = 'pending'
-				fetch('/api/drafts/', fetchOptions)
-					.then(resp => resp.json())
-					.then(respJson => {
-						if (respJson.status != 'ok') throw 'Failed loading modules'
-
-						data.allItems = data.items = respJson.value
-						populateSection(section)
-						$('.my-objects').removeClass('loading')
-
-						if ($search.val() !== '') {
-							search()
-						}
-					})
-					.catch(error => {
-						handleError(error)
-					})
+				title = 'Personal Library'
+				apiUrl = '/api/drafts'
+				color = 'blue'
 				break
 
 			case 'Community Library':
-
-				//$listContainer.addClass('loading');
-				$('.my-objects')
-					.show()
-					.addClass('loading')
-
-				data.items = 'pending'
-				fetch('/api/drafts-public', fetchOptions)
-					.then(resp => resp.json())
-					.then(respJson => {
-						if (respJson.status != 'ok') throw 'Failed loading modules'
-
-						data.allItems = data.items = respJson.value
-						populateSection(section)
-						$('.my-objects').removeClass('loading')
-
-						if ($search.val() !== '') {
-							search()
-						}
-					})
-					.catch(error => {
-						handleError(error)
-					})
-
+				title = 'Community Collection'
+				apiUrl = '/api/drafts-public'
+				color = 'purple'
+				break
 		}
+
+		const className = section.replace(' ', '-').toLowerCase()
+		$('.' + className).addClass(color)
+		$('.my-objects')
+			.show()
+			.addClass('loading')
+
+		$('#select-section-title').html(title)
+		data.items = 'pending'
+		fetch(apiUrl, fetchOptions)
+			.then(resp => resp.json())
+			.then(respJson => {
+				if (respJson.status != 'ok') throw 'Failed loading modules'
+
+				data.allItems = data.items = respJson.value
+				populateSection(section, title, color)
+				$('.my-objects').removeClass('loading')
+
+				if ($search.val() !== '') {
+					search()
+				}
+			})
+			.catch(error => {
+				handleError(error)
+			})
 	}
 
 	function populateSection(section) {
-		let className = section.replace(' ', '-').toLowerCase()
-		let items = data.items
-		let lastIndex = Math.min(Math.min(items.length, MAX_ITEMS) + data.last, items.length)
-		let $section = $('.' + className)
-		let $list = $section.children('ul')
+		const className = section.replace(' ', '-').toLowerCase()
+		const items = data.items
+		const lastIndex = Math.min(Math.min(items.length, MAX_ITEMS) + data.last, items.length)
+		const $section = $('.' + className)
+		const $list = $section.children('ul')
 
 		if (items.length === 0) {
 			$section.find('.no-items').show()
@@ -386,7 +375,7 @@ import 'whatwg-fetch'
 			}
 		})
 
-		$('.back-button').click(event => {
+		$('#back-button').click(event => {
 			event.preventDefault()
 			gotoSection('section-module-selection')
 		})
@@ -394,13 +383,13 @@ import 'whatwg-fetch'
 		// section-module-selection
 		$('.community-library-button-container').click(event => {
 			event.preventDefault();
-			gotoSection('section-select-object');
+			gotoSection('section-select-object', false, 'purple');
 			gotoTab('Community Library');
 		});
 
 		$('.personal-library-button-container').click(event => {
 			event.preventDefault()
-			gotoSection('section-select-object')
+			gotoSection('section-select-object', false, 'blue')
 			gotoTab('My Modules')
 		})
 	}
@@ -467,5 +456,7 @@ import 'whatwg-fetch'
 
 	// initalize:
 	setupUI()
-	gotoSection('section-module-selection')
+	// gotoSection('section-module-selection')
+	gotoSection('section-select-object', false, 'blue')
+	gotoTab('My Modules')
 })()

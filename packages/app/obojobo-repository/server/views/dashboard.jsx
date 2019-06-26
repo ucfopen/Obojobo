@@ -18,7 +18,12 @@ const mapItemTypes = {
 
 const Dashboard = (props) =>
 	<DefaultLayout title={title} className="repository--dashboard">
-		<RepositoryNav/>
+		<RepositoryNav
+			userId={props.currentUser.id}
+			userAvatar={props.currentUser.avatar()}
+			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
+			noticeCount={12}
+			/>
 		<RepositoryFactBanner title={title} facts={props.facts} />
 		<div className="repository--section-wrapper">
 			<section className="repository--main-content repository--column-layout">

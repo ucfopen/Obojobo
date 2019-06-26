@@ -1,5 +1,6 @@
 const db = oboRequire('db')
 const permissions = oboRequire('config').permissions
+const crypto = require('crypto')
 
 class User {
 	constructor({
@@ -104,6 +105,11 @@ class User {
 	hasPermission(permName) {
 		if (!permissions[permName]) return false
 		return this.hasOneOfRole(permissions[permName])
+	}
+
+	avatar(size = 120){
+		const md5Email = crypto.createHash('md5').update(this.email).digest("hex")
+		return `https://secure.gravatar.com/avatar/${md5Email}?s=${size}&d=retro`
 	}
 }
 
