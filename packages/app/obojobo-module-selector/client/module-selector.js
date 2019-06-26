@@ -381,13 +381,13 @@ import 'whatwg-fetch'
 		})
 
 		// section-module-selection
-		$('.community-library-button-container').click(event => {
+		$('#community-library-button').click(event => {
 			event.preventDefault();
 			gotoSection('section-select-object', false, 'purple');
 			gotoTab('Community Library');
 		});
 
-		$('.personal-library-button-container').click(event => {
+		$('#personal-library-button').click(event => {
 			event.preventDefault()
 			gotoSection('section-select-object', false, 'blue')
 			gotoTab('My Modules')
@@ -456,7 +456,7 @@ import 'whatwg-fetch'
 
 	// initalize:
 	setupUI()
-	// gotoSection('section-module-selection')
-	gotoSection('section-select-object', false, 'blue')
-	gotoTab('My Modules')
+	gotoSection('section-module-selection')
+	// gotoSection('section-select-object', false, 'blue')
+	// gotoTab('My Modules')
 })()

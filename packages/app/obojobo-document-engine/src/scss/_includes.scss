@@ -30,8 +30,15 @@ $box-shadow-overlay: 0 2px 2px $color-shadow;
 
 $duration-animation-default: 0.2s;
 
+// default for obobjobo
+// in documents: headers, buttons, dialogs
 $font-default: 'Libre Franklin', Arial, sans-serif;
+
+// use for larger blocks of text
+// in a document: all content
 $font-text: 'Noto Serif', serif;
+
+// math or code text
 $font-monospace: 'Roboto Mono', monospace;
 
 $font-size: 14.25pt;

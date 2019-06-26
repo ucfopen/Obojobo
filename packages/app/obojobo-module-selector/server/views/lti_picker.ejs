@@ -35,39 +35,41 @@
 
 		<p>Choose between:</p>
 
-		<a role="button" class="wizard-button-container personal-library-button-container">
-			<div href="#" class="personal-library-button wizard-button">
-				Personal<br /> Library
-			</div>
-			<p>
-				Modules you've created.
-			</p>
-		</a>
+		<div class="choose-library-wrapper">
+			<a role="button" id="personal-library-button" class="wizard-button-container ">
+				<div href="#" class="wizard-button">
+					Personal<br /> Library
+				</div>
+				<p>
+					Modules you've created.
+				</p>
+			</a>
 
-		<a role="button" class="wizard-button-container community-library-button-container">
-			<div href="#" class="community-library-button wizard-button">
-				Community<br /> Collection
-			</div>
-			<p>
-				Modules from others.
-			</p>
-		</a>
+			<a role="button" id="community-library-button" class="wizard-button-container">
+				<div href="#" class="wizard-button">
+					Community<br /> Collection
+				</div>
+				<p>
+					Modules from others.
+				</p>
+			</a>
+		</div>
 
 	</section>
 
 	<section id="section-select-object">
-		<div id="list-header">
-			<div id="header-title">
+		<div id="list-header-wrapper">
+			<div id="list-header">
+				<div id="header-title">
+					<div id="select-section-title"></div>
+				</div>
+				<div id="search-controls">
+					<input type="text" id="search" placeholder="search modules..." />
+					<a id="refresh" role="button" href="#">Refresh</a>
+				</div>
+				<div class="flourish-line"></div>
 				<a href="#" role="button" id="back-button">Back</a>
-				<div id="select-section-title"></div>
 			</div>
-			<div id="search-controls">
-				<input type="text" id="search"/>
-				<a id="refresh" role="button" href="#">Refresh</a>
-			</div>
-			<a href="/editor" role="button" class="button" target="_blank" id="new-module">New Module</a>
-
-			<div class="flourish-line"></div>
 		</div>
 
 		<div id="list-container">
@@ -97,6 +99,10 @@
 				</div>
 			</div>
 
+		</div>
+
+		<div class="new-module-button-wrapper">
+			<a href="/editor" role="button" class="button" target="_blank" id="new-module">Create a New Module</a>
 		</div>
 
 	</section>
