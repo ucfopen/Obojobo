@@ -41,6 +41,11 @@
 		button {
 			background-color: $color-dangerous;
 			border-bottom: 1px solid darken($color-action, 20%);
+
+			&:hover {
+				background-color: $color-dangerous-minor;
+				color: $color-bg;
+			}
 		}
 	}
 
