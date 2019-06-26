@@ -172,7 +172,11 @@ describe('apiutil', () => {
 			const calledEndpoint = fetch.mock.calls[0][0]
 			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/drafts/mockId')
-			expect(calledOptions).toBe()
+			expect(calledOptions).toEqual({
+				credentials: 'include',
+				headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+				method: 'GET'
+			})
 		})
 	})
 
@@ -191,7 +195,11 @@ describe('apiutil', () => {
 			const calledEndpoint = fetch.mock.calls[0][0]
 			const calledOptions = fetch.mock.calls[0][1]
 			expect(calledEndpoint).toBe('/api/drafts/mockId/full')
-			expect(calledOptions).toBe()
+			expect(calledOptions).toEqual({
+				credentials: 'include',
+				headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+				method: 'GET'
+			})
 		})
 	})
 
