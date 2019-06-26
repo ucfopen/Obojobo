@@ -64,13 +64,17 @@ html,body{
 }
 
 .avatar--notice{
+	cursor: default;
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
 	background: red;
-	border-radius: 50%;
+	border-radius: 1em;
 	color: white;
 	padding: .25em;
+	min-width: 1.2em;
+	text-align: center;
+	font-size: 0.8em;
 }
 
 

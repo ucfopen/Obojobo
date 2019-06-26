@@ -1,11 +1,9 @@
 const React = require('react')
 
-const buildUrl = (id) => `https://randomuser.me/api/portraits/${id}.jpg`
-
 const Avatar = (props) =>
 	<div className={`avatar ${props.className}`}>
 		<div className="avatar--image">
-			<img src={buildUrl(props.id)}/>
+			<img src={props.avatarUrl} />
 		</div>
 		{
 			props.notice

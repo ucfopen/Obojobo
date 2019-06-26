@@ -17,7 +17,7 @@
 			assetForEnv('/static/module-selector$[.min].js')
 		]
 
-		let fonts = ['//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700']
+		let fonts = ['//fonts.googleapis.com/css?family=Libre+Franklin:300,400,700']
 	%>
 	<%- include ../../../obojobo-express/views/partials/head %>
 </head>
@@ -30,14 +30,14 @@
 					<span class="remaining-tagline">Embed an Obojobo&reg; Next Module</span>
 				</h1>
 			</div>
-			<div class="blue-flourish"></div>
+			<div class="flourish-line"></div>
 		</header>
 
-		<p>Choose a collection:</p>
+		<p>Choose between:</p>
 
 		<a role="button" class="wizard-button-container personal-library-button-container">
 			<div href="#" class="personal-library-button wizard-button">
-				Personal<br /> Collection
+				Personal<br /> Library
 			</div>
 			<p>
 				Modules you've created.
@@ -51,31 +51,36 @@
 			<p>
 				Modules from others.
 			</p>
-		</div>
+		</a>
 
 	</section>
 
 	<section id="section-select-object">
-		<div id="list-overlay">
-			<a href="#" role="button" class="back-button">Back</a>
-			<a href="/editor" role="button" class="button" target="_blank" id="new-module">Create a new module</a>
-			<div class="select-section-title"></div>
-			<a id="refresh" role="button" href="#">Refresh</a>
-			<input type="text" id="search"></div>
-			<div class="blue-flourish"></div>
+		<div id="list-header">
+			<div id="header-title">
+				<a href="#" role="button" id="back-button">Back</a>
+				<div id="select-section-title"></div>
+			</div>
+			<div id="search-controls">
+				<input type="text" id="search"/>
+				<a id="refresh" role="button" href="#">Refresh</a>
+			</div>
+			<a href="/editor" role="button" class="button" target="_blank" id="new-module">New Module</a>
+
+			<div class="flourish-line"></div>
 		</div>
 
 		<div id="list-container">
 
 			<ul class="template">
 				<li class="template obo-item">
+					<div class="buttons">
+						<a role="button" class="button embed-button" href="#">Embed</a>
+						<a class="preview external" target="_blank" href="#">Preview</a>
+					</div>
 					<div class="description">
 						<h2><span class="title"></span></h2>
 						<div class="draft-id"></div>
-					</div>
-					<div class="buttons">
-						<a class="preview external" target="_blank" href="#">Preview</a>
-						<a role="button" class="button embed-button" href="#">Embed this Module</a>
 					</div>
 				</li>
 			</ul>
@@ -103,7 +108,7 @@
 					<span class="remaining-tagline">Obojobo&reg; Next Learning Module Selection</span>
 				</h1>
 			</div>
-			<div class="blue-flourish"></div>
+			<div class="flourish-line"></div>
 		</header>
 
 		<div class="progress-container">
@@ -115,7 +120,7 @@
 	<section id="section-success">
 		<header>
 			<span class="logo-text">Obojobo&reg;</span>
-			<div class="blue-flourish"></div>
+			<div class="flourish-line"></div>
 		</header>
 		<div class="grey-box">
 			<h1>Obojobo Instance Connected:</h1>

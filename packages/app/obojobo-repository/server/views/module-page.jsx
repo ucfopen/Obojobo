@@ -10,7 +10,12 @@ import Button from './components/button'
 
 const ModulePage = (props) =>
 	<DefaultLayout title={`${props.module.title} - an Obojobo Module by ${props.user.name}`} className="repository--module">
-		<RepositoryNav/>
+		<RepositoryNav
+			userId={props.currentUser.id}
+			userAvatar={props.currentUser.avatar()}
+			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
+			noticeCount={12}
+			/>
 		<RepositoryFactBanner title={props.module.title} facts={props.facts}  />
 
 		<div><b>Updated:</b> {props.module.updatedAt.toString()}</div>

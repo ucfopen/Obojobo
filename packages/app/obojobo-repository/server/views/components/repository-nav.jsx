@@ -17,9 +17,9 @@ const RepositoryNav = (props) =>
 			</div>
 
 			<div className="repository--nav--current-user">
-				<div className="repository--nav--current-user--name">Ian Turgeon</div>
+				<div className="repository--nav--current-user--name">{props.displayName}</div>
 				<div className="repository--nav--current-user--link"><a href="/dashboard">Your Dashboard</a></div>
-				<Avatar id="women/89" notice="5" className="repository--nav--current-user--avatar" />
+				<Avatar id={props.userId} avatarUrl={props.userAvatar} notice={props.noticeCount} className="repository--nav--current-user--avatar" />
 				<div className="repository--nav--current-user--menu">
 					Notices?
 					Links?

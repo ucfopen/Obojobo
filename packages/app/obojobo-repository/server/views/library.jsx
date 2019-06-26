@@ -9,7 +9,12 @@ const title = 'Library'
 
 const Library = (props) =>
 	<DefaultLayout title={title} className="repository--library">
-		<RepositoryNav/>
+		<RepositoryNav
+			userId={props.currentUser.id}
+			userAvatar={props.currentUser.avatar()}
+			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
+			noticeCount={3}
+			/>
 		<RepositoryFactBanner title={title} facts={props.facts} />
 
 		<div className="repository--section-wrapper">
