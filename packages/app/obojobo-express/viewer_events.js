@@ -29,7 +29,7 @@ oboEvents.on('client:nav:redAlert', (event, req) => {
 	return Promise.resolve()
 		.then(() => {
 
-			if (!event.payload.redAlert) throw Error('Missing Red Alert Status')
+			if (typeof event.payload.redAlert === "undefined") throw Error('Missing Red Alert Status')
 
 			return db.none(
 				`

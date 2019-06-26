@@ -543,7 +543,7 @@ export default class ViewerApp extends React.Component {
 
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
 
-		const redAlertState = NavUtil.isRedAlertEnabled(this.state.navState)
+		const redAlert = NavUtil.isRedAlertEnabled(this.state.navState)
 
 		if (isNavEnabled) {
 			const canNavigate = NavUtil.canNavigate(this.state.navState)

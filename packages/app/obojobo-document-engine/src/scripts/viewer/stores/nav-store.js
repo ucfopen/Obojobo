@@ -153,15 +153,15 @@ class NavStore extends Store {
 					this.triggerChange()
 				},
 				'nav:redAlert': payload => {
-					const redAlertState = { redAlert: payload.value.enable }
+					const redAlert = { redAlert: payload.value.enable }
 					APIUtil.postEvent({
 						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:redAlert',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId,
-						payload: redAlertState
+						payload: redAlert
 					})
-					this.setAndTrigger(redAlertState)
+					this.setAndTrigger(redAlert)
 				},
 				'question:scoreSet': payload => {
 					const navItem = this.state.itemsById[payload.value.id]
