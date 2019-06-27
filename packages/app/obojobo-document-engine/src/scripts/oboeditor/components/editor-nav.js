@@ -38,6 +38,13 @@ class EditorNav extends React.Component {
 		)
 	}
 
+	generateChildrenId(node) {
+		node.children.forEach(child => {
+			child.id = generateId()
+			child = this.generateChildrenId(child)
+		})
+	}
+
 	addAssessment(name = 'Assessment') {
 		ModalUtil.hide()
 
@@ -45,6 +52,10 @@ class EditorNav extends React.Component {
 		if (!/[^\s]/.test(name)) name = 'Assessment'
 
 		const newAssessment = Object.assign({}, assessmentTemplate)
+		this.generateChildrenId(newAssessment)
+		newAssessment.content.scoreActions.forEach(scoreAction => {
+			this.generateChildrenId(scoreAction.page)
+		})
 		newAssessment.id = generateId()
 		newAssessment.content.title = name
 
@@ -90,6 +101,7 @@ class EditorNav extends React.Component {
 		ModalUtil.hide()
 
 		const newPage = Object.assign({}, pageTemplate)
+		this.generateChildrenId(newPage)
 		newPage.id = generateId()
 
 		// Fix page titles that are whitespace strings
