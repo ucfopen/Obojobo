@@ -21,14 +21,22 @@ class MathEquationProperties extends React.Component {
 
 		this.inputRef = React.createRef()
 
-		this.state = this.props.content
-		this.state.error = ''
+		this.state = ({
+			content: this.props.content,
+			error: ''
+		})
 	}
 
 	handleLatexChange(event) {
 		const latex = event.target.value
 
-		return this.setState({ latex })
+		this.setState({
+			...this.state,
+			content: {
+				...this.state.content,
+				latex,
+			}
+		})
 	}
 
 	handleAltChange(event) {
@@ -40,7 +48,13 @@ class MathEquationProperties extends React.Component {
 	handleLabelChange(event) {
 		const label = event.target.value
 
-		return this.setState({ label })
+		this.setState({
+			...this.state,
+			content: { 
+				...this.state.content,
+				label
+			}
+		})
 	}
 
 	focusOnFirstElement() {
@@ -48,13 +62,13 @@ class MathEquationProperties extends React.Component {
 	}
 
 	onConfirm() {
-		const katexHtml = getLatexHtml(this.state.latex)
+		const katexHtml = getLatexHtml(this.state.content.latex)
 
 		if (katexHtml.error) {
 			return this.setState({ error: katexHtml.error.message })
 		}
 
-		return this.props.onConfirm(this.state)
+		return this.props.onConfirm(this.state.content)
 	}
 
 	render() {
@@ -72,7 +86,7 @@ class MathEquationProperties extends React.Component {
 							type="text"
 							id="obojobo-draft--chunks--math-equation--latex"
 							ref={this.inputRef}
-							value={this.state.latex || ''}
+							value={this.state.content.latex || ''}
 							onChange={this.handleLatexChange.bind(this)}
 						/>
 						<label>Alt:</label>
@@ -86,7 +100,7 @@ class MathEquationProperties extends React.Component {
 						<input
 							type="text"
 							id="obojobo-draft--chunks--math-equation--label"
-							value={this.state.label || ''}
+							value={this.state.content.label || ''}
 							onChange={this.handleLabelChange.bind(this)}
 						/>
 					</div>
