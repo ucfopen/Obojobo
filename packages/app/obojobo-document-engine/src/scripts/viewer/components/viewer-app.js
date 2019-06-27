@@ -111,6 +111,7 @@ export default class ViewerApp extends React.Component {
 		let attemptHistory
 		let viewState
 		let isPreviewing
+		let redAlertStatus
 		let outcomeServiceURL = 'the external system'
 
 		const urlTokens = document.location.pathname.split('/')
@@ -132,6 +133,7 @@ export default class ViewerApp extends React.Component {
 				viewState = visit.value.viewState
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
 				isPreviewing = visit.value.isPreviewing
+				redAlertStatus = visit.value.redAlertStatus
 				outcomeServiceURL = visit.value.lti.lisOutcomeServiceUrl
 
 				return APIUtil.getDraft(draftIdFromUrl)
@@ -141,6 +143,7 @@ export default class ViewerApp extends React.Component {
 
 				NavStore.init(
 					model,
+					redAlertStatus,
 					model.modelState.start,
 					window.location.pathname,
 					visitIdFromApi,
@@ -543,7 +546,7 @@ export default class ViewerApp extends React.Component {
 
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
 
-		const redAlert = NavUtil.isRedAlertEnabled(this.state.navState)
+		const redAlertStatus = NavUtil.isRedAlertEnabled(this.state.navState)
 
 		if (isNavEnabled) {
 			const canNavigate = NavUtil.canNavigate(this.state.navState)

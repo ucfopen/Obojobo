@@ -1,4 +1,5 @@
 const express = require('express')
+const db = require('obojobo-express/db')
 const router = express.Router()
 const logger = oboRequire('logger')
 const VisitModel = oboRequire('models/visit')
@@ -92,6 +93,14 @@ router
 				})
 			})
 			.then(() => {
+				return db.oneOrNone(`SELECT red_alert FROM red_alert_status WHERE user_id = $[user_id] AND draft_id = $[draft_id]`,
+				{
+					user_id: req.currentUser.id,
+					draft_id: draftId
+				})
+			})
+			.then((redAlertStatus) => {
+
 				logger.log(
 					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
 						req.currentUser.id
@@ -107,6 +116,7 @@ router
 				res.success({
 					visitId,
 					isPreviewing: visit.is_preview,
+					redAlertStatus: !!redAlertStatus,
 					lti,
 					viewState,
 					extensions: visitStartReturnExtensionsProps

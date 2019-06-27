@@ -153,15 +153,15 @@ class NavStore extends Store {
 					this.triggerChange()
 				},
 				'nav:redAlert': payload => {
-					const redAlert = { redAlert: payload.value.enable }
+					const redAlertStatus = { redAlert: payload.value.enable }
 					APIUtil.postEvent({
 						draftId: OboModel.getRoot().get('draftId'),
 						action: 'nav:redAlert',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId,
-						payload: redAlert
+						payload: redAlertStatus
 					})
-					this.setAndTrigger(redAlert)
+					this.setAndTrigger(redAlertStatus)
 				},
 				'question:scoreSet': payload => {
 					const navItem = this.state.itemsById[payload.value.id]
@@ -174,7 +174,8 @@ class NavStore extends Store {
 		)
 	}
 
-	init(model, startingId, startingPath, visitId, viewState = {}) {
+	init(model, redAlertStatus, startingId, startingPath, visitId, viewState = {}) {
+
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -182,7 +183,7 @@ class NavStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
-			redAlert: false,
+			redAlert: redAlertStatus,
 			locked:
 				viewState['nav:isLocked'] !== null && typeof viewState['nav:isLocked'] !== 'undefined'
 					? viewState['nav:isLocked'].value
@@ -194,7 +195,6 @@ class NavStore extends Store {
 			context: 'practice',
 			visitId
 		}
-
 		this.buildMenu(model)
 		NavUtil.gotoPath(startingPath)
 
