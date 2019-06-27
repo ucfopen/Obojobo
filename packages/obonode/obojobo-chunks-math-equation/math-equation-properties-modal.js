@@ -42,7 +42,13 @@ class MathEquationProperties extends React.Component {
 	handleAltChange(event) {
 		const alt = event.target.value
 
-		return this.setState({ alt })
+		this.setState({
+			...this.state,
+			content: { 
+				...this.state.content,
+				alt
+			}
+		})	
 	}
 
 	handleLabelChange(event) {
@@ -93,7 +99,7 @@ class MathEquationProperties extends React.Component {
 						<input
 							type="text"
 							id="obojobo-draft--chunks--math-equation--alt"
-							value={this.state.alt || ''}
+							value={this.state.content.alt || ''}
 							onChange={this.handleAltChange.bind(this)}
 						/>
 						<label>Optional Equation Label:</label>
