@@ -10,7 +10,12 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 			last_value(drafts_content.id) OVER wnd as "latest_version",
 			count(drafts_content.id) OVER wnd as revision_count,
 			last_value(drafts_content.content->'content'->'title') OVER wnd as "title",
-			drafts.user_id AS user_id
+			drafts.user_id AS user_id,
+			CASE
+				WHEN last_value(drafts_content.xml) OVER wnd IS NULL
+				THEN 'visual'
+				ELSE 'clasic'
+			END AS editor
 		FROM drafts
 		JOIN drafts_content AS drafts_content
 			ON drafts_content.draft_id = drafts.id
@@ -26,7 +31,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 
 
 class DraftSummary {
-	constructor({draft_id, latest_version, title, user_id, created_at, updated_at, revision_count}) {
+	constructor({draft_id, latest_version, title, user_id, created_at, updated_at, revision_count, editor}) {
 		this.draftId = draft_id
 		this.title = title
 		this.userId = user_id
@@ -34,6 +39,7 @@ class DraftSummary {
 		this.updatedAt = updated_at
 		this.latestVersion = latest_version
 		this.revisionCount = Number(revision_count)
+		this.editor = editor
 	}
 
 	static fetchById(id) {

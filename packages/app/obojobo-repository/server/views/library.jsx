@@ -1,21 +1,21 @@
 const React = require('react');
 import DefaultLayout from './layouts/default'
 import RepositoryNav from './components/repository-nav'
-import RepositoryFactBanner from './components/repository-fact-banner'
+import RepositoryBanner from './components/repository-banner'
 import Module from './components/module'
 import Button from './components/button'
 
-const title = 'Library'
+const title = 'Module Library'
 
 const Library = (props) =>
 	<DefaultLayout title={title} className="repository--library">
 		<RepositoryNav
 			userId={props.currentUser.id}
-			userAvatar={props.currentUser.avatar()}
+			avatarUrl={props.currentUser.avatarUrl}
 			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
 			noticeCount={3}
 			/>
-		<RepositoryFactBanner title={title} facts={props.facts} />
+		<RepositoryBanner className="default-bg" title={title} />
 
 		<div className="repository--section-wrapper">
 			<section className="repository--main-content">

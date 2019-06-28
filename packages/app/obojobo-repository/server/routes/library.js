@@ -2,12 +2,22 @@ const express = require('express')
 const router = express.Router()
 const RepositoryGroup = require('../models/group')
 const DraftSummary = require('../models/draft_summary')
+const GeoPattern = require('geopattern');
 const {
 	checkValidationRules,
 	requireDraftId,
 	getCurrentUser
 } = require('obojobo-express/express_validators')
 
+
+router
+	.route('/library/module-icon/:moduleId')
+	.get((req, res) => {
+		const pattern = GeoPattern.generate(req.params.moduleId)
+		res.set('Cache-Control', 'public, max-age=31557600'); // one year
+		res.setHeader('Content-Type', 'image/svg+xml');
+		return res.send(pattern.toString())
+	})
 
 router
 	.route('/library')
@@ -34,7 +44,6 @@ router
 					facts,
 					currentUser: req.currentUser
 				}
-				console.log(props)
 				res.render('library.jsx', props)
 			})
 			.catch(res.unexpected)

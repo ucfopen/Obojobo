@@ -1,5 +1,5 @@
 const React = require('react')
-import Module from './module'
+const Module = require('./module')
 
 const RepositoryListItemEdited = (props) =>
 	<div className="repository--item-list--row">

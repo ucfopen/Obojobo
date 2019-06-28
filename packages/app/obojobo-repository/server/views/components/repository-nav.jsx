@@ -1,9 +1,6 @@
 const React = require('react')
 const Avatar = require('./avatar')
-
-const getSVG = (svg) => ({
-	"__html": require(svg)
-})
+const Search = require('./search')
 
 const RepositoryNav = (props) =>
 	<div className="repository--section-wrapper repository--stick-to-top">
@@ -11,15 +8,11 @@ const RepositoryNav = (props) =>
 			<a href="/"><div className="repository--nav--logo">Obojobo</div></a>
 			<div className="repository--nav--links--link"><a href="/library">Library</a></div>
 			<div className="repository--nav--links--link"><a href="/editor">New Module</a></div>
-			<div className="repository--nav--links--search">
-				<div className="repository--nav--links--search--icon" dangerouslySetInnerHTML={getSVG('./magnify.svg')} ></div>
-				<input type="search" name="search" placeholder="Find a module..." />
-			</div>
-
+			<Search />
 			<div className="repository--nav--current-user">
 				<div className="repository--nav--current-user--name">{props.displayName}</div>
 				<div className="repository--nav--current-user--link"><a href="/dashboard">Your Dashboard</a></div>
-				<Avatar id={props.userId} avatarUrl={props.userAvatar} notice={props.noticeCount} className="repository--nav--current-user--avatar" />
+				<Avatar id={props.userId} avatarUrl={props.avatarUrl} notice={props.noticeCount} className="repository--nav--current-user--avatar" />
 				<div className="repository--nav--current-user--menu">
 					Notices?
 					Links?
