@@ -3,6 +3,7 @@ $border-color: #ccc;
 $button-color: #76c7aa;
 $module-icon-size: 90px;
 $avatar-icon-size: 90px;
+$color-banner-bg: #e8e3eb;
 
 @mixin with-bottom-border() {
 	position: relative;
@@ -24,6 +25,53 @@ $avatar-icon-size: 90px;
 	// disable border line on last item
 	&:last-child:after{
 		display: none;
+	}
+
+}
+
+
+.repository--module-icon--menu{
+	display: block;
+	width: 100%;
+	position: absolute;
+	top: -20px;
+	left: 0%;
+	background-color: #ccc;
+	border-radius: 5px;
+	padding: 5px 10px;
+	z-index: 100;
+	box-shadow: 1px 1px 3px rgba(0,0,0, .4);
+
+	.repository--module-icon--image{
+		position: absolute;
+		top: 5px;
+		left: -5px;
+		margin:0;
+		svg{
+			height: 30px;
+		}
+	}
+
+	.repository--module-icon--menu--title{
+		font-size: .9em;
+		margin-left: 21px;
+		text-align: left;
+
+		margin-bottom: 10px;
+	}
+
+	.repository--button{
+		display: inline-block;
+		margin-bottom: 8px;
+
+		&.delete{
+			background-color: $color-dangerous;
+
+			&:hover{
+				color: $color-dangerous;
+				background-color: white;
+			}
+		}
 	}
 
 }
@@ -85,18 +133,42 @@ html,body{
 }
 
 .repository--section-wrapper--full-width{
+	margin-bottom: 40px;
+	position: relative;
+	z-index: 1;
+
 	> section {
 		max-width: 800px;
 		margin: 0 auto;
 	}
-	margin-bottom: 40px;
+
+	&.default-bg .repository--section-wrapper--full-width-bg{
+		content: ' ';
+		position:absolute;
+		display: block;
+		height: 100%;
+		width: 100%;
+		background-image: url('/images/purple-background-cubes.png');
+		background-repeat: no-repeat;
+		background-size: auto;
+		background-attachment: fixed;
+		background-position-x: right;
+		background-position-y: top;
+		top: 0;
+		z-index: -1;
+		background-image: url('/images/purple-background-cubes.png');
+		filter: none;
+		opacity: .6;
+}
 }
 
 .repository--section-wrapper--grey{
-	background: #ddd;
+	background-color: $color-banner-bg;
 	border-top: 1px solid $border-color;
 	border-bottom: 1px solid $border-color;
 }
+
+
 
 
 .repository--nav{
@@ -190,44 +262,74 @@ $search-input-height: 15px;
 	display: none;
 }
 
-
 .repository--title-banner{
 	display: flex;
+	position: relative;
+	z-index: 1;
 	padding: 30px 10px;
 	box-sizing: border-box;
 	justify-content: space-between;
 	align-items: center;
 	color: #555;
+	overflow: hidden;
+
+	.repository--module-icon--image{
+		margin-right: 20px;
+		svg{
+			height: $module-icon-size + 45px;
+		}
+	}
 }
+
 
 .repository--title-banner--title{
 	font-family: $font-default;
+	color: darken($color-action, 10%);
 	font-weight: 700;
 	font-size: 2.5em;
-
 	white-space: pre-wrap;
 	margin: 0;
 	padding: 0;
+	z-index: 1;
 }
 
-.repository--info-banner--facts{
-	display: flex;
-	justify-content: space-between;
+.default-bg .repository--title-banner--title{
+	// add a stroke/shaddow
+	&:before{
+		$stroke-width: 5px;
+		position: absolute;
+		content: attr(data-title);
+		z-index: -1;
+		// webkit supports strokes, although they are center aligned,
+		// so we'll double the desired stroke here to think of the stroke-width
+		// in terms of pixels of stroke that'll be visible outside the text
+		-webkit-text-stroke: $stroke-width * 2 $color-banner-bg;
+		// In case we're not in webkit, throw a text-shadow on to at least get
+		// a pixel of glow to keep the background from mixing with the font too much
+		text-shadow: -1px -1px 0 $color-banner-bg, 1px -1px 0 $color-banner-bg, -1px 1px 0 $color-banner-bg, 1px 1px 0 $color-banner-bg;
+	}
 }
 
-.repository--info-banner--facts--fact{
-	padding-left: 40px;
-}
 
-.repository--info-banner--facts--fact--title{
-	font-size: .75em;
-	margin-bottom: 5px;
-}
+// .repository--banner--facts-wrapper{
+// 	display: flex;
+// 	justify-content: space-between;
+// 	z-index: 20;
+// }
 
-.repository--info-banner--facts--fact--value{
-	font-size: 1.2em;
-	color: #222;
-}
+// .repository---banner--fact{
+// 	padding-left: 40px;
+// }
+
+// .repository---banner--fact--title{
+// 	font-size: .75em;
+// 	margin-bottom: 5px;
+// }
+
+// .repository---banner--fact--value{
+// 	font-size: 1.2em;
+// 	color: #222;
+// }
 
 .repository--column-layout{
 	display: flex;
@@ -359,24 +461,42 @@ $search-input-height: 15px;
 	padding: 10px 20px;
 	font-weight: 700;
 	cursor: pointer;
+
+	&:hover{
+		background-color: $color-action-minor;
+		color: black;
+	}
 }
 
 .repository--module-icon{
+	position:relative;
 	font-family: $font-default;
 	width: $module-icon-size;
 	margin: 10px;
-	overflow: hidden;
+	border-radius: 5px;
+	background-color: none;
+	// overflow: hidden;
 	font-size: .75em;
 	text-align: center;
+
+	.repository--module-icon--menu{
+		display: none
+	}
+
+	&:hover {
+		background-color: #ccc;
+		.repository--module-icon--menu{
+			display: block;
+		}
+	}
 }
 
 .repository--module-icon--image{
+	filter: saturate(2);
 	svg{
 		height: $module-icon-size;
 	}
 }
-
-
 
 // ==================== LIBRARY
 
@@ -401,3 +521,14 @@ $search-input-height: 15px;
 	}
 
 }
+
+.repository--module--content{
+	max-width: 800px;
+	margin: 0 auto;
+
+	code{
+		background-color: #eee;
+		padding: 2px;
+	}
+}
+

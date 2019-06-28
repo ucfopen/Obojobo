@@ -1,5 +1,5 @@
 const React = require('react')
-import Avatar from './avatar'
+const Avatar = require('./avatar')
 
 const RepositoryListItemFeedback = (props) =>
 	<div className="repository--item-list--row">

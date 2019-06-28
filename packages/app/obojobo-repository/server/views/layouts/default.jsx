@@ -11,10 +11,12 @@ const DefaultLayout = (props) =>
 			<link rel="stylesheet" media="screen" href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i" />
 		</head>
 		<body className={props.className}>
-			<div className="repository--wrapper">
-				{props.children}
-			</div>
+			{props.children}
+			<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+			<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+			<script src="/static/dashboard.js"></script>
 		</body>
 	</html>
 
 module.exports = DefaultLayout;
+

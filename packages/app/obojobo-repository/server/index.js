@@ -21,7 +21,7 @@ app.on('mount', app => {
 
 	// register express-react-views template engine if not already registered
 	if(!app.engines['jsx']){
-		app.engine('jsx', require('express-react-views').createEngine());
+		app.engine('jsx', require('./lib/express-react-views').createEngine());
 	}
 
 	// =========== ROUTING & CONTROLLERS ===========

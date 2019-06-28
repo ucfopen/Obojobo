@@ -31,13 +31,9 @@
 	},
 	"dependencies": {
 		"express": "~4.16.4",
-		"express-react-views": "~0.10.5",
-		"express-validator": "^5.2.0",
 		"obojobo-express": "^4.1.0-rc1",
 		"obojobo-repository": "^4.1.0-rc1",
 		"obojobo-lib-utils": "^4.1.0-rc1",
-		"react": "16.7.0",
-		"react-dom": "16.7.0",
 		"whatwg-fetch": "^3.0.0"
 	},
 	"jest": {

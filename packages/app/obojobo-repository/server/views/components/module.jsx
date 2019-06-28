@@ -1,14 +1,18 @@
 const React = require('react')
-import ModuleImage from './module-image'
+const ModuleImage = require('./module-image')
+
 
 const Module = props =>
-	<a className="repository--module-icon" href={`/library/${props.draftId}`}>
-		<div className="repository--module-icon--image">
+	<div className="repository--module-icon">
+		<a href={`/library/${props.draftId}`} >
 			<ModuleImage id={props.draftId} />
-		</div>
-		<div className="repository--module-icon--flag repository--flag-details"></div>
-		<div className="repository--module-icon--flag repository--flag-incomplete"></div>
-		<div className="repository--module-icon--title">{props.title}</div>
-	</a>
+			{/*
+			<div className="repository--module-icon--flag repository--flag-details"></div>
+			<div className="repository--module-icon--flag repository--flag-incomplete"></div>
+			*/}
+			<div className="repository--module-icon--title">{props.title}</div>
+		</a>
+		{props.children}
+	</div>
 
 module.exports = Module

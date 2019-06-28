@@ -1,5 +1,6 @@
 import './css/module-selector.scss'
 
+// shim fetch for older browsers
 import 'whatwg-fetch'
 
 (function() {

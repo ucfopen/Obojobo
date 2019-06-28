@@ -1,7 +1,7 @@
 const React = require('react')
 
 const Avatar = (props) =>
-	<div className={`avatar ${props.className}`}>
+	<div className={`avatar ${props.className}`} >
 		<div className="avatar--image">
 			<img src={props.avatarUrl} />
 		</div>

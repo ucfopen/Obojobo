@@ -3,11 +3,9 @@ const router = express.Router()
 
 // Home page
 // mounted as /
+// redirects to the library for now
 router.get('/', (req, res) => {
-	res.render('index', {
-		title: 'Obojobo Next',
-		modules: req.app.locals.modules
-	})
+	res.redirect('/library');
 })
 
 module.exports = router
