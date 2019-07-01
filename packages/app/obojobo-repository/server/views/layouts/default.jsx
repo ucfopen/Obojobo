@@ -1,6 +1,6 @@
 const React = require('react');
 
-const DefaultLayout = (props) =>
+const DefaultLayout = props =>
 	<html lang="en">
 		<head>
 			<title>{ props.title }</title>
@@ -12,11 +12,10 @@ const DefaultLayout = (props) =>
 		</head>
 		<body className={props.className}>
 			{props.children}
-			<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-			<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+			<script crossOrigin="true" src="https://unpkg.com/react@16/umd/react.development.js"></script>
+			<script crossOrigin="true" src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 			<script src="/static/dashboard.js"></script>
 		</body>
 	</html>
 
 module.exports = DefaultLayout;
-

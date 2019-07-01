@@ -1,34 +1,29 @@
+require('./module-menu.scss')
+
 const React = require('react')
 const ModuleImage = require('./module-image')
+const ButtonLink = require('./button-link')
 const Button = require('./button')
 
-class Module extends React.Component {
+class ModuleMenu extends React.Component {
 	constructor(props) {
 		super(props)
-		this.onPreview = this.onPreview.bind(this)
-		this.onEdit = this.onEdit.bind(this)
 		this.onShare = this.onShare.bind(this)
 		this.onDelete = this.onDelete.bind(this)
 	}
 
-	onPreview(event){
-		window.location = `/preview/${this.props.draftId}`
+	urlForEditor(editor, draftId){
+		if(editor === 'visual'){
+			return `/editor/${draftId}`
+		}
+		return `/editor#id:${draftId}`
 	}
 
-	onEdit(event){
-		if(this.props.editor === 'visual'){
-			window.location = `/editor/${this.props.draftId}`
-		}
-		else{
-			window.location = `/editor#id:${this.props.draftId}`
-		}
-	}
-
-	onShare(event){
+	onShare(){
 		console.log('onShare')
 	}
 
-	onDelete(event){
+	onDelete(){
 		var response = confirm(`Delete "${this.props.title}" id: ${this.props.draftId} ?`)
 		if(!response) return;
 		const options = {
@@ -56,21 +51,21 @@ class Module extends React.Component {
 			alert('Error: ' + error.toString())
 			console.error(error)
 		})
-
 	}
 
 	render(){
 		return (
-			<div className="repository--module-icon--menu">
-				<ModuleImage id={this.props.draftId} />
-				<div className="repository--module-icon--menu--title">{this.props.title}</div>
-				<Button onClick={this.onPreview}>Preview</Button>
-				<Button onClick={this.onEdit}>Edit</Button>
-				<Button onClick={this.onShare}>Share</Button>
-				<Button onClick={this.onDelete} className="delete">Delete</Button>
+			<div className="repository--module-icon--menu-wrapper" >
+				<div className={`repository--module-icon--menu ${this.props.className || ''}`}>
+					<ButtonLink url={`/library/${this.props.draftId}`} >Overview</ButtonLink>
+					<ButtonLink url={`/preview/${this.props.draftId}`} >Preview</ButtonLink>
+					<ButtonLink url={this.urlForEditor(this.props.editor, this.props.draftId)} >Edit</ButtonLink>
+					<Button onClick={this.onShare} >Share</Button>
+					<Button onClick={this.onDelete} className="delete" >Delete</Button>
+				</div>
 			</div>
 		)
 	}
 }
 
-module.exports = Module
+module.exports = ModuleMenu

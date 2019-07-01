@@ -23,8 +23,6 @@ router
 					],
 					currentUser: req.currentUser
 				}
-
-				console.log(props)
 				res.render('dashboard.jsx', props)
 			})
 

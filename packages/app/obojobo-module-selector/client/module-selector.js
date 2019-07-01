@@ -458,6 +458,4 @@ import 'whatwg-fetch'
 	// initalize:
 	setupUI()
 	gotoSection('section-module-selection')
-	// gotoSection('section-select-object', false, 'blue')
-	// gotoTab('My Modules')
 })()

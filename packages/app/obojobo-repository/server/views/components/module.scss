@@ -1,0 +1,31 @@
+@import '../../../client/css/defaults';
+
+.repository--module-icon{
+	position:relative;
+	font-family: $font-default;
+	width: $dimension-module-icon;
+	padding: 10px;
+	border-radius: 5px;
+	background-color: none;
+	font-size: .75em;
+	text-align: center;
+
+	> a{
+		text-decoration: none;
+		color: black;
+		font-weight: 600;
+
+		.repository--module-icon--menu-control-button{
+			display: none;
+		}
+	}
+
+	&:hover {
+		background-color: $color-banner-bg;
+
+		.repository--module-icon--menu-control-button{
+			display: block;
+		}
+
+	}
+}

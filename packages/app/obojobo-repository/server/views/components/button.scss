@@ -1,0 +1,18 @@
+@import '../../../client/css/defaults';
+
+.repository--button{
+	border: 0;
+	background: $color-action;
+	color: white;
+	border-radius: 4px;
+	padding: 10px 20px;
+	font-weight: 700;
+	box-sizing: border-box;
+	cursor: pointer;
+	text-decoration: none;
+
+	&:hover{
+		background-color: $color-action-minor;
+		color: black;
+	}
+}

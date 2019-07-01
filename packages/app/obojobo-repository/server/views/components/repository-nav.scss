@@ -1,0 +1,86 @@
+@import '../../../client/css/defaults';
+
+.repository--section-wrapper{
+	max-width: 800px;
+	margin: 0 auto;
+	border-bottom: 1px solid $border-color;
+}
+
+.repository--stick-to-top{
+	position: sticky;
+	top: 0px;
+	background: #fff;
+	min-width: 100%;
+	z-index: 100;
+}
+
+.repository--nav{
+	width: 800px;
+	margin: 5px auto;
+	display: flex;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+	align-content: flex-start;
+	align-items: center;
+	font-size: .85em;
+}
+
+.repository--nav a:link,
+.repository--nav a:visited{
+	color: $color-obojobo-blue;
+}
+.repository--nav a:active,
+.repository--nav a:hover{
+	color: $color-highlight;
+}
+
+.repository--nav--logo{
+	background-image: url('/images/obojobo-logo.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	box-sizing: border-box;
+	display: block;
+	height: 25px;
+	overflow: hidden;
+	text-indent: -1000px;
+	width: 130px;
+}
+
+
+.repository--nav--current-user{
+	position: relative;
+	width: 200px;
+	font-size: .9em;
+	height: 65px;
+}
+
+.avatar.repository--nav--current-user--avatar{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	height: 60px;
+	width: 60px;
+	margin: 0;
+}
+
+.repository--nav--current-user--name{
+	position: absolute;
+	word-wrap: none;
+	bottom: 40px;
+	right: 70px;
+	max-width: 130px;
+	font-size: .9em;
+}
+
+.repository--nav--current-user--link{
+	position: absolute;
+	word-wrap: none;
+	bottom: 20px;
+	right: 70px;
+	max-width: 130px;
+}
+
+.repository--nav--current-user--menu{
+	display: none;
+}

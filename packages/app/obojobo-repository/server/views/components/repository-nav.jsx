@@ -1,3 +1,5 @@
+require('./repository-nav.scss')
+
 const React = require('react')
 const Avatar = require('./avatar')
 const Search = require('./search')

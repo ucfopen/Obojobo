@@ -1,3 +1,5 @@
+require('./repository-banner.scss')
+
 const React = require('react')
 
 /*

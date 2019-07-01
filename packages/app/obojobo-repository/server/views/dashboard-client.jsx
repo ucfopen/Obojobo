@@ -1,3 +1,4 @@
+
 const React = require('react');
 const RepositoryNav = require('./components/repository-nav')
 const RepositoryBanner = require('./components/repository-banner')
@@ -8,6 +9,7 @@ const RepositoryListItemScores = require('./components/repository-list-item-scor
 const RepositoryListItemEdited = require('./components/repository-list-item-edited')
 const Button = require('./components/button')
 const Search = require('./components/search')
+const connect = require('react-redux').connect
 
 const DashboardClient = (props) =>
 	<span>
@@ -24,9 +26,13 @@ const DashboardClient = (props) =>
 				<div className="repository--item-list--group">
 					<div className="repository--item-list--group--item-wrapper">
 						<div className="repository--item-list--row">
-						<Search />
+							<Search />
 							<div className="repository--item-list--group--item--multi-wrapper">
-								{props.myModules.map(draft => <Module key={draft.draftId} {...draft}><ModuleMenu {...draft}/></Module> )}
+								{
+									props.myModules.map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} >
+										</Module>
+									)
+								}
 								{
 									props.page < props.pageCount ?
 									<div className="repository--item-list--group--item--newline-container">
@@ -44,4 +50,14 @@ const DashboardClient = (props) =>
 		</div>
 	</span>
 
-module.exports = DashboardClient;
+
+const mapStateToProps = (state) => {
+	return Object.assign({}, state)
+}
+
+// const mapDispatchToProps = { increment, decrement, reset }
+
+module.exports = connect(mapStateToProps)(DashboardClient)
+
+
+// module.exports = DashboardClient;

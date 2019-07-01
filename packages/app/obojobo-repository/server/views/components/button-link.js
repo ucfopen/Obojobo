@@ -2,12 +2,12 @@ require('./button.scss')
 
 const React = require('react')
 
-const Button = (props) =>
-	<button
-		onClick={props.onClick}
+const ButtonLink = (props) =>
+	<a
+		href={props.url}
 		className={`repository--button ${props.className || ''}`}
 		>
 		{props.children}
-	</button>
+	</a>
 
-module.exports = Button
+module.exports = ButtonLink

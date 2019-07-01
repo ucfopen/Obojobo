@@ -1,0 +1,105 @@
+@import '../../../client/css/defaults';
+
+.repository--section-wrapper--full-width{
+	margin-bottom: 40px;
+	position: relative;
+	z-index: 1;
+
+	> section {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	&.default-bg .repository--section-wrapper--full-width-bg{
+		content: ' ';
+		position:absolute;
+		display: block;
+		height: 100%;
+		width: 100%;
+		background-image: url('/images/purple-background-cubes.png');
+		background-repeat: no-repeat;
+		background-size: auto;
+		background-attachment: fixed;
+		background-position-x: right;
+		background-position-y: top;
+		top: 0;
+		z-index: -1;
+		background-image: url('/images/purple-background-cubes.png');
+		filter: none;
+		opacity: .6;
+	}
+}
+
+.repository--section-wrapper--grey{
+	background-color: $color-banner-bg;
+	border-top: 1px solid $border-color;
+	border-bottom: 1px solid $border-color;
+}
+
+
+.repository--title-banner{
+	display: flex;
+	position: relative;
+	z-index: 1;
+	padding: 30px 10px;
+	box-sizing: border-box;
+	justify-content: space-between;
+	align-items: center;
+	color: #555;
+	overflow: hidden;
+
+	.repository--module-icon--image{
+		margin-right: 20px;
+		svg{
+			height: $dimension-module-icon + 45px;
+		}
+	}
+}
+
+.repository--title-banner--title{
+	font-family: $font-default;
+	color: darken($color-action, 10%);
+	font-weight: 700;
+	font-size: 2.5em;
+	white-space: pre-wrap;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+}
+
+.default-bg .repository--title-banner--title{
+	// add a stroke/shaddow
+	&:before{
+		$stroke-width: 5px;
+		position: absolute;
+		content: attr(data-title);
+		z-index: -1;
+		// webkit supports strokes, although they are center aligned,
+		// so we'll double the desired stroke here to think of the stroke-width
+		// in terms of pixels of stroke that'll be visible outside the text
+		-webkit-text-stroke: $stroke-width * 2 $color-banner-bg;
+		// In case we're not in webkit, throw a text-shadow on to at least get
+		// a pixel of glow to keep the background from mixing with the font too much
+		text-shadow: -1px -1px 0 $color-banner-bg, 1px -1px 0 $color-banner-bg, -1px 1px 0 $color-banner-bg, 1px 1px 0 $color-banner-bg;
+	}
+}
+
+// .repository--banner--facts-wrapper{
+// 	display: flex;
+// 	justify-content: space-between;
+// 	z-index: 20;
+// }
+
+// .repository---banner--fact{
+// 	padding-left: 40px;
+// }
+
+// .repository---banner--fact--title{
+// 	font-size: .75em;
+// 	margin-bottom: 5px;
+// }
+
+// .repository---banner--fact--value{
+// 	font-size: 1.2em;
+// 	color: #222;
+// }
