@@ -1,3 +1,5 @@
+require('./avatar.scss')
+
 const React = require('react')
 
 const Avatar = (props) =>

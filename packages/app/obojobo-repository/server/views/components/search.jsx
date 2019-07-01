@@ -1,3 +1,5 @@
+require('./search.scss')
+
 const React = require('react')
 
 const Search = props =>

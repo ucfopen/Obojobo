@@ -13,6 +13,11 @@ var beautifyHTML = require('js-beautify').html;
 var assign = require('object-assign');
 var _escaperegexp = require('lodash.escaperegexp');
 
+// make sure babel ignores scss and sass files
+// for server side rendering
+require('ignore-styles').default(['.sass', '.scss'])
+
+
 var DEFAULT_OPTIONS = {
   doctype: '<!DOCTYPE html>',
   beautify: false,

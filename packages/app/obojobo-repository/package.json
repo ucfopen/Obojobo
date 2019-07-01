@@ -37,11 +37,14 @@
 		"express-react-views": "~0.10.5",
 		"express-validator": "^5.2.0",
 		"geopattern": "^1.2.3",
+		"ignore-styles": "^5.0.1",
 		"js-beautify": "^1.7.3",
 		"lodash.escaperegexp": "^4.1.2",
 		"object-assign": "^4.1.1",
 		"obojobo-express": "^4.1.0-rc1",
 		"obojobo-lib-utils": "^4.1.0-rc1",
+		"react-redux": "^6.0.1",
+		"redux": "^4.0.1",
 		"whatwg-fetch": "^3.0.0"
 	},
 	"jest": {

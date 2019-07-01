@@ -1,3 +1,5 @@
+require('./module-menu.scss')
+
 const React = require('react')
 
 const ModuleImage = (props) =>

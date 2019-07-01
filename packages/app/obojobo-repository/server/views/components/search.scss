@@ -1,0 +1,23 @@
+@import '../../../client/css/defaults';
+
+$search-input-height: 15px;
+
+.repository--nav--links--search {
+	border-bottom: 1px solid $border-color;
+	input{
+		border: 0;
+		padding: 5px;
+		margin: 0;
+		height: $search-input-height;
+		margin-bottom: 6px;
+	}
+}
+
+.repository--nav--links--search--icon{
+	fill: $border-color;
+	vertical-align: middle;
+	display: inline-block;
+	width: $search-input-height;
+	height: $search-input-height;
+	content: '';
+}
