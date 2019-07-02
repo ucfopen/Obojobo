@@ -36,7 +36,9 @@ exports[`Figure Editor Node Figure component 1`] = `
       </div>
       <img
         alt="mockAlt"
+        className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
         onError={[Function]}
+        onLoad={[Function]}
         src="mockUrl"
         style={Object {}}
         unselectable="on"
@@ -89,7 +91,9 @@ exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
       </div>
       <img
         alt="mockAlt"
+        className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
         onError={[Function]}
+        onLoad={[Function]}
         src="mockUrl"
         style={
           Object {
@@ -141,7 +145,9 @@ exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
       </div>
       <img
         alt="mockAlt"
+        className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
         onError={[Function]}
+        onLoad={[Function]}
         src="mockUrl"
         style={
           Object {
@@ -192,7 +198,9 @@ exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
       </div>
       <img
         alt="mockAlt"
+        className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
         onError={[Function]}
+        onLoad={[Function]}
         src="mockUrl"
         style={
           Object {

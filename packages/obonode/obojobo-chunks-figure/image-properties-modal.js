@@ -57,7 +57,7 @@ class ImageProperties extends React.Component {
 	onCheckSize(event) {
 		const size = event.target.value
 
-		return this.setState({ size })
+		return this.setState({ size, width: null, height: null })
 	}
 
 	focusOnFirstElement() {
@@ -103,9 +103,9 @@ class ImageProperties extends React.Component {
 					</div>
 
 					<div className="flex-container image-container">
-						{
-							this.state.url ?
+						{this.state.url ? (
 							<Image
+								key={this.state.url}
 								chunk={{
 									modelState: {
 										url: this.state.url,
@@ -115,9 +115,9 @@ class ImageProperties extends React.Component {
 									}
 								}}
 							/>
-							:
+						) : (
 							<span className="image-preview image-preview-placeholder">No Image</span>
-						}
+						)}
 						<div className="image-preview">{this.state.filename || 'Image Preview'}</div>
 					</div>
 
@@ -177,7 +177,7 @@ class ImageProperties extends React.Component {
 							/>
 							<label htmlFor="obojobo-draft--chunks--figure--size-custom">Custom</label>
 							{size === 'custom' ? (
-								<div className="custom-size-inputs" >
+								<div className="custom-size-inputs">
 									<input
 										id="obojobo-draft--chunks--figure--custom-width"
 										name="custom-width"

@@ -1,7 +1,7 @@
 import Image from './image'
 import React from 'react'
 import renderer from 'react-test-renderer'
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 
 describe('Image', () => {
 	const uuidUrl = '52727a4f-0970-4b2c-941a-ce8027078b40'
@@ -91,15 +91,26 @@ describe('Image', () => {
 		expect(renderer.create(imageNoWidthNoHeight)).toMatchSnapshot()
 	})
 
-	test('Image component responds to error', () => {
-		const component = shallow(<Image chunk={{ modelState: { url: 'someUrl' } }} />)
+	test('Image component updates to error state if image does not load', () => {
+		const component = mount(<Image chunk={{ modelState: { url: 'someUrl' } }} />)
 		const img = component.find('img')
 		const event = { target: {} }
+
 		img.prop('onError')(event)
-		expect(event.target).toEqual({
-			src: 'https://via.placeholder.com/150/FF0000/FFF?text=Invalid',
-			alt: 'Invalid Image',
-			onerror: null
-		})
+		component.update()
+
+		expect(component.find('div').hasClass('is-not-valid')).toBe(true)
+		expect(component.exists('img')).toBe(false)
+	})
+
+	test('Image component updates to loaded state after image loads', () => {
+		const component = mount(<Image chunk={{ modelState: { url: 'someUrl' } }} />)
+		const event = { target: {} }
+
+		expect(component.find('img').hasClass('is-not-loaded')).toBe(true)
+		component.find('img').prop('onLoad')(event)
+		component.update()
+
+		expect(component.find('img').hasClass('is-loaded')).toBe(true)
 	})
 })

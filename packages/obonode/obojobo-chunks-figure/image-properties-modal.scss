@@ -87,8 +87,12 @@
 			flex-direction: column;
 			max-width: 100%;
 
-			img{
-				border: 1px solid #ddd;
+			.obojobo-draft--chunks--figure--image {
+				border: 1px solid $color-transparent;
+
+				&.is-loaded {
+					border: 1px solid $color-shadow;
+				}
 			}
 		}
 	}
@@ -101,18 +105,18 @@
 		max-width: 40%;
 	}
 
-	.image-preview{
+	.image-preview {
 		font-size: 0.8em;
 		margin-top: 0.2em;
 
-		&.image-preview-placeholder{
-			height: 100px;
-			width: 150px;
-			background: #aaa9a9;
+		&.image-preview-placeholder {
+			height: 100px; /* stylelint-disable-line unit-blacklist */
+			width: 150px; /* stylelint-disable-line unit-blacklist */
+			line-height: 100px; /* stylelint-disable-line unit-blacklist */
 			text-align: center;
 			box-sizing: border-box;
-			line-height: 100px;
-			color: #7d7b7b;
+			background: $color-bg2;
+			color: $color-text-minor;
 		}
 	}
 }

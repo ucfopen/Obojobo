@@ -1,7 +1,6 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
 import Image from './image'
@@ -10,7 +9,6 @@ import React from 'react'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
-const isOrNot = Common.util.isOrNot
 
 class Figure extends React.Component {
 	constructor(props) {
@@ -60,7 +58,6 @@ class Figure extends React.Component {
 
 	render() {
 		const content = this.props.node.data.get('content')
-		const isSelected = this.props.isSelected
 
 		const isCustom = content.size === 'custom'
 		const imgStyles = {}
@@ -93,7 +90,10 @@ class Figure extends React.Component {
 								Image Properties
 							</Button>
 						</div>
-						<Image chunk={{ modelState: content }} />
+						<Image
+							key={content.url + content.width + content.height + content.size}
+							chunk={{ modelState: content }}
+						/>
 					</div>
 
 					{/* uses children below because the caption is a textgroup */}

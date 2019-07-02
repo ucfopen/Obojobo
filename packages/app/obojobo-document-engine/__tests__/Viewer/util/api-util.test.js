@@ -1,7 +1,6 @@
 /* eslint no-extend-native: 0 */
 
-global.fetch = jest.fn()
-
+const originalFetch = global.fetch
 const originalToISOString = Date.prototype.toISOString
 
 const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
@@ -12,10 +11,12 @@ describe('apiutil', () => {
 	})
 
 	beforeAll(() => {
+		global.fetch = jest.fn()
 		Date.prototype.toISOString = () => 'mockDate'
 		jest.spyOn(window.parent, 'postMessage')
 	})
 	afterAll(() => {
+		global.fetch = originalFetch
 		Date.prototype.toISOString = originalToISOString
 	})
 
@@ -137,7 +138,9 @@ describe('apiutil', () => {
 	})
 
 	test('postEvent doesnt send a postmessage when status is error', () => {
-		expect.assertions(2)
+		expect.assertions(3)
+
+		const spy = jest.spyOn(console, 'error').mockImplementation(jest.fn)
 
 		fetch.mockResolvedValueOnce({
 			json: () => ({
@@ -154,6 +157,9 @@ describe('apiutil', () => {
 		}).then(() => {
 			expect(fetch).toHaveBeenCalled()
 			expect(window.parent.postMessage).not.toHaveBeenCalled()
+			expect(spy).toHaveBeenCalledWith('mockValue')
+
+			spy.mockRestore()
 		})
 	})
 
@@ -415,6 +421,22 @@ describe('apiutil', () => {
 		expect(fetch.mock.calls[0][0]).toBe('mock/endpoint')
 		expect(fetch.mock.calls[0][1]).toEqual({
 			body: expect.anything(),
+			credentials: 'include',
+			method: 'POST'
+		})
+		expect(response).toEqual({ mediaId: 'mockMediaId' })
+	})
+
+	test('postMultiPart calls fetch with passed in formData', async () => {
+		const mockFormData = new FormData()
+		fetch.mockResolvedValueOnce({
+			json: jest.fn().mockResolvedValueOnce({ mediaId: 'mockMediaId' })
+		})
+		const response = await APIUtil.postMultiPart('mock/endpoint', mockFormData)
+		expect(fetch).toHaveBeenCalled()
+		expect(fetch.mock.calls[0][0]).toBe('mock/endpoint')
+		expect(fetch.mock.calls[0][1]).toEqual({
+			body: mockFormData,
 			credentials: 'include',
 			method: 'POST'
 		})
