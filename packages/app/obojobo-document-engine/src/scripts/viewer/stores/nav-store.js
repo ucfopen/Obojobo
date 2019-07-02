@@ -175,7 +175,6 @@ class NavStore extends Store {
 	}
 
 	init(model, redAlertStatus, startingId, startingPath, visitId, viewState = {}) {
-
 		this.state = {
 			items: {},
 			itemsById: {},

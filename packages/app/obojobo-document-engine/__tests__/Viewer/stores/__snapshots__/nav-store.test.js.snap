@@ -271,12 +271,16 @@ Object {
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
-  "locked": true,
+  "locked": false,
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
-  "redAlert": false,
-  "visitId": 11,
+  "redAlert": 12,
+  "visitId": Object {
+    "nav:isLocked": Object {
+      "value": true,
+    },
+  },
 }
 `;
 
@@ -291,8 +295,12 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
-  "redAlert": false,
-  "visitId": 11,
+  "redAlert": 12,
+  "visitId": Object {
+    "nav:isOpen": Object {
+      "value": true,
+    },
+  },
 }
 `;
 
@@ -307,8 +315,8 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
-  "redAlert": false,
-  "visitId": 11,
+  "redAlert": 12,
+  "visitId": undefined,
 }
 `;
 
@@ -491,6 +499,23 @@ Array [
 `;
 
 exports[`NavStore nav:prev does not change to invalid page 1`] = `undefined`;
+
+exports[`NavStore nav:redAlert event fires and updates state 1`] = `
+Array [
+  "navstore:change",
+]
+`;
+
+exports[`NavStore nav:redAlert event fires and updates state 2`] = `
+Object {
+  "itemsById": Object {
+    "mockID": Object {
+      "redAlert": true,
+    },
+  },
+  "redAlert": undefined,
+}
+`;
 
 exports[`NavStore nav:setFlag event updates state and calls trigger 1`] = `
 Object {

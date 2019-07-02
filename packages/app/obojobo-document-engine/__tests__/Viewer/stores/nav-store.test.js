@@ -406,6 +406,26 @@ describe('NavStore', () => {
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
+	test('nav:redAlert event fires and updates state', () => {
+		NavStore.setState({ redAlert: true })
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// mock getRoot
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		Common.models.OboModel.getRoot.mockReturnValueOnce({
+			get: () => 'mockDraftId'
+		})
+
+		// go
+		eventCallbacks['nav:redAlert']()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0]).toMatchSnapshot()
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
 	test('question:scoreSet sets flag with a score of 100', () => {
 		NavStore.setState({ itemsById: { mockID: { showChildren: 'unchanged' } } })
 		// simulate trigger
@@ -457,18 +477,18 @@ describe('NavStore', () => {
 	})
 
 	test('init builds and goes to starting path', () => {
-		NavStore.init(null, 12, 'startingpath', 11)
+		NavStore.init(null, false, 12, 'startingpath', 11)
 		expect(NavUtil.gotoPath).toHaveBeenCalledWith('startingpath')
 	})
 
 	test('init builds and goes to starting id', () => {
-		NavStore.init(null, 12, 'startingpath', 11)
+		NavStore.init(null, false, 12, 'startingpath', 11)
 		expect(NavUtil.goto).toHaveBeenCalledWith(12)
 	})
 
 	test('init builds and goes to first with no starting id', () => {
 		NavUtil.getFirst.mockReturnValueOnce({ id: 'mockFirstId' })
-		NavStore.init(null, null, 'startingpath', 11)
+		NavStore.init(null, false, null, 'startingpath', 11)
 		expect(NavUtil.goto).toHaveBeenCalledWith('mockFirstId')
 	})
 

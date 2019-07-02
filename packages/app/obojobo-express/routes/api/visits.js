@@ -99,7 +99,14 @@ router
 					draft_id: draftId
 				})
 			})
-			.then((redAlertStatus) => {
+			.then((redAlertResult) => {
+				let redAlertStatus = false
+
+				if(redAlertResult == null) {
+					redAlertStatus = false
+				} else {
+					redAlertStatus = redAlertResult.red_alert
+				}
 
 				logger.log(
 					`VISIT: Start visit success for visitId="${visitId}", draftId="${draftId}", userId="${
@@ -112,7 +119,6 @@ router
 				if (visit.is_preview === false) {
 					lti.lis_outcome_service_url = launch.reqVars.lis_outcome_service_url
 				}
-
 				res.success({
 					visitId,
 					isPreviewing: visit.is_preview,
