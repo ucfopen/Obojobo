@@ -2,7 +2,7 @@ import Common from 'Common'
 
 const { Dispatcher } = Common.flux
 
-import QuestionUtil from '../../viewer/util/question-util'
+import QuestionUtil from '../util/question-util'
 
 const AssessmentUtil = {
 	getAssessmentForModel(state, model) {

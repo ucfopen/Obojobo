@@ -10,7 +10,7 @@ router
 	.get([requireCurrentUser, requireCanViewDrafts])
 	.get((req, res) => {
 		return DraftSummary
-			.fetchWhere(`drafts.user_id = $[userId]`, { userId: req.currentUser.id })
+			.fetchByUserId(req.currentUser.id)
 			.then(drafts => {
 				const props = {
 					title: 'Dashboard',
@@ -23,7 +23,7 @@ router
 					],
 					currentUser: req.currentUser
 				}
-				res.render('dashboard.jsx', props)
+				res.render('dashboard-server-view.jsx', props)
 			})
 
 })

@@ -1,5 +1,6 @@
 const db = require('../db')
-const logger = require('../logger.js')
+const logger = require('../logger')
+const oboEvents = require('../obo_events')
 
 // use to initiate a new visit for a draft
 // this will deactivate old visits, preventing
@@ -60,7 +61,23 @@ const deactivateOldVisitsAndCreateNewVisit = (
 				}
 			)
 		)
-		.then(visit => ({ visitId: visit.id, deactivatedVisitIds }))
+		.then(visit => {
+
+			oboEvents.emit(Visit.EVENT_NEW_VISIT, {
+				visitId: visit.id,
+				userId,
+				draftId,
+				resourceLinkId,
+				launchId,
+				isPreview,
+				deactivatedVisitIds
+			})
+
+			return {
+				visitId: visit.id,
+				deactivatedVisitIds
+			}
+		})
 }
 
 class Visit {
@@ -103,5 +120,7 @@ class Visit {
 		return deactivateOldVisitsAndCreateNewVisit(userId, draftId, 'preview', null, true)
 	}
 }
+
+Visit.EVENT_NEW_VISIT = 'EVENT_NEW_VISIT'
 
 module.exports = Visit

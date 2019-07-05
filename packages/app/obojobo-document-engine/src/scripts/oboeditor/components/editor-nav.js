@@ -3,17 +3,19 @@ import './editor-nav.scss'
 import '../../viewer/components/nav.scss'
 
 import ClipboardUtil from '../util/clipboard-util'
-import Common from 'obojobo-document-engine/src/scripts/common'
+import Common from '../../common'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
 import React from 'react'
 import SubMenu from './sub-menu'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import generatePage from '../documents/generate-page'
 import generateAssessment from '../documents/generate-assessment'
+import assessmentTemplate from '../documents/new-assessment.json'
+import generateId from '../generate-ids'
+import pageTemplate from '../documents/new-page.json'
 
 const { Prompt } = Common.components.modal
-const { ModalUtil } = Common.util
+const { ModalUtil, isOrNot } = Common.util
 const { Button } = Common.components
 
 class EditorNav extends React.Component {

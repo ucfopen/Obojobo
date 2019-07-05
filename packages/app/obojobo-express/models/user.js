@@ -1,6 +1,7 @@
 const db = oboRequire('db')
 const permissions = oboRequire('config').permissions
 const crypto = require('crypto')
+const oboEvents = oboRequire('obo_events')
 
 class User {
 	constructor({
@@ -72,7 +73,13 @@ class User {
 				this
 			)
 			.then(insertUserResult => {
-				this.id = insertUserResult.id
+				let eventName = User.EVENT_UPDATE_USER
+				if(!this.id){
+					eventName = User.EVENT_NEW_USER
+					// populate my id from the result
+					this.id = insertUserResult.id
+				}
+				oboEvents.emit(eventName, this)
 				return this
 			})
 	}
@@ -120,5 +127,8 @@ class User {
 		return userObj
 	}
 }
+
+User.EVENT_NEW_USER = 'EVENT_NEW_USER'
+User.EVENT_UPDATE_USER = 'EVENT_UPDATE_USER'
 
 module.exports = User

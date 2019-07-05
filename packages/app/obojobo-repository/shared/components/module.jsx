@@ -2,7 +2,7 @@ require('./module.scss')
 
 const React = require('react')
 const ModuleImage = require('./module-image')
-const ModuleMenu = require('./module-menu')
+const ModuleMenu = require('./module-menu-hoc')
 
 class Module extends React.Component {
 	constructor(props) {

@@ -1,0 +1,71 @@
+@import '../../client/css/defaults';
+
+.module-permissions-dialog{
+	min-width: 400px;
+	text-align: center;
+
+	.repository--module-icon--image{
+		width: 25px;
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	.top-bar{
+		text-align: left;
+		margin: -10px -20px 20px -20px;
+		padding: 0px 20px 5px 20px;
+		position: relative;
+		border-bottom: 1px solid #999;
+		box-sizing: border-box;
+
+		.module-title{
+			display: inline-block;
+			font-size: 12px;
+			font-weight: 600;
+			color: black;
+			margin: 0 20px 0 10px;
+			max-width: 50%;
+			vertical-align: middle;
+		}
+
+		.close-button{
+			position: absolute;
+			top: 5px;
+			right: 10px;
+		}
+	}
+
+	.title{
+		font-weight: 700;
+		font-size: 1.3em;
+		margin-bottom: 5px;
+	}
+
+	.sub-title{
+		font-size: .7em;
+		margin-bottom: 20px;
+	}
+
+	.access-list-wrapper{
+		margin: 20px -20px 20px -20px;
+		background-color: $color-banner-bg;
+		padding: 10px;
+	}
+
+	.access-list{
+		$dimensions-avatar: 30px;
+		$dimensions-close-button: 20px;
+		text-align: left;
+		height: 150px;
+		overflow: scroll;
+		list-style: none;
+		font-size: .7em;
+		padding: 0;
+		margin: 0;
+
+		li{
+			max-width: 50%;
+		}
+	}
+
+}

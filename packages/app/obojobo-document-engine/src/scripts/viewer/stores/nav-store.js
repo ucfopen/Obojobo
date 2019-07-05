@@ -6,6 +6,7 @@ import { startHeartBeat } from '../../viewer/util/stop-viewer'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
+const { OboModel } = Common.models
 
 const DEFAULT_CONTEXT = 'practice'
 

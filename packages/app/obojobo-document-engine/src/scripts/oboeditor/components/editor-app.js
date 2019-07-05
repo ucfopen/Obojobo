@@ -1,10 +1,10 @@
 import '../../../scss/main.scss'
 // uses viewer css for styling
-import '../../../scripts/viewer/components/viewer-app.scss'
+import '../../viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
 
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
-import Common from 'obojobo-document-engine/src/scripts/common'
+import APIUtil from '../../viewer/util/api-util'
+import Common from '../../common'
 import EditorNav from './editor-nav'
 import EditorStore from '../stores/editor-store'
 import { KeyUtils } from 'slate'

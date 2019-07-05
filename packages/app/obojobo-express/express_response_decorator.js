@@ -32,7 +32,6 @@ const success = (req, res, next, valueObject) => {
 			})
 		)
 	}
-
 	res.send(valueObject)
 }
 

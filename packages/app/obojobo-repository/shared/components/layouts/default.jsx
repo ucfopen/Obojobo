@@ -12,6 +12,7 @@ const DefaultLayout = props =>
 		</head>
 		<body className={props.className}>
 			{props.children}
+			<footer></footer>
 			<script crossOrigin="true" src="https://unpkg.com/react@16/umd/react.development.js"></script>
 			<script crossOrigin="true" src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 			<script src="/static/dashboard.js"></script>

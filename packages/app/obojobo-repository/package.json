@@ -43,8 +43,10 @@
 		"object-assign": "^4.1.1",
 		"obojobo-express": "^4.1.0-rc1",
 		"obojobo-lib-utils": "^4.1.0-rc1",
+		"react-modal": "^3.8.2",
 		"react-redux": "^6.0.1",
 		"redux": "^4.0.1",
+		"redux-pack": "^0.1.5",
 		"whatwg-fetch": "^3.0.0"
 	},
 	"jest": {

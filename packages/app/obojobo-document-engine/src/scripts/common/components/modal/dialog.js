@@ -1,6 +1,6 @@
 import './dialog.scss'
 
-import Button from '../../../common/components/button'
+import Button from '../button'
 import Modal from './modal'
 import React from 'react'
 

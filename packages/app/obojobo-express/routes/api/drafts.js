@@ -2,6 +2,7 @@ const express = require('express')
 const fs = require('fs')
 const router = express.Router()
 const DraftModel = oboRequire('models/draft')
+const oboEvents = oboRequire('obo_events')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const pgp = require('pg-promise')
@@ -90,11 +91,9 @@ router
 router
 	.route('/new')
 	.post(requireCanCreateDrafts)
-	.post((req, res) => {
+	.post((req, res, next) => {
 		return DraftModel.createWithContent(req.currentUser.id, draftTemplate, draftTemplateXML)
-			.then(newDraft => {
-				res.success(newDraft)
-			})
+			.then(res.success)
 			.catch(res.unexpected)
 	})
 // Create an editable tutorial document
@@ -104,9 +103,7 @@ router
 	.post(requireCanCreateDrafts)
 	.post((req, res) => {
 		return DraftModel.createWithContent(req.currentUser.id, tutorialDraft)
-			.then(newDraft => {
-				res.success(newDraft)
-			})
+			.then(res.success)
 			.catch(res.unexpected)
 	})
 
@@ -167,19 +164,8 @@ router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
 	.delete((req, res) => {
-		return db
-			.none(
-				`
-			UPDATE drafts
-			SET deleted = TRUE
-			WHERE id = $[draftId]
-			AND user_id = $[userId]
-			`,
-				{
-					draftId: req.params.draftId,
-					userId: req.currentUser.id
-				}
-			)
+		return DraftModel
+			.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})
