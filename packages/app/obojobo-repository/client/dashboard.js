@@ -1,30 +1,19 @@
 import './css/main.scss'
 import 'whatwg-fetch'
-// import store from './dashboard-store'
-import DashboardClient from '../server/views/dashboard-client'
-// require('./dashboard-app')
-
-import { createStore } from 'redux'
+import Dashboard from '../shared/components/dashboard-hoc'
+import DashboardReducer from '../shared/reducers/dashboard-reducer'
 import { Provider } from 'react-redux'
+import { createStore, applyMiddleware } from 'redux'
+import { middleware as reduxPackMiddleware } from 'redux-pack'
 
-// ===== REDUCER ======
-function counter(state = 0, action) {
-	switch (action.type) {
-		case 'INCREMENT':
-			return state + 1
-		case 'DECREMENT':
-			return state - 1
-		default:
-			return state
-	}
+const convertPropsToStore = initialState => {
+	return createStore(DashboardReducer, initialState, applyMiddleware(reduxPackMiddleware))
 }
 
 function hydrateDomElement(AppComponent, domId){
 	const domEl = document.querySelector(domId)
 	const initialState = JSON.parse(domEl.dataset.reactProps)
-	// ReactDOM.hydrate(<AppComponent {...props} />, domEl)
-	console.log('creating store!')
-	const store = createStore(counter, initialState)
+	const store = convertPropsToStore(initialState)
 
 	ReactDOM.hydrate(
 		<Provider store={store}>
@@ -34,4 +23,4 @@ function hydrateDomElement(AppComponent, domId){
 	)
 }
 
-hydrateDomElement(DashboardClient, "#react-hydrate-root")
+hydrateDomElement(Dashboard, "#react-hydrate-root")

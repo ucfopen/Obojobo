@@ -2,9 +2,9 @@
 
 import katex from 'katex'
 
-import StyleType from '../../common/text/style-type'
-import MockElement from '../../common/mockdom/mock-element'
-import MockTextNode from '../../common/mockdom/mock-text-node'
+import StyleType from './style-type'
+import MockElement from '../mockdom/mock-element'
+import MockTextNode from '../mockdom/mock-text-node'
 
 const ORDER = [
 	StyleType.COMMENT,

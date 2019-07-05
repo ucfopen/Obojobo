@@ -1,9 +1,9 @@
 const React = require('react');
-import DefaultLayout from './layouts/default'
-import RepositoryNav from './components/repository-nav'
-import RepositoryBanner from './components/repository-banner'
-import ModuleImage from './components/module-image'
-import Button from './components/button'
+import DefaultLayout from '../../shared/components/layouts/default'
+import RepositoryNav from '../../shared/components/repository-nav'
+import RepositoryBanner from '../../shared/components/repository-banner'
+import ModuleImage from '../../shared/components/module-image'
+import Button from '../../shared/components/button'
 
 const ModulePage = (props) =>
 	<DefaultLayout title={`${props.module.title} - an Obojobo Module by ${props.user.name}`} className="repository--module">

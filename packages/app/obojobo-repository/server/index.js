@@ -17,6 +17,7 @@ app.on('mount', app => {
 	let viewPaths = app.get('views')
 	if(!Array.isArray(viewPaths)) viewPaths = [viewPaths]
 	viewPaths.push(`${__dirname}/views`)
+	viewPaths.push(path.resolve(`${__dirname}/../shared/components`)) // add the components dir so babel can transpile the jsx
 	app.set('views', viewPaths)
 
 	// register express-react-views template engine if not already registered

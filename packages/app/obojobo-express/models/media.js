@@ -6,6 +6,7 @@ const sharp = require('sharp')
 const mediaConfig = oboRequire('config').media
 const logger = oboRequire('logger.js')
 const db = oboRequire('db')
+const oboEvents = oboRequire('obo_events')
 
 const MODE_INSERT_ORIGINAL_IMAGE = 'modeInsertOriginalImage'
 const MODE_INSERT_RESIZED_IMAGE = 'modeInsertResizedImage'
@@ -300,6 +301,8 @@ class Media {
 			userId: null
 		})
 
+		oboEvents.emit(Media.EVENT_RESIZED_IMAGE_CREATED, {originalImageId, targetDimensions})
+
 		return {
 			metadata: imageMetadata,
 			binary: resizedBinary
@@ -352,6 +355,14 @@ class Media {
 			.then(mediaRecord => {
 				// Delete the temporary media stored by Multer
 				fs.unlinkSync(fileInfo.path)
+
+				oboEvents.emit(Media.EVENT_IMAGE_CREATED, {
+					userId,
+					fileSize: fileInfo.size,
+					mimeType: fileInfo.mimetype,
+					originalName: fileInfo.originalname
+				})
+
 				// ID of the user media, not the binary data
 				return mediaRecord.media_id
 			})
@@ -361,5 +372,9 @@ class Media {
 			})
 	}
 }
+
+
+Media.EVENT_RESIZED_IMAGE_CREATED = 'EVENT_RESIZED_IMAGE_CREATED'
+Media.EVENT_IMAGE_CREATED = 'EVENT_IMAGE_CREATED'
 
 module.exports = Media

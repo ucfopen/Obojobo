@@ -1,8 +1,8 @@
 import Common from 'Common'
 
-import NavUtil from '../../viewer/util/nav-util'
-import APIUtil from '../../viewer/util/api-util'
-import FocusUtil from '../../viewer/util/focus-util'
+import NavUtil from '../util/nav-util'
+import APIUtil from '../util/api-util'
+import FocusUtil from '../util/focus-util'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux

@@ -1,10 +1,10 @@
 import Backbone from 'backbone'
 
-import uuid from '../../common/util/uuid'
-import Dispatcher from '../../common/flux/dispatcher'
+import uuid from '../util/uuid'
+import Dispatcher from '../flux/dispatcher'
 import { Registry } from '../registry'
-import DOMUtil from '../../common/page/dom-util'
-import setProp from '../../common/util/set-prop'
+import DOMUtil from '../page/dom-util'
+import setProp from '../util/set-prop'
 
 const DefaultAdapter = {
 	construct() {

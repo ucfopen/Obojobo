@@ -1,7 +1,7 @@
 import './modal.scss'
 
-import DeleteButton from '../../../common/components/delete-button'
-import ModalUtil from '../../../common/util/modal-util'
+import DeleteButton from '../delete-button'
+import ModalUtil from '../../util/modal-util'
 import React from 'react'
 
 class Modal extends React.Component {
@@ -9,6 +9,7 @@ class Modal extends React.Component {
 		super()
 		this.boundKeyUp = this.onKeyUp.bind(this)
 		this.deleteButtonRef = React.createRef()
+		this.onTabTrapFocus = this.onTabTrapFocus.bind(this)
 	}
 
 	componentDidMount() {
@@ -48,14 +49,14 @@ class Modal extends React.Component {
 				role="dialog"
 				aria-labelledby="obojobo-draft--components--modal--modal--content"
 			>
-				<input className="first-tab" type="text" onFocus={this.onTabTrapFocus.bind(this)} />
+				<input className="first-tab" type="text" onFocus={this.onTabTrapFocus} />
 				{this.props.onClose ? (
 					<DeleteButton ref={this.deleteButtonRef} onClick={this.props.onClose} />
 				) : null}
 				<div className="content" id="obojobo-draft--components--modal--modal--content">
 					{this.props.children}
 				</div>
-				<input className="last-tab" type="text" onFocus={this.onTabTrapFocus.bind(this)} />
+				<input className="last-tab" type="text" onFocus={this.onTabTrapFocus} />
 			</div>
 		)
 	}

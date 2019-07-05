@@ -1,6 +1,7 @@
 const db = require('../db')
 const draftNodeStore = oboRequire('draft_node_store')
 const logger = require('../logger.js')
+const oboEvents = oboRequire('obo_events')
 
 // Recurses through a draft tree
 // to find duplicate ids
@@ -32,6 +33,7 @@ const findDuplicateIdsRecursive = (jsonTreeNode, idSet = new Set()) => {
 }
 
 class Draft {
+
 	constructor(authorId, rawDraft) {
 		this.authorId = authorId
 		this.nodesById = new Map()
@@ -69,6 +71,25 @@ class Draft {
 		}
 
 		return draftNode
+	}
+
+	static deleteByIdAndUser(id, userId){
+		return db
+			.none(
+				`
+			UPDATE drafts
+			SET deleted = TRUE
+			WHERE id = $[id]
+			AND user_id = $[userId]
+			`,
+				{
+					id,
+					userId
+				}
+			)
+			.then(() => {
+				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, {id})
+			})
 	}
 
 	static fetchById(id) {
@@ -140,6 +161,7 @@ class Draft {
 			})
 			.then(() => {
 				// transaction committed
+				oboEvents.emit(Draft.EVENT_NEW_DRAFT_CREATED, newDraft)
 				return newDraft
 			})
 	}
@@ -166,7 +188,10 @@ class Draft {
 					xmlContent
 				}
 			)
-			.then(result => result.id)
+			.then(result => {
+				oboEvents.emit(Draft.EVENT_DRAFT_UPDATED, {draftId, jsonContent, xmlContent})
+				return result.id
+			})
 	}
 
 	// returns the first duplicate id found or
@@ -187,5 +212,9 @@ class Draft {
 		return this.nodesByType.get(type)
 	}
 }
+
+Draft.EVENT_NEW_DRAFT_CREATED = 'EVENT_NEW_DRAFT_CREATED'
+Draft.EVENT_DRAFT_DELETED = 'EVENT_DRAFT_DELETED'
+Draft.EVENT_DRAFT_UPDATED = 'EVENT_DRAFT_UPDATED'
 
 module.exports = Draft

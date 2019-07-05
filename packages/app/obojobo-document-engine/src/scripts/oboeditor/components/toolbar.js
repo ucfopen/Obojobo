@@ -1,5 +1,5 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
+import Common from '../../common'
 
 import basicMark from './marks/basic-mark'
 import linkMark from './marks/link-mark'

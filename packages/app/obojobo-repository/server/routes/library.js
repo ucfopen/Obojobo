@@ -44,7 +44,7 @@ router
 					facts,
 					currentUser: req.currentUser
 				}
-				res.render('library.jsx', props)
+				res.render('library-server-view.jsx', props)
 			})
 			.catch(res.unexpected)
 })
@@ -67,7 +67,7 @@ router
 					],
 					currentUser: req.currentUser
 				}
-				res.render('module-page.jsx', props)
+				res.render('module-page-server-view.jsx', props)
 			})
 			.catch(res.unexpected)
 	})

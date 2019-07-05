@@ -29,6 +29,13 @@ exports.up = function(db) {
 		.then(result => {
 			return db.addIndex('repository_map_user_to_draft', 'user_to_draft_unique', ['draft_id', 'user_id'], true)
 		})
+		.then(result => {
+			return db.runSql(`
+				-- copy existing ownership to the new permissions table
+				INSERT INTO repository_map_user_to_draft (draft_id, user_id, created_at)
+				SELECT id, user_id, created_at FROM drafts WHERE deleted = False AND user_id != '0'
+			`)
+		})
 };
 
 exports.down = function(db) {

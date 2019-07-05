@@ -1,6 +1,6 @@
 import './button.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
+import Common from '../index'
 import React from 'react'
 
 export default class Button extends React.Component {

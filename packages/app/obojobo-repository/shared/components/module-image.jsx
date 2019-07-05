@@ -1,4 +1,4 @@
-require('./module-menu.scss')
+require('./module-image.scss')
 
 const React = require('react')
 

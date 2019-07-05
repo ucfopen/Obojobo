@@ -17,8 +17,10 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 				ELSE 'clasic'
 			END AS editor
 		FROM drafts
-		JOIN drafts_content AS drafts_content
+		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
+		JOIN repository_map_user_to_draft
+			ON repository_map_user_to_draft.draft_id = drafts.id
 		${joinSQL}
 		WHERE drafts.deleted = FALSE
 		AND ${whereSQL}
@@ -26,6 +28,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 			PARTITION BY drafts_content.draft_id ORDER BY drafts_content.created_at
 			ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
 		)
+		ORDER BY updated_at DESC
 	`
 }
 
@@ -50,6 +53,11 @@ class DraftSummary {
 				logger.error('fetchById Error', error.message)
 				return Promise.reject('Error Loading DraftSummary by id')
 			})
+	}
+
+	static fetchByUserId(userId){
+		return DraftSummary
+			.fetchWhere(`repository_map_user_to_draft.user_id = $[userId]`, { userId })
 	}
 
 	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues){

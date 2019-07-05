@@ -5,10 +5,9 @@ import Common from 'Common'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
 import React from 'react'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { Prompt } = Common.components.modal
-const { ModalUtil } = Common.util
+const { ModalUtil, isOrNot } = Common.util
 
 const { OboModel } = Common.models
 

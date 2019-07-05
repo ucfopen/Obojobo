@@ -1,9 +1,9 @@
 const React = require('react');
-import DefaultLayout from './layouts/default'
-import RepositoryNav from './components/repository-nav'
-import RepositoryBanner from './components/repository-banner'
-import Module from './components/module'
-import Button from './components/button'
+import DefaultLayout from '../../shared/components/layouts/default'
+import RepositoryNav from '../../shared/components/repository-nav'
+import RepositoryBanner from '../../shared/components/repository-banner'
+import Module from '../../shared/components/module'
+import Button from '../../shared/components/button'
 
 const title = 'Module Library'
 

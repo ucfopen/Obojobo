@@ -1,6 +1,6 @@
 import './nav.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
+import Common from '../../common'
 import FocusUtil from '../util/focus-util'
 import Logo from './logo'
 import NavUtil from '../util/nav-util'

@@ -1,4 +1,4 @@
-@import '../../../client/css/defaults';
+@import '../../client/css/defaults';
 
 .repository--section-wrapper--full-width{
 	margin-bottom: 40px;
@@ -43,7 +43,6 @@
 	z-index: 1;
 	padding: 30px 10px;
 	box-sizing: border-box;
-	justify-content: space-between;
 	align-items: center;
 	color: #555;
 	overflow: hidden;

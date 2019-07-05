@@ -9,6 +9,7 @@ class Slider extends React.Component {
 		this.state = {
 			checked: this.props.initialChecked || false
 		}
+		this.handleCheckChange = this.handleCheckChange.bind(this)
 	}
 
 	handleCheckChange(event) {
@@ -26,7 +27,7 @@ class Slider extends React.Component {
 						className={'slider'}
 						type={'checkbox'}
 						checked={this.state.checked}
-						onChange={this.handleCheckChange.bind(this)}
+						onChange={this.handleCheckChange}
 					/>
 					<div className="slider round" />
 				</label>
