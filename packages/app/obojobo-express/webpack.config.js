@@ -1,9 +1,5 @@
-/* eslint-disable no-console */
-
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CopyPlugin = require('copy-webpack-plugin');
-const Babel = require('@babel/core')
 const { gatherClientScriptsFromModules } = require('obojobo-lib-utils')
 const docEnginePath = path.dirname(require.resolve('obojobo-document-engine'))
 const entriesFromObojoboModules = gatherClientScriptsFromModules()
@@ -93,25 +89,7 @@ module.exports =
 				immutable: 'Immutable'
 			},
 			plugins: [
-				new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` }),
-				new CopyPlugin([
-					{
-						from: path.resolve(
-							__dirname,
-							'..',
-							'obojobo-document-engine',
-							'src',
-							'scripts',
-							'oboeditor',
-							'draftmanager.js'
-						),
-						to: path.join(__dirname, 'public', 'compiled', filename_with_min + '.js'),
-						transform(content) {
-							const output = Babel.transformSync(content, { presets: ['@babel/preset-env'] })
-							return output.code
-						}
-					}
-				])
+				new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` })
 			],
 			resolve: {
 				extensions: ['.js', '.jsx'],
