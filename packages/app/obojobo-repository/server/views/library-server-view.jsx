@@ -26,7 +26,7 @@ const Library = (props) =>
 							<div className="repository--item-list--group--item-wrapper">
 								<div className="repository--item-list--row">
 									<div className="repository--item-list--group--item--multi-wrapper">
-										{group.drafts.map(draft => <Module key={draft.id} {...draft}></Module> )}
+										{group.drafts.map(draft => <Module key={draft.draftId} {...draft}></Module> )}
 										{
 											props.page < props.pageCount ?
 											<div className="repository--item-list--group--item--newline-container">
@@ -44,8 +44,6 @@ const Library = (props) =>
 				)}
 			</section>
 		</div>
-
-		<script src="/static/dashboard.js"></script>
 
 	</DefaultLayout>
 

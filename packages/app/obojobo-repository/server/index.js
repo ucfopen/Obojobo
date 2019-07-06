@@ -2,13 +2,6 @@ const path = require('path')
 const express = require('express')
 const app = express()
 
-// @TODO why is this here?
-const fs = require('fs');
-require.extensions['.svg'] = function (module, filename) {
-    module.exports = fs.readFileSync(filename, 'utf8');
-};
-
-// when the parent app is mounted
 app.on('mount', app => {
 	//  add our static directory
 	app.use(express.static(path.join(__dirname, 'public')))
@@ -22,13 +15,16 @@ app.on('mount', app => {
 
 	// register express-react-views template engine if not already registered
 	if(!app.engines['jsx']){
-		app.engine('jsx', require('./lib/express-react-views').createEngine());
+		app.engine('jsx', require('./express-react-views').createEngine());
 	}
 
 	// =========== ROUTING & CONTROLLERS ===========
 	app.use('/api', require('./routes/api'))
 	app.use('/', require('./routes/dashboard'))
 	app.use('/', require('./routes/library'))
+
+	// register the event listeners
+	require('./events')
 })
 
 module.exports = app

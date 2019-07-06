@@ -9,7 +9,6 @@ const RepositoryNav = (props) =>
 		<nav className="repository--nav">
 			<a href="/"><div className="repository--nav--logo">Obojobo</div></a>
 			<div className="repository--nav--links--link"><a href="/library">Library</a></div>
-			<div className="repository--nav--links--link"><a href="/editor">New Module</a></div>
 			<Search />
 			<div className="repository--nav--current-user">
 				<div className="repository--nav--current-user--name">{props.displayName}</div>

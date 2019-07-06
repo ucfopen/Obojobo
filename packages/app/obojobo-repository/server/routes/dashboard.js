@@ -11,16 +11,10 @@ router
 	.get((req, res) => {
 		return DraftSummary
 			.fetchByUserId(req.currentUser.id)
-			.then(drafts => {
+			.then(myModules => {
 				const props = {
 					title: 'Dashboard',
-					myModules: drafts,
-					facts: [
-						{ title: 'Modules', value: 12 },
-						{ title: 'Students', value: 196 },
-						{ title: 'Courses', value: 7 },
-						{ title: 'Assignments', value: 23 },
-					],
+					myModules,
 					currentUser: req.currentUser
 				}
 				res.render('dashboard-server-view.jsx', props)

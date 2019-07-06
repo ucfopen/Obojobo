@@ -18,11 +18,11 @@ const ModulePage = (props) =>
 			<ModuleImage id={props.module.draftId} />
 		</RepositoryBanner>
 
-		<section class="repository--module--content">
-{/*}
+		<section className="repository--module--content">
+			{/*}
 			<div><b>Updated:</b> {props.module.updatedAt.toString()}</div>
 			<div><b>Created:</b> {props.module.createdAt.toString()}</div>
-*/}
+			*/}
 
 			<h2>Use this Module in your Canvas Course</h2>
 			<p>This module can be used inside your course as an <b>assignment</b> or <b>module</b>.</p>
@@ -79,8 +79,6 @@ const ModulePage = (props) =>
 			</ol>
 
 		</section>
-
-	<script src="/static/dashboard.js"></script>
 	</DefaultLayout>
 
 module.exports = ModulePage;
