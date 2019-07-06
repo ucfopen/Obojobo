@@ -2,11 +2,11 @@ require('./button.scss')
 
 const React = require('react')
 
-const Button = (props) =>
+const Button = props =>
 	<button
-		onClick={props.onClick}
+		onClick={(e) => {e.preventDefault(); props.onClick();}}
 		className={`repository--button ${props.className || ''}`}
-		>
+	>
 		{props.children}
 	</button>
 

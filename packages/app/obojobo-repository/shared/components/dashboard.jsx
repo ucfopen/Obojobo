@@ -65,7 +65,7 @@ const Dashboard = (props) =>
 				<div className="repository--item-list--group">
 					<div className="repository--item-list--group--item-wrapper">
 						<div className="repository--item-list--row">
-							<Search onChange={(input) => {onModuleFilter(props, input)}} />
+							<Search onChange={input => {onModuleFilter(props, input)}} />
 							<div className="repository--item-list--group--item--multi-wrapper">
 								{
 									renderModules(props.filteredModules ? props.filteredModules : props.myModules)
