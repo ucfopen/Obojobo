@@ -34,4 +34,8 @@ const Search = props => {
 	)
 }
 
+Search.defaultProps = {
+	placeholder: 'Search...'
+}
+
 module.exports = Search
