@@ -50,6 +50,35 @@ router
 		}
 	})
 
+// Get a complete Draft Document Tree (for editing)
+// mounted as /api/drafts/:draftId/full
+router
+	.route('/:draftId/raw')
+	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
+	.get((req, res) => {
+		return db
+			.one(`
+			SELECT
+				drafts.id AS id,
+				drafts.user_id as author,
+				drafts_content.id AS version,
+				drafts.created_at AS draft_created_at,
+				drafts_content.created_at AS content_created_at,
+				drafts_content.content AS content,
+				drafts_content.xml AS xml
+			FROM drafts
+			JOIN drafts_content
+				ON drafts.id = drafts_content.draft_id
+			WHERE drafts.id = $[id]
+				AND deleted = FALSE
+			ORDER BY content_created_at DESC
+			LIMIT 1
+			`,
+				{ id: req.params.draftId }
+			)
+			.then(res.success)
+	})
+
 // Get a Draft Document Tree (for viewing by a student)
 // mounted as /api/drafts/:draftId
 router

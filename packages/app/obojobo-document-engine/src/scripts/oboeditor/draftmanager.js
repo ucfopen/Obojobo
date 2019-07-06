@@ -1,12 +1,13 @@
+import 'whatwg-fetch'
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 
 const domParser = new DOMParser()
 let childWindow = null
-const draftSearchStrings = []
 const draftEls = document.querySelectorAll('.link-edit')
 let isCtrlPressed = false
 let editingDraftId = null
+let mode = ''
 
 document.getElementById('add-image-form').addEventListener('submit', onSubmitInsertImage)
 
@@ -22,35 +23,11 @@ window.onbeforeunload = function() {
 
 // Reload preview windows:
 //eslint-disable-next-line
-function preview(draftId, url) {
-	childWindow = window.open(url, 'preview')
+function preview() {
+	childWindow = window.open(`/preview/${editingDraftId}`, 'preview')
 }
 
-// Setup search
-document.getElementById('remove-search').addEventListener('click', function() {
-	document.getElementById('search-input').value = ''
-	search('')
-})
-document.getElementById('search').addEventListener('keyup', function(event) {
-	search(event.target.value)
-})
-
-for (let i = 0, len = draftEls.length; i < len; i++) {
-	draftSearchStrings.push(draftEls[i].getAttribute('data-search-str'))
-}
-function search(ss) {
-	ss = ss.toLowerCase()
-	draftSearchStrings.forEach(function(draftSS) {
-		const id = draftSS.split(' ')[0]
-		const el = document.getElementById(id)
-		if (ss === '' || draftSS.indexOf(ss) > -1) {
-			el.style.display = 'block'
-		} else {
-			el.style.display = 'none'
-		}
-	})
-}
-
+// listen for Ctrl-S for saving
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Meta') {
 		isCtrlPressed = true
@@ -82,91 +59,6 @@ const editor = CodeMirror(document.getElementById('edit'), {
 	gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
 	theme: 'monokai'
 })
-
-// wire up (edit) buttons:
-const editLinks = document.getElementsByClassName('link-edit')
-for (let i = 0; i < editLinks.length; i++) {
-	editLinks[i].addEventListener('click', function(event) {
-		edit(event.target.getAttribute('data-id'))
-	})
-}
-
-const delLinks = document.getElementsByClassName('link-delete')
-for (let i = 0; i < delLinks.length; i++) {
-	delLinks[i].addEventListener('click', function(event) {
-		del(event.target.getAttribute('data-id'))
-	})
-}
-
-// wire up get url buttons
-const urlLinks = document.getElementsByClassName('link-url')
-for (let i = 0; i < urlLinks.length; i++) {
-	urlLinks[i].addEventListener('click', function(event) {
-		event.preventDefault()
-		event.stopPropagation()
-		getURL(event.target.getAttribute('data-id'))
-		return false
-	})
-}
-
-document.getElementById('button-create-new-draft').addEventListener('click', function() {
-	fetch('/api/drafts/new', {
-		method: 'POST',
-		credentials: 'include',
-		body: '',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json'
-		}
-	})
-		.then(function(resp) {
-			resp.json().then(function(json) {
-				if (json.value.id) {
-					location.hash = 'id:' + json.value.id
-					location.reload()
-				} else {
-					alert('Something went wrong, please try again')
-					console.error(json)
-				}
-			})
-		})
-		.catch(function(error) {
-			alert('Error: ' + error)
-			console.error(error)
-		})
-})
-
-// Set up OboEditor items
-function createTutorialDraft() {
-	fetch('/api/drafts/tutorial', {
-		method: 'POST',
-		credentials: 'include',
-		body: '',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json'
-		}
-	})
-		.then(function(resp) {
-			resp.json().then(function(json) {
-				if (json.value.id) {
-					window.location.hash = 'id:' + json.value.id
-					window.location.reload()
-				} else {
-					window.alert('Something went wrong, please try again')
-					console.error(json)
-				}
-			})
-		})
-		.catch(function(error) {
-			window.alert('Error: ' + error)
-			console.error(error)
-		})
-}
-// Add tutorial draft if the user has no drafts
-if (draftEls.length === 0) {
-	createTutorialDraft()
-}
 
 document.getElementById('button-save-draft').addEventListener('click', saveDraft)
 //eslint-disable-next-line
@@ -298,128 +190,14 @@ function onSubmitInsertImage(event) {
 function saveDraft() {
 	if (!editingDraftId) return
 	const draftContent = editor.getValue()
-	document.getElementById(editingDraftId).setAttribute('data-content', draftContent)
-	postCurrentlyEditingDraft(draftContent)
-}
-
-function edit(draftId) {
-	if (!draftId) return
-	editor.off('change', onEditorChange)
-	// if the selected draftId isn't loaded
-	// do nothing and reset the url
-	const el = document.getElementById(draftId)
-	if (!el) {
-		location.hash = ''
-		return
-	}
-	const content = el.getAttribute('data-content')
-	document.getElementById('editor').style.display = 'block'
-	editingDraftId = draftId
-	const selected = document.getElementsByClassName('selected')
-	if (selected[0]) selected[0].classList.remove('selected')
-	document.getElementById(draftId).classList.add('selected')
-	if (content.charAt(0) === '<') {
-		editor.setOption('mode', 'text/xml')
-	} else {
-		editor.setOption('mode', 'application/json')
-	}
-	editor.setValue(content)
-	location.hash = 'id:' + draftId
-	editor.on('change', onEditorChange)
-}
-
-function del(draftId) {
-	const response = confirm('Are you sure you want to delete ' + draftId + '?')
-	if (!response) return
-	fetch('/api/drafts/' + draftId, {
-		method: 'DELETE',
-		credentials: 'include',
-		body: '',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json'
-		}
-	})
-		.then(function(resp) {
-			resp.json().then(function(json) {
-				if (json.status.toLowerCase() === 'ok') {
-					location.reload()
-				} else {
-					alert('Error')
-				}
-			})
-		})
-		.catch(function(error) {
-			alert('Error: ' + error.toString())
-			console.error(error)
-		})
-}
-
-function getURL(draftId) {
-	const str = window.location.origin + '/view/' + draftId
-	// Loads the url into an invisible textarea
-	// to copy it to the clipboard
-	const el = document.createElement('textarea')
-	el.value = str
-	el.setAttribute('readonly', '')
-	el.style.position = 'absolute'
-	el.style.left = '-9999px'
-	document.body.appendChild(el)
-	const selected =
-		document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false
-	el.select()
-	document.execCommand('copy')
-	document.body.removeChild(el)
-	if (selected) {
-		document.getSelection().removeAllRanges()
-		document.getSelection().addRange(selected)
-	}
-	const linkURLEl = document.getElementById(draftId).getElementsByClassName('link-url')[0]
-	linkURLEl.innerText = 'Get URL - Copied to the clipboard!'
-	linkURLEl.classList.add('copied')
-	setTimeout(function() {
-		linkURLEl.innerText = 'Get URL'
-		linkURLEl.classList.remove('copied')
-	}, 2000)
-}
-
-function postCurrentlyEditingDraft(draftContent) {
-	let mime
-	// try to parse JSON, if it works we assume we're sending JSON.
-	// otherwise send as plain text in the hopes that it's XML
-	try {
-		JSON.parse(draftContent)
-		mime = 'application/json'
-	} catch (e) {
-		mime = 'text/plain'
-	}
-	fetch('/api/drafts/' + editingDraftId, {
-		method: 'POST',
-		credentials: 'include',
-		body: draftContent,
-		headers: {
-			Accept: mime,
-			'Content-Type': mime
-		}
-	})
-		.then(function(res) {
+	apiSaveDraft(draftContent)
+		.then(res => {
 			switch (res.status) {
 				case 200:
-					res.json().then(function(json) {
+					res.json().then(json => {
 						if (json.value.id) {
-							document.body.classList.add('saved')
-							document.getElementById('button-save-draft').innerText = 'Saved!'
-							document.getElementById('button-save-draft').disabled = true
-							setTimeout(function() {
-								document.body.classList.remove('saved')
-								document.getElementById('button-save-draft').innerText = 'Save Draft'
-								document.getElementById('button-save-draft').disabled = false
-							}, 1000)
-							if (childWindow && childWindow.location && childWindow.location.reload) {
-								childWindow.location.reload()
-							}
-							updateTitleFromEditor(editingDraftId)
-							document.getElementById(editingDraftId).classList.remove('unsaved')
+							animateSavedButton()
+							refreshPreviewWindow()
 						} else {
 							alert('Something went wrong, please try again')
 							console.error(json)
@@ -429,72 +207,97 @@ function postCurrentlyEditingDraft(draftContent) {
 				default:
 					res
 						.json()
-						.then(function(json) {
+						.then(json => {
 							alert('Error: ' + json.value.message + ' (' + res.status + ')')
 						})
-						.catch(function() {
+						.catch(() => {
 							alert('Error: ' + res.statusText + ' (' + res.status + ')')
 						})
 					break
 			}
 		})
-		.catch(function(error) {
+		.catch(error => {
 			alert('Error: ' + error)
 			console.error(error)
 		})
 }
 
-function updateTitleFromEditor(draftId) {
-	const title = getTitleFromEditor()
-	if (!title) return
-	try {
-		const el = document.getElementById(draftId).getElementsByClassName('title')[0]
-		el.innerText = title
-	} catch (e) {
-		// Do nothing
-	}
+function edit(draftId) {
+	if (!draftId) return
+
+	apiLoadDraft(draftId)
+		.then(content => {
+			let theContent
+			console.log(content)
+			document.getElementById('editor').style.display = 'block'
+			editingDraftId = draftId
+
+			if(content.value.xml){
+				mode = 'xml'
+				editor.setOption('mode', 'text/xml')
+				theContent = content.value.xml
+			} else {
+				mode = 'json'
+				editor.setOption('mode', 'application/json')
+				theContent = content.value.content
+			}
+			editor.setValue(theContent)
+		})
 }
 
-function getTitleFromEditor() {
-	try {
-		const doc = domParser.parseFromString(editor.getValue(), 'application/xml')
-		let els = doc.getElementsByTagName('Module')
-		if (els.length === 0) {
-			els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
+function apiLoadDraft(draftId){
+	const options = {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json'
 		}
-		if (els.length > 0) {
-			const el = els[0]
-			const title = el.getAttribute('title')
-			if (title) return title
+	}
+
+	return fetch(`/api/drafts/${draftId}/raw`, options)
+		.then(res => res.json())
+}
+
+function apiSaveDraft(content){
+	const mime = (mode === 'json' ? 'application/json' : 'text/plain')
+	const options = {
+		method: 'POST',
+		credentials: 'include',
+		body: content,
+		headers: {
+			Accept: mime,
+			'Content-Type': mime
 		}
-	} catch (e) {
-		// Do nothing
-		return null
 	}
-
-	return null
+	return fetch(`/api/drafts/${editingDraftId}`, options)
 }
 
-function onEditorChange() {
-	const el = document.getElementById(editingDraftId)
-	el.setAttribute('data-content', editor.getValue())
-	el.classList.add('unsaved')
+function animateSavedButton(){
+	document.body.classList.add('saved')
+	document.getElementById('button-save-draft').innerText = 'Saved!'
+	document.getElementById('button-save-draft').disabled = true
+	setTimeout(() => {
+		document.body.classList.remove('saved')
+		document.getElementById('button-save-draft').innerText = 'Save Draft'
+		document.getElementById('button-save-draft').disabled = false
+	}, 1000)
 }
 
-//eslint-disable-next-line
-function openInBetaEditor(draftId) {
-	const el = document.getElementById(draftId)
-	let confirm = true
-	if (el.getAttribute('data-content-type') === 'xml') {
-		confirm = window.confirm(
-			'Wait! Editing this document in the Beta OboEditor will convert your document from XML to JSON. Are you sure you want to continue?'
-		)
-	}
-	if (confirm) {
-		window.open('/editor/' + draftId, '_blank')
+function refreshPreviewWindow(){
+	if (childWindow && childWindow.location && childWindow.location.reload) {
+		childWindow.location.reload()
 	}
 }
 
 if (location.hash.indexOf('#id:') === 0) {
 	edit(location.hash.substr(4))
 }
+
+window.addImage = addImage
+window.addQuestion = addQuestion
+window.preview = preview
+window.saveDraft = saveDraft
+window.closeInsertImageModal = closeInsertImageModal
+window.onUpdateImage = onUpdateImage
+window.onChangeImageSize = onChangeImageSize

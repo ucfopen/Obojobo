@@ -35,18 +35,13 @@
 			button:disabled { background-color: gray }
 			#button-create-new-draft { width: 100%; border-radius: 0; }
 			#button-create-new-tutorial { width: 100%; border-radius: 0; border-top: 1px solid #000;}
-			#editor-container { position: absolute; top: 40px; bottom: 0; left: 300px; right: 0; }
+			#editor-container { position: absolute; top: 40px; bottom: 0; left: 0; right: 0; }
 			#editor { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
 			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; font-size: 11pt; }
-			#sidebar { overflow: scroll; position: absolute; left: 0; top: 40px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
-			#sidebar ul { padding: 0; margin: 0; }
-			#sidebar li { list-style-type: none; border-bottom: 1px solid #e6e6e6; padding: 10px; box-sizing: border-box; position: relative; }
-			#sidebar li:hover { background:#f3faff; }
-			#sidebar li p { margin: 0; pointer-events: none; font-size: 0.9em; }
 			.CodeMirror { border-left: 1px solid black; border-bottom: 1px solid black; height: 100%; }
 			h1 { position: absolute; left: 0; top: 0; right: 0; border-bottom: 1px solid black; font-size: 10pt; height: 40px; margin: 0; padding: 12px; box-sizing: border-box; }
 			.selected { background: #d7efff !important; }
-			#button-save-draft { position: absolute; left:50%; bottom: 5px; transform: translate(-50%);}
+			#bottom-buttons { position: absolute; left:50%; bottom: 5px; transform: translate(-50%);}
 			.draft-id, .date { display: block; font-size: 8pt; opacity: 0.7; pointer-events: none; }
 			.draft-id { margin-top: 15px; margin-bottom: 15px; }
 			.link-preview { font-size: 9pt; margin-right: 1em; }
@@ -59,10 +54,6 @@
 			#search { position: relative; }
 			#search input { width: 100%; font-family:'Libre Franklin', Arial; border: none; border-bottom: 1px solid gray; font-size: 1em; padding: 0.6em; }
 			#search button { position: absolute; top: 0; right: 0; height: 37px; width: 37px; background: transparent; color: gray; }
-			#sidebar .controls { display: none; }
-			#sidebar .selected .controls { display: block; }
-			#sidebar a { opacity: 0.8; }
-			#sidebar a:hover { opacity: 1; }
 			#pop-up-message { border: 2px solid green; color: green; background: #cbe4cb; position: fixed; right: 1em; bottom: 50px; width: 300px; height: 70px; z-index: 99; padding: 1em; box-sizing: border-box; pointer-events: none; border-radius: 0.25em; text-align: center; font-size: 1.4em; font-weight: bold; transform: translate(0, 120px); transition: transform 0.2s; }
 			.saved #pop-up-message { transform: translate(0, 0); }
 			.CodeMirror-wrap { background: #1d1d1b !important; }
@@ -115,60 +106,13 @@
 		<h1>Obojobo Draft Manager</h1>
 		<button onClick="addImage()" class="add-image-btn">Insert Image</button>
 		<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
-		<div id="sidebar">
-			<button id="button-create-new-draft">+ Create new draft</button>
-			<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ Visual Editor Tutorial</button>
-			<div id="search">
-				<input id="search-input" type="text" placeholder="Search..."  />
-				<button id="remove-search">&times;</button>
-			</div>
-			<ul id="list">
-				<% drafts.sort(function(a, b) {
-					let aTime = (new Date(a.createdAt)).getTime()
-					let bTime = (new Date(b.createdAt)).getTime()
-					let aTitle = a.content && a.content.content ? '' + a.content.content.title : null
-					let bTitle = b.content && b.content.content ? '' + b.content.content.title : null
-					if(aTitle.toLowerCase() < bTitle.toLowerCase()) return -1;
-					if(aTitle.toLowerCase() > bTitle.toLowerCase()) return 1;
-					if(aTitle < bTitle) return 1;
-					if(aTitle > bTitle) return -1;
-					return bTime - aTime
-				}).forEach(function(draft){ %>
-					<li
-						id="<%= draft.draftId %>"
-						class="link-edit"
-						data-id="<%= draft.draftId %>"
-						data-search-str="<%= draft.draftId %> <% if(draft.content && draft.content.content && draft.content.content.title){ %><%= ('' + draft.content.content.title).toLowerCase() %><% } %>"
-						data-content-type="<%= draft.xml ? 'xml' : 'json' %>"
-						data-content="<%= draft.xml ? draft.xml : JSON.stringify(draft.content,null,2) %>">
-							<% if(draft.content && draft.content.content && draft.content.content.title){ %>
-								<p class="title"><%= draft.content.content.title %></p>
-							<% } else { %>
-								<p class="title"><%= draft.draftId %></p>
-							<% } %>
-								<%
-								var date = new Date(draft.createdAt)
-								var isPm = date.getHours() > 12
-								var hours = isPm ? date.getHours() - 12 : date.getHours()
-								var minutes = '' + date.getMinutes()
-								if(minutes.length === 1) minutes = '0' + minutes
-							%>
-							<span class="date"><%= date.toDateString() + ' ' + hours + ':' + minutes + ' ' + (isPm ? 'pm' : 'am') %></span>
-							<div class="controls">
-								<span class="draft-id">id: <%= draft.draftId %></span>
-								<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
-								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
-								<a class="link-preview" onclick="openInBetaEditor('<%= draft.draftId %>')">Edit with Visual Editor (Beta)</a>
-							</div>
-							<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
-					</li>
-				<% }) %>
-			</ul>
-		</div>
 		<div id="editor-container">
 			<div id="editor">
 				<div id="edit"></div>
-				<button id="button-save-draft">Save Draft</button>
+				<div id="bottom-buttons">
+					<button id="button-preview-draft" onclick="preview();">Preview</button>
+					<button id="button-save-draft">Save Draft</button>
+				</div>
 			</div>
 		</div>
 		<div id="pop-up-message">
