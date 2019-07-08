@@ -67,11 +67,11 @@ const APIUtil = {
 	},
 
 	getDraft(id) {
-		return fetch(`/api/drafts/${id}`).then(processJsonResults)
+		return APIUtil.get(`/api/drafts/${id}`).then(processJsonResults)
 	},
 
 	getFullDraft(id) {
-		return fetch(`/api/drafts/${id}/full`).then(processJsonResults)
+		return APIUtil.get(`/api/drafts/${id}/full`).then(processJsonResults)
 	},
 
 	requestStart(visitId, draftId) {

@@ -3165,7 +3165,6 @@
 							"id": "fee457a6-1065-4f8b-9c2b-fab773b082e1",
 							"type": "ObojoboDraft.Chunks.MathEquation",
 							"content": {
-								"error": "",
 								"label": "",
 								"latex": ""
 							},
@@ -5488,7 +5487,7 @@
 									"type": "ObojoboDraft.Chunks.MCAssessment",
 									"content": {
 										"shuffle": true,
-										"responseType": "Pick One"
+										"responseType": "pick-all"
 									},
 									"children": [
 										{

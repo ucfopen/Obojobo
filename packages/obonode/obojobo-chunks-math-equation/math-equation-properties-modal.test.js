@@ -46,7 +46,7 @@ describe('MathEquationProperties', () => {
 		expect(onConfirm).toHaveBeenCalled()
 	})
 
-	test('MathEquationProperties component changes label', () => {
+	test('MathEquationProperties component changes alt', () => {
 		const onConfirm = jest.fn()
 
 		const component = mount(<MathEquationProperties content={{}} onConfirm={onConfirm} />)
@@ -54,6 +54,19 @@ describe('MathEquationProperties', () => {
 		component
 			.find('input')
 			.at(2)
+			.simulate('change', { target: { value: 'y = 5' } })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('MathEquationProperties component changes label', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<MathEquationProperties content={{}} onConfirm={onConfirm} />)
+
+		component
+			.find('input')
+			.at(3)
 			.simulate('change', { target: { value: '1.1' } })
 
 		expect(component.html()).toMatchSnapshot()
