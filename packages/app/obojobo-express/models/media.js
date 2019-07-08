@@ -187,7 +187,7 @@ class Media {
 		// size (ignoring whatever the requested size was)
 		if (
 			!Media.isMimeTypeResizable(originalMedia.mime_type) ||
-			!await Media.shouldResizeMedia(originalMedia.blob, targetDimensions)
+			!(await Media.shouldResizeMedia(originalMedia.blob, targetDimensions))
 		) {
 			return {
 				binaryData: originalMedia.blob,
@@ -228,60 +228,70 @@ class Media {
 			throw new Error('Inserting a resized image, but no media id of the original image provided')
 		}
 
-		return db.tx(transactionDb => {
-			// The following query takes an image binary and metadata, and stores it in the binaries database table.
-			// The binaries database table holds the binaries for images uploaded by a user, and stores resized
-			// images derived from the orginal user uploads. There is no difference between storing an original
-			// or resized image here. All entries are independent.
-			return transactionDb
-				.one(
-					`
+		return db
+			.tx(transactionDb => {
+				// The following query takes an image binary and metadata, and stores it in the binaries database table.
+				// The binaries database table holds the binaries for images uploaded by a user, and stores resized
+				// images derived from the orginal user uploads. There is no difference between storing an original
+				// or resized image here. All entries are independent.
+				return transactionDb
+					.one(
+						`
 					INSERT INTO binaries
 						(blob, file_size, mime_type)
 					VALUES
 						($[binary], $[size], $[mimetype])
 					RETURNING *`,
-					{ binary, size, mimetype }
-				)
-				.then(result => {
-					mediaBinaryInfo = result
+						{ binary, size, mimetype }
+					)
+					.then(result => {
+						mediaBinaryInfo = result
 
-					// If an orginal image is being stored, this query will create a record that the user uploaded an
-					// image. From this record, the user's original image and resized images derived from the original
-					// can be found. All resized images derived from an original will have the same mediaId as the
-					// original, so it is not necessary to store a reference to the resized images in the media table.
-					if (mode === MODE_INSERT_ORIGINAL_IMAGE) {
-						return transactionDb.one(
-							`
+						// If an orginal image is being stored, this query will create a record that the user uploaded an
+						// image. From this record, the user's original image and resized images derived from the original
+						// can be found. All resized images derived from an original will have the same mediaId as the
+						// original, so it is not necessary to store a reference to the resized images in the media table.
+						if (mode === MODE_INSERT_ORIGINAL_IMAGE) {
+							return transactionDb
+								.one(
+									`
 							INSERT INTO media
 								(user_id, file_name)
 							VALUES
 								($[userId], $[filename])
 							RETURNING *`,
-							{ userId, filename }
-						)
-					}
-				})
-				.then(result => {
-					// If a resized image is being stored, a new media record was not created. The mediaId of the
-					// original image the resized image was derived from must be passed in and used.
-					const mediaRecordId = mode === MODE_INSERT_ORIGINAL_IMAGE ? result.id : mediaId
-
-					// The media_binaries table links media records to their respective binary information. This
-					// query creates that link. Both original and resized images must be linked. Since resized
-					// images have the same id as the original they are derived from, a dimensions field is
-					// stored to describe the binary the link is pointing to.
-					return transactionDb.one(
-						`
+									{ userId, filename }
+								)
+								.then(insertMediaResult => {
+									// update the mediaId now that we have it
+									// if we're resizing, we already have it
+									mediaId = insertMediaResult.id
+								})
+						}
+					})
+					.then(() => {
+						// The media_binaries table links media records to their respective binary information. This
+						// query creates that link. Both original and resized images must be linked. Since resized
+						// images have the same id as the original they are derived from, a dimensions field is
+						// stored to describe the binary the link is pointing to.
+						return transactionDb.one(
+							`
 							INSERT INTO media_binaries
 								(media_id, binary_id, dimensions)
 							VALUES
-								($[mediaRecordId], $[mediaBinariesId], $[dimensions])
+								($[mediaId], $[mediaBinariesId], $[dimensions])
 							RETURNING *`,
-						{ mediaRecordId, mediaBinariesId: mediaBinaryInfo.id, dimensions }
-					)
-				})
-		})
+							{ mediaId, mediaBinariesId: mediaBinaryInfo.id, dimensions }
+						)
+					})
+			})
+			.then(() => ({
+				media_id: mediaId,
+				filename,
+				mode,
+				mimetype,
+				dimensions
+			}))
 	}
 
 	static async saveImageAtNewSize(originalImageId, originalImageBinary, targetDimensions) {
@@ -353,7 +363,7 @@ class Media {
 				// Delete the temporary media stored by Multer
 				fs.unlinkSync(fileInfo.path)
 				// ID of the user media, not the binary data
-				return mediaRecord.media_id
+				return mediaRecord
 			})
 			.catch(err => {
 				logger.error(err)

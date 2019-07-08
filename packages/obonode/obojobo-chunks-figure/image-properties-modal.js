@@ -1,9 +1,14 @@
-import React from 'react'
+import './image-properties-modal.scss'
+
+import { debounce, isUrlUUID } from './utils'
+
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import Image from './image'
+import React from 'react'
 
 const { SimpleDialog } = Common.components.modal
-
-import './image-properties-modal.scss'
+const URL_UPDATE_DELAY = 750
 
 class ImageProperties extends React.Component {
 	constructor(props) {
@@ -11,12 +16,24 @@ class ImageProperties extends React.Component {
 
 		this.inputRef = React.createRef()
 		this.state = this.props.content
+		if (!isUrlUUID(this.props.content.url)) {
+			this.state.urlInputText = this.props.content.url
+		}
+	}
+
+	handleFileChange(event) {
+		const file = event.target.files[0]
+		const formData = new window.FormData()
+		formData.append('userImage', file, file.name)
+		APIUtil.postMultiPart('/api/media/upload', formData).then(mediaData => {
+			this.setState({ url: mediaData.media_id, urlInputText: '', filename: mediaData.filename })
+		})
 	}
 
 	handleURLTextChange(event) {
-		const url = event.target.value
-
-		return this.setState({ url })
+		const urlInputText = event.target.value
+		this.setState({ urlInputText })
+		debounce(URL_UPDATE_DELAY, () => this.setState({ url: urlInputText, filename: null }))
 	}
 
 	handleAltTextChange(event) {
@@ -40,7 +57,7 @@ class ImageProperties extends React.Component {
 	onCheckSize(event) {
 		const size = event.target.value
 
-		return this.setState({ size })
+		return this.setState({ size, width: null, height: null })
 	}
 
 	focusOnFirstElement() {
@@ -59,15 +76,51 @@ class ImageProperties extends React.Component {
 			>
 				<div className="image-properties">
 					<label htmlFor="obojobo-draft--chunks--figure--url">URL:</label>
-					<input
-						type="text"
-						id="obojobo-draft--chunks--figure--url"
-						value={this.state.url || ''}
-						onChange={this.handleURLTextChange.bind(this)}
-						ref={this.inputRef}
-						size="50"
-						placeholder="Web Address of the Image"
-					/>
+					<div className="flex-container">
+						<div>
+							<input
+								type="text"
+								id="obojobo-draft--chunks--figure--url"
+								value={this.state.urlInputText || ''}
+								onChange={this.handleURLTextChange.bind(this)}
+								ref={this.inputRef}
+								size="50"
+								placeholder="Web Address of the Image"
+							/>
+						</div>
+						<div className="figure--url--or">Or</div>
+						<div className="figure--url--upload">
+							<label htmlFor="obojobo-draft--chunks--figure--image-file-input">
+								<input
+									type="file"
+									id="obojobo-draft--chunks--figure--image-file-input"
+									accept={this.props.allowedUploadTypes}
+									onChange={this.handleFileChange.bind(this)}
+								/>
+								<span className="upload">Upload</span>
+							</label>
+						</div>
+					</div>
+
+					<div className="flex-container image-container">
+						{this.state.url ? (
+							<Image
+								key={this.state.url}
+								chunk={{
+									modelState: {
+										url: this.state.url,
+										height: 100,
+										size: 'custom',
+										alt: 'Image preview'
+									}
+								}}
+							/>
+						) : (
+							<span className="image-preview image-preview-placeholder">No Image</span>
+						)}
+						<div className="image-preview">{this.state.filename || 'Image Preview'}</div>
+					</div>
+
 					<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
 					<input
 						type="text"
@@ -77,6 +130,7 @@ class ImageProperties extends React.Component {
 						size="50"
 						placeholder="Describe the Image"
 					/>
+
 					<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
 					<fieldset id="obojobo-draft--chunks--figure--size">
 						<div className="size-input">
@@ -123,7 +177,7 @@ class ImageProperties extends React.Component {
 							/>
 							<label htmlFor="obojobo-draft--chunks--figure--size-custom">Custom</label>
 							{size === 'custom' ? (
-								<div className="custom-size-inputs" id="custom-size-inputs">
+								<div className="custom-size-inputs">
 									<input
 										id="obojobo-draft--chunks--figure--custom-width"
 										name="custom-width"
@@ -133,7 +187,7 @@ class ImageProperties extends React.Component {
 										type="number"
 										placeholder="Width"
 										aria-label="Width"
-										value={this.state.width}
+										value={this.state.width || ''}
 										onChange={this.handleWidthTextChange.bind(this)}
 									/>
 									<span>px × </span>
@@ -146,7 +200,7 @@ class ImageProperties extends React.Component {
 										type="number"
 										placeholder="Height"
 										aria-label="Height"
-										value={this.state.height}
+										value={this.state.height || ''}
 										onChange={this.handleHeightTextChange.bind(this)}
 									/>
 									<span>px</span>

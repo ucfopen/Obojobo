@@ -4,6 +4,11 @@
 			"testkey": "testsecret"
 		}
 	},
+	"test": {
+		"keys":{
+			"jesttestkey":"jesttestsecret"
+		}
+	},
 	"production":{
 		"keys": {"ENV": "OBO_LTI_KEYS_JSON"}
 	}
