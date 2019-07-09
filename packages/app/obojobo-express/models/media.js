@@ -210,7 +210,7 @@ class Media {
 	}
 
 	static storeImageInDb({ filename, binary, size, mimetype, dimensions, mode, mediaId, userId }) {
-		let mediaBinaryInfo = null
+		let mediaBinaryId = null
 
 		if (!binary || !size || !mimetype || !dimensions || !mode) {
 			throw new Error('One or more required arguments not provided.')
@@ -241,11 +241,11 @@ class Media {
 						(blob, file_size, mime_type)
 					VALUES
 						($[binary], $[size], $[mimetype])
-					RETURNING *`,
+					RETURNING id`,
 						{ binary, size, mimetype }
 					)
-					.then(result => {
-						mediaBinaryInfo = result
+					.then(insertBinaryResult => {
+						mediaBinaryId = insertBinaryResult.id
 
 						// If an orginal image is being stored, this query will create a record that the user uploaded an
 						// image. From this record, the user's original image and resized images derived from the original
@@ -259,7 +259,7 @@ class Media {
 								(user_id, file_name)
 							VALUES
 								($[userId], $[filename])
-							RETURNING *`,
+							RETURNING id`,
 									{ userId, filename }
 								)
 								.then(insertMediaResult => {
@@ -274,14 +274,14 @@ class Media {
 						// query creates that link. Both original and resized images must be linked. Since resized
 						// images have the same id as the original they are derived from, a dimensions field is
 						// stored to describe the binary the link is pointing to.
-						return transactionDb.one(
+						return transactionDb.none(
 							`
 							INSERT INTO media_binaries
 								(media_id, binary_id, dimensions)
 							VALUES
-								($[mediaId], $[mediaBinariesId], $[dimensions])
-							RETURNING *`,
-							{ mediaId, mediaBinariesId: mediaBinaryInfo.id, dimensions }
+								($[mediaId], $[mediaBinaryId], $[dimensions])
+							`,
+							{ mediaId, mediaBinaryId, dimensions }
 						)
 					})
 			})

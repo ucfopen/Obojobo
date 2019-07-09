@@ -10,14 +10,17 @@ module.exports = insertObject => {
 		RETURNING *`,
 			insertObject
 		)
-		.then(createdEvent => {
+		.then(insertEventResult => {
 			if (insertObject.caliperPayload) {
 				// Add in internal event id to extensions object:
 				if (!insertObject.caliperPayload.extensions) {
 					insertObject.caliperPayload.extensions = {}
 				}
-				insertObject.caliperPayload.extensions.internalEventId = createdEvent.id
+				insertObject.caliperPayload.extensions.internalEventId = insertEventResult.id
 
+				// Don't bother including this in the promise chain
+				// It's considered a non-essential insert and we're
+				// not going to wait for it
 				db.none(
 					`
 					INSERT INTO caliper_store
@@ -27,6 +30,6 @@ module.exports = insertObject => {
 				)
 			}
 
-			return createdEvent
+			return insertEventResult
 		})
 }
