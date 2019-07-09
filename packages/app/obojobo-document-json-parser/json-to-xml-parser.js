@@ -1,5 +1,6 @@
-const nodeParser = require('./src/nodeParser');
 const formatter = require('xml-formatter');
+
+const nodeParser = require('./src/nodeParser');
 
 const jsonToXMLParser = node => {
     const xml = (
