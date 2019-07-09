@@ -1,6 +1,8 @@
 const textGroupParser = require('../textGroupParser')
 
-const headingNodeParser = (node, id) => {
+const headingNodeParser = node => {
+    const id = node.id ? ` id="${node.id}"` : ''
+
     const headingLevel = node.content.headingLevel
     const textGroupXML = textGroupParser(node.content.textGroup)
 

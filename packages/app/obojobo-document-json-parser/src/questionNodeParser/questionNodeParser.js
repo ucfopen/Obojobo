@@ -1,4 +1,6 @@
-const questionNodeParser = (node, id, childrenParser) => {
+const questionNodeParser = (node, childrenParser) => {
+    const id = node.id ? ` id="${node.id}"` : ''
+
     let solution = node.content.solution,
         solutionXML = ''
 

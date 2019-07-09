@@ -1,4 +1,5 @@
-const mcAnswerNodeParser = (node, id, childrenParser) => {
+const mcAnswerNodeParser = (node, childrenParser) => {
+    const id = node.id ? ` id="${node.id}"` : ''
 
     return (
         `<MCAnswer${id}>` +

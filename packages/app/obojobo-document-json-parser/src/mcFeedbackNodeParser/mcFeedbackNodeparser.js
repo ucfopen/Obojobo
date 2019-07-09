@@ -1,4 +1,6 @@
-const mcFeedbackNodeParser = (node, id, childrenParser) => {
+const mcFeedbackNodeParser = (node, childrenParser) => {
+    const id = node.id ? ` id="${node.id}"` : ''
+
     return (
         `<MCFeedback${id}>` +
         childrenParser(node.children) +

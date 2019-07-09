@@ -1,6 +1,7 @@
 const xmlEncode = require('../xmlEncode')
 
-const assessmentNodeParser = (node, id, childrenParser) => {
+const assessmentNodeParser = (node, childrenParser) => {
+    const id = node.id ? ` id="${node.id}"` : ''
 
     let attrs = ''
     for (const attr in node.content) {

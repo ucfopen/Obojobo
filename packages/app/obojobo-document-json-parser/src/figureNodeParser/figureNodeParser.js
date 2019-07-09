@@ -1,7 +1,8 @@
 const textGroupParser = require('../textGroupParser')
 const xmlEncode = require('../xmlEncode')
 
-const figureNodeParser = (node, id) => {
+const figureNodeParser = node => {
+    const id = node.id ? ` id="${node.id}"` : ''
 
     const textGroupXML = textGroupParser(node.content.textGroup)
 

@@ -1,7 +1,8 @@
 const textGroupParser = require('../textGroupParser')
 const xmlEncode = require('../xmlEncode')
 
-const actionButtonNodeParser = (node, id) => {
+const actionButtonNodeParser = node => {
+    const id = node.id ? ` id="${node.id}"` : ''
 
     let contentXML = ''
     for (const c in node.content) {
@@ -20,7 +21,7 @@ const actionButtonNodeParser = (node, id) => {
     )
 }
 
-const triggersParser = (triggers) => {
+const triggersParser = triggers => {
     if (!triggers) return ''
 
     let triggersBodyXML = ''

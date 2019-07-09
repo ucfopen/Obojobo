@@ -1,6 +1,8 @@
 const xmlEncode = require('../xmlEncode')
 
-const moduleNodeParser = (node, id, childrenParser) => {
+const moduleNodeParser = (node, childrenParser) => {
+    const id = node.id ? ` id="${node.id}"` : ''
+
     let attrs = '';
     for (const attr in node.content) {
         attrs += (

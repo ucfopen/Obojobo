@@ -1,7 +1,9 @@
 const textGroupParser = require('../textGroupParser')
 const xmlEncode = require('../xmlEncode')
 
-const listNodeParser = (node, id) => {
+const listNodeParser = node => {
+    const id = node.id ? ` id="${node.id}"` : ''
+
     const listStyles = listStylesParser(node.content.listStyles)
     const textGroupXML = textGroupParser(node.content.textGroup)
 
@@ -13,7 +15,7 @@ const listNodeParser = (node, id) => {
     )
 }
 
-const listStylesParser = (listStyles) => {
+const listStylesParser = listStyles => {
     if (!listStyles) return ''
 
     const typeXML = `<type>${listStyles.type}</type>`
