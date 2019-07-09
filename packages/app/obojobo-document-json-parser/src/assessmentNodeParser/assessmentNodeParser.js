@@ -1,6 +1,6 @@
 const xmlEncode = require('../xmlEncode')
 
-const assessmentNodeParser = (node, id, tabs, childrenParser) => {
+const assessmentNodeParser = (node, id, childrenParser) => {
 
     let attrs = ''
     for (const attr in node.content) {
@@ -8,19 +8,19 @@ const assessmentNodeParser = (node, id, tabs, childrenParser) => {
         attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
     }
 
-    const scoreActionsXML = scoreActionsParser(node.content.scoreActions, tabs + '\t', childrenParser)
-    const rubricXML = rubricParser(node.content.rubric, tabs + '\t')
+    const scoreActionsXML = scoreActionsParser(node.content.scoreActions, childrenParser)
+    const rubricXML = rubricParser(node.content.rubric)
 
     return (
-        `${tabs}<Assessment${attrs}${id}>\n` +
-            childrenParser(node.children, tabs + '\t') +
-            scoreActionsXML +
-            rubricXML +
-        `${tabs}</Assessment>\n`
+        `<Assessment${attrs}${id}>` +
+        childrenParser(node.children) +
+        scoreActionsXML +
+        rubricXML +
+        `</Assessment>`
     )
 }
 
-const scoreActionsParser = (scoreActions, tabs, childrenParser) => {
+const scoreActionsParser = (scoreActions, childrenParser) => {
     if (!scoreActions) return ''
 
     let scoreActionsBodyXML = ''
@@ -32,21 +32,21 @@ const scoreActionsParser = (scoreActions, tabs, childrenParser) => {
         }
 
         scoreActionsBodyXML += (
-            `${tabs+'\t'}<scoreAction${attrs}>\n` +
-                childrenParser([scoreAction.page], tabs + '\t\t\t') +
-            `${tabs+'\t'}</scoreAction>\n`
+            `<scoreAction${attrs}>` +
+            childrenParser([scoreAction.page]) +
+            `</scoreAction>`
         )
     })
-    
+
     return (
-        `${tabs}<scoreActions>\n` +
-            scoreActionsBodyXML +
-        `${tabs}</scoreActions>\n`
+        `<scoreActions>` +
+        scoreActionsBodyXML +
+        `</scoreActions>`
     )
 }
 
-const rubricParser = (rubric, tabs) => {
-    if(!rubric) return ''
+const rubricParser = (rubric) => {
+    if (!rubric) return ''
 
     let modsXML = ''
     if (rubric.mods) {
@@ -56,13 +56,13 @@ const rubricParser = (rubric, tabs) => {
             for (const attr in mod) {
                 attrs += ` ${[attr]}="${xmlEncode(mod[attr])}"`
             }
-            modsBodyXML += `${tabs+'\t\t\t'}<mod${attrs} />\n`
+            modsBodyXML += `<mod${attrs} />`
         })
 
         modsXML = (
-            `${tabs+'\t'}<mods>\n` +
-                modsBodyXML +
-            `${tabs+'\t'}</mods>\n`
+            `<mods>` +
+            modsBodyXML +
+            `</mods>`
         )
     }
 
@@ -73,9 +73,9 @@ const rubricParser = (rubric, tabs) => {
     }
 
     return (
-        `${tabs}<rubric${attrs}>\n` +
-            modsXML +
-        `${tabs}</rubric>\n`
+        `<rubric${attrs}>` +
+        modsXML +
+        `</rubric>`
     )
 }
 

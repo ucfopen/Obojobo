@@ -1,9 +1,9 @@
 const textGroupParser = require('../textGroupParser')
 const xmlEncode = require('../xmlEncode')
 
-const figureNodeParser = (node, id, tabs) => {
+const figureNodeParser = (node, id) => {
 
-    const textGroupXML = textGroupParser(node.content.textGroup, tabs + '\t')
+    const textGroupXML = textGroupParser(node.content.textGroup)
 
     // Parser content
     let attrs = ''
@@ -13,9 +13,9 @@ const figureNodeParser = (node, id, tabs) => {
     }
 
     return (
-        `${tabs}<Figure${attrs}${id}>\n` +
-            textGroupXML +
-        `${tabs}</Figure>\n`
+        `<Figure${attrs}${id}>` +
+        textGroupXML +
+        `</Figure>`
     )
 }
 

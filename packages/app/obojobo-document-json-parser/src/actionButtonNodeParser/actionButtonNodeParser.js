@@ -1,7 +1,7 @@
 const textGroupParser = require('../textGroupParser')
 const xmlEncode = require('../xmlEncode')
 
-const actionButtonNodeParser = (node, id, tabs) => {
+const actionButtonNodeParser = (node, id) => {
 
     let contentXML = ''
     for (const c in node.content) {
@@ -9,24 +9,24 @@ const actionButtonNodeParser = (node, id, tabs) => {
         contentXML += ` ${[c]}="${xmlEncode(node.content[c])}"`
     }
 
-    const textGroupXML = textGroupParser(node.content.textGroup, tabs + '\t')
-    const triggersXML = triggersParser(node.content.triggers, tabs + '\t')
+    const textGroupXML = textGroupParser(node.content.textGroup)
+    const triggersXML = triggersParser(node.content.triggers)
 
     return (
-        `${tabs}<ActionButton${contentXML}${id}>\n` +
-            textGroupXML +
-            triggersXML +
-        `${tabs}</ActionButton>\n`
+        `<ActionButton${contentXML}${id}>` +
+        textGroupXML +
+        triggersXML +
+        `</ActionButton>`
     )
 }
 
-const triggersParser = (triggers, tabs) => {
+const triggersParser = (triggers) => {
     if (!triggers) return ''
 
     let triggersBodyXML = ''
     triggers.forEach(trigger => {
-        if(!trigger.actions) return
-        
+        if (!trigger.actions) return
+
         let triggerXML = ''
         let actionsBodyXML = ''
 
@@ -37,23 +37,23 @@ const triggersParser = (triggers, tabs) => {
                 attrs += ` ${[attr]}="${xmlEncode(action.value[attr])}"`
             }
             actionsBodyXML += (
-                `${tabs+'\t\t\t'}<action type="${action.type}">\n` +
-                    `${tabs+'\t\t\t\t'}<value${attrs} />\n` +
-                `${tabs+'\t\t\t'}</action>\n`
+                `<action type="${action.type}">` +
+                `<value${attrs} />` +
+                `</action>`
             )
         })
 
         let actionsXML = ''
         if (actionsBodyXML !== '') {
             actionsXML = (
-                `${tabs+'\t\t'}<actions>\n` +
-                    actionsBodyXML +
-                `${tabs+'\t\t'}</actions>\n`
+                `<actions>` +
+                actionsBodyXML +
+                `</actions>`
             )
             triggerXML = (
-                `${tabs+'\t'}<trigger type="${xmlEncode(trigger.type)}">\n` +
-                    actionsXML +
-                `${tabs+'\t'}</trigger>\n`
+                `<trigger type="${xmlEncode(trigger.type)}">` +
+                actionsXML +
+                `</trigger>`
             )
         }
 
@@ -62,7 +62,7 @@ const triggersParser = (triggers, tabs) => {
 
     const triggersXML =
         triggersBodyXML !== '' ?
-        `${tabs}<triggers>\n` + triggersBodyXML + `${tabs+'\t'}</triggers>\n` :
+        `<triggers>` + triggersBodyXML + `</triggers>` :
         ''
 
     return triggersXML

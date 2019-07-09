@@ -1,12 +1,12 @@
 const xmlEncode = require('../xmlEncode')
 
-const breakNodeParser = (node, id, tabs) => {
+const breakNodeParser = (node, id) => {
     let attrs = ''
     for (const attr in node.content) {
         attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
     }
 
-    return `${tabs}<hr${attrs} />\n`
+    return `<hr${attrs} />`
 }
 
 module.exports = breakNodeParser

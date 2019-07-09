@@ -1,8 +1,8 @@
-const mcFeedbackNodeParser = (node, id, tabs, childrenParser) => {
+const mcFeedbackNodeParser = (node, id, childrenParser) => {
     return (
-        `${tabs}<MCFeedback${id}>\n` +
-            childrenParser(node.children, tabs + '\t') +
-        `${tabs}</MCFeedback>\n`
+        `<MCFeedback${id}>` +
+        childrenParser(node.children) +
+        `</MCFeedback>`
     )
 }
 

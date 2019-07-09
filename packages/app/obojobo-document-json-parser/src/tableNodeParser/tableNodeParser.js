@@ -1,16 +1,16 @@
 const textGroupParser = require('../textGroupParser')
 
-const tableNodeParser = (node, id, tabs) => {
+const tableNodeParser = (node, id) => {
     const header = node.content.header ? true : false
     const numRows = node.content.textGroup.numRows
     const numCols = node.content.textGroup.numCols
 
-    const textGroupXML = textGroupParser(node.content.textGroup.textGroup, tabs + '\t');
+    const textGroupXML = textGroupParser(node.content.textGroup.textGroup);
 
     return (
-        `${tabs}<Table numRows="${numRows}" numCols="${numCols}" header="${header}"${id}>\n` +
+        `<Table numRows="${numRows}" numCols="${numCols}" header="${header}"${id}>` +
             textGroupXML +
-        `${tabs}</Table>\n`
+        `</Table>`
     )
 }
 

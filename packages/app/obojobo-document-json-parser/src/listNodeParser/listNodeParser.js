@@ -1,22 +1,22 @@
 const textGroupParser = require('../textGroupParser')
 const xmlEncode = require('../xmlEncode')
 
-const listNodeParser = (node, id, tabs) => {
-    const listStyles = listStylesParser(node.content.listStyles, tabs + '\t')
-    const textGroupXML = textGroupParser(node.content.textGroup, tabs + '\t')
+const listNodeParser = (node, id) => {
+    const listStyles = listStylesParser(node.content.listStyles)
+    const textGroupXML = textGroupParser(node.content.textGroup)
 
     return (
-        `${tabs}<List${id}>\n` +
-            listStyles +
-            textGroupXML +
-        `${tabs}</List>\n`
+        `<List${id}>` +
+        listStyles +
+        textGroupXML +
+        `</List>`
     )
 }
 
-const listStylesParser = (listStyles, tabs) => {
+const listStylesParser = (listStyles) => {
     if (!listStyles) return ''
 
-    const typeXML = `${tabs+'\t'}<type>${listStyles.type}</type>\n`
+    const typeXML = `<type>${listStyles.type}</type>`
     let intentsXML = '';
     if (Array.isArray(listStyles.indents)) {
         listStyles.indents.forEach(indent => {
@@ -24,7 +24,7 @@ const listStylesParser = (listStyles, tabs) => {
             for (const attr in indent) {
                 attrs += ` ${[attr]}="${xmlEncode(indent[attr])}"`
             }
-            intentsXML += `${tabs+'\t\t'}<indent${attrs} />\n`
+            intentsXML += `<indent${attrs} />`
         })
     } else {
         for (const intent in listStyles.indents) {
@@ -33,21 +33,21 @@ const listStylesParser = (listStyles, tabs) => {
             for (const attr in listStyles.indents[intent]) {
                 attrs += ` ${[attr]}="${xmlEncode(listStyles.indents[intent][attr])}"`
             }
-            intentsXML += `${tabs+'\t\t'}<indent${attrs} />\n`
+            intentsXML += `<indent${attrs} />`
         }
     }
 
     intentsXML = (
-        `${tabs+'\t'}<indents>\n` +
-            intentsXML +
-        `${tabs+'\t'}</indents>\n`
+        `<indents>` +
+        intentsXML +
+        `</indents>`
     )
 
     return (
-        `${tabs}<listStyles>\n` +
-            typeXML +
-            intentsXML +
-        `${tabs}</listStyles>\n`
+        `<listStyles>` +
+        typeXML +
+        intentsXML +
+        `</listStyles>`
     )
 
 }

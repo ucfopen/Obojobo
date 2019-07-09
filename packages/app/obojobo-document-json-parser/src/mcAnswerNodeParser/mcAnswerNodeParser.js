@@ -1,9 +1,9 @@
-const mcAnswerNodeParser = (node, id, tabs, childrenParser) => {
+const mcAnswerNodeParser = (node, id, childrenParser) => {
 
     return (
-        `${tabs}<MCAnswer${id}>\n` +
-            childrenParser(node.children, tabs + '\t') +
-        `${tabs}</MCAnswer>\n`
+        `<MCAnswer${id}>` +
+        childrenParser(node.children) +
+        `</MCAnswer>`
     )
 }
 

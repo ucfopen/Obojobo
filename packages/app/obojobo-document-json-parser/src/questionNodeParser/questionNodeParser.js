@@ -1,20 +1,20 @@
-const questionNodeParser = (node, id, tabs, childrenParser) => {
+const questionNodeParser = (node, id, childrenParser) => {
     let solution = node.content.solution,
         solutionXML = ''
-        
+
     if (solution) {
         solutionXML = (
-            `${tabs+'\t'}<solution>\n` +
-                childrenParser([solution], tabs + '\t\t') +
-            `${tabs+'\t'}</solution>\n`
+            `<solution>` +
+            childrenParser([solution]) +
+            `</solution>`
         )
     }
 
     return (
-        `${tabs}<Question${id}>\n` +
-            solutionXML +
-            childrenParser(node.children, tabs + '\t') +
-        `${tabs}</Question>\n`
+        `<Question${id}>` +
+        solutionXML +
+        childrenParser(node.children) +
+        `</Question>`
     )
 }
 

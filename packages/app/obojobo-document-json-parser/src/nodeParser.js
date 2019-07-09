@@ -47,7 +47,7 @@ const parsers = {
     "ObojoboDraft.Chunks.YouTube": youTubeNodeParser
 }
 
-const childrenParser = (children, tabs) => {
+const childrenParser = (children) => {
     if (!children || !Array.isArray(children)) {
         return ''
     }
@@ -59,7 +59,7 @@ const childrenParser = (children, tabs) => {
             const id = (child.id) ?
                 ` id="${child.id}"` :
                 ''
-            result += parser(child, id, tabs, childrenParser)
+            result += parser(child, id, childrenParser)
         }
     })
 
@@ -76,7 +76,7 @@ const nodeParser = node => {
         const id = (node.id) ?
             ` id="${node.id}"` :
             ''
-        result += parser(node, id, '\t', childrenParser)
+        result += parser(node, id, childrenParser)
     }
 
     return result

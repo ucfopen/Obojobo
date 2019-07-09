@@ -1,6 +1,6 @@
 const xmlEncode = require('../xmlEncode')
 
-const pageNodeParser = (node, id, tabs, childrenParser) => {
+const pageNodeParser = (node, id, childrenParser) => {
     let attrs = '';
     for (const attr in node.content) {
         attrs += (
@@ -11,9 +11,9 @@ const pageNodeParser = (node, id, tabs, childrenParser) => {
     }
 
     return (
-        `${tabs}<Page${attrs}${id}>\n` +
-            childrenParser(node.children, tabs + '\t') +
-        `${tabs}</Page>\n`
+        `<Page${attrs}${id}>` +
+        childrenParser(node.children) +
+        `</Page>`
     )
 }
 

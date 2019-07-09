@@ -1,9 +1,9 @@
 const xmlEncode = require('../xmlEncode')
 
-const youTubeNodeParser = (node, id, tabs) => {
+const youTubeNodeParser = (node, id) => {
     const videoId = xmlEncode(node.content.videoId)
-    
-    return `${tabs}<YouTube videoId="${videoId}"${id}/>\n`
+
+    return `<YouTube videoId="${videoId}"${id}/>`
 }
 
 module.exports = youTubeNodeParser

@@ -1,8 +1,8 @@
-const contentNodeParser = (node, id, tabs, childrenParser) => {
+const contentNodeParser = (node, id, childrenParser) => {
     return (
-        `${tabs}<Content${id}>\n` +
-            childrenParser(node.children, tabs + '\t') +
-        `${tabs}</Content>\n`
+        `<Content${id}>` +
+        childrenParser(node.children) +
+        `</Content>`
     )
 }
 

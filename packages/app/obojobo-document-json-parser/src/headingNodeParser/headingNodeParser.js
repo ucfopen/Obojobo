@@ -1,13 +1,13 @@
 const textGroupParser = require('../textGroupParser')
 
-const headingNodeParser = (node, id, tabs) => {
+const headingNodeParser = (node, id) => {
     const headingLevel = node.content.headingLevel
-    const textGroupXML = textGroupParser(node.content.textGroup, tabs + '\t')
+    const textGroupXML = textGroupParser(node.content.textGroup)
 
     return (
-        `${tabs}<Heading headingLevel="${headingLevel}"${id}>\n` +
-            textGroupXML +
-        `${tabs}</Heading>\n`
+        `<Heading headingLevel="${headingLevel}"${id}>` +
+        textGroupXML +
+        `</Heading>`
     )
 }
 

@@ -1,13 +1,13 @@
 const textGroupParser = require('../textGroupParser')
 
-const codeNodeParser = (node, id, tabs) => {
+const codeNodeParser = (node, id) => {
 
-    const textGroupXML = textGroupParser(node.content.textGroup, tabs + '\t')
+    const textGroupXML = textGroupParser(node.content.textGroup)
 
     return (
-        `${tabs}<Code${id}>\n` +
-            textGroupXML +
-        `${tabs}</Code>\n`
+        `<Code${id}>` +
+        textGroupXML +
+        `</Code>`
     )
 }
 

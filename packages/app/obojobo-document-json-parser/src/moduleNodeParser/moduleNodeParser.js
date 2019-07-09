@@ -1,6 +1,6 @@
 const xmlEncode = require('../xmlEncode')
 
-const moduleNodeParser = (node, id, tabs, childrenParser) => {
+const moduleNodeParser = (node, id, childrenParser) => {
     let attrs = '';
     for (const attr in node.content) {
         attrs += (
@@ -11,9 +11,9 @@ const moduleNodeParser = (node, id, tabs, childrenParser) => {
     }
 
     return (
-        `${tabs}<Module${attrs}${id}>\n` +
-            childrenParser(node["children"], tabs + '\t') +
-        `${tabs}</Module>\n`
+        `<Module${attrs}${id}>` +
+        childrenParser(node.children) +
+        `</Module>`
     )
 }
 
