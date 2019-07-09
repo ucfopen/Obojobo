@@ -9,7 +9,7 @@ const nodes = filterFileType(fs.readdirSync(`${__dirname}/obo_node_json/`))
 describe('JSON to XML Test', () => {
 	for (let node of nodes) {
 		it(`Converts ${node}json to ${node}xml`, () => {
-			const json = fs.readFileSync(`${__dirname}/obo_node_json/${node}json`)
+			const json = require(`${__dirname}/obo_node_json/${node}json`)
 			expect(jsonToXmlParser(json)).toMatchSnapshot()
 		})
 	}

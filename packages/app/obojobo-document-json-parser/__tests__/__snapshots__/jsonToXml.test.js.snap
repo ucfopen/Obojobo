@@ -3,119 +3,466 @@
 exports[`JSON to XML Test Converts assessment.json to assessment.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Assessment title=\\"Assessment\\" review=\\"always\\" rubric=\\"[object Object]\\" attempts=\\"5\\" id=\\"my-assessment\\">
+		<Page id=\\"8ae3ead3-6c77-4d6e-88f3-d6bb18d02814\\">
+			<Heading headingLevel=\\"1\\" id=\\"3be6298c-f5c1-4a15-b69f-6cb479e2bd3b\\">
+				<textGroup>
+					<t align=\\"center\\">Assessment</t>
+				</textGroup>
+			</Heading>
+			<Text id=\\"6d74518b-2807-4b36-8f03-7f1e5809babe\\">
+				<textGroup>
+					<t align=\\"left\\">An assessment works a little differently from a regular page.</t>
+				</textGroup>
+			</Text>
+			<Heading headingLevel=\\"2\\" id=\\"d0aca91f-7a5f-4870-b8e2-19f8624ddd85\\">
+				<textGroup>
+					<t>Assessment Nodes</t>
+				</textGroup>
+			</Heading>
+			<Text id=\\"a087afe0-d4b4-4000-818a-7df5c128fe3e\\">
+				<textGroup>
+					<t align=\\"left\\">The assessment consists of four required nodes (Assessment Settings, Launch Page, Question Bank, and Score Actions) and a single optional node (Rubric). </t>
+				</textGroup>
+			</Text>
+			<Heading headingLevel=\\"3\\" id=\\"019d77a8-46e9-430f-b8ed-6463959ff204\\">
+				<textGroup>
+					<t>Assessment Settings</t>
+				</textGroup>
+			</Heading>
+			<Text id=\\"a7b8b08b-25ca-408c-b5a1-2f9521ef04aa\\">
+				<textGroup>
+					<t align=\\"left\\">The first required node is the assessment settings, which holds the basic parameters for the assessment. This is displayed in a box at the top of the page, and it lists the number of attempts and the review type.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"c54048b5-2920-41c2-8dc7-5470395b67ce\\">
+				<textGroup>
+					<t align=\\"left\\">The number of attempts controls how many times the student can take this assessment. Enter a number to limit the number of attempts, or type u<code>nlimited </code>to allow the student to try as many times as they want.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"63b4fe5e-e0d7-4909-9819-55bcbde08267\\">
+				<textGroup>
+					<t>The review type describes how answers will be displayed after an attempt has ended.</t>
+					<t>A value of <code>never</code> means that after every attempt, the student will only be able to see if an answered question is incorrect.</t>
+					<t>A value of <code>always</code> means that the student will see both incorrect responses and the correct answers after every attempt.</t>
+					<t>A value of no-attempts-remaining means that the student will see whether or not they got a question wrong after every attempt. Correct answers are shown after the final attempt.</t>
+				</textGroup>
+			</Text>
+			<Heading headingLevel=\\"3\\" id=\\"55ec109c-9486-43c9-affe-6e03abd0c205\\">
+				<textGroup>
+					<t>Launch Page</t>
+				</textGroup>
+			</Heading>
+			<Text id=\\"972fa096-01ea-4f9a-95e6-48853b2071f6\\">
+				<textGroup>
+					<t indent=\\"0\\">The second required node is the launch page. This is the page that a student sees the first time they navigate to an assessment.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"3f409a67-c623-47c6-9ad1-1d8e4318441a\\">
+				<textGroup>
+					<t indent=\\"0\\">Somewhere on the launch page, there should be an Action Button that executes the <code>assessment:attemptStart</code> action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:</t>
+				</textGroup>
+			</Text>
+			<ActionButton actions=\\"[object Object]\\" id=\\"6f464ec8-f759-456e-a184-7f4c6a3d4a9e\\">
+				<textGroup>
+					<t>Start Assessment</t>
+				</textGroup>
+				<triggers>
+					<trigger type=\\"onClick\\">
+						<actions>
+							<action type=\\"assessment:startAttempt\\">
+								<value id=\\"my-assessment\\"/>
+							</action>
+						</actions>
+					</trigger>
+				</triggers>
+			</ActionButton>
+			<Heading headingLevel=\\"3\\" id=\\"a5b046e4-3b21-47d8-ae08-01753202ee3b\\">
+				<textGroup>
+					<t>Question Bank</t>
+				</textGroup>
+			</Heading>
+			<Text id=\\"bdab686d-2d47-4488-bb80-276dbd6896ab\\">
+				<textGroup>
+					<t align=\\"left\\">The third required node is the Question Bank. This Question Bank functions the same way as a Question Bank within a page.</t>
+				</textGroup>
+			</Text>
+			<Heading headingLevel=\\"3\\" id=\\"26110943-45fa-45d8-822e-69d6769b9d3c\\">
+				<textGroup>
+					<t>Score Actions</t>
+				</textGroup>
+			</Heading>
+			<Text id=\\"634ad8af-740a-4afe-81a4-77124527c159\\">
+				<textGroup>
+					<t indent=\\"0\\">The fourth required node is the list of Score Actions. Score Actions are the pages that are displayed at the top of a review after a student has completed an attempt. Different Score Actions can be displayed for different score ranges.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"35f63b6e-8c05-45d2-91e1-f33c7ece0901\\">
+				<textGroup>
+					<t indent=\\"0\\">To describe a score range, use square brackets to denote an inclusive range, so that <code>[0,100]</code> would match all scores from 0 to 100, including 0 and 100. Use parenthesis to denote an exclusive range, such that (<code>0, 100)</code> would match all scores between 0 and 100, and would not match 0 or 100. Square brackets and parenthesis can also be mixed and matched, allowing for ranges such as [0<code>,100), </code>which matches all scores except 100, and (0<code>,100], </code>which matches all scores except 0. Any two numbers can be placed between the brackets and parenthesis, and the numbers should be separated by a comma.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"eff2f957-3a24-4616-9014-5367a9a9886b\\">
+				<textGroup>
+					<t indent=\\"0\\">In most cases, Score Actions should contain an Action Button that executes the assessment:attemptStart action, just like the Launch Page. This will allow the students to complete multiple attempts.</t>
+				</textGroup>
+			</Text>
+			<Heading headingLevel=\\"3\\" id=\\"983e5ded-9e03-4bf8-810e-233a1378fdab\\">
+				<textGroup>
+					<t>Rubric</t>
+				</textGroup>
+			</Heading>
+			<Text id=\\"3d98f19d-0b2b-4ad0-b413-53a703434fa2\\">
+				<textGroup>
+					<t indent=\\"0\\">The fifth node in the assessment is an optional Rubric. The Rubric allows you to set custom parameters about passing and failing scores for the assessment.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"04554faa-bcfa-4a36-aa30-782fbab7e0a3\\">
+				<textGroup>
+					<t indent=\\"0\\">When processing the student's score, the assessment first determines their <i>raw score</i> by dividing the number of questions correct by the total number of questions and then multiplying by 100. </t>
+					<t indent=\\"0\\">(<latex>(correct / questions) * 100 = raw score</latex>)</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"5451c527-db4c-43ab-91dc-078a77739c18\\">
+				<textGroup>
+					<t>The Rubric then checks the raw score. If the raw score is greater than or equal to the <i>Passing Score</i>, the rubric declares the student as passed.</t>
+					<t>If the student takes all of their allowed attempts and does not achieve at least one <i>Passing Score</i>, then the <i>Unable to Pass Result</i> will be sent to the grade book.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"367a23f3-a67f-425a-87f2-a9eae6a7b6f0\\">
+				<textGroup>
+					<t indent=\\"0\\">The Rubric also allows you to set up to 20 mods that change the student's score. These are bonus points that are added to a <i>Passed Result </i>after the student achieves a <i>Passing Score.</i> The Attempt Condition describes which attempts could receive the mod, either as a range of values (written similarly to the range of scores in <b>Score Actions</b>)<b>,</b> a single value, or as the variable <b>$l</b><b><code>ast_attempt. </code></b>The reward describes how many points to add to the Pas<i>sed Result, w</i>ith positive numbers increasing the score (up to a maximum of 100) and negative number decreasing the score.</t>
+				</textGroup>
+			</Text>
+			<Text id=\\"c39ac706-f041-42e0-b0b4-6414fb69aed0\\">
+				<textGroup>
+					<t indent=\\"0\\">In this assessment, the Rubric lists a 75% as the <i>Passing Score</i> and sets the <i>Passed Result</i> and <i>Failed Result</i> so that students who make at least 75% will receive a 100%, but students who do not make at least 75% will receive a 0%. Students who take all three attempts and never make at least a 75% will receive a score of 50%. There are also mods that show all of the possible options for ranges and rewards.</t>
+				</textGroup>
+			</Text>
+		</Page>
+		<QuestionBank choose=\\"2\\" select=\\"sequential\\" id=\\"28caa8c1-fc48-4c7b-a69b-39724eea964a\\">
+			<Question id=\\"8383da46-ac02-461f-a0a8-002d07483d2f\\">
+				<Text id=\\"97c23788-8ae7-4c28-9c21-c440de2fa878\\">
+					<textGroup>
+						<t indent=\\"0\\">Here is an example question inside of an Assessment's question bank.</t>
+					</textGroup>
+				</Text>
+				<MCAssessment shuffle=\\"true\\" responseType=\\"Pick One\\" id=\\"d9a152e4-503c-42fb-a3bb-d6553b2ea941\\">
+					<MCChoice score=\\"0\\" id=\\"bf5ea8a1-a228-4464-b12f-7f7bc3e3e1a3\\">
+						<MCAnswer id=\\"21b63e78-7f03-4288-82eb-a7064a4fd392\\">
+							<Text id=\\"949ac5a2-e826-47b4-829e-c398ae8917a6\\">
+								<textGroup>
+									<t indent=\\"0\\">Incorrect answer</t>
+								</textGroup>
+							</Text>
+						</MCAnswer>
+					</MCChoice>
+					<MCChoice score=\\"100\\" id=\\"bcc7fcc7-fbdb-4ffb-9abd-cda528c22c68\\">
+						<MCAnswer id=\\"6d1b4a2b-8a2e-46b5-ba43-5d8ebcb76ac9\\">
+							<Text id=\\"d200c0b9-db2f-4537-a054-e8ef01103519\\">
+								<textGroup>
+									<t indent=\\"0\\">Correct answer</t>
+								</textGroup>
+							</Text>
+						</MCAnswer>
+					</MCChoice>
+				</MCAssessment>
+			</Question>
+		</QuestionBank>
+		<scoreActions>
+			<scoreAction for=\\"[0,100]\\">
+				<Page id=\\"37bf9e1b-bf1c-4a5c-8feb-8af18af8b580\\">
+					<Heading headingLevel=\\"1\\" id=\\"60aaace6-c8b8-44db-90f2-6573075be8cc\\">
+						<textGroup>
+							<t align=\\"center\\">How did you do?</t>
+						</textGroup>
+					</Heading>
+					<Text id=\\"54e5ba7f-5062-4fca-a458-867b1f7814ef\\">
+						<textGroup>
+							<t align=\\"center\\">You have {{assessment:attemptsRemaining}} attempts remaining.</t>
+						</textGroup>
+					</Text>
+					<ActionButton actions=\\"[object Object]\\" id=\\"2e1caa8e-560f-4e20-bc45-0bc0586476b2\\">
+						<textGroup>
+							<t>Retry Assessment</t>
+						</textGroup>
+						<triggers>
+							<trigger type=\\"onClick\\">
+								<actions>
+									<action type=\\"assessment:startAttempt\\">
+										<value id=\\"my-assessment\\"/>
+									</action>
+								</actions>
+							</trigger>
+						</triggers>
+					</ActionButton>
+				</Page>
+			</scoreAction>
+		</scoreActions>
+		<rubric type=\\"pass-fail\\" failedResult=\\"0\\" passedResult=\\"100\\" unableToPassResult=\\"50\\" passingAttemptScore=\\"75\\">
+			<mods>
+				<mod reward=\\"1\\" attemptCondition=\\"[1,$last_attempt]\\"/>
+				<mod reward=\\"2\\" attemptCondition=\\"(1,$last_attempt)\\"/>
+				<mod reward=\\"-3\\" attemptCondition=\\"(1,3]\\"/>
+				<mod reward=\\"4\\" attemptCondition=\\"[1,2)\\"/>
+				<mod reward=\\"-5\\" attemptCondition=\\"1\\"/>
+				<mod reward=\\"-6\\" attemptCondition=\\"$last_attempt\\"/>
+			</mods>
+		</rubric>
+	</Assessment>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts break.json to break.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<hr width=\\"normal\\"/>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts code.json to code.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Code id=\\"1fbeedbe-a92d-4716-a614-9e6ce06c6804\\">
+		<textGroup>
+			<t indent=\\"0\\">
+				<i>// Sample code</i>
+			</t>
+			<t indent=\\"0\\">function main() {</t>
+			<t indent=\\"1\\">print(\\"Hello world\\");</t>
+			<t indent=\\"0\\">}</t>
+		</textGroup>
+	</Code>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts content.json to content.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Content id=\\"40a16682-bcd9-44f0-aeb6-23d4cb143676\\">
+	</Content>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts figure.json to figure.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Figure size=\\"small\\" id=\\"74ea47e7-701e-4aba-9b4f-e2498a2efb2d\\">
+		<textGroup>
+			<t>
+			</t>
+		</textGroup>
+	</Figure>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts heading.json to heading.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Heading headingLevel=\\"1\\" id=\\"cb446cb0-1528-45a8-8f67-f344a1d044a5\\">
+		<textGroup>
+			<t align=\\"left\\">Welcome to the Obojobo Visual Editor</t>
+		</textGroup>
+	</Heading>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts iframe.json to iframe.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<IFrame fit=\\"scale\\" src=\\"https://www.ucf.edu/\\" type=\\"media\\" title=\\"UCF Website\\" border=\\"false\\" autoload=\\"false\\" controls=\\"reload\\" initialZoom=\\"1\\" id=\\"43010777-b961-4ebd-b906-47f374be1d81\\"/>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts list.json to list.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<List id=\\"855c7a80-9ac8-4a5f-aa22-8305b87453d2\\">
+		<listStyles>
+			<type>unordered</type>
+			<indents>
+				<indent type=\\"unordered\\" bulletStyle=\\"disc\\"/>
+			</indents>
+		</listStyles>
+		<textGroup>
+			<t indent=\\"0\\">One Item</t>
+			<t indent=\\"0\\">Another Item</t>
+			<t indent=\\"0\\">A Third Item</t>
+		</textGroup>
+	</List>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts mathequation.json to mathequation.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<MathEquation alt=\\"x sub one equals x sub zero plus delta x\\" label=\\"1.1\\" latex=\\"x_1 = x_0 + \\\\Delta x\\" id=\\"66ae62f9-7cde-4a7f-9164-9245e9be1b1e\\"/>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts mcanswer.json to mcanswer.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<MCAnswer id=\\"6d1b4a2b-8a2e-46b5-ba43-5d8ebcb76ac9\\">
+		<Text id=\\"d200c0b9-db2f-4537-a054-e8ef01103519\\">
+			<textGroup>
+				<t indent=\\"0\\">Correct answer</t>
+			</textGroup>
+		</Text>
+	</MCAnswer>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts mcassessment.json to mcassessment.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<MCAssessment shuffle=\\"true\\" responseType=\\"Pick One\\" id=\\"802ec69f-2ba2-4dad-9ba4-06372a550ddb\\">
+		<MCChoice score=\\"100\\" id=\\"98f100ac-97d5-4c62-8e4b-5346e1ae0d2d\\">
+			<MCAnswer id=\\"40aacda7-f6a7-4a7c-aabc-6b4e5bed8c31\\">
+				<Text id=\\"fedc62b5-31f5-4b89-abfd-f6604208837c\\">
+					<textGroup>
+						<t indent=\\"0\\">An answer</t>
+					</textGroup>
+				</Text>
+			</MCAnswer>
+		</MCChoice>
+	</MCAssessment>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts mcchoice.json to mcchoice.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<MCChoice score=\\"100\\" id=\\"98f100ac-97d5-4c62-8e4b-5346e1ae0d2d\\">
+		<MCAnswer id=\\"40aacda7-f6a7-4a7c-aabc-6b4e5bed8c31\\">
+			<Text id=\\"fedc62b5-31f5-4b89-abfd-f6604208837c\\">
+				<textGroup>
+					<t indent=\\"0\\">An answer</t>
+				</textGroup>
+			</Text>
+		</MCAnswer>
+	</MCChoice>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts mcfeedback.json to mcfeedback.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<MCFeedback id=\\"a3c4c2cf-c2f3-4e98-8afb-02a736da72ca\\">
+		<Text id=\\"c4eaf302-d542-4ca8-b29b-60fe827a117d\\">
+			<textGroup>
+				<t indent=\\"0\\">Here is some detailed information about the incorrect answer</t>
+			</textGroup>
+		</Text>
+	</MCFeedback>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts module.json to module.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Module title=\\"Obojobo Visual Editor Tutorial\\" id=\\"9c7e4d32-2e5b-432e-83dc-dbbb923df3b8\\">
+	</Module>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts page.json to page.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Page title=\\"Welcome to the Obojobo Visual Editor\\" id=\\"b64fdc8e-48c1-43c1-9644-747519ad14ef\\">
+	</Page>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts question.json to question.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Question id=\\"c2eee86c-9c6a-480e-85c4-99a38c8e3ec0\\">
+		<Heading headingLevel=\\"1\\" id=\\"f20a3dfd-8a98-4e49-a24e-74b1a03214af\\">
+			<textGroup>
+				<t>A Simple Question</t>
+			</textGroup>
+		</Heading>
+		<Text id=\\"d5447fb0-cd8d-4449-9cbf-35a92abeea2e\\">
+			<textGroup>
+				<t>How much wood could a woodchuck chuck if a woodchuck could chuck wood?</t>
+			</textGroup>
+		</Text>
+		<MCAssessment shuffle=\\"true\\" responseType=\\"Pick One\\" id=\\"802ec69f-2ba2-4dad-9ba4-06372a550ddb\\">
+			<MCChoice score=\\"100\\" id=\\"98f100ac-97d5-4c62-8e4b-5346e1ae0d2d\\">
+				<MCAnswer id=\\"40aacda7-f6a7-4a7c-aabc-6b4e5bed8c31\\">
+					<Text id=\\"fedc62b5-31f5-4b89-abfd-f6604208837c\\">
+						<textGroup>
+							<t indent=\\"0\\">An answer</t>
+						</textGroup>
+					</Text>
+				</MCAnswer>
+			</MCChoice>
+		</MCAssessment>
+	</Question>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts questionbank.json to questionbank.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<QuestionBank choose=\\"2\\" select=\\"random\\" id=\\"292faef6-debd-4b7e-b532-7f617551d04e\\">
+		<Question id=\\"0175d297-fc23-4084-97b8-e65dacf535e9\\">
+			<Text id=\\"a2073f03-6b1a-41b7-836e-fb401b3042a9\\">
+				<textGroup>
+					<t indent=\\"0\\">A sample question</t>
+				</textGroup>
+			</Text>
+			<MCAssessment shuffle=\\"true\\" responseType=\\"Pick One\\" id=\\"c5f8fba3-3725-4c0d-ad02-fb85000a39b5\\">
+				<MCChoice score=\\"100\\" id=\\"181f3f66-9ce0-4cc1-bc21-fcf4cf6e9121\\">
+					<MCAnswer id=\\"7bd7191b-c804-4394-8883-4c08cd80afab\\">
+						<Text id=\\"cf4720a8-875d-4756-97e2-8fc7632b5f5e\\">
+							<textGroup>
+								<t indent=\\"0\\">
+								</t>
+							</textGroup>
+						</Text>
+					</MCAnswer>
+				</MCChoice>
+			</MCAssessment>
+		</Question>
+	</QuestionBank>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts table.json to table.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Table numRows=\\"3\\" numCols=\\"3\\" header=\\"true\\" id=\\"640648f0-26d4-4f7f-a92a-e0c1f75141a6\\">
+		<textGroup>
+			<t>Header 1</t>
+			<t>Header 2</t>
+			<t>Header 3</t>
+			<t>Item 1</t>
+			<t>Item 2</t>
+			<t>Item 3</t>
+			<t>Item 4</t>
+			<t>Item 5</t>
+			<t>Item 6</t>
+		</textGroup>
+	</Table>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts text.json to text.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<Text id=\\"6b0dc582-4758-47e2-af17-1c920d59d255\\">
+		<textGroup>
+			<t align=\\"0\\" indent=\\"0\\">The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.</t>
+		</textGroup>
+	</Text>
 </ObojoboDraftDoc>"
 `;
 
 exports[`JSON to XML Test Converts youtube.json to youtube.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
+	<YouTube videoId=\\"gJ390e5sjHk\\" id=\\"6c869d71-71b7-456b-b0f5-aafa1b17a450\\"/>
 </ObojoboDraftDoc>"
 `;
