@@ -13,9 +13,15 @@ const URL_UPDATE_DELAY = 750
 class ImageProperties extends React.Component {
 	constructor(props) {
 		super(props)
-
+		const defaultState = {
+			url: '',
+			alt: '',
+			size: 100,
+			height: 100,
+			width: 100
+		}
 		this.inputRef = React.createRef()
-		this.state = this.props.content
+		this.state = {...defaultState, ...props.content}
 		if (!isUrlUUID(this.props.content.url)) {
 			this.state.urlInputText = this.props.content.url
 		}

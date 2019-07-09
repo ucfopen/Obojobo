@@ -151,4 +151,20 @@ describe('Image Properties Modal', () => {
 
 		expect(input.html().includes(`value="newHeight"`)).toBe(true)
 	})
+
+	test('ImageProperties custom height handles null values', () => {
+		const component = mount(<ImageProperties content={{ size: 'custom' }} height={null} width={null} onConfirm={jest.fn} />)
+
+		const input = component.find('#obojobo-draft--chunks--figure--custom-height')
+		input.simulate('change', { target: { value: null } })
+		expect(input.html().includes(`value=""`)).toBe(true)
+	})
+
+	test('ImageProperties custom width handles null values', () => {
+		const component = mount(<ImageProperties content={{ size: 'custom' }} height={null} width={null} onConfirm={jest.fn} />)
+
+		const input = component.find('#obojobo-draft--chunks--figure--custom-width')
+		input.simulate('change', { target: { value: null } })
+		expect(input.html().includes(`value=""`)).toBe(true)
+	})
 })

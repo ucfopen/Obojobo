@@ -2,12 +2,18 @@
 
 const originalFetch = global.fetch
 const originalToISOString = Date.prototype.toISOString
-
 const APIUtil = require('../../../src/scripts/viewer/util/api-util').default
+import mockConsole from 'jest-mock-console';
+let restoreConsole
 
 describe('apiutil', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole();
 	})
 
 	beforeAll(() => {
@@ -140,8 +146,6 @@ describe('apiutil', () => {
 	test('postEvent doesnt send a postmessage when status is error', () => {
 		expect.assertions(3)
 
-		const spy = jest.spyOn(console, 'error').mockImplementation(jest.fn)
-
 		fetch.mockResolvedValueOnce({
 			json: () => ({
 				status: 'error',
@@ -157,9 +161,8 @@ describe('apiutil', () => {
 		}).then(() => {
 			expect(fetch).toHaveBeenCalled()
 			expect(window.parent.postMessage).not.toHaveBeenCalled()
-			expect(spy).toHaveBeenCalledWith('mockValue')
-
-			spy.mockRestore()
+			// eslint-disable-next-line no-console
+			expect(console.error).toHaveBeenCalledWith('mockValue')
 		})
 	})
 

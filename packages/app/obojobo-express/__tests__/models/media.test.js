@@ -60,7 +60,7 @@ describe('media model', () => {
 		path: 'tmp/media/0d3fd1ddb4838ea8fc2a651804428f3a',
 		size: 75099
 	}
-	const mockFileBinaryData = new Buffer('testBinaryInformation')
+	const mockFileBinaryData = Buffer.from('testBinaryInformation')
 	const mediaModelResize = MediaModel.resize
 	const mediaModelParseCustom = MediaModel.parseCustomImageDimensions
 	const mediaModelCacheImage = MediaModel.saveImageAtNewSize
@@ -369,7 +369,7 @@ describe('media model', () => {
 			binary_id: 'BINARY_UUID',
 			dimensions: 'small'
 		}
-		const mockImageBinary = new Buffer('image')
+		const mockImageBinary = Buffer.from('image')
 		const mockImageDimensions = 'small'
 		const mockOriginalImageId = 'SOME_UUID'
 		const mockResizedBinary = jest.fn()
@@ -688,7 +688,7 @@ describe('media model', () => {
 	})
 
 	test('resize calls sharp.resize correctly when given width only', () => {
-		const mockBuffer = new Buffer('some_image')
+		const mockBuffer = Buffer.from('some_image')
 		const expectedDimensions = {
 			width: 200,
 			height: undefined, //eslint-disable-line no-undefined
@@ -703,7 +703,7 @@ describe('media model', () => {
 	})
 
 	test('resize calls sharp.resize correctly when given height only', () => {
-		const mockBuffer = new Buffer('some_image')
+		const mockBuffer = Buffer.from('some_image')
 		const expectedDimensions = {
 			width: undefined, //eslint-disable-line no-undefined
 			height: 100,
@@ -718,7 +718,7 @@ describe('media model', () => {
 	})
 
 	test('resize calls sharp.resize correctly when given width and height', () => {
-		const mockBuffer = new Buffer('some_image')
+		const mockBuffer = Buffer.from('some_image')
 		const expectedDimensions = { width: 200, height: 100, fit: 'fill' }
 
 		mockSharpResize.mockReturnValueOnce({toBuffer: () => jest.fn()})
@@ -789,8 +789,8 @@ describe('media model', () => {
 			return true
 		})
 
-		const isValidFile = MediaModel.isValidFileType(new Buffer('TestImage'))
-		expect(isSvg).toHaveBeenCalledWith(new Buffer('TestImage'))
+		const isValidFile = MediaModel.isValidFileType(Buffer.from('TestImage'))
+		expect(isSvg).toHaveBeenCalledWith(Buffer.from('TestImage'))
 		expect(isValidFile).toBeTruthy()
 	})
 
