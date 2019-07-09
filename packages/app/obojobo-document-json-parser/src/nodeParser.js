@@ -76,5 +76,4 @@ const nodeParser = node => {
     return result
 }
 
-
 module.exports = nodeParser
