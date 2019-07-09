@@ -13,11 +13,14 @@
   "scripts": {
     "test": "TZ='America/New_York' jest --verbose",
     "test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
-    "convertJsonToXml": "node ./bin/json2xml.js examples/test-object.json > test-object.xml",
+    "convertJsonToXml": "node ./bin/json2xml.js > test-object.xml",
     "lint": "echo 'not implemented'",
     "lint:css": "echo 'not implemented'",
     "lint:js": "echo 'not implemented'"
   },
+  "bin": {
+		"obojobo-document-json-parser": "./bin/json2xml.js"
+	},
   "lint-staged": {
     "**/*.{js,scss}": [
       "prettier --write",
