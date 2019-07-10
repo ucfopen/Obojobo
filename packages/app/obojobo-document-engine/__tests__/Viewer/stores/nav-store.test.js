@@ -12,6 +12,7 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	gotoPath: jest.fn(),
 	goto: jest.fn(),
 	toggle: jest.fn(),
+	redAlert: jest.fn(),
 	getOrderedList: jest.fn(),
 	getNavTargetModel: jest.fn()
 }))

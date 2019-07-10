@@ -159,6 +159,7 @@ export default class ViewerApp extends React.Component {
 				Dispatcher.on('nav:open', this.boundOnDelayResize)
 				Dispatcher.on('nav:close', this.boundOnDelayResize)
 				Dispatcher.on('nav:toggle', this.boundOnDelayResize)
+				Dispatcher.on('nav:redAlert', this.boundOnDelayResize)
 
 				this.setState(
 					{

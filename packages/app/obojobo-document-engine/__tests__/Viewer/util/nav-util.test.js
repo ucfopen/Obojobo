@@ -165,6 +165,13 @@ describe('NavUtil', () => {
 		expect(x).toBe('mockTriggerReturn')
 	})
 
+	test('setRedAlert', () => {
+		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
+		const x = NavUtil.setRedAlert()
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert')
+		expect(x).toBe('mockTriggerReturn')
+	})
+
 	test('openExternalLink', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.openExternalLink('mockUrl')

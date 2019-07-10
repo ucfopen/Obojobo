@@ -1003,10 +1003,10 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('nav:open, nav:close and nav:toggle call onDelayResize', done => {
+	test('nav:open, nav:close, nav:redAlert and nav:toggle call onDelayResize', done => {
 		Dispatcher.on = jest.fn()
 
-		expect.assertions(3)
+		expect.assertions(4)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
@@ -1023,6 +1023,10 @@ describe('ViewerApp', () => {
 			)
 			expect(Dispatcher.on).toHaveBeenCalledWith(
 				'nav:toggle',
+				component.instance().boundOnDelayResize
+			)
+			expect(Dispatcher.on).toHaveBeenCalledWith(
+				'nav:redAlert',
 				component.instance().boundOnDelayResize
 			)
 
