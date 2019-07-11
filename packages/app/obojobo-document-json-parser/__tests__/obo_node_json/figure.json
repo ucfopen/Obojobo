@@ -1,21 +1,19 @@
 {
-	"id": "74ea47e7-701e-4aba-9b4f-e2498a2efb2d",
+	"id": "a34ef066-8463-4164-a3ef-e86a77661cb1",
 	"type": "ObojoboDraft.Chunks.Figure",
 	"content": {
-		"alt": null,
-		"url": null,
-		"size": "small",
-		"width": null,
-		"height": null,
-		"textGroup": [
-			{
-				"data": null,
-				"text": {
-					"value": "",
-					"styleList": []
-				}
+		"alt": "some alt test",
+		"url": "https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png",
+		"size": "custom",
+		"width": "700",
+		"height": "100",
+		"textGroup": [{
+			"data": null,
+			"text": {
+				"value": "An image with a custom size",
+				"styleList": []
 			}
-		]
+		}]
 	},
 	"children": []
 }

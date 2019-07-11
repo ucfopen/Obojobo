@@ -247,10 +247,9 @@ exports[`JSON to XML Test Converts content.json to content.xml 1`] = `
 exports[`JSON to XML Test Converts figure.json to figure.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<Figure size=\\"small\\" id=\\"74ea47e7-701e-4aba-9b4f-e2498a2efb2d\\">
+	<Figure alt=\\"some alt test\\" url=\\"https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png\\" size=\\"custom\\" width=\\"700\\" height=\\"100\\" id=\\"a34ef066-8463-4164-a3ef-e86a77661cb1\\">
 		<textGroup>
-			<t>
-			</t>
+			<t>An image with a custom size</t>
 		</textGroup>
 	</Figure>
 </ObojoboDraftDoc>"
