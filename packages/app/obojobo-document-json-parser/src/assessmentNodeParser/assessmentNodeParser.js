@@ -5,7 +5,7 @@ const assessmentNodeParser = (node, childrenParser) => {
 
     let attrs = ''
     for (const attr in node.content) {
-        if ([attr] == "triggers" || [attr] == "scoreActions") continue;
+        if ([attr] == "triggers" || [attr] == "scoreActions" || [attr] == "rubric") continue;
         attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
     }
 

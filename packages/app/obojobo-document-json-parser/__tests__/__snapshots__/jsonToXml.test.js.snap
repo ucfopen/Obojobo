@@ -3,7 +3,7 @@
 exports[`JSON to XML Test Converts assessment.json to assessment.xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
-	<Assessment title=\\"Assessment\\" review=\\"always\\" rubric=\\"[object Object]\\" attempts=\\"5\\" id=\\"my-assessment\\">
+	<Assessment title=\\"Assessment\\" review=\\"always\\" attempts=\\"5\\" id=\\"my-assessment\\">
 		<Page id=\\"8ae3ead3-6c77-4d6e-88f3-d6bb18d02814\\">
 			<Heading headingLevel=\\"1\\" id=\\"3be6298c-f5c1-4a15-b69f-6cb479e2bd3b\\">
 				<textGroup>
@@ -63,7 +63,7 @@ exports[`JSON to XML Test Converts assessment.json to assessment.xml 1`] = `
 					<t indent=\\"0\\">Somewhere on the launch page, there should be an Action Button that executes the <code>assessment:attemptStart</code> action. When clicked, this button will allow the student to start the assessment. Here is an example of the launch button:</t>
 				</textGroup>
 			</Text>
-			<ActionButton actions=\\"[object Object]\\" id=\\"6f464ec8-f759-456e-a184-7f4c6a3d4a9e\\">
+			<ActionButton id=\\"6f464ec8-f759-456e-a184-7f4c6a3d4a9e\\">
 				<textGroup>
 					<t>Start Assessment</t>
 				</textGroup>
@@ -182,7 +182,7 @@ exports[`JSON to XML Test Converts assessment.json to assessment.xml 1`] = `
 							<t align=\\"center\\">You have {{assessment:attemptsRemaining}} attempts remaining.</t>
 						</textGroup>
 					</Text>
-					<ActionButton actions=\\"[object Object]\\" id=\\"2e1caa8e-560f-4e20-bc45-0bc0586476b2\\">
+					<ActionButton id=\\"2e1caa8e-560f-4e20-bc45-0bc0586476b2\\">
 						<textGroup>
 							<t>Retry Assessment</t>
 						</textGroup>

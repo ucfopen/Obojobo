@@ -4,17 +4,17 @@ const xmlEncode = require('../xmlEncode')
 const actionButtonNodeParser = node => {
     const id = node.id ? ` id="${node.id}"` : ''
 
-    let contentXML = ''
-    for (const c in node.content) {
-        if ([c] == "triggers" || [c] == "textGroup") continue;
-        contentXML += ` ${[c]}="${xmlEncode(node.content[c])}"`
+    let attrs = ''
+    for (const attr in node.content) {
+        if ([attr] == "triggers" || [attr] == "textGroup" || [attr] == "actions") continue;
+        attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
     }
 
     const textGroupXML = textGroupParser(node.content.textGroup)
     const triggersXML = triggersParser(node.content.triggers)
 
     return (
-        `<ActionButton${contentXML}${id}>` +
+        `<ActionButton${attrs}${id}>` +
         textGroupXML +
         triggersXML +
         `</ActionButton>`
