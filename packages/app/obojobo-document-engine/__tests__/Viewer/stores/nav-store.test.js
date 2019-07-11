@@ -419,7 +419,7 @@ describe('NavStore', () => {
 		})
 
 		// go
-		eventCallbacks['nav:redAlert']()
+		eventCallbacks['nav:redAlert']({value: { id: 'mockID'}})
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
@@ -472,8 +472,18 @@ describe('NavStore', () => {
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
+	test('init builds state null locked state', () => {
+		NavStore.init(null, true, 12, '', 11, { 'nav:isLocked': { value: null } })
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
 	test('init builds state open state', () => {
 		NavStore.init(null, 12, '', 11, { 'nav:isOpen': { value: true } })
+		expect(NavStore.getState()).toMatchSnapshot()
+	})
+
+	test('init builds state open state', () => {
+		NavStore.init(null, true, 12, '', 11, { 'nav:isOpen': { value: null } })
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
@@ -495,7 +505,7 @@ describe('NavStore', () => {
 
 	test('init builds with no first', () => {
 		NavUtil.getFirst.mockReturnValueOnce(undefined) //eslint-disable-line
-		NavStore.init(null, null, 'startingpath', 11)
+		NavStore.init(null, null, null, 11)
 		expect(NavUtil.goto).not.toHaveBeenCalledWith()
 	})
 

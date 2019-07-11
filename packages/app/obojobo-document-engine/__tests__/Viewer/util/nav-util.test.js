@@ -168,7 +168,12 @@ describe('NavUtil', () => {
 	test('setRedAlert', () => {
 		expect(Common.flux.Dispatcher.trigger).not.toHaveBeenCalled()
 		const x = NavUtil.setRedAlert()
-		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert')
+		const expectedValue = {
+			value: {
+				enable: undefined
+			}
+		}
+		expect(Common.flux.Dispatcher.trigger).toHaveBeenCalledWith('nav:redAlert', expectedValue)
 		expect(x).toBe('mockTriggerReturn')
 	})
 

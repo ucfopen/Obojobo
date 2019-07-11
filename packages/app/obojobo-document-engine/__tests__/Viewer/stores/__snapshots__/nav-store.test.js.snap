@@ -284,6 +284,22 @@ Object {
 }
 `;
 
+exports[`NavStore init builds state null locked state 1`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": null,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "redAlert": true,
+  "visitId": 11,
+}
+`;
+
 exports[`NavStore init builds state open state 1`] = `
 Object {
   "context": "practice",
@@ -304,6 +320,22 @@ Object {
 }
 `;
 
+exports[`NavStore init builds state open state 2`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": null,
+  "redAlert": true,
+  "visitId": 11,
+}
+`;
+
 exports[`NavStore init builds state with basic options 1`] = `
 Object {
   "context": "practice",
@@ -317,6 +349,22 @@ Object {
   "open": true,
   "redAlert": 12,
   "visitId": undefined,
+}
+`;
+
+exports[`NavStore init builds true state locked state 1`] = `
+Object {
+  "context": "practice",
+  "items": Object {},
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": null,
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "redAlert": true,
+  "visitId": 11,
 }
 `;
 
@@ -507,12 +555,21 @@ Array [
 `;
 
 exports[`NavStore nav:redAlert event fires and updates state 2`] = `
-Object {
-  "itemsById": Object {
-    "mockID": Object {
-      "redAlert": true,
+Array [
+  Object {
+    "action": "nav:redAlert",
+    "draftId": "mockDraftId",
+    "eventVersion": "1.0.0",
+    "payload": Object {
+      "redAlert": undefined,
     },
+    "visitId": undefined,
   },
+]
+`;
+
+exports[`NavStore nav:redAlert event fires and updates state 3`] = `
+Object {
   "redAlert": undefined,
 }
 `;

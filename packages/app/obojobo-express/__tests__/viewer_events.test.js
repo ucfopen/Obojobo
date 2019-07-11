@@ -83,6 +83,19 @@ describe('viewer events', () => {
 		)
 	})
 
+	test('client:nav:redAlert', () => {
+		const clientNavRedAlert = oboEvents.on.mock.calls[1][1] 
+		clientNavRedAlert(mockEvent)
+		expect(vs.set).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mockContentId',
+			'nav:redAlert',
+			1,
+			true
+		)
+	})
+
 	test('client:nav:toggle', () => {
 		const clientNavToggle = oboEvents.on.mock.calls[2][1]
 		const mockPayloadEvent = {
