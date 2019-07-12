@@ -1,5 +1,8 @@
+const logger = require('obojobo-express/logger')
+
 jest.mock('../viewer/viewer_state', () => ({ set: jest.fn() }))
 jest.mock('../obo_events', () => ({ on: jest.fn(), emit: jest.fn() }))
+jest.mock('obojobo-express/logger')
 
 const vs = oboRequire('viewer/viewer_state')
 const mockEvent = {
@@ -84,16 +87,32 @@ describe('viewer events', () => {
 	})
 
 	test('client:nav:redAlert', () => {
-		const clientNavRedAlert = oboEvents.on.mock.calls[1][1] 
+		const clientNavRedAlert = oboEvents.on.mock.calls[3][1]
 		clientNavRedAlert(mockEvent)
 		expect(vs.set).toBeCalledWith(
 			'mockUserId',
 			'mockDraftId',
 			'mockContentId',
-			'nav:redAlert',
+			'nav:isOpen',
 			1,
 			true
 		)
+	})
+
+	test('client:nav:redAlert', () => {
+		const clientNavRedAlert = oboEvents.on.mock.calls[3][1]
+
+		return clientNavRedAlert({payload:{}}).then(() => {
+			expect(logger.error).toHaveBeenCalled()
+		})
+	})
+
+	test('client:nav:redAlert', () => {
+		const clientNavRedAlert = oboEvents.on.mock.calls[3][1]
+
+		return clientNavRedAlert({payload:{redAlert: "test"}}).then(() => {
+			expect(logger.error).toHaveBeenCalled()
+		})
 	})
 
 	test('client:nav:toggle', () => {

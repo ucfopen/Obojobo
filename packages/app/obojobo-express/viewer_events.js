@@ -28,7 +28,6 @@ oboEvents.on('client:nav:redAlert', (event, req) => {
 	const eventRecordResponse = 'client:nav:redAlert'
 	return Promise.resolve()
 		.then(() => {
-
 			if (typeof event.payload.redAlert === "undefined") throw Error('Missing Red Alert Status')
 
 			return db.none(
@@ -57,10 +56,6 @@ oboEvents.on('client:nav:redAlert', (event, req) => {
 
 const setNavOpen = (userId, draftId, contentId, value) => {
 	viewerState.set(userId, draftId, contentId, 'nav:isOpen', 1, value)
-}
-
-const setNavRedAlert = (userId, draftId, value) => {
-	viewerState.set(userId, draftId, 'nav:redAlert', value)
 }
 
 // @TODO: Enable this when we're able to restore the user to their last page
