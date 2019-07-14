@@ -25,6 +25,25 @@
 		"lerna": "^3.13.1",
 		"nodemon": "^1.18.8"
 	},
+	"jest": {
+		"projects": [
+			"<rootDir>/packages/*/*"
+		],
+		"transformIgnorePatterns": [
+			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
+		],
+		"coveragePathIgnorePatterns":[
+			"packages/app/obojobo-document-engine"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 0,
+				"functions": 0,
+				"lines": 0,
+				"statements": 0
+			}
+		}
+	},
 	"workspaces": [
 		"packages/app/obojobo-document-engine",
 		"packages/app/obojobo-document-xml-parser",
