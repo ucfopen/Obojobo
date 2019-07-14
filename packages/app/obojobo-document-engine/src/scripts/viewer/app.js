@@ -1,8 +1,11 @@
-import Common from 'Common'
-import Viewer from 'Viewer'
-
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+
+import Common from 'Common'
+import Viewer from 'Viewer'
+import reducer from './redux-store/reducer'
 
 import './polyfills'
 
@@ -36,11 +39,16 @@ if (ie) {
 	window.onblur = onBlur
 }
 
+// Set up Redux store
+const store = createStore(reducer)
+
 window.__oboViewerRender = () => {
 	ReactDOM.render(
-		<div className="root">
-			<Viewer.components.ViewerApp />
-		</div>,
+		<Provider store={store}>
+			<div className="root">
+				<Viewer.components.ViewerApp />
+			</div>
+		</Provider>,
 		document.getElementById('viewer-app')
 	)
 }

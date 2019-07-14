@@ -1,6 +1,10 @@
 import '../../../scss/main.scss'
 import './viewer-app.scss'
 
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { connect } from 'react-redux'
+
 import APIUtil from '../../viewer/util/api-util'
 import AssessmentStore from '../../viewer/stores/assessment-store'
 import Common from 'Common'
@@ -14,8 +18,6 @@ import Nav from './nav'
 import NavStore from '../../viewer/stores/nav-store'
 import NavUtil from '../../viewer/util/nav-util'
 import QuestionStore from '../../viewer/stores/question-store'
-import React from 'react'
-import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
 
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
@@ -37,7 +39,7 @@ Dispatcher.on('viewer:alert', payload =>
 	)
 )
 
-export default class ViewerApp extends React.Component {
+class ViewerApp extends React.Component {
 	// === REACT LIFECYCLE METHODS ===
 
 	constructor(props) {
@@ -137,6 +139,7 @@ export default class ViewerApp extends React.Component {
 				return APIUtil.getDraft(draftIdFromUrl)
 			})
 			.then(({ value: draftModel }) => {
+				this.props.updateStore(draftModel)
 				const model = OboModel.create(draftModel)
 
 				NavStore.init(
@@ -531,7 +534,8 @@ export default class ViewerApp extends React.Component {
 		window.__lo = this.state.model
 		window.__s = this.state
 
-		const ModuleComponent = this.state.model.getComponentClass()
+		// const ModuleComponent = this.state.model.getComponentClass()
+		const ModuleComponent = Common.Registry.getItemForType(this.props.rootNode.type).componentClass
 
 		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
 		let navTargetLabel = ''
@@ -629,7 +633,9 @@ export default class ViewerApp extends React.Component {
 					)}
 					{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
 					{hideViewer ? null : prevComp}
-					{hideViewer ? null : <ModuleComponent model={this.state.model} moduleData={this.state} />}
+					{hideViewer ? null : (
+						<ModuleComponent index={0} model={this.state.model} moduleData={this.state} />
+					)}
 					{hideViewer ? null : nextComp}
 					{this.state.isPreviewing ? (
 						<div className="preview-banner">
@@ -661,3 +667,18 @@ export default class ViewerApp extends React.Component {
 		)
 	}
 }
+
+const mapStateToProps = state => {
+	return {
+		rootNode: state.oboNodeList[0],
+		rootChild: state.adjList[0]
+	}
+}
+
+const mapDispatchToProops = dispatch => {
+	return {
+		updateStore: oboNodeObject => dispatch({ type: 'UPDATE_STORE', payload: { oboNodeObject } })
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProops)(ViewerApp)
