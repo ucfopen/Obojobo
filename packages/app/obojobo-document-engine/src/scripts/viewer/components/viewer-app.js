@@ -17,7 +17,7 @@ import MediaStore from '../../viewer/stores/media-store'
 import Nav from './nav'
 import NavStore from '../../viewer/stores/nav-store'
 import NavUtil from '../../viewer/util/nav-util'
-import ObojoboContent from './obojobo-content'
+import ObojoboContent from './ObojoboContent/ObojoboContent.js'
 import QuestionStore from '../../viewer/stores/question-store'
 import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
 

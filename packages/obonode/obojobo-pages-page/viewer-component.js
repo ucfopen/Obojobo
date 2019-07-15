@@ -15,7 +15,6 @@ class Page extends React.Component {
 	// }
 
 	render() {
-		console.log('Page')
 		return (
 			<OboComponent
 				// model={this.props.model}

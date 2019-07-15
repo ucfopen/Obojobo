@@ -8,14 +8,17 @@ const { OboComponent } = Viewer.components
 const { TextGroupEl } = Common.chunk.textChunk
 const { TextChunk } = Common.chunk
 
-const Text = props => (
-	<OboComponent model={props.model} moduleData={props.moduleData}>
-		<TextChunk className="obojobo-draft--chunks--single-text pad">
-			{props.model.modelState.textGroup.items.map((textItem, index) => (
-				<TextGroupEl textItem={textItem} groupIndex={index} key={index} parentModel={props.model} />
-			))}
-		</TextChunk>
-	</OboComponent>
-)
+const Text = props => {
+	console.log('text', props)
+	return(
+		<OboComponent >
+			<TextChunk className="obojobo-draft--chunks--single-text pad">
+				{props.node.content.textGroup.map((group, index) => (
+					<TextGroupEl textItem={group.text} groupIndex={index} key={index} />
+				))}
+			</TextChunk>
+		</OboComponent>
+	)
+}
 
 export default Text

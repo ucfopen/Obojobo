@@ -31,10 +31,12 @@ const getText = props => {
 }
 
 const TextGroupEl = props => {
-	const text = new StyleableText.createFromObject(props.node.content.textGroup[0].text)
+	const textItem = props.textItem
+	const text = new StyleableText.createFromObject(textItem)
+	text.normalizeStyles()
+
 	// console.log("textGroup", props.node.content.textGroup[0].text)
 	// console.log("text", text)
-	console.log(props.node.content)
 	return (
 	<span
 		// className={`text align-${props.textItem.data.align}`}

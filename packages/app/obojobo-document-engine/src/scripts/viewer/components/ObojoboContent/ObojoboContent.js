@@ -11,10 +11,14 @@ const obojoboContent = props => {
 
     const componentRenderer = index => {
         switch(oboNodeList[index].type){
+            // modify node
             case 'ObojoboDraft.Pages.Page':
-                break;
             case 'ObojoboDraft.Chunks.Heading':
-                break;
+            case 'ObojoboDraft.Chunks.YouTube':
+            case 'ObojoboDraft.Chunks.Text':
+            case 'ObojoboDraft.Chunks.Code':
+            case 'ObojoboDraft.Chunks.Break':
+                break
             default:
                 return null
         }

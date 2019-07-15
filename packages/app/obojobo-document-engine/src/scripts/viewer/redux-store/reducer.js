@@ -22,6 +22,10 @@ const reducer = (state = initialState, action) => {
 	}
 }
 
+const convertBackboneObjectToAdjList = object => {
+
+}
+
 // Algorithm: Breath First Search
 const convertObjectToAdjList = object => {
 	const oboNodeList = []

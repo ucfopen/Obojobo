@@ -19,7 +19,7 @@ const Heading = props => {
 			<TextChunk className="obojobo-draft--chunks--heading pad">
 				<HTag>
 					<TextGroupEl
-						node={props.node}
+						textItem={props.node.content.textGroup[0].text}
 						// parentModel={props.model}
 						// textItem={props.model.modelState.textGroup.first}
 						groupIndex="0"

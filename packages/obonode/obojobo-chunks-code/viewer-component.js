@@ -9,14 +9,14 @@ const { TextGroupEl } = Common.chunk.textChunk
 const { TextChunk } = Common.chunk
 
 const Code = props => (
-	<OboComponent model={props.model} moduleData={props.moduleData}>
+	<OboComponent>
 		<TextChunk className="obojobo-draft--chunks--code pad">
 			<pre>
 				<code>
-					{props.model.modelState.textGroup.items.map((textItem, index) => (
+					{props.node.content.textGroup.map((group, index) => (
 						<TextGroupEl
-							parentModel={props.model}
-							textItem={textItem}
+							// parentModel={props.model}
+							textItem={group.text}
 							groupIndex={index}
 							key={index}
 						/>
