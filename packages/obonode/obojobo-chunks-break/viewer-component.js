@@ -7,17 +7,14 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 const { OboComponent } = Viewer.components
 const { NonEditableChunk } = Common.chunk
 
-const Break = props => {
-	console.log('Break', props)
-	return (
-		<OboComponent>
-			<NonEditableChunk
-				className={`obojobo-draft--chunks--break viewer width-${props.node.content.width}`}
-			>
-				<hr />
-			</NonEditableChunk>
-		</OboComponent>
-	)
-}
+const Break = props => (
+	<OboComponent model={props.model} moduleData={props.moduleData}>
+		<NonEditableChunk
+			className={`obojobo-draft--chunks--break viewer width-${props.model.modelState.width}`}
+		>
+			<hr />
+		</NonEditableChunk>
+	</OboComponent>
+)
 
 export default Break

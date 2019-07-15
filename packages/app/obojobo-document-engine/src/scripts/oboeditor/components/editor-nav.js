@@ -1,6 +1,6 @@
 import './editor-nav.scss'
 // relies on styles from viewer
-import '../../viewer/components/nav.scss'
+import '../../viewer/components/Nav/nav.scss'
 
 import ClipboardUtil from '../util/clipboard-util'
 import Common from 'obojobo-document-engine/src/scripts/common'

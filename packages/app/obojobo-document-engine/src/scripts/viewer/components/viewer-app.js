@@ -12,12 +12,12 @@ import FocusStore from '../../viewer/stores/focus-store'
 import FocusUtil from '../../viewer/util/focus-util'
 import Header from '../../viewer/components/header'
 import IdleTimer from 'react-idle-timer'
-import InlineNavButton from '../../viewer/components/inline-nav-button'
+import InlineNavButton from '../../viewer/components/InlineNavButton/InlineNavButton'
 import MediaStore from '../../viewer/stores/media-store'
-import Nav from './nav'
+import Nav from './Nav/Nav'
 import NavStore from '../../viewer/stores/nav-store'
 import NavUtil from '../../viewer/util/nav-util'
-import ObojoboContent from './ObojoboContent/ObojoboContent.js'
+import ObojoboContent from './ObojoboContent/ObojoboContent'
 import QuestionStore from '../../viewer/stores/question-store'
 import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
 
@@ -140,8 +140,9 @@ class ViewerApp extends React.Component {
 				return APIUtil.getDraft(draftIdFromUrl)
 			})
 			.then(({ value: draftModel }) => {
-				this.props.updateStore(draftModel)
+				// this.props.updateStore(draftModel)
 				const model = OboModel.create(draftModel)
+				this.props.updateStoreModel(model)
 
 				NavStore.init(
 					model,
@@ -595,7 +596,7 @@ class ViewerApp extends React.Component {
 					{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
 					{hideViewer ? null : prevComp}
 					{hideViewer ? null : (
-						<ObojoboContent />
+						<ObojoboContent moduleData={this.state}/>
 						// <ModuleComponent index={0} model={this.state.model} moduleData={this.state} />
 					)}
 					{hideViewer ? null : nextComp}
@@ -639,7 +640,8 @@ const mapStateToProps = ({ oboNodeList, adjList }) => {
 
 const mapDispatchToProops = dispatch => {
 	return {
-		updateStore: oboNodeObject => dispatch({ type: 'UPDATE_STORE', payload: { oboNodeObject } })
+		updateStore: oboNodeObject => dispatch({ type: 'UPDATE_STORE', payload: { oboNodeObject } }),
+		updateStoreModel: model => dispatch({ type: 'UPDATE_STORE_MODEL', payload: { model } })
 	}
 }
 

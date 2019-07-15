@@ -3,22 +3,26 @@ import './inline-nav-button.scss'
 import React from 'react'
 import { connect } from 'react-redux'
 
-import NavUtil from '../../viewer/util/nav-util'
 
-const InlineNavButton = (props) => {
+const inlineNavButton = (props) => {
 
-	let navIndex
+    let navIndex
+    let content
+    let disabled
 	switch (props.type) {
 		case 'prev':
-			navIndex = props.currentNavIndex - 1;
-			break;
-
+            navIndex = props.currentNavIndex - 1;
+            content = 'Prev: '
+            disabled = navIndex < 0
+            content = disabled ? 'Start of Obojobo Example Document' : `Prev: ${props.oboNodeList[props.navList[navIndex]].attributes.content.title}`
+			break
 		case 'next':
-			navIndex = props.currentNavIndex + 1;
-			break;
+            navIndex = props.currentNavIndex + 1;
+            content = 'Next: '
+            disabled = navIndex >= props.navList.length
+            content = disabled ? 'End of Obojobo Example Document' : `Next: ${props.oboNodeList[props.navList[navIndex]].attributes.content.title}`
+			break
 	}
-	const disabled = navIndex < 0 || navIndex >= props.navList.length
-
 	return (
 		<button
 			className={`viewer--components--inline-nav-button is-${props.type}${
@@ -28,7 +32,7 @@ const InlineNavButton = (props) => {
 			// aria-label={this.props.ariaLabel}
 			// aria-disabled={this.props.disabled}
 		>
-			{"test"}
+			{content}
 		</button>
 	)
 }
@@ -48,4 +52,4 @@ const mapDispatchToProops = dispatch => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProops)(InlineNavButton)
+export default connect(mapStateToProps, mapDispatchToProops)(inlineNavButton)

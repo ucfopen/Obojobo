@@ -17,12 +17,11 @@ const Module = props => {
 
 	return (
 		<OboComponent
-			// model={props.model}
+			model={props.model}
 			// moduleData={props.moduleData}
 			className="obojobo-draft--modules--module"
 			role="main"
 		>
-			{/* {<div>{childEl}</div>} */}
 			{props.children}
 		</OboComponent>
 	)

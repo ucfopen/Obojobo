@@ -5,28 +5,23 @@ import { Registry } from 'Common'
 
 const obojoboContent = props => {
 
-    const { oboNodeList, adjList, navList, navItem } = props
-
-    const Module = Registry.getItemForType(oboNodeList[0].type).componentClass
-
     const componentRenderer = index => {
-        switch(oboNodeList[index].type){
-            // modify node
-            case 'ObojoboDraft.Pages.Page':
-            case 'ObojoboDraft.Chunks.Heading':
-            case 'ObojoboDraft.Chunks.YouTube':
-            case 'ObojoboDraft.Chunks.Text':
-            case 'ObojoboDraft.Chunks.Code':
-            case 'ObojoboDraft.Chunks.Break':
-                break
+        // Nodes that are not work
+        switch(oboNodeList[index].attributes.type){
+            case 'ObojoboDraft.Chunks.Question':
+            case 'ObojoboDraft.Chunks.IFrame':
+            case 'ObojoboDraft.Chunks.ActionButton':
+            case 'ObojoboDraft.Chunks.Table':
+            case 'ObojoboDraft.Sections.Assessment':
+                return
             default:
-                return null
+                break
         }
 
-        const Component = Registry.getItemForType(oboNodeList[index].type).componentClass
+        const Component = Registry.getItemForType(oboNodeList[index].attributes.type).componentClass
 
         return (
-            <Component node={oboNodeList[index]}>
+            <Component model={oboNodeList[index]}>
                 {adjList[index].map(childIndex => {
                     return componentRenderer(childIndex)
                 })}
@@ -35,19 +30,22 @@ const obojoboContent = props => {
     }
 
 
+    const { oboNodeList, adjList, navList, currentNavIndex } = props
+    const Module = Registry.getItemForType(oboNodeList[0].attributes.type).componentClass
+
     return (
-        <Module node={oboNodeList[0]}>
-            {componentRenderer(navList[navItem])}
+        <Module index={0} model={oboNodeList[0]} moduleData={props.moduleData}>
+            {componentRenderer(navList[currentNavIndex])}
         </Module>
     )
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, navList, navItem }) => {
+const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex }) => {
 	return {
 		oboNodeList,
         adjList,
         navList,
-        navItem
+        currentNavIndex
 	}
 }
 

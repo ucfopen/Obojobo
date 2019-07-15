@@ -4,11 +4,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-import FocusUtil from '../util/focus-util'
-import Logo from './logo'
-import NavUtil from '../util/nav-util'
-import NavHeader from './Nav/NavHeader/NavHeader'
-import NavItem from './Nav/NavItem/NavItem'
+import FocusUtil from '../../util/focus-util'
+import Logo from '../logo'
+import NavUtil from '../../util/nav-util'
+import NavHeader from './NavHeader/NavHeader'
+import NavItem from './NavItem/NavItem'
 // import NavSubItem from './NavSubItem/navSubItem'
 
 const { Button } = Common.components
@@ -145,15 +145,11 @@ class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
-	onClickNavItem(index) {
-		this.props.updateNavItem(index)
-	}
-
 	rendererNavItem() {
 		return this.props.navList.map((navIndex, index) => {
 			const className =
 			'link' +
-				isOrNot(index === this.props.navItem, 'selected')
+				isOrNot(index === this.props.currentNavIndex, 'selected')
 				// isOrNot(item.flags.complete, 'complete') +
 				// isOrNot(item.flags.correct, 'correct') +
 				// isOrNot(item.flags.assessment, 'assessment')
@@ -162,8 +158,8 @@ class Nav extends React.Component {
 			return (
 				<NavItem
 					index={navIndex}
-					label={this.props.oboNodeList[navIndex].content.title}
-					onClick={() => this.onClickNavItem(index)}
+					label={this.props.oboNodeList[navIndex].attributes.content.title}
+					onClick={() => this.props.updateNavItem(index)}
 					className={className}
 				/>
 			)
@@ -237,12 +233,12 @@ class Nav extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, navList, navItem }) => {
+const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex }) => {
 	return {
 		oboNodeList,
 		adjList,
 		navList,
-		navItem
+		currentNavIndex
 	}
 }
 
