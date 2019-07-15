@@ -6,13 +6,13 @@ class OboComponent extends React.Component {
 		return { tag: 'div' }
 	}
 
-	componentDidMount() {
-		return this.props.model.processTrigger('onMount')
-	}
+	// componentDidMount() {
+	// 	return this.props.model.processTrigger('onMount')
+	// }
 
-	componentWillUnmount() {
-		return this.props.model.processTrigger('onUnmount')
-	}
+	// componentWillUnmount() {
+	// 	return this.props.model.processTrigger('onUnmount')
+	// }
 
 	render() {
 		const Tag = this.props.tag
@@ -22,8 +22,8 @@ class OboComponent extends React.Component {
 			className += ` ${this.props.className}`
 		}
 
-		const isFocussed =
-			FocusUtil.getVisuallyFocussedModel(this.props.moduleData.focusState) === this.props.model
+		// const isFocussed =
+		// 	FocusUtil.getVisuallyFocussedModel(this.props.moduleData.focusState) === this.props.model
 
 		const otherProps = {}
 		for (const propKey in this.props) {
@@ -46,12 +46,12 @@ class OboComponent extends React.Component {
 			<Tag
 				{...otherProps}
 				className={className}
-				id={this.props.model.getDomId()}
-				data-obo-component
-				data-id={this.props.model.get('id')}
-				data-type={this.props.model.get('type')}
-				data-focussed={isFocussed}
-				tabIndex={this.props.tabIndex || this.props.tabIndex === 0 ? this.props.tabIndex : -1}
+				// id={this.props.model.getDomId()}
+				// data-obo-component
+				// data-id={this.props.model.get('id')}
+				// data-type={this.props.model.get('type')}
+				// data-focussed={isFocussed}
+				// tabIndex={this.props.tabIndex || this.props.tabIndex === 0 ? this.props.tabIndex : -1}
 			>
 				{this.props.children}
 			</Tag>

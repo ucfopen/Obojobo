@@ -1,43 +1,51 @@
 import './inline-nav-button.scss'
 
 import React from 'react'
+import { connect } from 'react-redux'
 
 import NavUtil from '../../viewer/util/nav-util'
 
-export default class InlineNavButton extends React.Component {
-	onClick(event) {
-		if (this.props.onClick) {
-			this.props.onClick()
-			return
-		}
+const InlineNavButton = (props) => {
 
-		if (this.props.disabled) {
-			return
-		}
+	let navIndex
+	switch (props.type) {
+		case 'prev':
+			navIndex = props.navItem - 1;
+			break;
 
-		if (event && event.target) event.target.blur()
-
-		switch (this.props.type) {
-			case 'prev':
-				return NavUtil.goPrev()
-
-			case 'next':
-				return NavUtil.goNext()
-		}
+		case 'next':
+			navIndex = props.navItem + 1;
+			break;
 	}
+	const disabled = navIndex < 0 || navIndex >= props.navList.length
 
-	render() {
-		return (
-			<button
-				className={`viewer--components--inline-nav-button is-${this.props.type}${
-					this.props.disabled ? ' is-not-enabled' : ' is-enabled'
-				}`}
-				onClick={this.onClick.bind(this)}
-				aria-label={this.props.ariaLabel}
-				aria-disabled={this.props.disabled}
-			>
-				{this.props.title}
-			</button>
-		)
+	return (
+		<button
+			className={`viewer--components--inline-nav-button is-${props.type}${
+				disabled ? ' is-not-enabled' : ' is-enabled'
+			}`}
+			onClick={() => props.updateNavItem(navIndex)}
+			// aria-label={this.props.ariaLabel}
+			// aria-disabled={this.props.disabled}
+		>
+			{"test"}
+		</button>
+	)
+}
+
+const mapStateToProps = ({ oboNodeList, adjList, navList, navItem }) => {
+	return {
+		oboNodeList,
+		adjList,
+		navList,
+		navItem
 	}
 }
+
+const mapDispatchToProops = dispatch => {
+	return {
+		updateNavItem: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } })
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProops)(InlineNavButton)

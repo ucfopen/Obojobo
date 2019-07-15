@@ -17,6 +17,7 @@ import MediaStore from '../../viewer/stores/media-store'
 import Nav from './nav'
 import NavStore from '../../viewer/stores/nav-store'
 import NavUtil from '../../viewer/util/nav-util'
+import ObojoboContent from './obojobo-content'
 import QuestionStore from '../../viewer/stores/question-store'
 import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
 
@@ -547,59 +548,19 @@ class ViewerApp extends React.Component {
 
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
 
-		if (isNavEnabled) {
-			const canNavigate = NavUtil.canNavigate(this.state.navState)
+		prevComp = (
+			<InlineNavButton
+				ref={this.prevRef}
+				type="prev"
+			/>
+		)
 
-			prevItem = NavUtil.getPrev(this.state.navState)
-			if (prevItem) {
-				const navText = prevItem.label ? 'Back: ' + prevItem.label : 'Back'
-				const navLabel = prevItem.label ? 'Go back to ' + prevItem.label : 'Go back'
-				prevComp = (
-					<InlineNavButton
-						ref={this.prevRef}
-						type="prev"
-						title={navText}
-						ariaLabel={navLabel}
-						disabled={!canNavigate}
-					/>
-				)
-			} else {
-				prevComp = (
-					<InlineNavButton
-						ref={this.prevRef}
-						type="prev"
-						title={`Start of ${this.state.model.title}`}
-						ariaLabel={`This is the start of ${this.state.model.title}.`}
-						disabled
-					/>
-				)
-			}
-
-			nextItem = NavUtil.getNext(this.state.navState)
-			if (nextItem) {
-				const navText = nextItem.label ? 'Next: ' + nextItem.label : 'Next'
-				const navLabel = nextItem.label ? 'Go forward to ' + nextItem.label : 'Go forward'
-				nextComp = (
-					<InlineNavButton
-						ref={this.nextRef}
-						type="next"
-						title={navText}
-						ariaLabel={navLabel}
-						disabled={!canNavigate}
-					/>
-				)
-			} else {
-				nextComp = (
-					<InlineNavButton
-						ref={this.nextRef}
-						type="next"
-						title={`End of ${this.state.model.title}`}
-						ariaLabel={`You have reached the end of ${this.state.model.title}.`}
-						disabled
-					/>
-				)
-			}
-		}
+		nextComp = (
+			<InlineNavButton
+				ref={this.nextRef}
+				type="next"
+			/>
+		)
 
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		const hideViewer = modalItem && modalItem.hideViewer
@@ -634,7 +595,8 @@ class ViewerApp extends React.Component {
 					{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
 					{hideViewer ? null : prevComp}
 					{hideViewer ? null : (
-						<ModuleComponent index={0} model={this.state.model} moduleData={this.state} />
+						<ObojoboContent />
+						// <ModuleComponent index={0} model={this.state.model} moduleData={this.state} />
 					)}
 					{hideViewer ? null : nextComp}
 					{this.state.isPreviewing ? (

@@ -1,12 +1,15 @@
 import './nav.scss'
 
 import React from 'react'
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import FocusUtil from '../util/focus-util'
 import Logo from './logo'
 import NavUtil from '../util/nav-util'
+import NavHeader from './Nav/NavHeader/NavHeader'
+import NavItem from './Nav/NavItem/NavItem'
+// import NavSubItem from './NavSubItem/navSubItem'
 
 const { Button } = Common.components
 const { StyleableText, StyleableTextComponent } = Common.text
@@ -142,8 +145,29 @@ class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
-	generateNavList() {
+	onClickNavItem(index) {
+		this.props.updateNavItem(index)
+	}
 
+	rendererNavItem() {
+		return this.props.navList.map((navIndex, index) => {
+			const className =
+			'link' +
+				isOrNot(index === this.props.navItem, 'selected')
+				// isOrNot(item.flags.complete, 'complete') +
+				// isOrNot(item.flags.correct, 'correct') +
+				// isOrNot(item.flags.assessment, 'assessment')
+				// isOrNot(isFirstInList, 'first-in-list') +
+				// isOrNot(isLastInList, 'last-in-list')
+			return (
+				<NavItem
+					index={navIndex}
+					label={this.props.oboNodeList[navIndex].content.title}
+					onClick={() => this.onClickNavItem(index)}
+					className={className}
+				/>
+			)
+		})
 	}
 
 	render() {
@@ -178,7 +202,9 @@ class Nav extends React.Component {
 					Toggle Navigation Menu
 				</button>
 				<ul aria-hidden={isNavInaccessible} tabIndex="-1">
-					{list.map((item, index) => {
+					<NavHeader />
+					{this.rendererNavItem()}
+					{/* {list.map((item, index) => {
 						switch (item.type) {
 							case 'heading':
 								return this.renderHeading(index, item)
@@ -203,7 +229,7 @@ class Nav extends React.Component {
 						}
 
 						return null
-					})}
+					})} */}
 				</ul>
 				<Logo />
 			</nav>
@@ -222,7 +248,7 @@ const mapStateToProps = ({ oboNodeList, adjList, navList, navItem }) => {
 
 const mapDispatchToProops = dispatch => {
 	return {
-		updateStore: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } })
+		updateNavItem: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } })
 	}
 }
 

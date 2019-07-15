@@ -2,6 +2,7 @@ import React from 'react'
 
 import StyleableTextComponent from '../../../common/text/styleable-text-component'
 import Dispatcher from '../../../common/flux/dispatcher'
+import StyleableText from '../../../common/text/styleable-text'
 
 const varRegex = /\{\{(.+?)\}\}/
 
@@ -29,14 +30,20 @@ const getText = props => {
 	return text
 }
 
-const TextGroupEl = props => (
+const TextGroupEl = props => {
+	const text = new StyleableText.createFromObject(props.node.content.textGroup[0].text)
+	// console.log("textGroup", props.node.content.textGroup[0].text)
+	// console.log("text", text)
+	console.log(props.node.content)
+	return (
 	<span
-		className={`text align-${props.textItem.data.align}`}
+		// className={`text align-${props.textItem.data.align}`}
 		data-group-index={props.groupIndex}
-		data-indent={props.textItem.data.indent}
+		// data-indent={props.textItem.data.indent}
 	>
-		<StyleableTextComponent text={getText(props)} />
+		{/* <StyleableTextComponent text={getText(props)} /> */}
+		<StyleableTextComponent text={text} />
 	</span>
-)
+)}
 
 export default TextGroupEl
