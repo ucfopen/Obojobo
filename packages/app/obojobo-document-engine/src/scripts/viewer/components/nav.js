@@ -1,10 +1,12 @@
 import './nav.scss'
 
+import React from 'react'
+import { connect } from 'react-redux';
+
 import Common from 'obojobo-document-engine/src/scripts/common'
 import FocusUtil from '../util/focus-util'
 import Logo from './logo'
 import NavUtil from '../util/nav-util'
-import React from 'react'
 
 const { Button } = Common.components
 const { StyleableText, StyleableTextComponent } = Common.text
@@ -16,7 +18,7 @@ const getLabelTextFromLabel = label => {
 	return label instanceof StyleableText ? label.value : label
 }
 
-export default class Nav extends React.Component {
+class Nav extends React.Component {
 	constructor(props) {
 		super(props)
 		this.selfRef = React.createRef()
@@ -140,6 +142,10 @@ export default class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
+	generateNavList() {
+
+	}
+
 	render() {
 		const navState = this.props.navState
 		const list = NavUtil.getOrderedList(navState)
@@ -204,3 +210,20 @@ export default class Nav extends React.Component {
 		)
 	}
 }
+
+const mapStateToProps = ({ oboNodeList, adjList, navList, navItem }) => {
+	return {
+		oboNodeList,
+		adjList,
+		navList,
+		navItem
+	}
+}
+
+const mapDispatchToProops = dispatch => {
+	return {
+		updateStore: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } })
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProops)(Nav);

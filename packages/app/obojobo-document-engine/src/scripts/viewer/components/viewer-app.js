@@ -534,8 +534,8 @@ class ViewerApp extends React.Component {
 		window.__lo = this.state.model
 		window.__s = this.state
 
-		// const ModuleComponent = this.state.model.getComponentClass()
-		const ModuleComponent = Common.Registry.getItemForType(this.props.rootNode.type).componentClass
+		const ModuleComponent = this.state.model.getComponentClass()
+		// const ModuleComponent = Common.Registry.getItemForType(this.props.rootNode.type).componentClass
 
 		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
 		let navTargetLabel = ''
@@ -668,10 +668,10 @@ class ViewerApp extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = ({ oboNodeList, adjList }) => {
 	return {
-		rootNode: state.oboNodeList[0],
-		rootChild: state.adjList[0]
+		oboNodeList,
+		adjList
 	}
 }
 
