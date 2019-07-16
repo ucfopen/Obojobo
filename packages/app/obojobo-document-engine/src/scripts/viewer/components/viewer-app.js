@@ -59,7 +59,7 @@ class ViewerApp extends React.Component {
 
 		const state = {
 			model: null,
-			navState: null,
+			// navState: null,
 			mediaState: null,
 			questionState: null,
 			assessmentState: null,
@@ -71,7 +71,7 @@ class ViewerApp extends React.Component {
 			lti: { outcomeServiceHostname: null }
 		}
 		this.navTargetId = null
-		this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
+		// this.onNavStoreChange = () => this.setState({ navState: NavStore.getState() })
 		this.onQuestionStoreChange = () => this.setState({ questionState: QuestionStore.getState() })
 		this.onAssessmentStoreChange = () =>
 			this.setState({
@@ -99,7 +99,7 @@ class ViewerApp extends React.Component {
 		this.state = state
 
 		// === SET UP DATA STORES ===
-		NavStore.onChange(this.onNavStoreChange)
+		// NavStore.onChange(this.onNavStoreChange)
 		QuestionStore.onChange(this.onQuestionStoreChange)
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
@@ -144,13 +144,13 @@ class ViewerApp extends React.Component {
 				const model = OboModel.create(draftModel)
 				this.props.updateStoreModel(model)
 
-				NavStore.init(
-					model,
-					model.modelState.start,
-					window.location.pathname,
-					visitIdFromApi,
-					viewState
-				)
+				// NavStore.init(
+				// 	model,
+				// 	model.modelState.start,
+				// 	window.location.pathname,
+				// 	visitIdFromApi,
+				// 	viewState
+				// )
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose
@@ -165,7 +165,7 @@ class ViewerApp extends React.Component {
 				this.setState(
 					{
 						model,
-						navState: NavStore.getState(),
+						// navState: NavStore.getState(),
 						mediaState: MediaStore.getState(),
 						questionState: QuestionStore.getState(),
 						assessmentState: AssessmentStore.getState(),
@@ -190,7 +190,7 @@ class ViewerApp extends React.Component {
 	}
 
 	componentWillUnmount() {
-		NavStore.offChange(this.onNavStoreChange)
+		// NavStore.offChange(this.onNavStoreChange)
 		QuestionStore.offChange(this.onQuestionStoreChange)
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
@@ -513,9 +513,9 @@ class ViewerApp extends React.Component {
 		})
 	}
 
-	unlockNavigation() {
-		return NavUtil.unlock()
-	}
+	// unlockNavigation() {
+	// 	return NavUtil.unlock()
+	// }
 
 	render() {
 		if (this.state.loading) return null
@@ -532,47 +532,44 @@ class ViewerApp extends React.Component {
 			) //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
 		}
 
-		let nextComp, nextItem, prevComp, prevItem
+		// let nextComp, nextItem, prevComp, prevItem
 		window.__lo = this.state.model
 		window.__s = this.state
 
-		const ModuleComponent = this.state.model.getComponentClass()
+		// const ModuleComponent = this.state.model.getComponentClass()
 		// const ModuleComponent = Common.Registry.getItemForType(this.props.rootNode.type).componentClass
 
-		const navTargetItem = NavUtil.getNavTarget(this.state.navState)
-		let navTargetLabel = ''
-		if (navTargetItem && navTargetItem.label) {
-			navTargetLabel = navTargetItem.label
-		}
+		// const navTargetItem = NavUtil.getNavTarget(this.state.navState)
+		// let navTargetLabel = ''
+		// if (navTargetItem && navTargetItem.label) {
+		// 	navTargetLabel = navTargetItem.label
+		// }
 
 		// const isNavEnabled = NavUtil.isNavEnabled(this.state.navState)
 
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
 
-		prevComp = (
-			<InlineNavButton
-				ref={this.prevRef}
-				type="prev"
-			/>
-		)
+		// prevComp = (
+		// 	<InlineNavButton
+		// 		ref={this.prevRef}
+		// 		type="prev"
+		// 	/>
+		// )
 
-		nextComp = (
-			<InlineNavButton
-				ref={this.nextRef}
-				type="next"
-			/>
-		)
+		// nextComp = (
+		// 	<InlineNavButton ref={this.nextRef} type="next" />
+		// )
 
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		const hideViewer = modalItem && modalItem.hideViewer
 
-		const { isNavEnabled } = this.props
+		const { isNavEnabled, isNavLocked } = this.props
 		const classNames = [
 			'viewer--viewer-app',
 			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
-			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
+			isNavLocked ? 'is-locked-nav' : 'is-unlocked-nav',
 			isNavEnabled ? 'is-open-nav' : 'is-closed-nav',
-			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
+			false ? 'is-disabled-nav' : 'is-enabled-nav',
 			visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive'
 		].join(' ')
 
@@ -592,23 +589,32 @@ class ViewerApp extends React.Component {
 					className={classNames}
 				>
 					{hideViewer ? null : (
+						<>
+							<Header moduleTitle={this.state.model.title} location={'just a test'} />
+							<Nav ref={this.navRef} navState={this.state.navState} />
+							<InlineNavButton ref={this.prevRef} type="prev" />
+							<ObojoboContent moduleData={this.state} />
+							<InlineNavButton ref={this.nextRef} type="next" />
+						</>
+					)}
+					{/* {hideViewer ? null : (
 						<Header moduleTitle={this.state.model.title} location={navTargetLabel} />
 					)}
 					{hideViewer ? null : <Nav ref={this.navRef} navState={this.state.navState} />}
-					{hideViewer ? null : prevComp}
+					{hideViewer ? null : <InlineNavButton ref={this.prevRef} type="prev" />}
 					{hideViewer ? null : (
 						<ObojoboContent moduleData={this.state}/>
 						// <ModuleComponent index={0} model={this.state.model} moduleData={this.state} />
 					)}
-					{hideViewer ? null : nextComp}
+					{hideViewer ? null : <InlineNavButton ref={this.nextRef} type="next" />} */}
 					{this.state.isPreviewing ? (
 						<div className="preview-banner">
 							<span>You are previewing this module</span>
 							<div className="controls">
 								<span>Preview options:</span>
 								<button
-									onClick={this.unlockNavigation.bind(this)}
-									disabled={!this.state.navState.locked}
+									// onClick={this.unlockNavigation.bind(this)}
+									// disabled={!this.state.navState.locked}
 								>
 									Unlock navigation
 								</button>
@@ -632,11 +638,12 @@ class ViewerApp extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, isNavEnabled }) => {
+const mapStateToProps = ({ oboNodeList, adjList, isNavEnabled, isNavLocked }) => {
 	return {
 		oboNodeList,
 		adjList,
-		isNavEnabled
+		isNavEnabled,
+		isNavLocked
 	}
 }
 

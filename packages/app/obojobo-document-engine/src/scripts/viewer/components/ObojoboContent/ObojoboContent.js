@@ -8,7 +8,7 @@ const obojoboContent = props => {
     const componentRenderer = index => {
         // Nodes that are not work
         switch(oboNodeList[index].attributes.type){
-            case 'ObojoboDraft.Chunks.Question':
+            // case 'ObojoboDraft.Chunks.Question':
             case 'ObojoboDraft.Chunks.IFrame':
             case 'ObojoboDraft.Chunks.ActionButton':
             case 'ObojoboDraft.Sections.Assessment':

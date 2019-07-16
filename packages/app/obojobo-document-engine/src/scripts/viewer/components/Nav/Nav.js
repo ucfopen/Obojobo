@@ -167,16 +167,16 @@ class Nav extends React.Component {
 	}
 
 	render() {
-		const { isNavEnabled } = this.props
-		const navState = this.props.navState
-		const list = NavUtil.getOrderedList(navState)
-		const lockEl = this.getLockEl(navState.locked)
-		const isNavInaccessible = navState.disabled || !isNavEnabled
+		const { isNavEnabled, isNavLocked } = this.props
+		// const navState = this.props.navState
+		// const list = NavUtil.getOrderedList(navState)
+		// const lockEl = this.getLockEl(navState.locked)
+		// const isNavInaccessible =  !isNavEnabled
 		const className =
 			'viewer--components--nav' +
-			isOrNot(navState.locked, 'locked') +
-			isOrNot(isNavEnabled, 'open') +
-			isOrNot(!navState.disabled, 'enabled')
+			isOrNot(isNavLocked, 'locked') +
+			isOrNot(isNavEnabled, 'open')
+			// isOrNot(!navState.disabled, 'enabled')
 
 		return (
 			<nav
@@ -189,16 +189,16 @@ class Nav extends React.Component {
 				<Button
 					altAction
 					className="skip-nav-button"
-					disabled={isNavInaccessible}
+					disabled={!isNavEnabled}
 					onClick={this.onClickSkipNavigation}
-					aria-hidden={isNavInaccessible}
+					aria-hidden={!isNavEnabled}
 				>
 					Skip Navigation
 				</Button>
 				<button className="toggle-button" onClick={this.props.onNavToggle}>
 					Toggle Navigation Menu
 				</button>
-				<ul aria-hidden={isNavInaccessible} tabIndex="-1">
+				<ul aria-hidden={!isNavEnabled} tabIndex="-1">
 					<NavHeader />
 					{this.rendererNavItem()}
 					{/* {list.map((item, index) => {
@@ -234,13 +234,14 @@ class Nav extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, isNavEnabled }) => {
+const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, isNavEnabled, isNavLocked }) => {
 	return {
 		oboNodeList,
 		adjList,
 		navList,
 		currentNavIndex,
-		isNavEnabled
+		isNavEnabled,
+		isNavLocked
 	}
 }
 

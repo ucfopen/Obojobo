@@ -8,6 +8,7 @@ const initialState = {
 	navList: [],
 	currentNavIndex: 0,
 	isNavEnabled: true,
+	isNavLocked: false,
 
 	// Index of oboNodeList
 	currentFocusNode: 14
