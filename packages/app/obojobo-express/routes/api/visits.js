@@ -42,6 +42,7 @@ router
 		let visitStartReturnExtensionsProps
 		let launch
 		let visit
+		let redAlertStatus
 
 		const draftId = req.currentDocument.draftId
 		const visitId = req.body.visitId
@@ -100,7 +101,6 @@ router
 				})
 			})
 			.then((redAlertResult) => {
-				let redAlertStatus = false
 
 				if(redAlertResult == null) {
 					redAlertStatus = false

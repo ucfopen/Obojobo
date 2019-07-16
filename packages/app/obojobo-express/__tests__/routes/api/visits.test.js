@@ -240,6 +240,7 @@ describe('api visits route', () => {
 
 	test('/start yells internal:startVisit and respond with success', () => {
 		expect.assertions(4)
+
 		// resolve ltiLaunch lookup
 		const launch = {
 			reqVars: {
@@ -266,6 +267,14 @@ describe('api visits route', () => {
 				expect(mockCurrentDocument.yell).toHaveBeenCalledTimes(1)
 				expect(mockCurrentDocument.yell.mock.calls[0][0]).toBe('internal:startVisit')
 			})
+	})
+
+	test('/start successfully returns redAlertResult', () => {
+		const redAlertResult = db.oneOrNone.mockReturnValueOnce(true)
+	})
+
+	test('/start returns redAlertResult as null', () => {
+		const redAlertResult = db.oneOrNone.mockReturnValueOnce(null)
 	})
 
 	test('visit:start event and createViewerSessionLoggedInEvent created', () => {
