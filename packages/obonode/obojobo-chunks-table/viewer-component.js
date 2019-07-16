@@ -18,7 +18,7 @@ const Table = props => {
 			<th
 				key={index}
 				className={`cell row-0 col-${index}`}
-				data-table-position={model.get('id') + ',0,' + index}
+				data-table-position={model.attributes.id + ',0,' + index}
 			>
 				<TextGroupEl parentModel={props.model} textItem={textGroupItem} groupIndex={index} />
 			</th>
@@ -37,7 +37,7 @@ const Table = props => {
 				<td
 					key={index}
 					className={`cell row-${rowNum} col-${index}`}
-					data-table-position={model.get('id') + ',' + rowNum + ',' + index}
+					data-table-position={model.attributes.id + ',' + rowNum + ',' + index}
 				>
 					<TextGroupEl
 						parentModel={props.model}

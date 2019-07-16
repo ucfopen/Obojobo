@@ -233,18 +233,20 @@ class Nav extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex }) => {
+const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, isNavEnabled }) => {
 	return {
 		oboNodeList,
 		adjList,
 		navList,
-		currentNavIndex
+		currentNavIndex,
+		isNavEnabled
 	}
 }
 
 const mapDispatchToProops = dispatch => {
 	return {
-		updateNavItem: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } })
+		updateNavItem: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } }),
+		setNavEnabled: () => dispatch({ type: 'UPDATE_NAV_ENABLED' })
 	}
 }
 

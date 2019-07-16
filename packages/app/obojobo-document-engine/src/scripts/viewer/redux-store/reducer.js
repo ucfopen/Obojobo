@@ -1,8 +1,13 @@
 const initialState = {
+	// List of OboNodes
 	oboNodeList: [],
+	// Adjacency List
 	adjList: [],
+
+	// List of navigation items
 	navList: [],
-	currentNavIndex: 0
+	currentNavIndex: 0,
+	isNavEnabled: true
 }
 
 const reducer = (state = initialState, action) => {
@@ -17,14 +22,19 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				...convertObjectToAdjList(action.payload.oboNodeObject)
-			};
+			}
 		case 'UPDATE_NAV':
 			return {
 				...state,
 				currentNavIndex: action.payload.value
 			}
-			default:
-				return state
+		case 'UPDATE_NAV_ENABLED':
+			return {
+				...state,
+				isNavEnabled: !state.isNavEnabled
+			}
+		default:
+			return state
 	}
 }
 

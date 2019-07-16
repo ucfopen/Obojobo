@@ -11,7 +11,6 @@ const obojoboContent = props => {
             case 'ObojoboDraft.Chunks.Question':
             case 'ObojoboDraft.Chunks.IFrame':
             case 'ObojoboDraft.Chunks.ActionButton':
-            case 'ObojoboDraft.Chunks.Table':
             case 'ObojoboDraft.Sections.Assessment':
                 return
             default:
