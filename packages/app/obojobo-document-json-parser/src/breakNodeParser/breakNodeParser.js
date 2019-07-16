@@ -1,10 +1,7 @@
-const xmlEncode = require('../xmlEncode')
+const processAttrs = require('../processAttrs')
 
 const breakNodeParser = node => {
-    let attrs = ''
-    for (const attr in node.content) {
-        attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
-    }
+    const attrs = processAttrs(node.content, [])
 
     return `<hr${attrs} />`
 }

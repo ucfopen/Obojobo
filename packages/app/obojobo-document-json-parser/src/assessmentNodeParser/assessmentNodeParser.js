@@ -1,14 +1,8 @@
-const xmlEncode = require('../xmlEncode')
+const processAttrs = require('../processAttrs')
 
 const assessmentNodeParser = (node, childrenParser) => {
     const id = node.id ? ` id="${node.id}"` : ''
-
-    let attrs = ''
-    for (const attr in node.content) {
-        if ([attr] == "triggers" || [attr] == "scoreActions" || [attr] == "rubric") continue;
-        attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
-    }
-
+    const attrs = processAttrs(node.content, ['triggers', 'scoreActions', 'rubric'])
     const scoreActionsXML = scoreActionsParser(node.content.scoreActions, childrenParser)
     const rubricXML = rubricParser(node.content.rubric)
 
@@ -26,11 +20,7 @@ const scoreActionsParser = (scoreActions, childrenParser) => {
 
     let scoreActionsBodyXML = ''
     scoreActions.forEach(scoreAction => {
-        let attrs = ''
-        for (const attr in scoreAction) {
-            if ([attr] == 'page') continue
-            attrs += ` ${[attr]}="${xmlEncode(scoreAction[attr])}"`
-        }
+        const attrs = processAttrs(scoreAction, ['page'])
 
         scoreActionsBodyXML += (
             `<scoreAction${attrs}>` +
@@ -53,10 +43,7 @@ const rubricParser = (rubric) => {
     if (rubric.mods) {
         let modsBodyXML = ''
         rubric.mods.forEach(mod => {
-            let attrs = ''
-            for (const attr in mod) {
-                attrs += ` ${[attr]}="${xmlEncode(mod[attr])}"`
-            }
+            const attrs = processAttrs(mod, [])
             modsBodyXML += `<mod${attrs} />`
         })
 
@@ -67,11 +54,7 @@ const rubricParser = (rubric) => {
         )
     }
 
-    let attrs = ''
-    for (const attr in rubric) {
-        if ([attr] == 'mods') continue
-        attrs += ` ${[attr]}="${xmlEncode(rubric[attr])}"`
-    }
+    const attrs = processAttrs(rubric, ['mods'])
 
     return (
         `<rubric${attrs}>` +

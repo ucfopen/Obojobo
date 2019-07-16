@@ -1,15 +1,10 @@
 const textGroupParser = require('../textGroupParser')
 const xmlEncode = require('../xmlEncode')
+const processAttrs = require('../processAttrs')
 
 const actionButtonNodeParser = node => {
     const id = node.id ? ` id="${node.id}"` : ''
-
-    let attrs = ''
-    for (const attr in node.content) {
-        if ([attr] == "triggers" || [attr] == "textGroup" || [attr] == "actions") continue;
-        attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
-    }
-
+    const attrs = processAttrs(node.content, ['triggers', 'textGroup', 'actions'])
     const textGroupXML = textGroupParser(node.content.textGroup)
     const triggersXML = triggersParser(node.content.triggers)
 
@@ -33,10 +28,7 @@ const triggersParser = triggers => {
 
         // Parser actions in each trigger
         trigger.actions.forEach(action => {
-            let attrs = ''
-            for (const attr in action.value) {
-                attrs += ` ${[attr]}="${xmlEncode(action.value[attr])}"`
-            }
+            const attrs = processAttrs(action.value, [])
             actionsBodyXML += (
                 `<action type="${action.type}">` +
                 `<value${attrs} />` +

@@ -1,17 +1,10 @@
 const textGroupParser = require('../textGroupParser')
-const xmlEncode = require('../xmlEncode')
+const processAttrs = require('../processAttrs')
 
 const figureNodeParser = node => {
     const id = node.id ? ` id="${node.id}"` : ''
-
     const textGroupXML = textGroupParser(node.content.textGroup)
-
-    // Parser content
-    let attrs = ''
-    for (const attr in node.content) {
-        if (node.content[attr] == null || [attr] == 'textGroup') continue
-        attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
-    }
+    const attrs = processAttrs(node.content, ['textGroup'])
 
     return (
         `<Figure${attrs}${id}>` +

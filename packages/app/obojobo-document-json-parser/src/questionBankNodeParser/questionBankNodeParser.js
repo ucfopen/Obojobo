@@ -1,12 +1,8 @@
-const xmlEncode = require('../xmlEncode')
+const processAttrs = require('../processAttrs')
 
 const questionBankNodeParser = (node, childrenParser) => {
     const id = node.id ? ` id="${node.id}"` : ''
-
-    let attrs = ''
-    for (const attr in node.content) {
-        attrs += ` ${[attr]}="${xmlEncode(node.content[attr])}"`
-    }
+    const attrs = processAttrs(node.content, [])
 
     return (
         `<QuestionBank${attrs}${id}>` +

@@ -1,5 +1,5 @@
 const textGroupParser = require('../textGroupParser')
-const xmlEncode = require('../xmlEncode')
+const processAttrs = require('../processAttrs')
 
 const listNodeParser = node => {
     const id = node.id ? ` id="${node.id}"` : ''
@@ -22,19 +22,13 @@ const listStylesParser = listStyles => {
     let intentsXML = '';
     if (Array.isArray(listStyles.indents)) {
         listStyles.indents.forEach(indent => {
-            let attrs = ''
-            for (const attr in indent) {
-                attrs += ` ${[attr]}="${xmlEncode(indent[attr])}"`
-            }
+            const attrs = processAttrs(indent, [])
             intentsXML += `<indent${attrs} />`
         })
     } else {
         for (const intent in listStyles.indents) {
-            let attrs = ''
-            attrs += ` level="${[intent]}"`
-            for (const attr in listStyles.indents[intent]) {
-                attrs += ` ${[attr]}="${xmlEncode(listStyles.indents[intent][attr])}"`
-            }
+            let attrs = ` level="${intent}"`
+            attrs += processAttrs(listStyles.indents[intent], [])
             intentsXML += `<indent${attrs} />`
         }
     }

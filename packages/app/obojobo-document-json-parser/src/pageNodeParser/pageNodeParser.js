@@ -1,16 +1,8 @@
-const xmlEncode = require('../xmlEncode')
+const processAttrs = require('../processAttrs')
 
 const pageNodeParser = (node, childrenParser) => {
     const id = node.id ? ` id="${node.id}"` : ''
-
-    let attrs = '';
-    for (const attr in node.content) {
-        attrs += (
-            node.content[attr] != null ?
-            ` ${[attr]}="${xmlEncode(node.content[attr])}"` :
-            ''
-        )
-    }
+    const attrs = processAttrs(node.content, [])
 
     return (
         `<Page${attrs}${id}>` +
