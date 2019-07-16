@@ -52,9 +52,9 @@ class ViewerApp extends React.Component {
 		this.containerRef = React.createRef()
 		this.idleTimerRef = React.createRef()
 
-		Dispatcher.on('viewer:scrollToTop', payload => {
-			this.scrollToTop(payload && payload.value ? payload.value.animateScroll : false)
-		})
+		// Dispatcher.on('viewer:scrollToTop', payload => {
+		// 	this.scrollToTop(payload && payload.value ? payload.value.animateScroll : false)
+		// })
 		Dispatcher.on('getTextForVariable', this.getTextForVariable.bind(this))
 
 		const state = {
@@ -93,7 +93,7 @@ class ViewerApp extends React.Component {
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
 		this.onBeforeWindowClose = this.onBeforeWindowClose.bind(this)
-		this.onWindowClose = this.onWindowClose.bind(this)
+		// this.onWindowClose = this.onWindowClose.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 
 		this.state = state
@@ -154,7 +154,7 @@ class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose
-				window.onunload = this.onWindowClose
+				// window.onunload = this.onWindowClose
 				window.onresize = this.onResize.bind(this)
 
 				this.boundOnDelayResize = this.onDelayResize.bind(this)
@@ -204,35 +204,35 @@ class ViewerApp extends React.Component {
 		return !nextState.loading
 	}
 
-	isDOMFocusInsideNav() {
-		if (!this.navRef.current) {
-			return false
-		}
-		/* eslint-disable-next-line */
-		return ReactDOM.findDOMNode(this.navRef.current).contains(document.activeElement)
-	}
+	// isDOMFocusInsideNav() {
+	// 	if (!this.navRef.current) {
+	// 		return false
+	// 	}
+	// 	/* eslint-disable-next-line */
+	// 	return ReactDOM.findDOMNode(this.navRef.current).contains(document.activeElement)
+	// }
 
-	isNavTargetChanging(prevState) {
-		return NavUtil.getNavTarget(prevState.navState) !== NavUtil.getNavTarget(this.state.navState)
-	}
+	// isNavTargetChanging(prevState) {
+	// 	return NavUtil.getNavTarget(prevState.navState) !== NavUtil.getNavTarget(this.state.navState)
+	// }
 
-	scrollToTopIfNavTargetChanging(prevState) {
-		if (this.isNavTargetChanging(prevState)) {
-			this.scrollToTop()
-		}
-	}
+	// scrollToTopIfNavTargetChanging(prevState) {
+	// 	if (this.isNavTargetChanging(prevState)) {
+	// 		this.scrollToTop()
+	// 	}
+	// }
 
-	focusOnContentIfNavTargetChanging(prevState) {
-		const focussedItem = FocusUtil.getFocussedItem(this.state.focusState)
+	// focusOnContentIfNavTargetChanging(prevState) {
+	// 	const focussedItem = FocusUtil.getFocussedItem(this.state.focusState)
 
-		if (
-			!this.isDOMFocusInsideNav() &&
-			this.isNavTargetChanging(prevState) &&
-			focussedItem.type === null
-		) {
-			FocusUtil.focusOnNavTarget()
-		}
-	}
+	// 	if (
+	// 		!this.isDOMFocusInsideNav() &&
+	// 		// this.isNavTargetChanging(prevState) &&
+	// 		focussedItem.type === null
+	// 	) {
+	// 		FocusUtil.focusOnNavTarget()
+	// 	}
+	// }
 
 	componentDidUpdate(prevProps, prevState) {
 		// remove loading element
@@ -241,82 +241,82 @@ class ViewerApp extends React.Component {
 			if (loadingEl && loadingEl.parentElement) {
 				document.getElementById('viewer-app').classList.add('is-loaded')
 				loadingEl.parentElement.removeChild(loadingEl)
-				this.scrollToTop()
+				// this.scrollToTop()
 			}
 		}
 
-		this.focusOnContentIfNavTargetChanging(prevState)
-		this.scrollToTopIfNavTargetChanging(prevState)
+		// this.focusOnContentIfNavTargetChanging(prevState)
+		// this.scrollToTopIfNavTargetChanging(prevState)
 
 		// use Focus Store values to update DOM Focus
-		this.updateDOMFocus()
+		// this.updateDOMFocus()
 	}
 
-	updateDOMFocus() {
-		const focussedItem = FocusUtil.getFocussedItemAndClear(this.state.focusState)
+	// updateDOMFocus() {
+	// 	const focussedItem = FocusUtil.getFocussedItemAndClear(this.state.focusState)
 
-		switch (focussedItem.type) {
-			case FocusStore.TYPE_COMPONENT: {
-				return this.focusComponent(OboModel.models[focussedItem.target], focussedItem.options)
-			}
+	// 	switch (focussedItem.type) {
+	// 		case FocusStore.TYPE_COMPONENT: {
+	// 			return this.focusComponent(OboModel.models[focussedItem.target], focussedItem.options)
+	// 		}
 
-			case FocusStore.TYPE_NAV_TARGET: {
-				return this.focusComponent(
-					NavUtil.getNavTargetModel(this.state.navState),
-					focussedItem.options
-				)
-			}
+	// 		case FocusStore.TYPE_NAV_TARGET: {
+	// 			return this.focusComponent(
+	// 				NavUtil.getNavTargetModel(this.state.navState),
+	// 				focussedItem.options
+	// 			)
+	// 		}
 
-			case FocusStore.TYPE_VIEWER: {
-				return this.focusViewer(focussedItem.target)
-			}
-		}
+	// 		case FocusStore.TYPE_VIEWER: {
+	// 			return this.focusViewer(focussedItem.target)
+	// 		}
+	// 	}
 
-		return false
-	}
+	// 	return false
+	// }
 
-	focusViewer(viewerFocusTarget) {
-		switch (viewerFocusTarget) {
-			case FocusStore.VIEWER_TARGET_NAVIGATION: {
-				if (!NavUtil.isNavEnabled(this.state.navState) || !NavUtil.isNavOpen(this.state.navState)) {
-					return false
-				}
+	// focusViewer(viewerFocusTarget) {
+	// 	switch (viewerFocusTarget) {
+	// 		case FocusStore.VIEWER_TARGET_NAVIGATION: {
+	// 			if (!NavUtil.isNavEnabled(this.state.navState) || !NavUtil.isNavOpen(this.state.navState)) {
+	// 				return false
+	// 			}
 
-				this.navRef.current.focus()
+	// 			this.navRef.current.focus()
 
-				return true
-			}
-		}
+	// 			return true
+	// 		}
+	// 	}
 
-		return false
-	}
+	// 	return false
+	// }
 
-	focusComponent(model, opts) {
-		if (!model) return false
+	// focusComponent(model, opts) {
+	// 	if (!model) return false
 
-		// Save the current scroll location since focus() will scroll the page (there is a
-		// preventScroll option but it is not widely supported). Once focus is called we'll
-		// quickly reset the scroll location to what it was before the focus. This allows
-		// the smooth scroll to move from where the page was rather than scrolling from an
-		// unexpected location.
-		const currentScrollTop = this.containerRef.current.scrollTop
-		const el = model.getDomEl()
+	// 	// Save the current scroll location since focus() will scroll the page (there is a
+	// 	// preventScroll option but it is not widely supported). Once focus is called we'll
+	// 	// quickly reset the scroll location to what it was before the focus. This allows
+	// 	// the smooth scroll to move from where the page was rather than scrolling from an
+	// 	// unexpected location.
+	// 	const currentScrollTop = this.containerRef.current.scrollTop
+	// 	const el = model.getDomEl()
 
-		const Component = model.getComponentClass ? model.getComponentClass() : null
+	// 	const Component = model.getComponentClass ? model.getComponentClass() : null
 
-		if (Component && Component.focusOnContent) {
-			Component.focusOnContent(model, opts)
-		} else {
-			focus(el)
-		}
+	// 	if (Component && Component.focusOnContent) {
+	// 		Component.focusOnContent(model, opts)
+	// 	} else {
+	// 		focus(el)
+	// 	}
 
-		if (opts.animateScroll) {
-			this.containerRef.current.scrollTop = currentScrollTop
-			el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-		}
+	// 	if (opts.animateScroll) {
+	// 		this.containerRef.current.scrollTop = currentScrollTop
+	// 		el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+	// 	}
 
-		return true
-	}
+	// 	return true
+	// }
 
 	onVisibilityChange() {
 		if (document.hidden) {
@@ -352,44 +352,44 @@ class ViewerApp extends React.Component {
 		return (event.text = Common.Registry.getTextForVariable(variable, textModel, this.state))
 	}
 
-	scrollToTop(animateScroll = false) {
-		if (!this.state.model || !this.state.model.getDomEl || !this.state.model.getDomEl()) {
-			return false
-		}
+	// scrollToTop(animateScroll = false) {
+	// 	if (!this.state.model || !this.state.model.getDomEl || !this.state.model.getDomEl()) {
+	// 		return false
+	// 	}
 
-		if (animateScroll) {
-			this.state.model.getDomEl().scrollIntoView({ behavior: 'smooth', block: 'start' })
-		} else {
-			this.state.model.getDomEl().scrollIntoView()
-		}
+	// 	if (animateScroll) {
+	// 		this.state.model.getDomEl().scrollIntoView({ behavior: 'smooth', block: 'start' })
+	// 	} else {
+	// 		this.state.model.getDomEl().scrollIntoView()
+	// 	}
 
-		return true
-	}
+	// 	return true
+	// }
 
 	// === NON REACT LIFECYCLE METHODS ===
 
-	onMouseDown(event) {
-		this.clearFadeEffect(event.target)
-	}
+	// onMouseDown(event) {
+	// 	this.clearFadeEffect(event.target)
+	// }
 
-	onFocus(event) {
-		this.clearFadeEffect(event.target)
-	}
+	// onFocus(event) {
+	// 	this.clearFadeEffect(event.target)
+	// }
 
-	clearFadeEffect(el) {
-		// When focusing on another element we want to remove
-		// the focus effect if the element is not part of the focused element
+	// clearFadeEffect(el) {
+	// 	// When focusing on another element we want to remove
+	// 	// the focus effect if the element is not part of the focused element
 
-		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
+	// 	const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
 
-		if (visuallyFocussedModel) {
-			const focussedElement = visuallyFocussedModel.getDomEl()
+	// 	if (visuallyFocussedModel) {
+	// 		const focussedElement = visuallyFocussedModel.getDomEl()
 
-			if (!focussedElement || !focussedElement.contains(el)) {
-				FocusUtil.clearFadeEffect()
-			}
-		}
-	}
+	// 		if (!focussedElement || !focussedElement.contains(el)) {
+	// 			FocusUtil.clearFadeEffect()
+	// 		}
+	// 	}
+	// }
 
 	onScroll() {
 		const focusState = this.state.focusState
@@ -407,9 +407,9 @@ class ViewerApp extends React.Component {
 		if (!el) {
 			return
 		}
-		if (!DOMUtil.isElementVisible(el)) {
-			return FocusUtil.clearFadeEffect()
-		}
+		// if (!DOMUtil.isElementVisible(el)) {
+		// 	return FocusUtil.clearFadeEffect()
+		// }
 	}
 
 	onResize() {
@@ -475,14 +475,14 @@ class ViewerApp extends React.Component {
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
-	onWindowClose() {
-		APIUtil.postEvent({
-			draftId: this.state.model.get('draftId'),
-			action: 'viewer:close',
-			eventVersion: '1.0.0',
-			visitId: this.state.navState.visitId
-		})
-	}
+	// onWindowClose() {
+	// 	APIUtil.postEvent({
+	// 		draftId: this.state.model.get('draftId'),
+	// 		action: 'viewer:close',
+	// 		eventVersion: '1.0.0',
+	// 		visitId: this.state.navState.visitId
+	// 	})
+	// }
 
 	clearPreviewScores() {
 		APIUtil.clearPreviewScores({
@@ -545,7 +545,7 @@ class ViewerApp extends React.Component {
 			navTargetLabel = navTargetItem.label
 		}
 
-		const isNavEnabled = NavUtil.isNavEnabled(this.state.navState)
+		// const isNavEnabled = NavUtil.isNavEnabled(this.state.navState)
 
 		const visuallyFocussedModel = FocusUtil.getVisuallyFocussedModel(this.state.focusState)
 
@@ -566,11 +566,12 @@ class ViewerApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		const hideViewer = modalItem && modalItem.hideViewer
 
+		const { isNavEnabled } = this.props
 		const classNames = [
 			'viewer--viewer-app',
 			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
 			this.state.navState.locked ? 'is-locked-nav' : 'is-unlocked-nav',
-			this.state.navState.open ? 'is-open-nav' : 'is-closed-nav',
+			isNavEnabled ? 'is-open-nav' : 'is-closed-nav',
 			this.state.navState.disabled ? 'is-disabled-nav' : 'is-enabled-nav',
 			visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive'
 		].join(' ')
@@ -585,8 +586,8 @@ class ViewerApp extends React.Component {
 			>
 				<div
 					ref={this.containerRef}
-					onMouseDown={this.onMouseDown.bind(this)}
-					onFocus={this.onFocus.bind(this)}
+					// onMouseDown={this.onMouseDown.bind(this)}
+					// onFocus={this.onFocus.bind(this)}
 					onScroll={this.onScroll.bind(this)}
 					className={classNames}
 				>
@@ -631,10 +632,11 @@ class ViewerApp extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ oboNodeList, adjList }) => {
+const mapStateToProps = ({ oboNodeList, adjList, isNavEnabled }) => {
 	return {
 		oboNodeList,
-		adjList
+		adjList,
+		isNavEnabled
 	}
 }
 

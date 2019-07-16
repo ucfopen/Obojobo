@@ -7,7 +7,10 @@ const initialState = {
 	// List of navigation items
 	navList: [],
 	currentNavIndex: 0,
-	isNavEnabled: true
+	isNavEnabled: true,
+
+	// Index of oboNodeList
+	currentFocusNode: 14
 }
 
 const reducer = (state = initialState, action) => {
@@ -32,6 +35,11 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				isNavEnabled: !state.isNavEnabled
+			}
+		case 'UPDATE_CURRENT_FOCUS':
+			return {
+				...state,
+				currentFocusNode: action.payload.value
 			}
 		default:
 			return state
