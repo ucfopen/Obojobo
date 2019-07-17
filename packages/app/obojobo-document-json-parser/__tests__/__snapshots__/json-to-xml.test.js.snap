@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`JSON to XML Test Converts assessment.json to assessment.xml 1`] = `
+exports[`JSON to XML Parser Converts assessment.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Assessment title=\\"Assessment\\" review=\\"always\\" attempts=\\"5\\" id=\\"my-assessment\\">
@@ -213,14 +213,14 @@ exports[`JSON to XML Test Converts assessment.json to assessment.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts break.json to break.xml 1`] = `
+exports[`JSON to XML Parser Converts break.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<hr width=\\"normal\\"/>
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts code.json to code.xml 1`] = `
+exports[`JSON to XML Parser Converts code.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Code id=\\"1fbeedbe-a92d-4716-a614-9e6ce06c6804\\">
@@ -236,7 +236,7 @@ exports[`JSON to XML Test Converts code.json to code.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts content.json to content.xml 1`] = `
+exports[`JSON to XML Parser Converts content.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Content id=\\"40a16682-bcd9-44f0-aeb6-23d4cb143676\\">
@@ -244,7 +244,7 @@ exports[`JSON to XML Test Converts content.json to content.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts figure.json to figure.xml 1`] = `
+exports[`JSON to XML Parser Converts figure.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Figure alt=\\"some alt test\\" url=\\"https://today.ucf.edu/files/2013/06/knight-leaders-548x365.png\\" size=\\"custom\\" width=\\"700\\" height=\\"100\\" id=\\"a34ef066-8463-4164-a3ef-e86a77661cb1\\">
@@ -255,7 +255,7 @@ exports[`JSON to XML Test Converts figure.json to figure.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts heading.json to heading.xml 1`] = `
+exports[`JSON to XML Parser Converts heading.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Heading headingLevel=\\"1\\" id=\\"cb446cb0-1528-45a8-8f67-f344a1d044a5\\">
@@ -266,14 +266,14 @@ exports[`JSON to XML Test Converts heading.json to heading.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts iframe.json to iframe.xml 1`] = `
+exports[`JSON to XML Parser Converts iframe.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<IFrame fit=\\"scale\\" src=\\"https://www.ucf.edu/\\" type=\\"media\\" title=\\"UCF Website\\" border=\\"false\\" autoload=\\"false\\" controls=\\"reload\\" initialZoom=\\"1\\" id=\\"43010777-b961-4ebd-b906-47f374be1d81\\"/>
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts list.json to list.xml 1`] = `
+exports[`JSON to XML Parser Converts list.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<List id=\\"855c7a80-9ac8-4a5f-aa22-8305b87453d2\\">
@@ -292,14 +292,14 @@ exports[`JSON to XML Test Converts list.json to list.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts mathequation.json to mathequation.xml 1`] = `
+exports[`JSON to XML Parser Converts mathequation.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<MathEquation alt=\\"x sub one equals x sub zero plus delta x\\" label=\\"1.1\\" latex=\\"x_1 = x_0 + \\\\Delta x\\" id=\\"66ae62f9-7cde-4a7f-9164-9245e9be1b1e\\"/>
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts mcanswer.json to mcanswer.xml 1`] = `
+exports[`JSON to XML Parser Converts mcanswer.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<MCAnswer id=\\"6d1b4a2b-8a2e-46b5-ba43-5d8ebcb76ac9\\">
@@ -312,7 +312,7 @@ exports[`JSON to XML Test Converts mcanswer.json to mcanswer.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts mcassessment.json to mcassessment.xml 1`] = `
+exports[`JSON to XML Parser Converts mcassessment.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<MCAssessment shuffle=\\"true\\" responseType=\\"Pick One\\" id=\\"802ec69f-2ba2-4dad-9ba4-06372a550ddb\\">
@@ -329,7 +329,7 @@ exports[`JSON to XML Test Converts mcassessment.json to mcassessment.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts mcchoice.json to mcchoice.xml 1`] = `
+exports[`JSON to XML Parser Converts mcchoice.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<MCChoice score=\\"100\\" id=\\"98f100ac-97d5-4c62-8e4b-5346e1ae0d2d\\">
@@ -344,7 +344,7 @@ exports[`JSON to XML Test Converts mcchoice.json to mcchoice.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts mcfeedback.json to mcfeedback.xml 1`] = `
+exports[`JSON to XML Parser Converts mcfeedback.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<MCFeedback id=\\"a3c4c2cf-c2f3-4e98-8afb-02a736da72ca\\">
@@ -357,7 +357,7 @@ exports[`JSON to XML Test Converts mcfeedback.json to mcfeedback.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts module.json to module.xml 1`] = `
+exports[`JSON to XML Parser Converts module.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Module title=\\"Obojobo Visual Editor Tutorial\\" id=\\"9c7e4d32-2e5b-432e-83dc-dbbb923df3b8\\">
@@ -365,7 +365,7 @@ exports[`JSON to XML Test Converts module.json to module.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts page.json to page.xml 1`] = `
+exports[`JSON to XML Parser Converts page.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Page title=\\"Welcome to the Obojobo Visual Editor\\" id=\\"b64fdc8e-48c1-43c1-9644-747519ad14ef\\">
@@ -373,7 +373,7 @@ exports[`JSON to XML Test Converts page.json to page.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts question.json to question.xml 1`] = `
+exports[`JSON to XML Parser Converts question.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Question id=\\"c2eee86c-9c6a-480e-85c4-99a38c8e3ec0\\">
@@ -402,7 +402,7 @@ exports[`JSON to XML Test Converts question.json to question.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts questionbank.json to questionbank.xml 1`] = `
+exports[`JSON to XML Parser Converts questionbank.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<QuestionBank choose=\\"2\\" select=\\"random\\" id=\\"292faef6-debd-4b7e-b532-7f617551d04e\\">
@@ -429,7 +429,7 @@ exports[`JSON to XML Test Converts questionbank.json to questionbank.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts table.json to table.xml 1`] = `
+exports[`JSON to XML Parser Converts table.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Table numRows=\\"3\\" numCols=\\"3\\" header=\\"true\\" id=\\"640648f0-26d4-4f7f-a92a-e0c1f75141a6\\">
@@ -448,7 +448,7 @@ exports[`JSON to XML Test Converts table.json to table.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts text.json to text.xml 1`] = `
+exports[`JSON to XML Parser Converts text.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<Text id=\\"6b0dc582-4758-47e2-af17-1c920d59d255\\">
@@ -459,7 +459,7 @@ exports[`JSON to XML Test Converts text.json to text.xml 1`] = `
 </ObojoboDraftDoc>"
 `;
 
-exports[`JSON to XML Test Converts youtube.json to youtube.xml 1`] = `
+exports[`JSON to XML Parser Converts youtube.json to xml 1`] = `
 "<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>
 <ObojoboDraftDoc>
 	<YouTube videoId=\\"gJ390e5sjHk\\" id=\\"6c869d71-71b7-456b-b0f5-aafa1b17a450\\"/>
