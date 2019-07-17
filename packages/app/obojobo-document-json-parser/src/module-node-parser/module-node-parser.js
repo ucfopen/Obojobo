@@ -1,15 +1,11 @@
 const processAttrs = require('../process-attrs')
 
 const moduleNodeParser = (node, childrenParser) => {
-    const id = node.id ? ` id="${node.id}"` : ''
+	const id = node.id ? ` id="${node.id}"` : ''
 
-    const attrs = processAttrs(node.content, [])
+	const attrs = processAttrs(node.content, [])
 
-    return (
-        `<Module${attrs}${id}>` +
-        childrenParser(node.children) +
-        `</Module>`
-    )
+	return `<Module${attrs}${id}>` + childrenParser(node.children) + `</Module>`
 }
 
 module.exports = moduleNodeParser

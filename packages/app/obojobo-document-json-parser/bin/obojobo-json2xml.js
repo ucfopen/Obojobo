@@ -4,7 +4,7 @@
 const path = require('path')
 const jsonToXml = require('../json-to-xml-parser')
 
-if(process.argv.length !== 3){
+if (process.argv.length !== 3) {
 	console.error('Usage: obojobo-json2xml.js <path-to-json-file.json>')
 	console.error(`Recieved ${process.argv.length - 2} arguments, expected 1`)
 	process.exit(1)

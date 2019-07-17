@@ -17,7 +17,24 @@
     "convertJsonToXml": "obojobo-json2xml examples/test-object.json > test-object.xml",
     "lint": "yarn lint:js && yarn lint:css",
     "lint:js": "eslint .",
-    "lint:css": "echo 'not implemented'"
+    "lint:css": "echo 'not implemented'",
+    "prettier:run": "prettier --write '**/*.{js,scss}'",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.js": [
+      "eslint"
+    ],
+    "**/*.{js}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": false,
+    "useTabs": true,
+    "singleQuote": true
   },
   "bin": {
     "obojobo-json2xml": "./bin/obojobo-json2xml.js"
