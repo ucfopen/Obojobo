@@ -51,7 +51,7 @@ describe('Question', () => {
 		const res = question.onAttemptEnd({}, {}, mockAssessment, [], currentAttempt)
 		expect(res).toEqual(undefined)
 		expect(question.yell).not.toHaveBeenCalled()
-		expect(currentAttempt.addScore).not.toHaveBeenCalled()
+		expect(currentAttempt.addScore).toHaveBeenCalledWith('mockQuestion', 'no-score')
 	})
 
 	test('calls addScore to 0 and does not yell if no response found', () => {

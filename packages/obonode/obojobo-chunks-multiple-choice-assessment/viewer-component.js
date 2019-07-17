@@ -28,6 +28,8 @@ const PICK_ALL_INCORRECT_MESSAGE =
 
 const ANIMATION_TRANSITION_TIME_MS = 800
 
+const FEEDBACK_LABELS_TO_SHOW = 'feedbackLabelsToShow'
+
 const FOCUS_TARGET_EXPLANATION = 'explanation'
 const FOCUS_TARGET_RESULTS = 'results'
 const FOCUS_TARGET_QUESTION = 'question'
@@ -36,7 +38,6 @@ export default class MCAssessment extends React.Component {
 	constructor(props) {
 		super(props)
 		this.answerChoicesRef = React.createRef()
-		const { correctLabels, incorrectLabels } = this.props.model.modelState
 
 		this.onClickShowExplanation = this.onClickShowExplanation.bind(this)
 		this.onClickHideExplanation = this.onClickHideExplanation.bind(this)
@@ -45,15 +46,8 @@ export default class MCAssessment extends React.Component {
 		this.onFormSubmit = this.onFormSubmit.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
+		// this.labelsToShow = null
 
-		const isReview = this.props.mode === 'review'
-		const isSurvey = this.props.type === 'survey'
-		const isAnswered = this.getResponseData().responses.size >= 1 // An answer choice was selected
-
-		this.correctLabels = this.getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered)
-		this.incorrectLabels = this.getIncorrectLabels(incorrectLabels, isReview)
-
-		this.updateFeedbackLabels()
 		this.sortIds()
 	}
 
@@ -274,7 +268,13 @@ export default class MCAssessment extends React.Component {
 			this.props.moduleData.navState.context
 		)
 
-		this.updateFeedbackLabels()
+		// Clear out labels so they are reselected
+		// this.labelsToShow = null
+		QuestionUtil.clearData(
+			questionModel.get('id'),
+			this.props.moduleData.navState.context,
+			FEEDBACK_LABELS_TO_SHOW
+		)
 
 		if (questionModel.modelState.type === 'survey') {
 			QuestionUtil.submitResponse(questionModel.get('id'), this.props.moduleData.navState.context)
@@ -285,6 +285,18 @@ export default class MCAssessment extends React.Component {
 
 	getScore() {
 		return QuestionUtil.getScoreForModel(
+			this.props.moduleData.questionState,
+			this.getQuestionModel(),
+			this.props.moduleData.navState.context
+		)
+	}
+
+	getScoreClass() {
+		return QuestionUtil.getScoreClass(this.getScore())
+	}
+
+	getIsAnswered() {
+		return QuestionUtil.isAnswered(
 			this.props.moduleData.questionState,
 			this.getQuestionModel(),
 			this.props.moduleData.navState.context
@@ -334,9 +346,15 @@ export default class MCAssessment extends React.Component {
 		}
 	}
 
-	updateFeedbackLabels() {
-		this.correctLabelToShow = this.getRandomItem(this.correctLabels)
-		this.incorrectLabelToShow = this.getRandomItem(this.incorrectLabels)
+	getFeedbackLabels(isReview, isSurvey, isAnswered) {
+		const { correctLabels, incorrectLabels } = this.props.model.modelState
+
+		return {
+			correct: this.getRandomItem(
+				this.getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered)
+			),
+			incorrect: this.getRandomItem(this.getIncorrectLabels(incorrectLabels, isReview))
+		}
 	}
 
 	getRandomItem(arrayOfOptions) {
@@ -433,10 +451,30 @@ export default class MCAssessment extends React.Component {
 		const isShowingExplanationValue = this.isShowingExplanation()
 		const isShowingExplanationButtonValue = this.isShowingExplanationButton()
 		const score = this.getScore()
+		const scoreClass = this.getScoreClass()
 		const sortedChoiceModels = this.getSortedChoiceModels()
-		const isAnswered = this.getResponseData().responses.size >= 1 // An answer choice was selected
+		// const isAnswered = this.getResponseData().responses.size >= 1 // An answer choice was selected
+		const isAnswered = this.getIsAnswered()
 		const isReview = this.props.mode === 'review'
+		const isSurvey = this.props.type === 'survey'
 		const isAssessmentQuestion = this.props.mode === 'assessment'
+
+		let labelsToShow = QuestionUtil.getData(
+			this.props.moduleData.questionState,
+			this.getQuestionModel(),
+			this.props.moduleData.navState.context,
+			FEEDBACK_LABELS_TO_SHOW
+		)
+
+		if (!labelsToShow) {
+			labelsToShow = this.getFeedbackLabels(isReview, isSurvey, isAnswered)
+			QuestionUtil.setData(
+				this.getQuestionModel().get('id'),
+				this.props.moduleData.navState.context,
+				FEEDBACK_LABELS_TO_SHOW,
+				labelsToShow
+			)
+		}
 
 		const className =
 			'obojobo-draft--chunks--mc-assessment' +
@@ -444,7 +482,7 @@ export default class MCAssessment extends React.Component {
 			` is-mode-${this.props.mode}` +
 			` is-type-${this.props.type}` +
 			isOrNot(isAnswered, 'answered') +
-			isOrNot(score === 100, 'correct') +
+			` ${scoreClass}` +
 			isOrNot(isShowingExplanationValue, 'showing-explanation') +
 			isOrNot(score !== null, 'scored')
 
@@ -472,8 +510,8 @@ export default class MCAssessment extends React.Component {
 						mode={this.props.mode}
 						type={this.props.type}
 						moduleData={this.props.moduleData}
-						correctLabel={this.correctLabelToShow}
-						incorrectLabel={this.incorrectLabelToShow}
+						correctLabel={labelsToShow.correct}
+						incorrectLabel={labelsToShow.incorrect}
 						pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
 					/>
 					{!isAssessmentQuestion ? (
@@ -483,8 +521,8 @@ export default class MCAssessment extends React.Component {
 							mode={this.props.mode}
 							type={this.props.type}
 							isTypePickAll={isTypePickAll}
-							correctLabel={this.correctLabelToShow}
-							incorrectLabel={this.incorrectLabelToShow}
+							correctLabel={labelsToShow.correct}
+							incorrectLabel={labelsToShow.incorrect}
 							pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
 							onClickReset={this.onClickReset}
 						/>

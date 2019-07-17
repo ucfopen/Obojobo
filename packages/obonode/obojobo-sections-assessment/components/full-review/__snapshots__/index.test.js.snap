@@ -166,7 +166,9 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
             <div>
                out of 
               1
-               questions correct
+               question
+              
+               correct
             </div>
             <div>
               Attempt Score: 
@@ -201,7 +203,7 @@ exports[`FullReview FullReview component with assessment review context 1`] = `
         </p>
         <div
           aria-label="Question"
-          className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-review is-type-default"
+          className="component obojobo-draft--chunks--question is-not-scored is-active is-mode-review is-type-default is-not-answered"
           data-focussed={false}
           data-id="question"
           data-obo-component={true}
@@ -296,6 +298,37 @@ exports[`FullReview FullReview component with fully displayed attempt 1`] = `
 `;
 
 exports[`FullReview FullReview component with highest attempt 1`] = `
+<div
+  className="attempt-review-container"
+>
+  <div
+    className="attempt-button-container is-showing-one-item"
+  >
+    <div
+      className="obojobo-draft--components--button-bar"
+    >
+      <div
+        className="is-selected"
+      >
+        <div
+          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+        >
+          <button
+            aria-label="Attempt 3"
+            aria-selected={true}
+            className="button"
+            onClick={[Function]}
+          >
+            3
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`FullReview FullReview component with highest attempt 2 1`] = `
 <div
   className="attempt-review-container"
 >

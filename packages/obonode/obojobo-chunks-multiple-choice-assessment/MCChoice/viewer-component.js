@@ -41,14 +41,19 @@ const choiceIsSelected = (questionState, model, navStateContext) => {
 
 const getQuestionModel = model => model.getParentOfType(QUESTION_TYPE)
 
-const answerIsCorrect = (model, isReview, questionState, navStateContext) => {
-	let score
+const getQuestionScore = (model, isReview, questionState, navStateContext) => {
+	const questionModel = getQuestionModel(model)
+
 	if (isReview) {
-		score = QuestionUtil.getScoreForModel(questionState, getQuestionModel(model), navStateContext)
-	} else {
-		score = model.modelState.score
+		return QuestionUtil.getScoreForModel(questionState, questionModel, navStateContext)
 	}
-	return score === 100
+
+	// Override any score property if this is for a survey type question
+	if (questionModel.modelState.type === 'survey') {
+		return 'no-score'
+	}
+
+	return model.modelState.score
 }
 
 const renderAnswerFlag = type => {
@@ -110,7 +115,10 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	return UNCHOSEN_CORRECTLY
 }
 
-const getChoiceText = (isCorrect, isTypePickAll) => {
+const getChoiceText = (score, isTypePickAll) => {
+	const isCorrect = score === 100
+
+	if (score === 'no-score') return 'Your response:'
 	if (isTypePickAll && isCorrect) return 'A correct response:'
 	if (isTypePickAll && !isCorrect) return 'An incorrect response:'
 	if (!isTypePickAll && isCorrect) return 'Your correct response:'
@@ -118,10 +126,10 @@ const getChoiceText = (isCorrect, isTypePickAll) => {
 }
 
 const MCChoice = props => {
-	let isCorrect
+	let score
 
 	try {
-		isCorrect = answerIsCorrect(
+		score = getQuestionScore(
 			props.model,
 			props.mode === 'review',
 			props.moduleData.questionState,
@@ -140,7 +148,7 @@ const MCChoice = props => {
 		props.moduleData.navState.context
 	)
 
-	const ansType = getAnsType(props.model, isCorrect, isSelected)
+	const ansType = getAnsType(props.model, score === 100, isSelected)
 	const inputType = getInputType(props.responseType)
 
 	let flag
@@ -151,7 +159,7 @@ const MCChoice = props => {
 	const className =
 		'obojobo-draft--chunks--mc-assessment--mc-choice' +
 		isOrNot(isSelected, 'selected') +
-		isOrNot(isCorrect, 'correct') +
+		isOrNot(score === 100, 'correct') +
 		` is-type-${ansType}` +
 		` is-mode-${props.mode}`
 
@@ -174,7 +182,7 @@ const MCChoice = props => {
 			/>
 			{isSelected && props.questionSubmitted && props.type !== 'review' ? (
 				<span className="for-screen-reader-only">
-					{getChoiceText(isCorrect, props.responseType === 'pick-all')}
+					{getChoiceText(score, props.responseType === 'pick-all')}
 				</span>
 			) : null}
 			<div className="children">

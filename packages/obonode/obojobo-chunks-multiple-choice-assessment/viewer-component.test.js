@@ -11,11 +11,23 @@ import React from 'react'
 import _ from 'underscore'
 import renderer from 'react-test-renderer'
 
+const { getScoreClass } = require.requireActual(
+	'obojobo-document-engine/src/scripts/viewer/util/question-util'
+).default
+
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')
 jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
+
+const DEFAULT_CORRECT_PRACTICE_LABELS = ['Correct!', 'You got it!', 'Great job!', "That's right!"]
+const DEFAULT_CORRECT_REVIEW_LABELS = ['Correct']
+const DEFAULT_INCORRECT_LABELS = ['Incorrect']
+const DEFAULT_INCORRECT_REVIEW_LABELS = ['Incorrect']
+const DEFAULT_SURVEY_LABELS = ['Response recorded']
+const DEFAULT_SURVEY_REVIEW_LABELS = ['Response recorded']
+const DEFAULT_SURVEY_UNANSWERED_LABELS = ['No response given']
 
 const MCCHOICE_NODE_TYPE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 const TYPE_PICK_ONE = 'pick-one'
@@ -167,8 +179,6 @@ const createComponent = ({
 	hasSolution = true,
 	sortedIds = ['choice1', 'choice2'],
 	response = null, //null or { ids: [some array] }
-	correctLabels = null, //not defined or an array
-	incorrectLabels = null, //not defined or an array
 	responseType = 'pick-one', //'pick-one', 'pick-one-multiple-correct' or 'pick-all'
 	shuffle = true, //true or false or not set
 	isShowingExplanation = null //true or false or not set
@@ -188,12 +198,6 @@ const createComponent = ({
 	if (!hasSolution) parent.modelState.solution = null
 	const model = parent.children.models[0]
 
-	if (correctLabels) {
-		model.modelState.correctLabels = correctLabels
-	}
-	if (incorrectLabels) {
-		model.modelState.incorrectLabels = incorrectLabels
-	}
 	if (responseType) {
 		model.modelState.responseType = responseType
 	}
@@ -205,8 +209,20 @@ const createComponent = ({
 	}
 
 	QuestionUtil.getScoreForModel.mockReturnValue(score)
+	QuestionUtil.isAnswered.mockReturnValue(score !== null)
 	QuestionUtil.getResponse.mockReturnValue(response)
-	QuestionUtil.getData.mockReturnValue(sortedIds)
+	QuestionUtil.getData.mockImplementation((state, model, context, key) => {
+		switch (key) {
+			case 'sortedIds':
+				return sortedIds
+
+			case 'feedbackLabelsToShow':
+				return {
+					correct: 'CORRECT_LABEL',
+					incorrect: 'INCORRECT_LABEL'
+				}
+		}
+	})
 
 	return renderer.create(
 		<MCAssessment model={model} moduleData={moduleData} mode={mode} type={type} />
@@ -218,6 +234,7 @@ let originalGetRandomItem
 describe('MCAssessment', () => {
 	beforeAll(() => {
 		_.shuffle = a => a
+		QuestionUtil.getScoreClass = getScoreClass
 	})
 	beforeEach(() => {
 		jest.resetAllMocks()
@@ -233,15 +250,6 @@ describe('MCAssessment', () => {
 	// MCAssessment component tests
 	test('MCAssessment component', () => {
 		expect(createComponent({}).toJSON()).toMatchSnapshot()
-	})
-
-	test('Component with labels', () => {
-		expect(
-			createComponent({
-				correctLabels: ['mockCorrectLabels'],
-				incorrectLabels: ['mockIncorrectLabels']
-			}).toJSON()
-		).toMatchSnapshot()
 	})
 
 	test('Component not shuffled', () => {
@@ -367,16 +375,6 @@ describe('MCAssessment', () => {
 	test('MCAssessment component, review', () => {
 		expect(
 			createComponent({
-				mode: 'review'
-			}).toJSON()
-		).toMatchSnapshot()
-	})
-
-	test('Component with labels, review', () => {
-		expect(
-			createComponent({
-				correctLabels: ['mockCorrectLabels'],
-				incorrectLabels: ['mockIncorrectLabels'],
 				mode: 'review'
 			}).toJSON()
 		).toMatchSnapshot()
@@ -523,16 +521,6 @@ describe('MCAssessment', () => {
 		).toMatchSnapshot()
 	})
 
-	test('Component with labels, assessment', () => {
-		expect(
-			createComponent({
-				correctLabels: ['mockCorrectLabels'],
-				incorrectLabels: ['mockIncorrectLabels'],
-				mode: 'assessment'
-			}).toJSON()
-		).toMatchSnapshot()
-	})
-
 	test('Component not shuffled, assessment', () => {
 		expect(
 			createComponent({
@@ -674,16 +662,6 @@ describe('MCAssessment', () => {
 		).toMatchSnapshot()
 	})
 
-	test('Component with labels (survey)', () => {
-		expect(
-			createComponent({
-				correctLabels: ['mockCorrectLabels'],
-				incorrectLabels: ['mockIncorrectLabels'],
-				type: 'survey'
-			}).toJSON()
-		).toMatchSnapshot()
-	})
-
 	test('Component not shuffled (survey)', () => {
 		expect(
 			createComponent({
@@ -755,17 +733,6 @@ describe('MCAssessment', () => {
 	test('MCAssessment component, review (survey)', () => {
 		expect(
 			createComponent({
-				mode: 'review',
-				type: 'survey'
-			}).toJSON()
-		).toMatchSnapshot()
-	})
-
-	test('Component with labels, review (survey)', () => {
-		expect(
-			createComponent({
-				correctLabels: ['mockCorrectLabels'],
-				incorrectLabels: ['mockIncorrectLabels'],
 				mode: 'review',
 				type: 'survey'
 			}).toJSON()
@@ -850,17 +817,6 @@ describe('MCAssessment', () => {
 	test('MCAssessment component, assessment (survey)', () => {
 		expect(
 			createComponent({
-				mode: 'assessment',
-				type: 'survey'
-			}).toJSON()
-		).toMatchSnapshot()
-	})
-
-	test('Component with labels, assessment (survey)', () => {
-		expect(
-			createComponent({
-				correctLabels: ['mockCorrectLabels'],
-				incorrectLabels: ['mockIncorrectLabels'],
 				mode: 'assessment',
 				type: 'survey'
 			}).toJSON()
@@ -1889,7 +1845,17 @@ describe('MCAssessment', () => {
 		])
 	})
 
-	test('updateFeedbackLabels gets random values for labels', () => {
+	test('getFeedbackLabels returns an object with two selected feedback labels', () => {
+		const getRandomItemSpy = jest
+			.spyOn(MCAssessment.prototype, 'getRandomItem')
+			.mockImplementation(a => a[0])
+		const getCorrectLabelsSpy = jest
+			.spyOn(MCAssessment.prototype, 'getCorrectLabels')
+			.mockReturnValue(['correct'])
+		const getIncorrectLabelsSpy = jest
+			.spyOn(MCAssessment.prototype, 'getIncorrectLabels')
+			.mockReturnValue(['incorrect'])
+
 		const moduleData = {
 			questionState: 'mockQuestionState',
 			navState: {
@@ -1899,23 +1865,78 @@ describe('MCAssessment', () => {
 		}
 		const parent = OboModel.create(questionJSON)
 		const model = parent.children.models[0]
-		const correctLabels = ['mockCorrectLabel', 'mockAnotherCorrectLabel']
-		const incorrectLabels = ['mockIncorrectLabel', 'mockAnotherIncorrectLabel']
+		model.modelState.correctLabels = 'mock-correct-labels'
+		model.modelState.incorrectLabels = 'mock-incorrect-labels'
 
 		QuestionUtil.getData.mockReturnValueOnce(false)
 
-		const component = shallow(
+		const component = mount(
 			<MCAssessment model={model} moduleData={moduleData} mode="assessment" type="default" />
 		)
 
-		const object = component.instance()
-		object.correctLabels = correctLabels
-		object.incorrectLabels = incorrectLabels
-		object.updateFeedbackLabels()
+		expect(
+			component.instance().getFeedbackLabels('mock-is-review', 'mock-is-survey', 'mock-is-answered')
+		).toEqual({
+			correct: 'correct',
+			incorrect: 'incorrect'
+		})
 
-		expect(correctLabels).toContain(object.correctLabelToShow)
-		expect(incorrectLabels).toContain(object.incorrectLabelToShow)
+		expect(getCorrectLabelsSpy).toHaveBeenCalledWith(
+			model.modelState.correctLabels,
+			'mock-is-review',
+			'mock-is-survey',
+			'mock-is-answered'
+		)
+		expect(getIncorrectLabelsSpy).toHaveBeenCalledWith(
+			model.modelState.incorrectLabels,
+			'mock-is-review'
+		)
+
+		getRandomItemSpy.mockRestore()
+		getCorrectLabelsSpy.mockRestore()
+		getIncorrectLabelsSpy.mockRestore()
 	})
+
+	test.each([
+		//clbl,review,survey,answrd,expected
+		[null, false, false, false, DEFAULT_CORRECT_PRACTICE_LABELS],
+		[null, false, false, true, DEFAULT_CORRECT_PRACTICE_LABELS],
+		[null, false, true, false, DEFAULT_SURVEY_LABELS],
+		[null, false, true, true, DEFAULT_SURVEY_LABELS],
+		[null, true, false, false, DEFAULT_CORRECT_REVIEW_LABELS],
+		[null, true, false, true, DEFAULT_CORRECT_REVIEW_LABELS],
+		[null, true, true, false, DEFAULT_SURVEY_UNANSWERED_LABELS],
+		[null, true, true, true, DEFAULT_SURVEY_REVIEW_LABELS],
+		[['mock-correct-labels'], false, false, false, ['mock-correct-labels']],
+		[['mock-correct-labels'], false, false, true, ['mock-correct-labels']],
+		[['mock-correct-labels'], false, true, false, ['mock-correct-labels']],
+		[['mock-correct-labels'], false, true, true, ['mock-correct-labels']],
+		[['mock-correct-labels'], true, false, false, ['mock-correct-labels']],
+		[['mock-correct-labels'], true, false, true, ['mock-correct-labels']],
+		[['mock-correct-labels'], true, true, false, ['mock-correct-labels']],
+		[['mock-correct-labels'], true, true, true, ['mock-correct-labels']]
+	])(
+		'getCorrectLabels(correctLabels=%s, isReview=%s, isSurvey=%s, isAnswered=%s) = %s',
+		(correctLabels, isReview, isSurvey, isAnswered, expectedResult) => {
+			expect(
+				MCAssessment.prototype.getCorrectLabels(correctLabels, isReview, isSurvey, isAnswered)
+			).toEqual(expectedResult)
+		}
+	)
+
+	test.each([
+		[null, false, DEFAULT_INCORRECT_LABELS],
+		[null, true, DEFAULT_INCORRECT_REVIEW_LABELS],
+		[['mock-incorrect-labels'], false, ['mock-incorrect-labels']],
+		[['mock-incorrect-labels'], true, ['mock-incorrect-labels']]
+	])(
+		'getIncorrectLabels(incorrectLabels=%s, isReview=%s, isSurvey=%s, isAnswered=%s) = %s',
+		(incorrectLabels, isReview, expectedResult) => {
+			expect(MCAssessment.prototype.getIncorrectLabels(incorrectLabels, isReview)).toEqual(
+				expectedResult
+			)
+		}
+	)
 
 	test('getRandomItem gets random values from array', () => {
 		MCAssessment.prototype.getRandomItem = originalGetRandomItem

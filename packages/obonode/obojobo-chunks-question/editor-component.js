@@ -11,19 +11,23 @@ const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
 class Question extends React.Component {
 	onSetType(event) {
-		const content = this.props.node.data.get('content')
-
-		content.type = event.target.value
+		const questionData = this.props.node.data
+		const questionDataContent = questionData.get('content')
+		const mcAssessmentNode = this.props.node.nodes.get(1)
+		const mcAssessmentData = mcAssessmentNode.data
 
 		this.props.editor.setNodeByKey(this.props.node.key, {
 			data: {
-				content
+				content: {
+					...questionDataContent,
+					type: event.target.value
+				}
 			}
 		})
 
-		const mcAss = this.props.node.nodes.get(1)
-		this.props.editor.setNodeByKey(mcAss.key, {
+		this.props.editor.setNodeByKey(mcAssessmentNode.key, {
 			data: {
+				...mcAssessmentData,
 				questionType: event.target.value
 			}
 		})

@@ -7,15 +7,7 @@ const MCAssessmentResults = props => {
 	const isForScreenReader = props.isForScreenReader
 	const isCorrect = score === 100
 
-	if (isModeSurvey && isForScreenReader) {
-		return (
-			<div className="result-container">
-				<p className="result survey">{`${
-					props.correctLabel
-				} - Your response was recorded for this question.`}</p>
-			</div>
-		)
-	} else if (isModeSurvey && !isForScreenReader) {
+	if (isModeSurvey) {
 		return (
 			<div className="result-container">
 				<p className="result survey">{props.correctLabel}</p>

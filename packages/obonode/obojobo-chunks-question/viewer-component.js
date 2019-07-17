@@ -95,6 +95,12 @@ export default class Question extends React.Component {
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
+		const scoreClass = QuestionUtil.getScoreClass(score)
+		const isAnswered = QuestionUtil.isAnswered(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
 		const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
 		const AssessmentComponent = assessment.getComponentClass()
 		let viewState
@@ -108,25 +114,6 @@ export default class Question extends React.Component {
 			)
 		}
 
-		let scoreClassName
-		switch (score) {
-			case null:
-				scoreClassName = ''
-				break
-
-			case 'no-score':
-				scoreClassName = ' is-no-score'
-				break
-
-			case 100:
-				scoreClassName = ' is-correct'
-				break
-
-			default:
-				scoreClassName = ' is-not-correct'
-				break
-		}
-
 		let startQuestionAriaLabel
 		if (mode === 'practice') {
 			startQuestionAriaLabel = 'Try Question'
@@ -137,10 +124,11 @@ export default class Question extends React.Component {
 
 		const classNames =
 			'obojobo-draft--chunks--question' +
-			scoreClassName +
+			` ${scoreClass}` +
 			` is-${viewState}` +
 			` is-type-${type}` +
 			` is-mode-${mode}` +
+			isOrNot(isAnswered, 'answered') +
 			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
@@ -181,16 +169,22 @@ export default class Question extends React.Component {
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-
+		const scoreClass = QuestionUtil.getScoreClass(score)
+		const isAnswered = QuestionUtil.isAnswered(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
 		const mode = this.getMode()
 		const type = this.props.model.modelState.type
 
 		const className =
 			'obojobo-draft--chunks--question' +
-			isOrNot(score === 100, 'correct') +
+			` ${scoreClass}` +
 			' is-active' +
 			` is-mode-${mode}` +
-			` is-type-${type}`
+			` is-type-${type}` +
+			isOrNot(isAnswered, 'answered')
 
 		return (
 			<OboComponent

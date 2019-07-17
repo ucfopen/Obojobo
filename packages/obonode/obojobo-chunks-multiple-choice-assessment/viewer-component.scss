@@ -2,6 +2,7 @@
 
 .component.obojobo-draft--chunks--mc-assessment {
 	$color-border: transparentize($color-shadow, 0.25);
+	$color-survey: #48b8b9;
 
 	@keyframes obojobo-draft--chunks--mc-assessment--fadein {
 		0% {
@@ -488,7 +489,7 @@
 
 		&.is-type-chosen-survey {
 			background-color: $color-survey;
-			color: white;
+			color: $color-bg;
 
 			&::before,
 			&::after {

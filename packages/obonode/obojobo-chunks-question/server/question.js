@@ -21,6 +21,7 @@ class Question extends DraftNode {
 
 		// Survey type questions have no score:
 		if (this.node.content.type && this.node.content.type.toLowerCase() === 'survey') {
+			currentAttempt.addScore(this.node.id, 'no-score')
 			return
 		}
 

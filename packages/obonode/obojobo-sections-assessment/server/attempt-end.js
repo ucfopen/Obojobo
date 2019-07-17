@@ -225,14 +225,17 @@ const getCalculatedScores = (
 }
 
 const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
-	const numGradedQuestions = Object.keys(scoreInfo.scoresByQuestionId).length
-
+	// Collect ids and scores for all questions
 	const questionScores = scoreInfo.questions.map(question => ({
 		id: question.id,
 		score: scoreInfo.scoresByQuestionId[question.id] || 0
 	}))
 
-	const attemptScore = questionScores.reduce((acc, s) => acc + s.score, 0) / numGradedQuestions
+	// Filter out survey ('no-score') questions:
+	const gradableQuestionScores = questionScores.filter(q => Number.isFinite(q.score))
+
+	const attemptScore =
+		gradableQuestionScores.reduce((acc, s) => acc + s.score, 0) / gradableQuestionScores.length
 
 	const allScores = attemptHistory
 		.map(attempt => parseFloat(attempt.result.attemptScore))

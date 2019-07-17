@@ -3,7 +3,7 @@
 exports[`Question Question in assessment answered correctly (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-active is-mode-assessment is-type-default"
+  className="component obojobo-draft--chunks--question is-correct is-active is-mode-assessment is-type-default is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -34,7 +34,7 @@ exports[`Question Question in assessment answered correctly (content only) 1`] =
 exports[`Question Question in assessment answered correctly 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-type-default is-mode-assessment is-not-flipping"
+  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-type-default is-mode-assessment is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -53,7 +53,7 @@ exports[`Question Question in assessment answered correctly 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-answered is-correct is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -87,9 +87,9 @@ exports[`Question Question in assessment answered correctly 1`] = `
                 className="result-container"
               >
                 <p
-                  className="result incorrect"
+                  className="result correct"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  mock-correct-labels - You received a 100% on this question.
                 </p>
               </div>
             </div>
@@ -137,7 +137,7 @@ exports[`Question Question in assessment answered correctly 1`] = `
 exports[`Question Question in assessment answered incorrectly (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-assessment is-type-default"
+  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-assessment is-type-default is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -168,7 +168,7 @@ exports[`Question Question in assessment answered incorrectly (content only) 1`]
 exports[`Question Question in assessment answered incorrectly 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-type-default is-mode-assessment is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-type-default is-mode-assessment is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -187,7 +187,7 @@ exports[`Question Question in assessment answered incorrectly 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-answered is-not-correct is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -223,7 +223,7 @@ exports[`Question Question in assessment answered incorrectly 1`] = `
                 <p
                   className="result incorrect"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  Incorrect - You received a 0% on this question.
                 </p>
               </div>
             </div>
@@ -271,7 +271,7 @@ exports[`Question Question in assessment answered incorrectly 1`] = `
 exports[`Question Question in assessment not answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-assessment is-type-default"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-mode-assessment is-type-default is-not-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -302,7 +302,7 @@ exports[`Question Question in assessment not answered (content only) 1`] = `
 exports[`Question Question in assessment not answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-mockViewState is-type-default is-mode-assessment is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-default is-mode-assessment is-not-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -321,7 +321,7 @@ exports[`Question Question in assessment not answered 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-default is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -350,35 +350,9 @@ exports[`Question Question in assessment not answered 1`] = `
             <div
               className="for-screen-reader-only"
               tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a undefined% on this question.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-            >
-              <button
-                className="button"
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
             />
           </div>
+          <span />
         </fieldset>
       </form>
     </div>
@@ -405,7 +379,7 @@ exports[`Question Question in assessment not answered 1`] = `
 exports[`Question Question in practice answered correctly (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-active is-mode-practice is-type-default"
+  className="component obojobo-draft--chunks--question is-correct is-active is-mode-practice is-type-default is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -436,7 +410,7 @@ exports[`Question Question in practice answered correctly (content only) 1`] = `
 exports[`Question Question in practice answered correctly 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-type-default is-mode-practice is-not-flipping"
+  className="component obojobo-draft--chunks--question is-correct is-mockViewState is-type-default is-mode-practice is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -455,7 +429,7 @@ exports[`Question Question in practice answered correctly 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-answered is-correct is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -489,9 +463,9 @@ exports[`Question Question in practice answered correctly 1`] = `
                 className="result-container"
               >
                 <p
-                  className="result incorrect"
+                  className="result correct"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  mock-correct-labels - You received a 100% on this question.
                 </p>
               </div>
             </div>
@@ -519,9 +493,9 @@ exports[`Question Question in practice answered correctly 1`] = `
               className="result-container"
             >
               <p
-                className="result incorrect"
+                className="result correct"
               >
-                Incorrect
+                mock-correct-labels
               </p>
             </div>
           </div>
@@ -568,7 +542,7 @@ exports[`Question Question in practice answered correctly 1`] = `
 exports[`Question Question in practice answered incorrectly (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice is-type-default"
+  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice is-type-default is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -599,7 +573,7 @@ exports[`Question Question in practice answered incorrectly (content only) 1`] =
 exports[`Question Question in practice answered incorrectly 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-type-default is-mode-practice is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-correct is-mockViewState is-type-default is-mode-practice is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -618,7 +592,7 @@ exports[`Question Question in practice answered incorrectly 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-answered is-not-correct is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -654,7 +628,7 @@ exports[`Question Question in practice answered incorrectly 1`] = `
                 <p
                   className="result incorrect"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  Incorrect - You received a 0% on this question.
                 </p>
               </div>
             </div>
@@ -731,7 +705,7 @@ exports[`Question Question in practice answered incorrectly 1`] = `
 exports[`Question Question in practice not answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice is-type-default"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-mode-practice is-type-default is-not-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -762,7 +736,7 @@ exports[`Question Question in practice not answered (content only) 1`] = `
 exports[`Question Question in practice not answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-mockViewState is-type-default is-mode-practice is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-default is-mode-practice is-not-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -781,7 +755,7 @@ exports[`Question Question in practice not answered 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-default is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -810,17 +784,7 @@ exports[`Question Question in practice not answered 1`] = `
             <div
               className="for-screen-reader-only"
               tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a undefined% on this question.
-                </p>
-              </div>
-            </div>
+            />
           </div>
           <div
             className="submit-and-result-container"
@@ -829,45 +793,18 @@ exports[`Question Question in practice not answered 1`] = `
               className="submit"
             >
               <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+                className="obojobo-draft--components--button is-not-dangerous align-center"
               >
                 <button
-                  aria-label="Try Question Again"
                   className="button"
-                  onClick={[Function]}
+                  disabled={true}
                 >
-                  Try Again
+                  Check Your Answer
                 </button>
               </div>
             </div>
-            <div
-              aria-hidden="true"
-              className="result-container"
-            >
-              <p
-                className="result incorrect"
-              >
-                Incorrect
-              </p>
-            </div>
           </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-            >
-              <button
-                className="button"
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
-            />
-          </div>
+          <span />
         </fieldset>
       </form>
     </div>
@@ -894,7 +831,7 @@ exports[`Question Question in practice not answered 1`] = `
 exports[`Question Question in review answered correctly (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-active is-mode-review is-type-default"
+  className="component obojobo-draft--chunks--question is-correct is-active is-mode-review is-type-default is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -925,7 +862,7 @@ exports[`Question Question in review answered correctly (content only) 1`] = `
 exports[`Question Question in review answered correctly 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-correct is-active is-type-default is-mode-review is-not-flipping"
+  className="component obojobo-draft--chunks--question is-correct is-active is-type-default is-mode-review is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -944,7 +881,7 @@ exports[`Question Question in review answered correctly 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-answered is-correct is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -978,9 +915,9 @@ exports[`Question Question in review answered correctly 1`] = `
                 className="result-container"
               >
                 <p
-                  className="result incorrect"
+                  className="result correct"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  mock-correct-labels - You received a 100% on this question.
                 </p>
               </div>
             </div>
@@ -993,9 +930,9 @@ exports[`Question Question in review answered correctly 1`] = `
               className="result-container"
             >
               <p
-                className="result incorrect"
+                className="result correct"
               >
-                Incorrect
+                mock-correct-labels
               </p>
             </div>
           </div>
@@ -1042,7 +979,7 @@ exports[`Question Question in review answered correctly 1`] = `
 exports[`Question Question in review answered incorrectly (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-review is-type-default"
+  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-review is-type-default is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1073,7 +1010,7 @@ exports[`Question Question in review answered incorrectly (content only) 1`] = `
 exports[`Question Question in review answered incorrectly 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-type-default is-mode-review is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-correct is-active is-type-default is-mode-review is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1092,7 +1029,7 @@ exports[`Question Question in review answered incorrectly 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-answered is-not-correct is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1128,7 +1065,7 @@ exports[`Question Question in review answered incorrectly 1`] = `
                 <p
                   className="result incorrect"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  Incorrect - You received a 0% on this question.
                 </p>
               </div>
             </div>
@@ -1190,7 +1127,7 @@ exports[`Question Question in review answered incorrectly 1`] = `
 exports[`Question Question in review not answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-review is-type-default"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-mode-review is-type-default is-not-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1221,7 +1158,7 @@ exports[`Question Question in review not answered (content only) 1`] = `
 exports[`Question Question in review not answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-active is-type-default is-mode-review is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-type-default is-mode-review is-not-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1240,7 +1177,7 @@ exports[`Question Question in review not answered 1`] = `
         className="obojobo-draft--chunks--question--content"
       />
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-default is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1269,49 +1206,12 @@ exports[`Question Question in review not answered 1`] = `
             <div
               className="for-screen-reader-only"
               tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a undefined% on this question.
-                </p>
-              </div>
-            </div>
+            />
           </div>
           <div
             className="submit-and-result-container"
-          >
-            <div
-              aria-hidden="true"
-              className="result-container"
-            >
-              <p
-                className="result incorrect"
-              >
-                Incorrect
-              </p>
-            </div>
-          </div>
-          <div
-            className="solution"
-          >
-            <div
-              className="obojobo-draft--components--button alt-action is-not-dangerous align-center show-explanation-button"
-            >
-              <button
-                className="button"
-                onClick={[Function]}
-              >
-                Read an explanation of the answer
-              </button>
-            </div>
-            <div
-              className="solution-container-animation-placeholder"
-            />
-          </div>
+          />
+          <span />
         </fieldset>
       </form>
     </div>
@@ -1338,7 +1238,7 @@ exports[`Question Question in review not answered 1`] = `
 exports[`Question Survey question in assessment answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-assessment is-type-survey"
+  className="component obojobo-draft--chunks--question is-no-score is-active is-mode-assessment is-type-survey is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1380,7 +1280,7 @@ exports[`Question Survey question in assessment answered (content only) 1`] = `
 exports[`Question Survey question in assessment answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-no-score is-mockViewState is-type-survey is-mode-assessment is-not-flipping"
+  className="component obojobo-draft--chunks--question is-no-score is-mockViewState is-type-survey is-mode-assessment is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1410,7 +1310,7 @@ exports[`Question Survey question in assessment answered 1`] = `
         </svg>
       </div>
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-survey is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-survey is-answered is-no-score is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1444,9 +1344,9 @@ exports[`Question Survey question in assessment answered 1`] = `
                 className="result-container"
               >
                 <p
-                  className="result incorrect"
+                  className="result survey"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  mock-correct-labels
                 </p>
               </div>
             </div>
@@ -1478,7 +1378,7 @@ exports[`Question Survey question in assessment answered 1`] = `
 exports[`Question Survey question in assessment not answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-assessment is-type-survey"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-mode-assessment is-type-survey is-not-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1520,7 +1420,7 @@ exports[`Question Survey question in assessment not answered (content only) 1`] 
 exports[`Question Survey question in assessment not answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-mockViewState is-type-survey is-mode-assessment is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-survey is-mode-assessment is-not-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1550,7 +1450,7 @@ exports[`Question Survey question in assessment not answered 1`] = `
         </svg>
       </div>
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-survey is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-assessment is-type-survey is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1579,17 +1479,7 @@ exports[`Question Survey question in assessment not answered 1`] = `
             <div
               className="for-screen-reader-only"
               tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a undefined% on this question.
-                </p>
-              </div>
-            </div>
+            />
           </div>
           <span />
         </fieldset>
@@ -1618,7 +1508,7 @@ exports[`Question Survey question in assessment not answered 1`] = `
 exports[`Question Survey question in practice answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice is-type-survey"
+  className="component obojobo-draft--chunks--question is-no-score is-active is-mode-practice is-type-survey is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1660,7 +1550,7 @@ exports[`Question Survey question in practice answered (content only) 1`] = `
 exports[`Question Survey question in practice answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-no-score is-mockViewState is-type-survey is-mode-practice is-not-flipping"
+  className="component obojobo-draft--chunks--question is-no-score is-mockViewState is-type-survey is-mode-practice is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1690,7 +1580,7 @@ exports[`Question Survey question in practice answered 1`] = `
         </svg>
       </div>
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-survey is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-survey is-answered is-no-score is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1724,9 +1614,9 @@ exports[`Question Survey question in practice answered 1`] = `
                 className="result-container"
               >
                 <p
-                  className="result incorrect"
+                  className="result survey"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  mock-correct-labels
                 </p>
               </div>
             </div>
@@ -1755,7 +1645,7 @@ exports[`Question Survey question in practice answered 1`] = `
               <p
                 className="result survey"
               >
-                test
+                mock-correct-labels
               </p>
             </div>
           </div>
@@ -1786,7 +1676,7 @@ exports[`Question Survey question in practice answered 1`] = `
 exports[`Question Survey question in practice not answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-practice is-type-survey"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-mode-practice is-type-survey is-not-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1828,7 +1718,7 @@ exports[`Question Survey question in practice not answered (content only) 1`] = 
 exports[`Question Survey question in practice not answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-mockViewState is-type-survey is-mode-practice is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-mockViewState is-type-survey is-mode-practice is-not-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1858,7 +1748,7 @@ exports[`Question Survey question in practice not answered 1`] = `
         </svg>
       </div>
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-survey is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-practice is-type-survey is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -1887,17 +1777,7 @@ exports[`Question Survey question in practice not answered 1`] = `
             <div
               className="for-screen-reader-only"
               tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a undefined% on this question.
-                </p>
-              </div>
-            </div>
+            />
           </div>
           <div
             className="submit-and-result-container"
@@ -1906,25 +1786,15 @@ exports[`Question Survey question in practice not answered 1`] = `
               className="submit"
             >
               <div
-                className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+                className="obojobo-draft--components--button is-not-dangerous align-center"
               >
                 <button
-                  aria-label="Change Response"
                   className="button"
-                  onClick={[Function]}
+                  disabled={true}
                 >
-                  Change Response
+                  Submit Response
                 </button>
               </div>
-            </div>
-            <div
-              className="result-container"
-            >
-              <p
-                className="result survey"
-              >
-                test
-              </p>
             </div>
           </div>
           <span />
@@ -1954,7 +1824,7 @@ exports[`Question Survey question in practice not answered 1`] = `
 exports[`Question Survey question in review answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-review is-type-survey"
+  className="component obojobo-draft--chunks--question is-no-score is-active is-mode-review is-type-survey is-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -1996,7 +1866,7 @@ exports[`Question Survey question in review answered (content only) 1`] = `
 exports[`Question Survey question in review answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-no-score is-active is-type-survey is-mode-review is-not-flipping"
+  className="component obojobo-draft--chunks--question is-no-score is-active is-type-survey is-mode-review is-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -2026,7 +1896,7 @@ exports[`Question Survey question in review answered 1`] = `
         </svg>
       </div>
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-survey is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-survey is-answered is-no-score is-not-showing-explanation is-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -2060,9 +1930,9 @@ exports[`Question Survey question in review answered 1`] = `
                 className="result-container"
               >
                 <p
-                  className="result incorrect"
+                  className="result survey"
                 >
-                  Incorrect - You received a undefined% on this question.
+                  mock-correct-labels
                 </p>
               </div>
             </div>
@@ -2076,7 +1946,7 @@ exports[`Question Survey question in review answered 1`] = `
               <p
                 className="result survey"
               >
-                test
+                mock-correct-labels
               </p>
             </div>
           </div>
@@ -2107,7 +1977,7 @@ exports[`Question Survey question in review answered 1`] = `
 exports[`Question Survey question in review not answered (content only) 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-not-correct is-active is-mode-review is-type-survey"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-mode-review is-type-survey is-not-answered"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -2149,7 +2019,7 @@ exports[`Question Survey question in review not answered (content only) 1`] = `
 exports[`Question Survey question in review not answered 1`] = `
 <div
   aria-label="Question"
-  className="component obojobo-draft--chunks--question is-active is-type-survey is-mode-review is-not-flipping"
+  className="component obojobo-draft--chunks--question is-not-scored is-active is-type-survey is-mode-review is-not-answered is-not-flipping"
   data-focussed={false}
   data-id="id"
   data-obo-component={true}
@@ -2179,7 +2049,7 @@ exports[`Question Survey question in review not answered 1`] = `
         </svg>
       </div>
       <form
-        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-survey is-not-answered is-not-correct is-not-showing-explanation is-scored"
+        className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one is-mode-review is-type-survey is-not-answered is-not-scored is-not-showing-explanation is-not-scored"
         data-focussed={false}
         data-id="mc-assessment-id"
         data-obo-component={true}
@@ -2208,31 +2078,11 @@ exports[`Question Survey question in review not answered 1`] = `
             <div
               className="for-screen-reader-only"
               tabIndex="-1"
-            >
-              <div
-                className="result-container"
-              >
-                <p
-                  className="result incorrect"
-                >
-                  Incorrect - You received a undefined% on this question.
-                </p>
-              </div>
-            </div>
+            />
           </div>
           <div
             className="submit-and-result-container"
-          >
-            <div
-              className="result-container"
-            >
-              <p
-                className="result survey"
-              >
-                test
-              </p>
-            </div>
-          </div>
+          />
           <span />
         </fieldset>
       </form>

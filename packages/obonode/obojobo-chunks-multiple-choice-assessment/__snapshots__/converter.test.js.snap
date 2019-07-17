@@ -4,6 +4,7 @@ exports[`MCAssessment Converter oboToSlate converts an OboNode to a Slate node 1
 Object {
   "data": Object {
     "content": Object {},
+    "questionType": "mock-question-type",
   },
   "key": "mockKey",
   "nodes": Array [

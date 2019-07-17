@@ -146,6 +146,10 @@ const QuestionUtil = {
 		return contextState.responses[model.get('id')] || null
 	},
 
+	isAnswered(state, model, context) {
+		return QuestionUtil.getResponse(state, model, context) !== null
+	},
+
 	getData(state, model, context, key) {
 		const contextState = QuestionUtil.getStateForContext(state, context)
 		if (!contextState) return null
@@ -167,6 +171,22 @@ const QuestionUtil = {
 		const scoreItem = contextState.scores[model.get('id')] || null
 
 		return scoreItem ? scoreItem.score : null
+	},
+
+	getScoreClass(score) {
+		switch (score) {
+			case null:
+				return 'is-not-scored'
+
+			case 'no-score':
+				return 'is-no-score'
+
+			case 100:
+				return 'is-correct'
+
+			default:
+				return 'is-not-correct'
+		}
 	}
 }
 

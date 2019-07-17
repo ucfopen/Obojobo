@@ -8,6 +8,10 @@ import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-uti
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 
+const { getScoreClass } = require.requireActual(
+	'obojobo-document-engine/src/scripts/viewer/util/question-util'
+).default
+
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/question-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/focus-util')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
@@ -47,7 +51,7 @@ const questionJSON = {
 			id: 'mc-assessment-id',
 			type: 'ObojoboDraft.Chunks.MCAssessment',
 			content: {
-				correctLabels: 'test'
+				correctLabels: 'mock-correct-labels'
 			},
 			children: [
 				{
@@ -184,17 +188,48 @@ const createComponent = (type, mode, score, showContentOnly) => {
 	const model = OboModel.create(questionJSON)
 
 	// Question answered correctly
-	QuestionUtil.getScoreForModel.mockReturnValueOnce(score)
-	QuestionUtil.getViewState.mockReturnValueOnce('mockViewState')
+	QuestionUtil.getScoreForModel.mockReturnValue(score)
+	QuestionUtil.isAnswered.mockReturnValue(score !== null)
+	QuestionUtil.getViewState.mockReturnValue('mockViewState')
 
 	return renderer.create(
 		<Question model={model} moduleData={moduleData} showContentOnly={showContentOnly} />
 	)
 }
 
+const expectClasses = (className, type, mode, answered, correct) => {
+	// All possible classes that we care about:
+	const types = ['is-type-default', 'is-type-survey']
+	const modes = ['is-mode-practice', 'is-mode-assessment', 'is-mode-review']
+	const answereds = ['is-answered', 'is-not-answered']
+	const corrects = ['is-not-correct', 'is-correct', 'is-not-scored', 'is-no-score']
+
+	// Remove the classes we are targeting for
+	types.splice(types.indexOf(type), 1)
+	modes.splice(modes.indexOf(mode), 1)
+	answereds.splice(answereds.indexOf(answered), 1)
+	corrects.splice(corrects.indexOf(correct), 1)
+
+	// Ensure the classes we *are not* expecting to exist are indeed not there!
+	expect(className.includes(types[0])).toBe(false)
+	expect(className.includes(modes[0])).toBe(false)
+	expect(className.includes(modes[1])).toBe(false)
+	expect(className.includes(answereds[0])).toBe(false)
+	expect(className.includes(corrects[0])).toBe(false)
+	expect(className.includes(corrects[1])).toBe(false)
+	expect(className.includes(corrects[2])).toBe(false)
+
+	// Ensure the classes we *are* expecting to exist are there!
+	expect(className.includes(type)).toBe(true)
+	expect(className.includes(mode)).toBe(true)
+	expect(className.includes(answered)).toBe(true)
+	expect(className.includes(correct)).toBe(true)
+}
+
 describe('Question', () => {
 	beforeAll(() => {
 		_.shuffle = a => a
+		QuestionUtil.getScoreClass = getScoreClass
 	})
 
 	beforeEach(() => {
@@ -202,123 +237,394 @@ describe('Question', () => {
 	})
 
 	test('Question in practice not answered', () => {
-		expect(createComponent('default', 'practice', null, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'practice', null, false).toJSON()
+
+		// expect(JSON.props.className).toBe(1)
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-practice',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in practice answered incorrectly', () => {
-		expect(createComponent('default', 'practice', 0, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'practice', 0, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-practice',
+			'is-answered',
+			'is-not-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in practice answered correctly', () => {
-		expect(createComponent('default', 'practice', 100, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'practice', 100, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-practice',
+			'is-answered',
+			'is-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in practice not answered', () => {
-		expect(createComponent('survey', 'practice', null, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'practice', null, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-practice',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in practice answered', () => {
-		expect(createComponent('survey', 'practice', 'no-score', false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'practice', 'no-score', false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-practice',
+			'is-answered',
+			'is-no-score'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in practice not answered (content only)', () => {
-		expect(createComponent('default', 'practice', null, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'practice', null, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-practice',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in practice answered incorrectly (content only)', () => {
-		expect(createComponent('default', 'practice', 0, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'practice', 0, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-practice',
+			'is-answered',
+			'is-not-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in practice answered correctly (content only)', () => {
-		expect(createComponent('default', 'practice', 100, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'practice', 100, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-practice',
+			'is-answered',
+			'is-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in practice not answered (content only)', () => {
-		expect(createComponent('survey', 'practice', null, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'practice', null, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-practice',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in practice answered (content only)', () => {
-		expect(createComponent('survey', 'practice', 'no-score', true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'practice', 'no-score', true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-practice',
+			'is-answered',
+			'is-no-score'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in assessment not answered', () => {
-		expect(createComponent('default', 'assessment', null, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'assessment', null, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-assessment',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in assessment answered incorrectly', () => {
-		expect(createComponent('default', 'assessment', 0, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'assessment', 0, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-assessment',
+			'is-answered',
+			'is-not-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in assessment answered correctly', () => {
-		expect(createComponent('default', 'assessment', 100, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'assessment', 100, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-assessment',
+			'is-answered',
+			'is-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in assessment not answered', () => {
-		expect(createComponent('survey', 'assessment', null, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'assessment', null, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-assessment',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in assessment answered', () => {
-		expect(createComponent('survey', 'assessment', 'no-score', false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'assessment', 'no-score', false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-assessment',
+			'is-answered',
+			'is-no-score'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in assessment not answered (content only)', () => {
-		expect(createComponent('default', 'assessment', null, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'assessment', null, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-assessment',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in assessment answered incorrectly (content only)', () => {
-		expect(createComponent('default', 'assessment', 0, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'assessment', 0, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-assessment',
+			'is-answered',
+			'is-not-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in assessment answered correctly (content only)', () => {
-		expect(createComponent('default', 'assessment', 100, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'assessment', 100, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-assessment',
+			'is-answered',
+			'is-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in assessment not answered (content only)', () => {
-		expect(createComponent('survey', 'assessment', null, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'assessment', null, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-assessment',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in assessment answered (content only)', () => {
-		expect(createComponent('survey', 'assessment', 'no-score', true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'assessment', 'no-score', true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-assessment',
+			'is-answered',
+			'is-no-score'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in review not answered', () => {
-		expect(createComponent('default', 'review', null, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'review', null, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-review',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in review answered incorrectly', () => {
-		expect(createComponent('default', 'review', 0, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'review', 0, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-review',
+			'is-answered',
+			'is-not-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in review answered correctly', () => {
-		expect(createComponent('default', 'review', 100, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'review', 100, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-review',
+			'is-answered',
+			'is-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in review not answered', () => {
-		expect(createComponent('survey', 'review', null, false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'review', null, false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-review',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in review answered', () => {
-		expect(createComponent('survey', 'review', 'no-score', false).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'review', 'no-score', false).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-review',
+			'is-answered',
+			'is-no-score'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in review not answered (content only)', () => {
-		expect(createComponent('default', 'review', null, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'review', null, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-review',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in review answered incorrectly (content only)', () => {
-		expect(createComponent('default', 'review', 0, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'review', 0, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-review',
+			'is-answered',
+			'is-not-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Question in review answered correctly (content only)', () => {
-		expect(createComponent('default', 'review', 100, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('default', 'review', 100, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-default',
+			'is-mode-review',
+			'is-answered',
+			'is-correct'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in review not answered (content only)', () => {
-		expect(createComponent('survey', 'review', null, true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'review', null, true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-review',
+			'is-not-answered',
+			'is-not-scored'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('Survey question in review answered (content only)', () => {
-		expect(createComponent('survey', 'review', 'no-score', true).toJSON()).toMatchSnapshot()
+		const JSON = createComponent('survey', 'review', 'no-score', true).toJSON()
+
+		expectClasses(
+			JSON.props.className,
+			'is-type-survey',
+			'is-mode-review',
+			'is-answered',
+			'is-no-score'
+		)
+		expect(JSON).toMatchSnapshot()
 	})
 
 	test('onClickBlocker does not return anything when not in practice mode', () => {

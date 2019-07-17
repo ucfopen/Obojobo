@@ -427,6 +427,38 @@ describe('MCChoice viewer-component', () => {
 		expect(component).toMatchSnapshot()
 	})
 
+	test('MCChoice that is selected and submitted - survey question', () => {
+		QuestionUtil.getResponse.mockReturnValueOnce({
+			ids: ['choice1']
+		})
+
+		const surveyQuestionJSON = getQuestionJSON()
+		surveyQuestionJSON.content.type = 'survey'
+		const question = OboModel.create(surveyQuestionJSON)
+		const mcassessment = question.children.models[0]
+		const model = mcassessment.children.models[0]
+		const moduleData = {
+			questionState: 'mockQuestionState',
+			navState: {
+				context: 'mockContext'
+			},
+			focusState: 'mockFocus'
+		}
+
+		const props = {
+			model,
+			moduleData,
+			key: 'mockKey',
+			responseType: TYPE_PICK_ALL,
+			questionSubmitted: true,
+			label: 'mocklabel'
+		}
+
+		const component = renderer.create(<MCChoice {...props} />)
+
+		expect(component).toMatchSnapshot()
+	})
+
 	test('MCChoice component in review mode - could have chosen', () => {
 		const questionJSON = getQuestionJSON()
 		const question = OboModel.create(questionJSON)

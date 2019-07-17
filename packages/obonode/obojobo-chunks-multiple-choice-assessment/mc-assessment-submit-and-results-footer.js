@@ -4,29 +4,26 @@ import React from 'react'
 
 const { Button } = Common.components
 
+const buttonLabels = {
+	default: {
+		buttonSubmitLabel: 'Check Your Answer',
+		buttonResetLabel: 'Try Again',
+		buttonResetAriaLabel: 'Try Question Again'
+	},
+	survey: {
+		buttonSubmitLabel: 'Submit Response',
+		buttonResetLabel: 'Change Response',
+		buttonResetAriaLabel: 'Change Response'
+	}
+}
+
 const MCAssessmentSubmitAndResultsFooter = props => {
 	const isTypePickAll = props.isTypePickAll
 	const score = props.score
-	const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
 	const isAnswered = props.isAnswered
+	const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
 
-	let buttonSubmitLabel = ''
-	let buttonResetLabel = ''
-	let buttonResetAriaLabel = ''
-
-	switch (props.type) {
-		case 'survey':
-			buttonSubmitLabel = 'Submit Response'
-			buttonResetLabel = 'Change Response'
-			buttonResetAriaLabel = 'Change Response'
-			break
-
-		default:
-			buttonSubmitLabel = 'Check Your Answer'
-			buttonResetLabel = 'Try Again'
-			buttonResetAriaLabel = 'Try Question Again'
-			break
-	}
+	const { buttonSubmitLabel, buttonResetLabel, buttonResetAriaLabel } = buttonLabels[props.type]
 
 	return (
 		<div className="submit-and-result-container">

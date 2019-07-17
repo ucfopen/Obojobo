@@ -1535,6 +1535,123 @@ exports[`MCChoice viewer-component MCChoice that is selected and submitted (Pick
 </label>
 `;
 
+exports[`MCChoice viewer-component MCChoice that is selected and submitted - survey question 1`] = `
+<label
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-not-correct is-type-chosen-survey is-mode-undefined"
+  data-focussed={false}
+  data-id="choice1"
+  data-obo-component={true}
+  data-type="ObojoboDraft.Chunks.MCAssessment.MCChoice"
+  id="obo-choice1"
+  tabIndex={-1}
+>
+  <input
+    aria-checked={true}
+    checked={true}
+    disabled={false}
+    name="id"
+    onChange={[Function]}
+    role="checkbox"
+    type="checkbox"
+    value="choice1"
+  />
+  <span
+    className="for-screen-reader-only"
+  >
+    Your response:
+  </span>
+  <div
+    className="children"
+  >
+    <div>
+      <div
+        className="component obojobo-draft--chunks--mc-assessment--mc-answer"
+        data-focussed={false}
+        data-id="choice1-answer"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.MCAssessment.MCAnswer"
+        id="obo-choice1-answer"
+        tabIndex={-1}
+      >
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="choice1-answer-text"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-choice1-answer-text"
+          tabIndex={-1}
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--single-text pad"
+          >
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
+            >
+              <span>
+                <span>
+                  <span>
+                    Example Text
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="feedback"
+    >
+      <div
+        className="component obojobo-draft--chunks--mc-assessment--mc-feedback is-correct-feedback"
+        data-focussed={false}
+        data-id="choice1-feedback"
+        data-obo-component={true}
+        data-type="ObojoboDraft.Chunks.MCAssessment.MCFeedback"
+        id="obo-choice1-feedback"
+        tabIndex={-1}
+      >
+        <span
+          className="for-screen-reader-only"
+        >
+          . Feedback for this answer choice:
+        </span>
+        <div
+          className="component"
+          data-focussed={false}
+          data-id="choice1-feedback-text"
+          data-obo-component={true}
+          data-type="ObojoboDraft.Chunks.Text"
+          id="obo-choice1-feedback-text"
+          tabIndex={-1}
+        >
+          <div
+            className="text-chunk obojobo-draft--chunks--single-text pad"
+          >
+            <span
+              className="text align-left"
+              data-group-index={0}
+              data-indent={0}
+            >
+              <span>
+                <span>
+                  <span>
+                    Example Text 2
+                  </span>
+                </span>
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</label>
+`;
+
 exports[`MCChoice viewer-component MCChoice that is selected and submitted 1`] = `
 <label
   className="component obojobo-draft--chunks--mc-assessment--mc-choice is-selected is-correct is-type-chosen-correctly is-mode-undefined"

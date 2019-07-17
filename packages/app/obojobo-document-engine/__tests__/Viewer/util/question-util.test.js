@@ -275,6 +275,20 @@ describe('QuestionUtil', () => {
 		expect(res).toEqual('A Response')
 	})
 
+	test('isAnswered returns boolean if a question has a response', () => {
+		const spy = jest.spyOn(QuestionUtil, 'getResponse')
+
+		spy.mockReturnValue(null)
+		expect(QuestionUtil.isAnswered('mock-state', 'mock-model', 'mock-context')).toBe(false)
+		expect(spy).toHaveBeenCalledWith('mock-state', 'mock-model', 'mock-context')
+
+		spy.mockReturnValue({})
+		expect(QuestionUtil.isAnswered('mock-state', 'mock-model', 'mock-context')).toBe(true)
+		expect(spy).toHaveBeenCalledWith('mock-state', 'mock-model', 'mock-context')
+
+		spy.mockRestore()
+	})
+
 	test('getData gets data from state with no id match', () => {
 		const data = QuestionUtil.getData(
 			{
@@ -470,5 +484,14 @@ describe('QuestionUtil', () => {
 				context: 'mockContext'
 			}
 		})
+	})
+
+	test('getScoreClass returns expected values', () => {
+		expect(QuestionUtil.getScoreClass(null)).toBe('is-not-scored')
+		expect(QuestionUtil.getScoreClass('no-score')).toBe('is-no-score')
+		expect(QuestionUtil.getScoreClass(100)).toBe('is-correct')
+		expect(QuestionUtil.getScoreClass(99)).toBe('is-not-correct')
+		expect(QuestionUtil.getScoreClass(0)).toBe('is-not-correct')
+		expect(QuestionUtil.getScoreClass('invalid-value')).toBe('is-not-correct')
 	})
 })
