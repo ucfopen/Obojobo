@@ -1,6 +1,6 @@
-import ChunkStyleList from './chunk-style-list'
-import StyleRange from './style-range'
-import StyleType from './style-type'
+const ChunkStyleList = require('./chunk-style-list')
+const StyleRange = require('./style-range')
+const StyleType = require('./style-type')
 
 // ceiling Infinity end values to the length
 const trimStyleRange = function(styleRange, maxLength) {
@@ -295,4 +295,4 @@ class StyleableText {
 	}
 }
 
-export default StyleableText
+module.exports = StyleableText

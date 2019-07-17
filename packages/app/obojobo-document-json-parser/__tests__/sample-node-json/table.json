@@ -1,0 +1,68 @@
+{
+	"id": "640648f0-26d4-4f7f-a92a-e0c1f75141a6",
+	"type": "ObojoboDraft.Chunks.Table",
+	"content": {
+		"header": true,
+		"textGroup": {
+			"numCols": 3,
+			"numRows": 3,
+			"textGroup": [
+				{
+					"text": {
+						"value": "Header 1",
+						"styleList": []
+					}
+				},
+				{
+					"text": {
+						"value": "Header 2",
+						"styleList": []
+					}
+				},
+				{
+					"text": {
+						"value": "Header 3",
+						"styleList": []
+					}
+				},
+				{
+					"text": {
+						"value": "Item 1",
+						"styleList": []
+					}
+				},
+				{
+					"text": {
+						"value": "Item 2",
+						"styleList": []
+					}
+				},
+				{
+					"text": {
+						"value": "Item 3",
+						"styleList": []
+					}
+				},
+				{
+					"text": {
+						"value": "Item 4",
+						"styleList": []
+					}
+				},
+				{
+					"text": {
+						"value": "Item 5",
+						"styleList": []
+					}
+				},
+				{
+					"text": {
+						"value": "Item 6",
+						"styleList": []
+					}
+				}
+			]
+		}
+	},
+	"children": []
+}

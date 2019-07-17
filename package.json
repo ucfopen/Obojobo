@@ -44,6 +44,7 @@
 	"workspaces": [
 		"packages/app/obojobo-document-engine",
 		"packages/app/obojobo-document-xml-parser",
+		"packages/app/obojobo-document-json-parser",
 		"packages/app/obojobo-express",
 		"packages/obonode/obojobo-chunks-action-button",
 		"packages/obonode/obojobo-chunks-break",

@@ -10,4 +10,4 @@ const StyleType = {
 	LATEX: '_latex'
 }
 
-export default StyleType
+module.exports = StyleType

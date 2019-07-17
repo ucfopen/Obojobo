@@ -1,0 +1,52 @@
+{
+	"id": "1fbeedbe-a92d-4716-a614-9e6ce06c6804",
+	"type": "ObojoboDraft.Chunks.Code",
+	"content": {
+		"textGroup": [
+			{
+				"data": {
+					"indent": 0
+				},
+				"text": {
+					"value": "// Sample code",
+					"styleList": [
+						{
+							"end": 14,
+							"data": {},
+							"type": "i",
+							"start": 0
+						}
+					]
+				}
+			},
+			{
+				"data": {
+					"indent": 0
+				},
+				"text": {
+					"value": "function main() {",
+					"styleList": []
+				}
+			},
+			{
+				"data": {
+					"indent": 1
+				},
+				"text": {
+					"value": "print(\"Hello world\");",
+					"styleList": []
+				}
+			},
+			{
+				"data": {
+					"indent": 0
+				},
+				"text": {
+					"value": "}",
+					"styleList": []
+				}
+			}
+		]
+	},
+	"children": []
+}
