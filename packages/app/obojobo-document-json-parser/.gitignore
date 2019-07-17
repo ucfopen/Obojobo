@@ -1,10 +1,5 @@
 node_modules
 .DS_Store
-./test-object.json
-./test-object.xml
 coverage
-__test.js
-out.xml
-test-object.xml
-example.json
 yarn.lock
+yarn-error.log

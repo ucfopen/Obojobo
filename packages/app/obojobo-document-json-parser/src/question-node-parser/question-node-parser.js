@@ -1,8 +1,7 @@
 const questionNodeParser = (node, childrenParser) => {
     const id = node.id ? ` id="${node.id}"` : ''
-
-    let solution = node.content.solution,
-        solutionXML = ''
+    const solution = node.content.solution
+    let solutionXML = ''
 
     if (solution) {
         solutionXML = (

@@ -1,5 +1,5 @@
 const StyleableText = require('obojobo-document-engine/src/scripts/common/text/styleable-text')
-const StyleableTextRenderer = require('obojobo-document-engine/src/scripts/common/text/styleable-text-renderer')
+const styleableTextRenderer = require('obojobo-document-engine/src/scripts/common/text/styleable-text-renderer')
 
 const textGroupParser = (textGroup) => {
     if (!textGroup) return ''
@@ -29,13 +29,13 @@ const textParser = text => {
     const s = StyleableText.createFromObject(text)
     s.normalizeStyles()
 
-    const mockElement = StyleableTextRenderer(s)
+    const mockElement = styleableTextRenderer(s)
 
     return mockTextNodeParser(mockElement)
 }
 
 const mockTextNodeParser = mockTextNode => {
-    if (mockTextNode.nodeType == 'text') {
+    if (mockTextNode.nodeType === 'text') {
         const text = (
             mockTextNode.text ?
             mockTextNode.text :
@@ -61,14 +61,15 @@ const mockElementParser = (text, mockElement) => {
     const type = mockElement.type
     let attrs = ''
     for (const attr in mockElement.attrs) {
-        attrs += ` ${[attr]}="${mockElement.attrs[attr]}"`
+        attrs += ` ${attr}="${mockElement.attrs[attr]}"`
 
-        if ([attr] == "class" && mockElement.attrs[attr] == 'latex')
+        if (attr === "class" && mockElement.attrs[attr] === 'latex'){
             return mockElementParser(`<latex>${text}</latex>`, mockElement.parent)
+        }
     }
 
     text = (
-        type != 'span' ?
+        type !== 'span' ?
         `<${type}${attrs}>${text}</${type}>` :
         text
     )

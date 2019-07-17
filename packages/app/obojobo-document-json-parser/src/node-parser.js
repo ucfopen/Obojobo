@@ -55,7 +55,7 @@ const childrenParser = (children) => {
     let result = '';
     children.forEach(child => {
         const parser = parsers[child.type];
-        if (parser != undefined) {
+        if (typeof parser !== 'undefined') {
             result += parser(child, childrenParser)
         }
     })
@@ -65,12 +65,11 @@ const childrenParser = (children) => {
 
 const nodeParser = node => {
     if (!node) return ''
-
-    const parser = parsers[node.type];
     let result = ''
+    const parser = parsers[node.type];
 
-    if (parser != undefined) {
-        result += parser(node, childrenParser)
+    if (typeof parser !== 'undefined') {
+       result += parser(node, childrenParser)
     }
 
     return result
