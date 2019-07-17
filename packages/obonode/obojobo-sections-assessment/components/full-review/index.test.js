@@ -400,43 +400,6 @@ describe('FullReview', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
-	//////////////////////////
-
-	test.skip('FullReview component with highest attempt 2', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
-		const mockAttempt = {
-			attemptId: 'mockAttemptId',
-			attemptNumber: 3,
-			assessmentScore: 80.34,
-			attemptScore: 80.34,
-			finishTime: '2018-06-05 20:28:11.228294+00',
-			questionScores: []
-		}
-
-		// mock last attempt taken
-		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttemptId' })
-		// mock highest attempt
-		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([mockAttempt])
-		// mock attempt taken
-		AssessmentUtil.getAllAttempts.mockReturnValueOnce([mockAttempt])
-		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
-
-		const component = renderer.create(
-			<FullReview showFullReview={true} model={model} moduleData={moduleData} />
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	///////////////////
 
 	test('FullReview component with two attempts', () => {
 		const moduleData = {

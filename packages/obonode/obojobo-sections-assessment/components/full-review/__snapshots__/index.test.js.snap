@@ -328,37 +328,6 @@ exports[`FullReview FullReview component with highest attempt 1`] = `
 </div>
 `;
 
-exports[`FullReview FullReview component with highest attempt 2 1`] = `
-<div
-  className="attempt-review-container"
->
-  <div
-    className="attempt-button-container is-showing-one-item"
-  >
-    <div
-      className="obojobo-draft--components--button-bar"
-    >
-      <div
-        className="is-selected"
-      >
-        <div
-          className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
-        >
-          <button
-            aria-label="Attempt 3"
-            aria-selected={true}
-            className="button"
-            onClick={[Function]}
-          >
-            3
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`FullReview FullReview component with non-passing attempt 1`] = `
 <div
   className="attempt-review-container"

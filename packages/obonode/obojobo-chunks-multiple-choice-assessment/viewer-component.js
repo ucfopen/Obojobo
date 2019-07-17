@@ -46,7 +46,6 @@ export default class MCAssessment extends React.Component {
 		this.onFormSubmit = this.onFormSubmit.bind(this)
 		this.onCheckAnswer = this.onCheckAnswer.bind(this)
 		this.isShowingExplanation = this.isShowingExplanation.bind(this)
-		// this.labelsToShow = null
 
 		this.sortIds()
 	}
@@ -269,7 +268,6 @@ export default class MCAssessment extends React.Component {
 		)
 
 		// Clear out labels so they are reselected
-		// this.labelsToShow = null
 		QuestionUtil.clearData(
 			questionModel.get('id'),
 			this.props.moduleData.navState.context,
@@ -453,7 +451,6 @@ export default class MCAssessment extends React.Component {
 		const score = this.getScore()
 		const scoreClass = this.getScoreClass()
 		const sortedChoiceModels = this.getSortedChoiceModels()
-		// const isAnswered = this.getResponseData().responses.size >= 1 // An answer choice was selected
 		const isAnswered = this.getIsAnswered()
 		const isReview = this.props.mode === 'review'
 		const isSurvey = this.props.type === 'survey'
