@@ -271,10 +271,58 @@ describe('api visits route', () => {
 
 	test('/start successfully returns redAlertResult', () => {
 		const redAlertResult = db.oneOrNone.mockReturnValueOnce(true)
+
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'howtune.com'
+			}
+		}
+
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		viewerState.get.mockResolvedValueOnce('view state')
+		mockCurrentUser = { id: 99 }
+
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			contentId: validUUID()
+		}
+
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(response.body.value.redAlertStatus).toBe(false)
+			})
 	})
 
 	test('/start returns redAlertResult as null', () => {
 		const redAlertResult = db.oneOrNone.mockReturnValueOnce(null)
+
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'howtune.com'
+			}
+		}
+
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		viewerState.get.mockResolvedValueOnce('view state')
+		mockCurrentUser = { id: 99 }
+
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			contentId: validUUID()
+		}
+
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(response.body.value.redAlertStatus).toBe(false)
+			})
 	})
 
 	test('visit:start event and createViewerSessionLoggedInEvent created', () => {
