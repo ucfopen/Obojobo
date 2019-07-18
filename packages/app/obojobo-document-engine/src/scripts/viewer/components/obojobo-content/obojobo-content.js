@@ -5,7 +5,7 @@ import { Registry } from 'Common'
 
 const ObojoboContent = props => {
 
-    const { moduleData, oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = props
+    const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = props
 
     const currRef = useRef(null)
 
@@ -39,7 +39,7 @@ const ObojoboContent = props => {
             myRef: index === currFocusNode ? currRef : null
         }
         return (
-            <Component model={model} moduleData={moduleData} >
+            <Component model={model}>
                 {adjList[index].map(childIndex => {
                     return componentRenderer(childIndex)
                 })}
@@ -47,11 +47,10 @@ const ObojoboContent = props => {
         )
     }
 
-
     const Module = Registry.getItemForType(oboNodeList[0].attributes.type).componentClass
 
     return (
-        <Module model={oboNodeList[0]} moduleData={moduleData}>
+        <Module model={oboNodeList[0]}>
             {componentRenderer(navList[currentNavIndex])}
         </Module>
     )
