@@ -7,9 +7,9 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import FocusUtil from '../../util/focus-util'
 import Logo from '../logo'
 import NavUtil from '../../util/nav-util'
-import NavHeader from './NavHeader/NavHeader'
-import NavItem from './NavItem/NavItem'
-import NavSubItem from './NavSubItem/NavSubItem'
+import NavHeader from './nav-header/nav-header'
+import NavItem from './nav-item/nav-item'
+import NavSubItem from './nav-sub-item/nav-sub-item'
 
 const { Button } = Common.components
 const { StyleableText, StyleableTextComponent } = Common.text

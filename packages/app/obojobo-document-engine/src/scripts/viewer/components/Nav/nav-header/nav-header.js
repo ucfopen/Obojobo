@@ -1,6 +1,6 @@
 import React from 'react'
 
-const navHeader = props => {
+const NavHeader = props => {
     return (
         <li className={'heading is-not-selected'}>
             {/* {item.label} */}
@@ -9,4 +9,4 @@ const navHeader = props => {
     )
 }
 
-export default navHeader
+export default NavHeader

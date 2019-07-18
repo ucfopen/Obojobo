@@ -27,6 +27,7 @@ const ObojoboContent = props => {
             case 'ObojoboDraft.Chunks.IFrame':
             case 'ObojoboDraft.Chunks.ActionButton':
             case 'ObojoboDraft.Sections.Assessment':
+            case 'ObojoboDraft.Chunks.QuestionBank':
                 return
             default:
                 break
