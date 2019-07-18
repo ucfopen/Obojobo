@@ -4,43 +4,53 @@ const initialState = {
 	// Adjacency List
 	adjList: [],
 
-	// List of navigation items
+	// Indexes of all navigation items
 	navList: [],
 	currentNavIndex: 0,
 	isNavEnabled: true,
 	isNavLocked: false,
 
-	// Index of oboNodeList
-	currentFocusNode: 14
+	// Index of focus node
+	currFocusNode: 0
 }
 
 const reducer = (state = initialState, action) => {
-	switch (action.type) {
+
+	const { type, payload } = action
+
+	switch (type) {
+		// Initialize Store with Backbone object
 		case 'UPDATE_STORE_MODEL':
-			convertBackboneObjectToAdjList(action.payload.model)
 			return {
 				...state,
-				...convertBackboneObjectToAdjList(action.payload.model)
+				...convertBackboneObjectToAdjList(payload.model)
 			}
+		// Initialize Store with JS object
 		case 'UPDATE_STORE':
 			return {
 				...state,
-				...convertObjectToAdjList(action.payload.oboNodeObject)
+				...convertObjectToAdjList(payload.oboNodeObject)
 			}
+		// Update current navigation item
 		case 'UPDATE_NAV':
+			const newNavNode = state.navList[payload.value]
+			const newFocusNode = state.adjList[newNavNode][0]
 			return {
 				...state,
-				currentNavIndex: action.payload.value
+				currentNavIndex: payload.value,
+				currFocusNode: newFocusNode
 			}
-		case 'UPDATE_NAV_ENABLED':
+		// Switch of/off navigation
+		case 'ON_NAV_TOGGLE':
 			return {
 				...state,
 				isNavEnabled: !state.isNavEnabled
 			}
+		// Update focus node
 		case 'UPDATE_CURRENT_FOCUS':
 			return {
 				...state,
-				currentFocusNode: action.payload.value
+				currentFocusNode: payload.value
 			}
 		default:
 			return state
@@ -106,11 +116,17 @@ const convertBackboneObjectToAdjList = object => {
 		}
 	}
 
+	const currFocusNode =
+		(adjList[navList[0]][0])
+		? adjList[navList[0]][0]
+		: 0
+
 	return {
 		oboNodeList,
 		adjList,
 		navList,
-		currentNavIndex: 0
+		currentNavIndex: 0,
+		currFocusNode
 	}
 }
 

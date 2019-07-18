@@ -248,7 +248,7 @@ const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, isNav
 const mapDispatchToProops = dispatch => {
 	return {
 		updateNavItem: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } }),
-		onNavToggle: () => dispatch({ type: 'UPDATE_NAV_ENABLED' })
+		onNavToggle: () => dispatch({ type: 'ON_NAV_TOGGLE' })
 	}
 }
 
