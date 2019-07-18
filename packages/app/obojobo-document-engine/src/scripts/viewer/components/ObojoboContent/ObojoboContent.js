@@ -12,8 +12,12 @@ const ObojoboContent = props => {
     useEffect(() => {
         // Scroll to current active component
         if (currRef && currRef.current) {
-            currRef.current.scrollIntoView()
+            const scrollIntoViewOptions = {
+                behavior: 'smooth'
+            }
+            currRef.current.scrollIntoView(scrollIntoViewOptions)
         }
+
     }, [currFocusNode])
 
     const componentRenderer = index => {

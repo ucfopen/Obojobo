@@ -9,7 +9,7 @@ import Logo from '../logo'
 import NavUtil from '../../util/nav-util'
 import NavHeader from './NavHeader/NavHeader'
 import NavItem from './NavItem/NavItem'
-// import NavSubItem from './NavSubItem/navSubItem'
+import NavSubItem from './NavSubItem/NavSubItem'
 
 const { Button } = Common.components
 const { StyleableText, StyleableTextComponent } = Common.text
@@ -145,23 +145,53 @@ class Nav extends React.Component {
 		return <div className="lock-icon" />
 	}
 
-	rendererNavItem() {
-		return this.props.navList.map((navIndex, index) => {
+	rendererNavSubItem() {
+		const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode} = this.props
+		return adjList[navList[currentNavIndex]].map(childIndex => {
+			const node = oboNodeList[childIndex]
+			if(node.attributes.type !== 'ObojoboDraft.Chunks.Heading' && node.attributes.content.headingLevel !== 2) {
+				return null
+			}
+			const { textGroup } = node.attributes.content
 			const className =
-			'link' +
-				isOrNot(index === this.props.currentNavIndex, 'selected')
+				'sub-link'
+				+ isOrNot(childIndex === currFocusNode, 'selected')
+				// + isOrNot(item.flags.correct, 'correct')
+				// isOrNot(isLastInList, 'last-in-list')
+			return (
+				<NavSubItem
+					key={childIndex}
+					label={textGroup[0].text.value}
+					onClick={() => this.props.updateFocusNode(childIndex)}
+					className={className}
+				/>
+			)
+
+		})
+	}
+
+	rendererNavItem() {
+		const { oboNodeList, navList, currentNavIndex } = this.props
+		return navList.map((navIndex, index) => {
+			const className =
+				'link' +
+				isOrNot(index === currentNavIndex, 'selected')
 				// isOrNot(item.flags.complete, 'complete') +
 				// isOrNot(item.flags.correct, 'correct') +
 				// isOrNot(item.flags.assessment, 'assessment')
 				// isOrNot(isFirstInList, 'first-in-list') +
 				// isOrNot(isLastInList, 'last-in-list')
 			return (
-				<NavItem
-					index={navIndex}
-					label={this.props.oboNodeList[navIndex].attributes.content.title}
-					onClick={() => this.props.updateNavItem(index)}
-					className={className}
-				/>
+				<>
+					<NavItem
+						key={navIndex}
+						index={navIndex}
+						label={oboNodeList[navIndex].attributes.content.title}
+						onClick={() => this.props.updateNavItem(index)}
+						className={className}
+					/>
+					{index === currentNavIndex ? this.rendererNavSubItem() : null}
+				</>
 			)
 		})
 	}
@@ -234,21 +264,23 @@ class Nav extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, isNavEnabled, isNavLocked }) => {
+const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, isNavEnabled, isNavLocked, currFocusNode }) => {
 	return {
 		oboNodeList,
 		adjList,
 		navList,
 		currentNavIndex,
 		isNavEnabled,
-		isNavLocked
+		isNavLocked,
+		currFocusNode
 	}
 }
 
 const mapDispatchToProops = dispatch => {
 	return {
 		updateNavItem: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } }),
-		onNavToggle: () => dispatch({ type: 'ON_NAV_TOGGLE' })
+		onNavToggle: () => dispatch({ type: 'ON_NAV_TOGGLE' }),
+		updateFocusNode: index => dispatch({ type: 'UPDATE_CURRENT_FOCUS', payload: { value: index }})
 	}
 }
 

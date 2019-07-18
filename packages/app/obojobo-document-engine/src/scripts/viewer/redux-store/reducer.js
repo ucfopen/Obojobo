@@ -50,7 +50,7 @@ const reducer = (state = initialState, action) => {
 		case 'UPDATE_CURRENT_FOCUS':
 			return {
 				...state,
-				currentFocusNode: payload.value
+				currFocusNode: payload.value
 			}
 		default:
 			return state

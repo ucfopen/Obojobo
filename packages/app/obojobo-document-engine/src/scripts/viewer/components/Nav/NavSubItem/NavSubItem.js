@@ -1,11 +1,11 @@
-import React from './node_modules/react';
+import React from 'react';
 
-const navSubItem = props => {
+const navSubItem = ({ onClick, className, label }) => {
     return (
-        <li key={index} onClick={this.onClick.bind(this, item)} className={className}>
+        <li onClick={onClick} className={className}>
             {/* {this.renderLinkButton(item.label, ariaLabel, isItemDisabled)}
             {lockEl} */}
-            {"Fake SubItem"}
+            {label}
         </li>
     )
 }
