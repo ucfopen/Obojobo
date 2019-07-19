@@ -12,20 +12,6 @@
 		margin: $dimension-padding / 3;
 		background: $color-bg;
 		border: 1px solid $color-shadow;
-
-		&::before {
-			content: 'Full explanation:';
-			font-family: $font-default;
-			font-size: 1em;
-			font-weight: bold;
-			color: $color-text-minor;
-			margin-top: 1em;
-			margin-left: 2em;
-			margin-bottom: -1em;
-			display: block;
-			transform: scale(0.7);
-			transform-origin: top left;
-		}
 	}
 
 	.delete-button {

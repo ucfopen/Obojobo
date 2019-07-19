@@ -35,7 +35,6 @@
 							"children": []
 						},
 						{
-
 							"id": "f1d8cf21-0233-4f8e-b06c-6c102749eecc",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
@@ -715,8 +714,8 @@
 									"id": "577a3972-72b1-4e9a-831b-ab1d8ebebe1c",
 									"type": "ObojoboDraft.Pages.Page",
 									"content": {
-										"readExplanationLabel": "Read Explanation Label",
-										"hideExplanationLabel": "Hide Explanation Label"
+										"showSolutionLabel": "Read Explanation Label",
+										"hideSolutionLabel": "Hide Explanation Label"
 									},
 									"children": [
 										{

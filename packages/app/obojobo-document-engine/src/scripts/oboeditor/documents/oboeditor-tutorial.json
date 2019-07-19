@@ -5841,8 +5841,8 @@
 									"id": "a3427c5e-3ff3-4d19-9800-f2357db8a4d0",
 									"type": "ObojoboDraft.Pages.Page",
 									"content": {
-										"readExplanationLabel": "Read Explanation Label",
-										"hideExplanationLabel": "Hide Explanation Label"
+										"showSolutionLabel": "Read Explanation Label",
+										"hideSolutionLabel": "Hide Explanation Label"
 									},
 									"children": [
 										{

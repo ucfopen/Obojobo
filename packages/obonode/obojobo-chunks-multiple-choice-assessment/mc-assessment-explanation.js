@@ -5,7 +5,7 @@ import React from 'react'
 const { Button } = Common.components
 const { focus } = Common.page
 
-const DEFAULT_READ_EXPLANATION_LABEL = 'Read Explanation'
+const DEFAULT_READ_EXPLANATION_LABEL = 'Read an explanation of the answer'
 const DEFAULT_HIDE_EXPLANATION_LABEL = 'Hide Explanation'
 export default class MCAssessmentExplanation extends React.Component {
 	constructor(props) {
@@ -32,26 +32,18 @@ export default class MCAssessmentExplanation extends React.Component {
 		const isShowingExplanation = this.props.isShowingExplanation
 		const solutionModel = this.props.solutionModel
 		const SolutionComponent = solutionModel.getComponentClass()
-		const readExplanationLabel = solutionModel.attributes.content.readExplanationLabel
-			? solutionModel.attributes.content.readExplanationLabel
-			: DEFAULT_READ_EXPLANATION_LABEL
-		const hideExplanationLabel = solutionModel.attributes.content.hideExplanationLabel
-			? solutionModel.attributes.content.hideExplanationLabel
-			: DEFAULT_HIDE_EXPLANATION_LABEL
+		const showSolutionLabel = this.props.showSolutionLabel || DEFAULT_READ_EXPLANATION_LABEL
+		const hideSolutionLabel = this.props.hideSolutionLabel || DEFAULT_HIDE_EXPLANATION_LABEL
 		return (
 			<div className="solution" key="solution">
 				{isShowingExplanation ? (
-					<Button
-						altAction
-						onClick={this.props.onClickHideExplanation}
-						value={hideExplanationLabel}
-					/>
+					<Button altAction onClick={this.props.onClickHideExplanation} value={hideSolutionLabel} />
 				) : (
 					<Button
 						className="show-explanation-button"
 						altAction
 						onClick={this.props.onClickShowExplanation}
-						value={readExplanationLabel}
+						value={showSolutionLabel}
 					/>
 				)}
 				<CSSTransition

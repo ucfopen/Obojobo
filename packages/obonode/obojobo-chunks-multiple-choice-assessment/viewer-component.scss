@@ -238,22 +238,6 @@
 				outline: none;
 			}
 
-			&::before {
-				$color-solution-label-text: transparentize($color-text, 0.25);
-
-				content: 'Full explanation:';
-				font-family: $font-default;
-				font-size: 1em;
-				font-weight: bold;
-				color: $color-solution-label-text;
-				margin-top: 1em;
-				margin-left: 2em;
-				margin-bottom: -1em;
-				display: block;
-				transform: scale(0.7);
-				transform-origin: top left;
-			}
-
 			&.solution-enter {
 				max-height: 0;
 				overflow: hidden;

@@ -355,6 +355,7 @@ export default class MCAssessment extends React.Component {
 		const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
 		const isPractice = this.props.mode === 'practice'
 		const isReview = this.props.mode === 'review'
+		const questionModel = this.getQuestionModel()
 
 		const className =
 			'obojobo-draft--chunks--mc-assessment' +
@@ -420,6 +421,8 @@ export default class MCAssessment extends React.Component {
 								animationOnExiting={this.animationOnExiting}
 								onClickShowExplanation={this.onClickShowExplanation}
 								onClickHideExplanation={this.onClickHideExplanation}
+								showSolutionLabel={questionModel.modelState.showSolutionLabel}
+								hideSolutionLabel={questionModel.modelState.hideSolutionLabel}
 							/>
 						) : (
 							<span />
