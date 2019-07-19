@@ -91,7 +91,7 @@ class IFrameProperties extends React.Component {
 	}
 
 	render() {
-		const controlList = this.state.controls.split(',')
+		const controlList = this.state.controls ? this.state.controls.split(',') : []
 
 		return (
 			<SimpleDialog
