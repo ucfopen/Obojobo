@@ -112,7 +112,7 @@ class Assessment extends DraftNode {
 					SCO.score_details AS "score_details"
 				FROM attempts ATT
 				LEFT JOIN assessment_scores SCO
-				ON ATT.id = SCO.attempt_id
+					ON ATT.id = SCO.attempt_id
 				WHERE
 					ATT.user_id = $[userId]
 					AND ATT.draft_id = $[draftId]
@@ -403,8 +403,8 @@ class Assessment extends DraftNode {
 
 				const q2 = dbTransaction.one(
 					`
-					INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview, resource_link_id)
-					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview], $[resourceLinkId])
+					INSERT INTO assessment_scores (user_id, draft_id, draft_content_id, assessment_id, attempt_id, score, score_details, is_preview)
+					VALUES($[userId], $[draftId], $[contentId], $[assessmentId], $[attemptId], $[score], $[scoreDetails], $[isPreview])
 					RETURNING id
 				`,
 					{

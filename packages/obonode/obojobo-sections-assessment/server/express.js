@@ -111,12 +111,14 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 
 			return db.manyOrNone(
 				`
-						SELECT id
+						SELECT assessment_scores.id
 						FROM assessment_scores
-						WHERE user_id = $[userId]
-						AND draft_id = $[draftId]
-						AND resource_link_id = $[resourceLinkId]
-						AND is_preview = true
+						JOIN attempts
+							ON attempts.id = assessment_scores.attempt_id
+						WHERE assessment_scores.user_id = $[userId]
+						AND assessment_scores.draft_id = $[draftId]
+						AND attempts.resource_link_id = $[resourceLinkId]
+						AND assessment_scores.is_preview = true
 					`,
 				{
 					userId: currentUser.id,
@@ -126,7 +128,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 			)
 		})
 		.then(assessmentScoreIdsResult => {
-			assessmentScoreIds = assessmentScoreIdsResult
+			assessmentScoreIds = assessmentScoreIdsResult.map(i => i.id)
 
 			return db.manyOrNone(
 				`
@@ -145,7 +147,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 			)
 		})
 		.then(attemptIdsResult => {
-			attemptIds = attemptIdsResult
+			attemptIds = attemptIdsResult.map(i => i.id)
 
 			return db.tx(transaction => {
 				const queries = []
@@ -157,7 +159,7 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 							DELETE FROM lti_assessment_scores
 							WHERE assessment_score_id IN ($[ids:csv])
 						`,
-							{ ids: assessmentScoreIds.map(i => i.id) }
+							{ ids: assessmentScoreIds }
 						)
 					)
 				}
@@ -169,39 +171,26 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 							DELETE FROM attempts_question_responses
 							WHERE attempt_id IN ($[ids:csv])
 						`,
-							{ ids: attemptIds.map(i => i.id) }
+							{ ids: attemptIds }
 						)
 					)
 				}
 
 				queries.push(
 					transaction.none(
-						`
+							`
 							DELETE FROM assessment_scores
-							WHERE user_id = $[userId]
-							AND draft_id = $[draftId]
-							AND resource_link_id = $[resourceLinkId]
-							AND is_preview = true
+							WHERE id IN ($[ids:csv])
 						`,
-						{
-							userId: currentUser.id,
-							draftId: currentDocument.draftId,
-							resourceLinkId
-						}
+							{ ids: assessmentScoreIds }
+
 					),
 					transaction.none(
 						`
 							DELETE FROM attempts
-							WHERE user_id = $[userId]
-							AND draft_id = $[draftId]
-							AND resource_link_id = $[resourceLinkId]
-							AND is_preview = true
+							WHERE id IN ($[ids:csv])
 						`,
-						{
-							userId: currentUser.id,
-							draftId: currentDocument.draftId,
-							resourceLinkId
-						}
+							{ ids: attemptIds }
 					)
 				)
 

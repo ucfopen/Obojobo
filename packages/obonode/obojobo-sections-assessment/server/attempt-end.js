@@ -341,7 +341,8 @@ const insertAttemptScoredEvents = (
 			user.id,
 			draftDocument.draftId,
 			assessmentId,
-			resourceLinkId
+			resourceLinkId,
+			isPreview
 		)
 		.then(highestAssessmentScoreRecord => {
 			return insertEvent({
