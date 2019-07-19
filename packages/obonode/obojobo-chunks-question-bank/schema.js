@@ -1,6 +1,7 @@
 import { Block } from 'slate'
 
-import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
+import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
+import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
@@ -8,6 +9,8 @@ const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const TEXT_PARAMETER = 'oboeditor.text-parameter'
+const SELECT_PARAMETER = 'oboeditor.select-parameter'
 
 import emptyQuestion from 'obojobo-chunks-question/empty-node.json'
 
@@ -50,12 +53,14 @@ const schema = {
 		'ObojoboDraft.Chunks.QuestionBank.Settings': {
 			nodes: [
 				{
-					match: [
-						{
-							type: 'Parameter'
-						}
-					],
-					min: 2
+					match: [{ type: TEXT_PARAMETER }],
+					min: 1,
+					max: 1
+				},
+				{
+					match: [{ type: SELECT_PARAMETER }],
+					min: 1,
+					max: 1
 				}
 			],
 			normalize: (editor, error) => {
@@ -64,46 +69,49 @@ const schema = {
 					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								ParameterNode.helpers.oboToSlate({
-									name: 'choose',
-									value: 'Infinity',
-									display: 'Choose'
-								})
+								TextParameter.helpers.oboToSlate(
+									'choose',
+									'Infinity',
+									'Choose'
+								)
 							)
 							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
-							ParameterNode.helpers.oboToSlate({
-								name: 'select',
-								value: 'sequential',
-								display: 'Select',
-								options: SELECT_TYPES
-							})
+							SelectParameter.helpers.oboToSlate(
+								'select',
+								'sequential',
+								'Select',
+								SELECT_TYPES
+							)
 						)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return editor.withoutNormalizing(c => {
-							c.removeNodeByKey(child.key)
-							if (index === 0) {
-								const block = Block.create(
-									ParameterNode.helpers.oboToSlate({
-										name: 'choose',
-										value: 'Infinity',
-										display: 'Choose'
-									})
-								)
-								return c.insertNodeByKey(node.key, index, block)
-							}
+						if (index === 0) {
 							const block = Block.create(
-								ParameterNode.helpers.oboToSlate({
-									name: 'select',
-									value: 'sequential',
-									display: 'Select',
-									options: SELECT_TYPES
-								})
+								TextParameter.helpers.oboToSlate(
+									'choose',
+									'Infinity',
+									'Choose'
+								)
 							)
-							return c.insertNodeByKey(node.key, index, block)
+							return editor.withoutNormalizing(e => {
+								e.removeNodeByKey(child.key)
+								return e.insertNodeByKey(node.key, index, block)
+							})
+						}
+						const block = Block.create(
+							SelectParameter.helpers.oboToSlate(
+								'select',
+								'sequential',
+								'Select',
+								SELECT_TYPES
+							)
+						)
+						return editor.withoutNormalizing(e => {
+							e.removeNodeByKey(child.key)
+							return e.insertNodeByKey(node.key, index, block)
 						})
 					}
 				}

@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toggle Parameter Node component with checkbox 1`] = `
+<div
+  className="parameter-node"
+  contentEditable={false}
+>
+  <div
+    className="obojobo-draft--components--slider"
+  >
+    <span
+      contentEditable={false}
+    >
+      mockType: 
+    </span>
+    <label
+      className="switch"
+    >
+      <input
+        checked={false}
+        className="slider"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <div
+        className="slider round"
+      />
+    </label>
+  </div>
+</div>
+`;
+
+exports[`Toggle Parameter Node component with select changes value 1`] = `"<div class=\\"parameter-node\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">mockType: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div>"`;
+
+exports[`Toggle Parameter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "checked": false,
+    "display": "someDisplay",
+    "name": "oboName",
+  },
+  "object": "block",
+  "type": "oboeditor.toggle-parameter",
+}
+`;
+
+exports[`Toggle Parameter plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`Toggle Parameter plugins.renderNode renders a Parameter when passed 1`] = `
+<Node
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "oboeditor.toggle-parameter",
+    }
+  }
+/>
+`;
+
+exports[`Toggle Parameter slateToObo converts a Slate node to an OboNode 1`] = `
+Object {
+  "mockType": false,
+}
+`;

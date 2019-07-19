@@ -13,7 +13,7 @@
 		"lint": "lerna run lint",
 		"lint:css": "lerna run lint:css",
 		"lint:js": "lerna run  lint:js",
-		"precommit": "lerna run lint-staged && yarn test:ci",
+		"precommit": "lerna run precommit && yarn test:ci",
 		"start": "start_obojobo_server",
 		"test": "TZ='America/New_York' jest --verbose",
 		"test:ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura",
@@ -44,6 +44,7 @@
 	"workspaces": [
 		"packages/app/obojobo-document-engine",
 		"packages/app/obojobo-document-xml-parser",
+		"packages/app/obojobo-document-json-parser",
 		"packages/app/obojobo-express",
 		"packages/obonode/obojobo-chunks-action-button",
 		"packages/obonode/obojobo-chunks-break",

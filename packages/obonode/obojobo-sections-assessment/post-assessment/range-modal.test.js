@@ -3,8 +3,10 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 describe('Range Modal', () => {
+	let onConfirm
 	beforeEach(() => {
 		jest.clearAllMocks()
+		onConfirm = jest.fn()
 	})
 
 	test('RangeModal component with single number', () => {
@@ -292,26 +294,22 @@ describe('Range Modal', () => {
 	})
 
 	test('onConfirm sets error state and does not call props.onConfirm if there is an error', () => {
-		const mockOnConfirm = jest.fn()
-		const component = mount(<RangeModal for="[100,0]" onConfirm={mockOnConfirm} />)
+		const component = mount(<RangeModal for="[100,0]" onConfirm={onConfirm} />)
 		component.instance().onConfirm()
 
 		expect(component.instance().state.error).toBe("Min can't be larger than max")
-		expect(mockOnConfirm).not.toHaveBeenCalled()
+		expect(onConfirm).not.toHaveBeenCalled()
 	})
 
 	test('onConfirm calls props.onConfirm if there is no error', () => {
-		const mockOnConfirm = jest.fn()
-		const component = mount(<RangeModal for="[0,100]" onConfirm={mockOnConfirm} />)
+		const component = mount(<RangeModal for="[0,100]" onConfirm={onConfirm} />)
 		component.instance().onConfirm()
 
 		expect(component.instance().state.error).toBe(null)
-		expect(mockOnConfirm).toHaveBeenCalled()
+		expect(onConfirm).toHaveBeenCalled()
 	})
 
 	test('RangeModal component calls onConfirm from props', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="[0,100]" onConfirm={onConfirm} />)
 
 		component
@@ -323,8 +321,6 @@ describe('Range Modal', () => {
 	})
 
 	test('RangeModal component calls onConfirm from props with single value', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="100" onConfirm={onConfirm} />)
 
 		component
@@ -336,8 +332,6 @@ describe('Range Modal', () => {
 	})
 
 	test('RangeModal component does not call confirm when for is above 100', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="10000" onConfirm={onConfirm} />)
 
 		component
@@ -352,8 +346,6 @@ describe('Range Modal', () => {
 	})
 
 	test('RangeModal component does not call confirm when min or max are above 100', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="[0,10000]" onConfirm={onConfirm} />)
 
 		component
@@ -368,8 +360,6 @@ describe('Range Modal', () => {
 	})
 
 	test('RangeModal component does not call confirm when min is greater than max', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="[80,30]" onConfirm={onConfirm} />)
 
 		component
@@ -385,113 +375,129 @@ describe('Range Modal', () => {
 
 	test('RangeModal component focuses on first element', () => {
 		const component = mount(<RangeModal for="[0,100]" />)
-
 		component.instance().focusOnFirstElement()
-
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('RangeModal component changes range type', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="[0,100]" onConfirm={onConfirm} />)
 
-		component
-			.find('input')
-			.at(1)
-			.simulate('change', { target: { value: 'single' } })
+		const typeSingleRadio = component.find('input').at(1)
+		const typeRangeRadio = component.find('input').at(2)
 
+		// verify initial state
+		expect(typeSingleRadio.props().id).toContain('range-modal--type-single')
+		expect(typeRangeRadio.props().id).toContain('range-modal--type-range')
+		expect(component.instance().state.type).toBe('range')
+
+		// check visibility
+		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--single-input'}).length).toBe(0)
+		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--min'}).length).toBe(1)
+
+		// switch radio to single
+		typeSingleRadio.simulate('change', { target: { value: 'single' } })
+		expect(component.instance().state.type).toBe('single')
+
+		// check visibility
+		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--single-input'}).length).toBe(1)
+		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--min'}).length).toBe(0)
 		expect(component.html()).toMatchSnapshot()
 
-		component
-			.find('input')
-			.at(2)
-			.simulate('change', { target: { value: 'range' } })
-
+		// switch radio back to range
+		typeRangeRadio.simulate('change', { target: { value: 'range' } })
+		expect(component.instance().state.type).toBe('range')
 		expect(component.html()).toMatchSnapshot()
+
+		// check visibility
+		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--single-input'}).length).toBe(0)
+		expect(component.find({id: 'editor--sections--assessment--post-assessment--range-modal--min'}).length).toBe(1)
 	})
 
 	test('RangeModal component changes single score', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="100" onConfirm={onConfirm} />)
 
-		component
-			.find('input')
-			.at(2)
-			.simulate('change', { target: { value: 'changed' } })
+		const singleInput = component.find('input').at(2)
+
+		// verify initial state
+		expect(singleInput.props().id).toContain('range-modal--single-input')
+
+		// update
+		singleInput.simulate('change', { target: { value: '75', type:  'number'} })
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('RangeModal component sets single "no-score" score', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="100" onConfirm={onConfirm} />)
 
-		component
-			.find('input')
-			.at(3)
-			.simulate('change', { target: { checked: true } })
+		const singleScoreNoScoreCheckBox = component.find('input').at(3)
 
+		// verify initial state
+		expect(singleScoreNoScoreCheckBox.props().id).toContain('range-modal--no-score')
+		expect(component.instance().state.range.min).toBe('100')
+
+		// enable no-score checkbox
+		singleScoreNoScoreCheckBox.simulate('change', { target: { checked: true } })
+		expect(component.instance().state.range.min).toBe('no-score')
 		expect(component.html()).toMatchSnapshot()
 
-		component
-			.find('input')
-			.at(3)
-			.simulate('change', { target: { checked: false } })
-
+		// now disable no-score checkbox
+		singleScoreNoScoreCheckBox.simulate('change', { target: { checked: false } })
+		expect(component.instance().state.range.min).toBe('')
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('RangeModal component changes first item of range', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="[0,100]" onConfirm={onConfirm} />)
 
-		component
-			.find('input')
-			.at(3)
-			.simulate('change', { target: { value: '100' } })
+		const minRangeInput = component.find('input').at(3)
+
+		// verify initial state
+		expect(minRangeInput.props().id).toContain('range-modal--min')
+
+		// update
+		minRangeInput.simulate('change', { target: { value: '100', type:  'number' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('RangeModal component changes inclusivity of first part of range', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="[0,100]" onConfirm={onConfirm} />)
 
-		component
-			.find('input')
-			.at(4)
-			.simulate('change', { target: { checked: false } })
+		const minInclusiveCheckbox = component.find('input').at(4)
+
+		// verify initial state
+		expect(minInclusiveCheckbox.props().id).toContain('range-modal--min-inclusive')
+
+		// update
+		minInclusiveCheckbox.simulate('change', { target: { checked: false, type: 'checkbox' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('RangeModal component changes second item of range', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="[0,100]" onConfirm={onConfirm} />)
 
-		component
-			.find('input')
-			.at(5)
-			.simulate('change', { target: { value: '1' } })
+		const maxRangeInput = component.find('input').at(5)
+
+		// verify initial state
+		expect(maxRangeInput.props().id).toContain('range-modal--max')
+
+		// update
+		maxRangeInput.simulate('change', { target: { value: '1', type: 'number' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('RangeModal component changes inclusivity of second part of range', () => {
-		const onConfirm = jest.fn()
-
 		const component = mount(<RangeModal for="[0,100]" onConfirm={onConfirm} />)
+		const maxInclusiveCheckbox = component.find('input').at(6)
 
-		component
-			.find('input')
-			.at(6)
-			.simulate('change', { target: { checked: false } })
+		// verify initial state
+		expect(maxInclusiveCheckbox.props().id).toContain('range-modal--max-inclusive')
+
+		// update
+		maxInclusiveCheckbox.simulate('change', { target: { checked: false, type: 'checkbox' } })
 
 		expect(component.html()).toMatchSnapshot()
 	})

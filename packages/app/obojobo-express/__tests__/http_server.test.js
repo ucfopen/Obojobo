@@ -1,3 +1,5 @@
+import mockConsole from 'jest-mock-console';
+
 let logger
 let mockExit
 mockVirtual('http')
@@ -5,10 +7,12 @@ let httpServer
 let server
 let app
 let http
+let restoreConsole
 
 describe('http_server', () => {
 	beforeEach(() => {
 		jest.resetModules()
+		restoreConsole = mockConsole('log')
 		jest.mock('../logger')
 		logger = oboRequire('logger')
 		global.oboJestMockConfig()
@@ -28,6 +32,7 @@ describe('http_server', () => {
 	})
 	afterEach(() => {
 		mockExit.mockRestore()
+		restoreConsole()
 	})
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -40,6 +45,8 @@ describe('http_server', () => {
 		expect(server.on).toHaveBeenCalledWith('error', expect.any(Function))
 		expect(server.on).toHaveBeenCalledWith('listening', expect.any(Function))
 		expect(returnValue).toBe(server)
+		// eslint-disable-next-line no-console
+		expect(console.log).toHaveBeenCalledWith('Note: Logging and config options can be set using environment variables.')
 	})
 
 	test('startServer converts negative ports to false', () => {

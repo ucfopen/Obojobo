@@ -6,32 +6,32 @@ const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 
 const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
-	let insertLaunchResult = null
+	let launchId = null
 
 	return db
 		.one(
 			`
 		INSERT INTO launches
 		(draft_id, draft_content_id, user_id, type, lti_key, data)
-		VALUES ($[draftId], $[contentId], $[userId], 'lti', $[lti_key], $[data])
+		VALUES ($[draftId], $[contentId], $[userId], 'lti', $[ltiConsumerKey], $[ltiBody])
 		RETURNING id`,
 			{
 				draftId: draftDocument.draftId,
 				contentId: draftDocument.contentId,
 				userId: user.id,
-				lti_key: ltiConsumerKey,
-				data: ltiBody
+				ltiConsumerKey,
+				ltiBody
 			}
 		)
 		.then(result => {
-			insertLaunchResult = result
+			launchId = result.id
 
 			// Insert Event
 			return insertEvent({
 				action: 'lti:launch',
 				actorTime: new Date().toISOString(),
 				isPreview: false,
-				payload: { launchId: insertLaunchResult.id },
+				payload: { launchId },
 				userId: user.id,
 				ip,
 				metadata: {},
@@ -41,7 +41,7 @@ const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 			})
 		})
 		.then(() => {
-			return insertLaunchResult
+			return launchId
 		})
 }
 
@@ -118,9 +118,9 @@ exports.assignment = (req, res, next) => {
 				req.lti.consumer_key
 			)
 		})
-		.then(launchResult => {
+		.then(launchId => {
 			req.oboLti = {
-				launchId: launchResult.id,
+				launchId,
 				body: req.lti.body
 			}
 

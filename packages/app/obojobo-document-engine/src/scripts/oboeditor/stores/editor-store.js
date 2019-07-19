@@ -1,7 +1,6 @@
 /* eslint eqeqeq: 0 */
 
 import Common from 'Common'
-
 import EditorUtil from '../util/editor-util'
 
 const { Store } = Common.flux
@@ -45,13 +44,16 @@ class EditorStore extends Store {
 				},
 				'editor:renamePage': payload => {
 					this.renamePage(payload.value.pageId, payload.value.name)
+				},
+				'editor:setStartPage': payload => {
+					this.setStartPage(payload.value.pageId)
 				}
 			},
 			this
 		)
 	}
 
-	init(model, startingId, startingPath, viewState = {}) {
+	init(model, startingId = null, settings, startingPath, viewState = {}) {
 		this.state = {
 			navItems: {},
 			itemsById: {},
@@ -62,7 +64,9 @@ class EditorStore extends Store {
 			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
 			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
 			context: 'editor',
-			currentModel: null
+			currentModel: null,
+			settings,
+			startingId
 		}
 
 		this.buildMenu(model)
@@ -211,6 +215,11 @@ class EditorStore extends Store {
 		OboModel.models[pageId].title = newName
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
+		this.triggerChange()
+	}
+
+	setStartPage(pageId) {
+		this.state.startingId = pageId
 		this.triggerChange()
 	}
 

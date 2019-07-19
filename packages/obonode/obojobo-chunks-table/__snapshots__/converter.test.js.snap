@@ -5,6 +5,8 @@ Object {
   "data": Object {
     "content": Object {
       "header": true,
+      "numCols": 2,
+      "numRows": undefined,
       "textGroup": Object {
         "numCols": 2,
         "textGroup": Array [
@@ -38,6 +40,7 @@ Object {
       "data": Object {
         "content": Object {
           "header": true,
+          "numCols": 2,
         },
       },
       "nodes": Array [
@@ -83,6 +86,7 @@ Object {
       "data": Object {
         "content": Object {
           "header": false,
+          "numCols": 2,
         },
       },
       "nodes": Array [
@@ -136,6 +140,8 @@ Object {
   "content": Object {
     "header": true,
     "textGroup": Object {
+      "numCols": undefined,
+      "numRows": undefined,
       "textGroup": Array [
         Object {
           "text": Object {

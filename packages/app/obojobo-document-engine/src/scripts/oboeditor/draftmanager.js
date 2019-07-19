@@ -283,7 +283,8 @@ function onSubmitInsertImage(event) {
 		// 	unsuccessful uploads
 		if (request.readyState === 4) {
 			if (request.status === 200) {
-				writeImageToDocument(request.responseText)
+				const res = JSON.parse(request.responseText)
+				writeImageToDocument(res.media_id)
 				closeInsertImageModal()
 			} else {
 				alert(request.responseText)

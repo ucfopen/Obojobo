@@ -99,7 +99,7 @@ class RangeModal extends React.Component {
 	}
 
 	onToggleNoScore(event) {
-		return this.updateSingleScore(event.target.checked ? 'no-score' : '')
+		this.updateSingleScore(event.target.checked ? 'no-score' : '')
 	}
 
 	getError(range) {
@@ -131,12 +131,12 @@ class RangeModal extends React.Component {
 		this.setState({ error })
 
 		if (error === null) {
-			return this.props.onConfirm(this.generateRangeString(this.state.range))
+			this.props.onConfirm(this.generateRangeString(this.state.range))
 		}
 	}
 
 	focusOnFirstElement() {
-		return Common.page.focus(this.inputRef)
+		Common.page.focus(this.inputRef)
 	}
 
 	render() {

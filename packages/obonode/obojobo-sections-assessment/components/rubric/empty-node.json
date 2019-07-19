@@ -1,0 +1,71 @@
+{
+	"object":"block",
+	"type":"ObojoboDraft.Sections.Assessment.Rubric",
+	"data": { "content": { "type": "pass-fail" } },
+	"nodes": [
+		{
+			"object": "block",
+			"type": "oboeditor.text-parameter",
+			"data": {
+				"name": "passingAttemptScore",
+				"display": "Passing Score"
+			},
+			"nodes":[
+				{
+					"object":"text",
+					"leaves":[
+						{"object":"leaf","text":"100","marks":[]}
+					]
+				}
+			]
+		},
+		{
+			"object": "block",
+			"type": "oboeditor.text-parameter",
+			"data": {
+				"name": "passedResult",
+				"display": "Passed Result"
+			},
+			"nodes":[
+				{
+					"object":"text",
+					"leaves":[
+						{"object":"leaf","text":"100","marks":[]}
+					]
+				}
+			]
+		},
+		{
+			"object": "block",
+			"type": "oboeditor.text-parameter",
+			"data": {
+				"name": "failedResult",
+				"display": "Failed Result"
+			},
+			"nodes":[
+				{
+					"object":"text",
+					"leaves":[
+						{"object":"leaf","text":"0","marks":[]}
+					]
+				}
+			]
+		},
+		{
+			"object": "block",
+			"type": "oboeditor.text-parameter",
+			"data": {
+				"name": "unableToPassResult",
+				"display": "Unable to Pass Result"
+			},
+			"nodes":[
+				{
+					"object":"text",
+					"leaves":[
+						{"object":"leaf","text":"","marks":[]}
+					]
+				}
+			]
+		}
+	]
+}

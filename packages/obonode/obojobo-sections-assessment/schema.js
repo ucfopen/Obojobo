@@ -1,7 +1,7 @@
 import { Block } from 'slate'
-
-import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
+import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
+import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
@@ -10,6 +10,9 @@ const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+const TEXT_PARAMETER = 'oboeditor.text-parameter'
+const SELECT_PARAMETER = 'oboeditor.select-parameter'
+const TOGGLE_PARAMETER = 'oboeditor.toggle-parameter'
 
 const schema = {
 	blocks: {
@@ -76,53 +79,62 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Sections.Assessment.Settings': {
-			nodes: [{ match: [{ type: 'Parameter' }], min: 2 }],
+			nodes: [
+				{
+					match: [{ type: TEXT_PARAMETER }],
+					min: 1,
+					max: 1
+				},
+				{
+					match: [{ type: SELECT_PARAMETER }],
+					min: 1,
+					max: 1
+				},
+				{
+					match: [{ type: TOGGLE_PARAMETER }],
+					min: 1,
+					max: 1
+				}
+			],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								ParameterNode.helpers.oboToSlate({
-									name: 'attempts',
-									value: 'unlimited',
-									display: 'Attempts'
-								})
+								TextParameter.helpers.oboToSlate('attempts', 'unlimited', 'Attempts')
 							)
 							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
-							ParameterNode.helpers.oboToSlate({
-								name: 'review',
-								value: 'never',
-								display: 'Review',
-								options: ['always', 'never', 'no-attempts-remaining']
-							})
+							SelectParameter.helpers.oboToSlate('review', 'never', 'Review', [
+								'always',
+								'never',
+								'no-attempts-remaining'
+							])
 						)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return editor.withoutNormalizing(c => {
-							c.removeNodeByKey(child.key)
-							if (index === 0) {
-								const block = Block.create(
-									ParameterNode.helpers.oboToSlate({
-										name: 'attempts',
-										value: 'unlimited',
-										display: 'Attempts'
-									})
-								)
-								return c.insertNodeByKey(node.key, index, block)
-							}
+						if (index === 0) {
 							const block = Block.create(
-								ParameterNode.helpers.oboToSlate({
-									name: 'review',
-									value: 'never',
-									display: 'Review',
-									options: ['always', 'never', 'no-attempts-remaining']
-								})
+								TextParameter.helpers.oboToSlate('attempts', 'unlimited', 'Attempts')
 							)
-							return c.insertNodeByKey(node.key, index, block)
+							return editor.withoutNormalizing(e => {
+								e.removeNodeByKey(child.key)
+								return e.insertNodeByKey(node.key, index, block)
+							})
+						}
+						const block = Block.create(
+							SelectParameter.helpers.oboToSlate('review', 'never', 'Review', [
+								'always',
+								'never',
+								'no-attempts-remaining'
+							])
+						)
+						return editor.withoutNormalizing(e => {
+							e.removeNodeByKey(child.key)
+							return e.insertNodeByKey(node.key, index, block)
 						})
 					}
 				}

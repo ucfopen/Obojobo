@@ -1,0 +1,15 @@
+{
+	"id": "43010777-b961-4ebd-b906-47f374be1d81",
+	"type": "ObojoboDraft.Chunks.IFrame",
+	"content": {
+		"fit": "scale",
+		"src": "https://www.ucf.edu/",
+		"type": "media",
+		"title": "UCF Website",
+		"border": false,
+		"autoload": false,
+		"controls": "reload",
+		"initialZoom": 1
+	},
+	"children": []
+}

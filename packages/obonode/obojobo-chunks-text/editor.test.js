@@ -1,5 +1,8 @@
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
+import SlateReact from 'slate-react'
+jest.mock('slate-react')
+
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/text-util')
 
 import Text from './editor'
@@ -7,7 +10,68 @@ const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 describe('Text editor', () => {
-	test('plugins.renderNode renders text when passed', () => {
+	test('onPaste calls next if not pasting text into a TEXT_NODE', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				}
+			}
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ type: 'text' })
+
+		Text.plugins.onPaste(null, editor, next)
+
+		expect(next).toHaveBeenCalled()
+	})
+
+	test('onPaste calls createTextLinesFromText', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey',
+						text: ''
+					},
+					{
+						key: 'mockBlockKey',
+						text: 'mock text'
+					}
+				],
+				document: {
+					getClosest: () => true
+				}
+			},
+			createTextLinesFromText: jest.fn().mockReturnValueOnce([
+				{
+					key: 'mockBlockKey'
+				}
+			]),
+			insertBlock: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const next = jest.fn()
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({
+			type: 'text',
+			text: 'mock text'
+		})
+
+		Text.plugins.onPaste(null, editor, next)
+
+		expect(editor.createTextLinesFromText).toHaveBeenCalled()
+	})
+
+	test('renderNode renders text when passed', () => {
 		const props = {
 			node: {
 				type: TEXT_NODE,
@@ -22,7 +86,7 @@ describe('Text editor', () => {
 		expect(Text.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
-	test('plugins.renderNode calls next', () => {
+	test('renderNode calls next', () => {
 		const props = {
 			node: {
 				type: 'mockNode',
@@ -182,7 +246,7 @@ describe('Text editor', () => {
 		const editor = {
 			value: {
 				blocks: {
-					get: () => ({ key: 'mockBlockKey' }),
+					get: () => ({ key: 'mockBlockKey', text: '' }),
 					some: () => true
 				},
 				document: {
@@ -193,10 +257,6 @@ describe('Text editor', () => {
 							nodes: { size: 1 }
 						}
 					}
-				},
-				endBlock: {
-					key: 'mockKey',
-					text: ''
 				}
 			}
 		}
@@ -476,6 +536,21 @@ describe('Text editor', () => {
 		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
+	test('plugins.schema.normalize fixes invalid oboeditor.component block in text', () => {
+		const editor = {
+			unwrapNodeByKey: jest.fn()
+		}
+
+		Text.plugins.schema.blocks[TEXT_NODE].normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { nodes: { size: 10 } },
+			child: { object: 'block', key: 'mockKey', type: 'oboeditor.component' },
+			index: 0
+		})
+
+		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
 	test('plugins.schema.normalize fixes required children in text', () => {
 		const editor = {
 			insertNodeByKey: jest.fn()
@@ -519,5 +594,13 @@ describe('Text editor', () => {
 		})
 
 		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
+	})
+
+	test('queries.createTextLinesFromText builds text lines', () => {
+		const editor = {}
+
+		const blocks = Text.plugins.queries.createTextLinesFromText(editor, ['mock text'])
+
+		expect(blocks).toMatchSnapshot()
 	})
 })

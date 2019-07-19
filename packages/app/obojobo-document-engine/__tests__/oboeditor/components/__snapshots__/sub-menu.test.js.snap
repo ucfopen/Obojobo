@@ -41,6 +41,14 @@ exports[`SubMenu SubMenu component 1`] = `
         onClick={[Function]}
         tabIndex="-1"
       >
+        Make Start Page
+      </button>
+    </li>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
         Delete
       </button>
     </li>
@@ -56,17 +64,17 @@ exports[`SubMenu SubMenu component 1`] = `
 </li>
 `;
 
-exports[`SubMenu SubMenu component cancels menu closure when focused 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+exports[`SubMenu SubMenu component cancels menu closure when focused 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Make Start Page</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
 
-exports[`SubMenu SubMenu component closes menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+exports[`SubMenu SubMenu component closes menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Make Start Page</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
 
-exports[`SubMenu SubMenu component closes menu when unfocused 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+exports[`SubMenu SubMenu component closes menu when unfocused 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Make Start Page</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
 
-exports[`SubMenu SubMenu component moves down through the menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+exports[`SubMenu SubMenu component moves down through the menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Make Start Page</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
 
-exports[`SubMenu SubMenu component moves up through the menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+exports[`SubMenu SubMenu component moves up through the menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-not-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Make Start Page</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
 
-exports[`SubMenu SubMenu component opens menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
+exports[`SubMenu SubMenu component opens menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><ul class=\\"dropdown  is-open\\"><span>▼</span><li><button tabindex=\\"-1\\">Move Up</button></li><li><button tabindex=\\"-1\\">Move Down</button></li><li><button tabindex=\\"-1\\">Edit Name</button></li><li><button tabindex=\\"-1\\">Make Start Page</button></li><li><button tabindex=\\"-1\\">Delete</button></li><li><button tabindex=\\"-1\\">Id: 7</button></li></ul></li>"`;
 
 exports[`SubMenu SubMenu component selected with no contentType 1`] = `
 <li
@@ -102,6 +110,14 @@ exports[`SubMenu SubMenu component selected with no contentType 1`] = `
         tabIndex="-1"
       >
         Edit Name
+      </button>
+    </li>
+    <li>
+      <button
+        onClick={[Function]}
+        tabIndex="-1"
+      >
+        Make Start Page
       </button>
     </li>
     <li>

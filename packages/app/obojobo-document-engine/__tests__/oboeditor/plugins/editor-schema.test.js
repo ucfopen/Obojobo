@@ -6,7 +6,7 @@ describe('EditorSchema', () => {
 	test('matcher builds oboeditor.component', () => {
 		expect(EditorSchema.schema).toMatchSnapshot()
 	})
-	test('schema.normalize fixes required children in editor', () => {
+	test('normalize fixes required children in editor', () => {
 		const editor = {
 			insertNodeByKey: jest.fn()
 		}
@@ -21,7 +21,26 @@ describe('EditorSchema', () => {
 		expect(editor.insertNodeByKey).toHaveBeenCalled()
 	})
 
-	test('schema.normalize fixes invalid children in editor', () => {
+	test('normalize fixes invalid block children in editor', () => {
+		const editor = {
+			wrapBlockByKey: jest.fn()
+		}
+
+		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
+			funct(editor)
+		})
+
+		EditorSchema.schema.document.normalize(editor, {
+			code: CHILD_TYPE_INVALID,
+			node: { key: 'mockKey' },
+			child: { object: 'block', key: 'mockChild' },
+			index: 0
+		})
+
+		expect(editor.wrapBlockByKey).toHaveBeenCalled()
+	})
+
+	test('normalize fixes invalid children in editor', () => {
 		const editor = {
 			removeNodeByKey: jest.fn(),
 			insertNodeByKey: jest.fn()

@@ -1,0 +1,15 @@
+{
+	"id": "9c7e4d32-2e5b-432e-83dc-dbbb923df3b8",
+	"Rev": "2f59762d-d848-44ea-b1b7-3d23ba589612",
+	"rev": "42498656-c7a2-49b7-a3d9-928d5840ada0",
+	"type": "ObojoboDraft.Modules.Module",
+	"index": 0,
+	"content": {
+		"start": null,
+		"title": "Obojobo Visual Editor Tutorial"
+	},
+	"draftId": "e2a43166-52d8-4d0f-8bfb-beb093f675d1",
+	"children": [],
+	"metadata": {},
+	"contentId": "2f59762d-d848-44ea-b1b7-3d23ba589612"
+}

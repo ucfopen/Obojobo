@@ -3,7 +3,11 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+
+import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
+import SlateReact from 'slate-react'
+jest.mock('slate-react')
 
 import Rubric from './editor'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
@@ -322,6 +326,166 @@ describe('Rubric editor', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
+	test('plugins.onPaste deals with no rubric', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				}
+			}
+		}
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		Rubric.plugins.onPaste(event, editor, jest.fn())
+
+		expect(event.preventDefault).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onPaste deals with pasting into rubric', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (key, funct) => {
+						funct({ type: 'mockType' })
+						return true
+					}
+				}
+			}
+		}
+		editor.insertText = jest.fn().mockReturnValueOnce(editor)
+
+		SlateReact.getEventTransfer.mockReturnValueOnce({ text: 'mock text' })
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		Rubric.plugins.onPaste(event, editor, jest.fn())
+
+		expect(editor.insertText).toHaveBeenCalled()
+	})
+
+	test('plugins.onCut deals with no rubric', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				}
+			},
+			extractTextToFragment: jest.fn()
+		}
+		editor.insertBlock = jest.fn().mockReturnValueOnce(editor)
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		Rubric.plugins.onCut(event, editor, jest.fn())
+
+		expect(editor.extractTextToFragment).not.toHaveBeenCalled()
+		expect(KeyDownUtil.deleteNodeContents).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onCut deals with cutting from rubric', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (key, funct) => {
+						funct({ type: 'mockType' })
+						return true
+					}
+				},
+				fragment: { text: 'selected text' }
+			},
+			extractTextToFragment: jest.fn()
+		}
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		Rubric.plugins.onCut(event, editor, jest.fn())
+
+		expect(editor.extractTextToFragment).toHaveBeenCalled()
+		expect(KeyDownUtil.deleteNodeContents).toHaveBeenCalled()
+	})
+
+	test('plugins.onCopy deals with no rubric', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: () => false
+				}
+			},
+			extractTextToFragment: jest.fn()
+		}
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		Rubric.plugins.onCopy(event, editor, jest.fn())
+
+		expect(editor.extractTextToFragment).not.toHaveBeenCalled()
+	})
+
+	test('plugins.onCopy deals with copying from rubric', () => {
+		const editor = {
+			value: {
+				blocks: [
+					{
+						key: 'mockBlockKey'
+					}
+				],
+				document: {
+					getClosest: (key, funct) => {
+						funct({ type: 'mockType' })
+						return true
+					}
+				},
+				fragment: { text: 'selected text' }
+			},
+			extractTextToFragment: jest.fn()
+		}
+
+		const event = {
+			preventDefault: jest.fn()
+		}
+
+		Rubric.plugins.onCopy(event, editor, jest.fn())
+
+		expect(editor.extractTextToFragment).toHaveBeenCalled()
+	})
+
 	test('plugins.renderNode renders the rubric when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -405,237 +569,12 @@ describe('Rubric editor', () => {
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid first child in rubric', () => {
+	test('extractTextToFragment copies the current text', () => {
 		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
+			value: {
+				fragment: { text: 'selected text' }
+			}
 		}
-		editor.withoutNormalizing = funct => {
-			funct(editor)
-		}
-
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid second child in rubric', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
-		}
-		editor.withoutNormalizing = funct => {
-			funct(editor)
-		}
-
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid third child in rubric', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
-		}
-		editor.withoutNormalizing = funct => {
-			funct(editor)
-		}
-
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 2
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid fourth child in rubric', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
-		}
-		editor.withoutNormalizing = funct => {
-			funct(editor)
-		}
-
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 3
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing first child in rubric', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing second child in rubric', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing third child in rubric', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 2
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing third child in rubric', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Rubric.plugins.schema.blocks[RUBRIC_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 3
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid children in ModList', () => {
-		const editor = {
-			wrapBlockByKey: jest.fn()
-		}
-
-		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: null,
-			child: { key: 'mockKey' },
-			index: null
-		})
-
-		expect(editor.wrapBlockByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing children in ModList', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Rubric.plugins.schema.blocks[MOD_LIST_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid second child in mod', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
-		}
-		editor.withoutNormalizing = funct => {
-			funct(editor)
-		}
-
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize fixes invalid first child in mod', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
-		}
-		editor.withoutNormalizing = funct => {
-			funct(editor)
-		}
-
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockKey' },
-			child: { key: 'mockKey' },
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing first child in mod', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds missing second child in mod', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Rubric.plugins.schema.blocks[MOD_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 1
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(Rubric.plugins.queries.extractTextToFragment(editor)).toMatchSnapshot()
 	})
 })

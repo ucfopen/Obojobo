@@ -4,9 +4,12 @@
 			"testkey": "testsecret"
 		}
 	},
-	"production":{
+	"test": {
 		"keys":{
-			"obo-next-production-lti-key": {"ENV": "OBO_LTI_SECRET"}
+			"jesttestkey":"jesttestsecret"
 		}
+	},
+	"production":{
+		"keys": {"ENV": "OBO_LTI_KEYS_JSON"}
 	}
 }

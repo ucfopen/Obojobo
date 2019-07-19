@@ -66,13 +66,12 @@ class User {
 				first_name = $[firstName],
 				last_name = $[lastName],
 				roles = $[roles]
-			RETURNING *
+			RETURNING id
 			`,
 				this
 			)
-			.then(result => {
-				// populate my id from the result
-				this.id = result.id
+			.then(insertUserResult => {
+				this.id = insertUserResult.id
 				return this
 			})
 	}

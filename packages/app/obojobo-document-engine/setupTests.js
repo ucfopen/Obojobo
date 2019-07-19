@@ -25,3 +25,12 @@ Object.defineProperty(document, 'hidden', {
 		isDocumentHidden = isHidden
 	}
 })
+
+global.flushPromises = () => {
+	return new Promise(resolve => setImmediate(resolve));
+}
+
+process.on('unhandledRejection', (reason, p) => {
+	// eslint-disable-next-line no-console
+	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+})

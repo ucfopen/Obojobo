@@ -1,0 +1,19 @@
+{
+	"id": "cb446cb0-1528-45a8-8f67-f344a1d044a5",
+	"type": "ObojoboDraft.Chunks.Heading",
+	"content": {
+		"textGroup": [
+			{
+				"data": {
+					"align": "left"
+				},
+				"text": {
+					"value": "Welcome to the Obojobo Visual Editor",
+					"styleList": []
+				}
+			}
+		],
+		"headingLevel": 1
+	},
+	"children": []
+}

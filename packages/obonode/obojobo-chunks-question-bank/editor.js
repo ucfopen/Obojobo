@@ -32,6 +32,7 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.QuestionBank', {
 	insertJSON: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
+	supportsChildren: true,
 	plugins
 })
 

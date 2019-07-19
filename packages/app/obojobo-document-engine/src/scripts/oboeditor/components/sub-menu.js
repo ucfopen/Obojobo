@@ -1,13 +1,14 @@
-import React from 'react'
-import Common from 'Common'
-import EditorUtil from '../util/editor-util'
+import './sub-menu.scss'
+
 import ClipboardUtil from '../util/clipboard-util'
+import Common from 'Common'
+import EditorStore from '../stores/editor-store'
+import EditorUtil from '../util/editor-util'
+import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
-
-import './sub-menu.scss'
 
 const { OboModel } = Common.models
 
@@ -52,6 +53,10 @@ class SubMenu extends React.Component {
 
 	movePage(pageId, index) {
 		EditorUtil.movePage(pageId, index)
+	}
+
+	setStartPage(pageId) {
+		EditorUtil.setStartPage(pageId)
 	}
 
 	componentDidUpdate() {
@@ -134,7 +139,7 @@ class SubMenu extends React.Component {
 							onClick={() => this.movePage(item.id, model.getIndex() - 1)}
 							tabIndex="-1"
 							ref={item => {
-								this.moveUp = item
+								this.moveUpRef = item
 							}}
 						>
 							Move Up
@@ -147,7 +152,7 @@ class SubMenu extends React.Component {
 							onClick={() => this.movePage(item.id, model.getIndex() + 1)}
 							tabIndex="-1"
 							ref={item => {
-								this.moveDown = item
+								this.moveDownRef = item
 							}}
 						>
 							Move Down
@@ -156,21 +161,37 @@ class SubMenu extends React.Component {
 				)}
 				<li>
 					<button
-						onClick={this.showRenamePageModal.bind(this, item)}
+						onClick={() => this.showRenamePageModal(item)}
 						tabIndex="-1"
 						ref={item => {
-							this.editName = item
+							this.editNameRef = item
 						}}
 					>
 						Edit Name
 					</button>
 				</li>
+				{item.id === EditorStore.state.startingId ? null : (
+					<li>
+						<button
+							onClick={event => {
+								event.stopPropagation()
+								this.setStartPage(item.id)
+							}}
+							tabIndex="-1"
+							ref={item => {
+								this.setStartRef = item
+							}}
+						>
+							Make Start Page
+						</button>
+					</li>
+				)}
 				<li>
 					<button
 						onClick={() => this.deletePage(item.id)}
 						tabIndex="-1"
 						ref={item => {
-							this.delete = item
+							this.deleteRef = item
 						}}
 					>
 						Delete
@@ -181,7 +202,7 @@ class SubMenu extends React.Component {
 						onClick={() => ClipboardUtil.copyToClipboard(item.id)}
 						tabIndex="-1"
 						ref={item => {
-							this.getId = item
+							this.getIdRef = item
 						}}
 					>
 						{'Id: ' + item.id}
@@ -193,13 +214,14 @@ class SubMenu extends React.Component {
 
 	// This is called after renderDropDown so that the proper ref setup has
 	// already occurred
-	linkReferences() {
+	linkReferences(item) {
 		this.menu = []
-		if (this.moveUp) this.menu.push(this.moveUp)
-		if (this.moveDown) this.menu.push(this.moveDown)
-		this.menu.push(this.editName)
-		this.menu.push(this.delete)
-		this.menu.push(this.getId)
+		if (this.moveUpRef) this.menu.push(this.moveUpRef)
+		if (this.moveDownRef) this.menu.push(this.moveDownRef)
+		this.menu.push(this.editNameRef)
+		if (item.id !== EditorStore.state.startingId) this.menu.push(this.setStartRef)
+		this.menu.push(this.deleteRef)
+		this.menu.push(this.getIdRef)
 	}
 
 	render() {
@@ -235,7 +257,7 @@ class SubMenu extends React.Component {
 			>
 				{this.renderLinkButton(item.label, ariaLabel, item.id)}
 				{this.renderDropDown(item)}
-				{this.linkReferences()}
+				{this.linkReferences(item)}
 			</li>
 		)
 	}

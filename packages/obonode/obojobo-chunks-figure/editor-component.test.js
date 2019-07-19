@@ -1,17 +1,23 @@
+import Figure from './editor-component'
+import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-
-import Figure from './editor-component'
-
-import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/stores/editor-store')
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 
 describe('Figure Editor Node', () => {
+	let mockEditor
 	beforeEach(() => {
 		jest.restoreAllMocks()
-		jest.resetAllMocks()
+		mockEditor = {
+			setNodeByKey: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+		EditorStore.state = { settings: { allowedUploadTypes: '.mockTypes'} }
 	})
+
 	test('Figure component', () => {
 		const component = renderer.create(
 			<Figure
@@ -27,7 +33,6 @@ describe('Figure Editor Node', () => {
 			/>
 		)
 		const tree = component.toJSON()
-
 		expect(tree).toMatchSnapshot()
 	})
 
@@ -85,10 +90,6 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('Figure component edits properties', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
 		const component = mount(
 			<Figure
 				node={{
@@ -97,7 +98,7 @@ describe('Figure Editor Node', () => {
 						get: () => ({})
 					}
 				}}
-				editor={editor}
+				editor={mockEditor}
 			/>
 		)
 
@@ -147,51 +148,41 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('changeProperties sets the nodes content', () => {
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
+		const mockContent = {mockContent: true}
+		const newMockContent = { newMockContent: 999 }
 		const component = mount(
 			<Figure
 				node={{
 					key: 'mockKey',
+					data: {
+						get: () => mockContent
+					}
+				}}
+				editor={mockEditor}
+			/>
+		)
+
+		component.instance().changeProperties(newMockContent)
+		expect(mockEditor.setNodeByKey).toHaveBeenCalledWith('mockKey', {data: {content: newMockContent}})
+	})
+
+	test('Figure component delete button calls editor.removeNodeByKey', () => {
+		const component = mount(
+			<Figure
+				node={{
 					data: {
 						get: () => ({})
 					}
 				}}
-				editor={editor}
+				editor={mockEditor}
 			/>
 		)
 
-		component.instance().changeProperties({ mockProperties: 'mock value' })
+		const deleteButton = component.find('button').at(0)
+		expect(deleteButton.props().children).toBe('×')
 
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-	})
-
-	test('Figure component deletes self', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<Figure
-				node={{
-					key: 'mockKey',
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={editor}
-			/>
-		)
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(mockEditor.removeNodeByKey).not.toHaveBeenCalled()
+		deleteButton.simulate('click')
+		expect(mockEditor.removeNodeByKey).toHaveBeenCalled()
 	})
 })
