@@ -48,6 +48,30 @@ class EditorNav extends React.Component {
 		newAssessment.id = generateId()
 		newAssessment.content.title = name
 
+		// Match Assessment Id with ActionButton
+		newAssessment.content.scoreActions.forEach(scoreAction => {
+			scoreAction.page.children.forEach(child => {
+				if (child.type === "ObojoboDraft.Chunks.ActionButton") {
+					child.content.triggers.forEach(trigger => {
+						trigger.actions.forEach(action => {
+								action.value.id = newAssessment.id
+						})
+					})
+				}
+			})
+		})
+		newAssessment.children.forEach(child => {
+			child.children.forEach(child => {
+				if (child.type === "ObojoboDraft.Chunks.ActionButton") {
+					child.content.triggers.forEach(trigger => {
+						trigger.actions.forEach(action => {
+								action.value.id = newAssessment.id
+						})
+					})
+				}
+			})
+		})
+
 		EditorUtil.addAssessment(newAssessment)
 		return this.setState({ navTargetId: newAssessment.id })
 	}
