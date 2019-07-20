@@ -61,7 +61,7 @@ exports[`PostTest PostTest component 1`] = `
       </div>
     </div>
     <div
-      className="score-actions-page"
+      className="score-actions-page pad"
     >
       <p>
         mockMessage
@@ -149,7 +149,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
       </div>
     </div>
     <div
-      className="score-actions-page"
+      className="score-actions-page pad"
     >
       <div
         className="component obojobo-draft--pages--page"
@@ -310,7 +310,7 @@ exports[`PostTest PostTest component with review 1`] = `
       </div>
     </div>
     <div
-      className="score-actions-page"
+      className="score-actions-page pad"
     >
       <div
         className="component obojobo-draft--pages--page"
@@ -471,7 +471,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
       </div>
     </div>
     <div
-      className="score-actions-page"
+      className="score-actions-page pad"
     >
       <div
         className="component obojobo-draft--pages--page"
@@ -632,7 +632,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
       </div>
     </div>
     <div
-      className="score-actions-page"
+      className="score-actions-page pad"
     >
       <div
         className="component obojobo-draft--pages--page"
@@ -783,7 +783,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
       </div>
     </div>
     <div
-      className="score-actions-page"
+      className="score-actions-page pad"
     >
       <div
         className="component obojobo-draft--pages--page"

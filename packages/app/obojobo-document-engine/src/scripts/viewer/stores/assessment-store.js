@@ -117,6 +117,7 @@ class AssessmentStore extends Store {
 					scores: scoreObject,
 					responses: attempt.responses
 				}
+
 				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
 			})
 		}
@@ -231,7 +232,9 @@ class AssessmentStore extends Store {
 		const assessment = this.state.assessments[assessId]
 		const model = OboModel.models[assessId]
 
-		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
+		assessment.current.state.questions.forEach(question =>
+			QuestionUtil.hideQuestion(question.id, context)
+		)
 		assessment.currentResponses.forEach(questionId =>
 			QuestionUtil.clearResponse(questionId, context)
 		)

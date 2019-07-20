@@ -201,6 +201,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getLastAttemptForModel.mockReturnValueOnce({ attemptId: 'mockAttempt' })
 		// mock attempts taken
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
 		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
@@ -239,6 +240,7 @@ describe('FullReview', () => {
 				]
 			}
 		])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
@@ -252,7 +254,14 @@ describe('FullReview', () => {
 			navState: {
 				context: 'assessmentReview:mockAttemptId'
 			},
-			questionState: { scores: [] },
+			questionState: {
+				contexts: {
+					'assessmentReview:mockAttemptId': {
+						scores: [],
+						responses: []
+					}
+				}
+			},
 			focusState: {}
 		}
 		const model = OboModel.create(assessmentJSON)
@@ -276,6 +285,7 @@ describe('FullReview', () => {
 				]
 			}
 		])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
@@ -316,6 +326,7 @@ describe('FullReview', () => {
 				]
 			}
 		])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(
 			<FullReview model={model} moduleData={moduleData} showFullReview={true} />
@@ -350,6 +361,7 @@ describe('FullReview', () => {
 				questionScores: []
 			}
 		])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
 		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
@@ -381,6 +393,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getHighestAttemptsForModelByAttemptScore.mockReturnValueOnce([mockAttempt])
 		// mock attempt taken
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([mockAttempt])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
@@ -429,6 +442,7 @@ describe('FullReview', () => {
 				]
 			}
 		])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
 
 		const component = renderer.create(<FullReview model={model} moduleData={moduleData} />)
 		const tree = component.toJSON()
@@ -442,7 +456,14 @@ describe('FullReview', () => {
 			navState: {
 				context: 'assessmentReview:mockAttemptId'
 			},
-			questionState: { scores: {} },
+			questionState: {
+				contexts: {
+					'assessmentReview:mockAttemptId': {
+						scores: {},
+						responses: {}
+					}
+				}
+			},
 			focusState: {}
 		}
 		const model = OboModel.create(assessmentJSON)
@@ -478,6 +499,7 @@ describe('FullReview', () => {
 				]
 			}
 		])
+		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
 
 		const component = mount(<FullReview model={model} moduleData={moduleData} />)
 		expect(NavUtil.setContext).toHaveBeenCalledTimes(1)

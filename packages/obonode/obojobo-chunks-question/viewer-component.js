@@ -7,7 +7,7 @@ import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { OboComponent } = Viewer.components
-const { FocusUtil, QuestionUtil } = Viewer.util
+const { FocusUtil, QuestionUtil, NavUtil } = Viewer.util
 const { Button } = Common.components
 const { focus } = Common.page
 
@@ -27,6 +27,9 @@ export default class Question extends React.Component {
 
 	static focusOnContent(model) {
 		const el = model.getDomEl()
+
+		if (!el) return false
+
 		const isHidden = el.classList.contains('is-hidden')
 		let focusableEl = null
 
@@ -46,10 +49,11 @@ export default class Question extends React.Component {
 	}
 
 	onClickBlocker() {
-		QuestionUtil.viewQuestion(this.props.model.get('id'))
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const context = NavUtil.getContext(this.props.moduleData.navState)
 
-		FocusUtil.focusComponent(this.props.model.get('id'), { fade: mode === 'practice' })
+		QuestionUtil.viewQuestion(this.props.model.get('id'), context)
+
+		FocusUtil.focusComponent(this.props.model.get('id'), { fade: context === 'practice' })
 
 		this.applyFlipCSS()
 	}
@@ -62,40 +66,52 @@ export default class Question extends React.Component {
 		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
 	}
 
+	getMode() {
+		const baseContext = this.props.moduleData.navState.context.split(':')[0]
+
+		switch (baseContext) {
+			case 'practice':
+				return 'practice'
+
+			case 'assessment':
+				return 'assessment'
+
+			case 'assessmentReview':
+				return 'review'
+		}
+
+		return null
+	}
+
 	render() {
 		if (this.props.showContentOnly) {
 			return this.renderContentOnly()
 		}
 
+		const mode = this.getMode()
+		const type = this.props.model.modelState.type
 		const score = QuestionUtil.getScoreForModel(
 			this.props.moduleData.questionState,
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-		const viewState = QuestionUtil.getViewState(
+		const scoreClass = QuestionUtil.getScoreClass(score)
+		const isAnswered = QuestionUtil.isAnswered(
 			this.props.moduleData.questionState,
-			this.props.model
+			this.props.model,
+			this.props.moduleData.navState.context
 		)
-
 		const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
-
 		const AssessmentComponent = assessment.getComponentClass()
-
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
-
-		let scoreClassName
-		switch (score) {
-			case null:
-				scoreClassName = ''
-				break
-
-			case 100:
-				scoreClassName = ' is-correct'
-				break
-
-			default:
-				scoreClassName = ' is-not-correct'
-				break
+		let viewState
+		if (mode === 'review') {
+			viewState = 'active'
+		} else {
+			viewState = QuestionUtil.getViewState(
+				this.props.moduleData.questionState,
+				this.props.model,
+				this.props.moduleData.navState.context
+			)
 		}
 
 		let startQuestionAriaLabel
@@ -108,9 +124,11 @@ export default class Question extends React.Component {
 
 		const classNames =
 			'obojobo-draft--chunks--question' +
-			scoreClassName +
-			(mode === 'review' ? ' is-active' : ` is-${viewState}`) +
+			` ${scoreClass}` +
+			` is-${viewState}` +
+			` is-type-${type}` +
 			` is-mode-${mode}` +
+			isOrNot(isAnswered, 'answered') +
 			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
@@ -129,6 +147,8 @@ export default class Question extends React.Component {
 							model={assessment}
 							moduleData={this.props.moduleData}
 							mode={mode}
+							type={type}
+							isReview={this.props.isReview}
 						/>
 					</div>
 					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
@@ -149,14 +169,22 @@ export default class Question extends React.Component {
 			this.props.model,
 			this.props.moduleData.navState.context
 		)
-
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const scoreClass = QuestionUtil.getScoreClass(score)
+		const isAnswered = QuestionUtil.isAnswered(
+			this.props.moduleData.questionState,
+			this.props.model,
+			this.props.moduleData.navState.context
+		)
+		const mode = this.getMode()
+		const type = this.props.model.modelState.type
 
 		const className =
 			'obojobo-draft--chunks--question' +
-			isOrNot(score === 100, 'correct') +
+			` ${scoreClass}` +
 			' is-active' +
-			` is-mode-${mode}`
+			` is-mode-${mode}` +
+			` is-type-${type}` +
+			isOrNot(isAnswered, 'answered')
 
 		return (
 			<OboComponent

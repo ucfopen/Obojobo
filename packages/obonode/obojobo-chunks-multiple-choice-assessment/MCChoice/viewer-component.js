@@ -10,6 +10,7 @@ const { QuestionUtil } = Viewer.util
 
 const QUESTION_TYPE = 'ObojoboDraft.Chunks.Question'
 const CHOSEN_CORRECTLY = 'chosen-correctly'
+const CHOSEN_SURVEY = 'chosen-survey'
 const SHOULD_NOT_HAVE_CHOSEN = 'should-not-have-chosen'
 const COULD_HAVE_CHOSEN = 'could-have-chosen'
 const SHOULD_HAVE_CHOSEN = 'should-have-chosen'
@@ -40,17 +41,19 @@ const choiceIsSelected = (questionState, model, navStateContext) => {
 
 const getQuestionModel = model => model.getParentOfType(QUESTION_TYPE)
 
-const answerIsCorrect = (model, mode, questionState, navStateContext) => {
-	let score
-	if (mode === 'review') {
-		// no score data for this context? no idea what to do, throw an error
-		if (!questionState.scores[navStateContext]) throw 'Unknown Question State'
+const getQuestionScore = (model, isReview, questionState, navStateContext) => {
+	const questionModel = getQuestionModel(model)
 
-		score = QuestionUtil.getScoreForModel(questionState, getQuestionModel(model), navStateContext)
-	} else {
-		score = model.modelState.score
+	if (isReview) {
+		return QuestionUtil.getScoreForModel(questionState, questionModel, navStateContext)
 	}
-	return score === 100
+
+	// Override any score property if this is for a survey type question
+	if (questionModel.modelState.type === 'survey') {
+		return 'no-score'
+	}
+
+	return model.modelState.score
 }
 
 const renderAnswerFlag = type => {
@@ -59,15 +62,23 @@ const renderAnswerFlag = type => {
 	switch (type) {
 		case UNCHOSEN_CORRECTLY:
 			return <div />
+
 		case CHOSEN_CORRECTLY:
 			flagEl = <p>Your Answer (Correct)</p>
 			break
+
+		case CHOSEN_SURVEY:
+			flagEl = <p>Your Response</p>
+			break
+
 		case SHOULD_NOT_HAVE_CHOSEN:
 			flagEl = <p>Your Answer (Incorrect)</p>
 			break
+
 		case COULD_HAVE_CHOSEN:
 			flagEl = <p>Also Correct Answer</p>
 			break
+
 		case SHOULD_HAVE_CHOSEN:
 			flagEl = <p>Correct Answer</p>
 			break
@@ -86,7 +97,12 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	// Renamed for clarity w/ isACorrectChoice
 	const userIsCorrect = isCorrect
 
+	const isASurveyQuestion = getQuestionModel(model).modelState.type === 'survey'
 	const isACorrectChoice = model.get('content').score === 100
+
+	if (isASurveyQuestion) {
+		return isSelected ? CHOSEN_SURVEY : UNCHOSEN_CORRECTLY
+	}
 
 	if (isSelected) {
 		return isACorrectChoice ? CHOSEN_CORRECTLY : SHOULD_NOT_HAVE_CHOSEN
@@ -99,7 +115,10 @@ const getAnsType = (model, isCorrect, isSelected) => {
 	return UNCHOSEN_CORRECTLY
 }
 
-const getChoiceText = (isCorrect, isTypePickAll) => {
+const getChoiceText = (score, isTypePickAll) => {
+	const isCorrect = score === 100
+
+	if (score === 'no-score') return 'Your response:'
 	if (isTypePickAll && isCorrect) return 'A correct response:'
 	if (isTypePickAll && !isCorrect) return 'An incorrect response:'
 	if (!isTypePickAll && isCorrect) return 'Your correct response:'
@@ -107,12 +126,12 @@ const getChoiceText = (isCorrect, isTypePickAll) => {
 }
 
 const MCChoice = props => {
-	let isCorrect
+	let score
 
 	try {
-		isCorrect = answerIsCorrect(
+		score = getQuestionScore(
 			props.model,
-			props.mode,
+			props.mode === 'review',
 			props.moduleData.questionState,
 			props.moduleData.navState.context
 		)
@@ -129,7 +148,7 @@ const MCChoice = props => {
 		props.moduleData.navState.context
 	)
 
-	const ansType = getAnsType(props.model, isCorrect, isSelected)
+	const ansType = getAnsType(props.model, score === 100, isSelected)
 	const inputType = getInputType(props.responseType)
 
 	let flag
@@ -140,7 +159,7 @@ const MCChoice = props => {
 	const className =
 		'obojobo-draft--chunks--mc-assessment--mc-choice' +
 		isOrNot(isSelected, 'selected') +
-		isOrNot(isCorrect, 'correct') +
+		isOrNot(score === 100, 'correct') +
 		` is-type-${ansType}` +
 		` is-mode-${props.mode}`
 
@@ -161,9 +180,9 @@ const MCChoice = props => {
 				aria-checked={isSelected}
 				disabled={props.mode === 'review'}
 			/>
-			{isSelected && props.questionSubmitted && props.mode !== 'review' ? (
+			{isSelected && props.questionSubmitted && props.type !== 'review' ? (
 				<span className="for-screen-reader-only">
-					{getChoiceText(isCorrect, props.responseType === 'pick-all')}
+					{getChoiceText(score, props.responseType === 'pick-all')}
 				</span>
 			) : null}
 			<div className="children">

@@ -44,6 +44,7 @@ class AssessmentReviewView extends React.Component {
 			const machineDateString = formatDate(date)
 			const ariaDateString = formatDate(date, 'MMMM Do YYYY [at] h:mma')
 			const numCorrect = AssessmentUtil.getNumCorrect(attempt.questionScores)
+			const numPossibleCorrect = AssessmentUtil.getNumPossibleCorrect(attempt.questionScores)
 
 			const report = scoreReporter.getReportFor(attempt.attemptNumber)
 
@@ -79,7 +80,8 @@ class AssessmentReviewView extends React.Component {
 										<span className="for-screen-reader-only">{ariaDateString}</span>
 									</div>
 									<div>
-										{numCorrect} out of {attempt.questionScores.length} questions correct
+										{numCorrect} out of {numPossibleCorrect} question
+										{numPossibleCorrect === 1 ? '' : 's'} correct
 									</div>
 									<div>
 										Attempt Score: <strong>{attemptScoreSummary}</strong>
@@ -102,7 +104,6 @@ class AssessmentReviewView extends React.Component {
 								<QuestionComponent
 									model={questionModel}
 									moduleData={this.props.moduleData}
-									mode={'review'}
 									key={scoreObj.id}
 								/>
 							) : (
