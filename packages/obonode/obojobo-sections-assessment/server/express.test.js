@@ -262,20 +262,23 @@ describe('server/express', () => {
 	})
 
 	test('/api/assessments/clear-preview-scores runs queries to empty preview score data', () => {
-		expect.assertions(10)
+		expect.assertions(12)
 
 		// visit is preview visit
 		req.body.visitId = 'mockPreviewVisitId'
 
-		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
+		Visit.fetchById.mockReturnValueOnce({
+			is_preview: true,
+			resource_link_id: 'mock_rlid'
+		})
 
 		// grab a ref to expected route & verify it's the route we want
 		const clearPreviewScoresRoute = server.post.mock.calls[3]
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		db.manyOrNone
-			.mockReturnValueOnce(Promise.resolve([{ id: 13 }])) // assessmentScoreIdsResult
-			.mockReturnValueOnce(Promise.resolve([14])) // attemptIdsResult
+			.mockResolvedValueOnce([{ id: 13 }, {id: 99}]) // assessmentScoreIdsResult
+			.mockResolvedValueOnce([{id: 14}, {id: 77}]) // attemptIdsResult
 
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
@@ -284,6 +287,23 @@ describe('server/express', () => {
 			expect(res.success).toHaveBeenCalledWith()
 
 			expect(db.manyOrNone).toHaveBeenCalledTimes(2)
+			expect(db.manyOrNone).toHaveBeenCalledWith(
+				expect.stringContaining('FROM assessment_scores'),
+				{
+					userId: 1,
+					draftId: 3,
+					resourceLinkId: 'mock_rlid'
+				}
+			)
+			expect(db.manyOrNone).toHaveBeenCalledWith(
+				expect.stringContaining('FROM attempts'),
+				{
+					userId: 1,
+					draftId: 3,
+					resourceLinkId: 'mock_rlid'
+				}
+			)
+
 			expect(db.none).toHaveBeenCalledTimes(4)
 			expect(db.none).toHaveBeenCalledWith(
 				expect.stringContaining('DELETE FROM attempts_question_responses'),
@@ -291,15 +311,15 @@ describe('server/express', () => {
 			)
 			expect(db.none).toHaveBeenCalledWith(
 				expect.stringContaining('DELETE FROM lti_assessment_scores'),
-				expect.anything()
+				{ids: [13, 99]}
 			)
 			expect(db.none).toHaveBeenCalledWith(
 				expect.stringContaining('DELETE FROM assessment_scores'),
-				expect.anything()
+				{ids: [13, 99]}
 			)
 			expect(db.none).toHaveBeenCalledWith(
 				expect.stringContaining('DELETE FROM attempts'),
-				expect.anything()
+				{ids: [14, 77]}
 			)
 		})
 	})
@@ -313,8 +333,8 @@ describe('server/express', () => {
 		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
 
 		db.manyOrNone
-			.mockReturnValueOnce(Promise.resolve([])) // assessmentScoreIdsResult
-			.mockReturnValueOnce(Promise.resolve([])) // attemptIdsResult
+			.mockResolvedValueOnce([]) // assessmentScoreIdsResult
+			.mockResolvedValueOnce([]) // attemptIdsResult
 
 		// execute
 		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
