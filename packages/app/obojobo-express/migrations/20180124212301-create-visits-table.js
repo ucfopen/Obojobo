@@ -39,11 +39,7 @@ exports.up = function(db) {
 			},
 			is_preview: { type: 'boolean', notNull: true }
 		})
-		.then(result => {
-			return db.addIndex('visits', 'visits_unique_visit', ['user_id', 'draft_id', 'is_active'])
-			return db.addIndex('visits', 'visits_user_id_index', ['user_id'])
-			return db.addIndex('visits', 'visits_draft_id_index', ['draft_id'])
-		})
+		.then(() => db.addIndex('visits', 'visits_unique_visit', ['user_id', 'draft_id', 'is_active']))
 }
 
 exports.down = function(db) {

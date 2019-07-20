@@ -130,12 +130,23 @@ describe('Attempt End', () => {
 		jest.fn().mockReturnValueOnce('mockReload')
 
 		const req = {
-			connection: { remoteAddress: 'mockRemoteAddress' }
+			connection: { remoteAddress: 'mockRemoteAddress' },
+			currentUser: { id: 'mockUserId' },
+			currentDocument: mockDraftDocument,
+			params: { attemptId: 'mockAttemptId' },
+			currentVisit: {
+				id: 'mockVisitId',
+				is_preview: false,
+				resource_link_id: 'mockResourceLinkId'
+			},
+			body: {
+				visitId: 'mockVisitId'
+			}
 		}
-		const user = { id: 'mockUserId' }
+
 		expect(insertEvent).toHaveBeenCalledTimes(0)
 
-		return endAttempt(req, {}, user, mockDraftDocument, 'mockAttemptId', true).then(results => {
+		return endAttempt(req, {}).then(results => {
 			expect(logger.info).toHaveBeenCalledTimes(8)
 			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttempt success'))
 			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('getAttemptHistory success'))
@@ -153,10 +164,30 @@ describe('Attempt End', () => {
 				'mockUserId',
 				mockDraftDocument,
 				'mockAssessmentId',
-				true
+				false,
+				'mockResourceLinkId'
 			)
 			expect(insertEvent).toHaveBeenCalledTimes(2)
-			expect(insertEvent).toHaveBeenCalledWith({
+
+			expect(insertEvent.mock.calls[0][0]).toEqual({
+				action: 'assessment:attemptEnd',
+				actorTime: 'mockDate',
+				caliperPayload: 'mockCaliperPayload',
+				draftId: 'mockDraftId',
+				contentId: 'mockContentId',
+				eventVersion: '1.1.0',
+				ip: 'mockRemoteAddress',
+				metadata: {},
+				payload: {
+					attemptCount: 6,
+					attemptId: 'mockAttemptId'
+				},
+				userId: 'mockUserId',
+				isPreview: false,
+				visitId: 'mockVisitId'
+			})
+
+			expect(insertEvent.mock.calls[1][0]).toEqual({
 				action: 'assessment:attemptScored',
 				actorTime: 'mockDate',
 				caliperPayload: 'mockCaliperPayload',
@@ -177,27 +208,12 @@ describe('Attempt End', () => {
 					ltiStatusDetails: undefined,
 					ltiScoreSent: 'mockScoreSent',
 					ltiScoreStatus: 'mockStatus',
-					scoreDetails: { assessmentScore: 'mockScoreForAttempt' }
+					scoreDetails: { assessmentScore: 'mockScoreForAttempt' },
+					resourceLinkId: 'mockResourceLinkId'
 				},
 				userId: 'mockUserId',
-				isPreview: true
-			})
-
-			expect(insertEvent).toHaveBeenCalledWith({
-				action: 'assessment:attemptEnd',
-				actorTime: 'mockDate',
-				caliperPayload: 'mockCaliperPayload',
-				draftId: 'mockDraftId',
-				contentId: 'mockContentId',
-				eventVersion: '1.1.0',
-				ip: 'mockRemoteAddress',
-				metadata: {},
-				payload: {
-					attemptCount: 6,
-					attemptId: 'mockAttemptId'
-				},
-				userId: 'mockUserId',
-				isPreview: true
+				isPreview: false,
+				visitId: 'mockVisitId'
 			})
 		})
 	})
@@ -567,7 +583,8 @@ describe('Attempt End', () => {
 			'mockDraftId',
 			'mockContentId',
 			{ attempt: 'mockCalculatedScores', assessmentScoreDetails: 'mockScoreDeets' },
-			'mockPreview'
+			'mockPreview',
+			'mockResourceLinkId'
 		)
 
 		// make sure we get the result of insertEvent back
@@ -582,7 +599,8 @@ describe('Attempt End', () => {
 			'mockContentId',
 			'mockCalculatedScores',
 			'mockScoreDeets',
-			'mockPreview'
+			'mockPreview',
+			'mockResourceLinkId'
 		)
 	})
 

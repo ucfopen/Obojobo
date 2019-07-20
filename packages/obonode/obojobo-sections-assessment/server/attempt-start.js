@@ -22,7 +22,8 @@ const startAttempt = (req, res) => {
 		questionBank: null,
 		attemptHistory: null,
 		numAttemptsTaken: null,
-		questionUsesMap: null
+		questionUsesMap: null,
+		resourceLinkId: null
 	}
 	let attemptState
 	let currentDocument = null
@@ -35,6 +36,7 @@ const startAttempt = (req, res) => {
 		})
 		.then(visit => {
 			assessmentProperties.isPreview = visit.is_preview
+			assessmentProperties.resourceLinkId = visit.resource_link_id
 
 			return req.requireCurrentDocument()
 		})
@@ -52,7 +54,8 @@ const startAttempt = (req, res) => {
 				assessmentProperties.user.id,
 				currentDocument.draftId,
 				req.body.assessmentId,
-				assessmentProperties.isPreview
+				assessmentProperties.isPreview,
+				assessmentProperties.resourceLinkId
 			)
 		})
 		.then(attemptHistory => {
@@ -84,7 +87,8 @@ const startAttempt = (req, res) => {
 					data: attemptState.data,
 					qb: attemptState.qb
 				},
-				assessmentProperties.isPreview
+				assessmentProperties.isPreview,
+				assessmentProperties.resourceLinkId
 			)
 		})
 		.then(result => {
@@ -97,7 +101,8 @@ const startAttempt = (req, res) => {
 				req.body.assessmentId,
 				assessmentProperties.isPreview,
 				req.hostname,
-				req.connection.remoteAddress
+				req.connection.remoteAddress,
+				req.body.visitId
 			)
 		})
 		.catch(error => {
@@ -191,18 +196,20 @@ const insertAttemptStartCaliperEvent = (
 	assessmentId,
 	isPreview,
 	hostname,
-	remoteAddress
+	remoteAddress,
+	visitId
 ) => {
 	const { createAssessmentAttemptStartedEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
 		action: ACTION_ASSESSMENT_ATTEMPT_START,
 		actorTime: new Date().toISOString(),
-		isPreview: isPreview,
+		isPreview,
 		payload: {
 			attemptId: attemptId,
 			attemptCount: numAttemptsTaken
 		},
-		userId: userId,
+		visitId,
+		userId,
 		ip: remoteAddress,
 		metadata: {},
 		draftId: draftDocument.draftId,

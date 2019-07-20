@@ -14,7 +14,7 @@ const {
 } = oboRequire('express_validators')
 
 // launch lti view of draft - redirects to visit route
-// mounted as /visit/:draftId/:page
+// mounted as /view/:draftId/:page
 router
 	.route('/:draftId/:page?')
 	.post([ltiLaunch.assignment, requireCurrentUser, requireCurrentDocument, checkValidationRules])
@@ -43,6 +43,7 @@ router
 						visitId,
 						deactivatedVisitId
 					},
+					resourceLinkId: req.oboLti.body.resource_link_id,
 					eventVersion: '1.0.0',
 					caliperPayload: createVisitCreateEvent({
 						actor: { type: ACTOR_USER, id: req.currentUser.id },
@@ -60,7 +61,7 @@ router
 	})
 
 // MAIN VISIT ROUTE
-// mounted as /visit/:draftId/visit/:visitId
+// mounted as /view/:draftId/visit/:visitId
 router
 	.route('/:draftId/visit/:visitId*')
 	.get([requireCurrentUser, requireCurrentDocument, requireVisitId, checkValidationRules])
@@ -81,6 +82,7 @@ router
 					metadata: {},
 					draftId: req.currentDocument.draftId,
 					contentId: req.currentDocument.contentId,
+					visitId: req.params.visitId,
 					payload: { visitId: req.params.visitId },
 					eventVersion: '1.1.0',
 					isPreview: currentVisit.is_preview,
