@@ -41,7 +41,7 @@ const assetForEnv = (assetPath, forceEnvTo = null) => {
 
 const getEnv = forceEnvTo => {
 	const env = forceEnvTo || process.env.ASSET_ENV
-	return (env ? env : NODE_ENV).toLowerCase()
+	return (env || NODE_ENV).toLowerCase()
 }
 
 module.exports = {
