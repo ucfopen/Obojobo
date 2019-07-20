@@ -219,13 +219,10 @@ describe('lti', () => {
 		['1', false],
 		['0.5', false],
 		[Infinity, false],
-		[-Infinity, false],
-	])(
-		'isScoreValid(%s) returns %s',
-		(score, expected) =>{
-			expect(lti.isScoreValid(score)).toBe(expected)
-		}
-	)
+		[-Infinity, false]
+	])('isScoreValid(%s) returns %s', (score, expected) => {
+		expect(lti.isScoreValid(score)).toBe(expected)
+	})
 
 	test('isLaunchExpired checks if a launch is expired after 5 hours', () => {
 		const isLaunchExpired = lti.isLaunchExpired
@@ -253,7 +250,6 @@ describe('lti', () => {
 			)
 		).toBe(true)
 	})
-
 
 	const unsent = 'error_newer_assessment_score_unsent'
 	const unk = 'error_state_unknown'
@@ -314,8 +310,10 @@ describe('lti', () => {
 		['hasOutcome', 'differentScore', true, true, okPreview]
 	])(
 		'getGradebookStatus(%s, %s, %s, %s) returns %s',
-		(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview, expected) =>{
-			expect(lti.getGradebookStatus(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview)).toBe(expected)
+		(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview, expected) => {
+			expect(
+				lti.getGradebookStatus(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview)
+			).toBe(expected)
 		}
 	)
 
@@ -334,7 +332,12 @@ describe('lti', () => {
 			score_details: 'details'
 		})
 
-		return getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id', false).then(result => {
+		return getLatestHighestAssessmentScoreRecord(
+			'user_id',
+			'draft_id',
+			'assessment_id',
+			false
+		).then(result => {
 			expect(result).toEqual({
 				id: 'id',
 				userId: 'user_id',
@@ -354,13 +357,17 @@ describe('lti', () => {
 		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
 		db.oneOrNone.mockResolvedValueOnce(null)
-		return getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id', false)
-			.then(result => {
-				expect(result.error.message).toBe('No assessment score found')
-			})
+		return getLatestHighestAssessmentScoreRecord(
+			'user_id',
+			'draft_id',
+			'assessment_id',
+			false
+		).then(result => {
+			expect(result.error.message).toBe('No assessment score found')
+		})
 	})
 
-	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', ()  => {
+	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', () => {
 		db.oneOrNone.mockResolvedValueOnce({ properties: 'properties' })
 
 		return lti.getLatestSuccessfulLTIAssessmentScoreRecord(123).then(result => {
@@ -691,7 +698,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -770,7 +776,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -857,7 +862,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -944,7 +948,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -1021,7 +1024,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -1100,7 +1102,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -1113,10 +1114,10 @@ describe('lti', () => {
 		}
 
 		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-
 			expect(logger.info).toHaveBeenCalledWith(
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
-				logId)
+				logId
+			)
 
 			expect(logger.error).toHaveBeenCalledWith(
 				'LTI no assessment score found, unable to proceed!',
@@ -1244,7 +1245,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
 		})
 	})
 
@@ -1317,7 +1317,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
 		})
 	})
 
@@ -1394,7 +1393,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
 		})
 	})
 
@@ -1478,7 +1476,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -1562,7 +1559,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -1650,7 +1646,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -1738,7 +1733,6 @@ describe('lti', () => {
 				isPreview: false,
 				contentId: 'content-id'
 			})
-
 		})
 	})
 
@@ -1826,7 +1820,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
 		})
 	})
 
@@ -1906,7 +1899,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -1987,7 +1979,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
 		})
 	})
 
@@ -2373,7 +2364,6 @@ describe('lti', () => {
 						statusDetails: 'status-details'
 					}
 				})
-
 			})
 	})
 
@@ -2410,7 +2400,6 @@ describe('lti', () => {
 						statusDetails: 'status-details'
 					}
 				})
-
 			})
 	})
 
@@ -2421,14 +2410,14 @@ describe('lti', () => {
 			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
 			.then(result => {
 				expect(result).toEqual({})
-
 			})
 	})
 
 	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId throws errors', () => {
 		db.manyOrNone.mockRejectedValueOnce('mock-reject-error')
-		return expect(lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id'))
-			.rejects.toMatch('mock-reject-error')
+		return expect(
+			lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+		).rejects.toMatch('mock-reject-error')
 	})
 
 	test('getOutcomeServiceForLaunch returns error if unexpected error occurs', () => {
@@ -2472,12 +2461,14 @@ describe('lti', () => {
 	test('insertReplaceResultEvent catches error', () => {
 		insertEvent.mockRejectedValueOnce(new Error('mock Error'))
 
-		return lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
-			expect(logger.error).toHaveBeenCalledWith(
-				'There was an error inserting the lti event:',
-				new Error('mock Error')
-			)
-		})
+		return lti
+			.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult')
+			.then(() => {
+				expect(logger.error).toHaveBeenCalledWith(
+					'There was an error inserting the lti event:',
+					new Error('mock Error')
+				)
+			})
 	})
 
 	test('logAndGetStatusForError logs unexpected error', () => {
@@ -2566,7 +2557,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: null,
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
 		})
 	})
 
@@ -2644,7 +2634,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
 		})
 	})
 })

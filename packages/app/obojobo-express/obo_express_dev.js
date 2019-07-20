@@ -28,7 +28,7 @@ const ltiContext = {
 	context_type: 'CourseSection'
 }
 
-const defaultResourceLinkId ='obojobo-dev-resource-id'
+const defaultResourceLinkId = 'obojobo-dev-resource-id'
 
 // constructs a signed lti request and sends it.
 const renderLtiLaunch = (paramsIn, method, endpoint, res) => {

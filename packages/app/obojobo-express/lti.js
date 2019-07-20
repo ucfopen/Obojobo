@@ -257,11 +257,7 @@ const getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId = (
 					AND ATT.resource_link_id = $[resourceLinkId]
 					AND S.user_id = $[userId]
 					AND S.is_preview = $[isPreview]
-					${
-						optionalAssessmentId ?
-						'AND S.assessment_id = $[optionalAssessmentId]'
-						: ''
-					}
+					${optionalAssessmentId ? 'AND S.assessment_id = $[optionalAssessmentId]' : ''}
 					AND L.id IS NOT NULL
 				ORDER BY S.id DESC
 			) T1
@@ -330,7 +326,13 @@ const getRequiredDataForReplaceResult = function(
 		launch: null
 	}
 
-	return getLatestHighestAssessmentScoreRecord(userId, draftId, assessmentId, resourceLinkId, isPreview)
+	return getLatestHighestAssessmentScoreRecord(
+		userId,
+		draftId,
+		assessmentId,
+		resourceLinkId,
+		isPreview
+	)
 		.then(assessmentScoreResult => {
 			result.assessmentScoreRecord = assessmentScoreResult
 

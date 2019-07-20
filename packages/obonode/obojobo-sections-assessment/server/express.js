@@ -178,19 +178,18 @@ app.post('/api/assessments/clear-preview-scores', (req, res) => {
 
 				queries.push(
 					transaction.none(
-							`
+						`
 							DELETE FROM assessment_scores
 							WHERE id IN ($[ids:csv])
 						`,
-							{ ids: assessmentScoreIds }
-
+						{ ids: assessmentScoreIds }
 					),
 					transaction.none(
 						`
 							DELETE FROM attempts
 							WHERE id IN ($[ids:csv])
 						`,
-							{ ids: attemptIds }
+						{ ids: attemptIds }
 					)
 				)
 
