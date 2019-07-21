@@ -17,6 +17,7 @@
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/foldcode.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/brace-fold.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/addon/fold/indent-fold.js",
+				"//cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js",
 			]
 			let css = [
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.css",
@@ -159,6 +160,7 @@
 								<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
 								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
 								<a class="link-preview" onclick="openInBetaEditor('<%= draft.draftId %>')">Edit with Visual Editor (Beta)</a>
+								<a class="link-preview" onclick="downloadDocument('<%= draft.draftId %>', '<%= draft.xml ? 'xml' : 'json' %>')">Download</a>
 							</div>
 							<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
 					</li>
