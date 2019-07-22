@@ -52,20 +52,20 @@ const MediaUtil = {
 	},
 
 	getDefaultZoom(state, model) {
-		if (typeof state.defaultZoomById[model.get('id')] === 'undefined') return DEFAULT_ZOOM
-		return state.defaultZoomById[model.get('id')]
+		if (typeof state.defaultZoomById[model.attributes.id] === 'undefined') return DEFAULT_ZOOM
+		return state.defaultZoomById[model.attributes.id]
 	},
 
 	getZoom(state, model) {
-		if (typeof state.zoomById[model.get('id')] === 'undefined') {
+		if (typeof state.zoomById[model.attributes.id] === 'undefined') {
 			return MediaUtil.getDefaultZoom(state, model)
 		}
 
-		return state.zoomById[model.get('id')]
+		return state.zoomById[model.attributes.id]
 	},
 
 	isShowingMedia(state, model) {
-		return state.shown[model.get('id')] === true
+		return state.shown[model.attributes.id] === true
 	}
 }
 

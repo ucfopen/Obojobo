@@ -7,7 +7,7 @@ import './viewer-component.scss'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Controls from './controls'
-import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
+// import FocusUtil from 'obojobo-document-engine/src/scripts/viewer/util/focus-util'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
@@ -37,7 +37,7 @@ export default class IFrame extends React.Component {
 		this.boundSkipToBottom = this.onClickSkipToBottom.bind(this)
 		this.boundSkipToTop = this.onClickSkipToTop.bind(this)
 
-		MediaUtil.setDefaultZoom(this.props.model.get('id'), this.props.model.modelState.initialZoom)
+		// MediaUtil.setDefaultZoom(this.props.model.get('id'), this.props.model.modelState.initialZoom)
 
 		this.state = {
 			actualWidth: 0,
@@ -74,16 +74,16 @@ export default class IFrame extends React.Component {
 	}
 
 	onClickContainer() {
-		MediaUtil.show(this.props.model.get('id'))
-		FocusUtil.focusComponent(this.props.model.get('id'))
+		MediaUtil.show(this.props.model.attributes.id)
+		// FocusUtil.focusComponent(this.props.model.attributes.id)
 	}
 
 	onClickZoomReset() {
-		MediaUtil.resetZoom(this.props.model.get('id'))
+		MediaUtil.resetZoom(this.props.model.attributes.id)
 	}
 
 	onClickSetZoom(newZoom) {
-		MediaUtil.setZoom(this.props.model.get('id'), newZoom)
+		MediaUtil.setZoom(this.props.model.attributes.id, newZoom)
 	}
 
 	onClickReload() {
@@ -123,7 +123,7 @@ export default class IFrame extends React.Component {
 		Dispatcher.off('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
 
 		if (this.isMediaNeedingToBeHidden()) {
-			MediaUtil.hide(this.props.model.get('id'), 'viewerClient')
+			MediaUtil.hide(this.props.model.attributes.id, 'viewerClient')
 		}
 	}
 

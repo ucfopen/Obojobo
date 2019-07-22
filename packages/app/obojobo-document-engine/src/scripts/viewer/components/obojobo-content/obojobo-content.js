@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Registry } from 'Common'
 
 const ObojoboContent = props => {
-	const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = props
+	const { moduleData, oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = props
 
 	const currRef = useRef(null)
 
@@ -21,8 +21,9 @@ const ObojoboContent = props => {
 	const componentRenderer = index => {
 		// Nodes that are not work
 		switch (oboNodeList[index].attributes.type) {
-			case 'ObojoboDraft.Chunks.Question':
-			case 'ObojoboDraft.Chunks.IFrame':
+			// case 'ObojoboDraft.Chunks.Question':
+			case 'ObojoboDraft.Chunks.MCAssessment':
+			// case 'ObojoboDraft.Chunks.IFrame':
 			case 'ObojoboDraft.Chunks.ActionButton':
 			case 'ObojoboDraft.Sections.Assessment':
 			case 'ObojoboDraft.Chunks.QuestionBank':
@@ -37,7 +38,7 @@ const ObojoboContent = props => {
 			myRef: index === currFocusNode ? currRef : null
 		}
 		return (
-			<Component model={model}>
+			<Component model={model} moduleData={moduleData}>
 				{adjList[index].map(childIndex => {
 					return componentRenderer(childIndex)
 				})}

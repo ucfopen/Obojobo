@@ -47,9 +47,9 @@ export default class Question extends React.Component {
 
 	onClickBlocker() {
 		QuestionUtil.viewQuestion(this.props.model.get('id'))
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		// const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		FocusUtil.focusComponent(this.props.model.get('id'), { fade: mode === 'practice' })
+		// FocusUtil.focusComponent(this.props.model.get('id'), { fade: mode === 'practice' })
 
 		this.applyFlipCSS()
 	}
@@ -67,36 +67,36 @@ export default class Question extends React.Component {
 			return this.renderContentOnly()
 		}
 
-		const score = QuestionUtil.getScoreForModel(
-			this.props.moduleData.questionState,
-			this.props.model,
-			this.props.moduleData.navState.context
-		)
-		const viewState = QuestionUtil.getViewState(
-			this.props.moduleData.questionState,
-			this.props.model
-		)
+		// const score = QuestionUtil.getScoreForModel(
+		// 	this.props.moduleData.questionState,
+		// 	this.props.model,
+		// 	this.props.moduleData.navState.context
+		// )
+		// const viewState = QuestionUtil.getViewState(
+		// 	this.props.moduleData.questionState,
+		// 	this.props.model
+		// )
 
-		const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
+		// const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
 
-		const AssessmentComponent = assessment.getComponentClass()
+		// const AssessmentComponent = assessment.getComponentClass()
 
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		// const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const mode = 'test'
+		let scoreClassName = ' is-correct'
+		// switch (score) {
+		// 	case null:
+		// 		scoreClassName = ''
+		// 		break
 
-		let scoreClassName
-		switch (score) {
-			case null:
-				scoreClassName = ''
-				break
+		// 	case 100:
+		// 		scoreClassName = ' is-correct'
+		// 		break
 
-			case 100:
-				scoreClassName = ' is-correct'
-				break
-
-			default:
-				scoreClassName = ' is-not-correct'
-				break
-		}
+		// 	default:
+		// 		scoreClassName = ' is-not-correct'
+		// 		break
+		// }
 
 		let startQuestionAriaLabel
 		if (mode === 'practice') {
@@ -109,7 +109,8 @@ export default class Question extends React.Component {
 		const classNames =
 			'obojobo-draft--chunks--question' +
 			scoreClassName +
-			(mode === 'review' ? ' is-active' : ` is-${viewState}`) +
+			// (mode === 'review' ? ' is-active' : ` is-${viewState}`) +
+			+' is-active' +
 			` is-mode-${mode}` +
 			isOrNot(this.state.isFlipping, 'flipping')
 
@@ -123,19 +124,20 @@ export default class Question extends React.Component {
 			>
 				<div className="flipper">
 					<div className="content-back">
-						<QuestionContent model={this.props.model} moduleData={this.props.moduleData} />
-						<AssessmentComponent
+						{/* <QuestionContent model={this.props.model} moduleData={this.props.moduleData} /> */}
+						{this.props.children}
+						{/* <AssessmentComponent
 							key={assessment.get('id')}
 							model={assessment}
 							moduleData={this.props.moduleData}
 							mode={mode}
-						/>
+						/> */}
 					</div>
 					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
 						<Button
 							value={mode === 'practice' ? 'Try Question' : 'Start Question'}
 							ariaLabel={startQuestionAriaLabel}
-							disabled={viewState !== 'hidden'}
+							// disabled={viewState !== 'hidden'}
 						/>
 					</div>
 				</div>
@@ -144,17 +146,17 @@ export default class Question extends React.Component {
 	}
 
 	renderContentOnly() {
-		const score = QuestionUtil.getScoreForModel(
-			this.props.moduleData.questionState,
-			this.props.model,
-			this.props.moduleData.navState.context
-		)
+		// const score = QuestionUtil.getScoreForModel(
+		// 	this.props.moduleData.questionState,
+		// 	this.props.model,
+		// 	this.props.moduleData.navState.context
+		// )
 
-		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		// const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
 		const className =
 			'obojobo-draft--chunks--question' +
-			isOrNot(score === 100, 'correct') +
+			// isOrNot(score === 100, 'correct') +
 			' is-active' +
 			` is-mode-${mode}`
 
@@ -169,7 +171,8 @@ export default class Question extends React.Component {
 			>
 				<div className="flipper">
 					<div className="content-back">
-						<QuestionContent model={this.props.model} moduleData={this.props.moduleData} />
+						{/* <QuestionContent model={this.props.model} moduleData={this.props.moduleData} /> */}
+						{this.props.children}
 						<div className="pad responses-hidden">(Responses Hidden)</div>
 					</div>
 				</div>
