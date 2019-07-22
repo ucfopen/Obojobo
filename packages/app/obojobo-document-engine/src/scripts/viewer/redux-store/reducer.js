@@ -35,17 +35,52 @@ const reducer = (state = initialState, action) => {
 			return {
 				...updateNav(state, payload)
 			}
-		// Switch of/off navigation
-		case 'ON_NAV_TOGGLE':
+		case 'ON_SET_NAV_PREV':
 			return {
 				...state,
-				isNavEnabled: !state.isNavEnabled
+				currentNavIndex: state.currentNavIndex - 1 >= 0 ? state.currentNavIndex - 1 : 0
+			}
+		case 'ON_SET_NAV_WITH_ID':
+			let updatedNavIndex = state.currentNavIndex
+			state.navList.forEach((navNode, index) => {
+				if (state.oboNodeList[navNode].attributes.id === payload.id) {
+					updatedNavIndex = index
+				}
+			})
+			return {
+				...state,
+				currentNavIndex: updatedNavIndex
+			}
+		case 'ON_SET_NAV_NEXT':
+			return {
+				...state,
+				currentNavIndex:
+					state.currentNavIndex + 1 < state.navList.length
+						? state.currentNavIndex + 1
+						: state.currentNavIndex
+			}
+		// Set isNavEnbled to payload.value of payload exists else toggle navigation
+		case 'ON_SET_NAV_ENABLE':
+			return {
+				...state,
+				isNavEnabled: payload !== undefined ? payload.value : !state.isNavEnabled
+			}
+
+		case 'ON_SET_NAV_LOCK':
+			return {
+				...state,
+				isNavLocked: payload.value
 			}
 		// Update focus node
-		case 'UPDATE_CURRENT_FOCUS':
+		case 'ON_SET_CURR_FOCUS':
 			return {
 				...state,
-				currFocusNode: payload.value
+				currFocusNode: payload.index
+			}
+		case 'ON_SET_CURR_FOCUS_WITH_ID':
+			return {
+				...state,
+				currFocusNode: state.mapIdToIndex[payload.id]
 			}
 		default:
 			return state
@@ -67,6 +102,7 @@ const updateNav = (state, payload) => {
 const convertBackboneObjectToAdjList = object => {
 	const oboNodeList = []
 	const adjList = []
+	const mapIdToIndex = {}
 
 	let currentIndex = 0
 	const queue = [
@@ -87,8 +123,11 @@ const convertBackboneObjectToAdjList = object => {
 		delete newNode.children
 		oboNodeList.push(newNode)
 
-		adjList.push([])
+		// Map node's id to its index
+		mapIdToIndex[newNode.attributes.id] = currentIndex
+
 		// Update adjList
+		adjList.push([])
 		if (parentIndex !== null) {
 			adjList[parentIndex].push(currentIndex)
 		}
@@ -121,11 +160,13 @@ const convertBackboneObjectToAdjList = object => {
 		}
 	}
 
+	// Set currFucusNode to the first node of the first navigation item
 	const currFocusNode = adjList[navList[0]][0] || 0
 
 	return {
 		oboNodeList,
 		adjList,
+		mapIdToIndex,
 		navList,
 		currentNavIndex: 0,
 		currFocusNode

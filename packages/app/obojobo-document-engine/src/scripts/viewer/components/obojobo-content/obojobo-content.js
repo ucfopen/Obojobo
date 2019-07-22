@@ -24,7 +24,7 @@ const ObojoboContent = props => {
 			// case 'ObojoboDraft.Chunks.Question':
 			case 'ObojoboDraft.Chunks.MCAssessment':
 			// case 'ObojoboDraft.Chunks.IFrame':
-			case 'ObojoboDraft.Chunks.ActionButton':
+			// case 'ObojoboDraft.Chunks.ActionButton':
 			case 'ObojoboDraft.Sections.Assessment':
 			case 'ObojoboDraft.Chunks.QuestionBank':
 				return

@@ -146,18 +146,19 @@ class Nav extends React.Component {
 	}
 
 	rendererNavSubItem() {
-		const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode} = this.props
+		const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = this.props
 		return adjList[navList[currentNavIndex]].map(childIndex => {
 			const node = oboNodeList[childIndex]
-			if(node.attributes.type !== 'ObojoboDraft.Chunks.Heading' && node.attributes.content.headingLevel !== 2) {
+			if (
+				node.attributes.type !== 'ObojoboDraft.Chunks.Heading' &&
+				node.attributes.content.headingLevel !== 2
+			) {
 				return null
 			}
 			const { textGroup } = node.attributes.content
-			const className =
-				'sub-link'
-				+ isOrNot(childIndex === currFocusNode, 'selected')
-				// + isOrNot(item.flags.correct, 'correct')
-				// isOrNot(isLastInList, 'last-in-list')
+			const className = 'sub-link' + isOrNot(childIndex === currFocusNode, 'selected')
+			// + isOrNot(item.flags.correct, 'correct')
+			// isOrNot(isLastInList, 'last-in-list')
 			return (
 				<NavSubItem
 					key={childIndex}
@@ -166,21 +167,18 @@ class Nav extends React.Component {
 					className={className}
 				/>
 			)
-
 		})
 	}
 
 	rendererNavItem() {
 		const { oboNodeList, navList, currentNavIndex } = this.props
 		return navList.map((navIndex, index) => {
-			const className =
-				'link' +
-				isOrNot(index === currentNavIndex, 'selected')
-				// isOrNot(item.flags.complete, 'complete') +
-				// isOrNot(item.flags.correct, 'correct') +
-				// isOrNot(item.flags.assessment, 'assessment')
-				// isOrNot(isFirstInList, 'first-in-list') +
-				// isOrNot(isLastInList, 'last-in-list')
+			const className = 'link' + isOrNot(index === currentNavIndex, 'selected')
+			// isOrNot(item.flags.complete, 'complete') +
+			// isOrNot(item.flags.correct, 'correct') +
+			// isOrNot(item.flags.assessment, 'assessment')
+			// isOrNot(isFirstInList, 'first-in-list') +
+			// isOrNot(isLastInList, 'last-in-list')
 			return (
 				<>
 					<NavItem
@@ -203,10 +201,8 @@ class Nav extends React.Component {
 		// const lockEl = this.getLockEl(navState.locked)
 		// const isNavInaccessible =  !isNavEnabled
 		const className =
-			'viewer--components--nav' +
-			isOrNot(isNavLocked, 'locked') +
-			isOrNot(isNavEnabled, 'open')
-			// isOrNot(!navState.disabled, 'enabled')
+			'viewer--components--nav' + isOrNot(isNavLocked, 'locked') + isOrNot(isNavEnabled, 'open')
+		// isOrNot(!navState.disabled, 'enabled')
 
 		return (
 			<nav
@@ -264,7 +260,15 @@ class Nav extends React.Component {
 	}
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, isNavEnabled, isNavLocked, currFocusNode }) => {
+const mapStateToProps = ({
+	oboNodeList,
+	adjList,
+	navList,
+	currentNavIndex,
+	isNavEnabled,
+	isNavLocked,
+	currFocusNode
+}) => {
 	return {
 		oboNodeList,
 		adjList,
@@ -279,9 +283,12 @@ const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, isNav
 const mapDispatchToProops = dispatch => {
 	return {
 		updateNavItem: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } }),
-		onNavToggle: () => dispatch({ type: 'ON_NAV_TOGGLE' }),
-		updateFocusNode: index => dispatch({ type: 'UPDATE_CURRENT_FOCUS', payload: { value: index }})
+		onNavToggle: () => dispatch({ type: 'ON_SET_NAV_ENABLE' }),
+		updateFocusNode: index => dispatch({ type: 'ON_SET_CURR_FOCUS', payload: { index } })
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProops)(Nav);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProops
+)(Nav)
