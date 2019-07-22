@@ -37,7 +37,10 @@ export default class IFrame extends React.Component {
 		this.boundSkipToBottom = this.onClickSkipToBottom.bind(this)
 		this.boundSkipToTop = this.onClickSkipToTop.bind(this)
 
-		// MediaUtil.setDefaultZoom(this.props.model.get('id'), this.props.model.modelState.initialZoom)
+		MediaUtil.setDefaultZoom(
+			this.props.model.attributes.id,
+			this.props.model.modelState.initialZoom
+		)
 
 		this.state = {
 			actualWidth: 0,

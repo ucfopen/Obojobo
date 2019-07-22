@@ -107,7 +107,6 @@ const getChoiceText = (isCorrect, isTypePickAll) => {
 }
 
 const MCChoice = props => {
-	console.log('MCChoice', props)
 	let isCorrect = false
 
 	// try {

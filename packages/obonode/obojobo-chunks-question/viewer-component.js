@@ -81,8 +81,7 @@ export default class Question extends React.Component {
 
 		// const AssessmentComponent = assessment.getComponentClass()
 
-		// const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
-		const mode = 'test'
+		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 		let scoreClassName = ' is-correct'
 		// switch (score) {
 		// 	case null:
