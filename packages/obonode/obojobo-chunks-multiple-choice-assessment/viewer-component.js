@@ -51,12 +51,12 @@ export default class MCAssessment extends React.Component {
 		}
 		this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS
 		this.updateFeedbackLabels()
-		this.sortIds()
+		// this.sortIds()
 	}
 
-	getQuestionModel() {
-		return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
-	}
+	// getQuestionModel() {
+	// 	return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
+	// }
 
 	getResponseData() {
 		const questionResponse = QuestionUtil.getResponse(
@@ -201,14 +201,14 @@ export default class MCAssessment extends React.Component {
 
 		this.nextFocus = FOCUS_TARGET_RESULTS
 
-		QuestionUtil.setResponse(
-			questionModel.get('id'),
-			response,
-			mcChoiceId,
-			this.props.moduleData.navState.context,
-			this.props.moduleData.navState.context.split(':')[1],
-			this.props.moduleData.navState.context.split(':')[2]
-		)
+		// QuestionUtil.setResponse(
+		// 	questionModel.get('id'),
+		// 	response,
+		// 	mcChoiceId,
+		// 	this.props.moduleData.navState.context,
+		// 	this.props.moduleData.navState.context.split(':')[1],
+		// 	this.props.moduleData.navState.context.split(':')[2]
+		// )
 	}
 
 	onFormSubmit(event) {
@@ -283,25 +283,29 @@ export default class MCAssessment extends React.Component {
 		return arrayOfOptions[Math.floor(Math.random() * arrayOfOptions.length)]
 	}
 
-	sortIds() {
-		if (!this.getSortedIds()) {
-			let ids = this.props.model.children.models.map(model => model.get('id'))
-			if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
-			QuestionUtil.setData(this.props.model.get('id'), 'sortedIds', ids)
-		}
-	}
+	// sortIds() {
+	// 	if (!this.getSortedIds()) {
+	// 		let ids = this.props.model.children.models.map(model => model.get('id'))
+	// 		if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
+	// 		QuestionUtil.setData(this.props.model.get('id'), 'sortedIds', ids)
+	// 	}
+	// }
 
 	getSortedIds() {
 		return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds')
 	}
 
 	getSortedChoiceModels() {
-		const sortedIds = this.getSortedIds()
-		if (!sortedIds) return []
+		// const sortedIds = this.props
+		// if (!sortedIds) return []
 
-		return sortedIds
-			.map(mcChoiceId => OboModel.models[mcChoiceId])
-			.filter(model => model.get('type') === 'ObojoboDraft.Chunks.MCAssessment.MCChoice')
+		return this.props.model.children.filter(
+			model => model.attributes.id !== 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+		)
+		return []
+		// return sortedIds
+		// 	.map(mcChoiceId => OboModel.models[mcChoiceId])
+		// 	.filter(model => model.get('type') === 'ObojoboDraft.Chunks.MCAssessment.MCChoice')
 	}
 
 	isShowingExplanationButton() {
@@ -346,13 +350,24 @@ export default class MCAssessment extends React.Component {
 	}
 
 	render() {
+		// const responseType = this.props.model.modelState.responseType
+		// const isTypePickAll = responseType === 'pick-all'
+		// const isShowingExplanationValue = this.isShowingExplanation()
+		// const isShowingExplanationButtonValue = this.isShowingExplanationButton()
+		// const score = this.getScore()
+		// const sortedChoiceModels = this.getSortedChoiceModels()
+		// const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
+		// const isPractice = this.props.mode === 'practice'
+		// const isReview = this.props.mode === 'review'
+
 		const responseType = this.props.model.modelState.responseType
 		const isTypePickAll = responseType === 'pick-all'
-		const isShowingExplanationValue = this.isShowingExplanation()
-		const isShowingExplanationButtonValue = this.isShowingExplanationButton()
-		const score = this.getScore()
+		const isShowingExplanationValue = false
+		const isShowingExplanationButtonValue = false
+		const score = 100
 		const sortedChoiceModels = this.getSortedChoiceModels()
-		const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
+		// const sortedChoiceModels = []
+		// const isAnAnswerChosen = this.getResponseData().responses.size >= 1 // An answer choice was selected
 		const isPractice = this.props.mode === 'practice'
 		const isReview = this.props.mode === 'review'
 
@@ -391,7 +406,7 @@ export default class MCAssessment extends React.Component {
 						incorrectLabel={this.incorrectLabelToShow}
 						pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
 					/>
-					{isPractice || isReview ? (
+					{/* {isPractice || isReview ? (
 						<MCAssessmentSubmitAndResultsFooter
 							score={score}
 							isAnAnswerChosen={isAnAnswerChosen}
@@ -402,8 +417,8 @@ export default class MCAssessment extends React.Component {
 							pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
 							onClickReset={this.onClickReset}
 						/>
-					) : null}
-					<CSSTransition
+					) : null} */}
+					{/* <CSSTransition
 						in={isShowingExplanationButtonValue}
 						classNames="submit"
 						timeout={ANIMATION_TRANSITION_TIME_MS}
@@ -424,7 +439,7 @@ export default class MCAssessment extends React.Component {
 						) : (
 							<span />
 						)}
-					</CSSTransition>
+					</CSSTransition> */}
 				</fieldset>
 			</OboComponent>
 		)

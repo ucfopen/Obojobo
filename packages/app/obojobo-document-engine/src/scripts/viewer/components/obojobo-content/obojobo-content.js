@@ -22,11 +22,14 @@ const ObojoboContent = props => {
 		// Nodes that are not work
 		switch (oboNodeList[index].attributes.type) {
 			// case 'ObojoboDraft.Chunks.Question':
-			case 'ObojoboDraft.Chunks.MCAssessment':
+			// case 'ObojoboDraft.Chunks.MCAssessment':
 			// case 'ObojoboDraft.Chunks.IFrame':
 			// case 'ObojoboDraft.Chunks.ActionButton':
 			case 'ObojoboDraft.Sections.Assessment':
-			case 'ObojoboDraft.Chunks.QuestionBank':
+			case 'ObojoboDraft.Chunks.MCAssessment.MCChoice':
+			case 'ObojoboDraft.Chunks.MCAssessment.MCFeedback':
+			case 'ObojoboDraft.Chunks.MCAssessment.MCAnswer':
+				// case 'ObojoboDraft.Chunks.QuestionBank':
 				return
 			default:
 				break
@@ -38,7 +41,7 @@ const ObojoboContent = props => {
 			myRef: index === currFocusNode ? currRef : null
 		}
 		return (
-			<Component model={model} moduleData={moduleData}>
+			<Component model={model} moduleData={moduleData} index={index}>
 				{adjList[index].map(childIndex => {
 					return componentRenderer(childIndex)
 				})}

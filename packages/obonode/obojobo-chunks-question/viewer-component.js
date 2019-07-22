@@ -46,7 +46,7 @@ export default class Question extends React.Component {
 	}
 
 	onClickBlocker() {
-		QuestionUtil.viewQuestion(this.props.model.get('id'))
+		// QuestionUtil.viewQuestion(this.props.model.get('id'))
 		// const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
 		// FocusUtil.focusComponent(this.props.model.get('id'), { fade: mode === 'practice' })
@@ -59,7 +59,7 @@ export default class Question extends React.Component {
 	// transforms, which can cause rendering issues.
 	applyFlipCSS() {
 		this.setState({ isFlipping: true })
-		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
+		// setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
 	}
 
 	render() {
@@ -110,8 +110,9 @@ export default class Question extends React.Component {
 			'obojobo-draft--chunks--question' +
 			scoreClassName +
 			// (mode === 'review' ? ' is-active' : ` is-${viewState}`) +
-			+' is-active' +
-			` is-mode-${mode}` +
+			// +' is-viewed' +
+			// ` is-mode-${'hidden'}` +
+			isOrNot(this.state.isFlipping, 'viewed') +
 			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
@@ -124,7 +125,9 @@ export default class Question extends React.Component {
 			>
 				<div className="flipper">
 					<div className="content-back">
-						{/* <QuestionContent model={this.props.model} moduleData={this.props.moduleData} /> */}
+						{/* <QuestionContent model={this.props.model} moduleData={this.props.moduleData}>
+							{this.props.children}
+						</QuestionContent> */}
 						{this.props.children}
 						{/* <AssessmentComponent
 							key={assessment.get('id')}

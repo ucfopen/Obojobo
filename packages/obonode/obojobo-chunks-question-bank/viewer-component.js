@@ -11,7 +11,8 @@ const QuestionBank = props => (
 		moduleData={props.moduleData}
 		className="obojobo-draft--chunks--question-bank"
 	>
-		{props.model.children.models.map((child, index) => {
+		{props.children}
+		{/* {props.model.children.models.map((child, index) => {
 			const Component = child.getComponentClass()
 
 			return (
@@ -23,7 +24,7 @@ const QuestionBank = props => (
 					numQuestionsInBank={props.model.children.models.length}
 				/>
 			)
-		})}
+		})} */}
 	</OboComponent>
 )
 

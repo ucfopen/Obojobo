@@ -107,28 +107,29 @@ const getChoiceText = (isCorrect, isTypePickAll) => {
 }
 
 const MCChoice = props => {
-	let isCorrect
+	console.log('MCChoice', props)
+	let isCorrect = false
 
-	try {
-		isCorrect = answerIsCorrect(
-			props.model,
-			props.mode,
-			props.moduleData.questionState,
-			props.moduleData.navState.context
-		)
-	} catch (error) {
-		// if there's no questionState data for this
-		// or getting the score throws an error
-		// just display a div
-		return <div />
-	}
+	// try {
+	// 	isCorrect = answerIsCorrect(
+	// 		props.model,
+	// 		props.mode,
+	// 		props.moduleData.questionState,
+	// 		props.moduleData.navState.context
+	// 	)
+	// } catch (error) {
+	// 	// if there's no questionState data for this
+	// 	// or getting the score throws an error
+	// 	// just display a div
+	// 	return <div />
+	// }
 
-	const isSelected = choiceIsSelected(
-		props.moduleData.questionState,
-		props.model,
-		props.moduleData.navState.context
-	)
-
+	// const isSelected = choiceIsSelected(
+	// 	props.moduleData.questionState,
+	// 	props.model,
+	// 	props.moduleData.navState.context
+	// )
+	const isSelected = false
 	const ansType = getAnsType(props.model, isCorrect, isSelected)
 	const inputType = getInputType(props.responseType)
 

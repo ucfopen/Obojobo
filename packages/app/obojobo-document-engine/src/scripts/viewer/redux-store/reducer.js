@@ -120,7 +120,8 @@ const convertBackboneObjectToAdjList = object => {
 		const newNode = {
 			...node
 		}
-		delete newNode.children
+		if (node.attributes.type !== 'ObojoboDraft.Chunks.MCAssessment') delete newNode.children
+
 		oboNodeList.push(newNode)
 
 		// Map node's id to its index
@@ -132,16 +133,17 @@ const convertBackboneObjectToAdjList = object => {
 			adjList[parentIndex].push(currentIndex)
 		}
 
-		if (node.children) {
-			for (let i = 0; i < node.children.models.length; i++) {
-				queue.push({
-					node: {
-						...node.children.models[i]
-					},
-					parentIndex: currentIndex
-				})
+		if (node.attributes.type !== 'ObojoboDraft.Chunks.MCAssessment')
+			if (node.children) {
+				for (let i = 0; i < node.children.models.length; i++) {
+					queue.push({
+						node: {
+							...node.children.models[i]
+						},
+						parentIndex: currentIndex
+					})
+				}
 			}
-		}
 		currentIndex++
 	}
 
