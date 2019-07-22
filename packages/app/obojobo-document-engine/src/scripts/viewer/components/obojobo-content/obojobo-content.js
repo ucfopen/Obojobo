@@ -4,65 +4,59 @@ import { connect } from 'react-redux'
 import { Registry } from 'Common'
 
 const ObojoboContent = props => {
+	const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = props
 
-    const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = props
+	const currRef = useRef(null)
 
-    const currRef = useRef(null)
+	useEffect(() => {
+		// Scroll to current active component
+		if (currRef && currRef.current) {
+			const scrollIntoViewOptions = {
+				behavior: 'smooth'
+			}
+			currRef.current.scrollIntoView(scrollIntoViewOptions)
+		}
+	}, [currFocusNode])
 
-    useEffect(() => {
-        // Scroll to current active component
-        if (currRef && currRef.current) {
-            const scrollIntoViewOptions = {
-                behavior: 'smooth'
-            }
-            currRef.current.scrollIntoView(scrollIntoViewOptions)
-        }
+	const componentRenderer = index => {
+		// Nodes that are not work
+		switch (oboNodeList[index].attributes.type) {
+			case 'ObojoboDraft.Chunks.Question':
+			case 'ObojoboDraft.Chunks.IFrame':
+			case 'ObojoboDraft.Chunks.ActionButton':
+			case 'ObojoboDraft.Sections.Assessment':
+			case 'ObojoboDraft.Chunks.QuestionBank':
+				return
+			default:
+				break
+		}
 
-    }, [currFocusNode])
+		const Component = Registry.getItemForType(oboNodeList[index].attributes.type).componentClass
+		const model = {
+			...oboNodeList[index],
+			myRef: index === currFocusNode ? currRef : null
+		}
+		return (
+			<Component model={model}>
+				{adjList[index].map(childIndex => {
+					return componentRenderer(childIndex)
+				})}
+			</Component>
+		)
+	}
 
-    const componentRenderer = index => {
-        // Nodes that are not work
-        switch(oboNodeList[index].attributes.type){
-            case 'ObojoboDraft.Chunks.Question':
-            case 'ObojoboDraft.Chunks.IFrame':
-            case 'ObojoboDraft.Chunks.ActionButton':
-            case 'ObojoboDraft.Sections.Assessment':
-            case 'ObojoboDraft.Chunks.QuestionBank':
-                return
-            default:
-                break
-        }
+	const Module = Registry.getItemForType(oboNodeList[0].attributes.type).componentClass
 
-        const Component = Registry.getItemForType(oboNodeList[index].attributes.type).componentClass
-        const model = {
-            ...oboNodeList[index],
-            myRef: index === currFocusNode ? currRef : null
-        }
-        return (
-            <Component model={model}>
-                {adjList[index].map(childIndex => {
-                    return componentRenderer(childIndex)
-                })}
-            </Component>
-        )
-    }
-
-    const Module = Registry.getItemForType(oboNodeList[0].attributes.type).componentClass
-
-    return (
-        <Module model={oboNodeList[0]}>
-            {componentRenderer(navList[currentNavIndex])}
-        </Module>
-    )
+	return <Module model={oboNodeList[0]}>{componentRenderer(navList[currentNavIndex])}</Module>
 }
 
 const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, currFocusNode }) => {
 	return {
 		oboNodeList,
-        adjList,
-        navList,
-        currentNavIndex,
-        currFocusNode
+		adjList,
+		navList,
+		currentNavIndex,
+		currFocusNode
 	}
 }
 

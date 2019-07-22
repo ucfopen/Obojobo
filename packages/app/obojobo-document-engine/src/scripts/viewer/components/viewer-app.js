@@ -569,7 +569,7 @@ class ViewerApp extends React.Component {
 			this.state.isPreviewing ? 'is-previewing' : 'is-not-previewing',
 			isNavLocked ? 'is-locked-nav' : 'is-unlocked-nav',
 			isNavEnabled ? 'is-open-nav' : 'is-closed-nav',
-			false ? 'is-disabled-nav' : 'is-enabled-nav',
+			false ? 'is-disabled-nav' : 'is-enabled-nav'
 			// visuallyFocussedModel ? 'is-focus-state-active' : 'is-focus-state-inactive'
 		].join(' ')
 
@@ -613,8 +613,8 @@ class ViewerApp extends React.Component {
 							<div className="controls">
 								<span>Preview options:</span>
 								<button
-									// onClick={this.unlockNavigation.bind(this)}
-									// disabled={!this.state.navState.locked}
+								// onClick={this.unlockNavigation.bind(this)}
+								// disabled={!this.state.navState.locked}
 								>
 									Unlock navigation
 								</button>
@@ -654,4 +654,7 @@ const mapDispatchToProops = dispatch => {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProops)(ViewerApp)
+export default connect(
+	mapStateToProps,
+	mapDispatchToProops
+)(ViewerApp)

@@ -15,7 +15,6 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-
 	const { type, payload } = action
 
 	switch (type) {
@@ -33,12 +32,8 @@ const reducer = (state = initialState, action) => {
 			}
 		// Update current navigation item
 		case 'UPDATE_NAV':
-			const newNavNode = state.navList[payload.value]
-			const newFocusNode = state.adjList[newNavNode][0]
 			return {
-				...state,
-				currentNavIndex: payload.value,
-				currFocusNode: newFocusNode
+				...updateNav(state, payload)
 			}
 		// Switch of/off navigation
 		case 'ON_NAV_TOGGLE':
@@ -57,24 +52,34 @@ const reducer = (state = initialState, action) => {
 	}
 }
 
+const updateNav = (state, payload) => {
+	const newNavNode = state.navList[payload.value]
+	const newFocusNode = state.adjList[newNavNode][0]
+
+	return {
+		...state,
+		currentNavIndex: payload.value,
+		currFocusNode: newFocusNode
+	}
+}
+
 // Algorithm: Breath First Search
 const convertBackboneObjectToAdjList = object => {
 	const oboNodeList = []
 	const adjList = []
 
 	let currentIndex = 0
-	const queue = [{
-		node: {
-			...object
-		},
-		parentIndex: null
-	}]
+	const queue = [
+		{
+			node: {
+				...object
+			},
+			parentIndex: null
+		}
+	]
 
 	while (queue.length > 0) {
-		const {
-			node,
-			parentIndex
-		} = queue.shift()
+		const { node, parentIndex } = queue.shift()
 
 		const newNode = {
 			...node
@@ -116,10 +121,7 @@ const convertBackboneObjectToAdjList = object => {
 		}
 	}
 
-	const currFocusNode =
-		(adjList[navList[0]][0])
-		? adjList[navList[0]][0]
-		: 0
+	const currFocusNode = adjList[navList[0]][0] || 0
 
 	return {
 		oboNodeList,
@@ -136,18 +138,17 @@ const convertObjectToAdjList = object => {
 	const adjList = []
 
 	let currentIndex = 0
-	const queue = [{
-		node: {
-			...object
-		},
-		parentIndex: null
-	}]
+	const queue = [
+		{
+			node: {
+				...object
+			},
+			parentIndex: null
+		}
+	]
 
 	while (queue.length > 0) {
-		const {
-			node,
-			parentIndex
-		} = queue.shift()
+		const { node, parentIndex } = queue.shift()
 
 		const newNode = {
 			...node
