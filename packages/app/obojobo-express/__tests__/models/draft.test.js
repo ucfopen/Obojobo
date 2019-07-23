@@ -332,4 +332,18 @@ describe('Draft Model', () => {
 				expect(xml).toBe('mock-xml-content')
 			})
 	})
+
+	test('xmlDocument querries the database and returns void with no results', () => {
+		expect.hasAssertions()
+
+		const mockQueryResult = {xml: 'mock-xml-content'}
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		db.oneOrNone.mockResolvedValueOnce(null)
+
+		return DraftModel.fetchById('whatever')
+			.then(model => model.xmlDocument)
+			.then(xml => {
+				expect(xml).toBe(null)
+			})
+	})
 })

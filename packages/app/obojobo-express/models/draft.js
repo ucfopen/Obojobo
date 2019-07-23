@@ -191,6 +191,7 @@ class Draft {
 			)
 			.then(xml => {
 				if(xml) return xml.xml
+				return null
 			})
 	}
 
