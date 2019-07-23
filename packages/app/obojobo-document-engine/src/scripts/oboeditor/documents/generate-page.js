@@ -13,7 +13,7 @@ const generatePage = () => ({
 				textGroup: [
 					{
 						text: {
-							value: "Add a Title Here"
+							value: ""
 						}
 					}
 				]
@@ -27,7 +27,7 @@ const generatePage = () => ({
 				textGroup: [
 					{
 						text: {
-							value: "Add some content here"
+							value: ""
 						}
 					}
 				]

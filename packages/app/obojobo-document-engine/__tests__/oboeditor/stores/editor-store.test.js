@@ -395,19 +395,24 @@ describe('EditorStore', () => {
 		EditorStore.triggerChange.mockReturnValueOnce(true)
 
 		EditorStore.setState({
-			currentModel: {
-				getParentOfType: () => 'mockParent'
-			}
+			currentPageModel: 'mock-current-model'
 		})
 
 		Common.models.OboModel.models.mockId = {
-			remove: jest.fn()
+			remove: jest.fn(),
+			getParentOfType: () => 'mockParentModule'
 		}
+
+		expect(Common.models.OboModel.models.mockId.remove).not.toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
+		expect(EditorStore.getState().currentPageModel).toBe('mock-current-model')
+		expect(EditorStore.triggerChange).not.toHaveBeenCalled()
 
 		EditorStore.deletePage('mockId')
 
 		expect(Common.models.OboModel.models.mockId.remove).toHaveBeenCalled()
-		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).toHaveBeenCalledWith('mockParentModule')
+		expect(EditorStore.getState()).toHaveProperty('currentPageModel', null)
 		expect(EditorStore.triggerChange).toHaveBeenCalled()
 	})
 
