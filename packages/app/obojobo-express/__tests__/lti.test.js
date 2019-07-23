@@ -367,6 +367,15 @@ describe('lti', () => {
 		})
 	})
 
+	test('getLatestHighestAssessmentScoreRecord returns error if an error occurs', () => {
+		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
+
+		db.oneOrNone.mockRejectedValueOnce('an error occured')
+		return getLatestHighestAssessmentScoreRecord().then(result => {
+			expect(result.error).toBe('an error occured')
+		})
+	})
+
 	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', () => {
 		db.oneOrNone.mockResolvedValueOnce({ properties: 'properties' })
 
@@ -2404,6 +2413,7 @@ describe('lti', () => {
 	})
 
 	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns empty object when nothing returned from database', () => {
+		expect.hasAssertions()
 		db.manyOrNone.mockResolvedValueOnce(null)
 
 		return lti
@@ -2413,11 +2423,16 @@ describe('lti', () => {
 			})
 	})
 
-	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId throws errors', () => {
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId throws errors', async () => {
+		expect.hasAssertions()
 		db.manyOrNone.mockRejectedValueOnce('mock-reject-error')
-		return expect(
-			lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
-		).rejects.toMatch('mock-reject-error')
+		try{
+			await lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+		} catch(e){
+			expect(logger.error).toHaveBeenCalledWith('Error in getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+			expect(logger.error).toHaveBeenCalledWith('mock-reject-error')
+			expect(e).toBe('mock-reject-error')
+		}
 	})
 
 	test('getOutcomeServiceForLaunch returns error if unexpected error occurs', () => {
