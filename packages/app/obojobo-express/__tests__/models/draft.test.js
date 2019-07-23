@@ -318,4 +318,18 @@ describe('Draft Model', () => {
 			expect(model.getChildNodesByType('Some.Missing.Node')).toBe(undefined)
 		})
 	})
+
+	test('xmlDocument querries the database and returns xml content', () => {
+		expect.hasAssertions()
+
+		const mockQueryResult = {xml: 'mock-xml-content'}
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		db.oneOrNone.mockResolvedValueOnce(mockQueryResult)
+
+		return DraftModel.fetchById('whatever')
+			.then(model => model.xmlDocument)
+			.then(xml => {
+				expect(xml).toBe('mock-xml-content')
+			})
+	})
 })
