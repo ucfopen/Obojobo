@@ -1,11 +1,8 @@
 {
-	"object": "block",
-	"type": "ObojoboDraft.Chunks.IFrame",
-	"isVoid": true,
-	"data": {
-		"content": {
-			"autoload": false,
-			"controls": "reload"
-		}
+	"object":"block",
+	"type":"ObojoboDraft.Chunks.IFrame",
+	"isVoid":true,
+	"data":{
+		"content": { }
 	}
 }

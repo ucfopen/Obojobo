@@ -121,6 +121,13 @@ const EditorUtil = {
 				index
 			}
 		})
+	},
+	setStartPage(pageId) {
+		return Dispatcher.trigger('editor:setStartPage', {
+			value: {
+				pageId
+			}
+		})
 	}
 }
 

@@ -27,31 +27,18 @@ global.oboJestMockConfig = () => {
 
 	// get the actual empty.xml
 	const realFs = require.requireActual('fs')
-	const emptyXmlPath = require.resolve('obojobo-document-engine/documents/empty.xml')
 	const configPath = path.resolve(__dirname, 'config')
-	const emptyXmlStream = realFs.readFileSync(emptyXmlPath)
-	fs.__setMockFileContents(configPath + '/db.json', JSON.stringify(dbJson))
-	fs.__setMockFileContents(
-		configPath + '/lti.json',
-		'{"test":{"keys":{"jesttestkey":"jesttestsecret"}}}'
-	)
-	fs.__setMockFileContents(
-		configPath + '/draft.json',
-		'{"test":{"excludeModules":["mockModule:mockExclude"]},"default":{"excludeModules":[]}}'
-	)
-	fs.__setMockFileContents(
-		configPath + '/permission_groups.json',
-		'{"test":{"canDoThing":["roleName"]}}'
-	)
-	fs.__setMockFileContents(
-		configPath + '/media.json',
-		'{"test":{"maxUploadSize":100000,"minImageSize": 10,"maxImageSize": 8000,"originalMediaTag":"original","presetDimensions":[]}}'
-	)
-	fs.__setMockFileContents(
-		configPath + '/general.json',
-		'{"test":{"key":"value","hostname":"obojobo.ucf.edu"}}'
-	)
-	fs.__setMockFileContents(emptyXmlPath, emptyXmlStream)
+	const bypassMock = file => {
+		fs.__setMockFileContents(file, realFs.readFileSync(file))
+	}
+
+	fs.__setMockFileContents(`${configPath}/db.json`, JSON.stringify(dbJson))
+	bypassMock(`${configPath}/lti.json`)
+	bypassMock(`${configPath}/draft.json`)
+	bypassMock(`${configPath}/media.json`)
+	bypassMock(`${configPath}/general.json`)
+	bypassMock(`${configPath}/permission_groups.json`)
+	bypassMock(require.resolve('obojobo-document-engine/documents/empty.xml'))
 }
 
 global.oboJestMockConfig()
@@ -84,3 +71,8 @@ global.mockStaticDate = () => {
 	}
 	return testDate
 }
+
+process.on('unhandledRejection', (reason, p) => {
+	// eslint-disable-next-line no-console
+	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
+})

@@ -2,28 +2,33 @@
 
 exports[`Question adapter construct builds with attributes 1`] = `
 Object {
-  "mode": "review",
+  "hideSolutionLabel": null,
+  "showSolutionLabel": null,
   "solution": OboModel {
     "_isMocked": true,
     "content": Object {},
     "modelState": Object {},
   },
+  "type": "default",
 }
 `;
 
 exports[`Question adapter construct builds without attributes 1`] = `
 Object {
-  "mode": "practice",
+  "hideSolutionLabel": null,
+  "showSolutionLabel": null,
   "solution": null,
+  "type": "default",
 }
 `;
 
 exports[`Question adapter toJSON builds a JSON representation 1`] = `
 Object {
   "content": Object {
-    "mode": "practice",
+    "hideSolutionLabel": null,
+    "showSolutionLabel": null,
     "solution": null,
-    "type": undefined,
+    "type": "default",
   },
 }
 `;
@@ -31,11 +36,12 @@ Object {
 exports[`Question adapter toJSON builds a JSON representation with solution 1`] = `
 Object {
   "content": Object {
-    "mode": "practice",
+    "hideSolutionLabel": null,
+    "showSolutionLabel": null,
     "solution": Object {
       "mockedToJSON": true,
     },
-    "type": undefined,
+    "type": "default",
   },
 }
 `;

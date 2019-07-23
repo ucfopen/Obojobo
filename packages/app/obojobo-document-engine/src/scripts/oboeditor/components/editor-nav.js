@@ -1,18 +1,17 @@
-import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-import EditorUtil from '../util/editor-util'
-import ClipboardUtil from '../util/clipboard-util'
-import SubMenu from './sub-menu'
-import generateId from '../generate-ids'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-
 import './editor-nav.scss'
 // relies on styles from viewer
 import '../../viewer/components/nav.scss'
 
-import pageTemplate from '../documents/new-page.json'
+import ClipboardUtil from '../util/clipboard-util'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import EditorStore from '../stores/editor-store'
+import EditorUtil from '../util/editor-util'
+import React from 'react'
+import SubMenu from './sub-menu'
 import assessmentTemplate from '../documents/new-assessment.json'
+import generateId from '../generate-ids'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import pageTemplate from '../documents/new-page.json'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -48,6 +47,30 @@ class EditorNav extends React.Component {
 		const newAssessment = Object.assign({}, assessmentTemplate)
 		newAssessment.id = generateId()
 		newAssessment.content.title = name
+
+		// Match Assessment Id with ActionButton
+		newAssessment.content.scoreActions.forEach(scoreAction => {
+			scoreAction.page.children.forEach(child => {
+				if (child.type === "ObojoboDraft.Chunks.ActionButton") {
+					child.content.triggers.forEach(trigger => {
+						trigger.actions.forEach(action => {
+								action.value.id = newAssessment.id
+						})
+					})
+				}
+			})
+		})
+		newAssessment.children.forEach(child => {
+			child.children.forEach(child => {
+				if (child.type === "ObojoboDraft.Chunks.ActionButton") {
+					child.content.triggers.forEach(trigger => {
+						trigger.actions.forEach(action => {
+								action.value.id = newAssessment.id
+						})
+					})
+				}
+			})
+		})
 
 		EditorUtil.addAssessment(newAssessment)
 		return this.setState({ navTargetId: newAssessment.id })
@@ -144,6 +167,17 @@ class EditorNav extends React.Component {
 					<li className="button-bar-buffer" />
 				</ul>
 				<div className="button-bar">
+					{EditorStore.state.startingId ? (
+						<div>
+							<span id="start-page">
+								Start: {EditorStore.state.itemsById[EditorStore.state.startingId].label}
+							</span>
+							<Button className="delete-button" onClick={() => EditorUtil.setStartPage(null)}>
+								×
+							</Button>
+						</div>
+					) : null}
+
 					<Button
 						className={'content-add-button align-left'}
 						onClick={this.showAddPageModal.bind(this)}

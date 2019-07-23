@@ -1,7 +1,7 @@
 /* eslint no-undefined: 0 */
 
-import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 import Common from '../../../src/scripts/common/index'
+import EditorUtil from '../../../src/scripts/oboeditor/util/editor-util'
 jest.mock('../../../src/scripts/oboeditor/util/editor-util')
 jest.mock('../../../src/scripts/viewer/util/api-util')
 
@@ -116,6 +116,16 @@ describe('EditorStore', () => {
 		expect(EditorStore.movePage).toHaveBeenCalledWith('mockId', 1)
 	})
 
+	test('editor:setStartPage calls setStartPage', () => {
+		jest.spyOn(EditorStore, 'setStartPage')
+
+		eventCallbacks['editor:setStartPage']({
+			value: { pageId: 'mockId' }
+		})
+
+		expect(EditorStore.setStartPage).toHaveBeenCalledWith('mockId')
+	})
+
 	test('editor:renamePage calls renamePage', () => {
 		jest.spyOn(EditorStore, 'renamePage')
 		EditorStore.renamePage.mockReturnValueOnce(false)
@@ -128,39 +138,44 @@ describe('EditorStore', () => {
 	})
 
 	test('init builds state with basic options', () => {
-		EditorStore.init(null, 12, '')
+		EditorStore.init(null, undefined, null, '')
+		expect(EditorStore.getState()).toMatchSnapshot()
+	})
+
+	test('init builds state with settings', () => {
+		EditorStore.init(null, undefined, {mockSetting: true}, '')
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state locked state', () => {
-		EditorStore.init(null, 12, '', { 'nav:isLocked': { value: true } })
+		EditorStore.init(null, 12, null, '', { 'nav:isLocked': { value: true } })
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state open state', () => {
-		EditorStore.init(null, 12, '', { 'nav:isOpen': { value: true } })
+		EditorStore.init(null, 12, null, '', { 'nav:isOpen': { value: true } })
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds and goes to starting path', () => {
-		EditorStore.init(null, 12, 'startingpath')
+		EditorStore.init(null, 12, null, 'startingpath')
 		expect(EditorUtil.gotoPath).toHaveBeenCalledWith('startingpath')
 	})
 
 	test('init builds and goes to starting id', () => {
-		EditorStore.init(null, 12, 'startingpath')
+		EditorStore.init(null, 12, null, 'startingpath')
 		expect(EditorUtil.goto).toHaveBeenCalledWith(12)
 	})
 
 	test('init builds and goes to first with no starting id', () => {
 		EditorUtil.getFirst.mockReturnValueOnce({ id: 'mockFirstId' })
-		EditorStore.init(null, null, 'startingpath')
+		EditorStore.init(null, null, null, 'startingpath')
 		expect(EditorUtil.goto).toHaveBeenCalledWith('mockFirstId')
 	})
 
 	test('init builds with no first', () => {
 		EditorUtil.getFirst.mockReturnValueOnce(undefined)
-		EditorStore.init(null, null, 'startingpath')
+		EditorStore.init(null, null, null, 'startingpath')
 		expect(EditorUtil.goto).not.toHaveBeenCalledWith()
 	})
 

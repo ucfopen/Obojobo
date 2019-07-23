@@ -112,6 +112,23 @@ describe('insert_event', () => {
 			})
 	})
 
+	test('insert event handles visitId correctly', () => {
+		expect.assertions(2)
+
+		const db = oboRequire('db')
+		const insertEvent = oboRequire('insert_event')
+		const insertObject = {}
+		db.one.mockResolvedValue({})
+
+		return insertEvent(insertObject)
+			.then(() => {
+				expect(insertObject['visitId']).toBe(null)
+				insertObject.visitId = 'someId'
+				return insertEvent(insertObject)
+			})
+			.then(() => expect(insertObject['visitId']).toBe('someId'))
+	})
+
 	test('Returns promise rejection', () => {
 		expect.assertions(1)
 
@@ -121,7 +138,7 @@ describe('insert_event', () => {
 		// mock insert
 		db.one.mockRejectedValueOnce(err)
 
-		return insertEvent()
+		return insertEvent({})
 			.then(created_at => {
 				expect(true).toBe('this should never run')
 				expect(created_at).toBeNull()

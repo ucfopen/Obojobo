@@ -7,4 +7,4 @@ class MockTextNode {
 	}
 }
 
-export default MockTextNode
+module.exports = MockTextNode

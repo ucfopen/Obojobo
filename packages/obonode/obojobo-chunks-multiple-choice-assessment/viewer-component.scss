@@ -2,6 +2,7 @@
 
 .component.obojobo-draft--chunks--mc-assessment {
 	$color-border: transparentize($color-shadow, 0.25);
+	$color-survey: #48b8b9;
 
 	@keyframes obojobo-draft--chunks--mc-assessment--fadein {
 		0% {
@@ -56,14 +57,21 @@
 	}
 
 	padding-bottom: 0;
+	margin-top: 1em;
 
 	> fieldset {
 		padding: 0;
 		margin: 0;
 		border: none;
+		background: white;
+		border-radius: 0 0 $dimension-rounded-radius $dimension-rounded-radius;
 
 		> legend {
 			border: none;
+			position: absolute;
+			background: none;
+			left: 0;
+			top: -0.5em;
 		}
 	}
 
@@ -165,6 +173,10 @@
 
 			&.incorrect {
 				background-color: $color-incorrect;
+			}
+
+			&.survey {
+				background-color: $color-survey;
 			}
 		}
 	}
@@ -296,6 +308,14 @@
 				margin-right: -1em;
 			}
 		}
+
+		&.is-type-survey {
+			.solution-container {
+				&::before {
+					content: 'About this question:';
+				}
+			}
+		}
 	}
 
 	.submit .obojobo-draft--components--button:first-child {
@@ -308,27 +328,10 @@
 		&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice,
 		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice {
-			// Only show unchosen correct answers in review
-			&.is-mode-review {
-				&::before {
-					content: none;
-				}
-
-				&.is-type-could-have-chosen {
-					background: transparentize($color-alt-correct, 0.9);
-				}
-
-				&.is-type-should-have-chosen {
-					background: transparentize($color-unchosen-correct, 0.9);
-				}
-			}
-
 			&.is-type-chosen-correctly {
 				// Do not include the checkmark on review
-				&:not(.is-mode-review) {
-					&::before {
-						@include correct();
-					}
+				&::before {
+					@include correct();
 				}
 
 				background: transparentize($color-correct, 0.9);
@@ -336,13 +339,15 @@
 
 			&.is-type-should-not-have-chosen {
 				// Do not include the x on review
-				&:not(.is-mode-review) {
-					&::before {
-						@include incorrect();
-					}
+				&::before {
+					@include incorrect();
 				}
 
 				background: transparentize($color-incorrect, 0.9);
+			}
+
+			&.is-type-chosen-survey {
+				background: transparentize($color-survey, 0.9);
 			}
 		}
 	}
@@ -356,6 +361,30 @@
 		.result-container .result {
 			animation: none;
 			transform: none;
+		}
+
+		&.is-scored {
+			// These two rules, one for pick-all and one for the others, could be combined but
+			// don't - IE11 has a bug that applies multiple sizes in pseudo elements :(
+			&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
+			&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice,
+			&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice {
+				// Only show unchosen correct answers in review
+				&.is-type-chosen-correctly,
+				&.is-type-should-not-have-chosen {
+					&::before {
+						content: '';
+					}
+				}
+
+				&.is-type-could-have-chosen {
+					background: transparentize($color-alt-correct, 0.9);
+				}
+
+				&.is-type-should-have-chosen {
+					background: transparentize($color-unchosen-correct, 0.9);
+				}
+			}
 		}
 	}
 
@@ -404,7 +433,8 @@
 			top: 50%;
 		}
 
-		&.is-type-chosen-correctly {
+		&.is-type-chosen-correctly,
+		&.is-type-chosen-survey {
 			background-color: $color-correct;
 
 			&::before,
@@ -438,6 +468,16 @@
 			&::before,
 			&::after {
 				background-color: $color-alt-correct;
+			}
+		}
+
+		&.is-type-chosen-survey {
+			background-color: $color-survey;
+			color: $color-bg;
+
+			&::before,
+			&::after {
+				background-color: $color-survey;
 			}
 		}
 	}

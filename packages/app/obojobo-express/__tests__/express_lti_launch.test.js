@@ -89,7 +89,7 @@ describe('lti launch middleware', () => {
 			expect(db.one).toBeCalledWith(
 				expect.stringContaining('INSERT INTO launches'),
 				expect.objectContaining({
-					data: {
+					ltiBody: {
 						lis_person_contact_email_primary: 'mann@internet.com',
 						lis_person_name_family: 'Mann',
 						lis_person_name_given: 'Hugh',
@@ -135,7 +135,7 @@ describe('lti launch middleware', () => {
 				expect.stringContaining('INSERT INTO launches'),
 				expect.objectContaining({
 					contentId: '12',
-					data: {
+					ltiBody: {
 						lis_person_contact_email_primary: 'mann@internet.com',
 						lis_person_name_family: 'Mann',
 						lis_person_name_given: 'Hugh',
@@ -143,7 +143,7 @@ describe('lti launch middleware', () => {
 						roles: ['saviour', 'explorer', 'doctor']
 					},
 					draftId: '999',
-					lti_key: undefined, //eslint-disable-line no-undefined
+					ltiConsumerKey: undefined, //eslint-disable-line no-undefined
 					userId: 1
 				})
 			)

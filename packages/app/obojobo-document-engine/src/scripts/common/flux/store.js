@@ -33,13 +33,6 @@ class Store {
 	setState(newState) {
 		this.state = Object.assign({}, newState)
 	}
-
-	updateStateByContext(obj, context) {
-		for (const key in obj) {
-			if (!this.state[key]) this.state[key] = {}
-			this.state[key][context] = obj[key]
-		}
-	}
 }
 
 export default Store

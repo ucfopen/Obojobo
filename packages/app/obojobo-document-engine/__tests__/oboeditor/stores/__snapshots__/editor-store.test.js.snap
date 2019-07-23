@@ -11,6 +11,7 @@ Object {
   "editor:rebuildMenu": [Function],
   "editor:renamePage": [Function],
   "editor:setContext": [Function],
+  "editor:setStartPage": [Function],
 }
 `;
 
@@ -219,6 +220,8 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "settings": null,
+  "startingId": 12,
 }
 `;
 
@@ -234,6 +237,8 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "settings": null,
+  "startingId": 12,
 }
 `;
 
@@ -249,5 +254,26 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "settings": null,
+  "startingId": null,
+}
+`;
+
+exports[`EditorStore init builds state with settings 1`] = `
+Object {
+  "context": "editor",
+  "currentModel": null,
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navItems": Object {},
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "settings": Object {
+    "mockSetting": true,
+  },
+  "startingId": null,
 }
 `;

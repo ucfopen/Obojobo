@@ -9,9 +9,9 @@
 		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed"
 	},
 	"env": {
-		"OBO_LTI_SECRET": {
-			"description": "LTI Secret used for default key 'obo-next-production-lit-key'",
-			"generator": "secret"
+		"OBO_LTI_KEYS_JSON": {
+			"description": "JSON string of key:secret values used for LTI'",
+			"value": "{\"obo-production-lti-key\":\"CHANGE_THIS_VALUE_NOW\"}"
 		},
 		"OBO_COOKIE_SECRET": {
 			"description": "Secret string used to encrypt cookie data",

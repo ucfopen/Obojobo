@@ -15,4 +15,10 @@
 			}
 		}
 	}
+
+	&.is-type-survey {
+		.obojobo-draft--chunks--mc-assessment--mc-choice .correct-button {
+			visibility: hidden;
+		}
+	}
 }

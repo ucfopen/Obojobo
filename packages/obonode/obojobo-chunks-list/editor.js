@@ -1,5 +1,7 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import { getEventTransfer } from 'slate-react'
+import { Block } from 'slate'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
@@ -27,6 +29,23 @@ const isType = editor => {
 }
 
 const plugins = {
+	onPaste(event, editor, next) {
+		const isList = isType(editor)
+		const transfer = getEventTransfer(event)
+		if (transfer.type === 'fragment' || !isList) return next()
+
+		const saveBlocks = editor.value.blocks
+
+		editor
+			.createListLinesFromText(transfer.text.split('\n'))
+			.forEach(line => editor.insertBlock(line))
+
+		saveBlocks.forEach(node => {
+			if (node.text === '') {
+				editor.removeNodeByKey(node.key)
+			}
+		})
+	},
 	onKeyDown(event, editor, next) {
 		// See if any of the selected nodes have a LIST_NODE parent
 		const isLine = isType(editor)
@@ -103,7 +122,24 @@ const plugins = {
 			})
 		}
 	},
-	schema: Schema
+	schema: Schema,
+	queries: {
+		createListLinesFromText(editor, textList) {
+			return textList.map(textLine =>
+				Block.create({
+					object: 'block',
+					type: LIST_LINE_NODE,
+					data: {},
+					nodes: [
+						{
+							object: 'text',
+							leaves: [{ object: 'leaf', text: textLine, marks: [] }]
+						}
+					]
+				})
+			)
+		}
+	}
 }
 
 Common.Registry.registerModel('ObojoboDraft.Chunks.List', {

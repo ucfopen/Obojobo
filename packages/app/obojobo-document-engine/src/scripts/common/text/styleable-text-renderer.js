@@ -1,10 +1,10 @@
 // Turns a StyleableText item into a mock DOM tree, which can then be used to render out in React
 
-import katex from 'katex'
+const katex = require('katex')
 
-import StyleType from '../../common/text/style-type'
-import MockElement from '../../common/mockdom/mock-element'
-import MockTextNode from '../../common/mockdom/mock-text-node'
+const StyleType = require('./style-type')
+const MockElement = require('../mockdom/mock-element')
+const MockTextNode = require('../mockdom/mock-text-node')
 
 const ORDER = [
 	StyleType.COMMENT,
@@ -236,4 +236,4 @@ const getMockElement = function(styleableText) {
 	return root
 }
 
-export default getMockElement
+module.exports = getMockElement

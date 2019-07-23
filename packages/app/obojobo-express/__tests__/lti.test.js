@@ -203,26 +203,25 @@ describe('lti', () => {
 		expect(lti.findSecretForKey('fakekey')).toBe(null)
 	})
 
-	test('isScoreValid ensures scores are valid', () => {
-		const isScoreValid = lti.isScoreValid
-
-		expect(isScoreValid(0)).toBe(true)
-		expect(isScoreValid(0.1)).toBe(true)
-		expect(isScoreValid(0.9)).toBe(true)
-		expect(isScoreValid(1)).toBe(true)
-
-		expect(isScoreValid(-1)).toBe(false)
-		expect(isScoreValid(1.1)).toBe(false)
-		expect(isScoreValid(null)).toBe(false)
-		expect(isScoreValid(undefined)).toBe(false) //eslint-disable-line no-undefined
-		expect(isScoreValid(true)).toBe(false)
-		expect(isScoreValid(false)).toBe(false)
-		expect(isScoreValid(NaN)).toBe(false)
-		expect(isScoreValid('0')).toBe(false)
-		expect(isScoreValid('1')).toBe(false)
-		expect(isScoreValid('0.5')).toBe(false)
-		expect(isScoreValid(Infinity)).toBe(false)
-		expect(isScoreValid(-Infinity)).toBe(false)
+	test.each([
+		[0, true],
+		[0.1, true],
+		[0.9, true],
+		[1, true],
+		[-1, false],
+		[1.1, false],
+		[null, false],
+		[undefined, false], //eslint-disable-line no-undefined
+		[true, false],
+		[false, false],
+		[NaN, false],
+		['0', false],
+		['1', false],
+		['0.5', false],
+		[Infinity, false],
+		[-Infinity, false]
+	])('isScoreValid(%s) returns %s', (score, expected) => {
+		expect(lti.isScoreValid(score)).toBe(expected)
 	})
 
 	test('isLaunchExpired checks if a launch is expired after 5 hours', () => {
@@ -252,104 +251,73 @@ describe('lti', () => {
 		).toBe(true)
 	})
 
-	test('getGradebookStatus returns the proper status', () => {
-		const ggs = lti.getGradebookStatus
+	const unsent = 'error_newer_assessment_score_unsent'
+	const unk = 'error_state_unknown'
+	const invalid = 'error_invalid'
+	const okNull = 'ok_null_score_not_sent'
+	const match = 'ok_gradebook_matches_assessment_score'
+	const noOutcome = 'ok_no_outcome_service'
+	const okPreview = 'ok_preview_mode'
 
-		// ARGUMENTS:
-		// outcomeType = 'unknownOutcome' || 'noOutcome' || 'hasOutcome'
-		// scoreType = 'nullScore || invalidScore || sameScore || differentScore'
-		// replaceResultWasSentSuccessfully = T/F
-		// isPreview = T/F
-		//
-		// RETURN:
-		//	* error_newer_assessment_score_unsent
-		//	* error_state_unknown
-		//	* error_invalid
-		//	* ok_null_score_not_sent
-		//	* ok_gradebook_matches_assessment_score
-		//	* ok_no_outcome_service
-		//  * ok_preview_mode
+	test.each([
+		['unknownOutcome', 'nullScore', false, false, okNull],
+		['unknownOutcome', 'invalidScore', false, false, unk],
+		['unknownOutcome', 'sameScore', false, false, match],
+		['unknownOutcome', 'differentScore', false, false, unk],
+		['unknownOutcome', 'nullScore', true, false, invalid],
+		['unknownOutcome', 'invalidScore', true, false, invalid],
+		['unknownOutcome', 'sameScore', true, false, invalid],
+		['unknownOutcome', 'differentScore', true, false, invalid],
+		['noOutcome', 'nullScore', false, false, noOutcome],
+		['noOutcome', 'invalidScore', false, false, noOutcome],
+		['noOutcome', 'sameScore', false, false, noOutcome],
+		['noOutcome', 'differentScore', false, false, noOutcome],
+		['noOutcome', 'nullScore', true, false, invalid],
+		['noOutcome', 'invalidScore', true, false, invalid],
+		['noOutcome', 'sameScore', true, false, invalid],
+		['noOutcome', 'differentScore', true, false, invalid],
+		['hasOutcome', 'nullScore', false, false, okNull],
+		['hasOutcome', 'invalidScore', false, false, unk],
+		['hasOutcome', 'sameScore', false, false, match],
+		['hasOutcome', 'differentScore', false, false, unsent],
+		['hasOutcome', 'nullScore', true, false, invalid],
+		['hasOutcome', 'invalidScore', true, false, invalid],
+		['hasOutcome', 'sameScore', true, false, match],
+		['hasOutcome', 'differentScore', true, false, match],
+		['unknownOutcome', 'nullScore', false, true, okPreview],
+		['unknownOutcome', 'invalidScore', false, true, okPreview],
+		['unknownOutcome', 'sameScore', false, true, okPreview],
+		['unknownOutcome', 'differentScore', false, true, okPreview],
+		['unknownOutcome', 'nullScore', true, true, okPreview],
+		['unknownOutcome', 'invalidScore', true, true, okPreview],
+		['unknownOutcome', 'sameScore', true, true, okPreview],
+		['unknownOutcome', 'differentScore', true, true, okPreview],
+		['noOutcome', 'nullScore', false, true, okPreview],
+		['noOutcome', 'invalidScore', false, true, okPreview],
+		['noOutcome', 'sameScore', false, true, okPreview],
+		['noOutcome', 'differentScore', false, true, okPreview],
+		['noOutcome', 'nullScore', true, true, okPreview],
+		['noOutcome', 'invalidScore', true, true, okPreview],
+		['noOutcome', 'sameScore', true, true, okPreview],
+		['noOutcome', 'differentScore', true, true, okPreview],
+		['hasOutcome', 'nullScore', false, true, okPreview],
+		['hasOutcome', 'invalidScore', false, true, okPreview],
+		['hasOutcome', 'sameScore', false, true, okPreview],
+		['hasOutcome', 'differentScore', false, true, okPreview],
+		['hasOutcome', 'nullScore', true, true, okPreview],
+		['hasOutcome', 'invalidScore', true, true, okPreview],
+		['hasOutcome', 'sameScore', true, true, okPreview],
+		['hasOutcome', 'differentScore', true, true, okPreview]
+	])(
+		'getGradebookStatus(%s, %s, %s, %s) returns %s',
+		(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview, expected) => {
+			expect(
+				lti.getGradebookStatus(outcomeType, scoreType, replaceResultWasSentSuccessfully, isPreview)
+			).toBe(expected)
+		}
+	)
 
-		const unsent = 'error_newer_assessment_score_unsent'
-		const unk = 'error_state_unknown'
-		const invalid = 'error_invalid'
-		const okNull = 'ok_null_score_not_sent'
-		const match = 'ok_gradebook_matches_assessment_score'
-		const noOutcome = 'ok_no_outcome_service'
-		const okPreview = 'ok_preview_mode'
-
-		expect(ggs('unknownOutcome', 'nullScore', false, false)).toBe(okNull)
-		expect(ggs('unknownOutcome', 'invalidScore', false, false)).toBe(unk)
-		expect(ggs('unknownOutcome', 'sameScore', false, false)).toBe(match)
-		expect(ggs('unknownOutcome', 'differentScore', false, false)).toBe(unk)
-
-		expect(ggs('unknownOutcome', 'nullScore', true, false)).toBe(invalid)
-		expect(ggs('unknownOutcome', 'invalidScore', true, false)).toBe(invalid)
-		expect(ggs('unknownOutcome', 'sameScore', true, false)).toBe(invalid)
-		expect(ggs('unknownOutcome', 'differentScore', true, false)).toBe(invalid)
-
-		//
-
-		expect(ggs('noOutcome', 'nullScore', false, false)).toBe(noOutcome)
-		expect(ggs('noOutcome', 'invalidScore', false, false)).toBe(noOutcome)
-		expect(ggs('noOutcome', 'sameScore', false, false)).toBe(noOutcome)
-		expect(ggs('noOutcome', 'differentScore', false, false)).toBe(noOutcome)
-
-		expect(ggs('noOutcome', 'nullScore', true, false)).toBe(invalid)
-		expect(ggs('noOutcome', 'invalidScore', true, false)).toBe(invalid)
-		expect(ggs('noOutcome', 'sameScore', true, false)).toBe(invalid)
-		expect(ggs('noOutcome', 'differentScore', true, false)).toBe(invalid)
-
-		//
-
-		expect(ggs('hasOutcome', 'nullScore', false, false)).toBe(okNull)
-		expect(ggs('hasOutcome', 'invalidScore', false, false)).toBe(unk)
-		expect(ggs('hasOutcome', 'sameScore', false, false)).toBe(match)
-		expect(ggs('hasOutcome', 'differentScore', false, false)).toBe(unsent)
-
-		expect(ggs('hasOutcome', 'nullScore', true, false)).toBe(invalid)
-		expect(ggs('hasOutcome', 'invalidScore', true, false)).toBe(invalid)
-		expect(ggs('hasOutcome', 'sameScore', true, false)).toBe(match)
-		expect(ggs('hasOutcome', 'differentScore', true, false)).toBe(match)
-
-		//
-
-		expect(ggs('unknownOutcome', 'nullScore', false, true)).toBe(okPreview)
-		expect(ggs('unknownOutcome', 'invalidScore', false, true)).toBe(okPreview)
-		expect(ggs('unknownOutcome', 'sameScore', false, true)).toBe(okPreview)
-		expect(ggs('unknownOutcome', 'differentScore', false, true)).toBe(okPreview)
-
-		expect(ggs('unknownOutcome', 'nullScore', true, true)).toBe(okPreview)
-		expect(ggs('unknownOutcome', 'invalidScore', true, true)).toBe(okPreview)
-		expect(ggs('unknownOutcome', 'sameScore', true, true)).toBe(okPreview)
-		expect(ggs('unknownOutcome', 'differentScore', true, true)).toBe(okPreview)
-
-		//
-
-		expect(ggs('noOutcome', 'nullScore', false, true)).toBe(okPreview)
-		expect(ggs('noOutcome', 'invalidScore', false, true)).toBe(okPreview)
-		expect(ggs('noOutcome', 'sameScore', false, true)).toBe(okPreview)
-		expect(ggs('noOutcome', 'differentScore', false, true)).toBe(okPreview)
-
-		expect(ggs('noOutcome', 'nullScore', true, true)).toBe(okPreview)
-		expect(ggs('noOutcome', 'invalidScore', true, true)).toBe(okPreview)
-		expect(ggs('noOutcome', 'sameScore', true, true)).toBe(okPreview)
-		expect(ggs('noOutcome', 'differentScore', true, true)).toBe(okPreview)
-
-		//
-
-		expect(ggs('hasOutcome', 'nullScore', false, true)).toBe(okPreview)
-		expect(ggs('hasOutcome', 'invalidScore', false, true)).toBe(okPreview)
-		expect(ggs('hasOutcome', 'sameScore', false, true)).toBe(okPreview)
-		expect(ggs('hasOutcome', 'differentScore', false, true)).toBe(okPreview)
-
-		expect(ggs('hasOutcome', 'nullScore', true, true)).toBe(okPreview)
-		expect(ggs('hasOutcome', 'invalidScore', true, true)).toBe(okPreview)
-		expect(ggs('hasOutcome', 'sameScore', true, true)).toBe(okPreview)
-		expect(ggs('hasOutcome', 'differentScore', true, true)).toBe(okPreview)
-	})
-
-	test('getLatestHighestAssessmentScoreRecord returns an object with expected properties', done => {
+	test('getLatestHighestAssessmentScoreRecord returns an object with expected properties', () => {
 		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
 		db.oneOrNone.mockResolvedValueOnce({
@@ -364,7 +332,12 @@ describe('lti', () => {
 			score_details: 'details'
 		})
 
-		getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id').then(result => {
+		return getLatestHighestAssessmentScoreRecord(
+			'user_id',
+			'draft_id',
+			'assessment_id',
+			false
+		).then(result => {
 			expect(result).toEqual({
 				id: 'id',
 				userId: 'user_id',
@@ -377,39 +350,34 @@ describe('lti', () => {
 				error: null,
 				scoreDetails: 'details'
 			})
-
-			done()
 		})
 	})
 
-	test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', done => {
+	test('getLatestHighestAssessmentScoreRecord returns error if nothing returned', () => {
 		const getLatestHighestAssessmentScoreRecord = lti.getLatestHighestAssessmentScoreRecord
 
 		db.oneOrNone.mockResolvedValueOnce(null)
-		getLatestHighestAssessmentScoreRecord('user_id', 'draft_id', 'assessment_id')
-			.then(result => {
-				expect(result.error.message).toBe('No assessment score found')
-				done()
-			})
-			.catch(() => {
-				expect('this to never').toBe('called')
-				done()
-			})
-	})
-
-	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', done => {
-		db.oneOrNone.mockResolvedValueOnce({ properties: 'properties' })
-
-		lti.getLatestSuccessfulLTIAssessmentScoreRecord(123).then(result => {
-			expect(result).toEqual({
-				properties: 'properties'
-			})
-
-			done()
+		return getLatestHighestAssessmentScoreRecord(
+			'user_id',
+			'draft_id',
+			'assessment_id',
+			false
+		).then(result => {
+			expect(result.error.message).toBe('No assessment score found')
 		})
 	})
 
-	test('send same assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
+	test('getLatestSuccessfulLTIAssessmentScoreRecord returns a record with expected values', () => {
+		db.oneOrNone.mockResolvedValueOnce({ properties: 'properties' })
+
+		return lti.getLatestSuccessfulLTIAssessmentScoreRecord(123).then(result => {
+			expect(result).toEqual({
+				properties: 'properties'
+			})
+		})
+	})
+
+	test('send same assessment score results in "success" and "ok_gradebook_matches_assessment"', () => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true)
 		mockDate()
 		const mockDraft = {
@@ -417,7 +385,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -488,12 +456,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('send different assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
+	test('send different assessment score results in "success" and "ok_gradebook_matches_assessment"', () => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), true, true)
 		mockDate()
 		const mockDraft = {
@@ -501,7 +467,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -572,12 +538,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('send first assessment score results in "success" and "ok_gradebook_matches_assessment"', done => {
+	test('send first assessment score results in "success" and "ok_gradebook_matches_assessment"', () => {
 		mockSendAssessScoreDBCalls(100, null, moment().toISOString(), true, true)
 		mockDate()
 		const mockDraft = {
@@ -585,7 +549,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -656,12 +620,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('send null assessment score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
+	test('send null assessment score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', () => {
 		mockSendAssessScoreDBCalls(null, null, moment().toISOString(), true, true)
 		mockDate()
 		const mockDraft = {
@@ -669,7 +631,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -736,12 +698,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('send assessment score with no outcome results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
+	test('send assessment score with no outcome results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', () => {
 		mockSendAssessScoreDBCalls(null, null, moment().toISOString(), true, true)
 		mockDate()
 		const mockDraft = {
@@ -749,7 +709,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -816,12 +776,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('replaceResult fail for same score results in "error_replace_result_failed" and "ok_gradebook_matches_assessment_score"', done => {
+	test('replaceResult fail for same score results in "error_replace_result_failed" and "ok_gradebook_matches_assessment_score"', () => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), false, true)
 		mockDate()
 		const mockDraft = {
@@ -829,7 +787,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -904,12 +862,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('replaceResult fail for different score results in "error_replace_result_failed" and "error_newer_assessment_score_unsent"', done => {
+	test('replaceResult fail for different score results in "error_replace_result_failed" and "error_newer_assessment_score_unsent"', () => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), false, true)
 		mockDate()
 		const mockDraft = {
@@ -917,7 +873,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -992,12 +948,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('missing key for newer assessment score results in "error_no_secret_for_key" and "error_newer_assessment_score_unsent"', done => {
+	test('missing key for newer assessment score results in "error_no_secret_for_key" and "error_newer_assessment_score_unsent"', () => {
 		mockSendAssessScoreDBCalls(100, null, moment().toISOString(), true, true, 'nokey')
 		mockDate()
 		const mockDraft = {
@@ -1005,7 +959,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -1070,12 +1024,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('missing key for same assessment score results in "error_no_secret_for_key" and "ok_gradebook_matches_assessment_score"', done => {
+	test('missing key for same assessment score results in "error_no_secret_for_key" and "ok_gradebook_matches_assessment_score"', () => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'nokey')
 		mockDate()
 		const mockDraft = {
@@ -1085,7 +1037,7 @@ describe('lti', () => {
 
 		// expect(logger.error.mock.calls).toBe(1)
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -1150,12 +1102,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', done => {
+	test('no assessment score results in "error_no_assessment_score_found" and "error_state_unknown"', () => {
 		mockSendAssessScoreDBCalls('missing', 1, moment().toISOString(), true, true)
 		mockDate()
 		const mockDraft = {
@@ -1163,25 +1113,25 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
-			// expect(logger.error.mock.calls).toBe(1)
-			expect(logger.info.mock.calls[0]).toEqual([
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+			expect(logger.info).toHaveBeenCalledWith(
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
-			])
-			expect(logger.error.mock.calls[0]).toEqual([
+			)
+
+			expect(logger.error).toHaveBeenCalledWith(
 				'LTI no assessment score found, unable to proceed!',
 				logId
-			])
-			expect(logger.info.mock.calls[1]).toEqual([
+			)
+			expect(logger.info).toHaveBeenCalledWith(
 				'LTI gradebook status is "error_state_unknown"',
 				logId
-			])
-			expect(logger.info.mock.calls[2]).toEqual([
+			)
+			expect(logger.info).toHaveBeenCalledWith(
 				'LTI store "error_no_assessment_score_found" success - id:"new-lti-assessment-score-id"',
 				logId
-			])
-			expect(logger.info.mock.calls[3]).toEqual(['LTI complete', logId])
+			)
+			expect(logger.info).toHaveBeenCalledWith('LTI complete', logId)
 
 			expect(insertEvent).lastCalledWith({
 				action: 'lti:replaceResult',
@@ -1223,12 +1173,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
-			done()
 		})
 	})
 
-	test('no launch for different score results in "error_no_launch_found" and "error_state_unknown"', done => {
+	test('no launch for different score results in "error_no_launch_found" and "error_state_unknown"', () => {
 		mockSendAssessScoreDBCalls(100, 0.5, moment().toISOString(), false, 'missing')
 		mockDate()
 		const mockDraft = {
@@ -1236,7 +1184,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1297,12 +1245,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
-			done()
 		})
 	})
 
-	test('no launch for same score results in "error_no_launch_found" and "ok_gradebook_matches_assessment_score"', done => {
+	test('no launch for same score results in "error_no_launch_found" and "ok_gradebook_matches_assessment_score"', () => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), false, 'missing')
 		mockDate()
 		const mockDraft = {
@@ -1310,7 +1256,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1371,12 +1317,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
-			done()
 		})
 	})
 
-	test('no launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
+	test('no launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', () => {
 		mockSendAssessScoreDBCalls(null, 1, moment().toISOString(), false, 'missing')
 		mockDate()
 		const mockDraft = {
@@ -1384,7 +1328,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1449,12 +1393,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
-			done()
 		})
 	})
 
-	test('expired launch for same score results in "error_launch_expired" and "ok_gradebook_matches_assessment_score"', done => {
+	test('expired launch for same score results in "error_launch_expired" and "ok_gradebook_matches_assessment_score"', () => {
 		mockSendAssessScoreDBCalls(
 			100,
 			1,
@@ -1470,7 +1412,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1534,12 +1476,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('expired launch for different score results in "error_launch_expired" and "error_newer_assessment_score_unsent"', done => {
+	test('expired launch for different score results in "error_launch_expired" and "error_newer_assessment_score_unsent"', () => {
 		mockSendAssessScoreDBCalls(
 			100,
 			0.5,
@@ -1555,7 +1495,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1619,12 +1559,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
+	test('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', () => {
 		mockSendAssessScoreDBCalls(
 			null,
 			1,
@@ -1640,7 +1578,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1708,12 +1646,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', done => {
+	test('expired launch for null score results in "not_attempted_score_is_null" and "ok_null_score_not_sent"', () => {
 		mockSendAssessScoreDBCalls(
 			null,
 			1,
@@ -1729,7 +1665,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1797,12 +1733,10 @@ describe('lti', () => {
 				isPreview: false,
 				contentId: 'content-id'
 			})
-
-			done()
 		})
 	})
 
-	test('expired launch for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
+	test('expired launch for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', () => {
 		mockSendAssessScoreDBCalls(
 			100,
 			1,
@@ -1818,7 +1752,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1886,12 +1820,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
-			done()
 		})
 	})
 
-	test('invalid score results in "error_score_is_invalid" and "error_state_unknown"', done => {
+	test('invalid score results in "error_score_is_invalid" and "error_state_unknown"', () => {
 		mockSendAssessScoreDBCalls('doggo', 1, moment().toISOString(), true, true)
 		mockDate()
 		const mockDraft = {
@@ -1899,7 +1831,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -1967,12 +1899,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', done => {
+	test('invalid score for no outcome launch results in "not_attempted_no_outcome_service_for_launch" and "ok_no_outcome_service"', () => {
 		mockSendAssessScoreDBCalls('doggo', 1, moment().toISOString(), true, false)
 		mockDate()
 		const mockDraft = {
@@ -1980,7 +1910,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			// expect(logger.error.mock.calls).toBe(1)
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
@@ -2049,12 +1979,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
-			done()
 		})
 	})
 
-	test('preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', done => {
+	test('preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
 		mockSendAssessScoreDBCalls(1, 1, moment().toISOString(), false, true, 'testkey', true, true)
 		mockDate()
 		const mockDraft = {
@@ -2062,7 +1990,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2115,11 +2043,10 @@ describe('lti', () => {
 				isPreview: false,
 				contentId: 'content-id'
 			})
-			done()
 		})
 	})
 
-	test('no launch for preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', done => {
+	test('no launch for preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
 		mockSendAssessScoreDBCalls(
 			1,
 			1,
@@ -2136,7 +2063,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2186,11 +2113,10 @@ describe('lti', () => {
 				isPreview: false,
 				contentId: 'content-id'
 			})
-			done()
 		})
 	})
 
-	test('null score in preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', done => {
+	test('null score in preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
 		mockSendAssessScoreDBCalls(
 			null,
 			null,
@@ -2207,7 +2133,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2260,11 +2186,10 @@ describe('lti', () => {
 				isPreview: false,
 				contentId: 'content-id'
 			})
-			done()
 		})
 	})
 
-	test('invalid score in preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', done => {
+	test('invalid score in preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
 		mockSendAssessScoreDBCalls(
 			'doggo',
 			1,
@@ -2281,7 +2206,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2334,11 +2259,10 @@ describe('lti', () => {
 				isPreview: false,
 				contentId: 'content-id'
 			})
-			done()
 		})
 	})
 
-	test('expired launch for preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', done => {
+	test('expired launch for preview mode results in "not_attempted_preview_mode" and "ok_preview_mode"', () => {
 		mockSendAssessScoreDBCalls(
 			1,
 			1,
@@ -2357,7 +2281,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id', true).then(() => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2410,11 +2334,10 @@ describe('lti', () => {
 				isPreview: false,
 				contentId: 'content-id'
 			})
-			done()
 		})
 	})
 
-	test('getLTIStatesByAssessmentIdForUserAndDraft returns expected values', done => {
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns expected values', () => {
 		db.manyOrNone.mockResolvedValueOnce([
 			{
 				assessment_id: 'assessmentid',
@@ -2427,24 +2350,24 @@ describe('lti', () => {
 			}
 		])
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id').then(result => {
-			expect(result).toEqual({
-				assessmentid: {
-					assessmentId: 'assessmentid',
-					assessmentScoreId: 'assessment-score-id',
-					scoreSent: 'score-sent',
-					sentDate: 'lti-sent-date',
-					status: 'status',
-					gradebookStatus: 'gradebook-status',
-					statusDetails: 'status-details'
-				}
+		return lti
+			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+			.then(result => {
+				expect(result).toEqual({
+					assessmentid: {
+						assessmentId: 'assessmentid',
+						assessmentScoreId: 'assessment-score-id',
+						scoreSent: 'score-sent',
+						sentDate: 'lti-sent-date',
+						status: 'status',
+						gradebookStatus: 'gradebook-status',
+						statusDetails: 'status-details'
+					}
+				})
 			})
-
-			done()
-		})
 	})
 
-	test('getLTIStatesByAssessmentIdForUserAndDraft searches on assessment', done => {
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId searches on assessment', () => {
 		db.manyOrNone.mockResolvedValueOnce([
 			{
 				assessment_id: 'assessment-id',
@@ -2457,8 +2380,14 @@ describe('lti', () => {
 			}
 		])
 
-		lti
-			.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id', 'assessment-id')
+		return lti
+			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
+				'user-id',
+				'draft-id',
+				'resource-link-id',
+				'assessment-id',
+				false
+			)
 			.then(result => {
 				expect(result).toEqual({
 					'assessment-id': {
@@ -2471,19 +2400,24 @@ describe('lti', () => {
 						statusDetails: 'status-details'
 					}
 				})
-
-				done()
 			})
 	})
 
-	test('getLTIStatesByAssessmentIdForUserAndDraft returns empty object when nothing returned from database', done => {
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId returns empty object when nothing returned from database', () => {
 		db.manyOrNone.mockResolvedValueOnce(null)
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft('user-id', 'draft-id').then(result => {
-			expect(result).toEqual({})
+		return lti
+			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+			.then(result => {
+				expect(result).toEqual({})
+			})
+	})
 
-			done()
-		})
+	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId throws errors', () => {
+		db.manyOrNone.mockRejectedValueOnce('mock-reject-error')
+		return expect(
+			lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
+		).rejects.toMatch('mock-reject-error')
 	})
 
 	test('getOutcomeServiceForLaunch returns error if unexpected error occurs', () => {
@@ -2500,42 +2434,41 @@ describe('lti', () => {
 		expect(rtn.error.message).toBe('Some Unexpected Error')
 	})
 
-	test('sendReplaceResultRequest returns false when OutcomeService returns error, logs error', done => {
+	test('sendReplaceResultRequest returns false when OutcomeService returns error, logs error', () => {
 		OutcomeService.__setNextSendReplaceResultError(new Error('Internal Outcome Service Error'))
 		// OutcomeService.__setNextSendReplaceResultReturn('rv')
 
 		const os = new OutcomeService()
 		os.service_url = 'service-url'
 
-		lti.sendReplaceResultRequest(os, 1).then(result => {
+		return lti.sendReplaceResultRequest(os, 1).then(result => {
 			expect(result).toBe(false)
 			expect(logger.info).toHaveBeenCalledWith('LTI sendReplaceResult to "service-url" with "1"')
 			expect(logger.info).toHaveBeenCalledWith(
 				'LTI sendReplaceResult threw error: "Error: Internal Outcome Service Error"'
 			)
-			done()
 		})
 	})
 
-	test('insertReplaceResultEvent calls insertEvent', done => {
+	test('insertReplaceResultEvent calls insertEvent', () => {
 		insertEvent.mockResolvedValueOnce('inserted')
 
 		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
 			expect(insertEvent).toHaveBeenCalled()
-			done()
 		})
 	})
 
-	test('insertReplaceResultEvent catches error', done => {
+	test('insertReplaceResultEvent catches error', () => {
 		insertEvent.mockRejectedValueOnce(new Error('mock Error'))
 
-		lti.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult').then(() => {
-			expect(logger.error).toHaveBeenCalledWith(
-				'There was an error inserting the lti event:',
-				new Error('mock Error')
-			)
-			done()
-		})
+		return lti
+			.insertReplaceResultEvent('mockUserId', 'mockDraftId', {}, {}, 'mockLTIResult')
+			.then(() => {
+				expect(logger.error).toHaveBeenCalledWith(
+					'There was an error inserting the lti event:',
+					new Error('mock Error')
+				)
+			})
 	})
 
 	test('logAndGetStatusForError logs unexpected error', () => {
@@ -2548,7 +2481,7 @@ describe('lti', () => {
 		})
 	})
 
-	test('sendHighestAssessmentScore fails and logs as expected', done => {
+	test('sendHighestAssessmentScore fails and logs as expected', () => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, true, 'testkey', false)
 		mockDate()
 		const mockDraft = {
@@ -2556,7 +2489,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2624,12 +2557,10 @@ describe('lti', () => {
 				ltiAssessmentScoreId: null,
 				outcomeServiceURL: 'lis_outcome_service_url'
 			})
-
-			done()
 		})
 	})
 
-	test('unexpected error works as expected', done => {
+	test('unexpected error works as expected', () => {
 		mockSendAssessScoreDBCalls(100, 1, moment().toISOString(), true, 'error')
 		mockDate()
 		const mockDraft = {
@@ -2637,7 +2568,7 @@ describe('lti', () => {
 			contentId: 'content-id'
 		}
 
-		lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
 			expect(logger.info.mock.calls[0]).toEqual([
 				'LTI begin sendHighestAssessmentScore for userId:"user-id", draftId:"draft-id", assessmentId:"assessment-id"',
 				logId
@@ -2703,8 +2634,6 @@ describe('lti', () => {
 				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
 				outcomeServiceURL: null
 			})
-
-			done()
 		})
 	})
 })

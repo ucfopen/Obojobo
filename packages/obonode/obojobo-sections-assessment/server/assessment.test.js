@@ -121,13 +121,12 @@ describe('Assessment', () => {
 		db.manyOrNone.mockResolvedValueOnce([makeMockAttempt()])
 
 		// there's no response history
-		jest.spyOn(Assessment, 'getResponseHistory')
-		Assessment.getResponseHistory.mockResolvedValueOnce({})
+		jest.spyOn(Assessment, 'getResponseHistory').mockResolvedValue({})
 
 		// there's no lti state
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', null, null, 'mockAssessmentId').then(
 			result => {
 				expect(result).toMatchSnapshot()
 			}
@@ -142,7 +141,7 @@ describe('Assessment', () => {
 		Assessment.getResponseHistory.mockResolvedValueOnce({})
 
 		// there's no lti state
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({})
 
 		return Assessment.getAttempts('mockUserId', 'mockDraftId').then(result => {
 			expect(result).toMatchSnapshot()
@@ -153,13 +152,12 @@ describe('Assessment', () => {
 		db.manyOrNone.mockResolvedValueOnce([])
 
 		// there's no response history
-		jest.spyOn(Assessment, 'getResponseHistory')
-		Assessment.getResponseHistory.mockResolvedValueOnce({})
+		jest.spyOn(Assessment, 'getResponseHistory').mockResolvedValueOnce({})
 
 		// there's no lti state
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({})
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'badAssessmentId').then(
+		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, null, 'badAssessmentId').then(
 			result => {
 				expect(result).toMatchSnapshot()
 			}
@@ -185,7 +183,7 @@ describe('Assessment', () => {
 		}
 		Assessment.getResponseHistory.mockResolvedValueOnce(mockHistory)
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: {
 				scoreSent: 0,
 				sentDate: 'mockSentDate',
@@ -195,11 +193,15 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
-			result => {
-				expect(result).toMatchSnapshot()
-			}
-		)
+		return Assessment.getAttempts(
+			'mockUserId',
+			'mockDraftId',
+			false,
+			null,
+			'mockAssessmentId'
+		).then(result => {
+			expect(result).toMatchSnapshot()
+		})
 	})
 
 	test('getAttempts returns multiple attempts with same assessment', () => {
@@ -225,7 +227,7 @@ describe('Assessment', () => {
 		}
 		Assessment.getResponseHistory.mockResolvedValueOnce(mockHistory)
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: {
 				scoreSent: 0,
 				sentDate: 'mockSentDate',
@@ -235,11 +237,15 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
-			result => {
-				expect(result).toMatchSnapshot()
-			}
-		)
+		return Assessment.getAttempts(
+			'mockUserId',
+			'mockDraftId',
+			false,
+			null,
+			'mockAssessmentId'
+		).then(result => {
+			expect(result).toMatchSnapshot()
+		})
 	})
 
 	test('getAttempts returns no history when assessmentIds for attempt and history dont match', () => {
@@ -262,7 +268,7 @@ describe('Assessment', () => {
 		}
 		Assessment.getResponseHistory.mockResolvedValueOnce(mockHistory)
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: {
 				scoreSent: 0,
 				sentDate: 'mockSentDate',
@@ -297,7 +303,7 @@ describe('Assessment', () => {
 		}
 		Assessment.getResponseHistory.mockResolvedValueOnce(mockHistory)
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraft.mockResolvedValueOnce({
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce({
 			mockAssessmentId: {
 				scoreSent: 0,
 				sentDate: 'mockSentDate',
@@ -307,14 +313,18 @@ describe('Assessment', () => {
 			}
 		})
 
-		return Assessment.getAttempts('mockUserId', 'mockDraftId', false, 'mockAssessmentId').then(
-			result => {
-				expect(result).toMatchSnapshot()
-				expect(logger.warn).toHaveBeenCalledWith(
-					"Couldn't find an attempt I was looking for ('mockUserId', 'mockDraftId', 'mockAttemptId', 'mockResponseId', 'mockAssessmentId') - Shouldn't get here!"
-				)
-			}
-		)
+		return Assessment.getAttempts(
+			'mockUserId',
+			'mockDraftId',
+			false,
+			null,
+			'mockAssessmentId'
+		).then(result => {
+			expect(result).toMatchSnapshot()
+			expect(logger.warn).toHaveBeenCalledWith(
+				"Couldn't find an attempt I was looking for ('mockUserId', 'mockDraftId', 'mockAttemptId', 'mockResponseId', 'mockAssessmentId') - Shouldn't get here!"
+			)
+		})
 	})
 
 	test('getAttemptIdsForUserForDraft calls db with expected fields', () => {
@@ -599,13 +609,15 @@ describe('Assessment', () => {
 			'mockUserId',
 			'mockDraftId',
 			false,
+			'mockResourceLinkId',
 			'mockAssessmentId'
 		).then(result => {
 			expect(db.manyOrNone.mock.calls[0][1]).toEqual({
 				userId: 'mockUserId',
 				draftId: 'mockDraftId',
 				isPreview: false,
-				optionalAssessmentId: 'mockAssessmentId'
+				optionalAssessmentId: 'mockAssessmentId',
+				resourceLinkId: 'mockResourceLinkId'
 			})
 
 			expect(result).toEqual({

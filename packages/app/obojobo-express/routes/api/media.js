@@ -1,26 +1,24 @@
 const express = require('express')
 const router = express.Router()
 const multer = require('multer')
-
 const mediaConfig = oboRequire('config').media
 const MediaModel = oboRequire('models/media')
-
-const diskStorage = multer.diskStorage({
-	destination: mediaConfig.tempUploadDestination
-})
-
-// single() takes the field name of the file field
-//  in the multipart form being submitted
-const multerUpload = multer({
-	storage: diskStorage,
-	limits: {
-		fileSize: mediaConfig.maxUploadSize
-	}
-}).single('userImage')
-
 const { requireCurrentUser } = oboRequire('express_validators')
 
 const upload = (req, res) => {
+	const diskStorage = multer.diskStorage({
+		destination: mediaConfig.tempUploadDestination
+	})
+
+	// single() takes the field name of the file field
+	//  in the multipart form being submitted
+	const multerUpload = multer({
+		storage: diskStorage,
+		limits: {
+			fileSize: mediaConfig.maxUploadSize
+		}
+	}).single('userImage')
+
 	return new Promise((resolve, reject) => {
 		multerUpload(req, res, err => {
 			// catches errors thrown by multerUpload
@@ -36,21 +34,17 @@ const upload = (req, res) => {
 // mounted as /api/media/upload
 router
 	.route('/upload')
-	.post([requireCurrentUser])
+	.post(requireCurrentUser)
 	.post((req, res, next) => {
 		upload(req, res)
 			.then(() => {
 				return (
 					MediaModel.createAndSave(req.currentUser.id, req.file)
-						.then(mediaId => {
-							res.send(mediaId)
-						})
-						// catches errors thrown by Media Model
-						.catch(next)
+						.then(mediaData => res.json(mediaData))
+						.catch(next) // catches errors thrown by Media Model
 				)
 			})
-			// catches errors thrown by upload
-			.catch(next)
+			.catch(next) // catches errors thrown by upload
 	})
 
 // Get media file

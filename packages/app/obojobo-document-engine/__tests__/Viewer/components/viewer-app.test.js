@@ -22,6 +22,7 @@ import ReactDOM from 'react-dom'
 import ViewerApp from 'obojobo-document-engine/src/scripts/viewer/components/viewer-app'
 import { mount } from 'enzyme'
 import testObject from 'obojobo-document-engine/test-object.json'
+import mockConsole from 'jest-mock-console';
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/stores/question-store')
@@ -38,6 +39,7 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/components/nav')
 jest.mock('obojobo-document-engine/src/scripts/common/page/dom-util')
 
 describe('ViewerApp', () => {
+	let restoreConsole
 	let isDOMFocusInsideNavSpy
 	const isDOMFocusInsideNavOriginal = ViewerApp.prototype.isDOMFocusInsideNav
 
@@ -63,6 +65,7 @@ describe('ViewerApp', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
+		restoreConsole = mockConsole('error')
 
 		isDOMFocusInsideNavSpy = jest
 			.spyOn(ViewerApp.prototype, 'isDOMFocusInsideNav')
@@ -75,6 +78,7 @@ describe('ViewerApp', () => {
 	})
 
 	afterEach(() => {
+		restoreConsole();
 		isDOMFocusInsideNavSpy.mockRestore()
 	})
 
@@ -110,21 +114,12 @@ describe('ViewerApp', () => {
 
 		// No visit or draft id
 		const spy = jest.spyOn(String.prototype, 'split').mockReturnValueOnce([])
-
-		// temporarily mock and unmock console.error to prevent logging to screen
-		const originalError = console.error
-		console.error = jest.fn()
 		const component = mount(<ViewerApp />)
 
 		setTimeout(() => {
 			component.update()
-
-			// restore important globals
-			const errorMock = console.error
-			console.error = originalError
-
 			expect(component.html()).toMatchSnapshot()
-			expect(errorMock).toHaveBeenCalled()
+			expect(console.error).toHaveBeenCalled()
 
 			spy.mockRestore()
 			component.unmount()

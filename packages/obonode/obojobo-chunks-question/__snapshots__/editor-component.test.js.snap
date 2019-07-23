@@ -2,8 +2,25 @@
 
 exports[`Question Editor Node Question builds the expected component 1`] = `
 <div
-  className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad"
+  className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default"
 >
+  <select
+    className="question-type"
+    contentEditable={false}
+    onChange={[Function]}
+    value="default"
+  >
+    <option
+      value="default"
+    >
+      Default
+    </option>
+    <option
+      value="survey"
+    >
+      Survey
+    </option>
+  </select>
   <div
     className="flipper question-editor"
   >
@@ -35,6 +52,60 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
 </div>
 `;
 
-exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
 
-exports[`Question Editor Node Question component deletes self 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+exports[`Question Editor Node Question component allows you to change question type 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+
+exports[`Question Editor Node Question component deletes self 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+
+exports[`Question Editor Node Survey Question builds the expected component 1`] = `
+<div
+  className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-survey"
+>
+  <select
+    className="question-type"
+    contentEditable={false}
+    onChange={[Function]}
+    value="survey"
+  >
+    <option
+      value="default"
+    >
+      Default
+    </option>
+    <option
+      value="survey"
+    >
+      Survey
+    </option>
+  </select>
+  <div
+    className="flipper question-editor"
+  >
+    <div
+      className="content-back"
+    >
+      <div
+        className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+      >
+        <button
+          className="button"
+          onClick={[Function]}
+        >
+          Add Solution
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+  >
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+</div>
+`;

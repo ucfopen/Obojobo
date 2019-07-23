@@ -180,9 +180,12 @@ const AssessmentUtil = {
 		return assessment.attempts.length
 	},
 
+	getNumPossibleCorrect(questionScores) {
+		return questionScores.map(q => q.score).filter(Number.isFinite).length
+	},
+
 	getNumCorrect(questionScores) {
-		const count100s = (acc, qs) => acc + (parseInt(qs.score, 10) === 100 ? 1 : 0)
-		return questionScores.reduce(count100s, 0)
+		return questionScores.map(q => q.score).filter(score => parseInt(score, 10) === 100).length
 	},
 
 	findHighestAttempts(attempts, scoreProperty) {

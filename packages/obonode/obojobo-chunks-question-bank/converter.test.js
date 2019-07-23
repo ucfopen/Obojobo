@@ -57,7 +57,7 @@ describe('QuestionBank editor', () => {
 		const oboNode = {
 			id: 'mockKey',
 			type: 'mockType',
-			content: { choose: Infinity },
+			content: { choose: null },
 			children: [
 				{
 					type: QUESTION_BANK_NODE,

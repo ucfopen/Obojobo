@@ -121,8 +121,8 @@ class Draft {
 						RETURNING *`,
 						{ userId }
 					)
-					.then(result => {
-						newDraft = result
+					.then(newDraftResult => {
+						newDraft = newDraftResult
 						// Add content referencing the draft
 						return transactionDb.one(
 							`
@@ -131,16 +131,13 @@ class Draft {
 							VALUES
 								($[draftId], $[jsonContent], $[xmlContent])
 							RETURNING *`,
-							{ draftId: result.id, jsonContent, xmlContent }
+							{ draftId: newDraft.id, jsonContent, xmlContent }
 						)
 					})
-					.then(result => {
-						newDraft.content = result
+					.then(newContentResult => {
+						newDraft.content = newContentResult
+						return newDraft
 					})
-			})
-			.then(() => {
-				// transaction committed
-				return newDraft
 			})
 	}
 
@@ -166,7 +163,7 @@ class Draft {
 					xmlContent
 				}
 			)
-			.then(result => result.id)
+			.then(insertContentResult => insertContentResult.id)
 	}
 
 	// returns the first duplicate id found or

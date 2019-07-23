@@ -24,6 +24,7 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.MCAssessment.MCFeedback', {
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
+	supportsChildren: true,
 	plugins
 })
 

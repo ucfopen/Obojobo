@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-document-engine",
-	"version": "4.0.1",
+	"version": "4.1.1",
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
@@ -20,7 +20,8 @@
 		"prettier:run": "prettier --write '{__{tests,mocks}__,src}/**/*.{js,scss}'",
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
-		"lint:css": "stylelint **/*.scss"
+		"lint:css": "stylelint **/*.scss",
+		"precommit": "lint-staged"
 	},
 	"lint-staged": {
 		"{__{tests,mocks}__,src}/**/*.js": [
@@ -49,14 +50,14 @@
 		"date-fns": "^1.29.0",
 		"immutable": "^3.8.2",
 		"katex": "^0.9.0",
-		"obojobo-lib-utils": "^4.0.1",
+		"obojobo-lib-utils": "^4.1.0",
 		"prop-types": "15.6.2",
-		"react": "16.7.0",
-		"react-dom": "16.7.0",
+		"react": "16.8.6",
+		"react-dom": "16.8.6",
 		"react-idle-timer": "^4.2.3",
 		"react-transition-group": "^2.5.3",
-		"slate": "0.44.0",
-		"slate-react": "0.20.0",
+		"slate": "0.44.12",
+		"slate-react": "0.20.8",
 		"slate-schema-violations": "^0.1.39",
 		"smoothscroll-polyfill": "^0.3.4",
 		"underscore": "1.5.1",
@@ -98,6 +99,7 @@
 			"<rootDir>/src/scripts/oboeditor/index.js",
 			"<rootDir>/src/scripts/oboeditor/app.js",
 			"<rootDir>/src/scripts/oboeditor/dist.js",
+			"<rootDir>/src/scripts/oboeditor/draftmanager.js",
 			"<rootDir>/src/scripts/oboeditor/documents/",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
 			".json",

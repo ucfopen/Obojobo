@@ -1,0 +1,45 @@
+{
+	"id": "855c7a80-9ac8-4a5f-aa22-8305b87453d2",
+	"type": "ObojoboDraft.Chunks.List",
+	"content": {
+		"textGroup": [
+			{
+				"data": {
+					"indent": 0
+				},
+				"text": {
+					"value": "One Item",
+					"styleList": []
+				}
+			},
+			{
+				"data": {
+					"indent": 0
+				},
+				"text": {
+					"value": "Another Item",
+					"styleList": []
+				}
+			},
+			{
+				"data": {
+					"indent": 0
+				},
+				"text": {
+					"value": "A Third Item",
+					"styleList": []
+				}
+			}
+		],
+		"listStyles": {
+			"type": "unordered",
+			"indents": [
+				{
+					"type": "unordered",
+					"bulletStyle": "disc"
+				}
+			]
+		}
+	},
+	"children": []
+}

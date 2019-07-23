@@ -2,6 +2,12 @@
 
 exports[`MCAssessment Editor Node MCAssessment builds the expected component 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored"
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored is-type-mock-question-type"
+/>
+`;
+
+exports[`MCAssessment Editor Node MCAssessment builds the expected component with defaults 1`] = `
+<div
+  className="component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored is-type-default"
 />
 `;

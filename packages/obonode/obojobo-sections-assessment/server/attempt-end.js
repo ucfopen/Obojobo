@@ -8,7 +8,13 @@ const logger = require('obojobo-express/logger')
 const attemptStart = require('./attempt-start')
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
 
-const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
+const endAttempt = (req, res) => {
+	const user = req.currentUser
+	const draftDocument = req.currentDocument
+	const attemptId = req.params.attemptId
+	const isPreview = req.currentVisit.is_preview
+	const resourceLinkId = req.currentVisit.resource_link_id
+
 	let attempt
 	let attemptHistory
 	let calculatedScores
@@ -21,7 +27,13 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 			logger.info(`End attempt "${attemptId}" - getAttempt success`)
 
 			attempt = attemptResult
-			return getAttemptHistory(user.id, attempt.draftId, attempt.assessmentId, isPreview)
+			return getAttemptHistory(
+				user.id,
+				attempt.draftId,
+				attempt.assessmentId,
+				isPreview,
+				resourceLinkId
+			)
 		})
 		.then(attemptHistoryResult => {
 			logger.info(`End attempt "${attemptId}" - getAttemptHistory success`)
@@ -56,7 +68,8 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 				attempt.draftId,
 				draftDocument.contentId,
 				calculatedScores,
-				isPreview
+				isPreview,
+				resourceLinkId
 			)
 		})
 		.then(completeAttemptResult => {
@@ -71,7 +84,8 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 				draftDocument,
 				user,
 				isPreview,
-				attemptHistory
+				attemptHistory,
+				resourceLinkId
 			)
 		})
 		.then(() => {
@@ -83,7 +97,8 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 				attempt.number,
 				isPreview,
 				req.hostname,
-				req.connection.remoteAddress
+				req.connection.remoteAddress,
+				req.body.visitId
 			)
 		})
 		.then(() => {
@@ -92,12 +107,17 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 			//
 			logger.info(`End attempt "${attemptId}" - insertAttemptEndEvent success`)
 
-			return lti.sendHighestAssessmentScore(user.id, draftDocument, attempt.assessmentId, isPreview)
+			return lti.sendHighestAssessmentScore(
+				user.id,
+				draftDocument,
+				attempt.assessmentId,
+				isPreview,
+				resourceLinkId
+			)
 		})
 		.then(ltiRequestResult => {
 			logger.info(`End attempt "${attemptId}" - sendLTIScore was executed`)
-
-			insertAttemptScoredEvents(
+			return insertAttemptScoredEvents(
 				user,
 				draftDocument,
 				attempt.assessmentId,
@@ -114,10 +134,20 @@ const endAttempt = (req, res, user, draftDocument, attemptId, isPreview) => {
 				ltiRequestResult.ltiAssessmentScoreId,
 				req.hostname,
 				req.connection.remoteAddress,
-				calculatedScores.assessmentScoreDetails
+				calculatedScores.assessmentScoreDetails,
+				resourceLinkId,
+				req.body.visitId
 			)
 		})
-		.then(() => Assessment.getAttempts(user.id, attempt.draftId, isPreview, attempt.assessmentId))
+		.then(() =>
+			Assessment.getAttempts(
+				user.id,
+				attempt.draftId,
+				isPreview,
+				resourceLinkId,
+				attempt.assessmentId
+			)
+		)
 }
 
 const getAttempt = attemptId => {
@@ -126,7 +156,12 @@ const getAttempt = attemptId => {
 	return Assessment.getAttempt(attemptId)
 		.then(selectResult => {
 			result = selectResult
-			return Assessment.getAttemptNumber(result.user_id, result.draft_id, attemptId)
+			return Assessment.getAttemptNumber(
+				result.user_id,
+				result.draft_id,
+				attemptId,
+				result.resource_link_id
+			)
 		})
 		.then(attemptNumber => {
 			result.attemptNumber = attemptNumber
@@ -142,8 +177,14 @@ const getAttempt = attemptId => {
 		}))
 }
 
-const getAttemptHistory = (userId, draftId, assessmentId, isPreview) =>
-	Assessment.getCompletedAssessmentAttemptHistory(userId, draftId, assessmentId, isPreview)
+const getAttemptHistory = (userId, draftId, assessmentId, isPreview, resourceLinkId) =>
+	Assessment.getCompletedAssessmentAttemptHistory(
+		userId,
+		draftId,
+		assessmentId,
+		isPreview,
+		resourceLinkId
+	)
 
 const getResponsesForAttempt = (userId, draftId) =>
 	Assessment.getResponsesForAttempt(userId, draftId)
@@ -159,6 +200,7 @@ const getCalculatedScores = (
 	const scoreInfo = {
 		scores: [0],
 		questions: attemptState.questions,
+		// gradedQuestionIds: [],
 		scoresByQuestionId: {}
 	}
 
@@ -183,12 +225,17 @@ const getCalculatedScores = (
 }
 
 const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
+	// Collect ids and scores for all questions
 	const questionScores = scoreInfo.questions.map(question => ({
 		id: question.id,
 		score: scoreInfo.scoresByQuestionId[question.id] || 0
 	}))
 
-	const attemptScore = scoreInfo.scores.reduce((a, b) => a + b) / scoreInfo.questions.length
+	// Filter out survey ('no-score') questions:
+	const gradableQuestionScores = questionScores.filter(q => Number.isFinite(q.score))
+
+	const attemptScore =
+		gradableQuestionScores.reduce((acc, s) => acc + s.score, 0) / gradableQuestionScores.length
 
 	const allScores = attemptHistory
 		.map(attempt => parseFloat(attempt.result.attemptScore))
@@ -219,9 +266,10 @@ const completeAttempt = (
 	draftId,
 	contentId,
 	calculatedScores,
-	isPreview
-) =>
-	Assessment.completeAttempt(
+	isPreview,
+	resourceLinkId
+) => {
+	return Assessment.completeAttempt(
 		assessmentId,
 		attemptId,
 		userId,
@@ -229,8 +277,10 @@ const completeAttempt = (
 		contentId,
 		calculatedScores.attempt,
 		calculatedScores.assessmentScoreDetails,
-		isPreview
+		isPreview,
+		resourceLinkId
 	)
+}
 
 const insertAttemptEndEvents = (
 	user,
@@ -240,7 +290,8 @@ const insertAttemptEndEvents = (
 	attemptNumber,
 	isPreview,
 	hostname,
-	remoteAddress
+	remoteAddress,
+	visitId
 ) => {
 	const { createAssessmentAttemptSubmittedEvent } = createCaliperEvent(null, hostname)
 	return insertEvent({
@@ -256,7 +307,8 @@ const insertAttemptEndEvents = (
 		draftId: draftDocument.draftId,
 		contentId: draftDocument.contentId,
 		eventVersion: '1.1.0',
-		isPreview: isPreview,
+		isPreview,
+		visitId,
 		caliperPayload: createAssessmentAttemptSubmittedEvent({
 			actor: { type: 'user', id: user.id },
 			draftId: draftDocument.draftId,
@@ -284,12 +336,20 @@ const insertAttemptScoredEvents = (
 	ltiAssessmentScoreId,
 	hostname,
 	remoteAddress,
-	scoreDetails
+	scoreDetails,
+	resourceLinkId,
+	visitId
 ) => {
 	const { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
 
 	return lti
-		.getLatestHighestAssessmentScoreRecord(user.id, draftDocument.draftId, assessmentId)
+		.getLatestHighestAssessmentScoreRecord(
+			user.id,
+			draftDocument.draftId,
+			assessmentId,
+			resourceLinkId,
+			isPreview
+		)
 		.then(highestAssessmentScoreRecord => {
 			return insertEvent({
 				action: 'assessment:attemptScored',
@@ -306,7 +366,8 @@ const insertAttemptScoredEvents = (
 					ltiGradeBookStatus,
 					assessmentScoreId,
 					ltiAssessmentScoreId,
-					scoreDetails
+					scoreDetails,
+					resourceLinkId
 				},
 				userId: user.id,
 				ip: remoteAddress,
@@ -314,7 +375,8 @@ const insertAttemptScoredEvents = (
 				draftId: draftDocument.draftId,
 				contentId: draftDocument.contentId,
 				eventVersion: '2.0.0',
-				isPreview: isPreview,
+				isPreview,
+				visitId,
 				caliperPayload: createAssessmentAttemptScoredEvent({
 					actor: { type: 'serverApp' },
 					draftId: draftDocument.draftId,
@@ -341,10 +403,10 @@ const reloadAttemptStateIfReviewing = (
 	draftDocument,
 	user,
 	isPreview,
-	attemptHistory
+	attemptHistory,
+	resourceLinkId
 ) => {
 	const assessmentNode = attempt.assessmentModel
-
 	// Do not reload the state if reviews are never allowed
 	if (assessmentNode.node.content.review === 'never') {
 		return null
@@ -385,6 +447,7 @@ const reloadAttemptStateIfReviewing = (
 			assessmentProperties.user.id,
 			draftId,
 			isPreview,
+			resourceLinkId,
 			assessmentProperties.id
 		).then(result => {
 			result.attempts.map(attempt => {

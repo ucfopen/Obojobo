@@ -48,4 +48,4 @@ Object.defineProperties(MockElement.prototype, {
 	}
 })
 
-export default MockElement
+module.exports = MockElement
