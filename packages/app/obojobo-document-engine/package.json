@@ -100,7 +100,6 @@
 			"<rootDir>/src/scripts/oboeditor/app.js",
 			"<rootDir>/src/scripts/oboeditor/dist.js",
 			"<rootDir>/src/scripts/oboeditor/draftmanager.js",
-			"<rootDir>/src/scripts/oboeditor/documents/",
 			"<rootDir>/src/scripts/viewer/polyfills.js",
 			".json",
 			"<rootDir>/src/scripts/common/index.js",
