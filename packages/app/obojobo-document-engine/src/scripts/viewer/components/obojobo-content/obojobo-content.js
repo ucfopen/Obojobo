@@ -21,15 +21,10 @@ const ObojoboContent = props => {
 	const componentRenderer = index => {
 		// Nodes that are not work
 		switch (oboNodeList[index].attributes.type) {
-			// case 'ObojoboDraft.Chunks.Question':
-			// case 'ObojoboDraft.Chunks.MCAssessment':
-			// case 'ObojoboDraft.Chunks.IFrame':
-			// case 'ObojoboDraft.Chunks.ActionButton':
 			case 'ObojoboDraft.Sections.Assessment':
 			case 'ObojoboDraft.Chunks.MCAssessment.MCChoice':
 			case 'ObojoboDraft.Chunks.MCAssessment.MCFeedback':
 			case 'ObojoboDraft.Chunks.MCAssessment.MCAnswer':
-				// case 'ObojoboDraft.Chunks.QuestionBank':
 				return
 			default:
 				break
