@@ -512,19 +512,23 @@ export default class ViewerApp extends React.Component {
 		return NavUtil.unlock()
 	}
 
+	renderRequestStatusError() {
+		return (
+			<div className="viewer--viewer-app--visit-error">
+				{`There was a problem starting your visit. Please return to ${
+					this.state.lti.outcomeServiceHostname
+						? this.state.lti.outcomeServiceHostname
+						: 'the external system'
+				} and relaunch this module.`}
+			</div>
+		) //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
+	}
+
 	render() {
 		if (this.state.loading) return null
 
 		if (this.state.requestStatus === 'invalid') {
-			return (
-				<div className="viewer--viewer-app--visit-error">
-					{`There was a problem starting your visit. Please return to ${
-						this.state.lti.outcomeServiceHostname
-							? this.state.lti.outcomeServiceHostname
-							: 'the external system'
-					} and relaunch this module.`}
-				</div>
-			) //`There was a problem starting your visit. Please return to ${outcomeServiceURL} and relaunch this module.`
+			return this.renderRequestStatusError()
 		}
 
 		let nextComp, nextItem, prevComp, prevItem
