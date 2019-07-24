@@ -13,7 +13,11 @@
 			"object":"block",
 			"type":"ObojoboDraft.Chunks.Question",
 			"isVoid":false,
-			"data":{},
+			"data": {
+				"content": {
+					"type": "default"
+				}
+			},
 			"nodes":[
 				{
 					"object": "block",
