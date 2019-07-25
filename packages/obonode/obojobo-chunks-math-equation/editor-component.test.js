@@ -48,7 +48,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: '1', label: '' }
+							return { latex: '1', label: '', size: 1 }
 						}
 					}
 				}}
@@ -69,7 +69,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: '1', label: '1.1' }
+							return { latex: '1', label: '1.1', size: 1 }
 						}
 					}
 				}}
@@ -99,7 +99,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: '1', label: '' }
+							return { latex: '1', label: '', size: 1 }
 						}
 					}
 				}}

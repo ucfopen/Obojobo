@@ -21,10 +21,10 @@ class MathEquationProperties extends React.Component {
 
 		this.inputRef = React.createRef()
 
-		this.state = ({
+		this.state = {
 			content: this.props.content,
 			error: ''
-		})
+		}
 	}
 
 	handleLatexChange(event) {
@@ -34,7 +34,7 @@ class MathEquationProperties extends React.Component {
 			...this.state,
 			content: {
 				...this.state.content,
-				latex,
+				latex
 			}
 		})
 	}
@@ -44,11 +44,23 @@ class MathEquationProperties extends React.Component {
 
 		this.setState({
 			...this.state,
-			content: { 
+			content: {
 				...this.state.content,
 				alt
 			}
-		})	
+		})
+	}
+
+	handleSizeChange(event) {
+		const size = event.target.value
+
+		this.setState({
+			...this.state,
+			content: {
+				...this.state.content,
+				size
+			}
+		})
 	}
 
 	handleLabelChange(event) {
@@ -56,7 +68,7 @@ class MathEquationProperties extends React.Component {
 
 		this.setState({
 			...this.state,
-			content: { 
+			content: {
 				...this.state.content,
 				label
 			}
@@ -76,7 +88,6 @@ class MathEquationProperties extends React.Component {
 
 		return this.props.onConfirm(this.state.content)
 	}
-
 	render() {
 		return (
 			<SimpleDialog
@@ -101,6 +112,15 @@ class MathEquationProperties extends React.Component {
 							id="obojobo-draft--chunks--math-equation--alt"
 							value={this.state.content.alt || ''}
 							onChange={this.handleAltChange.bind(this)}
+						/>
+						<label>Size: (1 is the default font size)</label>
+						<input
+							type="number"
+							step="0.1"
+							min="0.1"
+							id="obojobo-draft--chunks--math-equation--size"
+							value={this.state.content.size || 1}
+							onChange={this.handleSizeChange.bind(this)}
 						/>
 						<label>Optional Equation Label:</label>
 						<input
