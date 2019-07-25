@@ -72,7 +72,6 @@ class QuestionStore extends Store {
 			'question:showExplanation': payload => {
 				const { id, context } = payload.value
 				const root = OboModel.getRoot()
-				console.log(root)
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:showExplanation',
