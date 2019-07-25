@@ -11,6 +11,8 @@ import Controls from './controls'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import IFrameControlTypes from './iframe-control-types'
+import IFrameFitTypes from './iframe-fit-types'
 import { getRenderSettings } from './render-settings'
 
 const DEFAULT_WIDTH = 710
@@ -30,31 +32,54 @@ export default class IFrame extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.boundOnClickContainer = this.onClickContainer.bind(this)
-		this.boundOnZoomReset = this.onClickZoomReset.bind(this)
-		this.boundOnReload = this.onClickReload.bind(this)
-		this.boundOnViewerContentAreaResized = this.onViewerContentAreaResized.bind(this)
-		this.boundSkipToBottom = this.onClickSkipToBottom.bind(this)
-		this.boundSkipToTop = this.onClickSkipToTop.bind(this)
+		// this.boundOnClickContainer = this.onClickContainer.bind(this)
+		// this.boundOnZoomReset = this.onClickZoomReset.bind(this)
+		// this.boundOnReload = this.onClickReload.bind(this)
+		// this.boundOnViewerContentAreaResized = this.onViewerContentAreaResized.bind(this)
+		// this.boundSkipToBottom = this.onClickSkipToBottom.bind(this)
+		// this.boundSkipToTop = this.onClickSkipToTop.bind(this)
 
-		MediaUtil.setDefaultZoom(
-			this.props.model.attributes.id,
-			this.props.model.modelState.initialZoom
-		)
+		// MediaUtil.setDefaultZoom(
+		// 	this.props.model.attributes.id,
+		// 	this.props.model.modelState.initialZoom
+		// )
+
+		const {
+			src,
+			controls,
+			title,
+			type,
+			fit,
+			initialZoom,
+			autoload,
+			height,
+			width,
+			border
+		} = this.props.model.attributes.content
 
 		this.state = {
 			actualWidth: 0,
-			padding: 0
+			padding: 0,
+			isShowing: autoload || false,
+			displayedTitle: title || this.createSrc(src),
+			zoon: initialZoom || 1,
+			height: height || DEFAULT_HEIGHT,
+			width: width || DEFAULT_WIDTH,
+			border: border,
+			src: this.createSrc(src),
+			controls: controls,
+			fit: fit,
+			type: type
 		}
 	}
 
-	onClickSkipToBottom() {
-		this.refs.buttonSkipToTop.focus()
-	}
+	// onClickSkipToBottom() {
+	// 	this.refs.buttonSkipToTop.focus()
+	// }
 
-	onClickSkipToTop() {
-		this.refs.buttonSkipToBottom.focus()
-	}
+	// onClickSkipToTop() {
+	// 	this.refs.buttonSkipToBottom.focus()
+	// }
 
 	getMeasuredDimensions() {
 		const cs = window.getComputedStyle(this.refs.main, null)
@@ -76,58 +101,55 @@ export default class IFrame extends React.Component {
 		})
 	}
 
-	onClickContainer() {
-		MediaUtil.show(this.props.model.attributes.id)
-		// FocusUtil.focusComponent(this.props.model.attributes.id)
-	}
+	// onClickContainer() {
+	// 	MediaUtil.show(this.props.model.attributes.id)
+	// 	// FocusUtil.focusComponent(this.props.model.attributes.id)
+	// }
 
-	onClickZoomReset() {
-		MediaUtil.resetZoom(this.props.model.attributes.id)
-	}
+	// onClickZoomReset() {
+	// 	MediaUtil.resetZoom(this.props.model.attributes.id)
+	// }
 
-	onClickSetZoom(newZoom) {
-		MediaUtil.setZoom(this.props.model.attributes.id, newZoom)
-	}
+	// onClickSetZoom(newZoom) {
+	// 	MediaUtil.setZoom(this.props.model.attributes.id, newZoom)
+	// }
 
 	onClickReload() {
-		this.refs.iframe.src = this.createSrc(this.props.model.modelState.src)
+		this.refs.iframe.src = this.createSrc(this.state.src)
 	}
 
 	componentDidMount() {
-		const dims = this.getMeasuredDimensions()
-
-		this.setState({
-			actualWidth: dims.width,
-			padding: dims.padding
-		})
-
-		if (
-			window.ResizeObserver &&
-			window.ResizeObserver.prototype &&
-			window.ResizeObserver.prototype.observe &&
-			window.ResizeObserver.prototype.disconnect
-		) {
-			this.resizeObserver = new ResizeObserver(this.boundOnViewerContentAreaResized)
-			this.resizeObserver.observe(ReactDOM.findDOMNode(this.refs.self))
-		} else {
-			Dispatcher.on('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
-		}
+		// const dims = this.getMeasuredDimensions()
+		// this.setState({
+		// 	actualWidth: dims.width,
+		// 	padding: dims.padding
+		// })
+		// if (
+		// 	window.ResizeObserver &&
+		// 	window.ResizeObserver.prototype &&
+		// 	window.ResizeObserver.prototype.observe &&
+		// 	window.ResizeObserver.prototype.disconnect
+		// ) {
+		// 	this.resizeObserver = new ResizeObserver(this.boundOnViewerContentAreaResized)
+		// 	this.resizeObserver.observe(ReactDOM.findDOMNode(this.refs.self))
+		// } else {
+		// 	Dispatcher.on('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
+		// }
 	}
 
-	isMediaNeedingToBeHidden() {
-		return (
-			!this.props.model.modelState.autoload &&
-			MediaUtil.isShowingMedia(this.props.moduleData.mediaState, this.props.model)
-		)
-	}
+	// isMediaNeedingToBeHidden() {
+	// 	return (
+	// 		!this.props.model.modelState.autoload &&
+	// 		MediaUtil.isShowingMedia(this.props.moduleData.mediaState, this.props.model)
+	// 	)
+	// }
 
 	componentWillUnmount() {
-		if (this.resizeObserver) this.resizeObserver.disconnect()
-		Dispatcher.off('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
-
-		if (this.isMediaNeedingToBeHidden()) {
-			MediaUtil.hide(this.props.model.attributes.id, 'viewerClient')
-		}
+		// if (this.resizeObserver) this.resizeObserver.disconnect()
+		// Dispatcher.off('viewer:contentAreaResized', this.boundOnViewerContentAreaResized)
+		// if (this.isMediaNeedingToBeHidden()) {
+		// 	MediaUtil.hide(this.props.model.attributes.id, 'viewerClient')
+		// }
 	}
 
 	createSrc(src) {
@@ -147,33 +169,86 @@ export default class IFrame extends React.Component {
 		return src
 	}
 
+	getIFrameStyle(scale) {
+		return {
+			transform: `scale(${scale})`,
+			width: (1 / scale) * 100 + '%',
+			height: (1 / scale) * 100 + '%'
+		}
+	}
+
+	onShowContent() {
+		this.setState({
+			isShowing: true
+		})
+	}
+
+	getControlsOptions(modelState) {
+		const isZoomControlEnabled = modelState.controls.indexOf(IFrameControlTypes.ZOOM) > -1
+		const isReloadControlEnabled = modelState.controls.indexOf(IFrameControlTypes.RELOAD) > -1
+		const isNewWindowEnabled = modelState.controls.indexOf(IFrameControlTypes.NEW_WINDOW) > -1
+
+		return {
+			zoom: isZoomControlEnabled,
+			reload: isReloadControlEnabled,
+			newWindow: isNewWindowEnabled,
+			isControlsEnabled: isZoomControlEnabled || isReloadControlEnabled || isNewWindowEnabled
+		}
+	}
+
+	getZoomValues() {
+		const currentZoom = this.state.zoon
+		const defaultZoom = this.props.model.attributes.initialZoom || 1
+		const isZoomAtDefault = currentZoom === defaultZoom
+
+		return {
+			currentZoom,
+			defaultZoom,
+			isZoomAtDefault
+		}
+	}
+
+	getScaleDimensions() {
+		let scale
+		let containerStyle = {}
+
+		if (this.state.fit === IFrameFitTypes.SCROLL) {
+			scale = this.state.zoom
+			containerStyle = {
+				width: this.state.width,
+				height: this.state.height
+			}
+		} else {
+			scale = this.getScaleAmount() * this.state.zoom
+			containerStyle = {
+				width: this.state.width
+			}
+		}
+
+		scale = Math.max(MIN_SCALE, scale)
+
+		return {
+			scale,
+			containerStyle
+		}
+	}
+
+	getScaleAmount() {
+		return Math.min(1, (this.state.width - this.state.padding) / this.state.width)
+	}
+
 	render() {
 		const model = this.props.model
-		const ms = model.modelState
+		const { isShowing, src, displayedTitle, initialZoom, border } = this.state
 
-		const {
-			zoomValues,
-			displayedTitle,
-			ariaRegionLabel,
-			scaleDimensions,
-			isShowing,
-			controlsOpts,
-			isAtMinScale,
-			isAtMaxScale,
-			iframeStyle,
-			afterStyle
-		} = getRenderSettings(
-			model,
-			this.state.actualWidth,
-			this.state.padding,
-			DEFAULT_WIDTH,
-			DEFAULT_HEIGHT,
-			MIN_SCALE,
-			MAX_SCALE,
-			this.props.moduleData.mediaState
-		)
-
-		const src = this.createSrc(ms.src)
+		const ariaRegionLabel = 'test'
+		const afterStyle = { height: 500 }
+		const controlsOpts = this.getControlsOptions(model.modelState)
+		const zoomValues = this.getZoomValues()
+		const scaleDimensions = this.getScaleDimensions()
+		const isAtMinScale = scaleDimensions.scale <= MIN_SCALE
+		const isAtMaxScale = scaleDimensions.scale >= MAX_SCALE
+		const newIframeStyle = this.getIFrameStyle(initialZoom || 1)
 
 		return (
 			<OboComponent
@@ -187,17 +262,17 @@ export default class IFrame extends React.Component {
 					className={
 						'obojobo-draft--chunks--iframe viewer pad' +
 						isOrNot(this.props.moduleData.isPreviewing, 'previewing') +
-						isOrNot(ms.border, 'bordered') +
+						isOrNot(border, 'bordered') +
 						isOrNot(isShowing, 'showing') +
 						isOrNot(controlsOpts.isControlsEnabled, 'controls-enabled') +
-						isOrNot(ms.src === null, 'missing-src') +
+						isOrNot(src === null, 'missing-src') +
 						isOrNot(scaleDimensions.scale > 1, 'scaled-up')
 					}
 					ref="main"
 				>
 					<div
 						className="container"
-						onClick={!isShowing && ms.src !== null ? this.boundOnClickContainer : null}
+						onClick={!isShowing && src !== null ? () => this.onShowContent() : null}
 						style={scaleDimensions.containerStyle}
 					>
 						{isShowing ? (
@@ -214,14 +289,14 @@ export default class IFrame extends React.Component {
 							{isShowing ? (
 								<iframe
 									ref="iframe"
-									title={ms.title}
+									title={displayedTitle}
 									src={src}
 									frameBorder="0"
 									allow="geolocation; microphone; camera; midi; encrypted-media; vr"
-									style={iframeStyle}
+									style={newIframeStyle}
 								/>
 							) : (
-								<div className="blocker" style={iframeStyle} />
+								<div className="blocker" style={newIframeStyle} />
 							)}
 						</div>
 						<div className="after" style={afterStyle} />
@@ -230,12 +305,17 @@ export default class IFrame extends React.Component {
 								<span className="title" aria-hidden>
 									{displayedTitle}
 								</span>
-								{ms.src === null ? null : (
-									<Button ariaLabel="Click to load external content">View Content</Button>
+								{src === null ? null : (
+									<Button
+										ariaLabel="Click to load external content"
+										onClick={() => this.onShowContent()}
+									>
+										View Content
+									</Button>
 								)}
 							</div>
 						)}
-						{isShowing ? (
+						{/* {isShowing ? (
 							<Button
 								altAction
 								className="button-skip bottom"
@@ -244,7 +324,7 @@ export default class IFrame extends React.Component {
 							>
 								You are at the end of this embedded content. Click to skip to the beginning.
 							</Button>
-						) : null}
+						) : null} */}
 						{isShowing ? (
 							<Controls
 								newWindowSrc={src}
@@ -252,16 +332,16 @@ export default class IFrame extends React.Component {
 								isZoomResettable={!zoomValues.isZoomAtDefault}
 								isZoomOutDisabled={isAtMinScale}
 								isZoomInDisabled={isAtMaxScale}
-								reload={this.boundOnReload}
-								zoomIn={this.onClickSetZoom.bind(
-									this,
-									parseFloat((zoomValues.currentZoom + INCREASE_ZOOM_STEP).toFixed(2))
-								)}
-								zoomOut={this.onClickSetZoom.bind(
-									this,
-									parseFloat((zoomValues.currentZoom + DECREASE_ZOOM_STEP).toFixed(2))
-								)}
-								zoomReset={this.boundOnZoomReset}
+								reload={() => this.onClickReload()}
+								// zoomIn={this.onClickSetZoom.bind(
+								// 	this,
+								// 	parseFloat((zoomValues.currentZoom + INCREASE_ZOOM_STEP).toFixed(2))
+								// )}
+								// zoomOut={this.onClickSetZoom.bind(
+								// 	this,
+								// 	parseFloat((zoomValues.currentZoom + DECREASE_ZOOM_STEP).toFixed(2))
+								// )}
+								// zoomReset={this.boundOnZoomReset}
 							/>
 						) : null}
 					</div>
