@@ -8,6 +8,8 @@ const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
+const DEFAULT_CONTEXT = 'practice'
+
 class NavStore extends Store {
 	constructor() {
 		let item
@@ -18,6 +20,10 @@ class NavStore extends Store {
 			{
 				'nav:setContext': payload => {
 					this.state.context = payload.value.context
+					return this.triggerChange()
+				},
+				'nav:resetContext': () => {
+					this.state.context = DEFAULT_CONTEXT
 					return this.triggerChange()
 				},
 				'nav:rebuildMenu': payload => {
@@ -179,7 +185,7 @@ class NavStore extends Store {
 				viewState['nav:isOpen'] !== null && typeof viewState['nav:isOpen'] !== 'undefined'
 					? viewState['nav:isOpen'].value
 					: true,
-			context: 'practice',
+			context: DEFAULT_CONTEXT,
 			visitId
 		}
 

@@ -153,7 +153,7 @@ class AssessmentPostTest extends React.Component {
 						onClickResendScore={onClickResendScore}
 						assessmentScore={assessmentScore}
 					/>
-					<div className="score-actions-page">{scoreActionsPage}</div>
+					<div className="score-actions-page pad">{scoreActionsPage}</div>
 				</div>
 				<div className="attempt-history">
 					<h1>Attempt History:</h1>

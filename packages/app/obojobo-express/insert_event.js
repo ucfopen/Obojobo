@@ -1,12 +1,13 @@
 const db = oboRequire('db')
 
 module.exports = insertObject => {
+	insertObject.visitId = insertObject.visitId || null
 	return db
 		.one(
 			`
 		INSERT INTO events
-		(actor_time, action, actor, ip, metadata, payload, draft_id, draft_content_id, version, is_preview)
-		VALUES ($[actorTime], $[action], $[userId], $[ip], $[metadata], $[payload], $[draftId], $[contentId], $[eventVersion], $[isPreview])
+		(actor_time, action, actor, ip, metadata, payload, draft_id, draft_content_id, version, is_preview, visit_id)
+		VALUES ($[actorTime], $[action], $[userId], $[ip], $[metadata], $[payload], $[draftId], $[contentId], $[eventVersion], $[isPreview], $[visitId])
 		RETURNING *`,
 			insertObject
 		)

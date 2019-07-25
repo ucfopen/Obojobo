@@ -107,8 +107,7 @@
 				transform: none;
 			}
 
-			.is-correct > p,
-			.is-not-correct > p {
+			* > p {
 				margin-top: 0;
 				margin-bottom: 0;
 				font-family: $font-default;
@@ -122,7 +121,7 @@
 					font-family: $font-default;
 					font-size: 0.9em;
 					text-align: center;
-					margin-bottom: 1em;
+					padding-bottom: 1em;
 				}
 			}
 
@@ -143,6 +142,16 @@
 
 				.responses-hidden {
 					color: $color-correct;
+				}
+			}
+
+			.is-type-survey .obojobo-draft--chunks--question .flipper {
+				position: relative;
+				border: 1px solid $color-shadow;
+				background: transparentize($color-shadow, 0.9);
+
+				.responses-hidden {
+					color: $color-shadow;
 				}
 			}
 		}

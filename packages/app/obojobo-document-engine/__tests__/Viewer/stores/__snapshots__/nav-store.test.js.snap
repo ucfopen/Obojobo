@@ -12,6 +12,7 @@ Object {
   "nav:openExternalLink": [Function],
   "nav:prev": [Function],
   "nav:rebuildMenu": [Function],
+  "nav:resetContext": [Function],
   "nav:setContext": [Function],
   "nav:setFlag": [Function],
   "nav:showChildren": [Function],

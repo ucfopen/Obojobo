@@ -313,7 +313,7 @@ describe('apiutil', () => {
 			})
 		})
 	})
-	
+
 	test('endAttempt calls fetch', () => {
 		expect.assertions(4)
 
@@ -362,7 +362,7 @@ describe('apiutil', () => {
 			expect(fetch).toHaveBeenCalled()
 			const calledEndpoint = fetch.mock.calls[0][0]
 			const calledOptions = fetch.mock.calls[0][1]
-			expect(calledEndpoint).toBe('/api/lti/sendAssessmentScore')
+			expect(calledEndpoint).toBe('/api/lti/send-assessment-score')
 			expect(calledOptions).toEqual({
 				body: expect.anything(),
 				credentials: 'include',

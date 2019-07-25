@@ -22,7 +22,6 @@ const currentVisitMiddleware = oboRequire('express_current_visit')
 const registerChunks = oboRequire('express_register_chunks')
 const oboLtiMiddleware = oboRequire('obo_ims_lti')
 oboRequire('viewer_events')
-oboRequire('express_lti_launch')
 // when the parent app is mounted
 app.on('mount', app => {
 	// =========== MIDDLEWARE ===========

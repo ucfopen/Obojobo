@@ -115,6 +115,7 @@ class AssessmentStore extends Store {
 					scores: scoreObject,
 					responses: attempt.responses
 				}
+
 				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
 			})
 		}
@@ -236,7 +237,7 @@ class AssessmentStore extends Store {
 
 		assessment.current.state.chosen.forEach(question => {
 			if (question.type === QUESTION_NODE_TYPE) {
-				QuestionUtil.hideQuestion(question.id)
+				QuestionUtil.hideQuestion(question.id, context)
 			}
 		})
 

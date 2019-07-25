@@ -211,6 +211,25 @@ class Draft {
 		return this.root.toObject()
 	}
 
+	get xmlDocument(){
+		return db
+			.oneOrNone(
+				`
+			SELECT
+				drafts_content.xml
+			FROM drafts_content
+			WHERE drafts_content.draft_id = $[id]
+			ORDER BY created_at DESC
+			LIMIT 1
+			`,
+				{ id: this.draftId }
+			)
+			.then(xml => {
+				if(xml) return xml.xml
+				return null
+			})
+	}
+
 	getChildNodeById(id) {
 		return this.nodesById.get(id)
 	}

@@ -5,6 +5,10 @@
 		&.question-editor {
 			background: $color-bg;
 		}
+
+		> .content-back > div:first-child {
+			padding-top: 2em;
+		}
 	}
 
 	.add-solution {
@@ -26,6 +30,20 @@
 			padding: 0;
 			min-width: 1.4em;
 			border-radius: 50%;
+		}
+	}
+
+	> .question-type {
+		position: absolute;
+		right: 7em;
+		top: 1em;
+		z-index: 99;
+	}
+
+	&.is-type-survey {
+		.add-solution,
+		.solution-editor {
+			display: none;
 		}
 	}
 }

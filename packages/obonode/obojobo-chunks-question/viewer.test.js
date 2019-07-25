@@ -52,8 +52,8 @@ describe('ObojoboDraft.Chunks.Question registration', () => {
 	test('getNavItem returns link for a question in practice mode', () => {
 		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
-			modelState: {
-				mode: 'practice'
+			navState: {
+				context: 'practice'
 			},
 			// Mock the OboModel structure
 			parent: {
@@ -78,8 +78,8 @@ describe('ObojoboDraft.Chunks.Question registration', () => {
 	test('getNavItem returns link for a question in review mode', () => {
 		const register = Common.Registry.registerModel.mock.calls[0]
 		const model = {
-			modelState: {
-				mode: 'review'
+			navState: {
+				context: 'assessmentReview:mockAttemptId'
 			},
 			// Mock the OboModel structure
 			parent: {

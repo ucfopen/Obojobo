@@ -114,7 +114,10 @@
 			"<rootDir>/app.js",
 			"<rootDir>/webpack.config.js",
 			"<rootDir>/dev_nonce_store.js",
-			"<rootDir>/setup_tests.js"
+			"<rootDir>/setup_tests.js",
+			"<rootDir>/babel.config.js",
+			"<rootDir>/prettier.config.js",
+			"<rootDir>/obo_express_dev.js"
 		],
 		"coverageReporters": [
 			"text",
@@ -135,7 +138,11 @@
 		"ext": "js ejs",
 		"watch": [
 			"./",
-			"../obojobo-document-engine/server"
+			"../obojobo-document-engine/server",
+			"../../obonode/obojobo-sections-assessment/server",
+			"../../obonode/multiple-choice-assessment/server",
+			"../../obonode/chunks-question/server",
+			"../../obonode/chunks-question-bank/server"
 		]
 	}
 }

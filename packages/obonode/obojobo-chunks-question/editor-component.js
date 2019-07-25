@@ -10,6 +10,28 @@ const { Button } = Common.components
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
 class Question extends React.Component {
+	onSetType(event) {
+		const questionData = this.props.node.data
+		const questionDataContent = questionData.get('content')
+		const mcAssessmentNode = this.props.node.nodes.get(1)
+		const mcAssessmentData = mcAssessmentNode.data
+
+		this.props.editor.setNodeByKey(this.props.node.key, {
+			data: {
+				content: {
+					...questionDataContent,
+					type: event.target.value
+				}
+			}
+		})
+
+		this.props.editor.setNodeByKey(mcAssessmentNode.key, {
+			data: {
+				...mcAssessmentData,
+				questionType: event.target.value
+			}
+		})
+	}
 	delete() {
 		const editor = this.props.editor
 		return editor.removeNodeByKey(this.props.node.key)
@@ -23,9 +45,23 @@ class Question extends React.Component {
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 	}
 	render() {
+		const state = this.props.node.data.get('content')
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
 		return (
-			<div className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad">
+			<div
+				className={`component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-${
+					state.type
+				}`}
+			>
+				<select
+					className="question-type"
+					contentEditable={false}
+					value={state.type}
+					onChange={this.onSetType.bind(this)}
+				>
+					<option value="default">Default</option>
+					<option value="survey">Survey</option>
+				</select>
 				<div className="flipper question-editor">
 					<div className="content-back">
 						{this.props.children}

@@ -107,7 +107,7 @@ const APIUtil = {
 	},
 
 	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
-		return APIUtil.post('/api/lti/sendAssessmentScore', {
+		return APIUtil.post('/api/lti/send-assessment-score', {
 			draftId,
 			assessmentId,
 			visitId

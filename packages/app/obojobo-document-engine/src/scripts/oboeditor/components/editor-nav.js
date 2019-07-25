@@ -8,10 +8,9 @@ import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
 import React from 'react'
 import SubMenu from './sub-menu'
-import assessmentTemplate from '../documents/new-assessment.json'
-import generateId from '../generate-ids'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import pageTemplate from '../documents/new-page.json'
+import generatePage from '../documents/generate-page'
+import generateAssessment from '../documents/generate-assessment'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -21,9 +20,15 @@ class EditorNav extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = this.props.navState
+
+		// optimization - bind once instead of every render
+		this.showAddPageModal = this.showAddPageModal.bind(this)
+		this.showAddAssessmentModal = this.showAddAssessmentModal.bind(this)
+		this.addAssessment = this.addAssessment.bind(this)
+		this.addPage = this.addPage.bind(this)
 	}
 
-	onClick(item) {
+	onNavItemClick(item) {
 		EditorUtil.gotoPath(item.fullPath)
 		this.setState({ navTargetId: item.id })
 	}
@@ -33,7 +38,7 @@ class EditorNav extends React.Component {
 			<Prompt
 				title="Add Assessment"
 				message="Enter the title for the new assessment:"
-				onConfirm={this.addAssessment.bind(this)}
+				onConfirm={this.addAssessment}
 			/>
 		)
 	}
@@ -41,13 +46,8 @@ class EditorNav extends React.Component {
 	addAssessment(name = 'Assessment') {
 		ModalUtil.hide()
 
-		// Fix assessment titles that are whitespace strings
-		if (!/[^\s]/.test(name)) name = 'Assessment'
-
-		const newAssessment = Object.assign({}, assessmentTemplate)
-		newAssessment.id = generateId()
-		newAssessment.content.title = name
-
+		const newAssessment = generateAssessment()
+		newAssessment.content.title = this.isWhiteSpace(name) ? 'Assessment' : name
 		EditorUtil.addAssessment(newAssessment)
 		return this.setState({ navTargetId: newAssessment.id })
 	}
@@ -57,7 +57,7 @@ class EditorNav extends React.Component {
 			<Prompt
 				title="Add Page"
 				message="Enter the title for the new page:"
-				onConfirm={this.addPage.bind(this)}
+				onConfirm={this.addPage}
 			/>
 		)
 	}
@@ -65,14 +65,8 @@ class EditorNav extends React.Component {
 	addPage(title = null) {
 		ModalUtil.hide()
 
-		const newPage = Object.assign({}, pageTemplate)
-		newPage.id = generateId()
-
-		// Fix page titles that are whitespace strings
-		if (!/[^\s]/.test(title)) title = null
-
-		newPage.content.title = title
-
+		const newPage = generatePage()
+		newPage.content.title = this.isWhiteSpace(title) ? null : title
 		EditorUtil.addPage(newPage)
 		this.setState({ navTargetId: newPage.id })
 	}
@@ -92,9 +86,13 @@ class EditorNav extends React.Component {
 		ModalUtil.hide()
 
 		// If the module name is empty or just whitespace, provide a default value
-		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
+		if (!label || this.isWhiteSpace(label)) label = '(Unnamed Module)'
 
 		EditorUtil.renamePage(moduleId, label)
+	}
+
+	isWhiteSpace(str){
+		return !/[\S]/.test(str)
 	}
 
 	renderLabel(label) {
@@ -134,7 +132,7 @@ class EditorNav extends React.Component {
 									index={index}
 									isSelected={this.state.navTargetId === item.id}
 									list={list}
-									onClick={this.onClick.bind(this, item)}
+									onClick={this.onNavItemClick.bind(this, item)}
 								/>
 							)
 						}
@@ -156,13 +154,13 @@ class EditorNav extends React.Component {
 
 					<Button
 						className={'content-add-button align-left'}
-						onClick={this.showAddPageModal.bind(this)}
+						onClick={this.showAddPageModal}
 					>
 						+ Add Page
 					</Button>
 					<Button
 						className={'content-add-button align-left'}
-						onClick={this.showAddAssessmentModal.bind(this)}
+						onClick={this.showAddAssessmentModal}
 					>
 						+ Add Assessment
 					</Button>

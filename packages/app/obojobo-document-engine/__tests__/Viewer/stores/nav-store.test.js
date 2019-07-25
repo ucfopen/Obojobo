@@ -54,6 +54,15 @@ describe('NavStore', () => {
 		expect(NavStore.triggerChange).toHaveBeenCalled()
 	})
 
+	test('nav:setContext event sets the context to the default', () => {
+		jest.spyOn(NavStore, 'triggerChange')
+		NavStore.triggerChange.mockReturnValueOnce('')
+
+		eventCallbacks['nav:resetContext']({ value: { context: 'practice' } })
+
+		expect(NavStore.triggerChange).toHaveBeenCalled()
+	})
+
 	test('nav:rebuildMenu event rebuilds the menu', () => {
 		jest.spyOn(NavStore, 'buildMenu')
 		NavStore.buildMenu.mockReturnValueOnce('')
