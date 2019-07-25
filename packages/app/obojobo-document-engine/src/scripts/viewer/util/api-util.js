@@ -45,6 +45,8 @@ const APIUtil = {
 	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
 		return (
 			APIUtil.post('/api/events', {
+				draftId,
+				visitId,
 				event: {
 					action,
 					draft_id: draftId,

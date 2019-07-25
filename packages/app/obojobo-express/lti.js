@@ -134,6 +134,7 @@ const getLatestHighestAssessmentScoreRecord = (
 		isPreview: null,
 		error: null
 	}
+
 	return db
 		.oneOrNone(
 			`

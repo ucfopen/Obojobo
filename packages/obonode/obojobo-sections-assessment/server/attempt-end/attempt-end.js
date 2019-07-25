@@ -1,42 +1,41 @@
-const getAttempt = require('./get-attempt')
 const helpers = require('./attempt-end-helpers')
 const logger = require('obojobo-express/logger')
 
-const endAttempt = async state => {
-	const logSuccess = name => logger.info(`End attempt "${state.attemptId}" - ${name} success`)
+const endAttempt = async (req, res) => {
+	const logSuccess = name => logger.info(`End attempt "${req.params.attemptId}" - ${name} success`)
 
 	logger.info(
-		`End attempt "${state.attemptId}" begin for user "${state.user.id}" (Preview="${
-			state.isPreview
+		`End attempt "${req.params.attemptId}" begin for user "${req.currentUser.id}" (Preview="${
+			req.isPreview
 		}")`
 	)
 
-	state.attempt = await getAttempt(state.attemptId)
+	await helpers.getAttempt(req, res)
 	logSuccess('getAttempt')
 
-	state.attemptHistory = await helpers.getAttemptHistory(state)
+	await helpers.getAttemptHistory(req, res)
 	logSuccess('getAttemptHistory')
 
-	state.responsesForAttempt = await helpers.getResponsesForAttempt(state)
+	await helpers.getResponsesForAttempt(req, res)
 	logSuccess('getResponsesForAttempt')
 
-	state.calculatedScores = await helpers.getCalculatedScores(state)
+	await helpers.getCalculatedScores(req, res)
 	logSuccess('getCalculatedScores')
 
-	state.assessmentScoreId = await helpers.completeAttempt(state).assessmentScoreId
+	await helpers.completeAttempt(req, res)
 	logSuccess('completeAttempt')
 
-	await helpers.insertAttemptEndEvents(state)
+	await helpers.insertAttemptEndEvents(req, res)
 	logSuccess('insertAttemptEndEvent')
 
-	state.ltiRequest = await helpers.sendHighestAssessmentScore(state)
+	await helpers.sendHighestAssessmentScore(req, res)
 	logSuccess('sendLTIScore')
 
-	await helpers.insertAttemptScoredEvents(state)
+	await helpers.insertAttemptScoredEvents(req, res)
 	logSuccess('sendLTIScore')
 
 	// return attempts
-	return await helpers.getAttempts(state)
+	return await helpers.getAttempts(req, res)
 }
 
 module.exports = endAttempt

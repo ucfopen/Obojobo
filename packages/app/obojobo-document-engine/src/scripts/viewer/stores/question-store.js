@@ -71,8 +71,8 @@ class QuestionStore extends Store {
 
 			'question:showExplanation': payload => {
 				const { id, context } = payload.value
-				const root = OboModel.models[id].getRoot()
-
+				const root = OboModel.getRoot()
+				console.log(root)
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),
 					action: 'question:showExplanation',
@@ -89,7 +89,7 @@ class QuestionStore extends Store {
 
 			'question:hideExplanation': payload => {
 				const { id, context, actor } = payload.value
-				const root = OboModel.models[id].getRoot()
+				const root = OboModel.getRoot()
 
 				APIUtil.postEvent({
 					draftId: root.get('draftId'),

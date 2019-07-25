@@ -54,12 +54,13 @@ const insertAttemptScoredEvents = (
 	ltiAssessmentScoreId,
 	hostname,
 	remoteAddress,
-	scoreDetails
+	scoreDetails,
+	resourceLinkId
 ) => {
 	const { createAssessmentAttemptScoredEvent } = createCaliperEvent(null, hostname)
 
 	return lti
-		.getLatestHighestAssessmentScoreRecord(user.id, draftDocument.draftId, assessmentId)
+		.getLatestHighestAssessmentScoreRecord(user.id, draftDocument.draftId, assessmentId, resourceLinkId, isPreview)
 		.then(highestAssessmentScoreRecord => {
 			return insertEvent({
 				action: 'assessment:attemptScored',

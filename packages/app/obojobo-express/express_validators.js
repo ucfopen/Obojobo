@@ -57,6 +57,7 @@ exports.getCurrentUser = (req, res, next) => {
 
 // Valitator Middleware
 exports.requireDraftId = check('draftId', 'must be a valid UUID').isUUID()
+exports.requireAttemptId = check('attemptId', 'must be a valid UUID').isUUID()
 exports.requireVisitId = check('visitId', 'must be a valid UUID').isUUID()
 exports.requireEvent = [
 	check('event.action', 'must not be empty')
