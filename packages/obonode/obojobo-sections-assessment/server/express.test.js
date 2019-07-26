@@ -6,634 +6,428 @@ global.oboRequire = name => {
 
 jest.setMock('obojobo-express/logger', require('obojobo-express/__mocks__/logger'))
 jest.setMock('obojobo-express/db', require('obojobo-express/__mocks__/db'))
-jest.setMock('obojobo-express/insert_event', require('obojobo-express/__mocks__/insert_event'))
-jest.mock('obojobo-express/logger')
-jest.mock('obojobo-express/db')
 jest.mock('obojobo-express/obo_events')
+jest.mock('obojobo-express/db')
+jest.mock('./assessment')
 jest.mock('obojobo-express/lti')
-jest.mock('./util')
-jest.mock('./attempt-start', () => ({ startAttempt: jest.fn() }))
+jest.mock('obojobo-express/logger')
+jest.mock('./attempt-start')
 jest.mock('./attempt-resume')
 jest.mock('./attempt-end/attempt-end')
-jest.mock('./assessment', () => ({
-	getAttempt: jest.fn(),
-	getAttempts: jest.fn()
-}))
-
-jest.mock(
-	'obojobo-express/models/visit',
-	() => ({
-		fetchById: jest
-			.fn()
-			.mockReturnValue({ is_preview: false, resource_link_id: 'mockResourceLinkId' })
-	}),
-	{ virtual: true }
-)
-require('obojobo-express/__mocks__/__mock_express')
+jest.mock('./attempt-review')
+jest.mock('./util')
+jest.mock('obojobo-express/express_validators')
 
 describe('server/express', () => {
-	const db = require('obojobo-express/db')
-	const mockUser = { id: 1 }
-	const mockDocument = { draftId: 3, contentId: 12 }
-	const mockVisit = { id: 'mockId', resource_link_id: 'mockResourceLinkId', is_preview: false }
-	const Assessment = require('./assessment')
-	const server = require('./express')
-	const lti = require('obojobo-express/lti')
-	const logger = require('obojobo-express/logger')
-	const oboEvents = require('obojobo-express/obo_events')
-	const startAttempt = require('./attempt-start').startAttempt
-	const resumeAttempt = require('./attempt-resume')
-	const endAttempt = require('./attempt-end/attempt-end')
-	const Visit = require('obojobo-express/models/visit')
-	const { logAndRespondToUnexpected } = require('./util')
-	// build the req info
-	let req
-	let res
-	let currentVisit
-	let currentUser
-	let currentDocument
+	const mockCurrentUser = { id: 'mockCurrentUserId' }
+	const mockCurrentDocument = {draftId: 'mockDraftId'}
+	const mockCurrentVisit = {resource_link_id: 'mockResourceLinkId', is_preview: 'mockIsPreview'}
+	const bodyParser = require('body-parser')
+	const request = require('supertest')
+	let db
+	let logger
+	let Assessment
+	let startAttempt
+	let resumeAttempt
+	let endAttempt
+	let lti
+	let checkValidationRules
+	let requireCurrentDocument
+	let requireCurrentVisit
+	let requireAttemptId
+	let requireCurrentUser
+	let requireAssessmentId
+	let oboEvents
+	let app
 
-	beforeAll(() => {})
-	afterAll(() => {})
+	// this function makes a method that works like middleware
+	// optionally sets a variable on res
+	// optionally returns a value
+	const mockMiddleware = (fn, {resVarName, resVarObject, returnResult} = {}) => {
+		return fn.mockImplementation((req, res, next) => {
+			if(resVarName) req[resVarName] = resVarObject
+			next()
+			if(returnResult) return returnResult
+		})
+	}
+
 	beforeEach(() => {
-		// @TODO
-		// jest.resetAllMocks()
-		req = {
-			requireCurrentUser: jest.fn(() => {
-				// handles both cases of resolved user being used
-				// and req user being used
-				// @TODO use req user everywhere
-				req.currentUser = mockUser
-				return Promise.resolve(mockUser)
-			}),
-			requireCurrentDocument: jest.fn(() => {
-				// handles both cases of resolved document being used
-				// and req document being used
-				// @TODO use req document everywhere
-				req.currentDocument = mockDocument
-				return Promise.resolve(mockDocument)
-			}),
-			getCurrentVisitFromRequest: jest.fn().mockResolvedValue((currentVisit = mockVisit)),
-			currentDocument,
-			currentUser,
-			currentVisit,
-			params: {
-				draftId: 3,
-				attemptId: 5,
-				assessmentId: 999
-			},
-			body: {
-				draftId: 9,
-				assessmentId: 777,
-				visitId: 'mockVisitId'
-			}
+		// reset!
+		jest.resetModules()
+		jest.restoreAllMocks()
+		jest.clearAllMocks()
+
+		db = jest.requireMock('obojobo-express/db')
+		logger = jest.requireMock('obojobo-express/logger')
+		Assessment = jest.requireMock('./assessment')
+		startAttempt = jest.requireMock('./attempt-start').startAttempt
+		resumeAttempt = jest.requireMock('./attempt-resume')
+		endAttempt = jest.requireMock('./attempt-end/attempt-end')
+		lti = jest.requireMock('obojobo-express/lti')
+		let f = jest.requireMock('obojobo-express/express_validators')
+
+		mockMiddleware(startAttempt)
+		checkValidationRules = mockMiddleware(f.checkValidationRules)
+		requireCurrentDocument = mockMiddleware(f.requireCurrentDocument, {resVarName:'currentDocument', resVarObject: mockCurrentDocument})
+		requireCurrentVisit = mockMiddleware(f.requireCurrentVisit, {resVarName:'currentVisit', resVarObject: mockCurrentVisit})
+		requireAttemptId = mockMiddleware(f.requireAttemptId)
+		requireCurrentUser = mockMiddleware(f.requireCurrentUser, {resVarName: 'currentUser', resVarObject: mockCurrentUser})
+		requireAssessmentId = mockMiddleware(f.requireAssessmentId)
+		oboEvents = jest.requireMock('obojobo-express/obo_events')
+		// re-init the server
+		app = require('express')()
+		app.use(bodyParser.json())
+		app.use(bodyParser.text())
+		app.use(require('obojobo-express/express_response_decorator'))
+		app.use(require('./express'))
+	})
+
+
+	test('GET /api/lti/state/draft/mock-draft-id', () => {
+		expect.hasAssertions()
+		const mockReturnValue = { mockReturn: 'mockReturn'}
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce(mockReturnValue)
+
+		return request(app)
+			.get('/api/lti/state/draft/mock-draft-id')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId)
+					.toHaveBeenCalledWith(
+						mockCurrentUser.id,
+						mockCurrentDocument.draftId,
+						mockCurrentVisit.resource_link_id
+					)
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
+	})
+
+
+	test('POST /api/lti/sendAssessmentScore', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {
+			scoreSent: 'mockReturn',
+			status: 'mockStatus',
+			statusDetails: 'mockStatusDetails',
+			dbStatus: 'mockDbStatus',
+			gradebookStatus: 'mockGradeBookStatus'
 		}
+		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockReturnValue)
 
-		res = {
-			success: jest.fn(),
-			unexpected: jest.fn(),
-			notAuthorized: jest.fn()
-		}
+		return request(app)
+			.post('/api/lti/sendAssessmentScore')
+			.type('application/json')
+			.send('{"assessmentId":"mockAssessmentId"}')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				// verify validations ran
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireAssessmentId).toHaveBeenCalled()
+				// verify external libs were called with correct args
+				expect(lti.sendHighestAssessmentScore)
+					.toHaveBeenCalledWith(
+						mockCurrentUser.id,
+						mockCurrentDocument,
+						"mockAssessmentId",
+						mockCurrentVisit.is_preview,
+						mockCurrentVisit.resource_link_id
+					)
+				// verify the response body
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: {
+						score: mockReturnValue.scoreSent,
+						status: mockReturnValue.status,
+						statusDetails: mockReturnValue.statusDetails,
+						dbStatus: mockReturnValue.dbStatus,
+						gradebookStatus: mockReturnValue.gradebookStatus
 
-		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockReset()
-		lti.sendHighestAssessmentScore.mockReset()
-		db.manyOrNone.mockReset()
-		db.none.mockReset()
-		Assessment.getAttempt.mockRestore()
-		Assessment.getAttempts.mockRestore()
-		logger.error.mockReset()
-		logAndRespondToUnexpected.mockReset()
-	})
-	afterEach(() => {})
-
-	test('registers the expected routes', () => {
-		expect.assertions(11)
-
-		expect(server.get).toHaveBeenCalledTimes(4)
-		expect(server.post).toHaveBeenCalledTimes(6)
-		expect(server.delete).toHaveBeenCalledTimes(0)
-		expect(server.put).toHaveBeenCalledTimes(0)
-		expect(server.post).toBeCalledWith('/api/lti/sendAssessmentScore', expect.anything())
-		expect(server.post).toBeCalledWith('/api/assessments/attempt/start', expect.anything())
-		expect(server.post).toBeCalledWith(
-			'/api/assessments/attempt/:attemptId/resume',
-			expect.anything()
-		)
-		expect(server.post).toBeCalledWith('/api/assessments/attempt/:attemptId/end', expect.anything())
-		expect(server.post).toBeCalledWith('/api/assessments/clear-preview-scores', expect.anything())
-		expect(server.get).toBeCalledWith('/api/lti/state/draft/:draftId', expect.anything())
-		expect(oboEvents.on).toBeCalledWith('client:question:setResponse', expect.anything())
-	})
-
-	test('/api/lti/state/draft/:draftId calls getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId', () => {
-		expect.assertions(5)
-		// grab a ref to expected route & verify it's the route we want
-		const draftStateRoute = server.get.mock.calls[0]
-		expect(draftStateRoute[0]).toBe('/api/lti/state/draft/:draftId')
-
-		// mock result
-		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockReturnValueOnce('testresult')
-
-		// execute
-		return draftStateRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			// make sure the lti method is called
-			expect(lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId).toHaveBeenCalledWith(
-				1,
-				3,
-				'mockResourceLinkId'
-			)
-			// make sure the results are passed to res.success
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith('testresult')
-		})
-	})
-
-	test('/api/lti/sendAssessmentScore sends the highest assessment score and responds as expected', () => {
-		expect.assertions(6)
-
-		// grab a ref to expected route & verify it's the route we want
-		const sendAssessmentScoreRoute = server.post.mock.calls[0]
-		expect(sendAssessmentScoreRoute[0]).toBe('/api/lti/sendAssessmentScore')
-
-		// mock result
-		lti.sendHighestAssessmentScore.mockReturnValueOnce({
-			scoreSent: 1,
-			status: 2,
-			statusDetails: 3,
-			dbStatus: 4,
-			gradebookStatus: 5
-		})
-
-		// execute
-		return sendAssessmentScoreRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			// make sure the lti method is called
-			expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
-				1,
-				mockDocument,
-				777,
-				false,
-				'mockResourceLinkId'
-			)
-			// make sure the results are passed to res.success
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith({
-				score: 1,
-				status: 2,
-				statusDetails: 3,
-				dbStatus: 4,
-				gradebookStatus: 5
+					}
+				})
 			})
-			// make sure it logs info
-			expect(logger.info).toHaveBeenCalledWith(expect.stringContaining('sendAssessmentScore'))
-		})
 	})
 
-	test('/api/lti/sendAssessmentScore calls logAndRespondToUnexpected when error occurs', () => {
-		expect.assertions(2)
-
-		// grab a ref to expected route & verify it's the route we want
-		const sendAssessmentScoreRoute = server.post.mock.calls[0]
-		expect(sendAssessmentScoreRoute[0]).toBe('/api/lti/sendAssessmentScore')
-
-		// mock result
-		lti.sendHighestAssessmentScore.mockImplementationOnce(() => {
-			throw new Error('mockUnexpectedError')
+	test('POST /api/assessments/attempt/start', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		startAttempt.mockImplementationOnce((req, res, next) => {
+			res.success(mockReturnValue)
 		})
 
-		// execute
-		return sendAssessmentScoreRoute[1](req, res, {}).then(() => {
-			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
-				'Unexpected error starting a new attempt',
-				res,
-				req,
-				expect.any(Error)
-			)
-		})
+		return request(app)
+			.post('/api/assessments/attempt/start')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				// verify validations ran
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireAssessmentId).toHaveBeenCalled()
+
+				expect(startAttempt).toHaveBeenCalled()
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
 	})
 
-	test('/api/assessments/attempt/start calls startAttempt', () => {
-		expect.assertions(2)
-
-		// grab a ref to expected route & verify it's the route we want
-		const startAttemptRoute = server.post.mock.calls[1]
-		expect(startAttemptRoute[0]).toBe('/api/assessments/attempt/start')
-
-		// execute
-		startAttemptRoute[1](req, res, {})
-		expect(startAttempt).toHaveBeenCalledWith(req, res)
-	})
-
-	test('/api/assessments/attempt/start calls resumeAttempt', () => {
-		expect.assertions(2)
-
-		// grab a ref to expected route & verify it's the route we want
-		const resumeAttemptRoute = server.post.mock.calls[2]
-		expect(resumeAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/resume')
-
-		// execute
-		resumeAttemptRoute[1](req, res, {})
-		expect(resumeAttempt).toHaveBeenCalledWith(req, res)
-	})
-
-	test('/api/assessments/attempt/:attemptId/end calls endAttempt', () => {
-		expect.assertions(5)
-
-		// grab a ref to expected route & verify it's the route we want
-		const endAttemptRoute = server.post.mock.calls[3]
-		expect(endAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/end')
-
-		endAttempt.mockReturnValueOnce(Promise.resolve('endAttemptResult'))
-
-		// execute
-		return endAttemptRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(endAttempt).toHaveBeenCalledWith(req, res)
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith('endAttemptResult')
-		})
-	})
-
-	test('/api/assessments/attempt/:attemptId/end calls logAndRespondToUnexpected when error occurs', () => {
-		expect.assertions(2)
-
-		// grab a ref to expected route & verify it's the route we want
-		const endAttemptRoute = server.post.mock.calls[3]
-		expect(endAttemptRoute[0]).toBe('/api/assessments/attempt/:attemptId/end')
-
-		endAttempt.mockImplementationOnce(() => {
-			throw new Error('mockUnexpectedError')
+	test('POST /api/assessments/attempt/mock-attempt-id/resume', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		requireAttemptId.mockImplementationOnce((req, res, next) => {
+			return Promise.resolve()
+				.then(() => {
+					res.success(mockReturnValue)
+				})
 		})
 
-		// execute
-		return endAttemptRoute[1](req, res, {}).then(() => {
-			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
-				'Unexpected error completing your attempt',
-				res,
-				req,
-				expect.any(Error)
-			)
-		})
+		return request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/resume')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireAttemptId).toHaveBeenCalled()
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
 	})
 
-	test('/api/assessments/clear-preview-scores runs queries to empty preview score data', () => {
-		expect.assertions(12)
+	test('POST /api/assessments/attempt/mock-attempt-id/end', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		endAttempt.mockResolvedValueOnce(mockReturnValue)
 
-		// visit is preview visit
-		req.body.visitId = 'mockPreviewVisitId'
+		return request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/end')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireAttemptId).toHaveBeenCalled()
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
+	})
 
-		Visit.fetchById.mockReturnValueOnce({
-			is_preview: true,
-			resource_link_id: 'mock_rlid'
-		})
-
-		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[5]
-		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
-
+	test('POST /api/assessments/clear-preview-scores', () => {
+		expect.hasAssertions()
 		db.manyOrNone
-			.mockResolvedValueOnce([{ id: 13 }, { id: 99 }]) // assessmentScoreIdsResult
-			.mockResolvedValueOnce([{ id: 14 }, { id: 77 }]) // attemptIdsResult
+			.mockResolvedValueOnce([{id: 1}, {id: 2}])
+			.mockResolvedValueOnce([{id: 99}, {id: 77}])
 
-		// execute
-		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith()
-
-			expect(db.manyOrNone).toHaveBeenCalledTimes(2)
-			expect(db.manyOrNone).toHaveBeenCalledWith(
-				expect.stringContaining('FROM assessment_scores'),
-				{
-					userId: 1,
-					draftId: 3,
-					resourceLinkId: 'mock_rlid'
-				}
-			)
-			expect(db.manyOrNone).toHaveBeenCalledWith(expect.stringContaining('FROM attempts'), {
-				userId: 1,
-				draftId: 3,
-				resourceLinkId: 'mock_rlid'
+		return request(app)
+			.post('/api/assessments/clear-preview-scores')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(db.tx).toHaveBeenCalledTimes(1)
+				expect(db.none).toHaveBeenCalledTimes(4)
+				expect(db.batch).toHaveBeenCalledTimes(1)
+				expect(response.body).toEqual({
+					status: 'ok'
+				})
 			})
+	})
 
-			expect(db.none).toHaveBeenCalledTimes(4)
-			expect(db.none).toHaveBeenCalledWith(
-				expect.stringContaining('DELETE FROM attempts_question_responses'),
-				expect.anything()
-			)
-			expect(db.none).toHaveBeenCalledWith(
-				expect.stringContaining('DELETE FROM lti_assessment_scores'),
-				{ ids: [13, 99] }
-			)
-			expect(db.none).toHaveBeenCalledWith(
-				expect.stringContaining('DELETE FROM assessment_scores'),
-				{ ids: [13, 99] }
-			)
-			expect(db.none).toHaveBeenCalledWith(expect.stringContaining('DELETE FROM attempts'), {
-				ids: [14, 77]
+	test('GET /api/assessments/:draftId/mock-assessment-id/attempt/mock-attempt-id', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		Assessment.getAttempt.mockResolvedValueOnce(mockReturnValue)
+
+		return request(app)
+			.get('/api/assessments/:draftId/mock-assessment-id/attempt/mock-attempt-id')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireAssessmentId).toHaveBeenCalled()
+				expect(Assessment.getAttempt).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					mockCurrentDocument.draftId,
+					'mock-assessment-id',
+					'mock-attempt-id'
+				)
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
 			})
-		})
 	})
 
-	test('/api/assessments/clear-preview-scores runs nothing with no data', () => {
-		expect.assertions(8)
-		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
+	test('GET /api/assessments/:draftId/attempts', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		Assessment.getAttempts.mockResolvedValueOnce(mockReturnValue)
 
-		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[5]
-		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
-
-		db.manyOrNone
-			.mockResolvedValueOnce([]) // assessmentScoreIdsResult
-			.mockResolvedValueOnce([]) // attemptIdsResult
-
-		// execute
-		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
-			expect(res.success).toHaveBeenCalledTimes(1)
-
-			expect(db.manyOrNone).toHaveBeenCalledTimes(2)
-			expect(db.none).toHaveBeenCalledTimes(2)
-			expect(db.none).not.toHaveBeenCalledWith(
-				expect.stringContaining('DELETE FROM attempts_question_responses'),
-				expect.anything()
-			)
-			expect(db.none).not.toHaveBeenCalledWith(
-				expect.stringContaining('DELETE FROM lti_assessment_scores'),
-				expect.anything()
-			)
-			expect(db.none).toHaveBeenCalledWith(
-				expect.stringContaining('DELETE FROM assessment_scores'),
-				expect.anything()
-			)
-			expect(db.none).toHaveBeenCalledWith(
-				expect.stringContaining('DELETE FROM attempts'),
-				expect.anything()
-			)
-		})
+		return request(app)
+			.get('/api/assessments/:draftId/attempts')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(Assessment.getAttempts).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					mockCurrentDocument.draftId,
+					mockCurrentVisit.is_preview,
+					mockCurrentVisit.resource_link_id
+				)
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
 	})
 
-	test('/api/assessments/clear-preview-scores tests previewing state', () => {
-		expect.assertions(8)
+	test('GET /api/assessment/:draftId/mock-assesment-id/attempts', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		Assessment.getAttempts.mockResolvedValueOnce(mockReturnValue)
 
-		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[5]
-		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
-
-		// user that can't preview
-		req.requireCurrentUser.mockResolvedValueOnce({ id: 1 })
-
-		// execute
-		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(res.success).toHaveBeenCalledTimes(0)
-			expect(res.unexpected).toHaveBeenCalledTimes(0)
-			expect(db.manyOrNone).toHaveBeenCalledTimes(0)
-			expect(db.none).toHaveBeenCalledTimes(0)
-			expect(res.notAuthorized).toHaveBeenCalledTimes(1)
-			expect(res.notAuthorized).toHaveBeenCalledWith('Not in preview mode')
-		})
+		return request(app)
+			.get('/api/assessment/:draftId/mock-assesment-id/attempts')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireAssessmentId).toHaveBeenCalled()
+				expect(Assessment.getAttempts).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					mockCurrentDocument.draftId,
+					mockCurrentVisit.is_preview,
+					mockCurrentVisit.resource_link_id,
+					'mock-assesment-id'
+				)
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
 	})
 
-	test('/api/assessments/clear-preview-scores calls logAndRespondToUnexpected when error occurs', () => {
-		expect.assertions(2)
-		Visit.fetchById.mockReturnValueOnce({ is_preview: true })
+	test('GET /api/assessment/:draftId/mock-assesment-id/attempts', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		Assessment.getAttempts.mockResolvedValueOnce(mockReturnValue)
 
-		// grab a ref to expected route & verify it's the route we want
-		const clearPreviewScoresRoute = server.post.mock.calls[5]
-		expect(clearPreviewScoresRoute[0]).toBe('/api/assessments/clear-preview-scores')
-
-		db.manyOrNone.mockImplementationOnce(() => {
-			throw new Error('mockUnexpectedError')
-		})
-
-		// execute
-		return clearPreviewScoresRoute[1](req, res, {}).then(() => {
-			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
-				'Unexpected error clearing preview scores',
-				res,
-				req,
-				expect.any(Error)
-			)
-		})
-	})
-
-	// end of useless
-
-	test('/api/assessments/:draftId/:assessmentId/attempt/:attemptId calls getAttempt', () => {
-		expect.assertions(5)
-
-		// grab a ref to expected route & verify it's the route we want
-		const getAttemptRoute = server.get.mock.calls[1]
-		expect(getAttemptRoute[0]).toBe('/api/assessments/:draftId/:assessmentId/attempt/:attemptId')
-
-		Assessment.getAttempt.mockResolvedValueOnce('attempt')
-
-		// execute
-		return getAttemptRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith('attempt')
-			expect(Assessment.getAttempt).toHaveBeenCalledWith(1, 3, 999, 5)
-		})
-	})
-
-	test('/api/assessments/:draftId/:assessmentId/attempt/:attemptId calls logAndRespondToUnexpected when error occurs', () => {
-		expect.assertions(2)
-
-		// grab a ref to expected route & verify it's the route we want
-		const getAttemptRoute = server.get.mock.calls[1]
-		expect(getAttemptRoute[0]).toBe('/api/assessments/:draftId/:assessmentId/attempt/:attemptId')
-
-		Assessment.getAttempt.mockImplementationOnce(() => {
-			throw new Error('mockUnexpectedError')
-		})
-
-		// execute
-		return getAttemptRoute[1](req, res, {}).then(() => {
-			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
-				'Unexpected Error Loading attempt "${:attemptId}"',
-				res,
-				req,
-				expect.any(Error)
-			)
-		})
-	})
-
-	test('/api/assessments/:draftId/attempts alls getAttempts', () => {
-		expect.assertions(5)
-
-		// grab a ref to expected route & verify it's the route we want
-		const getAttemptsRoute = server.get.mock.calls[2]
-		expect(getAttemptsRoute[0]).toBe('/api/assessments/:draftId/attempts')
-
-		Assessment.getAttempts.mockResolvedValueOnce('attempts')
-
-		// execute
-		return getAttemptsRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith('attempts')
-			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3, false, 'mockResourceLinkId')
-		})
-	})
-
-	test('/api/assessments/:draftId/attempts calls res.notAuthorized if not logged in', () => {
-		expect.assertions(3)
-
-		// grab a ref to expected route & verify it's the route we want
-		const getAttemptsRoute = server.get.mock.calls[2]
-		expect(getAttemptsRoute[0]).toBe('/api/assessments/:draftId/attempts')
-
-		// No user found
-		req.requireCurrentUser.mockRejectedValueOnce(new Error('Login Required'))
-
-		// execute
-		return getAttemptsRoute[1](req, res, {}).then(() => {
-			expect(res.notAuthorized).toHaveBeenCalledTimes(1)
-			expect(res.notAuthorized).toHaveBeenCalledWith('Login Required')
-		})
-	})
-
-	test('/api/assessments/:draftId/attempts calls logAndRespondToUnexpected when an error occurs', () => {
-		expect.assertions(2)
-
-		// grab a ref to expected route & verify it's the route we want
-		const getAttemptsRoute = server.get.mock.calls[2]
-		expect(getAttemptsRoute[0]).toBe('/api/assessments/:draftId/attempts')
-
-		Assessment.getAttempts.mockImplementationOnce(() => {
-			throw new Error('mockUnexpectedError')
-		})
-
-		// execute
-		return getAttemptsRoute[1](req, res, {}).then(() => {
-			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
-				'Unexpected error loading attempts',
-				res,
-				req,
-				expect.any(Error)
-			)
-		})
-	})
-
-	test('/api/assessment/:draftId/:assessmentId/attempts for a given assessment returns attempts for that assessment', () => {
-		expect.assertions(5)
-
-		// grab a ref to expected route & verify it's the route we want
-		const getAttemptsRoute = server.get.mock.calls[3]
-		expect(getAttemptsRoute[0]).toBe('/api/assessment/:draftId/:assessmentId/attempts')
-
-		Assessment.getAttempts.mockResolvedValueOnce('attempts')
-
-		// execute
-		return getAttemptsRoute[1](req, res, {}).then(() => {
-			expect(req.requireCurrentUser).toHaveBeenCalled()
-			expect(res.success).toHaveBeenCalledTimes(1)
-			expect(res.success).toHaveBeenCalledWith('attempts')
-			expect(Assessment.getAttempts).toHaveBeenCalledWith(1, 3, false, 'mockResourceLinkId', 999)
-		})
-	})
-
-	test('/api/assessment/:draftId/:assessmentId/attempts calls res.notAuthorized if user not logged in', () => {
-		expect.assertions(3)
-
-		// grab a ref to expected route & verify it's the route we want
-		const getAttemptsRoute = server.get.mock.calls[3]
-		expect(getAttemptsRoute[0]).toBe('/api/assessment/:draftId/:assessmentId/attempts')
-
-		// No user found
-		req.requireCurrentUser.mockRejectedValueOnce(new Error('Login Required'))
-
-		// execute
-		return getAttemptsRoute[1](req, res, {}).then(() => {
-			expect(res.notAuthorized).toHaveBeenCalledTimes(1)
-			expect(res.notAuthorized).toHaveBeenCalledWith('Login Required')
-		})
-	})
-
-	test('/api/assessment/:draftId/:assessmentId/attempts calls logAndRespondToUnexpected when an error occurs', () => {
-		expect.assertions(2)
-
-		// grab a ref to expected route & verify it's the route we want
-		const getAttemptsRoute = server.get.mock.calls[3]
-		expect(getAttemptsRoute[0]).toBe('/api/assessment/:draftId/:assessmentId/attempts')
-
-		Assessment.getAttempts.mockImplementationOnce(() => {
-			throw new Error('mockUnexpectedError')
-		})
-
-		// execute
-		return getAttemptsRoute[1](req, res, {}).then(() => {
-			expect(logAndRespondToUnexpected).toHaveBeenCalledWith(
-				'Unexpected error loading attempts',
-				res,
-				req,
-				expect.any(Error)
-			)
-		})
+		return request(app)
+			.get('/api/assessment/:draftId/mock-assesment-id/attempts')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireAssessmentId).toHaveBeenCalled()
+				expect(Assessment.getAttempts).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					mockCurrentDocument.draftId,
+					mockCurrentVisit.is_preview,
+					mockCurrentVisit.resource_link_id,
+					'mock-assesment-id'
+				)
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
 	})
 
 	test('client:question:setResponse halts execution if no attemptId', () => {
-		expect.assertions(3)
+		expect.assertions(4)
 
-		const setResponseCallBack = oboEvents.on.mock.calls[0]
-		expect(setResponseCallBack[0]).toBe('client:question:setResponse')
-		const event = {
+		const mockReq = {}
+		const mockEvent = {
 			payload: {
 				questionId: 3,
 				response: 'what'
 			}
 		}
 
-		return setResponseCallBack[1](event, req).then(() => {
-			expect(db.none).not.toHaveBeenCalled()
-			expect(logger.error).not.toHaveBeenCalled()
-		})
+		expect(oboEvents.on).toHaveBeenCalledTimes(1)
+		expect(oboEvents.on).toHaveBeenCalledWith('client:question:setResponse', expect.any(Function))
+		const internalCallback = oboEvents.on.mock.calls[0][1]
+
+		return internalCallback(mockEvent, mockReq)
+			.then(() => {
+				expect(db.none).not.toHaveBeenCalled()
+				expect(logger.error).not.toHaveBeenCalled()
+			})
 	})
 
 	test('client:question:setResponse expects questionId', () => {
-		expect.assertions(3)
+		expect.assertions(4)
 
-		const setResponseCallBack = oboEvents.on.mock.calls[0]
-		expect(setResponseCallBack[0]).toBe('client:question:setResponse')
-		const event = {
+		const mockReq = {}
+		const mockEvent = {
 			payload: {
 				attemptId: 4,
 				response: 'what'
 			}
 		}
 
-		return setResponseCallBack[1](event, req).then(() => {
-			expect(db.none).not.toHaveBeenCalled()
-			expect(logger.error.mock.calls[0][4]).toBe('Missing Question ID')
-		})
+		expect(oboEvents.on).toHaveBeenCalledTimes(1)
+		expect(oboEvents.on).toHaveBeenCalledWith('client:question:setResponse', expect.any(Function))
+		const internalCallback = oboEvents.on.mock.calls[0][1]
+
+		return internalCallback(mockEvent, mockReq)
+			.then(() => {
+				expect(db.none).not.toHaveBeenCalled()
+				expect(logger.error.mock.calls[0][4]).toBe('Missing Question ID')
+			})
+
 	})
 
 	test('client:question:setResponse expects response', () => {
-		expect.assertions(3)
+		expect.assertions(4)
 
-		const setResponseCallBack = oboEvents.on.mock.calls[0]
-		expect(setResponseCallBack[0]).toBe('client:question:setResponse')
-		const event = {
+		const mockReq = {}
+		const mockEvent = {
 			payload: {
 				attemptId: 4,
 				questionId: 3
 			}
 		}
 
-		return setResponseCallBack[1](event, req).then(() => {
+		expect(oboEvents.on).toHaveBeenCalledTimes(1)
+		expect(oboEvents.on).toHaveBeenCalledWith('client:question:setResponse', expect.any(Function))
+		const internalCallback = oboEvents.on.mock.calls[0][1]
+
+		return internalCallback(mockEvent, mockReq).then(() => {
 			expect(db.none).not.toHaveBeenCalled()
 			expect(logger.error.mock.calls[0][4]).toBe('Missing Response')
 		})
 	})
 
 	test('client:question:setResponse inserts into attempts_question_responses', () => {
-		expect.assertions(2)
+		expect.assertions(3)
 
-		const setResponseCallBack = oboEvents.on.mock.calls[0]
-		expect(setResponseCallBack[0]).toBe('client:question:setResponse')
-		const event = {
+		const mockReq = {}
+		const mockEvent = {
 			payload: {
 				attemptId: 4,
 				questionId: 3,
@@ -641,7 +435,11 @@ describe('server/express', () => {
 			}
 		}
 
-		return setResponseCallBack[1](event, req).then(() => {
+		expect(oboEvents.on).toHaveBeenCalledTimes(1)
+		expect(oboEvents.on).toHaveBeenCalledWith('client:question:setResponse', expect.any(Function))
+		const internalCallback = oboEvents.on.mock.calls[0][1]
+
+		return internalCallback(mockEvent, mockReq).then(() => {
 			expect(db.none).toHaveBeenCalledWith(
 				expect.stringContaining('INSERT INTO attempts_question_responses'),
 				expect.anything()

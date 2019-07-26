@@ -59,6 +59,10 @@ exports.getCurrentUser = (req, res, next) => {
 exports.requireDraftId = check('draftId', 'must be a valid UUID').isUUID()
 exports.requireAttemptId = check('attemptId', 'must be a valid UUID').isUUID()
 exports.requireVisitId = check('visitId', 'must be a valid UUID').isUUID()
+exports.requireAssessmentId = check('assessmentId', 'must not be empty')
+	.exists({ checkNull: true, checkFalsy: true })
+	.isString()
+
 exports.requireEvent = [
 	check('event.action', 'must not be empty')
 		.exists({ checkNull: true, checkFalsy: true })

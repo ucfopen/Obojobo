@@ -1,9 +1,7 @@
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
 const oboEvents = require('obojobo-express/obo_events')
 const db = require('obojobo-express/db')
 const Assessment = require('./assessment')
-const VisitModel = require('obojobo-express/models/visit')
 const lti = require('obojobo-express/lti')
 const logger = require('obojobo-express/logger')
 const { startAttempt } = require('./attempt-start')
@@ -15,62 +13,41 @@ const {
 	checkValidationRules,
 	requireCurrentDocument,
 	requireCurrentVisit,
-	requireVisitId,
 	requireAttemptId,
-	requireCurrentUser
+	requireCurrentUser,
+	requireAssessmentId
 } = require('obojobo-express/express_validators')
-const ResponseDecorator = require('obojobo-express/express_response_decorator')
 
-router.use('/', ResponseDecorator)
-
-router.get('/api/lti/state/draft/:draftId', (req, res) =>
-	req
-		.getCurrentVisitFromRequest()
-		.then(req.requireCurrentUser)
-		.then(req.requireCurrentDocument)
-		.then(() =>
-			lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
-				req.currentUser.id,
-				req.currentDocument.draftId,
-				req.currentVisit.resource_link_id
-			)
+router
+	.route('/api/lti/state/draft/:draftId')
+	.get([requireCurrentDocument, requireCurrentVisit, requireCurrentUser])
+	.get((req, res) => lti
+		.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
+			req.currentUser.id,
+			req.currentDocument.draftId,
+			req.currentVisit.resource_link_id
 		)
 		.then(res.success)
-)
+	)
 
-router.post('/api/lti/sendAssessmentScore', (req, res) => {
-	logger.info('API sendAssessmentScore', req.body)
+router
+	.route('/api/lti/sendAssessmentScore')
+	.post([requireCurrentVisit, requireCurrentUser, requireCurrentDocument, requireAssessmentId])
+	.post(async (req, res) => {
 
-	let currentUser = null
-	let currentDocument = null
-	let ltiScoreResult
-	const assessmentId = req.body.assessmentId
-
-	return req
-		.getCurrentVisitFromRequest()
-		.then(() => req.requireCurrentUser())
-		.then(user => {
-			currentUser = user
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
+		try{
 			logger.info(
-				`API sendAssessmentScore with userId="${currentUser.id}", draftId="${
-					currentDocument.draftId
-				}", assessmentId="${assessmentId}"`
+				`API sendAssessmentScore with userId="${req.currentUser.id}", draftId="${
+					req.currentDocument.draftId
+				}", assessmentId="${req.body.assessmentId}"`
 			)
-
-			return lti.sendHighestAssessmentScore(
-				currentUser.id,
-				currentDocument,
-				assessmentId,
+			const ltiScoreResult = await  lti.sendHighestAssessmentScore(
+				req.currentUser.id,
+				req.currentDocument,
+				req.body.assessmentId,
 				req.currentVisit.is_preview,
 				req.currentVisit.resource_link_id
 			)
-		})
-		.then(result => {
-			ltiScoreResult = result
 
 			res.success({
 				score: ltiScoreResult.scoreSent,
@@ -79,14 +56,15 @@ router.post('/api/lti/sendAssessmentScore', (req, res) => {
 				dbStatus: ltiScoreResult.dbStatus,
 				gradebookStatus: ltiScoreResult.gradebookStatus
 			})
-		})
-		.catch(e => {
+		} catch(e) {
 			logAndRespondToUnexpected('Unexpected error starting a new attempt', res, req, e)
-		})
-})
+		}
+	})
+
 
 router
 	.route('/api/assessments/attempt/start')
+	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument, requireAssessmentId])
 	.post(startAttempt)
 
 router
@@ -117,47 +95,34 @@ router
 
 router
 	.route('/api/assessments/clear-preview-scores')
+	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
 	.post((req, res) => {
 		let assessmentScoreIds
 		let attemptIds
-		let currentUser = null
 		let currentDocument = null
 		let isPreview
 		let resourceLinkId
 
-		return req
-			.requireCurrentUser()
-			.then(user => {
-				currentUser = user
-				return VisitModel.fetchById(req.body.visitId)
-			})
-			.then(visit => {
-				isPreview = visit.is_preview
-				resourceLinkId = visit.resource_link_id
-				return req.requireCurrentDocument()
-			})
-			.then(draftDocument => {
-				currentDocument = draftDocument
-				if (!isPreview) throw 'Not in preview mode'
+		if (!req.currentVisit.is_preview) throw 'Not in preview mode'
 
-				return db.manyOrNone(
-					`
-							SELECT assessment_scores.id
-							FROM assessment_scores
-							JOIN attempts
-								ON attempts.id = assessment_scores.attempt_id
-							WHERE assessment_scores.user_id = $[userId]
-							AND assessment_scores.draft_id = $[draftId]
-							AND attempts.resource_link_id = $[resourceLinkId]
-							AND assessment_scores.is_preview = true
-						`,
-					{
-						userId: currentUser.id,
-						draftId: currentDocument.draftId,
-						resourceLinkId
-					}
-				)
-			})
+		return db
+			.manyOrNone(
+				`
+						SELECT assessment_scores.id
+						FROM assessment_scores
+						JOIN attempts
+							ON attempts.id = assessment_scores.attempt_id
+						WHERE assessment_scores.user_id = $[userId]
+						AND assessment_scores.draft_id = $[draftId]
+						AND attempts.resource_link_id = $[resourceLinkId]
+						AND assessment_scores.is_preview = true
+					`,
+				{
+					userId: req.currentUser.id,
+					draftId: req.currentDocument.draftId,
+					resourceLinkId: req.currentVisit.resource_link_id
+				}
+			)
 			.then(assessmentScoreIdsResult => {
 				assessmentScoreIds = assessmentScoreIdsResult.map(i => i.id)
 
@@ -171,9 +136,9 @@ router
 						AND is_preview = true
 					`,
 					{
-						userId: currentUser.id,
-						draftId: currentDocument.draftId,
-						resourceLinkId
+						userId: req.currentUser.id,
+						draftId: req.currentDocument.draftId,
+						resourceLinkId: req.currentVisit.resource_link_id
 					}
 				)
 			})
@@ -182,7 +147,6 @@ router
 
 				return db.tx(transaction => {
 					const queries = []
-
 					if (assessmentScoreIds.length > 0) {
 						queries.push(
 							transaction.none(
@@ -241,131 +205,98 @@ router
 // update getAttempt to take isPreview
 router
 	.route('/api/assessments/:draftId/:assessmentId/attempt/:attemptId')
+	.get([requireCurrentUser, requireCurrentDocument, requireAttemptId, requireAssessmentId])
 	.get((req, res) => {
-		let currentUser = null
-		let currentDocument = null
-
-		return req
-			.requireCurrentUser()
-			.then(user => {
-				currentUser = user
-				return req.requireCurrentDocument()
-			})
-			.then(draftDocument => {
-				currentDocument = draftDocument
-				return Assessment.getAttempt(
-					currentUser.id,
-					currentDocument.draftId,
-					req.params.assessmentId,
-					req.params.attemptId
-				)
-			})
-			.then(result => res.success(result))
-			.catch(error => {
-				logAndRespondToUnexpected('Unexpected Error Loading attempt "${:attemptId}"', res, req, error)
-			})
+		return Assessment.getAttempt(
+			req.currentUser.id,
+			req.currentDocument.draftId,
+			req.params.assessmentId,
+			req.params.attemptId
+		)
+		.then(res.success)
+		.catch(error => {
+			logAndRespondToUnexpected('Unexpected Error Loading attempt "${:attemptId}"', res, req, error)
+		})
 	})
 
-router.get('/api/assessments/:draftId/attempts', (req, res) => {
-	let currentUser = null
-	let currentDocument = null
 
-	return req
-		.getCurrentVisitFromRequest()
-		.then(req.requireCurrentUser)
-		.then(user => {
-			currentUser = user
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
-			return Assessment.getAttempts(
-				currentUser.id,
-				currentDocument.draftId,
+router
+	.route('/api/assessments/:draftId/attempts')
+	.get([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
+	.get((req, res) => {
+		return Assessment.getAttempts(
+				req.currentUser.id,
+				req.currentDocument.draftId,
 				req.currentVisit.is_preview,
 				req.currentVisit.resource_link_id
 			)
-		})
-		.then(result => {
-			res.success(result)
-		})
-		.catch(error => {
-			if (error.message === 'Login Required') {
-				return res.notAuthorized(error.message)
-			}
+			.then(res.success)
+			.catch(error => {
+				if (error.message === 'Login Required') {
+					return res.notAuthorized(error.message)
+				}
 
-			logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
-		})
-})
+				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
+			})
+	})
 
 // @TODO NOT USED
 // update getAttempts to take isPreview
-router.get('/api/assessment/:draftId/:assessmentId/attempts', (req, res) => {
-	let currentUser = null
-	let currentDocument = null
-
-	return req
-		.getCurrentVisitFromRequest()
-		.then(() => req.requireCurrentUser())
-		.then(user => {
-			currentUser = user
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
-			return Assessment.getAttempts(
-				currentUser.id,
-				currentDocument.draftId,
+router
+	.route('/api/assessment/:draftId/:assessmentId/attempts')
+	.get([requireCurrentDocument, requireCurrentUser, requireCurrentVisit, requireAssessmentId])
+	.get((req, res) => {
+		return Assessment.getAttempts(
+				req.currentUser.id,
+				req.currentDocument.draftId,
 				req.currentVisit.is_preview,
 				req.currentVisit.resource_link_id,
 				req.params.assessmentId
 			)
-		})
-		.then(result => res.success(result))
-		.catch(error => {
-			if (error.message === 'Login Required') {
-				return res.notAuthorized(error.message)
-			}
+			.then(res.success)
+			.catch(error => {
+				if (error.message === 'Login Required') {
+					return res.notAuthorized(error.message)
+				}
 
-			logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
-		})
-})
+				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
+			})
+	})
 
-oboEvents.on('client:question:setResponse', (event, req) => {
+oboEvents.on('client:question:setResponse', async (event, req) => {
 	const eventRecordResponse = 'client:question:setResponse'
 
-	return Promise.resolve()
-		.then(() => {
-			// If no attemptId is specified assume that we are in practice and
-			// we don't need to store the response
-			if (!event.payload.attemptId) return
+	try{
+		// If no attemptId is specified assume that we are in practice and
+		// we don't need to store the response
+		if (!event.payload.attemptId) return
 
-			if (!event.payload.questionId) throw 'Missing Question ID'
-			if (!event.payload.response) throw 'Missing Response'
+		if (!event.payload.questionId) throw 'Missing Question ID'
+		if (!event.payload.response) throw 'Missing Response'
 
-			return db.none(
-				`
-			INSERT INTO attempts_question_responses
-			(attempt_id, question_id, response, assessment_id)
-			VALUES($[attemptId], $[questionId], $[response], $[assessmentId])
-			ON CONFLICT (attempt_id, question_id) DO
-				UPDATE
-				SET
-					response = $[response],
-					updated_at = now()
-				WHERE attempts_question_responses.attempt_id = $[attemptId]
-					AND attempts_question_responses.question_id = $[questionId]`,
-				{
-					assessmentId: event.payload.assessmentId,
-					attemptId: event.payload.attemptId,
-					questionId: event.payload.questionId,
-					response: event.payload.response
-				}
-			)
-		})
-		.catch(error => {
-			logger.error(eventRecordResponse, req, event, error, error.toString())
-		})
+		await db.none(
+			`
+		INSERT INTO attempts_question_responses
+		(attempt_id, question_id, response, assessment_id)
+		VALUES($[attemptId], $[questionId], $[response], $[assessmentId])
+		ON CONFLICT (attempt_id, question_id) DO
+			UPDATE
+			SET
+				response = $[response],
+				updated_at = now()
+			WHERE attempts_question_responses.attempt_id = $[attemptId]
+				AND attempts_question_responses.question_id = $[questionId]`,
+			{
+				assessmentId: event.payload.assessmentId,
+				attemptId: event.payload.attemptId,
+				questionId: event.payload.questionId,
+				response: event.payload.response
+			}
+		)
+	} catch(error){
+		logger.error(eventRecordResponse, req, event, error, error.toString())
+	}
+
 })
 
 module.exports = router

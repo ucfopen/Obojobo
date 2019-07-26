@@ -98,6 +98,7 @@ describe('viewer route', () => {
 		return request(app)
 			.post(`/${validUUID()}/`)
 			.type('application/json')
+			.set('Accept', 'application/json')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(401)
