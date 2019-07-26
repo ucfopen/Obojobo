@@ -80,12 +80,15 @@ describe('attempt-end/insert events', () => {
 			'mockLtiAssessmentScoreId',
 			'mockHostname',
 			'mockRemoteAddress',
-			'mockScoreDetails'
+			'mockScoreDetails',
+			'mockResourceLinkId'
 		)
 		expect(mockGetLatestHighestAssessmentScoreRecord).toBeCalledWith(
 			'mockUserId',
 			'mockDraftId',
-			'mockAssessmentId'
+			'mockAssessmentId',
+			'mockResourceLinkId',
+			'mockIsPreview'
 		)
 		expect(mockCreateAssessmentAttemptScoredEvent).toBeCalledWith({
 			actor: { type: 'serverApp' },

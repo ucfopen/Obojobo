@@ -37,7 +37,7 @@ module.exports = {
 		})
 	},
 
-	getResponsesForAttempt(req, res) {
+	getResponsesForAttempt(req) {
 		return Assessment.getResponsesForAttempt(req.params.attemptId)
 			.then(responsesForAttempt => {
 				req.responsesForAttempt = responsesForAttempt
@@ -58,7 +58,7 @@ module.exports = {
 		})
 	},
 
-	completeAttempt(req, res) {
+	completeAttempt(req) {
 		return Assessment.completeAttempt(
 			req.attempt.assessmentId,
 			req.params.attemptId,
@@ -82,13 +82,13 @@ module.exports = {
 			req.attempt.assessmentId,
 			req.params.attemptId,
 			req.attempt.number,
-			req.currentVisit.isPreview,
+			req.currentVisit.is_preview,
 			req.hostname,
 			req.connection.remoteAddress
 		)
 	},
 
-	sendHighestAssessmentScore(req, res) {
+	sendHighestAssessmentScore(req) {
 		return lti.sendHighestAssessmentScore(
 			req.currentUser.id,
 			req.currentDocument,

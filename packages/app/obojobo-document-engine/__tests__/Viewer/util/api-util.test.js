@@ -117,7 +117,9 @@ describe('apiutil', () => {
 					event_version: 'mockEventVersion',
 					payload: {},
 					visitId: 'mockVisitId'
-				}
+				},
+				draftId: "mockDraftId",
+				visitId: "mockVisitId"
 			})
 		})
 	})
