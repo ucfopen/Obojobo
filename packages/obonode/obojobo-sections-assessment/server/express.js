@@ -61,7 +61,7 @@ router
 		}
 	})
 
-
+// @TODO: break startAttempt out so it doesn't need req, res
 router
 	.route('/api/assessments/attempt/start')
 	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument, requireAssessmentId])
@@ -69,10 +69,20 @@ router
 
 router
 	.route('/api/assessments/attempt/:attemptId/resume')
-	.post([requireAttemptId])
+	.post([requireCurrentUser, requireCurrentVisit, requireAttemptId])
 	.post(async (req, res) => {
 		try {
-			await resumeAttempt(req, res)
+			const attempt = await resumeAttempt(
+				req.currentUser,
+				req.currentVisit,
+				req.currentDocument,
+				req.body.attemptId,
+				req.hostname,
+				req.connection.remoteAddress
+			)
+
+			res.success(attempt)
+
 		} catch (error) {
 			logAndRespondToUnexpected('Unexpected error resuming your attempt', res, req, error)
 		}
@@ -89,9 +99,14 @@ router
 			)
 	})
 
+// @TODO make sure i own
 router
 	.route('/api/assessments/attempt/review')
-	.post(reviewAttempt)
+	.post([requireCurrentUser, requireAttemptId])
+	.post(async (req, res) => {
+		const questionModels = await reviewAttempt(req.body.attemptIds)
+		res.send(questionModels)
+	})
 
 router
 	.route('/api/assessments/clear-preview-scores')
@@ -267,10 +282,7 @@ oboEvents.on('client:question:setResponse', async (event, req) => {
 	const eventRecordResponse = 'client:question:setResponse'
 
 	try{
-		// If no attemptId is specified assume that we are in practice and
-		// we don't need to store the response
-		if (!event.payload.attemptId) return
-
+		if (!event.payload.attemptId) return // assume we're in practice
 		if (!event.payload.questionId) throw 'Missing Question ID'
 		if (!event.payload.response) throw 'Missing Response'
 

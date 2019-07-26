@@ -1,14 +1,13 @@
 const Assessment = require('./assessment')
 const attemptStart = require('./attempt-start')
-const DraftModel = oboRequire('models/draft')
+const DraftModel = require('obojobo-express/models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
+const logger = require('obojobo-express/logger')
 
-const getQuestionModelsFromAttempt = async (attemptId, req, res) => {
+const getQuestionModelsFromAttempt = async (attemptId) => {
 	const attempt = await Assessment.getAttempt(attemptId)
 
-	// const visit = await VisitModel.fetchById(req.body.visitId)
-	// const isPreview = visit.is_preview
-
+	// @TODO: memoize or cache this
 	const draftDocument = await DraftModel.fetchDraftByVersion(
 		attempt.draft_id,
 		attempt.draft_content_id
@@ -17,6 +16,9 @@ const getQuestionModelsFromAttempt = async (attemptId, req, res) => {
 	const assessmentNode = draftDocument.getChildNodeById(attempt.assessment_id)
 
 	if (assessmentNode.node.content.review !== 'always') {
+		// @TODO: are res & req needed for OboModel.yell()?!
+		const res = {}
+		const req = {}
 		await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
 	}
 
@@ -31,21 +33,29 @@ const getQuestionModelsFromAttempt = async (attemptId, req, res) => {
 	return attemptQuestionModelsMap
 }
 
-const reviewAttempt = async (req, res) => {
-	const attemptIds = req.body.attemptIds
-
+const reviewAttempt = async (attemptIds) => {
 	try {
-		await req.requireCurrentUser()
 
-		const questionModels = {}
-
+		// aysnc, let's get all the attmpts
+		const promises = []
 		for (const attemptId of attemptIds) {
-			questionModels[attemptId] = await getQuestionModelsFromAttempt(attemptId, req, res)
+			promises.push(getQuestionModelsFromAttempt(attemptId))
+		}
+		const results = await Promise.all(promises)
+
+		// now build an object
+		// { <attemptId>: questionModels }
+		let n = 0
+		const questionModels = {}
+		for (const attemptId of attemptIds) {
+			questionModels[attemptId] = results[n]
+			n++
 		}
 
 		res.send(questionModels)
-	} catch (ex) {
-		console.log(ex)
+	} catch (error) {
+		logger.error('reviewAttempt Error')
+		logger.error(error)
 	}
 }
 
