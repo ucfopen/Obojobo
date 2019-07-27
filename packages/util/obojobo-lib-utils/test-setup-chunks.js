@@ -24,3 +24,8 @@ process.on('unhandledRejection', (reason, p) => {
 	// eslint-disable-next-line no-console
 	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
 })
+
+
+global.flushPromises = () => {
+	return new Promise(resolve => setImmediate(resolve));
+}

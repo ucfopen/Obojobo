@@ -1,18 +1,22 @@
-jest.mock('./get-attempt', () => jest.fn().mockResolvedValue())
+jest.mock('./attempt-end-helpers')
 jest.mock('obojobo-express/logger')
 
 const endAttempt = require('./attempt-end')
-const getAttempt = require('./get-attempt')
+
 const helpers = require('./attempt-end-helpers')
 const logger = require('obojobo-express/logger')
 
-const mockArgs = {
-	attemptId: 'mockAttemptId',
-	user: {
+const mockReq = {
+	params: {
+		attemptId: 'mockAttemptId'
+	},
+	currentUser: {
 		id: 'mockUserId'
 	},
 	isPreview: 'mockIsPreview'
 }
+
+const mockRes = {}
 
 const executionOrder = []
 const handlePromise = name => {
@@ -27,7 +31,7 @@ for (const name in helpers) {
 
 describe('attempt-end/attempt-end', () => {
 	test('runs through expected steps', async () => {
-		await endAttempt(mockArgs)
+		await endAttempt(mockReq, mockRes)
 		expect(logger.info.mock.calls).toEqual([
 			['End attempt "mockAttemptId" begin for user "mockUserId" (Preview="mockIsPreview")'],
 			['End attempt "mockAttemptId" - getAttempt success'],
@@ -39,9 +43,10 @@ describe('attempt-end/attempt-end', () => {
 			['End attempt "mockAttemptId" - sendLTIScore success'],
 			['End attempt "mockAttemptId" - sendLTIScore success']
 		])
-		expect(getAttempt).toBeCalledWith('mockAttemptId')
+
 		// ensures called and called in order
 		expect(executionOrder).toEqual([
+			'getAttempt',
 			'getAttemptHistory',
 			'getResponsesForAttempt',
 			'getCalculatedScores',
@@ -51,5 +56,10 @@ describe('attempt-end/attempt-end', () => {
 			'insertAttemptScoredEvents',
 			'getAttempts'
 		])
+
+		// ensure res and req was sent to them all
+		for (const name in helpers) {
+			expect(spies[name]).toBeCalledWith(mockReq, mockRes)
+		}
 	})
 })

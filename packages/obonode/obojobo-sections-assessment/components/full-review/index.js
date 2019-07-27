@@ -25,7 +25,7 @@ class AssessmentReviewView extends React.Component {
 		const attemptReviewComponents = {}
 
 		const attempts = this.props.attempts
-		
+
 		const highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAttemptScore(
 			this.props.moduleData.assessmentState,
 			this.props.model
@@ -105,7 +105,7 @@ class AssessmentReviewView extends React.Component {
 									key={scoreObj.id}
 								/>
 							) : (
-								basicReview(this.props.moduleData, scoreObj, index)
+								basicReview(questionModel, this.props.moduleData, scoreObj, index)
 							)
 						})}
 					</div>

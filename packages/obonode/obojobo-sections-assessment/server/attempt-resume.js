@@ -8,10 +8,9 @@ const resumeAttempt = async (currentUser, currentVisit, currentDocument, attempt
 	// @TODO: these used to be req and res objects from express
 	// are they needed for OboModel.yell() ?!?!
 	// see: attemptStart.getSendToClientPromises
-	const req = {}
-	const res = {}
+	const req = {} // @TODO see if we can get rid of these
+	const res = {} // @TODO see if we can get rid of these
 	const attempt = await Assessment.getAttempt(attemptId)
-
 	const assessmentNode = currentDocument.getChildNodeById(attempt.assessment_id)
 
 	await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))

@@ -124,7 +124,6 @@ module.exports = {
 	},
 
 	getAttempts(req) {
-		console.log(req.attempt.assessmentId)
 		return Assessment.getAttempts(
 			req.currentUser.id,
 			req.attempt.draftId,

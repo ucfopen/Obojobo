@@ -3,13 +3,14 @@ const lti = require('obojobo-express/lti')
 const Assessment = require('../assessment')
 const getCalculatedScores = require('./get-calculated-scores')
 const insertEvents = require('./insert-events')
+const DraftDocument = require('obojobo-express/models/draft')
 
 jest.mock('obojobo-express/logger')
 jest.mock('../assessment')
 jest.mock('./get-calculated-scores')
 jest.mock('./insert-events')
 jest.mock('obojobo-express/lti')
-
+jest.mock('obojobo-express/models/draft')
 
 const mockCurrentUser = {
 	id: 'mockCurrentUserId'
@@ -253,4 +254,39 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockAttempt.assessmentId
 		)
 	})
+
+	test('get-attempt', async () => {
+		const mockReturnValue = {}
+
+		const mockReq = {
+			attempt: mockAttempt,
+			currentUser: mockCurrentUser,
+			currentVisit: mockCurrentVisit,
+			params:{
+				attemptId: 'mock-attempt-id'
+			}
+		}
+
+		await helpers.getAttempt(mockReq)
+		expect(Assessment.getAttempt).toBeCalledTimes(1)
+		expect(Assessment.getAttempt).toBeCalledWith('mock-attempt-id')
+		expect(Assessment.getAttemptNumber).toBeCalledTimes(1)
+		expect(Assessment.getAttemptNumber).toBeCalledWith('mockUserId', 'mockDraftId', 'mock-attempt-id')
+
+		expect(DraftDocument.fetchById).toBeCalledTimes(1)
+		expect(DraftDocument.fetchById).toBeCalledWith('mockDraftId')
+
+		expect(mockReq.attempt).toEqual({
+			assessmentId: 'mockAssessmentId',
+			number: "mockAttemptNumber",
+			attemptState: { chosen: [] },
+			draftId: "mockDraftId",
+			model: expect.any(Object),
+			assessmentModel: "mockChild"
+		})
+
+	})
+
 })
+
+

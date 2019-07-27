@@ -2,10 +2,13 @@ const Assessment = {
 	completeAttempt: jest.fn(),
 	getAttempt: jest.fn().mockResolvedValue({
 		id: 'mockAttemptId',
+		number: 'mockAttemptNumber',
 		user_id: 'mockUserId',
 		draft_id: 'mockDraftId',
 		assessment_id: 'mockAssessmentId',
-		state: 'mockState'
+		state: {
+			chosen: []
+		}
 	}),
 	getAttempts: jest.fn(),
 	getAttemptNumber: jest.fn().mockResolvedValue('mockAttemptNumber'),
