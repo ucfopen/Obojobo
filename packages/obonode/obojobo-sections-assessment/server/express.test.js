@@ -395,7 +395,6 @@ describe('server/express', () => {
 			.post('/api/assessments/clear-preview-scores')
 			.type('application/json')
 			.then(response => {
-				console.log(response.text)
 				expect(response.statusCode).toBe(200)
 				expect(requireCurrentVisit).toHaveBeenCalled()
 				expect(requireCurrentUser).toHaveBeenCalled()

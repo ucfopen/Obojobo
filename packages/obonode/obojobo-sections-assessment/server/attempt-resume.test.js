@@ -55,23 +55,26 @@ describe('start attempt route', () => {
 			state: {
 				chosen: [mockQuestionNode, mockQuestionBank]
 			},
-			getChildNodeById: jest.fn().mockReturnValue({
-				node: {
-					content: {
-						attempts: 3
-					}
-				},
-				children: [
-					{},
-					{
-						childrenSet: [],
-						buildAssessment: jest.fn().mockReturnValueOnce([mockQuestionNode])
-					}
-				],
-				draftTree: {
-					getChildNodeById: jest.fn().mockReturnValueOnce(mockQuestionNode)
-				}
-			})
+			draftTree:{
+				getChildNodeById: jest.fn().mockReturnValue({
+					node: {
+						content: {
+							attempts: 3
+						}
+					},
+					children: [
+						{},
+						{
+							childrenSet: [],
+							buildAssessment: jest.fn().mockReturnValueOnce([mockQuestionNode])
+						}
+					],
+					draftTree: {
+						getChildNodeById: jest.fn().mockReturnValueOnce(mockQuestionNode)
+					},
+					toObject: jest.fn().mockReturnValueOnce({})
+				})
+			}
 		}
 
 		// mock the caliperEvent methods
@@ -87,6 +90,14 @@ describe('start attempt route', () => {
 		}
 		const mockCurrentVisit = { is_preview: 'mockIsPreview' }
 		const mockCurrentUser = { id: 1 }
+		Assessment.getAttempt.mockResolvedValue({
+			assessment_id: 'mockAssessmentId',
+			id: "mockAttemptId",
+			number: "mockAttemptNumber",
+			state: {
+				chosen: [mockQuestionNode, mockQuestionBank]
+			}
+		})
 		const mockAttempt = await Assessment.getAttempt()
 
 		await resumeAttempt(
