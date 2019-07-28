@@ -141,6 +141,7 @@ class AssessmentStore extends Store {
 		ModalUtil.hide()
 
 		return APIUtil.resumeAttempt({
+			draftId: unfinishedAttempt.draftId,
 			attemptId: unfinishedAttempt.attemptId,
 			visitId: NavStore.getState().visitId
 		}).then(response => {

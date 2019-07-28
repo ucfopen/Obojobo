@@ -63,7 +63,8 @@ describe('start attempt route', () => {
 	let mockRes
 
 	beforeEach(() => {
-		jest.resetAllMocks()
+		jest.clearAllMocks()
+		jest.restoreAllMocks()
 		getRandom.mockReturnValue(0)
 		Visit.fetchById.mockReturnValue({ is_preview: false })
 

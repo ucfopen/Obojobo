@@ -23,9 +23,7 @@ const getQuestionModelsFromAttempt = async (attemptId) => {
 	}
 
 	const attemptQuestionModels = getFullQuestionsFromDraftTree(draftDocument, attempt.state.chosen)
-
 	const attemptQuestionModelsMap = {}
-
 	for (const questionModel of attemptQuestionModels) {
 		attemptQuestionModelsMap[questionModel.id] = questionModel
 	}
@@ -42,7 +40,6 @@ const reviewAttempt = async (attemptIds) => {
 			promises.push(getQuestionModelsFromAttempt(attemptId))
 		}
 		const results = await Promise.all(promises)
-
 		// now build an object
 		// { <attemptId>: questionModels }
 		let n = 0
@@ -52,7 +49,7 @@ const reviewAttempt = async (attemptIds) => {
 			n++
 		}
 
-		res.send(questionModels)
+		return questionModels
 	} catch (error) {
 		logger.error('reviewAttempt Error')
 		logger.error(error)

@@ -15,7 +15,6 @@ jest.mock('./attempt-start')
 jest.mock('./attempt-resume')
 jest.mock('./attempt-end/attempt-end')
 jest.mock('./attempt-review')
-jest.mock('./util')
 jest.mock('obojobo-express/express_validators')
 
 describe('server/express', () => {
@@ -24,6 +23,8 @@ describe('server/express', () => {
 	const mockCurrentVisit = {resource_link_id: 'mockResourceLinkId', is_preview: 'mockIsPreview'}
 	const bodyParser = require('body-parser')
 	const request = require('supertest')
+	const { reviewAttempt } = require('./attempt-review')
+	const { logAndRespondToUnexpected } = require('./util')
 	let db
 	let logger
 	let Assessment
@@ -64,15 +65,15 @@ describe('server/express', () => {
 		resumeAttempt = jest.requireMock('./attempt-resume')
 		endAttempt = jest.requireMock('./attempt-end/attempt-end')
 		lti = jest.requireMock('obojobo-express/lti')
-		let f = jest.requireMock('obojobo-express/express_validators')
+		let val = jest.requireMock('obojobo-express/express_validators')
 
 		mockMiddleware(startAttempt)
-		checkValidationRules = mockMiddleware(f.checkValidationRules)
-		requireCurrentDocument = mockMiddleware(f.requireCurrentDocument, {resVarName:'currentDocument', resVarObject: mockCurrentDocument})
-		requireCurrentVisit = mockMiddleware(f.requireCurrentVisit, {resVarName:'currentVisit', resVarObject: mockCurrentVisit})
-		requireAttemptId = mockMiddleware(f.requireAttemptId)
-		requireCurrentUser = mockMiddleware(f.requireCurrentUser, {resVarName: 'currentUser', resVarObject: mockCurrentUser})
-		requireAssessmentId = mockMiddleware(f.requireAssessmentId)
+		checkValidationRules = mockMiddleware(val.checkValidationRules)
+		requireCurrentDocument = mockMiddleware(val.requireCurrentDocument, {resVarName:'currentDocument', resVarObject: mockCurrentDocument})
+		requireCurrentVisit = mockMiddleware(val.requireCurrentVisit, {resVarName:'currentVisit', resVarObject: mockCurrentVisit})
+		requireAttemptId = mockMiddleware(val.requireAttemptId)
+		requireCurrentUser = mockMiddleware(val.requireCurrentUser, {resVarName: 'currentUser', resVarObject: mockCurrentUser})
+		requireAssessmentId = mockMiddleware(val.requireAssessmentId)
 		oboEvents = jest.requireMock('obojobo-express/obo_events')
 		// re-init the server
 		app = require('express')()
@@ -156,6 +157,34 @@ describe('server/express', () => {
 			})
 	})
 
+	test('POST /api/lti/sendAssessmentScore logs errors', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {
+			scoreSent: 'mockReturn',
+			status: 'mockStatus',
+			statusDetails: 'mockStatusDetails',
+			dbStatus: 'mockDbStatus',
+			gradebookStatus: 'mockGradeBookStatus'
+		}
+		lti.sendHighestAssessmentScore.mockRejectedValueOnce('mock-error')
+
+
+		return request(app)
+			.post('/api/lti/sendAssessmentScore')
+			.type('application/json')
+			.send('{"assessmentId":"mockAssessmentId"}')
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toEqual({
+					status: 'error',
+					value: {
+						message: expect.any(String),
+						type: "unexpected",
+					}
+				})
+			})
+	})
+
 	test('POST /api/assessments/attempt/start', () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
@@ -178,6 +207,56 @@ describe('server/express', () => {
 				expect(response.body).toEqual({
 					status: 'ok',
 					value: mockReturnValue
+				})
+			})
+	})
+
+	test('POST /api/assessments/attempt/mock-attempt-id/resume', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		resumeAttempt.mockReturnValueOnce(mockReturnValue)
+
+		return request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/resume')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				// verify validations ran
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireAttemptId).toHaveBeenCalled()
+				expect(resumeAttempt).toHaveBeenCalledWith(
+					mockCurrentUser,
+					mockCurrentVisit,
+					mockCurrentDocument,
+					'mock-attempt-id',
+					expect.any(String),
+					expect.any(String)
+				)
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
+	})
+
+	test('POST /api/assessments/attempt/mock-attempt-id/resume errors', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		resumeAttempt.mockRejectedValueOnce(mockReturnValue)
+
+		return request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/resume')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toEqual({
+					status: 'error',
+					value: {
+						message: expect.any(String),
+						type: "unexpected",
+					}
 				})
 			})
 	})
@@ -226,6 +305,63 @@ describe('server/express', () => {
 			})
 	})
 
+	test('POST /api/assessments/attempt/mock-attempt-id/end fails', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		endAttempt.mockRejectedValueOnce(mockReturnValue)
+
+		return request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/end')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toEqual({
+					status: 'error',
+					value: {
+						message: expect.any(String),
+						type: "unexpected",
+					}
+				})
+			})
+	})
+
+	test('POST /api/assessments/attempt/mock-attempt-id/end', () => {
+		expect.hasAssertions()
+		const mockReturnValue = {}
+		endAttempt.mockResolvedValueOnce(mockReturnValue)
+
+		return request(app)
+			.post('/api/assessments/attempt/mock-attempt-id/end')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(requireAttemptId).toHaveBeenCalled()
+				expect(response.body).toEqual({
+					status: 'ok',
+					value: mockReturnValue
+				})
+			})
+	})
+
+	test('POST /api/assessments/attempt/review', () => {
+		expect.hasAssertions()
+		const returnValue = {}
+		reviewAttempt.mockResolvedValueOnce(returnValue)
+
+		return request(app)
+			.post('/api/assessments/attempt/review')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireAttemptId).toHaveBeenCalled()
+				expect(response.body).toEqual(returnValue)
+			})
+	})
+
 	test('POST /api/assessments/clear-preview-scores', () => {
 		expect.hasAssertions()
 		db.manyOrNone
@@ -245,6 +381,71 @@ describe('server/express', () => {
 				expect(db.batch).toHaveBeenCalledTimes(1)
 				expect(response.body).toEqual({
 					status: 'ok'
+				})
+			})
+	})
+
+	test('POST /api/assessments/clear-preview-scores wiht nothing to clear', () => {
+		expect.hasAssertions()
+		db.manyOrNone
+			.mockResolvedValueOnce([])
+			.mockResolvedValueOnce([])
+
+		return request(app)
+			.post('/api/assessments/clear-preview-scores')
+			.type('application/json')
+			.then(response => {
+				console.log(response.text)
+				expect(response.statusCode).toBe(200)
+				expect(requireCurrentVisit).toHaveBeenCalled()
+				expect(requireCurrentUser).toHaveBeenCalled()
+				expect(requireCurrentDocument).toHaveBeenCalled()
+				expect(db.tx).toHaveBeenCalledTimes(1)
+				expect(db.none).toHaveBeenCalledTimes(2)
+				expect(db.batch).toHaveBeenCalledTimes(1)
+				expect(response.body).toEqual({
+					status: 'ok'
+				})
+			})
+	})
+
+	test('POST /api/assessments/clear-preview-scores fails when not preview', () => {
+		expect.hasAssertions()
+		requireCurrentVisit.mockImplementationOnce((req, res, next) => {
+			req.currentVisit = {is_preview: false}
+			next()
+		})
+
+		return request(app)
+			.post('/api/assessments/clear-preview-scores')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toEqual({
+					status: 'error',
+					value: {
+						message: "Not in preview mode",
+						type: "notAuthorized"
+					}
+				})
+			})
+	})
+
+	test('POST /api/assessments/clear-preview-scores fails on errors', () => {
+		expect.hasAssertions()
+		db.manyOrNone.mockRejectedValueOnce('mock-error')
+
+		return request(app)
+			.post('/api/assessments/clear-preview-scores')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toEqual({
+					status: 'error',
+					value: {
+						message: expect.any(String),
+						type: "unexpected"
+					}
 				})
 			})
 	})
@@ -275,6 +476,25 @@ describe('server/express', () => {
 			})
 	})
 
+	test('GET /api/assessments/:draftId/mock-assessment-id/attempt/mock-attempt-id fails', () => {
+		expect.hasAssertions()
+		Assessment.getAttempt.mockRejectedValueOnce()
+
+		return request(app)
+			.get('/api/assessments/:draftId/mock-assessment-id/attempt/mock-attempt-id')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toEqual({
+					status: 'error',
+					value: {
+						message: expect.any(String),
+						type: "unexpected"
+					}
+				})
+			})
+	})
+
 	test('GET /api/assessments/:draftId/attempts', () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
@@ -297,6 +517,25 @@ describe('server/express', () => {
 				expect(response.body).toEqual({
 					status: 'ok',
 					value: mockReturnValue
+				})
+			})
+	})
+
+	test('GET /api/assessments/:draftId/attempts fails', () => {
+		expect.hasAssertions()
+		Assessment.getAttempts.mockRejectedValueOnce()
+
+		return request(app)
+			.get('/api/assessments/:draftId/attempts')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toEqual({
+					status: 'error',
+					value: {
+						message: expect.any(String),
+						type: "unexpected"
+					}
 				})
 			})
 	})
@@ -325,6 +564,25 @@ describe('server/express', () => {
 				expect(response.body).toEqual({
 					status: 'ok',
 					value: mockReturnValue
+				})
+			})
+	})
+
+	test('GET /api/assessment/:draftId/mock-assesment-id/attempts fails', () => {
+		expect.hasAssertions()
+		Assessment.getAttempts.mockRejectedValueOnce()
+
+		return request(app)
+			.get('/api/assessment/:draftId/mock-assesment-id/attempts')
+			.type('application/json')
+			.then(response => {
+				expect(response.statusCode).toBe(500)
+				expect(response.body).toEqual({
+					status: 'error',
+					value: {
+						message: expect.any(String),
+						type: "unexpected"
+					}
 				})
 			})
 	})

@@ -69,14 +69,14 @@ router
 
 router
 	.route('/api/assessments/attempt/:attemptId/resume')
-	.post([requireCurrentUser, requireCurrentVisit, requireAttemptId])
+	.post([requireCurrentUser, requireCurrentDocument, requireCurrentVisit, requireAttemptId])
 	.post(async (req, res) => {
 		try {
 			const attempt = await resumeAttempt(
 				req.currentUser,
 				req.currentVisit,
 				req.currentDocument,
-				req.body.attemptId,
+				req.params.attemptId,
 				req.hostname,
 				req.connection.remoteAddress
 			)
@@ -100,6 +100,7 @@ router
 	})
 
 // @TODO make sure i own
+// seems like attemptid should be in the url and swithc to get?
 router
 	.route('/api/assessments/attempt/review')
 	.post([requireCurrentUser, requireAttemptId])
@@ -108,6 +109,7 @@ router
 		res.send(questionModels)
 	})
 
+// @TODO: should take an assessmentID in the url
 router
 	.route('/api/assessments/clear-preview-scores')
 	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
@@ -118,26 +120,27 @@ router
 		let isPreview
 		let resourceLinkId
 
-		if (!req.currentVisit.is_preview) throw 'Not in preview mode'
-
-		return db
-			.manyOrNone(
-				`
-						SELECT assessment_scores.id
-						FROM assessment_scores
-						JOIN attempts
-							ON attempts.id = assessment_scores.attempt_id
-						WHERE assessment_scores.user_id = $[userId]
-						AND assessment_scores.draft_id = $[draftId]
-						AND attempts.resource_link_id = $[resourceLinkId]
-						AND assessment_scores.is_preview = true
-					`,
-				{
-					userId: req.currentUser.id,
-					draftId: req.currentDocument.draftId,
-					resourceLinkId: req.currentVisit.resource_link_id
-				}
-			)
+		return Promise.resolve()
+			.then(() => {
+				if (!req.currentVisit.is_preview) throw 'Not in preview mode'
+				return db.manyOrNone(
+					`
+							SELECT assessment_scores.id
+							FROM assessment_scores
+							JOIN attempts
+								ON attempts.id = assessment_scores.attempt_id
+							WHERE assessment_scores.user_id = $[userId]
+							AND assessment_scores.draft_id = $[draftId]
+							AND attempts.resource_link_id = $[resourceLinkId]
+							AND assessment_scores.is_preview = true
+						`,
+					{
+						userId: req.currentUser.id,
+						draftId: req.currentDocument.draftId,
+						resourceLinkId: req.currentVisit.resource_link_id
+					}
+				)
+			})
 			.then(assessmentScoreIdsResult => {
 				assessmentScoreIds = assessmentScoreIdsResult.map(i => i.id)
 
@@ -247,10 +250,6 @@ router
 			)
 			.then(res.success)
 			.catch(error => {
-				if (error.message === 'Login Required') {
-					return res.notAuthorized(error.message)
-				}
-
 				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
 			})
 	})
@@ -270,10 +269,6 @@ router
 			)
 			.then(res.success)
 			.catch(error => {
-				if (error.message === 'Login Required') {
-					return res.notAuthorized(error.message)
-				}
-
 				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
 			})
 	})

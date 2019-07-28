@@ -91,8 +91,9 @@ const APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	resumeAttempt({ attemptId, visitId }) {
+	resumeAttempt({ draftId, attemptId, visitId }) {
 		return APIUtil.post(`/api/assessments/attempt/${attemptId}/resume`, {
+			draftId,
 			attemptId,
 			visitId
 		}).then(processJsonResults)
