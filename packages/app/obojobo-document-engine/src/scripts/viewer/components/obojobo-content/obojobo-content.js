@@ -6,9 +6,7 @@ import { Registry } from 'Common'
 const ObojoboContent = props => {
 	const { moduleData } = props
 	// Get states from Redux store
-	const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = useSelector(
-		state => state
-	)
+	const { oboNodeList, adjList, navList, currNavIndex, currFocusNode } = useSelector(state => state)
 
 	const currFocusRef = useRef(null)
 
@@ -51,7 +49,7 @@ const ObojoboContent = props => {
 
 	const rootNode = oboNodeList[0]
 	const Module = Registry.getItemForType(rootNode.attributes.type).componentClass
-	return <Module model={rootNode}>{componentRenderer(navList[currentNavIndex])}</Module>
+	return <Module model={rootNode}>{componentRenderer(navList[currNavIndex])}</Module>
 }
 
 export default ObojoboContent

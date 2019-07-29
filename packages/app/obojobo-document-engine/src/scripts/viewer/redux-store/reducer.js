@@ -6,7 +6,7 @@ const initialState = {
 
 	// Indexes of all navigation items
 	navList: [],
-	currentNavIndex: 0,
+	currNavIndex: 0,
 	isNavEnabled: true,
 	isNavLocked: false,
 
@@ -34,17 +34,8 @@ const reducer = (state = initialState, action) => {
 				...state,
 				...convertObjectToAdjList(payload.oboNodeObject)
 			}
-		case 'UPDATE_NAV':
-			return {
-				...updateNav(state, payload)
-			}
-		case 'ON_SET_NAV_PREV':
-			return {
-				...state,
-				currentNavIndex: state.currentNavIndex - 1 >= 0 ? state.currentNavIndex - 1 : 0
-			}
 		case 'ON_SET_NAV_WITH_ID':
-			let updatedNavIndex = state.currentNavIndex
+			let updatedNavIndex = state.currNavIndex
 			state.navList.forEach((navNode, index) => {
 				if (state.oboNodeList[navNode].attributes.id === payload.id) {
 					updatedNavIndex = index
@@ -52,15 +43,26 @@ const reducer = (state = initialState, action) => {
 			})
 			return {
 				...state,
-				currentNavIndex: updatedNavIndex
+				currNavIndex: updatedNavIndex
 			}
+		case 'ON_SET_NAV':
+			return {
+				...state,
+				...updateNav(state, payload)
+			}
+		case 'ON_SET_NAV_PREV':
+			return {
+				...state,
+				currNavIndex: state.currNavIndex - 1 >= 0 ? state.currNavIndex - 1 : 0
+			}
+
 		case 'ON_SET_NAV_NEXT':
 			return {
 				...state,
-				currentNavIndex:
-					state.currentNavIndex + 1 < state.navList.length
-						? state.currentNavIndex + 1
-						: state.currentNavIndex
+				currNavIndex:
+					state.currNavIndex + 1 < state.navList.length
+						? state.currNavIndex + 1
+						: state.currNavIndex
 			}
 
 		case 'ON_SET_NAV_ENABLE':
@@ -162,7 +164,7 @@ const updateNav = (state, payload) => {
 
 	return {
 		...state,
-		currentNavIndex: payload.value,
+		currNavIndex: payload.value,
 		currFocusNode: newFocusNode
 	}
 }
@@ -239,7 +241,7 @@ const convertBackboneObjectToAdjList = object => {
 		adjList,
 		mapIdToIndex,
 		navList,
-		currentNavIndex: 0,
+		currNavIndex: 0,
 		currFocusNode
 	}
 }
@@ -306,7 +308,7 @@ const convertObjectToAdjList = object => {
 		oboNodeList,
 		adjList,
 		navList,
-		currentNavIndex: 0
+		currNavIndex: 0
 	}
 }
 

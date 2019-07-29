@@ -19,7 +19,7 @@ const Nav = () => {
 		oboNodeList,
 		adjList,
 		navList,
-		currentNavIndex,
+		currNavIndex,
 		currFocusNode,
 		isNavEnabled,
 		isNavLocked
@@ -29,8 +29,8 @@ const Nav = () => {
 	const dispatch = useDispatch()
 
 	const rendererNavSubItem = () => {
-		return adjList[navList[currentNavIndex]].map(childIndex => {
-			const currNode = oboNodeList[childIndex]
+		return adjList[navList[currNavIndex]].map(oboNodeIndex => {
+			const currNode = oboNodeList[oboNodeIndex]
 			if (
 				currNode.attributes.type !== 'ObojoboDraft.Chunks.Heading' &&
 				currNode.attributes.content.headingLevel !== 2
@@ -38,13 +38,13 @@ const Nav = () => {
 				return null
 			}
 			const { textGroup } = currNode.attributes.content
-			const className = 'sub-link' + isOrNot(childIndex === currFocusNode, 'selected')
+			const className = 'sub-link' + isOrNot(oboNodeIndex === currFocusNode, 'selected')
 			// isOrNot(isLastInList, 'last-in-list')
 			return (
 				<NavSubItem
-					key={childIndex}
+					key={oboNodeIndex}
 					label={textGroup[0].text.value}
-					onClick={() => dispatch({ type: 'ON_SET_CURR_FOCUS', payload: { index: childIndex } })}
+					onClick={() => dispatch({ type: 'ON_SET_CURR_FOCUS', payload: { index: oboNodeIndex } })}
 					className={className}
 				/>
 			)
@@ -53,11 +53,11 @@ const Nav = () => {
 
 	const rendererNavItem = () => {
 		return navList.map((navIndex, index) => {
-			const lockEl = isNavLocked && index !== currentNavIndex ? <div className="lock-icon" /> : null
+			const lockEl = isNavLocked && index !== currNavIndex ? <div className="lock-icon" /> : null
 			const currNode = oboNodeList[navList[index]]
 			const className =
 				'link' +
-				isOrNot(index === currentNavIndex, 'selected') +
+				isOrNot(index === currNavIndex, 'selected') +
 				isOrNot(currNode.attributes.type === 'ObojoboDraft.Sections.Assessment', 'assessment') +
 				isOrNot(index === 0, 'first-in-list') +
 				isOrNot(index === navList.length - 1, 'last-in-list')
@@ -67,11 +67,11 @@ const Nav = () => {
 						key={navIndex}
 						index={navIndex}
 						label={oboNodeList[navIndex].attributes.content.title}
-						onClick={() => dispatch({ type: 'UPDATE_NAV', payload: { value: index } })}
+						onClick={() => dispatch({ type: 'ON_SET_NAV', payload: { value: index } })}
 						className={className}
 						lockEl={lockEl}
 					/>
-					{index === currentNavIndex ? rendererNavSubItem() : null}
+					{index === currNavIndex ? rendererNavSubItem() : null}
 				</>
 			)
 		})
