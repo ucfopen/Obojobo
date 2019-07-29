@@ -13,7 +13,7 @@ import Common from 'Common'
 import Header from '../../viewer/components/header'
 import IdleTimer from 'react-idle-timer'
 import InlineNavButton from './inline-nav-button/inline-nav-button'
-import MediaStore from '../../viewer/stores/media-store'
+// import MediaStore from '../../viewer/stores/media-store'
 import Nav from './nav/nav'
 // import NavStore from '../../viewer/stores/nav-store'
 // import NavUtil from '../../viewer/util/nav-util'
@@ -60,7 +60,7 @@ class ViewerApp extends React.Component {
 		const state = {
 			model: null,
 			// navState: null,
-			mediaState: null,
+			// mediaState: null,
 			questionState: null,
 			assessmentState: null,
 			modalState: null,
@@ -77,18 +77,19 @@ class ViewerApp extends React.Component {
 			this.setState({
 				assessmentState: AssessmentStore.getState()
 			})
-		this.onModalStoreChange = () =>
-			this.setState({
-				modalState: ModalStore.getState()
-			})
+		// this.onModalStoreChange = () =>
+		// 	this.setState({
+		// 		modalState: ModalStore.getState()
+		// 	})
 		// this.onFocusStoreChange = () =>
 		// 	this.setState({
 		// 		focusState: FocusStore.getState()
 		// 	})
-		this.onMediaStoreChange = () =>
-			this.setState({
-				mediaState: MediaStore.getState()
-			})
+		// this.onMediaStoreChange = () => {
+		// 	this.setState({
+		// 		mediaState: MediaStore.getState()
+		// 	})
+		// }
 
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
@@ -104,7 +105,7 @@ class ViewerApp extends React.Component {
 		AssessmentStore.onChange(this.onAssessmentStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
 		// FocusStore.onChange(this.onFocusStoreChange)
-		MediaStore.onChange(this.onMediaStoreChange)
+		// MediaStore.onChange(this.onMediaStoreChange)
 	}
 
 	componentDidMount() {
@@ -127,7 +128,7 @@ class ViewerApp extends React.Component {
 				QuestionStore.init()
 				ModalStore.init()
 				// FocusStore.init()
-				MediaStore.init()
+				// MediaStore.init()
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 
@@ -166,7 +167,7 @@ class ViewerApp extends React.Component {
 					{
 						model,
 						// navState: NavStore.getState(),
-						mediaState: MediaStore.getState(),
+						// mediaState: MediaStore.getState(),
 						questionState: QuestionStore.getState(),
 						assessmentState: AssessmentStore.getState(),
 						modalState: ModalStore.getState(),
@@ -195,7 +196,7 @@ class ViewerApp extends React.Component {
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
 		// FocusStore.offChange(this.onFocusStoreChange)
-		MediaStore.offChange(this.onMediaStoreChange)
+		// MediaStore.offChange(this.onMediaStoreChange)
 
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}

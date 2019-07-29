@@ -11,26 +11,29 @@ const initialState = {
 	isNavLocked: false,
 
 	// Index of focus node
-	currFocusNode: 0
+	currFocusNode: 0,
+
+	mediaState: {
+		shown: {},
+		zoomById: {},
+		defaultZoomById: {}
+	}
 }
 
 const reducer = (state = initialState, action) => {
 	const { type, payload } = action
 
 	switch (type) {
-		// Initialize Store with Backbone object
 		case 'UPDATE_STORE_MODEL':
 			return {
 				...state,
 				...convertBackboneObjectToAdjList(payload.model)
 			}
-		// Initialize Store with JS object
 		case 'UPDATE_STORE':
 			return {
 				...state,
 				...convertObjectToAdjList(payload.oboNodeObject)
 			}
-		// Update current navigation item
 		case 'UPDATE_NAV':
 			return {
 				...updateNav(state, payload)
@@ -59,7 +62,7 @@ const reducer = (state = initialState, action) => {
 						? state.currentNavIndex + 1
 						: state.currentNavIndex
 			}
-		// Set isNavEnbled to payload.value of payload exists else toggle navigation
+
 		case 'ON_SET_NAV_ENABLE':
 			return {
 				...state,
@@ -71,7 +74,7 @@ const reducer = (state = initialState, action) => {
 				...state,
 				isNavLocked: payload.value
 			}
-		// Update focus node
+
 		case 'ON_SET_CURR_FOCUS':
 			return {
 				...state,
@@ -82,9 +85,75 @@ const reducer = (state = initialState, action) => {
 				...state,
 				currFocusNode: state.mapIdToIndex[payload.id]
 			}
+
+		case 'UPDATE_MEDIA_STATE':
+			return {
+				...state,
+				mediaState: payload.mediaState
+			}
+		case 'SET_DEFAULT_ZOOM':
+			return {
+				...state,
+				...setDefaultZoom(state, payload)
+			}
+		case 'ON_SHOW_MEDIA':
+			return {
+				...state,
+				...onShowMedia(state, payload)
+			}
+		case 'ON_SET_ZOOM':
+			return {
+				...state,
+				...onSetZoom(state, payload)
+			}
+		case 'ON_RESET_ZOOM':
+			return {
+				...state,
+				...onResetZoom(state, payload)
+			}
 		default:
 			return state
 	}
+}
+
+const onResetZoom = (state, payload) => {
+	const id = payload.value.id
+	const { oboNodeList, mapIdToIndex, mediaState } = state
+	const model = oboNodeList[mapIdToIndex[id]]
+	const defaultZoom = model.attributes.content.initialZoom || 1
+
+	mediaState.zoomById[id] = defaultZoom
+}
+
+const onSetZoom = (state, payload) => {
+	const id = payload.value.id
+	const zoom = parseFloat(payload.value.zoom) || 0
+
+	if (zoom <= 0) return
+
+	const mediaState = state.mediaState
+	mediaState.zoomById[id] = zoom
+
+	return mediaState
+}
+
+const onShowMedia = (state, payload) => {
+	const id = payload.value.id
+
+	const mediaState = state.mediaState
+	mediaState.shown[id] = true
+}
+
+const setDefaultZoom = (state, payload) => {
+	const id = payload.id
+	let zoom = parseFloat(payload.initialZoom) || 0
+
+	zoom = zoom > 0 ? zoom : 1
+
+	if (!state.defaultZoomById) state.defaultZoomById = {}
+	state.defaultZoomById[id] = zoom
+
+	return state
 }
 
 const updateNav = (state, payload) => {

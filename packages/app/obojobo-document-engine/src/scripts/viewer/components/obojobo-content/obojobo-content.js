@@ -10,15 +10,15 @@ const ObojoboContent = props => {
 		state => state
 	)
 
-	const currNavRef = useRef(null)
+	const currFocusRef = useRef(null)
 
 	useEffect(() => {
 		// Scroll to current active component
-		if (currNavRef && currNavRef.current) {
+		if (currFocusRef && currFocusRef.current) {
 			const scrollIntoViewOptions = {
 				behavior: 'smooth'
 			}
-			currNavRef.current.scrollIntoView(scrollIntoViewOptions)
+			currFocusRef.current.scrollIntoView(scrollIntoViewOptions)
 		}
 	}, [currFocusNode])
 
@@ -38,7 +38,7 @@ const ObojoboContent = props => {
 		const Component = Registry.getItemForType(currNode.attributes.type).componentClass
 		const model = {
 			...currNode,
-			myRef: oboNodeIndex === currFocusNode ? currNavRef : null
+			myRef: oboNodeIndex === currFocusNode ? currFocusRef : null
 		}
 		return (
 			<Component model={model} moduleData={moduleData} index={oboNodeIndex}>
