@@ -1,18 +1,19 @@
 const initialState = {
-	// List of OboNodes
+	// Model State in Graph Theory Structure
 	oboNodeList: [],
-	// Adjacency List
 	adjList: [],
+	parent: [],
 
-	// Indexes of all navigation items
+	// Nav State
 	navList: [],
 	currNavIndex: 0,
 	isNavEnabled: true,
 	isNavLocked: false,
 
-	// Index of focus node
+	// Focus State
 	currFocusNode: 0,
 
+	// Media State
 	mediaState: {
 		shown: {},
 		zoomById: {},
@@ -173,6 +174,7 @@ const updateNav = (state, payload) => {
 const convertBackboneObjectToAdjList = object => {
 	const oboNodeList = []
 	const adjList = []
+	const parent = []
 	const mapIdToIndex = {}
 
 	let currentIndex = 0
@@ -194,6 +196,7 @@ const convertBackboneObjectToAdjList = object => {
 		if (node.attributes.type !== 'ObojoboDraft.Chunks.MCAssessment') delete newNode.children
 
 		oboNodeList.push(newNode)
+		parent.push(parentIndex)
 
 		// Map node's id to its index
 		mapIdToIndex[newNode.attributes.id] = currentIndex
@@ -239,6 +242,7 @@ const convertBackboneObjectToAdjList = object => {
 	return {
 		oboNodeList,
 		adjList,
+		parent,
 		mapIdToIndex,
 		navList,
 		currNavIndex: 0,

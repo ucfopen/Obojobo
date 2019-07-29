@@ -5,14 +5,18 @@ import React from 'react'
 const { Button } = Common.components
 
 const MCAssessmentSubmitAndResultsFooter = props => {
-	const { isTypePickAll, score, isAnAnswerChosen, isPractice, questionSubmitted } = props
+	const isTypePickAll = props.isTypePickAll
+	const score = props.score
 	const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
+	const isAnAnswerChosen = props.isAnAnswerChosen
+	const isPractice = props.isPractice
+	console.log('score', score)
 
 	return (
 		<div className="submit-and-result-container">
 			{isPractice ? (
 				<div className="submit">
-					{isAnswerScored || questionSubmitted ? (
+					{isAnswerScored ? (
 						<Button
 							altAction
 							onClick={props.onClickReset}
@@ -20,11 +24,7 @@ const MCAssessmentSubmitAndResultsFooter = props => {
 							ariaLabel="Try Question Again"
 						/>
 					) : (
-						<Button
-							value="Check Your Answer"
-							disabled={!isAnAnswerChosen}
-							onClick={props.onSubmmit}
-						/>
+						<Button value="Check Your Answer" disabled={!isAnAnswerChosen} />
 					)}
 				</div>
 			) : null}

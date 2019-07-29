@@ -13,7 +13,7 @@ import Common from 'Common'
 import Header from '../../viewer/components/header'
 import IdleTimer from 'react-idle-timer'
 import InlineNavButton from './inline-nav-button/inline-nav-button'
-// import MediaStore from '../../viewer/stores/media-store'
+import MediaStore from '../../viewer/stores/media-store'
 import Nav from './nav/nav'
 // import NavStore from '../../viewer/stores/nav-store'
 // import NavUtil from '../../viewer/util/nav-util'
@@ -77,15 +77,16 @@ class ViewerApp extends React.Component {
 			this.setState({
 				assessmentState: AssessmentStore.getState()
 			})
-		// this.onModalStoreChange = () =>
-		// 	this.setState({
-		// 		modalState: ModalStore.getState()
-		// 	})
+		this.onModalStoreChange = () =>
+			this.setState({
+				modalState: ModalStore.getState()
+			})
 		// this.onFocusStoreChange = () =>
 		// 	this.setState({
 		// 		focusState: FocusStore.getState()
 		// 	})
 		// this.onMediaStoreChange = () => {
+		// 	this.props.updateMediaStore(MediaStore.getState())
 		// 	this.setState({
 		// 		mediaState: MediaStore.getState()
 		// 	})
@@ -128,7 +129,7 @@ class ViewerApp extends React.Component {
 				QuestionStore.init()
 				ModalStore.init()
 				// FocusStore.init()
-				// MediaStore.init()
+				MediaStore.init()
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 
@@ -196,7 +197,7 @@ class ViewerApp extends React.Component {
 		AssessmentStore.offChange(this.onAssessmentStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
 		// FocusStore.offChange(this.onFocusStoreChange)
-		// MediaStore.offChange(this.onMediaStoreChange)
+		MediaStore.offChange(this.onMediaStoreChange)
 
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}

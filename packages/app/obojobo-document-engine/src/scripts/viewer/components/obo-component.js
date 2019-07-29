@@ -44,10 +44,7 @@ class OboComponent extends React.Component {
 
 		const { model } = this.props
 
-		const myRef =
-			(model && model.myRef)
-			? model.myRef
-			: null
+		const myRef = model && model.myRef ? model.myRef : null
 
 		return (
 			<Tag
@@ -55,8 +52,8 @@ class OboComponent extends React.Component {
 				className={className}
 				// id={this.props.model.getDomId()}
 				data-obo-component
-				// data-id={this.props.model.get('id')}
-				// data-type={this.props.model.get('type')}
+				data-id={this.props.model.attributes.id}
+				data-type={this.props.model.attributes.type}
 				// data-focussed={isFocussed}
 				ref={myRef}
 				// tabIndex={this.props.tabIndex || this.props.tabIndex === 0 ? this.props.tabIndex : -1}

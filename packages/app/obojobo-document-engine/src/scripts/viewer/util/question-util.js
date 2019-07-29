@@ -88,7 +88,7 @@ const QuestionUtil = {
 	},
 
 	getViewState(state, model) {
-		const modelId = model.get('id')
+		const modelId = model.attributes.id
 
 		if (state.viewing === modelId) {
 			return 'active'
@@ -101,21 +101,21 @@ const QuestionUtil = {
 
 	getResponse(state, model, context) {
 		if (!state.responses[context]) return null
-		return state.responses[context][model.get('id')] || null
+		return state.responses[context][model.attributes.id] || null
 	},
 
 	getData(state, model, key) {
-		return state.data[model.get('id') + ':' + key] || false
+		return state.data[model.attributes.id + ':' + key] || false
 	},
 
 	isShowingExplanation(state, model) {
-		return state.data[model.get('id') + ':showingExplanation'] || false
+		return state.data[model.attributes.id + ':showingExplanation'] || false
 	},
 
 	getScoreForModel(state, model, context) {
 		let scoreItem
 		if (state.scores[context] !== null && typeof state.scores[context] !== 'undefined') {
-			scoreItem = state.scores[context][model.get('id')]
+			scoreItem = state.scores[context][model.attributes.id]
 		}
 
 		return scoreItem === null ||
@@ -127,13 +127,13 @@ const QuestionUtil = {
 	},
 
 	setScore(itemId, score, context) {
-		return Dispatcher.trigger('question:scoreSet', {
-			value: {
-				itemId,
-				score,
-				context
-			}
-		})
+		// return Dispatcher.trigger('question:scoreSet', {
+		// 	value: {
+		// 		itemId,
+		// 		score,
+		// 		context
+		// 	}
+		// })
 	},
 
 	clearScore(itemId, context) {

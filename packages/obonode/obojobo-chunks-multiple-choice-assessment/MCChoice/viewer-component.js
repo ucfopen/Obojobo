@@ -28,30 +28,30 @@ const getInputType = responseType => {
 	}
 }
 
-// const choiceIsSelected = (questionState, model, navStateContext) => {
-// 	const response = QuestionUtil.getResponse(
-// 		questionState,
-// 		model.getParentOfType(QUESTION_TYPE),
-// 		navStateContext
-// 	) || { ids: [] }
+const choiceIsSelected = (questionState, model, navStateContext) => {
+	const response = QuestionUtil.getResponse(
+		questionState,
+		model.getParentOfType(QUESTION_TYPE),
+		navStateContext
+	) || { ids: [] }
 
-// 	return response.ids.indexOf(model.get('id')) !== -1
-// }
+	return response.ids.indexOf(model.get('id')) !== -1
+}
 
-// const getQuestionModel = model => model.getParentOfType(QUESTION_TYPE)
+const getQuestionModel = model => model.getParentOfType(QUESTION_TYPE)
 
-// const answerIsCorrect = (model, mode, questionState, navStateContext) => {
-// 	let score
-// 	if (mode === 'review') {
-// 		// no score data for this context? no idea what to do, throw an error
-// 		if (!questionState.scores[navStateContext]) throw 'Unknown Question State'
+const answerIsCorrect = (model, mode, questionState, navStateContext) => {
+	let score
+	if (mode === 'review') {
+		// no score data for this context? no idea what to do, throw an error
+		if (!questionState.scores[navStateContext]) throw 'Unknown Question State'
 
-// 		score = QuestionUtil.getScoreForModel(questionState, getQuestionModel(model), navStateContext)
-// 	} else {
-// 		score = model.modelState.score
-// 	}
-// 	return score === 100
-// }
+		score = QuestionUtil.getScoreForModel(questionState, getQuestionModel(model), navStateContext)
+	} else {
+		score = model.modelState.score
+	}
+	return score === 100
+}
 
 const renderAnswerFlag = type => {
 	let flagEl
@@ -107,32 +107,32 @@ const getChoiceText = (isCorrect, isTypePickAll) => {
 }
 
 const MCChoice = props => {
-	let isCorrect = false
+	let isCorrect
 
-	// try {
-	// 	isCorrect = answerIsCorrect(
-	// 		props.model,
-	// 		props.mode,
-	// 		props.moduleData.questionState,
-	// 		props.moduleData.navState.context
-	// 	)
-	// } catch (error) {
-	// 	// if there's no questionState data for this
-	// 	// or getting the score throws an error
-	// 	// just display a div
-	// 	return <div />
-	// }
+	try {
+		isCorrect = answerIsCorrect(
+			props.model,
+			props.mode,
+			props.moduleData.questionState,
+			// props.moduleData.navState.context
+			'practice'
+		)
+	} catch (error) {
+		// if there's no questionState data for this
+		// or getting the score throws an error
+		// just display a div
+		return <div />
+	}
 
-	// const isSelected = choiceIsSelected(
-	// 	props.moduleData.questionState,
-	// 	props.model,
-	// 	props.moduleData.navState.context
-	// )
-	const { isSelected, responseType, questionSubmitted } = props
-	// const ansType = getAnsType(props.model, isCorrect, isSelected)
-	let ansType = ''
-	if (questionSubmitted) ansType = getAnsType(props.model, isCorrect, isSelected)
-	const inputType = getInputType(responseType)
+	const isSelected = choiceIsSelected(
+		props.moduleData.questionState,
+		props.model,
+		// props.moduleData.navState.context
+		'practice'
+	)
+
+	const ansType = getAnsType(props.model, isCorrect, isSelected)
+	const inputType = getInputType(props.responseType)
 
 	let flag
 	if (props.mode === 'review') {
@@ -141,7 +141,7 @@ const MCChoice = props => {
 
 	const className =
 		'obojobo-draft--chunks--mc-assessment--mc-choice' +
-		isOrNot(props.isSelected, 'selected') +
+		isOrNot(isSelected, 'selected') +
 		isOrNot(isCorrect, 'correct') +
 		` is-type-${ansType}` +
 		` is-mode-${props.mode}`
@@ -162,7 +162,6 @@ const MCChoice = props => {
 				role={inputType}
 				aria-checked={isSelected}
 				disabled={props.mode === 'review'}
-				onClick={!props.questionSubmitted ? props.onClick : null}
 			/>
 			{isSelected && props.questionSubmitted && props.mode !== 'review' ? (
 				<span className="for-screen-reader-only">

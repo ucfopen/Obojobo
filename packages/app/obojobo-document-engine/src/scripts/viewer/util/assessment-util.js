@@ -7,7 +7,7 @@ import QuestionUtil from '../../viewer/util/question-util'
 const AssessmentUtil = {
 	getAssessmentForModel(state, model) {
 		let assessmentModel
-		if (model.get('type') === 'ObojoboDraft.Sections.Assessment') {
+		if (model.attributes.type === 'ObojoboDraft.Sections.Assessment') {
 			assessmentModel = model
 		} else {
 			assessmentModel = model.getParentOfType('ObojoboDraft.Sections.Assessment')
@@ -17,7 +17,7 @@ const AssessmentUtil = {
 			return null
 		}
 
-		const assessment = state.assessments[assessmentModel.get('id')]
+		const assessment = state.assessments[assessmentModel.attributes.id]
 		if (!assessment) {
 			return null
 		}
