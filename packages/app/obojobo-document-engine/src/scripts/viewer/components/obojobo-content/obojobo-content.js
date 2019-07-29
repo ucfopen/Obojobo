@@ -1,26 +1,31 @@
 import React, { useRef, useEffect } from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { Registry } from 'Common'
 
 const ObojoboContent = props => {
-	const { moduleData, oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = props
+	const { moduleData } = props
+	// Get states from Redux store
+	const { oboNodeList, adjList, navList, currentNavIndex, currFocusNode } = useSelector(
+		state => state
+	)
 
-	const currRef = useRef(null)
+	const currNavRef = useRef(null)
 
 	useEffect(() => {
 		// Scroll to current active component
-		if (currRef && currRef.current) {
+		if (currNavRef && currNavRef.current) {
 			const scrollIntoViewOptions = {
 				behavior: 'smooth'
 			}
-			currRef.current.scrollIntoView(scrollIntoViewOptions)
+			currNavRef.current.scrollIntoView(scrollIntoViewOptions)
 		}
 	}, [currFocusNode])
 
-	const componentRenderer = index => {
+	const componentRenderer = oboNodeIndex => {
+		const currNode = oboNodeList[oboNodeIndex]
 		// Nodes that are not work
-		switch (oboNodeList[index].attributes.type) {
+		switch (currNode.attributes.type) {
 			case 'ObojoboDraft.Sections.Assessment':
 			case 'ObojoboDraft.Chunks.MCAssessment.MCChoice':
 			case 'ObojoboDraft.Chunks.MCAssessment.MCFeedback':
@@ -30,33 +35,23 @@ const ObojoboContent = props => {
 				break
 		}
 
-		const Component = Registry.getItemForType(oboNodeList[index].attributes.type).componentClass
+		const Component = Registry.getItemForType(currNode.attributes.type).componentClass
 		const model = {
-			...oboNodeList[index],
-			myRef: index === currFocusNode ? currRef : null
+			...currNode,
+			myRef: oboNodeIndex === currFocusNode ? currNavRef : null
 		}
 		return (
-			<Component model={model} moduleData={moduleData} index={index}>
-				{adjList[index].map(childIndex => {
+			<Component model={model} moduleData={moduleData} index={oboNodeIndex}>
+				{adjList[oboNodeIndex].map(childIndex => {
 					return componentRenderer(childIndex)
 				})}
 			</Component>
 		)
 	}
 
-	const Module = Registry.getItemForType(oboNodeList[0].attributes.type).componentClass
-
-	return <Module model={oboNodeList[0]}>{componentRenderer(navList[currentNavIndex])}</Module>
+	const rootNode = oboNodeList[0]
+	const Module = Registry.getItemForType(rootNode.attributes.type).componentClass
+	return <Module model={rootNode}>{componentRenderer(navList[currentNavIndex])}</Module>
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, navList, currentNavIndex, currFocusNode }) => {
-	return {
-		oboNodeList,
-		adjList,
-		navList,
-		currentNavIndex,
-		currFocusNode
-	}
-}
-
-export default connect(mapStateToProps)(ObojoboContent)
+export default ObojoboContent
