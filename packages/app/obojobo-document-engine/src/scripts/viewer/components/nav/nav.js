@@ -1,7 +1,7 @@
 import './nav.scss'
 
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Logo from '../logo'
@@ -13,7 +13,8 @@ const { Button } = Common.components
 const { StyleableText, StyleableTextComponent } = Common.text
 const { isOrNot } = Common.util
 
-const Nav = props => {
+const Nav = () => {
+	// Get states from Redux Store
 	const {
 		oboNodeList,
 		adjList,
@@ -22,7 +23,10 @@ const Nav = props => {
 		currFocusNode,
 		isNavEnabled,
 		isNavLocked
-	} = props
+	} = useSelector(state => state)
+
+	// Get actions from Redux Store
+	const dispatch = useDispatch()
 
 	const rendererNavSubItem = () => {
 		return adjList[navList[currentNavIndex]].map(childIndex => {
@@ -40,7 +44,7 @@ const Nav = props => {
 				<NavSubItem
 					key={childIndex}
 					label={textGroup[0].text.value}
-					onClick={() => props.updateFocusNode(childIndex)}
+					onClick={() => dispatch({ type: 'ON_SET_CURR_FOCUS', payload: { index: childIndex } })}
 					className={className}
 				/>
 			)
@@ -63,7 +67,7 @@ const Nav = props => {
 						key={navIndex}
 						index={navIndex}
 						label={oboNodeList[navIndex].attributes.content.title}
-						onClick={() => props.updateNavItem(index)}
+						onClick={() => dispatch({ type: 'UPDATE_NAV', payload: { value: index } })}
 						className={className}
 						lockEl={lockEl}
 					/>
@@ -85,7 +89,7 @@ const Nav = props => {
 			>
 				Skip Navigation
 			</Button>
-			<button className="toggle-button" onClick={props.onNavToggle}>
+			<button className="toggle-button" onClick={() => dispatch({ type: 'ON_SET_NAV_ENABLE' })}>
 				Toggle Navigation Menu
 			</button>
 			<ul aria-hidden={!isNavEnabled} tabIndex="-1">
@@ -97,35 +101,4 @@ const Nav = props => {
 	)
 }
 
-const mapStateToProps = ({
-	oboNodeList,
-	adjList,
-	navList,
-	currentNavIndex,
-	isNavEnabled,
-	isNavLocked,
-	currFocusNode
-}) => {
-	return {
-		oboNodeList,
-		adjList,
-		navList,
-		currentNavIndex,
-		isNavEnabled,
-		isNavLocked,
-		currFocusNode
-	}
-}
-
-const mapDispatchToProops = dispatch => {
-	return {
-		updateNavItem: index => dispatch({ type: 'UPDATE_NAV', payload: { value: index } }),
-		onNavToggle: () => dispatch({ type: 'ON_SET_NAV_ENABLE' }),
-		updateFocusNode: index => dispatch({ type: 'ON_SET_CURR_FOCUS', payload: { index } })
-	}
-}
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProops
-)(Nav)
+export default Nav
