@@ -1,3 +1,5 @@
+const { uuid } = Common.util
+
 const initialState = {
 	// Model State in Graph Theory Structure
 	oboNodeList: [],
@@ -9,6 +11,18 @@ const initialState = {
 	currNavIndex: 0,
 	isNavEnabled: true,
 	isNavLocked: false,
+	navState: {
+		items: {},
+		itemsById: {},
+		itemsByPath: {},
+		itemsByFullPath: {},
+		navTargetHistory: [],
+		navTargetId: null,
+		locked: false,
+		open: true,
+		context: 'practice',
+		visitId: null
+	},
 
 	// Focus State
 	currFocusNode: 0,
@@ -18,6 +32,15 @@ const initialState = {
 		shown: {},
 		zoomById: {},
 		defaultZoomById: {}
+	},
+
+	// Question State
+	questionState: {
+		viewing: null,
+		viewedQuestions: {},
+		scores: {},
+		responses: {},
+		data: {}
 	}
 }
 
@@ -34,6 +57,16 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				...convertObjectToAdjList(payload.oboNodeObject)
+			}
+		case 'UPDATE_STATES':
+			return {
+				...state,
+				...payload
+			}
+		case 'UPDATE_NAV_STATE':
+			return {
+				...state,
+				...updateNavState()
 			}
 		case 'ON_SET_NAV_WITH_ID':
 			let updatedNavIndex = state.currNavIndex
@@ -114,9 +147,137 @@ const reducer = (state = initialState, action) => {
 				...state,
 				...onResetZoom(state, payload)
 			}
+
+		case 'VIEW_QUESTION':
+			return {
+				...state,
+				...viewQuestion(state, payload)
+			}
+		case 'SET_QUESTION_RESPONSE':
+			return {
+				...state,
+				...setQuestionResponse(state, payload)
+			}
+		case 'SET_QUESTION_SCORE':
+			return {
+				...state,
+				...setQuestionScore(state, payload)
+			}
+		case 'SET_QUESTION_DATA':
+			return {
+				...state,
+				...setQuestionData(state, payload)
+			}
+		case 'ON_RETRY_QUESTION':
+			return {
+				...state,
+				...onRetryQuestion(state, payload)
+			}
 		default:
 			return state
 	}
+}
+
+const onRetryQuestion = (state, payload) => {
+	const questionState = { ...state.questionState }
+	const questionId = payload.value.id
+	// const questionModel = oboNodeList[mapIdToIndex[questionId]]
+	// const root = questionModel.getRoot()
+
+	delete questionState.responses[payload.value.context][questionId]
+
+	// APIUtil.postEvent({
+	// 	draftId: root.get('draftId'),
+	// 	action: 'question:retry',
+	// 	eventVersion: '1.0.0',
+	// 	visitId: NavStore.getState().visitId,
+	// 	payload: {
+	// 		questionId: questionId
+	// 	}
+	// })
+
+	// if (QuestionUtil.isShowingExplanation(this.state, questionModel)) {
+	// 	QuestionUtil.hideExplanation(questionId, 'viewerClient')
+	// }
+
+	delete questionState.scores[payload.value.context][questionId]
+	return { questionState }
+}
+
+const setQuestionData = (state, payload) => {
+	const questionState = { ...state.questionState }
+	questionState.data[payload.value.key] = payload.value.value
+
+	return { questionState }
+}
+
+const setQuestionScore = (state, payload) => {
+	const questionState = { ...state.questionState }
+	const scoreId = uuid()
+
+	if (!questionState.scores[payload.value.context]) questionState.scores[payload.value.context] = {}
+
+	questionState.scores[payload.value.context][payload.value.itemId] = {
+		id: scoreId,
+		score: payload.value.score,
+		itemId: payload.value.itemId
+	}
+
+	return { questionState }
+	// if (payload.value.score === 100) {
+	// 	FocusUtil.clearFadeEffect()
+	// }
+
+	// this.triggerChange()
+
+	// model = OboModel.models[payload.value.itemId]
+	// APIUtil.postEvent({
+	// 	draftId: model.getRoot().get('draftId'),
+	// 	action: 'question:scoreSet',
+	// 	eventVersion: '1.0.0',
+	// 	visitId: NavStore.getState().visitId,
+	// 	payload: {
+	// 		id: scoreId,
+	// 		itemId: payload.value.itemId,
+	// 		score: payload.value.score,
+	// 		context: payload.value.context
+	// 	}
+	// })
+}
+
+const setQuestionResponse = (state, payload) => {
+	const questionState = state.questionState
+
+	const id = payload.value.id
+	const context = payload.value.context
+	if (!questionState.responses[context]) questionState.responses[context] = {}
+	questionState.responses[context][id] = payload.value.response
+
+	return { questionState }
+	// this.triggerChange()
+	// APIUtil.postEvent({
+	// 	draftId: OboModel.getRoot().get('draftId'),
+	// 	action: 'question:setResponse',
+	// 	eventVersion: '2.1.0',
+	// 	visitId: NavStore.getState().visitId,
+	// 	payload: {
+	// 		questionId: id,
+	// 		response: payload.value.response,
+	// 		targetId: payload.value.targetId,
+	// 		context,
+	// 		assessmentId: payload.value.assessmentId,
+	// 		attemptId: payload.value.attemptId
+	// 	}
+	// })
+}
+
+const viewQuestion = (state, payload) => {
+	const questionState = state.questionState
+
+	questionState.viewedQuestions[payload.value.id] = true
+	questionState.viewing = payload.value.id
+
+	return { questionState }
 }
 
 const onResetZoom = (state, payload) => {
@@ -137,7 +298,7 @@ const onSetZoom = (state, payload) => {
 	const mediaState = state.mediaState
 	mediaState.zoomById[id] = zoom
 
-	return mediaState
+	return { mediaState }
 }
 
 const onShowMedia = (state, payload) => {
@@ -145,6 +306,8 @@ const onShowMedia = (state, payload) => {
 
 	const mediaState = state.mediaState
 	mediaState.shown[id] = true
+
+	return { mediaState }
 }
 
 const setDefaultZoom = (state, payload) => {
@@ -153,10 +316,11 @@ const setDefaultZoom = (state, payload) => {
 
 	zoom = zoom > 0 ? zoom : 1
 
-	if (!state.defaultZoomById) state.defaultZoomById = {}
-	state.defaultZoomById[id] = zoom
+	const mediaState = state.mediaState
+	if (!mediaState.defaultZoomById) mediaState.defaultZoomById = {}
+	mediaState.defaultZoomById[id] = zoom
 
-	return state
+	return { mediaState }
 }
 
 const updateNav = (state, payload) => {
@@ -164,7 +328,6 @@ const updateNav = (state, payload) => {
 	const newFocusNode = state.adjList[newNavNode][0]
 
 	return {
-		...state,
 		currNavIndex: payload.value,
 		currFocusNode: newFocusNode
 	}

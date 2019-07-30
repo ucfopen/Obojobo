@@ -10,7 +10,6 @@ const MCAssessmentSubmitAndResultsFooter = props => {
 	const isAnswerScored = score !== null // Question has been submitted in practice or scored by server in assessment
 	const isAnAnswerChosen = props.isAnAnswerChosen
 	const isPractice = props.isPractice
-	console.log('score', score)
 
 	return (
 		<div className="submit-and-result-container">

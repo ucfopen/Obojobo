@@ -133,6 +133,7 @@ class ViewerApp extends React.Component {
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 
+				this.props.updateReduxStates({ visitId: visit.value.visitId })
 				visitIdFromApi = visit.value.visitId
 				viewState = visit.value.viewState
 				attemptHistory = visit.value.extensions[':ObojoboDraft.Sections.Assessment:attemptHistory']
@@ -153,6 +154,26 @@ class ViewerApp extends React.Component {
 				// 	visitIdFromApi,
 				// 	viewState
 				// )
+				this.props.updateReduxStates({
+					navState: {
+						items: {},
+						itemsById: {},
+						itemsByPath: {},
+						itemsByFullPath: {},
+						navTargetHistory: [],
+						navTargetId: null,
+						context: 'practice',
+						locked:
+							viewState['nav:isLocked'] !== null && typeof viewState['nav:isLocked'] !== 'undefined'
+								? viewState['nav:isLocked'].value
+								: false,
+						open:
+							viewState['nav:isOpen'] !== null && typeof viewState['nav:isOpen'] !== 'undefined'
+								? viewState['nav:isOpen'].value
+								: true,
+						visitId: visitIdFromApi
+					}
+				})
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose
@@ -652,7 +673,8 @@ const mapStateToProps = ({ oboNodeList, adjList, isNavEnabled, isNavLocked }) =>
 const mapDispatchToProops = dispatch => {
 	return {
 		updateStore: oboNodeObject => dispatch({ type: 'UPDATE_STORE', payload: { oboNodeObject } }),
-		updateStoreModel: model => dispatch({ type: 'UPDATE_STORE_MODEL', payload: { model } })
+		updateStoreModel: model => dispatch({ type: 'UPDATE_STORE_MODEL', payload: { model } }),
+		updateReduxStates: payload => dispatch({ type: 'UPDATE_STATES', payload })
 	}
 }
 

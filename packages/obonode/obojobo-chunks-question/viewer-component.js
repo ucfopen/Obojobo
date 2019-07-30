@@ -1,6 +1,7 @@
 import './viewer-component.scss'
 
 import React from 'react'
+import { connect } from 'react-redux'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
@@ -8,6 +9,7 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 const { OboComponent } = Viewer.components
 const { FocusUtil, QuestionUtil } = Viewer.util
+const { Registry } = Common
 const { Button } = Common.components
 const { focus } = Common.page
 
@@ -16,7 +18,7 @@ import QuestionContent from './Content/viewer-component'
 // 0.4s Card "flip" time plus an extra 50ms to handle delay
 const DURATION_FLIP_TIME_MS = 450
 
-export default class Question extends React.Component {
+class Question extends React.Component {
 	constructor() {
 		super()
 
@@ -46,10 +48,10 @@ export default class Question extends React.Component {
 	}
 
 	onClickBlocker() {
-		// QuestionUtil.viewQuestion(this.props.model.get('id'))
-		// const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		this.props.viewQuestion(this.props.model.attributes.id)
+		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
-		// FocusUtil.focusComponent(this.props.model.get('id'), { fade: mode === 'practice' })
+		// FocusUtil.focusComponent(this.props.model.attributes.id, { fade: mode === 'practice' })
 
 		this.applyFlipCSS()
 	}
@@ -59,7 +61,7 @@ export default class Question extends React.Component {
 	// transforms, which can cause rendering issues.
 	applyFlipCSS() {
 		this.setState({ isFlipping: true })
-		// setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
+		setTimeout(() => this.setState({ isFlipping: false }), DURATION_FLIP_TIME_MS)
 	}
 
 	render() {
@@ -67,35 +69,34 @@ export default class Question extends React.Component {
 			return this.renderContentOnly()
 		}
 
-		// const score = QuestionUtil.getScoreForModel(
-		// 	this.props.moduleData.questionState,
-		// 	this.props.model,
-		// 	this.props.moduleData.navState.context
-		// )
-		// const viewState = QuestionUtil.getViewState(
-		// 	this.props.moduleData.questionState,
-		// 	this.props.model
-		// )
+		const score = QuestionUtil.getScoreForModel(
+			this.props.questionState,
+			this.props.model,
+			this.props.navState.context
+		)
+		const viewState = QuestionUtil.getViewState(this.props.questionState, this.props.model)
 
 		// const assessment = this.props.model.children.models[this.props.model.children.models.length - 1]
-
-		// const AssessmentComponent = assessment.getComponentClass()
+		const { oboNodeList, adjList, index } = this.props
+		const assessment = oboNodeList[adjList[index][adjList[index].length - 1]]
+		const AssessmentComponent = Registry.getItemForType(assessment.attributes.type).componentClass
 
 		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
-		let scoreClassName = ' is-correct'
-		// switch (score) {
-		// 	case null:
-		// 		scoreClassName = ''
-		// 		break
 
-		// 	case 100:
-		// 		scoreClassName = ' is-correct'
-		// 		break
+		let scoreClassName
+		switch (score) {
+			case null:
+				scoreClassName = ''
+				break
 
-		// 	default:
-		// 		scoreClassName = ' is-not-correct'
-		// 		break
-		// }
+			case 100:
+				scoreClassName = ' is-correct'
+				break
+
+			default:
+				scoreClassName = ' is-not-correct'
+				break
+		}
 
 		let startQuestionAriaLabel
 		if (mode === 'practice') {
@@ -108,10 +109,8 @@ export default class Question extends React.Component {
 		const classNames =
 			'obojobo-draft--chunks--question' +
 			scoreClassName +
-			// (mode === 'review' ? ' is-active' : ` is-${viewState}`) +
-			// +' is-viewed' +
-			// ` is-mode-${'hidden'}` +
-			isOrNot(this.state.isFlipping, 'viewed') +
+			(mode === 'review' ? ' is-active' : ` is-${viewState}`) +
+			` is-mode-${mode}` +
 			isOrNot(this.state.isFlipping, 'flipping')
 
 		return (
@@ -124,22 +123,24 @@ export default class Question extends React.Component {
 			>
 				<div className="flipper">
 					<div className="content-back">
-						{/* <QuestionContent model={this.props.model} moduleData={this.props.moduleData}>
-							{this.props.children}
-						</QuestionContent> */}
-						{this.props.children}
-						{/* <AssessmentComponent
-							key={assessment.get('id')}
+						<QuestionContent
+							index={index}
+							model={this.props.model}
+							moduleData={this.props.moduleData}
+						/>
+						<AssessmentComponent
+							index={index}
+							key={assessment.attributes.id}
 							model={assessment}
 							moduleData={this.props.moduleData}
 							mode={mode}
-						/> */}
+						/>
 					</div>
 					<div className="blocker-front" key="blocker" onClick={this.onClickBlocker.bind(this)}>
 						<Button
 							value={mode === 'practice' ? 'Try Question' : 'Start Question'}
 							ariaLabel={startQuestionAriaLabel}
-							// disabled={viewState !== 'hidden'}
+							disabled={viewState !== 'hidden'}
 						/>
 					</div>
 				</div>
@@ -148,17 +149,17 @@ export default class Question extends React.Component {
 	}
 
 	renderContentOnly() {
-		// const score = QuestionUtil.getScoreForModel(
-		// 	this.props.moduleData.questionState,
-		// 	this.props.model,
-		// 	this.props.moduleData.navState.context
-		// )
+		const score = QuestionUtil.getScoreForModel(
+			this.props.questionState,
+			this.props.model,
+			this.props.navState.context
+		)
 
-		// const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
+		const mode = this.props.mode ? this.props.mode : this.props.model.modelState.mode
 
 		const className =
 			'obojobo-draft--chunks--question' +
-			// isOrNot(score === 100, 'correct') +
+			isOrNot(score === 100, 'correct') +
 			' is-active' +
 			` is-mode-${mode}`
 
@@ -173,8 +174,7 @@ export default class Question extends React.Component {
 			>
 				<div className="flipper">
 					<div className="content-back">
-						{/* <QuestionContent model={this.props.model} moduleData={this.props.moduleData} /> */}
-						{this.props.children}
+						<QuestionContent model={this.props.model} moduleData={this.props.moduleData} />
 						<div className="pad responses-hidden">(Responses Hidden)</div>
 					</div>
 				</div>
@@ -182,3 +182,23 @@ export default class Question extends React.Component {
 		)
 	}
 }
+
+const mapStateToProps = ({ oboNodeList, adjList, navState, questionState }) => {
+	return {
+		oboNodeList,
+		adjList,
+		navState,
+		questionState
+	}
+}
+
+const mapDispatchToProops = dispatch => {
+	return {
+		viewQuestion: id => dispatch({ type: 'VIEW_QUESTION', payload: { value: { id } } })
+	}
+}
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProops
+)(Question)

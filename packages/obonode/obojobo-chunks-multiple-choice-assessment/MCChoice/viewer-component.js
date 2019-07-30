@@ -1,7 +1,9 @@
 import './viewer-component.scss'
 
-import { CSSTransition } from 'react-transition-group'
 import React from 'react'
+import { useSelector } from 'react-redux'
+
+import { CSSTransition } from 'react-transition-group'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
@@ -107,16 +109,12 @@ const getChoiceText = (isCorrect, isTypePickAll) => {
 }
 
 const MCChoice = props => {
+	// Get State from Redux
+	const { navState, questionState } = useSelector(state => state)
 	let isCorrect
 
 	try {
-		isCorrect = answerIsCorrect(
-			props.model,
-			props.mode,
-			props.moduleData.questionState,
-			// props.moduleData.navState.context
-			'practice'
-		)
+		isCorrect = answerIsCorrect(props.model, props.mode, questionState, navState.context)
 	} catch (error) {
 		// if there's no questionState data for this
 		// or getting the score throws an error
@@ -124,12 +122,7 @@ const MCChoice = props => {
 		return <div />
 	}
 
-	const isSelected = choiceIsSelected(
-		props.moduleData.questionState,
-		props.model,
-		// props.moduleData.navState.context
-		'practice'
-	)
+	const isSelected = choiceIsSelected(questionState, props.model, navState.context)
 
 	const ansType = getAnsType(props.model, isCorrect, isSelected)
 	const inputType = getInputType(props.responseType)

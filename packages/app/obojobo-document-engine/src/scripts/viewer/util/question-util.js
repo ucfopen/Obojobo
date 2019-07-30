@@ -127,13 +127,13 @@ const QuestionUtil = {
 	},
 
 	setScore(itemId, score, context) {
-		// return Dispatcher.trigger('question:scoreSet', {
-		// 	value: {
-		// 		itemId,
-		// 		score,
-		// 		context
-		// 	}
-		// })
+		return Dispatcher.trigger('question:scoreSet', {
+			value: {
+				itemId,
+				score,
+				context
+			}
+		})
 	},
 
 	clearScore(itemId, context) {

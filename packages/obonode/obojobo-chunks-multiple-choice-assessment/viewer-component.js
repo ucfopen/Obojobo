@@ -11,6 +11,7 @@ import MCAssessmentExplanation from './mc-assessment-explanation'
 import MCAssessmentSubmitAndResultsFooter from './mc-assessment-submit-and-results-footer'
 import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import { isThisSecond } from 'date-fns'
 
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
@@ -54,6 +55,10 @@ class MCAssessment extends React.Component {
 		this.incorrectLabels = incorrectLabels ? incorrectLabels : DEFAULT_INCORRECT_LABELS
 		this.updateFeedbackLabels()
 		this.sortIds()
+
+		this.state = {
+			responses: []
+		}
 	}
 
 	getQuestionParentNode(index) {
@@ -70,9 +75,9 @@ class MCAssessment extends React.Component {
 
 	getResponseData() {
 		const questionResponse = QuestionUtil.getResponse(
-			this.props.moduleData.questionState,
+			this.props.questionState,
 			this.getQuestionModel(),
-			'practice'
+			this.props.navState.context
 		) || { ids: [] }
 
 		const correct = new Set()
@@ -129,7 +134,13 @@ class MCAssessment extends React.Component {
 	}
 
 	retry() {
-		QuestionUtil.retryQuestion(this.getQuestionModel().attributes.id, 'practice')
+		this.props.retryQuestion({
+			value: {
+				id: this.getQuestionModel().attributes.id,
+				context: this.props.navState.context
+			}
+		})
+		// QuestionUtil.retryQuestion(this.getQuestionModel().attributes.id, this.props.navState.context)
 	}
 
 	hideExplanation() {
@@ -183,9 +194,9 @@ class MCAssessment extends React.Component {
 		switch (this.props.model.modelState.responseType) {
 			case 'pick-all': {
 				response = QuestionUtil.getResponse(
-					this.props.moduleData.questionState,
+					this.props.questionState,
 					questionModel,
-					'practice'
+					this.props.navState.context
 				) || {
 					ids: []
 				}
@@ -193,8 +204,16 @@ class MCAssessment extends React.Component {
 
 				if (responseIndex === -1) {
 					response.ids.push(mcChoiceId)
+					this.setState({
+						...this.state,
+						responses: [...this.state.responses, mcChoiceId]
+					})
 				} else {
 					response.ids.splice(responseIndex, 1)
+					this.setState({
+						...this.state,
+						responses: this.state.responses.splice(responseIndex, 1)
+					})
 				}
 
 				break
@@ -204,73 +223,121 @@ class MCAssessment extends React.Component {
 				response = {
 					ids: [mcChoiceId]
 				}
+				this.setState({
+					...this.state,
+					responses: [mcChoiceId]
+				})
 				break
 		}
 
 		this.nextFocus = FOCUS_TARGET_RESULTS
 
-		QuestionUtil.setResponse(
-			questionModel.attributes.id,
-			response,
-			mcChoiceId,
-			'practice',
-			'practice'.split(':')[1],
-			'practice'.split(':')[2]
-		)
+		this.props.setQuestionResponse({
+			value: {
+				id: questionModel.attributes.id,
+				response,
+				targetId: mcChoiceId,
+				context: this.props.navState.context,
+				assessmentId: this.props.navState.context.split(':')[1],
+				attemptId: this.props.navState.context.split(':')[2]
+			}
+		})
+		// QuestionUtil.setResponse(
+		// 	questionModel.attributes.id,
+		// 	response,
+		// 	mcChoiceId,
+		// 	this.props.navState.context,
+		// 	this.props.navState.context.split(':')[1],
+		// 	this.props.navState.context.split(':')[2]
+		// )
 	}
 
 	onFormSubmit(event) {
 		event.preventDefault()
 
-		QuestionUtil.setScore(this.getQuestionModel().attributes.id, this.calculateScore(), 'practice')
+		this.props.setScore({
+			value: {
+				itemId: this.getQuestionModel().attributes.id,
+				score: this.calculateScore(),
+				context: this.props.navState.context
+			}
+		})
+		// QuestionUtil.setScore(
+		// 	this.getQuestionModel().attributes.id,
+		// 	this.calculateScore(),
+		// 	this.props.navState.context
+		// )
 		this.updateFeedbackLabels()
-		QuestionUtil.checkAnswer(this.getQuestionModel().attributes.id)
+		// QuestionUtil.checkAnswer(this.getQuestionModel().attributes.id)
 	}
 
 	getScore() {
-		return QuestionUtil.getScoreForModel(
-			this.props.moduleData.questionState,
-			this.getQuestionModel(),
-			'practice'
-		)
-	}
-
-	componentDidMount() {
-		Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
-	}
-
-	componentDidUpdate() {
-		this.sortIds()
-
-		switch (this.nextFocus) {
-			case FOCUS_TARGET_EXPLANATION:
-				delete this.nextFocus
-				this.refExplanation.focusOnExplanation()
-				break
-
-			case FOCUS_TARGET_RESULTS:
-				if (this.getScore() !== null) {
-					delete this.nextFocus
-					this.answerChoicesRef.current.focusOnResults()
-				}
-				break
-
-			case FOCUS_TARGET_QUESTION:
-				delete this.nextFocus
-				FocusUtil.focusComponent(this.getQuestionModel().attributes.id)
-				break
+		const { questionState, navState } = this.props
+		const model = this.getQuestionModel()
+		let scoreItem
+		if (
+			questionState.scores[navState.context] !== null &&
+			typeof questionState.scores[navState.context] !== 'undefined'
+		) {
+			scoreItem = questionState.scores[navState.context][model.attributes.id]
 		}
+
+		return scoreItem === null ||
+			typeof scoreItem === 'undefined' ||
+			scoreItem.score === null ||
+			typeof scoreItem.score === 'undefined'
+			? null
+			: scoreItem.score
+		// return QuestionUtil.getScoreForModel(
+		// 	this.props.questionState,
+		// 	this.getQuestionModel(),
+		// 	this.props.navState.context
+		// )
 	}
 
-	componentWillUnmount() {
-		Dispatcher.off('question:checkAnswer', this.onCheckAnswer)
-	}
+	// componentDidMount() {
+	// 	Dispatcher.on('question:checkAnswer', this.onCheckAnswer)
+	// }
+
+	// componentDidUpdate() {
+	// 	this.sortIds()
+
+	// 	// switch (this.nextFocus) {
+	// 	// 	case FOCUS_TARGET_EXPLANATION:
+	// 	// 		delete this.nextFocus
+	// 	// 		this.refExplanation.focusOnExplanation()
+	// 	// 		break
+
+	// 	// 	case FOCUS_TARGET_RESULTS:
+	// 	// 		if (this.getScore() !== null) {
+	// 	// 			delete this.nextFocus
+	// 	// 			this.answerChoicesRef.current.focusOnResults()
+	// 	// 		}
+	// 	// 		break
+
+	// 	// 	case FOCUS_TARGET_QUESTION:
+	// 	// 		delete this.nextFocus
+	// 	// 		FocusUtil.focusComponent(this.getQuestionModel().attributes.id)
+	// 	// 		break
+	// 	// }
+	// }
+
+	// componentWillUnmount() {
+	// 	Dispatcher.off('question:checkAnswer', this.onCheckAnswer)
+	// }
 
 	onCheckAnswer(payload) {
 		const questionId = this.getQuestionModel().attributes.id
 
 		if (payload.value.id === questionId) {
-			QuestionUtil.setScore(questionId, this.calculateScore(), 'practice')
+			this.props.setScore({
+				value: {
+					itemId: questionId,
+					score: this.calculateScore(),
+					context: this.props.navState.context
+				}
+			})
+			// QuestionUtil.setScore(questionId, this.calculateScore(), this.props.navState.context)
 		}
 	}
 
@@ -287,12 +354,18 @@ class MCAssessment extends React.Component {
 		if (!this.getSortedIds()) {
 			let ids = this.props.model.children.models.map(model => model.attributes.id)
 			if (this.props.model.modelState.shuffle) ids = _.shuffle(ids)
-			QuestionUtil.setData(this.props.model.attributes.id, 'sortedIds', ids)
+			this.props.setData({
+				value: {
+					key: this.props.model.attributes.id + ':' + 'sortedIds',
+					value: ids
+				}
+			})
+			// QuestionUtil.setData(this.props.model.attributes.id, 'sortedIds', ids)
 		}
 	}
 
 	getSortedIds() {
-		return QuestionUtil.getData(this.props.moduleData.questionState, this.props.model, 'sortedIds')
+		return QuestionUtil.getData(this.props.questionState, this.props.model, 'sortedIds')
 	}
 
 	getSortedChoiceModels() {
@@ -312,10 +385,7 @@ class MCAssessment extends React.Component {
 	}
 
 	isShowingExplanation() {
-		return QuestionUtil.isShowingExplanation(
-			this.props.moduleData.questionState,
-			this.getQuestionModel()
-		)
+		return QuestionUtil.isShowingExplanation(this.props.questionState, this.getQuestionModel())
 	}
 
 	getInstructions(responseType) {
@@ -391,11 +461,11 @@ class MCAssessment extends React.Component {
 						incorrectLabel={this.incorrectLabelToShow}
 						pickAllIncorrectMessage={PICK_ALL_INCORRECT_MESSAGE}
 					/>
-					{true || isReview ? (
+					{isPractice || isReview ? (
 						<MCAssessmentSubmitAndResultsFooter
 							score={score}
 							isAnAnswerChosen={isAnAnswerChosen}
-							isPractice={true}
+							isPractice={isPractice}
 							isTypePickAll={isTypePickAll}
 							correctLabel={this.correctLabelToShow}
 							incorrectLabel={this.incorrectLabelToShow}
@@ -403,7 +473,7 @@ class MCAssessment extends React.Component {
 							onClickReset={this.onClickReset}
 						/>
 					) : null}
-					{/* <CSSTransition
+					<CSSTransition
 						in={isShowingExplanationButtonValue}
 						classNames="submit"
 						timeout={ANIMATION_TRANSITION_TIME_MS}
@@ -424,27 +494,29 @@ class MCAssessment extends React.Component {
 						) : (
 							<span />
 						)}
-					</CSSTransition> */}
+					</CSSTransition>
 				</fieldset>
 			</OboComponent>
 		)
 	}
 }
 
-const mapStateToProps = ({ oboNodeList, adjList, isNavEnabled, isNavLocked, parent }) => {
+const mapStateToProps = ({ oboNodeList, adjList, parent, navState, questionState }) => {
 	return {
 		oboNodeList,
 		adjList,
-		isNavEnabled,
-		isNavLocked,
-		parent
+		parent,
+		navState,
+		questionState
 	}
 }
 
 const mapDispatchToProops = dispatch => {
 	return {
-		updateStore: oboNodeObject => dispatch({ type: 'UPDATE_STORE', payload: { oboNodeObject } }),
-		updateStoreModel: model => dispatch({ type: 'UPDATE_STORE_MODEL', payload: { model } })
+		setQuestionResponse: payload => dispatch({ type: 'SET_QUESTION_RESPONSE', payload }),
+		setScore: payload => dispatch({ type: 'SET_QUESTION_SCORE', payload }),
+		setData: payload => dispatch({ type: 'SET_QUESTION_DATA', payload }),
+		retryQuestion: payload => dispatch({ type: 'ON_RETRY_QUESTION', payload })
 	}
 }
 
