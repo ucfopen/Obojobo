@@ -151,14 +151,14 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('ViewerApp component with lti service', done => {
+	test('ViewerApp component displays error when the requestStatus is invalid', done => {
 		expect.assertions(1)
 		mocksForMount()
 
 		const component = mount(<ViewerApp />)
 		setTimeout(() => {
-			component.update()
 			component.instance().setState({ requestStatus: 'invalid' })
+			component.update()
 
 			expect(component.html()).toMatchSnapshot()
 
