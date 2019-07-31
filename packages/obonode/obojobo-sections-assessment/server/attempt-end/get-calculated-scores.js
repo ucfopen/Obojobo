@@ -36,17 +36,19 @@ const getCalculatedScores = (
 }
 
 const calculateScores = (assessmentModel, attemptHistory, scoreInfo) => {
-	const questionScores = []
-	let numQuestions = 0
+	const questionScores = scoreInfo.chosenAssessment
+		.filter(node => {
+			return node.type === QUESTION_NODE_TYPE
+		})
+		.map(node => {
+			return { id: node.id, score: scoreInfo.scoresByQuestionId[node.id] }
+		})
 
-	for (const node of scoreInfo.chosenAssessment) {
-		if (node.type === QUESTION_NODE_TYPE) {
-			numQuestions++
-			questionScores.push({ id: node.id, score: scoreInfo.scoresByQuestionId[node.id] })
-		}
-	}
+	// Filter out survey ('no-score') questions:
+	const gradableQuestionScores = questionScores.filter(q => Number.isFinite(q.score))
 
-	const attemptScore = scoreInfo.scores.reduce((a, b) => a + b) / numQuestions
+	const attemptScore =
+		gradableQuestionScores.reduce((acc, s) => acc + s.score, 0) / gradableQuestionScores.length
 
 	const allScores = attemptHistory
 		.map(attempt => parseFloat(attempt.result.attemptScore))

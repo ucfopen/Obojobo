@@ -66,6 +66,39 @@ describe('attempt-end/get-calculated-scores', () => {
 		})
 	})
 
+	test('returns as expected when a question is a survey type question', async () => {
+		mockAssessmentModel.yell = jest
+			.fn()
+			.mockImplementation((name, req, res, assessmentModel, responseHistory, obj) => {
+				obj.addScore('mockId_1', 20)
+				obj.addScore('mockId_2', 'no-score')
+				return []
+			})
+		const result = await getCalculatedScores(
+			mockReq,
+			mockRes,
+			mockAssessmentModel,
+			{
+				chosen: [
+					{ type: QUESTION_NODE_TYPE, id: 'mockId_1' },
+					{ type: QUESTION_NODE_TYPE, id: 'mockId_2' }
+				]
+			},
+			mockAttemptHistory,
+			mockResponseHistory
+		)
+
+		expect(result).toEqual({
+			assessmentScoreDetails: 'mockAssessmentScoreDetails',
+			attempt: {
+				attemptScore: 20,
+				questionScores: [{ id: 'mockId_1', score: 20 }, { id: 'mockId_2', score: 'no-score' }]
+			}
+		})
+
+		mockAssessmentModel.yell = mockYell
+	})
+
 	test('returns as expected when node.content.attempts is undefined', async () => {
 		delete mockAssessmentModel.node.content.attempts
 		const result = await getCalculatedScores(
