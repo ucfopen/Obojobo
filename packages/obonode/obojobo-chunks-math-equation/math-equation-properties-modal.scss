@@ -36,3 +36,18 @@
 		}
 	}
 }
+
+#katexContainer {
+	max-width: 15em;
+	margin-top: 0.3em;
+}
+
+.katex-display {
+	overflow-y: hidden;
+}
+
+#example-katex {
+	span {
+		margin: 0;
+	}
+}

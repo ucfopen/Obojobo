@@ -88,6 +88,32 @@ class MathEquationProperties extends React.Component {
 
 		return this.props.onConfirm(this.state.content)
 	}
+
+	equationGenerator() {
+		let katexHtml = getLatexHtml(this.state.content.latex)
+		if (katexHtml.error) {
+			katexHtml = ''
+		} else {
+			katexHtml = katexHtml.html
+		}
+
+		if (katexHtml.length === 0) {
+			return null
+		} else {
+			return katexHtml
+		}
+	}
+
+	latexCheck(katex) {
+		// eslint-disable-next-line
+		if (katex === '' || katex === null || katex === undefined) {
+			// eslint-disable-line no-undefined
+			return 'none'
+		} else {
+			return 'block'
+		}
+	}
+
 	render() {
 		return (
 			<SimpleDialog
@@ -96,7 +122,7 @@ class MathEquationProperties extends React.Component {
 				onConfirm={this.onConfirm.bind(this)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
-				<div className={`math-equation-properties`}>
+				<div className={`math-equation-properties`} style={{ margin: 'auto' }}>
 					<div>
 						<label>Latex Equation:</label>
 						<input
@@ -117,7 +143,8 @@ class MathEquationProperties extends React.Component {
 						<input
 							type="number"
 							step="0.1"
-							min="0.1"
+							min="0.5"
+							max="10"
 							id="obojobo-draft--chunks--math-equation--size"
 							value={this.state.content.size || 1}
 							onChange={this.handleSizeChange.bind(this)}
@@ -131,6 +158,16 @@ class MathEquationProperties extends React.Component {
 						/>
 					</div>
 					<span>{this.state.error}</span>
+				</div>
+				<div id="katexContainer" style={{ display: this.latexCheck(this.state.content.latex) }}>
+					<b id="previewTitle">Preview</b>
+					<div
+						style={{ fontSize: this.state.content.size + 'em' }}
+						aria-hidden
+						id="example-katex"
+						className={'katexPreview'}
+						dangerouslySetInnerHTML={{ __html: this.equationGenerator() }}
+					/>
 				</div>
 			</SimpleDialog>
 		)
