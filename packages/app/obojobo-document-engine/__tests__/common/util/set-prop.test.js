@@ -1,4 +1,4 @@
-import s from '../../../src/scripts/common/util/set-prop.js'
+import setProp from '../../../src/scripts/common/util/set-prop.js'
 
 describe('setProp', () => {
 	let target
@@ -8,56 +8,78 @@ describe('setProp', () => {
 	})
 
 	test('sets default values when no attrs passed', () => {
-		s(target, {}, 'propName', 'default-value')
+		setProp(target, {}, 'propName', 'default-value')
 		expect(target).toEqual({
 			propName: 'default-value'
 		})
 	})
 
 	test('sets default values when attr does not exist', () => {
-		s(target, { myProp: 'mocked-prop' }, 'propName', 'default-value')
+		setProp(target, { myProp: 'new-value' }, 'propName', 'default-value')
 		expect(target).toEqual({
 			propName: 'default-value'
 		})
 	})
 
 	test('sets values if in attrs', () => {
-		s(target, { myProp: 'test-value' }, 'myProp', 'default-value')
+		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value')
 		expect(target).toEqual({
-			myProp: 'test-value'
+			myProp: 'new-value'
 		})
 	})
 
 	test('calls set function if available', () => {
-		const setFn = jest.fn()
-		setFn.mockImplementation(x => x)
+		const transformFn = jest.fn()
+		transformFn.mockImplementation(x => x)
 
-		s(target, { myProp: 'test-value' }, 'myProp', 'default-value', setFn)
+		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value', transformFn)
 		expect(target).toEqual({
-			myProp: 'test-value'
+			myProp: 'new-value'
 		})
-		expect(setFn).toHaveBeenCalledTimes(1)
+		expect(transformFn).toHaveBeenCalledTimes(1)
+		expect(transformFn).toHaveBeenCalledWith('new-value')
+	})
+
+	test('set function value is used to alter state', () => {
+		const transformFn = jest.fn()
+		transformFn.mockReturnValue('result-from-transformFn')
+
+		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value', transformFn)
+		expect(target).toEqual({
+			myProp: 'result-from-transformFn'
+		})
+		expect(transformFn).toHaveBeenCalledTimes(1)
 	})
 
 	test('sets to default value if set function returns null', () => {
-		s(target, { myProp: 'test-value' }, 'myProp', 'default-value', () => null)
+		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value', () => null)
 		expect(target).toEqual({
 			myProp: 'default-value'
 		})
 	})
 
-	test('allowedValues restricts what is accepted', () => {
-		const setFn = jest.fn()
-		setFn.mockImplementation(x => x)
-
-		s(target, { myProp: 'test-value' }, 'myProp', 'default-value', setFn, ['other-value'])
+	test('allowedValues uses default value when requested value is not allowed', () => {
+		// desired value NOT in allowed values
+		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value', undefined, ['other-value'])
 		expect(target).toEqual({
 			myProp: 'default-value'
 		})
 
-		s(target, { myProp: 'test-value' }, 'myProp', 'default-value', setFn, ['test-value'])
+		// desired value IS in allowed values
+		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value', undefined, ['new-value'])
 		expect(target).toEqual({
-			myProp: 'test-value'
+			myProp: 'new-value'
 		})
+	})
+
+	test('when transformFn throws an error, the default value is used', () => {
+		const transformFn = jest.fn()
+		transformFn.mockImplementation(x => {throw Error('mock-error')})
+
+		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value', transformFn)
+		expect(target).toEqual({
+			myProp: 'default-value'
+		})
+
 	})
 })
