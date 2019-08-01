@@ -9,8 +9,18 @@ import './iframe-properties-modal.scss'
 class IFrameProperties extends React.Component {
 	constructor(props) {
 		super(props)
-
-		this.state = this.props.content
+		const defaultState = {
+			autoload: false,
+			border: false,
+			fit: false,
+			height: 480,
+			initialZoom: 1,
+			src: '',
+			title: '',
+			width: 640,
+			controls: ''
+		}
+		this.state = {...defaultState, ...props.content}
 		this.inputRef = React.createRef()
 	}
 
