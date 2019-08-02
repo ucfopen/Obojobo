@@ -13,7 +13,7 @@ describe('MCChoice', () => {
 	})
 
 	test('nodeName is expected value', () => {
-		expect(MCChoice.nodeName).toBe('ObojoboDraft.Chunks.MCChoice')
+		expect(MCChoice.nodeName).toBe('ObojoboDraft.Chunks.MCAssessment.MCChoice')
 	})
 
 	test('registers expected events', () => {

@@ -38,7 +38,6 @@ class Question extends React.Component {
 	}
 	addSolution() {
 		const editor = this.props.editor
-
 		const newQuestion = Block.create({
 			type: SOLUTION_NODE
 		})
