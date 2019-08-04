@@ -95,6 +95,7 @@ describe('AssessmentStore', () => {
 	beforeEach(done => {
 		jest.resetAllMocks()
 		restoreConsole = mockConsole('error')
+		APIUtil.getVisitSessionStatus.mockResolvedValue({status: 'ok'})
 		AssessmentStore.init()
 		AssessmentStore.triggerChange = jest.fn()
 		QuestionStore.init()

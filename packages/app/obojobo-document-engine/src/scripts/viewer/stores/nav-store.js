@@ -1,14 +1,16 @@
 import Common from 'Common'
-
+import NoModalModal from '../../common/components/modal/no-button-modal'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import FocusUtil from '../../viewer/util/focus-util'
+import { stopViewer, startHeartBeat } from '../../viewer/util/stop-viewer'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 
 const DEFAULT_CONTEXT = 'practice'
+let heartbeat
 
 class NavStore extends Store {
 	constructor() {
@@ -34,7 +36,7 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsByPath[payload.value.path])) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
+							draftId: this.state.draftId,
 							action: 'nav:gotoPath',
 							eventVersion: '1.0.0',
 							visitId: this.state.visitId,
@@ -55,7 +57,7 @@ class NavStore extends Store {
 					const prev = NavUtil.getPrev(this.state)
 					if (this.gotoItem(prev)) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
+							draftId: this.state.draftId,
 							action: 'nav:prev',
 							eventVersion: '1.0.0',
 							visitId: this.state.visitId,
@@ -71,7 +73,7 @@ class NavStore extends Store {
 					const next = NavUtil.getNext(this.state)
 					if (this.gotoItem(next)) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
+							draftId: this.state.draftId,
 							action: 'nav:next',
 							eventVersion: '1.0.0',
 							visitId: this.state.visitId,
@@ -86,7 +88,7 @@ class NavStore extends Store {
 					oldNavTargetId = this.state.navTargetId
 					if (this.gotoItem(this.state.itemsById[payload.value.id])) {
 						APIUtil.postEvent({
-							draftId: OboModel.getRoot().get('draftId'),
+							draftId: this.state.draftId,
 							action: 'nav:goto',
 							eventVersion: '1.0.0',
 							visitId: this.state.visitId,
@@ -99,7 +101,7 @@ class NavStore extends Store {
 				},
 				'nav:lock': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
+						draftId: this.state.draftId,
 						action: 'nav:lock',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId
@@ -108,7 +110,7 @@ class NavStore extends Store {
 				},
 				'nav:unlock': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
+						draftId: this.state.draftId,
 						action: 'nav:unlock',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId
@@ -117,7 +119,7 @@ class NavStore extends Store {
 				},
 				'nav:close': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
+						draftId: this.state.draftId,
 						action: 'nav:close',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId
@@ -126,7 +128,7 @@ class NavStore extends Store {
 				},
 				'nav:open': () => {
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
+						draftId: this.state.draftId,
 						action: 'nav:open',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId
@@ -136,7 +138,7 @@ class NavStore extends Store {
 				'nav:toggle': () => {
 					const updatedState = { open: !this.state.open }
 					APIUtil.postEvent({
-						draftId: OboModel.getRoot().get('draftId'),
+						draftId: this.state.draftId,
 						action: 'nav:toggle',
 						eventVersion: '1.0.0',
 						visitId: this.state.visitId,
@@ -169,7 +171,7 @@ class NavStore extends Store {
 		)
 	}
 
-	init(model, startingId, startingPath, visitId, viewState = {}) {
+	init(draftId, model, startingId, startingPath, visitId, viewState = {}) {
 		this.state = {
 			items: {},
 			itemsById: {},
@@ -186,9 +188,11 @@ class NavStore extends Store {
 					? viewState['nav:isOpen'].value
 					: true,
 			context: DEFAULT_CONTEXT,
-			visitId
+			visitId,
+			draftId
 		}
 
+		startHeartBeat(this.state.draftId)
 		this.buildMenu(model)
 		NavUtil.gotoPath(startingPath)
 
@@ -284,7 +288,6 @@ class NavStore extends Store {
 				.concat(childNavItem.fullPath)
 				.filter(item => item !== '')
 
-			// flatPath = ['view', model.getRoot().get('_id'), childNavItem.fullPath.join('/')].join('/')
 			const flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
 			childNavItem.fullFlatPath = [

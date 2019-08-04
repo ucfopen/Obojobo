@@ -74,6 +74,11 @@ const APIUtil = {
 		return APIUtil.get(`/api/drafts/${id}/full`).then(processJsonResults)
 	},
 
+	getVisitSessionStatus(draftId){
+		return APIUtil.get(`/api/visits/${draftId}/status`)
+			.then(processJsonResults)
+	},
+
 	requestStart(visitId, draftId) {
 		return APIUtil.post('/api/visits/start', {
 			visitId,

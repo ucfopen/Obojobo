@@ -30,6 +30,18 @@ const getDraftAndStartVisitProps = (req, res, draftDocument, visitId) => {
 		})
 }
 
+router
+	.route('/:draftId/status')
+	.get([requireCurrentUser])
+	.get((req, res) => {
+		if(req.session.visitSessions && req.session.visitSessions[req.params.draftId]){
+			res.success(true)
+			return
+		}
+
+		res.missing(false)
+	})
+
 // Start a new visit
 // mounted as /api/visits/start
 router
@@ -42,11 +54,13 @@ router
 
 		const draftId = req.currentDocument.draftId
 		const visitId = req.body.visitId
-
 		logger.log(`VISIT: Begin start visit for visitId="${visitId}", draftId="${draftId}"`)
 
 		return req
 			.getCurrentVisitFromRequest()
+			.catch(err => {
+				throw('Unable to start visit, visitId is no longer valid')
+			})
 			.then(() =>
 				Promise.all([
 					viewerState.get(
@@ -81,7 +95,6 @@ router
 			.then(launchResult => {
 				launch = launchResult
 				const { createViewerSessionLoggedInEvent } = createCaliperEvent(null, req.hostname)
-
 				return insertEvent({
 					action: 'visit:start',
 					actorTime: new Date().toISOString(),
@@ -114,6 +127,10 @@ router
 				if (req.currentVisit.is_preview === false) {
 					lti.lis_outcome_service_url = launch.reqVars.lis_outcome_service_url
 				}
+
+				// register a visitSessionId in the user's server side session
+				if(!req.session.visitSessions) req.session.visitSessions = {}
+				req.session.visitSessions[draftId] = true
 
 				res.success({
 					visitId,

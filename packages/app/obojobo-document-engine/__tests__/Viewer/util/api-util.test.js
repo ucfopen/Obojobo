@@ -453,4 +453,22 @@ describe('apiutil', () => {
 		})
 		expect(response).toEqual({ mediaId: 'mockMediaId' })
 	})
+
+	test('getVisitSessionStatus calls fetch and returns', async () =>{
+		fetch.mockResolvedValueOnce({
+			json: jest.fn().mockResolvedValueOnce({ status: 'ok' })
+		})
+		const response = await APIUtil.getVisitSessionStatus('mock-draft-id')
+		expect(fetch).toHaveBeenCalled()
+		expect(fetch.mock.calls[0][0]).toBe('/api/visits/mock-draft-id/status')
+		expect(fetch.mock.calls[0][1]).toEqual({
+				credentials: 'include',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				method: 'GET'
+		})
+		expect(response).toEqual({ status: 'ok' })
+	})
 })

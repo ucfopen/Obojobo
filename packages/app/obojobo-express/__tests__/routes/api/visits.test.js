@@ -1,20 +1,13 @@
 jest.mock('../../../routes/api/events/create_caliper_event')
 jest.mock('../../../models/visit')
 jest.mock('../../../insert_event')
-
-// make sure all Date objects use a static date
-mockStaticDate()
-
 jest.mock('../../../db')
-
 jest.unmock('express') // we'll use supertest + express for this
 
-// override requireCurrentUser to provide our own
 /* eslint-disable no-undefined */
-
 let mockCurrentUser
 let mockCurrentVisit
-const mockSaveSessionSuccess = true
+let mockSaveSessionSuccess
 jest.mock('../../../express_current_user', () => (req, res, next) => {
 	req.requireCurrentUser = () => {
 		req.currentUser = mockCurrentUser
@@ -43,27 +36,20 @@ jest.mock('../../../express_current_document', () => (req, res, next) => {
 	next()
 })
 
-// setup express server
-const request = require('supertest')
-const express = require('express')
-const bodyParser = require('body-parser')
-const app = express()
-app.use(bodyParser.json())
-app.use(oboRequire('express_current_user'))
-app.use(oboRequire('express_current_document'))
-app.use('/', oboRequire('express_response_decorator'))
-app.use('/api/', oboRequire('routes/api/visits'))
-
-// make sure all Date objects use a static date
 mockStaticDate()
 
 describe('api visits route', () => {
+	const request = require('supertest')
+	const express = require('express')
+	const bodyParser = require('body-parser')
 	const VisitModel = oboRequire('models/visit')
 	const insertEvent = oboRequire('insert_event')
 	const caliperEvent = oboRequire('routes/api/events/create_caliper_event')
 	const viewerState = oboRequire('viewer/viewer_state')
 	const db = oboRequire('db')
 	const ltiUtil = oboRequire('lti')
+	let mockSession
+	let app
 
 	beforeAll(() => {})
 	afterAll(() => {})
@@ -73,6 +59,7 @@ describe('api visits route', () => {
 		caliperEvent().createViewerSessionLoggedInEvent.mockReset()
 		ltiUtil.retrieveLtiLaunch = jest.fn()
 		viewerState.get = jest.fn()
+		mockSaveSessionSuccess = true
 		mockCurrentVisit = {
 			id: validUUID(),
 			is_preview: false,
@@ -80,8 +67,75 @@ describe('api visits route', () => {
 			resource_link_id: '12345'
 		}
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
+
+		mockSession = {}
+		app = express()
+		app.use(bodyParser.json())
+		app.use((req, res, next) => {
+			req.session = mockSession
+			next()
+		})
+		app.use(oboRequire('express_current_user'))
+		app.use(oboRequire('express_current_document'))
+		app.use('/', oboRequire('express_response_decorator'))
+		app.use('/api/', oboRequire('routes/api/visits'))
 	})
 	afterEach(() => {})
+
+	test('/mockDraftId/status requires current user', () => {
+		expect.hasAssertions()
+		mockCurrentUser = null
+		return request(app)
+			.get('/api/mockDraftId/status')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(401)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'notAuthorized')
+			})
+	})
+
+	test('/mockDraftId/status returns 200 when draftId session is valid', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99 }
+		mockSession.visitSessions = {mockDraftId: true}
+		return request(app)
+			.get('/api/mockDraftId/status')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', true)
+			})
+	})
+
+	test('/mockDraftId/status returns 404 when draftId session is not valid', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99 }
+		mockSession.visitSessions = {}
+		return request(app)
+			.get('/api/mockDraftId/status')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(404)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'missing')
+			})
+	})
+
+	test('/mockDraftId/status returns 404 when session.visitSessions isnt set', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99 }
+		mockSession.visitSessions = null
+		return request(app)
+			.get('/api/mockDraftId/status')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(404)
+				expect(response.body).toHaveProperty('status', 'error')
+				expect(response.body.value).toHaveProperty('type', 'missing')
+			})
+	})
 
 	test('/start fails without current user', () => {
 		expect.assertions(4)
@@ -148,7 +202,7 @@ describe('api visits route', () => {
 				expect(response.statusCode).toBe(403)
 				expect(response.body).toHaveProperty('status', 'error')
 				expect(response.body.value).toHaveProperty('type', 'reject')
-				expect(response.body.value).toHaveProperty('message', 'mock-fetch-reject')
+				expect(response.body.value).toHaveProperty('message', 'Unable to start visit, visitId is no longer valid')
 			})
 	})
 
@@ -211,6 +265,70 @@ describe('api visits route', () => {
 				expect(response.statusCode).toBe(200)
 				expect(response.body).toHaveProperty('status', 'ok')
 				expect(response.body.value).toMatchSnapshot()
+			})
+	})
+
+	test('/start doesnt overwrite session.visitSessions if it exists', () => {
+		expect.hasAssertions()
+		const originalVisitSession = {}
+		mockSession.visitSessions = originalVisitSession
+
+		mockCurrentUser = { id: 99 }
+		// resolve ltiLaunch lookup
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'obojobo.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		// resolve viewerState.get
+		viewerState.get.mockResolvedValueOnce('view state')
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			contentId: validUUID()
+		}
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(mockSession.visitSessions).toBe(originalVisitSession)
+				expect(mockSession.visitSessions).toEqual({
+					"00000000-0000-0000-0000-000000000000": true
+				})
+			})
+	})
+
+	test('/start creates session.visitSessions', () => {
+		expect.hasAssertions()
+
+		mockCurrentUser = { id: 99 }
+		// resolve ltiLaunch lookup
+		const launch = {
+			reqVars: {
+				lis_outcome_service_url: 'obojobo.com'
+			}
+		}
+		ltiUtil.retrieveLtiLaunch.mockResolvedValueOnce(launch)
+
+		// resolve viewerState.get
+		viewerState.get.mockResolvedValueOnce('view state')
+		mockCurrentDocument = {
+			draftId: validUUID(),
+			yell: jest.fn().mockResolvedValueOnce({ document: 'mock-document' }),
+			contentId: validUUID()
+		}
+		return request(app)
+			.post('/api/start')
+			.send({ visitId: validUUID() })
+			.then(response => {
+				expect(response.statusCode).toBe(200)
+				expect(mockSession).toHaveProperty('visitSessions')
+				expect(mockSession.visitSessions).toEqual({
+					"00000000-0000-0000-0000-000000000000": true
+				})
 			})
 	})
 
