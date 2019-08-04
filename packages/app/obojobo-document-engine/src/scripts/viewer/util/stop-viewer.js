@@ -5,7 +5,7 @@ import NoButtonModal from '../../common/components/modal/no-button-modal'
 import sysend from 'sysend'
 const { ModalUtil } = Common.util
 const { Dispatcher } = Common.flux
-const heartbeatDelay = 10000
+const heartbeatDelay = 20000
 const windowId = Math.random()
 let heartbeat
 

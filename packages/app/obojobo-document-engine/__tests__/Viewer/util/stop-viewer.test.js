@@ -68,7 +68,7 @@ describe('Stop Viewer', () => {
 		expect(APIUtil.getVisitSessionStatus.mock.calls[0][0]).toBe('mock-draft-id')
 
 		// second call after the setInterval runs
-		jest.advanceTimersByTime(10000);
+		jest.advanceTimersByTime(20000);
 		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(2)
 		expect(APIUtil.getVisitSessionStatus.mock.calls[1][0]).toBe('mock-draft-id')
 	})
