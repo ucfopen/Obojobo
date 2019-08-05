@@ -145,6 +145,53 @@ for (let i = 0; i < urlLinks.length; i++) {
 	})
 }
 
+function switchEditorFormat(format) {
+	if (!format) return
+
+	if (format === 'json') {
+		if (editor.options.mode === 'application/json') return
+
+		fetch(`/api/drafts/${editingDraftId}/full`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}
+		})
+			.then(res => res.json())
+			.then(result => JSON.stringify(result.value, null, 2))
+			.then(json => {
+				editor.setValue(json)
+				editor.setOption('mode', 'application/json')
+				editor.focus()
+			})
+			.catch(error => {
+				console.log(error)
+			})
+	} else if (format === 'xml') {
+		if (editor.options.mode === 'text/xml') return
+
+		fetch(`/api/drafts/${editingDraftId}/full`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				Accept: 'application/xml',
+				'Content-Type': 'application/xml'
+			}
+		})
+			.then(res => res.text())
+			.then(xml => {
+				editor.setValue(xml)
+				editor.setOption('mode', 'text/xml')
+				editor.focus()
+			})
+			.catch(error => {
+				console.log(error)
+			})
+	}
+}
+
 document.getElementById('button-create-new-draft').addEventListener('click', function() {
 	fetch('/api/drafts/new', {
 		method: 'POST',

@@ -36,10 +36,10 @@
 			button:disabled { background-color: gray }
 			#button-create-new-draft { width: 100%; border-radius: 0; }
 			#button-create-new-tutorial { width: 100%; border-radius: 0; border-top: 1px solid #000;}
-			#editor-container { position: absolute; top: 40px; bottom: 0; left: 300px; right: 0; }
+			#editor-container { position: absolute; top: 80px; bottom: 0; left: 300px; right: 0; }
 			#editor { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
 			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; font-size: 11pt; }
-			#sidebar { overflow: scroll; position: absolute; left: 0; top: 40px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
+			#sidebar { overflow: scroll; position: absolute; left: 0; top: 80px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
 			#sidebar ul { padding: 0; margin: 0; }
 			#sidebar li { list-style-type: none; border-bottom: 1px solid #e6e6e6; padding: 10px; box-sizing: border-box; position: relative; }
 			#sidebar li:hover { background:#f3faff; }
@@ -55,8 +55,8 @@
 			.link-url.copied { color: green; pointer-events: none; text-decoration: none; font-weight: bold; }
 			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
 			.link-delete:hover { color:red; }
-			.add-image-btn { position: absolute; top: 5px; right: 13em; }
-			.add-question-btn { position: absolute; top: 5px; right: 1em; }
+			.add-image-btn { position: absolute; top: 45px; right: 13em; }
+			.add-question-btn { position: absolute; top: 45px; right: 1em; }
 			#search { position: relative; }
 			#search input { width: 100%; font-family:'Libre Franklin', Arial; border: none; border-bottom: 1px solid gray; font-size: 1em; padding: 0.6em; }
 			#search button { position: absolute; top: 0; right: 0; height: 37px; width: 37px; background: transparent; color: gray; }
@@ -92,6 +92,14 @@
 			.modal .step-2 { visibility: hidden; }
 			.modal.on-step-2 .step-2 { visibility: visible; }
 			.spinner { width: 80px; height: 80px; margin: 100px auto; background-color: #333; border-radius: 100%; -webkit-animation: sk-scaleout 1.0s infinite ease-in-out; animation: sk-scaleout 1.0s infinite ease-in-out; }
+			.tool-bar { display: block; position: absolute; top: 40px; left: 0; right: 0; color: #000; }
+			.tool-bar button { border-radius: 0; padding: 0.5rem 0.5rem; background-color: #fff; color: #000; pointer-events: none; }
+			.tool-bar .dropdown:hover { background-color: #b2b2b2; }
+			.dropdown { position: relative; display: inline-block; }
+			.dropdown-content { display: none; position: absolute; background-color: #fff; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4); z-index: 1000; }
+			.dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; }
+			.dropdown-content a:hover { background-color: #ddd; }
+			.dropdown:hover .dropdown-content { display: block; }
 			@-webkit-keyframes sk-scaleout {
 				0% { -webkit-transform: scale(0) }
 				100% {
@@ -113,9 +121,23 @@
 </head>
 <body>
 	<div>
+		<div class="tool-bar">
+			<div class="dropdown">
+				<button>Edit</button>
+				<div class="dropdown-content">
+					<a onClick="switchEditorFormat('json')">Edit as JSON</a>
+					<a onClick="switchEditorFormat('xml')">Edit as XML</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button>Insert</button>
+				<div class="dropdown-content">
+					<a onClick="addImage()">Image</a>
+					<a onClick="addQuestion()">MC Question</a>
+				</div>
+			</div>
+		</div>
 		<h1>Obojobo Draft Manager</h1>
-		<button onClick="addImage()" class="add-image-btn">Insert Image</button>
-		<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
 		<div id="sidebar">
 			<button id="button-create-new-draft">+ Create new draft</button>
 			<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ Visual Editor Tutorial</button>
