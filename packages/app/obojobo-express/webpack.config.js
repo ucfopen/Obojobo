@@ -152,7 +152,8 @@ module.exports =
 			],
 			resolve: {
 				alias: {
-					styles: path.join(docEnginePath, 'src', 'scss')
+					styles: path.join(docEnginePath, 'src', 'scss'),
+					// "node-modules": path.join(docEnginePath, 'src', 'scss')
 				}
 			}
 		}

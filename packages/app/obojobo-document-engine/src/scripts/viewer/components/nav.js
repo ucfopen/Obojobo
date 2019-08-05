@@ -20,6 +20,48 @@ export default class Nav extends React.Component {
 	constructor(props) {
 		super(props)
 		this.selfRef = React.createRef()
+		this.onWindowClick = this.onWindowClick.bind(this)
+	}
+
+	onWindowClick(event){
+
+		if(window.innerWidth < 480 && event.x > this.selfRef.current.offsetWidth){
+			NavUtil.close()
+		}
+	}
+
+	hideOrShowOnResize(){
+		// getting bigger
+		if(window.innerWidth > this.lastWidth){
+			if(window.innerWidth > 480){
+				NavUtil.open()
+			}
+		}
+		else{
+			if(window.innerWidth < 480){
+				NavUtil.close()
+			}
+		}
+
+		this.lastWidth = window.innerWidth
+	}
+
+	componentDidMount(){
+		this.lastWidth = window.innerWidth
+		window.addEventListener('mouseUp', this.onWindowClick)
+		window.addEventListener('pointerup', this.onWindowClick)
+		window.onresize = this.hideOrShowOnResize
+
+		if(window.innerWidth < 480){
+			setTimeout(() => {
+				NavUtil.close()
+			}, 900)
+		}
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('mouseUp', this.onWindowClick)
+		window.removeEventListener('pointerup', this.onWindowClick)
 	}
 
 	onClick(item) {
