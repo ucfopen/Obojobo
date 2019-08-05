@@ -42,6 +42,30 @@ const displayVisualEditor = (req, res) => {
 	res.render('editor', { settings: { allowedUploadTypes } })
 }
 
+const displayFilesManager = (req, res) => {
+	return db
+		.any(
+			`
+				SELECT
+					file_name as "fileName",
+					created_at as "createdAt"
+				FROM
+					media
+				WHERE
+					user_id = $[userId]
+				ORDER BY
+					"fileName" DESC
+			`,
+			{
+				userId: req.currentUser.id
+			}
+		)
+		.then(files => {
+			res.render('files_manager', { files })
+		})
+		.catch(res.unexpected)
+}
+
 // Display the Editor Picker
 // and XML Document Editor
 // mounted as /editor
@@ -49,6 +73,13 @@ router
 	.route('/')
 	.get(requireCanViewEditor)
 	.get(displayEditorPicker)
+
+// Display the Files Manager
+// mounted as /editor/files-manager
+router
+	.route('/files-manager')
+	.get([requireCanViewEditor])
+	.get(displayFilesManager)
 
 // Display the visual editor
 // mounted as /editor/draftId/page

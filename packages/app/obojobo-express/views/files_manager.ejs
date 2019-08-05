@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<style type="text/css">
+			body {
+				font-family: Arial;
+				padding: 0;
+				margin: 0;
+				margin-top: 40px;
+				background-color: #f3f2f1;
+			}
+
+			h1 {
+				text-align: center;
+			}
+
+			.file-manager-container {
+				padding: 0.5rem;
+				margin: 1rem 3rem;
+			}
+
+			table {
+				background-color: #f3f3f3;
+				border-collapse: collapse;
+				width: 100%;
+				margin: 15px 0;
+			}
+
+			tr {
+				border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+			}
+
+			th {
+				cursor: pointer;
+				padding: 5px 0px;
+			}
+
+			td,
+			th {
+				text-align: left;
+				padding: 0;
+			}
+
+			a {
+				text-decoration: none;
+			}
+
+			td a {
+				color: #663300;
+				display: block;
+				padding: 1rem 3rem;
+			}
+
+			th a {
+				padding: 1rem 3rem;
+			}
+
+			tbody tr:hover {
+				background-color: #fff;
+				box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.1);
+			}
+		</style>
+	</head>
+	<body>
+		<h1>File Manager</h1>
+		<!-- <div>Hello <%= files %></div> -->
+		<div class="file-manager-container">
+			<table class="sortable">
+				<thead>
+					<tr>
+						<th><a>Filename</a></th>
+						<th><a>Date Modified</a></th>
+					</tr>
+				</thead>
+				<tbody>
+					<% files.forEach(file => { %>
+					<tr>
+						<td><a><%= file.fileName %></a></td>
+						<td><a><%= file.createdAt %></a></td>
+					</tr>
+					<% }) %>
+				</tbody>
+			</table>
+		</div>
+	</body>
+</html>
