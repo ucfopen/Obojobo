@@ -143,6 +143,7 @@ var processAttemptRecords = async (db, limit, offset) => {
 		if (!r.state || !r.state.qb) {
 			console.log('Unexpected malformed state.qb')
 			console.log(r)
+			return
 		}
 
 		const newState = JSON.stringify(toStateObject(r.state.qb, r.state.questions.map(q => q.id)))
