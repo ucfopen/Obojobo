@@ -52,6 +52,13 @@ var toHash = node => {
 
 	if (node.children instanceof Array) {
 		node.children.forEach(child => {
+			if (!child || !child.type) {
+				console.log('Unexpected child discovered')
+				console.log(child)
+				console.log(parent)
+				return
+			}
+
 			child._parent = node
 			const childQuestions = toHash(child)
 			questions = { ...questions, ...childQuestions }
@@ -96,9 +103,11 @@ var getChosen = (node, questionIds) => {
 
 var toStateObject = (root, questionIds) => {
 	const questions = getChosen(root, questionIds)
-	const questionObjects = questions.map(q => ({ id: q.id, type: q.type })).filter(q => {
-		return q.id !== root.id
-	})
+	const questionObjects = questions
+		.map(q => ({ id: q.id, type: q.type }))
+		.filter(q => {
+			return q.id !== root.id
+		})
 
 	return {
 		chosen: questionObjects
