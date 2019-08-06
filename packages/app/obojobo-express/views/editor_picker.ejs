@@ -55,6 +55,7 @@
 			.link-url.copied { color: green; pointer-events: none; text-decoration: none; font-weight: bold; }
 			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
 			.link-delete:hover { color:red; }
+			.file-manager-btn { position: absolute; top: 5px; right: 21.7em; }
 			.add-image-btn { position: absolute; top: 5px; right: 13em; }
 			.add-question-btn { position: absolute; top: 5px; right: 1em; }
 			#search { position: relative; }
@@ -116,6 +117,7 @@
 		<h1>Obojobo Draft Manager</h1>
 		<button onClick="addImage()" class="add-image-btn">Insert Image</button>
 		<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
+		<button onClick="openFileManager()" class="file-manager-btn">File Manager</button>
 		<div id="sidebar">
 			<button id="button-create-new-draft">+ Create new draft</button>
 			<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ Visual Editor Tutorial</button>

@@ -1,82 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<title>Obojobo File Manager</title>
 		<style type="text/css">
-			body {
-				font-family: Arial;
-				padding: 0;
-				margin: 0;
-				margin-top: 40px;
-				background-color: #f3f2f1;
-			}
-
-			h1 {
-				text-align: center;
-			}
-
-			.file-manager-container {
-				padding: 0.5rem;
-				margin: 1rem 3rem;
-			}
-
-			table {
-				background-color: #f3f3f3;
-				border-collapse: collapse;
-				width: 100%;
-				margin: 15px 0;
-			}
-
-			tr {
-				border-bottom: 1px solid rgba(0, 0, 0, 0.13);
-			}
-
-			th {
-				cursor: pointer;
-				padding: 5px 0px;
-			}
-
-			td,
-			th {
-				text-align: left;
-				padding: 0;
-			}
-
-			a {
-				text-decoration: none;
-			}
-
-			td a {
-				color: #663300;
-				display: block;
-				padding: 1rem 3rem;
-			}
-
-			th a {
-				padding: 1rem 3rem;
-			}
-
-			tbody tr:hover {
-				background-color: #fff;
-				box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.1);
-			}
+			body { font-family: Arial; padding: 0; margin: 0; margin-top: 40px; }
+			h1 { position: absolute; left: 0; top: 0; right: 0; border-bottom: 1px solid black; font-size: 10pt; height: 40px; margin: 0; padding: 12px; box-sizing: border-box; }
+			.file-manager-container { padding: 0.5rem; margin: 1rem 5rem; }
+			table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+			tr { border-bottom: 1px solid rgba(0, 0, 0, 0.13); }
+			th { font-size: 1.1rem; text-align: left;  padding: 1rem 1rem;}
+			td { font-size: 1.2rem; padding: 1rem 1rem;}
+			tbody tr:hover { cursor: pointer; background-color: #fff; box-shadow: 5px 5px 10px rgb(0, 0, 0, 0.1); }
+			a { text-decoration: none; }
+			a:focus, a:hover { color: #6714bd; }
 		</style>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	</head>
 	<body>
-		<h1>File Manager</h1>
-		<!-- <div>Hello <%= files %></div> -->
+		<h1>Obojobo File Manager</h1>
 		<div class="file-manager-container">
-			<table class="sortable">
+			<table>
 				<thead>
 					<tr>
-						<th><a>Filename</a></th>
-						<th><a>Date Modified</a></th>
+						<th></th>
+						<th>Name</th>
+						<th>Created at</th>
 					</tr>
 				</thead>
 				<tbody>
 					<% files.forEach(file => { %>
 					<tr>
+						<td><i class="material-icons">photo</i></td>
 						<td><a><%= file.fileName %></a></td>
-						<td><a><%= file.createdAt %></a></td>
+						<td><%= file.createdAt.toUTCString() %></td>
 					</tr>
 					<% }) %>
 				</tbody>

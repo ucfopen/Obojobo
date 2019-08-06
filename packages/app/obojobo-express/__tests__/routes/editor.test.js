@@ -171,6 +171,37 @@ describe('editor route', () => {
 			})
 	})
 
+	test('get files_manager rejects users without canViewEditor permission', () => {
+		expect.assertions(3)
+
+		// mock the list of files
+		db.any.mockResolvedValueOnce([])
+		mockCurrentUser.canViewEditor = false
+
+		return request(app)
+			.get('/files-manager')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(401)
+				expect(response.text).toContain('Not Authorized')
+			})
+	})
+
+	test('get files_manager returns the expected response', () => {
+		expect.assertions(3)
+
+		// mock the list of files
+		db.any.mockResolvedValueOnce([])
+
+		return request(app)
+			.get('/files-manager')
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/html')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('Obojobo File Manager')
+			})
+	})
+
 	test('get editor/draftId returns the expected response', () => {
 		expect.assertions(3)
 		mockCurrentUser.isGuest = () => false
