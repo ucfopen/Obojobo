@@ -121,18 +121,32 @@ var selectAttemptRecords = async (db, limit, offset) => {
 		})
 }
 
-var getAttemptRecords = async db => {
-	let records = []
-	let subset = null
-	let offset = 0
+var processAttemptRecords = async (db, limit, offset) => {
+	let updates = []
 
-	while (subset === null || subset.length > 0) {
-		subset = await selectAttemptRecords(db, 500, offset)
-		offset += 500
-		records = records.concat(subset)
-	}
+	// Retreive 500 attempts at a time
+	const records = await selectAttemptRecords(db, 500, offset)
 
-	return records
+	// Update the selected attempts with the updated state object
+	records.forEach(r => {
+		const attemptId = r.id
+		const newState = JSON.stringify(toStateObject(r.state.qb, r.state.questions.map(q => q.id)))
+
+		// Create one large update query
+		updates.push(`
+      UPDATE
+        attempts
+      SET
+        state='${newState}'
+      WHERE
+        attempts.id='${attemptId}'
+    `)
+	})
+
+	updates = updates.join(';')
+
+	// Run the single update query and return the number of records that were processed
+	return db.runSql(updates).then(result => records.length)
 }
 
 /**
@@ -146,28 +160,13 @@ exports.setup = function(options, seedLink) {
 }
 
 exports.up = async function(db) {
-	const records = await getAttemptRecords(db)
+	let numRecordsProcessed = null
+	let offset = 0
 
-	records.forEach(r => {
-		r.state = toStateObject(r.state.qb, r.state.questions.map(q => q.id))
-	})
-
-	let updates = []
-	records.forEach(r => {
-		const attemptId = r.id
-		const state = JSON.stringify(r.state)
-
-		updates.push(`
-						UPDATE
-							attempts
-						SET
-							state='${state}'
-						WHERE
-							attempts.id='${attemptId}'
-					`)
-	})
-	updates = updates.join(';')
-	return db.runSql(updates)
+	while (numRecordsProcessed === null || numRecordsProcessed.length > 0) {
+		numRecordsProcessed = await processAttemptRecords(db, 500, offset)
+		offset += 500
+	}
 }
 
 exports.down = function(db) {
