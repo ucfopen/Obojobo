@@ -122,6 +122,7 @@ var selectAttemptRecords = async (db, limit, offset) => {
     id,
     state
   FROM attempts
+  ORDER BY id ASC
   LIMIT ${limit} OFFSET ${offset}
 `
 		)
@@ -131,7 +132,8 @@ var selectAttemptRecords = async (db, limit, offset) => {
 }
 
 var processAttemptRecords = async (db, limit, offset) => {
-	let updates = []
+	let updates = ''
+	console.log(`processing attempt records ${offset} - ${offset+limit}`)
 
 	// Retreive 500 attempts at a time
 	const records = await selectAttemptRecords(db, 500, offset)
@@ -142,24 +144,19 @@ var processAttemptRecords = async (db, limit, offset) => {
 
 		if (!r.state || !r.state.qb) {
 			console.log('Unexpected malformed state.qb')
-			console.log(r)
+			console.log(attemptId)
+			console.log(r.state)
 			return
 		}
 
 		const newState = JSON.stringify(toStateObject(r.state.qb, r.state.questions.map(q => q.id)))
 
 		// Create one large update query
-		updates.push(`
-      UPDATE
-        attempts
-      SET
-        state='${newState}'
-      WHERE
-        attempts.id='${attemptId}'
-    `)
+		updates += `
+			UPDATE attempts
+			SET state='${newState}'
+			WHERE attempts.id='${attemptId}';`
 	})
-
-	updates = updates.join(';')
 
 	// Run the single update query and return the number of records that were processed
 	return db.runSql(updates).then(result => records.length)
@@ -179,7 +176,7 @@ exports.up = async function(db) {
 	let numRecordsProcessed = null
 	let offset = 0
 
-	while (numRecordsProcessed === null || numRecordsProcessed.length > 0) {
+	while (numRecordsProcessed === null || numRecordsProcessed > 0) {
 		numRecordsProcessed = await processAttemptRecords(db, 500, offset)
 		offset += 500
 	}
