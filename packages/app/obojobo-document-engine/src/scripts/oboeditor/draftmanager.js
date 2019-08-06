@@ -173,6 +173,46 @@ document.getElementById('button-create-new-draft').addEventListener('click', fun
 		})
 })
 
+function fetchMedias() {
+	return fetch('/api/media/all', {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(res => {
+			return res.json()
+		})
+		.then(result => {
+			return result
+		})
+		.catch(error => {
+			console.error(error)
+		})
+}
+
+function renderMediaList() {
+	fetchMedias().then(medias => {
+		let fileListHTML = ''
+		medias.forEach(media => {
+			console.log(media)
+			fileListHTML += `
+					<div class="file-info">
+						<img
+							src="${media.binaryData}"
+							class="file-thumbnail"
+						/>
+						<p class="file-name">${media.fileName}</p>
+					</div>
+				`
+		})
+		const fileDisplay = document.getElementById('file-display')
+		fileDisplay.innerHTML = fileListHTML
+	})
+}
+
 // Set up OboEditor items
 function createTutorialDraft() {
 	fetch('/api/drafts/tutorial', {
@@ -218,6 +258,7 @@ function addQuestion() {
 
 //eslint-disable-next-line
 function addImage() {
+	renderMediaList()
 	const addImageModalEl = document.getElementById('add-image-modal')
 	addImageModalEl.style.display = 'block'
 }

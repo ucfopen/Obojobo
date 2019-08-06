@@ -30,6 +30,14 @@ const upload = (req, res) => {
 	})
 }
 
+const getMediaThumbnail = mediaId => {
+	return MediaModel.fetchByIdAndDimensions(mediaId, 'small')
+		.then(imageData => {
+			return imageData
+		})
+		.catch(error => console.log(error))
+}
+
 // Upload media file
 // mounted as /api/media/upload
 router
@@ -38,13 +46,36 @@ router
 	.post((req, res, next) => {
 		upload(req, res)
 			.then(() => {
-				return (
-					MediaModel.createAndSave(req.currentUser.id, req.file)
-						.then(mediaData => res.json(mediaData))
-						.catch(next) // catches errors thrown by Media Model
-				)
+				return MediaModel.createAndSave(req.currentUser.id, req.file)
+					.then(mediaData => res.json(mediaData))
+					.catch(next) // catches errors thrown by Media Model
 			})
 			.catch(next) // catches errors thrown by upload
+	})
+
+// Get list of media a thumbnail
+// mounted as /api/media/all
+router
+	.route('/all')
+	.get([requireCurrentUser])
+	.get((req, res) => {
+		MediaModel.fetchAllById(req.currentUser.id)
+			.then(medias => {
+				Promise.all(
+					medias.map(async media => {
+						const thumbnail = await getMediaThumbnail(media.id)
+						return {
+							...media,
+							thumbnail
+						}
+					})
+				)
+					.then(results => {
+						res.send(results)
+					})
+					.catch(err => console.log(err))
+			})
+			.catch(res.status(404))
 	})
 
 // Get media file

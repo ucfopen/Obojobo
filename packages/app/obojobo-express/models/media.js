@@ -209,6 +209,34 @@ class Media {
 		}
 	}
 
+	static async fetchAllById(userId) {
+		const medias = await db
+			.manyOrNone(
+				`
+					SELECT
+						id as "id",
+						file_name as "fileName",
+						created_at as "createdAt"
+					FROM
+						media
+					WHERE
+						user_id = $[userId]
+					ORDER BY
+						"fileName" DESC
+				`,
+				{
+					userId
+				}
+			)
+			.then(res => res)
+			.catch(err => {
+				logger.error(err)
+				throw err
+			})
+
+		return medias
+	}
+
 	static storeImageInDb({ filename, binary, size, mimetype, dimensions, mode, mediaId, userId }) {
 		let mediaBinaryId = null
 
