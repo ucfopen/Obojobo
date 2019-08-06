@@ -139,6 +139,12 @@ var processAttemptRecords = async (db, limit, offset) => {
 	// Update the selected attempts with the updated state object
 	records.forEach(r => {
 		const attemptId = r.id
+
+		if (!r.state || !r.state.qb) {
+			console.log('Unexpected malformed state.qb')
+			console.log(r)
+		}
+
 		const newState = JSON.stringify(toStateObject(r.state.qb, r.state.questions.map(q => q.id)))
 
 		// Create one large update query
