@@ -173,8 +173,11 @@ document.getElementById('button-create-new-draft').addEventListener('click', fun
 		})
 })
 
-function fetchMedias() {
-	return fetch('/api/media/all', {
+function renderMediaList() {
+	const fileDisplay = document.getElementById('file-display')
+	fileDisplay.innerHTML = `<div class="spinner"></div>`
+
+	fetch('/api/media/all', {
 		method: 'GET',
 		credentials: 'include',
 		headers: {
@@ -182,35 +185,31 @@ function fetchMedias() {
 			'Content-Type': 'application/json'
 		}
 	})
-		.then(res => {
-			return res.json()
-		})
-		.then(result => {
-			return result
-		})
-		.catch(error => {
-			console.error(error)
-		})
-}
+		.then(res => res.json())
+		.then(medias => {
+			if (medias.length === 0)
+				return (fileDisplay.innerHTML = '<p>There is no image in your library</p>')
 
-function renderMediaList() {
-	fetchMedias().then(medias => {
-		let fileListHTML = ''
-		medias.forEach(media => {
-			console.log(media)
-			fileListHTML += `
+			let fileDisplayHTML = ''
+			medias.forEach(media => {
+				fileDisplayHTML += `
 					<div class="file-info">
 						<img
-							src="${media.binaryData}"
+							src="${'data:image/jpeg;base64,' +
+								btoa(String.fromCharCode.apply(null, media.thumbnail.binaryData.data))}"
 							class="file-thumbnail"
 						/>
-						<p class="file-name">${media.fileName}</p>
+						<div class="file-name">${media.fileName}</div>
 					</div>
 				`
+			})
+			// fileDisplay = document.getElementById('file-display')
+			fileDisplay.innerHTML = fileDisplayHTML
 		})
-		const fileDisplay = document.getElementById('file-display')
-		fileDisplay.innerHTML = fileListHTML
-	})
+		.catch(err => {
+			console.log(err)
+			fileDisplay.innerHTML = '<p>There is no file in the library</p>'
+		})
 }
 
 // Set up OboEditor items

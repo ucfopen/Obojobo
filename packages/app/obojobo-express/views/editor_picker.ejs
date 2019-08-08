@@ -93,81 +93,18 @@
 			.modal .step-2 { visibility: hidden; }
 			.modal.on-step-2 .step-2 { visibility: visible; }
 			.spinner { width: 80px; height: 80px; margin: 100px auto; background-color: #333; border-radius: 100%; -webkit-animation: sk-scaleout 1.0s infinite ease-in-out; animation: sk-scaleout 1.0s infinite ease-in-out; }
-			.media-importer {
-        display: flex;
-        justify-content: center;
-      }
 
-      .section {
-        flex: 1;
-		margin: 0 1rem;
-      }
+			.media-importer { display: flex; justify-content: center; }
+			.section { flex: 1; margin: 0 1rem; }
+			.section-title { text-align: center; }
+			.section-line {	background-color: rgb(0, 0, 0, 0.2); width: 1px; margin: 2rem 0; }
+			#file-display { height: 300px; margin-top: 10px; margin-left: 20px; overflow-y: auto; overflow: -moz-scrollbars-vertical; }
+			#file-display .file-info { display: flex; flex-flow: row; align-content: space-between; font-size: 13px; padding: 5px 10px; }
+			#file-display .file-info:hover { background-color: #f9d991; }
+			#file-display .file-info span { vertical-align: top; }
+			#file-display .file-info .file-thumbnail { height: 55px; width: 75px; object-fit: cover; }
+			#file-display .file-info .file-name { flex-grow: 1; padding: 2px 5px; }
 
-      .section-title {
-        text-align: center;
-      }
-
-      .section-line {
-        background-color: rgb(0, 0, 0, 0.2);
-        width: 1px;
-        margin: 2rem 0;
-      }
-
-      #drag-wrapper {
-        position: relative;
-        height: 333px;
-        margin: 1rem;
-        border: 5px dashed #dadada;
-        background: hsl(0, 0%, 96%);
-      }
-
-      #drag-wrapper .drag-text {
-        position: absolute;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        left: 50%;
-      }
-
-      #sort-bar {
-        background: hsl(0, 0%, 96%);
-      }
-
-      #file-display {
-        height: 100%;
-        margin-top: 10px;
-        margin-left: 20px;
-      }
-      #file-display .file-info {
-        display: flex;
-        flex-flow: row;
-        align-content: space-between;
-        color: #6b6b6b;
-        font-size: 13px;
-        padding: 5px 10px;
-      }
-      #file-display .file-info:nth-child(odd) {
-        background-color: #eaeaea;
-      }
-      #file-display .file-info:hover {
-        background-color: #f9d991;
-      }
-      #file-display .file-info span {
-        vertical-align: top;
-      }
-      #file-display .file-info .file-thumbnail {
-        width: 75px;
-      }
-      #file-display .file-info .file-name {
-        flex-grow: 1;
-        padding: 0 5px;
-      }
-      #file-display .file-info .file-name strong {
-        display: block;
-        color: #484848;
-      }
-      #file-display img {
-        max-height: 75px;
-      }
 			@-webkit-keyframes sk-scaleout {
 				0% { -webkit-transform: scale(0) }
 				100% {
@@ -192,7 +129,7 @@
 		<h1>Obojobo Draft Manager</h1>
 		<button onClick="addImage()" class="add-image-btn">Insert Image</button>
 		<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
-		<button onClick="fetchMedias()" class="file-manager-btn">File Manager</button>
+		<button onClick="openFileManager()" class="file-manager-btn">File Manager</button>
 		<div id="sidebar">
 			<button id="button-create-new-draft">+ Create new draft</button>
 			<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ Visual Editor Tutorial</button>
