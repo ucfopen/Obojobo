@@ -88,9 +88,9 @@ exports.up = function(db) {
 		})
 		.then(() => {
 			// tiny bit of cleanup
-			// the veiw state isn't too important yet, - keeps track of if you
-			// have the menu open or not.
-			// I'm Cutting some corners here so I don't have to find the
+			// the view state isn't too important yet - keeps track of if you
+			// have the viewer nav menu open or not.
+			// I'm cutting some corners here so I don't have to
 			// triangulate the correct resource_link_ids for this table
 			return db.runSql(`DELETE FROM view_state WHERE resource_link_id IS null`)
 		})

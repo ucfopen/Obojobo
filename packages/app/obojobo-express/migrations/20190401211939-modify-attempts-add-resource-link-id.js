@@ -90,6 +90,15 @@ exports.up = function(db) {
 				AND is_preview = true
 			`)
 		})
+		.then(() => {
+			// resource_link_id is now set to 'preview' in preview mode
+			return db.runSql(`
+				UPDATE visits
+				SET resource_link_id = 'preview'
+				WHERE resource_link_id IS null
+				AND is_preview = true
+			`)
+		})
 }
 
 exports.down = function(db) {
