@@ -2,7 +2,61 @@
 
 .image-properties {
 	text-align: left;
-	width: 22em;
+	margin-top: 1em;
+	width: 40em;
+	display: flex;
+
+	.figure--src {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding-left: 2rem;
+		width: 30em;
+
+		p {
+			margin: 0 0 1em 0;
+		}
+
+		.figure-divider {
+			width: 100%;
+			margin: 1em;
+			background-color: #000;
+			height: 2px;
+		}
+
+		.figure--url-container {
+			display: flex;
+			align-items: center;
+		}
+
+		#file-display {
+			height: 10em;
+			overflow-y: auto;
+
+			.file-info {
+				display: flex;
+				flex-flow: row;
+				align-content: space-between;
+				font-size: 13px;
+				padding: 5px 5px;
+
+				.file-thumbnail {
+					height: 55px;
+					width: 75px;
+					object-fit: cover;
+				}
+
+				.file-name {
+					// flex-grow: 1;
+					padding: 2px 2px;
+					margin: 0;
+				}
+			}
+		}
+		.file-info:hover {
+			background-color: #f9d991;
+		}
+	}
 
 	> label {
 		margin-bottom: 0.3em;
@@ -98,7 +152,7 @@
 	}
 
 	.figure--url--or {
-		padding: 0 1em;
+		padding: 1em 1em;
 	}
 
 	.figure--url--upload {

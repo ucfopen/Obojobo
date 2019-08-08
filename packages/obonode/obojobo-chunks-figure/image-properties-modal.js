@@ -18,13 +18,25 @@ class ImageProperties extends React.Component {
 			alt: '',
 			size: 100,
 			height: 100,
-			width: 100
+			width: 100,
+			medias: []
 		}
 		this.inputRef = React.createRef()
-		this.state = {...defaultState, ...props.content}
+		this.state = { ...defaultState, ...props.content }
 		if (!isUrlUUID(this.props.content.url)) {
 			this.state.urlInputText = this.props.content.url
 		}
+	}
+
+	componentDidMount() {
+		APIUtil.get('/api/media/all')
+			.then(res => res.json())
+			.then(medias => {
+				this.setState({ medias })
+			})
+			.catch(err => {
+				console.log(err)
+			})
 	}
 
 	handleFileChange(event) {
@@ -33,6 +45,13 @@ class ImageProperties extends React.Component {
 		formData.append('userImage', file, file.name)
 		APIUtil.postMultiPart('/api/media/upload', formData).then(mediaData => {
 			this.setState({ url: mediaData.media_id, urlInputText: '', filename: mediaData.filename })
+		})
+	}
+
+	onClickMedia(mediaId, filename) {
+		this.setState({
+			url: mediaId,
+			filename: filename
 		})
 	}
 
@@ -81,20 +100,129 @@ class ImageProperties extends React.Component {
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
 				<div className="image-properties">
-					<label htmlFor="obojobo-draft--chunks--figure--url">URL:</label>
-					<div className="flex-container">
-						<div>
+					<div>
+						<div className="flex-container image-container">
+							{this.state.url ? (
+								<Image
+									key={this.state.url}
+									chunk={{
+										modelState: {
+											url: this.state.url,
+											height: 100,
+											size: 'custom',
+											alt: 'Image preview'
+										}
+									}}
+								/>
+							) : (
+								<span className="image-preview image-preview-placeholder">No Image</span>
+							)}
+							<div className="image-preview">{this.state.filename || 'Image Preview'}</div>
+						</div>
+
+						<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
+						<input
+							type="text"
+							id="obojobo-draft--chunks--figure--alt"
+							value={this.state.alt || ''}
+							onChange={this.handleAltTextChange.bind(this)}
+							size="50"
+							placeholder="Describe the Image"
+						/>
+
+						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
+						<fieldset id="obojobo-draft--chunks--figure--size">
+							<div className="size-input">
+								<input
+									type="radio"
+									name="size"
+									value="large"
+									id="obojobo-draft--chunks--figure--size-large"
+									checked={size === 'large'}
+									onChange={this.onCheckSize.bind(this)}
+								/>
+								<label htmlFor="obojobo-draft--chunks--figure--size-large">Large</label>
+							</div>
+							<div className="size-input">
+								<input
+									type="radio"
+									name="size"
+									value="medium"
+									id="obojobo-draft--chunks--figure--size-medium"
+									checked={size === 'medium'}
+									onChange={this.onCheckSize.bind(this)}
+								/>
+								<label htmlFor="obojobo-draft--chunks--figure--size-medium">Medium</label>
+							</div>
+							<div className="size-input">
+								<input
+									type="radio"
+									name="size"
+									value="small"
+									id="obojobo-draft--chunks--figure--size-small"
+									checked={size === 'small'}
+									onChange={this.onCheckSize.bind(this)}
+								/>
+								<label htmlFor="obojobo-draft--chunks--figure--size-small">Small</label>
+							</div>
+							<div className="size-input">
+								<input
+									type="radio"
+									name="size"
+									value="custom"
+									id="obojobo-draft--chunks--figure--size-custom"
+									checked={size === 'custom'}
+									onChange={this.onCheckSize.bind(this)}
+								/>
+								<label htmlFor="obojobo-draft--chunks--figure--size-custom">Custom</label>
+								{size === 'custom' ? (
+									<div className="custom-size-inputs">
+										<input
+											id="obojobo-draft--chunks--figure--custom-width"
+											name="custom-width"
+											min="1"
+											max="2000"
+											step="1"
+											type="number"
+											placeholder="Width"
+											aria-label="Width"
+											value={this.state.width || ''}
+											onChange={this.handleWidthTextChange.bind(this)}
+										/>
+										<span>px × </span>
+										<input
+											id="obojobo-draft--chunks--figure--custom-height"
+											name="custom-height"
+											min="1"
+											max="2000"
+											step="1"
+											type="number"
+											placeholder="Height"
+											aria-label="Height"
+											value={this.state.height || ''}
+											onChange={this.handleHeightTextChange.bind(this)}
+										/>
+										<span>px</span>
+									</div>
+								) : null}
+							</div>
+						</fieldset>
+					</div>
+
+					<div className="figure--src">
+						<div className="figure--url-container">
+							<label>URL:</label>
 							<input
 								type="text"
 								id="obojobo-draft--chunks--figure--url"
 								value={this.state.urlInputText || ''}
 								onChange={this.handleURLTextChange.bind(this)}
 								ref={this.inputRef}
-								size="50"
+								// size="50"
 								placeholder="Web Address of the Image"
 							/>
 						</div>
-						<div className="figure--url--or">Or</div>
+						<div className="figure-divider" />
 						<div className="figure--url--upload">
 							<label htmlFor="obojobo-draft--chunks--figure--image-file-input">
 								<input
@@ -106,114 +234,32 @@ class ImageProperties extends React.Component {
 								<span className="upload">Upload</span>
 							</label>
 						</div>
+						<div className="figure-divider" />
+
+						<p>
+							<strong>Pick from your library</strong>
+						</p>
+						<div id="file-display">
+							{this.state.medias.map(media => {
+								return (
+									<div
+										className="file-info"
+										id={media.id}
+										onClick={() => this.onClickMedia(media.id, media.fileName)}
+									>
+										<img
+											src={
+												'data:image/jpeg;base64,' +
+												btoa(String.fromCharCode.apply(null, media.thumbnail.binaryData.data))
+											}
+											className="file-thumbnail"
+										/>
+										<p className="file-name">{media.fileName}</p>
+									</div>
+								)
+							})}
+						</div>
 					</div>
-
-					<div className="flex-container image-container">
-						{this.state.url ? (
-							<Image
-								key={this.state.url}
-								chunk={{
-									modelState: {
-										url: this.state.url,
-										height: 100,
-										size: 'custom',
-										alt: 'Image preview'
-									}
-								}}
-							/>
-						) : (
-							<span className="image-preview image-preview-placeholder">No Image</span>
-						)}
-						<div className="image-preview">{this.state.filename || 'Image Preview'}</div>
-					</div>
-
-					<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
-					<input
-						type="text"
-						id="obojobo-draft--chunks--figure--alt"
-						value={this.state.alt || ''}
-						onChange={this.handleAltTextChange.bind(this)}
-						size="50"
-						placeholder="Describe the Image"
-					/>
-
-					<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
-					<fieldset id="obojobo-draft--chunks--figure--size">
-						<div className="size-input">
-							<input
-								type="radio"
-								name="size"
-								value="large"
-								id="obojobo-draft--chunks--figure--size-large"
-								checked={size === 'large'}
-								onChange={this.onCheckSize.bind(this)}
-							/>
-							<label htmlFor="obojobo-draft--chunks--figure--size-large">Large</label>
-						</div>
-						<div className="size-input">
-							<input
-								type="radio"
-								name="size"
-								value="medium"
-								id="obojobo-draft--chunks--figure--size-medium"
-								checked={size === 'medium'}
-								onChange={this.onCheckSize.bind(this)}
-							/>
-							<label htmlFor="obojobo-draft--chunks--figure--size-medium">Medium</label>
-						</div>
-						<div className="size-input">
-							<input
-								type="radio"
-								name="size"
-								value="small"
-								id="obojobo-draft--chunks--figure--size-small"
-								checked={size === 'small'}
-								onChange={this.onCheckSize.bind(this)}
-							/>
-							<label htmlFor="obojobo-draft--chunks--figure--size-small">Small</label>
-						</div>
-						<div className="size-input">
-							<input
-								type="radio"
-								name="size"
-								value="custom"
-								id="obojobo-draft--chunks--figure--size-custom"
-								checked={size === 'custom'}
-								onChange={this.onCheckSize.bind(this)}
-							/>
-							<label htmlFor="obojobo-draft--chunks--figure--size-custom">Custom</label>
-							{size === 'custom' ? (
-								<div className="custom-size-inputs">
-									<input
-										id="obojobo-draft--chunks--figure--custom-width"
-										name="custom-width"
-										min="1"
-										max="2000"
-										step="1"
-										type="number"
-										placeholder="Width"
-										aria-label="Width"
-										value={this.state.width || ''}
-										onChange={this.handleWidthTextChange.bind(this)}
-									/>
-									<span>px × </span>
-									<input
-										id="obojobo-draft--chunks--figure--custom-height"
-										name="custom-height"
-										min="1"
-										max="2000"
-										step="1"
-										type="number"
-										placeholder="Height"
-										aria-label="Height"
-										value={this.state.height || ''}
-										onChange={this.handleHeightTextChange.bind(this)}
-									/>
-									<span>px</span>
-								</div>
-							) : null}
-						</div>
-					</fieldset>
 				</div>
 			</SimpleDialog>
 		)
