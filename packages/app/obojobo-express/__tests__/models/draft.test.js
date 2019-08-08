@@ -322,7 +322,7 @@ describe('Draft Model', () => {
 	test('xmlDocument querries the database and returns xml content', () => {
 		expect.hasAssertions()
 
-		const mockQueryResult = {xml: 'mock-xml-content'}
+		const mockQueryResult = { xml: 'mock-xml-content' }
 		db.one.mockResolvedValueOnce(mockRawDraft)
 		db.oneOrNone.mockResolvedValueOnce(mockQueryResult)
 
@@ -336,7 +336,6 @@ describe('Draft Model', () => {
 	test('xmlDocument querries the database and returns void with no results', () => {
 		expect.hasAssertions()
 
-		const mockQueryResult = {xml: 'mock-xml-content'}
 		db.one.mockResolvedValueOnce(mockRawDraft)
 		db.oneOrNone.mockResolvedValueOnce(null)
 

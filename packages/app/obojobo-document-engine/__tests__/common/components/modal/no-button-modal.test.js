@@ -1,6 +1,5 @@
 import NoButtonModal from '../../../../src/scripts/common/components/modal/no-button-modal'
 import React from 'react'
-import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 describe('NoButtonModal', () => {
@@ -17,5 +16,4 @@ describe('NoButtonModal', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
-
 })

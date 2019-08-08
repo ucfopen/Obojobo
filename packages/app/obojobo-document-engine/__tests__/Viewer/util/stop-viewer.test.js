@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 jest.mock('../../../src/scripts/viewer/util/api-util')
 jest.mock('../../../src/scripts/common/components/modal/no-button-modal')
 jest.mock('sysend')
@@ -7,7 +9,7 @@ jest.mock('../../../src/scripts/common/index', () => ({
 			trigger: jest.fn()
 		}
 	},
-	util:{
+	util: {
 		ModalUtil: {
 			show: jest.fn()
 		}
@@ -25,7 +27,7 @@ describe('Stop Viewer', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 		jest.clearAllTimers()
-		APIUtil.getVisitSessionStatus.mockResolvedValue({status: 'ok'})
+		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 	})
 
 	test('startHeartBeat loads session right away', () => {
@@ -37,10 +39,7 @@ describe('Stop Viewer', () => {
 	test('startHeartBeat registers a sysend listener', () => {
 		expect.hasAssertions()
 		StopViewer.startHeartBeat('mock-draft-id')
-		expect(sysend.on).toHaveBeenCalledWith(
-			'viewer-init',
-			expect.any(Function)
-		)
+		expect(sysend.on).toHaveBeenCalledWith('viewer-init', expect.any(Function))
 	})
 
 	test('startHeartBeat broadcasts to other windows', () => {
@@ -48,13 +47,10 @@ describe('Stop Viewer', () => {
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
-			expect(sysend.broadcast).toHaveBeenCalledWith(
-				'viewer-init',
-				{
-					windowId: expect.any(Number),
-					draftId: "mock-draft-id"
-				}
-			)
+			expect(sysend.broadcast).toHaveBeenCalledWith('viewer-init', {
+				windowId: expect.any(Number),
+				draftId: 'mock-draft-id'
+			})
 		})
 	})
 
@@ -68,7 +64,7 @@ describe('Stop Viewer', () => {
 		expect(APIUtil.getVisitSessionStatus.mock.calls[0][0]).toBe('mock-draft-id')
 
 		// second call after the setInterval runs
-		jest.advanceTimersByTime(20000);
+		jest.advanceTimersByTime(20000)
 		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(2)
 		expect(APIUtil.getVisitSessionStatus.mock.calls[1][0]).toBe('mock-draft-id')
 	})
@@ -82,7 +78,7 @@ describe('Stop Viewer', () => {
 
 		// trigger sysend.on('viewer-init') to run stopViewer()
 		const sysendListener = sysend.on.mock.calls[0][1]
-		sysendListener({windowId: 0, draftId: 'mock-draft-id'})
+		sysendListener({ windowId: 0, draftId: 'mock-draft-id' })
 		expect(sysend.off).toHaveBeenCalledWith('viewer-init')
 	})
 
@@ -93,15 +89,15 @@ describe('Stop Viewer', () => {
 
 		// trigger sysend.on('viewer-init') to run stopViewer()
 		const sysendListener = sysend.on.mock.calls[0][1]
-		sysendListener({windowId: 0, draftId: 'mock-draft-id'})
+		sysendListener({ windowId: 0, draftId: 'mock-draft-id' })
 
 		// first call starts right away
 		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
-		jest.runOnlyPendingTimers();
+		jest.runOnlyPendingTimers()
 		expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
 	})
 
-	test('sysend listener does nothing when triggerd by same window', () => {
+	test('sysend listener does nothing when triggered by same window', () => {
 		expect.hasAssertions()
 		StopViewer.startHeartBeat('mock-draft-id')
 
@@ -110,21 +106,20 @@ describe('Stop Viewer', () => {
 			const windowId = sysend.broadcast.mock.calls[0][1].windowId
 
 			const sysendListener = sysend.on.mock.calls[0][1]
-			sysendListener({windowId: windowId, draftId: 'mock-draft-id'})
+			sysendListener({ windowId: windowId, draftId: 'mock-draft-id' })
 			expect(sysend.off).not.toHaveBeenCalledWith('viewer-init')
 		})
 	})
 
-	test('sysend listener calls stopHeartBeat triggerd by a different window', () => {
+	test('sysend listener calls stopHeartBeat triggered by a different window', () => {
 		expect.hasAssertions()
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
 			expect(sysend.broadcast).toHaveBeenCalled()
-			const windowId = sysend.broadcast.mock.calls[0][1].windowId
 
 			const sysendListener = sysend.on.mock.calls[0][1]
-			sysendListener({windowId: 0, draftId: 'mock-draft-id'})
+			sysendListener({ windowId: 0, draftId: 'mock-draft-id' })
 			expect(sysend.off).toHaveBeenCalledWith('viewer-init')
 		})
 	})
@@ -132,12 +127,12 @@ describe('Stop Viewer', () => {
 	test('executeHeartBeat stops the interval when status is not ok', () => {
 		jest.useFakeTimers()
 		expect.hasAssertions()
-		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({status: 'error'})
+		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
 			expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
-			jest.runOnlyPendingTimers();
+			jest.runOnlyPendingTimers()
 			expect(APIUtil.getVisitSessionStatus).toHaveBeenCalledTimes(1)
 		})
 	})
@@ -145,7 +140,7 @@ describe('Stop Viewer', () => {
 	test('executeHeartBeat shows modal when status is not ok', () => {
 		jest.useFakeTimers()
 		expect.hasAssertions()
-		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({status: 'error'})
+		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
@@ -156,7 +151,7 @@ describe('Stop Viewer', () => {
 	test('executeHeartBeat dispatches when status is not ok', () => {
 		jest.useFakeTimers()
 		expect.hasAssertions()
-		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({status: 'error'})
+		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
@@ -167,12 +162,11 @@ describe('Stop Viewer', () => {
 	test('executeHeartBeat broadcasts even when statis is not ok', () => {
 		jest.useFakeTimers()
 		expect.hasAssertions()
-		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({status: 'error'})
+		APIUtil.getVisitSessionStatus.mockResolvedValueOnce({ status: 'error' })
 		StopViewer.startHeartBeat('mock-draft-id')
 
 		return flushPromises().then(() => {
 			expect(sysend.broadcast).toHaveBeenCalled()
 		})
 	})
-
 })

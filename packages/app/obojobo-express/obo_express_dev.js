@@ -110,7 +110,7 @@ module.exports = app => {
 
 	// builds a valid course navigation lti launch and submits it
 	app.get('/lti/dev/launch/course_navigation', (req, res) => {
-		let resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/course_navigation`
 		const params = {
@@ -137,7 +137,7 @@ module.exports = app => {
 
 	// builds a valid document view lti launch and submits it
 	app.get('/lti/dev/launch/view', (req, res) => {
-		let resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/view/00000000-0000-0000-0000-000000000000`
 		const params = {

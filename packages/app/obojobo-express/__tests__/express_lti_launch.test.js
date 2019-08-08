@@ -57,7 +57,9 @@ describe('lti launch middleware', () => {
 		db.one.mockResolvedValue({ id: 88 })
 		db.none.mockReset()
 		db.none.mockResolvedValue(null)
-		sessionSave.mockImplementation((cb) => {cb()}) // session.save is successful
+		sessionSave.mockImplementation(cb => {
+			cb()
+		}) // session.save is successful
 		User.saveOrCreateCallback.mockReset()
 		logger.error.mockReset()
 		DraftDocument.fetchById = jest.fn().mockResolvedValueOnce(
@@ -243,10 +245,9 @@ describe('lti launch middleware', () => {
 		expect.hasAssertions()
 		const [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
-			expect(db.none).toHaveBeenCalledWith(
-				expect.stringContaining('delete from sessions'),
-				{ currentUserId: 1 }
-			)
+			expect(db.none).toHaveBeenCalledWith(expect.stringContaining('DELETE FROM sessions'), {
+				currentUserId: 1
+			})
 		})
 	})
 
@@ -258,17 +259,17 @@ describe('lti launch middleware', () => {
 			req.currentUser = createdUser
 		})
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
-			expect(db.none).not.toHaveBeenCalledWith(
-				expect.stringContaining('delete from sessions'),
-				{ currentUserId: 1 }
-			)
+			expect(db.none).not.toHaveBeenCalledWith(expect.stringContaining('DELETE FROM sessions'), {
+				currentUserId: 1
+			})
 		})
 	})
 
-
 	test('assignment handles session save failure', () => {
 		expect.hasAssertions()
-		sessionSave.mockImplementation((cb) => {cb('error')}) // session.save error
+		sessionSave.mockImplementation(cb => {
+			cb('error')
+		}) // session.save error
 		const [req, res, mockNext] = mockExpressArgs(true)
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
 			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
@@ -458,5 +459,4 @@ describe('lti launch middleware', () => {
 			expect(logger.error).toHaveBeenCalledWith('LTI Body', expect.any(Object))
 		})
 	})
-
 })

@@ -1,16 +1,13 @@
 import Common from 'Common'
-import NoModalModal from '../../common/components/modal/no-button-modal'
 import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import FocusUtil from '../../viewer/util/focus-util'
-import { stopViewer, startHeartBeat } from '../../viewer/util/stop-viewer'
+import { startHeartBeat } from '../../viewer/util/stop-viewer'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
-const { OboModel } = Common.models
 
 const DEFAULT_CONTEXT = 'practice'
-let heartbeat
 
 class NavStore extends Store {
 	constructor() {

@@ -5,7 +5,7 @@ import NoButtonModal from '../../common/components/modal/no-button-modal'
 import sysend from 'sysend'
 const { ModalUtil } = Common.util
 const { Dispatcher } = Common.flux
-const heartbeatDelay = 20000
+const HEARTBEAT_DELAY = 20000
 const windowId = Math.random()
 let heartbeat
 
@@ -15,7 +15,8 @@ export const stopViewer = () => {
 	ModalUtil.show(
 		<NoButtonModal>
 			<p>
-			This Obojobo module window has expired. Typically this is caused by opening this module in more then one window.
+				This Obojobo module window has expired. Typically this is caused by opening this module in
+				more then one window.
 			</p>
 		</NoButtonModal>,
 		true
@@ -29,28 +30,27 @@ export const stopHeartBeat = () => {
 	clearInterval(heartbeat)
 }
 
-const executeHeartBeat = (draftId) => {
-	APIUtil.getVisitSessionStatus(draftId)
-	.then(result => {
-		if(result.status !== 'ok'){
+const executeHeartBeat = draftId => {
+	APIUtil.getVisitSessionStatus(draftId).then(result => {
+		if (result.status !== 'ok') {
 			stopViewer()
 		}
 
-		sysend.broadcast('viewer-init', {windowId, draftId})
+		sysend.broadcast('viewer-init', { windowId, draftId })
 	})
 }
 
-export const startHeartBeat = (draftId) => {
+export const startHeartBeat = draftId => {
 	clearInterval(heartbeat)
 	heartbeat = setInterval(() => {
 		executeHeartBeat(draftId)
-	}, heartbeatDelay)
+	}, HEARTBEAT_DELAY)
 
 	executeHeartBeat(draftId)
 
 	sysend.on('viewer-init', msg => {
-		if(msg.windowId == windowId || msg.draftId != draftId) return
+		// eslint-disable-next-line eqeqeq
+		if (msg.windowId == windowId || msg.draftId != draftId) return
 		stopViewer()
 	})
 }
-

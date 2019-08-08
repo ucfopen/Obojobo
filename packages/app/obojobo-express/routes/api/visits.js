@@ -34,7 +34,7 @@ router
 	.route('/:draftId/status')
 	.get([requireCurrentUser])
 	.get((req, res) => {
-		if(req.session.visitSessions && req.session.visitSessions[req.params.draftId]){
+		if (req.session.visitSessions && req.session.visitSessions[req.params.draftId]) {
 			res.success(true)
 			return
 		}
@@ -58,8 +58,8 @@ router
 
 		return req
 			.getCurrentVisitFromRequest()
-			.catch(err => {
-				throw('Unable to start visit, visitId is no longer valid')
+			.catch(() => {
+				throw 'Unable to start visit, visitId is no longer valid'
 			})
 			.then(() =>
 				Promise.all([
@@ -129,7 +129,7 @@ router
 				}
 
 				// register a visitSessionId in the user's server side session
-				if(!req.session.visitSessions) req.session.visitSessions = {}
+				if (!req.session.visitSessions) req.session.visitSessions = {}
 				req.session.visitSessions[draftId] = true
 
 				res.success({

@@ -5,12 +5,13 @@ const logger = oboRequire('logger')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 
-const saveSessionPromise = req => new Promise((resolve, reject) => {
-	req.session.save(error => {
-		if(error) reject(error)
-		else resolve()
+const saveSessionPromise = req =>
+	new Promise((resolve, reject) => {
+		req.session.save(error => {
+			if (error) reject(error)
+			else resolve()
+		})
 	})
-})
 
 const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 	let launchId = null
@@ -97,11 +98,13 @@ const userFromLaunch = (req, ltiBody) => {
 			// if the user wasn't already logged in here
 			// invalidate all other sessions for this user
 			// prevents clearing the current session
-			if(!req.currentUser || req.currentUser.id != newUser.id){
-				return db.none(`
-					delete from sessions
-					where sess ->> 'currentUserId' = $[currentUserId]`,
-					{currentUserId: newUser.id}
+			// eslint-disable-next-line eqeqeq
+			if (!req.currentUser || req.currentUser.id != newUser.id) {
+				return db.none(
+					`
+					DELETE FROM sessions
+					WHERE sess ->> 'currentUserId' = $[currentUserId]`,
+					{ currentUserId: newUser.id }
 				)
 			}
 		})

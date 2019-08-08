@@ -26,8 +26,9 @@ function preview(draftId, url) {
 	childWindow = window.open(url, 'preview')
 }
 
-function downloadDocument(draftId, format = 'json'){
-	if(format === 'json'){
+//eslint-disable-next-line
+function downloadDocument(draftId, format = 'json') {
+	if (format === 'json') {
 		fetch(`/api/drafts/${draftId}/full`, {
 			method: 'GET',
 			credentials: 'include',
@@ -36,14 +37,14 @@ function downloadDocument(draftId, format = 'json'){
 				'Content-Type': 'application/json'
 			}
 		})
-		.then(res => res.json())
-		.then(json => JSON.stringify(json.value, null, 2))
-		.then(contents => {
-			// use downloadjs to locally build a file to download
-			download(contents, `obojobo-draft-${draftId}.json`, 'application/json')
-		})
-	}
-	else{
+			.then(res => res.json())
+			.then(json => JSON.stringify(json.value, null, 2))
+			.then(contents => {
+				// use downloadjs to locally build a file to download
+				// eslint-disable-next-line no-undef
+				download(contents, `obojobo-draft-${draftId}.json`, 'application/json')
+			})
+	} else {
 		fetch(`/api/drafts/${draftId}/full`, {
 			method: 'GET',
 			credentials: 'include',
@@ -52,13 +53,13 @@ function downloadDocument(draftId, format = 'json'){
 				'Content-Type': 'application/xml'
 			}
 		})
-		.then(res => res.text())
-		.then(contents => {
-			// use downloadjs to locally build a file to download
-			download(contents, `obojobo-draft-${draftId}.xml`, 'application/xml')
-		})
+			.then(res => res.text())
+			.then(contents => {
+				// use downloadjs to locally build a file to download
+				// eslint-disable-next-line no-undef
+				download(contents, `obojobo-draft-${draftId}.xml`, 'application/xml')
+			})
 	}
-
 }
 
 // Setup search
