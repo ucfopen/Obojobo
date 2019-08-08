@@ -41,24 +41,24 @@ exports.up = function(db) {
 								draft_id,
 								draft_content_id,
 								user_id,
-								data -> 'resource_link_id' as rlid,
+								data ->> 'resource_link_id' as rlid,
 								created_at as start_date,
 								CASE
 									WHEN lead(user_id) over wnd = user_id
-										AND lead(data -> 'resource_link_id') over wnd = data -> 'resource_link_id'
+										AND lead(data ->> 'resource_link_id') over wnd = data ->> 'resource_link_id'
 									THEN lead(created_at) over wnd
 									ELSE now()
 								END as end_date,
 								CASE
 									WHEN lead(user_id) over wnd = user_id
-										AND lead(data -> 'resource_link_id') over wnd = data -> 'resource_link_id'
+										AND lead(data ->> 'resource_link_id') over wnd = data ->> 'resource_link_id'
 									THEN lead(id) over wnd
 									ELSE null
 								END as next_launch_id
 								FROM launches
-								WHERE data -> 'resource_link_id' IS NOT null
+								WHERE data ->> 'resource_link_id' IS NOT null
 								WINDOW wnd as (
-									PARTITION BY data -> 'resource_link_id', user_id ORDER BY data -> 'resource_link_id', user_id, created_at
+									PARTITION BY data ->> 'resource_link_id', user_id ORDER BY data ->> 'resource_link_id', user_id, created_at
 								)
 						) as foo;
 
@@ -85,6 +85,14 @@ exports.up = function(db) {
 				-- remove the tmp table
 				Drop table tmp_launch_windows;
 			`)
+		})
+		.then(() => {
+			// tiny bit of cleanup
+			// the view state isn't too important yet - keeps track of if you
+			// have the viewer nav menu open or not.
+			// I'm cutting some corners here so I don't have to
+			// triangulate the correct resource_link_ids for this table
+			return db.runSql(`DELETE FROM view_state WHERE resource_link_id IS null`)
 		})
 }
 

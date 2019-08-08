@@ -5,7 +5,8 @@
 		"password": "mysecretpassword",
 		"host": "127.0.0.1",
 		"database": "postgres",
-		"port": 5432
+		"port": 5432,
+		"ssl": false
 	},
 	"production":{
 		"driver": "postgres",
@@ -13,6 +14,7 @@
 		"password": {"ENV": "DB_PASS"},
 		"host": {"ENV": "DB_HOST"},
 		"database": {"ENV": "DB_NAME"},
-		"port": {"ENV": "DB_PORT"}
+		"port": {"ENV": "DB_PORT"},
+		"ssl": {"ENV": "DB_SSL"}
 	}
 }

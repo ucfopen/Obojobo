@@ -16,7 +16,7 @@ import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 import LTINetworkStates from '../../../src/scripts/viewer/stores/assessment-store/lti-network-states'
 import LTIResyncStates from '../../../src/scripts/viewer/stores/assessment-store/lti-resync-states'
-import mockConsole from 'jest-mock-console';
+import mockConsole from 'jest-mock-console'
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({
 	show: jest.fn()
@@ -65,29 +65,43 @@ describe('AssessmentStore', () => {
 				attemptId: 'attemptId',
 				assessmentId: 'assessmentId',
 				state: {
-					questions: [
+					chosen: [
 						{
 							id: 'q1',
-							type: 'ObojoboDraft.Chunks.Question',
-							children: [
-								{
-									id: 'r1',
-									type: 'ObojoboDraft.Chunks.MCAssessment'
-								}
-							]
+							type: 'ObojoboDraft.Chunks.Question'
 						},
 						{
 							id: 'q2',
-							type: 'ObojoboDraft.Chunks.Question',
-							children: [
-								{
-									id: 'r2',
-									type: 'ObojoboDraft.Chunks.MCAssessment'
-								}
-							]
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'qb',
+							type: 'ObojoboDraft.Chunks.QuestionBank'
 						}
 					]
-				}
+				},
+				questions: [
+					{
+						id: 'q1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r1',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					},
+					{
+						id: 'q2',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r2',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					}
+				]
 			}
 		})
 	}
@@ -95,7 +109,7 @@ describe('AssessmentStore', () => {
 	beforeEach(done => {
 		jest.resetAllMocks()
 		restoreConsole = mockConsole('error')
-		APIUtil.getVisitSessionStatus.mockResolvedValue({status: 'ok'})
+		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 		AssessmentStore.init()
 		AssessmentStore.triggerChange = jest.fn()
 		QuestionStore.init()
@@ -209,19 +223,63 @@ describe('AssessmentStore', () => {
 
 	test('resuming an unfinished attempt hides the modal, starts the attempt and triggers a change', () => {
 		const originalStartAttempt = AssessmentStore.startAttempt
-		const unfinishedAttempt = { a: 1 }
+		const unfinishedAttempt = {
+			status: 'ok',
+			value: {
+				attemptId: 'attemptId',
+				assessmentId: 'assessmentId',
+				state: {
+					chosen: [
+						{
+							id: 'q1',
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'q2',
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'qb',
+							type: 'ObojoboDraft.Chunks.QuestionBank'
+						}
+					]
+				},
+				questions: [
+					{
+						id: 'q1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r1',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					},
+					{
+						id: 'q2',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r2',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					}
+				]
+			}
+		}
+
+		APIUtil.resumeAttempt = jest.fn().mockResolvedValueOnce(unfinishedAttempt)
 
 		AssessmentStore.startAttempt = jest.fn()
 		ModalUtil.hide = jest.fn()
 
-		AssessmentStore.onResumeAttemptConfirm(unfinishedAttempt)
-
-		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.startAttempt).toHaveBeenCalledWith(unfinishedAttempt)
-		expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
-
-		AssessmentStore.startAttempt = originalStartAttempt
+		return AssessmentStore.onResumeAttemptConfirm(unfinishedAttempt).then(() => {
+			expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
+			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+			expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
+			AssessmentStore.startAttempt = originalStartAttempt
+		})
 	})
 
 	test('tryStartAttempt shows an error if no attempts are left and triggers a change', () => {
