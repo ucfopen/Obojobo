@@ -105,6 +105,41 @@ class Draft {
 			})
 	}
 
+	static fetchDraftByVersion(draftId, contentId) {
+		return db
+			.one(
+				`
+			SELECT
+				drafts.id AS id,
+				drafts.user_id as author,
+				drafts_content.id AS version,
+				drafts.created_at AS draft_created_at,
+				drafts_content.created_at AS content_created_at,
+				drafts_content.content AS content
+			FROM drafts
+			JOIN drafts_content
+				ON drafts.id = drafts_content.draft_id
+			WHERE drafts.id = $[draftId]
+				AND deleted = FALSE
+				AND drafts_content.id = $[contentId]
+			ORDER BY content_created_at DESC
+			LIMIT 1
+			`,
+				{ draftId, contentId }
+			)
+			.then(result => {
+				result.content.draftId = result.id
+				result.content.contentId = result.version
+				result.content._rev = result.version
+
+				return new Draft(result.author, result.content)
+			})
+			.catch(error => {
+				logger.error('fetchByVersion Error', error.message)
+				return Promise.reject(error)
+			})
+	}
+
 	static createWithContent(userId, jsonContent = {}, xmlContent = null) {
 		let newDraft
 

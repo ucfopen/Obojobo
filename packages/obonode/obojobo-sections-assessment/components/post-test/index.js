@@ -7,20 +7,28 @@ import Viewer from 'Viewer'
 
 const { OboModel } = Common.models
 const { focus } = Common.page
-const { AssessmentUtil, NavUtil } = Viewer.util
+const { AssessmentUtil, NavUtil, APIUtil } = Viewer.util
 const { Dispatcher } = Common.flux
 
 class AssessmentPostTest extends React.Component {
-	constructor() {
-		super()
-		this.boundFocusOnContent = this.focusOnContent.bind(this)
+	constructor(props) {
+		super(props)
+
+		this.state = {
+			attempts: null,
+			isFetching: true
+		}
 
 		this.h1Ref = React.createRef()
 		this.ltiStatusRef = React.createRef()
+		this.boundFocusOnContent = this.focusOnContent.bind(this)
+		this.onClickResendScore = this.onClickResendScore.bind(this)
+		this.renderFullReview = this.renderFullReview.bind(this)
 	}
 
 	componentDidMount() {
 		Dispatcher.on(FOCUS_ON_ASSESSMENT_CONTENT, this.boundFocusOnContent)
+		this.fetchAttemptReviews() // WARNING - ASYNC
 	}
 
 	componentWillUnmount() {
@@ -31,41 +39,113 @@ class AssessmentPostTest extends React.Component {
 		focus(this.h1Ref)
 	}
 
-	render() {
-		const props = this.props
+	// WARNING - ASYNC
+	fetchAttemptReviews() {
+		const attemptIds = []
 
-		const isFullReviewAvailable = reviewType => {
-			switch (reviewType) {
-				case 'always':
-					return true
-				case 'never':
-					return false
-				case 'no-attempts-remaining':
-					return isAssessmentComplete()
-			}
+		const attempts = AssessmentUtil.getAllAttempts(
+			this.props.moduleData.assessmentState,
+			this.props.model
+		)
+
+		attempts.forEach(attempt => {
+			attemptIds.push(attempt.attemptId)
+		})
+
+		return APIUtil
+			.reviewAttempt(attemptIds)
+			.then(result => {
+				attempts.forEach(attempt => {
+					attempt.state.questionModels = result[attempt.attemptId]
+				})
+
+				this.setState({
+					attempts,
+					isFetching: false
+				})
+			})
+	}
+
+	onClickResendScore(){
+		AssessmentUtil.resendLTIScore(this.props.model)
+	}
+
+	isFullReviewAvailable(model, assessmentState) {
+		switch (model.modelState.review) {
+			case 'always':
+				return true
+			case 'never':
+				return false
+			case 'no-attempts-remaining':
+				return !AssessmentUtil.hasAttemptsRemaining(
+					assessmentState,
+					model
+				)
+		}
+	}
+
+	renderFullReview(){
+		const showFullReview = this.isFullReviewAvailable(
+			this.props.model,
+			this.props.moduleData.assessmentState,
+		)
+
+		return (
+			<FullReview
+				{...this.props}
+				showFullReview={showFullReview}
+				attempts={this.state.attempts}
+			/>
+		)
+	}
+
+	renderScoreActionsPage(props){
+		if (!props.scoreAction.page){
+			return <p>{props.scoreAction.message}</p>
 		}
 
-		const isAssessmentComplete = () =>
-			!AssessmentUtil.hasAttemptsRemaining(props.moduleData.assessmentState, props.model)
+		const pageModel = OboModel.create(props.scoreAction.page)
+		pageModel.parent = props.model
+		const PageComponent = pageModel.getComponentClass()
+		return <PageComponent model={pageModel} moduleData={props.moduleData} />
+	}
+
+	renderRecordedScore(assessmentScore, props){
+		if(assessmentScore === null || assessmentScore === undefined){
+			return (
+				<div className="recorded-score is-null">
+					<h2>Recorded Score:</h2>
+					<span className="value">Did Not Pass</span>
+				</div>
+			)
+		}
+
+		const highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
+			props.moduleData.assessmentState,
+			props.model
+		)
+
+		return (
+			<div className="recorded-score is-not-null">
+				<h2>Recorded Score:</h2>
+				<span className="value">
+					{Math.round(assessmentScore)}
+					<span className="for-screen-reader-only percent-label"> percent out of 100</span>
+				</span>
+				<span className="from-attempt">{`From attempt ${
+					highestAttempts[0].assessmentScoreDetails.attemptNumber
+				}`}</span>
+			</div>
+		)
+	}
+
+	render() {
+		const props = this.props
 
 		const assessmentScore = AssessmentUtil.getAssessmentScoreForModel(
 			props.moduleData.assessmentState,
 			props.model
 		)
-
-		let firstHighestAttempt = null
-		if (assessmentScore !== null) {
-			const highestAttempts = AssessmentUtil.getHighestAttemptsForModelByAssessmentScore(
-				props.moduleData.assessmentState,
-				props.model
-			)
-
-			firstHighestAttempt = highestAttempts[0]
-		}
-
-		const onClickResendScore = () => {
-			AssessmentUtil.resendLTIScore(props.model)
-		}
 
 		const ltiState = AssessmentUtil.getLTIStateForModel(
 			props.moduleData.assessmentState,
@@ -74,58 +154,31 @@ class AssessmentPostTest extends React.Component {
 
 		const assessmentLabel = NavUtil.getNavLabelForModel(props.moduleData.navState, props.model)
 
-		let scoreActionsPage
-
-		if (props.scoreAction.page) {
-			const pageModel = OboModel.create(props.scoreAction.page)
-			pageModel.parent = props.model
-			const PageComponent = pageModel.getComponentClass()
-			scoreActionsPage = <PageComponent model={pageModel} moduleData={props.moduleData} />
-		} else {
-			scoreActionsPage = <p>{props.scoreAction.message}</p>
-		}
-
-		const externalSystemLabel = props.moduleData.lti.outcomeServiceHostname
-
-		const showFullReview = isFullReviewAvailable(props.model.modelState.review)
-
 		return (
 			<div className="score unlock">
 				<div className="overview">
 					<h1 ref={this.h1Ref} tabIndex="-1">
 						{assessmentLabel} Overview
 					</h1>
-					{assessmentScore === null ? (
-						<div className="recorded-score is-null">
-							<h2>Recorded Score:</h2>
-							<span className="value">Did Not Pass</span>
-						</div>
-					) : (
-						<div className="recorded-score is-not-null">
-							<h2>Recorded Score:</h2>
-							<span className="value">
-								{Math.round(assessmentScore)}
-								<span className="for-screen-reader-only percent-label"> percent out of 100</span>
-							</span>
-							<span className="from-attempt">{`From attempt ${
-								firstHighestAttempt.assessmentScoreDetails.attemptNumber
-							}`}</span>
-						</div>
-					)}
-
+					{ this.renderRecordedScore(assessmentScore, props) }
 					<LTIStatus
 						ref={this.ltiStatusRef}
 						ltiState={ltiState}
 						isPreviewing={props.moduleData.isPreviewing}
-						externalSystemLabel={externalSystemLabel}
-						onClickResendScore={onClickResendScore}
+						externalSystemLabel={props.moduleData.lti.outcomeServiceHostname}
+						onClickResendScore={this.onClickResendScore}
 						assessmentScore={assessmentScore}
 					/>
-					<div className="score-actions-page pad">{scoreActionsPage}</div>
+					<div className="score-actions-page pad">
+						{this.renderScoreActionsPage(props)}
+					</div>
 				</div>
 				<div className="attempt-history">
 					<h1>Attempt History:</h1>
-					<FullReview {...props} showFullReview={showFullReview} />
+					{this.state.isFetching ?
+						<span>Loading...</span>
+						: this.renderFullReview()
+					}
 				</div>
 			</div>
 		)

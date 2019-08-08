@@ -1,0 +1,56 @@
+const Assessment = require('./assessment')
+const attemptStart = require('./attempt-start')
+const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
+const insertEvent = require('obojobo-express/insert_event')
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+
+const resumeAttempt = async (currentUser, currentVisit, currentDocument, attemptId, hostname, remoteAddress) => {
+	// @TODO: these used to be req and res objects from express
+	// are they needed for OboModel.yell() ?!?!
+	// see: attemptStart.getSendToClientPromises
+	const req = {} // @TODO see if we can get rid of these
+	const res = {} // @TODO see if we can get rid of these
+	const attempt = await Assessment.getAttempt(attemptId)
+	const assessmentNode = currentDocument.getChildNodeById(attempt.assessment_id)
+
+	await Promise.all(attemptStart.getSendToClientPromises(assessmentNode, attempt.state, req, res))
+
+	attempt.questions = []
+
+	for (const node of attempt.state.chosen) {
+		if (node.type === QUESTION_NODE_TYPE) {
+			attempt.questions.push(assessmentNode.draftTree.getChildNodeById(node.id).toObject())
+		}
+	}
+
+	const { createAssessmentAttemptResumedEvent } = createCaliperEvent(null, hostname)
+	await insertEvent({
+		action: 'assessment:attemptResume',
+		actorTime: new Date().toISOString(),
+		payload: {
+			attemptId: attempt.id,
+			attemptCount: attempt.number
+		},
+		userId: currentUser.id,
+		ip: remoteAddress,
+		metadata: {},
+		draftId: currentDocument.draftId,
+		contentId: currentDocument.contentId,
+		eventVersion: '1.1.0',
+		isPreview: currentVisit.is_preview,
+		caliperPayload: createAssessmentAttemptResumedEvent({
+			actor: { type: 'user', id: currentUser.id },
+			draftId: currentDocument.draftId,
+			contentId: currentDocument.contentId,
+			assessmentId: attempt.assessmentId,
+			attemptId: attempt.id
+		})
+	})
+
+	// update response
+	attempt.attemptId = attempt.id
+	delete attempt.id
+	return attempt
+}
+
+module.exports = resumeAttempt
