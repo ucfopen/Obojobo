@@ -31,24 +31,24 @@ exports.up = function(db) {
 								draft_id,
 								draft_content_id,
 								user_id,
-								data -> 'resource_link_id' as rlid,
+								data ->> 'resource_link_id' as rlid,
 								created_at as start_date,
 								CASE
 									WHEN lead(user_id) over wnd = user_id
-										AND lead(data -> 'resource_link_id') over wnd = data -> 'resource_link_id'
+										AND lead(data ->> 'resource_link_id') over wnd = data ->> 'resource_link_id'
 									THEN lead(created_at) over wnd
 									ELSE now()
 								END as end_date,
 								CASE
 									WHEN lead(user_id) over wnd = user_id
-										AND lead(data -> 'resource_link_id') over wnd = data -> 'resource_link_id'
+										AND lead(data ->> 'resource_link_id') over wnd = data ->> 'resource_link_id'
 									THEN lead(id) over wnd
 									ELSE null
 								END as next_launch_id
 								FROM launches
-								WHERE data -> 'resource_link_id' IS NOT null
+								WHERE data ->> 'resource_link_id' IS NOT null
 								WINDOW wnd as (
-									PARTITION BY data -> 'resource_link_id', user_id ORDER BY data -> 'resource_link_id', user_id, created_at
+									PARTITION BY data ->> 'resource_link_id', user_id ORDER BY data ->> 'resource_link_id', user_id, created_at
 								)
 						) as foo;
 
@@ -67,13 +67,27 @@ exports.up = function(db) {
 						ON attempts.draft_content_id = tmp_launch_windows.draft_content_id
 						AND attempts.user_id = tmp_launch_windows.user_id
 					WHERE
-						attempts.created_at BETWEEN tmp_launch_windows.start_date AND tmp_launch_windows.end_date
+						attempts.is_preview = false
+						AND attempts.created_at
+							BETWEEN
+								tmp_launch_windows.start_date
+							AND
+								tmp_launch_windows.end_date
 				) AS approximate_rlids
 				WHERE
 					attempts.id = approximate_rlids.attempt_id;
 
 				-- remove the tmp table
 				Drop table tmp_launch_windows;
+			`)
+		})
+		.then(() => {
+			// resource_link_id is now set to 'preview' in preview mode
+			return db.runSql(`
+				UPDATE attempts
+				SET resource_link_id = 'preview'
+				WHERE resource_link_id IS null
+				AND is_preview = true
 			`)
 		})
 }
