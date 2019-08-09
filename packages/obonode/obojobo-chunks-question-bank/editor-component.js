@@ -24,16 +24,31 @@ const addQuestionBank = (editor, node) => {
 	editor.insertNodeByKey(node.key, node.nodes.size, newQuestion)
 }
 
-const QuestionBank = ({editor, node, children}) => (
+const QuestionBank = ({ editor, node, children }) => (
 	<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-		<Button className="delete-button" onClick={() => {remove(editor, node)}}>
+		<Button
+			className="delete-button"
+			onClick={() => {
+				remove(editor, node)
+			}}
+		>
 			&times;
 		</Button>
 		{children}
-		<Button className='buffer' onClick={() => {addQuestion(editor, node)}}>
+		<Button
+			className="buffer"
+			onClick={() => {
+				addQuestion(editor, node)
+			}}
+		>
 			{'Add Question'}
 		</Button>
-		<Button className='buffer' onClick={() => {addQuestionBank(editor, node)}}>
+		<Button
+			className="buffer"
+			onClick={() => {
+				addQuestionBank(editor, node)
+			}}
+		>
 			{'Add Question Bank'}
 		</Button>
 	</div>

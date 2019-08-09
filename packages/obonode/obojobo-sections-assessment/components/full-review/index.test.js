@@ -177,7 +177,7 @@ const assessmentJSON = {
 		{
 			id: 'QuestionBank',
 			type: 'ObojoboDraft.Chunks.QuestionBank',
-			children: [ questionJSON ]
+			children: [questionJSON]
 		}
 	]
 }
@@ -204,11 +204,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
 		const component = renderer.create(
-			<FullReview
-				model={model}
-				moduleData={moduleData}
-				attempts={attempts}
-			/>
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
 		)
 		const tree = component.toJSON()
 
@@ -244,7 +240,7 @@ describe('FullReview', () => {
 						id: 'questionId'
 					}
 				],
-				state:{
+				state: {
 					questionModels: {
 						questionId: questionJSON
 					}
@@ -254,11 +250,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(
-			<FullReview
-				model={model}
-				moduleData={moduleData}
-				attempts={attempts}
-			/>
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
 		)
 		const tree = component.toJSON()
 
@@ -300,7 +292,7 @@ describe('FullReview', () => {
 						id: 'questionId'
 					}
 				],
-				state:{
+				state: {
 					questionModels: {
 						questionId: questionJSON
 					}
@@ -310,11 +302,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(
-			<FullReview
-				model={model}
-				moduleData={moduleData}
-				attempts={attempts}
-			/>
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
 		)
 		const tree = component.toJSON()
 
@@ -352,7 +340,7 @@ describe('FullReview', () => {
 						id: 'questionId'
 					}
 				],
-				state:{
+				state: {
 					questionModels: {
 						questionId: questionJSON
 					}
@@ -363,12 +351,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(
-			<FullReview
-				model={model}
-				moduleData={moduleData}
-				attempts={attempts}
-				showFullReview={true}
-			/>
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} showFullReview={true} />
 		)
 
 		const tree = component.toJSON()
@@ -404,11 +387,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(0)
 
 		const component = renderer.create(
-			<FullReview
-				model={model}
-				moduleData={moduleData}
-				attempts={attempts}
-			/>
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
 		)
 		const tree = component.toJSON()
 
@@ -442,11 +421,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValueOnce(1)
 
 		const component = renderer.create(
-			<FullReview
-				model={model}
-				moduleData={moduleData}
-				attempts={attempts}
-			/>
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
 		)
 
 		const tree = component.toJSON()
@@ -482,7 +457,7 @@ describe('FullReview', () => {
 						id: 'questionId'
 					}
 				],
-				state:{
+				state: {
 					questionModels: {
 						questionId: questionJSON
 					}
@@ -498,7 +473,7 @@ describe('FullReview', () => {
 						id: 'questionId'
 					}
 				],
-				state:{
+				state: {
 					questionModels: {
 						questionId: questionJSON
 					}
@@ -508,11 +483,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
 
 		const component = renderer.create(
-			<FullReview
-				model={model}
-				moduleData={moduleData}
-				attempts={attempts}
-			/>
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
 		)
 
 		const tree = component.toJSON()
@@ -555,7 +526,7 @@ describe('FullReview', () => {
 						id: 'questionId'
 					}
 				],
-				state:{
+				state: {
 					questionModels: {
 						questionId: questionJSON
 					}
@@ -572,7 +543,7 @@ describe('FullReview', () => {
 						id: 'questionId'
 					}
 				],
-				state:{
+				state: {
 					questionModels: {
 						questionId: questionJSON
 					}
@@ -582,11 +553,7 @@ describe('FullReview', () => {
 		AssessmentUtil.getNumPossibleCorrect.mockReturnValue(1)
 
 		const component = mount(
-			<FullReview
-				model={model}
-				moduleData={moduleData}
-				attempts={attempts}
-			/>
+			<FullReview model={model} moduleData={moduleData} attempts={attempts} />
 		)
 
 		expect(NavUtil.setContext).toHaveBeenCalledTimes(1)

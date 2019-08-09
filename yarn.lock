@@ -11557,6 +11557,11 @@ symbol-tree@^3.2.2:
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.2.tgz#ae27db38f660a7ae2e1c3b7d1bc290819b8519e6"
   integrity sha1-rifbOPZgp64uHDt9G8KQgZuFGeY=
 
+sysend@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/sysend/-/sysend-1.3.3.tgz#7b45b72a7241b408e1a7ddfa2529b3247d40f44b"
+  integrity sha512-6U/soi3Ul/xKZ2AwM1Q7YngqwAoMx0PUVle131REgiuu/+VUQEvSZyc6L37nTaqZv4Jagcvcz8WT4IVugVUj8w==
+
 table@4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/table/-/table-4.0.2.tgz#a33447375391e766ad34d3486e6e2aedc84d2e36"

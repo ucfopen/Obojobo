@@ -37,7 +37,6 @@ const {
 	startAttempt,
 	createAssessmentUsedQuestionMap,
 	initAssessmentUsedQuestions,
-	getNodeQuestions,
 	getSendToClientPromises,
 	insertAttemptStartCaliperEvent,
 	getState,

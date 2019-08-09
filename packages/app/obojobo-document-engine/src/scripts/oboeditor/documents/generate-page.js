@@ -2,18 +2,18 @@ import generateId from '../generate-ids'
 
 const generatePage = () => ({
 	id: generateId(),
-	type: "ObojoboDraft.Pages.Page",
+	type: 'ObojoboDraft.Pages.Page',
 	content: {},
 	children: [
 		{
 			id: generateId(),
-			type: "ObojoboDraft.Chunks.Heading",
+			type: 'ObojoboDraft.Chunks.Heading',
 			content: {
 				headingLevel: 1,
 				textGroup: [
 					{
 						text: {
-							value: ""
+							value: ''
 						}
 					}
 				]
@@ -22,12 +22,12 @@ const generatePage = () => ({
 		},
 		{
 			id: generateId(),
-			type: "ObojoboDraft.Chunks.Text",
+			type: 'ObojoboDraft.Chunks.Text',
 			content: {
 				textGroup: [
 					{
 						text: {
-							value: ""
+							value: ''
 						}
 					}
 				]

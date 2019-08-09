@@ -15,7 +15,7 @@ describe('Figure Editor Node', () => {
 			setNodeByKey: jest.fn(),
 			removeNodeByKey: jest.fn()
 		}
-		EditorStore.state = { settings: { allowedUploadTypes: '.mockTypes'} }
+		EditorStore.state = { settings: { allowedUploadTypes: '.mockTypes' } }
 	})
 
 	test('Figure component', () => {
@@ -148,7 +148,7 @@ describe('Figure Editor Node', () => {
 	})
 
 	test('changeProperties sets the nodes content', () => {
-		const mockContent = {mockContent: true}
+		const mockContent = { mockContent: true }
 		const newMockContent = { newMockContent: 999 }
 		const component = mount(
 			<Figure
@@ -163,7 +163,9 @@ describe('Figure Editor Node', () => {
 		)
 
 		component.instance().changeProperties(newMockContent)
-		expect(mockEditor.setNodeByKey).toHaveBeenCalledWith('mockKey', {data: {content: newMockContent}})
+		expect(mockEditor.setNodeByKey).toHaveBeenCalledWith('mockKey', {
+			data: { content: newMockContent }
+		})
 	})
 
 	test('Figure component delete button calls editor.removeNodeByKey', () => {

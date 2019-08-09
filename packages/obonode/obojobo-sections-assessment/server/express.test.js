@@ -19,12 +19,11 @@ jest.mock('obojobo-express/express_validators')
 
 describe('server/express', () => {
 	const mockCurrentUser = { id: 'mockCurrentUserId' }
-	const mockCurrentDocument = {draftId: 'mockDraftId'}
-	const mockCurrentVisit = {resource_link_id: 'mockResourceLinkId', is_preview: 'mockIsPreview'}
+	const mockCurrentDocument = { draftId: 'mockDraftId' }
+	const mockCurrentVisit = { resource_link_id: 'mockResourceLinkId', is_preview: 'mockIsPreview' }
 	const bodyParser = require('body-parser')
 	const request = require('supertest')
 	const { reviewAttempt } = require('./attempt-review')
-	const { logAndRespondToUnexpected } = require('./util')
 	let db
 	let logger
 	let Assessment
@@ -32,7 +31,6 @@ describe('server/express', () => {
 	let resumeAttempt
 	let endAttempt
 	let lti
-	let checkValidationRules
 	let requireCurrentDocument
 	let requireCurrentVisit
 	let requireAttemptId
@@ -44,11 +42,11 @@ describe('server/express', () => {
 	// this function makes a method that works like middleware
 	// optionally sets a variable on res
 	// optionally returns a value
-	const mockMiddleware = (fn, {resVarName, resVarObject, returnResult} = {}) => {
+	const mockMiddleware = (fn, { resVarName, resVarObject, returnResult } = {}) => {
 		return fn.mockImplementation((req, res, next) => {
-			if(resVarName) req[resVarName] = resVarObject
+			if (resVarName) req[resVarName] = resVarObject
 			next()
-			if(returnResult) return returnResult
+			if (returnResult) return returnResult
 		})
 	}
 
@@ -65,14 +63,23 @@ describe('server/express', () => {
 		resumeAttempt = jest.requireMock('./attempt-resume')
 		endAttempt = jest.requireMock('./attempt-end/attempt-end')
 		lti = jest.requireMock('obojobo-express/lti')
-		let val = jest.requireMock('obojobo-express/express_validators')
+		const val = jest.requireMock('obojobo-express/express_validators')
 
 		mockMiddleware(startAttempt)
-		checkValidationRules = mockMiddleware(val.checkValidationRules)
-		requireCurrentDocument = mockMiddleware(val.requireCurrentDocument, {resVarName:'currentDocument', resVarObject: mockCurrentDocument})
-		requireCurrentVisit = mockMiddleware(val.requireCurrentVisit, {resVarName:'currentVisit', resVarObject: mockCurrentVisit})
+		mockMiddleware(val.checkValidationRules)
+		requireCurrentDocument = mockMiddleware(val.requireCurrentDocument, {
+			resVarName: 'currentDocument',
+			resVarObject: mockCurrentDocument
+		})
+		requireCurrentVisit = mockMiddleware(val.requireCurrentVisit, {
+			resVarName: 'currentVisit',
+			resVarObject: mockCurrentVisit
+		})
 		requireAttemptId = mockMiddleware(val.requireAttemptId)
-		requireCurrentUser = mockMiddleware(val.requireCurrentUser, {resVarName: 'currentUser', resVarObject: mockCurrentUser})
+		requireCurrentUser = mockMiddleware(val.requireCurrentUser, {
+			resVarName: 'currentUser',
+			resVarObject: mockCurrentUser
+		})
 		requireAssessmentId = mockMiddleware(val.requireAssessmentId)
 		oboEvents = jest.requireMock('obojobo-express/obo_events')
 		// re-init the server
@@ -83,11 +90,12 @@ describe('server/express', () => {
 		app.use(require('./express'))
 	})
 
-
 	test('GET /api/lti/state/draft/mock-draft-id', () => {
 		expect.hasAssertions()
-		const mockReturnValue = { mockReturn: 'mockReturn'}
-		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce(mockReturnValue)
+		const mockReturnValue = { mockReturn: 'mockReturn' }
+		lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId.mockResolvedValueOnce(
+			mockReturnValue
+		)
 
 		return request(app)
 			.get('/api/lti/state/draft/mock-draft-id')
@@ -97,19 +105,17 @@ describe('server/express', () => {
 				expect(requireCurrentDocument).toHaveBeenCalled()
 				expect(requireCurrentVisit).toHaveBeenCalled()
 				expect(requireCurrentUser).toHaveBeenCalled()
-				expect(lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId)
-					.toHaveBeenCalledWith(
-						mockCurrentUser.id,
-						mockCurrentDocument.draftId,
-						mockCurrentVisit.resource_link_id
-					)
+				expect(lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					mockCurrentDocument.draftId,
+					mockCurrentVisit.resource_link_id
+				)
 				expect(response.body).toEqual({
 					status: 'ok',
 					value: mockReturnValue
 				})
 			})
 	})
-
 
 	test('POST /api/lti/sendAssessmentScore', () => {
 		expect.hasAssertions()
@@ -134,14 +140,13 @@ describe('server/express', () => {
 				expect(requireCurrentUser).toHaveBeenCalled()
 				expect(requireAssessmentId).toHaveBeenCalled()
 				// verify external libs were called with correct args
-				expect(lti.sendHighestAssessmentScore)
-					.toHaveBeenCalledWith(
-						mockCurrentUser.id,
-						mockCurrentDocument,
-						"mockAssessmentId",
-						mockCurrentVisit.is_preview,
-						mockCurrentVisit.resource_link_id
-					)
+				expect(lti.sendHighestAssessmentScore).toHaveBeenCalledWith(
+					mockCurrentUser.id,
+					mockCurrentDocument,
+					'mockAssessmentId',
+					mockCurrentVisit.is_preview,
+					mockCurrentVisit.resource_link_id
+				)
 				// verify the response body
 				expect(response.body).toEqual({
 					status: 'ok',
@@ -151,7 +156,6 @@ describe('server/express', () => {
 						statusDetails: mockReturnValue.statusDetails,
 						dbStatus: mockReturnValue.dbStatus,
 						gradebookStatus: mockReturnValue.gradebookStatus
-
 					}
 				})
 			})
@@ -159,15 +163,7 @@ describe('server/express', () => {
 
 	test('POST /api/lti/sendAssessmentScore logs errors', () => {
 		expect.hasAssertions()
-		const mockReturnValue = {
-			scoreSent: 'mockReturn',
-			status: 'mockStatus',
-			statusDetails: 'mockStatusDetails',
-			dbStatus: 'mockDbStatus',
-			gradebookStatus: 'mockGradeBookStatus'
-		}
 		lti.sendHighestAssessmentScore.mockRejectedValueOnce('mock-error')
-
 
 		return request(app)
 			.post('/api/lti/sendAssessmentScore')
@@ -179,7 +175,7 @@ describe('server/express', () => {
 					status: 'error',
 					value: {
 						message: expect.any(String),
-						type: "unexpected",
+						type: 'unexpected'
 					}
 				})
 			})
@@ -255,7 +251,7 @@ describe('server/express', () => {
 					status: 'error',
 					value: {
 						message: expect.any(String),
-						type: "unexpected",
+						type: 'unexpected'
 					}
 				})
 			})
@@ -265,10 +261,9 @@ describe('server/express', () => {
 		expect.hasAssertions()
 		const mockReturnValue = {}
 		requireAttemptId.mockImplementationOnce((req, res, next) => {
-			return Promise.resolve()
-				.then(() => {
-					res.success(mockReturnValue)
-				})
+			return Promise.resolve().then(() => {
+				res.success(mockReturnValue)
+			})
 		})
 
 		return request(app)
@@ -319,7 +314,7 @@ describe('server/express', () => {
 					status: 'error',
 					value: {
 						message: expect.any(String),
-						type: "unexpected",
+						type: 'unexpected'
 					}
 				})
 			})
@@ -365,8 +360,8 @@ describe('server/express', () => {
 	test('POST /api/assessments/clear-preview-scores', () => {
 		expect.hasAssertions()
 		db.manyOrNone
-			.mockResolvedValueOnce([{id: 1}, {id: 2}])
-			.mockResolvedValueOnce([{id: 99}, {id: 77}])
+			.mockResolvedValueOnce([{ id: 1 }, { id: 2 }])
+			.mockResolvedValueOnce([{ id: 99 }, { id: 77 }])
 
 		return request(app)
 			.post('/api/assessments/clear-preview-scores')
@@ -387,9 +382,7 @@ describe('server/express', () => {
 
 	test('POST /api/assessments/clear-preview-scores wiht nothing to clear', () => {
 		expect.hasAssertions()
-		db.manyOrNone
-			.mockResolvedValueOnce([])
-			.mockResolvedValueOnce([])
+		db.manyOrNone.mockResolvedValueOnce([]).mockResolvedValueOnce([])
 
 		return request(app)
 			.post('/api/assessments/clear-preview-scores')
@@ -411,7 +404,7 @@ describe('server/express', () => {
 	test('POST /api/assessments/clear-preview-scores fails when not preview', () => {
 		expect.hasAssertions()
 		requireCurrentVisit.mockImplementationOnce((req, res, next) => {
-			req.currentVisit = {is_preview: false}
+			req.currentVisit = { is_preview: false }
 			next()
 		})
 
@@ -423,8 +416,8 @@ describe('server/express', () => {
 				expect(response.body).toEqual({
 					status: 'error',
 					value: {
-						message: "Not in preview mode",
-						type: "notAuthorized"
+						message: 'Not in preview mode',
+						type: 'notAuthorized'
 					}
 				})
 			})
@@ -443,7 +436,7 @@ describe('server/express', () => {
 					status: 'error',
 					value: {
 						message: expect.any(String),
-						type: "unexpected"
+						type: 'unexpected'
 					}
 				})
 			})
@@ -488,7 +481,7 @@ describe('server/express', () => {
 					status: 'error',
 					value: {
 						message: expect.any(String),
-						type: "unexpected"
+						type: 'unexpected'
 					}
 				})
 			})
@@ -533,7 +526,7 @@ describe('server/express', () => {
 					status: 'error',
 					value: {
 						message: expect.any(String),
-						type: "unexpected"
+						type: 'unexpected'
 					}
 				})
 			})
@@ -580,7 +573,7 @@ describe('server/express', () => {
 					status: 'error',
 					value: {
 						message: expect.any(String),
-						type: "unexpected"
+						type: 'unexpected'
 					}
 				})
 			})
@@ -629,11 +622,10 @@ describe('server/express', () => {
 		expect(oboEvents.on).toHaveBeenCalledWith('client:question:setResponse', expect.any(Function))
 		const internalCallback = oboEvents.on.mock.calls[0][1]
 
-		return internalCallback(mockEvent, mockReq)
-			.then(() => {
-				expect(db.none).not.toHaveBeenCalled()
-				expect(logger.error).not.toHaveBeenCalled()
-			})
+		return internalCallback(mockEvent, mockReq).then(() => {
+			expect(db.none).not.toHaveBeenCalled()
+			expect(logger.error).not.toHaveBeenCalled()
+		})
 	})
 
 	test('client:question:setResponse expects questionId', () => {
@@ -651,12 +643,10 @@ describe('server/express', () => {
 		expect(oboEvents.on).toHaveBeenCalledWith('client:question:setResponse', expect.any(Function))
 		const internalCallback = oboEvents.on.mock.calls[0][1]
 
-		return internalCallback(mockEvent, mockReq)
-			.then(() => {
-				expect(db.none).not.toHaveBeenCalled()
-				expect(logger.error.mock.calls[0][4]).toBe('Missing Question ID')
-			})
-
+		return internalCallback(mockEvent, mockReq).then(() => {
+			expect(db.none).not.toHaveBeenCalled()
+			expect(logger.error.mock.calls[0][4]).toBe('Missing Question ID')
+		})
 	})
 
 	test('client:question:setResponse expects response', () => {

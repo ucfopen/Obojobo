@@ -91,7 +91,7 @@ class EditorNav extends React.Component {
 		EditorUtil.renamePage(moduleId, label)
 	}
 
-	isWhiteSpace(str){
+	isWhiteSpace(str) {
 		return !/[\S]/.test(str)
 	}
 
@@ -152,16 +152,10 @@ class EditorNav extends React.Component {
 						</div>
 					) : null}
 
-					<Button
-						className={'content-add-button align-left'}
-						onClick={this.showAddPageModal}
-					>
+					<Button className={'content-add-button align-left'} onClick={this.showAddPageModal}>
 						+ Add Page
 					</Button>
-					<Button
-						className={'content-add-button align-left'}
-						onClick={this.showAddAssessmentModal}
-					>
+					<Button className={'content-add-button align-left'} onClick={this.showAddAssessmentModal}>
 						+ Add Assessment
 					</Button>
 					<br />

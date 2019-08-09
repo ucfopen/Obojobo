@@ -5,6 +5,14 @@ const logger = oboRequire('logger')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
 
+const saveSessionPromise = req =>
+	new Promise((resolve, reject) => {
+		req.session.save(error => {
+			if (error) reject(error)
+			else resolve()
+		})
+	})
+
 const storeLtiLaunch = (draftDocument, user, ip, ltiBody, ltiConsumerKey) => {
 	let launchId = null
 
@@ -71,6 +79,9 @@ const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) 
 	})
 }
 
+// creates / loads user based on lti launch data
+// clears all previous sesions created for this user
+// saves the current user id to the session
 const userFromLaunch = (req, ltiBody) => {
 	// Save/Create the user
 	const newUser = new User({
@@ -81,10 +92,27 @@ const userFromLaunch = (req, ltiBody) => {
 		roles: ltiBody.roles
 	})
 
-	return newUser.saveOrCreate().then(user => {
-		req.setCurrentUser(user)
-		return user
-	})
+	return newUser
+		.saveOrCreate()
+		.then(() => {
+			// if the user wasn't already logged in here
+			// invalidate all other sessions for this user
+			// prevents clearing the current session
+			// eslint-disable-next-line eqeqeq
+			if (!req.currentUser || req.currentUser.id != newUser.id) {
+				return db.none(
+					`
+					DELETE FROM sessions
+					WHERE sess ->> 'currentUserId' = $[currentUserId]`,
+					{ currentUserId: newUser.id }
+				)
+			}
+		})
+		.then(() => {
+			req.setCurrentUser(newUser)
+			return saveSessionPromise(req)
+		})
+		.then(() => newUser)
 }
 
 // LTI launch detection (req.lti is created by express-ims-lti)

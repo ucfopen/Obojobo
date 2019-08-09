@@ -143,7 +143,7 @@ describe('EditorStore', () => {
 	})
 
 	test('init builds state with settings', () => {
-		EditorStore.init(null, undefined, {mockSetting: true}, '')
+		EditorStore.init(null, undefined, { mockSetting: true }, '')
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 

@@ -25,7 +25,6 @@ process.on('unhandledRejection', (reason, p) => {
 	console.log('Unhandled Rejection at: Promise', p, 'reason:', reason)
 })
 
-
 global.flushPromises = () => {
-	return new Promise(resolve => setImmediate(resolve));
+	return new Promise(resolve => setImmediate(resolve))
 }

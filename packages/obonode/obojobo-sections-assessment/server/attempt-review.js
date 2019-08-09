@@ -4,7 +4,7 @@ const DraftModel = require('obojobo-express/models/draft')
 const { getFullQuestionsFromDraftTree } = require('./util')
 const logger = require('obojobo-express/logger')
 
-const getQuestionModelsFromAttempt = async (attemptId) => {
+const getQuestionModelsFromAttempt = async attemptId => {
 	const attempt = await Assessment.getAttempt(attemptId)
 
 	// @TODO: memoize or cache this
@@ -31,9 +31,8 @@ const getQuestionModelsFromAttempt = async (attemptId) => {
 	return attemptQuestionModelsMap
 }
 
-const reviewAttempt = async (attemptIds) => {
+const reviewAttempt = async attemptIds => {
 	try {
-
 		// aysnc, let's get all the attmpts
 		const promises = []
 		for (const attemptId of attemptIds) {

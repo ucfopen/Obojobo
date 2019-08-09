@@ -5,7 +5,6 @@ jest.mock('obojobo-express/models/draft')
 jest.mock('./util')
 jest.mock('obojobo-express/logger')
 
-const Assessment = require('./assessment')
 const attemptStart = require('./attempt-start')
 const DraftModel = require('obojobo-express/models/draft')
 const util = require('./util')
@@ -155,7 +154,7 @@ describe('attempt review', () => {
 			expect(attemptStart.getSendToClientPromises).toHaveBeenCalledTimes(0)
 			expect(util.getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(0)
 			expect(logger.error).toHaveBeenCalledTimes(2)
-			expect(questionModels).toBe(undefined)
+			expect(questionModels).toBe(undefined) //eslint-disable-line no-undefined
 		})
 	})
 })

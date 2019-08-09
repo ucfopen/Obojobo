@@ -9,7 +9,6 @@ const { Prompt } = Common.components.modal
 const { Button } = Common.components
 
 class YouTube extends React.Component {
-
 	showSourceModal() {
 		ModalUtil.show(
 			<Prompt

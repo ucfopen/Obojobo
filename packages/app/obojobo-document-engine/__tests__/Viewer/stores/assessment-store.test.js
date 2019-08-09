@@ -16,7 +16,7 @@ import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 import LTINetworkStates from '../../../src/scripts/viewer/stores/assessment-store/lti-network-states'
 import LTIResyncStates from '../../../src/scripts/viewer/stores/assessment-store/lti-resync-states'
-import mockConsole from 'jest-mock-console';
+import mockConsole from 'jest-mock-console'
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({
 	show: jest.fn()
@@ -109,6 +109,7 @@ describe('AssessmentStore', () => {
 	beforeEach(done => {
 		jest.resetAllMocks()
 		restoreConsole = mockConsole('error')
+		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 		AssessmentStore.init()
 		AssessmentStore.triggerChange = jest.fn()
 		QuestionStore.init()

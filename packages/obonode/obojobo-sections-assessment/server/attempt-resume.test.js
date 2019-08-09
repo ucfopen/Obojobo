@@ -55,7 +55,7 @@ describe('start attempt route', () => {
 			state: {
 				chosen: [mockQuestionNode, mockQuestionBank]
 			},
-			draftTree:{
+			draftTree: {
 				getChildNodeById: jest.fn().mockReturnValue({
 					node: {
 						content: {
@@ -92,8 +92,8 @@ describe('start attempt route', () => {
 		const mockCurrentUser = { id: 1 }
 		Assessment.getAttempt.mockResolvedValue({
 			assessment_id: 'mockAssessmentId',
-			id: "mockAttemptId",
-			number: "mockAttemptNumber",
+			id: 'mockAttemptId',
+			number: 'mockAttemptNumber',
 			state: {
 				chosen: [mockQuestionNode, mockQuestionBank]
 			}

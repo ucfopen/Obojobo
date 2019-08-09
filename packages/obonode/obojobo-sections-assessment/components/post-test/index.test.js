@@ -260,17 +260,19 @@ describe('PostTest', () => {
 		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
 			{
 				attemptId: 1,
-				state:{
+				state: {
 					questionModels: []
 				}
 			}
 		])
 
-		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([{
-			assessmentScoreDetails: {
-				attemptNumber: 'mockAttemptNumber'
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+			{
+				assessmentScoreDetails: {
+					attemptNumber: 'mockAttemptNumber'
+				}
 			}
-		}])
+		])
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValue(null)
 		APIUtil.reviewAttempt.mockResolvedValue({})
 
@@ -311,7 +313,6 @@ describe('PostTest', () => {
 
 			component.unmount()
 		})
-
 	})
 
 	test('PostTest component with scoreAction', () => {
@@ -334,7 +335,7 @@ describe('PostTest', () => {
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValue(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValue([
 			{
-				assessmentScoreDetails:{
+				assessmentScoreDetails: {
 					attemptNumber: 'mockAttemptNumber'
 				}
 			}
@@ -462,7 +463,6 @@ describe('PostTest', () => {
 			expect(AssessmentUtil.resendLTIScore).toHaveBeenCalled()
 			component.unmount()
 		})
-
 	})
 
 	test('Component listens to FOCUS_ON_ASSESSMENT_CONTENT events when mounted (and stops listening when unmounted)', () => {

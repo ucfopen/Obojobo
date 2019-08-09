@@ -80,7 +80,7 @@ describe('api draft route', () => {
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
 			get: jest.fn().mockResolvedValue(basicXML)
-		});
+		})
 
 		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
 
@@ -116,7 +116,7 @@ describe('api draft route', () => {
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
 			get: jest.fn().mockResolvedValue(null) // pretend we don't have xml
-		});
+		})
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
@@ -147,7 +147,7 @@ describe('api draft route', () => {
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
 			get: jest.fn().mockResolvedValue(null) // pretend we don't have xml
-		});
+		})
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
@@ -179,7 +179,7 @@ describe('api draft route', () => {
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
 			get: jest.fn().mockResolvedValue(null) // pretend we don't have xml
-		});
+		})
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
@@ -211,7 +211,7 @@ describe('api draft route', () => {
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
 			get: jest.fn().mockResolvedValue(basicXML) // pretend we don't have xml
-		});
+		})
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
@@ -242,7 +242,7 @@ describe('api draft route', () => {
 		// mock the xmlDocument Getter
 		Object.defineProperty(mockDraftModel, 'xmlDocument', {
 			get: jest.fn().mockResolvedValue(basicXML) // pretend we don't have xml
-		});
+		})
 
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')

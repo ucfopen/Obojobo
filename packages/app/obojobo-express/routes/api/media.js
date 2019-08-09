@@ -38,11 +38,9 @@ router
 	.post((req, res, next) => {
 		upload(req, res)
 			.then(() => {
-				return (
-					MediaModel.createAndSave(req.currentUser.id, req.file)
-						.then(mediaData => res.json(mediaData))
-						.catch(next) // catches errors thrown by Media Model
-				)
+				return MediaModel.createAndSave(req.currentUser.id, req.file)
+					.then(mediaData => res.json(mediaData))
+					.catch(next) // catches errors thrown by Media Model
 			})
 			.catch(next) // catches errors thrown by upload
 	})
