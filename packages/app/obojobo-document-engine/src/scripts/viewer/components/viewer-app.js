@@ -240,7 +240,7 @@ export default class ViewerApp extends React.Component {
 			}
 		}
 
-		if(this.state.requestStatus === 'invalid') return
+		if (this.state.requestStatus === 'invalid') return
 
 		this.focusOnContentIfNavTargetChanging(prevState)
 		this.scrollToTopIfNavTargetChanging(prevState)
@@ -521,7 +521,8 @@ export default class ViewerApp extends React.Component {
 
 		return (
 			<div className="viewer--viewer-app--visit-error">
-				There was a problem starting your visit. Please return to {serviceName} and relaunch this module.
+				There was a problem starting your visit. Please return to {serviceName} and relaunch this
+				module.
 			</div>
 		)
 	}

@@ -1,8 +1,8 @@
 import React from 'react'
 
-const NoButtonModal = props =>
+const NoButtonModal = props => (
 	<div
-		className='obojobo-draft--components--modal--modal'
+		className="obojobo-draft--components--modal--modal"
 		role="dialog"
 		aria-labelledby="obojobo-draft--components--modal--modal--content"
 	>
@@ -10,5 +10,6 @@ const NoButtonModal = props =>
 			{props.children}
 		</div>
 	</div>
+)
 
 export default NoButtonModal

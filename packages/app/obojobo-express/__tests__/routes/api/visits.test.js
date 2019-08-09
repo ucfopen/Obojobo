@@ -98,7 +98,7 @@ describe('api visits route', () => {
 	test('/mockDraftId/status returns 200 when draftId session is valid', () => {
 		expect.hasAssertions()
 		mockCurrentUser = { id: 99 }
-		mockSession.visitSessions = {mockDraftId: true}
+		mockSession.visitSessions = { mockDraftId: true }
 		return request(app)
 			.get('/api/mockDraftId/status')
 			.then(response => {
@@ -202,7 +202,10 @@ describe('api visits route', () => {
 				expect(response.statusCode).toBe(403)
 				expect(response.body).toHaveProperty('status', 'error')
 				expect(response.body.value).toHaveProperty('type', 'reject')
-				expect(response.body.value).toHaveProperty('message', 'Unable to start visit, visitId is no longer valid')
+				expect(response.body.value).toHaveProperty(
+					'message',
+					'Unable to start visit, visitId is no longer valid'
+				)
 			})
 	})
 
@@ -296,7 +299,7 @@ describe('api visits route', () => {
 				expect(response.statusCode).toBe(200)
 				expect(mockSession.visitSessions).toBe(originalVisitSession)
 				expect(mockSession.visitSessions).toEqual({
-					"00000000-0000-0000-0000-000000000000": true
+					'00000000-0000-0000-0000-000000000000': true
 				})
 			})
 	})
@@ -327,7 +330,7 @@ describe('api visits route', () => {
 				expect(response.statusCode).toBe(200)
 				expect(mockSession).toHaveProperty('visitSessions')
 				expect(mockSession.visitSessions).toEqual({
-					"00000000-0000-0000-0000-000000000000": true
+					'00000000-0000-0000-0000-000000000000': true
 				})
 			})
 	})

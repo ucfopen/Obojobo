@@ -55,7 +55,12 @@ class EditorApp extends React.Component {
 			})
 			.then(({ value: draftModel }) => {
 				const obomodel = OboModel.create(draftModel)
-				EditorStore.init(obomodel, draftModel.content.start, this.props.settings, window.location.pathname)
+				EditorStore.init(
+					obomodel,
+					draftModel.content.start,
+					this.props.settings,
+					window.location.pathname
+				)
 
 				return this.setState({
 					modalState: ModalStore.getState(),

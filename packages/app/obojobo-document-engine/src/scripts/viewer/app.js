@@ -40,9 +40,7 @@ if (ie) {
 window.__oboViewerRender = () => {
 	ReactDOM.render(
 		<div className="root">
-			<Viewer.components.ViewerApp
-				visitId={visitId}
-				draftId={draftId} />
+			<Viewer.components.ViewerApp visitId={visitId} draftId={draftId} />
 		</div>,
 		document.getElementById('viewer-app')
 	)

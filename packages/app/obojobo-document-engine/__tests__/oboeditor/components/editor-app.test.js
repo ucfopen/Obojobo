@@ -16,7 +16,7 @@ import ModalUtil from 'src/scripts/common/util/modal-util'
 jest.mock('src/scripts/common/util/modal-util')
 import Common from 'src/scripts/common'
 import testObject from 'test-object.json'
-import mockConsole from 'jest-mock-console';
+import mockConsole from 'jest-mock-console'
 let restoreConsole
 
 describe('EditorApp', () => {

@@ -20,7 +20,7 @@ class IFrameProperties extends React.Component {
 			width: 640,
 			controls: ''
 		}
-		this.state = {...defaultState, ...props.content}
+		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
 	}
 
@@ -159,14 +159,14 @@ class IFrameProperties extends React.Component {
 						</div>
 						<div>
 							<Slider
-								title='Border'
+								title="Border"
 								initialChecked={this.state.border}
 								handleCheckChange={this.handleBorderChange.bind(this)}
 							/>
 						</div>
 						<div>
 							<Slider
-								title='Autoload'
+								title="Autoload"
 								initialChecked={this.state.autoload}
 								handleCheckChange={this.handleAutoloadChange.bind(this)}
 							/>
@@ -183,7 +183,7 @@ class IFrameProperties extends React.Component {
 							</select>
 						</div>
 						<div>
-							<label htmlFor='obojobo-draft--chunks--iframe--properties-modal--zoom'>
+							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom">
 								Initial Zoom:
 							</label>
 							<input
@@ -202,17 +202,17 @@ class IFrameProperties extends React.Component {
 					<div className="controls">
 						<h2>Controls:</h2>
 						<Slider
-							title='Reload'
+							title="Reload"
 							initialChecked={controlList.includes('reload')}
 							handleCheckChange={this.handleControlChange.bind(this, 'reload')}
 						/>
 						<Slider
-							title='New Window'
+							title="New Window"
 							initialChecked={controlList.includes('new-window')}
 							handleCheckChange={this.handleControlChange.bind(this, 'new-window')}
 						/>
 						<Slider
-							title='Zoom'
+							title="Zoom"
 							initialChecked={controlList.includes('zoom')}
 							handleCheckChange={this.handleControlChange.bind(this, 'zoom')}
 						/>

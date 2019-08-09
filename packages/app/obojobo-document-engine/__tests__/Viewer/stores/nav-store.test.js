@@ -40,7 +40,7 @@ describe('NavStore', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 		NavStore.setState()
-		APIUtil.getVisitSessionStatus.mockResolvedValue({status: 'ok'})
+		APIUtil.getVisitSessionStatus.mockResolvedValue({ status: 'ok' })
 	})
 
 	test('Regisers events w/ dispatcher', () => {
@@ -305,8 +305,11 @@ describe('NavStore', () => {
 	})
 
 	test('nav:close event fires and updates state', () => {
-		NavStore.setState({ locked: 'unchanged', open: 'unchanged',
-			draftId: 'mockDraftId' })
+		NavStore.setState({
+			locked: 'unchanged',
+			open: 'unchanged',
+			draftId: 'mockDraftId'
+		})
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
 
@@ -320,8 +323,11 @@ describe('NavStore', () => {
 	})
 
 	test('nav:toggle event fires and updates state', () => {
-		NavStore.setState({ locked: 'unchanged', open: false,
-			draftId: 'mockDraftId' })
+		NavStore.setState({
+			locked: 'unchanged',
+			open: false,
+			draftId: 'mockDraftId'
+		})
 		// simulate trigger
 		Dispatcher.trigger.mockReturnValueOnce()
 

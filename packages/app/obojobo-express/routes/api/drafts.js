@@ -43,13 +43,13 @@ router
 			res.format({
 				'application/xml': async () => {
 					let xml = await draftModel.xmlDocument
-					if(!xml) {
+					if (!xml) {
 						const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
 						xml = jsonToXml(draftModel.document)
 					}
 					res.send(xml)
 				},
-				'default': () => {
+				default: () => {
 					res.success(draftModel.document)
 				}
 			})

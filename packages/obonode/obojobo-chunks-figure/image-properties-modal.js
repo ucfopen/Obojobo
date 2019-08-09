@@ -21,7 +21,7 @@ class ImageProperties extends React.Component {
 			width: 100
 		}
 		this.inputRef = React.createRef()
-		this.state = {...defaultState, ...props.content}
+		this.state = { ...defaultState, ...props.content }
 		if (!isUrlUUID(this.props.content.url)) {
 			this.state.urlInputText = this.props.content.url
 		}

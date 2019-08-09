@@ -4,7 +4,6 @@ let logger
 
 describe('config', () => {
 	beforeEach(() => {
-
 		delete process.env.NODE_ENV
 		jest.resetModules()
 		jest.mock('../logger')
@@ -112,7 +111,7 @@ describe('config', () => {
 	test('processes json env variables by expanding them when found', () => {
 		const fs = require('fs')
 		const mockDBConfig = {
-			development: { ENV: 'DB_CONFIG_JSON'}
+			development: { ENV: 'DB_CONFIG_JSON' }
 		}
 
 		const configPath = path.resolve(__dirname + '/../config')
@@ -129,7 +128,7 @@ describe('config', () => {
 		process.env.NODE_ENV = 'test'
 		const fs = require('fs')
 		const mockDBConfig = {
-			test: { ENV: 'DB_CONFIG_JSON'}
+			test: { ENV: 'DB_CONFIG_JSON' }
 		}
 
 		const configPath = path.resolve(__dirname + '/../config')
@@ -142,7 +141,9 @@ describe('config', () => {
 		expect(config).not.toHaveProperty('db.port', 999)
 
 		expect(logger.error).toHaveBeenCalledTimes(2)
-		expect(logger.error).toHaveBeenCalledWith('Error: Expected ENV DB_CONFIG_JSON to be valid JSON, but it did not parse')
+		expect(logger.error).toHaveBeenCalledWith(
+			'Error: Expected ENV DB_CONFIG_JSON to be valid JSON, but it did not parse'
+		)
 		delete process.env.DB_CONFIG_JSON
 	})
 
@@ -150,7 +151,7 @@ describe('config', () => {
 		process.env.DB_PORT = 'mock-port'
 		const fs = require('fs')
 		const mockDBConfig = {
-			development: { ENV: 'DB_CONFIG_JSON'}
+			development: { ENV: 'DB_CONFIG_JSON' }
 		}
 
 		const configPath = path.resolve(__dirname + '/../config')
