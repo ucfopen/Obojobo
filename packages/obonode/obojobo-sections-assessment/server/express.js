@@ -168,6 +168,13 @@ router
 								WHERE assessment_score_id IN ($[ids:csv])
 							`,
 								{ ids: assessmentScoreIds }
+							),
+							transaction.none(
+								`
+									DELETE FROM assessment_scores
+									WHERE id IN ($[ids:csv])
+								`,
+								{ ids: assessmentScoreIds }
 							)
 						)
 					}
@@ -180,26 +187,16 @@ router
 								WHERE attempt_id IN ($[ids:csv])
 							`,
 								{ ids: attemptIds }
+							),
+							transaction.none(
+								`
+									DELETE FROM attempts
+									WHERE id IN ($[ids:csv])
+								`,
+								{ ids: attemptIds }
 							)
 						)
 					}
-
-					queries.push(
-						transaction.none(
-							`
-								DELETE FROM assessment_scores
-								WHERE id IN ($[ids:csv])
-							`,
-							{ ids: assessmentScoreIds }
-						),
-						transaction.none(
-							`
-								DELETE FROM attempts
-								WHERE id IN ($[ids:csv])
-							`,
-							{ ids: attemptIds }
-						)
-					)
 
 					return transaction.batch(queries)
 				})
