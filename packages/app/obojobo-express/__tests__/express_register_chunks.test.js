@@ -40,7 +40,7 @@ describe('register chunks middleware', () => {
 
 		middleware(mockApp)
 		// 8 for assets, 1 each for express files
-		expect(mockApp.use).toHaveBeenCalledTimes(8)
+		expect(mockApp.use).toHaveBeenCalledTimes(10)
 	})
 
 	test('registers all middleware as expected', () => {
