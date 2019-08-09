@@ -425,7 +425,8 @@ describe('server/express', () => {
 
 	test('POST /api/assessments/clear-preview-scores fails on errors', () => {
 		expect.hasAssertions()
-		db.manyOrNone.mockRejectedValueOnce('mock-error')
+		db.manyOrNone.mockResolvedValueOnce([]) // deletePreviewScores
+		db.manyOrNone.mockRejectedValueOnce('mock-error') // deletePreviewAttempts
 
 		return request(app)
 			.post('/api/assessments/clear-preview-scores')
