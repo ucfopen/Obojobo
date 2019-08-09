@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-modules-module",
-	"version": "5.0.0-alpha.0",
+	"version": "5.0.0-alpha.1",
 	"license": "AGPL-3.0-only",
 	"description": "Default Module node for Obojobo",
 	"scripts": {
@@ -31,7 +31,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^5.0.0-alpha.0"
+		"obojobo-lib-utils": "^5.0.0-alpha.1"
 	},
 	"devDependencies": {
 		"lint-staged": "^6.1.1"
