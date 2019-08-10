@@ -16,7 +16,7 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
 	return db
-		.createTable('repository_groups', {
+		.createTable('repository_collections', {
 			id: {
 				type: 'UUID',
 				primaryKey: true,
@@ -34,31 +34,31 @@ exports.up = function(db) {
 			// options: { type: 'jsonb' }
 		})
 		.then(result => {
-			return db.addIndex('repository_groups', 'groups_type_index', ['group_type'])
+			return db.addIndex('repository_collections', 'collections_type_index', ['group_type'])
 		})
 		.then(result => {
-			return db.addIndex('repository_groups', 'groups_title_index', ['title'])
+			return db.addIndex('repository_collections', 'collections_title_index', ['title'])
 		})
 		.then(result => {
-			return db.addIndex('repository_groups', 'groups_created_at_index', ['created_at'])
+			return db.addIndex('repository_collections', 'collections_created_at_index', ['created_at'])
 		})
 		.then(result => {
-			return db.addIndex('repository_groups', 'groups_user_id_index', ['user_id'])
+			return db.addIndex('repository_collections', 'collections_user_id_index', ['user_id'])
 		})
 		// .then(result => {
-		// 	return db.addIndex('repository_groups', 'groups_parent_group_id_index', ['parent_group_id'])
+		// 	return db.addIndex('repository_collections', 'collections_parent_group_id_index', ['parent_group_id'])
 		// })
 		//
 		.then(() => db.runSql(`
 			INSERT
-			INTO repository_groups
+			INTO repository_collections
 			(id, title, group_type)
 			VALUES('00000000-0000-0000-0000-000000000000', 'Public Library', 'tag');
 		`))
 }
 
 exports.down = function(db) {
-	return db.dropTable('repository_groups')
+	return db.dropTable('repository_collections')
 }
 
 exports._meta = {

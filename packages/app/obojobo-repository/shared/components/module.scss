@@ -23,6 +23,11 @@
 	&:hover {
 		background-color: $color-banner-bg;
 
+		.repository--module-icon--image{
+			margin-top: -2px;
+			padding-bottom: 2px;
+		}
+
 		.repository--module-icon--menu-control-button{
 			display: block;
 		}

@@ -62,11 +62,11 @@ const Dashboard = (props) =>
 		<div className="repository--section-wrapper">
 			<section className="repository--main-content">
 				<div className="repository--main-content--title">My Modules</div>
-				<div className="repository--item-list--group">
-					<div className="repository--item-list--group--item-wrapper">
+				<div className="repository--item-list--collection">
+					<div className="repository--item-list--collection--item-wrapper">
 						<div className="repository--item-list--row">
 							<Search onChange={input => {onModuleFilter(props, input)}} />
-							<div className="repository--item-list--group--item--multi-wrapper">
+							<div className="repository--item-list--collection--item--multi-wrapper">
 								{
 									renderModules(props.filteredModules ? props.filteredModules : props.myModules)
 								}

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const RepositoryGroup = require('../models/group')
+const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const GeoPattern = require('geopattern');
 const {
@@ -24,21 +24,21 @@ router
 	.get(getCurrentUser)
 	.get((req, res) => {
 		let cur
-		const publicLibGroupId = '00000000-0000-0000-0000-000000000000'
+		const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
 		const facts = [
 			{ title: 'Your Modules', value: 22 },
 			{ title: 'Open Modules', value: 235 },
 			{ title: 'Private Modules', value: 789 },
 		]
 
-		return RepositoryGroup
-			.fetchById(publicLibGroupId)
-			.then(group => {
-				return group.loadRelatedDrafts()
+		return RepositoryCollection
+			.fetchById(publicLibCollectionId)
+			.then(collection => {
+				return collection.loadRelatedDrafts()
 			})
-			.then(group => {
+			.then(collection => {
 				const props = {
-					groups: [group],
+					collections: [collection],
 					page: 1,
 					pageCount: 1,
 					facts,

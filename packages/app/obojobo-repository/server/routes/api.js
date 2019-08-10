@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const RepositoryGroup = require('../models/group')
+const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const { requireCanViewDrafts, requireCurrentUser, requireCurrentDocument } = require('obojobo-express/express_validators')
 const UserModel = require('obojobo-express/models/user')
@@ -24,12 +24,12 @@ const resultsToUsers = results => {
 router
 	.route('/drafts-public')
 	.get((req, res) => {
-		const publicLibGroupId = '00000000-0000-0000-0000-000000000000'
-		return RepositoryGroup
-			.fetchById(publicLibGroupId)
-			.then(group => group.loadRelatedDrafts())
-			.then(group => {
-				res.success(group.drafts)
+		const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
+		return RepositoryCollection
+			.fetchById(publicLibCollectionId)
+			.then(collection => collection.loadRelatedDrafts())
+			.then(collection => {
+				res.success(collection.drafts)
 			})
 			.catch(res.unexpected)
 	})

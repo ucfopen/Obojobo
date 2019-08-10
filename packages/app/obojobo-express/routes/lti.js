@@ -43,7 +43,7 @@ router.route('/config.xml').get((req, res) => {
 router
 	.route('/canvas/course_navigation')
 	.post([ltiLaunch.courseNavlaunch, requireCanViewEditor])
-	.post((req, res) => res.redirect('/editor'))
+	.post((req, res) => res.redirect('/dashboard'))
 
 // route /lti/canvas/resource_selection moved to obojobo-module-selector
 // route /lti/canvas/editor_button moved to obojobo-module-selector

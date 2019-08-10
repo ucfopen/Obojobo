@@ -36,18 +36,18 @@
 	}
 }
 
-.repository--item-list--group{
+.repository--item-list--collection{
 	&:last-child{
 		border-top: 0;
 	}
 }
 
-.repository--item-list--group--item--date{
+.repository--item-list--collection--item--date{
 	font-size: .8em;
 	color: $color-text-minor;
 }
 
-.repository--item-list--group--title{
+.repository--item-list--collection--title{
 	font-size: .8em;
 	margin-bottom: 10px;
 }
@@ -94,12 +94,12 @@
 	font-size: 1.1em;
 }
 
-.repository--item-list--group--item--text{
+.repository--item-list--collection--item--text{
 	margin: 10px;
 
 }
 
-.repository--item-list--group--item--text-detail{
+.repository--item-list--collection--item--text-detail{
 	font-size: .8em;
 }
 
@@ -107,7 +107,7 @@
 	font-style: italic;
 }
 
-.repository--item-list--group--item--multi-wrapper{
+.repository--item-list--collection--item--multi-wrapper{
 	display: flex;
 	flex-wrap: wrap;
 	box-sizing: border-box;
@@ -116,7 +116,7 @@
 	@include with-bottom-border();
 }
 
-.repository--item-list--group--item--newline-container{
+.repository--item-list--collection--item--newline-container{
 	width: 100%;
 	margin: 20px 10px;
 	text-align: center;

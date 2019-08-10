@@ -16,10 +16,10 @@ exports.setup = function(options, seedLink) {
 
 exports.up = function(db) {
 	return db
-		.createTable('repository_map_drafts_to_groups', {
+		.createTable('repository_map_drafts_to_collections', {
 			id: { type: 'bigserial', primaryKey: true },
 			draft_id: { type: 'UUID' },
-			group_id: { type: 'UUID' },
+			collection_id: { type: 'UUID' },
 			user_id: { type: 'bigint', notNull: false },
 			created_at: {
 				type: 'timestamp WITH TIME ZONE',
@@ -28,15 +28,15 @@ exports.up = function(db) {
 			},
 		})
 		.then(result => {
-			return db.addIndex('repository_map_drafts_to_groups', 'drafts_to_groups_unique', ['draft_id', 'group_id'], true)
+			return db.addIndex('repository_map_drafts_to_collections', 'drafts_to_collections_unique', ['draft_id', 'collection_id'], true)
 		})
 		.then(result => {
-			return db.addIndex('repository_map_drafts_to_groups', 'drafts_to_groups_created_at', ['created_at'])
+			return db.addIndex('repository_map_drafts_to_collections', 'drafts_to_collections_created_at', ['created_at'])
 		})
 };
 
 exports.down = function(db) {
-  return db.dropTable('repository_map_drafts_to_groups')
+  return db.dropTable('repository_map_drafts_to_collections')
 };
 
 exports._meta = {

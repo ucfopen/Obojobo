@@ -19,17 +19,18 @@ const Library = (props) =>
 
 		<div className="repository--section-wrapper">
 			<section className="repository--main-content">
-				{props.groups.map(group =>
-					<span key={group.id}>
-						<div className="repository--main-content--title">{group.title}</div>
-						<div className="repository--item-list--group">
-							<div className="repository--item-list--group--item-wrapper">
+				<p>Find the modules your course needs.</p>
+				{props.collections.map(collection =>
+					<span key={collection.id}>
+						<div className="repository--main-content--title">{collection.title}</div>
+						<div className="repository--item-list--collection">
+							<div className="repository--item-list--collection--item-wrapper">
 								<div className="repository--item-list--row">
-									<div className="repository--item-list--group--item--multi-wrapper">
-										{group.drafts.map(draft => <Module key={draft.draftId} {...draft}></Module> )}
+									<div className="repository--item-list--collection--item--multi-wrapper">
+										{collection.drafts.map(draft => <Module key={draft.draftId} {...draft}></Module> )}
 										{
 											props.page < props.pageCount ?
-											<div className="repository--item-list--group--item--newline-container">
+											<div className="repository--item-list--collection--item--newline-container">
 												<Button>Load more..</Button>
 											</div>
 											:
