@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-heading",
-	"version": "5.0.0-alpha.3",
+	"version": "5.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "Heading content chunk for Obojobo",
 	"scripts": {
@@ -31,7 +31,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^5.0.0-alpha.3"
+		"obojobo-lib-utils": "^5.0.0"
 	},
 	"devDependencies": {
 		"lint-staged": "^6.1.1"
