@@ -181,7 +181,6 @@ const deletePreviewAttempts = ({ transaction, userId, draftId, resourceLinkId })
 		})
 }
 
-// @TODO: should take an assessmentID in the url
 router
 	.route('/api/assessments/clear-preview-scores')
 	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
