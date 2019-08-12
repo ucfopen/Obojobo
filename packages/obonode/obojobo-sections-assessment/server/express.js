@@ -31,7 +31,7 @@ router
 	)
 
 router
-	.route('/api/lti/sendAssessmentScore')
+	.route('/api/lti/send-assessment-score')
 	.post([requireCurrentVisit, requireCurrentUser, requireCurrentDocument, requireAssessmentId])
 	.post(async (req, res) => {
 		try {

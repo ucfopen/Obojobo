@@ -117,7 +117,7 @@ describe('server/express', () => {
 			})
 	})
 
-	test('POST /api/lti/sendAssessmentScore', () => {
+	test('POST /api/lti/send-assessment-score', () => {
 		expect.hasAssertions()
 		const mockReturnValue = {
 			scoreSent: 'mockReturn',
@@ -129,7 +129,7 @@ describe('server/express', () => {
 		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockReturnValue)
 
 		return request(app)
-			.post('/api/lti/sendAssessmentScore')
+			.post('/api/lti/send-assessment-score')
 			.type('application/json')
 			.send('{"assessmentId":"mockAssessmentId"}')
 			.then(response => {
@@ -161,12 +161,12 @@ describe('server/express', () => {
 			})
 	})
 
-	test('POST /api/lti/sendAssessmentScore logs errors', () => {
+	test('POST /api/lti/send-assessment-score logs errors', () => {
 		expect.hasAssertions()
 		lti.sendHighestAssessmentScore.mockRejectedValueOnce('mock-error')
 
 		return request(app)
-			.post('/api/lti/sendAssessmentScore')
+			.post('/api/lti/send-assessment-score')
 			.type('application/json')
 			.send('{"assessmentId":"mockAssessmentId"}')
 			.then(response => {
