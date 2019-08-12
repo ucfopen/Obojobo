@@ -54,13 +54,15 @@ router
 	})
 
 // Get list of media a thumbnail
-// mounted as /api/media/all
+// mounted as /api/media/many
 router
-	.route('/all')
+	.route('/many/')
 	.get([requireCurrentUser])
 	.get((req, res) => {
-		MediaModel.fetchAllById(req.currentUser.id)
-			.then(medias => {
+		const start = parseInt(req.query.start)
+		const count = parseInt(req.query.count)
+		MediaModel.fetchManyById(req.currentUser.id, start, count)
+			.then(medias =>
 				Promise.all(
 					medias.map(async media => {
 						const thumbnail = await getMediaThumbnail(media.id)
@@ -70,10 +72,10 @@ router
 						}
 					})
 				)
-					.then(results => {
-						res.send(results)
-					})
-					.catch(err => console.log(err))
+			)
+			.then(results => {
+				res.status(200)
+				res.send(results)
 			})
 			.catch(res.status(404))
 	})

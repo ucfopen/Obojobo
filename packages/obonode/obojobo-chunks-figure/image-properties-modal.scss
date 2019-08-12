@@ -3,60 +3,7 @@
 .image-properties {
 	text-align: left;
 	margin-top: 1em;
-	width: 40em;
 	display: flex;
-
-	.figure--src {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		padding-left: 2rem;
-		width: 30em;
-
-		p {
-			margin: 0 0 1em 0;
-		}
-
-		.figure-divider {
-			width: 100%;
-			margin: 1em;
-			background-color: #000;
-			height: 2px;
-		}
-
-		.figure--url-container {
-			display: flex;
-			align-items: center;
-		}
-
-		#file-display {
-			height: 10em;
-			overflow-y: auto;
-
-			.file-info {
-				display: flex;
-				flex-flow: row;
-				align-content: space-between;
-				font-size: 13px;
-				padding: 5px 5px;
-
-				.file-thumbnail {
-					height: 55px;
-					width: 75px;
-					object-fit: cover;
-				}
-
-				.file-name {
-					// flex-grow: 1;
-					padding: 2px 2px;
-					margin: 0;
-				}
-			}
-		}
-		.file-info:hover {
-			background-color: #f9d991;
-		}
-	}
 
 	> label {
 		margin-bottom: 0.3em;
@@ -101,40 +48,12 @@
 		}
 	}
 
-	.upload {
-		// same as button component styles
-		$color-button-bg: lighten($color-action, 9%);
-
-		user-select: none;
-		cursor: pointer;
-		font-family: $font-default;
-		font-size: 0.85em;
-		position: relative;
-		min-width: 3.25em;
-		border-radius: 0.2em;
-		padding: 0.6rem 1em;
-		background-color: $color-button-bg;
-		color: $color-bg;
-		border: 1px solid $color-transparent;
-		border-bottom: 1px solid darken($color-action, 20%);
-
-		&:hover {
-			background-color: $color-action;
-		}
-	}
-
-	#obojobo-draft--chunks--figure--alt {
-		margin-bottom: 1em;
-	}
-
-	#obojobo-draft--chunks--figure--image-file-input {
-		display: none;
-	}
-
 	.flex-container {
 		display: flex;
 		align-items: center;
+		padding: 1em 0;
 		margin-bottom: 1em;
+		background-color: #f2f2f2;
 
 		&.image-container {
 			justify-content: center;
@@ -148,15 +67,11 @@
 					border: 1px solid $color-shadow;
 				}
 			}
+
+			button {
+				margin-top: 1rem;
+			}
 		}
-	}
-
-	.figure--url--or {
-		padding: 1em 1em;
-	}
-
-	.figure--url--upload {
-		max-width: 40%;
 	}
 
 	.image-preview {

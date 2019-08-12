@@ -1,11 +1,11 @@
 import './image-properties-modal.scss'
 
-import { debounce, isUrlUUID } from './utils'
-
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
-import Common from 'obojobo-document-engine/src/scripts/common'
-import Image from './image'
 import React from 'react'
+
+import Common from 'obojobo-document-engine/src/scripts/common'
+import ChooseImageModal from './choose-image-modal'
+import Image from './image'
+import { debounce, isUrlUUID } from './utils'
 
 const { SimpleDialog } = Common.components.modal
 const URL_UPDATE_DELAY = 750
@@ -19,7 +19,7 @@ class ImageProperties extends React.Component {
 			size: 100,
 			height: 100,
 			width: 100,
-			medias: []
+			isChoosingImage: false
 		}
 		this.inputRef = React.createRef()
 		this.state = { ...defaultState, ...props.content }
@@ -28,30 +28,9 @@ class ImageProperties extends React.Component {
 		}
 	}
 
-	componentDidMount() {
-		APIUtil.get('/api/media/all')
-			.then(res => res.json())
-			.then(medias => {
-				this.setState({ medias })
-			})
-			.catch(err => {
-				console.log(err)
-			})
-	}
-
-	handleFileChange(event) {
-		const file = event.target.files[0]
-		const formData = new window.FormData()
-		formData.append('userImage', file, file.name)
-		APIUtil.postMultiPart('/api/media/upload', formData).then(mediaData => {
-			this.setState({ url: mediaData.media_id, urlInputText: '', filename: mediaData.filename })
-		})
-	}
-
-	onClickMedia(mediaId, filename) {
+	onSetMediaUrl(mediaId) {
 		this.setState({
-			url: mediaId,
-			filename: filename
+			url: mediaId
 		})
 	}
 
@@ -89,13 +68,26 @@ class ImageProperties extends React.Component {
 		return this.inputRef.current.focus()
 	}
 
+	onSetIsChoosingImage(value) {
+		this.setState({ isChoosingImage: value })
+	}
+
 	render() {
 		const size = this.state.size
+
+		if (this.state.isChoosingImage)
+			return (
+				<ChooseImageModal
+					allowedUploadTypes={this.props.allowedUploadTypes}
+					onSetMediaUrl={mediaId => this.onSetMediaUrl(mediaId)}
+					onSetIsChoosingImage={value => this.onSetIsChoosingImage(value)}
+				/>
+			)
 
 		return (
 			<SimpleDialog
 				cancelOk
-				title="Figure Properties"
+				title="Image Properties"
 				onConfirm={() => this.props.onConfirm(this.state)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
@@ -117,7 +109,11 @@ class ImageProperties extends React.Component {
 							) : (
 								<span className="image-preview image-preview-placeholder">No Image</span>
 							)}
-							<div className="image-preview">{this.state.filename || 'Image Preview'}</div>
+							<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center">
+								<button className="button" onClick={() => this.onSetIsChoosingImage(true)}>
+									Change Image...
+								</button>
+							</div>
 						</div>
 
 						<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
@@ -207,58 +203,6 @@ class ImageProperties extends React.Component {
 								) : null}
 							</div>
 						</fieldset>
-					</div>
-
-					<div className="figure--src">
-						<div className="figure--url-container">
-							<label>URL:</label>
-							<input
-								type="text"
-								id="obojobo-draft--chunks--figure--url"
-								value={this.state.urlInputText || ''}
-								onChange={this.handleURLTextChange.bind(this)}
-								ref={this.inputRef}
-								// size="50"
-								placeholder="Web Address of the Image"
-							/>
-						</div>
-						<div className="figure-divider" />
-						<div className="figure--url--upload">
-							<label htmlFor="obojobo-draft--chunks--figure--image-file-input">
-								<input
-									type="file"
-									id="obojobo-draft--chunks--figure--image-file-input"
-									accept={this.props.allowedUploadTypes}
-									onChange={this.handleFileChange.bind(this)}
-								/>
-								<span className="upload">Upload</span>
-							</label>
-						</div>
-						<div className="figure-divider" />
-
-						<p>
-							<strong>Pick from your library</strong>
-						</p>
-						<div id="file-display">
-							{this.state.medias.map(media => {
-								return (
-									<div
-										className="file-info"
-										id={media.id}
-										onClick={() => this.onClickMedia(media.id, media.fileName)}
-									>
-										<img
-											src={
-												'data:image/jpeg;base64,' +
-												btoa(String.fromCharCode.apply(null, media.thumbnail.binaryData.data))
-											}
-											className="file-thumbnail"
-										/>
-										<p className="file-name">{media.fileName}</p>
-									</div>
-								)
-							})}
-						</div>
 					</div>
 				</div>
 			</SimpleDialog>

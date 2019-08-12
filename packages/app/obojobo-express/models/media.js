@@ -209,7 +209,7 @@ class Media {
 		}
 	}
 
-	static async fetchAllById(userId) {
+	static async fetchManyById(userId, start, end) {
 		const medias = await db
 			.manyOrNone(
 				`
@@ -222,13 +222,13 @@ class Media {
 					WHERE
 						user_id = $[userId]
 					ORDER BY
-						"fileName" DESC
+						"createdAt" DESC
 				`,
 				{
 					userId
 				}
 			)
-			.then(res => res)
+			.then(res => res.splice(start, end))
 			.catch(err => {
 				logger.error(err)
 				throw err
