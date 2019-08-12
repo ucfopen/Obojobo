@@ -380,7 +380,7 @@ describe('server/express', () => {
 			})
 	})
 
-	test('POST /api/assessments/clear-preview-scores wiht nothing to clear', () => {
+	test('POST /api/assessments/clear-preview-scores with nothing to clear', () => {
 		expect.hasAssertions()
 		db.manyOrNone.mockResolvedValueOnce([]).mockResolvedValueOnce([])
 
@@ -393,7 +393,7 @@ describe('server/express', () => {
 				expect(requireCurrentUser).toHaveBeenCalled()
 				expect(requireCurrentDocument).toHaveBeenCalled()
 				expect(db.tx).toHaveBeenCalledTimes(1)
-				expect(db.none).toHaveBeenCalledTimes(2)
+				expect(db.none).toHaveBeenCalledTimes(0)
 				expect(db.batch).toHaveBeenCalledTimes(1)
 				expect(response.body).toEqual({
 					status: 'ok'
@@ -425,7 +425,8 @@ describe('server/express', () => {
 
 	test('POST /api/assessments/clear-preview-scores fails on errors', () => {
 		expect.hasAssertions()
-		db.manyOrNone.mockRejectedValueOnce('mock-error')
+		db.manyOrNone.mockResolvedValueOnce([]) // deletePreviewScores
+		db.manyOrNone.mockRejectedValueOnce('mock-error') // deletePreviewAttempts
 
 		return request(app)
 			.post('/api/assessments/clear-preview-scores')

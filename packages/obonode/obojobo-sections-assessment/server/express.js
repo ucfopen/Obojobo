@@ -107,109 +107,103 @@ router
 		res.send(questionModels)
 	})
 
-// @TODO: should take an assessmentID in the url
+const deletePreviewScores = ({ transaction, userId, draftId, resourceLinkId }) => {
+	return transaction
+		.manyOrNone(
+			`
+			SELECT assessment_scores.id
+			FROM assessment_scores
+			JOIN attempts
+				ON attempts.id = assessment_scores.attempt_id
+			WHERE assessment_scores.user_id = $[userId]
+			AND assessment_scores.draft_id = $[draftId]
+			AND attempts.resource_link_id = $[resourceLinkId]
+			AND assessment_scores.is_preview = true
+		`,
+			{ userId, draftId, resourceLinkId }
+		)
+		.then(assessmentScoreIdsResult => {
+			const ids = assessmentScoreIdsResult.map(i => i.id)
+			if (ids.length < 1) return []
+
+			return [
+				transaction.none(
+					`
+					DELETE FROM lti_assessment_scores
+					WHERE assessment_score_id IN ($[ids:csv])
+				`,
+					{ ids }
+				),
+				transaction.none(
+					`
+					DELETE FROM assessment_scores
+					WHERE id IN ($[ids:csv])
+				`,
+					{ ids }
+				)
+			]
+		})
+}
+
+const deletePreviewAttempts = ({ transaction, userId, draftId, resourceLinkId }) => {
+	return transaction
+		.manyOrNone(
+			`
+			SELECT id
+			FROM attempts
+			WHERE user_id = $[userId]
+			AND draft_id = $[draftId]
+			AND resource_link_id = $[resourceLinkId]
+			AND is_preview = true
+		`,
+			{ userId, draftId, resourceLinkId }
+		)
+		.then(attemptIdsResult => {
+			const ids = attemptIdsResult.map(i => i.id)
+			if (ids.length < 1) return []
+
+			return [
+				transaction.none(
+					`
+					DELETE FROM attempts_question_responses
+					WHERE attempt_id IN ($[ids:csv])
+				`,
+					{ ids }
+				),
+				transaction.none(
+					`
+					DELETE FROM attempts
+					WHERE id IN ($[ids:csv])
+				`,
+					{ ids }
+				)
+			]
+		})
+}
+
 router
 	.route('/api/assessments/clear-preview-scores')
 	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
 	.post((req, res) => {
-		let assessmentScoreIds
-		let attemptIds
+		if (!req.currentVisit.is_preview) return res.notAuthorized('Not in preview mode')
 
-		return Promise.resolve()
-			.then(() => {
-				if (!req.currentVisit.is_preview) throw 'Not in preview mode'
-				return db.manyOrNone(
-					`
-							SELECT assessment_scores.id
-							FROM assessment_scores
-							JOIN attempts
-								ON attempts.id = assessment_scores.attempt_id
-							WHERE assessment_scores.user_id = $[userId]
-							AND assessment_scores.draft_id = $[draftId]
-							AND attempts.resource_link_id = $[resourceLinkId]
-							AND assessment_scores.is_preview = true
-						`,
-					{
-						userId: req.currentUser.id,
-						draftId: req.currentDocument.draftId,
-						resourceLinkId: req.currentVisit.resource_link_id
+		return db
+			.tx(transaction => {
+				const args = {
+					transaction,
+					userId: req.currentUser.id,
+					draftId: req.currentDocument.draftId,
+					resourceLinkId: req.currentVisit.resource_link_id
+				}
+
+				return Promise.all([deletePreviewScores(args), deletePreviewAttempts(args)]).then(
+					([scoreQueries, attemptQueries]) => {
+						return transaction.batch(scoreQueries.concat(attemptQueries))
 					}
 				)
-			})
-			.then(assessmentScoreIdsResult => {
-				assessmentScoreIds = assessmentScoreIdsResult.map(i => i.id)
-
-				return db.manyOrNone(
-					`
-						SELECT id
-						FROM attempts
-						WHERE user_id = $[userId]
-						AND draft_id = $[draftId]
-						AND resource_link_id = $[resourceLinkId]
-						AND is_preview = true
-					`,
-					{
-						userId: req.currentUser.id,
-						draftId: req.currentDocument.draftId,
-						resourceLinkId: req.currentVisit.resource_link_id
-					}
-				)
-			})
-			.then(attemptIdsResult => {
-				attemptIds = attemptIdsResult.map(i => i.id)
-
-				return db.tx(transaction => {
-					const queries = []
-					if (assessmentScoreIds.length > 0) {
-						queries.push(
-							transaction.none(
-								`
-								DELETE FROM lti_assessment_scores
-								WHERE assessment_score_id IN ($[ids:csv])
-							`,
-								{ ids: assessmentScoreIds }
-							)
-						)
-					}
-
-					if (attemptIds.length > 0) {
-						queries.push(
-							transaction.none(
-								`
-								DELETE FROM attempts_question_responses
-								WHERE attempt_id IN ($[ids:csv])
-							`,
-								{ ids: attemptIds }
-							)
-						)
-					}
-
-					queries.push(
-						transaction.none(
-							`
-								DELETE FROM assessment_scores
-								WHERE id IN ($[ids:csv])
-							`,
-							{ ids: assessmentScoreIds }
-						),
-						transaction.none(
-							`
-								DELETE FROM attempts
-								WHERE id IN ($[ids:csv])
-							`,
-							{ ids: attemptIds }
-						)
-					)
-
-					return transaction.batch(queries)
-				})
 			})
 			.then(() => res.success())
 			.catch(error => {
-				if (error === 'Not in preview mode') {
-					return res.notAuthorized(error)
-				}
-
 				logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
 			})
 	})
