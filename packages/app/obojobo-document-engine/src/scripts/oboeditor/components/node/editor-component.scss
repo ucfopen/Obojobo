@@ -3,15 +3,11 @@
 .oboeditor-component {
 	position: relative;
 
-	.component:last-child {
-		padding-bottom: 2em;
-	}
-
 	.component-toolbar {
 		position: absolute;
 		height: 100%;
 		top: 0;
-		z-index: $z-index-above-most;
+		z-index: $z-index-above-content;
 
 		.top {
 			top: 0;
