@@ -1,5 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Caliper event creator createAssessmentAttemptResumedEvent 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Resumed",
+  "actor": "https://testHost/api/user/testUserId",
+  "edApp": "https://testHost/api/system",
+  "eventTime": "mockDate",
+  "extensions": Object {
+    "foo": "bar",
+  },
+  "federatedSession": "https://testHost/api/launch/testOboLaunchId",
+  "generated": "https://testHost/api/attempt/testAttemptId",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://testHost/api/draft-content/testContentId/assessment/testAssessment",
+  "session": "https://testHost/api/session/testSessionId",
+  "type": "AssessmentEvent",
+}
+`;
+
 exports[`Caliper event creator createAssessmentAttemptScoredEvent 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",

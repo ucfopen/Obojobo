@@ -133,29 +133,20 @@ describe('QuestionBank', () => {
 			.set('qH',          0)
 
 		const mockQuestionBank = buildQuestionBankForTest(SELECT_SEQUENTIAL)
-		const tree = mockQuestionBank.buildAssessment(usageMap)
+		const chosenAssessment = mockQuestionBank.buildAssessment(usageMap)
 
-		// test the ids and order of the results
-		expect(tree).toEqual(
-			expect.objectContaining({
-				id: 'QB',
-				type: 'ObojoboDraft.Chunks.QuestionBank',
-				children: [
-					expect.objectContaining({
-						id: 'QB1',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qA']
-					}),
-					expect.objectContaining({
-						id: 'QB2',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
-					}),
-					'mockBuiltQuestion-qG',
-					'mockBuiltQuestion-qH'
-				]
-			})
-		)
+		const expectedChosenAssessment = [
+			'mockBuiltQuestion-qA',
+			{ id: 'QB1', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qC',
+			'mockBuiltQuestion-qD',
+			{ id: 'QB2', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qG',
+			'mockBuiltQuestion-qH',
+			{ id: 'QB', type: 'ObojoboDraft.Chunks.QuestionBank' }
+		]
+
+		expect(chosenAssessment).toEqual(expectedChosenAssessment)
 	})
 
 	test('createChosenQuestionTree picks expected questions in order for SECOND attempt in sequential mode', () => {
@@ -191,35 +182,21 @@ describe('QuestionBank', () => {
 			.set('qH',          1)
 
 		const mockQuestionBank = buildQuestionBankForTest(SELECT_SEQUENTIAL)
-		const tree = mockQuestionBank.buildAssessment(usageMap)
+		const chosenAssessment = mockQuestionBank.buildAssessment(usageMap)
 
-		expect(tree).toEqual(
-			expect.objectContaining({
-				id: 'QB',
-				type: 'ObojoboDraft.Chunks.QuestionBank',
-				children: [
-					expect.objectContaining({
-						id: 'QB1',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qB']
-					}),
-					expect.objectContaining({
-						id: 'QB2',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: [
-							expect.objectContaining({
-								id: 'QB3',
-								type: 'ObojoboDraft.Chunks.QuestionBank',
-								children: ['mockBuiltQuestion-qE']
-							}),
-							'mockBuiltQuestion-qC'
-						]
-					}),
-					'mockBuiltQuestion-qG',
-					'mockBuiltQuestion-qH'
-				]
-			})
-		)
+		const expectedChosenAssessment = [
+			'mockBuiltQuestion-qB',
+			{ id: 'QB1', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qE',
+			{ id: 'QB3', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qC',
+			{ id: 'QB2', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qG',
+			'mockBuiltQuestion-qH',
+			{ id: 'QB', type: 'ObojoboDraft.Chunks.QuestionBank' }
+		]
+
+		expect(chosenAssessment).toEqual(expectedChosenAssessment)
 	})
 
 	test('createChosenQuestionTree picks expected questions in order for THIRD attempt in sequential mode', () => {
@@ -255,36 +232,22 @@ describe('QuestionBank', () => {
 			.set('qH',          2)
 
 		const mockQuestionBank = buildQuestionBankForTest(SELECT_SEQUENTIAL)
-		const tree = mockQuestionBank.buildAssessment(usageMap)
+		const chosenAssessment = mockQuestionBank.buildAssessment(usageMap)
+
+		const expectedChosenAssessment = [
+			'mockBuiltQuestion-qA',
+			{ id: 'QB1', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qD',
+			'mockBuiltQuestion-qF',
+			{ id: 'QB3', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			{ id: 'QB2', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qG',
+			'mockBuiltQuestion-qH',
+			{ id: 'QB', type: 'ObojoboDraft.Chunks.QuestionBank' }
+		]
 
 		// test the ids and order of the results
-		expect(tree).toEqual(
-			expect.objectContaining({
-				id: 'QB',
-				type: 'ObojoboDraft.Chunks.QuestionBank',
-				children: [
-					expect.objectContaining({
-						id: 'QB1',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qA']
-					}),
-					expect.objectContaining({
-						id: 'QB2',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: [
-							'mockBuiltQuestion-qD',
-							expect.objectContaining({
-								id: 'QB3',
-								type: 'ObojoboDraft.Chunks.QuestionBank',
-								children: ['mockBuiltQuestion-qF']
-							})
-						]
-					}),
-					'mockBuiltQuestion-qG',
-					'mockBuiltQuestion-qH'
-				]
-			})
-		)
+		expect(chosenAssessment).toEqual(expectedChosenAssessment)
 	})
 
 	test('createChosenQuestionTree picks expected questions in order for FOURTH attempt in sequential mode', () => {
@@ -320,29 +283,21 @@ describe('QuestionBank', () => {
 			.set('qH',          3)
 
 		const mockQuestionBank = buildQuestionBankForTest(SELECT_SEQUENTIAL)
-		const tree = mockQuestionBank.buildAssessment(usageMap)
+		const chosenAssessment = mockQuestionBank.buildAssessment(usageMap)
+
+		const expectedChosenAssessment = [
+			'mockBuiltQuestion-qB',
+			{ id: 'QB1', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qC',
+			'mockBuiltQuestion-qD',
+			{ id: 'QB2', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qG',
+			'mockBuiltQuestion-qH',
+			{ id: 'QB', type: 'ObojoboDraft.Chunks.QuestionBank' }
+		]
 
 		// test the ids and order of the results
-		expect(tree).toEqual(
-			expect.objectContaining({
-				id: 'QB',
-				type: 'ObojoboDraft.Chunks.QuestionBank',
-				children: [
-					expect.objectContaining({
-						id: 'QB1',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qB']
-					}),
-					expect.objectContaining({
-						id: 'QB2',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
-					}),
-					'mockBuiltQuestion-qG',
-					'mockBuiltQuestion-qH'
-				]
-			})
-		)
+		expect(chosenAssessment).toEqual(expectedChosenAssessment)
 	})
 
 	test('buildAssessment creates a random-all group', () => {
@@ -351,29 +306,21 @@ describe('QuestionBank', () => {
 		const usageMap = new Map()
 
 		const mockQBNode = buildQuestionBankForTest(SELECT_RANDOM)
-		const tree = mockQBNode.buildAssessment(usageMap)
+		const chosenAssessment = mockQBNode.buildAssessment(usageMap)
+
+		const expectedChosenAssessment = [
+			'mockBuiltQuestion-qA',
+			{ id: 'QB1', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qC',
+			'mockBuiltQuestion-qD',
+			{ id: 'QB2', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qG',
+			'mockBuiltQuestion-qH',
+			{ id: 'QB', type: 'ObojoboDraft.Chunks.QuestionBank' }
+		]
 
 		// test the ids and order of the results
-		expect(tree).toEqual(
-			expect.objectContaining({
-				id: 'QB',
-				type: 'ObojoboDraft.Chunks.QuestionBank',
-				children: [
-					expect.objectContaining({
-						id: 'QB1',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qA']
-					}),
-					expect.objectContaining({
-						id: 'QB2',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
-					}),
-					'mockBuiltQuestion-qG',
-					'mockBuiltQuestion-qH'
-				]
-			})
-		)
+		expect(chosenAssessment).toEqual(expect.arrayContaining(expectedChosenAssessment))
 	})
 
 	test('buildAssessment creates a random-unseen group', () => {
@@ -391,32 +338,24 @@ describe('QuestionBank', () => {
 			.set('qH', 0)
 
 		const mockQBNode = buildQuestionBankForTest(SELECT_RANDOM_UNSEEN)
-		const tree = mockQBNode.buildAssessment(usageMap)
+		const chosenAssessment = mockQBNode.buildAssessment(usageMap)
+
+		const expectedChosenAssessment = [
+			'mockBuiltQuestion-qA',
+			{ id: 'QB1', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qC',
+			'mockBuiltQuestion-qD',
+			{ id: 'QB2', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qG',
+			'mockBuiltQuestion-qH',
+			{ id: 'QB', type: 'ObojoboDraft.Chunks.QuestionBank' }
+		]
 
 		// test the ids and order of the results
-		expect(tree).toEqual(
-			expect.objectContaining({
-				id: 'QB',
-				type: 'ObojoboDraft.Chunks.QuestionBank',
-				children: [
-					expect.objectContaining({
-						id: 'QB1',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qA']
-					}),
-					expect.objectContaining({
-						id: 'QB2',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
-					}),
-					'mockBuiltQuestion-qG',
-					'mockBuiltQuestion-qH'
-				]
-			})
-		)
+		expect(chosenAssessment).toEqual(expect.arrayContaining(expectedChosenAssessment))
 	})
 
-	test('buildAssessment creates a squential group and logs an error when select is unknown', () => {
+	test('buildAssessment creates a sequential group and logs an error when select is unknown', () => {
 		const usageMap = new Map()
 			.set('QB1', 0)
 			.set('qA', 0)
@@ -431,29 +370,22 @@ describe('QuestionBank', () => {
 			.set('qH', 0)
 
 		const mockQBNode = buildQuestionBankForTest('mock-invalid-selection')
-		const tree = mockQBNode.buildAssessment(usageMap)
+		const assessmentArray = mockQBNode.buildAssessment(usageMap)
 
 		// test the ids and order of the results
-		expect(tree).toEqual(
-			expect.objectContaining({
-				id: 'QB',
-				type: 'ObojoboDraft.Chunks.QuestionBank',
-				children: [
-					expect.objectContaining({
-						id: 'QB1',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qA']
-					}),
-					expect.objectContaining({
-						id: 'QB2',
-						type: 'ObojoboDraft.Chunks.QuestionBank',
-						children: ['mockBuiltQuestion-qC', 'mockBuiltQuestion-qD']
-					}),
-					'mockBuiltQuestion-qG',
-					'mockBuiltQuestion-qH'
-				]
-			})
-		)
+		const expectedAssessmentArray = [
+			'mockBuiltQuestion-qA',
+			{ id: 'QB1', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qC',
+			'mockBuiltQuestion-qD',
+			{ id: 'QB2', type: 'ObojoboDraft.Chunks.QuestionBank' },
+			'mockBuiltQuestion-qG',
+			'mockBuiltQuestion-qH',
+			{ id: 'QB', type: 'ObojoboDraft.Chunks.QuestionBank' }
+		]
+
+		expect(assessmentArray.length).toBe(8)
+		expect(assessmentArray).toEqual(expectedAssessmentArray)
 		expect(logger.error.mock.calls[0]).toEqual([
 			'Invalid Select Type for QuestionBank: mock-invalid-selection'
 		])

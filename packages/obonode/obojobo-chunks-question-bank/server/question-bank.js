@@ -2,6 +2,7 @@ const DraftNode = require('obojobo-express/models/draft_node')
 const _ = require('underscore')
 const logger = require('obojobo-express/logger')
 const { getRandom } = require('./util')
+const flatten = require('array-flatten')
 
 const SELECT_SEQUENTIAL = 'sequential'
 const SELECT_RANDOM = 'random'
@@ -48,19 +49,18 @@ class QuestionBank extends DraftNode {
 
 		const chosenChildren = this.buildFromArray(chosenIds, questionUsesMap)
 
-		const tree = this.toObject()
-		tree.children = chosenChildren
+		const thisQb = this.toObject()
+		chosenChildren.push({ id: thisQb.id, type: thisQb.type })
 
-		return tree
+		return chosenChildren
 	}
 
 	getContentValues() {
 		// choose should either be an integer > 0 or "all"
 		// ("all" meaning choose all available questions)
 		// Any other value results in the default of "all".
-		const chooseInt = this.node.content.choose ? parseInt(this.node.content.choose) : null
-		const isValidNumericChoose =
-			Number.isFinite(chooseInt) && chooseInt > 0
+		const chooseInt = this.node.content.choose ? parseInt(this.node.content.choose, 10) : null
+		const isValidNumericChoose = Number.isFinite(chooseInt) && chooseInt > 0
 		const choose = isValidNumericChoose ? Math.floor(chooseInt) : Infinity
 
 		const select = this.node.content.select || SELECT_SEQUENTIAL
@@ -70,12 +70,13 @@ class QuestionBank extends DraftNode {
 
 	// sends buildAssessment call to chosen children, and gathers responses
 	buildFromArray(chosenIds, questionUsesMap) {
-		const chosenChildren = []
+		let chosenChildren = []
 
 		for (const id of chosenIds) {
 			const childNode = this.draftTree.getChildNodeById(id)
 			if (childNode.buildAssessment) {
 				chosenChildren.push(childNode.buildAssessment(questionUsesMap))
+				chosenChildren = flatten(chosenChildren)
 			}
 		}
 

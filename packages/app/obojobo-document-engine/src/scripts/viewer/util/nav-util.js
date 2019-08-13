@@ -229,12 +229,20 @@ const NavUtil = {
 		return getFlatList(state.items)
 	},
 
+	getContext(state) {
+		return state.context
+	},
+
 	setContext(context) {
 		return Dispatcher.trigger('nav:setContext', {
 			value: {
 				context
 			}
 		})
+	},
+
+	resetContext() {
+		return Dispatcher.trigger('nav:resetContext')
 	},
 
 	isNavEnabled(state) {

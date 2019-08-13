@@ -27,25 +27,12 @@
 		color: $color-bg;
 		border: 1px solid $color-transparent;
 		border-bottom: 1px solid darken($color-action, 20%);
-
-		&:hover {
-			background-color: $color-action;
-		}
-
-		&:disabled {
-			@include disabled();
-		}
 	}
 
 	&.is-dangerous {
 		button {
 			background-color: $color-dangerous;
 			border-bottom: 1px solid darken($color-action, 20%);
-
-			&:hover {
-				background-color: $color-dangerous-minor;
-				color: $color-bg;
-			}
 		}
 	}
 
@@ -55,15 +42,6 @@
 			border-bottom: 1px solid $color-action;
 			background-color: $color-bg;
 			color: $color-action;
-
-			&:hover {
-				background-color: $color-action;
-				color: $color-bg;
-			}
-
-			&:disabled {
-				@include disabled();
-			}
 		}
 	}
 
@@ -73,16 +51,38 @@
 			border-bottom: 1px solid $color-dangerous;
 			background-color: $color-bg;
 			color: $color-dangerous;
-
-			&:hover {
-				background-color: $color-dangerous;
-				color: $color-bg;
-			}
-
-			&:disabled {
-				@include disabled();
-			}
 		}
+	}
+
+	.button:hover {
+		background-color: $color-action;
+	}
+
+	.button:disabled {
+		@include disabled();
+	}
+
+	&.is-dangerous button:hover {
+		background-color: $color-dangerous-minor;
+		color: $color-bg;
+	}
+
+	&.alt-action button:hover {
+		background-color: $color-action;
+		color: $color-bg;
+	}
+
+	&.alt-action button:disabled {
+		@include disabled();
+	}
+
+	&.alt-action.is-dangerous button:hover {
+		background-color: $color-dangerous;
+		color: $color-bg;
+	}
+
+	&.alt-action.is-dangerous button:disabled {
+		@include disabled();
 	}
 
 	&.align-left {

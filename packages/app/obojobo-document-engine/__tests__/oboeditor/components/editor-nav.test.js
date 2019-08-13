@@ -101,7 +101,7 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		component.instance().onClick({
+		component.instance().onNavItemClick({
 			id: 6,
 			type: 'link',
 			label: 'label6',

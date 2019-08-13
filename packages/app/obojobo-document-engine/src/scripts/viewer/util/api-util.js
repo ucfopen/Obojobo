@@ -45,6 +45,8 @@ const APIUtil = {
 	postEvent({ draftId, action, eventVersion, visitId, payload = {} }) {
 		return (
 			APIUtil.post('/api/events', {
+				draftId,
+				visitId,
 				event: {
 					action,
 					draft_id: draftId,
@@ -89,15 +91,26 @@ const APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	endAttempt({ attemptId, draftId, visitId }) {
-		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, {
+	resumeAttempt({ draftId, attemptId, visitId }) {
+		return APIUtil.post(`/api/assessments/attempt/${attemptId}/resume`, {
 			draftId,
+			attemptId,
 			visitId
 		}).then(processJsonResults)
 	},
 
+	endAttempt({ attemptId, draftId, visitId }) {
+		return APIUtil.post(`/api/assessments/attempt/${attemptId}/end`, { draftId, visitId }).then(
+			processJsonResults
+		)
+	},
+
+	reviewAttempt(attemptIds) {
+		return APIUtil.post(`/api/assessments/attempt/review`, { attemptIds }).then(processJsonResults)
+	},
+
 	resendLTIAssessmentScore({ draftId, assessmentId, visitId }) {
-		return APIUtil.post('/api/lti/sendAssessmentScore', {
+		return APIUtil.post('/api/lti/send-assessment-score', {
 			draftId,
 			assessmentId,
 			visitId

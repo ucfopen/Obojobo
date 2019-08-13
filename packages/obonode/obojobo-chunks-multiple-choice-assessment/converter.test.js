@@ -10,7 +10,11 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 
+jest.mock('obojobo-document-engine/src/scripts/common/models/obo-model')
+
 import Converter from './converter'
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
 const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
@@ -146,6 +150,7 @@ describe('MCAssessment Converter', () => {
 			type: 'mockType',
 			children: [
 				{
+					id: 'mockId',
 					type: MCCHOICE_NODE
 				},
 				{
@@ -154,6 +159,18 @@ describe('MCAssessment Converter', () => {
 			],
 			content: {}
 		}
+		OboModel.models = {
+			mockKey: {
+				parent: {
+					attributes: {
+						content: {
+							type: 'mock-question-type'
+						}
+					}
+				}
+			}
+		}
+
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()

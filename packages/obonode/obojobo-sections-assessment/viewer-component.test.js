@@ -202,7 +202,7 @@ describe('Assessment', () => {
 		const component = mount(<Assessment model={model} moduleData={moduleData} />)
 		component.unmount()
 
-		expect(NavUtil.setContext).toHaveBeenCalledWith('practice')
+		expect(NavUtil.resetContext).toHaveBeenCalled()
 		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:endAttempt', expect.any(Function))
 		expect(Dispatcher.off).toHaveBeenCalledWith('assessment:attemptEnded', expect.any(Function))
 	})

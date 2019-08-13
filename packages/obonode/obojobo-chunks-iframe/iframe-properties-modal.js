@@ -12,12 +12,13 @@ class IFrameProperties extends React.Component {
 		const defaultState = {
 			autoload: false,
 			border: false,
-			fit: false,
+			fit: '',
 			height: 480,
 			initialZoom: 1,
 			src: '',
 			title: '',
-			width: 640
+			width: 640,
+			controls: ''
 		}
 		this.state = {...defaultState, ...props.content}
 		this.inputRef = React.createRef()
@@ -91,7 +92,7 @@ class IFrameProperties extends React.Component {
 	}
 
 	render() {
-		const controlList = this.state.controls.split(',')
+		const controlList = this.state.controls ? this.state.controls.split(',') : []
 
 		return (
 			<SimpleDialog

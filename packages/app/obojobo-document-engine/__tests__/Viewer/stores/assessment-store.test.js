@@ -65,29 +65,43 @@ describe('AssessmentStore', () => {
 				attemptId: 'attemptId',
 				assessmentId: 'assessmentId',
 				state: {
-					questions: [
+					chosen: [
 						{
 							id: 'q1',
-							type: 'ObojoboDraft.Chunks.Question',
-							children: [
-								{
-									id: 'r1',
-									type: 'ObojoboDraft.Chunks.MCAssessment'
-								}
-							]
+							type: 'ObojoboDraft.Chunks.Question'
 						},
 						{
 							id: 'q2',
-							type: 'ObojoboDraft.Chunks.Question',
-							children: [
-								{
-									id: 'r2',
-									type: 'ObojoboDraft.Chunks.MCAssessment'
-								}
-							]
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'qb',
+							type: 'ObojoboDraft.Chunks.QuestionBank'
 						}
 					]
-				}
+				},
+				questions: [
+					{
+						id: 'q1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r1',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					},
+					{
+						id: 'q2',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r2',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					}
+				]
 			}
 		})
 	}
@@ -208,19 +222,63 @@ describe('AssessmentStore', () => {
 
 	test('resuming an unfinished attempt hides the modal, starts the attempt and triggers a change', () => {
 		const originalStartAttempt = AssessmentStore.startAttempt
-		const unfinishedAttempt = { a: 1 }
+		const unfinishedAttempt = {
+			status: 'ok',
+			value: {
+				attemptId: 'attemptId',
+				assessmentId: 'assessmentId',
+				state: {
+					chosen: [
+						{
+							id: 'q1',
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'q2',
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'qb',
+							type: 'ObojoboDraft.Chunks.QuestionBank'
+						}
+					]
+				},
+				questions: [
+					{
+						id: 'q1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r1',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					},
+					{
+						id: 'q2',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r2',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					}
+				]
+			}
+		}
+
+		APIUtil.resumeAttempt = jest.fn().mockResolvedValueOnce(unfinishedAttempt)
 
 		AssessmentStore.startAttempt = jest.fn()
 		ModalUtil.hide = jest.fn()
 
-		AssessmentStore.onResumeAttemptConfirm(unfinishedAttempt)
-
-		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.startAttempt).toHaveBeenCalledWith(unfinishedAttempt)
-		expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
-
-		AssessmentStore.startAttempt = originalStartAttempt
+		return AssessmentStore.onResumeAttemptConfirm(unfinishedAttempt).then(() => {
+			expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
+			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+			expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
+			AssessmentStore.startAttempt = originalStartAttempt
+		})
 	})
 
 	test('tryStartAttempt shows an error if no attempts are left and triggers a change', () => {
@@ -516,12 +574,12 @@ describe('AssessmentStore', () => {
 
 		return AssessmentStore.tryStartAttempt('assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }))
-			.then(() => AssessmentStore.tryEndAttempt('assessmentId'))
+			.then(() => AssessmentStore.tryEndAttempt('assessmentId', 'mockContext'))
 			.then(() => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
 				expect(QuestionUtil.hideQuestion).toHaveBeenCalledTimes(2)
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1')
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2')
+				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1', 'mockContext')
+				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2', 'mockContext')
 			})
 	})
 
