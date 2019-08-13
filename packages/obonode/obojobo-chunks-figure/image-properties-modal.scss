@@ -2,7 +2,6 @@
 
 .image-properties {
 	text-align: left;
-	margin-top: 1em;
 	display: flex;
 
 	> label {
@@ -53,7 +52,7 @@
 		align-items: center;
 		padding: 1em 0;
 		margin-bottom: 1em;
-		background-color: #f2f2f2;
+		background-color: $color-bg2;
 
 		&.image-container {
 			justify-content: center;
@@ -84,7 +83,7 @@
 			line-height: 100px; /* stylelint-disable-line unit-blacklist */
 			text-align: center;
 			box-sizing: border-box;
-			background: $color-bg2;
+			background: darken($color-bg2, 10%);
 			color: $color-text-minor;
 		}
 	}

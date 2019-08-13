@@ -5,10 +5,9 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import ChooseImageModal from './choose-image-modal'
 import Image from './image'
-import { debounce, isUrlUUID } from './utils'
+import { isUrlUUID } from './utils'
 
 const { SimpleDialog } = Common.components.modal
-const URL_UPDATE_DELAY = 750
 
 class ImageProperties extends React.Component {
 	constructor(props) {
@@ -22,7 +21,11 @@ class ImageProperties extends React.Component {
 			isChoosingImage: false
 		}
 		this.inputRef = React.createRef()
-		this.state = { ...defaultState, ...props.content }
+		this.state = {
+			...defaultState,
+			...props.content,
+			isChoosingImage: props.content.url !== '' || false
+		}
 		if (!isUrlUUID(this.props.content.url)) {
 			this.state.urlInputText = this.props.content.url
 		}
@@ -32,12 +35,6 @@ class ImageProperties extends React.Component {
 		this.setState({
 			url: mediaId
 		})
-	}
-
-	handleURLTextChange(event) {
-		const urlInputText = event.target.value
-		this.setState({ urlInputText })
-		debounce(URL_UPDATE_DELAY, () => this.setState({ url: urlInputText, filename: null }))
 	}
 
 	handleAltTextChange(event) {
@@ -124,6 +121,7 @@ class ImageProperties extends React.Component {
 							onChange={this.handleAltTextChange.bind(this)}
 							size="50"
 							placeholder="Describe the Image"
+							ref={this.inputRef}
 						/>
 
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>

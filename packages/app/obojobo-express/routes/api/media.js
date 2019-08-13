@@ -30,14 +30,6 @@ const upload = (req, res) => {
 	})
 }
 
-const getMediaThumbnail = mediaId => {
-	return MediaModel.fetchByIdAndDimensions(mediaId, 'small')
-		.then(imageData => {
-			return imageData
-		})
-		.catch(error => console.log(error))
-}
-
 // Upload media file
 // mounted as /api/media/upload
 router
@@ -53,33 +45,6 @@ router
 			.catch(next) // catches errors thrown by upload
 	})
 
-// Get list of media a thumbnail
-// mounted as /api/media/many
-router
-	.route('/many/')
-	.get([requireCurrentUser])
-	.get((req, res) => {
-		const start = parseInt(req.query.start)
-		const count = parseInt(req.query.count)
-		MediaModel.fetchManyById(req.currentUser.id, start, count)
-			.then(medias =>
-				Promise.all(
-					medias.map(async media => {
-						const thumbnail = await getMediaThumbnail(media.id)
-						return {
-							...media,
-							thumbnail
-						}
-					})
-				)
-			)
-			.then(results => {
-				res.status(200)
-				res.send(results)
-			})
-			.catch(res.status(404))
-	})
-
 // Get media file
 // mounted as /api/media/:mediaId/:dimensions
 router
@@ -90,6 +55,23 @@ router
 			.then(imageData => {
 				res.contentType(imageData.mimeType)
 				res.send(imageData.binaryData)
+			})
+			.catch(next)
+	})
+
+// Get list of media a thumbnail
+// mounted as /api/media/many
+router
+	.route('/many/')
+	.get([requireCurrentUser])
+	.get((req, res, next) => {
+		const start = parseInt(req.query.start)
+		const count = parseInt(req.query.count)
+
+		MediaModel.fetchManyById(req.currentUser.id, start, count)
+			.then(medias => {
+				res.status(200)
+				res.send(medias)
 			})
 			.catch(next)
 	})

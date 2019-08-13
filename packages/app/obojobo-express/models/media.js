@@ -209,13 +209,16 @@ class Media {
 		}
 	}
 
-	static async fetchManyById(userId, start, end) {
-		const medias = await db
+	static fetchManyById(userId, start, count) {
+		if (!userId || !Number.isInteger(start) || !Number.isInteger(count)) {
+			throw new Error('Invalid argument.')
+		}
+
+		return db
 			.manyOrNone(
 				`
 					SELECT
 						id as "id",
-						file_name as "fileName",
 						created_at as "createdAt"
 					FROM
 						media
@@ -228,13 +231,11 @@ class Media {
 					userId
 				}
 			)
-			.then(res => res.splice(start, end))
+			.then(res => res.splice(start, count))
 			.catch(err => {
 				logger.error(err)
 				throw err
 			})
-
-		return medias
 	}
 
 	static storeImageInDb({ filename, binary, size, mimetype, dimensions, mode, mediaId, userId }) {

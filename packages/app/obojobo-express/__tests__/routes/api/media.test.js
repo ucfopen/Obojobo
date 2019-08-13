@@ -96,11 +96,9 @@ describe('api media route', () => {
 	afterEach(() => {})
 
 	test('POST /api/media/upload returns the results of MediaModel.createAndSave', () => {
-		const mockCreateAndSaveResults = { mockResults: true}
+		const mockCreateAndSaveResults = { mockResults: true }
 		mockCurrentUser = { id: 99 } // mock current logged in user
-		MediaModel.createAndSave = jest
-			.fn()
-			.mockResolvedValueOnce(mockCreateAndSaveResults)
+		MediaModel.createAndSave = jest.fn().mockResolvedValueOnce(mockCreateAndSaveResults)
 
 		return request(app)
 			.post('/api/media/upload')
@@ -114,12 +112,10 @@ describe('api media route', () => {
 	})
 
 	test('POST /api/media/upload catches error from Multer', () => {
-		const mockCreateAndSaveResults = { mockResults: true}
+		const mockCreateAndSaveResults = { mockResults: true }
 		mockCurrentUser = { id: 99 } // mock current logged in user
 
-		MediaModel.createAndSave = jest
-			.fn()
-			.mockResolvedValueOnce(mockCreateAndSaveResults)
+		MediaModel.createAndSave = jest.fn().mockResolvedValueOnce(mockCreateAndSaveResults)
 
 		// multerUpload encounters error
 		mockMulterUpload.mockImplementationOnce((req, res, cb) => {
@@ -151,4 +147,17 @@ describe('api media route', () => {
 			})
 	})
 
+	test('GET /api/media/many', () => {
+		mockCurrentUser = { id: 99 } // mock current logged in user
+		const mockStart = 0
+		const mockCount = 1
+
+		MediaModel.fetchManyById = jest.fn().mockResolvedValueOnce([])
+
+		return request(app)
+			.get(`/api/media/many/?start=${mockStart}&count=${mockCount}`)
+			.then(() => {
+				expect(MediaModel.fetchManyById).toBeCalledWith(mockCurrentUser.id, mockStart, mockCount)
+			})
+	})
 })
