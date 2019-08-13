@@ -17,12 +17,14 @@ const ERROR_FATAL_NO_SECRET_FOR_KEY /*        */ = new Error('No LTI secret foun
 const ERROR_FATAL_NO_LAUNCH_FOUND /*          */ = new Error('No launch found')
 const ERROR_FATAL_LAUNCH_EXPIRED /*           */ = new Error('Launch expired')
 const ERROR_FATAL_SCORE_IS_INVALID /*         */ = new Error('LTI score is invalid')
+const ERROR_USER_NOT_A_LEARNER /*             */ = new Error('User does not have student role.')
 
 const STATUS_SUCCESS /*                             */ = 'success'
 const STATUS_NOT_ATTEMPTED_NO_OUTCOME_FOR_LAUNCH /* */ =
 	'not_attempted_no_outcome_service_for_launch'
 const STATUS_NOT_ATTEMPTED_SCORE_IS_NULL /*         */ = 'not_attempted_score_is_null'
 const STATUS_NOT_ATTEMPTED_PREVIEW_MODE /*          */ = 'not_attempted_preview_mode'
+const STATUS_NOT_A_LEARNER /*                       */ = 'error_not_a_learner'
 const STATUS_ERROR_LAUNCH_EXPIRED /*                */ = 'error_launch_expired'
 const STATUS_ERROR_REPLACE_RESULT_FAILED /*         */ = 'error_replace_result_failed'
 const STATUS_ERROR_NO_ASSESSMENT_SCORE_FOUND /*     */ = 'error_no_assessment_score_found'
@@ -630,6 +632,12 @@ const logAndGetStatusForError = function(error, requiredData, logId) {
 			result.status = STATUS_NOT_ATTEMPTED_SCORE_IS_NULL
 			logger.info(`LTI not sending null score for user:"${userId}" on draft:"${draftId}"`, logId)
 			break
+
+		case ERROR_USER_NOT_A_LEARNER:
+			result.status = STATUS_NOT_A_LEARNER
+			logger.info(`LTI launch does not contain Learner role`, logId)
+			break
+
 		//
 		// Bad unexpected errors:
 		// In these cases we didn't expect for any of these errors to happen
@@ -743,6 +751,12 @@ const sendHighestAssessmentScore = (
 
 			if (outcomeData.error !== null) {
 				throw outcomeData.error
+			}
+
+			// The LMS may error if we send scores for users w/o Learner role
+			// let's not bother sending the score
+			if (!requiredData.launch.reqVars.roles.includes('Learner')) {
+				throw ERROR_USER_NOT_A_LEARNER
 			}
 
 			result.scoreSent = requiredData.ltiScoreToSend

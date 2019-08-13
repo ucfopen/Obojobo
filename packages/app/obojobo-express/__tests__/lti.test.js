@@ -72,7 +72,8 @@ const mockSendAssessScoreDBCalls = (
 	ltiHasOutcome, // Use 'missing' to indicate no launch, 'error' to throw an error
 	ltiKey = 'testkey',
 	insertLTIAssessmentScoreSucceeds = true,
-	previewMode = false
+	previewMode = false,
+	isLearner = true
 ) => {
 	// mock get assessment_score
 	if (assessmentScore === 'missing') {
@@ -153,7 +154,8 @@ const mockSendAssessScoreDBCalls = (
 				id: 'launch-id',
 				data: {
 					lis_outcome_service_url: ltiHasOutcome ? 'lis_outcome_service_url' : null,
-					lis_result_sourcedid: 'lis_result_sourcedid'
+					lis_result_sourcedid: 'lis_result_sourcedid',
+					roles: isLearner ? ['Learner'] : ['Instructor']
 				},
 				lti_key: ltiKey,
 				created_at: creationDate
@@ -459,6 +461,101 @@ describe('lti', () => {
 				launchId: 'launch-id',
 				scoreSent: 1,
 				status: 'success',
+				statusDetails: null,
+				gradebookStatus: 'ok_gradebook_matches_assessment_score',
+				dbStatus: 'recorded',
+				ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+				outcomeServiceURL: 'lis_outcome_service_url'
+			})
+		})
+	})
+
+	test('Sending scores after a launch without Learner Role errors', () => {
+		mockSendAssessScoreDBCalls(
+			100,
+			1,
+			moment().toISOString(),
+			true,
+			true,
+			undefined, //eslint-disable-line no-undefined
+			true,
+			false,
+			false
+		)
+		mockDate()
+		const mockDraft = {
+			draftId: 'draft-id',
+			contentId: 'content-id'
+		}
+
+		return lti.sendHighestAssessmentScore('user-id', mockDraft, 'assessment-id').then(result => {
+			expect(logger.info.mock.calls).toMatchInlineSnapshot(`
+			Array [
+			  Array [
+			    "LTI begin sendHighestAssessmentScore for userId:\\"user-id\\", draftId:\\"draft-id\\", assessmentId:\\"assessment-id\\"",
+			    "DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+			  ],
+			  Array [
+			    "LTI found assessment score. Details: user:\\"user-id\\", draft:\\"draft-id\\", score:\\"100\\", assessmentScoreId:\\"assessment-score-id\\", attemptId:\\"attempt-id\\", preview:\\"false\\"",
+			    "DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+			  ],
+			  Array [
+			    "LTI launch with id:\\"launch-id\\" retrieved!",
+			    "DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+			  ],
+			  Array [
+			    "LTI launch does not contain Learner role",
+			    "DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+			  ],
+			  Array [
+			    "LTI gradebook status is \\"ok_gradebook_matches_assessment_score\\"",
+			    "DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+			  ],
+			  Array [
+			    "LTI store \\"error_not_a_learner\\" success - id:\\"new-lti-assessment-score-id\\"",
+			    "DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+			  ],
+			  Array [
+			    "LTI complete",
+			    "DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+			  ],
+			]
+		`)
+
+			expect(insertEvent).lastCalledWith({
+				action: 'lti:replaceResult',
+				actorTime: 'MOCKED-ISO-DATE-STRING',
+				payload: {
+					launchId: 'launch-id',
+					launchKey: 'testkey',
+					body: {
+						lis_outcome_service_url: 'lis_outcome_service_url',
+						lis_result_sourcedid: 'lis_result_sourcedid'
+					},
+					result: {
+						launchId: 'launch-id',
+						scoreSent: null,
+						status: 'error_not_a_learner',
+						statusDetails: null,
+						gradebookStatus: 'ok_gradebook_matches_assessment_score',
+						dbStatus: 'recorded',
+						ltiAssessmentScoreId: 'new-lti-assessment-score-id',
+						outcomeServiceURL: 'lis_outcome_service_url'
+					}
+				},
+				userId: 'user-id',
+				ip: '',
+				eventVersion: '2.0.0',
+				metadata: {},
+				draftId: 'draft-id',
+				isPreview: false,
+				contentId: 'content-id'
+			})
+
+			expect(result).toEqual({
+				launchId: 'launch-id',
+				scoreSent: null,
+				status: 'error_not_a_learner',
 				statusDetails: null,
 				gradebookStatus: 'ok_gradebook_matches_assessment_score',
 				dbStatus: 'recorded',
