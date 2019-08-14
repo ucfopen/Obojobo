@@ -61,6 +61,7 @@ describe('lti launch middleware', () => {
 			cb()
 		}) // session.save is successful
 		User.saveOrCreateCallback.mockReset()
+		User.clearSessionsForUserById.mockReset()
 		logger.error.mockReset()
 		DraftDocument.fetchById = jest.fn().mockResolvedValueOnce(
 			new DraftDocument({
@@ -242,12 +243,11 @@ describe('lti launch middleware', () => {
 	})
 
 	test('assignment deletes previous sessions for current user', () => {
-		expect.hasAssertions()
+		expect.assertions(2)
 		const [req, res, mockNext] = mockExpressArgs(true)
+		expect(User.clearSessionsForUserById).not.toHaveBeenCalled()
 		return ltiLaunch.assignment(req, res, mockNext).then(() => {
-			expect(db.none).toHaveBeenCalledWith(expect.stringContaining('DELETE FROM sessions'), {
-				currentUserId: 1
-			})
+			expect(User.clearSessionsForUserById).toHaveBeenCalledWith(1)
 		})
 	})
 
