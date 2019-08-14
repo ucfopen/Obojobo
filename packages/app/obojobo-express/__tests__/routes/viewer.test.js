@@ -155,7 +155,6 @@ describe('viewer route', () => {
 			deactivatedVisitId: 'mocked-deactivated-visit-id'
 		})
 
-		// mockCurrentUser = {id: 44}
 		mockCurrentDocument = { draftId: uuid }
 		mockLtiLaunch = { resource_link_id: 3 }
 
