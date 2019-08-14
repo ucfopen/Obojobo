@@ -16,6 +16,7 @@ import ErrorUtil from '../../../src/scripts/common/util/error-util'
 import QuestionUtil from '../../../src/scripts/viewer/util/question-util'
 import LTINetworkStates from '../../../src/scripts/viewer/stores/assessment-store/lti-network-states'
 import LTIResyncStates from '../../../src/scripts/viewer/stores/assessment-store/lti-resync-states'
+import mockConsole from 'jest-mock-console';
 
 jest.mock('../../../src/scripts/common/util/modal-util', () => ({
 	show: jest.fn()
@@ -34,6 +35,7 @@ jest.mock('../../../src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('../../../src/scripts/viewer/util/focus-util')
 
 describe('AssessmentStore', () => {
+	let restoreConsole
 	const getExampleAssessment = () => ({
 		id: 'rootId',
 		type: 'ObojoboDraft.Modules.Module',
@@ -63,36 +65,50 @@ describe('AssessmentStore', () => {
 				attemptId: 'attemptId',
 				assessmentId: 'assessmentId',
 				state: {
-					questions: [
+					chosen: [
 						{
 							id: 'q1',
-							type: 'ObojoboDraft.Chunks.Question',
-							children: [
-								{
-									id: 'r1',
-									type: 'ObojoboDraft.Chunks.MCAssessment'
-								}
-							]
+							type: 'ObojoboDraft.Chunks.Question'
 						},
 						{
 							id: 'q2',
-							type: 'ObojoboDraft.Chunks.Question',
-							children: [
-								{
-									id: 'r2',
-									type: 'ObojoboDraft.Chunks.MCAssessment'
-								}
-							]
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'qb',
+							type: 'ObojoboDraft.Chunks.QuestionBank'
 						}
 					]
-				}
+				},
+				questions: [
+					{
+						id: 'q1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r1',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					},
+					{
+						id: 'q2',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r2',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					}
+				]
 			}
 		})
 	}
 
 	beforeEach(done => {
 		jest.resetAllMocks()
-
+		restoreConsole = mockConsole('error')
 		AssessmentStore.init()
 		AssessmentStore.triggerChange = jest.fn()
 		QuestionStore.init()
@@ -103,6 +119,10 @@ describe('AssessmentStore', () => {
 		Registry.getItems(() => {
 			done()
 		})
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('init builds state with a specific structure and return it', () => {
@@ -202,19 +222,63 @@ describe('AssessmentStore', () => {
 
 	test('resuming an unfinished attempt hides the modal, starts the attempt and triggers a change', () => {
 		const originalStartAttempt = AssessmentStore.startAttempt
-		const unfinishedAttempt = { a: 1 }
+		const unfinishedAttempt = {
+			status: 'ok',
+			value: {
+				attemptId: 'attemptId',
+				assessmentId: 'assessmentId',
+				state: {
+					chosen: [
+						{
+							id: 'q1',
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'q2',
+							type: 'ObojoboDraft.Chunks.Question'
+						},
+						{
+							id: 'qb',
+							type: 'ObojoboDraft.Chunks.QuestionBank'
+						}
+					]
+				},
+				questions: [
+					{
+						id: 'q1',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r1',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					},
+					{
+						id: 'q2',
+						type: 'ObojoboDraft.Chunks.Question',
+						children: [
+							{
+								id: 'r2',
+								type: 'ObojoboDraft.Chunks.MCAssessment'
+							}
+						]
+					}
+				]
+			}
+		}
+
+		APIUtil.resumeAttempt = jest.fn().mockResolvedValueOnce(unfinishedAttempt)
 
 		AssessmentStore.startAttempt = jest.fn()
 		ModalUtil.hide = jest.fn()
 
-		AssessmentStore.onResumeAttemptConfirm(unfinishedAttempt)
-
-		expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
-		expect(AssessmentStore.startAttempt).toHaveBeenCalledWith(unfinishedAttempt)
-		expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
-
-		AssessmentStore.startAttempt = originalStartAttempt
+		return AssessmentStore.onResumeAttemptConfirm(unfinishedAttempt).then(() => {
+			expect(AssessmentStore.startAttempt).toHaveBeenCalledTimes(1)
+			expect(AssessmentStore.triggerChange).toHaveBeenCalledTimes(1)
+			expect(ModalUtil.hide).toHaveBeenCalledTimes(1)
+			AssessmentStore.startAttempt = originalStartAttempt
+		})
 	})
 
 	test('tryStartAttempt shows an error if no attempts are left and triggers a change', () => {
@@ -261,14 +325,10 @@ describe('AssessmentStore', () => {
 		ErrorUtil.show.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		const originalError = console.error
-		console.error = jest.fn()
 
 		return AssessmentStore.tryStartAttempt('assessmentId').then(() => {
-			const errorMock = console.error
-			console.error = originalError
 			expect(ErrorUtil.show).toHaveBeenCalledTimes(1)
-			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
+			expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		})
 	})
 
@@ -339,14 +399,10 @@ describe('AssessmentStore', () => {
 		ErrorUtil.errorResponse.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		const originalError = console.error
-		console.error = jest.fn()
 
 		return AssessmentStore.tryResendLTIScore('assessmentId').then(() => {
-			const errorMock = console.error
-			console.error = originalError
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
-			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
+			expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		})
 	})
 
@@ -448,14 +504,10 @@ describe('AssessmentStore', () => {
 		ErrorUtil.errorResponse.mockImplementationOnce(() => {
 			throw new Error('Mock Error')
 		})
-		const originalError = console.error
-		console.error = jest.fn()
 
 		return AssessmentStore.tryEndAttempt('assessmentId').then(() => {
-			const errorMock = console.error
-			console.error = originalError
 			expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(1)
-			expect(errorMock).toHaveBeenCalledWith(expect.any(Error))
+			expect(console.error).toHaveBeenCalledWith(expect.any(Error))
 		})
 	})
 
@@ -522,12 +574,12 @@ describe('AssessmentStore', () => {
 
 		return AssessmentStore.tryStartAttempt('assessmentId')
 			.then(() => AssessmentStore.trySetResponse('q1', { responseForR1: 'someValue' }))
-			.then(() => AssessmentStore.tryEndAttempt('assessmentId'))
+			.then(() => AssessmentStore.tryEndAttempt('assessmentId', 'mockContext'))
 			.then(() => {
 				expect(ErrorUtil.errorResponse).toHaveBeenCalledTimes(0)
 				expect(QuestionUtil.hideQuestion).toHaveBeenCalledTimes(2)
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1')
-				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2')
+				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q1', 'mockContext')
+				expect(QuestionUtil.hideQuestion).toHaveBeenCalledWith('q2', 'mockContext')
 			})
 	})
 

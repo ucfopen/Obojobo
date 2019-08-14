@@ -53,7 +53,7 @@ class EditorStore extends Store {
 		)
 	}
 
-	init(model, startingId = null, startingPath, viewState = {}) {
+	init(model, startingId = null, settings, startingPath, viewState = {}) {
 		this.state = {
 			navItems: {},
 			itemsById: {},
@@ -64,7 +64,8 @@ class EditorStore extends Store {
 			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
 			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
 			context: 'editor',
-			currentModel: null,
+			currentPageModel: null,
+			settings,
 			startingId
 		}
 
@@ -111,7 +112,7 @@ class EditorStore extends Store {
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
 		const navModel = EditorUtil.getNavTargetModel(this.state)
-		this.state.currentModel = navModel
+		this.state.currentPageModel = navModel
 		this.triggerChange()
 		return true
 	}
@@ -173,45 +174,46 @@ class EditorStore extends Store {
 	}
 
 	addPage(newPage) {
-		const model = OboModel.getRoot()
+		const rootModel = OboModel.getRoot()
 
 		// Add the newPage to the content
 		const pageModel = OboModel.create(newPage)
-		model.children.forEach(child => {
+		rootModel.children.forEach(child => {
 			if (child.get('type') === CONTENT_NODE) {
 				child.children.add(pageModel)
 			}
 		})
 
-		EditorUtil.rebuildMenu(model)
+		EditorUtil.rebuildMenu(rootModel)
 		EditorUtil.goto(pageModel.id)
 	}
 
 	addAssessment(newAssessment) {
-		const model = OboModel.getRoot()
+		const rootModel = OboModel.getRoot()
 
 		// Add the newPage to the content
 		const assessmentModel = OboModel.create(newAssessment)
-		model.children.add(assessmentModel)
+		rootModel.children.add(assessmentModel)
 
-		EditorUtil.rebuildMenu(model)
+		EditorUtil.rebuildMenu(rootModel)
 		EditorUtil.goto(assessmentModel.id)
 	}
 
 	deletePage(pageId) {
-		const model = this.state.currentModel.getParentOfType(MODULE_NODE)
+		const pageModel = OboModel.models[pageId]
+		const parentModule = pageModel.getParentOfType(MODULE_NODE)
 
-		OboModel.models[pageId].remove()
+		pageModel.remove()
+		EditorUtil.rebuildMenu(parentModule)
 
-		EditorUtil.rebuildMenu(model)
-
-		this.state.currentModel = null
+		this.state.currentPageModel = null
 		this.triggerChange()
 	}
 
 	renamePage(pageId, newName) {
-		OboModel.models[pageId].set('content', { title: newName })
-		OboModel.models[pageId].title = newName
+		const pageModel = OboModel.models[pageId]
+		pageModel.set('content', { title: newName })
+		pageModel.title = newName
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 		this.triggerChange()
@@ -223,8 +225,8 @@ class EditorStore extends Store {
 	}
 
 	movePage(pageId, index) {
-		const model = OboModel.models[pageId]
-		model.moveTo(index)
+		const pageModel = OboModel.models[pageId]
+		pageModel.moveTo(index)
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 		this.triggerChange()

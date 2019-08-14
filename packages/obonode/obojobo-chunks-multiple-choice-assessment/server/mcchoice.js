@@ -2,7 +2,7 @@ const DraftNode = require('obojobo-express/models/draft_node')
 
 class MCChoice extends DraftNode {
 	static get nodeName() {
-		return 'ObojoboDraft.Chunks.MCChoice'
+		return 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
 	}
 
 	constructor(draftTree, node, initFn) {

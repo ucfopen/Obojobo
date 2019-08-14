@@ -40,7 +40,19 @@ router
 				)
 			}
 
-			return res.success(draftModel.document)
+			res.format({
+				'application/xml': async () => {
+					let xml = await draftModel.xmlDocument
+					if(!xml) {
+						const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
+						xml = jsonToXml(draftModel.document)
+					}
+					res.send(xml)
+				},
+				'default': () => {
+					res.success(draftModel.document)
+				}
+			})
 		} catch (e) {
 			if (isNoDataFromQueryError(e)) {
 				return res.missing('Draft not found')

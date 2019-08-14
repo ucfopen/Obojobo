@@ -7,9 +7,11 @@ import React from 'react'
 import focus from 'obojobo-document-engine/src/scripts/common/page/focus'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/assessment-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/nav-util')
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
 jest.mock('obojobo-document-engine/src/scripts/viewer/assessment/assessment-score-reporter')
 jest.mock('obojobo-document-engine/src/scripts/common/flux/dispatcher')
 jest.mock('obojobo-document-engine/src/scripts/common/page/focus')
@@ -249,12 +251,30 @@ const scoreActionJSON = {
 }
 
 describe('PostTest', () => {
+	let moduleData
+	let model
+	let scoreAction
+
 	beforeEach(() => {
 		jest.resetAllMocks()
-	})
+		AssessmentUtil.getAllAttempts.mockReturnValueOnce([
+			{
+				attemptId: 1,
+				state:{
+					questionModels: []
+				}
+			}
+		])
 
-	test('PostTest component', () => {
-		const moduleData = {
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([{
+			assessmentScoreDetails: {
+				attemptNumber: 'mockAttemptNumber'
+			}
+		}])
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValue(null)
+		APIUtil.reviewAttempt.mockResolvedValue({})
+
+		moduleData = {
 			assessmentState: 'mockAssessmentState',
 			navState: {
 				context: 'mockContext'
@@ -264,95 +284,79 @@ describe('PostTest', () => {
 			},
 			focusState: {}
 		}
-		const model = OboModel.create(assessmentJSON)
-		const scoreAction = {
+		model = OboModel.create(assessmentJSON)
+		scoreAction = {
+			page: scoreActionJSON
+		}
+	})
+
+	test('PostTest component', () => {
+		scoreAction = {
 			page: null,
 			message: 'mockMessage'
 		}
 
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
-
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const tree = component.toJSON()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		expect(tree).toMatchSnapshot()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			// component.update()
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+
+			component.unmount()
+		})
+
 	})
+
 	test('PostTest component with scoreAction', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			lti: {
-				outcomeServiceHostname: 'mockLTIHost'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
-		const scoreAction = {
-			page: scoreActionJSON
-		}
-
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(null)
-
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const tree = component.toJSON()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		expect(tree).toMatchSnapshot()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with recorded score', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			lti: {
-				outcomeServiceHostname: 'mockLTIHost'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
-		const scoreAction = {
-			page: scoreActionJSON
-		}
-
-		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
-		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
+		AssessmentUtil.getAssessmentScoreForModel.mockReturnValue(100)
+		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValue([
 			{
-				assessmentScoreDetails: { attemptNumber: 'mockAttemptNumber' }
+				assessmentScoreDetails:{
+					attemptNumber: 'mockAttemptNumber'
+				}
 			}
 		])
 
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const tree = component.toJSON()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		expect(tree).toMatchSnapshot()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with review', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			lti: {
-				outcomeServiceHostname: 'mockLTIHost'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_ALWAYS
-		const scoreAction = {
-			page: scoreActionJSON
-		}
-
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
@@ -363,27 +367,20 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const tree = component.toJSON()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		expect(tree).toMatchSnapshot()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with review after all attempts - attempts remaining', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			lti: {
-				outcomeServiceHostname: 'mockLTIHost'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_AFTER_ALL
-		const scoreAction = {
-			page: scoreActionJSON
-		}
 
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
@@ -396,28 +393,20 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const tree = component.toJSON()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		expect(tree).toMatchSnapshot()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	test('PostTest component with review after all attempts - no attempts remaining', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			lti: {
-				outcomeServiceHostname: 'mockLTIHost'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_AFTER_ALL
-		const scoreAction = {
-			page: scoreActionJSON
-		}
-
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
@@ -429,30 +418,22 @@ describe('PostTest', () => {
 		const component = renderer.create(
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
-		const tree = component.toJSON()
+		const initialRender = component.toJSON()
+		expect(initialRender).toMatchSnapshot()
 
-		expect(tree).toMatchSnapshot()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const afterFetchRender = component.toJSON()
+			expect(afterFetchRender).toMatchSnapshot()
+			component.unmount()
+		})
 	})
 
 	// This button is actually part of the LTIStatus module
 	// The function is in PostTest because it needs the assessment model
 	test('PostTest component resends LTI when Resend button is clicked', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			lti: {
-				outcomeServiceHostname: 'mockLTIHost'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
 		model.modelState.review = FULL_REVIEW_AFTER_ALL
-		const scoreAction = {
-			page: scoreActionJSON
-		}
-
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
@@ -468,31 +449,23 @@ describe('PostTest', () => {
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
 
-		component
-			.childAt(0)
-			.childAt(0)
-			.childAt(2)
-			.find('button')
-			.simulate('click')
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			component
+				.childAt(0)
+				.childAt(0)
+				.childAt(2)
+				.find('button')
+				.simulate('click')
 
-		expect(AssessmentUtil.resendLTIScore).toHaveBeenCalled()
+			expect(AssessmentUtil.resendLTIScore).toHaveBeenCalled()
+			component.unmount()
+		})
+
 	})
 
 	test('Component listens to FOCUS_ON_ASSESSMENT_CONTENT events when mounted (and stops listening when unmounted)', () => {
-		const moduleData = {
-			assessmentState: 'mockAssessmentState',
-			navState: {
-				context: 'mockContext'
-			},
-			lti: {
-				outcomeServiceHostname: 'mockLTIHost'
-			},
-			focusState: {}
-		}
-		const model = OboModel.create(assessmentJSON)
-		const scoreAction = {
-			page: scoreActionJSON
-		}
 		AssessmentUtil.getAssessmentScoreForModel.mockReturnValueOnce(100)
 		AssessmentUtil.getHighestAttemptsForModelByAssessmentScore.mockReturnValueOnce([
 			{
@@ -507,16 +480,20 @@ describe('PostTest', () => {
 			<PostTest model={model} moduleData={moduleData} scoreAction={scoreAction} />
 		)
 
-		const boundFocusOnContent = component.instance().boundFocusOnContent
-		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.on).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
-		expect(Dispatcher.off).not.toHaveBeenCalled()
+		// NEEDED DUE TO AYNC IN COMPONENT CONSTRUCTOR
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			const boundFocusOnContent = component.instance().boundFocusOnContent
+			expect(Dispatcher.on).toHaveBeenCalledTimes(1)
+			expect(Dispatcher.on).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
+			expect(Dispatcher.off).not.toHaveBeenCalled()
 
-		component.unmount()
+			component.unmount()
 
-		expect(Dispatcher.on).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.off).toHaveBeenCalledTimes(1)
-		expect(Dispatcher.off).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
+			expect(Dispatcher.on).toHaveBeenCalledTimes(1)
+			expect(Dispatcher.off).toHaveBeenCalledTimes(1)
+			expect(Dispatcher.off).toHaveBeenCalledWith(FOCUS_ON_ASSESSMENT_CONTENT, boundFocusOnContent)
+		})
 	})
 
 	test('focusOnContent calls focus on the h1', () => {

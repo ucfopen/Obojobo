@@ -55,8 +55,7 @@ class EditorApp extends React.Component {
 			})
 			.then(({ value: draftModel }) => {
 				const obomodel = OboModel.create(draftModel)
-
-				EditorStore.init(obomodel, draftModel.content.start, window.location.pathname)
+				EditorStore.init(obomodel, draftModel.content.start, this.props.settings, window.location.pathname)
 
 				return this.setState({
 					modalState: ModalStore.getState(),
@@ -68,8 +67,8 @@ class EditorApp extends React.Component {
 				})
 			})
 			.catch(err => {
-				// eslint-disable-next-line
-				console.log(err)
+				// eslint-disable-next-line no-console
+				console.error(err)
 				return this.setState({ requestStatus: 'invalid', requestError: err })
 			})
 	}
@@ -106,7 +105,7 @@ class EditorApp extends React.Component {
 				/>
 				<div className={'component obojobo-draft--modules--module'} role="main" data-obo-component>
 					<PageEditor
-						page={this.state.editorState.currentModel}
+						page={this.state.editorState.currentPageModel}
 						context={this.state.editorState.context}
 						model={this.state.model}
 						draft={this.state.draft}

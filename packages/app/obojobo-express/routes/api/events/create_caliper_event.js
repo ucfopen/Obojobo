@@ -186,6 +186,11 @@ const caliperEventFactory = (req, host = null, isCalledFromCreateCaliperEventFro
 			return createAssessmentEvent(obj, IRI)
 		},
 
+		createAssessmentAttemptResumedEvent: obj => {
+			obj.action = 'Resumed'
+			return createAssessmentEvent(obj, IRI)
+		},
+
 		createAssessmentAttemptSubmittedEvent: obj => {
 			obj.action = 'Submitted'
 			return createAssessmentEvent(obj, IRI)

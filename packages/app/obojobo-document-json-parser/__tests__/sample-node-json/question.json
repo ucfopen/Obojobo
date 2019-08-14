@@ -1,0 +1,84 @@
+{
+	"id": "c2eee86c-9c6a-480e-85c4-99a38c8e3ec0",
+	"type": "ObojoboDraft.Chunks.Question",
+	"content": {},
+	"children": [
+		{
+			"id": "f20a3dfd-8a98-4e49-a24e-74b1a03214af",
+			"type": "ObojoboDraft.Chunks.Heading",
+			"content": {
+				"textGroup": [
+					{
+						"data": {},
+						"text": {
+							"value": "A Simple Question",
+							"styleList": []
+						}
+					}
+				],
+				"headingLevel": 1
+			},
+			"children": []
+		},
+		{
+			"id": "d5447fb0-cd8d-4449-9cbf-35a92abeea2e",
+			"type": "ObojoboDraft.Chunks.Text",
+			"content": {
+				"textGroup": [
+					{
+						"data": {},
+						"text": {
+							"value": "How much wood could a woodchuck chuck if a woodchuck could chuck wood?",
+							"styleList": []
+						}
+					}
+				]
+			},
+			"children": []
+		},
+		{
+			"id": "802ec69f-2ba2-4dad-9ba4-06372a550ddb",
+			"type": "ObojoboDraft.Chunks.MCAssessment",
+			"content": {
+				"shuffle": true,
+				"responseType": "Pick One"
+			},
+			"children": [
+				{
+					"id": "98f100ac-97d5-4c62-8e4b-5346e1ae0d2d",
+					"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+					"content": {
+						"score": 100
+					},
+					"children": [
+						{
+							"id": "40aacda7-f6a7-4a7c-aabc-6b4e5bed8c31",
+							"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+							"content": {},
+							"children": [
+								{
+									"id": "fedc62b5-31f5-4b89-abfd-f6604208837c",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"data": {
+													"indent": 0
+												},
+												"text": {
+													"value": "An answer",
+													"styleList": []
+												}
+											}
+										]
+									},
+									"children": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -26,6 +26,7 @@ jest.mock('../../../express_current_user', () => (req, res, next) => {
 	}
 	req.getCurrentVisitFromRequest = () => {
 		if (!mockCurrentVisit) return Promise.reject()
+		if (mockCurrentVisit === 'mock-fetch-reject') return Promise.reject('mock-fetch-reject')
 		req.currentVisit = mockCurrentVisit
 		return Promise.resolve()
 	}
@@ -75,7 +76,8 @@ describe('api visits route', () => {
 		mockCurrentVisit = {
 			id: validUUID(),
 			is_preview: false,
-			draft_content_id: validUUID()
+			draft_content_id: validUUID(),
+			resource_link_id: '12345'
 		}
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
 	})
@@ -137,8 +139,7 @@ describe('api visits route', () => {
 			yell: jest.fn().mockResolvedValueOnce(),
 			contentId: validUUID()
 		}
-		// mockCurrentVisit = null
-		VisitModel.fetchById.mockRejectedValueOnce('mock-fetch-reject')
+		mockCurrentVisit = 'mock-fetch-reject'
 		return request(app)
 			.post('/api/start')
 			.send({ visitId: validUUID() })
@@ -306,7 +307,8 @@ describe('api visits route', () => {
 					isPreview: false,
 					metadata: {},
 					payload: { visitId: validUUID() },
-					userId: 99
+					userId: 99,
+					visitId: validUUID()
 				})
 				expect(caliperEvent().createViewerSessionLoggedInEvent).toBeCalledWith({
 					actor: { id: 99, type: 'user' },

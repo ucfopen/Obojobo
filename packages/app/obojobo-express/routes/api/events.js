@@ -36,6 +36,7 @@ router
 			payload: event.payload,
 			draftId: req.currentDocument.draftId,
 			contentId: req.currentDocument.contentId,
+			visitId: req.currentVisit.id,
 			caliperPayload: caliperEvent
 		}
 

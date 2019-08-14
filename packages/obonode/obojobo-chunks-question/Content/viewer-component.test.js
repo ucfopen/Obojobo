@@ -8,6 +8,7 @@ describe('QuestionContent', () => {
 	test('QuestionContent component with no children', () => {
 		const props = {
 			model: {
+				modelState: {},
 				children: {
 					models: []
 				}
@@ -30,6 +31,7 @@ describe('QuestionContent', () => {
 
 		const props = {
 			model: {
+				modelState: {},
 				children: {
 					models: [mockChild, mockChild, mockChild]
 				}
@@ -43,6 +45,25 @@ describe('QuestionContent', () => {
 		expect(key).toBe(2)
 
 		const tree = component.toJSON()
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('QuestionContent survey component', () => {
+		const props = {
+			model: {
+				modelState: {
+					type: 'survey'
+				},
+				children: {
+					models: []
+				}
+			},
+			moduleData: 'mockModuleData'
+		}
+
+		const component = renderer.create(<QuestionContent {...props} />)
+		const tree = component.toJSON()
+
 		expect(tree).toMatchSnapshot()
 	})
 })

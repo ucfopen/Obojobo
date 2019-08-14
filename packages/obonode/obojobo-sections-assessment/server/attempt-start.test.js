@@ -24,13 +24,14 @@ jest.mock(
 jest.mock(
 	'./util',
 	() => ({
+		getFullQuestionsFromDraftTree: jest.fn(),
 		getRandom: jest.fn().mockReturnValue(0),
 		logAndRespondToUnexpected: jest.fn()
 	}),
 	{ virtual: false }
 )
 
-const { getRandom, logAndRespondToUnexpected } = require('./util')
+const { getRandom, logAndRespondToUnexpected, getFullQuestionsFromDraftTree } = require('./util')
 
 const {
 	startAttempt,
@@ -47,11 +48,11 @@ const testJson = require('obojobo-document-engine/test-object.json')
 const Assessment = require('./assessment')
 const insertEvent = require('obojobo-express/insert_event')
 const Draft = require('obojobo-express/models/draft')
-const DraftNode = require('obojobo-express/models/draft_node')
 const createCaliperEvent = require('obojobo-express/routes/api/events/create_caliper_event')
 const Visit = require('obojobo-express/models/visit')
 
 const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+const QUESTION_BANK_NODE_TYPE = 'ObojoboDraft.Chunks.QuestionBank'
 const ERROR_ATTEMPT_LIMIT_REACHED = 'Attempt limit reached'
 const ERROR_UNEXPECTED_DB_ERROR = 'Unexpected DB error'
 
@@ -62,7 +63,8 @@ describe('start attempt route', () => {
 	let mockRes
 
 	beforeEach(() => {
-		jest.resetAllMocks()
+		jest.clearAllMocks()
+		jest.restoreAllMocks()
 		getRandom.mockReturnValue(0)
 		Visit.fetchById.mockReturnValue({ is_preview: false })
 
@@ -83,7 +85,7 @@ describe('start attempt route', () => {
 		mockRes = {}
 	})
 
-	test('startAttempt calls database, inserts events, and returns expected object', done => {
+	test('startAttempt calls database, inserts events, adds assessment questions to response, and returns expected object', done => {
 		mockRes = {
 			success: jest.fn(),
 			reject: jest.fn()
@@ -100,17 +102,12 @@ describe('start attempt route', () => {
 					{},
 					{
 						childrenSet: [],
-						buildAssessment: jest.fn().mockReturnValueOnce({
-							children: [
-								{
-									id: 'mockQuestion',
-									type: QUESTION_NODE_TYPE,
-									children: [],
-									yell: jest.fn(),
-									toObject: jest.fn().mockReturnValueOnce({})
-								}
-							]
-						})
+						buildAssessment: jest.fn().mockReturnValueOnce([
+							{
+								id: 'mockQuestion',
+								type: QUESTION_NODE_TYPE
+							}
+						])
 					}
 				],
 				draftTree: {
@@ -146,7 +143,19 @@ describe('start attempt route', () => {
 		Assessment.getCompletedAssessmentAttemptHistory = jest.fn().mockResolvedValueOnce([])
 		Assessment.getNumberAttemptsTaken = jest.fn(() => 1)
 		Assessment.insertNewAttempt = jest.fn().mockReturnValueOnce({
-			attemptId: 'mockAttemptId'
+			attemptId: 'mockAttemptId',
+			state: {
+				chosen: [
+					{
+						id: 'mockQuestion',
+						type: QUESTION_NODE_TYPE
+					},
+					{
+						id: 'mockQuestionBank',
+						type: QUESTION_BANK_NODE_TYPE
+					}
+				]
+			}
 		})
 		const createAssessmentAttemptStartedEvent = jest.fn().mockReturnValue('mockCaliperPayload')
 		insertEvent.mockReturnValueOnce('mockInsertResult')
@@ -155,9 +164,11 @@ describe('start attempt route', () => {
 		})
 
 		return startAttempt(mockReq, mockRes).then(() => {
+			expect(mockRes.success).toBeCalledTimes(1)
 			expect(mockReq.requireCurrentDocument).toHaveBeenCalled()
 			expect(Assessment.getCompletedAssessmentAttemptHistory).toHaveBeenCalled()
 			expect(Assessment.insertNewAttempt).toHaveBeenCalled()
+			expect(getFullQuestionsFromDraftTree).toHaveBeenCalledTimes(1)
 
 			return done()
 		})
@@ -236,7 +247,7 @@ describe('start attempt route', () => {
 		// mock child lookup
 		mockDraft.getChildNodeById.mockReturnValue({ node: { type: 'ObojoboDraft.Chunks.Question' } })
 		mockDraft.getChildNodeById.mockReturnValueOnce({
-			node: { type: 'ObojoboDraft.Chunks.QuestionBank' }
+			node: { type: QUESTION_BANK_NODE_TYPE }
 		})
 		mockDraft.getChildNodeById.mockReturnValueOnce({ node: { type: 'none' } })
 
@@ -251,32 +262,32 @@ describe('start attempt route', () => {
 		expect(usedQuestionMap.get('qb2.q2')).toBe(0)
 	})
 
-	test('initAssessmentUsedQuestions tracks question use from initalized map', () => {
-		const fakeChildNodes = [
-			{
-				id: 'qb1.q1',
-				children: []
-			},
-			{
-				id: 'qb1.q2',
-				children: []
-			},
-			{
-				id: 'mockId',
-				children: []
-			}
-		]
-		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
+	// test('initAssessmentUsedQuestions tracks question use from initalized map', () => {
+	// 	const fakeChildNodes = [
+	// 		{
+	// 			id: 'qb1.q1',
+	// 			children: []
+	// 		},
+	// 		{
+	// 			id: 'qb1.q2',
+	// 			children: []
+	// 		},
+	// 		{
+	// 			id: 'mockId',
+	// 			children: []
+	// 		}
+	// 	]
+	// 	const mockQbTree = { id: 'qb1', children: fakeChildNodes }
 
-		initAssessmentUsedQuestions(mockQbTree, mockUsedQuestionMap)
+	// 	initAssessmentUsedQuestions(mockQbTree, mockUsedQuestionMap)
 
-		expect(mockUsedQuestionMap.get('qb1')).toBe(1)
-		expect(mockUsedQuestionMap.get('qb1.q1')).toBe(1)
-		expect(mockUsedQuestionMap.get('qb1.q2')).toBe(1)
-		expect(mockUsedQuestionMap.get('qb2')).toBe(0)
-		expect(mockUsedQuestionMap.get('qb2.q1')).toBe(0)
-		expect(mockUsedQuestionMap.get('qb2.q2')).toBe(0)
-	})
+	// 	expect(mockUsedQuestionMap.get('qb1')).toBe(1)
+	// 	expect(mockUsedQuestionMap.get('qb1.q1')).toBe(1)
+	// 	expect(mockUsedQuestionMap.get('qb1.q2')).toBe(1)
+	// 	expect(mockUsedQuestionMap.get('qb2')).toBe(0)
+	// 	expect(mockUsedQuestionMap.get('qb2.q1')).toBe(0)
+	// 	expect(mockUsedQuestionMap.get('qb2.q2')).toBe(0)
+	// })
 
 	test('createAssessmentUsedQuestionMap can initialize a map to track use of assessment questions', () => {
 		const mockAssessmentProperties = {
@@ -300,10 +311,14 @@ describe('start attempt route', () => {
 	})
 
 	test('initAssessmentUsedQuestions can track use of assessment questions using an initialized question map', () => {
-		const fakeChildNodes = [{ id: 'qb1.q1', children: [] }, { id: 'qb1.q2', children: [] }]
-		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
+		const chosenAssessment = [
+			{ id: 'qb1.q1', type: QUESTION_NODE_TYPE },
+			{ id: 'qb1.q2', type: QUESTION_NODE_TYPE },
+			{ id: 'mock-id', type: QUESTION_NODE_TYPE },
+			{ id: 'qb1', type: QUESTION_BANK_NODE_TYPE }
+		]
 
-		initAssessmentUsedQuestions(mockQbTree, mockUsedQuestionMap)
+		initAssessmentUsedQuestions(chosenAssessment, mockUsedQuestionMap)
 
 		expect(mockUsedQuestionMap.get('qb1')).toBe(1)
 		expect(mockUsedQuestionMap.get('qb1.q1')).toBe(1)
@@ -313,42 +328,52 @@ describe('start attempt route', () => {
 		expect(mockUsedQuestionMap.get('qb2.q2')).toBe(0)
 	})
 
-	test('can retrieve an array of question type nodes from a node tree', () => {
-		let n = 0
-		const newQ = () => {
-			const q = new DraftNode()
-			q.id = n++
-			q.type = 'ObojoboDraft.Chunks.Question'
-			return q
-		}
+	// test('can retrieve an array of question type nodes from a node tree', () => {
+	// 	let n = 0
+	// 	const newQ = () => {
+	// 		const q = new DraftNode()
+	// 		q.id = n++
+	// 		q.type = 'ObojoboDraft.Chunks.Question'
+	// 		return q
+	// 	}
 
-		const node = new DraftNode({ getChildNodeById: jest.fn(id => `q${id}`) })
-		const q1 = newQ()
-		const q2 = newQ()
-		const q3 = newQ()
-		const q4 = newQ()
-		const q5 = newQ()
-		const q6 = newQ()
-		node.children = [q1, q5]
-		q1.children = [q2, q3]
-		q2.children = [q4, q6]
-		q6.type = 'not-a-question'
+	// 	const node = new DraftNode({ getChildNodeById: jest.fn(id => `q${id}`) })
+	// 	const q1 = newQ()
+	// 	const q2 = newQ()
+	// 	const q3 = newQ()
+	// 	const q4 = newQ()
+	// 	const q5 = newQ()
+	// 	const q6 = newQ()
+	// 	node.children = [q1, q5]
+	// 	q1.children = [q2, q3]
+	// 	q2.children = [q4, q6]
+	// 	q6.type = 'not-a-question'
 
-		const questions = getNodeQuestions(node, node)
+	// 	const questions = getNodeQuestions(node, node)
 
-		expect(questions).toHaveLength(5)
-		expect(questions).toEqual(['q0', 'q1', 'q3', 'q2', 'q4'])
-	})
+	// 	expect(questions).toHaveLength(5)
+	// 	expect(questions).toEqual(['q0', 'q1', 'q3', 'q2', 'q4'])
+	// })
 
 	test('getSendToClientPromises calls and returns array of yell results from all questions', () => {
-		const attemptState = { questions: [] }
-		expect(getSendToClientPromises(attemptState, {}, {})).toEqual([])
+		const attemptState = { chosen: [] }
+
+		const mockAssessmentNode = {
+			draftTree: {
+				getChildNodeById: jest.fn(() => ({ yell: mockYell }))
+			}
+		}
+
+		expect(getSendToClientPromises(mockAssessmentNode, attemptState, {}, {})).toEqual([])
 
 		let n = 0
 		const mockYell = jest.fn(() => n++)
-		attemptState.questions = [{ yell: mockYell }, { yell: mockYell }]
+		attemptState.chosen = [
+			{ id: 'mockId1', type: 'mockType1' },
+			{ id: 'mockId2', type: 'mockType2' }
+		]
 
-		const result = getSendToClientPromises(attemptState, 'mockReq', 'mockRes')
+		const result = getSendToClientPromises(mockAssessmentNode, attemptState, 'mockReq', 'mockRes')
 		// yell is called?
 		expect(mockYell).toHaveBeenCalledTimes(2)
 		expect(mockYell).toHaveBeenCalledWith(
@@ -423,15 +448,18 @@ describe('start attempt route', () => {
 	})
 
 	test('loadChildren builds a full map of used questions', () => {
-		const fakeChildNodes = [{ id: 'qb1.q1', children: [] }, { id: 'qb1.q2', children: [] }]
-		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
+		const mockChosenQuestions = [
+			{ id: 'qb1.q1', type: QUESTION_NODE_TYPE },
+			{ id: 'qb1.q2', type: QUESTION_NODE_TYPE },
+			{ id: 'qb1', type: QUESTION_BANK_NODE_TYPE }
+		]
 		const mockAssessmentProperties = {
 			nodeChildrenIds: ['qb1', 'qb1.q1', 'qb1.q2', 'qb2', 'qb2.q1', 'qb2.q2'],
 			draftTree: mockDraft,
 			attemptHistory: [
 				{
 					state: {
-						qb: mockQbTree
+						chosen: mockChosenQuestions
 					}
 				}
 			]
@@ -473,27 +501,20 @@ describe('start attempt route', () => {
 	})
 
 	test('getState calls qb.buildAssessment and returns the expected state', () => {
-		const fakeChildNodes = [
-			{
-				id: 'qb1.q1',
-				type: 'ObojoboDraft.Chunks.Question',
-				children: []
-			},
-			{
-				id: 'qb1.q2',
-				type: 'ObojoboDraft.Chunks.Question',
-				children: []
-			}
-		]
-		const mockQbTree = { id: 'qb1', children: fakeChildNodes }
-		const mockBuildAssessment = jest.fn(() => mockQbTree)
+		const mockBuildAssessment = jest.fn(() => [
+			{ id: 'qb1.q1', type: QUESTION_NODE_TYPE },
+			{ id: 'qb1', type: QUESTION_BANK_NODE_TYPE }
+		])
 		const mockAssessmentProperties = {
 			nodeChildrenIds: ['qb1', 'qb1.q1', 'qb1.q2', 'qb2', 'qb2.q1', 'qb2.q2'],
 			draftTree: mockDraft,
 			attemptHistory: [
 				{
 					state: {
-						qb: mockQbTree
+						chosen: [
+							{ id: 'qb1.q1', type: QUESTION_NODE_TYPE },
+							{ id: 'qb1', type: QUESTION_BANK_NODE_TYPE }
+						]
 					}
 				}
 			],
@@ -516,21 +537,9 @@ describe('start attempt route', () => {
 
 		const state = getState(mockAssessmentProperties)
 
-		expect(state.qb).toEqual(mockQbTree)
-		expect(state.questions).toEqual([
-			{
-				node: {
-					id: 'qb1.q1',
-					type: 'ObojoboDraft.Chunks.Question'
-				}
-			},
-			{
-				node: {
-					id: 'qb1.q2',
-					type: 'ObojoboDraft.Chunks.Question'
-				}
-			}
+		expect(state.chosen).toEqual([
+			{ id: 'qb1.q1', type: 'ObojoboDraft.Chunks.Question' },
+			{ id: 'qb1', type: QUESTION_BANK_NODE_TYPE }
 		])
-		expect(state.data).toEqual({})
 	})
 })

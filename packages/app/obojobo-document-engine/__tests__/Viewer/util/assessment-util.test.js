@@ -621,6 +621,13 @@ describe('AssessmentUtil', () => {
 		expect(completedAttempts).toEqual(3)
 	})
 
+	test('getNumPossibleCorrect returns the number of questions which could be correct', () => {
+		const questionScores = [{ score: 100 }, { score: 0 }, { score: 'no-score' }]
+
+		const correct = AssessmentUtil.getNumPossibleCorrect(questionScores)
+		expect(correct).toEqual(2)
+	})
+
 	test('getNumCorrect returns correct questions', () => {
 		const questionScores = [{ score: 100 }, { score: 0 }, { score: 100 }]
 

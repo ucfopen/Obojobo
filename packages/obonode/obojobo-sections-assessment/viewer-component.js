@@ -65,7 +65,7 @@ class Assessment extends React.Component {
 	}
 
 	componentWillUnmount() {
-		NavUtil.setContext('practice')
+		NavUtil.resetContext()
 		Dispatcher.off('assessment:endAttempt', this.onEndAttempt)
 		Dispatcher.off('assessment:attemptEnded', this.onAttemptEnded)
 	}

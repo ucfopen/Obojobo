@@ -1,9 +1,9 @@
 jest.mock('obojobo-document-engine/src/scripts/common/models/obo-model', () => {
 	return require('obojobo-document-engine/__mocks__/obo-model-adapter-mock').default
 })
-import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
 import AssessmentAdapter from './adapter'
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
 describe('ObojoboDraft.Sections.Assessment adapter', () => {
 	test('construct builds without attributes', () => {

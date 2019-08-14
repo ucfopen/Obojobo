@@ -1,11 +1,15 @@
 jest.mock('../viewer/viewer_state', () => ({ set: jest.fn() }))
 jest.mock('../obo_events', () => ({ on: jest.fn(), emit: jest.fn() }))
+jest.mock('../models/visit', () => ({
+	fetchById: jest.fn().mockResolvedValue({ resource_link_id: 'mockResourceLinkId' })
+}))
 
 const vs = oboRequire('viewer/viewer_state')
 const mockEvent = {
 	userId: 'mockUserId',
 	draftId: 'mockDraftId',
-	contentId: 'mockContentId'
+	contentId: 'mockContentId',
+	visitId: 'mockVisitId'
 }
 let ve
 let oboEvents
@@ -58,28 +62,32 @@ describe('viewer events', () => {
 
 	test('client:nav:open', () => {
 		const clientNavOpen = oboEvents.on.mock.calls[0][1]
-		clientNavOpen(mockEvent)
-		expect(vs.set).toBeCalledWith(
-			'mockUserId',
-			'mockDraftId',
-			'mockContentId',
-			'nav:isOpen',
-			1,
-			true
-		)
+		clientNavOpen(mockEvent).then(() => {
+			expect(vs.set).toBeCalledWith(
+				'mockUserId',
+				'mockDraftId',
+				'mockContentId',
+				'nav:isOpen',
+				1,
+				true,
+				'mockResourceLinkId'
+			)
+		})
 	})
 
 	test('client:nav:close', () => {
 		const clientNavClose = oboEvents.on.mock.calls[1][1]
-		clientNavClose(mockEvent)
-		expect(vs.set).toBeCalledWith(
-			'mockUserId',
-			'mockDraftId',
-			'mockContentId',
-			'nav:isOpen',
-			1,
-			false
-		)
+		clientNavClose(mockEvent).then(() => {
+			expect(vs.set).toBeCalledWith(
+				'mockUserId',
+				'mockDraftId',
+				'mockContentId',
+				'nav:isOpen',
+				1,
+				false,
+				'mockResourceLinkId'
+			)
+		})
 	})
 
 	test('client:nav:toggle', () => {
@@ -90,14 +98,16 @@ describe('viewer events', () => {
 			contentId: 'mockContentId',
 			payload: { open: 'yep' }
 		}
-		clientNavToggle(mockPayloadEvent)
-		expect(vs.set).toBeCalledWith(
-			'mockUserId',
-			'mockDraftId',
-			'mockContentId',
-			'nav:isOpen',
-			1,
-			'yep'
-		)
+		clientNavToggle(mockPayloadEvent).then(() => {
+			expect(vs.set).toBeCalledWith(
+				'mockUserId',
+				'mockDraftId',
+				'mockContentId',
+				'nav:isOpen',
+				1,
+				'yep',
+				'mockResourceLinkId'
+			)
+		})
 	})
 })

@@ -202,6 +202,35 @@ describe('Caliper event creator', () => {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
+	test('createAssessmentAttemptResumedEvent', () => {
+		const attemptResumed = caliperEvents.createAssessmentAttemptResumedEvent({
+			actor,
+			draftId,
+			contentId,
+			assessmentId,
+			attemptId,
+			sessionIds,
+			extensions
+		})
+		expect(attemptResumed).toMatchSnapshot()
+	})
+
+	test('createAssessmentAttemptResumedEvent - throws error given a bad actor', () => {
+		expect(() => {
+			caliperEvents.createAssessmentAttemptResumedEvent({
+				actor: { type: 'bad' },
+				draftId,
+				contentId,
+				assessmentId,
+				attemptId,
+				sessionIds,
+				extensions
+			})
+		}).toThrow(`Invalid actor type. Must provide actor of type user`)
+	})
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+
 	test('createAssessmentAttemptSubmittedEvent', () => {
 		const attemptSubmitted = caliperEvents.createAssessmentAttemptSubmittedEvent({
 			actor,

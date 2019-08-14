@@ -1,8 +1,7 @@
 import { Block } from 'slate'
-
-import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
-import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
+import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
+import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
@@ -13,6 +12,7 @@ const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const TEXT_PARAMETER = 'oboeditor.text-parameter'
 const SELECT_PARAMETER = 'oboeditor.select-parameter'
+const TOGGLE_PARAMETER = 'oboeditor.toggle-parameter'
 
 const schema = {
 	blocks: {
@@ -87,6 +87,11 @@ const schema = {
 				},
 				{
 					match: [{ type: SELECT_PARAMETER }],
+					min: 1,
+					max: 1
+				},
+				{
+					match: [{ type: TOGGLE_PARAMETER }],
 					min: 1,
 					max: 1
 				}

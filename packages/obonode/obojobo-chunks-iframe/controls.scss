@@ -128,6 +128,10 @@
 		}
 	}
 
+	.control-button-container:hover > .tool-tip {
+		z-index: $z-index-above-all + 1;
+	}
+
 	> .size-controls {
 		position: absolute;
 		right: 0;

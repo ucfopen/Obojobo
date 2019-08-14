@@ -25,11 +25,11 @@ if (process.env.DATABASE_URL) {
 }
 
 const isStringJSON = (name, string) => {
-	if(!name.endsWith('_JSON')) return false
-	try{
+	if (!name.endsWith('_JSON')) return false
+	try {
 		JSON.parse(string)
 		return true
-	} catch (error){
+	} catch (error) {
 		throw new Error(`Expected ENV ${name} to be valid JSON, but it did not parse`)
 	}
 }
@@ -50,10 +50,16 @@ const replaceENVsInJson = originalJson => {
 			const isJSON = isStringJSON(envVar, replacement)
 
 			// if JSON, recurse to allow env replacement inside json
-			if(isJSON) replacement = replaceENVsInJson(replacement)
+			if (isJSON) replacement = replaceENVsInJson(replacement)
 
 			// if the value isnt true, false, or an integer, wrap it with quotes
-			if (!isJSON && typeof replacement == 'string' && replacement !== 'true' && replacement !== 'false' && !/^\d+$/g.test(replacement)) {
+			if (
+				!isJSON &&
+				typeof replacement === 'string' &&
+				replacement !== 'true' &&
+				replacement !== 'false' &&
+				!/^\d+$/g.test(replacement)
+			) {
 				replacement = `"${replacement}"`
 			}
 			// replace without changing pattern.exec()'s position in originalJson

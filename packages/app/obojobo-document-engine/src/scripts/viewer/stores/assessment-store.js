@@ -12,6 +12,8 @@ import QuestionStore from './question-store'
 import QuestionUtil from '../../viewer/util/question-util'
 import React from 'react'
 
+const QUESTION_NODE_TYPE = 'ObojoboDraft.Chunks.Question'
+
 const { Dispatcher, Store } = Common.flux
 const { OboModel } = Common.models
 const { ErrorUtil, ModalUtil } = Common.util
@@ -100,10 +102,6 @@ class AssessmentStore extends Store {
 				} else {
 					assessment.attempts.push(attempt)
 				}
-
-				attempt.state.questions.forEach(question => {
-					OboModel.create(question)
-				})
 			})
 		})
 
@@ -117,6 +115,7 @@ class AssessmentStore extends Store {
 					scores: scoreObject,
 					responses: attempt.responses
 				}
+
 				QuestionStore.updateStateByContext(stateToUpdate, `assessmentReview:${attempt.attemptId}`)
 			})
 		}
@@ -141,8 +140,14 @@ class AssessmentStore extends Store {
 	onResumeAttemptConfirm(unfinishedAttempt) {
 		ModalUtil.hide()
 
-		this.startAttempt(unfinishedAttempt)
-		this.triggerChange()
+		return APIUtil.resumeAttempt({
+			draftId: unfinishedAttempt.draftId,
+			attemptId: unfinishedAttempt.attemptId,
+			visitId: NavStore.getState().visitId
+		}).then(response => {
+			this.startAttempt(response.value)
+			this.triggerChange()
+		})
 	}
 
 	tryStartAttempt(id) {
@@ -182,7 +187,7 @@ class AssessmentStore extends Store {
 		const model = OboModel.models[id]
 
 		model.children.at(1).children.reset()
-		for (const child of Array.from(startAttemptResp.state.questions)) {
+		for (const child of Array.from(startAttemptResp.questions)) {
 			const c = OboModel.create(child)
 			model.children.at(1).children.add(c)
 		}
@@ -231,7 +236,12 @@ class AssessmentStore extends Store {
 		const assessment = this.state.assessments[assessId]
 		const model = OboModel.models[assessId]
 
-		assessment.current.state.questions.forEach(question => QuestionUtil.hideQuestion(question.id))
+		assessment.current.state.chosen.forEach(question => {
+			if (question.type === QUESTION_NODE_TYPE) {
+				QuestionUtil.hideQuestion(question.id, context)
+			}
+		})
+
 		assessment.currentResponses.forEach(questionId =>
 			QuestionUtil.clearResponse(questionId, context)
 		)

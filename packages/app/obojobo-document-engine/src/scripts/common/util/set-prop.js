@@ -41,13 +41,20 @@ export default (
 
 	// If propName exists on sourceObject...
 	if (typeof sourceObject[propName] !== 'undefined') {
-		// ...filter sourceObject[propName] through transformValueFn
-		const value = transformValueFn(sourceObject[propName])
+		try{
+			// ...filter sourceObject[propName] through transformValueFn
+			const value = transformValueFn(sourceObject[propName])
 
-		// If value ∈ allowedValues (or allowedValues was not specified)...
-		if (allowedValues === null || allowedValues.indexOf(value) > -1) {
-			// ...set the value on targetObject
-			targetObject[propName] = value
+			// If value ∈ allowedValues (or allowedValues was not specified)...
+			if (allowedValues === null || allowedValues.indexOf(value) > -1) {
+				// ...set the value on targetObject
+				targetObject[propName] = value
+			}
+		} catch (error){
+			// absorb the error, the value should remain null
+			// which will end up using the default value
+			console.error(`SetProp transformValueFn for "${propName}" errored.`)
+			console.error(error)
 		}
 	}
 
