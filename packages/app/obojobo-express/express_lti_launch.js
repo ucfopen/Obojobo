@@ -120,22 +120,13 @@ exports.assignment = (req, res, next) => {
 		return Promise.resolve()
 	}
 
-	// allows launches to redirect /view/example to /view/00000000-0000-0000-0000-000000000000
-	// the actual redirect happens in the route, this just handles the lti launch
-	let currentUser = null
-	let currentDocument = null
-
 	return Promise.resolve(req.lti)
 		.then(lti => userFromLaunch(req, lti.body))
-		.then(launchUser => {
-			currentUser = launchUser
-			return req.requireCurrentDocument()
-		})
-		.then(draftDocument => {
-			currentDocument = draftDocument
+		.then(() => req.requireCurrentDocument())
+		.then(() => {
 			return storeLtiLaunch(
-				currentDocument,
-				currentUser,
+				req.currentDocument,
+				req.currentUser,
 				req.connection.remoteAddress,
 				req.lti.body,
 				req.lti.consumer_key

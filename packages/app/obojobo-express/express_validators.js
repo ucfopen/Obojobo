@@ -36,7 +36,7 @@ const requireCurrentUser = (req, res, next, permission = null) => {
 			next()
 		})
 		.catch(error => {
-			logger.error('Missing required current user.')
+			logger.error('Missing required current user or perms.')
 			logger.info(error)
 			res.notAuthorized()
 		})
