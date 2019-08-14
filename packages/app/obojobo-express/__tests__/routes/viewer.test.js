@@ -72,7 +72,7 @@ describe('viewer route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockCurrentVisit = { is_preview: false }
-		mockCurrentUser = { id: 4 }
+		mockCurrentUser = { id: 4, canCompleteAssignment: true }
 		insertEvent.mockReset()
 		VisitModel.createVisit.mockReset()
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
@@ -122,7 +122,7 @@ describe('viewer route', () => {
 			})
 	})
 
-	test('launch visit redirects', () => {
+	test('launch visit redirects to view for students', () => {
 		expect.assertions(3)
 
 		VisitModel.createVisit.mockResolvedValueOnce({
@@ -142,6 +142,29 @@ describe('viewer route', () => {
 				expect(response.text).toBe(
 					'Found. Redirecting to /view/' + validUUID() + '/visit/mocked-visit-id'
 				)
+			})
+	})
+
+	test('launch visit redirects to preview for non-students', () => {
+		expect.assertions(3)
+		mockCurrentUser.canCompleteAssignment = false
+		const uuid = validUUID()
+
+		VisitModel.createVisit.mockResolvedValueOnce({
+			visitId: 'mocked-visit-id',
+			deactivatedVisitId: 'mocked-deactivated-visit-id'
+		})
+
+		// mockCurrentUser = {id: 44}
+		mockCurrentDocument = { draftId: uuid }
+		mockLtiLaunch = { resource_link_id: 3 }
+
+		return request(app)
+			.post(`/${uuid}/`)
+			.then(response => {
+				expect(response.header['content-type']).toContain('text/plain')
+				expect(response.statusCode).toBe(302)
+				expect(response.text).toBe(`Found. Redirecting to /preview/${uuid}`)
 			})
 	})
 

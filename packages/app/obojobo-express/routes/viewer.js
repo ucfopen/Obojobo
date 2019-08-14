@@ -19,6 +19,13 @@ router
 	.route('/:draftId/:page?')
 	.post([ltiLaunch.assignment, requireCurrentUser, requireCurrentDocument, checkValidationRules])
 	.post((req, res) => {
+		// if the user can't complete an assignment,
+		// redirect them to preview url
+		if (!req.currentUser.canCompleteAssignment) {
+			res.redirect(`/preview/${req.params.draftId}`)
+			return Promise.resolve()
+		}
+
 		let createdVisitId
 
 		return Visit.createVisit(
