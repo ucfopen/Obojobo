@@ -78,8 +78,6 @@ export default class NumericAnswerResults {
 			return FAILED_VALIDATION
 		}
 
-		console.log(scoreResult)
-
 		if (scoreResult.details.score !== 100) {
 			return FAILED
 		}
