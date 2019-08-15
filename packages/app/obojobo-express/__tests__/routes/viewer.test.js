@@ -72,7 +72,7 @@ describe('viewer route', () => {
 	afterAll(() => {})
 	beforeEach(() => {
 		mockCurrentVisit = { is_preview: false }
-		mockCurrentUser = { id: 4, canCompleteAssignment: true }
+		mockCurrentUser = { id: 4, canViewAsStudent: true }
 		insertEvent.mockReset()
 		VisitModel.createVisit.mockReset()
 		VisitModel.fetchById.mockResolvedValue(mockCurrentVisit)
@@ -147,7 +147,7 @@ describe('viewer route', () => {
 
 	test('launch visit redirects to preview for non-students', () => {
 		expect.assertions(3)
-		mockCurrentUser.canCompleteAssignment = false
+		mockCurrentUser.canViewAsStudent = false
 		const uuid = validUUID()
 
 		VisitModel.createVisit.mockResolvedValueOnce({

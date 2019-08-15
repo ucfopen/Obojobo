@@ -19,9 +19,11 @@ router
 	.route('/:draftId/:page?')
 	.post([ltiLaunch.assignment, requireCurrentUser, requireCurrentDocument, checkValidationRules])
 	.post((req, res) => {
-		// if the user can't complete an assignment,
-		// redirect them to preview url
-		if (!req.currentUser.canCompleteAssignment) {
+		// Non students get redirected to preview mode
+		// This will prevent LTI users with a role of Learner
+		// from submitting scores back via LTI
+		// which Canvas doesn't support
+		if (!req.currentUser.canViewAsStudent) {
 			res.redirect(`/preview/${req.params.draftId}`)
 			return Promise.resolve()
 		}
