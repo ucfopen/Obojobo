@@ -172,6 +172,16 @@ describe('user model', () => {
 		})
 	})
 
+	test('clearSessionsForUserById deletes sessions from the db', () => {
+		db.none.mockResolvedValueOnce('')
+
+		return User.clearSessionsForUserById(66).then(() => {
+			expect(db.none).toHaveBeenCalledWith(expect.stringContaining('DELETE FROM sessions'), {
+				id: 66
+			})
+		})
+	})
+
 	test('throws error when not given enough arguments', () => {
 		expect(() => {
 			new User()

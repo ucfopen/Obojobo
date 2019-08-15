@@ -100,12 +100,7 @@ const userFromLaunch = (req, ltiBody) => {
 			// prevents clearing the current session
 			// eslint-disable-next-line eqeqeq
 			if (!req.currentUser || req.currentUser.id != newUser.id) {
-				return db.none(
-					`
-					DELETE FROM sessions
-					WHERE sess ->> 'currentUserId' = $[currentUserId]`,
-					{ currentUserId: newUser.id }
-				)
+				return User.clearSessionsForUserById(newUser.id)
 			}
 		})
 		.then(() => {
@@ -151,7 +146,6 @@ exports.assignment = (req, res, next) => {
 				launchId,
 				body: req.lti.body
 			}
-
 			return next()
 		})
 		.catch(error => {
