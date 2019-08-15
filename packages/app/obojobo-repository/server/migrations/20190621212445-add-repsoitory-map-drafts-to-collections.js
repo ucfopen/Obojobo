@@ -33,6 +33,12 @@ exports.up = function(db) {
 		.then(result => {
 			return db.addIndex('repository_map_drafts_to_collections', 'drafts_to_collections_created_at', ['created_at'])
 		})
+		.then(() => db.runSql(`
+			INSERT
+			INTO repository_map_drafts_to_collections
+			(draft_id, collection_id)
+			VALUES('00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000000');
+		`))
 };
 
 exports.down = function(db) {

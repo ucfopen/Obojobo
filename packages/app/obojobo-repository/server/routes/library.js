@@ -25,11 +25,6 @@ router
 	.get((req, res) => {
 		let cur
 		const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
-		const facts = [
-			{ title: 'Your Modules', value: 22 },
-			{ title: 'Open Modules', value: 235 },
-			{ title: 'Private Modules', value: 789 },
-		]
 
 		return RepositoryCollection
 			.fetchById(publicLibCollectionId)
@@ -41,7 +36,6 @@ router
 					collections: [collection],
 					page: 1,
 					pageCount: 1,
-					facts,
 					currentUser: req.currentUser
 				}
 				res.render('library-server-view.jsx', props)

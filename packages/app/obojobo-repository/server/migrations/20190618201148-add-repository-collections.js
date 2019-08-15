@@ -53,7 +53,7 @@ exports.up = function(db) {
 			INSERT
 			INTO repository_collections
 			(id, title, group_type)
-			VALUES('00000000-0000-0000-0000-000000000000', 'Public Library', 'tag');
+			VALUES('00000000-0000-0000-0000-000000000000', 'Community Collection', 'tag');
 		`))
 }
 

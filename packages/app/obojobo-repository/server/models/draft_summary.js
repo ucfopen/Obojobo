@@ -19,8 +19,6 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 		FROM drafts
 		JOIN drafts_content
 			ON drafts_content.draft_id = drafts.id
-		JOIN repository_map_user_to_draft
-			ON repository_map_user_to_draft.draft_id = drafts.id
 		${joinSQL}
 		WHERE drafts.deleted = FALSE
 		AND ${whereSQL}
@@ -57,7 +55,11 @@ class DraftSummary {
 
 	static fetchByUserId(userId){
 		return DraftSummary
-			.fetchWhere(`repository_map_user_to_draft.user_id = $[userId]`, { userId })
+			.fetchAndJoinWhere(
+				`JOIN repository_map_user_to_draft
+					ON repository_map_user_to_draft.draft_id = drafts.id`,
+				`repository_map_user_to_draft.user_id = $[userId]`,
+				{ userId })
 	}
 
 	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues){
