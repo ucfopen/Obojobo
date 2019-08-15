@@ -108,6 +108,9 @@ export default class Decimal extends Numeric {
 	 * Decimal.getNumSigFigs('100.') //3
 	 */
 	static getNumSigFigs(valueString) {
+		// Remove negative sign
+		valueString = valueString.replace('-', '').replace('+', '')
+
 		const [leftString, rightString] = valueString.split('.').concat(null)
 
 		const bigLeft = Big(leftString !== '' ? leftString : '0').abs()
@@ -118,7 +121,8 @@ export default class Decimal extends Numeric {
 		}
 
 		if (bigLeft.eq(0)) {
-			return Decimal.getString(bigRight).length
+			if (bigRight && bigRight.eq(0)) return 0
+			return bigRight ? Decimal.getString(bigRight).length : 0
 		}
 
 		return Decimal.getString(bigLeft).length + rightString.length
