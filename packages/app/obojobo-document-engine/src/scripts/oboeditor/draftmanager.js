@@ -189,13 +189,7 @@ for (let i = 0; i < dropdownEls.length; i++) {
 	})
 }
 
-function onClickDropdownContent() {
-	const dropdownContentEls = document.getElementsByClassName('dropdown-content')
-	for (let i = 0; i < dropdownContentEls.length; i++) {
-		dropdownContentEls[i].style.display = 'none'
-	}
-}
-
+//eslint-disable-next-line
 function switchEditorFormat(format) {
 	if (!format) return
 
