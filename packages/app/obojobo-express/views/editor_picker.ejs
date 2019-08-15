@@ -28,18 +28,18 @@
 		%>
 		<%- include ./partials/head %>
 		<style type="text/css">
-			body { font-family:'Libre Franklin', Arial; padding:0; margin:0; margin-top: 40px; }
+			body { font-family:'Libre Franklin', Arial; padding:0; margin:0 }
 			ul > li > p, ul > li > a { display:inline-block; margin-right: 1em; }
 			a { color: #0d4fa7; text-decoration: underline; cursor: pointer; }
-			button, input[type="submit"] { font-size: 16pt; background-color: #6714bd; color: white; font-weight: bold; border:none; cursor: pointer; opacity: 0.8; font-family:'Libre Franklin', Arial; border-radius: 4px; padding: 0.1em 1em; }
+			button, input[type="submit"] { font-size: 20px; background-color: #6714bd; color: white; font-weight: bold; border:none; cursor: pointer; opacity: 0.8; font-family:'Libre Franklin', Arial; border-radius: 4px; padding: 0.1em 1em; }
 			button:hover { opacity: 1; }
 			button:disabled { background-color: gray }
 			#button-create-new-draft { width: 100%; border-radius: 0; }
-			#button-create-new-tutorial { width: 100%; border-radius: 0; border-top: 1px solid #000;}
-			#editor-container { position: absolute; top: 80px; bottom: 0; left: 300px; right: 0; }
+			#button-create-new-tutorial { width: 100%; border-radius: 0; border-top: 1px solid #000; }
+			#editor-container { position: absolute; top: 40px; bottom: 0; left: 300px; right: 0; }
 			#editor { display: none; position: absolute; left: 0; top: 0; right: 0; bottom: 0; }
 			#edit { position: absolute; left: 0; top: 0; right: 0; bottom: 40px; font-size: 11pt; }
-			#sidebar { overflow: scroll; position: absolute; left: 0; top: 80px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
+			#sidebar { overflow: scroll; position: absolute; left: 0; top: 40px; bottom: 0; padding:0; width: 300px; border-right: 1px solid black; }
 			#sidebar ul { padding: 0; margin: 0; }
 			#sidebar li { list-style-type: none; border-bottom: 1px solid #e6e6e6; padding: 10px; box-sizing: border-box; position: relative; }
 			#sidebar li:hover { background:#f3faff; }
@@ -55,8 +55,6 @@
 			.link-url.copied { color: green; pointer-events: none; text-decoration: none; font-weight: bold; }
 			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
 			.link-delete:hover { color:red; }
-			.add-image-btn { position: absolute; top: 45px; right: 13em; }
-			.add-question-btn { position: absolute; top: 45px; right: 1em; }
 			#search { position: relative; }
 			#search input { width: 100%; font-family:'Libre Franklin', Arial; border: none; border-bottom: 1px solid gray; font-size: 1em; padding: 0.6em; }
 			#search button { position: absolute; top: 0; right: 0; height: 37px; width: 37px; background: transparent; color: gray; }
@@ -65,6 +63,7 @@
 			#sidebar a { opacity: 0.8; }
 			#sidebar a:hover { opacity: 1; }
 			#pop-up-message { border: 2px solid green; color: green; background: #cbe4cb; position: fixed; right: 1em; bottom: 50px; width: 300px; height: 70px; z-index: 99; padding: 1em; box-sizing: border-box; pointer-events: none; border-radius: 0.25em; text-align: center; font-size: 1.4em; font-weight: bold; transform: translate(0, 120px); transition: transform 0.2s; }
+			#copy-message { border: 2px solid green; color: green; background: #cbe4cb; position: fixed; right: 1em; bottom: 50px; width: 300px; height: 70px; z-index: 99; padding: 1em; box-sizing: border-box; pointer-events: none; border-radius: 0.25em; text-align: center; font-size: 1.4em; font-weight: bold; transform: translate(0, 120px); transition: transform 0.2s; transform: translate(0, 0); display: none }
 			.saved #pop-up-message { transform: translate(0, 0); }
 			.CodeMirror-wrap { background: #1d1d1b !important; }
 			#remove-search { padding: 0; }
@@ -92,14 +91,14 @@
 			.modal .step-2 { visibility: hidden; }
 			.modal.on-step-2 .step-2 { visibility: visible; }
 			.spinner { width: 80px; height: 80px; margin: 100px auto; background-color: #333; border-radius: 100%; -webkit-animation: sk-scaleout 1.0s infinite ease-in-out; animation: sk-scaleout 1.0s infinite ease-in-out; }
-			.tool-bar { display: block; position: absolute; top: 40px; left: 0; right: 0; color: #000; }
-			.tool-bar button { border-radius: 0; padding: 0.5rem 0.5rem; background-color: #fff; color: #000; pointer-events: none; }
-			.tool-bar .dropdown:hover { background-color: #b2b2b2; }
+			.tool-bar { display: block; color: #000; border-bottom: 1px solid #000 }
+			.tool-bar button { border-radius: 0; padding: 8px 8px; background-color: #fff; color: #000; pointer-events: none; }
+			.tool-bar .dropdown:hover { background-color: #b2b2b2 }
 			.dropdown { position: relative; display: inline-block; }
-			.dropdown-content { display: none; position: absolute; background-color: #fff; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4); z-index: 1000; }
+			.dropdown-content { display: none; position: absolute; background-color: #fff; min-width: 250px ; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4); z-index: 1000; }
+			.disable { pointer-events: none; opacity: 0.3; }
 			.dropdown-content a { color: black; padding: 12px 16px; text-decoration: none; display: block; }
 			.dropdown-content a:hover { background-color: #ddd; }
-			.dropdown:hover .dropdown-content { display: block; }
 			@-webkit-keyframes sk-scaleout {
 				0% { -webkit-transform: scale(0) }
 				100% {
@@ -123,21 +122,35 @@
 	<div>
 		<div class="tool-bar">
 			<div class="dropdown">
+				<button>File</button>
+				<div class="dropdown-content">
+					<a class ="disable" onClick="saveDraft()">Save</a>
+					<a class ="disable" onClick="downloadDocument()">Download</a>
+					<a class ="disable" onClick="getURL()">Copy Module URL</a>
+				</div>
+			</div>
+			<div class="dropdown">
 				<button>Edit</button>
 				<div class="dropdown-content">
-					<a onClick="switchEditorFormat('json')">Edit as JSON</a>
-					<a onClick="switchEditorFormat('xml')">Edit as XML</a>
+					<a class ="disable" onClick="switchEditorFormat('json')" id="edit-as-json">Edit as JSON</a>
+					<a class ="disable" onClick="switchEditorFormat('xml')" id="edit-as-xml">Edit as XML</a>
+					<a class ="disable" onClick="openInBetaEditor()">Edit with Visual Editor (Beta)</a>
 				</div>
 			</div>
 			<div class="dropdown">
 				<button>Insert</button>
 				<div class="dropdown-content">
-					<a onClick="addImage()">Image</a>
-					<a onClick="addQuestion()">MC Question</a>
+					<a class ="disable" onClick="addImage()">Image</a>
+					<a class ="disable" onClick="addQuestion()">MC Question</a>
+				</div>
+			</div>
+			<div class="dropdown">
+				<button>View</button>
+				<div class="dropdown-content">
+					<a class ="disable" onClick="preview()">Preview</a>
 				</div>
 			</div>
 		</div>
-		<h1>Obojobo Draft Manager</h1>
 		<div id="sidebar">
 			<button id="button-create-new-draft">+ Create new draft</button>
 			<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ Visual Editor Tutorial</button>
@@ -182,7 +195,7 @@
 								<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
 								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
 								<a class="link-preview" onclick="openInBetaEditor('<%= draft.draftId %>')">Edit with Visual Editor (Beta)</a>
-								<a class="link-preview" onclick="downloadDocument('<%= draft.draftId %>', '<%= draft.xml ? 'xml' : 'json' %>')">Download</a>
+								<a class="link-preview" onclick="downloadDocument()">Download</a>
 							</div>
 							<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
 					</li>
@@ -194,6 +207,9 @@
 				<div id="edit"></div>
 				<button id="button-save-draft">Save Draft</button>
 			</div>
+		</div>
+		<div id="copy-message">
+			Copied!
 		</div>
 		<div id="pop-up-message">
 			Saved!

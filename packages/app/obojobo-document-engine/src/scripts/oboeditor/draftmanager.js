@@ -23,6 +23,13 @@ window.onbeforeunload = function() {
 // Reload preview windows:
 //eslint-disable-next-line
 function preview(draftId, url) {
+	if (!draftId) {
+		if (!editingDraftId) return
+		draftId = editingDraftId
+	}
+	if (!url) {
+		url = `/preview/${draftId}`
+	}
 	childWindow = window.open(url, 'preview')
 }
 
@@ -44,7 +51,7 @@ function downloadDocument(draftId, format = 'json') {
 				// eslint-disable-next-line no-undef
 				download(contents, `obojobo-draft-${draftId}.json`, 'application/json')
 			})
-	} else {
+	} else if (format === 'xml') {
 		fetch(`/api/drafts/${draftId}/full`, {
 			method: 'GET',
 			credentials: 'include',
@@ -92,12 +99,32 @@ document.addEventListener('keydown', function(event) {
 		isCtrlPressed = true
 		return
 	}
+
+	// Save
 	if (event.keyCode === 83 && isCtrlPressed) {
 		event.preventDefault()
 		saveDraft()
 	}
+
+	// Undo and Redo
+	if ((event.keyCode === 90 || event.keyCode === 89) && isCtrlPressed) {
+		event.preventDefault()
+
+		if (editor.getValue().charAt(0) === '<') {
+			editor.setOption('mode', 'text/xml')
+			const el = document.getElementById(editingDraftId)
+			el.setAttribute('data-content-type', 'xml')
+		} else {
+			editor.setOption('mode', 'application/json')
+			const el = document.getElementById(editingDraftId)
+			el.setAttribute('data-content-type', 'json')
+		}
+
+		updateToolBar()
+	}
 	isCtrlPressed = false
 })
+
 document.addEventListener('keyup', function(event) {
 	if (event.keyCode === 83 && event.ctrlKey) {
 		event.preventDefault()
@@ -145,12 +172,42 @@ for (let i = 0; i < urlLinks.length; i++) {
 	})
 }
 
+// Event to show/hide Toolbar
+const dropdownEls = document.getElementsByClassName('dropdown')
+for (let i = 0; i < dropdownEls.length; i++) {
+	// Display dropdown content when `mouseover`
+	dropdownEls[i].addEventListener('mouseover', () => {
+		dropdownContentEl.style.display = 'block'
+	})
+	// Hide dropdown content when `click` or `mouseout`
+	const dropdownContentEl = dropdownEls[i].getElementsByClassName('dropdown-content')[0]
+	dropdownContentEl.addEventListener('click', () => {
+		dropdownContentEl.style.display = 'none'
+	})
+	dropdownEls[i].addEventListener('mouseout', () => {
+		dropdownContentEl.style.display = 'none'
+	})
+}
+
+function onClickDropdownContent() {
+	const dropdownContentEls = document.getElementsByClassName('dropdown-content')
+	for (let i = 0; i < dropdownContentEls.length; i++) {
+		dropdownContentEls[i].style.display = 'none'
+	}
+}
+
 function switchEditorFormat(format) {
 	if (!format) return
 
 	if (format === 'json') {
 		if (editor.options.mode === 'application/json') return
 
+		const confirm = window.confirm(
+			'Convert a document from XML to JSON will delete all comments. Are you sure you want to continue?'
+		)
+		if (!confirm) return
+
+		saveDraft()
 		fetch(`/api/drafts/${editingDraftId}/full`, {
 			method: 'GET',
 			credentials: 'include',
@@ -163,8 +220,21 @@ function switchEditorFormat(format) {
 			.then(result => JSON.stringify(result.value, null, 2))
 			.then(json => {
 				editor.setValue(json)
+
+				// Change editor type
 				editor.setOption('mode', 'application/json')
 				editor.focus()
+				const el = document.getElementById(editingDraftId)
+				el.setAttribute('data-content-type', 'json')
+
+				// Disable `Edit as JSON` and enable `Edit as XML`
+				const editAsJsonEl = document.getElementById('edit-as-json')
+				editAsJsonEl.className = 'disable'
+				const editAsXmlEl = document.getElementById('edit-as-xml')
+				editAsXmlEl.className = ''
+				saveDraft()
+
+				updateToolBar()
 			})
 			.catch(error => {
 				console.log(error)
@@ -172,6 +242,7 @@ function switchEditorFormat(format) {
 	} else if (format === 'xml') {
 		if (editor.options.mode === 'text/xml') return
 
+		saveDraft()
 		fetch(`/api/drafts/${editingDraftId}/full`, {
 			method: 'GET',
 			credentials: 'include',
@@ -183,8 +254,22 @@ function switchEditorFormat(format) {
 			.then(res => res.text())
 			.then(xml => {
 				editor.setValue(xml)
+
+				// Change editor type
 				editor.setOption('mode', 'text/xml')
+				const el = document.getElementById(editingDraftId)
+				el.setAttribute('data-content-type', 'xml')
 				editor.focus()
+
+				// Disable `Edit as Json`
+				const editAsXmlEl = document.getElementById('edit-as-xml')
+				editAsXmlEl.className = 'disable'
+				const editAsJsonEl = document.getElementById('edit-as-json')
+				editAsJsonEl.className = ''
+				saveDraft()
+
+				// Enable/Disable Toolbar Menu based on new Editor
+				updateToolBar()
 			})
 			.catch(error => {
 				console.log(error)
@@ -386,6 +471,48 @@ function saveDraft() {
 	postCurrentlyEditingDraft(draftContent)
 }
 
+// Enable and disable Toolbar Menu based on editor type
+function updateToolBar() {
+	// Disable all Menu
+	const dropdownEls = document.getElementsByClassName('dropdown')
+	for (let i = 0; i < dropdownEls.length; i++) {
+		const dropdownContentEls = dropdownEls[i]
+			.getElementsByClassName('dropdown-content')[0]
+			.getElementsByTagName('a')
+
+		for (let j = 0; j < dropdownContentEls.length; j++) {
+			dropdownContentEls[j].classList.add('disable')
+		}
+	}
+
+	for (let i = 0; i < dropdownEls.length; i++) {
+		// Keep Insert Menu disable for json editor
+		if (editor.options.mode === 'application/json') {
+			const dropdownBtn = dropdownEls[i].getElementsByTagName('button')[0]
+			if (dropdownBtn.innerHTML === 'Insert') {
+				continue
+			}
+		}
+
+		const dropdownContentEls = dropdownEls[i]
+			.getElementsByClassName('dropdown-content')[0]
+			.getElementsByTagName('a')
+
+		for (let j = 0; j < dropdownContentEls.length; j++) {
+			// Keep `Edit as JSON`/`Edit as XML` disable if current editor are `JSON`/`XML`
+			if (
+				(dropdownContentEls[j].innerHTML === 'Edit as JSON' &&
+					editor.options.mode === 'application/json') ||
+				(dropdownContentEls[j].innerHTML === 'Edit as XML' && editor.options.mode === 'text/xml')
+			) {
+				continue
+			}
+
+			dropdownContentEls[j].classList.remove('disable')
+		}
+	}
+}
+
 function edit(draftId) {
 	if (!draftId) return
 	editor.off('change', onEditorChange)
@@ -410,6 +537,8 @@ function edit(draftId) {
 	editor.setValue(content)
 	location.hash = 'id:' + draftId
 	editor.on('change', onEditorChange)
+
+	updateToolBar()
 }
 
 function del(draftId) {
@@ -439,7 +568,11 @@ function del(draftId) {
 		})
 }
 
+// Get Url of current document of draftId is not specified
 function getURL(draftId) {
+	if (!draftId) {
+		draftId = editingDraftId
+	}
 	const str = window.location.origin + '/view/' + draftId
 	// Loads the url into an invisible textarea
 	// to copy it to the clipboard
@@ -458,12 +591,11 @@ function getURL(draftId) {
 		document.getSelection().removeAllRanges()
 		document.getSelection().addRange(selected)
 	}
-	const linkURLEl = document.getElementById(draftId).getElementsByClassName('link-url')[0]
-	linkURLEl.innerText = 'Get URL - Copied to the clipboard!'
-	linkURLEl.classList.add('copied')
+
+	const copyPopUp = document.getElementById('copy-message')
+	copyPopUp.style.display = 'block'
 	setTimeout(function() {
-		linkURLEl.innerText = 'Get URL'
-		linkURLEl.classList.remove('copied')
+		copyPopUp.style.display = 'none'
 	}, 2000)
 }
 
@@ -565,8 +697,13 @@ function onEditorChange() {
 	el.classList.add('unsaved')
 }
 
+// Open current document if draftId is not specified
 //eslint-disable-next-line
 function openInBetaEditor(draftId) {
+	if (!draftId) {
+		if (!editingDraftId) return
+		draftId = editingDraftId
+	}
 	const el = document.getElementById(draftId)
 	let confirm = true
 	if (el.getAttribute('data-content-type') === 'xml') {
