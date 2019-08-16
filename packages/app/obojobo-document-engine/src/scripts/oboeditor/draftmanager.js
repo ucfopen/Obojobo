@@ -63,31 +63,6 @@ function downloadDocument(draftId, format = 'json') {
 	}
 }
 
-// Setup search
-document.getElementById('remove-search').addEventListener('click', function() {
-	document.getElementById('search-input').value = ''
-	search('')
-})
-document.getElementById('search').addEventListener('keyup', function(event) {
-	search(event.target.value)
-})
-
-for (let i = 0, len = draftEls.length; i < len; i++) {
-	draftSearchStrings.push(draftEls[i].getAttribute('data-search-str'))
-}
-function search(ss) {
-	ss = ss.toLowerCase()
-	draftSearchStrings.forEach(function(draftSS) {
-		const id = draftSS.split(' ')[0]
-		const el = document.getElementById(id)
-		if (ss === '' || draftSS.indexOf(ss) > -1) {
-			el.style.display = 'block'
-		} else {
-			el.style.display = 'none'
-		}
-	})
-}
-
 // listen for Ctrl-S for saving
 document.addEventListener('keydown', function(event) {
 	if (event.key === 'Meta') {

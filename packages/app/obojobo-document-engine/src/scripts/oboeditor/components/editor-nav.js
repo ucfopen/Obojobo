@@ -10,9 +10,6 @@ import React from 'react'
 import SubMenu from './sub-menu'
 import generatePage from '../documents/generate-page'
 import generateAssessment from '../documents/generate-assessment'
-import assessmentTemplate from '../documents/new-assessment.json'
-import generateId from '../generate-ids'
-import pageTemplate from '../documents/new-page.json'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil, isOrNot } = Common.util

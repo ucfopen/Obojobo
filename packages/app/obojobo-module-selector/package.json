@@ -31,9 +31,9 @@
 	},
 	"dependencies": {
 		"express": "~4.16.4",
-		"obojobo-express": "^4.1.0-rc1",
-		"obojobo-repository": "^4.1.0-rc1",
-		"obojobo-lib-utils": "^4.1.0-rc1",
+		"obojobo-express": "^5.0.1",
+		"obojobo-repository": "^5.0.1",
+		"obojobo-lib-utils": "^5.0.1",
 		"whatwg-fetch": "^3.0.0"
 	},
 	"jest": {

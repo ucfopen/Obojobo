@@ -9,10 +9,12 @@ const flattenArray = array => {
 	return result
 }
 
-const searchNodeModulesForOboNodesCache = []
+const searchNodeModulesForOboNodesCache = new Set()
 const searchNodeModulesForOboNodes = (forceReload = false) => {
-	if (searchNodeModulesForOboNodesCache.length > 0 && !forceReload) return [...searchNodeModulesForOboNodesCache]
-	searchNodeModulesForOboNodesCache.length = 0 // clear the array
+	if (searchNodeModulesForOboNodesCache.size > 0 && !forceReload) {
+		return Array.from(searchNodeModulesForOboNodesCache)
+	}
+	searchNodeModulesForOboNodesCache.clear()
 	// use yarn to get a list of obojobo-* node_modules
 	const packageSearchOut = require('child_process').execSync('yarn list --pattern obojobo-')
 	const pattern = /obojobo-[^@]+/gi
@@ -21,25 +23,25 @@ const searchNodeModulesForOboNodes = (forceReload = false) => {
 		try {
 			pkg = pkg.trim()
 			const manifest = require(pkg)
-			if (manifest.obojobo) searchNodeModulesForOboNodesCache.push(pkg)
+			if (manifest.obojobo) searchNodeModulesForOboNodesCache.add(pkg)
 		} catch (error) {
-			if(!error.message.includes('Cannot find module')){
+			if (!error.message.includes('Cannot find module')) {
 				console.log(error)
 			}
 			// do nothing if there's no index.js
 		}
 	})
-	return [...searchNodeModulesForOboNodesCache]
+	return Array.from(searchNodeModulesForOboNodesCache)
 }
 
 const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 	const manifest = require(oboNodePackage) // load package index index.js
 	if (!manifest.obojobo) return null
 	let scripts
-	if(type =='obonodes') type = 'server'
-	if(type == 'middleware') scripts = manifest.obojobo.expressMiddleware
-	if(type == 'migrations') scripts = manifest.obojobo.migrations
-	else if(manifest.obojobo[`${type}Scripts`]){
+	if (type == 'obonodes') type = 'server'
+	if (type == 'middleware') scripts = manifest.obojobo.expressMiddleware
+	if (type == 'migrations') scripts = manifest.obojobo.migrations
+	else if (manifest.obojobo[`${type}Scripts`]) {
 		scripts = manifest.obojobo[`${type}Scripts`]
 	}
 	if (!scripts) return null
@@ -49,7 +51,8 @@ const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 const getOboNodeScriptPathsFromPackageByTypeCache = new Map()
 const getOboNodeScriptPathsFromPackageByType = (oboNodePackage, type) => {
 	const cacheKey = `${oboNodePackage}-${type}`
-	if(getOboNodeScriptPathsFromPackageByTypeCache.has(cacheKey)) return [...getOboNodeScriptPathsFromPackageByTypeCache.get(cacheKey)]
+	if (getOboNodeScriptPathsFromPackageByTypeCache.has(cacheKey))
+		return [...getOboNodeScriptPathsFromPackageByTypeCache.get(cacheKey)]
 	let scripts = getOboNodeScriptPathsFromPackage(oboNodePackage, type)
 	if (!scripts) return null
 	// allow scriptss to be a single string - convert to an array to conform to the rest of this method
@@ -63,7 +66,6 @@ const getOboNodeScriptPathsFromPackageByType = (oboNodePackage, type) => {
 	return [...resolved]
 }
 
-
 const getAllOboNodeScriptPathsByType = type => {
 	const nodes = searchNodeModulesForOboNodes()
 	const scripts = nodes.map(node => getOboNodeScriptPathsFromPackageByType(node, type))
@@ -76,7 +78,7 @@ const gatherAllMigrations = () => {
 	const allDirs = []
 	let migrationDirs = modules.map(module => {
 		const dir = getOboNodeScriptPathsFromPackage(module, 'migrations')
-		if(!dir) return
+		if (!dir) return
 		const basedir = path.dirname(require.resolve(module))
 		allDirs.push(`${basedir}/${dir}`)
 	})
@@ -84,21 +86,20 @@ const gatherAllMigrations = () => {
 }
 
 const migrateUp = () => {
-	const { execSync } = require( 'child_process' )
-	const dbMigratePath =  require.resolve('db-migrate/bin/db-migrate')
+	const { execSync } = require('child_process')
+	const dbMigratePath = require.resolve('db-migrate/bin/db-migrate')
 	const configPath = require.resolve('obojobo-express/config/db.json')
 	const migrationDirs = gatherAllMigrations()
-		// "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
-		// "db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",
-		// "db:migrateup": "node_modules/.bin/db-migrate up --config config/db.json",
-		// "db:migratedown": "node_modules/.bin/db-migrate down --config config/db.json",
-		// "db:createmigration": "node_modules/.bin/db-migrate create --config config/db.json",
-		// "db:remove": "(docker kill db_postgres || true) && (docker rm db_postgres || true)",
-		// "db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
+	// "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
+	// "db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",
+	// "db:migrateup": "node_modules/.bin/db-migrate up --config config/db.json",
+	// "db:migratedown": "node_modules/.bin/db-migrate down --config config/db.json",
+	// "db:createmigration": "node_modules/.bin/db-migrate create --config config/db.json",
+	// "db:remove": "(docker kill db_postgres || true) && (docker rm db_postgres || true)",
+	// "db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
 	migrationDirs.forEach(dir => {
 		console.log(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
-		let output = execSync(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`);
-		// console.log(output)
+		let output = execSync(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
 	})
 }
 
@@ -126,9 +127,9 @@ const gatherClientScriptsFromModules = () => {
 	 */
 	modules.forEach(oboNodePackage => {
 		let items = getOboNodeScriptPathsFromPackage(oboNodePackage, 'client')
-		for(let item in items){
+		for (let item in items) {
 			let key = item.toLowerCase()
-			if(!entries[key]){
+			if (!entries[key]) {
 				entries[key] = {}
 				entries[key][defaultOrderKey] = []
 			}
@@ -138,11 +139,11 @@ const gatherClientScriptsFromModules = () => {
 			if (!Array.isArray(script)) script = [script]
 
 			script.forEach(single => {
-				if(typeof single === 'string'){
+				if (typeof single === 'string') {
 					entries[key][defaultOrderKey].push(require.resolve(`${oboNodePackage}/${single}`))
 				}
-				if(single.hasOwnProperty('file') && single.hasOwnProperty('position')){
-					if(!entries[key][single.position]) entries[key][single.position] = []
+				if (single.hasOwnProperty('file') && single.hasOwnProperty('position')) {
+					if (!entries[key][single.position]) entries[key][single.position] = []
 					entries[key][single.position].push(require.resolve(`${oboNodePackage}/${single.file}`))
 				}
 			})
@@ -154,7 +155,7 @@ const gatherClientScriptsFromModules = () => {
 	let scripts = {}
 	Object.keys(entries).forEach(entryName => {
 		const entry = entries[entryName]
-		const sortedOrderKeys = Object.keys(entry).sort((a,b) => a - b)
+		const sortedOrderKeys = Object.keys(entry).sort((a, b) => a - b)
 		scripts[entryName] = []
 		sortedOrderKeys.forEach(key => {
 			scripts[entryName] = [...scripts[entryName], ...entry[key]]
