@@ -1,7 +1,7 @@
 @import '../../client/css/defaults';
 
 .repository--section-wrapper{
-	max-width: 800px;
+	max-width: 770px;
 	margin: 0 auto;
 	border-bottom: 1px solid $border-color;
 }
@@ -15,7 +15,7 @@
 }
 
 .repository--nav{
-	width: 800px;
+	max-width: 800px;
 	margin: 5px auto;
 	display: flex;
 	flex-wrap: nowrap;
@@ -34,6 +34,10 @@
 	color: $color-highlight;
 }
 
+.repository--nav--links--link{
+	flex-grow: 1;
+}
+
 .repository--nav--logo{
 	background-image: url('/images/obojobo-logo.svg');
 	background-position: center;
@@ -50,36 +54,29 @@
 
 .repository--nav--current-user{
 	position: relative;
-	width: 200px;
 	font-size: .9em;
 	height: 65px;
+	text-align: right;
+	padding: 16px 65px 0 0;
+	box-sizing: border-box;
 }
 
 .avatar.repository--nav--current-user--avatar{
 	position: absolute;
 	right: 0px;
-	top: 0px;
-	height: 60px;
-	width: 60px;
+	top: 5px;
+	height: 55px;
+	width: 55px;
 	margin: 0;
 }
 
 .repository--nav--current-user--name{
-	position: absolute;
-	word-wrap: none;
-	bottom: 40px;
-	right: 70px;
-	max-width: 130px;
 	font-size: .9em;
 }
 
-.repository--nav--current-user--link{
-	position: absolute;
-	word-wrap: none;
-	bottom: 20px;
-	right: 70px;
-	max-width: 130px;
-}
+// .repository--nav--current-user--link{
+// 	word-wrap: none;
+// }
 
 .repository--nav--current-user--menu{
 	display: none;
