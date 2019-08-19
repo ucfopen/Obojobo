@@ -55,7 +55,6 @@
 			.link-url.copied { color: green; pointer-events: none; text-decoration: none; font-weight: bold; }
 			.link-delete, .link-delete:visited { color: gray; position: absolute; right: 0; top:10px; text-decoration:none; font-size: 11pt; }
 			.link-delete:hover { color:red; }
-			.file-manager-btn { position: absolute; top: 5px; right: 21.7em; }
 			.add-image-btn { position: absolute; top: 5px; right: 13em; }
 			.add-question-btn { position: absolute; top: 5px; right: 1em; }
 			#search { position: relative; }
@@ -72,7 +71,7 @@
 			.link-edit.unsaved .title { color: #032ca0; font-weight: bold; }
 			.link-edit.unsaved .title:after { content: "*"; }
 			#add-image-modal { position: fixed; left: 0; top: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 99999; display: none; }
-			.modal { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 800px; background: white; border-radius: 5px; padding: 2em; }
+			.modal { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 300px; background: white; border-radius: 5px; padding: 2em; }
 			#add-image-form-fieldset { border: none; margin: 0; padding: 0; }
 			.modal h2 { text-align: center; margin-top: 0; }
 			.modal .close-button { font-size: 16pt; background-color: #6714bd; color: white; font-weight: bold; border:none; cursor: pointer; opacity: 0.8; font-family:'Libre Franklin', Arial; border-radius: 4px; padding: 0.1em 1em; background: transparent; position: absolute; top: 0; right: 0; color: black; padding: 0; width: 1.5em; height: 1.5em; text-decoration: none; text-align: center; z-index: 1; }
@@ -93,18 +92,6 @@
 			.modal .step-2 { visibility: hidden; }
 			.modal.on-step-2 .step-2 { visibility: visible; }
 			.spinner { width: 80px; height: 80px; margin: 100px auto; background-color: #333; border-radius: 100%; -webkit-animation: sk-scaleout 1.0s infinite ease-in-out; animation: sk-scaleout 1.0s infinite ease-in-out; }
-
-			.media-importer { display: flex; justify-content: center; }
-			.section { flex: 1; margin: 0 1rem; }
-			.section-title { text-align: center; }
-			.section-line {	background-color: rgb(0, 0, 0, 0.2); width: 1px; margin: 2rem 0; }
-			#file-display { height: 300px; margin-top: 10px; margin-left: 20px; overflow-y: auto; overflow: -moz-scrollbars-vertical; }
-			#file-display .file-info { display: flex; flex-flow: row; align-content: space-between; font-size: 13px; padding: 5px 10px; }
-			#file-display .file-info:hover { background-color: #f9d991; }
-			#file-display .file-info span { vertical-align: top; }
-			#file-display .file-info .file-thumbnail { height: 55px; width: 75px; object-fit: cover; }
-			#file-display .file-info .file-name { flex-grow: 1; padding: 2px 5px; }
-
 			@-webkit-keyframes sk-scaleout {
 				0% { -webkit-transform: scale(0) }
 				100% {
@@ -129,7 +116,6 @@
 		<h1>Obojobo Draft Manager</h1>
 		<button onClick="addImage()" class="add-image-btn">Insert Image</button>
 		<button onClick="addQuestion()" class="add-question-btn">Insert MC Question</button>
-		<button onClick="openFileManager()" class="file-manager-btn">File Manager</button>
 		<div id="sidebar">
 			<button id="button-create-new-draft">+ Create new draft</button>
 			<button id="button-create-new-tutorial" onClick="createTutorialDraft()">+ Visual Editor Tutorial</button>
@@ -191,127 +177,49 @@
 			Saved!
 		</div>
 		<div id="add-image-modal">
-				<form class="modal" id="add-image-form" action="#">
-				  <div class="media-importer">
-					<div class="section">
-						<h2>Insert Image</h2>
-					  <fieldset id="add-image-form-fieldset">
-						<a
-						  role="button"
-						  class="close-button"
-						  onclick="closeInsertImageModal()"
-						  >&times;</a
-						>
-						<input
-						  id="image-file-input"
-						  type="file"
-						  onchange="onUpdateImage(this)"
-						/>
-						<div class="caption step-2">
-						  <label for="alt-text">Alt text:</label>
-						  <input id="alt-text" type="text" placeholder="Describe the image" />
-						</div>
-						<div class="caption step-2">
-						  <label for="image-caption">Optional caption:</label>
-						  <input
-							id="image-caption"
-							type="text"
-							placeholder="Will display below the image"
-						  />
-						</div>
-						<div class="size step-2">
-						  <h3>Size:</h3>
-						  <label class="size-option">
-							<input
-							  type="radio"
-							  name="size"
-							  value="large"
-							  checked
-							  onchange="onChangeImageSize(this)"
-							/>
+			<form class="modal" id="add-image-form" action="#">
+				<fieldset id="add-image-form-fieldset">
+					<h2>Insert Image</h2>
+					<a role="button" class="close-button" onclick="closeInsertImageModal()">&times;</a>
+					<input id="image-file-input" type="file" onchange="onUpdateImage(this)" />
+					<div class="caption step-2">
+						<label for="alt-text">Alt text:</label>
+						<input id="alt-text" type="text" placeholder="Describe the image" />
+					</div>
+					<div class="caption step-2">
+						<label for="image-caption">Optional caption:</label>
+						<input id="image-caption" type="text" placeholder="Will display below the image" />
+					</div>
+					<div class="size step-2">
+						<h3>Size:</h3>
+						<label class="size-option">
+							<input type="radio" name="size" value="large" checked onchange="onChangeImageSize(this)" />
 							<span>Large</span>
-						  </label>
-						  <label class="size-option">
-							<input
-							  type="radio"
-							  name="size"
-							  value="medium"
-							  onchange="onChangeImageSize(this)"
-							/>
+						</label>
+						<label class="size-option">
+							<input type="radio" name="size" value="medium" onchange="onChangeImageSize(this)" />
 							<span>Medium</span>
-						  </label>
-						  <label class="size-option">
-							<input
-							  type="radio"
-							  name="size"
-							  value="small"
-							  onchange="onChangeImageSize(this)"
-							/>
+						</label>
+						<label class="size-option">
+							<input type="radio" name="size" value="small" onchange="onChangeImageSize(this)" />
 							<span>Small</span>
-						  </label>
-						  <label class="size-option custom-size">
-							<input
-							  type="radio"
-							  name="size"
-							  value="custom"
-							  onchange="onChangeImageSize(this)"
-							/>
+						</label>
+						<label class="size-option custom-size">
+							<input type="radio" name="size" value="custom" onchange="onChangeImageSize(this)" />
 							<span>Custom</span>
 							<div class="custom-size-inputs" id="custom-size-inputs">
-							  <input
-								id="custom-width"
-								name="custom-width"
-								min="1"
-								max="2000"
-								step="1"
-								type="number"
-								placeholder="Width"
-							  />
-							  <span>px </span><span class="by">&times;</span>
-							  <input
-								id="custom-height"
-								name="custom-height"
-								min="1"
-								max="2000"
-								step="1"
-								type="number"
-								placeholder="Height"
-							  />
-							  <span>px</span>
+								<input id="custom-width" name="custom-width" min="1" max="2000" step="1" type="number" placeholder="Width" />
+								<span>px </span><span class="by">&times;</span>
+								<input id="custom-height" name="custom-height" min="1" max="2000" step="1" type="number" placeholder="Height" />
+								<span>px</span>
 							</div>
-						  </label>
-						</div>
-						<input
-						  type="submit"
-						  class="insert-image-button step-2"
-						  id="insert-image-button"
-						  value="Insert"
-						/>
-						<div class="image-loading" id="image-loading">
-						  <div class="spinner"></div>
-						</div>
-					  </fieldset>
+						</label>
 					</div>
-
-					<div class="section-line"></div>
-
-					<div class="section">
-					  <h2 class="section-title">Pick from your library</h2>
-					  <div id="sort-bar"></div>
-					  <div id="file-display">
-						<div class="file-info">
-						  <img
-							src="./Screen Shot 2019-07-16 at 3.33.18 PM.png"
-							class="file-thumbnail"
-						  />
-						  <p class="file-name">My Picture</p>
-						</div>
-					  </div>
-					</div>
-				  </div>
-				</form>
-			  </div>
-
+					<input type="submit" class="insert-image-button step-2" id="insert-image-button" value="Insert" />
+					<div class="image-loading" id="image-loading"><div class="spinner"></div></div>
+				</fieldset>
+			</form>
+		</div>
 	</div>
 
 	<script src="<%= assetForEnv('/static/draftmanager$[.min].js') %>"></script>

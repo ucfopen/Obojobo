@@ -26,10 +26,7 @@ function preview(draftId, url) {
 	childWindow = window.open(url, 'preview')
 }
 
-function openFileManager() {
-	window.open('/editor/files-manager')
-}
-
+//eslint-disable-next-line
 function downloadDocument(draftId, format = 'json') {
 	if (format === 'json') {
 		fetch(`/api/drafts/${draftId}/full`, {
@@ -44,6 +41,7 @@ function downloadDocument(draftId, format = 'json') {
 			.then(json => JSON.stringify(json.value, null, 2))
 			.then(contents => {
 				// use downloadjs to locally build a file to download
+				// eslint-disable-next-line no-undef
 				download(contents, `obojobo-draft-${draftId}.json`, 'application/json')
 			})
 	} else {
@@ -58,6 +56,7 @@ function downloadDocument(draftId, format = 'json') {
 			.then(res => res.text())
 			.then(contents => {
 				// use downloadjs to locally build a file to download
+				// eslint-disable-next-line no-undef
 				download(contents, `obojobo-draft-${draftId}.xml`, 'application/xml')
 			})
 	}
@@ -173,45 +172,6 @@ document.getElementById('button-create-new-draft').addEventListener('click', fun
 		})
 })
 
-function renderMediaList() {
-	const fileDisplay = document.getElementById('file-display')
-	fileDisplay.innerHTML = `<div class="spinner"></div>`
-
-	fetch('/api/media/all', {
-		method: 'GET',
-		credentials: 'include',
-		headers: {
-			Accept: 'application/json',
-			'Content-Type': 'application/json'
-		}
-	})
-		.then(res => res.json())
-		.then(medias => {
-			if (medias.length === 0)
-				return (fileDisplay.innerHTML = '<p>There is no image in your library</p>')
-
-			let fileDisplayHTML = ''
-			medias.forEach(media => {
-				fileDisplayHTML += `
-					<div class="file-info">
-						<img
-							src="${'data:image/jpeg;base64,' +
-								btoa(String.fromCharCode.apply(null, media.thumbnail.binaryData.data))}"
-							class="file-thumbnail"
-						/>
-						<div class="file-name">${media.fileName}</div>
-					</div>
-				`
-			})
-			// fileDisplay = document.getElementById('file-display')
-			fileDisplay.innerHTML = fileDisplayHTML
-		})
-		.catch(err => {
-			console.log(err)
-			fileDisplay.innerHTML = '<p>There is no file in the library</p>'
-		})
-}
-
 // Set up OboEditor items
 function createTutorialDraft() {
 	fetch('/api/drafts/tutorial', {
@@ -257,7 +217,6 @@ function addQuestion() {
 
 //eslint-disable-next-line
 function addImage() {
-	renderMediaList()
 	const addImageModalEl = document.getElementById('add-image-modal')
 	addImageModalEl.style.display = 'block'
 }
