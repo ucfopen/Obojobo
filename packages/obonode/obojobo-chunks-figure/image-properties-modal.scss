@@ -4,7 +4,8 @@
 	text-align: left;
 	display: flex;
 
-	> label {
+	label {
+		margin-top: 0.7rem;
 		margin-bottom: 0.3em;
 	}
 
@@ -50,8 +51,7 @@
 	.flex-container {
 		display: flex;
 		align-items: center;
-		padding: 1em 0;
-		margin-bottom: 1em;
+		padding: 1rem 0;
 		background-color: $color-bg2;
 
 		&.image-container {
@@ -59,15 +59,9 @@
 			flex-direction: column;
 			max-width: 100%;
 
-			.obojobo-draft--chunks--figure--image {
-				border: 1px solid $color-transparent;
-
-				&.is-loaded {
-					border: 1px solid $color-shadow;
-				}
-			}
-
 			button {
+				font-size: 0.8rem;
+				padding: 0.5rem;
 				margin-top: 1rem;
 			}
 		}
@@ -75,7 +69,6 @@
 
 	.image-preview {
 		font-size: 0.8em;
-		margin-top: 0.2em;
 
 		&.image-preview-placeholder {
 			height: 100px; /* stylelint-disable-line unit-blacklist */

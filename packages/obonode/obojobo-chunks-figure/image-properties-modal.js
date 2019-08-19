@@ -17,14 +17,13 @@ class ImageProperties extends React.Component {
 			alt: '',
 			size: 100,
 			height: 100,
-			width: 100,
-			isChoosingImage: false
+			width: 100
 		}
 		this.inputRef = React.createRef()
 		this.state = {
 			...defaultState,
 			...props.content,
-			isChoosingImage: props.content.url !== '' || false
+			isChoosingImage: !this.props.content.url && this.props.content.url !== ''
 		}
 		if (!isUrlUUID(this.props.content.url)) {
 			this.state.urlInputText = this.props.content.url
