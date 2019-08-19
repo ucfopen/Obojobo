@@ -2,6 +2,7 @@ $border-color: #ccc;
 $button-color: #76c7aa;
 $color-banner-bg: #e8e3eb;
 $color-action: #6714bd;
+$color-button-bg: lighten($color-action, 9%);
 $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
 $color-error: #990000;
 $color-dangerous: #d40000;

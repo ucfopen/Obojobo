@@ -52,6 +52,14 @@
 	margin-bottom: 10px;
 }
 
+.repository--item-list--collection--item-wrapper{
+	// add some margin so that the
+	// icons line up visually with the left
+	// the padding/bg around them makes them look off otherwise
+	margin-left: -8px;
+	margin-right: -8px;
+}
+
 .repository--item-list--row{
 	// overflow: auto;
 	font-size: .8em;

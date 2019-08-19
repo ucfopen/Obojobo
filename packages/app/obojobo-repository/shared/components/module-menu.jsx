@@ -13,7 +13,7 @@ const ModuleMenu = props => {
 	const onShare = () => {
 		props.showModulePermissions(props)
 	}
-	const onDelete = () => {
+	const onMore = () => {
 		var response = confirm(`Delete "${props.title}" id: ${props.draftId} ?`)
 		if(!response) return;
 		props.deleteModule(props.draftId)
@@ -24,7 +24,8 @@ const ModuleMenu = props => {
 				<ButtonLink url={`/preview/${props.draftId}`} target="_blank" >Preview</ButtonLink>
 				<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">Edit</ButtonLink>
 				<Button onClick={onShare} >Share</Button>
-				<Button onClick={onDelete} className="delete" >Delete</Button>
+				<hr/>
+				<Button onClick={onMore} className="more" >More...</Button>
 			</div>
 		</div>
 	)

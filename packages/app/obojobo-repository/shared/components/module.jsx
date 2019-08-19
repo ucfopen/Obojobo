@@ -2,21 +2,19 @@ require('./module.scss')
 
 const React = require('react')
 const { useState } = require('react')
-
 const ModuleImage = require('./module-image')
 const ModuleMenu = require('./module-menu-hoc')
-
 
 const Module = (props) => {
 	const [isMenuOpen, setMenuOpen] = useState(false)
 	const onCloseMenu = () => setMenuOpen(false)
 	const onToggleMenu = (e) => {
 		setMenuOpen(!isMenuOpen)
-		e.preventDefault()
+		e.preventDefault() // block the event from bubbling out to the parent href
 	}
 
 	return (
-		<div onMouseLeave={onCloseMenu} className="repository--module-icon" onClick={props.onClick}>
+		<div onMouseLeave={onCloseMenu} className={"repository--module-icon " + (isMenuOpen ? "is-open" : "is-not-open") }>
 			<a href={`/library/${props.draftId}`} >
 				<ModuleImage id={props.draftId} />
 				{ props.hasMenu ?

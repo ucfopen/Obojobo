@@ -10,6 +10,7 @@ const RepositoryListItemScores = require('./repository-list-item-scores')
 const RepositoryListItemEdited = require('./repository-list-item-edited')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
 const Button = require('./button')
+const MultiButton = require('./multi-button')
 const Search = require('./search')
 const ReactModal = require('react-modal')
 
@@ -42,10 +43,6 @@ const renderModalDialog = (props) => {
 	}
 }
 
-const onModuleFilter = (props, input) => {
-	props.filterModules(input)
-}
-
 const renderModules = (modules) => {
 	return modules.map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} ></Module>)
 }
@@ -61,11 +58,18 @@ const Dashboard = (props) =>
 		<RepositoryBanner title={props.title} className="default-bg" facts={props.facts} />
 		<div className="repository--section-wrapper">
 			<section className="repository--main-content">
+				<div className="repository--main-content--control-bar">
+					<MultiButton title="Create a New Module...">
+						<Button onClick={() => {props.createNewModule(false)}}>New XML Module</Button>
+						<Button onClick={() => {props.createNewModule(false)}}>New Visual Editor Module</Button>
+						<Button onClick={() => {props.createNewModule(true)}}>New Sample / Tutorial</Button>
+					</MultiButton>
+					<Search onChange={props.filterModules} />
+				</div>
 				<div className="repository--main-content--title">My Modules</div>
 				<div className="repository--item-list--collection">
 					<div className="repository--item-list--collection--item-wrapper">
 						<div className="repository--item-list--row">
-							<Search onChange={input => {onModuleFilter(props, input)}} />
 							<div className="repository--item-list--collection--item--multi-wrapper">
 								{
 									renderModules(props.filteredModules ? props.filteredModules : props.myModules)
@@ -74,9 +78,6 @@ const Dashboard = (props) =>
 						</div>
 					</div>
 				</div>
-				<Button onClick={() => {props.createNewModule(false)}}>New XML Module</Button>
-				<Button onClick={() => {props.createNewModule(false)}}>New Visual Editor Module</Button>
-				<Button onClick={() => {props.createNewModule(true)}}>New Visual Editor Tutorial</Button>
 			</section>
 		</div>
 		{ renderModalDialog(props) }

@@ -2,18 +2,18 @@
 
 .repository--button{
 	border: 0;
-	background: $color-action;
+	background: $color-button-bg;
 	color: white;
 	border-radius: 4px;
 	padding: 8px 18px;
-	font-weight: 400;
+	font-weight: bold;
 	box-sizing: border-box;
 	cursor: pointer;
 	text-decoration: none;
+	font-size: 11px;
 
 	&:hover{
-		background-color: $color-action-minor;
-		color: black;
+		background: $color-action;
 	}
 
 	&.close-button{

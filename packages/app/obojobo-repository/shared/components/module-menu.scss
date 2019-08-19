@@ -32,7 +32,7 @@
 		fill: $color-action;
 	}
 
-	&:hover{
+	&:hover {
 		background-color: $color-action;
 		height: $size-big;
 		width: $size-big;
@@ -55,22 +55,32 @@
 	top: 5px;
 	background-color: $color-banner-bg;
 	border-radius: 0px 0px 5px 5px;
-	padding: 5px 10px;
+	padding: 5px 9px;
 	z-index: 100;
+	border: 1px solid $color-banner-bg;
+	border-top: 0;
+
+	hr{
+		margin: 0 0 4px 0;
+		border: 0;
+		border-top: 1px solid darken($color-banner-bg, 10%);
+	}
 
 	.repository--button{
 		display: inline-block;
 		margin-bottom: 8px;
 		width: 100%;
 		position: relative;
+		font-weight: bold;
 
-		&.delete{
-			margin-top: 10px;
-			background-color: $color-dangerous;
+		&.more{
+			margin-bottom: 2px;
+			color: $color-action;
+			background-color: inherit;
+			text-decoration: underline;
 
 			&:before{
 				content: ' ';
-				border-bottom: 1px solid #999;
 				width: 100%;
 				height: 1px;
 				position: absolute;
@@ -79,8 +89,7 @@
 			}
 
 			&:hover{
-				color: $color-dangerous;
-				background-color: white;
+				background-color: rgba(255,255,255,.5);
 			}
 		}
 	}

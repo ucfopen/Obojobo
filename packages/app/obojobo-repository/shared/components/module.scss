@@ -4,11 +4,12 @@
 	position:relative;
 	font-family: $font-default;
 	width: $dimension-module-icon;
-	padding: 10px;
+	padding: 9px;
 	border-radius: 5px;
 	background-color: none;
 	font-size: .75em;
 	text-align: center;
+	border: 1px solid rgba(0,0,0,0);
 
 	> a{
 		text-decoration: none;
@@ -20,8 +21,12 @@
 		}
 	}
 
-	&:hover {
+	&.is-open{
 		background-color: $color-banner-bg;
+	}
+
+	&:hover {
+		border-color: $color-banner-bg;
 
 		.repository--module-icon--image{
 			margin-top: -2px;
@@ -31,6 +36,5 @@
 		.repository--module-icon--menu-control-button{
 			display: block;
 		}
-
 	}
 }
