@@ -165,7 +165,7 @@ export default class Numeric {
 	static isValidUnit(unitString) {
 		if (!unitString) return true
 		if (unitString.indexOf(' ') > -1) return false
-		return /^[^0-9,\.].*/.test(unitString)
+		return /^[^0-9,\.,\/].*/.test(unitString)
 	}
 
 	/**
@@ -187,9 +187,9 @@ export default class Numeric {
 	init(str) {
 		let parsed = this.constructor.parse(str)
 
-		if (!Numeric.isValidUnit(parsed.unit)) {
-			parsed = this.constructor.getNullParseObject()
-		}
+		// if (!Numeric.isValidUnit(parsed.unit)) {
+		// 	parsed = this.constructor.getNullParseObject()
+		// }
 
 		/**
 		 * @type {string}

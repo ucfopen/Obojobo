@@ -92,6 +92,7 @@ export default class NumericEntry {
 	 * NumericEntry.getProcessedInput('  4,000  g ') //4000 g
 	 */
 	static getProcessedInput(s) {
+		//@TODO: Consider stripping out '$' for financial inputs
 		// return s.replace(/\s/g, '').replace(/,/g, '')
 		return s
 			.replace(/,/g, '') // Remove commas

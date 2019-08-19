@@ -235,6 +235,8 @@ describe('Decimal', () => {
 		${'+.0'}       | ${'exact'} | ${'+.0'}    | ${''}
 		${'2kCal'}     | ${'exact'} | ${'2'}      | ${'kCal'}
 		${'-2 kCal'}   | ${'exact'} | ${'-2'}     | ${'kCal'}
+		${'1.21 Ω'}    | ${'exact'} | ${'1.21'}   | ${'Ω'}
+		${'99.9%'}     | ${'exact'} | ${'99.9'}   | ${'%'}
 		${'-.2'}       | ${'exact'} | ${'-.2'}    | ${''}
 		${'1/2'}       | ${'none'}  | ${''}       | ${''}
 	`(`parse($input)={$matchType,$valueString,$unit}`, ({ input, matchType, valueString, unit }) => {

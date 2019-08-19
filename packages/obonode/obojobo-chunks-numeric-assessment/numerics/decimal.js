@@ -3,7 +3,20 @@ import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
 import Numeric from './numeric'
 import Big from '../big'
 
-const decimalRegex = /^[-\+]?([0-9]+|[0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.)+/
+//0
+//+0
+//-0
+//0.0
+//0.
+//.0
+//0g
+//0. g
+//.0g
+//.0 g
+//0%
+//.0%
+//0. %
+const decimalRegex = /^[-\+]?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.|[0-9]+)+/
 
 /**
  * A decimal numeric type. Units may have whitespace between the value but are not required.
@@ -42,14 +55,22 @@ export default class Decimal extends Numeric {
 	 * Decimal.parse("2/3 kCal") //{ matchType:'none', valueString:'', unit:'' }
 	 */
 	static parse(str) {
+		console.log('---------------')
+		console.log('PARSE', str)
 		const matches = decimalRegex.exec(str)
-
+		console.log('matches', matches[0])
 		if (!matches || !matches.length) return Numeric.getNullParseObject()
 
+		const unit = str.substr(matches[0].length).trim()
+
+		console.log('unit', unit)
+		console.log('isValidUnit', Numeric.isValidUnit(unit))
+
+		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
 		return {
 			matchType: MATCH_EXACT,
 			valueString: matches[0],
-			unit: str.substr(matches[0].length).trim()
+			unit
 		}
 	}
 
