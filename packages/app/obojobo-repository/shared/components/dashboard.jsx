@@ -4,11 +4,11 @@ const React = require('react');
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
-const ModuleMenu = require('./module-menu')
 const RepositoryListItemFeedback = require('./repository-list-item-feedback')
 const RepositoryListItemScores = require('./repository-list-item-scores')
 const RepositoryListItemEdited = require('./repository-list-item-edited')
 const ModulePermissionsDialog = require('./module-permissions-dialog')
+const ModuleOptionsDialog = require('./module-options-dialog')
 const Button = require('./button')
 const MultiButton = require('./multi-button')
 const Search = require('./search')
@@ -17,30 +17,46 @@ const ReactModal = require('react-modal')
 ReactModal.setAppElement('#dashboard-root')
 
 const renderModalDialog = (props) => {
+	let child
+	let title
 	switch(props.dialog){
+		case 'module-more':
+			title = "Module Options"
+			child = <ModuleOptionsDialog
+					title=""
+					{...props.selectedModule}
+					showModulePermissions={props.showModulePermissions}
+					deleteModule={props.deleteModule}
+					onClose={props.closeModal}
+				/>
+			break
+
 		case 'module-permissions':
-			return <ReactModal
-				isOpen={true}
-				contentLabel="Module Access"
-				className="repository--modal"
-				overlayClassName="repository--modal-overlay"
-				onRequestClose={props.closeModal}
-				>
-					<ModulePermissionsDialog
-						title=""
-						{...props.selectedModule}
-						searchState={props.searchPeople}
-						loadUsersForModule={props.loadUsersForModule}
-						onClose={props.closeModal}
-						addUserToModule={props.addUserToModule}
-						draftPermissions={props.draftPermissions}
-						deleteModulePermissions={props.deleteModulePermissions}
-						currentUserId={props.currentUser.id}
-					/>
-				</ReactModal>
+			title = "Module Access"
+			child = <ModulePermissionsDialog
+					title=""
+					{...props.selectedModule}
+					searchState={props.searchPeople}
+					loadUsersForModule={props.loadUsersForModule}
+					onClose={props.closeModal}
+					addUserToModule={props.addUserToModule}
+					draftPermissions={props.draftPermissions}
+					deleteModulePermissions={props.deleteModulePermissions}
+					currentUserId={props.currentUser.id}
+				/>
+			break
+
 		default:
 			return null
 	}
+
+	return <ReactModal
+		isOpen={true}
+		contentLabel={title}
+		className="repository--modal"
+		overlayClassName="repository--modal-overlay"
+		onRequestClose={props.closeModal}
+		>{child}</ReactModal>
 }
 
 const renderModules = (modules) => {

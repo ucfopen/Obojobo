@@ -9,7 +9,8 @@ const { SHOW_MODULE_PERMISSIONS,
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	CREATE_NEW_MODULE,
-	FILTER_MODULES
+	FILTER_MODULES,
+	SHOW_MODULE_MORE
 } = require('../actions/dashboard-actions')
 
 const defaultResults = (isFetching = false, hasFetched = false, items = []) => ({
@@ -31,10 +32,15 @@ function DashboardReducer(state, action) {
 		case CREATE_NEW_MODULE:
 		case DELETE_MODULE:
 			return handle(state, action, {
-				// start: prevState => ({...prevState}),
-				success: prevState => ({...prevState, myModules: action.payload.value}),
-				// failure: prevState => ({...prevState}),
+				success: prevState => ({...prevState, myModules: action.payload.value, dialog: null}),
 			})
+
+		case SHOW_MODULE_MORE:
+			return {
+				...state,
+				dialog: 'module-more',
+				selectedModule: action.module
+			}
 
 		case SHOW_MODULE_PERMISSIONS:
 			return {

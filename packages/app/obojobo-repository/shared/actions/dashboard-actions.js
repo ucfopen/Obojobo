@@ -53,7 +53,7 @@ const apiCreateNewModule = useTutorial => {
 // ================== ACTIONS ===================
 
 const SHOW_MODULE_PERMISSIONS = 'SHOW_MODULE_PERMISSIONS'
-const showModulePermissions = (module) => ({
+const showModulePermissions = module => ({
 		type: SHOW_MODULE_PERMISSIONS,
 		module
 })
@@ -116,6 +116,12 @@ const filterModules = (searchString) => ({
 	searchString
 })
 
+const SHOW_MODULE_MORE = 'SHOW_MODULE_MORE'
+const showModuleMore = module => ({
+	type: SHOW_MODULE_MORE,
+	module
+})
+
 
 module.exports = {
 	SHOW_MODULE_PERMISSIONS,
@@ -128,6 +134,7 @@ module.exports = {
 	DELETE_MODULE_PERMISSIONS,
 	DELETE_MODULE,
 	FILTER_MODULES,
+	SHOW_MODULE_MORE,
 	filterModules,
 	deleteModule,
 	closeModal,
@@ -137,5 +144,6 @@ module.exports = {
 	createNewModule,
 	showModulePermissions,
 	loadUsersForModule,
-	clearPeopleSearchResults
+	clearPeopleSearchResults,
+	showModuleMore
 }

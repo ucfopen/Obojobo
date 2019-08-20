@@ -12,6 +12,7 @@ const DefaultLayout = props =>
 				: <link rel="stylesheet" media="screen" href="/static/dashboard.css" />
 			}
 			<link rel="stylesheet" media="screen" href="//fonts.googleapis.com/css?family=Libre+Franklin:400,400i,700,700i,900,900i|Roboto+Mono:400,400i,700,700i|Noto+Serif:400,400i,700,700i" />
+			{ props.headerJs.map(url  => <script src={url}></script>) }
 		</head>
 		<body className={props.className}>
 			{props.children}
@@ -26,5 +27,9 @@ const DefaultLayout = props =>
 			}
 		</body>
 	</html>
+
+DefaultLayout.defaultProps = {
+	headerJs: []
+}
 
 module.exports = DefaultLayout;

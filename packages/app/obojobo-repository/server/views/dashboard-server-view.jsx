@@ -10,6 +10,7 @@ const DashboardServerApp = props =>
 	<DefaultLayout
 		title="Dashboard"
 		className="repository--dashboard"
+		headerJs={['//cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js']}
 		appScriptUrl="/static/dashboard.js">
 		<span id="react-hydrate-root" data-react-props={convertPropsToString(props)}>
 			{createCommonReactApp(Dashboard, propsToStore(DashboardReducer, props))}

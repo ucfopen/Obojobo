@@ -1,5 +1,5 @@
 const ModuleMenu = require('./module-menu')
 const connect = require('react-redux').connect
-const { showModulePermissions, deleteModule }  = require('../actions/dashboard-actions')
-const mapActionsToProps = { showModulePermissions, deleteModule }
+const { showModulePermissions, deleteModule, showModuleMore }  = require('../actions/dashboard-actions')
+const mapActionsToProps = { showModulePermissions, deleteModule, showModuleMore }
 module.exports = connect(null, mapActionsToProps)(ModuleMenu)
