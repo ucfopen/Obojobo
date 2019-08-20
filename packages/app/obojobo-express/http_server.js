@@ -1,6 +1,4 @@
 /* eslint-disable */
-var http = require('http')
-
 /**
  * This code is derived from bin/www used in Express 4
  * We extracted the code from that file to make it 1: testable
@@ -25,12 +23,14 @@ const normalizePort = val => {
 	return false
 }
 
-const startServer = (app, logger, port = '3000') => {
+const startServer = (app, logger, port = '3000', options = {}) => {
 	console.log('Note: Logging and config options can be set using environment variables.')
+	console.log(`DEBUG is set to: ${process.env.DEBUG}`)
 
 	port = normalizePort(port)
 	app.set('port', port)
-	const server = http.createServer(app)
+	const http_or_https = options.cert ? require('https') : require('http')
+	const server = http_or_https.createServer(options, app)
 
 	server.on('error', error => {
 		if (error.syscall !== 'listen') {

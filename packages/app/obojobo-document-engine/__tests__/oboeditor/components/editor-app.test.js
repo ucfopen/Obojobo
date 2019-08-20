@@ -16,11 +16,18 @@ import ModalUtil from 'src/scripts/common/util/modal-util'
 jest.mock('src/scripts/common/util/modal-util')
 import Common from 'src/scripts/common'
 import testObject from 'test-object.json'
+import mockConsole from 'jest-mock-console'
+let restoreConsole
 
 describe('EditorApp', () => {
 	beforeEach(() => {
 		jest.resetAllMocks()
 		jest.restoreAllMocks()
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('EditorApp component', done => {
@@ -117,32 +124,34 @@ describe('EditorApp', () => {
 		})
 	})
 
-	test('EditorApp component renders error messsage', done => {
-		expect.assertions(1)
+	test('EditorApp component renders error messsage', () => {
+		expect.assertions(2)
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
 			modelState: { start: 'mockStart' }
 		})
 
+		const mockError = { type: 'someType', message: 'someMessage' }
 		APIUtil.getFullDraft.mockResolvedValueOnce({
 			status: 'error',
-			value: { type: 'someType', message: 'someMessage' }
+			value: mockError
 		})
 
 		const component = mount(<EditorApp />)
-		setTimeout(() => {
+
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
 			component.update()
-
 			expect(component.html()).toMatchSnapshot()
-
+			// eslint-disable-next-line no-console
+			expect(console.error).toHaveBeenCalledWith(mockError)
 			component.unmount()
-			done()
 		})
 	})
 
-	test('EditorApp component renders modal', done => {
-		expect.assertions(1)
+	test('EditorApp component renders modal', () => {
+		expect.assertions(2)
 
 		jest.spyOn(Common.models.OboModel, 'create')
 		Common.models.OboModel.create.mockReturnValueOnce({
@@ -157,13 +166,14 @@ describe('EditorApp', () => {
 		})
 
 		const component = mount(<EditorApp />)
-		setTimeout(() => {
+
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
 			component.update()
-
 			expect(component.html()).toMatchSnapshot()
-
+			// eslint-disable-next-line no-console
+			expect(console.error).not.toHaveBeenCalled()
 			component.unmount()
-			done()
 		})
 	})
 })

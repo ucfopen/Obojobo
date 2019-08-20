@@ -31,11 +31,10 @@ jest.mock('../../../config', () => {
 	}
 })
 
-
 const mediaConfig = require('../../../config').media
 
+// Mocks multerUpload with no errors
 const mockMulterUpload = jest.fn().mockImplementation((req, res, cb) => {
-	// Mocks multerUpload with no errors
 	cb(null)
 })
 
@@ -86,31 +85,20 @@ app.use(oboRequire('express_current_user'))
 app.use('/', oboRequire('express_response_decorator'))
 app.use('/api/media', media)
 
-describe('api draft route', () => {
+describe('api media route', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
+		jest.clearAllMocks()
 		db.none.mockReset()
 		db.any.mockReset()
 	})
 	afterEach(() => {})
 
-	test('POST /api/media/upload works normally', () => {
+	test('POST /api/media/upload returns the results of MediaModel.createAndSave', () => {
+		const mockCreateAndSaveResults = { mockResults: true }
 		mockCurrentUser = { id: 99 } // mock current logged in user
-
-		MediaModel.createAndSave = jest
-			.fn()
-			.mockResolvedValueOnce('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
-
-		MediaModel.isValidFileType = jest.fn()
-
-		MediaModel.isValidFileType.mockImplementationOnce(() => {
-			return true
-		})
-
-		MediaModel.isValidFileType.mockImplementationOnce(() => {
-			return false
-		})
+		MediaModel.createAndSave = jest.fn().mockResolvedValueOnce(mockCreateAndSaveResults)
 
 		return request(app)
 			.post('/api/media/upload')
@@ -119,47 +107,43 @@ describe('api draft route', () => {
 				expect(mockMulterDiskStorage).toBeCalledWith({
 					destination: mediaConfig.tempUploadDestination
 				})
-				expect(response.text).toBe('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
+				expect(response.body).toEqual(mockCreateAndSaveResults)
 			})
 	})
 
 	test('POST /api/media/upload catches error from Multer', () => {
+		const mockCreateAndSaveResults = { mockResults: true }
 		mockCurrentUser = { id: 99 } // mock current logged in user
 
-		MediaModel.createAndSave = jest
-			.fn()
-			.mockResolvedValueOnce('82ecb67a-7d2f-4785-a0b2-61cba30fa6eb')
+		MediaModel.createAndSave = jest.fn().mockResolvedValueOnce(mockCreateAndSaveResults)
 
 		// multerUpload encounters error
 		mockMulterUpload.mockImplementationOnce((req, res, cb) => {
-			cb('An error from multer')
+			cb('Mock Multer Error')
 		})
 
 		return request(app)
 			.post('/api/media/upload')
 			.then(response => {
 				expect(mockMulterUpload).toHaveBeenCalled()
-				expect(mockMulterDiskStorage).toBeCalledWith({
-					destination: mediaConfig.tempUploadDestination
-				})
-				// @TODO: this should probably testing that it's a json formatted object
-				expect(response.text).toContain('An error from multer')
+				expect(response.statusCode).toBe(500)
+				expect(response.text).toContain('Mock Multer Error')
 			})
 	})
-})
 
-test('GET api/media/:id/:dimensions', () => {
-	mockCurrentUser = { id: 99 } // mock current logged in user
+	test('GET api/media/:id/:dimensions', () => {
+		mockCurrentUser = { id: 99 } // mock current logged in user
 
-	MediaModel.fetchByIdAndDimensions = jest.fn().mockResolvedValueOnce({
-		mimeType: 'text/html',
-		binaryData: 'ImageData'
-	})
-
-	return request(app)
-		.get('/api/media/id/100x100')
-		.then(response => {
-			expect(MediaModel.fetchByIdAndDimensions).toBeCalledWith('id', '100x100')
-			expect(response.text).toBe('ImageData')
+		MediaModel.fetchByIdAndDimensions = jest.fn().mockResolvedValueOnce({
+			mimeType: 'text/html',
+			binaryData: 'mockBinaryImageData'
 		})
+
+		return request(app)
+			.get('/api/media/mockMediaId/8675x309')
+			.then(response => {
+				expect(MediaModel.fetchByIdAndDimensions).toBeCalledWith('mockMediaId', '8675x309')
+				expect(response.text).toBe('mockBinaryImageData')
+			})
+	})
 })

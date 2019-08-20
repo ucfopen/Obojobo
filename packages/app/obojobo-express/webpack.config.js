@@ -6,6 +6,8 @@ const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
 const viewerOboNodeScripts = getAllOboNodeScriptPathsByType('viewer')
 const editorOboNodeScripts = getAllOboNodeScriptPathsByType('editor')
 const docEnginePath = path.dirname(require.resolve('obojobo-document-engine'))
+const CopyPlugin = require('copy-webpack-plugin')
+const Babel = require('@babel/core')
 
 module.exports =
 	// built client files
@@ -127,7 +129,27 @@ module.exports =
 				'slate-react': 'SlateReact',
 				immutable: 'Immutable'
 			},
-			plugins: [new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` })],
+			plugins: [
+				new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` }),
+				new CopyPlugin([
+					{
+						from: path.resolve(
+							__dirname,
+							'..',
+							'obojobo-document-engine',
+							'src',
+							'scripts',
+							'oboeditor',
+							'draftmanager.js'
+						),
+						to: path.join(__dirname, 'public', 'compiled', filename_with_min + '.js'),
+						transform(content) {
+							const output = Babel.transformSync(content, { presets: ['@babel/preset-env'] })
+							return output.code
+						}
+					}
+				])
+			],
 			resolve: {
 				alias: {
 					styles: path.join(docEnginePath, 'src', 'scss')

@@ -14,10 +14,17 @@
 			}
 		}
 	},
+	"test": {
+		"key": "value",
+		"hostname": "obojobo.ucf.edu"
+	},
 	"development": {
 		"cookieSecret": "REPLACE_ME_WITH_YOUR_SECRET"
 	},
 	"production": {
-		"cookieSecret": { "ENV": "OBO_COOKIE_SECRET" }
+		"secureCookie": {"ENV": "OBO_COOKIE_SECURE"},
+		"cookieSecret": {
+			"ENV": "OBO_COOKIE_SECRET"
+		}
 	}
 }

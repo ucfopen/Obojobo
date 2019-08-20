@@ -105,43 +105,74 @@ class Draft {
 			})
 	}
 
+	static fetchDraftByVersion(draftId, contentId) {
+		return db
+			.one(
+				`
+			SELECT
+				drafts.id AS id,
+				drafts.user_id as author,
+				drafts_content.id AS version,
+				drafts.created_at AS draft_created_at,
+				drafts_content.created_at AS content_created_at,
+				drafts_content.content AS content
+			FROM drafts
+			JOIN drafts_content
+				ON drafts.id = drafts_content.draft_id
+			WHERE drafts.id = $[draftId]
+				AND deleted = FALSE
+				AND drafts_content.id = $[contentId]
+			ORDER BY content_created_at DESC
+			LIMIT 1
+			`,
+				{ draftId, contentId }
+			)
+			.then(result => {
+				result.content.draftId = result.id
+				result.content.contentId = result.version
+				result.content._rev = result.version
+
+				return new Draft(result.author, result.content)
+			})
+			.catch(error => {
+				logger.error('fetchByVersion Error', error.message)
+				return Promise.reject(error)
+			})
+	}
+
 	static createWithContent(userId, jsonContent = {}, xmlContent = null) {
 		let newDraft
 
-		return db
-			.tx(transactionDb => {
-				// Create a draft first
-				return transactionDb
-					.one(
-						`
+		return db.tx(transactionDb => {
+			// Create a draft first
+			return transactionDb
+				.one(
+					`
 						INSERT INTO drafts
 							(user_id)
 						VALUES
 							($[userId])
 						RETURNING *`,
-						{ userId }
-					)
-					.then(result => {
-						newDraft = result
-						// Add content referencing the draft
-						return transactionDb.one(
-							`
+					{ userId }
+				)
+				.then(newDraftResult => {
+					newDraft = newDraftResult
+					// Add content referencing the draft
+					return transactionDb.one(
+						`
 							INSERT INTO drafts_content
 								(draft_id, content, xml)
 							VALUES
 								($[draftId], $[jsonContent], $[xmlContent])
 							RETURNING *`,
-							{ draftId: result.id, jsonContent, xmlContent }
-						)
-					})
-					.then(result => {
-						newDraft.content = result
-					})
-			})
-			.then(() => {
-				// transaction committed
-				return newDraft
-			})
+						{ draftId: newDraft.id, jsonContent, xmlContent }
+					)
+				})
+				.then(newContentResult => {
+					newDraft.content = newContentResult
+					return newDraft
+				})
+		})
 	}
 
 	static updateContent(draftId, jsonContent, xmlContent) {
@@ -166,7 +197,7 @@ class Draft {
 					xmlContent
 				}
 			)
-			.then(result => result.id)
+			.then(insertContentResult => insertContentResult.id)
 	}
 
 	// returns the first duplicate id found or
@@ -177,6 +208,25 @@ class Draft {
 
 	get document() {
 		return this.root.toObject()
+	}
+
+	get xmlDocument() {
+		return db
+			.oneOrNone(
+				`
+			SELECT
+				drafts_content.xml
+			FROM drafts_content
+			WHERE drafts_content.draft_id = $[id]
+			ORDER BY created_at DESC
+			LIMIT 1
+			`,
+				{ id: this.draftId }
+			)
+			.then(xml => {
+				if (xml) return xml.xml
+				return null
+			})
 	}
 
 	getChildNodeById(id) {

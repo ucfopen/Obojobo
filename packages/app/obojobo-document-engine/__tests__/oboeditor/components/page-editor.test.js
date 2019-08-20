@@ -5,6 +5,7 @@ import EditorStore from '../../../src/scripts/oboeditor/stores/editor-store'
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import React from 'react'
 import { Value } from 'slate'
+import mockConsole from 'jest-mock-console'
 
 jest.mock('slate-react')
 
@@ -22,10 +23,16 @@ const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
+let restoreConsole
 
 describe('PageEditor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('EditorNav component', () => {
@@ -182,19 +189,19 @@ describe('PageEditor', () => {
 		const component = mount(<PageEditor {...props} />)
 		const tree = component.html()
 
-		component
-			.find('button')
-			.at(14)
-			.simulate('click')
+		const saveButton = component.find('button').at(14)
+		expect(saveButton.props().children).toBe('Save Document')
+		saveButton.simulate('click')
 
 		expect(tree).toMatchSnapshot()
 		expect(APIUtil.postDraft).toHaveBeenCalled()
 	})
 
 	test('EditorNav component with content fails to export to database', () => {
-		jest.spyOn(window, 'alert')
-		window.alert.mockReturnValueOnce(null)
-		APIUtil.postDraft.mockResolvedValueOnce({ status: 'not ok' })
+		APIUtil.postDraft.mockResolvedValueOnce({
+			status: 'not ok',
+			value: { message: 'mock error message' }
+		})
 
 		// remove startingId for test coverage
 		EditorStore.state = {}
@@ -223,16 +230,61 @@ describe('PageEditor', () => {
 		const component = mount(<PageEditor {...props} />)
 		const tree = component.html()
 
-		component
-			.find('button')
-			.at(14)
-			.simulate('click')
+		const saveButton = component.find('button').at(14)
+		expect(saveButton.props().children).toBe('Save Document')
+		saveButton.simulate('click')
 
-		expect(tree).toMatchSnapshot()
-		expect(APIUtil.postDraft).toHaveBeenCalled()
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			expect(APIUtil.postDraft).toHaveBeenCalled()
+			expect(tree).toMatchSnapshot()
+			// eslint-disable-next-line no-console
+			expect(console.error).not.toHaveBeenCalled()
+			// restore startingId
+			EditorStore.state = { startingId: null }
+		})
+	})
 
-		// restore startingId
-		EditorStore.state = { startingId: null }
+	test('EditorNav component console errors on invalid postDraft response', () => {
+		APIUtil.postDraft.mockResolvedValueOnce({ status: 'not ok', throwsError: 'you bet!' })
+
+		// remove startingId for test coverage
+		EditorStore.state = {}
+
+		const props = {
+			page: {
+				id: 2,
+				set: jest.fn(),
+				attributes: {
+					children: [
+						{
+							type: 'ObojoboDraft.Chunks.Break',
+							content: {}
+						}
+					]
+				},
+				get: jest.fn()
+			},
+			model: {
+				children: [],
+				flatJSON: () => {
+					return { content: {}, children: [] }
+				}
+			}
+		}
+		const component = mount(<PageEditor {...props} />)
+		const saveButton = component.find('button').at(14)
+		expect(saveButton.props().children).toBe('Save Document')
+		saveButton.simulate('click')
+
+		// eslint-disable-next-line no-undef
+		return flushPromises().then(() => {
+			expect(APIUtil.postDraft).toHaveBeenCalled()
+			// eslint-disable-next-line no-console
+			expect(console.error).toHaveBeenCalledTimes(1)
+			// restore startingId
+			EditorStore.state = { startingId: null }
+		})
 	})
 
 	test('EditorNav component alters value majorly', () => {

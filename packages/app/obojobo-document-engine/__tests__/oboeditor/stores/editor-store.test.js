@@ -138,39 +138,44 @@ describe('EditorStore', () => {
 	})
 
 	test('init builds state with basic options', () => {
-		EditorStore.init(null, undefined, '')
+		EditorStore.init(null, undefined, null, '')
+		expect(EditorStore.getState()).toMatchSnapshot()
+	})
+
+	test('init builds state with settings', () => {
+		EditorStore.init(null, undefined, { mockSetting: true }, '')
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state locked state', () => {
-		EditorStore.init(null, 12, '', { 'nav:isLocked': { value: true } })
+		EditorStore.init(null, 12, null, '', { 'nav:isLocked': { value: true } })
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds state open state', () => {
-		EditorStore.init(null, 12, '', { 'nav:isOpen': { value: true } })
+		EditorStore.init(null, 12, null, '', { 'nav:isOpen': { value: true } })
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 
 	test('init builds and goes to starting path', () => {
-		EditorStore.init(null, 12, 'startingpath')
+		EditorStore.init(null, 12, null, 'startingpath')
 		expect(EditorUtil.gotoPath).toHaveBeenCalledWith('startingpath')
 	})
 
 	test('init builds and goes to starting id', () => {
-		EditorStore.init(null, 12, 'startingpath')
+		EditorStore.init(null, 12, null, 'startingpath')
 		expect(EditorUtil.goto).toHaveBeenCalledWith(12)
 	})
 
 	test('init builds and goes to first with no starting id', () => {
 		EditorUtil.getFirst.mockReturnValueOnce({ id: 'mockFirstId' })
-		EditorStore.init(null, null, 'startingpath')
+		EditorStore.init(null, null, null, 'startingpath')
 		expect(EditorUtil.goto).toHaveBeenCalledWith('mockFirstId')
 	})
 
 	test('init builds with no first', () => {
 		EditorUtil.getFirst.mockReturnValueOnce(undefined)
-		EditorStore.init(null, null, 'startingpath')
+		EditorStore.init(null, null, null, 'startingpath')
 		expect(EditorUtil.goto).not.toHaveBeenCalledWith()
 	})
 
@@ -390,19 +395,24 @@ describe('EditorStore', () => {
 		EditorStore.triggerChange.mockReturnValueOnce(true)
 
 		EditorStore.setState({
-			currentModel: {
-				getParentOfType: () => 'mockParent'
-			}
+			currentPageModel: 'mock-current-model'
 		})
 
 		Common.models.OboModel.models.mockId = {
-			remove: jest.fn()
+			remove: jest.fn(),
+			getParentOfType: () => 'mockParentModule'
 		}
+
+		expect(Common.models.OboModel.models.mockId.remove).not.toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
+		expect(EditorStore.getState().currentPageModel).toBe('mock-current-model')
+		expect(EditorStore.triggerChange).not.toHaveBeenCalled()
 
 		EditorStore.deletePage('mockId')
 
 		expect(Common.models.OboModel.models.mockId.remove).toHaveBeenCalled()
-		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).toHaveBeenCalledWith('mockParentModule')
+		expect(EditorStore.getState()).toHaveProperty('currentPageModel', null)
 		expect(EditorStore.triggerChange).toHaveBeenCalled()
 	})
 

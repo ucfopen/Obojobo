@@ -2,6 +2,7 @@ $color-action: #6714bd;
 $color-action-minor: desaturate(lighten($color-action, 30%), 40%);
 $color-error: #990000;
 $color-dangerous: #d40000;
+$color-dangerous-minor: desaturate($color-dangerous, 20%);
 $color-text: #000000;
 $color-text-minor: lighten($color-text, 40%);
 $color-text-subheading: #a20e83;

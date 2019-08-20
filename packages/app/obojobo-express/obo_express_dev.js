@@ -28,6 +28,8 @@ const ltiContext = {
 	context_type: 'CourseSection'
 }
 
+const defaultResourceLinkId = 'obojobo-dev-resource-id'
+
 // constructs a signed lti request and sends it.
 const renderLtiLaunch = (paramsIn, method, endpoint, res) => {
 	// add the required oauth params to the given prams
@@ -73,9 +75,9 @@ module.exports = app => {
 			<h2>LTI & Auth</h2>
 			<ul>
 				<li><a href="/lti">Lti Instructions</a></li>
-				<li><a href="/lti/dev/launch/course_navigation">Course Nav Launch</a></li>
+				<li><a href="/lti/dev/launch/course_navigation?resource_link_id=whatever-you-want"">Course Nav Launch</a></li>
 				<li><a href="/lti/dev/launch/resource_selection">Resource Selection Launch</a></li>
-				<li><a href="/lti/dev/launch/view">Assignment Launch</a></li>
+				<li><a href="/lti/dev/launch/view?resource_link_id=whatever-you-want">Assignment Launch</a></li>
 				<li><a href="/profile">Whoami</a></li>
 				<li><a href="/profile/logout">Logout</a></li>
 			</ul>
@@ -108,6 +110,7 @@ module.exports = app => {
 
 	// builds a valid course navigation lti launch and submits it
 	app.get('/lti/dev/launch/course_navigation', (req, res) => {
+		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/course_navigation`
 		const params = {
@@ -121,7 +124,7 @@ module.exports = app => {
 			lis_result_sourcedid: 'UzMyOTQ0NzY6Ojo0Mjk3ODUyMjY6OjoyOTEyMw==',
 			lti_message_type: 'basic-lti-launch-request',
 			lti_version: 'LTI-1p0',
-			resource_link_id: '429785226',
+			resource_link_id,
 			resource_link_title: 'Phone home'
 		}
 		renderLtiLaunch(
@@ -134,13 +137,14 @@ module.exports = app => {
 
 	// builds a valid document view lti launch and submits it
 	app.get('/lti/dev/launch/view', (req, res) => {
+		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/view/00000000-0000-0000-0000-000000000000`
 		const params = {
 			lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 			lti_message_type: 'basic-lti-launch-request',
 			lti_version: 'LTI-1p0',
-			resource_link_id: '429785226'
+			resource_link_id
 		}
 		renderLtiLaunch({ ...ltiPerson, ...params }, method, endpoint, res)
 	})

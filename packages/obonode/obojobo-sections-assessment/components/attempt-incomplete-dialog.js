@@ -30,6 +30,7 @@ const AttemptIncompleteDialog = props => (
 				default: true
 			}
 		]}
+		width="35rem"
 	>
 		<b>Wait! You left some questions blank.</b>
 		<br />

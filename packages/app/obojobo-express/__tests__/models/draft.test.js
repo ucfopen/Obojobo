@@ -48,7 +48,7 @@ describe('Draft Model', () => {
 	})
 
 	test('yell calls to child nodes', () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
 		let childNode
 		db.one.mockResolvedValueOnce(mockRawDraft)
@@ -67,7 +67,7 @@ describe('Draft Model', () => {
 	})
 
 	test('fetchById retrives a DraftDocument from the database', () => {
-		expect.assertions(5)
+		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce(mockRawDraft)
 
@@ -81,22 +81,18 @@ describe('Draft Model', () => {
 	})
 
 	test('fetchById returns error when not found in database', () => {
-		expect.assertions(2)
+		expect.hasAssertions()
 
 		db.one.mockRejectedValueOnce(new Error('not found in db'))
 
-		return DraftModel.fetchById('whatever')
-			.then(() => {
-				expect(true).toBe('this should never be called')
-			})
-			.catch(err => {
-				expect(err).toBeInstanceOf(Error)
-				expect(err.message).toBe('not found in db')
-			})
+		return DraftModel.fetchById('whatever').catch(err => {
+			expect(err).toBeInstanceOf(Error)
+			expect(err.message).toBe('not found in db')
+		})
 	})
 
 	test('createWithContent inserts a new draft', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 		// mock insert draft
 		db.one.mockResolvedValueOnce({ id: 'NEWID' })
 		// respond to insert content
@@ -133,7 +129,7 @@ describe('Draft Model', () => {
 	})
 
 	test('createWithContent fails when begin tranaction fails', () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
 		// reject transaction
 		db.tx.mockRejectedValueOnce(new Error('error'))
@@ -142,7 +138,7 @@ describe('Draft Model', () => {
 	})
 
 	test('createWithContent fails when insert draft fails', () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
 		// reject insert draft query
 		db.one.mockRejectedValueOnce(new Error('an error'))
@@ -151,7 +147,7 @@ describe('Draft Model', () => {
 	})
 
 	test('createWithContent fails when insert content fails', () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
 		// respond to insert draft
 		db.one.mockResolvedValueOnce({ id: 'NEWID' })
@@ -162,7 +158,7 @@ describe('Draft Model', () => {
 	})
 
 	test('updateContent calls db.one with expected args', () => {
-		expect.assertions(2)
+		expect.hasAssertions()
 
 		const id = 555
 		const jsonContent = 'mockJsonContent'
@@ -170,34 +166,26 @@ describe('Draft Model', () => {
 
 		db.one.mockResolvedValueOnce({ id })
 
-		return DraftModel.updateContent(id, jsonContent, xmlContent)
-			.then(resultId => {
-				expect(resultId).toBe(id)
-				expect(db.one).toBeCalledWith(
-					expect.any(String),
-					expect.objectContaining({
-						draftId: id,
-						jsonContent: jsonContent,
-						xmlContent: xmlContent
-					})
-				)
-			})
-			.catch(err => {
-				expect(err).toBe('never called')
-			})
+		return DraftModel.updateContent(id, jsonContent, xmlContent).then(resultId => {
+			expect(resultId).toBe(id)
+			expect(db.one).toBeCalledWith(
+				expect.any(String),
+				expect.objectContaining({
+					draftId: id,
+					jsonContent: jsonContent,
+					xmlContent: xmlContent
+				})
+			)
+		})
 	})
 
 	test('updateContent fails as expected', () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 		db.one.mockRejectedValueOnce('test error')
 
-		return DraftModel.updateContent(555, 'content')
-			.then(id => {
-				expect(id).toBe('never called')
-			})
-			.catch(err => {
-				expect(err).toBe('test error')
-			})
+		return DraftModel.updateContent(555, 'content').catch(err => {
+			expect(err).toBe('test error')
+		})
 	})
 
 	test('findDuplicateIds parses a single level draft with no duplications', () => {
@@ -272,7 +260,7 @@ describe('Draft Model', () => {
 	})
 
 	test('get document returns the root object', () => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce(mockRawDraft)
 		return DraftModel.fetchById('whatever').then(model => {
@@ -288,7 +276,7 @@ describe('Draft Model', () => {
 	})
 
 	test('getChildNodeById returns the child with a matching id', () => {
-		expect.assertions(4)
+		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce(mockRawDraft)
 
@@ -301,7 +289,7 @@ describe('Draft Model', () => {
 	})
 
 	test('getChildNodesByType returns all nodes with a matching type', () => {
-		expect.assertions(7)
+		expect.hasAssertions()
 
 		db.one.mockResolvedValueOnce(mockRawDraft)
 
@@ -317,5 +305,59 @@ describe('Draft Model', () => {
 			//eslint-disable-next-line no-undefined
 			expect(model.getChildNodesByType('Some.Missing.Node')).toBe(undefined)
 		})
+	})
+
+	test('fetchDraftByVersion returns a draft', () => {
+		expect.hasAssertions()
+
+		db.one.mockResolvedValueOnce(mockRawDraft)
+
+		return DraftModel.fetchDraftByVersion('whatever').then(model => {
+			expect(model.getChildNodesByType('DraftNode')).toBeInstanceOf(Array)
+			expect(model.getChildNodesByType('DraftNode')).toHaveLength(2)
+			expect(model.getChildNodesByType('DraftNode')[0]).toBeInstanceOf(DraftNode)
+
+			expect(model.getChildNodesByType('Some.Node.Type')).toBeInstanceOf(Array)
+			expect(model.getChildNodesByType('Some.Node.Type')).toHaveLength(1)
+			expect(model.getChildNodesByType('Some.Node.Type')[0]).toBeInstanceOf(DraftNode)
+
+			//eslint-disable-next-line no-undefined
+			expect(model.getChildNodesByType('Some.Missing.Node')).toBe(undefined)
+		})
+	})
+
+	test('fetchDraftByVersion handles errors', () => {
+		expect.hasAssertions()
+
+		db.one.mockRejectedValueOnce('mock-error')
+
+		return expect(DraftModel.fetchDraftByVersion(0)).rejects.toMatch('mock-error')
+	})
+
+	test('xmlDocument querries the database and returns xml content', () => {
+		expect.hasAssertions()
+
+		const mockQueryResult = { xml: 'mock-xml-content' }
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		db.oneOrNone.mockResolvedValueOnce(mockQueryResult)
+
+		return DraftModel.fetchById('whatever')
+			.then(model => model.xmlDocument)
+			.then(xml => {
+				expect(xml).toBe('mock-xml-content')
+			})
+	})
+
+	test('xmlDocument querries the database and returns void with no results', () => {
+		expect.hasAssertions()
+
+		db.one.mockResolvedValueOnce(mockRawDraft)
+		db.oneOrNone.mockResolvedValueOnce(null)
+
+		return DraftModel.fetchById('whatever')
+			.then(model => model.xmlDocument)
+			.then(xml => {
+				expect(xml).toBe(null)
+			})
 	})
 })

@@ -15,7 +15,9 @@ const plugins = {
 	onPaste(event, editor, next) {
 		const transfer = getEventTransfer(event)
 
-		if (transfer.type !== 'fragment' || transfer.fragment.nodes.get(0).type !== ASSESSMENT_NODE) return next()
+		if (transfer.type !== 'fragment' || transfer.fragment.nodes.get(0).type !== ASSESSMENT_NODE) {
+			return next()
+		}
 
 		const cutAssessment = transfer.fragment.nodes.get(0).toJSON()
 		const jsonFragment = {

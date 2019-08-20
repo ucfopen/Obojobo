@@ -241,13 +241,17 @@ class PageEditor extends React.Component {
 			json.children.push(contentJSON)
 		})
 
-		APIUtil.postDraft(this.props.draftId, json).then(result => {
-			if (result.status === 'ok') {
-				ModalUtil.show(<SimpleDialog ok title={'Successfully saved draft'} />)
-			} else {
-				ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
-			}
-		})
+		APIUtil.postDraft(this.props.draftId, json)
+			.then(result => {
+				const title =
+					result.status === 'ok' ? 'Successfully saved draft' : 'Error: ' + result.value.message
+				ModalUtil.show(<SimpleDialog ok title={title} />)
+			})
+			.catch(error => {
+				// eslint-disable-next-line no-console
+				console.error(error)
+				ModalUtil.show(<SimpleDialog ok title={'Unkown error saving draft'} />)
+			})
 	}
 }
 

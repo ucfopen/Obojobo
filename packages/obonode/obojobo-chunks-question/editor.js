@@ -35,18 +35,10 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.Question', {
 	supportsChildren: true,
 	plugins,
 	getNavItem(model) {
-		let label
 		const questions = model.parent.children.models.filter(
 			child => child.get('type') === 'ObojoboDraft.Chunks.Question'
 		)
-
-		if (model.title) {
-			label = model.title
-		} else if (model.modelState.mode === 'practice') {
-			label = `Practice Question ${questions.indexOf(model) + 1}`
-		} else {
-			label = `Question ${questions.indexOf(model) + 1}`
-		}
+		const label = model.title || `Question ${questions.indexOf(model) + 1}`
 
 		return {
 			type: 'sub-link',

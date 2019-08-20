@@ -12,7 +12,7 @@ class IFrameProperties extends React.Component {
 		const defaultState = {
 			autoload: false,
 			border: false,
-			fit: false,
+			fit: '',
 			height: 480,
 			initialZoom: 1,
 			src: '',
@@ -20,7 +20,7 @@ class IFrameProperties extends React.Component {
 			width: 640,
 			controls: ''
 		}
-		this.state = {...defaultState, ...props.content}
+		this.state = { ...defaultState, ...props.content }
 		this.inputRef = React.createRef()
 	}
 
@@ -32,45 +32,45 @@ class IFrameProperties extends React.Component {
 	handleTitleChange(event) {
 		const title = event.target.value
 
-		return this.setState({ title })
+		this.setState({ title })
 	}
 
 	handleURLChange(event) {
 		const src = event.target.value
 
-		return this.setState({ src })
+		this.setState({ src })
 	}
 
 	handleBorderChange(checked) {
-		return this.setState({ border: checked })
+		this.setState({ border: checked })
 	}
 
 	handleFitChange(event) {
 		const fit = event.target.value
 
-		return this.setState({ fit })
+		this.setState({ fit })
 	}
 
 	handleWidthChange(event) {
 		const width = event.target.value
 
-		return this.setState({ width })
+		this.setState({ width })
 	}
 
 	handleHeightChange(event) {
 		const height = event.target.value
 
-		return this.setState({ height })
+		this.setState({ height })
 	}
 
 	handleZoomChange(event) {
 		const initialZoom = event.target.value
 
-		return this.setState({ initialZoom })
+		this.setState({ initialZoom })
 	}
 
 	handleAutoloadChange(checked) {
-		return this.setState({ autoload: checked })
+		this.setState({ autoload: checked })
 	}
 
 	handleControlChange(property, checked) {
@@ -88,11 +88,11 @@ class IFrameProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.inputRef.current.focus()
+		this.inputRef.current.focus()
 	}
 
 	render() {
-		const controlList = this.state.controls.split(',')
+		const controlList = this.state.controls ? this.state.controls.split(',') : []
 
 		return (
 			<SimpleDialog
@@ -159,14 +159,14 @@ class IFrameProperties extends React.Component {
 						</div>
 						<div>
 							<Slider
-								title={'Border'}
+								title="Border"
 								initialChecked={this.state.border}
 								handleCheckChange={this.handleBorderChange.bind(this)}
 							/>
 						</div>
 						<div>
 							<Slider
-								title={'Autoload'}
+								title="Autoload"
 								initialChecked={this.state.autoload}
 								handleCheckChange={this.handleAutoloadChange.bind(this)}
 							/>
@@ -183,7 +183,7 @@ class IFrameProperties extends React.Component {
 							</select>
 						</div>
 						<div>
-							<label htmlFor={'obojobo-draft--chunks--iframe--properties-modal--zoom'}>
+							<label htmlFor="obojobo-draft--chunks--iframe--properties-modal--zoom">
 								Initial Zoom:
 							</label>
 							<input
@@ -202,17 +202,17 @@ class IFrameProperties extends React.Component {
 					<div className="controls">
 						<h2>Controls:</h2>
 						<Slider
-							title={'Reload'}
+							title="Reload"
 							initialChecked={controlList.includes('reload')}
 							handleCheckChange={this.handleControlChange.bind(this, 'reload')}
 						/>
 						<Slider
-							title={'New Window'}
+							title="New Window"
 							initialChecked={controlList.includes('new-window')}
 							handleCheckChange={this.handleControlChange.bind(this, 'new-window')}
 						/>
 						<Slider
-							title={'Zoom'}
+							title="Zoom"
 							initialChecked={controlList.includes('zoom')}
 							handleCheckChange={this.handleControlChange.bind(this, 'zoom')}
 						/>

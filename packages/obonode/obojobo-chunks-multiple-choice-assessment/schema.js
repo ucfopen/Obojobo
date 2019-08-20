@@ -103,33 +103,25 @@ const schema = {
 					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								SelectParameter.helpers.oboToSlate(
-									'responseType',
+								SelectParameter.helpers.oboToSlate('responseType', 'pick-one', 'Response Type', [
 									'pick-one',
-									'Response Type',
-									['pick-one', 'pick-all']
-								)
+									'pick-all'
+								])
 							)
 							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
-							ToggleParameter.helpers.oboToSlate(
-								'shuffle',
-								true,
-								'Shuffle'
-							)
+							ToggleParameter.helpers.oboToSlate('shuffle', true, 'Shuffle')
 						)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								SelectParameter.helpers.oboToSlate(
-									'responseType',
+								SelectParameter.helpers.oboToSlate('responseType', 'pick-one', 'Response Type', [
 									'pick-one',
-									'Response Type',
-									['pick-one', 'pick-all']
-								)
+									'pick-all'
+								])
 							)
 							return editor.withoutNormalizing(e => {
 								e.removeNodeByKey(child.key)
@@ -137,11 +129,7 @@ const schema = {
 							})
 						}
 						const block = Block.create(
-							ToggleParameter.helpers.oboToSlate(
-								'shuffle',
-								true,
-								'Shuffle'
-							)
+							ToggleParameter.helpers.oboToSlate('shuffle', true, 'Shuffle')
 						)
 						return editor.withoutNormalizing(e => {
 							e.removeNodeByKey(child.key)

@@ -78,4 +78,4 @@ StyleRange.INSIDE_RIGHT = 'right'
 StyleRange.CONTAINS = 'contains'
 StyleRange.ENSCAPSULATED_BY = 'enscapsulatedBy'
 
-export default StyleRange
+module.exports = StyleRange

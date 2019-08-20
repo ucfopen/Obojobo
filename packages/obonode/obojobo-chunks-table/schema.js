@@ -23,7 +23,7 @@ const schema = {
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Deal with Paste insertion of top-level nodes
-						if(child.type === 'oboeditor.component'){
+						if (child.type === 'oboeditor.component') {
 							return editor.unwrapNodeByKey(child.key)
 						}
 
@@ -39,7 +39,7 @@ const schema = {
 
 						return editor.wrapBlockByKey(child.key, {
 							type: TABLE_ROW_NODE,
-							data: { content: { header,  numCols} }
+							data: { content: { header, numCols } }
 						})
 					}
 					case CHILD_MIN_INVALID: {
@@ -65,7 +65,7 @@ const schema = {
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
 						// Deal with Paste insertion of top-level nodes
-						if(child.type === 'oboeditor.component'){
+						if (child.type === 'oboeditor.component') {
 							return editor.unwrapNodeByKey(child.key)
 						}
 

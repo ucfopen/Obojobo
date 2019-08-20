@@ -17,114 +17,146 @@ describe('QuestionUtil', () => {
 	})
 
 	test('setResponse triggers question:setResponse', () => {
-		QuestionUtil.setResponse('testId', { response: 'A Response' })
+		QuestionUtil.setResponse(
+			'testId',
+			{ response: 'A Response' },
+			'mockTargetId',
+			'mockContext',
+			'mockAssessmentId',
+			'mockAttemptId'
+		)
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:setResponse', {
 			value: {
 				id: 'testId',
-				response: { response: 'A Response' }
+				response: { response: 'A Response' },
+				targetId: 'mockTargetId',
+				context: 'mockContext',
+				assessmentId: 'mockAssessmentId',
+				attemptId: 'mockAttemptId'
 			}
 		})
 	})
 
 	test('clearResponse triggers question:clearResponse', () => {
-		QuestionUtil.clearResponse('testId')
+		QuestionUtil.clearResponse('testId', 'mockContext')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:clearResponse', {
 			value: {
-				id: 'testId'
+				id: 'testId',
+				context: 'mockContext'
 			}
 		})
 	})
 
 	test('setData triggers question:setData', () => {
-		QuestionUtil.setData('testId', 'theKey', 'theValue')
+		QuestionUtil.setData('testId', 'mockContext', 'theKey', 'theValue')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:setData', {
 			value: {
 				key: 'testId:theKey',
-				value: 'theValue'
+				value: 'theValue',
+				context: 'mockContext'
 			}
 		})
 	})
 
 	test('clearData triggers question:clearData', () => {
-		QuestionUtil.clearData('testId', 'theKey')
+		QuestionUtil.clearData('testId', 'mockContext', 'theKey')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:clearData', {
 			value: {
-				key: 'testId:theKey'
+				key: 'testId:theKey',
+				context: 'mockContext'
 			}
 		})
 	})
 
 	test('viewQuestion triggers question:viewQuestion', () => {
-		QuestionUtil.viewQuestion('testId')
+		QuestionUtil.viewQuestion('testId', 'mockContext')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:view', {
 			value: {
-				id: 'testId'
+				id: 'testId',
+				context: 'mockContext'
 			}
 		})
 	})
 
 	test('hideQuestion triggers question:hideQuestion', () => {
-		QuestionUtil.hideQuestion('testId')
+		QuestionUtil.hideQuestion('testId', 'mockContext')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:hide', {
 			value: {
-				id: 'testId'
+				id: 'testId',
+				context: 'mockContext'
+			}
+		})
+	})
+
+	test('submitResponse triggers question:submitResponse', () => {
+		QuestionUtil.submitResponse('testId', 'mockContext')
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:submitResponse', {
+			value: {
+				id: 'testId',
+				context: 'mockContext'
 			}
 		})
 	})
 
 	test('checkAnswer calls question:checkAnswer', () => {
-		QuestionUtil.checkAnswer('testId')
+		QuestionUtil.checkAnswer('testId', 'mockContext')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:checkAnswer', {
 			value: {
-				id: 'testId'
+				id: 'testId',
+				context: 'mockContext'
 			}
 		})
 	})
 
 	test('showExplanation triggers question:showExplanation', () => {
-		QuestionUtil.showExplanation('testId')
+		QuestionUtil.showExplanation('testId', 'mockContext')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:showExplanation', {
 			value: {
-				id: 'testId'
+				id: 'testId',
+				context: 'mockContext'
 			}
 		})
 	})
 
 	test('hideExplanation triggers question:hideExplanation', () => {
-		QuestionUtil.hideExplanation('testId', 'testActor')
+		QuestionUtil.hideExplanation('testId', 'mockContext', 'testActor')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:hideExplanation', {
 			value: {
 				id: 'testId',
-				actor: 'testActor'
+				actor: 'testActor',
+				context: 'mockContext'
 			}
 		})
 	})
 
 	test('retryQuestion triggers question:retryQuestion', () => {
-		QuestionUtil.retryQuestion('testId')
+		QuestionUtil.retryQuestion('testId', 'mockContext')
 
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger).toHaveBeenCalledWith('question:retry', {
 			value: {
-				id: 'testId'
+				id: 'testId',
+				context: 'mockContext'
 			}
 		})
 	})
@@ -132,31 +164,46 @@ describe('QuestionUtil', () => {
 	test('getViewState returns view states', () => {
 		const active = QuestionUtil.getViewState(
 			{
-				viewing: 'testId',
-				viewedQuestions: {
-					testId: true
+				contexts: {
+					mockContext: {
+						viewing: 'testId',
+						viewedQuestions: {
+							testId: true
+						}
+					}
 				}
 			},
-			testModel
+			testModel,
+			'mockContext'
 		)
 		const viewed = QuestionUtil.getViewState(
 			{
-				viewing: 'anotherId',
-				viewedQuestions: {
-					testId: true,
-					anotherId: true
+				contexts: {
+					mockContext: {
+						viewing: 'anotherId',
+						viewedQuestions: {
+							testId: true,
+							anotherId: true
+						}
+					}
 				}
 			},
-			testModel
+			testModel,
+			'mockContext'
 		)
 		const hidden = QuestionUtil.getViewState(
 			{
-				viewing: 'notTestId',
-				viewedQuestions: {
-					notTestId: true
+				contexts: {
+					mockContext: {
+						viewing: 'notTestId',
+						viewedQuestions: {
+							notTestId: true
+						}
+					}
 				}
 			},
-			testModel
+			testModel,
+			'mockContext'
 		)
 
 		expect(active).toEqual('active')
@@ -164,12 +211,26 @@ describe('QuestionUtil', () => {
 		expect(hidden).toEqual('hidden')
 	})
 
-	test('getResponse gets a response from state with no matching context', () => {
+	test('getViewState returns null if no context exists', () => {
+		expect(
+			QuestionUtil.getViewState(
+				{
+					contexts: {}
+				},
+				testModel,
+				'mockContext'
+			)
+		).toBe(null)
+	})
+
+	test('getResponse gets null from state with no matching context', () => {
 		const res = QuestionUtil.getResponse(
 			{
-				responses: {
+				contexts: {
 					mockContext: {
-						testId: 'A Response'
+						responses: {
+							testId: 'A Response'
+						}
 					}
 				}
 			},
@@ -180,11 +241,13 @@ describe('QuestionUtil', () => {
 		expect(res).toEqual(null)
 	})
 
-	test('getResponse gets a response from state with no matching id', () => {
+	test('getResponse gets null from state with no matching id', () => {
 		const res = QuestionUtil.getResponse(
 			{
-				responses: {
-					mockContext: {}
+				contexts: {
+					mockContext: {
+						responses: {}
+					}
 				}
 			},
 			testModel,
@@ -197,9 +260,11 @@ describe('QuestionUtil', () => {
 	test('getResponse gets a response from state', () => {
 		const res = QuestionUtil.getResponse(
 			{
-				responses: {
+				contexts: {
 					mockContext: {
-						testId: 'A Response'
+						responses: {
+							testId: 'A Response'
+						}
 					}
 				}
 			},
@@ -210,72 +275,162 @@ describe('QuestionUtil', () => {
 		expect(res).toEqual('A Response')
 	})
 
+	test('isAnswered returns boolean if a question has a response', () => {
+		const spy = jest.spyOn(QuestionUtil, 'getResponse')
+
+		spy.mockReturnValue(null)
+		expect(QuestionUtil.isAnswered('mock-state', 'mock-model', 'mock-context')).toBe(false)
+		expect(spy).toHaveBeenCalledWith('mock-state', 'mock-model', 'mock-context')
+
+		spy.mockReturnValue({})
+		expect(QuestionUtil.isAnswered('mock-state', 'mock-model', 'mock-context')).toBe(true)
+		expect(spy).toHaveBeenCalledWith('mock-state', 'mock-model', 'mock-context')
+
+		spy.mockRestore()
+	})
+
 	test('getData gets data from state with no id match', () => {
 		const data = QuestionUtil.getData(
 			{
-				data: {}
+				contexts: {
+					mockContext: {
+						data: {}
+					}
+				}
 			},
 			testModel,
+			'mockContext',
 			'theKey'
 		)
 
-		expect(data).toEqual(false)
+		expect(data).toEqual(null)
 	})
 
 	test('getData gets data from state for a given model and key', () => {
 		const data = QuestionUtil.getData(
 			{
-				data: {
-					'testId:theKey': { someData: true }
+				contexts: {
+					mockContext: {
+						data: {
+							'testId:theKey': { someData: true }
+						}
+					}
 				}
 			},
 			testModel,
+			'mockContext',
 			'theKey'
 		)
 
 		expect(data).toEqual({ someData: true })
 	})
 
+	test('getData gets null if no data exists for a given context', () => {
+		const data = QuestionUtil.getData(
+			{
+				contexts: {
+					mockContext: {
+						data: {
+							'testId:theKey': { someData: true }
+						}
+					}
+				}
+			},
+			testModel,
+			'someOtherContext',
+			'theKey'
+		)
+
+		expect(data).toEqual(null)
+	})
+
 	test('isShowingExplanation reports if it is showing an explanation', () => {
 		expect(
 			QuestionUtil.isShowingExplanation(
 				{
-					data: {
-						'testId:showingExplanation': false
+					contexts: {
+						mockContext: {
+							data: {
+								'testId:showingExplanation': false
+							}
+						}
 					}
 				},
-				testModel
+				testModel,
+				'mockContext'
 			)
 		).toBe(false)
 
 		expect(
 			QuestionUtil.isShowingExplanation(
 				{
-					data: {
-						'otherId:showingExplanation': true
+					contexts: {
+						mockContext: {
+							data: {
+								'otherId:showingExplanation': true
+							}
+						}
 					}
 				},
-				testModel
+				testModel,
+				'mockContext'
 			)
 		).toBe(false)
 
 		expect(
 			QuestionUtil.isShowingExplanation(
 				{
-					data: {
-						'testId:showingExplanation': true
+					contexts: {
+						mockContext: {
+							data: {
+								'testId:showingExplanation': true
+							}
+						}
 					}
 				},
-				testModel
+				testModel,
+				'mockContext'
 			)
 		).toBe(true)
+
+		expect(
+			QuestionUtil.isShowingExplanation(
+				{
+					contexts: {
+						mockContext: {
+							data: {}
+						}
+					}
+				},
+				testModel,
+				'mockContext'
+			)
+		).toBe(false)
+
+		expect(
+			QuestionUtil.isShowingExplanation(
+				{
+					contexts: {
+						mockContext: {
+							data: {
+								'testId:showingExplanation': true
+							}
+						}
+					}
+				},
+				testModel,
+				'someOtherContext'
+			)
+		).toBe(false)
 	})
 
 	test('getScoreForModel returns the score', () => {
 		const state = {
-			scores: {
+			contexts: {
 				mockContext: {
-					testId: { score: 100 }
+					scores: {
+						testId: { score: 100 }
+					}
 				}
 			}
 		}
@@ -288,6 +443,22 @@ describe('QuestionUtil', () => {
 
 		score = QuestionUtil.getScoreForModel(state, model, 'nonExistentContext')
 		expect(score).toEqual(null)
+	})
+
+	test('getScoreForModel returns null if no score item exists', () => {
+		expect(
+			QuestionUtil.getScoreForModel(
+				{
+					contexts: {
+						mockContext: {
+							scores: {}
+						}
+					}
+				},
+				{ get: () => 'some-id' },
+				'mockContext'
+			)
+		).toBe(null)
 	})
 
 	test('setScore calls question:scoreSet', () => {
@@ -313,5 +484,14 @@ describe('QuestionUtil', () => {
 				context: 'mockContext'
 			}
 		})
+	})
+
+	test('getScoreClass returns expected values', () => {
+		expect(QuestionUtil.getScoreClass(null)).toBe('is-not-scored')
+		expect(QuestionUtil.getScoreClass('no-score')).toBe('is-no-score')
+		expect(QuestionUtil.getScoreClass(100)).toBe('is-correct')
+		expect(QuestionUtil.getScoreClass(99)).toBe('is-not-correct')
+		expect(QuestionUtil.getScoreClass(0)).toBe('is-not-correct')
+		expect(QuestionUtil.getScoreClass('invalid-value')).toBe('is-not-correct')
 	})
 })

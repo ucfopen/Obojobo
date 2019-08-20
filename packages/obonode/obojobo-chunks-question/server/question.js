@@ -8,7 +8,6 @@ class Question extends DraftNode {
 	constructor(draftTree, node, initFn) {
 		super(draftTree, node, initFn)
 		this.registerEvents({
-			'ObojoboDraft.Sections.Assessment:sendToAssessment': this.onSendToAssessment,
 			'ObojoboDraft.Sections.Assessment:attemptEnd': this.onAttemptEnd
 		})
 	}
@@ -17,21 +16,28 @@ class Question extends DraftNode {
 		return this.toObject()
 	}
 
-	onSendToAssessment() {
-		this.node.content.mode = 'assessment'
-	}
-
 	onAttemptEnd(req, res, assessment, responseHistory, currentAttempt) {
 		if (!assessment.contains(this.node)) return
+
+		// Survey type questions have no score:
+		if (this.node.content.type && this.node.content.type.toLowerCase() === 'survey') {
+			currentAttempt.addScore(this.node.id, 'no-score')
+			return
+		}
 
 		const questionResponses = responseHistory.filter(responseRecord => {
 			return responseRecord.question_id === this.node.id
 		})
 
-		if (questionResponses.length === 0) return
-
 		if (questionResponses.length > 1) throw 'Impossible response to MCAssessment question'
 
+		// If there was no response to this question then set score to 0 by default
+		if (questionResponses.length === 0) {
+			currentAttempt.addScore(this.node.id, 0)
+			return
+		}
+
+		// Otherwise, determine the score
 		return this.yell(
 			'ObojoboDraft.Chunks.Question:calculateScore',
 			req.app,
