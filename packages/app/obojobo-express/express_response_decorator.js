@@ -2,6 +2,7 @@ const QueryResultError = require('pg-promise').errors.QueryResultError
 const inflector = require('json-inflector')
 const logger = oboRequire('logger')
 const apiUrlRegex = /\/api\/.*/
+const oboEvents = require('./obo_events')
 
 const getSanitizedErrorMessage = e => {
 	// If the error is in our blacklist only return the error name:
@@ -37,6 +38,11 @@ const success = (req, res, next, valueObject) => {
 
 const badInput = (req, res, next, message) => {
 	res.status(422)
+
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_BAD_INPUT', {req, res, next, message})
+	if(res.headersSent || req.responseHandled) return
+
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -54,6 +60,10 @@ const badInput = (req, res, next, message) => {
 
 const notAuthorized = (req, res, next, message) => {
 	res.status(401)
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_NOT_AUTHORIZED', {req, res, next, message})
+	if(res.headersSent || req.responseHandled) return
+
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -71,6 +81,10 @@ const notAuthorized = (req, res, next, message) => {
 
 const reject = (req, res, next, message) => {
 	res.status(403)
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_REJECTED', {req, res, next, message})
+	if(res.headersSent || req.responseHandled) return
+
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -89,6 +103,10 @@ const reject = (req, res, next, message) => {
 const missing = (req, res, next, message) => {
 	res.status(404)
 
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_NOT_FOUND', {req, res, next, message})
+	if(res.headersSent || req.responseHandled) return
+
 	if (shouldRespondWithJson(req)) {
 		return res.json(
 			camelize({
@@ -105,10 +123,13 @@ const missing = (req, res, next, message) => {
 }
 
 const unexpected = (req, res, next, messageOrError) => {
-	let message
-
 	res.status(500)
 
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_UNEXPECTED', {req, res, next, message})
+	if(res.headersSent || req.responseHandled) return
+
+	let message
 	if (messageOrError instanceof Error) {
 		logger.error('error thrown', messageOrError.stack)
 		message = getSanitizedErrorMessage(messageOrError)

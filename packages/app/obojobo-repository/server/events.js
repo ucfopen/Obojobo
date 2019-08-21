@@ -28,3 +28,16 @@ oboEvents.on(DraftModel.EVENT_DRAFT_DELETED, ({id}) => {
 			drafts.deleted = TRUE`)
 		.catch(logger.error)
 })
+
+
+oboEvents.on('HTTP_NOT_AUTHORIZED', ({req, res, next, message}) => {
+	req.responseHandled = true
+	return req.getCurrentUser()
+			.then(myModules => {
+				const props = {
+					title: 'Dashboard',
+					currentUser: req.currentUser
+				}
+				res.render('error-not-authorized.jsx', props)
+			})
+})
