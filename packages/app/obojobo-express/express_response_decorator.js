@@ -125,10 +125,6 @@ const missing = (req, res, next, message) => {
 const unexpected = (req, res, next, messageOrError) => {
 	res.status(500)
 
-	// give other things a chance to execute
-	oboEvents.emit('HTTP_UNEXPECTED', {req, res, next, message})
-	if(res.headersSent || req.responseHandled) return
-
 	let message
 	if (messageOrError instanceof Error) {
 		logger.error('error thrown', messageOrError.stack)
@@ -141,6 +137,10 @@ const unexpected = (req, res, next, messageOrError) => {
 	if (!message) {
 		message = 'Unexpected Error'
 	}
+
+	// give other things a chance to execute
+	oboEvents.emit('HTTP_UNEXPECTED', {req, res, next, message})
+	if(res.headersSent || req.responseHandled) return
 
 	if (shouldRespondWithJson(req)) {
 		return res.json(
