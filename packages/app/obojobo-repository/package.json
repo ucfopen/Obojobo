@@ -44,6 +44,7 @@
 		"obojobo-express": "^5.0.1",
 		"obojobo-lib-utils": "^5.0.1",
 		"react-modal": "^3.8.2",
+		"moment": "2.24.0",
 		"react-redux": "^6.0.1",
 		"redux": "^4.0.1",
 		"redux-pack": "^0.1.5",

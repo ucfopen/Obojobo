@@ -23,6 +23,8 @@ DashboardServerApp.defaultProps = {
 	selectedModule:{},
 	draftPermissions:{},
 	myModules:[],
+	moduleSearchString: '',
+	shareSearchString: '',
 	searchPeople:{
 		hasFetched: false,
 		isFetching: false,

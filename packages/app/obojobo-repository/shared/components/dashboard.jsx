@@ -1,6 +1,8 @@
 require('./modal.scss')
+require('./dashboard.scss')
 
-const React = require('react');
+const React = require('react')
+const { useState, useEffect } = require('react')
 const RepositoryNav = require('./repository-nav')
 const RepositoryBanner = require('./repository-banner')
 const Module = require('./module')
@@ -16,7 +18,7 @@ const ReactModal = require('react-modal')
 
 ReactModal.setAppElement('#dashboard-root')
 
-const renderModalDialog = (props) => {
+const renderModalDialog = props => {
 	let child
 	let title
 	switch(props.dialog){
@@ -59,12 +61,19 @@ const renderModalDialog = (props) => {
 		>{child}</ReactModal>
 }
 
-const renderModules = (modules) => {
+const renderModules = modules => {
 	return modules.map(draft => <Module key={draft.draftId} hasMenu={true} {...draft} ></Module>)
 }
 
-const Dashboard = (props) =>
-	<span id="dashboard-root">
+const Dashboard = props =>{
+	// on initial render, check to see if the locathion has has a url in it
+	useEffect(() => {
+		if(typeof window != 'undefined'){
+			props.filterModules(window.location.hash.substr(1))
+		}
+	}, [])
+
+	return <span id="dashboard-root">
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
@@ -80,7 +89,7 @@ const Dashboard = (props) =>
 						<Button onClick={() => {props.createNewModule(false)}}>New Visual Editor Module</Button>
 						<Button onClick={() => {props.createNewModule(true)}}>New Sample / Tutorial</Button>
 					</MultiButton>
-					<Search onChange={props.filterModules} />
+					<Search value={props.moduleSearchString} placeholder="filter..." onChange={props.filterModules} />
 				</div>
 				<div className="repository--main-content--title">My Modules</div>
 				<div className="repository--item-list--collection">
@@ -98,5 +107,6 @@ const Dashboard = (props) =>
 		</div>
 		{ renderModalDialog(props) }
 	</span>
+}
 
 module.exports = Dashboard;

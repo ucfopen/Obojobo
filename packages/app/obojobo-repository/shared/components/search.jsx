@@ -1,13 +1,11 @@
 require('./search.scss')
 
 const React = require('react')
-const { useState, useRef, useEffect } = require('react')
+const { useRef, useEffect } = require('react')
 
 const Search = props => {
 	const inputEl = useRef(null)
-	const [value, setValue] = useState('')
 	const handleChange = (e) => {
-		setValue(e.target.value)
 		if(props.onChange) props.onChange(e.target.value)
 	}
 	useEffect(() => {if(props.focusOnMount === true) inputEl.current.focus()}, [])
@@ -27,8 +25,9 @@ const Search = props => {
 				onChange={handleChange}
 				type="search"
 				name="search"
-				value={value}
+				value={props.value}
 				placeholder={props.placeholder}
+				className={props.value ? 'is-not-empty' : 'is-empty'}
 			/>
 		</div>
 	)

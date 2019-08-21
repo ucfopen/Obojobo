@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
+const UserModel = require('obojobo-express/models/user')
 const GeoPattern = require('geopattern');
 const {
 	checkValidationRules,
@@ -46,24 +47,31 @@ router
 router
 	.route('/library/:draftId')
 	.get([requireDraftId, getCurrentUser, checkValidationRules])
-	.get((req, res) => {
-		return DraftSummary.fetchById(req.params.draftId)
-			.then(module => {
-				const props = {
-					module,
-					user:{
-						name: 'Ian Turgeon'
-					},
-					facts: [
-						{title: 'Rating', value: 4.2},
-						{title: 'Views', value: 102},
-						{title: 'Revisions', value: module.revisionCount}
-					],
-					currentUser: req.currentUser
-				}
-				res.render('module-page-server-view.jsx', props)
-			})
-			.catch(res.unexpected)
+	.get(async (req, res) => {
+
+		let module
+		try{
+			module = await DraftSummary.fetchById(req.params.draftId)
+		} catch(e){
+			res.missing()
+			return
+		}
+
+		try{
+			let owner = {firstName: 'Obojobo', lastName: 'Next'}
+			if(module.userId !== '0'){
+				owner = await UserModel.fetchById(module.userId)
+			}
+
+			const props = {
+				module,
+				owner,
+				currentUser: req.currentUser
+			}
+			res.render('module-page-server-view.jsx', props)
+		} catch (e){
+			res.unexpected(e)
+		}
 	})
 
 module.exports = router

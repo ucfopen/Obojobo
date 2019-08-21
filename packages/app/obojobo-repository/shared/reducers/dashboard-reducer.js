@@ -32,7 +32,8 @@ function DashboardReducer(state, action) {
 		case CREATE_NEW_MODULE:
 		case DELETE_MODULE:
 			return handle(state, action, {
-				success: prevState => ({...prevState, myModules: action.payload.value, dialog: null}),
+				start: prevState => ({...prevState, dialog: null, moduleSearchString: '', filteredModules: state.myModules}),
+				success: prevState => ({...prevState, myModules: action.payload.value}),
 			})
 
 		case SHOW_MODULE_MORE:
@@ -59,7 +60,7 @@ function DashboardReducer(state, action) {
 
 		case FILTER_MODULES:
 			const filteredModules = filterModules(state.myModules, action.searchString)
-			return { ...state, filteredModules}
+			return { ...state, filteredModules, moduleSearchString: action.searchString}
 
 		case CLEAR_PEOPLE_SEARCH_RESULTS:
 			return {...state, searchPeople: defaultResults()}
@@ -87,7 +88,7 @@ function DashboardReducer(state, action) {
 
 		case LOAD_USER_SEARCH:
 			return handle(state, action, {
-				// start: prevState => ({...prevState}),
+				start: prevState => ({...prevState, shareSearchString: action.meta.searchString}),
 				success: prevState => ({...prevState, searchPeople: {items: action.payload.value.sort()}}),
 				// failure: prevState => ({...prevState})
 			})

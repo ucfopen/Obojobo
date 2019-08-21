@@ -14,7 +14,7 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 			CASE
 				WHEN last_value(drafts_content.xml) OVER wnd IS NULL
 				THEN 'visual'
-				ELSE 'clasic'
+				ELSE 'classic'
 			END AS editor
 		FROM drafts
 		JOIN drafts_content

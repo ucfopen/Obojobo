@@ -4,14 +4,23 @@ import RepositoryNav from '../../shared/components/repository-nav'
 import RepositoryBanner from '../../shared/components/repository-banner'
 import ModuleImage from '../../shared/components/module-image'
 import Button from '../../shared/components/button'
+import ButtonLink from '../../shared/components/button-link'
+import moment from 'moment'
+import  { urlForEditor } from '../../shared/repository-utils'
+
+const deleteModule = (title, draftId, deleteFn) => {
+	var response = confirm(`Delete "${title}" id: ${draftId} ?`)
+	if(!response) return;
+	deleteFn(draftId)
+}
 
 const ModulePage = (props) =>
-	<DefaultLayout title={`${props.module.title} - an Obojobo Module by ${props.user.name}`} className="repository--module">
+	<DefaultLayout title={`${props.module.title} - an Obojobo Module`} className="repository--module">
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
 			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
-			noticeCount={12}
+			noticeCount={0}
 			/>
 
 		<RepositoryBanner title={props.module.title}>
@@ -19,10 +28,19 @@ const ModulePage = (props) =>
 		</RepositoryBanner>
 
 		<section className="repository--module--content">
-			{/*}
-			<div><b>Updated:</b> {props.module.updatedAt.toString()}</div>
-			<div><b>Created:</b> {props.module.createdAt.toString()}</div>
-			*/}
+
+			<div className="repository--main-content--control-bar">
+				{ props.module.userId == props.currentUser.id ?
+					<ButtonLink url={`/dashboard#${props.module.draftId}`} >View in Dashboard</ButtonLink>
+					: null
+				}
+			</div>
+
+
+			<div><b>Owner:</b> {props.owner.firstName} {props.owner.lastName}</div>
+			<div><b>Created:</b> {moment(props.module.createdAt).format('ll')}</div>
+			<div><b>Updated:</b> {moment(props.module.updatedAt).fromNow()}</div>
+			<div><b>Revisions:</b> {props.module.revisionCount}</div>
 
 			<h2>Use this Module in your Canvas Course</h2>
 			<p>This module can be used inside your course as an <b>assignment</b> or <b>module</b>.</p>

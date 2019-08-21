@@ -9,8 +9,8 @@ const defaultOptions = () => ({
 	}
 })
 
-const apiSearchForUser = (searchInput) => {
-	return fetch(`/api/users/search?q=${searchInput}`, defaultOptions())
+const apiSearchForUser = (searchString) => {
+	return fetch(`/api/users/search?q=${searchString}`, defaultOptions())
 		.then(res => res.json())
 }
 
@@ -65,9 +65,12 @@ const CLEAR_PEOPLE_SEARCH_RESULTS = 'CLEAR_PEOPLE_SEARCH_RESULTS'
 const clearPeopleSearchResults = () => ({ type: CLEAR_PEOPLE_SEARCH_RESULTS })
 
 const LOAD_USER_SEARCH = 'LOAD_USER_SEARCH'
-const searchForUser = (input) => ({
+const searchForUser = (searchString) => ({
 	type: LOAD_USER_SEARCH,
-	promise: apiSearchForUser(input)
+	meta: {
+		searchString
+	},
+	promise: apiSearchForUser(searchString)
 })
 
 const ADD_USER_TO_MODULE = 'ADD_USER_TO_MODULE'
