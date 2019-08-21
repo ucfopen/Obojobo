@@ -28,6 +28,10 @@ $color-reward-text: #947d00;
 $color-obojobo-blue: #0d4fa7;
 $color-preview: #af1b5c;
 
+$size-spacing-vertical-big: 40px;
+$size-spacing-vertical-half: $size-spacing-vertical-big / 2;
+$size-spacing-vertical-internal: $size-spacing-vertical-half / 2;
+
 $box-shadow-focus: 0 0 3px 3px $color-browser-focus;
 $box-shadow-overlay: 0 2px 2px $color-shadow;
 
@@ -69,8 +73,8 @@ $dimension-avatar-icon: 90px;
 
 @mixin with-bottom-border() {
 	position: relative;
-	padding-bottom: 10px;
-	margin-bottom: 20px;
+	padding-bottom: $size-spacing-vertical-internal;
+	margin-bottom: $size-spacing-vertical-half;
 
 	// border line between items
 	&:after {

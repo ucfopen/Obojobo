@@ -24,18 +24,17 @@
 
 	.sub-title{
 		font-size: .7em;
-		margin-bottom: 20px;
+		margin-bottom: $size-spacing-vertical-half;
 	}
 
 	.access-list-wrapper{
-		margin: 20px -20px -20px -20px;
+		margin: -$size-spacing-vertical-half;
+		margin-top: $size-spacing-vertical-half;
 		background-color: $color-banner-bg;
 		padding: 10px;
 	}
 
 	.access-list{
-		$dimensions-avatar: 30px;
-		$dimensions-close-button: 20px;
 		text-align: left;
 		height: 150px;
 		overflow: scroll;

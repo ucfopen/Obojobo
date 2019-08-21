@@ -10,6 +10,7 @@
 	font-size: .75em;
 	text-align: center;
 	border: 1px solid rgba(0,0,0,0);
+	animation: slide-up 0.4s ease;
 
 	> a{
 		text-decoration: none;
@@ -37,4 +38,15 @@
 			display: block;
 		}
 	}
+}
+
+@keyframes slide-up {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
