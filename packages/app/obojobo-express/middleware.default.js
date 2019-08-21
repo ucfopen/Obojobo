@@ -16,6 +16,7 @@ module.exports = app => {
 	// =========== STATIC ASSET PATHS ================
 	app.use(express.static(path.join(__dirname, 'public'))) // serve the files from public as static files
 	app.use(compression()) // enable gzip compression
+	app.disable('x-powered-by');
 
 	// =========== VIEW ENGINES ================
 	// register express-react-views template engine if not already registered
