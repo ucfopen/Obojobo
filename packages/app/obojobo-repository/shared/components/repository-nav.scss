@@ -16,6 +16,7 @@
 
 .repository--nav{
 	max-width: 800px;
+	min-height: 65px;
 	margin: 5px auto;
 	display: flex;
 	flex-wrap: nowrap;
@@ -59,9 +60,15 @@
 	text-align: right;
 	padding: 16px 65px 0 0;
 	box-sizing: border-box;
+
+	&:hover{
+		.repository--nav--current-user--menu{
+			display: block;
+		}
+	}
 }
 
-.avatar.repository--nav--current-user--avatar{
+.repository--nav--current-user > .avatar{
 	position: absolute;
 	right: 0px;
 	top: 5px;
@@ -74,10 +81,12 @@
 	font-size: .9em;
 }
 
-// .repository--nav--current-user--link{
-// 	word-wrap: none;
-// }
-
 .repository--nav--current-user--menu{
 	display: none;
+	position: absolute;
+	right: -20px;
+	top: 62px;
+	background: #fff;
+	padding: 20px;
+	border-radius: 3px;
 }
