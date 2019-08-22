@@ -61,6 +61,16 @@ jobs:
         - cd packages/app/obojobo-document-engine
 
     - <<: *_npm-package-deploy-on-tag-template
+      stage: obojobo-module-selector npm release
+      before_deploy:
+        - cd packages/app/obojobo-module-selector
+
+    - <<: *_npm-package-deploy-on-tag-template
+      stage: obojobo-repository npm release
+      before_deploy:
+        - cd packages/app/obojobo-repository
+
+    - <<: *_npm-package-deploy-on-tag-template
       stage: obojobo-document-xml-parser npm release
       before_deploy:
         - cd packages/app/obojobo-document-xml-parser
