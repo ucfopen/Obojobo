@@ -13,7 +13,7 @@ const Library = (props) =>
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
 			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
-			noticeCount={3}
+			noticeCount={0}
 			/>
 		<RepositoryBanner className="default-bg" title={title} />
 

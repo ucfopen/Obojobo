@@ -28,19 +28,7 @@ const ModulePage = (props) =>
 		</RepositoryBanner>
 
 		<section className="repository--module--content">
-
-			<div className="repository--main-content--control-bar">
-				{ props.module.userId == props.currentUser.id ?
-					<ButtonLink url={`/dashboard#${props.module.draftId}`} >View in Dashboard</ButtonLink>
-					: null
-				}
-			</div>
-
-
-			<div><b>Owner:</b> {props.owner.firstName} {props.owner.lastName}</div>
-			<div><b>Created:</b> {moment(props.module.createdAt).format('ll')}</div>
-			<div><b>Updated:</b> {moment(props.module.updatedAt).fromNow()}</div>
-			<div><b>Revisions:</b> {props.module.revisionCount}</div>
+			<div >Created by <b>{props.owner.firstName} {props.owner.lastName}</b> on <b>{moment(props.module.createdAt).format('ll')}</b> and updated {moment(props.module.updatedAt).fromNow()}.</div>
 
 			<h2>Use this Module in your Canvas Course</h2>
 			<p>This module can be used inside your course as an <b>assignment</b> or <b>module</b>.</p>

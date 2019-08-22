@@ -66,19 +66,12 @@ const renderModules = modules => {
 }
 
 const Dashboard = props =>{
-	// on initial render, check to see if the locathion has has a url in it
-	useEffect(() => {
-		if(typeof window != 'undefined'){
-			props.filterModules(window.location.hash.substr(1))
-		}
-	}, [])
-
 	return <span id="dashboard-root">
 		<RepositoryNav
 			userId={props.currentUser.id}
 			avatarUrl={props.currentUser.avatarUrl}
 			displayName={`${props.currentUser.firstName} ${props.currentUser.lastName}`}
-			noticeCount={12}
+			noticeCount={0}
 			/>
 		<RepositoryBanner title={props.title} className="default-bg" facts={props.facts} />
 		<div className="repository--section-wrapper">

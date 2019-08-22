@@ -20,7 +20,7 @@ const ModuleOptionsDialog = props => (
 			<Button className="close-button" onClick={props.onClose}>X</Button>
 		</div>
 		<h1 className="title">Module Options</h1>
-		<div className="sub-title">Do more things to this module.</div>
+		<div className="sub-title">Preview, share, download and more...</div>
 		<ButtonLink url={`/preview/${props.draftId}`} target="_blank" >Preview</ButtonLink>
 		<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">Edit</ButtonLink>
 		<Button className="new-button" onClick={() => {props.showModulePermissions(props)}}>Share</Button>
