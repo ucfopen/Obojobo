@@ -35,9 +35,38 @@ oboEvents.on('HTTP_NOT_AUTHORIZED', ({req, res, next, message}) => {
 	return req.getCurrentUser()
 			.then(myModules => {
 				const props = {
-					title: 'Dashboard',
+					title: 'Not Authorized',
+					children: 'You do not have the permissions required to view this page.',
 					currentUser: req.currentUser
 				}
-				res.render('error-not-authorized.jsx', props)
+				res.render('error-server-view.jsx', props)
 			})
 })
+
+
+oboEvents.on('HTTP_NOT_FOUND', ({req, res, next, message}) => {
+	req.responseHandled = true
+	return req.getCurrentUser()
+			.then(myModules => {
+				const props = {
+					title: 'Not Found',
+					children: "The page you requested doesn't exist.",
+					currentUser: req.currentUser
+				}
+				res.render('error-server-view.jsx', props)
+			})
+})
+
+oboEvents.on('HTTP_UNEXPECTED', ({req, res, next, message}) => {
+	req.responseHandled = true
+	return req.getCurrentUser()
+			.then(myModules => {
+				const props = {
+					title: 'Unexpected Server Error',
+					children: 'There was an internal server error.',
+					currentUser: req.currentUser
+				}
+				res.render('error-server-view.jsx', props)
+			})
+})
+
