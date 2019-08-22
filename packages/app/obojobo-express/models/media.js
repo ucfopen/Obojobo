@@ -187,7 +187,7 @@ class Media {
 		// size (ignoring whatever the requested size was)
 		if (
 			!Media.isMimeTypeResizable(originalMedia.mime_type) ||
-			!(await Media.shouldResizeMedia(originalMedia.blob, targetDimensions))
+			!await Media.shouldResizeMedia(originalMedia.blob, targetDimensions)
 		) {
 			return {
 				binaryData: originalMedia.blob,
@@ -231,7 +231,14 @@ class Media {
 					userId
 				}
 			)
-			.then(res => res.splice(start, count))
+			.then(res => {
+				const hasMore = res.length > start + count
+				const data = res.splice(start, count)
+				return {
+					data,
+					hasMore
+				}
+			})
 			.catch(err => {
 				logger.error(err)
 				throw err

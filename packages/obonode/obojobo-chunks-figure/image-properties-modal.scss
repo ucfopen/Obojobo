@@ -3,6 +3,7 @@
 .image-properties {
 	text-align: left;
 	display: flex;
+	width: 22em;
 
 	label {
 		margin-top: 0.7rem;
@@ -57,12 +58,16 @@
 		&.image-container {
 			justify-content: center;
 			flex-direction: column;
-			max-width: 100%;
 
 			button {
 				font-size: 0.8rem;
 				padding: 0.5rem;
 				margin-top: 1rem;
+			}
+
+			img {
+				max-width: 20rem;
+				object-fit: cover;
 			}
 		}
 	}

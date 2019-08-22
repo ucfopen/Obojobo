@@ -6,7 +6,7 @@ import ChooseImageModal from './choose-image-modal'
 jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util', () => ({
 	postMultiPart: jest.fn().mockResolvedValue({ mediaId: 'mockMediaId' }),
 	get: jest.fn().mockResolvedValue({
-		json: jest.fn().mockResolvedValue([{ id: '0' }])
+		json: jest.fn().mockResolvedValue({ data: [{ id: '0' }], hasMore: true })
 	})
 }))
 

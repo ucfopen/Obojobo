@@ -38,22 +38,24 @@ class ChooseImageModal extends React.Component {
 	fetchMedias() {
 		this.setState({
 			...this.state,
-			isFetching: true
+			isFetching: true,
+			hasMore: false
 		})
 		APIUtil.get(`/api/media/many/?start=${this.state.start}&count=${this.state.count}`)
 			.then(res => res.json())
 			.then(result => {
-				if (result.status != 'error') {
+				if (result.status !== 'error') {
 					this.setState({
 						...this.state,
-						medias: [...this.state.medias, ...result],
+						medias: [...this.state.medias, ...result.data],
 						isFetching: false,
-						hasMore: result.length === this.state.count,
+						hasMore: result.hasMore,
 						start: this.state.start + this.state.count
 					})
 				}
 			})
 			.catch(err => {
+				// eslint-disable-next-line no-console
 				console.log(err)
 			})
 	}
@@ -107,9 +109,8 @@ class ChooseImageModal extends React.Component {
 							/>
 						))}
 
-						{this.state.isFetching ? (
-							<h5>Loading...</h5>
-						) : this.state.hasMore ? (
+						{this.state.isFetching ? <h5>Loading...</h5> : null}
+						{this.state.hasMore ? (
 							<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center">
 								<button
 									className="choose-image--image-gallary--view-more-btn button"

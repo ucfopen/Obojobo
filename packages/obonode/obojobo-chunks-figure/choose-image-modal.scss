@@ -53,8 +53,9 @@
 	}
 
 	.choose-image--divider {
-		height: 1.5px;
-		background-color: lighten($color-bg3, 70%);
+		height: 1px; /* stylelint-disable-line unit-blacklist */
+		/* stylelint-disable-next-line sh-waqar/declaration-use-variable */
+		background-color: darken($color-bg2, 30%);
 		margin: 0.5rem 0;
 	}
 
