@@ -30,11 +30,8 @@
 		]
 	},
 	"dependencies": {
-		"babel-preset-env": "^1.6.0",
-		"babel-preset-react": "^6.24.1",
-		"babel-register": "^6.26.0",
 		"express": "~4.16.4",
-		"express-react-views": "~0.10.5",
+		"express-react-views-custom": "https://github.com/ucfcdl/express-react-views.git#0ea22b3a3a5846adaae4b7bc86fe0e8f13a38051",
 		"express-validator": "^5.2.0",
 		"geopattern": "^1.2.3",
 		"ignore-styles": "^5.0.1",

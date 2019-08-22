@@ -5372,10 +5372,9 @@ express-list-endpoints@^4.0.0:
   resolved "https://registry.yarnpkg.com/express-list-endpoints/-/express-list-endpoints-4.0.0.tgz#c7e8b3e0655e82403ab314292b00945377a7d8e6"
   integrity sha512-3xkJTUirrozS+6WlaRWgIRI4cKMiLUsAFKO5qADNfwfMv8leFGaCODB3AuAvl0NyUGuitDrGxMtWt/zOaEY4Gg==
 
-express-react-views@~0.10.5:
+"express-react-views-custom@https://github.com/ucfcdl/express-react-views.git#0ea22b3a3a5846adaae4b7bc86fe0e8f13a38051":
   version "0.10.5"
-  resolved "https://registry.yarnpkg.com/express-react-views/-/express-react-views-0.10.5.tgz#e2e7733fd6a31f771def4523b048e95e7eafac39"
-  integrity sha512-5zyT7loBcw7ux8doXD9mJc9YR8SxTioJcthOmz3aguYl0WHsaYeWKCE4ZAquRSyjumMGm9Fk0dsg1mbIof+rXA==
+  resolved "https://github.com/ucfcdl/express-react-views.git#0ea22b3a3a5846adaae4b7bc86fe0e8f13a38051"
   dependencies:
     babel-preset-env "^1.6.0"
     babel-preset-react "^6.24.1"
@@ -8686,7 +8685,7 @@ modify-values@^1.0.0:
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-moment@^2.10.1, moment@^2.18.0:
+moment@2.24.0, moment@^2.10.1, moment@^2.18.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
