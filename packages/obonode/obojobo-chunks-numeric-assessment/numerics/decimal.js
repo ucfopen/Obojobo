@@ -55,16 +55,10 @@ export default class Decimal extends Numeric {
 	 * Decimal.parse("2/3 kCal") //{ matchType:'none', valueString:'', unit:'' }
 	 */
 	static parse(str) {
-		console.log('---------------')
-		console.log('PARSE', str)
 		const matches = decimalRegex.exec(str)
-		console.log('matches', matches[0])
 		if (!matches || !matches.length) return Numeric.getNullParseObject()
 
 		const unit = str.substr(matches[0].length).trim()
-
-		console.log('unit', unit)
-		console.log('isValidUnit', Numeric.isValidUnit(unit))
 
 		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
 		return {

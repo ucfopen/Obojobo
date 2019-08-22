@@ -6,16 +6,12 @@ describe('Decimal', () => {
 		expect(Decimal.type).toEqual('decimal')
 	})
 
-	test('isType returns true if the string input is a decimal value', () => {
-		//@TODO
+	test('get label returns the expected label', () => {
+		expect(Decimal.label).toEqual('Decimal')
 	})
 
-	test.skip('getMatchType returns the correct match type', () => {
-		decimalRegex.test.mockReturnValue(false)
-		expect(Decimal.getMatchType()).toBe('none')
-
-		decimalRegex.test.mockReturnValue(true)
-		expect(Decimal.getMatchType()).toBe('exact')
+	test('isSafe returns true', () => {
+		expect(Decimal.isSafe()).toEqual(true)
 	})
 
 	test('getBigValue returns a Big object', () => {
