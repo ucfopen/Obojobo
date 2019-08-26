@@ -46,7 +46,7 @@
 		"body-parser": "^1.17.1",
 		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js.git#v1.0.0",
 		"compression": "^1.6.2",
-		"connect-pg-simple": "^3.1.2",
+		"connect-pg-simple": "^6.0.1",
 		"copy-webpack-plugin": "^5.0.2",
 		"css-loader": "^2.0.0",
 		"db-migrate": "^0.10.0-beta.20",
