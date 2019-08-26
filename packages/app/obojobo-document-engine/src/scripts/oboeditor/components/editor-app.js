@@ -28,7 +28,8 @@ class EditorApp extends React.Component {
 			navTargetId: null,
 			loading: true,
 			draftId: null,
-			draft: null
+			draft: null,
+			hasError: false
 		}
 
 		// Make Slate nodes generate with UUIDs
@@ -40,6 +41,14 @@ class EditorApp extends React.Component {
 		// === SET UP DATA STORES ===
 		EditorStore.onChange(this.onEditorStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
+	}
+
+	componentDidCatch(error, info) {
+		this.setState({ hasError: true })
+		// eslint-disable-next-line no-console
+		console.log(error)
+		// eslint-disable-next-line no-console
+		console.log(info)
 	}
 
 	componentDidMount() {
@@ -84,6 +93,8 @@ class EditorApp extends React.Component {
 	}
 
 	render() {
+		if (this.state.hasError) return <p>Something went wrong. Please try again.</p>
+
 		if (this.state.requestStatus === 'invalid') {
 			return (
 				<div className="viewer--viewer-app--visit-error">
