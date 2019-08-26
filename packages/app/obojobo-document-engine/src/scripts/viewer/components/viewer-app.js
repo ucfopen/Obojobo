@@ -148,7 +148,6 @@ export default class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose
-				window.onunload = this.onWindowClose
 				window.onresize = this.onResize.bind(this)
 
 				this.boundOnDelayResize = this.onDelayResize.bind(this)
@@ -467,6 +466,8 @@ export default class ViewerApp extends React.Component {
 		if (closePrevented) {
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
+
+		this.onWindowClose()
 
 		/* eslint-disable-next-line */
 		return undefined // Returning undefined will allow browser to close normally
