@@ -9,6 +9,10 @@
 		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed"
 	},
 	"env": {
+		"DB_SSL": {
+			"description": "Connect to the database using SSL",
+			"value": "true"
+		},
 		"OBO_LTI_KEYS_JSON": {
 			"description": "JSON string of key:secret values used for LTI'",
 			"value": "{\"obo-production-lti-key\":\"CHANGE_THIS_VALUE_NOW\"}"
@@ -16,6 +20,10 @@
 		"OBO_COOKIE_SECRET": {
 			"description": "Secret string used to encrypt cookie data",
 			"generator": "secret"
+		},
+		"OBO_COOKIE_SECURE":{
+			"description": "Restrict cookies to SSL?",
+			"value": "true"
 		},
 		"DEBUG": {
 			"description": "Select which logs to write to the error log",
