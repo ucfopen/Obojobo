@@ -33,40 +33,39 @@ function preview(draftId, url) {
 	childWindow = window.open(url, 'preview')
 }
 
+// Download current editing document with current format if draftId and fotmat are not specified
 //eslint-disable-next-line
-function downloadDocument(draftId, format = 'json') {
-	if (format === 'json') {
-		fetch(`/api/drafts/${draftId}/full`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
+function downloadDocument(draftId, format) {
+	let formatResults
+
+	switch (format) {
+		case 'json':
+			formatResults = text => {
+				const json = JSON.parse(text)
+				return JSON.stringify(json, null, 2)
 			}
-		})
-			.then(res => res.json())
-			.then(json => JSON.stringify(json.value, null, 2))
-			.then(contents => {
-				// use downloadjs to locally build a file to download
-				// eslint-disable-next-line no-undef
-				download(contents, `obojobo-draft-${draftId}.json`, 'application/json')
-			})
-	} else if (format === 'xml') {
-		fetch(`/api/drafts/${draftId}/full`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/xml',
-				'Content-Type': 'application/xml'
-			}
-		})
-			.then(res => res.text())
-			.then(contents => {
-				// use downloadjs to locally build a file to download
-				// eslint-disable-next-line no-undef
-				download(contents, `obojobo-draft-${draftId}.xml`, 'application/xml')
-			})
+			break
+
+		case 'xml':
+			formatResults = text => text
+			break
 	}
+
+	fetch(`/api/drafts/${draftId}/full`, {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			Accept: `application/${format}`,
+			'Content-Type': `application/${format}`
+		}
+	})
+		.then(res => res.text())
+		.then(formatResults)
+		.then(contents => {
+			// use downloadjs to locally build a file to download
+			// eslint-disable-next-line no-undef
+			download(contents, `obojobo-draft-${draftId}.${format}`, `application/${format}`)
+		})
 }
 
 // Setup search

@@ -125,7 +125,7 @@
 				<button>File</button>
 				<div class="dropdown-content">
 					<a class ="disable" onClick="saveDraft()">Save</a>
-					<a class ="disable" onClick="downloadDocument()">Download</a>
+					<a class ="disable" onClick="downloadDocument(editingDraftId, editor.options.mode.split('/')[1])">Download</a>
 					<a class ="disable" onClick="getURL()">Copy Module URL</a>
 				</div>
 			</div>
@@ -195,7 +195,7 @@
 								<a onclick="preview('<%= draft.draftId %>', '/preview/<%= draft.draftId %>')" target="_blank" class="link-preview">Preview</a>
 								<a data-id="<%= draft.draftId %>" class="link-url">Get URL</a>
 								<a class="link-preview" onclick="openInBetaEditor('<%= draft.draftId %>')">Edit with Visual Editor (Beta)</a>
-								<a class="link-preview" onclick="downloadDocument()">Download</a>
+								<a class="link-preview" onclick="downloadDocument(editingDraftId,editor.options.mode.split('/')[1])">Download</a>
 							</div>
 							<a class="link-delete" data-id="<%= draft.draftId %>">&times;</a>
 					</li>
