@@ -718,7 +718,7 @@ describe('api draft route', () => {
 	})
 
 	// list drafts
-	test('list drafts exits when user cant view drafts', () => {
+	test('list drafts works when user cant view drafts', () => {
 		expect.assertions(4)
 		db.any.mockResolvedValueOnce('mock-db-result')
 		mockCurrentUser = { id: 99, canPreviewDrafts: false } // mock current logged in user
@@ -726,11 +726,9 @@ describe('api draft route', () => {
 			.get('/api/drafts')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(401)
-				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value', {
-					type: 'notAuthorized'
-				})
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-db-result')
 			})
 	})
 

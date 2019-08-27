@@ -16,7 +16,7 @@ const {
 	requireCanViewEditor,
 	requireCanCreateDrafts,
 	requireCanDeleteDrafts,
-	requireCanPreviewDrafts
+	requireCurrentUser
 } = oboRequire('express_validators')
 
 const isNoDataFromQueryError = e => {
@@ -189,7 +189,7 @@ router
 // mounted as /api/drafts
 router
 	.route('/')
-	.get(requireCanPreviewDrafts)
+	.get(requireCurrentUser)
 	.get((req, res) => {
 		return db
 			.any(
