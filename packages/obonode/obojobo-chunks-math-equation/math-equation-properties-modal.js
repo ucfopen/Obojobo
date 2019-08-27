@@ -89,7 +89,7 @@ class MathEquationProperties extends React.Component {
 		return this.props.onConfirm(this.state.content)
 	}
 
-	equationGenerator() {
+	getEquationHTML() {
 		let katexHtml = getLatexHtml(this.state.content.latex)
 		if (katexHtml.error) {
 			katexHtml = ''
@@ -101,16 +101,6 @@ class MathEquationProperties extends React.Component {
 			return null
 		} else {
 			return katexHtml
-		}
-	}
-
-	latexCheck(katex) {
-		// eslint-disable-next-line
-		if (katex === '' || katex === null || katex === undefined) {
-			// eslint-disable-line no-undefined
-			return 'none'
-		} else {
-			return 'block'
 		}
 	}
 
@@ -159,14 +149,13 @@ class MathEquationProperties extends React.Component {
 					</div>
 					<span>{this.state.error}</span>
 				</div>
-				<div id="katexContainer" style={{ display: this.latexCheck(this.state.content.latex) }}>
-					<b id="previewTitle">Preview</b>
+				<div className={'katex-container'}>
+					<b id="preview-title">Preview</b>
 					<div
 						style={{ fontSize: this.state.content.size + 'em' }}
 						aria-hidden
-						id="example-katex"
-						className={'katexPreview'}
-						dangerouslySetInnerHTML={{ __html: this.equationGenerator() }}
+						className={'katex-preview'}
+						dangerouslySetInnerHTML={{ __html: this.getEquationHTML() }}
 					/>
 				</div>
 			</SimpleDialog>
