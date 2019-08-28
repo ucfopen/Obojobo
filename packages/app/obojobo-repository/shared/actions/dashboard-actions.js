@@ -54,8 +54,8 @@ const apiCreateNewModule = useTutorial => {
 
 const SHOW_MODULE_PERMISSIONS = 'SHOW_MODULE_PERMISSIONS'
 const showModulePermissions = module => ({
-		type: SHOW_MODULE_PERMISSIONS,
-		module
+	type: SHOW_MODULE_PERMISSIONS,
+	module
 })
 
 const CLOSE_MODAL = 'CLOSE_MODAL'

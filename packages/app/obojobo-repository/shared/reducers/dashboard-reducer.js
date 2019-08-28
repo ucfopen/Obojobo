@@ -13,12 +13,16 @@ const { SHOW_MODULE_PERMISSIONS,
 	SHOW_MODULE_MORE
 } = require('../actions/dashboard-actions')
 
-const defaultResults = (isFetching = false, hasFetched = false, items = []) => ({
+const searchPeopleResultsState = (isFetching = false, hasFetched = false, items = []) => ({
 	items,
 	hasFetched,
 	isFetching
 })
 
+const closedDialogState = () => ({
+	dialog: null,
+	dialogProps: null
+})
 
 function filterModules(modules, searchString){
 	return modules.filter(m => {
@@ -30,10 +34,20 @@ function DashboardReducer(state, action) {
 	console.log(action)
 	switch (action.type) {
 		case CREATE_NEW_MODULE:
+			return handle(state, action, {
+				// update my modules list & remove filtering because the new module could be filtered
+				success: prevState => ({...prevState, myModules: action.payload.value, moduleSearchString: '', filteredModules: null}),
+			})
+
 		case DELETE_MODULE:
 			return handle(state, action, {
-				start: prevState => ({...prevState, dialog: null, moduleSearchString: '', filteredModules: state.myModules}),
-				success: prevState => ({...prevState, myModules: action.payload.value}),
+				// close the dialog containing the delete button
+				start: prevState => ({...state, ...closedDialogState()}),
+				// update myModules and re-apply the filter if one exists
+				success: prevState => {
+					const filteredModules = filterModules(action.payload.value, state.moduleSearchString)
+					return {...prevState, myModules: action.payload.value, filteredModules}
+				},
 			})
 
 		case SHOW_MODULE_MORE:
@@ -48,14 +62,13 @@ function DashboardReducer(state, action) {
 				...state,
 				dialog: 'module-permissions',
 				selectedModule: action.module,
-				searchPeople: defaultResults()
+				searchPeople: searchPeopleResultsState()
 			}
 
 		case CLOSE_MODAL:
 			return {
 				...state,
-				dialog: null,
-				dialogProps: null
+				...closedDialogState()
 			}
 
 		case FILTER_MODULES:
@@ -63,34 +76,36 @@ function DashboardReducer(state, action) {
 			return { ...state, filteredModules, moduleSearchString: action.searchString}
 
 		case CLEAR_PEOPLE_SEARCH_RESULTS:
-			return {...state, searchPeople: defaultResults()}
+			return {...state, searchPeople: searchPeopleResultsState(), shareSearchString: ''}
 
 		case DELETE_MODULE_PERMISSIONS:
 		case LOAD_USERS_FOR_MODULE:
 		case ADD_USER_TO_MODULE:
 			return handle(state, action, {
+				// update the permissions and re-populate the search state
 				start: prevState => {
+					const searchPeople = searchPeopleResultsState(true)
 					const newState = {...prevState}
 					newState.draftPermissions = {...newState.draftPermissions}
-					newState.draftPermissions[newState.selectedModule.draftId] = defaultResults(true)
+					newState.draftPermissions[newState.selectedModule.draftId] = searchPeople
 					return newState
 				},
+				// update the permissions and repopulate search state
+				// update the modules if the payload contains them
 				success: prevState => {
+					const searchPeople = searchPeopleResultsState(false, true, action.payload.value)
 					const newState = {...prevState}
 					newState.draftPermissions = {...newState.draftPermissions}
-					newState.draftPermissions[newState.selectedModule.draftId] = defaultResults(false, true, action.payload.value.sort())
-					// update the modules if the payload contains them
+					newState.draftPermissions[newState.selectedModule.draftId] = searchPeople
 					if(action.payload.modules) newState.myModules = action.payload.modules
 					return newState
 				},
-				// failure: prevState => ({...prevState}),
 			})
 
 		case LOAD_USER_SEARCH:
 			return handle(state, action, {
 				start: prevState => ({...prevState, shareSearchString: action.meta.searchString}),
-				success: prevState => ({...prevState, searchPeople: {items: action.payload.value.sort()}}),
-				// failure: prevState => ({...prevState})
+				success: prevState => ({...prevState, searchPeople: {items: action.payload.value}}),
 			})
 
 		default:
