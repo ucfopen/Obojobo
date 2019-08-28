@@ -1,15 +1,14 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-
-import ImageProperties from './image-properties-modal'
+import EditorStore from 'obojobo-document-engine/src/scripts/oboeditor/stores/editor-store'
 import Image from './image'
+import ImageProperties from './image-properties-modal'
+import React from 'react'
 
 const { ModalUtil } = Common.util
 const { Button } = Common.components
-const isOrNot = Common.util.isOrNot
 
 class Figure extends React.Component {
 	constructor(props) {
@@ -35,13 +34,10 @@ class Figure extends React.Component {
 		this.setState({ imageIsSelected: false })
 	}
 
-	onImageClick() {
-		this.setState({ imageIsSelected: true })
-	}
-
 	showImagePropertiesModal() {
 		ModalUtil.show(
 			<ImageProperties
+				allowedUploadTypes={EditorStore.state.settings.allowedUploadTypes}
 				content={this.props.node.data.get('content')}
 				onConfirm={this.changeProperties.bind(this)}
 			/>
@@ -50,7 +46,6 @@ class Figure extends React.Component {
 
 	changeProperties(content) {
 		const editor = this.props.editor
-
 		editor.setNodeByKey(this.props.node.key, {
 			data: { content }
 		})
@@ -58,23 +53,11 @@ class Figure extends React.Component {
 
 	deleteNode() {
 		const editor = this.props.editor
-
-		return editor.removeNodeByKey(this.props.node.key)
-	}
-
-	renderEditToolbar() {
-		return (
-			<div className="image-toolbar">
-				<Button className="properties-button" onClick={this.showImagePropertiesModal.bind(this)}>
-					Image Properties
-				</Button>
-			</div>
-		)
+		editor.removeNodeByKey(this.props.node.key)
 	}
 
 	render() {
 		const content = this.props.node.data.get('content')
-		const isSelected = this.props.isSelected
 
 		const isCustom = content.size === 'custom'
 		const imgStyles = {}
@@ -95,17 +78,22 @@ class Figure extends React.Component {
 			<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
 				<div className="container">
 					{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
-					<div
-						className={
-							'figure-box ' + isOrNot(isSelected || this.state.imageIsSelected, 'selected')
-						}
-						onClick={this.onImageClick.bind(this)}
-					>
+					<div className="figure-box">
 						<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
 							×
 						</Button>
-						{this.renderEditToolbar()}
-						<Image chunk={{ modelState: content }} />
+						<div className="image-toolbar">
+							<Button
+								className="properties-button"
+								onClick={this.showImagePropertiesModal.bind(this)}
+							>
+								Image Properties
+							</Button>
+						</div>
+						<Image
+							key={content.url + content.width + content.height + content.size}
+							chunk={{ modelState: content }}
+						/>
 					</div>
 
 					{/* uses children below because the caption is a textgroup */}

@@ -6,6 +6,10 @@
 	padding-left: 0.4em;
 	border-bottom: 1px solid $color-shadow;
 
+	@media screen and (max-width: $breakpoint-nav-small) {
+		left: $dimension-nav-menu-small;
+	}
+
 	button {
 		font-size: 1em;
 		width: 2.5em;

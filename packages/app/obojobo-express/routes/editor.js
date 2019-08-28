@@ -1,7 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const db = oboRequire('db')
+const mediaConfig = oboRequire('config').media
 const { requireCanViewEditor, requireCurrentDocument } = oboRequire('express_validators')
+const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex
+	.split('|')
+	.map(i => `.${i}`)
+	.join(',')
 
 const displayEditorPicker = (req, res) => {
 	return db
@@ -34,7 +39,7 @@ const displayEditorPicker = (req, res) => {
 }
 
 const displayVisualEditor = (req, res) => {
-	res.render('editor')
+	res.render('editor', { settings: { allowedUploadTypes } })
 }
 
 // Display the Editor Picker

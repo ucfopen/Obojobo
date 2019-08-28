@@ -1,5 +1,3 @@
-/* eslint-disable no-undefined */
-
 jest.mock('../../db')
 
 describe('guest user model', () => {
@@ -43,11 +41,11 @@ describe('guest user model', () => {
 		const GuestUser = oboRequire('models/guest_user')
 		const g = new GuestUser()
 
-		expect(g.canViewEditor).toBe(undefined)
-		expect(g.canEditDrafts).toBe(undefined)
-		expect(g.canDeleteDrafts).toBe(undefined)
-		expect(g.canCreateDrafts).toBe(undefined)
-		expect(g.canViewDrafts).toBe(undefined)
+		expect(g.canViewEditor).toBe(false)
+		expect(g.canEditDrafts).toBe(false)
+		expect(g.canDeleteDrafts).toBe(false)
+		expect(g.canCreateDrafts).toBe(false)
+		expect(g.canViewDrafts).toBe(false)
 
 		expect(g.hasPermission('canViewEditor')).toBe(false)
 		expect(g.hasPermission('canEditDrafts')).toBe(false)

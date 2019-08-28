@@ -10,13 +10,14 @@ const DraftDocument = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
 const ltiLaunch = oboRequire('express_lti_launch')
+const sessionSave = jest.fn()
 
 // array of mocked express middleware request arguments
 const mockExpressArgs = withLtiData => {
 	const res = {}
 
 	const req = {
-		session: {},
+		session: { save: sessionSave },
 		connection: { remoteAddress: '1.1.1.1' },
 		params: {
 			draftId: '999'
@@ -54,6 +55,11 @@ describe('lti launch middleware', () => {
 		insertEvent.mockResolvedValue()
 		db.one.mockReset()
 		db.one.mockResolvedValue({ id: 88 })
+		db.none.mockReset()
+		db.none.mockResolvedValue(null)
+		sessionSave.mockImplementation(cb => {
+			cb()
+		}) // session.save is successful
 		User.saveOrCreateCallback.mockReset()
 		logger.error.mockReset()
 		DraftDocument.fetchById = jest.fn().mockResolvedValueOnce(
@@ -89,7 +95,7 @@ describe('lti launch middleware', () => {
 			expect(db.one).toBeCalledWith(
 				expect.stringContaining('INSERT INTO launches'),
 				expect.objectContaining({
-					data: {
+					ltiBody: {
 						lis_person_contact_email_primary: 'mann@internet.com',
 						lis_person_name_family: 'Mann',
 						lis_person_name_given: 'Hugh',
@@ -135,7 +141,7 @@ describe('lti launch middleware', () => {
 				expect.stringContaining('INSERT INTO launches'),
 				expect.objectContaining({
 					contentId: '12',
-					data: {
+					ltiBody: {
 						lis_person_contact_email_primary: 'mann@internet.com',
 						lis_person_name_family: 'Mann',
 						lis_person_name_given: 'Hugh',
@@ -143,7 +149,7 @@ describe('lti launch middleware', () => {
 						roles: ['saviour', 'explorer', 'doctor']
 					},
 					draftId: '999',
-					lti_key: undefined, //eslint-disable-line no-undefined
+					ltiConsumerKey: undefined, //eslint-disable-line no-undefined
 					userId: 1
 				})
 			)
@@ -235,6 +241,43 @@ describe('lti launch middleware', () => {
 		})
 	})
 
+	test('assignment deletes previous sessions for current user', () => {
+		expect.hasAssertions()
+		const [req, res, mockNext] = mockExpressArgs(true)
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(db.none).toHaveBeenCalledWith(expect.stringContaining('DELETE FROM sessions'), {
+				currentUserId: 1
+			})
+		})
+	})
+
+	test('assignment skips deleting previous sessions for current user when already logged in', () => {
+		expect.hasAssertions()
+		const [req, res, mockNext] = mockExpressArgs(true)
+		// make sure the current user matches the user found via saveOrCreate()
+		User.saveOrCreateCallback.mockImplementationOnce(createdUser => {
+			req.currentUser = createdUser
+		})
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(db.none).not.toHaveBeenCalledWith(expect.stringContaining('DELETE FROM sessions'), {
+				currentUserId: 1
+			})
+		})
+	})
+
+	test('assignment handles session save failure', () => {
+		expect.hasAssertions()
+		sessionSave.mockImplementation(cb => {
+			cb('error')
+		}) // session.save error
+		const [req, res, mockNext] = mockExpressArgs(true)
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
+			expect()
+			expect(mockNext).toHaveBeenCalledWith(expect.any(Error))
+		})
+	})
+
 	test('assignment sets the current draft', () => {
 		expect.assertions(1)
 
@@ -263,7 +306,6 @@ describe('lti launch middleware', () => {
 	test('courseNavlaunch creates a new user and calls req.setCurrentUser', () => {
 		expect.assertions(4)
 
-		const User = oboRequire('models/user')
 		let createdUser
 
 		User.saveOrCreateCallback.mockImplementationOnce(user => {

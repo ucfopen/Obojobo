@@ -23,6 +23,8 @@ module.exports = app => {
 
 	// ===========  ASSETS FROM THE ASSET MANIFEST ===========
 	const registerAssetVersions = (base, ext) => {
+		if (process.env.IS_WEBPACK) return
+
 		app.use(
 			`/static/${base}.min${ext}`,
 			express.static(`${__dirname}/public/compiled/${base}.min${ext}`)
@@ -34,4 +36,5 @@ module.exports = app => {
 	registerAssetVersions('viewer', '.css')
 	registerAssetVersions('editor', '.js')
 	registerAssetVersions('editor', '.css')
+	registerAssetVersions('draftmanager', '.js')
 }

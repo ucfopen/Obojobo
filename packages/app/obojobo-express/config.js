@@ -24,30 +24,50 @@ if (process.env.DATABASE_URL) {
 	process.env.DB_PORT = dburl.port
 }
 
-const replaceENVsInObject = configObject => {
-	const rawJson = JSON.stringify(configObject) // convert back to string
+const isStringJSON = (name, string) => {
+	if (!name.endsWith('_JSON')) return false
+	try {
+		JSON.parse(string)
+		return true
+	} catch (error) {
+		throw new Error(`Expected ENV ${name} to be valid JSON, but it did not parse`)
+	}
+}
 
+const replaceENVsInJson = originalJson => {
 	// replace any "ENV": "CONFIG_VAR" settings with
 	// values from procesess.env
 	const pattern = /\{\s*"ENV"\s*?:\s*?"(.*?)"\s*\}/gi
 	let result
 
-	let replacedJson = rawJson
-	while ((result = pattern.exec(rawJson))) {
-		if (!process.env[result[1]]) {
-			throw new Error(`Expected ENV var ${result[1]} is not set`)
+	let replacedJson = originalJson
+	while ((result = pattern.exec(originalJson))) {
+		const envVar = result[1]
+		if (!process.env[envVar]) {
+			throw new Error(`Expected ENV var ${envVar} is not set`)
 		} else {
-			let replacement = process.env[result[1]]
+			let replacement = process.env[envVar]
+			const isJSON = isStringJSON(envVar, replacement)
+
+			// if JSON, recurse to allow env replacement inside json
+			if (isJSON) replacement = replaceENVsInJson(replacement)
+
 			// if the value isnt true, false, or an integer, wrap it with quotes
-			if (replacement !== 'true' && replacement !== 'false' && !/^\d+$/g.test(replacement)) {
+			if (
+				!isJSON &&
+				typeof replacement === 'string' &&
+				replacement !== 'true' &&
+				replacement !== 'false' &&
+				!/^\d+$/g.test(replacement)
+			) {
 				replacement = `"${replacement}"`
 			}
-			// replace without changing pattern.exec()'s position in rawJson
+			// replace without changing pattern.exec()'s position in originalJson
 			replacedJson = replacedJson.replace(result[0], replacement)
 		}
 	}
 
-	return JSON.parse(replacedJson) // convert back to object
+	return replacedJson
 }
 
 const getConfigFileData = (configFile, env) => {
@@ -61,7 +81,8 @@ const getConfigFileData = (configFile, env) => {
 		}
 
 		if (config[env]) {
-			envObject = replaceENVsInObject(envObject)
+			const hydratedJson = replaceENVsInJson(JSON.stringify(envObject))
+			envObject = JSON.parse(hydratedJson)
 		}
 
 		return Object.assign({}, defaultObject, envObject) // combine with default if it exists

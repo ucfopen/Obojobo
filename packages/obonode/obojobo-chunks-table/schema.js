@@ -19,8 +19,14 @@ const schema = {
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				const header = index === 0 && node.data.get('content').header
+				const numCols = node.data.get('content').numCols
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
+						// Deal with Paste insertion of top-level nodes
+						if (child.type === 'oboeditor.component') {
+							return editor.unwrapNodeByKey(child.key)
+						}
+
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
 						if (child.object === 'block' && index === node.nodes.size - 1) {
 							return editor.unwrapNodeByKey(child.key)
@@ -33,13 +39,13 @@ const schema = {
 
 						return editor.wrapBlockByKey(child.key, {
 							type: TABLE_ROW_NODE,
-							data: { content: { header } }
+							data: { content: { header, numCols } }
 						})
 					}
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: TABLE_ROW_NODE,
-							data: { content: { header } }
+							data: { content: { header, numCols } }
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
@@ -58,6 +64,11 @@ const schema = {
 				const header = node.data.get('content').header
 				switch (error.code) {
 					case CHILD_TYPE_INVALID: {
+						// Deal with Paste insertion of top-level nodes
+						if (child.type === 'oboeditor.component') {
+							return editor.unwrapNodeByKey(child.key)
+						}
+
 						// Allow inserting of new nodes by unwrapping unexpected blocks at end
 						if (child.object === 'block' && index === node.nodes.size - 1) {
 							return editor.unwrapNodeByKey(child.key)

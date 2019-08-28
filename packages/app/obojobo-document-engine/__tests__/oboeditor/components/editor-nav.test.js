@@ -1,13 +1,19 @@
-import { mount } from 'enzyme'
+import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
+import EditorNav from 'src/scripts/oboeditor/components/editor-nav'
+import EditorStore from 'src/scripts/oboeditor/stores/editor-store'
+import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
+import ModalUtil from 'src/scripts/common/util/modal-util'
 import React from 'react'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import EditorNav from 'src/scripts/oboeditor/components/editor-nav'
-
-import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 jest.mock('src/scripts/oboeditor/util/editor-util')
 // SubMenu
 jest.mock('src/scripts/oboeditor/components/sub-menu')
+// Editor Store
+jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
+	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
+}))
 
 describe('EditorNav', () => {
 	beforeAll(() => {
@@ -91,7 +97,7 @@ describe('EditorNav', () => {
 		const props = { navState: {} }
 		const component = mount(<EditorNav {...props} />)
 
-		component.instance().onClick({
+		component.instance().onNavItemClick({
 			id: 6,
 			type: 'link',
 			label: 'label6',

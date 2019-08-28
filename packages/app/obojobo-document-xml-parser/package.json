@@ -1,14 +1,14 @@
 {
   "dependencies": {
     "minimist": "^1.2.0",
-    "xml-js": "^1.0.2",
-    "obojobo-lib-utils": "1.0.0"
+    "obojobo-lib-utils": "^5.0.1",
+    "xml-js": "^1.0.2"
   },
-  "devDependencies":{
+  "devDependencies": {
     "lint-staged": "^6.1.1"
   },
   "name": "obojobo-document-xml-parser",
-  "version": "3.4.0",
+  "version": "5.0.1",
   "license": "AGPL-3.0-only",
   "main": "xml2draft.js",
   "scripts": {
@@ -18,7 +18,8 @@
     "prettier:run": "prettier --write '{__{tests,mocks}__,server,src}/**/*.{js,scss}'",
     "lint": "echo 'not implemented'",
     "lint:css": "echo 'not implemented'",
-    "lint:js": "echo 'not implemented'"
+    "lint:js": "echo 'not implemented'",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "**/*.{js,scss}": [
@@ -28,7 +29,10 @@
   },
   "jest": {
     "verbose": false,
-    "coverageReporters": ["text", "lcov"],
+    "coverageReporters": [
+      "text",
+      "lcov"
+    ],
     "coveragePathIgnorePatterns": [
       "src/draft-json-transform.js",
       "src/extension-transform.js",

@@ -10,68 +10,14 @@
 	},
 	"nodes": [
 		{
-			"object": "block",
-			"type": "ObojoboDraft.Chunks.QuestionBank.Settings",
-			"isVoid": false,
-			"data": {},
-			"nodes": [
-				{
-					"object": "block",
-					"type": "Parameter",
-					"isVoid": false,
-					"data": {
-						"name": "choose",
-						"display": "Choose",
-						"type": "type-text"
-					},
-					"nodes": [
-						{
-							"object": "text",
-							"leaves": [
-								{
-									"object": "leaf",
-									"text": "Infinity",
-									"marks": []
-								}
-							]
-						}
-					]
-				},
-				{
-					"object": "block",
-					"type": "Parameter",
-					"isVoid": true,
-					"data": {
-						"name": "select",
-						"display": "Select",
-						"options": [
-							"sequential",
-							"random",
-							"random-unseen"
-						],
-						"type": "type-select",
-						"current": "sequential"
-					},
-					"nodes": [
-						{
-							"object": "text",
-							"leaves": [
-								{
-									"object": "leaf",
-									"text": "",
-									"marks": []
-								}
-							]
-						}
-					]
-				}
-			]
-		},
-		{
 			"object":"block",
 			"type":"ObojoboDraft.Chunks.Question",
 			"isVoid":false,
-			"data":{},
+			"data": {
+				"content": {
+					"type": "default"
+				}
+			},
 			"nodes":[
 				{
 					"object": "block",
@@ -109,95 +55,39 @@
 					"nodes":[
 						{
 							"object":"block",
-							"type":"ObojoboDraft.Chunks.MCAssessment.ChoiceList",
+							"type":"ObojoboDraft.Chunks.MCAssessment.MCChoice",
 							"isVoid":false,
-							"data":{},
+							"data":{"content":{"score":100}},
 							"nodes":[
 								{
 									"object":"block",
-									"type":"ObojoboDraft.Chunks.MCAssessment.MCChoice",
+									"type":"ObojoboDraft.Chunks.MCAssessment.MCAnswer",
 									"isVoid":false,
-									"data":{"content":{"score":100}},
+									"data":{},
 									"nodes":[
 										{
-											"object":"block",
-											"type":"ObojoboDraft.Chunks.MCAssessment.MCAnswer",
-											"isVoid":false,
-											"data":{},
-											"nodes":[
+											"object": "block",
+											"type": "oboeditor.component",
+											"nodes": [
 												{
-													"object": "block",
-													"type": "oboeditor.component",
-													"nodes": [
+													"object":"block",
+													"type":"ObojoboDraft.Chunks.Text",
+													"isVoid":false,
+													"data":{"content":{"indent":0}},
+													"nodes":[
 														{
 															"object":"block",
-															"type":"ObojoboDraft.Chunks.Text",
+															"type":"ObojoboDraft.Chunks.Text.TextLine",
 															"isVoid":false,
-															"data":{"content":{"indent":0}},
+															"data":{"indent":0},
 															"nodes":[
 																{
-																	"object":"block",
-																	"type":"ObojoboDraft.Chunks.Text.TextLine",
-																	"isVoid":false,
-																	"data":{"indent":0},
-																	"nodes":[
+																	"object":"text",
+																	"leaves":[
 																		{
-																			"object":"text",
-																			"leaves":[
-																				{
-																					"object":"leaf",
-																					"text":"",
-																					"marks":[]
-																				}
-																			]
-																		}
-																	]
-																}
-															]
-														}
-													]
-												}
-											]
-										}
-									]
-								},
-								{
-									"object":"block",
-									"type":"ObojoboDraft.Chunks.MCAssessment.MCChoice",
-									"isVoid":false,
-									"data":{"content":{"score":0}},
-									"nodes":[
-										{
-											"object":"block",
-											"type":"ObojoboDraft.Chunks.MCAssessment.MCAnswer",
-											"isVoid":false,
-											"data":{},
-											"nodes":[
-												{
-													"object": "block",
-													"type": "oboeditor.component",
-													"nodes": [
-														{
-															"object":"block",
-															"type":"ObojoboDraft.Chunks.Text",
-															"isVoid":false,
-															"data":{"content":{"indent":0}},
-															"nodes":[
-																{
-																	"object":"block",
-																	"type":"ObojoboDraft.Chunks.Text.TextLine",
-																	"isVoid":false,
-																	"data":{"indent":0},
-																	"nodes":[
-																		{
-																			"object":"text",
-																			"leaves":[
-																				{
-																					"object":"leaf",
-																					"text":"",
-																					"marks":[]
-																				}
-																			]
+																			"object":"leaf",
+																			"text":"",
+																			"marks":[]
 																		}
 																	]
 																}
@@ -213,52 +103,45 @@
 						},
 						{
 							"object":"block",
-							"type":"ObojoboDraft.Chunks.MCAssessment.Settings",
+							"type":"ObojoboDraft.Chunks.MCAssessment.MCChoice",
 							"isVoid":false,
-							"data":{},
+							"data":{"content":{"score":0}},
 							"nodes":[
 								{
 									"object":"block",
-									"type":"Parameter",
-									"isVoid":true,
-									"data":{
-										"name":"responseType",
-										"display":"Response Type",
-										"options":["pick-one","pick-all"],
-										"type":"type-select",
-										"current":"Pick One"
-									},
+									"type":"ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+									"isVoid":false,
+									"data":{},
 									"nodes":[
 										{
-											"object":"text",
-											"leaves":[
+											"object": "block",
+											"type": "oboeditor.component",
+											"nodes": [
 												{
-													"object":"leaf",
-													"text":"",
-													"marks":[]
-												}
-											]
-										}
-									]
-								},
-								{
-									"object":"block",
-									"type":"Parameter",
-									"isVoid":true,
-									"data":{
-										"name":"shuffle",
-										"display":"Shuffle",
-										"type":"type-toggle",
-										"checked":true
-									},
-									"nodes":[
-										{
-											"object":"text",
-											"leaves":[
-												{
-													"object":"leaf",
-													"text":"",
-													"marks":[]
+													"object":"block",
+													"type":"ObojoboDraft.Chunks.Text",
+													"isVoid":false,
+													"data":{"content":{"indent":0}},
+													"nodes":[
+														{
+															"object":"block",
+															"type":"ObojoboDraft.Chunks.Text.TextLine",
+															"isVoid":false,
+															"data":{"indent":0},
+															"nodes":[
+																{
+																	"object":"text",
+																	"leaves":[
+																		{
+																			"object":"leaf",
+																			"text":"",
+																			"marks":[]
+																		}
+																	]
+																}
+															]
+														}
+													]
 												}
 											]
 										}

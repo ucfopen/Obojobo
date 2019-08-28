@@ -10,7 +10,24 @@ describe('MCAssessment Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return {}
+							return 'mock-question-type'
+						}
+					}
+				}}
+			/>
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
+	test('MCAssessment builds the expected component with defaults', () => {
+		const component = renderer.create(
+			<MCAssessment
+				node={{
+					data: {
+						get: () => {
+							return null
 						}
 					}
 				}}

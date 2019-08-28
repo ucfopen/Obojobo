@@ -8,15 +8,10 @@
 		margin-bottom: 0.3em;
 	}
 
-	input {
-		margin-bottom: 0.5em;
-	}
-
 	input[type='text'] {
 		@include text-input();
 
 		width: 100%;
-		margin-bottom: 1em;
 	}
 
 	input[type='number'] {
@@ -49,6 +44,79 @@
 			display: inline;
 			vertical-align: middle;
 			padding-left: 0.3em;
+		}
+	}
+
+	.upload {
+		// same as button component styles
+		$color-button-bg: lighten($color-action, 9%);
+
+		user-select: none;
+		cursor: pointer;
+		font-family: $font-default;
+		font-size: 0.85em;
+		position: relative;
+		min-width: 3.25em;
+		border-radius: 0.2em;
+		padding: 0.6rem 1em;
+		background-color: $color-button-bg;
+		color: $color-bg;
+		border: 1px solid $color-transparent;
+		border-bottom: 1px solid darken($color-action, 20%);
+
+		&:hover {
+			background-color: $color-action;
+		}
+	}
+
+	#obojobo-draft--chunks--figure--alt {
+		margin-bottom: 1em;
+	}
+
+	#obojobo-draft--chunks--figure--image-file-input {
+		display: none;
+	}
+
+	.flex-container {
+		display: flex;
+		align-items: center;
+		margin-bottom: 1em;
+
+		&.image-container {
+			justify-content: center;
+			flex-direction: column;
+			max-width: 100%;
+
+			.obojobo-draft--chunks--figure--image {
+				border: 1px solid $color-transparent;
+
+				&.is-loaded {
+					border: 1px solid $color-shadow;
+				}
+			}
+		}
+	}
+
+	.figure--url--or {
+		padding: 0 1em;
+	}
+
+	.figure--url--upload {
+		max-width: 40%;
+	}
+
+	.image-preview {
+		font-size: 0.8em;
+		margin-top: 0.2em;
+
+		&.image-preview-placeholder {
+			height: 100px; /* stylelint-disable-line unit-blacklist */
+			width: 150px; /* stylelint-disable-line unit-blacklist */
+			line-height: 100px; /* stylelint-disable-line unit-blacklist */
+			text-align: center;
+			box-sizing: border-box;
+			background: $color-bg2;
+			color: $color-text-minor;
 		}
 	}
 }

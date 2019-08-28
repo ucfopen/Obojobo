@@ -3,9 +3,11 @@ jest.mock('../../../models/user')
 jest.mock('../../../db')
 jest.mock('../../../logger')
 jest.mock('obojobo-document-xml-parser/xml-to-draft-object')
+jest.mock('obojobo-document-json-parser/json-to-xml-parser')
 
 import DraftModel from '../../../models/draft'
 const xml = require('obojobo-document-xml-parser/xml-to-draft-object')
+const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
 
 // don't use our existing express mock, we're using supertest
 jest.unmock('express')
@@ -59,30 +61,197 @@ describe('api draft route', () => {
 		db.none.mockReset()
 		db.any.mockReset()
 		xml.mockReset()
+		jsonToXml.mockReset()
 	})
 	afterEach(() => {})
 
-	// get full draft
-
-	test('get full draft returns success if user is the author and and has canViewEditor rights', () => {
-		expect.assertions(5)
+	test('get full draft returns xml without conversion for non-json modules when accept header is xml', () => {
+		expect.hasAssertions()
 		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
 		// mock a yell function that returns a document
 		const mockYell = jest.fn()
 		// mock the document returned by fetchById
-		DraftModel.fetchById.mockResolvedValueOnce({
+		const mockDraftModel = {
 			root: { yell: mockYell },
-			document: 'mock-document',
+			document: 'mock-document-json',
 			authorId: 99
+		}
+
+		// mock the xmlDocument Getter
+		Object.defineProperty(mockDraftModel, 'xmlDocument', {
+			get: jest.fn().mockResolvedValue(basicXML)
 		})
+
+		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.set('Accept', 'application/xml')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/xml')
+				expect(response.statusCode).toBe(200)
+				expect(mockYell).not.toHaveBeenCalled()
+				expect(response.text).toBe(basicXML)
+				expect(jsonToXml).not.toHaveBeenCalled()
+			})
+	})
+
+	test('get full draft converts json to xml for json modules when accept header is xml', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+
+		// mock the document returned by fetchById
+		const mockDraftModel = {
+			root: { yell: mockYell },
+			document: 'mock-document-json',
+			authorId: 99
+		}
+
+		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+
+		jsonToXml.mockReturnValueOnce('mock-xml')
+
+		// mock the xmlDocument Getter
+		Object.defineProperty(mockDraftModel, 'xmlDocument', {
+			get: jest.fn().mockResolvedValue(null) // pretend we don't have xml
+		})
+
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.set('Accept', 'application/xml')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/xml')
+				expect(response.statusCode).toBe(200)
+				expect(response.text).toContain('mock-xml')
+				expect(jsonToXml).toHaveBeenCalledWith('mock-document-json')
+			})
+	})
+
+	test('get full draft returns json for json modules when accept headers is json', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+
+		// mock the document returned by fetchById
+		const mockDraftModel = {
+			root: { yell: mockYell },
+			document: 'mock-document-json',
+			authorId: 99
+		}
+
+		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+
+		// mock the xmlDocument Getter
+		Object.defineProperty(mockDraftModel, 'xmlDocument', {
+			get: jest.fn().mockResolvedValue(null) // pretend we don't have xml
+		})
+
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.set('Accept', 'application/json')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
 				expect(response.statusCode).toBe(200)
-				expect(mockYell).not.toHaveBeenCalled()
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document')
+				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(jsonToXml).not.toHaveBeenCalled()
+			})
+	})
+
+	test('get full draft returns json for json modules when accept header is something weird', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+
+		// mock the document returned by fetchById
+		const mockDraftModel = {
+			root: { yell: mockYell },
+			document: 'mock-document-json',
+			authorId: 99
+		}
+
+		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+
+		// mock the xmlDocument Getter
+		Object.defineProperty(mockDraftModel, 'xmlDocument', {
+			get: jest.fn().mockResolvedValue(null) // pretend we don't have xml
+		})
+
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.set('Accept', 'application/tomfoolery')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-document-json')
+				expect(jsonToXml).not.toHaveBeenCalled()
+			})
+	})
+
+	test('get full draft returns json for xml modules when accept header is json', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+
+		// mock the document returned by fetchById
+		const mockDraftModel = {
+			root: { yell: mockYell },
+			document: 'mock-document-json',
+			authorId: 99
+		}
+
+		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+
+		// mock the xmlDocument Getter
+		Object.defineProperty(mockDraftModel, 'xmlDocument', {
+			get: jest.fn().mockResolvedValue(basicXML) // pretend we don't have xml
+		})
+
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.set('Accept', 'application/json')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-document-json')
+			})
+	})
+
+	test('get full draft returns json for xml modules when accept header is something weird', () => {
+		expect.hasAssertions()
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		// mock a yell function that returns a document
+		const mockYell = jest.fn()
+
+		// mock the document returned by fetchById
+		const mockDraftModel = {
+			root: { yell: mockYell },
+			document: 'mock-document-json',
+			authorId: 99
+		}
+
+		DraftModel.fetchById.mockResolvedValueOnce(mockDraftModel)
+
+		// mock the xmlDocument Getter
+		Object.defineProperty(mockDraftModel, 'xmlDocument', {
+			get: jest.fn().mockResolvedValue(basicXML) // pretend we don't have xml
+		})
+
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/full')
+			.set('Accept', 'anything-except-xml')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-document-json')
 			})
 	})
 
@@ -94,7 +263,7 @@ describe('api draft route', () => {
 		// mock the document returned by fetchById
 		DraftModel.fetchById.mockResolvedValueOnce({
 			root: { yell: mockYell },
-			document: 'mock-document',
+			document: 'mock-document-json',
 			authorId: 99
 		})
 		return request(app)
@@ -115,7 +284,7 @@ describe('api draft route', () => {
 		// mock the document returned by fetchById
 		DraftModel.fetchById.mockResolvedValueOnce({
 			root: { yell: mockYell },
-			document: 'mock-document',
+			document: 'mock-document-json',
 			authorId: 99
 		})
 		return request(app)
@@ -140,7 +309,7 @@ describe('api draft route', () => {
 		// mock the document returned by fetchById
 		DraftModel.fetchById.mockResolvedValueOnce({
 			root: { yell: mockYell },
-			document: 'mock-document',
+			document: 'mock-document-json',
 			authorId: 99
 		})
 		return request(app)
@@ -199,7 +368,7 @@ describe('api draft route', () => {
 		// mock the document returned by fetchById
 		DraftModel.fetchById.mockResolvedValueOnce({
 			root: { yell: mockYell },
-			document: 'mock-document'
+			document: 'mock-document-json'
 		})
 		return request(app)
 			.get('/api/drafts/00000000-0000-0000-0000-000000000000')
@@ -212,7 +381,7 @@ describe('api draft route', () => {
 					expect.anything()
 				)
 				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-document')
+				expect(response.body).toHaveProperty('value', 'mock-document-json')
 			})
 	})
 

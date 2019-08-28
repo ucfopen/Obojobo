@@ -1,23 +1,39 @@
-import { shallow, mount } from 'enzyme'
+import { mount, shallow } from 'enzyme'
+
+import APIUtil from 'src/scripts/viewer/util/api-util'
+import EditorStore from '../../../src/scripts/oboeditor/stores/editor-store'
+import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import React from 'react'
 import { Value } from 'slate'
+import mockConsole from 'jest-mock-console'
 
 jest.mock('slate-react')
 
-import PageEditor from 'src/scripts/oboeditor/components/page-editor'
-import APIUtil from 'src/scripts/viewer/util/api-util'
 jest.mock('src/scripts/viewer/util/api-util')
 jest.mock('src/scripts/oboeditor/components/toolbars/file-menu')
 jest.mock('src/scripts/common/util/modal-util')
+
+// Editor Store
+jest.mock('src/scripts/oboeditor/stores/editor-store', () => {
+	return {
+		state: { startingId: null }
+	}
+})
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
+let restoreConsole
 
 describe('PageEditor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('EditorNav component', () => {
@@ -124,121 +140,6 @@ describe('PageEditor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('EditorNav component displaying Assessment exports toJSON', () => {
-		APIUtil.postDraft.mockResolvedValueOnce({ status: 'ok' })
-
-		const page = {
-			id: 2,
-			set: jest.fn(),
-			attributes: {
-				children: [
-					{
-						type: BREAK_NODE,
-						content: {},
-						children: []
-					}
-				]
-			},
-			get: jest
-				.fn()
-				.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
-				.mockReturnValueOnce({
-					scoreActions: [
-						{
-							for: '100',
-							page: {
-								type: PAGE_NODE,
-								children: [
-									{
-										type: BREAK_NODE,
-										content: {}
-									}
-								]
-							}
-						}
-					]
-				})
-				.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in export
-		}
-
-		const value = {
-			document: {
-				nodes: { get: () => ({
-					data: { get: () => ({}) },
-					nodes: []
-				})}
-			}
-		}
-
-		const props = {
-			page: {
-				id: 2,
-				set: jest.fn(),
-				attributes: {
-					children: [
-						{
-							type: BREAK_NODE,
-							content: {},
-							children: []
-						}
-					]
-				},
-				get: jest
-					.fn()
-					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in import
-					.mockReturnValueOnce({
-						scoreActions: [
-							{
-								for: '100',
-								page: {
-									type: PAGE_NODE,
-									children: [
-										{
-											type: BREAK_NODE,
-											content: {}
-										}
-									]
-								}
-							}
-						]
-					})
-					.mockReturnValueOnce(ASSESSMENT_NODE) // get('type') in export
-			},
-			model: {
-				title: 'Mock Title',
-				children: [
-					{
-						get: () => ASSESSMENT_NODE,
-						children: []
-					},
-					{
-						get: () => CONTENT_NODE,
-						flatJSON: () => {
-							return { children: [] }
-						},
-						children: {
-							models: [
-								{
-									get: () => null
-								}
-							]
-						}
-					},
-					{
-						get: () => 'mockNode'
-					}
-				],
-				flatJSON: () => {
-					return { children: [] }
-				}
-			}
-		}
-		const component = mount(<PageEditor {...props} />)
-		const json = component.instance().exportToJSON(page, value)
-
-		expect(json).toMatchSnapshot()
-	})
-
 	test('EditorNav component alters value majorly', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
@@ -295,7 +196,7 @@ describe('PageEditor', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('EditorNav component stores refrence', () => {
+	test('EditorNav component stores reference', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
 			page: {

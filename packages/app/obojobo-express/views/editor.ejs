@@ -11,11 +11,11 @@
 			]
 			let headerJs = []
 			let footerJs = [
-				assetForEnv('//unpkg.com/react@16.7.0/umd/react.production.min.js'),
-				assetForEnv('//unpkg.com/react-dom@16.7.0/umd/react-dom.production.min.js'),
+				assetForEnv('//unpkg.com/react@16.8.6/umd/react.production.min.js'),
+				assetForEnv('//unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js'),
 				assetForEnv('//unpkg.com/immutable/dist/immutable$[.min].js'),
-				assetForEnv('//unpkg.com/slate@0.44.0/dist/slate$[.min].js'),
-				assetForEnv('//unpkg.com/slate-react@0.20.0/dist/slate-react$[.min].js'),
+				assetForEnv('//unpkg.com/slate@0.44.12/dist/slate$[.min].js'),
+				assetForEnv('//unpkg.com/slate-react@0.20.8/dist/slate-react$[.min].js'),
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore$[-min].js'),
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0/katex.min.js'),
@@ -43,7 +43,10 @@
 			<% })
 		}
 	%>
-	<script>window.__oboEditorRender()</script>
+	<script>
+		var settings = <%- JSON.stringify(settings) %>
+		window.__oboEditorRender(settings)
+	</script>
 </body>
 
 </html>

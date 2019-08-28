@@ -1,6 +1,7 @@
 import { Block } from 'slate'
 
-import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
+import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
+import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
@@ -8,6 +9,8 @@ const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
 const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
 const MCCHOICE_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCChoice'
+const TOGGLE_PARAMETER = 'oboeditor.toggle-parameter'
+const SELECT_PARAMETER = 'oboeditor.select-parameter'
 
 const schema = {
 	blocks: {
@@ -84,8 +87,14 @@ const schema = {
 		'ObojoboDraft.Chunks.MCAssessment.Settings': {
 			nodes: [
 				{
-					match: [{ type: 'Parameter' }],
-					min: 2
+					match: [{ type: SELECT_PARAMETER }],
+					min: 1,
+					max: 1
+				},
+				{
+					match: [{ type: TOGGLE_PARAMETER }],
+					min: 1,
+					max: 1
 				}
 			],
 			normalize: (editor, error) => {
@@ -94,48 +103,37 @@ const schema = {
 					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								ParameterNode.helpers.oboToSlate({
-									name: 'responseType',
-									value: 'Pick One',
-									display: 'Response Type',
-									options: ['pick-one', 'pick-all']
-								})
+								SelectParameter.helpers.oboToSlate('responseType', 'pick-one', 'Response Type', [
+									'pick-one',
+									'pick-all'
+								])
 							)
 							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
-							ParameterNode.helpers.oboToSlate({
-								name: 'shuffle',
-								value: true,
-								display: 'Shuffle',
-								checked: true
-							})
+							ToggleParameter.helpers.oboToSlate('shuffle', true, 'Shuffle')
 						)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						return editor.withoutNormalizing(c => {
-							c.removeNodeByKey(child.key)
-							if (index === 0) {
-								const block = Block.create(
-									ParameterNode.helpers.oboToSlate({
-										name: 'responseType',
-										value: 'Pick One',
-										display: 'Response Type',
-										options: ['pick-one', 'pick-all']
-									})
-								)
-								return c.insertNodeByKey(node.key, index, block)
-							}
+						if (index === 0) {
 							const block = Block.create(
-								ParameterNode.helpers.oboToSlate({
-									name: 'shuffle',
-									value: true,
-									display: 'Shuffle',
-									checked: true
-								})
+								SelectParameter.helpers.oboToSlate('responseType', 'pick-one', 'Response Type', [
+									'pick-one',
+									'pick-all'
+								])
 							)
-							return c.insertNodeByKey(node.key, index, block)
+							return editor.withoutNormalizing(e => {
+								e.removeNodeByKey(child.key)
+								return e.insertNodeByKey(node.key, index, block)
+							})
+						}
+						const block = Block.create(
+							ToggleParameter.helpers.oboToSlate('shuffle', true, 'Shuffle')
+						)
+						return editor.withoutNormalizing(e => {
+							e.removeNodeByKey(child.key)
+							return e.insertNodeByKey(node.key, index, block)
 						})
 					}
 				}

@@ -1,7 +1,19 @@
 import React from 'react'
 import { mount } from 'enzyme'
-
+import TestRenderer from 'react-test-renderer'
 import IFrameProperties from './iframe-properties-modal'
+
+// mock ref.current.focus and ref.current.select on inputs
+const testRendererOptions = {
+	createNodeMock: element => {
+		if (element.type === 'input') {
+			return {
+				focus: () => {},
+				select: () => {}
+			}
+		}
+	}
+}
 
 describe('IFrame Properties Modal', () => {
 	beforeEach(() => {
@@ -100,22 +112,34 @@ describe('IFrame Properties Modal', () => {
 	})
 
 	test('IFrameProperties component changes border', () => {
-		const component = mount(
+		const testRenderer = TestRenderer.create(
 			<IFrameProperties
 				content={{
 					controls: '',
 					border: false,
 					initialZoom: 1
 				}}
-			/>
+			/>,
+			testRendererOptions
 		)
 
-		component
-			.find('input')
-			.at(3)
-			.simulate('change', { target: { checked: false } })
+		const startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
 
-		expect(component.html()).toMatchSnapshot()
+		// locate the slider component for border input
+		const testInstance = testRenderer.root
+		const borderSlider = testInstance.findByProps({ title: 'Border' })
+
+		// execute that slider's handleCheckChange
+		borderSlider.props.handleCheckChange(true)
+
+		// capture the changes
+		const endState = testRenderer.toJSON()
+
+		// compare the snapshots
+		expect(endState).toMatchSnapshot()
+
+		expect(startState).not.toEqual(endState)
 	})
 
 	test('IFrameProperties component changes fit', () => {
@@ -148,11 +172,12 @@ describe('IFrame Properties Modal', () => {
 			/>
 		)
 
-		component
-			.find('input')
-			.at(4)
-			.simulate('change', { target: { value: 'changed' } })
+		const widthInput = component.find('input').at(3)
+		expect(widthInput.prop('placeholder')).toBe('Width')
+		expect(component.state().width).toBe(640)
 
+		widthInput.simulate('change', { target: { value: 600 } })
+		expect(component.state().width).toBe(600)
 		expect(component.html()).toMatchSnapshot()
 	})
 
@@ -167,14 +192,16 @@ describe('IFrame Properties Modal', () => {
 			/>
 		)
 
-		component
-			.find('input')
-			.at(5)
-			.simulate('change', { target: { value: 'changed' } })
+		const heightInput = component.find('input').at(4)
+		expect(heightInput.prop('placeholder')).toBe('Height')
+		expect(component.state().height).toBe(480)
 
+		heightInput.simulate('change', { target: { value: 999 } })
+		expect(component.state().height).toBe(999)
 		expect(component.html()).toMatchSnapshot()
 	})
 
+	// @TODO: fragile, relies on input ordering and difficult to read snapshot html dump
 	test('IFrameProperties component changes initial zoom', () => {
 		const component = mount(
 			<IFrameProperties
@@ -186,59 +213,138 @@ describe('IFrame Properties Modal', () => {
 			/>
 		)
 
-		component
-			.find('input')
-			.at(6)
-			.simulate('change', { target: { value: 'changed' } })
-
+		const zoomInput = component.find('input').at(7)
+		expect(zoomInput.prop('placeholder')).toBe('Decimal Value')
+		zoomInput.simulate('change', { target: { value: 333 } })
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('IFrameProperties component changes autoload', () => {
-		const component = mount(
+		const testRenderer = TestRenderer.create(
 			<IFrameProperties
 				content={{
 					controls: '',
 					border: false,
 					initialZoom: 1
 				}}
-			/>
+			/>,
+			testRendererOptions
 		)
 
-		component
-			.find('input')
-			.at(7)
-			.simulate('change', { target: { checked: true } })
+		const startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
 
-		expect(component.html()).toMatchSnapshot()
+		// locate the slider component for border input
+		const testInstance = testRenderer.root
+		const autoloadSlider = testInstance.findByProps({ title: 'Autoload' })
+
+		// execute that slider's handleCheckChange
+		autoloadSlider.props.handleCheckChange(true)
+
+		// capture the changes
+		const endState = testRenderer.toJSON()
+
+		// compare the snapshots
+		expect(endState).toMatchSnapshot()
+
+		expect(startState).not.toEqual(endState)
 	})
 
-	test('IFrameProperties component changes IFrame controls', () => {
-		const component = mount(
+	test('IFrameProperties component changes Reload', () => {
+		const testRenderer = TestRenderer.create(
 			<IFrameProperties
 				content={{
 					controls: '',
 					border: false,
 					initialZoom: 1
 				}}
-			/>
+			/>,
+			testRendererOptions
 		)
 
-		component
-			.find('input')
-			.at(8)
-			.simulate('change', { target: { checked: false } })
+		const startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
 
-		component
-			.find('input')
-			.at(9)
-			.simulate('change', { target: { checked: true } })
+		// locate the slider component for border input
+		const testInstance = testRenderer.root
+		const autoloadSlider = testInstance.findByProps({ title: 'Reload' })
 
-		component
-			.find('input')
-			.at(10)
-			.simulate('change', { target: { checked: true } })
+		// execute that slider's handleCheckChange
+		autoloadSlider.props.handleCheckChange(true)
+		expect(testInstance.instance.state.controls).toBe(',reload')
 
-		expect(component.html()).toMatchSnapshot()
+		// capture the changes
+		const endState = testRenderer.toJSON()
+
+		// compare the snapshots
+		expect(endState).toMatchSnapshot()
+
+		expect(startState).not.toEqual(endState)
+
+		// turn it back off
+		autoloadSlider.props.handleCheckChange(false)
+		expect(testInstance.instance.state.controls).toBe('')
+	})
+
+	test('IFrameProperties component changes New Window', () => {
+		const testRenderer = TestRenderer.create(
+			<IFrameProperties
+				content={{
+					controls: '',
+					border: false,
+					initialZoom: 1
+				}}
+			/>,
+			testRendererOptions
+		)
+
+		const startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
+
+		// locate the slider component for border input
+		const testInstance = testRenderer.root
+		const autoloadSlider = testInstance.findByProps({ title: 'New Window' })
+
+		// execute that slider's handleCheckChange
+		autoloadSlider.props.handleCheckChange(true)
+
+		// capture the changes
+		const endState = testRenderer.toJSON()
+
+		// compare the snapshots
+		expect(endState).toMatchSnapshot()
+
+		expect(startState).not.toEqual(endState)
+	})
+
+	test('IFrameProperties component changes Zoom', () => {
+		const testRenderer = TestRenderer.create(
+			<IFrameProperties
+				content={{
+					controls: '',
+					border: false,
+					initialZoom: 1
+				}}
+			/>,
+			testRendererOptions
+		)
+
+		const startState = testRenderer.toJSON()
+		expect(startState).toMatchSnapshot()
+
+		// locate the slider component for border input
+		const testInstance = testRenderer.root
+		const autoloadSlider = testInstance.findByProps({ title: 'Zoom' })
+
+		// execute that slider's handleCheckChange
+		autoloadSlider.props.handleCheckChange(true)
+
+		// capture the changes
+		const endState = testRenderer.toJSON()
+
+		// compare the snapshots
+		expect(endState).toMatchSnapshot()
+
+		expect(startState).not.toEqual(endState)
 	})
 })

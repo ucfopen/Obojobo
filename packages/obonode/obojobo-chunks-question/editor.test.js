@@ -181,7 +181,7 @@ describe('Question editor', () => {
 
 		model.title = null
 		expect(questionMock.getNavItem(model)).toEqual({
-			label: 'Practice Question 0',
+			label: 'Question 0',
 			path: ['#obo-testId'],
 			type: 'sub-link'
 		})

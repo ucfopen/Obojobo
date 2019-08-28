@@ -1,0 +1,19 @@
+{
+  "packages": [
+    "packages/**/*"
+  ],
+  "version": "5.0.1",
+  "command": {
+    "command": {
+      "run": {
+        "npmClient": "yarn"
+      }
+    },
+    "version": {
+      "allowBranch": [
+        "master",
+        "dev/*"
+      ]
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-math-equation",
-	"version": "1.0.0",
+	"version": "5.0.1",
 	"license": "AGPL-3.0-only",
 	"description": "MathEquation content chunk for Obojobo",
 	"scripts": {
@@ -9,7 +9,8 @@
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
-		"prettier:run": "prettier --write '**/*.{js,scss}'"
+		"prettier:run": "prettier --write '**/*.{js,scss}'",
+		"precommit": "lint-staged"
 	},
 	"lint-staged": {
 		"**/*.js": [
@@ -31,7 +32,7 @@
 	},
 	"dependencies": {
 		"katex": "^0.9.0",
-		"obojobo-lib-utils": "1.0.0"
+		"obojobo-lib-utils": "^5.0.1"
 	},
 	"devDependencies": {
 		"lint-staged": "^6.1.1"

@@ -1,0 +1,19 @@
+{
+	"id": "6b0dc582-4758-47e2-af17-1c920d59d255",
+	"type": "ObojoboDraft.Chunks.Text",
+	"content": {
+		"textGroup": [
+			{
+				"data": {
+					"align": 0,
+					"indent": 0
+				},
+				"text": {
+					"value": "The Obojobo Visual Editor is a quick, intuitive editor to help you make gorgeous Obojobo Modules. This tutorial will teach you how to leverage all of the capabilities provided by the Obojobo Visual Editor to rapidly build your own custom Obojobo Modules.",
+					"styleList": []
+				}
+			}
+		]
+	},
+	"children": []
+}

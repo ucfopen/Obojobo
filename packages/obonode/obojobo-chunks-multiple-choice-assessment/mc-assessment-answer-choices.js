@@ -25,6 +25,7 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 					{isAnswerScored ? (
 						<MCAssessmentResults
 							score={this.props.score}
+							type={this.props.type}
 							isTypePickAll={isTypePickAll}
 							correctLabel={this.props.correctLabel}
 							incorrectLabel={this.props.incorrectLabel}
@@ -43,6 +44,7 @@ export default class MCAssessmentAnswerChoices extends React.Component {
 							responseType={responseType}
 							isShowingExplanation
 							mode={this.props.mode}
+							type={this.props.type}
 							questionSubmitted={isAnswerScored}
 							choiceIndex={index}
 						/>

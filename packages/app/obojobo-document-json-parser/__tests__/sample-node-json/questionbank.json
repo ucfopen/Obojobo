@@ -1,0 +1,79 @@
+{
+	"id": "292faef6-debd-4b7e-b532-7f617551d04e",
+	"type": "ObojoboDraft.Chunks.QuestionBank",
+	"content": {
+		"choose": "2",
+		"select": "random"
+	},
+	"children": [
+		{
+			"id": "0175d297-fc23-4084-97b8-e65dacf535e9",
+			"type": "ObojoboDraft.Chunks.Question",
+			"content": {},
+			"children": [
+				{
+					"id": "a2073f03-6b1a-41b7-836e-fb401b3042a9",
+					"type": "ObojoboDraft.Chunks.Text",
+					"content": {
+						"textGroup": [
+							{
+								"data": {
+									"indent": 0
+								},
+								"text": {
+									"value": "A sample question",
+									"styleList": []
+								}
+							}
+						]
+					},
+					"children": []
+				},
+				{
+					"id": "c5f8fba3-3725-4c0d-ad02-fb85000a39b5",
+					"type": "ObojoboDraft.Chunks.MCAssessment",
+					"content": {
+						"shuffle": true,
+						"responseType": "Pick One"
+					},
+					"children": [
+						{
+							"id": "181f3f66-9ce0-4cc1-bc21-fcf4cf6e9121",
+							"type": "ObojoboDraft.Chunks.MCAssessment.MCChoice",
+							"content": {
+								"score": 100
+							},
+							"children": [
+								{
+									"id": "7bd7191b-c804-4394-8883-4c08cd80afab",
+									"type": "ObojoboDraft.Chunks.MCAssessment.MCAnswer",
+									"content": {},
+									"children": [
+										{
+											"id": "cf4720a8-875d-4756-97e2-8fc7632b5f5e",
+											"type": "ObojoboDraft.Chunks.Text",
+											"content": {
+												"textGroup": [
+													{
+														"data": {
+															"indent": 0
+														},
+														"text": {
+															"value": "",
+															"styleList": []
+														}
+													}
+												]
+											},
+											"children": []
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -34,7 +34,7 @@ Array [
 				first_name = $[firstName],
 				last_name = $[lastName],
 				roles = $[roles]
-			RETURNING *
+			RETURNING id
 			",
   User {
     "createdAt": "mockNowDate",

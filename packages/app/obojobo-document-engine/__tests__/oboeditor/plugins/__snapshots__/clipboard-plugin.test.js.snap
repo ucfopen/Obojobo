@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClipboardPlugin createBlockFromText builds a TEXT_NODE 1`] = `
+Immutable.Record {
+  "data": Immutable.Map {},
+  "key": "0",
+  "nodes": Immutable.List [
+    Immutable.Record {
+      "data": Immutable.Map {},
+      "key": "1",
+      "nodes": Immutable.List [
+        Immutable.Record {
+          "data": Immutable.Map {
+            "indent": 0,
+          },
+          "key": "2",
+          "nodes": Immutable.List [
+            Immutable.Record {
+              "leaves": Immutable.List [
+                Immutable.Record {
+                  "marks": Immutable.Set [],
+                  "text": "First text line",
+                },
+              ],
+              "key": "3",
+            },
+          ],
+          "type": "ObojoboDraft.Chunks.Text.TextLine",
+        },
+        Immutable.Record {
+          "data": Immutable.Map {
+            "indent": 0,
+          },
+          "key": "4",
+          "nodes": Immutable.List [
+            Immutable.Record {
+              "leaves": Immutable.List [
+                Immutable.Record {
+                  "marks": Immutable.Set [],
+                  "text": "Second text line",
+                },
+              ],
+              "key": "5",
+            },
+          ],
+          "type": "ObojoboDraft.Chunks.Text.TextLine",
+        },
+      ],
+      "type": "ObojoboDraft.Chunks.Text",
+    },
+  ],
+  "type": "oboeditor.component",
+}
+`;

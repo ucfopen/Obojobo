@@ -11,11 +11,20 @@ import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
 jest.mock('src/scripts/oboeditor/util/clipboard-util')
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 jest.mock('src/scripts/oboeditor/util/editor-util')
+import EditorStore from 'src/scripts/oboeditor/stores/editor-store'
+jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
+	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
+}))
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 describe('File Menu', () => {
+	beforeEach(() => {
+		EditorStore.state.startingId = null
+		jest.clearAllMocks()
+	})
+	
 	test('File Menu node', () => {
 		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
 			{ draftId: "mockDraft" },

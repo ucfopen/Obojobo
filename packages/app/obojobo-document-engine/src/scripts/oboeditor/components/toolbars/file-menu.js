@@ -2,6 +2,7 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import ClipboardUtil from '../../util/clipboard-util'
+import EditorStore from '../stores/editor-store'
 import EditorUtil from '../../util/editor-util'
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 
@@ -59,6 +60,7 @@ class FileMenu extends React.Component {
 	saveModule(draftId) {
 		this.props.exportToJSON()
 		const json = this.props.model.flatJSON()
+		json.content.start = EditorStore.state.startingId
 
 		// deal with content
 		this.props.model.children.forEach(child => {

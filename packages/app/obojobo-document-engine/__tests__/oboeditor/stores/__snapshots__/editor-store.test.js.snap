@@ -11,6 +11,7 @@ Object {
   "editor:rebuildMenu": [Function],
   "editor:renamePage": [Function],
   "editor:setContext": [Function],
+  "editor:setStartPage": [Function],
 }
 `;
 
@@ -169,7 +170,7 @@ Object {
 
 exports[`EditorStore gotoItem sends triggers events and updates history 1`] = `
 Object {
-  "currentModel": Object {
+  "currentPageModel": Object {
     "id": "newItem",
     "processTrigger": [MockFunction],
     "showChildren": true,
@@ -189,7 +190,7 @@ Object {
 
 exports[`EditorStore gotoItem sends updates history with no previous item 1`] = `
 Object {
-  "currentModel": Object {
+  "currentPageModel": Object {
     "id": "newItem",
     "processTrigger": [MockFunction],
     "showChildren": true,
@@ -210,7 +211,7 @@ Object {
 exports[`EditorStore init builds state locked state 1`] = `
 Object {
   "context": "editor",
-  "currentModel": null,
+  "currentPageModel": null,
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
@@ -219,13 +220,15 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "settings": null,
+  "startingId": 12,
 }
 `;
 
 exports[`EditorStore init builds state open state 1`] = `
 Object {
   "context": "editor",
-  "currentModel": null,
+  "currentPageModel": null,
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
@@ -234,13 +237,15 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "settings": null,
+  "startingId": 12,
 }
 `;
 
 exports[`EditorStore init builds state with basic options 1`] = `
 Object {
   "context": "editor",
-  "currentModel": null,
+  "currentPageModel": null,
   "itemsByFullPath": Object {},
   "itemsById": Object {},
   "itemsByPath": Object {},
@@ -249,5 +254,26 @@ Object {
   "navTargetHistory": Array [],
   "navTargetId": null,
   "open": true,
+  "settings": null,
+  "startingId": null,
+}
+`;
+
+exports[`EditorStore init builds state with settings 1`] = `
+Object {
+  "context": "editor",
+  "currentPageModel": null,
+  "itemsByFullPath": Object {},
+  "itemsById": Object {},
+  "itemsByPath": Object {},
+  "locked": false,
+  "navItems": Object {},
+  "navTargetHistory": Array [],
+  "navTargetId": null,
+  "open": true,
+  "settings": Object {
+    "mockSetting": true,
+  },
+  "startingId": null,
 }
 `;

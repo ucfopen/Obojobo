@@ -1,5 +1,6 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
-import ParameterNode from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node'
+import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
+import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.QuestionBank.Settings'
@@ -42,17 +43,12 @@ const oboToSlate = node => {
 			object: 'block',
 			type: SETTINGS_NODE,
 			nodes: [
-				ParameterNode.helpers.oboToSlate({
-					name: 'choose',
-					value: '' + node.content.choose,
-					display: 'Choose'
-				}),
-				ParameterNode.helpers.oboToSlate({
-					name: 'select',
-					value: node.content.select,
-					display: 'Select',
-					options: SELECT_TYPES
-				})
+				TextParameter.helpers.oboToSlate(
+					'choose',
+					'' + (node.content.choose || Infinity),
+					'Choose'
+				),
+				SelectParameter.helpers.oboToSlate('select', node.content.select, 'Select', SELECT_TYPES)
 			]
 		}
 	]

@@ -1,18 +1,16 @@
-import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-import EditorUtil from '../util/editor-util'
-import ClipboardUtil from '../util/clipboard-util'
-import SubMenu from './sub-menu'
-import generateId from '../generate-ids'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-
 import './editor-nav.scss'
 // relies on styles from viewer
 import '../../viewer/components/nav.scss'
 
-import pageTemplate from '../documents/new-page.json'
-import assessmentTemplate from '../documents/new-assessment.json'
+import ClipboardUtil from '../util/clipboard-util'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import EditorStore from '../stores/editor-store'
+import EditorUtil from '../util/editor-util'
+import React from 'react'
+import SubMenu from './sub-menu'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import generatePage from '../documents/generate-page'
+import generateAssessment from '../documents/generate-assessment'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -24,7 +22,7 @@ class EditorNav extends React.Component {
 		this.state = this.props.navState
 	}
 
-	onClick(item) {
+	onNavItemClick(item) {
 		EditorUtil.gotoPath(item.fullPath)
 		this.setState({ navTargetId: item.id })
 	}
@@ -62,7 +60,7 @@ class EditorNav extends React.Component {
 									index={index}
 									isSelected={this.state.navTargetId === item.id}
 									list={list}
-									onClick={this.onClick.bind(this, item)}
+									onClick={this.onNavItemClick.bind(this, item)}
 								/>
 							)
 						}

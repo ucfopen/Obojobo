@@ -1,6 +1,6 @@
-import ScoreActions from './post-assessment/score-actions'
 // @TODO: Importing from the server code, we shouldn't do this:
 import AssessmentRubric from './assessment-rubric'
+import ScoreActions from './post-assessment/score-actions'
 
 const Adapter = {
 	construct(model, attrs) {

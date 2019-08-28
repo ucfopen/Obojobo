@@ -1,5 +1,10 @@
 {
 	"default": {
-		"excludeModules":[]
+		"excludeModules": []
+	},
+	"test": {
+		"excludeModules": [
+			"mockModule:mockExclude"
+		]
 	}
 }

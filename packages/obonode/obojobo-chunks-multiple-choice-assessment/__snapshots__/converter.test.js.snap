@@ -4,6 +4,7 @@ exports[`MCAssessment Converter oboToSlate converts an OboNode to a Slate node 1
 Object {
   "data": Object {
     "content": Object {},
+    "questionType": "mock-question-type",
   },
   "key": "mockKey",
   "nodes": Array [
@@ -26,23 +27,18 @@ Object {
               "pick-one",
               "pick-all",
             ],
-            "type": "type-select",
           },
-          "isVoid": true,
           "object": "block",
-          "type": "Parameter",
+          "type": "oboeditor.select-parameter",
         },
         Object {
           "data": Object {
             "checked": undefined,
             "display": "Shuffle",
             "name": "shuffle",
-            "options": undefined,
-            "type": "type-toggle",
           },
-          "isVoid": true,
           "object": "block",
-          "type": "Parameter",
+          "type": "oboeditor.toggle-parameter",
         },
       ],
       "object": "block",

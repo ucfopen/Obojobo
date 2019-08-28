@@ -9,10 +9,6 @@ const { Prompt } = Common.components.modal
 const { Button } = Common.components
 
 class YouTube extends React.Component {
-	constructor(props) {
-		super(props)
-	}
-
 	showSourceModal() {
 		ModalUtil.show(
 			<Prompt
@@ -44,13 +40,12 @@ class YouTube extends React.Component {
 		)
 	}
 
-	renderVideo() {
-		const content = this.props.node.data.get('content')
+	renderVideo(videoId) {
 		return (
 			<iframe
-				src={'https://www.youtube.com/embed/' + content.videoId}
+				src={'https://www.youtube.com/embed/' + videoId}
 				frameBorder="0"
-				allowFullScreen="true"
+				allowFullScreen={true}
 			/>
 		)
 	}
@@ -60,7 +55,7 @@ class YouTube extends React.Component {
 
 		return (
 			<div className={'obojobo-draft--chunks--you-tube viewer pad'}>
-				{content.videoId ? this.renderVideo() : this.renderNoVideo()}
+				{content.videoId ? this.renderVideo(content.videoId) : this.renderNoVideo()}
 				<Button onClick={this.showSourceModal.bind(this)}>Edit</Button>
 			</div>
 		)
