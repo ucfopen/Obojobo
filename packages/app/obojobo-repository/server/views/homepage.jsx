@@ -88,7 +88,7 @@ const Homepage = props =>
 						<div className="ucf-open-logo">UCF Open</div>
 					</a>
 				</div>
-				<div className="ucf-open-desc">Obojobo&trade; is a UCF Open Source project.</div>
+				<div className="ucf-open-desc">Obojobo is a UCF Open Source project.</div>
 				<div className="ucf-open-links">
 					<a href="https://ucfopen.github.io">About UCFOpen</a>
 					<a href="https://github.com/ucfopen">UCFOpen on Github</a>
@@ -97,7 +97,7 @@ const Homepage = props =>
 			</div>
 
 			<div className="copyright">
-				<span className="copy">Obojobo&trade; &copy; <span id="copyright-date">{ currentYear }</span> University of Central Florida</span>
+				<span className="copy">&copy; <span id="copyright-date">{ currentYear }</span> University of Central Florida</span>
 			</div>
 		</footer>
 
