@@ -9,17 +9,17 @@ const RepositoryNav = (props) =>
 		<nav className="repository--nav">
 			<a href="/"><div className="repository--nav--logo">Obojobo</div></a>
 			<div className="repository--nav--links--link"><a href="/library">Module Library</a></div>
+			<div className="repository--nav--links--link"><a href="/dashboard">Dashboard</a></div>
 			{ /* <Search /> */ }
 			{ props.userId !== 0 ?
 				<div className="repository--nav--current-user">
 					<div className="repository--nav--current-user--name">{props.displayName}</div>
-					<div className="repository--nav--current-user--link"><a href="/dashboard">Your Dashboard</a></div>
 					<Avatar id={props.userId} avatarUrl={props.avatarUrl} notice={props.noticeCount} className="repository--nav--current-user--avatar" />
 					<div className="repository--nav--current-user--menu">
 						<div className="repository--nav--current-user--link"><a href="/profile/logout">Log Out</a></div>
 					</div>
 				</div>
-				: null
+				: <div className="repository--nav--links--link"><a href="/login">Log in</a></div>
 			}
 		</nav>
 	</div>
