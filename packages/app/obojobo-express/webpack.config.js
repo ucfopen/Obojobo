@@ -73,7 +73,18 @@ module.exports =
 							},
 							'sass-loader'
 						]
-					}
+					},
+					{
+						test: /\.(jpe?g|png)$/i,
+						use: [
+							{
+								loader: 'responsive-loader',
+								options: {
+									adapter: require('responsive-loader/sharp')
+								},
+							},
+						],
+					},
 				]
 			},
 			externals: {

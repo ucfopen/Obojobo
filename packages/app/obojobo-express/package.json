@@ -46,8 +46,8 @@
 		"body-parser": "^1.17.1",
 		"caliper-js-public": "https://github.com/IMSGlobal/caliper-js.git#v1.0.0",
 		"compression": "^1.6.2",
-		"consolidate": "^0.15.1",
 		"connect-pg-simple": "^3.1.2",
+		"consolidate": "^0.15.1",
 		"debug": "~4.1.1",
 		"debug-logger": "^0.4.1",
 		"ejs": "^2.5.7",
@@ -68,6 +68,7 @@
 		"obojobo-lib-utils": "^5.0.1",
 		"pg-promise": "^5.5.0",
 		"react-transition-group": "^2.5.3",
+		"responsive-loader": "^1.2.0",
 		"serve-favicon": "~2.5.0",
 		"sharp": "0.21.0",
 		"uuid": "^3.3.2"

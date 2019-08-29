@@ -10,6 +10,13 @@ const {
 	getCurrentUser
 } = require('obojobo-express/express_validators')
 
+router
+	.route('/')
+	.get(getCurrentUser)
+	.get((req, res) => {
+		res.render('homepage.jsx', {currentUser: req.currentUser})
+	})
+
 // returns images for a module
 router
 	.route('/library/module-icon/:moduleId')
@@ -17,7 +24,7 @@ router
 		const pattern = GeoPattern.generate(req.params.moduleId)
 		res.set('Cache-Control', 'public, max-age=31557600'); // one year
 		res.setHeader('Content-Type', 'image/svg+xml');
-		return res.send(pattern.toString())
+		res.send(pattern.toString())
 	})
 
 
@@ -25,10 +32,7 @@ router
 	.route('/login')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		const props = {
-			currentUser: req.currentUser
-		}
-		res.render('login-server-view.jsx', props)
+		res.render('login-server-view.jsx', {currentUser: req.currentUser})
 	})
 
 router
