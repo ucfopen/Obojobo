@@ -2,6 +2,11 @@ import Common from 'Common'
 
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
+const domParser = new DOMParser()
+
+const XML_MODE = 'xml'
+const JSON_MODE = 'json'
+const VISUAL_MODE = 'visual'
 
 const getFlatList = function(item) {
 	let list = []
@@ -128,7 +133,50 @@ const EditorUtil = {
 				pageId
 			}
 		})
-	}
+	},
+	getTitleFromXML(draftModel) {
+		try {
+			const doc = domParser.parseFromString(draftModel, 'application/xml')
+			let els = doc.getElementsByTagName('Module')
+			if (els.length === 0) {
+				els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
+			}
+			if (els.length > 0) {
+				const el = els[0]
+				const title = el.getAttribute('title')
+				if (!this.isEmptyString(title)) return title
+			}
+
+			return '(Unnamed Module)'
+		} catch (err) {
+			// eslint-disable-next-line no-console
+			console.error(err)
+			return '(Unnamed Module)'
+		}
+	},
+	getTitleFromJSON(draftModel) {
+		try {
+			const json = JSON.parse(draftModel)
+			if(!json.content || this.isEmptyString(json.content.title)) return '(Unnamed Module)'
+
+			return json.content.title
+		} catch (err) {
+			// eslint-disable-next-line no-console
+			console.error(err)
+			return '(Unnamed Module)'
+		}
+	},
+	isEmptyString(string) {
+		return !string || !/[^\s]/.test(string)
+	},
+	getTitleFromString(draftModel, mode) {
+		switch(mode) {
+			case XML_MODE:
+				return this.getTitleFromXML(draftModel)
+			default:
+				return this.getTitleFromJSON(draftModel)
+		}
+	},
 }
 
 export default EditorUtil

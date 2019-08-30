@@ -26,7 +26,6 @@ import MCAnswer from 'obojobo-chunks-multiple-choice-assessment/MCAnswer/editor'
 import MCAssessment from 'obojobo-chunks-multiple-choice-assessment/editor'
 import MCChoice from 'obojobo-chunks-multiple-choice-assessment/MCChoice/editor'
 import MCFeedback from 'obojobo-chunks-multiple-choice-assessment/MCFeedback/editor'
-import MarkToolbar from './toolbar'
 import MathEquation from 'obojobo-chunks-math-equation/editor'
 import Page from 'obojobo-pages-page/editor'
 import Question from 'obojobo-chunks-question/editor'
@@ -43,9 +42,7 @@ import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
 import YouTube from 'obojobo-chunks-youtube/editor'
 
-const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
-const { Button } = Common.components
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -94,6 +91,8 @@ class PageEditor extends React.Component {
 		this.state = {
 			value: Value.fromJSON(json)
 		}
+
+		this.saveModule = this.saveModule.bind(this)
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -108,7 +107,6 @@ class PageEditor extends React.Component {
 
 		// Save changes when switching pages
 		if (prevProps.page.id !== this.props.page.id) {
-			console.log(this.props.page.id)
 			this.exportToJSON(prevProps.page, prevState.value)
 			this.setState({ value: Value.fromJSON(this.importFromJSON()) })
 		}
@@ -126,16 +124,16 @@ class PageEditor extends React.Component {
 		if (this.props.page === null) return this.renderEmpty()
 
 		return (
-			<div
-				className={'component obojobo-draft--modules--module editor--page-editor'} role="main">
+			<div className={'component obojobo-draft--modules--module editor--page-editor'} role="main">
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
 						getEditor={this.getEditor.bind(this)}
 						model={this.props.model}
 						draftId={this.props.draftId}
-						exportToJSON={this.exportToJSON.bind(this, this.props.page, this.state.value)}/>
-					<ContentToolbar getEditor={this.getEditor.bind(this)}/>
+						onSave={this.saveModule}
+					/>
+					<ContentToolbar getEditor={this.getEditor.bind(this)} />
 				</div>
 				<Editor
 					className={'component obojobo-draft--pages--page'}
@@ -171,6 +169,43 @@ class PageEditor extends React.Component {
 		}
 
 		this.setState({ value: change.value })
+	}
+
+	saveModule(draftId) {
+		this.exportToJSON(this.props.page, this.state.value)
+		const json = this.props.model.flatJSON()
+		json.content.start = EditorStore.state.startingId
+
+		// deal with content
+		this.props.model.children.forEach(child => {
+			let contentJSON = {}
+
+			switch (child.get('type')) {
+				case CONTENT_NODE:
+					contentJSON = child.flatJSON()
+
+					for (const item of Array.from(child.children.models)) {
+						contentJSON.children.push({
+							id: item.get('id'),
+							type: item.get('type'),
+							content: item.get('content'),
+							children: item.get('children')
+						})
+					}
+					break
+
+				case ASSESSMENT_NODE:
+					contentJSON.id = child.get('id')
+					contentJSON.type = child.get('type')
+					contentJSON.children = child.get('children')
+					contentJSON.content = child.get('content')
+					break
+			}
+
+			json.children.push(contentJSON)
+		})
+
+		return APIUtil.postDraft(draftId, JSON.stringify(json))
 	}
 
 	exportToJSON(page, value) {

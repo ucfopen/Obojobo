@@ -112,7 +112,7 @@ const FileToolbar = props => {
 			<FileMenu
 				model={props.model}
 				draftId={props.draftId}
-				exportToJSON={props.exportToJSON}/>
+				onSave={props.onSave}/>
 			<DropDownMenu menu={editMenu} />
 			<DropDownMenu menu={viewMenu}/>
 			<DropDownMenu menu={insertMenu}/>

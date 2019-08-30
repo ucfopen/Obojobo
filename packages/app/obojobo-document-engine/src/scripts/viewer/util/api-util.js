@@ -9,13 +9,13 @@ const processJsonResults = res => {
 }
 
 const APIUtil = {
-	get(endpoint) {
+	get(endpoint, format) {
 		return fetch(endpoint, {
 			method: 'GET',
 			credentials: 'include',
 			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
+				Accept: `application/${format}`,
+				'Content-Type': `application/${format}`
 			}
 		})
 	},
@@ -30,6 +30,20 @@ const APIUtil = {
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
+			}
+		})
+	},
+
+	postWithFormat(endpoint, body, format) {
+		if (!body) body = '{}'
+
+		return fetch(endpoint, {
+			method: 'POST',
+			credentials: 'include',
+			body: body,
+			headers: {
+				Accept: format,
+				'Content-Type': format
 			}
 		})
 	},
@@ -81,15 +95,15 @@ const APIUtil = {
 	},
 
 	getDraft(id) {
-		return APIUtil.get(`/api/drafts/${id}`).then(processJsonResults)
+		return APIUtil.get(`/api/drafts/${id}`, 'json').then(processJsonResults)
 	},
 
-	getFullDraft(id) {
-		return APIUtil.get(`/api/drafts/${id}/full`).then(processJsonResults)
+	getFullDraft(id, format='json') {
+		return APIUtil.get(`/api/drafts/${id}/full`, format).then(res => res.text())
 	},
 
 	getVisitSessionStatus(draftId) {
-		return APIUtil.get(`/api/visits/${draftId}/status`).then(processJsonResults)
+		return APIUtil.get(`/api/visits/${draftId}/status`, 'json').then(processJsonResults)
 	},
 
 	requestStart(visitId, draftId) {
@@ -140,8 +154,8 @@ const APIUtil = {
 		}).then(processJsonResults)
 	},
 
-	postDraft(id, draftJSON) {
-		return APIUtil.post(`/api/drafts/${id}`, draftJSON).then(processJsonResults)
+	postDraft(id, draftString, format='application/json') {
+		return APIUtil.postWithFormat(`/api/drafts/${id}`, draftString, format).then(processJsonResults)
 	},
 
 	createNewDraft() {
@@ -153,7 +167,7 @@ const APIUtil = {
 	},
 
 	getAllDrafts() {
-		return APIUtil.get(`/api/drafts`).then(processJsonResults)
+		return APIUtil.get(`/api/drafts`, 'json').then(processJsonResults)
 	},
 }
 
