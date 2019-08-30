@@ -18,6 +18,35 @@
 					},
 					"children": [
 						{
+							"id": "13979ccb-68b3-4051-a8ee-fe36dseff3fb",
+							"type": "ObojoboDraft.Chunks.Question",
+							"content": {},
+							"children": [
+								{
+									"id": "124a8fc4-d336-4f0f-9d94-4048b74f523f",
+									"type": "ObojoboDraft.Chunks.Text",
+									"content": {
+										"textGroup": [
+											{
+												"text": {
+													"value": "What is 2+2 = ?",
+													"styleList": []
+												},
+												"data": null
+											}
+										]
+									},
+									"children": []
+								},
+								{
+									"id": "95be34a8-5949-4498-8e84-53acb5dl789",
+									"type": "ObojoboDraft.Chunks.NumericAssessment",
+									"children": []
+								}
+							]
+						},
+
+						{
 							"id": "95be34a8-5949-4498-8e84-53acb5d07789",
 							"type": "ObojoboDraft.Chunks.Heading",
 							"content": {
