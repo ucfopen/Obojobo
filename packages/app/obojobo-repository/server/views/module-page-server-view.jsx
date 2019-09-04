@@ -27,7 +27,7 @@ const ModulePage = (props) =>
 			<ModuleImage id={props.module.draftId} />
 		</RepositoryBanner>
 
-		<section className="repository--module--content">
+		<section className="repository--main-content">
 			<div >Created by <b>{props.owner.firstName} {props.owner.lastName}</b> on <b>{moment(props.module.createdAt).format('ll')}</b> and updated {moment(props.module.updatedAt).fromNow()}.</div>
 
 			<h2>Use this Module in your Canvas Course</h2>

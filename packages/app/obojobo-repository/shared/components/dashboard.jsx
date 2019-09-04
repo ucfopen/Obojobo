@@ -77,7 +77,7 @@ const Dashboard = props =>{
 		<div className="repository--section-wrapper">
 			<section className="repository--main-content">
 				<div className="repository--main-content--control-bar">
-					<MultiButton title="Create a New Module...">
+					<MultiButton title="New Module">
 						<Button onClick={() => {props.createNewModule(false)}}>New XML Module</Button>
 						<Button onClick={() => {props.createNewModule(false)}}>New Visual Editor Module</Button>
 						<Button onClick={() => {props.createNewModule(true)}}>New Sample / Tutorial</Button>

@@ -40,6 +40,11 @@ $search-input-height: 30px;
 		&:focus{
 			outline-width: 0;
 		}
+
+		@include mq($from: zero, $until: tablet) {
+			margin-left: 10px;
+			margin-right: 10px;
+		}
 	}
 
 }

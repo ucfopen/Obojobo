@@ -20,7 +20,7 @@ const Homepage = props =>
 			<div className="computers">
 				<div className="ipad"></div>
 			</div>
-			<h1>Next Generation Course Content</h1>
+			<h1>Next Generation Course</h1>
 		</section>
 
 		<div id="content" className="content">
@@ -40,7 +40,7 @@ const Homepage = props =>
 					<h1>Built for the Future.</h1>
 					<h2>Stay on the leading edge.</h2>
 					<p>
-						Every paragraph in Obojobo&trade;Next is delivered by a modular plugin-like library. Things like images, math equations, practice questions, widgets, videos, etc are availible now. This means Obojobo&trade;Next is a future-proof architecture that will deliver the next big things when they arrive.
+						Every paragraph in ObojoboNext is delivered by a modular plugin-like library. Things like images, math equations, practice questions, widgets, videos, etc are availible now. This means ObojoboNext is a future-proof architecture that will deliver the next big things when they arrive.
 					</p>
 				</div>
 			</section>
@@ -72,9 +72,9 @@ const Homepage = props =>
 			<section id="step-6" className="step step-6">
 				<div className="step-items-container">
 					<h1>Open Source First.</h1>
-					<h2>Afterall, we're all in this together.</h2>
+					<h2>We're all in this together.</h2>
 					<p>
-						Teaching and learning are the critical path to a better tomorrow.  A tomorrow we can all contribute to. Check out <a href="https://github.com/ucfopen/Obojobo">Obojobo&trade; on Github</a>!
+						Teaching and learning are the critical path to a better tomorrow.  A tomorrow we can all contribute to. Check out <a href="https://github.com/ucfopen/Obojobo">ObojoboNext on Github</a>!
 					</p>
 				</div>
 			</section>

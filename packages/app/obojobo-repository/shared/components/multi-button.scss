@@ -2,22 +2,25 @@
 
 .repository--button.repository--multi-button{
 	$size: 30px;
-	display: inline-block;
 	position: relative;
 	border: 1px solid $color-action;
-
+	min-height: 42px;
+	padding-left: 43px;
+	padding-top: 14px;
+	min-width: 135px;
+	margin-right: 10px;
 
 	.child-buttons{
 		display: none;
 	}
 
 	.icon{
-		display: inline-block;
-		position: relative;
+		position: absolute;
 		height: $size;
 		width: $size;
-		margin: -2px 7px -2px -10px;
-		vertical-align: middle;
+		left: 5px;
+		top: 5px;
+
 
 		svg {
 
@@ -49,7 +52,7 @@
 		.child-buttons{
 			display: block;
 			position: absolute;
-			top: 37px;
+			top: 38px;
 			width: calc(100% + 2px);;
 			left: 0px;
 			box-sizing: border-box;

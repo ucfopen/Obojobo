@@ -122,6 +122,10 @@
 	justify-content: flex-start;
 
 	@include with-bottom-border();
+
+	@include mq($from: zero, $until: mobileL) {
+		justify-content: space-around;
+	}
 }
 
 .repository--item-list--collection--item--newline-container{
@@ -129,6 +133,28 @@
 	margin: 20px 10px;
 	text-align: center;
 }
+
+.repository--main-content{
+	box-sizing: border-box;
+	max-width: 800px;
+	margin: 0 auto;
+
+	@include mq($from: zero, $until: tablet) {
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+
+	code{
+		background-color: #eee;
+		padding: 2px;
+	}
+
+	img{
+		max-width: 100%;
+	}
+}
+
+
 
 // ==================== LIBRARY
 
@@ -154,15 +180,7 @@
 
 }
 
-.repository--module--content{
-	max-width: 800px;
-	margin: 0 auto;
 
-	code{
-		background-color: #eee;
-		padding: 2px;
-	}
-}
 
 footer{
 	height: 150px;

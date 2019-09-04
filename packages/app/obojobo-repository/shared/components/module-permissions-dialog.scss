@@ -1,8 +1,9 @@
 @import '../../client/css/defaults';
 
 .module-permissions-dialog{
-	min-width: 400px;
+	max-width: 400px;
 	text-align: center;
+	width: 80vw;
 
 	.repository--module-icon--image{
 		width: 25px;
@@ -68,4 +69,24 @@
 		}
 	}
 
+	.button-things{
+		text-align: left;
+		margin: 40px 10px;
+
+		display: grid;
+		grid-template-columns: 100px auto;
+		grid-gap: 10px;
+		align-items: center;
+
+		.label{
+			font-size: .8em;
+		}
+
+		.repository--button {
+			min-width: 100px;
+			display: inline-block;
+			text-align: center;
+			margin-right: 10px;
+		}
+	}
 }

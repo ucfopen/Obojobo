@@ -23,6 +23,18 @@
 	align-content: flex-start;
 	align-items: center;
 	font-size: .85em;
+
+	@include mq($from: zero, $until: mobileS) {
+		font-size: .65em;
+	}
+
+	@include mq($from: mobileS, $until: mobileL) {
+		font-size: .70em;
+	}
+
+	@include mq($from: mobileL, $until: tablet) {
+		font-size: .75em;
+	}
 }
 
 .repository--nav a:link,
@@ -44,7 +56,23 @@
 	height: 25px;
 	overflow: hidden;
 	text-indent: -1000px;
-	width: 130px;
+	width: 100px;
+	margin:0 20px;
+
+	@include mq($from: zero, $until: mobileS) {
+		margin:0 10px;
+		width: 65px;
+	}
+
+	@include mq($from: mobileS, $until: mobileL) {
+		margin:0 10px;
+		width: 70px;
+	}
+
+	@include mq($from: mobileL, $until: tablet) {
+		margin:0 10px;
+		width: 75px;
+	}
 }
 
 
@@ -84,4 +112,10 @@
 	background: #fff;
 	padding: 20px;
 	border-radius: 3px;
+}
+
+// if the last child is a link (login link instead of logged in user avatar)
+// space it from the right side of the window
+.repository--nav--links--link:last-child{
+	padding-right: 20px;
 }
