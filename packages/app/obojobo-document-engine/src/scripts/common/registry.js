@@ -4,6 +4,8 @@ let registeredToolbarItems
 let toolbarItems
 let variableHandlers
 
+const noop = () => {}
+
 class _Registry {
 	init() {
 		items = new Map()
@@ -46,34 +48,43 @@ class _Registry {
 
 	registerModel(className, opts = {}) {
 		const item = items.get(className)
+
+		// combine opts with existing item if set
 		if (item) opts = Object.assign(opts, item)
 
+		// combine defaults with opts (and existing item)
 		opts = Object.assign(
 			{
 				type: null,
 				default: false,
 				variables: {},
 				templateObject: '',
-				init() {}
+				init: noop
 			},
 			opts
 		)
 
+		// bind cloneBlankNode to the combined templateObject value
 		opts.cloneBlankNode = this.cloneBlankNode.bind(this, opts.templateObject)
 
+		// save/update the final combined options on items
 		items.set(className, opts)
 
+		// if combined ops has default set to true, store it in the default for this type
 		if (opts.default) {
 			defaults.set(opts.type, className)
 		}
 
+		// run init if it was set
 		opts.init()
 
+		// store variable handlers
 		for (const variable in opts.variables) {
 			const cb = opts.variables[variable]
 			variableHandlers.set(variable, cb)
 		}
 
+		// return this for chaining
 		return this
 	}
 
