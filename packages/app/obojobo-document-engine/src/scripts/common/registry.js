@@ -40,33 +40,28 @@ class _Registry {
 		return this
 	}
 
+	cloneBlankNode(templateObject) {
+		return JSON.parse(JSON.stringify(templateObject))
+	}
+
 	registerModel(className, opts = {}) {
 		const item = items.get(className)
 		if (item) opts = Object.assign(opts, item)
-
-		items.set(className, opts)
 
 		opts = Object.assign(
 			{
 				type: null,
 				default: false,
-				insertItem: null,
-				componentClass: null,
-				commandHandler: null,
 				variables: {},
-				init() {},
-				// editor
-				// pull out to editor registry eventually
-				name: '',
-				icon: null,
-				isInsertable: false,
-				slateToObo: null,
-				oboToSlate: null,
-				plugins: null,
-				supportsChildren: false
+				templateObject: '',
+				init() {}
 			},
 			opts
 		)
+
+		opts.cloneBlankNode = this.cloneBlankNode.bind(this, opts.templateObject)
+
+		items.set(className, opts)
 
 		if (opts.default) {
 			defaults.set(opts.type, className)
