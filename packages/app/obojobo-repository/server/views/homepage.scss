@@ -1,3 +1,4 @@
+@import '../../client/css/defaults';
 
 /* global element styles*/
 a {
@@ -122,7 +123,6 @@ header .header-container nav > ul > li > ul {
 	background: #5e5e5e;
 	position: absolute;
 	right: -1px;
-	/*top: 51px;*/
 	display: none;
 	background: white;
 	box-shadow: 0 2px 2px rgba(0, 0, 0, .5);
@@ -197,7 +197,6 @@ header .header-container nav > ul > li > ul > li a:hover {
 
 .step {
 	width: 100%;
-	height: 400px;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	position: relative;
@@ -207,6 +206,7 @@ header .header-container nav > ul > li > ul > li a:hover {
 	width: 366px;
 	margin: 0 auto;
 	padding-top: 75px;
+	padding-bottom: 20px;
 }
 
 .step .step-items-container h1 {
@@ -354,25 +354,17 @@ header .header-container nav > ul > .help > ul {
 }
 
 /* responsive */
-@media (min-width: 1500px) {
+@include mq($from: wide) {
 	.hero {
 		background-size: 100% 658px;
 	}
 }
 
-/* Large desktop */
-@media (min-width: 1200px) {
-	.hero h1 {
-		font-size: 65pt;
-	}
-}
-
-@media (max-width: 1105px) and (min-width: 980px) {
+@include mq($from: desktop) {
 	.step .step-items-container {
 		width: 336px;
 	}
 
-	/* 90% */
 	.step-1 {
 		background-size: 466px;
 	}
@@ -383,7 +375,7 @@ header .header-container nav > ul > .help > ul {
 		background-size: 217px;
 	}
 	.step-4 {
-		background-size: 322px; /* smaller */
+		background-size: 322px;
 	}
 	.step-5 {
 		background-size: 282px;
@@ -413,8 +405,7 @@ header .header-container nav > ul > .help > ul {
 	}
 }
 
-/* Portrait tablet to landscape and desktop */
-@media (max-width: 1025px) {
+@include mq($until: desktop) {
 	.hero {
 		height: 560px;
 	}
@@ -445,7 +436,6 @@ header .header-container nav > ul > .help > ul {
 	}
 
 	.step {
-		height: 320px;
 		width: auto;
 	}
 
@@ -466,7 +456,6 @@ header .header-container nav > ul > .help > ul {
 	.step-3,
 	.step-5 {
 		padding-left: 50%;
-		/*background-position: calc(100% - 70px);*/
 		background-position: 80%;
 	}
 	.step-2,
@@ -488,7 +477,6 @@ header .header-container nav > ul > .help > ul {
 		margin-right: -350px;
 	}
 
-	/* 70% */
 	.step-1 {
 		background-size: 363px;
 	}
@@ -506,12 +494,12 @@ header .header-container nav > ul > .help > ul {
 		background-size: 219px;
 	}
 	.step-6 {
-		background-size: 493px; /* smaller */
+		background-size: 493px;
 	}
 }
 
-/* Landscape phone to portrait tablet */
-@media (max-width: 767px) {
+
+@include mq($until: tablet) {
 	header {
 		height: auto;
 	}
@@ -617,8 +605,8 @@ header .header-container nav > ul > .help > ul {
 	}
 }
 
-/* Landscape phones and down */
-@media (max-width: 480px) {
+
+@include mq($from: zero, $until: mobileL) {
 	.hero {
 		height: 215px;
 		margin-bottom: 170px;

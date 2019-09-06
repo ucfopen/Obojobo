@@ -20,22 +20,24 @@ const ModuleOptionsDialog = props => (
 			<Button className="close-button" onClick={props.onClose}>X</Button>
 		</div>
 		<h1 className="title">Module Options</h1>
-		<div className="sub-title">Preview, share, download and more...</div>
 		<div className="button-things">
 				<ButtonLink url={`/preview/${props.draftId}`} target="_blank" >Preview</ButtonLink>
-				<div className="label">Try out this module.</div>
+				<div className="label">View with preview controls.</div>
 
 				<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">Edit</ButtonLink>
-				<div className="label">Write, edit, and update content.</div>
+				<div className="label">Write, edit, and update.</div>
 
 				<Button className="new-button" onClick={() => {props.showModulePermissions(props)}}>Share</Button>
-				<div className="label">Add or Remove Collaborators.</div>
+				<div className="label">Add or remove collaborators.</div>
 
 				<Button className="new-button" onClick={() => {downloadDocument(props.draftId, props.editor === 'visual' ? 'json' : 'xml')}}>Download</Button>
-				<div className="label">Grab a copy for yourself.</div>
+				<div className="label">Download a copy.</div>
+
+				<ButtonLink url={`/library/${props.draftId}`} target="_blank" >Public Page</ButtonLink>
+				<div className="label">Visit this module's public page.</div>
 
 				<Button className="new-button" onClick={() => {deleteModule(props.title, props.draftId, props.deleteModule)}}>Delete</Button>
-				<div className="label">Say goodbye.</div>
+				<div className="label">Say farewell.</div>
 
 		</div>
 		<Button className="done-button secondary-button" onClick={props.onClose}>Close</Button>

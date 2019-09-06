@@ -20,7 +20,7 @@ const Homepage = props =>
 			<div className="computers">
 				<div className="ipad"></div>
 			</div>
-			<h1>Next Generation Course</h1>
+			<h1>The Future of Course Content</h1>
 		</section>
 
 		<div id="content" className="content">
