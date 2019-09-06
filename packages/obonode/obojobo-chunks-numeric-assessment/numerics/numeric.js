@@ -1,5 +1,6 @@
 import { INPUT_TYPE_INVALID } from './types/input-types'
 import { MATCH_NONE } from '../entry/match-types'
+import Big from '../big'
 
 /**
  * The result of parsing a string for a given numeric class
@@ -146,7 +147,7 @@ export default class Numeric {
 	 * @param {string} valueString
 	 * @return {number} 0
 	 */
-	static getNumDigits(valueString) {
+	static getNumDecimalDigits(valueString) {
 		return 0
 	}
 
@@ -164,8 +165,8 @@ export default class Numeric {
 	 */
 	static isValidUnit(unitString) {
 		if (!unitString) return true
-		if (unitString.indexOf(' ') > -1) return false
-		return /^[^0-9,\.,\/].*/.test(unitString)
+		// if (unitString.indexOf(' ') > -1) return false
+		return /^[^0-9,\.,\/,\^].*/.test(unitString)
 	}
 
 	/**
@@ -298,6 +299,13 @@ export default class Numeric {
 	}
 
 	/**
+	 * @alias getStringWithUnit
+	 */
+	toString() {
+		return this.getStringWithUnit()
+	}
+
+	/**
 	 * Determine if a given Big instance is equal to this instance
 	 * @param {Big} bigValue
 	 * @return {boolean}
@@ -337,8 +345,8 @@ export default class Numeric {
 	/**
 	 * @return {boolean} The number of digits this value contains
 	 */
-	get numDigits() {
-		return this.constructor.getNumDigits(this.string)
+	get numDecimalDigits() {
+		return this.constructor.getNumDecimalDigits(this.string)
 	}
 
 	/**

@@ -62,7 +62,7 @@ export default class Scientific extends Numeric {
 	 * Scientific.getInputType("6.02e23") //"e"
 	 * Scientific.getInputType("6.02x10^23") //"x"
 	 * Scientific.getInputType("6.02*10^23") //"asterisk"
-	 * Scientific.getInputType("6.02'10^23") //"apos"
+	 * Scientific.getInputType("6.02'23") //"apos"
 	 * Scientific.getInputType("6.02ee10^23") //"ee"
 	 * Scientific.getInputType("6.02") //null
 	 */
@@ -116,10 +116,13 @@ export default class Scientific extends Numeric {
 		const valueString = Scientific.getValueString(str)
 		if (!valueString) return Scientific.getNullParseObject()
 
+		const unit = str.substr(valueString.length).trim()
+
+		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
 		return {
 			matchType: MATCH_EXACT,
 			valueString,
-			unit: str.substr(valueString.length).trim()
+			unit
 		}
 	}
 
@@ -170,10 +173,10 @@ export default class Scientific extends Numeric {
 	 * @param {string} valueString
 	 * @return {number}
 	 * @example
-	 * Scientific.getNumDigits('4.9e9') //10
+	 * Scientific.getNumDecimalDigits('4.9e-2') //3
 	 */
-	static getNumDigits(valueString) {
-		return Decimal.getNumDigits(Scientific.getTerms(valueString).bigValue)
+	static getNumDecimalDigits(valueString) {
+		return Decimal.getNumDecimalDigits(Scientific.getTerms(valueString).bigValue)
 	}
 
 	/**
@@ -197,25 +200,6 @@ export default class Scientific extends Numeric {
 			bigValue.e
 		)
 	}
-
-	// static getStringForType(bigValue, scientificType) {
-	// 	switch (scientificType) {
-	// 		case SCIENTIFIC_TYPE_APOS:
-	// 			return Scientific.createString(bigValue, "'")
-
-	// 		case SCIENTIFIC_TYPE_ASTERISK:
-	// 			return Scientific.createString(bigValue, '*10^')
-
-	// 		case SCIENTIFIC_TYPE_E:
-	// 			return Scientific.createString(bigValue, 'e')
-
-	// 		case SCIENTIFIC_TYPE_EE:
-	// 			return Scientific.createString(bigValue, 'ee')
-
-	// 		case SCIENTIFIC_TYPE_X:
-	// 			return Scientific.createString(bigValue, 'x10^')
-	// 	}
-	// }
 
 	/**
 	 * Get Big values for the different components of a scientific string
@@ -266,7 +250,7 @@ export default class Scientific extends Numeric {
 	 * Scientific.getIsValidScientific('60.2e22') //false
 	 */
 	static getIsValidScientific(valueString) {
-		const digit = getTerms(valueString).bigDigit
-		return digit.gte(0) && digit.lte(10) && !digit.eq(10)
+		const digit = Scientific.getTerms(valueString).bigDigit
+		return digit.abs().gte(1) && digit.lte(10) && !digit.eq(10)
 	}
 }

@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericRule constructor sets valid values 1`] = `
+NumericRule {
+  "allUnits": Array [
+    "grams",
+    "g",
+  ],
+  "allowedTypes": Array [
+    "decimal",
+    "fractional",
+  ],
+  "decimals": Object {
+    "isClosed": false,
+    "isMaxInclusive": true,
+    "isMinInclusive": true,
+    "max": "2",
+    "min": "0",
+  },
+  "errorType": "percent",
+  "errorValue": 0.2,
+  "isFractionReduced": true,
+  "isInteger": false,
+  "isValidScientific": true,
+  "round": "decimals",
+  "scientificTypes": Array [
+    "e",
+  ],
+  "score": 100,
+  "sigFigs": Object {
+    "isClosed": false,
+    "isMaxInclusive": true,
+    "isMinInclusive": true,
+    "max": "3",
+    "min": "1",
+  },
+  "unitsAreCaseSensitive": false,
+  "unitsMatch": "ignore-unit",
+  "value": Object {
+    "isClosed": false,
+    "isMaxInclusive": true,
+    "isMinInclusive": true,
+    "max": "6.78",
+    "min": "6.78",
+    "unit": "grams",
+  },
+}
+`;

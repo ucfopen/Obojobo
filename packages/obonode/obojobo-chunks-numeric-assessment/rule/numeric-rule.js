@@ -2,7 +2,11 @@ import Big from '../big'
 import NumericEntryRange from '../range/numeric-entry-range'
 import BigValueRange from '../range/big-value-range'
 import NumericEntry from '../entry/numeric-entry'
-import { ROUND_TYPE_NONE, ROUND_TYPE_ROUND_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } from './round-types'
+import {
+	ROUND_TYPE_NONE,
+	ROUND_TYPE_ROUND_DECIMAL_DIGITS,
+	ROUND_TYPE_ROUND_SIG_FIGS
+} from './round-types'
 import {
 	INPUT_TYPE_SCIENTIFIC,
 	INPUT_TYPE_DECIMAL,
@@ -21,13 +25,14 @@ import {
 } from '../numerics/types/scientific-types'
 import { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } from './rule-error-types'
 import { ANY_UNIT, IGNORE_UNIT, NO_UNIT, MATCHES_UNIT } from './unit-types'
+import ValueRange from '../range/value-range'
 
 const SCHEMA = [
 	'percentError',
 	'absoluteError',
 	'types',
 	'sigFigs',
-	'digits',
+	'decimals',
 	'isInteger',
 	'isFractionReduced',
 	'isValidScientific',
@@ -48,13 +53,13 @@ const ZERO = new NumericEntry('0')
  * @property {number} [percentError=0] The allowed amount of percent error calculated from a student's answer and the config value.
  * @property {number} [absoluteError=0] The allowed amount of absolute error calculated from a student's answer and the config value.
  * @property {string} [types=(All types)] A comma separated list of types (i.e. `'decimal,fractional'`). A student's answer must be one of these types to match. If omitted then any valid value is matched.
- * @property {ValueRangeString} [sigFigs=[,] (Any)] A range of significant figures. A student's answer must contain these amount of significant figures to match. If omitted then any valid value is matched.
- * @property {ValueRangeString} [digits=[,] (Any)] A range of the number of digits. A student's answer must have these amount of digits to match. If omitted then any valid value is matched.
+ * @property {ValueRangeString} [sigFigs=(*,*) (Any)] A range of significant figures. A student's answer must contain these amount of significant figures to match. If omitted then any valid value is matched.
+ * @property {ValueRangeString} [decimals=(*,*) (Any)] A range of the number of decimal digits. A student's answer must have these amount of digits to match. If omitted then any valid value is matched.
  * @property {boolean} [isInteger=null] If true this rule matches if and only if a student's answer is an integer. If false a student's answer must not be an integer. If omitted then a student's answer can be either.
  * @property {boolean} [isFractionReduced=null] If true then this rule matches if and only if a given fractional value is in it's most reduced form. If false then a given fractional value must not be reduced. If omitted then fractional values can be either. If the student's answer is not fractional then this rule is ignored and always matches.
  * @property {boolean} [isValidScientific=null] If true then this rule matches if and only if a given scientific value has a digit term less than 10 (i.e. `6.02e23` is "valid" while `60.2e22` is not). If false than a given scientific value must not be valid. If omitted then scientific values can be either. IF the student's answer is not scientific then this rule is ignored and always matches.
  * @property {number} [score=0] This is the score to award the student if this rule matches. `score` **MUST** be included for rules in the score rule set. In the validation rule set `score` is ignored.
- * @property {string} [round=none] Determines how to round a student's answer compared to the `value`. This is useful in cases where a student value may be more precise (i.e. if `value` is `3.14` and a student answer is `3.141` round can allow the student answer to still match). Possible values are `none`, `sig-figs` or `digits`. `none` performs no rounding. `sig-figs` rounds a given student answer to the number of significant figures of `value`. `digits` rounds to the number of digits of `value`.
+ * @property {string} [round=none] Determines how to round a student's answer compared to the `value`. This is useful in cases where a student value may be more precise (i.e. if `value` is `3.14` and a student answer is `3.141` round can allow the student answer to still match). Possible values are `none`, `sig-figs` or `decimals`. `none` performs no rounding. `sig-figs` rounds a given student answer to the number of significant figures of `value`. `decimals` rounds to the number of decimal digits of `value`.
  * @property {string} [unitsMatch=true] If true then a given student answer must match the units specified in `value` and optionally in `additionalUnits` (and should not have a unit if there are no units specified). If false then the given student answer must not match the specified units. If omitted then units are ignored and this rule always matches.
  * @property {string} [additionalUnits=''] A comma separated list of units that are allowed in addition to any units specified in `value`. For example, if `value` specifies `g` (for grams) it may be useful to allow `grams` as an alternate valid unit.
  * @property {boolean} [unitsAreCaseSensitive=false] If true then this rule matches only if their cases are the same (i.e. `g` and `g` match but `g` and `G` do not). If false then case is ignored.
@@ -82,7 +87,7 @@ export default class NumericRule {
 	 * @throws Error if both percentError and absoluteError are defined on config.
 	 */
 	static getRuleErrorType(config) {
-		if (config.percentError && config.absoluteError) throw 'Cant have both errors!'
+		if (config.percentError && config.absoluteError) throw "Can't have both errors!"
 		if (!config.percentError && !config.absoluteError) return NO_ERROR
 		return config.absoluteError ? ABSOLUTE_ERROR : PERCENT_ERROR
 	}
@@ -135,8 +140,7 @@ export default class NumericRule {
 	 * @return {Big}
 	 */
 	static getRuleAbsoluteError(config) {
-		if (typeof config.absoluteError === 'undefined' || !config.absoluteError) return Big(0)
-		return Big(config.absoluteError).abs()
+		return config.absoluteError ? Big(config.absoluteError).abs() : Big(0)
 	}
 
 	/**
@@ -160,23 +164,6 @@ export default class NumericRule {
 			}).length === types.length
 		)
 	}
-
-	// static getExplicitRuleTypes(config, value) {
-	// 	let types = []
-
-	// 	if (value.min) types.push(value.min.numericInstance.type)
-	// 	if (value.max) types.push(value.max.numericInstance.type)
-
-	// 	if (config.types) {
-	// 		types = types.concat(config.types.split(','))
-	// 	}
-
-	// 	if (!NumericRule.isTypesValid(types)) {
-	// 		throw 'Invalid type given'
-	// 	}
-
-	// 	return [...new Set(types)]
-	// }
 
 	/**
 	 * Returns `config.types` as an array
@@ -212,19 +199,28 @@ export default class NumericRule {
 		if (!config.sigFigs) return new BigValueRange()
 
 		const range = new BigValueRange(config.sigFigs)
-		if (range.min.lte(Big(0))) throw 'bad sig figs range'
+		if (range.getValuePosition(Big(0)) !== ValueRange.VALUE_BELOW_MIN) {
+			throw 'sigFigs range must be larger than 0'
+		}
 
 		return range
 	}
 
 	/**
-	 * Returns `config.digits` as a BigValueRange
+	 * Returns `config.decimals` as a BigValueRange
 	 * @param {RuleConfigObject} config
 	 * @return {BigValueRange}
 	 */
-	static getRuleDigits(config) {
-		if (!config.digits) return new BigValueRange()
-		return new BigValueRange(config.digits)
+	static getRuleDecimalDigits(config) {
+		if (!config.decimals) return new BigValueRange()
+
+		const range = new BigValueRange(config.decimals)
+		const pos = range.getMinValuePosition(Big(0))
+		if (pos !== ValueRange.VALUE_BELOW && pos !== ValueRange.VALUE_EQUAL) {
+			throw 'decimals range must be 0 or larger'
+		}
+
+		return range
 	}
 
 	/**
@@ -256,11 +252,11 @@ export default class NumericRule {
 	 * @return {boolean|null}
 	 */
 	static getRuleIsValidScientific(config) {
-		if (typeof config.isValidScientific === 'undefined' || config.isValidScientific === null) {
-			return null
+		if (config.isValidScientific === true || config.isValidScientific === false) {
+			return config.isValidScientific
 		}
 
-		return !!config.isValidScientific
+		return null
 	}
 
 	/**
@@ -272,14 +268,14 @@ export default class NumericRule {
 	static getRuleScore(config) {
 		if (typeof config.score === 'undefined' || config.score === null) return 0
 		const score = parseFloat(config.score)
-		if (!Number.isFinite(score) || score < 0 || score > 100) throw 'Bad score error'
+		if (!Number.isFinite(score) || score < 0 || score > 100) throw 'Score must be 0-100'
 		return score
 	}
 
 	/**
 	 * Validates and returns `config.round`
 	 * @param {RuleConfigObject} config
-	 * @return {'none'|'digits'|'sigFigs'}
+	 * @return {'none'|'decimals'|'sigFigs'}
 	 * @throws Error if an invalid round type is specified
 	 */
 	static getRuleRound(config) {
@@ -289,10 +285,10 @@ export default class NumericRule {
 
 		if (
 			round !== ROUND_TYPE_NONE &&
-			round !== ROUND_TYPE_ROUND_DIGITS &&
+			round !== ROUND_TYPE_ROUND_DECIMAL_DIGITS &&
 			round !== ROUND_TYPE_ROUND_SIG_FIGS
 		) {
-			throw 'Bad round value'
+			throw 'Invalid round value'
 		}
 
 		return round
@@ -315,7 +311,7 @@ export default class NumericRule {
 			]
 		}
 
-		const types = config.scientificTypes.split(',').map(getProcessedInput)
+		const types = config.scientificTypes.split(',')
 
 		if (
 			types.filter(t => {
@@ -325,16 +321,16 @@ export default class NumericRule {
 					case SCIENTIFIC_TYPE_E:
 					case SCIENTIFIC_TYPE_EE:
 					case SCIENTIFIC_TYPE_X:
-						return true
+						return false
 				}
 
-				return false
+				return true
 			}).length > 0
 		) {
 			throw 'Invalid scientific type given'
 		}
 
-		return [...new Set(...types)]
+		return [...new Set(types)]
 	}
 
 	/**
@@ -344,7 +340,7 @@ export default class NumericRule {
 	 * @throws Error if an invalid unit match property is given
 	 */
 	static getUnitsMatch(config) {
-		if (typeof config.unitsMatch === 'undefined') return MATCHES_UNIT
+		if (!config.unitsMatch) return MATCHES_UNIT
 
 		switch (config.unitsMatch) {
 			case NO_UNIT:
@@ -372,7 +368,7 @@ export default class NumericRule {
 			units.push(unit)
 		}
 
-		units = [...new Set([].concat(additionalUnits))]
+		units = [...new Set(units.concat(additionalUnits))]
 
 		return units.length === 0 ? [''] : units
 	}
@@ -380,10 +376,9 @@ export default class NumericRule {
 	/**
 	 * Returns `config.additionalUnits` as an array
 	 * @param {RuleConfigObject} config
-	 * @param {NumericEntryRange} value
 	 * @return {string[]}
 	 */
-	static getAdditionalUnits(config, value) {
+	static getAdditionalUnits(config) {
 		if (typeof config.additionalUnits === 'string') {
 			return config.additionalUnits
 				.split(',')
@@ -409,20 +404,10 @@ export default class NumericRule {
 	 * @param {RuleConfigObject} config
 	 * @param {string[]} types
 	 * @return {NumericEntryRange}
-	 * @throws Error if a closed range is specified
 	 */
 	static getRuleValue(config, types) {
-		if (typeof config.value === 'undefined' || config.value === null) return new NumericEntryRange()
-
-		console.log('grv "' + config.value + '"')
-
-		const range = new NumericEntryRange(config.value, types)
-
-		console.log('range:', range)
-
-		if (range.isClosed) throw 'Invalid range given for value'
-
-		return range
+		if (!config.value) return new NumericEntryRange()
+		return new NumericEntryRange(config.value, types)
 	}
 
 	/**
@@ -441,7 +426,7 @@ export default class NumericRule {
 	 */
 	constructor(config, types) {
 		const nonStandardProps = NumericRule.getNonStandardProperties(config)
-		if (nonStandardProps.length > 0) throw 'invalid properties ' + nonStandardProps.join(',')
+		if (nonStandardProps.length > 0) throw 'Invalid properties: ' + nonStandardProps.join(',')
 
 		/**
 		 * @type {NumericEntryRange}
@@ -466,7 +451,7 @@ export default class NumericRule {
 		/**
 		 * @type {BigValueRange}
 		 */
-		this.digits = NumericRule.getRuleDigits(config)
+		this.decimals = NumericRule.getRuleDecimalDigits(config)
 
 		/**
 		 * @type {boolean|null}

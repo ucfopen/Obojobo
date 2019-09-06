@@ -5,8 +5,8 @@ import Numeric from './numeric'
 import Decimal from './decimal'
 import Big from '../big'
 
-const binaryZeroB = /^0b[0-1]+$/
-const binaryInferred = /^[0-1]+$/
+const binaryZeroB = /^0b[0-1]+$|^0b[0-1]+ /
+const binaryInferred = /^[0-1]+$|^[0-1]+ /
 
 /**
  * A binary numeric type. Values should be prefixed with "0b" but are possible binary matches if given a number with only zeroes and ones. Units cannot come directly after the value string and must have a space in-between.
@@ -56,25 +56,14 @@ export default class Binary extends Numeric {
 	static getValueString(str) {
 		switch (Binary.getInputType(str)) {
 			case BINARY_TYPE_ZERO_B:
-				return binaryZeroB.exec(str)[0]
+				return binaryZeroB.exec(str)[0].trim()
 
 			case BINARY_TYPE_INFERRED:
-				return binaryInferred.exec(str)[0]
+				return binaryInferred.exec(str)[0].trim()
 		}
 
 		return null
 	}
-
-	// static parse(str) {
-	// 	const valueString = Binary.getValueString(str)
-	// 	if (!valueString) return Numeric.getNullParseObject()
-
-	// 	return {
-	// 		matchType: Binary.getMatchType(str),
-	// 		valueString,
-	// 		unit: str.substr(valueString.length).trim()
-	// 	}
-	// }
 
 	/**
 	 * Gets details about an answer string.
@@ -91,10 +80,14 @@ export default class Binary extends Numeric {
 		const valueString = Binary.getValueString(tokens[0])
 		if (!valueString) return Numeric.getNullParseObject()
 
+		const unit = tokens[1] || ''
+
+		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
+
 		return {
 			matchType: Binary.getMatchType(valueString),
 			valueString,
-			unit: tokens[1] || ''
+			unit
 		}
 	}
 
@@ -191,14 +184,13 @@ export default class Binary extends Numeric {
 	}
 
 	/**
-	 * Converts the binary value to decimal then returns the number of digits
+	 * Binary numbers are integers so this is always 0
 	 * @param {string} valueString
-	 * @return {number} The number of digits of this instance
+	 * @return {0}
 	 * @example
-	 * Binary.getNumDigits('0b10') //1
-	 * Binary.getNumDigits('1111') //2
+	 * Binary.getNumDecimalDigits('0b10') //0
 	 */
-	static getNumDigits(valueString) {
-		return Decimal.getNumDigits(Binary.getBigValue(valueString).toString())
+	static getNumDecimalDigits() {
+		return 0
 	}
 }

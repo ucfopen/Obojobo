@@ -1,5 +1,6 @@
 import ValueRange from './value-range'
 import NumericEntry from '../entry/numeric-entry'
+import BigValueRange from './big-value-range'
 
 /**
  * String describing the range for NumericEntryRange.
@@ -7,9 +8,9 @@ import NumericEntry from '../entry/numeric-entry'
  * @example
  * "9" // 9
  * "0xFF" // 0xFF
- * "[,]" // All NumericEntries
- * "[,] mols" // All NumericEntries (unit is 'mols')
- * "[0,4]" // All NumericEntries that equate to 0 to 4
+ * "*" // All NumericEntries
+ * "(*,*) mols" // All NumericEntries (unit is 'mols')
+ * "[0,*)" // All NumericEntries 0 or higher
  * "(9g,12g)" // All NumericEntries above 9 and below 12 (unit is 'g')
  * "(9,12)g" // Alternate syntax of above
  * "[1/2,3/4]" // All NumericEntries between 0.5 to 0.75
@@ -74,7 +75,6 @@ export default class NumericEntryRange extends ValueRange {
 	static compareValues(a, b) {
 		// If either numericInstance says that the two values are equal we consider
 		// them equal
-		console.log('con', a, b)
 		const aIsEqualB = a.numericInstance.isEqual(b.numericInstance.bigValue)
 		const bIsEqualA = b.numericInstance.isEqual(a.numericInstance.bigValue)
 
@@ -90,17 +90,52 @@ export default class NumericEntryRange extends ValueRange {
 	 * @return {NumericEntry}
 	 */
 	static parseValue(types, inputString) {
-		console.log('pv', types, inputString, new NumericEntry(inputString, types))
+		if (inputString === null) return null
 		return new NumericEntry(inputString, types)
+	}
+
+	/**
+	 * Determine the unit based on the various type syntaxes (i.e. `[4,5]`, `[4kg,5kg]` or `[4,5]kg`)
+	 * @param {string} combinedUnit
+	 * @param {string} minUnit
+	 * @param {string} maxUnit
+	 * @throws Error if given two conflicting units or specify both syntaxes (i.e. `[4g,5kg]`, `[4g,5g]kg`)
+	 */
+	static getUnit(combinedUnit, minUnit, maxUnit) {
+		if (minUnit && maxUnit && minUnit !== maxUnit) {
+			throw 'Unable to have different units'
+		}
+		if ((minUnit || maxUnit) && combinedUnit) {
+			throw 'Unable to define both types of units'
+		}
+
+		return combinedUnit || minUnit || maxUnit || ''
+	}
+
+	/**
+	 * Get a serialized value for a NumericEntry
+	 * @param {NumericEntry|null} o
+	 * @return {string|null}
+	 */
+	static serializeValue(o) {
+		return o === null ? o : o.numericInstance.getString()
+	}
+
+	/**
+	 * Get a string representation for a NumericEntry
+	 * @param {NumericEntry|null} o
+	 * @return {string}
+	 */
+	static toStringValue(o) {
+		return o === null ? '*' : o.numericInstance.getString()
 	}
 
 	/**
 	 * Create a new NumericEntryRange
 	 * @param {NumericEntryRangeString|NumericEntryRangeObject} rangeStringOrRangeObject
 	 * @param {string[]} types
-	 * @throws Error if given two conflicting units (i.e. `"[4g,5kg]"`)
 	 */
-	constructor(rangeStringOrRangeObject = false, types) {
+	constructor(rangeStringOrRangeObject = true, types) {
 		let unit = ''
 
 		if (typeof rangeStringOrRangeObject === 'string') {
@@ -108,52 +143,48 @@ export default class NumericEntryRange extends ValueRange {
 			rangeStringOrRangeObject = parsed.rangeString
 			unit = parsed.unit
 		} else {
-			unit = rangeStringOrRangeObject.unit || ''
+			unit =
+				rangeStringOrRangeObject && rangeStringOrRangeObject.unit
+					? rangeStringOrRangeObject.unit
+					: ''
 		}
 
 		super(
 			rangeStringOrRangeObject,
 			NumericEntryRange.parseValue.bind(null, types),
-			NumericEntryRange.compareValues
+			NumericEntryRange.compareValues,
+			NumericEntryRange.serializeValue,
+			NumericEntryRange.toStringValue
 		)
-
-		// this.types = types
-
-		let valueUnits = []
-		if (this.min) valueUnits.push(this.min.numericInstance.unit)
-		if (this.max) valueUnits.push(this.max.numericInstance.unit)
-
-		valueUnits = [...new Set(valueUnits)]
-
-		if (valueUnits.length > 1) {
-			throw 'Unable to have different units'
-		}
-
-		const valueUnit = valueUnits.length > 0 ? valueUnits[0] : ''
-
-		if (valueUnit !== '' && unit !== '' && valueUnit !== unit) {
-			throw 'Unable to have different units'
-		}
-
-		if (unit === '') {
-			unit = valueUnit
-		}
-
-		// Remove units
-		if (this.min) this.min.numericInstance.clearUnit()
-		if (this.max) this.max.numericInstance.clearUnit()
 
 		/**
 		 * The given unit (if any). Defaults to `''`.
 		 * @type {string}
 		 */
-		this.unit = unit
+		this.unit = NumericEntryRange.getUnit(
+			unit,
+			this.min ? this.min.numericInstance.unit : null,
+			this.max ? this.max.numericInstance.unit : null
+		)
+
+		// Remove units
+		if (this.min) this.min.numericInstance.clearUnit()
+		if (this.max) this.max.numericInstance.clearUnit()
 	}
 
-	// get isSafe() {
-	// 	console.log('@TODO!')
-	// 	return (this.min === null || this.min.isSafe) && (this.max === null || this.max.isSafe)
-	// }
+	/**
+	 * Returns a BigValueRange version of this range
+	 * @return {BigValueRange}
+	 */
+	toBigValueRange() {
+		return new BigValueRange({
+			isClosed: this.isClosed,
+			isMinInclusive: this.isMinInclusive,
+			isMaxInclusive: this.isMaxInclusive,
+			min: this.min !== null && this.min.numericInstance ? this.min.numericInstance.bigValue : null,
+			max: this.max !== null && this.max.numericInstance ? this.max.numericInstance.bigValue : null
+		})
+	}
 
 	/**
 	 * Returns a NumericEntryRangeObject representing this range.
@@ -162,8 +193,6 @@ export default class NumericEntryRange extends ValueRange {
 	toJSON() {
 		const o = super.toJSON()
 
-		o.min = o.min.numericInstance.getString()
-		o.max = o.max.numericInstance.getString()
 		o.unit = this.unit
 
 		return o

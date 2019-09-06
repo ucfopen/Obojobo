@@ -6,11 +6,13 @@
  * @return {number|null}
  */
 export default (measuredBigValue, trueBigValue) => {
+	if (measuredBigValue === null || trueBigValue === null) return null
+
 	// There is no percent error when the true value is zero:
 	if (trueBigValue.eq(0)) return null
 
-	if (measuredBigValue === null || trueBigValue === null) return null
 	if (measuredBigValue.eq(trueBigValue)) return 0
+
 	return parseFloat(
 		measuredBigValue
 			.minus(trueBigValue)

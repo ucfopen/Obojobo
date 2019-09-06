@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericRuleOutcome constructor sets properties as expected 1`] = `
+NumericRuleOutcome {
+  "isExpectedFractionReduced": true,
+  "isExpectedInteger": true,
+  "isExpectedNumSigFigs": true,
+  "isExpectedScientific": true,
+  "isExpectedType": true,
+  "isExpectedUnits": true,
+  "isMatched": true,
+  "rule": NumericRule {
+    "allUnits": Array [
+      "",
+    ],
+    "allowedTypes": Array [
+      "scientific",
+      "decimal",
+      "fractional",
+      "hex",
+      "octal",
+      "binary",
+    ],
+    "decimals": Object {
+      "isClosed": false,
+      "isMaxInclusive": null,
+      "isMinInclusive": null,
+      "max": null,
+      "min": null,
+    },
+    "errorType": "noError",
+    "errorValue": "0",
+    "isFractionReduced": null,
+    "isInteger": null,
+    "isValidScientific": null,
+    "round": "none",
+    "scientificTypes": Array [
+      "apos",
+      "asterisk",
+      "e",
+      "ee",
+      "x",
+    ],
+    "score": 0,
+    "sigFigs": Object {
+      "isClosed": false,
+      "isMaxInclusive": null,
+      "isMinInclusive": null,
+      "max": null,
+      "min": null,
+    },
+    "unitsAreCaseSensitive": false,
+    "unitsMatch": "matches-unit",
+    "value": Object {
+      "isClosed": false,
+      "isMaxInclusive": true,
+      "isMinInclusive": true,
+      "max": "42",
+      "min": "42",
+      "unit": "",
+    },
+  },
+  "scoreOutcome": Object {
+    "errorType": "noError",
+    "isWithinError": true,
+    "roundedBigValue": "42",
+  },
+}
+`;

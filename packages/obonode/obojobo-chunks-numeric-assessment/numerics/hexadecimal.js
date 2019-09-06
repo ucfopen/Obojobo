@@ -11,11 +11,11 @@ import Numeric from './numeric'
 import Decimal from './decimal'
 import Big from '../big'
 
-const hexZeroX = /^0x[0-9a-fA-F]+$/
-const hexOctothorpe = /^#[0-9a-fA-F]+$/
-const hexDollarSign = /^\$[0-9a-fA-F]+$/
-const hexNoPrefix = /^\$[0-9a-fA-F]*[a-fA-F][0-9a-fA-F]*$/
-const hexInferred = /^[0-9a-fA-F]+$/
+const hexZeroX = /^0x[0-9a-fA-F]+$|^0x[0-9a-fA-F]+ /
+const hexOctothorpe = /^#[0-9a-fA-F]+$|^#[0-9a-fA-F]+ /
+const hexDollarSign = /^\$[0-9a-fA-F]+$|^\$[0-9a-fA-F]+ /
+const hexNoPrefix = /^[0-9a-fA-F]*[a-fA-F][0-9a-fA-F]*$|^[0-9a-fA-F]*[a-fA-F][0-9a-fA-F]* /
+const hexInferred = /^[0-9]+$|^[0-9]+ /
 
 /**
  * A hexadecimal numeric type. Values should be prefixed with "0x" but "#" or "$" may also be used.
@@ -71,19 +71,19 @@ export default class Hexadecimal extends Numeric {
 	static getValueString(str) {
 		switch (Hexadecimal.getInputType(str)) {
 			case HEX_TYPE_ZERO_X:
-				return hexZeroX.exec(str)[0]
+				return hexZeroX.exec(str)[0].trim()
 
 			case HEX_TYPE_OCTOTHORPE:
-				return hexOctothorpe.exec(str)[0]
+				return hexOctothorpe.exec(str)[0].trim()
 
 			case HEX_TYPE_DOLLAR_SIGN:
-				return hexDollarSign.exec(str)[0]
+				return hexDollarSign.exec(str)[0].trim()
 
 			case HEX_TYPE_NO_PREFIX:
-				return hexNoPrefix.exec(str)[0]
+				return hexNoPrefix.exec(str)[0].trim()
 
 			case HEX_TYPE_INFERRED:
-				return hexInferred.exec(str)[0]
+				return hexInferred.exec(str)[0].trim()
 		}
 
 		return null
@@ -125,10 +125,10 @@ export default class Hexadecimal extends Numeric {
 			case HEX_TYPE_ZERO_X:
 			case HEX_TYPE_OCTOTHORPE:
 			case HEX_TYPE_DOLLAR_SIGN:
-			case HEX_TYPE_NO_PREFIX:
 				return MATCH_EXACT
 
 			case HEX_TYPE_INFERRED:
+			case HEX_TYPE_NO_PREFIX:
 				return MATCH_INFERRED
 		}
 
@@ -184,10 +184,10 @@ export default class Hexadecimal extends Numeric {
 				return Number(valueString)
 
 			case HEX_TYPE_OCTOTHORPE:
-				return Number('0x' + valueString.replace('#'))
+				return Number('0x' + valueString.replace('#', ''))
 
 			case HEX_TYPE_DOLLAR_SIGN:
-				return Number('0x' + valueString.replace('$'))
+				return Number('0x' + valueString.replace('$', ''))
 
 			case HEX_TYPE_NO_PREFIX:
 			case HEX_TYPE_INFERRED:
@@ -216,14 +216,13 @@ export default class Hexadecimal extends Numeric {
 	}
 
 	/**
-	 * Converts the hexadecimal value to decimal and then returns the number of digits.
+	 * Hexadecimal numbers are integers so this is always 0
 	 * @param {string} valueString
-	 * @return {number} The number of significant figures of this instance
+	 * @return {0}
 	 * @example
-	 * Hexadecimal.getNumDigits('0x2') //1
-	 * Hexadecimal.getNumDigits('FF') //3
+	 * Hexadecimal.getNumDecimalDigits('0xFF') //0
 	 */
-	static getNumDigits(valueString) {
-		return Decimal.getNumDigits(Hexadecimal.getBigValue(valueString).toString())
+	static getNumDecimalDigits() {
+		return 0
 	}
 }

@@ -157,15 +157,14 @@ export default class Decimal extends Numeric {
 	}
 
 	/**
-	 * Determine the number of digits represented by the string
+	 * Determine the number of decimal digits represented by the string
 	 * @param {string} valueString
 	 * @return {number}
 	 * @example
-	 * Decimal.getNumDigits('-96.2') //3
+	 * Decimal.getNumDecimalDigits('-96.2') //1
 	 */
-	static getNumDigits(valueString) {
-		return Decimal.getString(Big(valueString))
-			.replace('-', '')
-			.replace('.', '').length
+
+	static getNumDecimalDigits(valueString) {
+		return (Decimal.getString(Big(valueString)).split('.')[1] || '').length
 	}
 }

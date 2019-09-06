@@ -9,9 +9,10 @@
  * @example "3" //3
  * @example "[3,4]" //Values 3 to 4
  * @example "(3,4)" //Values greater than 3 and less than 4
- * @example "[,4]" //Values less than or equal to 4
- * @example "(3,]" //Values greater than 3
- * @example "[,]" //Any value
+ * @example "(*,4]" //Values less than or equal to 4
+ * @example "(3,*)" //Values greater than 3
+ * @example "(*,*)" //Any value
+ * @example "*" //Any value
  * @example "" //No value
  */
 
@@ -41,15 +42,17 @@
  * functions and comparison functions to create a range to work with any value type.
  * @example
  * new ValueRange() // -Infinity to Infinity
- * new ValueRange('[,]') // -Infinity to Infinity
+ * new ValueRange(true) // -Infinity to Infinity
+ * new ValueRange('(*,*)') // -Infinity to Infinity
  * new ValueRange({}) // -Infinity to Infinity
  * new ValueRange({ isClosed:true }) // Closed range (no values)
  * new ValueRange('') // Closed range (no values)
  * new ValueRange(null) // Closed range (no values)
+ * new ValueRange(false) // Closed range (no values)
  * new ValueRange('6') // 6
  * new ValueRange('[6,7)') // >= 6 and < 7
- * new ValueRange('[,7)') // < 7
- * new ValueRange('[6,]') // >= 6
+ * new ValueRange('(*,7)') // < 7
+ * new ValueRange('[6,*)') // >= 6
  * new ValueRange({ min:6, isMinInclusive:true, max:7, isMaxInclusive:true }) // 6 to 7
  * new ValueRange({ max:7, isMaxInclusive:true }) // <= 7
  */
@@ -63,20 +66,29 @@ export default class ValueRange {
 	static parseRangeString(rangeString) {
 		if (typeof rangeString === 'undefined' || rangeString === null) return null
 
+		if (rangeString === '*') rangeString = '(*,*)'
+
 		if (rangeString.indexOf(',') === -1) rangeString = `[${rangeString},${rangeString}]`
 
+		if (rangeString.indexOf('[*') > -1 || rangeString.indexOf('*]') > -1) {
+			throw 'Bad range string: * must be exclusive'
+		}
 		if (rangeString.indexOf('[') === -1 && rangeString.indexOf('(') === -1) {
-			throw 'Bad range string'
+			throw 'Bad range string: Missing [ or ('
 		}
 		if (rangeString.indexOf(']') === -1 && rangeString.indexOf(')') === -1) {
-			throw 'Bad range string'
+			throw 'Bad range string: Missing ] or )'
 		}
 
 		const values = rangeString.replace(/[([)\]]+/g, '')
 		const rangeValues = values.split(',').map(s => s.trim())
 
-		const min = rangeValues[0].length === 0 ? null : rangeValues[0]
-		const max = rangeValues[1].length === 0 ? null : rangeValues[1]
+		if (rangeValues[0].length === 0 || rangeValues[1].length === 0) {
+			throw 'Bad range string: Missing values'
+		}
+
+		const min = rangeValues[0] === '*' ? null : rangeValues[0]
+		const max = rangeValues[1] === '*' ? null : rangeValues[1]
 		const isMinInclusive = min === null ? null : rangeString.charAt(0) === '['
 		const isMaxInclusive = max === null ? null : rangeString.charAt(rangeString.length - 1) === ']'
 
@@ -91,10 +103,11 @@ export default class ValueRange {
 	/**
 	 * Default parse function which simply calls parseFloat on the given string
 	 * @param {string} v
-	 * @return {number}
+	 * @return {number|null}
 	 */
 	static DefaultParseValue(v) {
-		return parseFloat(v)
+		const parsed = parseFloat(v)
+		return Number.isFinite(parsed) ? parsed : null
 	}
 
 	/**
@@ -110,15 +123,36 @@ export default class ValueRange {
 	}
 
 	/**
+	 * Default serialize function which simply returns the value passed
+	 * @param {number|null} o
+	 * @return {number}
+	 */
+	static DefaultSerialize(o) {
+		if (o === null) return o
+		return o.toJSON ? o.toJSON() : o
+	}
+
+	/**
+	 * Default toString function
+	 * @param {number|null} o
+	 * @return {number|null}
+	 */
+	static DefaultToString(o) {
+		return o === null ? '*' : o.toString()
+	}
+
+	/**
 	 * Create a new ValueRange instance
 	 * @param {ValueRangeString|ValueRangeObject} rangeStringOrRangeObject
 	 * @param {function} [parseFn=DefaultParseValue]
 	 * @param {function} [compareFn=DefaultNumberCompare]
 	 */
 	constructor(
-		rangeStringOrRangeObject = false,
+		rangeStringOrRangeObject = '*',
 		parseFn = this.constructor.DefaultParseValue,
-		compareFn = this.constructor.DefaultNumberCompare
+		compareFn = this.constructor.DefaultNumberCompare,
+		serializeFn = this.constructor.DefaultSerialize,
+		toStringFn = this.constructor.DefaultToString
 	) {
 		/**
 		 * If true then this is a range which accepts no values.
@@ -160,32 +194,97 @@ export default class ValueRange {
 		 */
 		this.compareFn = compareFn
 
-		if (rangeStringOrRangeObject === false) rangeStringOrRangeObject = '[,]'
+		/**
+		 * Function used on min and max when toJSON is called.
+		 * @type {function}
+		 */
+		this.serializeFn = serializeFn
 
-		if (rangeStringOrRangeObject === null) {
-			this.isClosed = true
+		/**
+		 * Function used on min and max when toString is called.
+		 * @type {function}
+		 */
+		this.toStringFn = toStringFn
+
+		if (
+			!rangeStringOrRangeObject ||
+			(typeof rangeStringOrRangeObject === 'object' && rangeStringOrRangeObject.isClosed)
+		) {
+			this.close()
+			return
 		}
+
+		this.init()
 
 		if (typeof rangeStringOrRangeObject === 'string') {
 			rangeStringOrRangeObject = this.constructor.parseRangeString(rangeStringOrRangeObject)
 		}
 
 		if (typeof rangeStringOrRangeObject === 'object') {
-			if (rangeStringOrRangeObject.isClosed) {
-				this.isClosed = true
+			const o = rangeStringOrRangeObject
+
+			if (typeof o.min !== 'undefined') {
+				this.min = parseFn(o.min)
+			} else {
+				this.min = null
+			}
+
+			if (typeof o.max !== 'undefined') {
+				this.max = parseFn(o.max)
+			} else {
+				this.max = null
+			}
+
+			if (this.min === null) {
+				this.isMinInclusive = null
+			} else if (typeof o.isMinInclusive !== 'undefined') {
+				this.isMinInclusive = !!o.isMinInclusive
+			} else {
+				this.isMinInclusive = true
+			}
+
+			if (this.max === null) {
+				this.isMaxInclusive = null
+			} else if (typeof o.isMaxInclusive !== 'undefined') {
+				this.isMaxInclusive = !!o.isMaxInclusive
+			} else {
+				this.isMaxInclusive = true
+			}
+
+			// A range like (1,1) is a closed range, convert accordingly
+			if (
+				this.min !== null &&
+				this.max !== null &&
+				this.min === this.max &&
+				!this.isMinInclusive &&
+				!this.isMaxInclusive
+			) {
+				this.close()
 				return
 			}
 
-			const min = rangeStringOrRangeObject.min
-			const max = rangeStringOrRangeObject.max
+			if (
+				this.min !== null &&
+				this.max !== null &&
+				this.min === this.max &&
+				(this.isMinInclusive !== true || this.isMaxInclusive !== true)
+			) {
+				throw 'Invalid range: Singular range must have inclusive min and max'
+			}
 
-			this.min = min === null ? null : parseFn(min)
-			this.isMinInclusive = min === null ? null : !!rangeStringOrRangeObject.isMinInclusive
-			this.max = max === null ? null : parseFn(max)
-			this.isMaxInclusive = max === null ? null : !!rangeStringOrRangeObject.isMaxInclusive
-
-			if (min !== null && max !== null && this.compareFn(this.min, this.max) > 0) {
+			// A range like [1,-1] is inverted, throw error
+			if (this.min !== null && this.max !== null && this.compareFn(this.min, this.max) > 0) {
 				throw 'Invalid range: min value must be larger than max value'
+			}
+
+			// A range like (1,1] is unclear (greater than 1 and equal to 1), throw error
+			if (
+				this.min !== null &&
+				this.max !== null &&
+				this.min === this.max &&
+				(this.isMinInclusive !== true || this.isMaxInclusive !== true)
+			) {
+				throw 'Invalid range: Singular range must have inclusive min and max'
 			}
 		}
 	}
@@ -195,6 +294,17 @@ export default class ValueRange {
 	 */
 	init() {
 		this.isClosed = false
+		this.min = null
+		this.isMinInclusive = null
+		this.max = null
+		this.isMaxInclusive = null
+	}
+
+	/**
+	 * Resets values to a closed range
+	 */
+	close() {
+		this.isClosed = true
 		this.min = null
 		this.isMinInclusive = null
 		this.max = null
@@ -323,24 +433,25 @@ export default class ValueRange {
 	 * @returns {ValueRangeString}
 	 */
 	toString() {
-		if (this.isClosed) return 'null'
-		if (this.isSingular) return this.min
+		if (this.isClosed) return ''
+		if (this.isSingular) return this.toStringFn(this.min)
+		if (this.isAllValues) return '*'
 
 		let lhs = ''
 		if (this.isMinInclusive === true) {
 			lhs = '['
-		} else if (this.isMinInclusive === false) {
+		} else {
 			lhs = '('
 		}
 
 		let rhs = ''
 		if (this.isMaxInclusive === true) {
 			rhs = ']'
-		} else if (this.isMaxInclusive === false) {
+		} else {
 			rhs = ')'
 		}
 
-		return `${lhs}${this.min === null ? '' : this.min},${this.max === null ? '' : this.max}${rhs}`
+		return `${lhs}${this.toStringFn(this.min)},${this.toStringFn(this.max)}${rhs}`
 	}
 
 	/**
@@ -350,9 +461,9 @@ export default class ValueRange {
 	toJSON() {
 		return {
 			isClosed: this.isClosed,
-			min: this.min,
+			min: this.serializeFn(this.min),
 			isMinInclusive: this.isMinInclusive,
-			max: this.max,
+			max: this.serializeFn(this.max),
 			isMaxInclusive: this.isMaxInclusive
 		}
 	}
@@ -494,6 +605,14 @@ export default class ValueRange {
 	 */
 	get isFinite() {
 		return this.isClosed || (this.min !== null && this.max !== null)
+	}
+
+	/**
+	 * True if this range includes all values (-Infinity to Infinity), false otherwise
+	 * @type {boolean}
+	 */
+	get isAllValues() {
+		return !this.isClosed && this.min === null && this.max === null
 	}
 }
 

@@ -65,10 +65,13 @@ export default class Fractional extends Numeric {
 
 		if (!matches || !matches.length) return Numeric.getNullParseObject()
 
+		const unit = str.substr(matches[0].length).trim()
+
+		if (!Numeric.isValidUnit(unit)) return Numeric.getNullParseObject()
 		return {
 			matchType: MATCH_EXACT,
 			valueString: matches[0],
-			unit: str.substr(matches[0].length).trim()
+			unit
 		}
 	}
 

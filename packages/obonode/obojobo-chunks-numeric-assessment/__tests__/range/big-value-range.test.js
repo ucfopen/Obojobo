@@ -1,4 +1,4 @@
-import BigValueRange from '../range/big-value-range'
+import BigValueRange from '../../range/big-value-range'
 import Big from 'big.js'
 
 describe('BigValueRange', () => {
@@ -21,5 +21,15 @@ describe('BigValueRange', () => {
 			isMaxInclusive: true,
 			isClosed: false
 		})
+	})
+
+	test('compareValues compares two Big values', () => {
+		expect(BigValueRange.compareValues(Big(-1), Big(0))).toBe(-1)
+		expect(BigValueRange.compareValues(Big(0), Big(-1))).toBe(1)
+		expect(BigValueRange.compareValues(Big(1), Big(1))).toBe(0)
+	})
+
+	test('parseValue returns a new Big instance', () => {
+		expect(BigValueRange.parseValue('3.14')).toEqual(Big('3.14'))
 	})
 })

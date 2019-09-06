@@ -5,8 +5,8 @@ import Decimal from './decimal'
 import Big from '../big'
 import { OCTAL_TYPE_INFERRED, OCTAL_TYPE_ZERO_O } from './types/octal-types'
 
-const octalZeroO = /^0o[0-7]+$/
-const octalInferred = /^[0-7]+$/
+const octalZeroO = /^0o[0-7]+$|^0o[0-7]+ /
+const octalInferred = /^[0-7]+$|^[0-7]+ /
 
 /**
  * An octal numeric type. Values should be prefixed with "0o" but are possible octal matches if given a number with only numbers 0-7. Units cannot come directly after the value string and must have a space in-between.
@@ -40,6 +40,8 @@ export default class Octal extends Numeric {
 	static getInputType(str) {
 		if (octalZeroO.test(str)) return OCTAL_TYPE_ZERO_O
 		if (octalInferred.test(str)) return OCTAL_TYPE_INFERRED
+
+		return null
 	}
 
 	/**
@@ -54,10 +56,10 @@ export default class Octal extends Numeric {
 	static getValueString(str) {
 		switch (Octal.getInputType(str)) {
 			case OCTAL_TYPE_ZERO_O:
-				return octalZeroO.exec(str)[0]
+				return octalZeroO.exec(str)[0].trim()
 
 			case OCTAL_TYPE_INFERRED:
-				return octalInferred.exec(str)[0]
+				return octalInferred.exec(str)[0].trim()
 		}
 
 		return null
@@ -189,14 +191,13 @@ export default class Octal extends Numeric {
 	}
 
 	/**
-	 * Converts the octal value to decimal then returns the number of digits
+	 * Octal numbers are integers so this is always 0
 	 * @param {string} valueString
-	 * @return {number} The number of digits of this instance
+	 * @return {0}
 	 * @example
-	 * Octal.getNumDigits('0o55') //2
-	 * Octal.getNumDigits('120') //2
+	 * Octal.getNumDecimalDigits('0o555') //0
 	 */
-	static getNumDigits(valueString) {
-		return Decimal.getNumDigits(Octal.getBigValue(valueString).toString())
+	static getNumDecimalDigits() {
+		return 0
 	}
 }

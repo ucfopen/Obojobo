@@ -1,17 +1,19 @@
-import { ROUND_TYPE_NONE, ROUND_TYPE_ROUND_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } from './round-types'
+import {
+	ROUND_TYPE_NONE,
+	ROUND_TYPE_ROUND_DECIMAL_DIGITS,
+	ROUND_TYPE_ROUND_SIG_FIGS
+} from './round-types'
 import { INPUT_TYPE_SCIENTIFIC, INPUT_TYPE_FRACTIONAL } from '../numerics/types/input-types'
 import ValueRange from '../range/value-range'
 import getPercentError from '../util/percent-error'
 import { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } from './rule-error-types'
 import { IGNORE_UNIT, ANY_UNIT, MATCHES_UNIT, NO_UNIT } from './unit-types'
+import BigValueRange from '../range/big-value-range'
 
 /**
  * @typedef {Object} NumericRuleScoreOutcomeObject
  * Gets details about how correct a student's answer is
  * @property {Big} roundedBigValue
- * @property {object} errorAmount
- * @property {number} errorAmount.percentError
- * @property {Big} errorAmount.absoluteError
  * @property {boolean} isWithinError
  * @property {'percent'|'absolute'|'noError'} errorType
  */
@@ -41,29 +43,16 @@ export default class NumericRuleOutcome {
 	 */
 	static getPercentErrorRange(rule) {
 		const percentError = rule.errorValue
-		const cloneRange = rule.value.clone()
-		const min = cloneRange.min ? cloneRange.min.numericInstance : null
-		const max = cloneRange.max ? cloneRange.max.numericInstance : null
+		const bigValueRange = rule.value.toBigValueRange()
+		let diff
 
-		let newMin, newMax, diff
-
-		if (min) {
-			diff = min.bigValue.minus(min.bigValue.div(percentError + 1))
-		} else if (max) {
-			diff = max.bigValue.minus(max.bigValue.div(percentError + 1))
+		if (bigValueRange.min) {
+			diff = bigValueRange.min.minus(bigValueRange.min.div(percentError + 1))
+		} else if (bigValueRange.max) {
+			diff = bigValueRange.max.minus(bigValueRange.max.div(percentError + 1))
 		}
 
-		if (min) {
-			newMin = min.bigValue.minus(diff)
-			min.setBigValue(newMin)
-		}
-
-		if (max) {
-			newMax = max.bigValue.plus(diff)
-			max.setBigValue(newMax)
-		}
-
-		return cloneRange
+		return NumericRuleOutcome.extendBigValueRange(bigValueRange, diff)
 	}
 
 	/**
@@ -72,52 +61,50 @@ export default class NumericRuleOutcome {
 	 * @return {NumericEntryRange}
 	 * @example
 	 * const rule = new NumericRule({ value:'2', absoluteError:0.5 })
-	 * const newRange = NumericRuleOutcome.getPercentErrorRange(rule)
+	 * const newRange = NumericRuleOutcome.getAbsoluteErrorRange(rule)
 	 * newRange.toString() // [1.5,2.5]
 	 */
 	static getAbsoluteErrorRange(rule) {
 		const absError = rule.errorValue
-		const cloneRange = rule.value.clone()
-		const min = cloneRange.min ? cloneRange.min.numericInstance : null
-		const max = cloneRange.max ? cloneRange.max.numericInstance : null
+		const bigValueRange = rule.value.toBigValueRange()
 
-		if (min) {
-			const newMin = min.bigValue.minus(absError)
-			min.setBigValue(newMin)
-		}
-
-		if (max) {
-			const newMax = max.bigValue.plus(absError)
-			max.setBigValue(newMax)
-		}
-
-		console.log('absabsabs', min.getString(), max.getString())
-
-		return cloneRange
+		return NumericRuleOutcome.extendBigValueRange(bigValueRange, absError)
 	}
 
 	/**
-	 * Determine if a rounded student's answer is within the allowed error amount
+	 * Modifies a BigValueRange by extending the min and max by amount
+	 * @param {BigValueRange} range
+	 * @param {Big} amount
+	 * @return {BigValueRange}
+	 */
+	static extendBigValueRange(range, amount) {
+		if (range.min) {
+			range.min = range.min.minus(amount)
+		}
+
+		if (range.max) {
+			range.max = range.max.plus(amount)
+		}
+
+		return range
+	}
+
+	/**
+	 * Determine if a rounded student'0s answer is within the allowed error amount
 	 * @param {NumericRule} rule
 	 * @param {NumericEntry} roundedEntry
 	 * @result {boolean}
 	 */
-	static getIsWithinError(rule, roundedEntry) {
+	static getIsWithinError(rule, roundedBigValue) {
 		switch (rule.errorType) {
 			case PERCENT_ERROR:
-				// return errorAmount.percentError === null || errorAmount.percentError <= rule.errorValue
-				return NumericRuleOutcome.getPercentErrorRange(rule).isValueInRange(roundedEntry)
+				return NumericRuleOutcome.getPercentErrorRange(rule).isValueInRange(roundedBigValue)
 
 			case ABSOLUTE_ERROR:
-				// return errorAmount.absoluteError.lte(rule.errorValue)
-				return NumericRuleOutcome.getAbsoluteErrorRange(rule).isValueInRange(roundedEntry)
+				return NumericRuleOutcome.getAbsoluteErrorRange(rule).isValueInRange(roundedBigValue)
 
 			case NO_ERROR:
-				// debugger
-				return rule.value.isValueInRange(roundedEntry)
-
-			// return rule.value.isValueInRange(roundedBigValue)
-			// return errorAmount.absoluteError.eq(0)
+				return rule.value.toBigValueRange().isValueInRange(roundedBigValue)
 		}
 	}
 
@@ -128,16 +115,16 @@ export default class NumericRuleOutcome {
 	 * @return {NumericRuleScoreOutcomeObject}
 	 */
 	static getScoreOutcome(numericEntry, rule) {
-		const roundedEntry = this.getRoundedEntryForRule(numericEntry, rule)
-		const errorAmount = {
-			percentError: '@TODO',
-			absoluteError: '@TODO'
-		}
-		const isWithinError = NumericRuleOutcome.getIsWithinError(rule, roundedEntry)
+		const roundedBigValue = NumericRuleOutcome.getRoundedBigValueForRule(numericEntry, rule)
+		// const errorAmount = {
+		// 	percentError: '@TODO',
+		// 	absoluteError: '@TODO'
+		// }
+		const isWithinError = NumericRuleOutcome.getIsWithinError(rule, roundedBigValue)
 
 		return {
-			roundedBigValue: roundedEntry.numericInstance.bigValue,
-			errorAmount,
+			roundedBigValue,
+			// errorAmount,
 			isWithinError,
 			errorType: rule.errorType
 		}
@@ -151,18 +138,18 @@ export default class NumericRuleOutcome {
 	 * @property {number} errorAmount.percentError
 	 * @property {Big} errorAmount.absoluteError
 	 */
-	static getAnswerErrorAmount(rule, roundedStudentBigValue) {
-		return {
-			percentError: NumericRuleOutcome.getAnswerPercentErrorAmount(
-				rule.value,
-				roundedStudentBigValue
-			),
-			absoluteError: NumericRuleOutcome.getAnswerAbsoluteErrorAmount(
-				rule.value,
-				roundedStudentBigValue
-			)
-		}
-	}
+	// static getAnswerErrorAmount(rule, roundedStudentBigValue) {
+	// 	return {
+	// 		percentError: NumericRuleOutcome.getAnswerPercentErrorAmount(
+	// 			rule.value,
+	// 			roundedStudentBigValue
+	// 		),
+	// 		absoluteError: NumericRuleOutcome.getAnswerAbsoluteErrorAmount(
+	// 			rule.value,
+	// 			roundedStudentBigValue
+	// 		)
+	// 	}
+	// }
 
 	/**
 	 * Get the percent error of a student's answer
@@ -170,25 +157,25 @@ export default class NumericRuleOutcome {
 	 * @param {Big} roundedStudentBigValue
 	 * @return {number}
 	 */
-	static getAnswerPercentErrorAmount(correctAnswerRange, roundedStudentBigValue) {
-		switch (correctAnswerRange.getValuePosition(roundedStudentBigValue)) {
-			case ValueRange.VALUE_BELOW_MIN:
-				if (!correctAnswerRange.min) return 0
-				return getPercentError(
-					roundedStudentBigValue,
-					correctAnswerRange.min.numericInstance.bigValue
-				)
+	// static getAnswerPercentErrorAmount(correctAnswerRange, roundedStudentBigValue) {
+	// 	switch (correctAnswerRange.getValuePosition(roundedStudentBigValue)) {
+	// 		case ValueRange.VALUE_BELOW_MIN:
+	// 			if (!correctAnswerRange.min) return 0
+	// 			return getPercentError(
+	// 				roundedStudentBigValue,
+	// 				correctAnswerRange.min.numericInstance.bigValue
+	// 			)
 
-			case ValueRange.VALUE_ABOVE_MAX:
-				if (!correctAnswerRange.max) return 0
-				return getPercentError(
-					roundedStudentBigValue,
-					correctAnswerRange.max.numericInstance.bigValue
-				)
-		}
+	// 		case ValueRange.VALUE_ABOVE_MAX:
+	// 			if (!correctAnswerRange.max) return 0
+	// 			return getPercentError(
+	// 				roundedStudentBigValue,
+	// 				correctAnswerRange.max.numericInstance.bigValue
+	// 			)
+	// 	}
 
-		return 0
-	}
+	// 	return 0
+	// }
 
 	/**
 	 * Get the absolute error of a student's answer
@@ -196,19 +183,19 @@ export default class NumericRuleOutcome {
 	 * @param {Big} roundedStudentBigValue
 	 * @return {Big}
 	 */
-	static getAnswerAbsoluteErrorAmount(correctAnswerRange, roundedStudentBigValue) {
-		switch (correctAnswerRange.getValuePosition(roundedStudentBigValue)) {
-			case ValueRange.VALUE_BELOW_MIN:
-				if (!correctAnswerRange.min) return 0
-				return correctAnswerRange.min.numericInstance.bigValue.minus(roundedStudentBigValue)
+	// static getAnswerAbsoluteErrorAmount(correctAnswerRange, roundedStudentBigValue) {
+	// 	switch (correctAnswerRange.getValuePosition(roundedStudentBigValue)) {
+	// 		case ValueRange.VALUE_BELOW_MIN:
+	// 			if (!correctAnswerRange.min) return 0
+	// 			return correctAnswerRange.min.numericInstance.bigValue.minus(roundedStudentBigValue)
 
-			case ValueRange.VALUE_ABOVE_MAX:
-				if (!correctAnswerRange.max) return 0
-				return roundedStudentBigValue.minus(correctAnswerRange.max.numericInstance.bigValue)
-		}
+	// 		case ValueRange.VALUE_ABOVE_MAX:
+	// 			if (!correctAnswerRange.max) return 0
+	// 			return roundedStudentBigValue.minus(correctAnswerRange.max.numericInstance.bigValue)
+	// 	}
 
-		return Big(0)
-	}
+	// 	return Big(0)
+	// }
 
 	/**
 	 * Returns a new NumericEntry with the value rounded based on the rounding setting
@@ -218,21 +205,18 @@ export default class NumericRuleOutcome {
 	 * @param {NumericRule} rule
 	 * @return {NumericEntry}
 	 */
-	static getRoundedEntryForRule(numericEntry, rule) {
-		const roundedEntry = numericEntry.clone()
+	static getRoundedBigValueForRule(numericEntry, rule) {
+		const roundedInstance = numericEntry.clone().numericInstance
 
 		switch (rule.round) {
-			case ROUND_TYPE_NONE:
-				return roundedEntry
-
-			case ROUND_TYPE_ROUND_DIGITS:
-				let numDigits = Math.max(
-					rule.value.min.numericInstance.numDigits,
-					rule.value.max.numericInstance.numDigits
+			case ROUND_TYPE_ROUND_DECIMAL_DIGITS:
+				let numDecimalDigits = Math.max(
+					rule.value.min.numericInstance.numDecimalDigits,
+					rule.value.max.numericInstance.numDecimalDigits
 				)
 
-				roundedEntry.numericInstance.round(numDigits)
-				return roundedEntry
+				roundedInstance.round(numDecimalDigits)
+				break
 
 			case ROUND_TYPE_ROUND_SIG_FIGS:
 				let numSigFigs = Math.max(
@@ -240,9 +224,11 @@ export default class NumericRuleOutcome {
 					rule.value.max.numericInstance.numSigFigs
 				)
 
-				roundedEntry.numericInstance.round(numSigFigs)
-				return roundedEntry
+				roundedInstance.round(numSigFigs)
+				break
 		}
+
+		return roundedInstance.bigValue
 	}
 
 	/**
@@ -251,7 +237,7 @@ export default class NumericRuleOutcome {
 	 * @return {boolean}
 	 */
 	static getIsExpectedNumSigFigs(numericInstance, rule) {
-		return !rule.expectedNumSigFigs || numericInstance.numSigFigs === rule.expectedNumSigFigs
+		return rule.sigFigs.isValueInRange(numericInstance.numSigFigs)
 	}
 
 	/**
@@ -270,9 +256,9 @@ export default class NumericRuleOutcome {
 	 */
 	static getIsExpectedFractionReduced(numericInstance, rule) {
 		return (
-			!rule.isFractionReduced ||
+			rule.isFractionReduced === null ||
 			rule.type !== INPUT_TYPE_FRACTIONAL ||
-			numericInstance.isFractionReduced
+			numericInstance.isFractionReduced === rule.isFractionReduced
 		)
 	}
 
@@ -302,7 +288,6 @@ export default class NumericRuleOutcome {
 				return !numericInstance.isWithUnit
 
 			case MATCHES_UNIT:
-				console.log('kompare', numericInstance.unit, rule.allUnits)
 				if (rule.unitsAreCaseSensitive) {
 					return rule.allUnits.indexOf(numericInstance.unit) > -1
 				} else {
@@ -320,9 +305,9 @@ export default class NumericRuleOutcome {
 	 */
 	static getIsExpectedScientific(numericInstance, rule) {
 		return (
-			!rule.isValidScientific ||
+			rule.isValidScientific === null ||
 			rule.type !== INPUT_TYPE_SCIENTIFIC ||
-			numericInstance.isValidScientific
+			numericInstance.isValidScientific === rule.isValidScientific
 		)
 	}
 

@@ -27,6 +27,7 @@ export default class BigValueRange extends ValueRange {
 	 * @return {Big}
 	 */
 	static parseValue(inputString) {
+		if (inputString === null) return null
 		return new Big(inputString)
 	}
 
@@ -34,16 +35,16 @@ export default class BigValueRange extends ValueRange {
 	 * Create a new BigValueRange
 	 * @param {ValueRangeString|ValueRangeObject} rangeStringOrRangeObject
 	 */
-	constructor(rangeStringOrRangeObject = false) {
+	constructor(rangeStringOrRangeObject = '*') {
 		super(rangeStringOrRangeObject, BigValueRange.parseValue, BigValueRange.compareValues)
 	}
 
-	toJSON() {
-		const o = super.toJSON()
+	// toJSON() {
+	// 	const o = super.toJSON()
 
-		o.min = o.min.toString()
-		o.max = o.max.toString()
+	// 	o.min = o.min.toString()
+	// 	o.max = o.max.toString()
 
-		return o
-	}
+	// 	return o
+	// }
 }
