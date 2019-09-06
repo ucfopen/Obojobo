@@ -35,25 +35,22 @@
 	@mixin correct() {
 		content: '✔';
 		position: absolute;
-		display: block;
+		top: 0.8em;
+		left: 0.6em;
 		color: $color-correct;
 		font-size: 2.5em;
 		transform: translate(-50%, -50%);
-		margin-top: 2rem;
-		margin-left: 1rem;
-		left: 1rem;
 		animation: obojobo-draft--chunks--mc-assessment--fadein $duration-animation-default * 2;
 	}
 
 	@mixin incorrect() {
 		content: '✖';
 		position: absolute;
-		top: 0.65em;
-		display: block;
+		top: 0.8em;
+		left: 0.6em;
 		color: $color-incorrect;
 		font-size: 2.5em;
 		transform: translate(-50%, -50%);
-		left: 0.6em;
 		animation: obojobo-draft--chunks--mc-assessment--fadein $duration-animation-default * 2;
 	}
 
@@ -70,38 +67,106 @@
 
 	.input-section {
 		border: 1px solid $color-border;
-		padding: 0.5rem 0 0.5rem 3rem;
-		padding-left: 3em;
-		display: flex;
+		position: relative;
 		margin: -1px;
 
-		// &::before {
-		// 	@include correct();
-		// }
+		.input-container {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			margin: 1rem 0;
 
-		#numeric-assessment--input {
-			height: 2.8rem;
-			cursor: pointer;
+			#numeric-assessment--input {
+				height: 2.5rem;
+				cursor: pointer;
+				font-family: $font-default;
+				font-size: 1rem;
+				width: 8rem;
+				padding: 0 0.5rem;
+				border-radius: 2px;
+				border: 1px solid $color-action;
+				margin: auto 0;
+				display: inline-block;
+			}
+
+			* {
+				margin: 0;
+			}
+		}
+
+		.feedback {
+			background: lighten($color-incorrect, 60%);
+			border-radius: 0.2rem;
+
+			.feedback--content {
+				margin: 1rem;
+				padding: 0.5rem;
+				font-size: 1rem;
+			}
+		}
+	}
+
+	.warning {
+		height: 2.2rem;
+		position: relative;
+		background-color: $color-warning;
+		margin: auto 0;
+
+		&::before {
+			content: '';
+			position: absolute;
+			border-color: $color-bg $color-warning $color-bg $color-bg;
+			border-style: solid;
+			border-width: 1.1rem 1.1rem 1.1rem 1.1rem;
+		}
+
+		.warning--content {
 			font-family: $font-default;
-			font-size: 1rem;
-			width: 8rem;
-			border-radius: 2px;
-			padding: 0rem 0.5rem;
-			border: 1px solid #6714bd;
-			margin: auto 0;
+			font-weight: bold;
+			box-sizing: border-box;
+			margin: 0;
 			display: inline-block;
-
-			// &::after {
-			// 	@include correct();
-			// }
+			padding: 0 1rem 0 2.3rem;
+			font-size: 0.7em;
+			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
 		}
 	}
 
 	.submit-and-result-container {
-		padding-left: 3em;
 		min-height: 4em;
-		border: 1px solid $color-border;
-		margin: -1px;
+		display: table;
+		border-bottom: 1px solid $color-border;
+	}
+
+	.result-container {
+		display: table-cell;
+		position: relative;
+		vertical-align: middle;
+		padding: 1em;
+
+		.result {
+			font-family: $font-default;
+			color: $color-bg;
+			font-weight: bold;
+			box-sizing: border-box;
+			margin: 0;
+			display: inline-block;
+			border-radius: 9999px;
+			padding: 0 1.5em;
+			font-size: 0.8em;
+			transform: scale(0);
+			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
+			animation-delay: $duration-animation-default * 1.5;
+			animation-fill-mode: forwards;
+
+			&.correct {
+				background-color: $color-correct;
+			}
+
+			&.incorrect {
+				background-color: $color-incorrect;
+			}
+		}
 	}
 
 	.submit {
@@ -117,379 +182,35 @@
 			margin-top: 1em;
 			min-width: 10.5em;
 		}
-
-		.divider {
-			color: $color-shadow;
-			display: inline-block;
-			padding: 0 0.4em;
-			transform: scale(2, 0.9);
-		}
 	}
 
-	// .result-container {
-	// 	display: table-cell;
-	// 	position: relative;
-	// 	vertical-align: middle;
-	// 	padding-right: 1em;
-	// 	padding-top: 1em;
-	// 	padding-bottom: 1em;
+	&.is-scored {
+		&.is-correct {
+			.input-section {
+				&::before {
+					@include correct();
+				}
 
-	// 	.pick-all-instructions {
-	// 		font-family: $font-default;
-	// 		font-size: 0.8em;
-	// 		font-weight: bold;
-	// 		color: $color-incorrect;
-	// 		width: 24em;
-	// 		display: inline-block;
-	// 		line-height: 1.5em;
-	// 		vertical-align: middle;
-	// 		margin-left: 1.25em;
-	// 	}
+				background: transparentize($color-correct, 0.9);
 
-	// 	.result {
-	// 		font-family: $font-default;
-	// 		color: $color-bg;
-	// 		font-weight: bold;
-	// 		box-sizing: border-box;
-	// 		margin: 0;
-	// 		display: inline-block;
-	// 		border-radius: 9999px;
-	// 		padding: 0 1.5em;
-	// 		font-size: 0.8em;
-	// 		transform: scale(0);
-	// 		animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
-	// 		animation-delay: $duration-animation-default * 1.5;
-	// 		// animation-delay: $duration-animation-default * 2;
-	// 		animation-fill-mode: forwards;
+				#numeric-assessment--input {
+					border: 1px solid $color-correct;
+				}
+			}
+		}
 
-	// 		&.correct {
-	// 			background-color: $color-correct;
-	// 		}
+		&.is-not-correct {
+			.input-section {
+				&::before {
+					@include incorrect();
+				}
 
-	// 		&.incorrect {
-	// 			background-color: $color-incorrect;
-	// 		}
+				background: transparentize($color-incorrect, 0.9);
 
-	// 		&.survey {
-	// 			background-color: $color-survey;
-	// 		}
-	// 	}
-	// }
-
-	// .solution {
-	// 	background: $color-bg2;
-	// 	position: relative;
-	// 	border-bottom-left-radius: 0.3em;
-	// 	border-bottom-right-radius: 0.3em;
-	// 	border-top: 1px solid $color-shadow;
-	// 	padding-bottom: 1px; /* stylelint-disable-line unit-blacklist */
-
-	// 	> .obojobo-draft--components--button {
-	// 		margin-top: 1em;
-	// 		margin-bottom: 1em;
-	// 		margin-left: 3em;
-
-	// 		button {
-	// 			min-width: 10.5em;
-	// 		}
-	// 	}
-
-	// 	&.submit-enter {
-	// 		opacity: 0;
-	// 		max-height: 0;
-	// 		overflow: hidden;
-	// 	}
-
-	// 	&.submit-enter.submit-enter-active {
-	// 		opacity: 1;
-	// 		max-height: 16em;
-
-	// 		/* prettier-ignore */
-	// 		transition:
-	// 			opacity $duration-animation-default * 2,
-	// 			max-height $duration-animation-default * 2;
-	// 		// transition-delay: $duration-animation-default * 2;
-	// 	}
-
-	// 	&.submit-leave {
-	// 		opacity: 1;
-	// 		max-height: 16em;
-	// 		overflow: hidden;
-	// 	}
-
-	// 	&.submit-leave.submit-exit-active {
-	// 		opacity: 0;
-	// 		max-height: 0;
-
-	// 		/* prettier-ignore */
-	// 		transition:
-	// 			opacity $duration-animation-default * 2,
-	// 			max-height $duration-animation-default * 2;
-	// 	}
-
-	// 	> .solution-container-animation-placeholder {
-	// 		transition: height $duration-animation-default * 2;
-	// 	}
-
-	// 	.solution-container {
-	// 		background: $color-bg;
-	// 		text-align: left;
-	// 		padding: 0;
-	// 		margin-bottom: $dimension-padding / 3;
-	// 		margin-left: $dimension-padding / 3;
-	// 		margin-right: $dimension-padding / 3;
-	// 		border: 1px solid $color-shadow;
-	// 		position: relative;
-
-	// 		&:focus {
-	// 			outline: none;
-	// 		}
-
-	// 		&::before {
-	// 			$color-solution-label-text: transparentize($color-text, 0.25);
-
-	// 			content: 'Full explanation:';
-	// 			font-family: $font-default;
-	// 			font-size: 1em;
-	// 			font-weight: bold;
-	// 			color: $color-solution-label-text;
-	// 			margin-top: 1em;
-	// 			margin-left: 2em;
-	// 			margin-bottom: -1em;
-	// 			display: block;
-	// 			transform: scale(0.7);
-	// 			transform-origin: top left;
-	// 		}
-
-	// 		&.solution-enter {
-	// 			max-height: 0;
-	// 			overflow: hidden;
-	// 			border: 0 solid $color-transparent;
-	// 			margin-bottom: 0;
-	// 			opacity: 0;
-	// 		}
-
-	// 		&.solution-enter.solution-enter-active {
-	// 			max-height: 60em;
-	// 			margin-bottom: 1em;
-	// 			border: 1px solid $color-shadow;
-	// 			opacity: 1;
-
-	// 			/* prettier-ignore */
-	// 			transition:
-	// 				max-height $duration-animation-default * 2,
-	// 				margin-bottom $duration-animation-default * 2,
-	// 				border $duration-animation-default * 2,
-	// 				opacity $duration-animation-default * 2;
-	// 		}
-
-	// 		&.solution-exit {
-	// 			max-height: 60em;
-	// 			margin-bottom: 1em;
-	// 			border: 1px solid $color-shadow;
-	// 			overflow: hidden;
-	// 			opacity: 1;
-	// 		}
-
-	// 		&.solution-exit.solution-exit-active {
-	// 			max-height: 0;
-	// 			margin-bottom: 0;
-	// 			border: 0 solid $color-transparent;
-	// 			opacity: 0;
-
-	// 			/* prettier-ignore */
-	// 			transition:
-	// 				max-height $duration-animation-default * 2,
-	// 				margin-bottom $duration-animation-default * 2,
-	// 				border $duration-animation-default * 2,
-	// 				opacity $duration-animation-default * 2;
-	// 		}
-
-	// 		> div > .for-screen-reader-only {
-	// 			position: absolute;
-	// 			left: 0;
-	// 			top: 0;
-	// 			width: 0;
-	// 			height: 0;
-	// 			overflow: hidden;
-	// 		}
-
-	// 		> div > .component[data-obo-component='true'] {
-	// 			margin-left: -1em;
-	// 			margin-right: -1em;
-	// 		}
-	// 	}
-
-	// 	&.is-type-survey {
-	// 		.solution-container {
-	// 			&::before {
-	// 				content: 'About this question:';
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// .submit .obojobo-draft--components--button:first-child {
-	// 	margin-right: 1em;
-	// }
-
-	// &.is-scored {
-	// 	// These two rules, one for pick-all and one for the others, could be combined but
-	// 	// don't - IE11 has a bug that applies multiple sizes in pseudo elements :(
-	// 	&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
-	// 	&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice,
-	// 	&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice {
-	// 		&.is-type-chosen-correctly {
-	// 			// Do not include the checkmark on review
-	// 			&::before {
-	// 				@include correct();
-	// 			}
-
-	// 			background: transparentize($color-correct, 0.9);
-	// 		}
-
-	// 		&.is-type-should-not-have-chosen {
-	// 			// Do not include the x on review
-	// 			&::before {
-	// 				@include incorrect();
-	// 			}
-
-	// 			background: transparentize($color-incorrect, 0.9);
-	// 		}
-
-	// 		&.is-type-chosen-survey {
-	// 			background: transparentize($color-survey, 0.9);
-	// 		}
-	// 	}
-	// }
-
-	// // prettier-ignore
-	// &.is-scored.is-not-correct.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice.is-type-chosen-correctly {
-	// 	background: transparentize($color-highlight, 0.8);
-	// }
-
-	// &.is-mode-review {
-	// 	.result-container .result {
-	// 		animation: none;
-	// 		transform: none;
-	// 	}
-
-	// 	&.is-scored {
-	// 		// These two rules, one for pick-all and one for the others, could be combined but
-	// 		// don't - IE11 has a bug that applies multiple sizes in pseudo elements :(
-	// 		&.is-response-type-pick-one .obojobo-draft--chunks--mc-assessment--mc-choice,
-	// 		&.is-response-type-pick-one-multiple-correct .obojobo-draft--chunks--mc-assessment--mc-choice,
-	// 		&.is-response-type-pick-all .obojobo-draft--chunks--mc-assessment--mc-choice {
-	// 			// Only show unchosen correct answers in review
-	// 			&.is-type-chosen-correctly,
-	// 			&.is-type-should-not-have-chosen {
-	// 				&::before {
-	// 					content: '';
-	// 				}
-	// 			}
-
-	// 			&.is-type-could-have-chosen {
-	// 				background: transparentize($color-alt-correct, 0.9);
-	// 			}
-
-	// 			&.is-type-should-have-chosen {
-	// 				background: transparentize($color-unchosen-correct, 0.9);
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-	// .obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag {
-	// 	@mixin point() {
-	// 		content: ' ';
-	// 		position: absolute;
-	// 		left: 0;
-	// 		top: 50%;
-	// 		transform: translate(6.79em, -50%) rotate(45deg);
-	// 		width: 1.72em;
-	// 		height: 1.72em;
-	// 		border-radius: $dimension-rounded-radius;
-	// 	}
-
-	// 	&::before {
-	// 		@include point();
-
-	// 		z-index: -1;
-	// 		box-shadow: 0 1px 1px $color-shadow;
-	// 	}
-
-	// 	&::after {
-	// 		@include point();
-	// 	}
-
-	// 	position: absolute;
-	// 	color: $color-bg;
-	// 	width: 7.75em;
-	// 	text-align: center;
-	// 	border-radius: $dimension-rounded-radius;
-	// 	font-size: 0.75em;
-	// 	left: -5.3em;
-	// 	top: 1.1em;
-	// 	font-family: $font-default;
-	// 	box-shadow: 0 1px 1px $color-shadow;
-	// 	padding-left: 0.5em;
-	// 	padding-right: 0.5em;
-	// 	box-sizing: border-box;
-	// 	min-height: 2.5em;
-
-	// 	> p {
-	// 		margin: 0.25em;
-	// 		margin-left: 0;
-	// 		line-height: 1em;
-	// 		top: 50%;
-	// 	}
-
-	// 	&.is-type-chosen-correctly,
-	// 	&.is-type-chosen-survey {
-	// 		background-color: $color-correct;
-
-	// 		&::before,
-	// 		&::after {
-	// 			background-color: $color-correct;
-	// 		}
-	// 	}
-
-	// 	&.is-type-should-not-have-chosen {
-	// 		background-color: $color-incorrect;
-
-	// 		&::before,
-	// 		&::after {
-	// 			background-color: $color-incorrect;
-	// 		}
-	// 	}
-
-	// 	&.is-type-should-have-chosen {
-	// 		background-color: $color-unchosen-correct;
-
-	// 		&::before,
-	// 		&::after {
-	// 			background-color: $color-unchosen-correct;
-	// 		}
-	// 	}
-
-	// 	&.is-type-could-have-chosen {
-	// 		background-color: $color-alt-correct;
-	// 		color: $color-text;
-
-	// 		&::before,
-	// 		&::after {
-	// 			background-color: $color-alt-correct;
-	// 		}
-	// 	}
-
-	// 	&.is-type-chosen-survey {
-	// 		background-color: $color-survey;
-	// 		color: $color-bg;
-
-	// 		&::before,
-	// 		&::after {
-	// 			background-color: $color-survey;
-	// 		}
-	// 	}
-	// }
+				#numeric-assessment--input {
+					border: 1px solid $color-incorrect;
+				}
+			}
+		}
+	}
 }
