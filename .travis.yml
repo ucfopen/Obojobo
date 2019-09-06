@@ -131,11 +131,6 @@ jobs:
         - cd packages/obonode/obojobo-chunks-multiple-choice-assessment
 
     - <<: *_npm-package-deploy-on-tag-template
-      stage: obojobople-numeric-assessment npm release
-      before_deploy:
-        - cd packages/obonode/obojobo-chunks-numeric-assessment
-
-    - <<: *_npm-package-deploy-on-tag-template
       stage: obojobo-chunks-question npm release
       before_deploy:
         - cd packages/obonode/obojobo-chunks-question
