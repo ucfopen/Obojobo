@@ -2,6 +2,7 @@ import React from 'react'
 import Common from 'Common'
 
 import FileMenu from './file-menu'
+import ViewMenu from './view-menu'
 import DropDownMenu from './drop-down-menu'
 
 import './file-toolbar.scss'
@@ -107,16 +108,25 @@ const FileToolbar = props => {
 		]
 	}
 
+	const saved = props.saved ? "saved" : ""
+
 	return (
 		<div className={`visual-editor--file-toolbar`}>
 			<FileMenu
 				model={props.model}
 				draftId={props.draftId}
-				onSave={props.onSave}/>
+				onSave={props.onSave}
+				onRename={props.onRename}/>
 			<DropDownMenu menu={editMenu} />
-			<DropDownMenu menu={viewMenu}/>
+			<ViewMenu
+				draftId={props.draftId} 
+				switchMode={props.switchMode}
+				onSave={props.onSave}/>
 			<DropDownMenu menu={insertMenu}/>
 			<DropDownMenu menu={formatMenu}/>
+			<div className={"saved-message " + saved}>
+				Saved!
+			</div>
 		</div>
 	)
 }

@@ -49,6 +49,11 @@ class FileMenu extends React.Component {
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 
 		EditorUtil.renamePage(moduleId, label)
+
+		if(this.props.onRename) {
+			console.log('here?')
+			this.props.onRename(label)
+		}
 	}
 
 	deleteModule() {

@@ -1,87 +1,31 @@
 import './page-editor.scss'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
-import ActionButton from 'obojobo-chunks-action-button/editor'
 import AlignMarks from './marks/align-marks'
 import Assessment from 'obojobo-sections-assessment/editor'
 import BasicMarks from './marks/basic-marks'
-import Break from 'obojobo-chunks-break/editor'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
-import Code from 'obojobo-chunks-code/editor'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
 import ContentToolbar from './toolbars/content-toolbar'
 import { Editor } from 'slate-react'
 import EditorSchema from '../plugins/editor-schema'
 import EditorStore from '../stores/editor-store'
-import Figure from 'obojobo-chunks-figure/editor'
 import FileToolbar from './toolbars/file-toolbar'
-import HTML from 'obojobo-chunks-html/editor'
-import Heading from 'obojobo-chunks-heading/editor'
-import IFrame from 'obojobo-chunks-iframe/editor'
+import hotKeyPlugin from '../plugins/hot-key-plugin'
 import IndentMarks from './marks/indent-marks'
 import LinkMark from './marks/link-mark'
-import List from 'obojobo-chunks-list/editor'
-import MCAnswer from 'obojobo-chunks-multiple-choice-assessment/MCAnswer/editor'
-import MCAssessment from 'obojobo-chunks-multiple-choice-assessment/editor'
-import MCChoice from 'obojobo-chunks-multiple-choice-assessment/MCChoice/editor'
-import MCFeedback from 'obojobo-chunks-multiple-choice-assessment/MCFeedback/editor'
-import MathEquation from 'obojobo-chunks-math-equation/editor'
-import Page from 'obojobo-pages-page/editor'
-import Question from 'obojobo-chunks-question/editor'
-import QuestionBank from 'obojobo-chunks-question-bank/editor'
 import React from 'react'
-import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
-import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-component'
 import ScriptMarks from './marks/script-marks'
 import SelectParameter from './parameter-node/select-parameter'
-import Table from 'obojobo-chunks-table/editor'
-import Text from 'obojobo-chunks-text/editor'
 import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
-import YouTube from 'obojobo-chunks-youtube/editor'
 
 const { ModalUtil } = Common.util
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-
-const plugins = [
-	Component.plugins,
-	BasicMarks.plugins,
-	LinkMark.plugins,
-	ScriptMarks.plugins,
-	AlignMarks.plugins,
-	IndentMarks.plugins,
-	ActionButton.plugins,
-	Break.plugins,
-	Code.plugins,
-	Figure.plugins,
-	Heading.plugins,
-	IFrame.plugins,
-	List.plugins,
-	MathEquation.plugins,
-	Table.plugins,
-	Text.plugins,
-	YouTube.plugins,
-	QuestionBank.plugins,
-	Question.plugins,
-	MCAssessment.plugins,
-	MCChoice.plugins,
-	MCAnswer.plugins,
-	MCFeedback.plugins,
-	HTML.plugins,
-	ScoreActions.plugins,
-	Page.plugins,
-	Rubric.plugins,
-	ToggleParameter.plugins,
-	SelectParameter.plugins,
-	TextParameter.plugins,
-	Assessment.plugins,
-	EditorSchema,
-	ClipboardPlugin
-]
 
 class PageEditor extends React.Component {
 	constructor(props) {
@@ -89,10 +33,65 @@ class PageEditor extends React.Component {
 		const json = this.importFromJSON()
 
 		this.state = {
-			value: Value.fromJSON(json)
+			value: Value.fromJSON(json),
+			saved: true
 		}
 
 		this.saveModule = this.saveModule.bind(this)
+		this.checkIfSaved = this.checkIfSaved.bind(this)
+		this.plugins = this.getPlugins()
+	}
+
+	getPlugins() {
+		const nodePlugins = Common.Registry.getItems(this.convertItemsToArray).map(item => item.plugins).filter(item => item)
+		const markPlugins = [
+			BasicMarks.plugins,
+			LinkMark.plugins,
+			ScriptMarks.plugins,
+			AlignMarks.plugins,
+			IndentMarks.plugins,
+		]
+		const componentPlugins = [
+			Component.plugins,
+			ToggleParameter.plugins,
+			SelectParameter.plugins,
+			TextParameter.plugins,
+		]
+
+		const editorPlugins = [
+			EditorSchema,
+			ClipboardPlugin,
+			hotKeyPlugin(() => this.saveModule(this.props.draftId)),
+		]
+
+		return [
+			...nodePlugins,
+			...markPlugins,
+			...componentPlugins,
+			...editorPlugins
+		]
+	}
+
+	convertItemsToArray(items) {
+		return Array.from(items.values())
+	}
+
+	componentDidMount() {
+		// Setup unload to prompt user before closing
+		window.addEventListener("beforeunload", this.checkIfSaved)
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener("beforeunload", this.checkIfSaved)
+	}
+
+	checkIfSaved(event) {
+		if (!this.state.saved) {
+			event.returnValue = true
+			return true // Returning true will cause browser to ask user to confirm leaving page
+		}
+		//eslint-disable-next-line
+		return undefined // Returning undefined will allow browser to close normally
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -132,6 +131,8 @@ class PageEditor extends React.Component {
 						model={this.props.model}
 						draftId={this.props.draftId}
 						onSave={this.saveModule}
+						switchMode={this.props.switchMode}
+						saved={this.state.saved}
 					/>
 					<ContentToolbar getEditor={this.getEditor.bind(this)} />
 				</div>
@@ -140,7 +141,7 @@ class PageEditor extends React.Component {
 					value={this.state.value}
 					ref={this.ref.bind(this)}
 					onChange={change => this.onChange(change)}
-					plugins={plugins}
+					plugins={this.plugins}
 				/>
 			</div>
 		)
@@ -168,7 +169,7 @@ class PageEditor extends React.Component {
 			ModalUtil.hide()
 		}
 
-		this.setState({ value: change.value })
+		this.setState({ value: change.value, saved: false })
 	}
 
 	saveModule(draftId) {
@@ -204,7 +205,7 @@ class PageEditor extends React.Component {
 
 			json.children.push(contentJSON)
 		})
-
+		this.setState({ saved: true })
 		return APIUtil.postDraft(draftId, JSON.stringify(json))
 	}
 

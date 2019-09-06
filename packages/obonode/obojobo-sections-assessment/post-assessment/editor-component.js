@@ -194,6 +194,15 @@ const plugins = {
 	}
 }
 
+Common.Registry.registerModel(ACTIONS_NODE, {
+	name: 'ScoreActions',
+	isInsertable: false,
+	slateToObo: slateToObo,
+	oboToSlate: oboToSlate,
+	supportsChildren: true,
+	plugins
+})
+
 const Actions = {
 	components: {
 		Node,

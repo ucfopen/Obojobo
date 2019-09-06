@@ -190,6 +190,15 @@ const plugins = {
 	}
 }
 
+Common.Registry.registerModel(RUBRIC_NODE, {
+	name: 'Rubric',
+	isInsertable: false,
+	slateToObo: Converter.slateToObo,
+	oboToSlate: Converter.oboToSlate,
+	supportsChildren: true,
+	plugins
+})
+
 const Rubric = {
 	components: {
 		Node,

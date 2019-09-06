@@ -36,7 +36,7 @@ class EditorApp extends React.Component {
 			loading: true,
 			draftId: null,
 			draft: null,
-			mode: XML_MODE,
+			mode: VISUAL_MODE,
 			code: null
 		}
 
@@ -49,13 +49,16 @@ class EditorApp extends React.Component {
 		// === SET UP DATA STORES ===
 		EditorStore.onChange(this.onEditorStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
+
+		this.switchMode = this.switchMode.bind(this)
 	}
 
 	getVisualEditorState(draftId, draftModel) {
-		const obomodel = OboModel.create(draftModel)
+		const json = JSON.parse(draftModel)
+		const obomodel = OboModel.create(json)
 		EditorStore.init(
 			obomodel,
-			draftModel.content.start,
+			json.content.start,
 			this.props.settings,
 			window.location.pathname
 		)
@@ -64,7 +67,7 @@ class EditorApp extends React.Component {
 			modalState: ModalStore.getState(),
 			editorState: EditorStore.getState(),
 			draftId,
-			draft: draftModel,
+			draft: json,
 			model: obomodel,
 			loading: false
 		}
@@ -97,44 +100,14 @@ class EditorApp extends React.Component {
 	}
 
 	switchMode(mode) {
-		this.setState(() => {
-			return APIUtil.getFullDraft(draftId, this.state.mode === VISUAL_MODE ? JSON_MODE : this.state.mode)
-				.then(response => {
-					switch(this.state.mode) {
-						case XML_MODE:
-							// Calling getFullDraft with xml will return plain text xml
-							return response
-						default:
-							const json = JSON.parse(response)
-							if(json.status === 'error') throw json.value
-
-							return JSON.stringify(json.value, null, 4)
-					}
-				}) 
-				.then(draftModel => {
-					switch(this.state.mode) {
-						case VISUAL_MODE:
-							return this.setVisualEditorState(draftId, draftModel)
-						default:
-							return this.setCodeEditorState(draftId, draftModel)
-					}
-				})
-				.catch(err => {
-					// eslint-disable-next-line no-console
-					console.error(err)
-					return this.setState({ requestStatus: 'invalid', requestError: err })
-				})
-		})
+		this.setState({ mode, loading: true })
+		this.reloadDraft(this.state.draftId, mode)
 	}
 
-	componentDidMount() {
-		const urlTokens = document.location.pathname.split('/')
-		const draftId = urlTokens[2] ? urlTokens[2] : null
-		ModalStore.init()
-
-		return APIUtil.getFullDraft(draftId, this.state.mode === VISUAL_MODE ? JSON_MODE : this.state.mode)
+	reloadDraft(draftId, mode) {
+		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? JSON_MODE : mode)
 			.then(response => {
-				switch(this.state.mode) {
+				switch(mode) {
 					case XML_MODE:
 						// Calling getFullDraft with xml will return plain text xml
 						return response
@@ -146,7 +119,7 @@ class EditorApp extends React.Component {
 				}
 			}) 
 			.then(draftModel => {
-				switch(this.state.mode) {
+				switch(mode) {
 					case VISUAL_MODE:
 						return this.setState(this.getVisualEditorState(draftId, draftModel))
 					default:
@@ -160,6 +133,14 @@ class EditorApp extends React.Component {
 			})
 	}
 
+	componentDidMount() {
+		const urlTokens = document.location.pathname.split('/')
+		const draftId = urlTokens[2] ? urlTokens[2] : null
+		ModalStore.init()
+
+		return this.reloadDraft(draftId, this.state.mode)
+	}
+
 	componentWillUnmount() {
 		EditorStore.offChange(this.onEditorStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
@@ -170,7 +151,8 @@ class EditorApp extends React.Component {
 			initialCode={this.state.code} 
 			model={this.state.model} 
 			draftId={this.state.draftId}
-			mode={this.state.mode} />
+			mode={this.state.mode} 
+			switchMode={this.switchMode}/>
 	}
 
 	renderVisualEditor() {
@@ -188,6 +170,7 @@ class EditorApp extends React.Component {
 					model={this.state.model}
 					draft={this.state.draft}
 					draftId={this.state.draftId}
+					switchMode={this.switchMode}
 				/>
 			</div>
 		)
