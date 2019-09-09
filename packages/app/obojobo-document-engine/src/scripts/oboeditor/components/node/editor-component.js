@@ -7,23 +7,19 @@ import DropMenu from './components/insert-menu'
 import './editor-component.scss'
 
 class Node extends React.Component {
-	cloneNodeJSON(sourceJSON) {
-		return JSON.parse(JSON.stringify(sourceJSON))
-	}
-
 	insertBlockAtStart(item) {
-		const json = this.cloneNodeJSON(item.insertJSON)
-
-		return this.props.editor.insertNodeByKey(this.props.node.key, 0, Block.create(json))
+		return this.props.editor.insertNodeByKey(
+			this.props.node.key,
+			0,
+			Block.create(item.cloneBlankNode())
+		)
 	}
 
 	insertBlockAtEnd(item) {
-		const json = this.cloneNodeJSON(item.insertJSON)
-
 		return this.props.editor.insertNodeByKey(
 			this.props.node.key,
 			this.props.node.nodes.size,
-			Block.create(json)
+			Block.create(item.cloneBlankNode())
 		)
 	}
 
