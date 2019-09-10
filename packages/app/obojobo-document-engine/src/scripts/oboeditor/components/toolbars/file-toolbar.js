@@ -5,37 +5,43 @@ import FileMenu from './file-menu'
 import ViewMenu from './view-menu'
 import DropDownMenu from './drop-down-menu'
 
+import BasicMarks from '../marks/basic-marks'
+import LinkMark from '../marks/link-mark'
+import ScriptMarks from '../marks/script-marks'
+import AlignMarks from '../marks/align-marks'
+import IndentMarks from '../marks/indent-marks'
+
 import './file-toolbar.scss'
 
 const FileToolbar = props => {
 	const editMenu = {
 		name: 'Edit',
 		menu: [
-			{ name: 'Undo', type: 'action' },
-			{ name: 'Redo', type: 'action' },
-			{ name: 'Cut', type: 'action' },
-			{ name: 'Copy', type: 'action' },
-			{ name: 'Paste', type: 'action' },
-			{ name: 'Paste without formatting', type: 'action' },
-			{ name: 'Delete', type: 'action' },
-			{ name: 'Select all', type: 'action' }
-		]
-	}
-
-	const viewMenu = {
-		name: 'View',
-		menu: [
-			{ name: 'Visual Editor', type: 'action' },
-			{ name: 'XML Editor', type: 'action' },
-			{ name: 'JSON Editor', type: 'action' },
-			{ name: 'Preview Module', type: 'action' }
+			{ name: 'Undo', type: 'action', action: () =>  props.getEditor().undo()},
+			{ name: 'Redo', type: 'action', action: () =>  props.getEditor().redo()},
+			{ name: 'Delete', type: 'action', action: () => props.getEditor().delete()},
+			{ name: 'Select all', type: 'action', action: () => props.getEditor().moveToRangeOfDocument().focus()}
 		]
 	}
 
 	const insertMenu = {
 		name: 'Insert',
-		menu: Common.Registry.getItems(items => Array.from(items.values()))
+		menu: Common.Registry.getItems(items => Array.from(items.values())).map(item => {
+			item.disabled = true
+			return item
+		})
 	}
+
+	const textMarks = [
+		...BasicMarks.marks,
+		...LinkMark.marks,
+		...ScriptMarks.marks
+	]
+
+	const alignIndentMarks = [
+		...AlignMarks.marks,
+		...IndentMarks.marks
+	]
 
 	const formatMenu = {
 		name: 'Format',
@@ -43,41 +49,33 @@ const FileToolbar = props => {
 			{
 				name: 'Text',
 				type: 'sub-menu',
-				menu: [
-					{ name: 'Bold', type: 'action' },
-					{ name: 'Italic', type: 'action' },
-					{ name: 'Strikethrough', type: 'action' },
-					{ name: 'Quote', type: 'action' },
-					{ name: 'Monospace', type: 'action' },
-					{ name: 'LaTeX', type: 'action' },
-					{ name: 'Link', type: 'action' },
-					{ name: 'Superscript', type: 'action' },
-					{ name: 'Subscript', type: 'action' }
-				]
+				menu: textMarks.map(mark => ({
+					name: mark.name,
+					type: 'action',
+					action: () => mark.action(props.getEditor())
+				}))
 			},
 			{
 				name: 'Paragraph styles',
 				type: 'sub-menu',
 				menu: [
-					{ name: 'Normal Text', type: 'action' },
-					{ name: 'Heading 1', type: 'action' },
-					{ name: 'Heading 2', type: 'action' },
-					{ name: 'Heading 3', type: 'action' },
-					{ name: 'Heading 4', type: 'action' },
-					{ name: 'Heading 5', type: 'action' },
-					{ name: 'Heading 6', type: 'action' }
+					{ name: 'Normal Text', type: 'action', disabled: true },
+					{ name: 'Heading 1', type: 'action', disabled: true },
+					{ name: 'Heading 2', type: 'action', disabled: true },
+					{ name: 'Heading 3', type: 'action', disabled: true },
+					{ name: 'Heading 4', type: 'action', disabled: true },
+					{ name: 'Heading 5', type: 'action', disabled: true },
+					{ name: 'Heading 6', type: 'action', disabled: true }
 				]
 			},
 			{
 				name: 'Align & indent',
 				type: 'sub-menu',
-				menu: [
-					{ name: 'Left', type: 'action' },
-					{ name: 'Center', type: 'action' },
-					{ name: 'Right', type: 'action' },
-					{ name: 'Increase Indent', type: 'action' },
-					{ name: 'Decrease Indent', type: 'action' }
-				]
+				menu: alignIndentMarks.map(mark => ({
+					name: mark.name,
+					type: 'action',
+					action: () => mark.action(props.getEditor())
+				}))
 			},
 			{
 				name: 'Bullets & numbering',
@@ -87,20 +85,20 @@ const FileToolbar = props => {
 						name: 'Bulletted List',
 						type: 'sub-menu',
 						menu: [
-							{ name: 'Disc', type: 'action' },
-							{ name: 'Circle', type: 'action' },
-							{ name: 'Square', type: 'action' }
+							{ name: 'Disc', type: 'action', disabled: true },
+							{ name: 'Circle', type: 'action', disabled: true },
+							{ name: 'Square', type: 'action', disabled: true }
 						]
 					},
 					{
 						name: 'Numbered List',
 						type: 'sub-menu',
 						menu: [
-							{ name: 'Numbers', type: 'action' },
-							{ name: 'Uppercase Alphabet', type: 'action' },
-							{ name: 'Uppercase Roman Numerals', type: 'action' },
-							{ name: 'Lowercase Alphabet', type: 'action' },
-							{ name: 'Lowercase Roman Numerals', type: 'action' }
+							{ name: 'Numbers', type: 'action', disabled: true },
+							{ name: 'Uppercase Alphabet', type: 'action', disabled: true },
+							{ name: 'Uppercase Roman Numerals', type: 'action', disabled: true },
+							{ name: 'Lowercase Alphabet', type: 'action', disabled: true },
+							{ name: 'Lowercase Roman Numerals', type: 'action', disabled: true }
 						]
 					},
 				]
@@ -123,7 +121,7 @@ const FileToolbar = props => {
 				switchMode={props.switchMode}
 				onSave={props.onSave}/>
 			<DropDownMenu menu={insertMenu}/>
-			<DropDownMenu menu={formatMenu}/>
+			{props.mode === 'visual' ? <DropDownMenu menu={formatMenu}/> : null}
 			<div className={"saved-message " + saved}>
 				Saved!
 			</div>

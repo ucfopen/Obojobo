@@ -90,7 +90,8 @@ class DropMenu extends React.Component {
 								return (
 									<button
 										key={item.name}
-										onClick={item.action}>
+										onClick={item.action}
+										disabled={item.disabled}>
 										{item.name}
 									</button>
 								)

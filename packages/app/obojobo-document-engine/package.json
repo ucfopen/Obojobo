@@ -83,6 +83,7 @@
 			"^Common(.*)$": "<rootDir>/src/scripts/common$1",
 			"^Viewer(.*)$": "<rootDir>/src/scripts/viewer$1",
 			"\\.scss$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
+			"\\.css$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js",
 			"\\.svg$": "obojobo-lib-utils/__mocks__/ignore-file-stub.js"
 		},
 		"moduleDirectories": [

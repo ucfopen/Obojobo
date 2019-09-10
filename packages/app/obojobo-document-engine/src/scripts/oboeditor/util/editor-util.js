@@ -42,10 +42,11 @@ const EditorUtil = {
 			}
 		})
 	},
-	addPage(newPage) {
+	addPage(newPage, afterPageId) {
 		return Dispatcher.trigger('editor:addPage', {
 			value: {
-				newPage
+				newPage,
+				afterPageId
 			}
 		})
 	},

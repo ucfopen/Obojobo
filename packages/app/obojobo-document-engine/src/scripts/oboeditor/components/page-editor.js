@@ -133,6 +133,7 @@ class PageEditor extends React.Component {
 						onSave={this.saveModule}
 						switchMode={this.props.switchMode}
 						saved={this.state.saved}
+						mode={'visual'}
 					/>
 					<ContentToolbar getEditor={this.getEditor.bind(this)} />
 				</div>

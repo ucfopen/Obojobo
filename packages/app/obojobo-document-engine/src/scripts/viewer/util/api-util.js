@@ -52,7 +52,6 @@ const APIUtil = {
 		return fetch(endpoint, {
 			method: 'DELETE',
 			credentials: 'include',
-			body: '',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json'

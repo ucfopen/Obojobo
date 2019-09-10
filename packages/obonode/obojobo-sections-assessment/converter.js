@@ -20,7 +20,6 @@ import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/compone
 import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
 
 const slateToObo = node => {
-	console.log(node)
 	const content = node.data.get('content')
 	// Remove rubric if it has been deleted
 	delete content.rubric

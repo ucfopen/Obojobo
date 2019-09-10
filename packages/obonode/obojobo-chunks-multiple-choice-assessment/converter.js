@@ -42,11 +42,20 @@ const slateToObo = node => {
 	}
 }
 
+const convertItemsToArray = (items) => {
+	return Array.from(items.values())
+}
+
 const oboToSlate = node => {
 	const choiceList = {
 		object: 'block',
 		type: CHOICE_LIST_NODE,
-		nodes: node.children.map(child => Common.Registry.getItemForType(child.type).oboToSlate(child))
+		nodes: node.children.map(child => {
+			console.log(child.type)
+			const array = Common.Registry.getItems(convertItemsToArray)
+			console.log(array)
+			return Common.Registry.getItemForType(child.type).oboToSlate(child)
+		})
 	}
 
 	const settings = {

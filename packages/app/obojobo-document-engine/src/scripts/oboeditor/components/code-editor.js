@@ -1,3 +1,5 @@
+import React from 'react'
+
 import './code-editor.scss'
 // Allows codemirror to work properly
 import 'codemirror/lib/codemirror.css'
@@ -14,13 +16,11 @@ import EditorUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/edito
 import FileToolbar from './toolbars/file-toolbar'
 import hotKeyPlugin from '../plugins/hot-key-plugin'
 
-const { ModalUtil } = Common.util
-
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
 
 const domParser = new DOMParser()
-var serial = new XMLSerializer()
+const serial = new XMLSerializer()
 
 class CodeEditor extends React.Component {
 	constructor(props) {
@@ -35,6 +35,9 @@ class CodeEditor extends React.Component {
 		this.saveCode = this.saveCode.bind(this)
 		this.setTitle = this.setTitle.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
+		this.getEditor = this.getEditor.bind(this)
+
+		this.editor = null;
 
 		this.keyBinding = hotKeyPlugin(this.saveCode)
 	}
@@ -61,25 +64,33 @@ class CodeEditor extends React.Component {
 		this.setState({ code, saved: false })
 	}
 
+	setJSONTitle(code, title) {
+		const json = JSON.parse(code)
+		json.content.title = title
+		return { code: JSON.stringify(json, null, 4)}
+	}
+
+	setXMLTitle(code, title) {
+		const doc = domParser.parseFromString(code, 'application/xml')
+		let els = doc.getElementsByTagName('Module')
+		if (els.length === 0) {
+			els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
+		}
+		if (els.length > 0) {
+			const el = els[0]
+			el.setAttribute('title', title)
+		}
+		return { code: serial.serializeToString(doc)}
+	}
+
 	setTitle(title) {
 		return this.setState((state, props) => {
 			switch(props.mode) {
-				case 'json':
-					const json = JSON.parse(state.code)
-					json.content.title = title
-					return { code: JSON.stringify(json, null, 4)}
+				case JSON_MODE:
+					return this.setJSONTitle(state.code, title)
 
 				case XML_MODE:
-					const doc = domParser.parseFromString(state.code, 'application/xml')
-					let els = doc.getElementsByTagName('Module')
-					if (els.length === 0) {
-						els = doc.getElementsByTagName('ObojoboDraft.Modules.Module')
-					}
-					if (els.length > 0) {
-						const el = els[0]
-						el.setAttribute('title', title)
-					}
-					return { code: serial.serializeToString(doc)}
+					return this.setXMLTitle(state.code, title)
 			}
 		})
 	}
@@ -96,6 +107,28 @@ class CodeEditor extends React.Component {
 			this.props.draftId, 
 			this.state.code, 
 			this.props.mode === 'xml' ? 'text/plain' : 'application/json')
+	}
+
+	getEditor() {
+		return this.editor
+	}
+
+	// Makes CodeMirror commands match Slate commands
+	convertCodeMirrorToEditor(codeMirror) {
+		const editor = codeMirror
+		editor.moveToRangeOfDocument = () => { 
+			const lastInfo = editor.lineInfo(editor.lastLine())
+			editor.setSelection( 
+				{ line: editor.firstLine(), ch: 0 }, 
+				{ line: lastInfo.line, ch: lastInfo.text.length})
+			return editor
+		}
+		editor.focus = () => editor
+		editor.delete = () => {
+			editor.deleteH(1, 'char')
+			return editor
+		}
+		return editor
 	}
 
 	render() {
@@ -115,9 +148,9 @@ class CodeEditor extends React.Component {
 		return (
 			<div 
 				className={'component editor--code-editor'}
-				onKeyDown={event => this.keyBinding.onKeyDown(event, null, () => undefined)}
-				onKeyUp={event => this.keyBinding.onKeyUp(event, null, () => undefined)}
-				onKeyPress={event => this.keyBinding.onKeyDown(event, null, () => undefined)}>
+				onKeyDown={event => this.keyBinding.onKeyDown(event, this.getEditor(), () => undefined)}
+				onKeyUp={event => this.keyBinding.onKeyUp(event, this.getEditor(), () => undefined)}
+				onKeyPress={event => this.keyBinding.onKeyDown(event, this.getEditor(), () => undefined)}>
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
@@ -127,9 +160,15 @@ class CodeEditor extends React.Component {
 						onRename={this.setTitle}
 						switchMode={this.props.switchMode}
 						saved={this.state.saved}
+						getEditor={this.getEditor}
+						mode={this.props.mode}
 					/>
 				</div>
-				<CodeMirror options={options} value={this.state.code} onBeforeChange={this.onBeforeChange} />
+				<CodeMirror 
+					options={options} 
+					value={this.state.code} 
+					onBeforeChange={this.onBeforeChange} 
+					editorDidMount={editor => { this.editor = this.convertCodeMirrorToEditor(editor) }}/>
 			</div>
 		)
 	}

@@ -2,24 +2,23 @@ import './editor-nav.scss'
 // relies on styles from viewer
 import '../../viewer/components/nav.scss'
 
-import ClipboardUtil from '../util/clipboard-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
 import React from 'react'
 import SubMenu from './sub-menu'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import generatePage from '../documents/generate-page'
 import generateAssessment from '../documents/generate-assessment'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
-const { Button } = Common.components
 
 class EditorNav extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = this.props.navState
+
+		this.showAddAssessmentModal = this.showAddAssessmentModal.bind(this)
+		this.addAssessment = this.addAssessment.bind(this)
 	}
 
 	onNavItemClick(item) {
@@ -37,6 +36,29 @@ class EditorNav extends React.Component {
 				{this.renderLabel(item.label)}
 			</li>
 		)
+	}
+
+	showAddAssessmentModal() {
+		ModalUtil.show(
+			<Prompt
+				title="Add Assessment"
+				message="Enter the title for the new assessment:"
+				onConfirm={this.addAssessment}
+			/>
+		)
+	}
+
+	addAssessment(name = 'Assessment') {
+		ModalUtil.hide()
+
+		const newAssessment = generateAssessment()
+		newAssessment.content.title = this.isWhiteSpace(name) ? 'Assessment' : name
+		EditorUtil.addAssessment(newAssessment)
+		return this.setState({ navTargetId: newAssessment.id })
+	}
+
+	isWhiteSpace(str) {
+		return !/[\S]/.test(str)
 	}
 
 	render() {
@@ -67,6 +89,9 @@ class EditorNav extends React.Component {
 						return null
 					})}
 				</ul>
+				<button className={'content-add-button align-left'} onClick={this.showAddAssessmentModal}>
+						+ Add Assessment
+				</button>
 			</div>
 		)
 	}

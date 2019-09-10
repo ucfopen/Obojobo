@@ -6,6 +6,7 @@ import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import generatePage from '../documents/generate-page'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -24,6 +25,8 @@ class SubMenu extends React.Component {
 
 		this.menu = []
 		this.timeOutId = null
+
+		this.showAddPageModal = this.showAddPageModal.bind(this)
 	}
 
 	deletePage(pageId) {
@@ -212,6 +215,38 @@ class SubMenu extends React.Component {
 		)
 	}
 
+	renderNewItemButton(pageId) {
+		return (
+			<div className="addPage">
+				<div className="addLocation"/>
+				<button onClick={() => this.showAddPageModal(pageId)}>+ Page</button>
+			</div>
+		)
+	}
+
+	showAddPageModal(pageId) {
+		ModalUtil.show(
+			<Prompt
+				title="Add Page"
+				message="Enter the title for the new page:"
+				onConfirm={this.addPage.bind(this, pageId)}
+			/>
+		)
+	}
+
+	addPage(afterPageId, title = null) {
+		ModalUtil.hide()
+
+		const newPage = generatePage()
+		newPage.content.title = this.isWhiteSpace(title) ? null : title
+		EditorUtil.addPage(newPage, afterPageId)
+		this.setState({ navTargetId: newPage.id })
+	}
+
+	isWhiteSpace(str) {
+		return !/[\S]/.test(str)
+	}
+
 	// This is called after renderDropDown so that the proper ref setup has
 	// already occurred
 	linkReferences(item) {
@@ -257,6 +292,7 @@ class SubMenu extends React.Component {
 			>
 				{this.renderLinkButton(item.label, ariaLabel, item.id)}
 				{this.renderDropDown(item)}
+				{this.props.isSelected ? this.renderNewItemButton(item.id) : null }
 				{this.linkReferences(item)}
 			</li>
 		)

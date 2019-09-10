@@ -1,4 +1,4 @@
-import { getEventTransfer } from 'slate-react'
+import { getEventTransfer, cloneFragment } from 'slate-react'
 import { Block } from 'slate'
 import Common from 'Common'
 
@@ -9,6 +9,8 @@ const TEXT_LINE_NODE = 'ObojoboDraft.Chunks.Text.TextLine'
 
 const ClipboardPlugin = {
 	onPaste(event, editor, next) {
+		console.log('hewwo?')
+		console.log(editor)
 		const transfer = getEventTransfer(event)
 		// This event allows for reuse of other KeyDown methods without breaking
 		// the default onPaste behavior

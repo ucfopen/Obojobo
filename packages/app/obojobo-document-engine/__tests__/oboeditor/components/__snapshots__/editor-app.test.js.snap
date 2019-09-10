@@ -2,6 +2,8 @@
 
 exports[`EditorApp EditorApp component 1`] = `"<div class=\\"visual-editor--editor-app\\"><div class=\\"draft-content\\"></div></div>"`;
 
+exports[`EditorApp EditorApp component displays xml 1`] = `"<div class=\\"visual-editor--editor-app\\"></div>"`;
+
 exports[`EditorApp EditorApp component renders error messsage 1`] = `"<div class=\\"viewer--viewer-app--visit-error\\"><h1>Error</h1><h2>someType</h2><div>someMessage</div></div>"`;
 
 exports[`EditorApp EditorApp component renders modal 1`] = `"<div class=\\"visual-editor--editor-app\\"><div class=\\"draft-content\\"></div><div class=\\"obojobo-draft--components--modal-container\\"><div class=\\"content\\">mock component</div></div></div>"`;

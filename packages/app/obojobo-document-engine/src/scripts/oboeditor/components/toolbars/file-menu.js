@@ -12,8 +12,6 @@ const { Prompt } = Common.components.modal
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
-const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-
 class FileMenu extends React.Component {
 	constructor(props) {
 		super(props)
@@ -51,7 +49,6 @@ class FileMenu extends React.Component {
 		EditorUtil.renamePage(moduleId, label)
 
 		if(this.props.onRename) {
-			console.log('here?')
 			this.props.onRename(label)
 		}
 	}

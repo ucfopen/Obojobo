@@ -31,7 +31,7 @@ class EditorStore extends Store {
 					this.gotoItem(this.state.itemsByPath[payload.value.path])
 				},
 				'editor:addPage': payload => {
-					this.addPage(payload.value.newPage)
+					this.addPage(payload.value.newPage, payload.value.afterPageId)
 				},
 				'editor:addAssessment': payload => {
 					this.addAssessment(payload.value.newAssessment)
@@ -173,19 +173,26 @@ class EditorStore extends Store {
 		return navItem
 	}
 
-	addPage(newPage) {
+	addPage(newPage, afterPageId) {
 		const rootModel = OboModel.getRoot()
+		let newPageModel
 
-		// Add the newPage to the content
-		const pageModel = OboModel.create(newPage)
-		rootModel.children.forEach(child => {
-			if (child.get('type') === CONTENT_NODE) {
-				child.children.add(pageModel)
-			}
-		})
+		if(afterPageId) {
+			const pageModel = OboModel.models[afterPageId]
+			newPageModel = OboModel.create(newPage)
+			pageModel.addChildAfter(newPageModel)
+		} else {
+			// Add the newPage to the end of the content
+			newPageModel = OboModel.create(newPage)
+			rootModel.children.forEach(child => {
+				if (child.get('type') === CONTENT_NODE) {
+					child.children.add(newPageModel)
+				}
+			})
+		}
 
 		EditorUtil.rebuildMenu(rootModel)
-		EditorUtil.goto(pageModel.id)
+		EditorUtil.goto(newPageModel.id)
 	}
 
 	addAssessment(newAssessment) {
