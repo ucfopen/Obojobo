@@ -124,6 +124,15 @@ module.exports = req => {
 				sessionIds
 			})
 
+		case 'question:submitReponse':
+			return caliperEvents.createPracticeQuestionSubmittedEvent({
+				actor: actorFromType(ACTOR_USER),
+				draftId: currentDocument.draftId,
+				contentId: currentDocument.contentId,
+				questionId: clientEvent.payload.questionId,
+				sessionIds
+			})
+
 		case 'question:showExplanation':
 			return caliperEvents.createViewEvent({
 				actor: actorFromType(ACTOR_USER),

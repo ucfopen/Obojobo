@@ -22,6 +22,7 @@ import LeftIcon from '../assets/left-icon'
 import RightIcon from '../assets/right-icon'
 import CenterIcon from '../assets/center-icon'
 import UnindentIcon from '../assets/unindent-icon'
+import HangingIndentIcon from '../assets/hanging-indent-icon'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -102,6 +103,7 @@ class Node extends React.Component {
 		if (mark.name === 'Link') return this.toggleLink()
 		if (mark.name === 'Indent') return this.indent()
 		if (mark.name === 'Unindent') return this.unindent()
+		if (mark.name === 'Hanging Indent') return this.hangingIndent()
 
 		return editor.toggleMark(mark.type)
 	}
@@ -181,10 +183,10 @@ class Node extends React.Component {
 
 		// get the bullet and type of the closest parent level
 		const level = value.document.getClosest(block.key, parent => parent.type === LIST_LEVEL_NODE)
-
 		const content = level.data.get('content')
 		bullet = content.bulletStyle
 		type = content.type
+
 
 		// get the proper bullet for the next level
 		const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
@@ -213,6 +215,28 @@ class Node extends React.Component {
 
 				case LIST_LINE_NODE:
 					return this.indentList(editor.value, block, editor)
+			}
+		})
+	}
+
+	hangingIndent() {
+		const editor = this.props.getEditor()
+		editor.value.blocks.forEach(block => {
+			const dataJSON = block.data.toJSON()
+
+			switch (block.type) {
+				case TEXT_LINE_NODE:
+					case TEXT_LINE_NODE:
+					dataJSON.hangingIndent = (dataJSON.hangingIndent == true) ? false : true
+					return editor.setNodeByKey(block.key, { data: dataJSON })
+
+				case CODE_LINE_NODE:
+					dataJSON.content.indent = dataJSON.content.indent + 1
+					return editor.setNodeByKey(block.key, { data: dataJSON })
+
+				case LIST_LINE_NODE:
+					dataJSON.hangingIndent = (dataJSON.hangingIndent == true) ? false : true
+					return editor.setNodeByKey(block.key, { data: dataJSON })
 			}
 		})
 	}
@@ -365,6 +389,12 @@ const markList = [
 		type: ITALIC_MARK,
 		plugin: () => ({}),
 		icon: UnindentIcon
+	},
+	{
+		name: 'Hanging Indent',
+		type: ITALIC_MARK,
+		plugin: () => ({}),
+		icon: HangingIndentIcon
 	}
 ]
 

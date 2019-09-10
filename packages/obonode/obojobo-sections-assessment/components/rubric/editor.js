@@ -168,11 +168,12 @@ const plugins = {
 							{
 								object: 'block',
 								type: 'ObojoboDraft.Chunks.Text',
+								data: { hangingIndent: false },
 								nodes: [
 									{
 										object: 'block',
 										type: 'ObojoboDraft.Chunks.Text.TextLine',
-										data: { indent: 0 },
+										data: { indent: 0 , hangingIndent: false},
 										nodes: [
 											{
 												object: 'text',

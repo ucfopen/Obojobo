@@ -5,11 +5,13 @@ const TextGroupAdapter = {
 		if (attrs && attrs.content && attrs.content.textGroup) {
 			model.modelState.textGroup = TextGroup.fromDescriptor(attrs.content.textGroup, Infinity, {
 				indent: 0,
+				hangingIndent: false,
 				align: 'left'
 			})
 		} else {
 			model.modelState.textGroup = TextGroup.create(Infinity, {
 				indent: 0,
+				hangingIndent: false,
 				align: 'left'
 			})
 		}
