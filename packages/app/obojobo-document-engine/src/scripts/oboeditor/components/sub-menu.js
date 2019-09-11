@@ -8,7 +8,12 @@ import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import generatePage from '../documents/generate-page'
 
+import MoreInfoIcon from '../assets/more-info-icon'
+
+import EscapableBubble from './escapable-bubble'
+
 const { Prompt } = Common.components.modal
+const { Bubble } = Common.components.modal.bubble
 const { ModalUtil } = Common.util
 
 const { OboModel } = Common.models
@@ -27,6 +32,7 @@ class SubMenu extends React.Component {
 		this.timeOutId = null
 
 		this.showAddPageModal = this.showAddPageModal.bind(this)
+		this.showMoreInfoModal = this.showMoreInfoModal.bind(this)
 	}
 
 	deletePage(pageId) {
@@ -217,8 +223,7 @@ class SubMenu extends React.Component {
 
 	renderNewItemButton(pageId) {
 		return (
-			<div className="addPage">
-				<div className="addLocation"/>
+			<div className="add-page">
 				<button onClick={() => this.showAddPageModal(pageId)}>+ Page</button>
 			</div>
 		)
@@ -247,16 +252,11 @@ class SubMenu extends React.Component {
 		return !/[\S]/.test(str)
 	}
 
-	// This is called after renderDropDown so that the proper ref setup has
-	// already occurred
-	linkReferences(item) {
-		this.menu = []
-		if (this.moveUpRef) this.menu.push(this.moveUpRef)
-		if (this.moveDownRef) this.menu.push(this.moveDownRef)
-		this.menu.push(this.editNameRef)
-		if (item.id !== EditorStore.state.startingId) this.menu.push(this.setStartRef)
-		this.menu.push(this.deleteRef)
-		this.menu.push(this.getIdRef)
+	showMoreInfoModal() {
+		ModalUtil.show(
+			<EscapableBubble
+				onClose={ModalUtil.hide}/>
+		)
 	}
 
 	render() {
@@ -291,9 +291,12 @@ class SubMenu extends React.Component {
 				onKeyDown={event => this.onKeyDown(event)}
 			>
 				{this.renderLinkButton(item.label, ariaLabel, item.id)}
-				{this.renderDropDown(item)}
-				{this.props.isSelected ? this.renderNewItemButton(item.id) : null }
-				{this.linkReferences(item)}
+				<button 
+					className="more-info-button"
+					onClick={this.showMoreInfoModal}>
+					<MoreInfoIcon />
+				</button>
+				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null }
 			</li>
 		)
 	}

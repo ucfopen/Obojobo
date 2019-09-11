@@ -12,7 +12,10 @@ const EditorSchema = {
 		document: {
 			nodes: [
 				{
-					match: [{ type: 'oboeditor.component' }, { type: 'ObojoboDraft.Sections.Assessment' }],
+					match: [
+						{ type: 'oboeditor.component' }, 
+						{ type: 'ObojoboDraft.Sections.Assessment' },
+						{ type: 'oboeditor.ErrorMessage'}],
 					min: 1
 				}
 			],

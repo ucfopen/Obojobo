@@ -95,24 +95,44 @@ class PageEditor extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		// Deal with deleted page
-		if (!this.props.page) {
-			return
-		}
-		if (!prevProps.page) {
-			this.setState({ value: Value.fromJSON(this.importFromJSON()) })
+		// Do nothing when updating state from empty page
+		if (!prevProps.page && !this.props.page) {
 			return
 		}
 
-		// Save changes when switching pages
+		// If updating from an existing page to no page, set the user alert message
+		if(prevProps.page && !this.props.page) {
+			return this.setState({ value: Value.fromJSON({ 
+				document: { 
+					nodes: [
+						{
+							type: 'oboeditor.ErrorMessage',
+							object: 'block',
+							nodes: [
+								{
+									object: 'text',
+									leaves: [
+										{ text: 'No content available, create a page to start editing'}
+									]
+								}
+							]
+						}
+					] 
+				} 
+			})})
+		}
+
+		// If updating from no page to an existing page, load the new page into the editor
+		if (!prevProps.page && this.props.page) {
+			return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
+		}
+
+		// Both page and previous page are garunteed to not be null here
+		// Save changes and update value when switching pages
 		if (prevProps.page.id !== this.props.page.id) {
 			this.exportToJSON(prevProps.page, prevState.value)
-			this.setState({ value: Value.fromJSON(this.importFromJSON()) })
+			return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
 		}
-	}
-
-	renderEmpty() {
-		return <p>No content available, click on a page to start editing</p>
 	}
 
 	ref(editor) {
@@ -120,8 +140,6 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
-		if (this.props.page === null) return this.renderEmpty()
-
 		return (
 			<div className={'component obojobo-draft--modules--module editor--page-editor'} role="main">
 				<div className="draft-toolbars">
@@ -143,6 +161,7 @@ class PageEditor extends React.Component {
 					ref={this.ref.bind(this)}
 					onChange={change => this.onChange(change)}
 					plugins={this.plugins}
+					readOnly={!this.props.page}
 				/>
 			</div>
 		)
@@ -211,6 +230,8 @@ class PageEditor extends React.Component {
 	}
 
 	exportToJSON(page, value) {
+		if (this.props.page === null) return
+
 		if (page.get('type') === ASSESSMENT_NODE) {
 			const json = Common.Registry.getItemForType(ASSESSMENT_NODE).slateToObo(
 				value.document.nodes.get(0)

@@ -7,6 +7,10 @@ import Settings from './components/settings/editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
+import './MCAnswer/editor'
+import './MCChoice/editor'
+import './MCFeedback/editor'
+
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 const SETTINGS_NODE = 'ObojoboDraft.Chunks.MCAssessment.Settings'
 const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'

@@ -215,6 +215,9 @@ class EditorStore extends Store {
 
 		this.state.currentPageModel = null
 		this.triggerChange()
+
+		const first = EditorUtil.getFirst(this.state)
+		if (first && first.id) EditorUtil.goto(first.id)
 	}
 
 	renamePage(pageId, newName) {
