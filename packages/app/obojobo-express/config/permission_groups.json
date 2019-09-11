@@ -1,10 +1,10 @@
 {
 	"default": {
-		"canViewEditor": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"],
-		"canEditDrafts": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"],
-		"canDeleteDrafts": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"],
-		"canCreateDrafts": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"],
-		"canViewDrafts": ["Instructor", "Administrator", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"]
+		"canViewEditor": ["Instructor", "Administrator", "ContentDeveloper", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"],
+		"canEditDrafts": ["Instructor", "Administrator", "ContentDeveloper", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"],
+		"canDeleteDrafts": ["Instructor", "Administrator", "ContentDeveloper", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"],
+		"canCreateDrafts": ["Instructor", "Administrator", "ContentDeveloper", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"],
+		"canViewDrafts": ["Instructor", "Administrator", "ContentDeveloper", "urn:lti:instrole:ims/lis/Administrator", "urn:lti:role:ims/lis/TeachingAssistant"]
 	},
 	"test": {
 		"canDoThing": ["roleName"]
