@@ -1,4 +1,3 @@
-import './css/main.scss'
-// import 'whatwg-fetch'
-
+require('../shared/components/page-library')
+require('../shared/components/page-module')
 

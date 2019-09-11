@@ -1,0 +1,53 @@
+footer {
+	color: #888888;
+	font-size: 12pt;
+	height: 130px;
+	padding-top: 50px;
+}
+
+
+footer div {
+	text-align: center;
+	display: block;
+	margin: 0 auto;
+	padding-left: 1em;
+	padding-right: 1em;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+.ucf-open-footer{
+	margin-bottom: 35px;
+}
+
+.ucf-open-logo{
+	overflow: hidden;
+	text-indent: -400px;
+	width: 175px;
+	height: 62px;
+	background: url('/images/ucf_open.svg') center center no-repeat;
+	margin-bottom: 20px;
+}
+
+.ucf-open-desc{
+	margin-bottom: 5px
+}
+
+.ucf-open-links > a{
+	display: inline-block;
+	padding: 2px;
+	margin:5px 2px;
+}
+
+.copyright > span {
+	display: block;
+	margin-bottom: 0.5em;
+}
+
+.copyright > span a {
+	color: gray;
+}
+.copyright > span a:hover {
+	color: #333333;
+}

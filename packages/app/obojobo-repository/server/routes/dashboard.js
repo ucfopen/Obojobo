@@ -17,7 +17,7 @@ router
 					myModules,
 					currentUser: req.currentUser
 				}
-				res.render('dashboard-server-view.jsx', props)
+				res.render('page-dashboard-server.jsx', props)
 			})
 
 })

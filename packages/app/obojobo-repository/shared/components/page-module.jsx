@@ -1,12 +1,14 @@
+require('./page-module.scss')
+
 const React = require('react');
-import DefaultLayout from '../../shared/components/layouts/default'
-import RepositoryNav from '../../shared/components/repository-nav'
-import RepositoryBanner from '../../shared/components/repository-banner'
-import ModuleImage from '../../shared/components/module-image'
-import Button from '../../shared/components/button'
-import ButtonLink from '../../shared/components/button-link'
+import DefaultLayout from './layouts/default'
+import RepositoryNav from './repository-nav'
+import RepositoryBanner from './repository-banner'
+import ModuleImage from './module-image'
+import Button from './button'
+import ButtonLink from './button-link'
 import moment from 'moment'
-import  { urlForEditor } from '../../shared/repository-utils'
+import  { urlForEditor } from '../repository-utils'
 
 const deleteModule = (title, draftId, deleteFn) => {
 	var response = confirm(`Delete "${title}" id: ${draftId} ?`)
@@ -14,7 +16,7 @@ const deleteModule = (title, draftId, deleteFn) => {
 	deleteFn(draftId)
 }
 
-const ModulePage = (props) =>
+const PageModule = (props) =>
 	<DefaultLayout title={`${props.module.title} - an Obojobo Module`} className="repository--module">
 		<RepositoryNav
 			userId={props.currentUser.id}
@@ -87,4 +89,4 @@ const ModulePage = (props) =>
 		</section>
 	</DefaultLayout>
 
-module.exports = ModulePage;
+module.exports = PageModule;

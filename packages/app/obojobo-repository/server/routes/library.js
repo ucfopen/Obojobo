@@ -14,7 +14,7 @@ router
 	.route('/')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		res.render('homepage.jsx', {currentUser: req.currentUser})
+		res.render('page-homepage.jsx', {currentUser: req.currentUser})
 	})
 
 // returns images for a module
@@ -32,7 +32,7 @@ router
 	.route('/login')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		res.render('login-server-view.jsx', {currentUser: req.currentUser})
+		res.render('page-login.jsx', {currentUser: req.currentUser})
 	})
 
 router
@@ -54,7 +54,7 @@ router
 					pageCount: 1,
 					currentUser: req.currentUser
 				}
-				res.render('library-server-view.jsx', props)
+				res.render('page-library.jsx', props)
 			})
 			.catch(res.unexpected)
 })
@@ -83,7 +83,7 @@ router
 				owner,
 				currentUser: req.currentUser
 			}
-			res.render('module-page-server-view.jsx', props)
+			res.render('page-module.jsx', props)
 		} catch (e){
 			res.unexpected(e)
 		}

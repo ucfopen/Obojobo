@@ -50,7 +50,7 @@ header .header-container .logo {
 	width: 127px;
 	height: 33px;
 
-	background-image: url('../../server/public/images/obojobo-logo.svg');
+	background-image: url('/images/obojobo-logo.svg');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: contain;
@@ -150,14 +150,14 @@ header .header-container nav > ul > li > ul > li a:hover {
 }
 
 .hero {
-	background: url('../public/images/homepage/hero-bg.jpg') no-repeat center;
+	background: url('/images/homepage/hero-bg.jpg') no-repeat center;
 	height: 658px;
 	width: 100%;
 	margin-bottom: 300px;
 }
 
 .hero .computers {
-	background: url('../public/images/homepage/hero-computer-new.png') no-repeat center 100px;
+	background: url('/images/homepage/hero-computer-new.png') no-repeat center 100px;
 	width: 933px;
 	height: 710px;
 	margin: 0 auto;
@@ -167,7 +167,7 @@ header .header-container nav > ul > li > ul > li a:hover {
 }
 
 .hero .computers .ipad {
-	background: url('../public/images/homepage/hero-ipad.png') no-repeat;
+	background: url('/images/homepage/hero-ipad.png') no-repeat;
 	width: 181px;
 	height: 279px;
 	-moz-box-sizing: border-box;
@@ -192,7 +192,7 @@ header .header-container nav > ul > li > ul > li a:hover {
 
 .content {
 	overflow: hidden;
-	background: url('../public/images/homepage/dotted-line-coverup.png') no-repeat center top, url('../public/images/homepage/dotted-line-coverup.png') no-repeat center bottom, url('../public/images/homepage/dotted-line-bg.png') center center repeat-y;
+	background: url('/images/homepage/dotted-line-coverup.png') no-repeat center top, url('/images/homepage/dotted-line-coverup.png') no-repeat center bottom, url('/images/homepage/dotted-line-bg.png') center center repeat-y;
 }
 
 .step {
@@ -224,59 +224,6 @@ header .header-container nav > ul > li > ul > li a:hover {
 	padding: 0;
 }
 
-footer {
-	color: #888888;
-	font-size: 12pt;
-	height: 130px;
-	padding-top: 50px;
-}
-
-
-footer div {
-	text-align: center;
-	display: block;
-	margin: 0 auto;
-	padding-left: 1em;
-	padding-right: 1em;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-
-.ucf-open-footer{
-	margin-bottom: 35px;
-}
-
-.ucf-open-logo{
-	overflow: hidden;
-	text-indent: -400px;
-	width: 175px;
-	height: 62px;
-	background: url('../public/images/ucf_open.svg') center center no-repeat;
-	margin-bottom: 20px;
-}
-
-.ucf-open-desc{
-	margin-bottom: 5px
-}
-
-.ucf-open-links > a{
-	display: inline-block;
-	padding: 2px;
-	margin:5px 2px;
-}
-
-.copyright > span {
-	display: block;
-	margin-bottom: 0.5em;
-}
-
-.copyright > span a {
-	color: gray;
-}
-.copyright > span a:hover {
-	color: #333333;
-}
 
 /* top menu widths */
 header .header-container nav > ul > .about > ul {
@@ -298,7 +245,7 @@ header .header-container nav > ul > .help > ul {
 /* steps */
 .step-1 {
 	text-align: right;
-	background: url('../public/images/homepage/thinking.png') center center no-repeat;
+	background: url('/images/homepage/thinking.png') center center no-repeat;
 }
 .step-1 .step-items-container {
 	padding-right: 670px;
@@ -306,7 +253,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-2 {
 	text-align: left;
-	background: #3b3b3b url('../public/images/homepage/build.png') center center no-repeat;
+	background: #3b3b3b url('/images/homepage/build.png') center center no-repeat;
 }
 .step-2 .step-items-container {
 	padding-left: 650px;
@@ -319,7 +266,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-3 {
 	text-align: right;
-	background: url('../public/images/homepage/xray.png') center center no-repeat;
+	background: url('/images/homepage/xray.png') center center no-repeat;
 }
 .step-3 .step-items-container {
 	padding-right: 650px;
@@ -327,10 +274,10 @@ header .header-container nav > ul > .help > ul {
 
 .step-4 {
 	text-align: left;
-	background: #acdfda url('../public/images/homepage/laptop.png') center center no-repeat;
+	background: #acdfda url('/images/homepage/laptop.png') center center no-repeat;
 }
 .step-4 .step-items-container {
-	padding-left: 750px;
+	padding-left: 650px;
 }
 .step-4 .step-items-container h1 {
 	color: #cc4f69;
@@ -338,7 +285,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-5 {
 	text-align: right;
-	background: url('../public/images/homepage/analytics.png') center center no-repeat;
+	background: url('/images/homepage/analytics.png') center center no-repeat;
 }
 .step-5 .step-items-container {
 	padding-right: 650px;
@@ -346,7 +293,7 @@ header .header-container nav > ul > .help > ul {
 
 .step-6 {
 	text-align: left;
-	background: #d9f3d9 url('../public/images/homepage/many.png') center center no-repeat;
+	background: #d9f3d9 url('/images/homepage/many.png') center center no-repeat;
 }
 .step-6 .step-items-container {
 	padding-left: 650px;
@@ -375,7 +322,7 @@ header .header-container nav > ul > .help > ul {
 		background-size: 217px;
 	}
 	.step-4 {
-		background-size: 322px;
+		background-size: 228px;
 	}
 	.step-5 {
 		background-size: 282px;
@@ -394,14 +341,14 @@ header .header-container nav > ul > .help > ul {
 		padding-right: 590px;
 	}
 	.step-4 .step-items-container {
-		padding-left: 690px;
+		padding-left: 590px;
 	}
 	.step-5 .step-items-container {
 		padding-right: 580px;
 	}
 	.step-6 .step-items-container {
 		padding-left: 580px;
-		padding-top: 110px;
+		padding-top: 70px;
 	}
 }
 

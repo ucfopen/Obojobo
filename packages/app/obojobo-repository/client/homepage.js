@@ -1,2 +1,1 @@
-import Homepage from '../server/views/homepage'
-// import 'whatwg-fetch'
+require('../shared/components/page-homepage')

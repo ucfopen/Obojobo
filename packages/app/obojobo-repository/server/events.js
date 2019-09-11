@@ -39,7 +39,7 @@ oboEvents.on('HTTP_NOT_AUTHORIZED', ({req, res, next, message}) => {
 					children: 'You do not have the permissions required to view this page.',
 					currentUser: req.currentUser
 				}
-				res.render('error-server-view.jsx', props)
+				res.render('page-error.jsx', props)
 			})
 })
 
@@ -53,7 +53,7 @@ oboEvents.on('HTTP_NOT_FOUND', ({req, res, next, message}) => {
 					children: "The page you requested doesn't exist.",
 					currentUser: req.currentUser
 				}
-				res.render('error-server-view.jsx', props)
+				res.render('page-error.jsx', props)
 			})
 })
 
@@ -66,7 +66,7 @@ oboEvents.on('HTTP_UNEXPECTED', ({req, res, next, message}) => {
 					children: 'There was an internal server error.',
 					currentUser: req.currentUser
 				}
-				res.render('error-server-view.jsx', props)
+				res.render('page-error.jsx', props)
 			})
 })
 

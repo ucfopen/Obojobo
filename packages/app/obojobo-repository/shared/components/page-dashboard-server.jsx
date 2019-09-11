@@ -1,23 +1,23 @@
 const React = require('react');
-const { createStore, applyMiddleware } = require('redux')
-const { Provider } = require('react-redux')
-const DashboardReducer = require('../../shared/reducers/dashboard-reducer')
-const DefaultLayout = require('../../shared/components/layouts/default')
-const Dashboard = require('../../shared/components/dashboard-hoc')
-const { propsToStore, createCommonReactApp, convertPropsToString} = require('../../shared/react-utils')
+const DefaultLayout = require('./layouts/default')
+const Dashboard = require('./dashboard-hoc')
+const { propsToStore, createCommonReactApp, convertPropsToString} = require('../react-utils')
+const DashboardReducer = require('../reducers/dashboard-reducer')
 
-const DashboardServerApp = props =>
+const PageDashboardServer = props =>
 	<DefaultLayout
 		title="Dashboard"
 		className="repository--dashboard"
 		headerJs={['//cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js']}
-		appScriptUrl="/static/dashboard.js">
+		appScriptUrl="/static/dashboard.js"
+		appCSSUrl="/static/dashboard.css"
+		>
 		<span id="react-hydrate-root" data-react-props={convertPropsToString(props)}>
 			{createCommonReactApp(Dashboard, propsToStore(DashboardReducer, props))}
 		</span>
 	</DefaultLayout>
 
-DashboardServerApp.defaultProps = {
+PageDashboardServer.defaultProps = {
 	dialog: false,
 	dialog: null,
 	selectedModule:{},
@@ -33,4 +33,4 @@ DashboardServerApp.defaultProps = {
 	}
 }
 
-module.exports = DashboardServerApp;
+module.exports = PageDashboardServer

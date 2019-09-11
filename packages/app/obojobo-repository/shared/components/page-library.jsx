@@ -1,13 +1,13 @@
 const React = require('react');
-import DefaultLayout from '../../shared/components/layouts/default'
-import RepositoryNav from '../../shared/components/repository-nav'
-import RepositoryBanner from '../../shared/components/repository-banner'
-import Module from '../../shared/components/module'
-import Button from '../../shared/components/button'
+import DefaultLayout from './layouts/default'
+import RepositoryNav from './repository-nav'
+import RepositoryBanner from './repository-banner'
+import Module from './module'
+import Button from './button'
 
 const title = 'Module Library'
 
-const Library = (props) =>
+const PageLibrary = (props) =>
 	<DefaultLayout title={title} className="repository--library">
 		<RepositoryNav
 			userId={props.currentUser.id}
@@ -48,4 +48,4 @@ const Library = (props) =>
 
 	</DefaultLayout>
 
-module.exports = Library;
+module.exports = PageLibrary;
