@@ -1,10 +1,14 @@
-footer {
-	color: #888888;
-	font-size: 12pt;
-	height: 130px;
-	padding-top: 50px;
-}
+$color-fg: #888888;
+$color-bg: white;
 
+footer {
+	background: $color-bg;
+	color: $color-fg;
+	padding-top: 30px;
+	font-size: .7em;
+	border-top: 1px solid #f9f4f4;
+	margin-top: 20px
+}
 
 footer div {
 	text-align: center;
@@ -16,16 +20,16 @@ footer div {
 	box-sizing: border-box;
 }
 
-
 .ucf-open-footer{
 	margin-bottom: 35px;
 }
 
 .ucf-open-logo{
 	overflow: hidden;
-	text-indent: -400px;
-	width: 175px;
-	height: 62px;
+	display: inline-block;
+	text-indent: -40000px;
+	width: 13em;
+	height: 3.5em;
 	background: url('/images/ucf_open.svg') center center no-repeat;
 	margin-bottom: 20px;
 }
@@ -36,11 +40,24 @@ footer div {
 
 .ucf-open-links > a{
 	display: inline-block;
-	padding: 2px;
-	margin:5px 2px;
+	padding: 2px 0;
+	color: $color-fg;
+
+	&:hover{
+		color: darken($color-fg, 25%);
+	}
+
+	// add separator between links
+	& + a:before{
+		content: '·';
+		padding: 0 .5rem;
+		display:inline-block;
+	}
 }
 
+
 .copyright > span {
+	font-size: .8em;
 	display: block;
 	margin-bottom: 0.5em;
 }

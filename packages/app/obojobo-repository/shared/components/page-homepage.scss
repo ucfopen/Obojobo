@@ -300,6 +300,12 @@ header .header-container nav > ul > .help > ul {
 	padding-top: 150px;
 }
 
+
+.repository--homepage footer {
+	font-size: 1em;
+	border: none;
+}
+
 /* responsive */
 @include mq($from: wide) {
 	.hero {
@@ -550,6 +556,10 @@ header .header-container nav > ul > .help > ul {
 	.step-5 {
 		background-position: center 30px;
 	}
+
+	.repository--homepage footer {
+		font-size: .8em;
+	}
 }
 
 
@@ -592,10 +602,6 @@ header .header-container nav > ul > .help > ul {
 
 	.step .step-items-container h2 {
 		font-size: 12pt;
-	}
-
-	footer {
-		font-size: 9pt;
 	}
 
 	.step-1 {

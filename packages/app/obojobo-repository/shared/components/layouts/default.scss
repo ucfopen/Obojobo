@@ -1,5 +1,19 @@
 @import '../../../client/css/defaults';
 
+.layout--wrapper{
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.layout--content{
+	flex-grow: 1;
+}
+
+.layout--footer{
+	flex-grow: 0;
+}
+
 .repository--column-layout{
 	display: flex;
 

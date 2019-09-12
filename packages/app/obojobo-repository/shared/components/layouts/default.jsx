@@ -17,8 +17,14 @@ const DefaultLayout = props =>
 			{ props.headerJs.map(url  => <script src={url}></script>) }
 		</head>
 		<body className={props.className}>
-			{props.children}
-			<Footer/>
+			<div className="layout--wrapper">
+				<div className="layout--content">
+					{props.children}
+				</div>
+				<div className="layout--footer">
+					<Footer/>
+				</div>
+			</div>
 			{ props.appScriptUrl ?
 				<React.Fragment>
 					<script crossOrigin="true" src="https://unpkg.com/react@16/umd/react.development.js"></script>
