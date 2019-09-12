@@ -19,12 +19,6 @@ jest.mock('../../rule/numeric-rule', () => {
 	return NumericRule
 })
 jest.mock('../../evaluation/numeric-answer-results')
-// 	return {
-// 		getResult: (entry, validationResult, scoreResult) => {
-// 			return { entry, validationResult, scoreResult }
-// 		}
-// 	}
-// })
 jest.mock('../../evaluation/numeric-rule-set-evaluator')
 jest.mock('../../entry/numeric-entry', () => {
 	class NumericEntry {
@@ -125,6 +119,15 @@ describe('NumericAnswerEvaluator', () => {
 			rules: [{ config: { c: 3 }, types: ['mocktypes'] }],
 			types: ['mocktypes']
 		})
+	})
+
+	test('init works with default params', () => {
+		const getTypesSpy = jest.spyOn(NumericAnswerEvaluator, 'getTypes').mockImplementation(jest.fn())
+
+		NumericAnswerEvaluator.prototype.init({ scoreRuleConfigs: [] })
+		expect(getTypesSpy).toHaveBeenCalledWith('')
+
+		getTypesSpy.mockRestore()
 	})
 
 	test('evaluate does not validate or score if student input is bad', () => {

@@ -191,4 +191,10 @@ describe('NumericEntry', () => {
 		expect(entry.numericInstance).toEqual(null)
 		expect(entry.status).toBe('inputNotMatched')
 	})
+
+	test('constructor throws error if wrong type of value passed in', () => {
+		expect(() => {
+			new NumericEntry(true)
+		}).toThrow('inputString must be of type string!')
+	})
 })

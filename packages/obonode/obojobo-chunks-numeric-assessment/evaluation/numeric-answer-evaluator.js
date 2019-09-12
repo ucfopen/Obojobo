@@ -50,8 +50,6 @@ class NumericAnswerEvaluator {
 			throw 'Invalid types'
 		}
 
-		if (types.length === 0) return null
-
 		return types
 	}
 

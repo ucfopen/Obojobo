@@ -255,4 +255,10 @@ describe('NumericEntryRange', () => {
 		)
 		expect(new NumericEntryRange('').toBigValueRange()).toEqual(new BigValueRange(''))
 	})
+
+	test('toStringValue returns the string value', () => {
+		expect(NumericEntryRange.toStringValue(new NumericEntry('3.14 degrees'))).toBe('3.14')
+		expect(NumericEntryRange.toStringValue(new NumericEntry('55/66'))).toBe('5/6')
+		expect(NumericEntryRange.toStringValue(null)).toBe('*')
+	})
 })

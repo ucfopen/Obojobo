@@ -142,7 +142,7 @@ describe('NumericAnswerResults', () => {
 			}
 		})
 
-		//failed
+		//failed (return matchingOutcome)
 		spy.mockReturnValueOnce('failed')
 		mockNumericEntry = jest.fn()
 		expect(
@@ -157,6 +157,24 @@ describe('NumericAnswerResults', () => {
 			entry: mockNumericEntry,
 			details: {
 				matchingOutcome: 'mockMatchingOutcome',
+				score: 'mockScore'
+			}
+		})
+
+		//failed (return null)
+		spy.mockReturnValueOnce('failed')
+		mockNumericEntry = jest.fn()
+		expect(
+			NumericAnswerResults.getResult(mockNumericEntry, jest.fn(), {
+				details: {
+					score: 'mockScore'
+				}
+			})
+		).toEqual({
+			status: 'failed',
+			entry: mockNumericEntry,
+			details: {
+				matchingOutcome: null,
 				score: 'mockScore'
 			}
 		})

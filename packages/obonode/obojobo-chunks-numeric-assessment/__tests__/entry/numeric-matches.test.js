@@ -19,11 +19,27 @@ jest.mock('../../numerics/numeric-classes', () => {
 		}
 	}
 
+	class MockExactSameLengthAsShort {
+		constructor() {
+			this.type = 'typeExactShort2'
+			this.matchType = 'exact'
+			this.valueString = 'sameLenAsShort!'
+		}
+	}
+
 	class MockInferred {
 		constructor() {
 			this.type = 'typeInferred'
 			this.matchType = 'inferred'
 			this.valueString = 'mockValueString'
+		}
+	}
+
+	class MockInferred2 {
+		constructor() {
+			this.type = 'typeInferred2'
+			this.matchType = 'inferred'
+			this.valueString = 'mockValueString2'
 		}
 	}
 
@@ -37,7 +53,9 @@ jest.mock('../../numerics/numeric-classes', () => {
 	return {
 		typeExactLong: MockExactLong,
 		typeExactShort: MockExactShort,
+		typeExactSameLengthAsShort: MockExactSameLengthAsShort,
 		typeInferred: MockInferred,
+		typeInferred2: MockInferred2,
 		typeNone: MockNone
 	}
 })
@@ -95,6 +113,19 @@ describe('NumericMatches', () => {
 		})
 	})
 
+	test('remove will do nothing if no matches are found', () => {
+		const matches = new NumericMatches()
+		const mockExactLong = new NumericClasses.typeExactLong()
+		matches.add(mockExactLong)
+
+		matches.remove('typeExactShort')
+
+		expect(matches.matches).toEqual({
+			exact: ['typeExactLong'],
+			inferred: []
+		})
+	})
+
 	test('getMatchesForNumericType', () => {
 		const matches = new NumericMatches()
 		const mockExactLong = new NumericClasses.typeExactLong()
@@ -129,6 +160,13 @@ describe('NumericMatches', () => {
 		})
 	})
 
+	test('getNumericTypesForMatches throws error if given bad type', () => {
+		const matches = new NumericMatches()
+		expect(() => {
+			matches.getNumericTypesForMatches('someInvalidType')
+		}).toThrow('Invalid matchType given')
+	})
+
 	test('getInstance', () => {
 		const matches = new NumericMatches()
 		const mockExactLong = new NumericClasses.typeExactLong()
@@ -139,5 +177,31 @@ describe('NumericMatches', () => {
 		expect(matches.getInstance('typeExactLong')).toBe(mockExactLong)
 		expect(matches.getInstance('typeInferred')).toBe(mockTypeInferred)
 		expect(matches.getInstance('typeExactShort')).toBe(null)
+	})
+
+	test('getStatus returns the expected status value', () => {
+		const matches = new NumericMatches()
+		const mockExactShort = new NumericClasses.typeExactShort()
+		const mockExactShort2 = new NumericClasses.typeExactSameLengthAsShort()
+		const mockInferred = new NumericClasses.typeInferred()
+		const mockInferred2 = new NumericClasses.typeInferred2()
+
+		matches.add(mockExactShort)
+		matches.add(mockExactShort2)
+		matches.add(mockInferred)
+		matches.add(mockInferred2)
+		expect(matches.status).toBe('multipleExact')
+
+		matches.remove('typeExactShort2')
+		expect(matches.status).toBe('singleExact')
+
+		matches.remove('typeExactShort')
+		expect(matches.status).toBe('multipleInferred')
+
+		matches.remove('typeInferred2')
+		expect(matches.status).toBe('singleInferred')
+
+		matches.remove('typeInferred')
+		expect(matches.status).toBe('noMatches')
 	})
 })

@@ -210,11 +210,4 @@ export default class NumericEntry {
 	clone() {
 		return new NumericEntry(this.inputString, this.types)
 	}
-
-	toJSON() {
-		return {
-			inputString: this.inputString,
-			processedInputString: this.processedInputString
-		}
-	}
 }

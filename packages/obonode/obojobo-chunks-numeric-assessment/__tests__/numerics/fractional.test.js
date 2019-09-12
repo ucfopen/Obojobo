@@ -1,12 +1,17 @@
 import Fractional from '../../numerics/fractional'
 import Big from 'big.js'
 import getPercentError from '../../util/percent-error'
+import Numeric from '../../numerics/numeric'
 
 jest.mock('../../util/percent-error')
 
 describe('Fractional', () => {
 	test('get type returns expected type', () => {
 		expect(Fractional.type).toEqual('fractional')
+	})
+
+	test('get label returns expected string', () => {
+		expect(Fractional.label).toEqual('Fraction')
 	})
 
 	test('isSafe returns true', () => {
@@ -22,6 +27,14 @@ describe('Fractional', () => {
 		expect(Fractional.getBigValue('mock-string')).toBe(mockBigValue)
 
 		getTermsSpy.mockRestore()
+	})
+
+	test('getRoundedBigValue simply returns a copy of the big value', () => {
+		const b = new Big(123)
+		const r = Fractional.getRoundedBigValue(b)
+
+		expect(b).not.toBe(r)
+		expect(b).toEqual(r)
 	})
 
 	test('getBigValueReducedTerms calls getReducedTerms on getBigValueFractionsTerms', () => {
@@ -142,29 +155,38 @@ describe('Fractional', () => {
 	})
 
 	test.each`
-		input       | n        | d
-		${2}        | ${2}     | ${1}
-		${-1}       | ${-1}    | ${1}
-		${0.5}      | ${1}     | ${2}
-		${0.4}      | ${2}     | ${5}
-		${-0.25}    | ${-1}    | ${4}
-		${0.125}    | ${1}     | ${8}
-		${3.14}     | ${157}   | ${50}
-		${0}        | ${0}     | ${1}
-		${1}        | ${1}     | ${1}
-		${0.333333} | ${1}     | ${3}
-		${0.666666} | ${2}     | ${3}
-		${0.666667} | ${2}     | ${3}
-		${0.33333}  | ${25641} | ${76924}
-		${0.66666}  | ${28987} | ${43481}
-		${0.111}    | ${111}   | ${1000}
-		${0.1}      | ${1}     | ${10}
-		${0.01}     | ${1}     | ${100}
-		${0.001}    | ${1}     | ${1000}
+		input          | n            | d
+		${2}           | ${2}         | ${1}
+		${-1}          | ${-1}        | ${1}
+		${0.5}         | ${1}         | ${2}
+		${0.4}         | ${2}         | ${5}
+		${-0.25}       | ${-1}        | ${4}
+		${0.125}       | ${1}         | ${8}
+		${3.14}        | ${157}       | ${50}
+		${0}           | ${0}         | ${1}
+		${1}           | ${1}         | ${1}
+		${0.333333}    | ${1}         | ${3}
+		${0.666666}    | ${2}         | ${3}
+		${0.666667}    | ${2}         | ${3}
+		${0.33333}     | ${25641}     | ${76924}
+		${0.66666}     | ${28987}     | ${43481}
+		${0.111}       | ${111}       | ${1000}
+		${0.1}         | ${1}         | ${10}
+		${0.01}        | ${1}         | ${100}
+		${0.001}       | ${1}         | ${1000}
+		${0.000000001} | ${0}         | ${1}
+		${100000000}   | ${100000000} | ${1}
 	`(`getBigValueFractionTerms($input)=$expected`, ({ input, n, d }) => {
 		expect(Fractional.getBigValueFractionTerms(Big(input))).toEqual({
 			bigNumerator: Big(n),
 			bigDenominator: Big(d)
+		})
+	})
+
+	test('getBigValueFractionTerms allows custom error values', () => {
+		expect(Fractional.getBigValueFractionTerms(Big(4.95), 0.1)).toEqual({
+			bigNumerator: Big(5),
+			bigDenominator: Big(1)
 		})
 	})
 
@@ -409,6 +431,10 @@ describe('Fractional', () => {
 		${'+6928bytes'}       | ${'none'}  | ${''}       | ${''}
 	`(`parse($input)={$matchType,$valueString,$unit}`, ({ input, matchType, valueString, unit }) => {
 		expect(Fractional.parse(input)).toEqual({ matchType, valueString, unit })
+	})
+
+	test('parse returns a null parse object if unit is invalid', () => {
+		expect(Fractional.parse('1/2 .')).toEqual(Numeric.getNullParseObject())
 	})
 
 	test.each`

@@ -50,6 +50,38 @@ describe('NumericRule', () => {
 		absSpy.mockRestore()
 	})
 
+	test('getRulePercentError returns 0 if not defined', () => {
+		expect(NumericRule.getRulePercentError({})).toBe(0)
+		expect(NumericRule.getRulePercentError({ percentError: 0 })).toBe(0)
+		expect(NumericRule.getRulePercentError({ percentError: false })).toBe(0)
+		expect(NumericRule.getRulePercentError({ percentError: null })).toBe(0)
+	})
+
+	test.each`
+		percError
+		${'a'}
+		${true}
+		${-0.1}
+		${Infinity}
+		${-Infinity}
+	`(`getRulePercentError($percError) throws error`, ({ percError }) => {
+		expect(() => {
+			NumericRule.getRulePercentError({ percentError: percError })
+		}).toThrow('Bad percentError error')
+	})
+
+	test('getRulePercentError throws error if checked value is zero', () => {
+		expect(() => {
+			NumericRule.getRulePercentError({ percentError: 1 }, new NumericEntryRange('0'))
+		}).toThrow('percentError not allowed when value is zero')
+		expect(() => {
+			NumericRule.getRulePercentError({ percentError: 1 }, new NumericEntryRange('[0,*)'))
+		}).toThrow('percentError not allowed when value is zero')
+		expect(() => {
+			NumericRule.getRulePercentError({ percentError: 1 }, new NumericEntryRange('(*,0]'))
+		}).toThrow('percentError not allowed when value is zero')
+	})
+
 	test('getRuleAbsoluteError returns the expected value', () => {
 		expect(NumericRule.getRuleAbsoluteError({})).toEqual(Big(0))
 		expect(NumericRule.getRuleAbsoluteError({ absoluteError: false })).toEqual(Big(0))
@@ -249,6 +281,10 @@ describe('NumericRule', () => {
 
 	test('getRuleScientificTypes returns the types given', () => {
 		expect(NumericRule.getRuleScientificTypes({ scientificTypes: 'e,ee' })).toEqual(['e', 'ee'])
+		expect(NumericRule.getRuleScientificTypes({ scientificTypes: 'apos,asterisk' })).toEqual([
+			'apos',
+			'asterisk'
+		])
 	})
 
 	test('getRuleScientificTypes throws an error if a bad type is given', () => {

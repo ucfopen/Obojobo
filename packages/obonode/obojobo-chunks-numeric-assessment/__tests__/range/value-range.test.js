@@ -817,4 +817,66 @@ describe('ValueRange', () => {
 	`(`$range isAllValues={$isAllValues}`, ({ range, isAllValues }) => {
 		expect(new ValueRange(range).isAllValues).toBe(isAllValues)
 	})
+
+	test('parseRangeString returns null if given invalid string', () => {
+		expect(ValueRange.parseRangeString()).toBe(null)
+		expect(ValueRange.parseRangeString(null)).toBe(null)
+	})
+
+	test.each`
+		range
+		${'[*,0]'}
+		${'[0,*]'}
+		${'[*,*]'}
+	`(`$range parseRangeString throws error`, ({ range }) => {
+		expect(() => {
+			ValueRange.parseRangeString(range)
+		}).toThrow('Bad range string: * must be exclusive')
+	})
+
+	test.each`
+		range
+		${'*,0]'}
+		${'*,0)'}
+		${'2,3]'}
+		${'2,3)'}
+		${',3]'}
+		${',3)'}
+	`(`$range parseRangeString throws error`, ({ range }) => {
+		expect(() => {
+			ValueRange.parseRangeString(range)
+		}).toThrow('Bad range string: Missing [ or (')
+	})
+
+	test.each`
+		range
+		${'[0,*'}
+		${'(0,*'}
+		${'[2,3'}
+		${'(2,3'}
+		${'[2,'}
+		${'(2,'}
+	`(`$range parseRangeString throws error`, ({ range }) => {
+		expect(() => {
+			ValueRange.parseRangeString(range)
+		}).toThrow('Bad range string: Missing ] or )')
+	})
+
+	test.each`
+		range
+		${'(*,]'}
+		${'[,*)'}
+		${'[9.8,]'}
+		${'[,9.8]'}
+		${'(9.8,]'}
+		${'(,9.8]'}
+		${'(,]'}
+		${'[,)'}
+		${'(,)'}
+		${'[,]'}
+	`(`$range parseRangeString throws error`, ({ range }) => {
+		expect(() => {
+			ValueRange.parseRangeString(range)
+		}).toThrow('Bad range string: Missing values')
+	})
 })

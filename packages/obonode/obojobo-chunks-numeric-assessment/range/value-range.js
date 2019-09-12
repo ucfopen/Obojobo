@@ -263,6 +263,7 @@ export default class ValueRange {
 				return
 			}
 
+			// A range like (1,1] is unclear (greater than 1 and equal to 1), throw error
 			if (
 				this.min !== null &&
 				this.max !== null &&
@@ -275,16 +276,6 @@ export default class ValueRange {
 			// A range like [1,-1] is inverted, throw error
 			if (this.min !== null && this.max !== null && this.compareFn(this.min, this.max) > 0) {
 				throw 'Invalid range: min value must be larger than max value'
-			}
-
-			// A range like (1,1] is unclear (greater than 1 and equal to 1), throw error
-			if (
-				this.min !== null &&
-				this.max !== null &&
-				this.min === this.max &&
-				(this.isMinInclusive !== true || this.isMaxInclusive !== true)
-			) {
-				throw 'Invalid range: Singular range must have inclusive min and max'
 			}
 		}
 	}

@@ -1,6 +1,7 @@
 import Binary from '../../numerics/binary'
 import Decimal from '../../numerics/decimal'
 import Big from 'big.js'
+import Numeric from '../../numerics/numeric'
 
 describe('Binary', () => {
 	test('get type returns expected type', () => {
@@ -259,6 +260,10 @@ describe('Binary', () => {
 		${'+6928bytes'}       | ${'none'}     | ${''}       | ${''}
 	`(`parse($input)={$matchType,$valueString,$unit}`, ({ input, matchType, valueString, unit }) => {
 		expect(Binary.parse(input)).toEqual({ matchType, valueString, unit })
+	})
+
+	test('parse returns a null parse object if unit is invalid', () => {
+		expect(Binary.parse('0b0 /5')).toEqual(Numeric.getNullParseObject())
 	})
 
 	/////

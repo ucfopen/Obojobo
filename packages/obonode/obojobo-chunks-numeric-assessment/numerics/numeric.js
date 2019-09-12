@@ -165,7 +165,6 @@ export default class Numeric {
 	 */
 	static isValidUnit(unitString) {
 		if (!unitString) return true
-		// if (unitString.indexOf(' ') > -1) return false
 		return /^[^0-9,\.,\/,\^].*/.test(unitString)
 	}
 
@@ -261,7 +260,7 @@ export default class Numeric {
 		return {
 			type: this.type,
 			numSigFigs: this.numSigFigs,
-			decimalPrecision: this.decimalPrecision,
+			numDecimalDigits: this.numDecimalDigits,
 			bigValue: this.bigValue,
 			match: this.match
 		}

@@ -306,13 +306,4 @@ export default class Fractional extends Numeric {
 			this.isReduced = this.constructor.getIsReduced(this.valueString)
 		}
 	}
-
-	toJSON() {
-		const o = super.toJSON()
-
-		o.terms = Object.assign({}, this.terms)
-		o.isReduced = this.isReduced
-
-		return o
-	}
 }

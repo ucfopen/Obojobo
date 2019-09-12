@@ -35,6 +35,20 @@ describe('NumericRuleSetEvaluator', () => {
 		initSpy.mockRestore()
 	})
 
+	test('constructor works for default values', () => {
+		const initSpy = jest
+			.spyOn(NumericRuleSetEvaluator.prototype, 'init')
+			.mockImplementation(jest.fn())
+
+		const inst = new NumericRuleSetEvaluator({ rules: 'mockRules' })
+
+		expect(initSpy).toHaveBeenCalledWith({ rules: 'mockRules', types: null })
+		expect(inst.rules).toBe(null)
+		expect(inst.types).toBe(null)
+
+		initSpy.mockRestore()
+	})
+
 	test('init sets rules and types values', () => {
 		const e = new NumericRuleSetEvaluator({ rules: 'mock-rules', types: 'mock-types' })
 
@@ -45,6 +59,18 @@ describe('NumericRuleSetEvaluator', () => {
 
 		expect(e.rules).toBe('mock-rules-2')
 		expect(e.types).toBe('mock-types-2')
+	})
+
+	test('init works for default values', () => {
+		const e = new NumericRuleSetEvaluator({ rules: 'mock-rules', types: 'mock-types' })
+
+		expect(e.rules).toBe('mock-rules')
+		expect(e.types).toBe('mock-types')
+
+		e.init({ rules: 'mock-rules-2' })
+
+		expect(e.rules).toBe('mock-rules-2')
+		expect(e.types).toBe(null)
 	})
 
 	test('evaluate returns expected details object with no rules', () => {
@@ -112,5 +138,13 @@ describe('NumericRuleSetEvaluator', () => {
 		})
 
 		getRuleOutcomesSpy.mockRestore()
+	})
+
+	test('evaulate returns a no rules object if no rules to evaluate', () => {
+		const e = new NumericRuleSetEvaluator({ rules: [] })
+
+		expect(e.evaluate('mockStudentEntry')).toEqual({
+			status: 'noRules'
+		})
 	})
 })

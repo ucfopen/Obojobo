@@ -12,7 +12,13 @@ describe('NumericRuleOutcome', () => {
 		expect(NumericRuleOutcome.getPercentErrorRange(r1).toString()).toEqual('[1,3]')
 
 		const r2 = new NumericRule({ value: '[2,3]', percentError: 1 })
-		expect(NumericRuleOutcome.getPercentErrorRange(r2).toString()).toEqual('[1,4]')
+		expect(NumericRuleOutcome.getPercentErrorRange(r2).toString()).toEqual('[1,4.5]')
+
+		const r3 = new NumericRule({ value: '(*,3]', percentError: 1 })
+		expect(NumericRuleOutcome.getPercentErrorRange(r3).toString()).toEqual('(*,4.5]')
+
+		const r4 = new NumericRule({ value: '[2,*)', percentError: 1 })
+		expect(NumericRuleOutcome.getPercentErrorRange(r4).toString()).toEqual('[1,*)')
 	})
 
 	test('getAbsoluteErrorRange returns a range of possible answer values', () => {
@@ -24,19 +30,27 @@ describe('NumericRuleOutcome', () => {
 	})
 
 	test('extendBigValueRange extends a range', () => {
-		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('[-1,1]'), 1)).toEqual(
-			new BigValueRange('[-2,2]')
+		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('[-1,1]'), 1, 2)).toEqual(
+			new BigValueRange('[-2,3]')
 		)
 
-		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('(*,1]'), 1)).toEqual(
-			new BigValueRange('(*,2]')
+		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('[-1,1]'), 1, null)).toEqual(
+			new BigValueRange('[-2,1]')
 		)
 
-		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('[-1,*)'), 1)).toEqual(
+		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('[-1,1]'), null, 2)).toEqual(
+			new BigValueRange('[-1,3]')
+		)
+
+		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('(*,1]'), 1, 2)).toEqual(
+			new BigValueRange('(*,3]')
+		)
+
+		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('[-1,*)'), 1, 2)).toEqual(
 			new BigValueRange('[-2,*)')
 		)
 
-		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('(*,*)'), 1)).toEqual(
+		expect(NumericRuleOutcome.extendBigValueRange(new BigValueRange('(*,*)'), 1, 2)).toEqual(
 			new BigValueRange('(*,*)')
 		)
 	})

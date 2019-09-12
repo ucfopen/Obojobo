@@ -45,7 +45,7 @@ const SCHEMA = [
 	'value'
 ]
 
-const ZERO = new NumericEntry('0')
+const ZERO = Big(0)
 
 /**
  * A rule config object used to create a NumericRule instance. Rules compare a student answer to the rules properties and "match" if the student answer agrees with all of the properties.
@@ -124,8 +124,9 @@ export default class NumericRule {
 		const percentError = parseFloat(config.percentError)
 		if (!Number.isFinite(percentError) || percentError < 0) throw 'Bad percentError error'
 
-		const minIsZero = value.minEq(ZERO)
-		const maxIsZero = value.maxEq(ZERO)
+		const bigValueRange = value.toBigValueRange()
+		const minIsZero = bigValueRange.minEq(ZERO)
+		const maxIsZero = bigValueRange.maxEq(ZERO)
 
 		if ((minIsZero || maxIsZero) && percentError !== 0) {
 			throw 'percentError not allowed when value is zero'
