@@ -4,7 +4,8 @@ import NumericRuleOutcome from '../../rule/numeric-rule-outcome'
 jest.mock('../../rule/numeric-rule-outcome', () => {
 	class MockNumericRuleOutcome {
 		constructor(studentEntry, rules) {
-			;(this.studentEntry = studentEntry), (this.rules = rules)
+			this.studentEntry = studentEntry
+			this.rules = rules
 		}
 	}
 

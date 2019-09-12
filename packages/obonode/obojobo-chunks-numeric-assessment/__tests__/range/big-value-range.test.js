@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+
 import BigValueRange from '../../range/big-value-range'
 import Big from 'big.js'
 

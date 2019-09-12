@@ -1,3 +1,5 @@
+/* eslint-disable no-undefined */
+
 import setProp from '../../../src/scripts/common/util/set-prop.js'
 
 describe('setProp', () => {
@@ -74,12 +76,13 @@ describe('setProp', () => {
 
 	test('when transformFn throws an error, the default value is used', () => {
 		const transformFn = jest.fn()
-		transformFn.mockImplementation(x => {throw Error('mock-error')})
+		transformFn.mockImplementation(() => {
+			throw Error('mock-error')
+		})
 
 		setProp(target, { myProp: 'new-value' }, 'myProp', 'default-value', transformFn)
 		expect(target).toEqual({
 			myProp: 'default-value'
 		})
-
 	})
 })

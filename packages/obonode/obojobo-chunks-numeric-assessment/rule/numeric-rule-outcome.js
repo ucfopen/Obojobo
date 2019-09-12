@@ -1,14 +1,7 @@
-import {
-	ROUND_TYPE_NONE,
-	ROUND_TYPE_ROUND_DECIMAL_DIGITS,
-	ROUND_TYPE_ROUND_SIG_FIGS
-} from './round-types'
+import { ROUND_TYPE_ROUND_DECIMAL_DIGITS, ROUND_TYPE_ROUND_SIG_FIGS } from './round-types'
 import { INPUT_TYPE_SCIENTIFIC, INPUT_TYPE_FRACTIONAL } from '../numerics/types/input-types'
-import ValueRange from '../range/value-range'
-import getPercentError from '../util/percent-error'
 import { PERCENT_ERROR, ABSOLUTE_ERROR, NO_ERROR } from './rule-error-types'
 import { IGNORE_UNIT, ANY_UNIT, MATCHES_UNIT, NO_UNIT } from './unit-types'
-import BigValueRange from '../range/big-value-range'
 
 /**
  * @typedef {Object} NumericRuleScoreOutcomeObject
@@ -213,23 +206,25 @@ export default class NumericRuleOutcome {
 		const roundedInstance = numericEntry.clone().numericInstance
 
 		switch (rule.round) {
-			case ROUND_TYPE_ROUND_DECIMAL_DIGITS:
-				let numDecimalDigits = Math.max(
+			case ROUND_TYPE_ROUND_DECIMAL_DIGITS: {
+				const numDecimalDigits = Math.max(
 					rule.value.min.numericInstance.numDecimalDigits,
 					rule.value.max.numericInstance.numDecimalDigits
 				)
 
 				roundedInstance.round(numDecimalDigits)
 				break
+			}
 
-			case ROUND_TYPE_ROUND_SIG_FIGS:
-				let numSigFigs = Math.max(
+			case ROUND_TYPE_ROUND_SIG_FIGS: {
+				const numSigFigs = Math.max(
 					rule.value.min.numericInstance.numSigFigs,
 					rule.value.max.numericInstance.numSigFigs
 				)
 
 				roundedInstance.round(numSigFigs)
 				break
+			}
 		}
 
 		return roundedInstance.bigValue

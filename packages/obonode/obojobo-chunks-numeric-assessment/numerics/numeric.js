@@ -1,6 +1,6 @@
 import { INPUT_TYPE_INVALID } from './types/input-types'
 import { MATCH_NONE } from '../entry/match-types'
-import Big from '../big'
+import big from '../big'
 
 /**
  * The result of parsing a string for a given numeric class
@@ -56,7 +56,7 @@ export default class Numeric {
 	 * @param {string} str Answer string (i.e. "9.8 m/s^2")
 	 * @return {NullNumericParseObject} A null NumericParseObject
 	 */
-	static parse(str) {
+	static parse() {
 		return Numeric.getNullParseObject()
 	}
 
@@ -96,7 +96,7 @@ export default class Numeric {
 	 * @param {string} valueString
 	 * @return {boolean} False
 	 */
-	static isSafe(valueString) {
+	static isSafe() {
 		return false
 	}
 
@@ -106,7 +106,7 @@ export default class Numeric {
 	 * @param {string} valueString
 	 * @return {null}
 	 */
-	static getBigValue(valueString) {
+	static getBigValue() {
 		return null
 	}
 
@@ -118,8 +118,8 @@ export default class Numeric {
 	 * @return {Big}
 	 */
 	static getRoundedBigValue(bigValue, toDigits = null) {
-		if (!toDigits) return Big(bigValue)
-		return Big(bigValue.toPrecision(toDigits))
+		if (!toDigits) return big(bigValue)
+		return big(bigValue.toPrecision(toDigits))
 	}
 
 	/**
@@ -127,7 +127,7 @@ export default class Numeric {
 	 * @param {string} valueString
 	 * @return {number|null}
 	 */
-	static getNumSigFigs(valueString) {
+	static getNumSigFigs() {
 		return null
 	}
 
@@ -137,7 +137,7 @@ export default class Numeric {
 	 * @param {string} valueString
 	 * @return {null}
 	 */
-	static getIsInteger(valueString) {
+	static getIsInteger() {
 		return null
 	}
 
@@ -147,7 +147,7 @@ export default class Numeric {
 	 * @param {string} valueString
 	 * @return {number} 0
 	 */
-	static getNumDecimalDigits(valueString) {
+	static getNumDecimalDigits() {
 		return 0
 	}
 
@@ -165,7 +165,7 @@ export default class Numeric {
 	 */
 	static isValidUnit(unitString) {
 		if (!unitString) return true
-		return /^[^0-9,\.,\/,\^].*/.test(unitString)
+		return /^[^0-9,.,/,^].*/.test(unitString)
 	}
 
 	/**
@@ -185,7 +185,7 @@ export default class Numeric {
 	 * @param {string} str
 	 */
 	init(str) {
-		let parsed = this.constructor.parse(str)
+		const parsed = this.constructor.parse(str)
 
 		// if (!Numeric.isValidUnit(parsed.unit)) {
 		// 	parsed = this.constructor.getNullParseObject()

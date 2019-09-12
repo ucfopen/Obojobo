@@ -1,7 +1,7 @@
 import { INPUT_TYPE_DECIMAL } from './types/input-types'
-import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
+import { MATCH_EXACT } from '../entry/match-types'
 import Numeric from './numeric'
-import Big from '../big'
+import big from '../big'
 
 //0
 //+0
@@ -16,7 +16,7 @@ import Big from '../big'
 //0%
 //.0%
 //0. %
-const decimalRegex = /^[-\+]?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.|[0-9]+)+/
+const decimalRegex = /^[-+]?([0-9]+\.[0-9]+|\.[0-9]+|[0-9]+\.|[0-9]+)+/
 
 /**
  * A decimal numeric type. Units may have whitespace between the value but are not required.
@@ -83,7 +83,7 @@ export default class Decimal extends Numeric {
 	 * @return {Big}
 	 */
 	static getBigValue(valueString) {
-		return Big(valueString)
+		return big(valueString)
 	}
 
 	/**
@@ -91,7 +91,7 @@ export default class Decimal extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Decimal.getString(Big(2)) //"2"
+	 * Decimal.getString(big(2)) //"2"
 	 */
 	static getString(bigValue) {
 		let leftSide
@@ -128,8 +128,8 @@ export default class Decimal extends Numeric {
 
 		const [leftString, rightString] = valueString.split('.').concat(null)
 
-		const bigLeft = Big(leftString !== '' ? leftString : '0').abs()
-		const bigRight = rightString ? Big(rightString) : null
+		const bigLeft = big(leftString !== '' ? leftString : '0').abs()
+		const bigRight = rightString ? big(rightString) : null
 
 		if (rightString === null) {
 			return Decimal.getString(bigLeft).replace(/0+$/, '').length
@@ -152,7 +152,7 @@ export default class Decimal extends Numeric {
 	 * Decimal.getIsInteger('5.1') //false
 	 */
 	static getIsInteger(valueString) {
-		const bigValue = Big(valueString)
+		const bigValue = big(valueString)
 		return bigValue.minus(bigValue.mod(1)).eq(bigValue)
 	}
 
@@ -165,6 +165,6 @@ export default class Decimal extends Numeric {
 	 */
 
 	static getNumDecimalDigits(valueString) {
-		return (Decimal.getString(Big(valueString)).split('.')[1] || '').length
+		return (Decimal.getString(big(valueString)).split('.')[1] || '').length
 	}
 }

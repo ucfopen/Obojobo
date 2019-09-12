@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+
 import Big from 'big.js'
 
 export default s => {

@@ -1,9 +1,9 @@
-import NumericRuleOutcome from '../../rule/numeric-rule-outcome'
+/* eslint-disable new-cap */
+
 import NumericRule from '../../rule/numeric-rule'
 
 import Big from 'big.js'
 import NumericEntryRange from '../../range/numeric-entry-range'
-import NumericEntry from '../../entry/numeric-entry'
 import BigValueRange from '../../range/big-value-range'
 
 describe('NumericRule', () => {
@@ -408,6 +408,7 @@ describe('NumericRule', () => {
 
 	test('constructor throws error if invalid config properties given', () => {
 		expect(() => {
+			// eslint-disable-next-line no-new
 			new NumericRule({
 				invalidPropertyA: 'abc',
 				invalidPropertyB: '123'

@@ -1,3 +1,6 @@
+/* eslint-disable new-cap */
+/* eslint-disable no-new */
+
 import Numeric from '../../numerics/numeric'
 import Big from 'big.js'
 

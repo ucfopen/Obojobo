@@ -3,7 +3,7 @@ import { INPUT_TYPE_BINARY } from './types/input-types'
 import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
 import Numeric from './numeric'
 import Decimal from './decimal'
-import Big from '../big'
+import big from '../big'
 
 const binaryZeroB = /^0b[0-1]+$|^0b[0-1]+ /
 const binaryInferred = /^[0-1]+$|^[0-1]+ /
@@ -126,8 +126,8 @@ export default class Binary extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Binary.getString(Big(2)) //"0b10"
-	 * Binary.getString(Big(15)) //"0b1111"
+	 * Binary.getString(big(2)) //"0b10"
+	 * Binary.getString(big(15)) //"0b1111"
 	 */
 	static getString(bigValue) {
 		return `0b${Number(bigValue).toString(2)}`
@@ -138,11 +138,11 @@ export default class Binary extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Binary.getBigValue('0b10') //Big(2)
-	 * Binary.getBigValue('1111') //Big(15)
+	 * Binary.getBigValue('0b10') //big(2)
+	 * Binary.getBigValue('1111') //big(15)
 	 */
 	static getBigValue(valueString) {
-		return Big(Binary.getValue(valueString))
+		return big(Binary.getValue(valueString))
 	}
 
 	/**

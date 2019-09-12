@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+
 import Scientific from '../../numerics/scientific'
 import Big from 'big.js'
 

@@ -1,12 +1,12 @@
 import ValueRange from './value-range'
-import Big from '../big'
+import big from '../big'
 
 /**
  * A type of ValueRange but for Big values instead of numbers.
  * @example
  * const range = new BigValueRange('[2,4]')
- * range.min // Equal to Big(2)
- * range.max // Equal to Big(4)
+ * range.min // Equal to big(2)
+ * range.max // Equal to big(4)
  */
 export default class BigValueRange extends ValueRange {
 	/**
@@ -28,7 +28,7 @@ export default class BigValueRange extends ValueRange {
 	 */
 	static parseValue(inputString) {
 		if (inputString === null) return null
-		return new Big(inputString)
+		return big(inputString)
 	}
 
 	/**

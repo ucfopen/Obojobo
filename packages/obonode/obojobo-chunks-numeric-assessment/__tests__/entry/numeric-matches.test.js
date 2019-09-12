@@ -1,6 +1,5 @@
 import NumericMatches from '../../entry/numeric-matches'
 import NumericClasses from '../../numerics/numeric-classes'
-import NumericEntry from '../../entry/numeric-entry'
 
 jest.mock('../../numerics/numeric-classes', () => {
 	class MockExactLong {
@@ -51,12 +50,12 @@ jest.mock('../../numerics/numeric-classes', () => {
 		}
 	}
 	return {
-		typeExactLong: MockExactLong,
-		typeExactShort: MockExactShort,
-		typeExactSameLengthAsShort: MockExactSameLengthAsShort,
-		typeInferred: MockInferred,
-		typeInferred2: MockInferred2,
-		typeNone: MockNone
+		TypeExactLong: MockExactLong,
+		TypeExactShort: MockExactShort,
+		TypeExactSameLengthAsShort: MockExactSameLengthAsShort,
+		TypeInferred: MockInferred,
+		TypeInferred2: MockInferred2,
+		TypeNone: MockNone
 	}
 })
 
@@ -78,8 +77,8 @@ describe('NumericMatches', () => {
 
 	test('removeShorterExactMatches removes shorter exact matches', () => {
 		const matches = new NumericMatches()
-		const mockExactLong = new NumericClasses.typeExactLong()
-		const mockExactShort = new NumericClasses.typeExactShort()
+		const mockExactLong = new NumericClasses.TypeExactLong()
+		const mockExactShort = new NumericClasses.TypeExactShort()
 		matches.add(mockExactLong)
 		matches.add(mockExactShort)
 
@@ -93,7 +92,7 @@ describe('NumericMatches', () => {
 
 	test('remove will remove matches', () => {
 		const matches = new NumericMatches()
-		const mockExactLong = new NumericClasses.typeExactLong()
+		const mockExactLong = new NumericClasses.TypeExactLong()
 		matches.add(mockExactLong)
 
 		expect(matches.status).toBe('singleExact')
@@ -115,7 +114,7 @@ describe('NumericMatches', () => {
 
 	test('remove will do nothing if no matches are found', () => {
 		const matches = new NumericMatches()
-		const mockExactLong = new NumericClasses.typeExactLong()
+		const mockExactLong = new NumericClasses.TypeExactLong()
 		matches.add(mockExactLong)
 
 		matches.remove('typeExactShort')
@@ -128,8 +127,8 @@ describe('NumericMatches', () => {
 
 	test('getMatchesForNumericType', () => {
 		const matches = new NumericMatches()
-		const mockExactLong = new NumericClasses.typeExactLong()
-		const mockTypeInferred = new NumericClasses.typeInferred()
+		const mockExactLong = new NumericClasses.TypeExactLong()
+		const mockTypeInferred = new NumericClasses.TypeInferred()
 		matches.add(mockExactLong)
 		matches.add(mockTypeInferred)
 
@@ -145,8 +144,8 @@ describe('NumericMatches', () => {
 
 	test('getNumericTypesForMatches', () => {
 		const matches = new NumericMatches()
-		const mockExactLong = new NumericClasses.typeExactLong()
-		const mockTypeInferred = new NumericClasses.typeInferred()
+		const mockExactLong = new NumericClasses.TypeExactLong()
+		const mockTypeInferred = new NumericClasses.TypeInferred()
 		matches.add(mockExactLong)
 		matches.add(mockTypeInferred)
 
@@ -169,8 +168,8 @@ describe('NumericMatches', () => {
 
 	test('getInstance', () => {
 		const matches = new NumericMatches()
-		const mockExactLong = new NumericClasses.typeExactLong()
-		const mockTypeInferred = new NumericClasses.typeInferred()
+		const mockExactLong = new NumericClasses.TypeExactLong()
+		const mockTypeInferred = new NumericClasses.TypeInferred()
 		matches.add(mockExactLong)
 		matches.add(mockTypeInferred)
 
@@ -181,10 +180,10 @@ describe('NumericMatches', () => {
 
 	test('getStatus returns the expected status value', () => {
 		const matches = new NumericMatches()
-		const mockExactShort = new NumericClasses.typeExactShort()
-		const mockExactShort2 = new NumericClasses.typeExactSameLengthAsShort()
-		const mockInferred = new NumericClasses.typeInferred()
-		const mockInferred2 = new NumericClasses.typeInferred2()
+		const mockExactShort = new NumericClasses.TypeExactShort()
+		const mockExactShort2 = new NumericClasses.TypeExactSameLengthAsShort()
+		const mockInferred = new NumericClasses.TypeInferred()
+		const mockInferred2 = new NumericClasses.TypeInferred2()
 
 		matches.add(mockExactShort)
 		matches.add(mockExactShort2)

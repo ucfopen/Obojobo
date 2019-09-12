@@ -2,12 +2,12 @@ import Numeric from './numeric'
 import Decimal from './decimal'
 import { INPUT_TYPE_FRACTIONAL } from './types/input-types'
 import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
-import Big from '../big'
+import big from '../big'
 import getPercentError from '../util/percent-error'
 
 const DEFAULT_TO_FRACTION_ERROR_VALUE = 0.000001
 
-const fractionalRegex = /^[-\+]?[0-9]+\/[0-9]+/
+const fractionalRegex = /^[-+]?[0-9]+\/[0-9]+/
 
 /**
  * Object representing the terms of a fraction
@@ -98,7 +98,7 @@ export default class Fractional extends Numeric {
 	 * @return {Big}
 	 */
 	static getRoundedBigValue(bigValue) {
-		return Big(bigValue)
+		return big(bigValue)
 	}
 
 	/**
@@ -106,7 +106,7 @@ export default class Fractional extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {FractionalTermsObject}
 	 * @example
-	 * Fractional.getBigValueReducedTerms(Big(0.5)) // {bigNumerator:Big(1), bigDenominator:Big(2)}
+	 * Fractional.getBigValueReducedTerms(big(0.5)) // {bigNumerator:big(1), bigDenominator:big(2)}
 	 */
 	static getBigValueReducedTerms(bigValue) {
 		const terms = Fractional.getBigValueFractionTerms(bigValue)
@@ -118,7 +118,7 @@ export default class Fractional extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Fractional.getString(Big(0.5)) //"1/2"
+	 * Fractional.getString(big(0.5)) //"1/2"
 	 */
 	static getString(bigValue) {
 		const terms = Fractional.getBigValueReducedTerms(bigValue)
@@ -147,9 +147,9 @@ export default class Fractional extends Numeric {
 	 * @param {number} [error=0.000001]
 	 * @return {boolean}
 	 * @example
-	 * Fractional.getIsEqual('1/2', Big(0.5)) //true
-	 * Fractional.getIsEqual('1/3', Big(0.333)) //false
-	 * Fractional.getIsEqual('1/2', Big(0.333333333)) //true
+	 * Fractional.getIsEqual('1/2', big(0.5)) //true
+	 * Fractional.getIsEqual('1/3', big(0.333)) //false
+	 * Fractional.getIsEqual('1/2', big(0.333333333)) //true
 	 */
 	static getIsEqual(str, bigValue, error = DEFAULT_TO_FRACTION_ERROR_VALUE) {
 		const parsed = Fractional.parse(str)
@@ -184,29 +184,31 @@ export default class Fractional extends Numeric {
 		const numeratorMultiplier = bigValue.lt(0) ? -1 : 1
 
 		bigValue = bigValue.abs()
-		let n = bigValue.minus(bigValue.mod(1)) //Floor
+		const n = bigValue.minus(bigValue.mod(1)) //Floor
 
 		bigValue = bigValue.minus(n)
 		if (bigValue.lt(error)) {
-			return { bigNumerator: n.times(numeratorMultiplier), bigDenominator: Big(1) }
+			return { bigNumerator: n.times(numeratorMultiplier), bigDenominator: big(1) }
 		} else if (
-			Big(1)
+			big(1)
 				.minus(error)
 				.lt(bigValue)
 		) {
-			return { bigNumerator: n.plus(1).times(numeratorMultiplier), bigDenominator: Big(1) }
+			return { bigNumerator: n.plus(1).times(numeratorMultiplier), bigDenominator: big(1) }
 		}
 
 		//The lower fraction is 0/1
-		let lowerN = Big(0)
-		let lowerD = Big(1)
+		let lowerN = big(0)
+		let lowerD = big(1)
 		//The upper fraction is 1/1
-		let upperN = Big(1)
-		let upperD = Big(1)
+		let upperN = big(1)
+		let upperD = big(1)
+
+		// eslint-disable-next-line no-constant-condition
 		while (true) {
 			//The middle fraction is (lowerN + upperN) / (lowerD + upperD)
-			let middleN = lowerN.plus(upperN)
-			let middleD = lowerD.plus(upperD)
+			const middleN = lowerN.plus(upperN)
+			const middleD = lowerD.plus(upperD)
 			//If bigValue + error < middle
 			if (middleD.times(bigValue.plus(error)).lt(middleN)) {
 				//middle is our new upper
@@ -238,7 +240,7 @@ export default class Fractional extends Numeric {
 	static getFractionStringPercentError(bigValue) {
 		const terms = Fractional.getBigValueReducedTerms(bigValue)
 
-		return getPercentError(Big(terms.bigNumerator).div(Big(terms.bigDenominator)), bigValue)
+		return getPercentError(big(terms.bigNumerator).div(big(terms.bigDenominator)), bigValue)
 	}
 
 	/**
@@ -246,13 +248,13 @@ export default class Fractional extends Numeric {
 	 * @param {string} valueString
 	 * @return {FractionalTermsValueObject}
 	 * @example
-	 * Fractional.getTerms("1/2") // {bigNumerator:Big(1), bigDenominator:Big(2), bigValue:Big(0.5)}
+	 * Fractional.getTerms("1/2") // {bigNumerator:big(1), bigDenominator:big(2), bigValue:big(0.5)}
 	 */
 	static getTerms(valueString) {
 		const tokens = valueString.split('/')
 
-		const bigNumerator = Big(tokens[0])
-		const bigDenominator = Big(tokens[1])
+		const bigNumerator = big(tokens[0])
+		const bigDenominator = big(tokens[1])
 
 		return {
 			bigNumerator,
@@ -284,7 +286,7 @@ export default class Fractional extends Numeric {
 	static getIsReduced(valueString) {
 		const givenTerms = Fractional.getTerms(valueString)
 
-		return Big(Fractional.getGCD(givenTerms.bigNumerator, givenTerms.bigDenominator)).eq(Big(1))
+		return big(Fractional.getGCD(givenTerms.bigNumerator, givenTerms.bigDenominator)).eq(big(1))
 	}
 
 	/**

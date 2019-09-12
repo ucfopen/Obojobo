@@ -8,14 +8,14 @@ import {
 import Numeric from './numeric'
 import Decimal from './decimal'
 import { INPUT_TYPE_SCIENTIFIC } from './types/input-types'
-import { MATCH_EXACT, MATCH_NONE } from '../entry/match-types'
-import Big from '../big'
+import { MATCH_EXACT } from '../entry/match-types'
+import big from '../big'
 
-const xScientificNotationRegex = /^[-\+]?[0-9]+(\.[0-9]+)?x10\^[-\+]?[0-9]+/
-const asteriskScientificNotationRegex = /^[-\+]?[0-9]+(\.[0-9]+)?\*10\^[-\+]?[0-9]+/
-const eScientificNotationRegex = /^[-\+]?[0-9]+(\.[0-9]+)?e[-\+]?[0-9]+/
-const eeScientificNotationRegex = /^[-\+]?[0-9]+(\.[0-9]+)?ee[-\+]?[0-9]+/
-const aposScientificNotationRegex = /^[-\+]?[0-9]+(\.[0-9]+)?'[-\+]?[0-9]+/
+const xScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?x10\^[-+]?[0-9]+/
+const asteriskScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?\*10\^[-+]?[0-9]+/
+const eScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?e[-+]?[0-9]+/
+const eeScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?ee[-+]?[0-9]+/
+const aposScientificNotationRegex = /^[-+]?[0-9]+(\.[0-9]+)?'[-+]?[0-9]+/
 
 /**
  * Object representing the terms of a Scientific value
@@ -184,7 +184,7 @@ export default class Scientific extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Scientific.getString(Big(700)) //7e2
+	 * Scientific.getString(big(700)) //7e2
 	 */
 	static getString(bigValue) {
 		if (bigValue.c.length === 1) {
@@ -206,38 +206,40 @@ export default class Scientific extends Numeric {
 	 * @param {string} valueString
 	 * @return {ScientificTermsObject}
 	 * @example
-	 * Scientific.getTerms('3.14e2') //{ bigDigit:Big(3.14), bigExponential:Big(2), bigValue:Big(314) }
+	 * Scientific.getTerms('3.14e2') //{ bigDigit:big(3.14), bigExponential:big(2), bigValue:big(314) }
 	 */
 	static getTerms(valueString) {
-		let digit = null
-		let exponential = null
+		let tokens
 
 		switch (this.getInputType(valueString)) {
 			case SCIENTIFIC_TYPE_APOS:
-				;[digit, exponential] = valueString.split("'")
+				tokens = valueString.split("'")
 				break
 
 			case SCIENTIFIC_TYPE_ASTERISK:
-				;[digit, exponential] = valueString.split('*10^')
+				tokens = valueString.split('*10^')
 				break
 
 			case SCIENTIFIC_TYPE_E:
-				;[digit, exponential] = valueString.split('e')
+				tokens = valueString.split('e')
 				break
 
 			case SCIENTIFIC_TYPE_EE:
-				;[digit, exponential] = valueString.split('ee')
+				tokens = valueString.split('ee')
 				break
 
 			case SCIENTIFIC_TYPE_X:
-				;[digit, exponential] = valueString.split('x10^')
+				tokens = valueString.split('x10^')
 				break
 		}
 
+		const digit = tokens[0]
+		const exponential = tokens[1]
+
 		return {
-			bigDigit: Big(digit),
-			bigExponential: Big(exponential),
-			bigValue: Big(`${digit}e${exponential}`)
+			bigDigit: big(digit),
+			bigExponential: big(exponential),
+			bigValue: big(`${digit}e${exponential}`)
 		}
 	}
 

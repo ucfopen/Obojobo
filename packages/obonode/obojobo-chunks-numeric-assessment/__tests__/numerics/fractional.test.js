@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+
 import Fractional from '../../numerics/fractional'
 import Big from 'big.js'
 import getPercentError from '../../util/percent-error'

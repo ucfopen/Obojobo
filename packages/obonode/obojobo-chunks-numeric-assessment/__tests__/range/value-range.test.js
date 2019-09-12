@@ -1,3 +1,5 @@
+/* eslint-disable no-new */
+
 import ValueRange from '../../range/value-range'
 
 describe('ValueRange', () => {

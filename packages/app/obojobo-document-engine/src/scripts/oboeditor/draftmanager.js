@@ -26,6 +26,7 @@ function preview(draftId, url) {
 	childWindow = window.open(url, 'preview')
 }
 
+//eslint-disable-next-line
 function downloadDocument(draftId, format = 'json'){
 	if(format === 'json'){
 		fetch(`/api/drafts/${draftId}/full`, {
@@ -40,10 +41,10 @@ function downloadDocument(draftId, format = 'json'){
 		.then(json => JSON.stringify(json.value, null, 2))
 		.then(contents => {
 			// use downloadjs to locally build a file to download
+			// eslint-disable-next-line no-undef
 			download(contents, `obojobo-draft-${draftId}.json`, 'application/json')
 		})
-	}
-	else{
+	} else {
 		fetch(`/api/drafts/${draftId}/full`, {
 			method: 'GET',
 			credentials: 'include',
@@ -55,6 +56,7 @@ function downloadDocument(draftId, format = 'json'){
 		.then(res => res.text())
 		.then(contents => {
 			// use downloadjs to locally build a file to download
+			// eslint-disable-next-line no-undef
 			download(contents, `obojobo-draft-${draftId}.xml`, 'application/xml')
 		})
 	}

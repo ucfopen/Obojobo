@@ -2,7 +2,7 @@ import { INPUT_TYPE_OCTAL } from './types/input-types'
 import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
 import Numeric from './numeric'
 import Decimal from './decimal'
-import Big from '../big'
+import big from '../big'
 import { OCTAL_TYPE_INFERRED, OCTAL_TYPE_ZERO_O } from './types/octal-types'
 
 const octalZeroO = /^0o[0-7]+$|^0o[0-7]+ /
@@ -133,8 +133,8 @@ export default class Octal extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Octal.getString(Big(45)) //"0o55"
-	 * Octal.getString(Big(80)) //"0o120"
+	 * Octal.getString(big(45)) //"0o55"
+	 * Octal.getString(big(80)) //"0o120"
 	 */
 	static getString(bigValue) {
 		return `0o${Number(bigValue).toString(8)}`
@@ -145,11 +145,11 @@ export default class Octal extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Octal.getBigValue('0o55') //Big(45)
-	 * Octal.getBigValue('120') //Big(80)
+	 * Octal.getBigValue('0o55') //big(45)
+	 * Octal.getBigValue('120') //big(80)
 	 */
 	static getBigValue(valueString) {
-		return Big(Octal.getValue(valueString))
+		return big(Octal.getValue(valueString))
 	}
 
 	/**

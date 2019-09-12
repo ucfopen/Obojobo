@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+
 import Binary from '../../numerics/binary'
 import Decimal from '../../numerics/decimal'
 import Big from 'big.js'

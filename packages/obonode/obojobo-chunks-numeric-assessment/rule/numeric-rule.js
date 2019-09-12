@@ -1,7 +1,6 @@
-import Big from '../big'
+import big from '../big'
 import NumericEntryRange from '../range/numeric-entry-range'
 import BigValueRange from '../range/big-value-range'
-import NumericEntry from '../entry/numeric-entry'
 import {
 	ROUND_TYPE_NONE,
 	ROUND_TYPE_ROUND_DECIMAL_DIGITS,
@@ -45,7 +44,7 @@ const SCHEMA = [
 	'value'
 ]
 
-const ZERO = Big(0)
+const ZERO = big(0)
 
 /**
  * A rule config object used to create a NumericRule instance. Rules compare a student answer to the rules properties and "match" if the student answer agrees with all of the properties.
@@ -107,7 +106,7 @@ export default class NumericRule {
 				return NumericRule.getRuleAbsoluteError(config)
 
 			case NO_ERROR:
-				return Big(0)
+				return big(0)
 		}
 	}
 
@@ -141,7 +140,7 @@ export default class NumericRule {
 	 * @return {Big}
 	 */
 	static getRuleAbsoluteError(config) {
-		return config.absoluteError ? Big(config.absoluteError).abs() : Big(0)
+		return config.absoluteError ? big(config.absoluteError).abs() : big(0)
 	}
 
 	/**
@@ -200,7 +199,7 @@ export default class NumericRule {
 		if (!config.sigFigs) return new BigValueRange()
 
 		const range = new BigValueRange(config.sigFigs)
-		if (range.getValuePosition(Big(0)) !== ValueRange.VALUE_BELOW_MIN) {
+		if (range.getValuePosition(big(0)) !== ValueRange.VALUE_BELOW_MIN) {
 			throw 'sigFigs range must be larger than 0'
 		}
 
@@ -216,7 +215,7 @@ export default class NumericRule {
 		if (!config.decimals) return new BigValueRange()
 
 		const range = new BigValueRange(config.decimals)
-		const pos = range.getMinValuePosition(Big(0))
+		const pos = range.getMinValuePosition(big(0))
 		if (pos !== ValueRange.VALUE_BELOW && pos !== ValueRange.VALUE_EQUAL) {
 			throw 'decimals range must be 0 or larger'
 		}

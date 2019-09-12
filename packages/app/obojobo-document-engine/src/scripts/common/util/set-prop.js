@@ -41,7 +41,7 @@ export default (
 
 	// If propName exists on sourceObject...
 	if (typeof sourceObject[propName] !== 'undefined') {
-		try{
+		try {
 			// ...filter sourceObject[propName] through transformValueFn
 			const value = transformValueFn(sourceObject[propName])
 
@@ -50,11 +50,11 @@ export default (
 				// ...set the value on targetObject
 				targetObject[propName] = value
 			}
-		} catch (error){
+		} catch (error) {
 			// absorb the error, the value should remain null
 			// which will end up using the default value
-			console.error(`SetProp transformValueFn for "${propName}" errored.`)
-			console.error(error)
+			console.error(`SetProp transformValueFn for "${propName}" errored.`) // eslint-disable-line no-console
+			console.error(error) // eslint-disable-line no-console
 		}
 	}
 

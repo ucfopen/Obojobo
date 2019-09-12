@@ -1,3 +1,5 @@
+/* eslint-disable new-cap */
+
 jest.mock('../../numerics/numeric-classes', () => {
 	class MockExact {
 		constructor() {
@@ -38,15 +40,8 @@ jest.mock('../../numerics/numeric-classes', () => {
 		typeExact: MockExact,
 		typeInferred: MockInferred,
 		typeNone: MockNone
-		// typeExact2: MockExact,
-		// typeInferred2: MockInferred
 	}
 })
-// jest.mock('../../entry/numeric-matches.js', () => {
-// 	return {
-// 		add: jest.fn()
-// 	}
-// })
 
 import NumericMatches from '../../entry/numeric-matches.js'
 import NumericClasses from '../../numerics/numeric-classes.js'
@@ -194,7 +189,7 @@ describe('NumericEntry', () => {
 
 	test('constructor throws error if wrong type of value passed in', () => {
 		expect(() => {
-			new NumericEntry(true)
+			new NumericEntry(true) // eslint-disable-line no-new
 		}).toThrow('inputString must be of type string!')
 	})
 })

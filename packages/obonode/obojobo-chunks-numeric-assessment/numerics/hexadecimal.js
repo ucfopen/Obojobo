@@ -9,7 +9,7 @@ import { INPUT_TYPE_HEXADECIMAL } from './types/input-types'
 import { MATCH_EXACT, MATCH_INFERRED, MATCH_NONE } from '../entry/match-types'
 import Numeric from './numeric'
 import Decimal from './decimal'
-import Big from '../big'
+import big from '../big'
 
 const hexZeroX = /^0x[0-9a-fA-F]+$|^0x[0-9a-fA-F]+ /
 const hexOctothorpe = /^#[0-9a-fA-F]+$|^#[0-9a-fA-F]+ /
@@ -149,8 +149,8 @@ export default class Hexadecimal extends Numeric {
 	 * @param {Big} bigValue
 	 * @return {string}
 	 * @example
-	 * Hexadecimal.getString(Big(2)) //"0x2"
-	 * Hexadecimal.getString(Big(255)) //"0xFF"
+	 * Hexadecimal.getString(big(2)) //"0x2"
+	 * Hexadecimal.getString(big(255)) //"0xFF"
 	 */
 	static getString(bigValue) {
 		return `0x${Number(bigValue)
@@ -163,11 +163,11 @@ export default class Hexadecimal extends Numeric {
 	 * @param {string} valueString
 	 * @return {string}
 	 * @example
-	 * Hexadecimal.getBigValue('0x2') //Big(2)
-	 * Hexadecimal.getBigValue('0xFF') //Big(255)
+	 * Hexadecimal.getBigValue('0x2') //big(2)
+	 * Hexadecimal.getBigValue('0xFF') //big(255)
 	 */
 	static getBigValue(valueString) {
-		return Big(Hexadecimal.getValue(valueString))
+		return big(Hexadecimal.getValue(valueString))
 	}
 
 	/**
