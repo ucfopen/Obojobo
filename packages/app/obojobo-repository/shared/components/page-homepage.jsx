@@ -39,7 +39,7 @@ const PageHomepage = props =>
 				<div className="step-items-container">
 					<h1>Built for the Future.</h1>
 					<p>
-						Every paragraph in ObojoboNext is delivered by a modular plugin-like library. Things like images, math equations, practice questions, widgets, videos, etc are availible now. This modularity means ObojoboNext is poised to deliver the next big thing.
+						Every paragraph in ObojoboNext is delivered by individual modular plugins. Examples include images, math equations, questions, widgets, and videos. This modularity means ObojoboNext is poised to deliver the next big thing.
 					</p>
 				</div>
 			</section>
@@ -49,7 +49,7 @@ const PageHomepage = props =>
 					<h1>Datalicious.</h1>
 					<h2>Gain insights, perform research</h2>
 					<p>
-						We started from day one enabling our users to build research studies that were previously impossible.
+						We started on day one enabling our users to build research studies that were previously impossible.
 					</p>
 
 					<p>
@@ -62,7 +62,7 @@ const PageHomepage = props =>
 				<div className="step-items-container">
 					<h1>LMS Integrated.</h1>
 					<p>
-						We integrate with Instructure's Canvas so you can use all the power of ObojoboNext right in the LMS you and your students already know.
+						ObojoboNext integrates with Instructure's Canvas so you can use all the power of ObojoboNext right in the LMS you and your students already know.
 					</p>
 				</div>
 			</section>
@@ -71,7 +71,7 @@ const PageHomepage = props =>
 				<div className="step-items-container">
 					<h1>Open Source First.</h1>
 					<p>
-						Install it, cusomize it, update it. Together we will build the future of online learning.
+						Install it, cusomize it, update it. Let's build the future of learning together.
 					</p>
 					<p><a href="https://github.com/ucfopen/Obojobo">Join us on Github</a>!</p>
 				</div>
