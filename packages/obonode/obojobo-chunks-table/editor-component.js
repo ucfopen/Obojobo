@@ -29,16 +29,13 @@ class Table extends React.Component {
 
 		content.numCols++
 
-		editor.setNodeByKey(this.props.node.key, { data: { content }})
+		editor.setNodeByKey(this.props.node.key, { data: { content } })
 
 		this.props.node.nodes.forEach(row => {
 			const rowContent = row.data.get('content')
 			rowContent.numCols = content.numCols
 
-			return editor.setNodeByKey(
-				row.key,
-				{ data: { content: rowContent }}
-			)
+			return editor.setNodeByKey(row.key, { data: { content: rowContent } })
 		})
 	}
 

@@ -38,10 +38,9 @@ module.exports = {
 	},
 
 	getResponsesForAttempt(req) {
-		return Assessment.getResponsesForAttempt(req.params.attemptId)
-			.then(responsesForAttempt => {
-				req.responsesForAttempt = responsesForAttempt
-			})
+		return Assessment.getResponsesForAttempt(req.params.attemptId).then(responsesForAttempt => {
+			req.responsesForAttempt = responsesForAttempt
+		})
 	},
 
 	getCalculatedScores(req, res) {
@@ -52,8 +51,7 @@ module.exports = {
 			req.attempt.attemptState,
 			req.attemptHistory,
 			req.responsesForAttempt
-		)
-		.then(calculatedScores => {
+		).then(calculatedScores => {
 			req.calculatedScores = calculatedScores
 		})
 	},
@@ -69,8 +67,7 @@ module.exports = {
 			req.calculatedScores.assessmentScoreDetails,
 			req.currentVisit.is_preview,
 			req.currentVisit.resource_link_id
-		)
-		.then(result => {
+		).then(result => {
 			req.assessmentScoreId = result.assessmentScoreId
 		})
 	},
@@ -89,15 +86,17 @@ module.exports = {
 	},
 
 	sendHighestAssessmentScore(req) {
-		return lti.sendHighestAssessmentScore(
-			req.currentUser.id,
-			req.currentDocument,
-			req.attempt.assessmentId,
-			req.currentVisit.is_preview,
-			req.currentVisit.resource_link_id
-		).then(ltiRequest => {
-			req.ltiRequest = ltiRequest
-		})
+		return lti
+			.sendHighestAssessmentScore(
+				req.currentUser.id,
+				req.currentDocument,
+				req.attempt.assessmentId,
+				req.currentVisit.is_preview,
+				req.currentVisit.resource_link_id
+			)
+			.then(ltiRequest => {
+				req.ltiRequest = ltiRequest
+			})
 	},
 
 	insertAttemptScoredEvents(req) {

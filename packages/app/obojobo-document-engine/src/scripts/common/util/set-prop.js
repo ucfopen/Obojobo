@@ -53,8 +53,8 @@ export default (
 		} catch (error) {
 			// absorb the error, the value should remain null
 			// which will end up using the default value
-			console.error(`SetProp transformValueFn for "${propName}" errored.`) // eslint-disable-line no-console
-			console.error(error) // eslint-disable-line no-console
+			console.error(`SetProp transformValueFn for "${propName}" errored.`) //eslint-disable-line no-console
+			console.error(error) //eslint-disable-line no-console
 		}
 	}
 

@@ -434,7 +434,7 @@ describe('apiutil', () => {
 
 		return APIUtil.postDraft('mockDraftId', {}).then(() => {
 			expect(post).toHaveBeenCalledWith('/api/drafts/mockDraftId', {})
-			expect(console.error).toHaveBeenCalledWith('mockError') // eslint-disable-line no-console
+			expect(console.error).toHaveBeenCalledWith('mockError') //eslint-disable-line no-console
 		})
 	})
 
@@ -467,5 +467,14 @@ describe('apiutil', () => {
 			method: 'POST'
 		})
 		expect(response).toEqual({ mediaId: 'mockMediaId' })
+	})
+
+	test('getVisitSessionStatus calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.getVisitSessionStatus('mock-draft-id').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/visits/mock-draft-id/status')
+			expect(result).toEqual(mockJsonResult)
+		})
 	})
 })

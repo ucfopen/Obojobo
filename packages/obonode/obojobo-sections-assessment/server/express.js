@@ -1,4 +1,4 @@
-const router = require('express').Router()
+const router = require('express').Router() //eslint-disable-line new-cap
 const oboEvents = require('obojobo-express/obo_events')
 const db = require('obojobo-express/db')
 const Assessment = require('./assessment')
@@ -10,7 +10,6 @@ const endAttempt = require('./attempt-end/attempt-end')
 const { reviewAttempt } = require('./attempt-review')
 const { logAndRespondToUnexpected } = require('./util')
 const {
-	checkValidationRules,
 	requireCurrentDocument,
 	requireCurrentVisit,
 	requireAttemptId,
@@ -21,27 +20,27 @@ const {
 router
 	.route('/api/lti/state/draft/:draftId')
 	.get([requireCurrentDocument, requireCurrentVisit, requireCurrentUser])
-	.get((req, res) => lti
-		.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
-			req.currentUser.id,
-			req.currentDocument.draftId,
-			req.currentVisit.resource_link_id
-		)
-		.then(res.success)
+	.get((req, res) =>
+		lti
+			.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId(
+				req.currentUser.id,
+				req.currentDocument.draftId,
+				req.currentVisit.resource_link_id
+			)
+			.then(res.success)
 	)
 
 router
-	.route('/api/lti/sendAssessmentScore')
+	.route('/api/lti/send-assessment-score')
 	.post([requireCurrentVisit, requireCurrentUser, requireCurrentDocument, requireAssessmentId])
 	.post(async (req, res) => {
-
-		try{
+		try {
 			logger.info(
 				`API sendAssessmentScore with userId="${req.currentUser.id}", draftId="${
 					req.currentDocument.draftId
 				}", assessmentId="${req.body.assessmentId}"`
 			)
-			const ltiScoreResult = await  lti.sendHighestAssessmentScore(
+			const ltiScoreResult = await lti.sendHighestAssessmentScore(
 				req.currentUser.id,
 				req.currentDocument,
 				req.body.assessmentId,
@@ -56,7 +55,7 @@ router
 				dbStatus: ltiScoreResult.dbStatus,
 				gradebookStatus: ltiScoreResult.gradebookStatus
 			})
-		} catch(e) {
+		} catch (e) {
 			logAndRespondToUnexpected('Unexpected error starting a new attempt', res, req, e)
 		}
 	})
@@ -82,7 +81,6 @@ router
 			)
 
 			res.success(attempt)
-
 		} catch (error) {
 			logAndRespondToUnexpected('Unexpected error resuming your attempt', res, req, error)
 		}
@@ -109,112 +107,103 @@ router
 		res.send(questionModels)
 	})
 
-// @TODO: should take an assessmentID in the url
+const deletePreviewScores = ({ transaction, userId, draftId, resourceLinkId }) => {
+	return transaction
+		.manyOrNone(
+			`
+			SELECT assessment_scores.id
+			FROM assessment_scores
+			JOIN attempts
+				ON attempts.id = assessment_scores.attempt_id
+			WHERE assessment_scores.user_id = $[userId]
+			AND assessment_scores.draft_id = $[draftId]
+			AND attempts.resource_link_id = $[resourceLinkId]
+			AND assessment_scores.is_preview = true
+		`,
+			{ userId, draftId, resourceLinkId }
+		)
+		.then(assessmentScoreIdsResult => {
+			const ids = assessmentScoreIdsResult.map(i => i.id)
+			if (ids.length < 1) return []
+
+			return [
+				transaction.none(
+					`
+					DELETE FROM lti_assessment_scores
+					WHERE assessment_score_id IN ($[ids:csv])
+				`,
+					{ ids }
+				),
+				transaction.none(
+					`
+					DELETE FROM assessment_scores
+					WHERE id IN ($[ids:csv])
+				`,
+					{ ids }
+				)
+			]
+		})
+}
+
+const deletePreviewAttempts = ({ transaction, userId, draftId, resourceLinkId }) => {
+	return transaction
+		.manyOrNone(
+			`
+			SELECT id
+			FROM attempts
+			WHERE user_id = $[userId]
+			AND draft_id = $[draftId]
+			AND resource_link_id = $[resourceLinkId]
+			AND is_preview = true
+		`,
+			{ userId, draftId, resourceLinkId }
+		)
+		.then(attemptIdsResult => {
+			const ids = attemptIdsResult.map(i => i.id)
+			if (ids.length < 1) return []
+
+			return [
+				transaction.none(
+					`
+					DELETE FROM attempts_question_responses
+					WHERE attempt_id IN ($[ids:csv])
+				`,
+					{ ids }
+				),
+				transaction.none(
+					`
+					DELETE FROM attempts
+					WHERE id IN ($[ids:csv])
+				`,
+					{ ids }
+				)
+			]
+		})
+}
+
 router
 	.route('/api/assessments/clear-preview-scores')
 	.post([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
 	.post((req, res) => {
-		let assessmentScoreIds
-		let attemptIds
-		let currentDocument = null
-		let isPreview
-		let resourceLinkId
+		if (!req.currentVisit.is_preview) return res.notAuthorized('Not in preview mode')
 
-		return Promise.resolve()
-			.then(() => {
-				if (!req.currentVisit.is_preview) throw 'Not in preview mode'
-				return db.manyOrNone(
-					`
-							SELECT assessment_scores.id
-							FROM assessment_scores
-							JOIN attempts
-								ON attempts.id = assessment_scores.attempt_id
-							WHERE assessment_scores.user_id = $[userId]
-							AND assessment_scores.draft_id = $[draftId]
-							AND attempts.resource_link_id = $[resourceLinkId]
-							AND assessment_scores.is_preview = true
-						`,
-					{
-						userId: req.currentUser.id,
-						draftId: req.currentDocument.draftId,
-						resourceLinkId: req.currentVisit.resource_link_id
+		return db
+			.tx(transaction => {
+				const args = {
+					transaction,
+					userId: req.currentUser.id,
+					draftId: req.currentDocument.draftId,
+					resourceLinkId: req.currentVisit.resource_link_id
+				}
+
+				return Promise.all([deletePreviewScores(args), deletePreviewAttempts(args)]).then(
+					([scoreQueries, attemptQueries]) => {
+						return transaction.batch(scoreQueries.concat(attemptQueries))
 					}
 				)
-			})
-			.then(assessmentScoreIdsResult => {
-				assessmentScoreIds = assessmentScoreIdsResult.map(i => i.id)
-
-				return db.manyOrNone(
-					`
-						SELECT id
-						FROM attempts
-						WHERE user_id = $[userId]
-						AND draft_id = $[draftId]
-						AND resource_link_id = $[resourceLinkId]
-						AND is_preview = true
-					`,
-					{
-						userId: req.currentUser.id,
-						draftId: req.currentDocument.draftId,
-						resourceLinkId: req.currentVisit.resource_link_id
-					}
-				)
-			})
-			.then(attemptIdsResult => {
-				attemptIds = attemptIdsResult.map(i => i.id)
-
-				return db.tx(transaction => {
-					const queries = []
-					if (assessmentScoreIds.length > 0) {
-						queries.push(
-							transaction.none(
-								`
-								DELETE FROM lti_assessment_scores
-								WHERE assessment_score_id IN ($[ids:csv])
-							`,
-								{ ids: assessmentScoreIds }
-							)
-						)
-					}
-
-					if (attemptIds.length > 0) {
-						queries.push(
-							transaction.none(
-								`
-								DELETE FROM attempts_question_responses
-								WHERE attempt_id IN ($[ids:csv])
-							`,
-								{ ids: attemptIds }
-							)
-						)
-					}
-
-					queries.push(
-						transaction.none(
-							`
-								DELETE FROM assessment_scores
-								WHERE id IN ($[ids:csv])
-							`,
-							{ ids: assessmentScoreIds }
-						),
-						transaction.none(
-							`
-								DELETE FROM attempts
-								WHERE id IN ($[ids:csv])
-							`,
-							{ ids: attemptIds }
-						)
-					)
-
-					return transaction.batch(queries)
-				})
 			})
 			.then(() => res.success())
 			.catch(error => {
-				if (error === 'Not in preview mode') {
-					return res.notAuthorized(error)
-				}
-
 				logAndRespondToUnexpected('Unexpected error clearing preview scores', res, req, error)
 			})
 	})
@@ -231,23 +220,27 @@ router
 			req.params.assessmentId,
 			req.params.attemptId
 		)
-		.then(res.success)
-		.catch(error => {
-			logAndRespondToUnexpected('Unexpected Error Loading attempt "${:attemptId}"', res, req, error)
-		})
+			.then(res.success)
+			.catch(error => {
+				logAndRespondToUnexpected(
+					'Unexpected Error Loading attempt "${:attemptId}"',
+					res,
+					req,
+					error
+				)
+			})
 	})
-
 
 router
 	.route('/api/assessments/:draftId/attempts')
 	.get([requireCurrentUser, requireCurrentVisit, requireCurrentDocument])
 	.get((req, res) => {
 		return Assessment.getAttempts(
-				req.currentUser.id,
-				req.currentDocument.draftId,
-				req.currentVisit.is_preview,
-				req.currentVisit.resource_link_id
-			)
+			req.currentUser.id,
+			req.currentDocument.draftId,
+			req.currentVisit.is_preview,
+			req.currentVisit.resource_link_id
+		)
 			.then(res.success)
 			.catch(error => {
 				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
@@ -261,12 +254,12 @@ router
 	.get([requireCurrentDocument, requireCurrentUser, requireCurrentVisit, requireAssessmentId])
 	.get((req, res) => {
 		return Assessment.getAttempts(
-				req.currentUser.id,
-				req.currentDocument.draftId,
-				req.currentVisit.is_preview,
-				req.currentVisit.resource_link_id,
-				req.params.assessmentId
-			)
+			req.currentUser.id,
+			req.currentDocument.draftId,
+			req.currentVisit.is_preview,
+			req.currentVisit.resource_link_id,
+			req.params.assessmentId
+		)
 			.then(res.success)
 			.catch(error => {
 				logAndRespondToUnexpected('Unexpected error loading attempts', res, req, error)
@@ -276,7 +269,7 @@ router
 oboEvents.on('client:question:setResponse', async (event, req) => {
 	const eventRecordResponse = 'client:question:setResponse'
 
-	try{
+	try {
 		if (!event.payload.attemptId) return // assume we're in practice
 		if (!event.payload.questionId) throw 'Missing Question ID'
 		if (!event.payload.response) throw 'Missing Response'
@@ -300,10 +293,9 @@ oboEvents.on('client:question:setResponse', async (event, req) => {
 				response: event.payload.response
 			}
 		)
-	} catch(error){
+	} catch (error) {
 		logger.error(eventRecordResponse, req, event, error, error.toString())
 	}
-
 })
 
 module.exports = router

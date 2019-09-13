@@ -7,7 +7,6 @@ require('obojobo-chunks-text/viewer')
 require('obojobo-chunks-multiple-choice-assessment/viewer')
 require('obojobo-chunks-question/viewer')
 
-
 describe('BasicReview', () => {
 	let questionJSON
 

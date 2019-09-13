@@ -53,4 +53,6 @@ class MockUser {
 	}
 }
 
+MockUser.clearSessionsForUserById = jest.fn()
+
 module.exports = MockUser

@@ -5,8 +5,7 @@ import EditorStore from '../../../src/scripts/oboeditor/stores/editor-store'
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import React from 'react'
 import { Value } from 'slate'
-import mockConsole from 'jest-mock-console';
-
+import mockConsole from 'jest-mock-console'
 
 jest.mock('slate-react')
 
@@ -199,7 +198,10 @@ describe('PageEditor', () => {
 	})
 
 	test('EditorNav component with content fails to export to database', () => {
-		APIUtil.postDraft.mockResolvedValueOnce({ status: 'not ok', value: {message: 'mock error message'} })
+		APIUtil.postDraft.mockResolvedValueOnce({
+			status: 'not ok',
+			value: { message: 'mock error message' }
+		})
 
 		// remove startingId for test coverage
 		EditorStore.state = {}
@@ -241,7 +243,6 @@ describe('PageEditor', () => {
 			// restore startingId
 			EditorStore.state = { startingId: null }
 		})
-
 	})
 
 	test('EditorNav component console errors on invalid postDraft response', () => {

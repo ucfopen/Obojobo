@@ -1,12 +1,20 @@
 /* eslint-disable no-undefined */
+/* eslint-disable no-console */
 
 import setProp from '../../../src/scripts/common/util/set-prop.js'
+import mockConsole from 'jest-mock-console'
 
 describe('setProp', () => {
 	let target
+	let restoreConsole
 
 	beforeEach(() => {
 		target = {}
+		restoreConsole = mockConsole('error')
+	})
+
+	afterEach(() => {
+		restoreConsole()
 	})
 
 	test('sets default values when no attrs passed', () => {
@@ -84,5 +92,6 @@ describe('setProp', () => {
 		expect(target).toEqual({
 			myProp: 'default-value'
 		})
+		expect(console.error).toHaveBeenCalledTimes(2)
 	})
 })

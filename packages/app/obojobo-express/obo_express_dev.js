@@ -3,14 +3,25 @@ const config = require('./config')
 const oauthKey = Object.keys(config.lti.keys)[0]
 const oauthSecret = config.lti.keys[oauthKey]
 
-const ltiPerson = {
-	lis_person_contact_email_primary: 'jbaird@uni.ac.uk',
-	lis_person_name_family: 'Baird',
-	lis_person_name_full: 'John Logie Baird',
-	lis_person_name_given: 'John',
+const ltiInstructor = {
+	lis_person_contact_email_primary: 'zach@obojobo.com',
+	lis_person_name_family: 'Berry',
+	lis_person_name_full: 'Zachary Allen Berry',
+	lis_person_name_given: 'Zach',
 	lis_person_sourcedid: 'sis:942a8dd9',
 	roles: 'Instructor',
-	user_id: '29123',
+	user_id: '29129',
+	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
+}
+
+const ltiLearner = {
+	lis_person_contact_email_primary: 'ian@obojobo.com',
+	lis_person_name_family: 'Turgeon',
+	lis_person_name_full: 'Ian Emerson Turgeon',
+	lis_person_name_given: 'Ian',
+	lis_person_sourcedid: 'sis:942a8d23',
+	roles: 'Learner',
+	user_id: '29111',
 	user_image: 'https://s.gravatar.com/avatar/17f34572459fa620071cae55d7f1eacb?s=80'
 }
 
@@ -74,10 +85,10 @@ module.exports = app => {
 			<h1>Obojobo Next Express Dev Utils</h1>
 			<h2>LTI & Auth</h2>
 			<ul>
-				<li><a href="/lti">Lti Instructions</a></li>
-				<li><a href="/lti/dev/launch/course_navigation?resource_link_id=whatever-you-want"">Course Nav Launch</a></li>
-				<li><a href="/lti/dev/launch/resource_selection">Resource Selection Launch</a></li>
-				<li><a href="/lti/dev/launch/view?resource_link_id=whatever-you-want">Assignment Launch</a></li>
+				<li><a href="/lti">LTI Instructions</a></li>
+				<li>LTI Course Nav: <a href="/lti/dev/launch/course_navigation?resource_link_id=whatever-you-want"">Instructor</a> <a href="/lti/dev/launch/course_navigation?student=1&resource_link_id=whatever-you-want"">Student</a></li>
+				<li>LTI Resource Selection: <a href="/lti/dev/launch/resource_selection">Instructor</a> <a href="/lti/dev/launch/resource_selection?student=1">Student</a></li>
+				<li>LTI Assignment: <a href="/lti/dev/launch/view?resource_link_id=whatever-you-want">Instructor</a> <a href="/lti/dev/launch/view?student=1&resource_link_id=whatever-you-want">Student</a></li>
 				<li><a href="/profile">Whoami</a></li>
 				<li><a href="/profile/logout">Logout</a></li>
 			</ul>
@@ -110,7 +121,8 @@ module.exports = app => {
 
 	// builds a valid course navigation lti launch and submits it
 	app.get('/lti/dev/launch/course_navigation', (req, res) => {
-		let resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+		const person = req.query.student ? ltiLearner : ltiInstructor
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/lti/canvas/course_navigation`
 		const params = {
@@ -128,7 +140,7 @@ module.exports = app => {
 			resource_link_title: 'Phone home'
 		}
 		renderLtiLaunch(
-			{ ...ltiContext, ...ltiPerson, ...ltiToolConsumer, ...params },
+			{ ...ltiContext, ...person, ...ltiToolConsumer, ...params },
 			method,
 			endpoint,
 			res
@@ -137,7 +149,8 @@ module.exports = app => {
 
 	// builds a valid document view lti launch and submits it
 	app.get('/lti/dev/launch/view', (req, res) => {
-		let resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+		const person = req.query.student ? ltiLearner : ltiInstructor
 		const method = 'POST'
 		const endpoint = `${baseUrl(req)}/view/00000000-0000-0000-0000-000000000000`
 		const params = {
@@ -146,12 +159,15 @@ module.exports = app => {
 			lti_version: 'LTI-1p0',
 			resource_link_id
 		}
-		renderLtiLaunch({ ...ltiPerson, ...params }, method, endpoint, res)
+		renderLtiLaunch({ ...person, ...params }, method, endpoint, res)
 	})
+
+	ltiLearner
 
 	// builds a valid resourse selection lti launch and submits it
 	app.get('/lti/dev/launch/resource_selection', (req, res) => {
 		const method = 'POST'
+		const person = req.query.student ? ltiLearner : ltiInstructor
 		const endpoint = `${baseUrl(req)}/lti/canvas/resource_selection`
 		const params = {
 			accept_copy_advice: 'false',
@@ -168,7 +184,7 @@ module.exports = app => {
 			lti_version: 'LTI-1p0'
 		}
 		renderLtiLaunch(
-			{ ...ltiContext, ...ltiPerson, ...ltiToolConsumer, ...params },
+			{ ...ltiContext, ...person, ...ltiToolConsumer, ...params },
 			method,
 			endpoint,
 			res

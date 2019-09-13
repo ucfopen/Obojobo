@@ -21,10 +21,10 @@ class MathEquationProperties extends React.Component {
 
 		this.inputRef = React.createRef()
 
-		this.state = ({
+		this.state = {
 			content: this.props.content,
 			error: ''
-		})
+		}
 	}
 
 	handleLatexChange(event) {
@@ -34,7 +34,7 @@ class MathEquationProperties extends React.Component {
 			...this.state,
 			content: {
 				...this.state.content,
-				latex,
+				latex
 			}
 		})
 	}
@@ -44,11 +44,11 @@ class MathEquationProperties extends React.Component {
 
 		this.setState({
 			...this.state,
-			content: { 
+			content: {
 				...this.state.content,
 				alt
 			}
-		})	
+		})
 	}
 
 	handleLabelChange(event) {
@@ -56,7 +56,7 @@ class MathEquationProperties extends React.Component {
 
 		this.setState({
 			...this.state,
-			content: { 
+			content: {
 				...this.state.content,
 				label
 			}

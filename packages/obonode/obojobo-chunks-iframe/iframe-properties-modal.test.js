@@ -5,8 +5,8 @@ import IFrameProperties from './iframe-properties-modal'
 
 // mock ref.current.focus and ref.current.select on inputs
 const testRendererOptions = {
-	createNodeMock: (element) => {
-		if(element.type === 'input'){
+	createNodeMock: element => {
+		if (element.type === 'input') {
 			return {
 				focus: () => {},
 				select: () => {}
@@ -112,7 +112,6 @@ describe('IFrame Properties Modal', () => {
 	})
 
 	test('IFrameProperties component changes border', () => {
-
 		const testRenderer = TestRenderer.create(
 			<IFrameProperties
 				content={{
@@ -129,7 +128,7 @@ describe('IFrame Properties Modal', () => {
 
 		// locate the slider component for border input
 		const testInstance = testRenderer.root
-		const borderSlider = testInstance.findByProps({title: 'Border'})
+		const borderSlider = testInstance.findByProps({ title: 'Border' })
 
 		// execute that slider's handleCheckChange
 		borderSlider.props.handleCheckChange(true)
@@ -142,7 +141,6 @@ describe('IFrame Properties Modal', () => {
 
 		expect(startState).not.toEqual(endState)
 	})
-
 
 	test('IFrameProperties component changes fit', () => {
 		const component = mount(
@@ -203,7 +201,6 @@ describe('IFrame Properties Modal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-
 	// @TODO: fragile, relies on input ordering and difficult to read snapshot html dump
 	test('IFrameProperties component changes initial zoom', () => {
 		const component = mount(
@@ -239,7 +236,7 @@ describe('IFrame Properties Modal', () => {
 
 		// locate the slider component for border input
 		const testInstance = testRenderer.root
-		const autoloadSlider = testInstance.findByProps({title: 'Autoload'})
+		const autoloadSlider = testInstance.findByProps({ title: 'Autoload' })
 
 		// execute that slider's handleCheckChange
 		autoloadSlider.props.handleCheckChange(true)
@@ -270,11 +267,11 @@ describe('IFrame Properties Modal', () => {
 
 		// locate the slider component for border input
 		const testInstance = testRenderer.root
-		const autoloadSlider = testInstance.findByProps({title: 'Reload'})
+		const autoloadSlider = testInstance.findByProps({ title: 'Reload' })
 
 		// execute that slider's handleCheckChange
 		autoloadSlider.props.handleCheckChange(true)
-		expect(testInstance.instance.state.controls).toBe(",reload")
+		expect(testInstance.instance.state.controls).toBe(',reload')
 
 		// capture the changes
 		const endState = testRenderer.toJSON()
@@ -286,7 +283,7 @@ describe('IFrame Properties Modal', () => {
 
 		// turn it back off
 		autoloadSlider.props.handleCheckChange(false)
-		expect(testInstance.instance.state.controls).toBe("")
+		expect(testInstance.instance.state.controls).toBe('')
 	})
 
 	test('IFrameProperties component changes New Window', () => {
@@ -306,7 +303,7 @@ describe('IFrame Properties Modal', () => {
 
 		// locate the slider component for border input
 		const testInstance = testRenderer.root
-		const autoloadSlider = testInstance.findByProps({title: 'New Window'})
+		const autoloadSlider = testInstance.findByProps({ title: 'New Window' })
 
 		// execute that slider's handleCheckChange
 		autoloadSlider.props.handleCheckChange(true)
@@ -337,7 +334,7 @@ describe('IFrame Properties Modal', () => {
 
 		// locate the slider component for border input
 		const testInstance = testRenderer.root
-		const autoloadSlider = testInstance.findByProps({title: 'Zoom'})
+		const autoloadSlider = testInstance.findByProps({ title: 'Zoom' })
 
 		// execute that slider's handleCheckChange
 		autoloadSlider.props.handleCheckChange(true)
@@ -350,6 +347,4 @@ describe('IFrame Properties Modal', () => {
 
 		expect(startState).not.toEqual(endState)
 	})
-
-
 })

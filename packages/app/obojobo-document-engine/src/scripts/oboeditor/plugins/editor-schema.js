@@ -33,7 +33,7 @@ const EditorSchema = {
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						if(child.object === 'block') {
+						if (child.object === 'block') {
 							return editor.wrapBlockByKey(child.key, 'oboeditor.component')
 						}
 

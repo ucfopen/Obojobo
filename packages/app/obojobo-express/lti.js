@@ -519,8 +519,8 @@ const sendReplaceResultRequest = (outcomeService, score) => {
 
 	return new Promise((resolve, reject) => {
 		/* istanbul ignore next */
-		if(outcomeService.service_url === 'https://example.fake/outcomes/fake'){
-			logger.info("BYPASSING SEND DUE TO USING TEST SERVICE URL")
+		if (outcomeService.service_url === 'https://example.fake/outcomes/fake') {
+			logger.info('BYPASSING SEND DUE TO USING TEST SERVICE URL')
 			return resolve(true)
 		}
 		outcomeService.send_replace_result(score, (err, result) => {
