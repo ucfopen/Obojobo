@@ -3,6 +3,7 @@ import Component from 'obojobo-document-engine/src/scripts/oboeditor/components/
 
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 const slateToObo = node => {
@@ -17,6 +18,10 @@ const slateToObo = node => {
 				break
 
 			case MCASSESSMENT_NODE:
+				children.push(Common.Registry.getItemForType(child.type).slateToObo(child))
+				break
+
+			case NUMERIC_ASSESSMENT_NODE:
 				children.push(Common.Registry.getItemForType(child.type).slateToObo(child))
 				break
 
@@ -39,7 +44,7 @@ const oboToSlate = node => {
 	const content = node.content
 
 	node.children.forEach(child => {
-		if (child.type === MCASSESSMENT_NODE) {
+		if (child.type === MCASSESSMENT_NODE || child.type === NUMERIC_ASSESSMENT_NODE) {
 			nodes.push(Common.Registry.getItemForType(child.type).oboToSlate(child))
 		} else {
 			nodes.push(Component.helpers.oboToSlate(child))
