@@ -251,7 +251,7 @@ describe('user model', () => {
 		expect(u.canEditDrafts).toBe(true)
 		expect(u.canDeleteDrafts).toBe(true)
 		expect(u.canCreateDrafts).toBe(true)
-		expect(u.canViewDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
 	})
 
 	test('Administrator role gives expected perms', () => {
@@ -267,7 +267,7 @@ describe('user model', () => {
 		expect(u.canEditDrafts).toBe(true)
 		expect(u.canDeleteDrafts).toBe(true)
 		expect(u.canCreateDrafts).toBe(true)
-		expect(u.canViewDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
 	})
 
 	test('TeachingAssistant role gives expected perms', () => {
@@ -283,7 +283,7 @@ describe('user model', () => {
 		expect(u.canEditDrafts).toBe(true)
 		expect(u.canDeleteDrafts).toBe(true)
 		expect(u.canCreateDrafts).toBe(true)
-		expect(u.canViewDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
 	})
 
 	test('ContentDeveloper role gives expected perms', () => {
@@ -299,7 +299,7 @@ describe('user model', () => {
 		expect(u.canEditDrafts).toBe(true)
 		expect(u.canDeleteDrafts).toBe(true)
 		expect(u.canCreateDrafts).toBe(true)
-		expect(u.canViewDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
 	})
 
 	test('Learner role gives expected perms', () => {
@@ -315,6 +315,6 @@ describe('user model', () => {
 		expect(u.canEditDrafts).toBe(false)
 		expect(u.canDeleteDrafts).toBe(false)
 		expect(u.canCreateDrafts).toBe(false)
-		expect(u.canViewDrafts).toBe(false)
+		expect(u.canPreviewDrafts).toBe(false)
 	})
 })
