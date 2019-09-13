@@ -7,29 +7,65 @@ describe('Registry', () => {
 
 	test('registerModel registers a model', () => {
 		expect.assertions(2)
-		Registry.registerModel('type')
+		Registry.registerModel('mockType')
 
 		Registry.getItems(items => {
 			expect(items.size).toBe(1)
-			expect(items.get('type')).toEqual({})
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+									Object {
+									  "cloneBlankNode": [Function],
+									  "default": false,
+									  "init": [Function],
+									  "templateObject": "",
+									  "type": null,
+									  "variables": Object {},
+									}
+						`)
 		})
 	})
 
 	test('registerModel registers a model that already exists', () => {
 		expect.assertions(2)
-		Registry.registerModel('type')
-		Registry.registerModel('type')
+		Registry.registerModel('mockType')
+		Registry.registerModel('mockType')
 
 		Registry.getItems(items => {
 			expect(items.size).toBe(1)
-			expect(items.get('type')).toEqual({})
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+						Object {
+						  "cloneBlankNode": [Function],
+						  "default": false,
+						  "init": [Function],
+						  "templateObject": "",
+						  "type": null,
+						  "variables": Object {},
+						}
+				`)
+		})
+	})
+
+	test('registerModel cloneBlankNode really does clone the template', () => {
+		expect.hasAssertions()
+
+		const templateObject = { mockProperty: {} }
+		Registry.registerModel('mockType', { templateObject })
+
+		Registry.getItems(items => {
+			const item = items.get('mockType')
+			const clone = item.cloneBlankNode()
+
+			// expect the objects to look the same
+			expect(clone.mockProperty).toEqual(templateObject.mockProperty)
+
+			// but not reference the same object
+			expect(clone.mockProperty).not.toBe(templateObject.mockProperty)
 		})
 	})
 
 	test('registers calls init', () => {
 		expect.assertions(1)
 		const init = jest.fn()
-		Registry.registerModel('type', { init: init })
+		Registry.registerModel('mockType', { init: init })
 
 		Registry.getItems(() => {
 			expect(init).toHaveBeenCalled()
