@@ -11,7 +11,6 @@ const ObojoboDocumentServer = require('./obo_express')
 const IS_WEBPACK = process.env.IS_WEBPACK || false
 const engines = require('consolidate')
 
-
 module.exports = app => {
 	// =========== STATIC ASSET PATHS ================
 	app.use(express.static(path.join(__dirname, 'public'))) // serve the files from public as static files
@@ -54,7 +53,6 @@ module.exports = app => {
 	app.use(ObojoboDocumentServer)
 
 	// Custom Routes
-	app.use('/', require('./routes/index'))
 	app.use('/profile', require('./routes/profile'))
 
 	// 404 handler

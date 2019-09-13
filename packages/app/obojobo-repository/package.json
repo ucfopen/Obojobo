@@ -6,8 +6,8 @@
 	"homepage": "https://ucfopen.github.io/Obojobo-Docs/",
 	"description": "Obojobo express server middleware.",
 	"scripts": {
-		"test": "TZ='America/New_York' jest",
-		"test:ci": "TZ='America/New_York' CI=true jest --ci --coverage --coverageReporters text-summary cobertura",
+		"test": "echo 'not implemented'",
+		"test:ci": "echo 'not implemented'",
 		"lint": "yarn lint:js && yarn lint:css",
 		"lint:js": "eslint .",
 		"lint:css": "stylelint **/*.scss",
@@ -45,33 +45,6 @@
 		"react-redux": "^6.0.1",
 		"redux": "^4.0.1",
 		"redux-pack": "^0.1.5",
-		"sass-mq": "^5.0.1",
-		"whatwg-fetch": "^3.0.0"
-	},
-	"jest": {
-		"setupFilesAfterEnv": [
-			"./setup_tests.js"
-		],
-		"collectCoverageFrom": [
-			"*.js",
-			"models/**/*.js",
-			"routes/**/*.js"
-		],
-		"coveragePathIgnorePatterns": [
-			"<rootDir>/node_modules",
-			"<rootDir>/setup_tests.js"
-		],
-		"coverageReporters": [
-			"text",
-			"lcov"
-		],
-		"coverageThreshold": {
-			"global": {
-				"branches": 100,
-				"functions": 100,
-				"lines": 100,
-				"statements": 100
-			}
-		}
+		"sass-mq": "^5.0.1"
 	}
 }

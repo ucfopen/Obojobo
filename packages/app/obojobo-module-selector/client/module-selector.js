@@ -1,8 +1,5 @@
 import './css/module-selector.scss'
 
-// shim fetch for older browsers
-import 'whatwg-fetch'
-
 (function() {
 	const PROGESS_FAKE_DELAY_MS = 1000
 	const SEARCH_DELAY_MS = 250

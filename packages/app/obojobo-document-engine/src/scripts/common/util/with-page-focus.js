@@ -1,17 +1,13 @@
 import focus from '../page/focus'
-
-function getDisplayName(WrappedComponent) {
-	return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-}
+import React from 'react'
 
 function withPageFocus(BaseComponent){
-	class WithPageFocus extends React.Component{
+
+	return class extends React.Component{
 		render(){
 			return <BaseComponent {...this.props} focus={focus} />
 		}
 	}
-	WithPageFocus.displayName = `WithPageFocus(${getDisplayName(BaseComponent)})`
-	return WithPageFocus
 }
 
 export default withPageFocus
