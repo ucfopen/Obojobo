@@ -237,4 +237,84 @@ describe('user model', () => {
 			})
 		}).not.toThrow()
 	})
+
+	test('Instructor role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['Instructor']
+		})
+		expect(u.canViewEditor).toBe(true)
+		expect(u.canEditDrafts).toBe(true)
+		expect(u.canDeleteDrafts).toBe(true)
+		expect(u.canCreateDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
+	})
+
+	test('Administrator role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['urn:lti:instrole:ims/lis/Administrator']
+		})
+		expect(u.canViewEditor).toBe(true)
+		expect(u.canEditDrafts).toBe(true)
+		expect(u.canDeleteDrafts).toBe(true)
+		expect(u.canCreateDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
+	})
+
+	test('TeachingAssistant role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['urn:lti:role:ims/lis/TeachingAssistant']
+		})
+		expect(u.canViewEditor).toBe(true)
+		expect(u.canEditDrafts).toBe(true)
+		expect(u.canDeleteDrafts).toBe(true)
+		expect(u.canCreateDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
+	})
+
+	test('ContentDeveloper role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['ContentDeveloper']
+		})
+		expect(u.canViewEditor).toBe(true)
+		expect(u.canEditDrafts).toBe(true)
+		expect(u.canDeleteDrafts).toBe(true)
+		expect(u.canCreateDrafts).toBe(true)
+		expect(u.canPreviewDrafts).toBe(true)
+	})
+
+	test('Learner role gives expected perms', () => {
+		const u = new User({
+			id: 5,
+			firstName: 'Roger',
+			lastName: 'Wilco',
+			email: 'e@m.com',
+			username: 'someusername',
+			roles: ['Learner']
+		})
+		expect(u.canViewEditor).toBe(false)
+		expect(u.canEditDrafts).toBe(false)
+		expect(u.canDeleteDrafts).toBe(false)
+		expect(u.canCreateDrafts).toBe(false)
+		expect(u.canPreviewDrafts).toBe(false)
+	})
 })

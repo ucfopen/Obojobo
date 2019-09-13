@@ -718,25 +718,23 @@ describe('api draft route', () => {
 	})
 
 	// list drafts
-	test('list drafts exits when user cant view drafts', () => {
+	test('list drafts works when user cant view drafts', () => {
 		expect.assertions(4)
 		db.any.mockResolvedValueOnce('mock-db-result')
-		mockCurrentUser = { id: 99, canViewDrafts: false } // mock current logged in user
+		mockCurrentUser = { id: 99, canPreviewDrafts: false } // mock current logged in user
 		return request(app)
 			.get('/api/drafts')
 			.then(response => {
 				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(401)
-				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value', {
-					type: 'notAuthorized'
-				})
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-db-result')
 			})
 	})
 
 	test('list drafts renders results', () => {
 		expect.assertions(4)
-		mockCurrentUser = { id: 99, canViewDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, canPreviewDrafts: true } // mock current logged in user
 		db.any.mockResolvedValueOnce('mock-db-result') // mock result of query to get all my drafts
 		return request(app)
 			.get('/api/drafts')
@@ -750,7 +748,7 @@ describe('api draft route', () => {
 
 	test('delete 500s when the database errors', () => {
 		expect.assertions(5)
-		mockCurrentUser = { id: 99, canViewDrafts: true } // mock current logged in user
+		mockCurrentUser = { id: 99, canPreviewDrafts: true } // mock current logged in user
 		db.any.mockRejectedValueOnce('rejected value') // mock result of query to get all my drafts
 		return request(app)
 			.get('/api/drafts')

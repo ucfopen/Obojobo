@@ -59,7 +59,7 @@ describe('current user middleware', () => {
 	})
 
 	test('unsets the curent user', () => {
-		expect.assertions(6)
+		expect.hasAssertions()
 		const { req } = mockArgs
 		const User = oboRequire('models/user')
 		const mockUser = new User({ id: 8 })
@@ -71,8 +71,6 @@ describe('current user middleware', () => {
 		return req
 			.getCurrentUser()
 			.then(user => {
-				expect(User.fetchById).toBeCalledWith(8)
-				expect(user.id).toBe(8)
 				expect(user).toBeInstanceOf(User)
 				req.resetCurrentUser()
 				return req.getCurrentUser()
@@ -95,7 +93,7 @@ describe('current user middleware', () => {
 	})
 
 	test('getCurrentUser gets the current user', () => {
-		expect.assertions(3)
+		expect.hasAssertions()
 
 		const { req } = mockArgs
 		const User = oboRequire('models/user')
@@ -104,14 +102,34 @@ describe('current user middleware', () => {
 		req.setCurrentUser(mockUser)
 
 		return req.getCurrentUser().then(user => {
+			expect(user).toBe(mockUser)
+			expect(user.id).toBe(8)
+			expect(user).toBeInstanceOf(User)
+			expect(req.currentUser).toBe(mockUser)
+			expect(req.currentUser).toBe(user)
+		})
+	})
+
+	test('getCurrentUser loads the user if not already loaded', () => {
+		expect.hasAssertions()
+
+		const { req } = mockArgs
+		const User = oboRequire('models/user')
+		const mockUser = new User({ id: 8 })
+		User.fetchById = jest.fn().mockResolvedValue(mockUser)
+		req.session.currentUserId = mockUser.id // only set the id, don't set req.currentUser
+
+		return req.getCurrentUser().then(user => {
 			expect(User.fetchById).toBeCalledWith(8)
 			expect(user.id).toBe(8)
 			expect(user).toBeInstanceOf(User)
+			expect(req.currentUser).toBe(mockUser)
+			expect(req.currentUser).toBe(user)
 		})
 	})
 
 	test('getCurrentUser gets the current user when required', () => {
-		expect.assertions(3)
+		expect.hasAssertions()
 
 		const { req } = mockArgs
 		const User = oboRequire('models/user')
@@ -120,14 +138,13 @@ describe('current user middleware', () => {
 		req.setCurrentUser(mockUser)
 
 		return req.getCurrentUser(true).then(user => {
-			expect(User.fetchById).toBeCalledWith(8)
 			expect(user.id).toBe(8)
 			expect(user).toBeInstanceOf(User)
 		})
 	})
 
 	test('getCurrentUser gets a guest user', () => {
-		expect.assertions(3)
+		expect.hasAssertions()
 
 		const { req } = mockArgs
 		const GuestUser = oboRequire('models/guest_user')
@@ -136,6 +153,7 @@ describe('current user middleware', () => {
 			expect(user.id).toBe(0)
 			expect(user).toBeInstanceOf(GuestUser)
 			expect(user.isGuest()).toBe(true)
+			expect(req.currentUser).toBe(user)
 		})
 	})
 
@@ -206,22 +224,6 @@ describe('current user middleware', () => {
 				expect(err).toBeInstanceOf(Error)
 				expect(err.message).toBe('Login Required')
 			})
-	})
-
-	test('getCurrentUser gets the current user', () => {
-		expect.assertions(3)
-
-		const { req } = mockArgs
-		const User = oboRequire('models/user')
-		const mockUser = new User({ id: 8 })
-		User.fetchById = jest.fn().mockResolvedValue(mockUser)
-		req.setCurrentUser(mockUser)
-
-		return req.getCurrentUser().then(user => {
-			expect(User.fetchById).toBeCalledWith(8)
-			expect(user.id).toBe(8)
-			expect(user).toBeInstanceOf(User)
-		})
 	})
 
 	test('requireCurrentUser rejects when expected', () => {
