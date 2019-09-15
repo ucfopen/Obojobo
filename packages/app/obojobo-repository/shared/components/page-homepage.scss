@@ -1,3 +1,4 @@
+/* stylelint-disable */
 @import '../../client/css/defaults';
 
 /* global element styles */
@@ -9,11 +10,7 @@ a:hover {
 	color: #6b4b93;
 }
 
-
-/* specific styles */
-
-/* Set a defined width for browsers that
-don't understand media queries */
+/* Set a defined width for browsers that don't understand media queries */
 html {
 	min-width: 1105px;
 }
@@ -49,8 +46,6 @@ header .header-container .logo {
 	left: 20px;
 	font-size: 33px;
 	color: #0c59b0;
-	width: 127px;
-	height: 33px;
 	background-image: url('/images/obojobo-logo.svg');
 	background-position: center;
 	background-repeat: no-repeat;
@@ -126,7 +121,6 @@ header .header-container nav > ul > li > ul {
 	padding: 0;
 	margin: 0;
 	text-align: right;
-	background: #5e5e5e;
 	position: absolute;
 	right: -1px;
 	display: none;
@@ -145,6 +139,9 @@ header .header-container nav > ul > li > ul > li {
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
+}
+header .header-container nav > ul > li:first-child {
+	margin-left: 0;
 }
 
 header .header-container nav > ul > li > ul > li a {
@@ -233,7 +230,6 @@ header .header-container nav > ul > li > ul > li a:hover {
 	padding: 0;
 }
 
-
 /* top menu widths */
 header .header-container nav > ul > .about > ul {
 	width: 280px;
@@ -250,9 +246,6 @@ header .header-container nav > ul > .instructors > ul {
 header .header-container nav > ul > .help > ul {
 	width: 230px;
 }
-
-
-
 
 /* steps */
 .step-1 {
@@ -319,7 +312,6 @@ header .header-container nav > ul > .help > ul {
 	padding-left: 650px;
 	padding-top: 150px;
 }
-
 
 .repository--homepage footer {
 	font-size: 1em;
@@ -489,7 +481,6 @@ header .header-container nav > ul > .help > ul {
 	}
 }
 
-
 @include mq($until: tablet) {
 	header {
 		height: auto;
@@ -601,7 +592,6 @@ header .header-container nav > ul > .help > ul {
 		font-size: 0.8em;
 	}
 }
-
 
 @include mq($from: zero, $until: mobileL) {
 	.hero {

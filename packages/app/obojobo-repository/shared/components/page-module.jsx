@@ -1,5 +1,3 @@
-require('./page-module.scss')
-
 const React = require('react');
 import DefaultLayout from './layouts/default'
 import RepositoryNav from './repository-nav'

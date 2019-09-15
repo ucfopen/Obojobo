@@ -1,22 +1,20 @@
 import './css/module-selector.scss'
 
 (function() {
-	const PROGESS_FAKE_DELAY_MS = 1000
 	const SEARCH_DELAY_MS = 250
 	const CHANGE_SECTION_FADE_DELAY_MS = 250
 	const MAX_ITEMS = 20
-	const VERIFY_TIME_SECONDS = 30
 	const MESSAGE_LOGOUT = 'You have been logged out. Please refresh the page and try again.'
 
 	let searchIntervalId = -1
-	let data = { items: undefined, allItems: undefined, last: 0 }
-	let searchStrings = {}
+	const data = { items: undefined, allItems: undefined, last: 0 } // eslint-disable-line no-undefined
+	const searchStrings = {}
 	let selectedItem = null
 
 	// elements:
-	let $template = $($('.template.obo-item')[0])
-	let $listContainer = $('#list-container')
-	let $search = $('#search')
+	const $template = $($('.template.obo-item')[0])
+	const $listContainer = $('#list-container')
+	const $search = $('#search')
 	let section = null
 
 	// searching:
@@ -25,9 +23,9 @@ import './css/module-selector.scss'
 			return
 		}
 
-		let text = $.trim($search.val())
+		const text = $.trim($search.val())
 		if ($search.attr('data-last-search') !== text) {
-			let className = section.replace(' ', '-').toLowerCase()
+			const className = section.replace(' ', '-').toLowerCase()
 			$('.' + className)
 				.children('ul')
 				.empty()
@@ -39,7 +37,7 @@ import './css/module-selector.scss'
 	}
 
 	function clearSearch() {
-		let className = section.replace(' ', '-').toLowerCase()
+		const className = section.replace(' ', '-').toLowerCase()
 		$('.' + className)
 			.children('ul')
 			.empty()
@@ -51,24 +49,22 @@ import './css/module-selector.scss'
 
 	function getDraftById(draftId) {
 		return data.allItems.find(item => {
-			return item.draftId == draftId
+			return item.draftId === draftId
 		})
 	}
 
 	function filterList(searchTerms) {
-		let $list = $('.' + section.toLowerCase().replace(' ', '-'))
-		//$lis = $list.find('.obo-item');
-		let items = data.allItems
+		const items = data.allItems
 
 		if (searchTerms.length === 0) {
 			clearSearch()
 			return
 		}
 
-		let terms = searchTerms.toLowerCase().split(' ')
-		let numTerms = terms.length
+		const terms = searchTerms.toLowerCase().split(' ')
+		const numTerms = terms.length
 
-		let len = items.length
+		const len = items.length
 		let item
 		let ss
 		let numMatches
@@ -110,8 +106,8 @@ import './css/module-selector.scss'
 			$('.preview-link').attr('href', '/preview/' + window.__previousResponse.body.loID)
 		}
 
-		let $shownSection = $('section:not(:hidden)')
-		let $newSection = $('#' + sectionId)
+		const $shownSection = $('section:not(:hidden)')
+		const $newSection = $('#' + sectionId)
 		$newSection.removeClass().addClass(addClass)
 		if ($shownSection.length === 0) {
 			if (skipFadeAnimation) {
@@ -119,8 +115,7 @@ import './css/module-selector.scss'
 			} else {
 				$newSection.fadeIn(CHANGE_SECTION_FADE_DELAY_MS)
 			}
-		} else {
-			if (skipFadeAnimation) {
+		} else if (skipFadeAnimation) {
 				$shownSection.hide()
 				$newSection.show()
 			} else {
@@ -128,7 +123,6 @@ import './css/module-selector.scss'
 					$newSection.fadeIn(CHANGE_SECTION_FADE_DELAY_MS)
 				})
 			}
-		}
 	}
 
 	function gotoTab(newSection) {
@@ -156,13 +150,13 @@ import './css/module-selector.scss'
 
 	function startProgressBar() {
 		// create a random number of progress bar stops
-		let availStops = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-		let stops = { tick: 0 }
+		const availStops = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+		const stops = { tick: 0 }
 		for (let i = 0, len = getRandInt(3, 5); i < len; i++) {
 			stops[availStops.splice(getRandInt(0, availStops.length), 1)] = true
 		}
 
-		let intervalId = setInterval(() => {
+		const intervalId = setInterval(() => {
 			stops.tick++
 			if (typeof stops[stops.tick] !== 'undefined') {
 				$('.progressbar').progressbar('value', stops.tick * 10)
@@ -191,20 +185,20 @@ import './css/module-selector.scss'
 			.html('Success!')
 		$('.progressbar').progressbar('value', 100)
 		setTimeout(() => {
-			let ltiData = buildContentItem(
+			const ltiData = buildContentItem(
 				selectedItem.title,
 				buildLaunchUrl(selectedItem.draftId),
-				__isAssignment
+				__isAssignment // eslint-disable-line no-undef
 			)
-			let $form = $('#submit-form')
+			const $form = $('#submit-form')
 			$form.find('input[name=content_items]').val(JSON.stringify(ltiData))
-			$form.attr('action', __returnUrl)
+			$form.attr('action', __returnUrl) // eslint-disable-line no-undef
 			$form.submit()
 		}, 1000)
 	}
 
 	function buildContentItem(title, url, isAssignment = false) {
-		let specialTitle = isAssignment ? title : title + " (doesn't send scores to gradebook)"
+		const specialTitle = isAssignment ? title : title + " (doesn't send scores to gradebook)"
 		return {
 			'@context': 'http://purl.imsglobal.org/ctx/lti/v1/ContentItem',
 			'@graph': [
@@ -226,13 +220,13 @@ import './css/module-selector.scss'
 
 	// utility
 	function hasMoreItems() {
-		let d = data
+		const d = data
 		return d.last < d.items.length
 	}
 
 	// list pages
 	function appendListItem(lo, $list) {
-		let $clone = $template.clone()
+		const $clone = $template.clone()
 		$clone.removeClass('template')
 		$clone.find('.title').html(lo.title ? lo.title : 'Untitled')
 		$clone.find('.draft-id').html('id: ' + lo.draftId)
@@ -282,7 +276,7 @@ import './css/module-selector.scss'
 		fetch(apiUrl, fetchOptions)
 			.then(resp => resp.json())
 			.then(respJson => {
-				if (respJson.status != 'ok') throw 'Failed loading modules'
+				if (respJson.status !== 'ok') throw 'Failed loading modules'
 
 				data.allItems = data.items = respJson.value
 				populateSection(section, title, color)
@@ -309,7 +303,7 @@ import './css/module-selector.scss'
 		} else {
 			$section.find('.no-items').hide()
 
-			let len = lastIndex
+			const len = lastIndex
 			for (let i = data.last; i < len; i++) {
 				appendListItem(items[i], $list)
 			}
@@ -320,16 +314,9 @@ import './css/module-selector.scss'
 		$section.show()
 	}
 
-	function showList($list) {
-		clearSearch()
-		populateSection(section)
-		$list.show()
-		$listContainer.scrollTop(0)
-	}
-
 	function resetSectionList(section){
-		let $list = $('.' + section.toLowerCase().replace(' ', '-'))
-		data.items = undefined
+		const $list = $('.' + section.toLowerCase().replace(' ', '-'))
+		data.items = undefined // eslint-disable-line no-undefined
 		data.last = 0
 		$list.find('ul').empty()
 		$list.find('.no-items').hide()
@@ -355,8 +342,8 @@ import './css/module-selector.scss'
 		})
 
 		$('#list-container').scroll(() => {
-			let $this = $(this)
-			let $list = $this.find('.' + section.replace(' ', '-').toLowerCase()).children('ul')
+			const $this = $(this)
+			const $list = $this.find('.' + section.replace(' ', '-').toLowerCase()).children('ul')
 			if ($list.height() - $this.scrollTop() <= $this.height()) {
 				if (hasMoreItems() && $list.find('.click-to-expand').length === 0) {
 					populateSection(section)
@@ -395,8 +382,8 @@ import './css/module-selector.scss'
 	function onSelectClick(event) {
 		event.preventDefault()
 
-		let $this = $(this)
-		let $oboItem = $this.parent().parent()
+		const $this = $(this)
+		const $oboItem = $this.parent().parent()
 		selectedItem = getDraftById($oboItem.attr('data-lo-id'))
 
 		gotoSection('progress')
@@ -439,7 +426,7 @@ import './css/module-selector.scss'
 
 	function killPage(message) {
 		gotoSection('dead', true)
-		gotoSection = (a, b) => {}
+		gotoSection = () => {} // eslint-disable-line no-func-assign
 
 		$('#error-window p').html(message)
 		$('#error-window')

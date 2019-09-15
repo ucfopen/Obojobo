@@ -12,12 +12,9 @@ $search-input-height: 30px;
 
 		z-index: 1;
 		background: none;
-		border: 0;
 		top: 0;
 		left: 0;
-		padding-left: $search-input-height + 10px;
 		width: calc(100% - 2px);
-		height: 100%;
 		line-height: $search-input-height;
 		border: solid 1px $border-color;
 		background-color: white;

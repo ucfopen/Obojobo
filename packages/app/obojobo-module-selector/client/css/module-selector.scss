@@ -41,12 +41,10 @@ header {
 	text-decoration: none;
 	cursor: pointer;
 	position: relative;
-
 	background-color: $color-personal-action;
 	border-radius: 4px;
 	display: inline-block;
 	padding: 10px 24px;
-	text-decoration: none;
 	letter-spacing: 0.05em;
 	line-height: 1em;
 	font-size: 13pt;
@@ -64,10 +62,6 @@ header {
 	display: none;
 }
 
-#section-success {
-	display: none;
-}
-
 .no-items {
 	display: none;
 	position: absolute;
@@ -76,7 +70,7 @@ header {
 	width: 400px;
 	margin-left: -200px;
 	left: 50%;
-	border: 1px solid #ccc;
+	border: 1px solid #cccccc;
 	border-radius: 6px;
 	padding: 2em 0 2em 0;
 }
@@ -88,9 +82,8 @@ header {
 	font-size: 10pt;
 }
 
-
 #error-container {
-	padding: 0px 30px;
+	padding: 0 30px;
 }
 
 #list-header-wrapper {
@@ -122,7 +115,6 @@ header {
 			left: 10px;
 		}
 
-
 		#select-section-title {
 			display: inline;
 			font-weight: 700;
@@ -153,7 +145,6 @@ header {
 		}
 	}
 }
-
 
 #list-container {
 	margin: 0 auto;
@@ -204,9 +195,6 @@ header {
 		}
 	}
 
-	.description {
-	}
-
 	h2 {
 		font-size: 12pt;
 		margin: 0 0 5px 0;
@@ -225,8 +213,8 @@ header {
 	height: 100%;
 
 	.new-module-button-wrapper {
-		bottom: 0px;
-		background-color: #fff;
+		bottom: 0;
+		background-color: #ffffff;
 		border-top: 1px solid $color-light-border;
 		text-align: center;
 		position: absolute;
@@ -255,9 +243,11 @@ header {
 		a {
 			color: $color-personal-minor;
 		}
+
 		.flourish-line {
 			background: $color-personal-action;
 		}
+
 		.button {
 			color: white;
 		}
@@ -269,8 +259,9 @@ header {
 		}
 
 		#header-title {
-			background: url("/module-selector/community-library-icon.png") no-repeat
-				0px 0px;
+			background:
+				url("/module-selector/community-library-icon.png") no-repeat
+				0 0;
 			padding: 0 65px 15px 65px;
 			background-size: 55px;
 		}
@@ -323,7 +314,7 @@ header {
 .instance-window-note {
 	margin-left: 110px;
 	font-size: 8pt;
-	color: #666;
+	color: #666666;
 	margin-top: 0;
 }
 
@@ -344,11 +335,6 @@ header {
 
 .section.my-modules {
 	overflow: scroll;
-}
-
-#section-module-selection {
-	display: none;
-	text-align: center;
 }
 
 #section-progress header .blue-flourish,
@@ -375,7 +361,6 @@ header {
 }
 
 #section-module-selection header .heading-container a {
-	margin-top: 20px;
 	font-size: 8pt;
 	display: block;
 	width: 100%;
@@ -389,7 +374,7 @@ header {
 	margin: 1.5em;
 }
 
-.choose-library-wrapper{
+.choose-library-wrapper {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
@@ -400,7 +385,6 @@ header {
 	max-width: 247px;
 	min-width: 150px;
 	margin-bottom: 20px;
-
 	display: inline-block;
 	padding: 0 30px 0 30px;
 	vertical-align: top;
@@ -424,7 +408,6 @@ header {
 	.wizard-button {
 		width: 100%;
 		border-radius: 4px;
-		display: inline-block;
 		text-decoration: none;
 		font-weight: 600;
 		font-size: 20pt;
@@ -442,6 +425,9 @@ header {
 }
 
 #section-module-selection {
+	display: none;
+	text-align: center;
+
 	.wizard-button {
 		transition: all 0.1s ease;
 	}
@@ -478,6 +464,7 @@ header {
 }
 
 #section-success {
+	display: none;
 	text-align: center;
 
 	.grey-box {
@@ -585,7 +572,7 @@ header {
 .ui-dialog-titlebar {
 	padding-bottom: 6px;
 	margin-bottom: 2em;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #cccccc;
 }
 
 .ui-dialog-titlebar-close {
@@ -649,11 +636,12 @@ header {
 	border-radius: 11px;
 	transition: width 0.2s ease, background 0.2s ease;
 }
+
 .progress-container.success .ui-progressbar-value {
 	background: #37c89c;
 }
 
-@media (max-width: 500px){
+@media (max-width: 500px) {
 	#list-header-wrapper {
 		#list-header {
 			#select-section-title {
@@ -664,14 +652,14 @@ header {
 		}
 	}
 
-	#section-select-object.blue #header-title{
+	#section-select-object.blue #header-title {
 		padding: 0 32px 15px 32px;
 		background-size: 25px;
 	}
 
-	#section-select-object.purple #header-title{
+	#section-select-object.purple #header-title {
 		padding: 0 32px 15px 32px;
-		background-position: 0px 5px;
+		background-position: 0 5px;
 		background-size: 25px;
 	}
 
@@ -679,18 +667,12 @@ header {
 		border-radius: 4px;
 		padding: 10px 20px;
 		letter-spacing: 0.05em;
-		line-height: .9em;
-		font-size: .9em;
+		line-height: 0.9em;
+		font-size: 0.9em;
 	}
-
-	.buttons{
-		font-size: .9em;
-	}
-
 }
 
-
-@media (max-width: 450px){
+@media (max-width: 450px) {
 	#list-header-wrapper {
 		#list-header {
 			#select-section-title {
@@ -705,21 +687,21 @@ header {
 		border-radius: 3px;
 		padding: 8px 20px;
 		letter-spacing: 0.05em;
-		line-height: .8em;
-		font-size: .8em;
+		line-height: 0.8em;
+		font-size: 0.8em;
 	}
 
-	.buttons{
-		font-size: .8em;
+	.buttons {
+		font-size: 0.8em;
 	}
 
 	#section-select-object.blue #header-title,
-	#section-select-object.purple #header-title{
+	#section-select-object.purple #header-title {
 		padding: 0 25 15px 25px;
 		background-image: none;
 	}
 
-	.obo-item h2{
-		font-size: .9em;
+	.obo-item h2 {
+		font-size: 0.9em;
 	}
 }

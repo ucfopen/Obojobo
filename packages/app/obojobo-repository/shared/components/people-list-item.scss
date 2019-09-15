@@ -13,10 +13,6 @@
 		background-color: lighten($color-banner-bg, 2%);
 	}
 
-	.avatar {
-		vertical-align: middle;
-	}
-
 	.user-name {
 		max-width: calc(100% - #{$dimensions-avatar + $dimensions-close-button + 20px});
 		display: inline-block;

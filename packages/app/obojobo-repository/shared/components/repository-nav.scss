@@ -76,6 +76,15 @@
 	}
 }
 
+.repository--nav--current-user--menu {
+	display: none;
+	position: absolute;
+	right: -20px;
+	top: 62px;
+	background: #ffffff;
+	padding: 20px;
+	border-radius: 3px;
+}
 
 .repository--nav--current-user {
 	position: relative;
@@ -103,16 +112,6 @@
 
 .repository--nav--current-user--name {
 	font-size: 0.9em;
-}
-
-.repository--nav--current-user--menu {
-	display: none;
-	position: absolute;
-	right: -20px;
-	top: 62px;
-	background: #ffffff;
-	padding: 20px;
-	border-radius: 3px;
 }
 
 // if the last child is a link (login link instead of logged in user avatar)

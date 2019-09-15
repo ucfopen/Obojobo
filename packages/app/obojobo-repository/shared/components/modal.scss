@@ -2,7 +2,6 @@
 $z-index-above-all: 200;
 $duration-animation-default: 0.2s;
 
-
 @keyframes obojobo-draft--components--modal-container {
 	0% {
 		opacity: 0;
@@ -25,12 +24,6 @@ $duration-animation-default: 0.2s;
 	}
 }
 
-// .ReactModal__Body--open{
-// 	overflow: hidden !important;
-// 	position: fixed;
-// 	width: 100%;
-// }
-
 .repository--modal-overlay {
 	position: fixed;
 	overflow: scroll;
@@ -39,10 +32,9 @@ $duration-animation-default: 0.2s;
 	right: 0;
 	top: 0;
 	bottom: 0;
-	z-index: $z-index-above-all;
 	animation-duration: $duration-animation-default;
 	animation-name: obojobo-draft--components--modal-container;
-	z-index: 200;
+	z-index: $z-index-above-all;
 }
 
 .repository--modal {
@@ -58,5 +50,3 @@ $duration-animation-default: 0.2s;
 	-webkit-overflow-scrolling: touch;
 	outline: none;
 }
-
-

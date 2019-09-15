@@ -1,4 +1,4 @@
 node_modules
-public/
+server/public/
 coverage/
 migrations/

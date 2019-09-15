@@ -61,6 +61,7 @@ footer div {
 	margin-bottom: 0.5em;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .copyright > span a {
 	color: gray;
 }

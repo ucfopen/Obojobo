@@ -1,4 +1,4 @@
-const router = require('express').Router()
+const router = require('express').Router() // eslint-disable-line new-cap
 const ltiLaunch = require('obojobo-express/express_lti_launch')
 const { requireCanViewEditor } = require('obojobo-express/express_validators')
 
