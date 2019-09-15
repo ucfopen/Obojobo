@@ -8,7 +8,7 @@ function hydrateEl(Component, reducers, domSelector){
 	const initialState = JSON.parse(domEl.dataset.reactProps)
 	const store = propsToStore(reducers, initialState)
 	const app = createCommonReactApp(Component, store)
-	ReactDOM.hydrate(app, domEl)
+	ReactDOM.hydrate(app, domEl) //eslint-disable-line no-undef
 }
 
 function propsToStore(reducer, initialState){

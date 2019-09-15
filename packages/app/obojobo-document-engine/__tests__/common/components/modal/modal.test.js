@@ -127,7 +127,6 @@ describe('Modal', () => {
 			</Modal>
 		)
 
-		console.log(component.instance().deleteButtonRef.current)
 		const deleteButtonFocus = jest.spyOn(component.instance().deleteButtonRef.current, 'focus')
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(0)
 

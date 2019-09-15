@@ -1,32 +1,32 @@
 @import '../../../client/css/defaults';
 
-.layout--wrapper{
+.layout--wrapper {
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
 }
 
-.layout--content{
+.layout--content {
 	flex-grow: 1;
 }
 
-.layout--footer{
+.layout--footer {
 	flex-grow: 0;
 }
 
-.repository--column-layout{
+.repository--column-layout {
 	display: flex;
 
-	> div{
+	> div {
 		margin-left: 25px;
 		margin-right: 25px;
 		width: 50%;
 
-		&:first-child{
+		&:first-child {
 			margin-left: 0;
 		}
 
-		&:last-child{
+		&:last-child {
 			margin-right: 0;
 		}
 	}
@@ -37,36 +37,34 @@
 	white-space: nowrap;
 	margin-bottom: 20px;
 
-	&:after {
+	&::after {
 		border-top: 1px solid $border-color;
 		content: '';
 		display: table-cell;
 		position: relative;
 		top: 0.6em;
 		width: 100%;
-	}
-	&:after {
 		left: 2%;
 	}
 }
 
-.repository--item-list--collection{
-	&:last-child{
+.repository--item-list--collection {
+	&:last-child {
 		border-top: 0;
 	}
 }
 
-.repository--item-list--collection--item--date{
-	font-size: .8em;
+.repository--item-list--collection--item--date {
+	font-size: 0.8em;
 	color: $color-text-minor;
 }
 
-.repository--item-list--collection--title{
-	font-size: .8em;
+.repository--item-list--collection--title {
+	font-size: 0.8em;
 	margin-bottom: 10px;
 }
 
-.repository--item-list--collection--item-wrapper{
+.repository--item-list--collection--item-wrapper {
 	// add some margin so that the
 	// icons line up visually with the left
 	// the padding/bg around them makes them look off otherwise
@@ -74,25 +72,24 @@
 	margin-right: -8px;
 }
 
-.repository--item-list--row{
+.repository--item-list--row {
 	// overflow: auto;
-	font-size: .8em;
+	font-size: 0.8em;
 	font-family: $font-text;
 	width: 100%;
 
 	.avatar,
-	> .repository--module-icon{
+	> .repository--module-icon {
 		float: left;
 	}
 
-	> a{
+	> a {
 		text-decoration: none;
 		color: black;
 		font-weight: 600;
 	}
 
-
-	> em{
+	> em {
 		font-style: normal;
 		font-weight: 700;
 	}
@@ -100,36 +97,35 @@
 	@include with-bottom-border();
 }
 
-.repository--fact--bad{
+.repository--fact--bad {
 	color: red;
 }
 
-.repository--fact--good{
+.repository--fact--good {
 	color: green;
 }
 
-.repository--fact--neutral{
+.repository--fact--neutral {
 	color: inherit;
 }
 
-.repository--fact--value{
+.repository--fact--value {
 	font-size: 1.1em;
 }
 
-.repository--item-list--collection--item--text{
+.repository--item-list--collection--item--text {
 	margin: 10px;
-
 }
 
-.repository--item-list--collection--item--text-detail{
-	font-size: .8em;
+.repository--item-list--collection--item--text-detail {
+	font-size: 0.8em;
 }
 
-.repository--quote{
+.repository--quote {
 	font-style: italic;
 }
 
-.repository--item-list--collection--item--multi-wrapper{
+.repository--item-list--collection--item--multi-wrapper {
 	display: flex;
 	flex-wrap: wrap;
 	box-sizing: border-box;
@@ -142,13 +138,13 @@
 	}
 }
 
-.repository--item-list--collection--item--newline-container{
+.repository--item-list--collection--item--newline-container {
 	width: 100%;
 	margin: 20px 10px;
 	text-align: center;
 }
 
-.repository--main-content{
+.repository--main-content {
 	box-sizing: border-box;
 	max-width: 800px;
 	margin: 0 auto;
@@ -158,17 +154,17 @@
 		margin-right: 10px;
 	}
 
-	code{
-		background-color: #eee;
+	code {
+		background-color: #eeeeee;
 		padding: 2px;
 	}
 
-	img{
+	img {
 		max-width: 100%;
 	}
 }
 
-.repository--main-content--title{
+.repository--main-content--title {
 	font-family: $font-default;
 	text-align: center;
 	font-size: 1.2em;
@@ -176,16 +172,13 @@
 	white-space: nowrap;
 	margin-bottom: 20px;
 
-	&:after {
+	&::after {
 		border-top: 1px solid $border-color;
 		content: '';
 		display: table-cell;
 		position: relative;
 		top: 0.6em;
 		width: 100%;
-	}
-	&:after {
 		left: 2%;
 	}
-
 }

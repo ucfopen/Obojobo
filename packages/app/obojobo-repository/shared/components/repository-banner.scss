@@ -1,6 +1,6 @@
 @import '../../client/css/defaults';
 
-.repository--section-wrapper--full-width{
+.repository--section-wrapper--full-width {
 	margin-bottom: $size-spacing-vertical-big;
 	position: relative;
 	z-index: 1;
@@ -10,9 +10,9 @@
 		margin: 0 auto;
 	}
 
-	&.default-bg .repository--section-wrapper--full-width-bg{
+	&.default-bg .repository--section-wrapper--full-width-bg {
 		content: ' ';
-		position:absolute;
+		position: absolute;
 		display: block;
 		height: 100%;
 		width: 100%;
@@ -26,36 +26,37 @@
 		z-index: -1;
 		background-image: url('/images/purple-background-cubes.png');
 		filter: none;
-		opacity: .6;
+		opacity: 0.6;
 	}
 }
 
-.repository--section-wrapper--grey{
+.repository--section-wrapper--grey {
 	background-color: $color-banner-bg;
 	border-top: 1px solid $border-color;
 	border-bottom: 1px solid $border-color;
 }
 
 
-.repository--title-banner{
+.repository--title-banner {
 	display: flex;
 	position: relative;
 	z-index: 1;
 	padding: 30px $size-spacing-vertical-half;
 	box-sizing: border-box;
 	align-items: center;
-	color: #555;
+	color: #555555;
 	overflow: hidden;
 
-	.repository--module-icon--image{
+	.repository--module-icon--image {
 		margin-right: 20px;
-		svg{
+
+		svg {
 			height: $dimension-module-icon + 45px;
 		}
 	}
 }
 
-.repository--title-banner--title{
+.repository--title-banner--title {
 	font-family: $font-default;
 	color: darken($color-action, 10%);
 	font-weight: 700;
@@ -66,10 +67,11 @@
 	z-index: 1;
 }
 
-.default-bg .repository--title-banner--title{
+.default-bg .repository--title-banner--title {
 	// add a stroke/shaddow
-	&:before{
+	&::before {
 		$stroke-width: 5px;
+
 		position: absolute;
 		content: attr(data-title);
 		z-index: -1;

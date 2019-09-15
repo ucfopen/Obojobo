@@ -1,4 +1,4 @@
-const router = require('express').Router()
+const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const { requireCanViewDrafts, requireCurrentUser, requireCurrentDocument } = require('obojobo-express/express_validators')
@@ -99,7 +99,7 @@ router
 				const draftId = req.currentDocument.draftId
 				return db.none(`INSERT INTO repository_map_user_to_draft (draft_id, user_id) VALUES($[draftId], $[userId]) ON CONFLICT DO NOTHING`, {userId, draftId})
 			})
-			.then(insertPermResult => {res.success()})
+			.then(() => {res.success()})
 			.catch(res.unexpected)
 	})
 
@@ -115,7 +115,7 @@ router
 				const draftId = req.currentDocument.draftId
 				return db.none(`DELETE FROM repository_map_user_to_draft WHERE draft_id = $[draftId] AND user_id = $[userId]`, {userId, draftId})
 			})
-			.then(insertPermResult => {res.success()})
+			.then(() => {res.success()})
 			.catch(res.unexpected)
 	})
 

@@ -1,13 +1,13 @@
 @import '../../client/css/defaults';
 
-.repository--module-icon--menu-wrapper{
+.repository--module-icon--menu-wrapper {
 	position: relative;
 	box-sizing: border-box;
 	margin-left: -10px;
 	width: 100%;
 }
 
-.repository--module-icon--menu-control-button{
+.repository--module-icon--menu-control-button {
 	$size-small: 30px;
 	$size-big: 35px;
 	$position-icon-top: 80px;
@@ -40,6 +40,7 @@
 		border-radius: $size-big;
 		top: $position-icon-top - ($size-big - $size-small) / 2;
 		right: $position-icon-right - ($size-big - $size-small) / 2;
+
 		> svg {
 			margin: -5px;
 			stroke: white;
@@ -48,50 +49,49 @@
 	}
 }
 
-.repository--module-icon--menu{
+.repository--module-icon--menu {
 	display: block;
 	position: absolute;
 	width: 100%;
 	top: 5px;
 	background-color: $color-banner-bg;
-	border-radius: 0px 0px 5px 5px;
+	border-radius: 0 0 5px 5px;
 	padding: 5px 9px;
 	z-index: 100;
 	border: 1px solid $color-banner-bg;
 	border-top: 0;
 
-	hr{
+	hr {
 		margin: 0 0 4px 0;
 		border: 0;
 		border-top: 1px solid darken($color-banner-bg, 10%);
 	}
 
-	.repository--button{
+	.repository--button {
 		display: inline-block;
 		margin-bottom: 8px;
 		width: 100%;
 		position: relative;
 		font-weight: bold;
 
-		&.more{
+		&.more {
 			margin-bottom: 2px;
 			color: $color-action;
 			background-color: inherit;
 			text-decoration: underline;
 
-			&:before{
+			&::before {
 				content: ' ';
 				width: 100%;
 				height: 1px;
 				position: absolute;
 				top: -10px;
-				left: 0px;
+				left: 0;
 			}
 
-			&:hover{
-				background-color: rgba(255,255,255,.5);
+			&:hover {
+				background-color: rgba(255, 255, 255, 0.5);
 			}
 		}
 	}
-
 }

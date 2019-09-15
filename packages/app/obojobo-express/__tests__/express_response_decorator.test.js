@@ -76,10 +76,10 @@ describe('api response middleware', () => {
 	test('some functions emit events', () => {
 		const oboEvents = require('../obo_events')
 		oboEvents.emit.mockReset()
-		const { res, mockStatus } = mockArgs
+		const { res } = mockArgs
 
 		functionsWithEvents.forEach(method => {
-			const result = res[method]()
+			res[method]()
 		})
 
 		expect(oboEvents.emit).toHaveBeenCalledTimes(functionsWithEvents.length)
@@ -91,21 +91,21 @@ describe('api response middleware', () => {
 	})
 
 	test('some functions do nothing if responseHandled is set', () => {
-		const { res, mockStatus } = mockArgs
+		const { res } = mockArgs
 
 		res.responseHandled = true
 		functionsWithEvents.forEach(method => {
-			const result = res[method]()
+			res[method]()
 			expect(res.send).not.toHaveBeenCalled()
 		})
 	})
 
 	test('some functions do nothing if headers are sent', () => {
-		const { res, mockStatus } = mockArgs
+		const { res } = mockArgs
 
 		res.headersSent = true
 		functionsWithEvents.forEach(method => {
-			const result = res[method]()
+			res[method]()
 			expect(res.send).not.toHaveBeenCalled()
 		})
 	})

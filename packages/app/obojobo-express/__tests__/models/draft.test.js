@@ -295,7 +295,7 @@ describe('Draft Model', () => {
 		db.none.mockResolvedValueOnce()
 
 		return DraftModel.deleteByIdAndUser('draft_id', 'user_id').then(voidResult => {
-			expect(voidResult).toBe(undefined)
+			expect(voidResult).toBe(undefined) //eslint-disable-line no-undefined
 			expect(oboEvents.emit).toHaveBeenCalledWith('EVENT_DRAFT_DELETED', {"id": "draft_id"})
 
 		})

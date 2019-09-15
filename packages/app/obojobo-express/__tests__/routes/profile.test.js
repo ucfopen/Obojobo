@@ -35,7 +35,7 @@ describe('profile routes', () => {
 		expect.hasAssertions()
 		return request(app)
 			.get('/logout')
-			.then(response => {
+			.then(() => {
 				expect(mockResetCurrentUser).toHaveBeenCalledTimes(1)
 			})
 	})

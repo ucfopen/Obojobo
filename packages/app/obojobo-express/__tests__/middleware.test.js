@@ -28,19 +28,9 @@ jest.mock('express-session')
 
 const originalWEBPACK = process.env.IS_WEBPACK
 let mockRes
-let mockError
 let mockApp
 let mockReq
 let mockConsolidateEngines
-// adds `times` number of mockImplemenationOnce calls to a mock function
-const mockImplementationTimes = (mock, times, implementation) => {
-	let n = times
-	while (n--) {
-		mock.mockImplementationOnce(implementation)
-	}
-
-	return mock
-}
 
 describe('middleware', () => {
 	beforeEach(() => {
@@ -54,9 +44,6 @@ describe('middleware', () => {
 			missing: jest.fn(),
 			unexpected: jest.fn(),
 			locals: {}
-		}
-		mockError = {
-			message: 'mockMessage'
 		}
 
 		mockApp = {

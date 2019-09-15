@@ -1,25 +1,25 @@
 @import '../../client/css/defaults';
 
-.module-permissions-dialog{
+.module-permissions-dialog {
 	max-width: 400px;
 	text-align: center;
 	width: 80vw;
 
-	.repository--module-icon--image{
+	.repository--module-icon--image {
 		width: 25px;
 		display: inline-block;
 		vertical-align: middle;
 	}
 
-	.top-bar{
+	.top-bar {
 		text-align: left;
 		margin: -10px -20px 20px -20px;
-		padding: 0px 20px 5px 20px;
+		padding: 0 20px 5px 20px;
 		position: relative;
-		border-bottom: 1px solid #999;
+		border-bottom: 1px solid #999999;
 		box-sizing: border-box;
 
-		.module-title{
+		.module-title {
 			display: inline-block;
 			font-size: 12px;
 			font-weight: 600;
@@ -29,57 +29,57 @@
 			vertical-align: middle;
 		}
 
-		.close-button{
+		.close-button {
 			position: absolute;
 			top: 5px;
 			right: 10px;
 		}
 	}
 
-	.title{
+	.title {
 		font-weight: 700;
 		font-size: 1.3em;
 		margin-bottom: 5px;
 	}
 
-	.sub-title{
-		font-size: .7em;
+	.sub-title {
+		font-size: 0.7em;
 		margin-bottom: 20px;
 	}
 
-	.access-list-wrapper{
+	.access-list-wrapper {
 		margin: 20px -20px 20px -20px;
 		background-color: $color-banner-bg;
 		padding: 10px;
 	}
 
-	.access-list{
+	.access-list {
 		$dimensions-avatar: 30px;
 		$dimensions-close-button: 20px;
+
 		text-align: left;
 		height: 150px;
 		overflow: scroll;
 		list-style: none;
-		font-size: .7em;
+		font-size: 0.7em;
 		padding: 0;
 		margin: 0;
 
-		li{
+		li {
 			max-width: 50%;
 		}
 	}
 
-	.button-things{
+	.button-things {
 		text-align: left;
 		margin: 40px 10px;
-
 		display: grid;
 		grid-template-columns: 100px auto;
 		grid-gap: 10px;
 		align-items: center;
 
-		.label{
-			font-size: .8em;
+		.label {
+			font-size: 0.8em;
 		}
 
 		.repository--button {

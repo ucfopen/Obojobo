@@ -1,9 +1,10 @@
 @import '../../client/css/defaults';
 
-/* global element styles*/
+/* global element styles */
 a {
 	color: black;
 }
+
 a:hover {
 	color: #6b4b93;
 }
@@ -16,6 +17,7 @@ don't understand media queries */
 html {
 	min-width: 1105px;
 }
+
 @media (min-width: 1px) {
 	html {
 		min-width: 0;
@@ -46,10 +48,9 @@ header .header-container .logo {
 	top: 16px;
 	left: 20px;
 	font-size: 33px;
-	color: #0C59B0;
+	color: #0c59b0;
 	width: 127px;
 	height: 33px;
-
 	background-image: url('/images/obojobo-logo.svg');
 	background-position: center;
 	background-repeat: no-repeat;
@@ -84,16 +85,19 @@ header .header-container nav > ul > li {
 	padding: 0;
 	height: 50px;
 	border: 1px solid white;
-	/*line-height: 0;*/
+
+	/* line-height: 0; */
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 }
+
 header .header-container nav > ul > li:first-child {
 	margin-left: 0;
 }
+
 header .header-container nav > ul > li:hover {
 	border: 1px solid gray;
-	box-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 }
 
 header .header-container nav > ul > li > a {
@@ -107,12 +111,14 @@ header .header-container nav > ul > li > a {
 	height: 100%;
 	line-height: 3em;
 }
+
 header .header-container nav > ul > li:hover > a {
 	z-index: 3;
 }
+
 header .header-container nav > ul > li > a:hover {
 	text-decoration: underline;
-	background: #EBE5F8;
+	background: #ebe5f8;
 	z-index: 3;
 }
 
@@ -125,11 +131,12 @@ header .header-container nav > ul > li > ul {
 	right: -1px;
 	display: none;
 	background: white;
-	box-shadow: 0 2px 2px rgba(0, 0, 0, .5);
+	box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
 	border: 1px solid gray;
 	top: 47px;
 	z-index: 2;
 }
+
 header .header-container nav > ul > li:hover > ul {
 	display: block;
 }
@@ -139,13 +146,15 @@ header .header-container nav > ul > li > ul > li {
 	padding: 0;
 	margin: 0;
 }
+
 header .header-container nav > ul > li > ul > li a {
 	padding: 1em 1.5em;
 	display: block;
 	text-decoration: none;
 }
+
 header .header-container nav > ul > li > ul > li a:hover {
-	background: #EBE5F8;
+	background: #ebe5f8;
 	text-decoration: underline;
 }
 
@@ -212,7 +221,7 @@ header .header-container nav > ul > li > ul > li a:hover {
 .step .step-items-container h1 {
 	color: #2e70bb;
 	font-size: 28pt;
-	margin: 0 0 .2em 0;
+	margin: 0 0 0.2em 0;
 	padding: 0;
 	line-height: 1em;
 }
@@ -229,12 +238,15 @@ header .header-container nav > ul > li > ul > li a:hover {
 header .header-container nav > ul > .about > ul {
 	width: 280px;
 }
+
 header .header-container nav > ul > .students > ul {
 	width: 230px;
 }
+
 header .header-container nav > ul > .instructors > ul {
 	width: 300px;
 }
+
 header .header-container nav > ul > .help > ul {
 	width: 230px;
 }
@@ -247,6 +259,7 @@ header .header-container nav > ul > .help > ul {
 	text-align: right;
 	background: url('/images/homepage/thinking.png') center center no-repeat;
 }
+
 .step-1 .step-items-container {
 	padding-right: 670px;
 }
@@ -255,9 +268,11 @@ header .header-container nav > ul > .help > ul {
 	text-align: left;
 	background: #3b3b3b url('/images/homepage/build.png') center center no-repeat;
 }
+
 .step-2 .step-items-container {
 	padding-left: 650px;
 }
+
 .step-2 .step-items-container h1,
 .step-2 .step-items-container h2,
 .step-2 .step-items-container p {
@@ -268,6 +283,7 @@ header .header-container nav > ul > .help > ul {
 	text-align: right;
 	background: url('/images/homepage/xray.png') center center no-repeat;
 }
+
 .step-3 .step-items-container {
 	padding-right: 650px;
 }
@@ -276,9 +292,11 @@ header .header-container nav > ul > .help > ul {
 	text-align: left;
 	background: #acdfda url('/images/homepage/laptop.png') center center no-repeat;
 }
+
 .step-4 .step-items-container {
 	padding-left: 650px;
 }
+
 .step-4 .step-items-container h1 {
 	color: #cc4f69;
 }
@@ -287,6 +305,7 @@ header .header-container nav > ul > .help > ul {
 	text-align: right;
 	background: url('/images/homepage/analytics.png') center center no-repeat;
 }
+
 .step-5 .step-items-container {
 	padding-right: 650px;
 }
@@ -295,6 +314,7 @@ header .header-container nav > ul > .help > ul {
 	text-align: left;
 	background: #d9f3d9 url('/images/homepage/many.png') center center no-repeat;
 }
+
 .step-6 .step-items-container {
 	padding-left: 650px;
 	padding-top: 150px;
@@ -321,18 +341,23 @@ header .header-container nav > ul > .help > ul {
 	.step-1 {
 		background-size: 466px;
 	}
+
 	.step-2 {
 		background-size: 249px;
 	}
+
 	.step-3 {
 		background-size: 217px;
 	}
+
 	.step-4 {
 		background-size: 228px;
 	}
+
 	.step-5 {
 		background-size: 282px;
 	}
+
 	.step-6 {
 		background-size: 916px;
 	}
@@ -340,18 +365,23 @@ header .header-container nav > ul > .help > ul {
 	.step-1 .step-items-container {
 		padding-right: 610px;
 	}
+
 	.step-2 .step-items-container {
 		padding-left: 590px;
 	}
+
 	.step-3 .step-items-container {
 		padding-right: 590px;
 	}
+
 	.step-4 .step-items-container {
 		padding-left: 590px;
 	}
+
 	.step-5 .step-items-container {
 		padding-right: 580px;
 	}
+
 	.step-6 .step-items-container {
 		padding-left: 580px;
 		padding-top: 70px;
@@ -374,7 +404,7 @@ header .header-container nav > ul > .help > ul {
 	}
 
 	.hero .computers .ipad {
-		display:none;
+		display: none;
 	}
 
 	.hero iframe {
@@ -411,18 +441,21 @@ header .header-container nav > ul > .help > ul {
 		padding-left: 50%;
 		background-position: 80%;
 	}
+
 	.step-2,
 	.step-4,
 	.step-6 {
 		padding-right: 50%;
 		background-position: 20%;
 	}
+
 	.step-1 .step-items-container,
 	.step-3 .step-items-container,
 	.step-5 .step-items-container {
 		padding-left: 0;
 		margin-left: -350px;
 	}
+
 	.step-2 .step-items-container,
 	.step-4 .step-items-container,
 	.step-6 .step-items-container {
@@ -433,19 +466,24 @@ header .header-container nav > ul > .help > ul {
 	.step-1 {
 		background-size: 363px;
 	}
+
 	.step-2 {
 		background-size: 194px;
 	}
+
 	.step-3 {
 		background-size: 169px;
 	}
+
 	.step-4 {
 		background-position: 10%;
 		background-size: 305px;
 	}
+
 	.step-5 {
 		background-size: 219px;
 	}
+
 	.step-6 {
 		background-size: 493px;
 	}
@@ -550,15 +588,17 @@ header .header-container nav > ul > .help > ul {
 		margin-left: 0;
 		margin-right: 0;
 	}
+
 	.step-4 {
 		background-position: center 85px;
 	}
+
 	.step-5 {
 		background-position: center 30px;
 	}
 
 	.repository--homepage footer {
-		font-size: .8em;
+		font-size: 0.8em;
 	}
 }
 
@@ -597,7 +637,7 @@ header .header-container nav > ul > .help > ul {
 
 	.step .step-items-container h1 {
 		font-size: 18pt;
-		margin-bottom: .3em;
+		margin-bottom: 0.3em;
 	}
 
 	.step .step-items-container h2 {
@@ -607,9 +647,11 @@ header .header-container nav > ul > .help > ul {
 	.step-1 {
 		background-size: 259px;
 	}
+
 	.step-1 .step-items-container {
 		padding-top: 260px;
 	}
+
 	.step-6 .step-items-container {
 		padding-top: 250px;
 	}

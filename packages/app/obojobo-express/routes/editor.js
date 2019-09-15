@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const db = oboRequire('db')
 const mediaConfig = oboRequire('config').media
 const { requireCanViewEditor, requireCurrentDocument } = oboRequire('express_validators')
 const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex

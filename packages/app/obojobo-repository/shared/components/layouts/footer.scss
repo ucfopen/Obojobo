@@ -5,9 +5,9 @@ footer {
 	background: $color-bg;
 	color: $color-fg;
 	padding-top: 30px;
-	font-size: .7em;
+	font-size: 0.7em;
 	border-top: 1px solid #f9f4f4;
-	margin-top: 20px
+	margin-top: 20px;
 }
 
 footer div {
@@ -20,11 +20,11 @@ footer div {
 	box-sizing: border-box;
 }
 
-.ucf-open-footer{
+.ucf-open-footer {
 	margin-bottom: 35px;
 }
 
-.ucf-open-logo{
+.ucf-open-logo {
 	overflow: hidden;
 	display: inline-block;
 	text-indent: -40000px;
@@ -34,30 +34,29 @@ footer div {
 	margin-bottom: 20px;
 }
 
-.ucf-open-desc{
-	margin-bottom: 5px
+.ucf-open-desc {
+	margin-bottom: 5px;
 }
 
-.ucf-open-links > a{
+.ucf-open-links > a {
 	display: inline-block;
 	padding: 2px 0;
 	color: $color-fg;
 
-	&:hover{
+	&:hover {
 		color: darken($color-fg, 25%);
 	}
 
 	// add separator between links
-	& + a:before{
+	& + a::before {
 		content: '·';
-		padding: 0 .5rem;
-		display:inline-block;
+		padding: 0 0.5rem;
+		display: inline-block;
 	}
 }
 
-
 .copyright > span {
-	font-size: .8em;
+	font-size: 0.8em;
 	display: block;
 	margin-bottom: 0.5em;
 }
@@ -65,6 +64,7 @@ footer div {
 .copyright > span a {
 	color: gray;
 }
+
 .copyright > span a:hover {
 	color: #333333;
 }

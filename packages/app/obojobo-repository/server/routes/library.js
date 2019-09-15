@@ -1,5 +1,4 @@
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const UserModel = require('obojobo-express/models/user')
@@ -39,7 +38,6 @@ router
 	.route('/library')
 	.get(getCurrentUser)
 	.get((req, res) => {
-		let cur
 		const publicLibCollectionId = '00000000-0000-0000-0000-000000000000'
 
 		return RepositoryCollection

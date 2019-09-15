@@ -1,7 +1,8 @@
 @import '../../client/css/defaults';
 
-.repository--button.repository--multi-button{
+.repository--button.repository--multi-button {
 	$size: 30px;
+
 	position: relative;
 	border: 1px solid $color-action;
 	min-height: 42px;
@@ -10,11 +11,11 @@
 	min-width: 135px;
 	margin-right: 10px;
 
-	.child-buttons{
+	.child-buttons {
 		display: none;
 	}
 
-	.icon{
+	.icon {
 		position: absolute;
 		height: $size;
 		width: $size;
@@ -23,18 +24,17 @@
 
 
 		svg {
-
 			position: relative;
 			height: 100%;
 			width: 100%;
 			fill: white;
 		}
 
-		&:after{
+		&::after {
 			text-align: center;
 			position: absolute;
-			top:0;
-			left:0;
+			top: 0;
+			left: 0;
 			height: 100%;
 			width: 100%;
 			line-height: $size;
@@ -44,41 +44,40 @@
 	}
 
 	&:hover {
-
 		color: $color-action;
 		background-color: white;
 		border: 1px solid darken($color-banner-bg, 10%);
 
-		.child-buttons{
+		.child-buttons {
 			display: block;
 			position: absolute;
 			top: 38px;
-			width: calc(100% + 2px);;
-			left: 0px;
+			width: calc(100% + 2px);
+			left: 0;
 			box-sizing: border-box;
-			background: #fff;
+			background: #ffffff;
 			border: 1px solid darken($color-banner-bg, 10%);
 			border-radius: 0 0 5px 5px;
-			margin-left:-1px;
-			padding: 12px 10px 0px 10px;
+			margin-left: -1px;
+			padding: 12px 10px 0 10px;
 			z-index: 100;
 			border-top: none;
 
-			button{
+			button {
 				display: block;
 				margin-bottom: 8px;
 				width: 100%;
 			}
 		}
 
-		.icon{
+		.icon {
 			svg {
 				fill: white;
 				stroke: $color-action;
 				stroke-width: 6px;
 			}
 
-			&:after{
+			&::after {
 				content: "＋";
 				color: $color-action;
 			}

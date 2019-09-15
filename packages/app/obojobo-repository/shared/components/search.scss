@@ -5,9 +5,11 @@ $search-input-height: 30px;
 .repository--nav--links--search {
 	position: relative;
 
-	input{
+	input {
 		position: relative;
+
 		@include text-input;
+
 		z-index: 1;
 		background: none;
 		border: 0;
@@ -27,17 +29,17 @@ $search-input-height: 30px;
 
 		&:active,
 		&:hover,
-		&:focus{
+		&:focus {
 			border-color: $color-action;
 		}
 
-		&.is-not-empty{
+		&.is-not-empty {
 			border-color: $color-action;
 			background-color: $color-action;
 			color: white;
 		}
 
-		&:focus{
+		&:focus {
 			outline-width: 0;
 		}
 
@@ -46,10 +48,9 @@ $search-input-height: 30px;
 			margin-right: 10px;
 		}
 	}
-
 }
 
-.repository--nav--links--search--icon{
+.repository--nav--links--search--icon {
 	position: absolute;
 	top: 2px;
 	left: 6px;
@@ -57,7 +58,8 @@ $search-input-height: 30px;
 	height: calc(100% - 4px);
 	width: 14px;
 	z-index: 2;
-	svg{
+
+	svg {
 		height: 40%;
 	}
 }

@@ -20,17 +20,6 @@ jest.mock('../../express_current_user', () => (req, res, next) => {
 	next()
 })
 
-const mockDbDraft = (id, name) => ({
-	draftId: id,
-	xml: `xml-${name}`,
-	createdAt: new Date(2018, 11, 24, 10, 33, 30, 0),
-	content: {
-		content: {
-			title: `${name}-mock-title`
-		}
-	}
-})
-
 jest.mock('../../express_current_document', () => (req, res, next) => {
 	req.requireCurrentDocument = () => {
 		req.currentDocument = mockCurrentDocument

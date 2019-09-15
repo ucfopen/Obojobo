@@ -29,6 +29,7 @@ const searchNodeModulesForOboNodes = (forceReload = false) => {
 		} catch (error) {
 			/* istanbul ignore next */
 			if (!error.message.includes('Cannot find module')) {
+				// eslint-disable-next-line no-console
 				console.log(error)
 			}
 			// do nothing if there's no index.js
@@ -41,9 +42,9 @@ const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 	const manifest = require(oboNodePackage) // load package index index.js
 	if (!manifest.obojobo) return null
 	let scripts
-	if (type == 'obonodes') type = 'server'
-	if (type == 'middleware') scripts = manifest.obojobo.expressMiddleware
-	if (type == 'migrations') scripts = manifest.obojobo.migrations
+	if (type === 'obonodes') type = 'server'
+	if (type === 'middleware') scripts = manifest.obojobo.expressMiddleware
+	if (type === 'migrations') scripts = manifest.obojobo.migrations
 	else if (manifest.obojobo[`${type}Scripts`]) {
 		scripts = manifest.obojobo[`${type}Scripts`]
 	}
@@ -54,8 +55,9 @@ const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 const getOboNodeScriptPathsFromPackageByTypeCache = new Map()
 const getOboNodeScriptPathsFromPackageByType = (oboNodePackage, type) => {
 	const cacheKey = `${oboNodePackage}-${type}`
-	if (getOboNodeScriptPathsFromPackageByTypeCache.has(cacheKey))
+	if (getOboNodeScriptPathsFromPackageByTypeCache.has(cacheKey)){
 		return [...getOboNodeScriptPathsFromPackageByTypeCache.get(cacheKey)]
+	}
 	let scripts = getOboNodeScriptPathsFromPackage(oboNodePackage, type)
 	if (!scripts) return null
 	// allow scriptss to be a single string - convert to an array to conform to the rest of this method
@@ -79,7 +81,7 @@ const getAllOboNodeScriptPathsByType = type => {
 const gatherAllMigrations = () => {
 	const modules = searchNodeModulesForOboNodes()
 	const allDirs = []
-	let migrationDirs = modules.map(module => {
+	modules.forEachs(module => {
 		const dir = getOboNodeScriptPathsFromPackage(module, 'migrations')
 		if (!dir) return
 		const basedir = path.dirname(resolver(module))
@@ -96,8 +98,9 @@ const migrateUp = () => {
 	const migrationDirs = gatherAllMigrations()
 
 	migrationDirs.forEach(dir => {
+		// eslint-disable-next-line no-console
 		console.log(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
-		let output = execSync(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
+		execSync(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
 	})
 }
 
@@ -124,9 +127,9 @@ const gatherClientScriptsFromModules = () => {
 		}
 	 */
 	modules.forEach(oboNodePackage => {
-		let items = getOboNodeScriptPathsFromPackage(oboNodePackage, 'client')
-		for (let item in items) {
-			let key = item.toLowerCase()
+		const items = getOboNodeScriptPathsFromPackage(oboNodePackage, 'client')
+		for (const item in items) {
+			const key = item.toLowerCase()
 			if (!entries[key]) {
 				entries[key] = {}
 				entries[key][defaultOrderKey] = []
@@ -136,6 +139,7 @@ const gatherClientScriptsFromModules = () => {
 			// convert to array if not an array
 			if (!Array.isArray(script)) script = [script]
 
+			// eslint-disable-next-line no-loop-func
 			script.forEach(single => {
 				// support config format of:
 				// entryFileName: 'rel/path/to/file.js'
@@ -154,7 +158,7 @@ const gatherClientScriptsFromModules = () => {
 
 	// flatten the entries object above into a single dimensional array
 	// using the sort keys to define the order
-	let scripts = {}
+	const scripts = {}
 	Object.keys(entries).forEach(entryName => {
 		const entry = entries[entryName]
 		const sortedOrderKeys = Object.keys(entry).sort((a, b) => a - b)

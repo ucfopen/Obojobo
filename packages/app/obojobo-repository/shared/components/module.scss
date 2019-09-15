@@ -1,56 +1,57 @@
 @import '../../client/css/defaults';
 
-.repository--module-icon{
-	position:relative;
+.repository--module-icon {
+	position: relative;
 	font-family: $font-default;
 	width: $dimension-module-icon;
 	padding: 9px;
 	border-radius: 5px;
 	background-color: none;
-	font-size: .75em;
+	font-size: 0.75em;
 	text-align: center;
-	border: 1px solid rgba(0,0,0,0);
+	border: 1px solid rgba(0, 0, 0, 0);
 	animation: slide-up 0.4s ease;
 
-	> a{
+	> a {
 		text-decoration: none;
 		color: black;
 		font-weight: 600;
 
-		.repository--module-icon--menu-control-button{
+		.repository--module-icon--menu-control-button {
 			display: none;
 		}
 	}
 
-	&.is-open{
+	&.is-open {
 		background-color: $color-banner-bg;
 	}
 
 	&:hover {
 		border-color: $color-banner-bg;
 
-		.repository--module-icon--image{
+		.repository--module-icon--image {
 			margin-top: -2px;
 			padding-bottom: 2px;
 		}
 
-		.repository--module-icon--menu-control-button{
+		.repository--module-icon--menu-control-button {
 			display: block;
 		}
 	}
 
-	.repository--module-icon--menu-control-button.is-visible{
+	.repository--module-icon--menu-control-button.is-visible {
 		display: block;
 	}
 }
 
 @keyframes slide-up {
-    0% {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+	0% {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }

@@ -31,7 +31,6 @@ function filterModules(modules, searchString){
 }
 
 function DashboardReducer(state, action) {
-	console.log(action)
 	switch (action.type) {
 		case CREATE_NEW_MODULE:
 			return handle(state, action, {
@@ -42,7 +41,7 @@ function DashboardReducer(state, action) {
 		case DELETE_MODULE:
 			return handle(state, action, {
 				// close the dialog containing the delete button
-				start: prevState => ({...state, ...closedDialogState()}),
+				start: () => ({...state, ...closedDialogState()}),
 				// update myModules and re-apply the filter if one exists
 				success: prevState => {
 					const filteredModules = filterModules(action.payload.value, state.moduleSearchString)
@@ -72,8 +71,11 @@ function DashboardReducer(state, action) {
 			}
 
 		case FILTER_MODULES:
-			const filteredModules = filterModules(state.myModules, action.searchString)
-			return { ...state, filteredModules, moduleSearchString: action.searchString}
+			return {
+				...state,
+				filteredModules: filterModules(state.myModules, action.searchString),
+				moduleSearchString: action.searchString
+			}
 
 		case CLEAR_PEOPLE_SEARCH_RESULTS:
 			return {...state, searchPeople: searchPeopleResultsState(), shareSearchString: ''}

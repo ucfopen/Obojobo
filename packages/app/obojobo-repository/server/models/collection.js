@@ -36,8 +36,6 @@ class RepositoryCollection {
 	}
 
 	static create({title = '', user_id}) {
-		let newDraft
-
 		return db
 			.one(
 				`
@@ -52,7 +50,6 @@ class RepositoryCollection {
 					created_at as createdAt`,
 				{
 					title,
-					type,
 					user_id
 				}
 			)

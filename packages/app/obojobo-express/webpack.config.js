@@ -9,6 +9,7 @@ module.exports =
 	(env, argv) => {
 		const is_production = argv.mode === 'production'
 		const filename_with_min = is_production ? '[name].min' : '[name]'
+		// eslint-disable-next-line no-console
 		console.log(`OboNode client scripts to build ${Object.keys(entriesFromObojoboModules).length}`)
 		return {
 			stats: { children: false, modules: false },

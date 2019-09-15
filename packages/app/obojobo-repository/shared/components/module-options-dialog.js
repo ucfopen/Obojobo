@@ -7,8 +7,8 @@ const ButtonLink = require('./button-link')
 const { urlForEditor, downloadDocument } = require('../repository-utils')
 
 const deleteModule = (title, draftId, deleteFn) => {
-	var response = confirm(`Delete "${title}" id: ${draftId} ?`)
-	if(!response) return;
+	const response = confirm(`Delete "${title}" id: ${draftId} ?`) //eslint-disable-line no-alert, no-undef
+	if(!response) return
 	deleteFn(draftId)
 }
 
@@ -33,8 +33,8 @@ const ModuleOptionsDialog = props => (
 				<Button className="new-button" onClick={() => {downloadDocument(props.draftId, props.editor === 'visual' ? 'json' : 'xml')}}>Download</Button>
 				<div className="label">Download a copy.</div>
 
-				<ButtonLink url={`/library/${props.draftId}`} target="_blank" >Public Page</ButtonLink>
-				<div className="label">Visit this module's public page.</div>
+				<ButtonLink url={`/library/${props.draftId}`} target="_blank">Public Page</ButtonLink>
+				<div className="label">Visit this modules public page.</div>
 
 				<Button className="new-button" onClick={() => {deleteModule(props.title, props.draftId, props.deleteModule)}}>Delete</Button>
 				<div className="label">Say farewell.</div>

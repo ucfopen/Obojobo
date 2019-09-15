@@ -1,6 +1,6 @@
 @import '../../client/css/defaults';
 
-.avatar{
+.avatar {
 	position: relative;
 	height: $dimension-avatar-icon;
 	width: $dimension-avatar-icon;
@@ -13,21 +13,22 @@
 	width: 100%;
 	top: 0;
 	right: 0;
+
 	img {
 		height: 100%;
 		border-radius: 50%;
 	}
 }
 
-.avatar--notice{
+.avatar--notice {
 	cursor: default;
 	position: absolute;
-	bottom: 0px;
-	right: 0px;
+	bottom: 0;
+	right: 0;
 	background: red;
 	border-radius: 1em;
 	color: white;
-	padding: .25em;
+	padding: 0.25em;
 	min-width: 1.2em;
 	text-align: center;
 	font-size: 0.8em;

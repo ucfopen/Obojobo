@@ -1,6 +1,6 @@
 @import './media-queries';
 
-$border-color: #ccc;
+$border-color: #cccccc;
 $button-color: #76c7aa;
 $color-banner-bg: #e8e3eb;
 $color-action: #6714bd;
@@ -37,8 +37,6 @@ $size-spacing-vertical-internal: $size-spacing-vertical-half / 2;
 $box-shadow-focus: 0 0 3px 3px $color-browser-focus;
 $box-shadow-overlay: 0 2px 2px $color-shadow;
 
-// $duration-animation-default: 0.2s;
-
 // default for obobjobo
 // in documents: headers, buttons, dialogs
 $font-default: 'Libre Franklin', Arial, sans-serif;
@@ -46,25 +44,12 @@ $font-default: 'Libre Franklin', Arial, sans-serif;
 // use for larger blocks of text
 // in a document: all content
 $font-text: 'Noto Serif', serif;
-
 // math or code text
 $font-monospace: 'Roboto Mono', monospace;
-
 $font-size: 14.25pt;
-
 
 $dimension-module-icon: 90px;
 $dimension-avatar-icon: 90px;
-// $dimension-column-width: 44em;
-// $dimension-padding: 3em;
-// $dimension-editor: $dimension-column-width + 3em + 3em;
-// $dimension-toolbar-height: 2.7em;
-// $dimension-nav-menu: 18rem;
-// $dimension-nav-menu-small: 14rem;
-// $dimension-rounded-radius: 0.25em;
-// $dimension-header-padding: 1rem;
-// $dimension-preview-banner: 3rem;
-
 
 @mixin text-input() {
 	box-sizing: border-box;
@@ -79,7 +64,7 @@ $dimension-avatar-icon: 90px;
 	margin-bottom: $size-spacing-vertical-half;
 
 	// border line between items
-	&:after {
+	&::after {
 		position: absolute;
 		bottom: 0;
 		left: 8%;
@@ -91,13 +76,13 @@ $dimension-avatar-icon: 90px;
 	}
 
 	// disable border line on last item
-	&:last-child:after{
+	&:last-child::after {
 		display: none;
 	}
-
 }
 
-html,body{
+html,
+body {
 	margin: 0;
 	padding: 0;
 	font-family: $font-default;

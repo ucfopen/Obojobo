@@ -1,56 +1,54 @@
 @import '../../client/css/defaults';
 
-.people-search-dialog{
+.people-search-dialog {
 	min-width: 300px;
 	text-align: center;
 
-	.repository--module-icon--image{
+	.repository--module-icon--image {
 		width: 25px;
 		display: inline-block;
 		vertical-align: middle;
 	}
 
-	> .close-button{
+	> .close-button {
 		position: absolute;
 		top: 5px;
 		right: 10px;
 	}
 
-	.title{
+	.title {
 		font-weight: 700;
 		font-size: 1em;
 		margin-bottom: 5px;
 	}
 
-	.sub-title{
-		font-size: .7em;
+	.sub-title {
+		font-size: 0.7em;
 		margin-bottom: $size-spacing-vertical-half;
 	}
 
-	.access-list-wrapper{
+	.access-list-wrapper {
 		margin: -$size-spacing-vertical-half;
 		margin-top: $size-spacing-vertical-half;
 		background-color: $color-banner-bg;
 		padding: 10px;
 	}
 
-	.access-list{
+	.access-list {
 		text-align: left;
 		height: 150px;
 		overflow: scroll;
 		list-style: none;
-		font-size: .7em;
+		font-size: 0.7em;
 		padding: 0;
 		margin: 0;
 
-		li{
+		li {
 			max-width: 80%;
 			padding: 5px;
 			margin: 0 auto;
 			position: relative;
 			border-radius: 3px;
 		}
-
 	}
-
 }

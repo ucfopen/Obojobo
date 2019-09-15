@@ -1,19 +1,19 @@
 @import '../../client/css/defaults';
 
-.repository--section-wrapper{
+.repository--section-wrapper {
 	max-width: 770px;
 	margin: 0 auto;
 }
 
-.repository--stick-to-top{
+.repository--stick-to-top {
 	position: sticky;
-	top: 0px;
-	background: #fff;
+	top: 0;
+	background: #ffffff;
 	min-width: 100%;
 	z-index: 100;
 }
 
-.repository--nav{
+.repository--nav {
 	max-width: 800px;
 	min-height: 65px;
 	margin: 5px auto;
@@ -22,31 +22,32 @@
 	justify-content: space-between;
 	align-content: flex-start;
 	align-items: center;
-	font-size: .85em;
+	font-size: 0.85em;
 
 	@include mq($from: zero, $until: mobileS) {
-		font-size: .65em;
+		font-size: 0.65em;
 	}
 
 	@include mq($from: mobileS, $until: mobileL) {
-		font-size: .70em;
+		font-size: 0.7em;
 	}
 
 	@include mq($from: mobileL, $until: tablet) {
-		font-size: .75em;
+		font-size: 0.75em;
 	}
 }
 
 .repository--nav a:link,
-.repository--nav a:visited{
+.repository--nav a:visited {
 	color: $color-obojobo-blue;
 }
+
 .repository--nav a:active,
-.repository--nav a:hover{
+.repository--nav a:hover {
 	color: $color-highlight;
 }
 
-.repository--nav--logo{
+.repository--nav--logo {
 	background-image: url('/images/obojobo-logo.svg');
 	background-position: center;
 	background-repeat: no-repeat;
@@ -57,65 +58,65 @@
 	overflow: hidden;
 	text-indent: -1000px;
 	width: 100px;
-	margin:0 20px;
+	margin: 0 20px;
 
 	@include mq($from: zero, $until: mobileS) {
-		margin:0 10px;
+		margin: 0 10px;
 		width: 65px;
 	}
 
 	@include mq($from: mobileS, $until: mobileL) {
-		margin:0 10px;
+		margin: 0 10px;
 		width: 70px;
 	}
 
 	@include mq($from: mobileL, $until: tablet) {
-		margin:0 10px;
+		margin: 0 10px;
 		width: 75px;
 	}
 }
 
 
-.repository--nav--current-user{
+.repository--nav--current-user {
 	position: relative;
-	font-size: .9em;
+	font-size: 0.9em;
 	height: 65px;
 	text-align: right;
 	padding: 25px 65px 0 0;
 	box-sizing: border-box;
 
-	&:hover{
-		.repository--nav--current-user--menu{
+	&:hover {
+		.repository--nav--current-user--menu {
 			display: block;
 		}
 	}
 }
 
-.repository--nav--current-user > .avatar{
+.repository--nav--current-user > .avatar {
 	position: absolute;
-	right: 0px;
+	right: 0;
 	top: 5px;
 	height: 55px;
 	width: 55px;
 	margin: 0;
 }
 
-.repository--nav--current-user--name{
-	font-size: .9em;
+.repository--nav--current-user--name {
+	font-size: 0.9em;
 }
 
-.repository--nav--current-user--menu{
+.repository--nav--current-user--menu {
 	display: none;
 	position: absolute;
 	right: -20px;
 	top: 62px;
-	background: #fff;
+	background: #ffffff;
 	padding: 20px;
 	border-radius: 3px;
 }
 
 // if the last child is a link (login link instead of logged in user avatar)
 // space it from the right side of the window
-.repository--nav--links--link:last-child{
+.repository--nav--links--link:last-child {
 	padding-right: 20px;
 }

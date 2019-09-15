@@ -2,9 +2,7 @@ import 'whatwg-fetch'
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 
-const domParser = new DOMParser()
 let childWindow = null
-const draftEls = document.querySelectorAll('.link-edit')
 let isCtrlPressed = false
 let editingDraftId = null
 let mode = ''
