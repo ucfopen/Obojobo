@@ -9,6 +9,7 @@ class DeleteButton extends React.Component {
 	}
 
 	static get defaultProps() {
+		/* istanbul ignore next */
 		return {
 			indent: 0,
 			focus: () => {}

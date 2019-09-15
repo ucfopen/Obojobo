@@ -34,7 +34,9 @@ class Modal extends React.Component {
 	onTabTrapFocus() {
 		if (this.props.onClose) {
 			return this.deleteButtonRef.current.focus()
-		} else if (this.props.focusOnFirstElement) {
+		}
+
+		if (this.props.focusOnFirstElement) {
 			return this.props.focusOnFirstElement()
 		}
 	}

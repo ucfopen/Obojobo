@@ -717,6 +717,20 @@ describe('api draft route', () => {
 			})
 	})
 
+	test('raw draft queries the db', () => {
+		expect.hasAssertions()
+		db.one.mockResolvedValueOnce('mock-db-result')
+		mockCurrentUser = { id: 99, canViewEditor: true } // mock current logged in user
+		return request(app)
+			.get('/api/drafts/00000000-0000-0000-0000-000000000000/raw')
+			.then(response => {
+				expect(response.header['content-type']).toContain('application/json')
+				expect(response.statusCode).toBe(200)
+				expect(response.body).toHaveProperty('status', 'ok')
+				expect(response.body).toHaveProperty('value', 'mock-db-result')
+			})
+	})
+
 	// list drafts
 	test.skip('list drafts exits when user cant view drafts', () => {
 		expect.assertions(4)

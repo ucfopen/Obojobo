@@ -1,4 +1,6 @@
 const path = require('path')
+// allows us to override resolve for testing
+let resolver = require.resolve
 
 const flattenArray = array => {
 	let result = []
@@ -25,6 +27,7 @@ const searchNodeModulesForOboNodes = (forceReload = false) => {
 			const manifest = require(pkg)
 			if (manifest.obojobo) searchNodeModulesForOboNodesCache.add(pkg)
 		} catch (error) {
+			/* istanbul ignore next */
 			if (!error.message.includes('Cannot find module')) {
 				console.log(error)
 			}
@@ -61,7 +64,7 @@ const getOboNodeScriptPathsFromPackageByType = (oboNodePackage, type) => {
 	// filter any missing values
 	scripts = scripts.filter(a => a !== null)
 	// node is just a string name, convert it to a full path
-	const resolved = scripts.map(s => require.resolve(`${oboNodePackage}/${s}`))
+	const resolved = scripts.map(s => resolver(`${oboNodePackage}/${s}`))
 	getOboNodeScriptPathsFromPackageByTypeCache.set(cacheKey, resolved)
 	return [...resolved]
 }
@@ -79,24 +82,19 @@ const gatherAllMigrations = () => {
 	let migrationDirs = modules.map(module => {
 		const dir = getOboNodeScriptPathsFromPackage(module, 'migrations')
 		if (!dir) return
-		const basedir = path.dirname(require.resolve(module))
+		const basedir = path.dirname(resolver(module))
 		allDirs.push(`${basedir}/${dir}`)
 	})
 	return allDirs
 }
 
+// locates migrations, config, and runs db-migrate up
 const migrateUp = () => {
 	const { execSync } = require('child_process')
-	const dbMigratePath = require.resolve('db-migrate/bin/db-migrate')
-	const configPath = require.resolve('obojobo-express/config/db.json')
+	const dbMigratePath = resolver('db-migrate/bin/db-migrate')
+	const configPath = resolver('obojobo-express/config/db.json')
 	const migrationDirs = gatherAllMigrations()
-	// "db:initdocker": "docker run --name db_postgres -d --restart=unless-stopped -p 5432:5432 postgres:9.6.1-alpine",
-	// "db:reset": "node_modules/.bin/db-migrate reset --config config/db.json",
-	// "db:migrateup": "node_modules/.bin/db-migrate up --config config/db.json",
-	// "db:migratedown": "node_modules/.bin/db-migrate down --config config/db.json",
-	// "db:createmigration": "node_modules/.bin/db-migrate create --config config/db.json",
-	// "db:remove": "(docker kill db_postgres || true) && (docker rm db_postgres || true)",
-	// "db:rebuild": "yarn db:remove && yarn db:initdocker && sleep 4 && yarn db:migrateup && yarn sampleDraft:seed",
+
 	migrationDirs.forEach(dir => {
 		console.log(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
 		let output = execSync(`${dbMigratePath} up --config ${configPath} --migrations-dir ${dir}`)
@@ -139,12 +137,16 @@ const gatherClientScriptsFromModules = () => {
 			if (!Array.isArray(script)) script = [script]
 
 			script.forEach(single => {
+				// support config format of:
+				// entryFileName: 'rel/path/to/file.js'
 				if (typeof single === 'string') {
-					entries[key][defaultOrderKey].push(require.resolve(`${oboNodePackage}/${single}`))
+					entries[key][defaultOrderKey].push(resolver(`${oboNodePackage}/${single}`))
 				}
+				// support config format of:
+				// entryFileName: { file: 'rel/path/to/file.js', position: 20 }
 				if (single.hasOwnProperty('file') && single.hasOwnProperty('position')) {
 					if (!entries[key][single.position]) entries[key][single.position] = []
-					entries[key][single.position].push(require.resolve(`${oboNodePackage}/${single.file}`))
+					entries[key][single.position].push(resolver(`${oboNodePackage}/${single.file}`))
 				}
 			})
 		}
@@ -165,12 +167,18 @@ const gatherClientScriptsFromModules = () => {
 	return scripts
 }
 
+const setResolver = newResolver => {
+	resolver = newResolver
+}
+
 module.exports = {
+	getOboNodeScriptPathsFromPackage,
 	getOboNodeScriptPathsFromPackageByType,
 	searchNodeModulesForOboNodes,
 	getAllOboNodeScriptPathsByType,
 	flattenArray,
 	gatherAllMigrations,
 	migrateUp,
-	gatherClientScriptsFromModules
+	gatherClientScriptsFromModules,
+	setResolver
 }

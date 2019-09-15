@@ -5,7 +5,7 @@ function withPageFocus(BaseComponent){
 
 	return class extends React.Component{
 		render(){
-			return <BaseComponent {...this.props} focus={focus} />
+			return <BaseComponent {...this.props} focus={focus} withPageFocus={true} />
 		}
 	}
 }
