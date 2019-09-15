@@ -68,7 +68,8 @@ router
 	.get([requireDraftId, requireCanViewEditor, checkValidationRules])
 	.get((req, res) => {
 		return db
-			.one(`
+			.one(
+				`
 			SELECT
 				drafts.id AS id,
 				drafts.user_id as author,
@@ -192,11 +193,9 @@ router
 	.route('/:draftId')
 	.delete([requireCanDeleteDrafts, requireDraftId, checkValidationRules])
 	.delete((req, res) => {
-		return DraftModel
-			.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
+		return DraftModel.deleteByIdAndUser(req.params.draftId, req.currentUser.id)
 			.then(res.success)
 			.catch(res.unexpected)
 	})
-
 
 module.exports = router

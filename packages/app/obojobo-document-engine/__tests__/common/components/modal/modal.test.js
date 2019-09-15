@@ -164,10 +164,10 @@ describe('Modal', () => {
 		const onClose = jest.fn()
 		const focusOnFirstElement = jest.fn()
 		const focus = jest.fn()
-		const component = mount(<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}/>)
+		const component = mount(<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement} />)
 
 		const inst = component.instance()
-		inst.deleteButtonRef = {current: {focus}}
+		inst.deleteButtonRef = { current: { focus } }
 		inst.onTabTrapFocus()
 
 		expect(focus).toHaveBeenCalled()
@@ -177,10 +177,10 @@ describe('Modal', () => {
 	test('onTabTrapFocus focuses on focusOnFirstElement with onClose prop not set', () => {
 		const focusOnFirstElement = jest.fn()
 		const focus = jest.fn()
-		const component = mount(<Modal focusOnFirstElement={focusOnFirstElement}/>)
+		const component = mount(<Modal focusOnFirstElement={focusOnFirstElement} />)
 
 		const inst = component.instance()
-		inst.deleteButtonRef = {current: {focus}}
+		inst.deleteButtonRef = { current: { focus } }
 		inst.onTabTrapFocus()
 
 		expect(focus).not.toHaveBeenCalled()
@@ -192,7 +192,7 @@ describe('Modal', () => {
 		const component = mount(<Modal />)
 
 		const inst = component.instance()
-		inst.deleteButtonRef = {current: {focus}}
+		inst.deleteButtonRef = { current: { focus } }
 		inst.onTabTrapFocus()
 
 		expect(focus).not.toHaveBeenCalled()

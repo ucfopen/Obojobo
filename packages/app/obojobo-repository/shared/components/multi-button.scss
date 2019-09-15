@@ -37,7 +37,7 @@
 			height: 100%;
 			width: 100%;
 			line-height: $size;
-			content: "＋";
+			content: '＋';
 			color: $color-action;
 		}
 	}
@@ -77,7 +77,7 @@
 			}
 
 			&::after {
-				content: "＋";
+				content: '＋';
 				color: $color-action;
 			}
 		}

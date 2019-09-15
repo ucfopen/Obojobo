@@ -5,7 +5,7 @@ import React from 'react'
 import NavUtil from '../../viewer/util/nav-util'
 
 export default class InlineNavButton extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.onClick = this.onClick.bind(this)
 	}

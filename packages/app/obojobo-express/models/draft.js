@@ -33,7 +33,6 @@ const findDuplicateIdsRecursive = (jsonTreeNode, idSet = new Set()) => {
 }
 
 class Draft {
-
 	constructor(authorId, rawDraft) {
 		this.authorId = authorId
 		this.nodesById = new Map()
@@ -73,7 +72,7 @@ class Draft {
 		return draftNode
 	}
 
-	static deleteByIdAndUser(id, userId){
+	static deleteByIdAndUser(id, userId) {
 		return db
 			.none(
 				`
@@ -88,7 +87,7 @@ class Draft {
 				}
 			)
 			.then(() => {
-				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, {id})
+				oboEvents.emit(Draft.EVENT_DRAFT_DELETED, { id })
 			})
 	}
 
@@ -220,7 +219,7 @@ class Draft {
 				}
 			)
 			.then(insertContentResult => {
-				oboEvents.emit(Draft.EVENT_DRAFT_UPDATED, {draftId, jsonContent, xmlContent})
+				oboEvents.emit(Draft.EVENT_DRAFT_UPDATED, { draftId, jsonContent, xmlContent })
 				return insertContentResult.id
 			})
 	}

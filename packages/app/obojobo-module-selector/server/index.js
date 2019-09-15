@@ -10,7 +10,7 @@ app.on('mount', app => {
 	// ============= VEIW & TEMPLATE SETUP ==============
 	// append our view path to the configured view paths
 	let viewPaths = app.get('views')
-	if(!Array.isArray(viewPaths)) viewPaths = [viewPaths]
+	if (!Array.isArray(viewPaths)) viewPaths = [viewPaths]
 	viewPaths.push(`${__dirname}/views`)
 	app.set('views', viewPaths)
 

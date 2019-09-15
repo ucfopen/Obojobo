@@ -311,7 +311,7 @@ class Media {
 			userId: null
 		})
 
-		oboEvents.emit(Media.EVENT_RESIZED_IMAGE_CREATED, {originalImageId, targetDimensions})
+		oboEvents.emit(Media.EVENT_RESIZED_IMAGE_CREATED, { originalImageId, targetDimensions })
 
 		return {
 			metadata: imageMetadata,
@@ -382,7 +382,6 @@ class Media {
 			})
 	}
 }
-
 
 Media.EVENT_RESIZED_IMAGE_CREATED = 'EVENT_RESIZED_IMAGE_CREATED'
 Media.EVENT_IMAGE_CREATED = 'EVENT_IMAGE_CREATED'

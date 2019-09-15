@@ -19,7 +19,7 @@ module.exports =
 			target: 'web',
 			devServer: {
 				https: true,
-				host: '127.0.0.1',
+				host: '0.0.0.0',
 				before: app => {
 					// add utilities for dev env (visit /dev)
 					require('./obo_express_dev')(app)
@@ -82,10 +82,10 @@ module.exports =
 								loader: 'responsive-loader',
 								options: {
 									adapter: require('responsive-loader/sharp')
-								},
-							},
-						],
-					},
+								}
+							}
+						]
+					}
 				]
 			},
 			externals: {
@@ -100,9 +100,7 @@ module.exports =
 				'slate-react': 'SlateReact',
 				immutable: 'Immutable'
 			},
-			plugins: [
-				new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` })
-			],
+			plugins: [new MiniCssExtractPlugin({ filename: `${filename_with_min}.css` })],
 			resolve: {
 				extensions: ['.js', '.jsx'],
 				alias: {

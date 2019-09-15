@@ -15,14 +15,13 @@ module.exports = app => {
 	// =========== STATIC ASSET PATHS ================
 	app.use(express.static(path.join(__dirname, 'public'))) // serve the files from public as static files
 	app.use(compression()) // enable gzip compression
-	app.disable('x-powered-by');
+	app.disable('x-powered-by')
 
 	// =========== VIEW ENGINES ================
 	// register express-react-views template engine if not already registered
-	if(!app.engines['ejs']) app.engine('ejs', engines.ejs)
+	if (!app.engines['ejs']) app.engine('ejs', engines.ejs)
 	app.set('view engine', 'ejs') // set the default extension to ejs
 	app.set('views', path.join(__dirname, 'views'))
-
 
 	// =========== SET UP MIDDLEWARE ================
 	app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))

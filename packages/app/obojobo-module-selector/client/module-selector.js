@@ -1,6 +1,6 @@
 import './css/module-selector.scss'
 
-(function() {
+;(function() {
 	const SEARCH_DELAY_MS = 250
 	const CHANGE_SECTION_FADE_DELAY_MS = 250
 	const MAX_ITEMS = 20
@@ -116,13 +116,13 @@ import './css/module-selector.scss'
 				$newSection.fadeIn(CHANGE_SECTION_FADE_DELAY_MS)
 			}
 		} else if (skipFadeAnimation) {
-				$shownSection.hide()
-				$newSection.show()
-			} else {
-				$shownSection.fadeOut(CHANGE_SECTION_FADE_DELAY_MS, function() {
-					$newSection.fadeIn(CHANGE_SECTION_FADE_DELAY_MS)
-				})
-			}
+			$shownSection.hide()
+			$newSection.show()
+		} else {
+			$shownSection.fadeOut(CHANGE_SECTION_FADE_DELAY_MS, function() {
+				$newSection.fadeIn(CHANGE_SECTION_FADE_DELAY_MS)
+			})
+		}
 	}
 
 	function gotoTab(newSection) {
@@ -314,7 +314,7 @@ import './css/module-selector.scss'
 		$section.show()
 	}
 
-	function resetSectionList(section){
+	function resetSectionList(section) {
 		const $list = $('.' + section.toLowerCase().replace(' ', '-'))
 		data.items = undefined // eslint-disable-line no-undefined
 		data.last = 0
@@ -367,10 +367,10 @@ import './css/module-selector.scss'
 
 		// section-module-selection
 		$('#community-library-button').click(event => {
-			event.preventDefault();
-			gotoSection('section-select-object', false, 'purple');
-			gotoTab('Community Library');
-		});
+			event.preventDefault()
+			gotoSection('section-select-object', false, 'purple')
+			gotoTab('Community Library')
+		})
 
 		$('#personal-library-button').click(event => {
 			event.preventDefault()
@@ -397,7 +397,7 @@ import './css/module-selector.scss'
 	}
 
 	function handleError(result) {
-		const isErrorObject = (typeof result !== 'undefined' && typeof result.errorID !== 'undefined')
+		const isErrorObject = typeof result !== 'undefined' && typeof result.errorID !== 'undefined'
 		if (isErrorObject && result.errorID === 1) {
 			killPage(MESSAGE_LOGOUT)
 		} else if (isErrorObject) {

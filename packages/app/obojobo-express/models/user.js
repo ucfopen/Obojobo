@@ -74,7 +74,7 @@ class User {
 			)
 			.then(insertUserResult => {
 				let eventName = User.EVENT_UPDATE_USER
-				if(!this.id){
+				if (!this.id) {
 					eventName = User.EVENT_NEW_USER
 					// populate my id from the result
 					this.id = insertUserResult.id
@@ -116,13 +116,18 @@ class User {
 
 	get avatarUrl() {
 		const size = 120
-		const md5Email = crypto.createHash('md5').update(this.email).digest("hex")
+		const md5Email = crypto
+			.createHash('md5')
+			.update(this.email)
+			.digest('hex')
 		return `https://secure.gravatar.com/avatar/${md5Email}?s=${size}&d=retro`
 	}
 
-	toJSON(){
+	toJSON() {
 		const userObj = {}
-		Object.keys(this).forEach(k => {userObj[k] = this[k]})
+		Object.keys(this).forEach(k => {
+			userObj[k] = this[k]
+		})
 		userObj.avatarUrl = this.avatarUrl
 		return userObj
 	}

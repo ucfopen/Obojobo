@@ -1,6 +1,5 @@
-
 const urlForEditor = (editor, draftId) => {
-	if(editor === 'visual') return `/editor/${draftId}`
+	if (editor === 'visual') return `/editor/${draftId}`
 	return `/editor#id:${draftId}`
 }
 

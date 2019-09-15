@@ -30,9 +30,17 @@ const buildQueryWhere = (whereSQL, joinSQL = '') => {
 	`
 }
 
-
 class DraftSummary {
-	constructor({draft_id, latest_version, title, user_id, created_at, updated_at, revision_count, editor}) {
+	constructor({
+		draft_id,
+		latest_version,
+		title,
+		user_id,
+		created_at,
+		updated_at,
+		revision_count,
+		editor
+	}) {
 		this.draftId = draft_id
 		this.title = title
 		this.userId = user_id
@@ -53,16 +61,16 @@ class DraftSummary {
 			})
 	}
 
-	static fetchByUserId(userId){
-		return DraftSummary
-			.fetchAndJoinWhere(
-				`JOIN repository_map_user_to_draft
+	static fetchByUserId(userId) {
+		return DraftSummary.fetchAndJoinWhere(
+			`JOIN repository_map_user_to_draft
 					ON repository_map_user_to_draft.draft_id = drafts.id`,
-				`repository_map_user_to_draft.user_id = $[userId]`,
-				{ userId })
+			`repository_map_user_to_draft.user_id = $[userId]`,
+			{ userId }
+		)
 	}
 
-	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues){
+	static fetchAndJoinWhere(joinSQL, whereSQL, queryValues) {
 		return db
 			.any(buildQueryWhere(whereSQL, joinSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
@@ -72,7 +80,7 @@ class DraftSummary {
 			})
 	}
 
-	static fetchWhere(whereSQL, queryValues){
+	static fetchWhere(whereSQL, queryValues) {
 		return db
 			.any(buildQueryWhere(whereSQL), queryValues)
 			.then(DraftSummary.resultsToObjects)
@@ -82,9 +90,11 @@ class DraftSummary {
 			})
 	}
 
-	static resultsToObjects(results){
-		if(Array.isArray(results)){
-			return results.map(object => { return new DraftSummary(object)})
+	static resultsToObjects(results) {
+		if (Array.isArray(results)) {
+			return results.map(object => {
+				return new DraftSummary(object)
+			})
 		}
 		return new DraftSummary(results)
 	}

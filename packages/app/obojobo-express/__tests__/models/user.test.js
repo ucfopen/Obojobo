@@ -8,7 +8,6 @@ const User = require('../../models/user')
 const db = require('../../db')
 const oboEvents = require('../../obo_events')
 
-
 describe('user model', () => {
 	beforeAll(() => {
 		Date.now = () => 'mockNowDate'

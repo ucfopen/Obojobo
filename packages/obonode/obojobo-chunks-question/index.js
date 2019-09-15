@@ -1,7 +1,7 @@
 module.exports = {
 	obojobo: {
 		serverScripts: 'server/question.js',
-		clientScripts:{
+		clientScripts: {
 			viewer: 'viewer.js',
 			editor: 'editor.js'
 		}

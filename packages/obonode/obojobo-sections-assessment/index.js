@@ -2,7 +2,7 @@ module.exports = {
 	obojobo: {
 		serverScripts: 'server/assessment.js',
 		expressMiddleware: 'server/express.js',
-		clientScripts:{
+		clientScripts: {
 			viewer: 'viewer.js',
 			editor: 'editor.js'
 		}

@@ -9,17 +9,14 @@ router
 	.route('/dashboard')
 	.get([requireCurrentUser, requireCanViewDrafts])
 	.get((req, res) => {
-		return DraftSummary
-			.fetchByUserId(req.currentUser.id)
-			.then(myModules => {
-				const props = {
-					title: 'Dashboard',
-					myModules,
-					currentUser: req.currentUser
-				}
-				res.render('page-dashboard-server.jsx', props)
-			})
-
-})
+		return DraftSummary.fetchByUserId(req.currentUser.id).then(myModules => {
+			const props = {
+				title: 'Dashboard',
+				myModules,
+				currentUser: req.currentUser
+			}
+			res.render('page-dashboard-server.jsx', props)
+		})
+	})
 
 module.exports = router

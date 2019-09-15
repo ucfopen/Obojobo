@@ -145,7 +145,6 @@ describe('middleware', () => {
 		const ObojoboDocumentServer = require('../obo_express')
 		middleware(mockApp)
 		expect(mockApp.use).toHaveBeenCalledWith(ObojoboDocumentServer)
-
 	})
 
 	test('profile route is registered', () => {
@@ -198,8 +197,6 @@ describe('middleware', () => {
 
 		expect(mockRes.missing).not.toHaveBeenCalled()
 		expect(mockNext).toHaveBeenCalled()
-
-
 	})
 
 	test('when NOT using webpack, the 404 handler calls missing for non-static files', () => {
@@ -259,5 +256,4 @@ describe('middleware', () => {
 		expect(mockRes.unexpected).toHaveBeenCalled()
 		expect(logger.error).toHaveBeenCalled()
 	})
-
 })

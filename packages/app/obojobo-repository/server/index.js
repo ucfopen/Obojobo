@@ -8,13 +8,13 @@ app.on('mount', app => {
 
 	// append our view path to the configured view paths
 	let viewPaths = app.get('views')
-	if(!Array.isArray(viewPaths)) viewPaths = [viewPaths]
+	if (!Array.isArray(viewPaths)) viewPaths = [viewPaths]
 	viewPaths.push(path.resolve(`${__dirname}/../shared/components`)) // add the components dir so babel can transpile the jsx
 	app.set('views', viewPaths)
 
 	// register express-react-views template engine if not already registered
-	if(!app.engines['jsx']){
-		app.engine('jsx', require('express-react-views-custom').createEngine());
+	if (!app.engines['jsx']) {
+		app.engine('jsx', require('express-react-views-custom').createEngine())
 	}
 
 	// =========== ROUTING & CONTROLLERS ===========

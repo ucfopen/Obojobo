@@ -44,10 +44,9 @@ describe('DeleteButton', () => {
 
 	test('DeleteButton calls focus callback with ref argument', () => {
 		const focus = require('../../../src/scripts/common/page/focus').default
-		const wrapper = mount(<DeleteButton focus={focus}/>)
+		const wrapper = mount(<DeleteButton focus={focus} />)
 		const inst = wrapper.find(DeleteButtonBase).instance()
 		inst.focus()
 		expect(focus).toHaveBeenCalledWith(inst.deleteButtonRef)
-
 	})
 })

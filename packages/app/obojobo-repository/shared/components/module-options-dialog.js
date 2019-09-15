@@ -8,39 +8,69 @@ const { urlForEditor, downloadDocument } = require('../repository-utils')
 
 const deleteModule = (title, draftId, deleteFn) => {
 	const response = confirm(`Delete "${title}" id: ${draftId} ?`) //eslint-disable-line no-alert, no-undef
-	if(!response) return
+	if (!response) return
 	deleteFn(draftId)
 }
 
 const ModuleOptionsDialog = props => (
-	<div className="module-permissions-dialog" >
+	<div className="module-permissions-dialog">
 		<div className="top-bar">
 			<ModuleIamge id={props.draftId} />
 			<div className="module-title">{props.title}</div>
-			<Button className="close-button" onClick={props.onClose}>X</Button>
+			<Button className="close-button" onClick={props.onClose}>
+				X
+			</Button>
 		</div>
 		<h1 className="title">Module Options</h1>
 		<div className="button-things">
-				<ButtonLink url={`/preview/${props.draftId}`} target="_blank" >Preview</ButtonLink>
-				<div className="label">View with preview controls.</div>
+			<ButtonLink url={`/preview/${props.draftId}`} target="_blank">
+				Preview
+			</ButtonLink>
+			<div className="label">View with preview controls.</div>
 
-				<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">Edit</ButtonLink>
-				<div className="label">Write, edit, and update.</div>
+			<ButtonLink url={urlForEditor(props.editor, props.draftId)} target="_blank">
+				Edit
+			</ButtonLink>
+			<div className="label">Write, edit, and update.</div>
 
-				<Button className="new-button" onClick={() => {props.showModulePermissions(props)}}>Share</Button>
-				<div className="label">Add or remove collaborators.</div>
+			<Button
+				className="new-button"
+				onClick={() => {
+					props.showModulePermissions(props)
+				}}
+			>
+				Share
+			</Button>
+			<div className="label">Add or remove collaborators.</div>
 
-				<Button className="new-button" onClick={() => {downloadDocument(props.draftId, props.editor === 'visual' ? 'json' : 'xml')}}>Download</Button>
-				<div className="label">Download a copy.</div>
+			<Button
+				className="new-button"
+				onClick={() => {
+					downloadDocument(props.draftId, props.editor === 'visual' ? 'json' : 'xml')
+				}}
+			>
+				Download
+			</Button>
+			<div className="label">Download a copy.</div>
 
-				<ButtonLink url={`/library/${props.draftId}`} target="_blank">Public Page</ButtonLink>
-				<div className="label">Visit this modules public page.</div>
+			<ButtonLink url={`/library/${props.draftId}`} target="_blank">
+				Public Page
+			</ButtonLink>
+			<div className="label">Visit this modules public page.</div>
 
-				<Button className="new-button" onClick={() => {deleteModule(props.title, props.draftId, props.deleteModule)}}>Delete</Button>
-				<div className="label">Say farewell.</div>
-
+			<Button
+				className="new-button"
+				onClick={() => {
+					deleteModule(props.title, props.draftId, props.deleteModule)
+				}}
+			>
+				Delete
+			</Button>
+			<div className="label">Say farewell.</div>
 		</div>
-		<Button className="done-button secondary-button" onClick={props.onClose}>Close</Button>
+		<Button className="done-button secondary-button" onClick={props.onClose}>
+			Close
+		</Button>
 	</div>
 )
 

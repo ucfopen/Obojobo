@@ -45,7 +45,7 @@ describe('profile routes', () => {
 		return request(app)
 			.get('/logout')
 			.then(response => {
-				expect(response.header['content-type']).toContain("text/plain; charset=utf-8")
+				expect(response.header['content-type']).toContain('text/plain; charset=utf-8')
 				expect(response.statusCode).toBe(302)
 				expect(response.text).toBe('Found. Redirecting to /')
 			})

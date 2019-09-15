@@ -3,7 +3,7 @@ const logger = require('obojobo-express/logger')
 const DraftSummary = require('./draft_summary')
 
 class RepositoryCollection {
-	constructor({id = null, title = '', user_id, created_at = null}) {
+	constructor({ id = null, title = '', user_id, created_at = null }) {
 		this.id = id
 		this.title = title
 		this.userId = user_id
@@ -35,7 +35,7 @@ class RepositoryCollection {
 			})
 	}
 
-	static create({title = '', user_id}) {
+	static create({ title = '', user_id }) {
 		return db
 			.one(
 				`
@@ -66,8 +66,7 @@ class RepositoryCollection {
 
 		const whereSQL = `repository_collections.id = $[collectionId]`
 
-		return DraftSummary
-			.fetchAndJoinWhere(joinOn, whereSQL, { collectionId : this.id })
+		return DraftSummary.fetchAndJoinWhere(joinOn, whereSQL, { collectionId: this.id })
 			.then(draftSummaries => {
 				this.drafts = draftSummaries
 				return this

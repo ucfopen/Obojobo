@@ -260,27 +260,26 @@ function saveDraft() {
 function edit(draftId) {
 	if (!draftId) return
 
-	apiLoadDraft(draftId)
-		.then(content => {
-			let theContent
-			console.log(content)
-			document.getElementById('editor').style.display = 'block'
-			editingDraftId = draftId
+	apiLoadDraft(draftId).then(content => {
+		let theContent
+		console.log(content)
+		document.getElementById('editor').style.display = 'block'
+		editingDraftId = draftId
 
-			if(content.value.xml){
-				mode = 'xml'
-				editor.setOption('mode', 'text/xml')
-				theContent = content.value.xml
-			} else {
-				mode = 'json'
-				editor.setOption('mode', 'application/json')
-				theContent = content.value.content
-			}
-			editor.setValue(theContent)
-		})
+		if (content.value.xml) {
+			mode = 'xml'
+			editor.setOption('mode', 'text/xml')
+			theContent = content.value.xml
+		} else {
+			mode = 'json'
+			editor.setOption('mode', 'application/json')
+			theContent = content.value.content
+		}
+		editor.setValue(theContent)
+	})
 }
 
-function apiLoadDraft(draftId){
+function apiLoadDraft(draftId) {
 	const options = {
 		method: 'GET',
 		credentials: 'include',
@@ -290,12 +289,11 @@ function apiLoadDraft(draftId){
 		}
 	}
 
-	return fetch(`/api/drafts/${draftId}/raw`, options)
-		.then(res => res.json())
+	return fetch(`/api/drafts/${draftId}/raw`, options).then(res => res.json())
 }
 
-function apiSaveDraft(content){
-	const mime = (mode === 'json' ? 'application/json' : 'text/plain')
+function apiSaveDraft(content) {
+	const mime = mode === 'json' ? 'application/json' : 'text/plain'
 	const options = {
 		method: 'POST',
 		credentials: 'include',
@@ -308,7 +306,7 @@ function apiSaveDraft(content){
 	return fetch(`/api/drafts/${editingDraftId}`, options)
 }
 
-function animateSavedButton(){
+function animateSavedButton() {
 	document.body.classList.add('saved')
 	document.getElementById('button-save-draft').innerText = 'Saved!'
 	document.getElementById('button-save-draft').disabled = true
@@ -319,7 +317,7 @@ function animateSavedButton(){
 	}, 1000)
 }
 
-function refreshPreviewWindow(){
+function refreshPreviewWindow() {
 	if (childWindow && childWindow.location && childWindow.location.reload) {
 		childWindow.location.reload()
 	}

@@ -55,7 +55,7 @@ const getOboNodeScriptPathsFromPackage = (oboNodePackage, type) => {
 const getOboNodeScriptPathsFromPackageByTypeCache = new Map()
 const getOboNodeScriptPathsFromPackageByType = (oboNodePackage, type) => {
 	const cacheKey = `${oboNodePackage}-${type}`
-	if (getOboNodeScriptPathsFromPackageByTypeCache.has(cacheKey)){
+	if (getOboNodeScriptPathsFromPackageByTypeCache.has(cacheKey)) {
 		return [...getOboNodeScriptPathsFromPackageByTypeCache.get(cacheKey)]
 	}
 	let scripts = getOboNodeScriptPathsFromPackage(oboNodePackage, type)

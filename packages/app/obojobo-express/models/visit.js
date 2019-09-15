@@ -62,7 +62,6 @@ const deactivateOldVisitsAndCreateNewVisit = (
 			)
 		)
 		.then(visit => {
-
 			oboEvents.emit(Visit.EVENT_NEW_VISIT, {
 				visitId: visit.id,
 				userId,

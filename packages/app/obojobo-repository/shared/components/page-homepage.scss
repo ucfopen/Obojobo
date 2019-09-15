@@ -198,7 +198,9 @@ header .header-container nav > ul > li > ul > li a:hover {
 
 .content {
 	overflow: hidden;
-	background: url('/images/homepage/dotted-line-coverup.png') no-repeat center top, url('/images/homepage/dotted-line-coverup.png') no-repeat center bottom, url('/images/homepage/dotted-line-bg.png') center center repeat-y;
+	background: url('/images/homepage/dotted-line-coverup.png') no-repeat center top,
+		url('/images/homepage/dotted-line-coverup.png') no-repeat center bottom,
+		url('/images/homepage/dotted-line-bg.png') center center repeat-y;
 }
 
 .step {
