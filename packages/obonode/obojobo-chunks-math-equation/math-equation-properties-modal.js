@@ -32,6 +32,7 @@ class MathEquationProperties extends React.Component {
 
 		this.setState({
 			...this.state,
+			error: '',
 			content: {
 				...this.state.content,
 				latex
@@ -112,7 +113,7 @@ class MathEquationProperties extends React.Component {
 				onConfirm={this.onConfirm.bind(this)}
 				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
-				<div className={`math-equation-properties`} style={{ margin: 'auto' }}>
+				<div className={`math-equation-properties`}>
 					<div>
 						<label>Latex Equation:</label>
 						<input
@@ -122,12 +123,20 @@ class MathEquationProperties extends React.Component {
 							value={this.state.content.latex || ''}
 							onChange={this.handleLatexChange.bind(this)}
 						/>
+						<span className="error">{this.state.error}</span>
 						<label>Alt:</label>
 						<input
 							type="text"
 							id="obojobo-draft--chunks--math-equation--alt"
 							value={this.state.content.alt || ''}
 							onChange={this.handleAltChange.bind(this)}
+						/>
+						<label>Optional Equation Label:</label>
+						<input
+							type="text"
+							id="obojobo-draft--chunks--math-equation--label"
+							value={this.state.content.label || ''}
+							onChange={this.handleLabelChange.bind(this)}
 						/>
 						<label>Size: (1 is the default font size)</label>
 						<input
@@ -139,24 +148,18 @@ class MathEquationProperties extends React.Component {
 							value={this.state.content.size || 1}
 							onChange={this.handleSizeChange.bind(this)}
 						/>
-						<label>Optional Equation Label:</label>
-						<input
-							type="text"
-							id="obojobo-draft--chunks--math-equation--label"
-							value={this.state.content.label || ''}
-							onChange={this.handleLabelChange.bind(this)}
-						/>
 					</div>
-					<span>{this.state.error}</span>
-				</div>
-				<div className={'katex-container'}>
-					<b id="preview-title">Preview</b>
-					<div
-						style={{ fontSize: this.state.content.size + 'em' }}
-						aria-hidden
-						className={'katex-preview'}
-						dangerouslySetInnerHTML={{ __html: this.getEquationHTML() }}
-					/>
+					<div className={'preview-container'}>
+						<span className="preview-title">Equation Preview</span>
+						<div className="katex-container">
+							<div
+								style={{ fontSize: this.state.content.size + 'em' }}
+								aria-hidden
+								className={'katex-preview'}
+								dangerouslySetInnerHTML={{ __html: this.getEquationHTML() }}
+							/>
+						</div>
+					</div>
 				</div>
 			</SimpleDialog>
 		)
