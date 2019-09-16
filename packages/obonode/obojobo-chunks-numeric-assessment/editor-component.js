@@ -66,10 +66,7 @@ class NumericAssessment extends React.Component {
 
 	render() {
 		return (
-			<div
-				className="component obojobo-draft--chunks--numeric-assessment pad"
-				contentEditable={false}
-			>
+			<div className="component obojobo-draft--chunks--numeric-assessment" contentEditable={false}>
 				{this.state.responses.map((response, index) => (
 					<NumericInput
 						response={response}
@@ -79,7 +76,9 @@ class NumericAssessment extends React.Component {
 					/>
 				))}
 
-				<Button onClick={() => this.onAddNumericInput()}>Add possible answer</Button>
+				<Button className="add-answer-btn pad" onClick={() => this.onAddNumericInput()}>
+					Add possible answer
+				</Button>
 			</div>
 		)
 	}

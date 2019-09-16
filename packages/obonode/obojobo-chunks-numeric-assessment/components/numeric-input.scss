@@ -3,14 +3,23 @@
 .numeric-input-container {
 	$color-border: #dfdfdf;
 
-	margin-bottom: 1.5rem;
 	position: relative;
+	padding: 1rem 3em;
+	border-bottom: 1px solid $color-border;
+
+	.delete-button {
+		button {
+			position: absolute;
+			top: 3.1rem;
+		}
+	}
 
 	table {
 		border-collapse: collapse;
 
 		th,
 		td {
+			font-family: $font-default;
 			text-align: left;
 			padding: 0;
 			padding-right: 1rem;

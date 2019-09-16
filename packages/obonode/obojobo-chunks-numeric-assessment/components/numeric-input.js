@@ -30,9 +30,9 @@ class NumericInput extends React.Component {
 			case MARGIN_OF_ERROR:
 				return (
 					<>
+						<th>Type</th>
 						<th>Answer</th>
 						<th>Margin</th>
-						<th>Type</th>
 					</>
 				)
 			case WITHIN_A_RANGE:
@@ -45,9 +45,9 @@ class NumericInput extends React.Component {
 			case PRECISE_RESPONSE:
 				return (
 					<>
+						<th>Type</th>
 						<th>Answer</th>
 						<th>Precision</th>
-						<th>Type</th>
 					</>
 				)
 		}
@@ -82,6 +82,18 @@ class NumericInput extends React.Component {
 				return (
 					<>
 						<td>
+							<select
+								className="select-item"
+								name="precisionType"
+								value={precisionType}
+								onChange={event => props.onClickDropdown(event)}
+							>
+								{precisionDropdown.map(requirement => (
+									<option>{requirement}</option>
+								))}
+							</select>
+						</td>
+						<td>
 							<input
 								className="input-item"
 								name="answerInput"
@@ -96,18 +108,6 @@ class NumericInput extends React.Component {
 								value={precisionInput}
 								onChange={() => props.onInputChange(event)}
 							/>
-						</td>
-						<td>
-							<select
-								className="select-item"
-								name="precisionType"
-								value={precisionType}
-								onChange={event => props.onClickDropdown(event)}
-							>
-								{precisionDropdown.map(requirement => (
-									<option>{requirement}</option>
-								))}
-							</select>
 						</td>
 					</>
 				)
@@ -136,6 +136,18 @@ class NumericInput extends React.Component {
 				return (
 					<>
 						<td>
+							<select
+								className="select-item"
+								name="marginType"
+								value={marginType}
+								onChange={event => props.onClickDropdown(event)}
+							>
+								{marginDropdown.map(requirement => (
+									<option>{requirement}</option>
+								))}
+							</select>
+						</td>
+						<td>
 							<input
 								className="input-item"
 								name="answerInput"
@@ -151,18 +163,6 @@ class NumericInput extends React.Component {
 								onChange={() => props.onInputChange(event)}
 							/>
 						</td>
-						<td>
-							<select
-								className="select-item"
-								name="marginType"
-								value={marginType}
-								onChange={event => props.onClickDropdown(event)}
-							>
-								{marginDropdown.map(requirement => (
-									<option>{requirement}</option>
-								))}
-							</select>
-						</td>
 					</>
 				)
 		}
@@ -171,9 +171,6 @@ class NumericInput extends React.Component {
 	render() {
 		return (
 			<div className="numeric-input-container">
-				<Button className="delete-button" onClick={() => this.props.onDeteteResponse()}>
-					×
-				</Button>
 				<table>
 					<tr>
 						<th>Requirement</th>
@@ -194,6 +191,9 @@ class NumericInput extends React.Component {
 						{this.renderOption(this.props)}
 					</tr>
 				</table>
+				<Button className="delete-button" onClick={() => this.props.onDeteteResponse()}>
+					×
+				</Button>
 			</div>
 		)
 	}

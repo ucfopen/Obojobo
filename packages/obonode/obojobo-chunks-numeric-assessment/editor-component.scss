@@ -6,5 +6,8 @@
 
 	border-top: 1px solid $color-border;
 	border-bottom: 1px solid $color-border;
-	padding: 1rem 0;
+
+	.add-answer-btn {
+		margin: 1rem 0;
+	}
 }
