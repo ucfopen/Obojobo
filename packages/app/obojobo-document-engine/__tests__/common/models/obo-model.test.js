@@ -7,6 +7,7 @@ import { Registry } from '../../../src/scripts/common/registry'
 jest.mock('../../../src/scripts/common/models/obo-model', () => {
 	return require('../../../__mocks__/obo-model-mock').default
 })
+jest.mock('../../../src/scripts/viewer/util/stop-viewer')
 
 jest.mock('../../../src/scripts/common/flux/dispatcher', () => {
 	return {

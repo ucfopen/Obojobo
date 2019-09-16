@@ -69,32 +69,19 @@ const schema = {
 					case CHILD_MIN_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								TextParameter.helpers.oboToSlate(
-									'choose',
-									'Infinity',
-									'Choose'
-								)
+								TextParameter.helpers.oboToSlate('choose', 'Infinity', 'Choose')
 							)
 							return editor.insertNodeByKey(node.key, index, block)
 						}
 						const block = Block.create(
-							SelectParameter.helpers.oboToSlate(
-								'select',
-								'sequential',
-								'Select',
-								SELECT_TYPES
-							)
+							SelectParameter.helpers.oboToSlate('select', 'sequential', 'Select', SELECT_TYPES)
 						)
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
 						if (index === 0) {
 							const block = Block.create(
-								TextParameter.helpers.oboToSlate(
-									'choose',
-									'Infinity',
-									'Choose'
-								)
+								TextParameter.helpers.oboToSlate('choose', 'Infinity', 'Choose')
 							)
 							return editor.withoutNormalizing(e => {
 								e.removeNodeByKey(child.key)
@@ -102,12 +89,7 @@ const schema = {
 							})
 						}
 						const block = Block.create(
-							SelectParameter.helpers.oboToSlate(
-								'select',
-								'sequential',
-								'Select',
-								SELECT_TYPES
-							)
+							SelectParameter.helpers.oboToSlate('select', 'sequential', 'Select', SELECT_TYPES)
 						)
 						return editor.withoutNormalizing(e => {
 							e.removeNodeByKey(child.key)

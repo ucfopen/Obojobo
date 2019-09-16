@@ -59,9 +59,10 @@ describe('Toggle Parameter', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: jest.fn()
-						.mockReturnValueOnce('mockType')
-						.mockReturnValueOnce(false)
+				get: jest
+					.fn()
+					.mockReturnValueOnce('mockType')
+					.mockReturnValueOnce(false)
 			},
 			text: 'mockValue'
 		}
@@ -71,11 +72,7 @@ describe('Toggle Parameter', () => {
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const slateNode = ToggleParameter.helpers.oboToSlate(
-			'oboName',
-			false,
-			'someDisplay'
-		)
+		const slateNode = ToggleParameter.helpers.oboToSlate('oboName', false, 'someDisplay')
 
 		expect(slateNode).toMatchSnapshot()
 	})

@@ -17,17 +17,17 @@ const mockCurrentUser = {
 }
 
 const mockAttempt = {
-		draftId: 'mockDraftId',
-		assessmentId: 'mockAssessmentId',
-		assessmentModel: 'mockAssessmentModel',
-		attemptState: 'mockAttemptState',
-		number: 'mockNumber'
-	}
+	draftId: 'mockDraftId',
+	assessmentId: 'mockAssessmentId',
+	assessmentModel: 'mockAssessmentModel',
+	attemptState: 'mockAttemptState',
+	number: 'mockNumber'
+}
 
 const mockCurrentVisit = {
-		is_preview: 'mockIsPreview',
-		resource_link_id: "mockResourceLinkId"
-	}
+	is_preview: 'mockIsPreview',
+	resource_link_id: 'mockResourceLinkId'
+}
 
 const mockAttemptHistory = 'mockAttemptHistory'
 
@@ -36,34 +36,32 @@ const mockParams = {
 }
 
 const mockCalculatedScores = {
-		attempt: { attemptScore: 'mockAttemptScore' },
-		assessmentScoreDetails: {
-			assessmentModdedScore: 'mockAssessmentModdedScore'
-		}
+	attempt: { attemptScore: 'mockAttemptScore' },
+	assessmentScoreDetails: {
+		assessmentModdedScore: 'mockAssessmentModdedScore'
 	}
+}
 
 const mockLtiRequest = {
-		gradebookStatus: 'mockGradebookStatus',
-		ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
-		scoreSent: 'mockScoreSent',
-		status: 'mockStatus',
-		statusDetails: 'mockStatusDetails'
-	}
+	gradebookStatus: 'mockGradebookStatus',
+	ltiAssessmentScoreId: 'mockLtiAssessmentScoreId',
+	scoreSent: 'mockScoreSent',
+	status: 'mockStatus',
+	statusDetails: 'mockStatusDetails'
+}
 
 const mockAssessmentScoreId = 'mockAssessmentScoreId'
 
-const isPreview = 'mockIsPreview'
 const mockHostName = 'mockHostName'
 const mockConnection = {
-		remoteAddress: 'mockRemoteAddress'
-	}
+	remoteAddress: 'mockRemoteAddress'
+}
 
 const mockCurrentDocument = {
 	contentId: 'mockContentId'
 }
 
 const mockResponsesForAttempt = 'mockResponsesForAttempt'
-
 
 describe('attempt-end/attempt-end-helpers', () => {
 	test('getAttemptHistory', async () => {
@@ -120,7 +118,7 @@ describe('attempt-end/attempt-end-helpers', () => {
 	})
 
 	test('completeAttempt', async () => {
-		Assessment.completeAttempt.mockResolvedValueOnce({assessmentScoreId: mockAssessmentScoreId})
+		Assessment.completeAttempt.mockResolvedValueOnce({ assessmentScoreId: mockAssessmentScoreId })
 		const mockReq = {
 			attempt: mockAttempt,
 			params: mockParams,
@@ -141,7 +139,7 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockCalculatedScores.attempt,
 			mockCalculatedScores.assessmentScoreDetails,
 			mockCurrentVisit.is_preview,
-			mockCurrentVisit.resource_link_id,
+			mockCurrentVisit.resource_link_id
 		)
 	})
 
@@ -172,26 +170,25 @@ describe('attempt-end/attempt-end-helpers', () => {
 			mockConnection.remoteAddress
 		)
 	}),
-
-	test('sendHighestAssessmentScore', async () => {
-		const mockReturnValue = {}
-		lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockReturnValue)
-		const mockReq = {
-			attempt: mockAttempt,
-			currentUser: mockCurrentUser,
-			currentDocument: mockCurrentDocument,
-			currentVisit: mockCurrentVisit
-		}
-		await helpers.sendHighestAssessmentScore(mockReq)
-		expect(mockReq).toHaveProperty('ltiRequest', mockReturnValue)
-		expect(lti.sendHighestAssessmentScore).toBeCalledWith(
-			mockCurrentUser.id,
-			mockCurrentDocument,
-			mockAttempt.assessmentId,
-			mockCurrentVisit.is_preview,
-			mockCurrentVisit.resource_link_id
-		)
-	})
+		test('sendHighestAssessmentScore', async () => {
+			const mockReturnValue = {}
+			lti.sendHighestAssessmentScore.mockResolvedValueOnce(mockReturnValue)
+			const mockReq = {
+				attempt: mockAttempt,
+				currentUser: mockCurrentUser,
+				currentDocument: mockCurrentDocument,
+				currentVisit: mockCurrentVisit
+			}
+			await helpers.sendHighestAssessmentScore(mockReq)
+			expect(mockReq).toHaveProperty('ltiRequest', mockReturnValue)
+			expect(lti.sendHighestAssessmentScore).toBeCalledWith(
+				mockCurrentUser.id,
+				mockCurrentDocument,
+				mockAttempt.assessmentId,
+				mockCurrentVisit.is_preview,
+				mockCurrentVisit.resource_link_id
+			)
+		})
 
 	test('insertAttemptScoredEvents', async () => {
 		const mockReturnValue = {}
@@ -256,13 +253,11 @@ describe('attempt-end/attempt-end-helpers', () => {
 	})
 
 	test('get-attempt', async () => {
-		const mockReturnValue = {}
-
 		const mockReq = {
 			attempt: mockAttempt,
 			currentUser: mockCurrentUser,
 			currentVisit: mockCurrentVisit,
-			params:{
+			params: {
 				attemptId: 'mock-attempt-id'
 			}
 		}
@@ -271,22 +266,22 @@ describe('attempt-end/attempt-end-helpers', () => {
 		expect(Assessment.getAttempt).toBeCalledTimes(1)
 		expect(Assessment.getAttempt).toBeCalledWith('mock-attempt-id')
 		expect(Assessment.getAttemptNumber).toBeCalledTimes(1)
-		expect(Assessment.getAttemptNumber).toBeCalledWith('mockUserId', 'mockDraftId', 'mock-attempt-id')
+		expect(Assessment.getAttemptNumber).toBeCalledWith(
+			'mockUserId',
+			'mockDraftId',
+			'mock-attempt-id'
+		)
 
 		expect(DraftDocument.fetchById).toBeCalledTimes(1)
 		expect(DraftDocument.fetchById).toBeCalledWith('mockDraftId')
 
 		expect(mockReq.attempt).toEqual({
 			assessmentId: 'mockAssessmentId',
-			number: "mockAttemptNumber",
+			number: 'mockAttemptNumber',
 			attemptState: { chosen: [] },
-			draftId: "mockDraftId",
+			draftId: 'mockDraftId',
 			model: expect.any(Object),
-			assessmentModel: "mockChild"
+			assessmentModel: 'mockChild'
 		})
-
 	})
-
 })
-
-

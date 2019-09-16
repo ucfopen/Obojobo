@@ -37,16 +37,8 @@ const oboToSlate = node => {
 			node.passingAttemptScore,
 			'Passing Score'
 		),
-		TextParameter.helpers.oboToSlate(
-			'passedResult',
-			node.passedResult,
-			'Passed Result'
-		),
-		TextParameter.helpers.oboToSlate(
-			'failedResult',
-			node.failedResult,
-			'Failed Result'
-		),
+		TextParameter.helpers.oboToSlate('passedResult', node.passedResult, 'Passed Result'),
+		TextParameter.helpers.oboToSlate('failedResult', node.failedResult, 'Failed Result'),
 		TextParameter.helpers.oboToSlate(
 			'unableToPassResult',
 			node.unableToPassResult,
@@ -75,13 +67,7 @@ const oboToSlate = node => {
 					'Attempt Condition'
 				)
 			)
-			slateMod.nodes.push(
-				TextParameter.helpers.oboToSlate(
-					'reward',
-					mod.reward,
-					'Reward'
-				)
-			)
+			slateMod.nodes.push(TextParameter.helpers.oboToSlate('reward', mod.reward, 'Reward'))
 
 			modList.nodes.push(slateMod)
 		})

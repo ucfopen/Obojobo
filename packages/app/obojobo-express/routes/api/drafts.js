@@ -16,7 +16,7 @@ const {
 	requireCanViewEditor,
 	requireCanCreateDrafts,
 	requireCanDeleteDrafts,
-	requireCanViewDrafts
+	requireCurrentUser
 } = oboRequire('express_validators')
 
 const isNoDataFromQueryError = e => {
@@ -43,13 +43,13 @@ router
 			res.format({
 				'application/xml': async () => {
 					let xml = await draftModel.xmlDocument
-					if(!xml) {
+					if (!xml) {
 						const jsonToXml = require('obojobo-document-json-parser/json-to-xml-parser')
 						xml = jsonToXml(draftModel.document)
 					}
 					res.send(xml)
 				},
-				'default': () => {
+				default: () => {
 					res.success(draftModel.document)
 				}
 			})
@@ -189,7 +189,7 @@ router
 // mounted as /api/drafts
 router
 	.route('/')
-	.get(requireCanViewDrafts)
+	.get(requireCurrentUser)
 	.get((req, res) => {
 		return db
 			.any(

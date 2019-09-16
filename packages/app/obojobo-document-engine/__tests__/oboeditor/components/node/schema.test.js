@@ -13,7 +13,7 @@ describe('Component schema', () => {
 		Schema.blocks[COMPONENT_NODE].normalize(editor, {
 			code: CHILD_UNKNOWN,
 			node: { key: 'mockKey' },
-			child: { object: 'block', type: 'oboeditor.component'},
+			child: { object: 'block', type: 'oboeditor.component' },
 			index: 0
 		})
 
@@ -31,7 +31,7 @@ describe('Component schema', () => {
 		Schema.blocks[COMPONENT_NODE].normalize(editor, {
 			code: CHILD_UNKNOWN,
 			node: { key: 'mockKey' },
-			child: { object: 'block', type: 'mockPage', nodes:[{ key: 'mockGrandChild'}] },
+			child: { object: 'block', type: 'mockPage', nodes: [{ key: 'mockGrandChild' }] },
 			index: 0
 		})
 
@@ -61,7 +61,7 @@ describe('Component schema', () => {
 		Schema.blocks[COMPONENT_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
-			child: { object: 'block', type: 'oboeditor.component'},
+			child: { object: 'block', type: 'oboeditor.component' },
 			index: 0
 		})
 
@@ -79,7 +79,7 @@ describe('Component schema', () => {
 		Schema.blocks[COMPONENT_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: { key: 'mockKey' },
-			child: { object: 'block', type: 'mockPage', nodes:[{ key: 'mockGrandChild'}] },
+			child: { object: 'block', type: 'mockPage', nodes: [{ key: 'mockGrandChild' }] },
 			index: 0
 		})
 

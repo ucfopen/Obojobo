@@ -35,6 +35,7 @@ module.exports = app => {
 			resave: false,
 			name: config.general.cookieName,
 			saveUninitialized: false,
+			rolling: true,
 			cookie: {
 				path: '/',
 				sameSite: false, // Seems to be blocking access from webcourses2c.instructure.com to obojobo (though not webcourses.ucf.edu?)

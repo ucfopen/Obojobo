@@ -32,29 +32,17 @@ const schema = {
 						switch (index) {
 							case 0:
 								block = Block.create(
-									TextParameter.helpers.oboToSlate(
-										'passingAttemptScore',
-										'100',
-										'Passing Score'
-									)
+									TextParameter.helpers.oboToSlate('passingAttemptScore', '100', 'Passing Score')
 								)
 								break
 							case 1:
 								block = Block.create(
-									TextParameter.helpers.oboToSlate(
-										'passedResult',
-										'100',
-										'Passed Result'
-									)
+									TextParameter.helpers.oboToSlate('passedResult', '100', 'Passed Result')
 								)
 								break
 							case 2:
 								block = Block.create(
-									TextParameter.helpers.oboToSlate(
-										'failedResult',
-										'0',
-										'Failed Result'
-									)
+									TextParameter.helpers.oboToSlate('failedResult', '0', 'Failed Result')
 								)
 								break
 							case 3:
@@ -91,9 +79,7 @@ const schema = {
 			}
 		},
 		'ObojoboDraft.Sections.Assessment.Rubric.Mod': {
-			nodes: [
-				{ match: [{ type:  TEXT_PARAMETER }], min: 2 }
-			],
+			nodes: [{ match: [{ type: TEXT_PARAMETER }], min: 2 }],
 			normalize: (editor, error) => {
 				const { node, index } = error
 				switch (error.code) {
@@ -108,13 +94,7 @@ const schema = {
 							)
 							return editor.insertNodeByKey(node.key, index, block)
 						}
-						const block = Block.create(
-							TextParameter.helpers.oboToSlate(
-								'reward',
-								'0',
-								'Reward'
-							)
-						)
+						const block = Block.create(TextParameter.helpers.oboToSlate('reward', '0', 'Reward'))
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 				}

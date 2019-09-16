@@ -2426,10 +2426,12 @@ describe('lti', () => {
 	test('getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId throws errors', async () => {
 		expect.hasAssertions()
 		db.manyOrNone.mockRejectedValueOnce('mock-reject-error')
-		try{
+		try {
 			await lti.getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId('user-id', 'draft-id')
-		} catch(e){
-			expect(logger.error).toHaveBeenCalledWith('Error in getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId')
+		} catch (e) {
+			expect(logger.error).toHaveBeenCalledWith(
+				'Error in getLTIStatesByAssessmentIdForUserAndDraftAndResourceLinkId'
+			)
 			expect(logger.error).toHaveBeenCalledWith('mock-reject-error')
 			expect(e).toBe('mock-reject-error')
 		}

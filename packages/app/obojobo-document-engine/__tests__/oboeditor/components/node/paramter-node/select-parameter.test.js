@@ -13,7 +13,8 @@ describe('Select Parameter', () => {
 			<Node
 				node={{
 					data: {
-						get: jest.fn()
+						get: jest
+							.fn()
 							.mockReturnValueOnce('mockType')
 							.mockReturnValueOnce('Option 1')
 							.mockReturnValueOnce(['Option 1', 'Option 2'])
@@ -61,10 +62,11 @@ describe('Select Parameter', () => {
 			key: 'mockKey',
 			type: 'mockType',
 			data: {
-				get: jest.fn()
-						.mockReturnValueOnce('type-select')
-						.mockReturnValueOnce('Option 1')
-						.mockReturnValueOnce(['Option 1', 'Option 2'])
+				get: jest
+					.fn()
+					.mockReturnValueOnce('type-select')
+					.mockReturnValueOnce('Option 1')
+					.mockReturnValueOnce(['Option 1', 'Option 2'])
 			},
 			text: 'mockValue'
 		}
@@ -74,12 +76,10 @@ describe('Select Parameter', () => {
 	})
 
 	test('oboToSlate converts an OboNode to a Slate node', () => {
-		const slateNode = SelectParameter.helpers.oboToSlate(
-			'oboName',
-			'someValue',
-			'someDisplay',
-			['Option 1', 'Option 2']
-		)
+		const slateNode = SelectParameter.helpers.oboToSlate('oboName', 'someValue', 'someDisplay', [
+			'Option 1',
+			'Option 2'
+		])
 
 		expect(slateNode).toMatchSnapshot()
 	})

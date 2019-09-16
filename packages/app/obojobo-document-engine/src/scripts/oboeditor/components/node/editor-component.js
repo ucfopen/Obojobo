@@ -8,18 +8,18 @@ import './editor-component.scss'
 
 class Node extends React.Component {
 	insertBlockAtStart(item) {
-		const editor = this.props.editor
-
-		return editor.insertNodeByKey(this.props.node.key, 0, Block.create(item.insertJSON))
+		return this.props.editor.insertNodeByKey(
+			this.props.node.key,
+			0,
+			Block.create(item.cloneBlankNode())
+		)
 	}
 
 	insertBlockAtEnd(item) {
-		const editor = this.props.editor
-
-		return editor.insertNodeByKey(
+		return this.props.editor.insertNodeByKey(
 			this.props.node.key,
 			this.props.node.nodes.size,
-			Block.create(item.insertJSON)
+			Block.create(item.cloneBlankNode())
 		)
 	}
 

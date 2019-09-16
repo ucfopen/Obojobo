@@ -5,6 +5,7 @@ const logger = oboRequire('logger')
 const setCurrentUser = (req, user) => {
 	if (!(user instanceof User)) throw new Error('Invalid User for Current user')
 	req.session.currentUserId = user.id
+	req.currentUser = user
 }
 
 const resetCurrentUser = req => {
@@ -29,7 +30,8 @@ const getCurrentUser = (req, isRequired = false) => {
 			)
 			return Promise.reject(new Error('Login Required'))
 		}
-		return Promise.resolve(new GuestUser())
+		req.currentUser = new GuestUser()
+		return Promise.resolve(req.currentUser)
 	}
 
 	// fetch user from database using session data for the user id
@@ -41,7 +43,8 @@ const getCurrentUser = (req, isRequired = false) => {
 		.catch(err => {
 			logger.warn('getCurrentUser', err)
 			if (isRequired) return Promise.reject(new Error('Login Required'))
-			return Promise.resolve(new GuestUser())
+			req.currentUser = new GuestUser()
+			return Promise.resolve(req.currentUser)
 		})
 }
 

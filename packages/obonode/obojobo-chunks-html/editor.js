@@ -43,7 +43,7 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.HTML', {
 	name: 'HTML',
 	icon: Icon,
 	isInsertable: true,
-	insertJSON: emptyNode,
+	templateObject: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
 	plugins
@@ -58,9 +58,6 @@ const HTML = {
 	helpers: {
 		slateToObo: Converter.slateToObo,
 		oboToSlate: Converter.oboToSlate
-	},
-	json: {
-		emptyNode
 	},
 	plugins
 }
