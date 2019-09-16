@@ -814,6 +814,8 @@ describe('ViewerApp', () => {
 		mocksForMount()
 		const component = mount(<ViewerApp />)
 
+		global.navigator.sendBeacon = jest.fn()
+
 		setTimeout(() => {
 			component.update()
 			const spy = jest.spyOn(Dispatcher, 'trigger')
@@ -853,7 +855,9 @@ describe('ViewerApp', () => {
 		})
 	})
 
-	test('onWindowClose calls APIUtil', done => {
+	test('sendCloseEvent calls navigator.sendBeacon', done => {
+		global.navigator.sendBeacon = jest.fn()
+
 		expect.assertions(1)
 		mocksForMount()
 		const component = mount(<ViewerApp />)
@@ -861,9 +865,9 @@ describe('ViewerApp', () => {
 		setTimeout(() => {
 			component.update()
 
-			component.instance().onWindowClose()
+			component.instance().sendCloseEvent()
 
-			expect(APIUtil.postEvent).toHaveBeenCalled()
+			expect(navigator.sendBeacon).toHaveBeenCalled()
 
 			component.unmount()
 			done()
