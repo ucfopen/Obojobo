@@ -1,3 +1,4 @@
+// @TODO: use obojobo-util function to load these dynamically
 import 'obojobo-chunks-action-button/viewer'
 import 'obojobo-chunks-break/viewer'
 import 'obojobo-chunks-code/viewer'

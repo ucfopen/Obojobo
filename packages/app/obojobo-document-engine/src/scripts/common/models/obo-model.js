@@ -54,6 +54,8 @@ class OboModel extends Backbone.Model {
 		}
 
 		if (!item) {
+			// @TODO: make this more visible to the user
+			console.error(`The node type ${typeOrNameOrJson} was not found in the registry`)
 			return null
 		}
 

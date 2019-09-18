@@ -22,6 +22,7 @@ module.exports =
 			devServer: {
 				https: true,
 				host: '127.0.0.1',
+				disableHostCheck: true,
 				before: app => {
 					// add utilities for dev env (visit /dev)
 					require('./server/obo_express_dev')(app)
