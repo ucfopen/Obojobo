@@ -187,7 +187,6 @@ class Node extends React.Component {
 		bullet = content.bulletStyle
 		type = content.type
 
-
 		// get the proper bullet for the next level
 		const bulletList = type === 'unordered' ? unorderedBullets : orderedBullets
 		const nextBullet = bulletList[(bulletList.indexOf(bullet) + 1) % bulletList.length]
