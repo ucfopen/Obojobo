@@ -257,6 +257,7 @@ exports[`PostTest PostTest component with recorded score 1`] = `
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -421,6 +422,7 @@ exports[`PostTest PostTest component with recorded score 2`] = `
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -582,6 +584,7 @@ exports[`PostTest PostTest component with review 1`] = `
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -736,6 +739,7 @@ exports[`PostTest PostTest component with review 2`] = `
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -897,6 +901,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -1051,6 +1056,7 @@ exports[`PostTest PostTest component with review after all attempts - attempts r
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -1212,6 +1218,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -1366,6 +1373,7 @@ exports[`PostTest PostTest component with review after all attempts - no attempt
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -1517,6 +1525,7 @@ exports[`PostTest PostTest component with scoreAction 1`] = `
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>
@@ -1671,6 +1680,7 @@ exports[`PostTest PostTest component with scoreAction 2`] = `
               <span
                 className="text align-center"
                 data-group-index="0"
+                data-hanging-indent={false}
                 data-indent={0}
               >
                 <span>

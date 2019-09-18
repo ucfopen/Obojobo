@@ -30,6 +30,7 @@ exports[`MCFeedback MCFeedback component for a correct item 1`] = `
       <span
         className="text align-left"
         data-group-index={0}
+        data-hanging-indent={false}
         data-indent={0}
       >
         <span>
@@ -75,6 +76,7 @@ exports[`MCFeedback MCFeedback component for an incorrect item 1`] = `
       <span
         className="text align-left"
         data-group-index={0}
+        data-hanging-indent={false}
         data-indent={0}
       >
         <span>

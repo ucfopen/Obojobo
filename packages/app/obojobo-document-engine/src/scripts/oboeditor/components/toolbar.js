@@ -225,15 +225,6 @@ class Node extends React.Component {
 
 			switch (block.type) {
 				case TEXT_LINE_NODE:
-					case TEXT_LINE_NODE:
-					dataJSON.hangingIndent = (dataJSON.hangingIndent == true) ? false : true
-					return editor.setNodeByKey(block.key, { data: dataJSON })
-
-				case CODE_LINE_NODE:
-					dataJSON.content.indent = dataJSON.content.indent + 1
-					return editor.setNodeByKey(block.key, { data: dataJSON })
-
-				case LIST_LINE_NODE:
 					dataJSON.hangingIndent = (dataJSON.hangingIndent == true) ? false : true
 					return editor.setNodeByKey(block.key, { data: dataJSON })
 			}

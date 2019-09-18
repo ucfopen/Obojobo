@@ -10,6 +10,7 @@ Object {
     Object {
       "data": Object {
         "align": undefined,
+        "hangingIndent": undefined,
         "indent": 1,
       },
       "nodes": Array [
@@ -24,6 +25,7 @@ Object {
     Object {
       "data": Object {
         "align": "left",
+        "hangingIndent": false,
         "indent": 0,
       },
       "nodes": Array [
