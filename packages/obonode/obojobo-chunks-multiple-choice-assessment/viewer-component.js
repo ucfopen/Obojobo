@@ -494,9 +494,7 @@ export default class MCAssessment extends React.Component {
 			>
 				<fieldset>
 					<legend className="instructions">
-						<span className="for-screen-reader-only">{`Multiple choice form with ${
-							sortedChoiceModels.length
-						} choices. `}</span>
+						<span className="for-screen-reader-only">{`Multiple choice form with ${sortedChoiceModels.length} choices. `}</span>
 						{this.getInstructions(responseType, this.props.type)}
 					</legend>
 					<MCAssessmentAnswerChoices
