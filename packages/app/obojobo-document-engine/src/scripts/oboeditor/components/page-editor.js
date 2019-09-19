@@ -22,6 +22,8 @@ import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
 
+import EditorNav from './navigation/editor-nav'
+
 const { ModalUtil } = Common.util
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
@@ -37,6 +39,7 @@ class PageEditor extends React.Component {
 			saved: true
 		}
 
+		this.exportToJSON = this.exportToJSON.bind(this)
 		this.saveModule = this.saveModule.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.plugins = this.getPlugins()
@@ -141,7 +144,7 @@ class PageEditor extends React.Component {
 
 	render() {
 		return (
-			<div className={'component obojobo-draft--modules--module editor--page-editor'} role="main">
+			<div className="editor--page-editor">
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
@@ -155,14 +158,24 @@ class PageEditor extends React.Component {
 					/>
 					<ContentToolbar getEditor={this.getEditor.bind(this)} />
 				</div>
-				<Editor
-					className={'component obojobo-draft--pages--page'}
-					value={this.state.value}
-					ref={this.ref.bind(this)}
-					onChange={change => this.onChange(change)}
-					plugins={this.plugins}
-					readOnly={!this.props.page}
+
+				<EditorNav
+					navState={this.props.navState}
+					model={this.props.model}
+					draftId={this.props.draftId}
+					savePage={this.exportToJSON.bind(this, this.props.page, this.state.value)}
 				/>
+
+				<div className="component obojobo-draft--modules--module" role="main">
+					<Editor
+						className={'component obojobo-draft--pages--page'}
+						value={this.state.value}
+						ref={this.ref.bind(this)}
+						onChange={change => this.onChange(change)}
+						plugins={this.plugins}
+						readOnly={!this.props.page}
+					/>
+				</div>
 			</div>
 		)
 	}

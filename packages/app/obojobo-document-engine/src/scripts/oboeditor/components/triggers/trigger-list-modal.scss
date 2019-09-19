@@ -1,0 +1,106 @@
+@import '~styles/includes';
+
+.trigger-list-modal {
+	.trigger {
+		position: relative;
+		border: 1px solid $color-shadow;
+		border-radius: $dimension-rounded-radius;
+		padding-top: 1em;
+		padding-bottom: 1em;
+		text-align: left;
+		margin-bottom: 1.5em;
+		background: $color-bg;
+
+		label {
+			display: inline;
+			padding-left: 1em;
+			padding-right: 0.5em;
+		}
+
+		.delete-button {
+			position: absolute;
+			top: 0;
+			right: 0;
+			border: none;
+			font-size: 1em;
+			font-weight: bold;
+			background: none;
+			color: $color-shadow;
+			padding-right: 0.5em;
+		}
+
+		.action {
+			position: relative;
+			border-top: 1px solid $color-shadow;
+			border-bottom: 1px solid $color-shadow;
+			padding-top: 1em;
+			text-align: right;
+
+			.drag-button {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				width: 1em;
+				border: none;
+				border-right: 1px solid $color-shadow;
+			}
+
+			.delete-button {
+				font-size: 0.8em;
+			}
+
+			.action-options {
+				.obojobo-draft--components--slider {
+					margin-bottom: 1em;
+					margin-right: 4.7em;
+				}
+			}
+		}
+
+		.button {
+			padding: 0.2em 0.5em;
+			color: $color-action;
+			background-color: $color-bg;
+			border-color: $color-action;
+			border-width: 2px;
+			height: 2.35em;
+			margin-left: 1em;
+			margin-top: 1em;
+
+			&:hover {
+				color: $color-bg;
+				background-color: $color-action;
+			}
+		}
+	}
+
+	.select-item {
+		font-family: $font-default;
+		border-radius: 3px;
+		font-size: 1em;
+		background-color: white;
+		min-width: 24.2em;
+		padding: 0.7em 2em 0.7em 0.5em;
+
+		appearance: none;
+		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+			linear-gradient(135deg, gray 50%, transparent 50%);
+		background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
+			calc(100% - 2.5em) 0.5em;
+		background-size: 5px 5px, 5px 5px, 1px 1.5em;
+		background-repeat: no-repeat;
+		margin-right: 1.5em;
+		margin-bottom: 1em;
+	}
+
+	.input-item {
+		font-family: $font-monospace;
+		border-radius: 3px;
+		font-size: 1em;
+		width: 17em;
+		padding: 0.7em 0 0.7em 0.5em;
+		margin-right: 1.5em;
+		margin-bottom: 1em;
+	}
+}

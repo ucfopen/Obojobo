@@ -1,4 +1,4 @@
-@import '../../../scss/includes';
+@import '../../../../scss/includes';
 
 .editor--editor-nav--submenu {
 	padding-right: 1em;
@@ -82,13 +82,5 @@
 			background-color: $color-obojobo-blue;
 			color: $color-bg;
 		}
-	}
-
-	.more-info-button {
-		width: 1.2em;
-		height: 1.2em;
-		position: absolute;
-		right: -1em;
-		opacity: 0.5;
 	}
 }

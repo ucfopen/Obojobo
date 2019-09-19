@@ -1,11 +1,20 @@
 @import '../../../scss/includes';
 
 .editor--page-editor {
-	margin: 3em auto;
-	width: 100%;
-	display: table-cell;
-	margin-top: 3em;
-	margin-bottom: 1em;
+	display: flex;
+	margin: 2em;
+	margin-top: 8em;
+	border: 1px solid $color-text;
+	background-color: $color-bg;
+	border-radius: $dimension-rounded-radius;
+
+	.obojobo-draft--modules--module {
+		margin: 3em auto;
+		width: 100%;
+		display: table-cell;
+		margin-top: 3em;
+		margin-bottom: 1em;
+	}
 
 	.parameter-node {
 		padding-right: 1em;

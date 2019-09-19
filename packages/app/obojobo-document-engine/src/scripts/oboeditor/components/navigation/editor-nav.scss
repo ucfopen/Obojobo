@@ -1,4 +1,4 @@
-@import '../../../scss/includes';
+@import '../../../../scss/includes';
 
 .visual-editor--draft-nav {
 	$color-nav-bg: #fbfbfb;
@@ -20,7 +20,7 @@
 	box-sizing: border-box;
 	transition: left $duration-animation-default $duration-animation-default;
 	border-right: 1px solid transparentize($color-shadow, 0.1);
-	overflow-y: auto;
+	overflow-y: visible;
 	border-radius: $dimension-rounded-radius 0 0 $dimension-rounded-radius;
     align-items: stretch;
 

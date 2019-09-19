@@ -1,14 +1,14 @@
 import './editor-nav.scss'
 // relies on styles from viewer
-import '../../viewer/components/nav.scss'
+import '../../../viewer/components/nav.scss'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-import EditorUtil from '../util/editor-util'
+import EditorUtil from '../../util/editor-util'
 import React from 'react'
 import SubMenu from './sub-menu'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import generatePage from '../documents/generate-page'
-import generateAssessment from '../documents/generate-assessment'
+import generatePage from '../../documents/generate-page'
+import generateAssessment from '../../documents/generate-assessment'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -93,33 +93,42 @@ class EditorNav extends React.Component {
 	}
 
 	renderItems(list) {
-		if(list.length < 2) {
-			return [
-				this.renderHeading(0, list[0]),
-				(<li key="1" className="no-pages-item">
-					<button 
-						className="add-node-button"
-						onClick={this.showAddPageModal}>
-						+ Page
-					</button>
-				</li>),
-			]
+		// If there are no pages in the nav list, add a placeholder item
+		// The placeholder will render an Add Page button
+		if(list.filter(item => item.type !== 'heading' && !item.flags.assessment).length < 1) {
+			list.splice(1,0, {
+				type: 'no-pages'
+			})
 		}
 
 		return list.map((item, index) => {
-			if (item.type === 'heading') return this.renderHeading(index, item)
-			if (item.type === 'link') {
-				return (
-					<SubMenu
-						key={index}
-						index={index}
-						isSelected={this.state.navTargetId === item.id}
-						list={list}
-						onClick={this.onNavItemClick.bind(this, item)}
-					/>
-				)
+			switch(item.type){
+				case 'heading': 
+					return this.renderHeading(index, item)
+				case 'link':
+					return (
+						<SubMenu
+							key={index}
+							index={index}
+							isSelected={this.state.navTargetId === item.id}
+							list={list}
+							onClick={this.onNavItemClick.bind(this, item)}
+							savePage={this.props.savePage}
+						/>
+					)
+				case 'no-pages':
+					return (
+						<li key="1" className="no-pages-item">
+							<button 
+								className="add-node-button"
+								onClick={this.showAddPageModal}>
+								+ Page ⚡
+							</button>
+						</li>
+					)
+				default:
+					return null
 			}
-			return null
 		})
 	}
 

@@ -7,7 +7,6 @@ import './editor-app.scss'
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import CodeEditor from './code-editor'
-import EditorNav from './editor-nav'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/editor-util'
 import { KeyUtils } from 'slate'
@@ -107,12 +106,13 @@ class EditorApp extends React.Component {
 	reloadDraft(draftId, mode) {
 		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? JSON_MODE : mode)
 			.then(response => {
+				let json
 				switch(mode) {
 					case XML_MODE:
 						// Calling getFullDraft with xml will return plain text xml
 						return response
 					default:
-						const json = JSON.parse(response)
+						json = JSON.parse(response)
 						if(json.status === 'error') throw json.value
 
 						return JSON.stringify(json.value, null, 4)
@@ -157,22 +157,15 @@ class EditorApp extends React.Component {
 
 	renderVisualEditor() {
 		return (
-			<div className="draft-content">
-				<EditorNav
-					navState={this.state.editorState}
-					model={this.state.model}
-					draftId={this.state.draftId}
-				/>
-
-				<PageEditor
-					page={this.state.editorState.currentPageModel}
-					context={this.state.editorState.context}
-					model={this.state.model}
-					draft={this.state.draft}
-					draftId={this.state.draftId}
-					switchMode={this.switchMode}
-				/>
-			</div>
+			<PageEditor
+				page={this.state.editorState.currentPageModel}
+				navState={this.state.editorState}
+				context={this.state.editorState.context}
+				model={this.state.model}
+				draft={this.state.draft}
+				draftId={this.state.draftId}
+				switchMode={this.switchMode}
+			/>
 		)
 	}
 
@@ -193,8 +186,8 @@ class EditorApp extends React.Component {
 		return (
 			<div className="visual-editor--editor-app">
 				{this.state.mode === VISUAL_MODE ?
-				 this.renderVisualEditor() :
-				 this.renderCodeEditor()}
+				this.renderVisualEditor() :
+				this.renderCodeEditor()}
 				
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
