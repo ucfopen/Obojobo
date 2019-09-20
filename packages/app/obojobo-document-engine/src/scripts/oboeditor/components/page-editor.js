@@ -1,40 +1,13 @@
 import './page-editor.scss'
 
 import APIUtil from '../../viewer/util/api-util'
-import ActionButton from 'obojobo-chunks-action-button/editor'
-import Assessment from 'obojobo-sections-assessment/editor'
-import Break from 'obojobo-chunks-break/editor'
-import ClipboardPlugin from '../plugins/clipboard-plugin'
-import Code from 'obojobo-chunks-code/editor'
 import Common from '../../common'
-import Component from './node/editor'
 import { Editor } from 'slate-react'
-import EditorSchema from '../plugins/editor-schema'
 import EditorStore from '../stores/editor-store'
-import Figure from 'obojobo-chunks-figure/editor'
-import HTML from 'obojobo-chunks-html/editor'
-import Heading from 'obojobo-chunks-heading/editor'
-import IFrame from 'obojobo-chunks-iframe/editor'
-import List from 'obojobo-chunks-list/editor'
-import MCAnswer from 'obojobo-chunks-multiple-choice-assessment/MCAnswer/editor'
-import MCAssessment from 'obojobo-chunks-multiple-choice-assessment/editor'
-import MCChoice from 'obojobo-chunks-multiple-choice-assessment/MCChoice/editor'
-import MCFeedback from 'obojobo-chunks-multiple-choice-assessment/MCFeedback/editor'
 import MarkToolbar from './toolbar'
-import MathEquation from 'obojobo-chunks-math-equation/editor'
-import Page from 'obojobo-pages-page/editor'
-import Question from 'obojobo-chunks-question/editor'
-import QuestionBank from 'obojobo-chunks-question-bank/editor'
 import React from 'react'
-import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
-import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-component'
-import SelectParameter from './parameter-node/select-parameter'
-import Table from 'obojobo-chunks-table/editor'
-import Text from 'obojobo-chunks-text/editor'
-import TextParameter from './parameter-node/text-parameter'
-import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
-import YouTube from 'obojobo-chunks-youtube/editor'
+import Component from './node/editor'
 
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -43,37 +16,7 @@ const { Button } = Common.components
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
-const plugins = [
-	Component.plugins,
-	MarkToolbar.plugins,
-	ActionButton.plugins,
-	Break.plugins,
-	Code.plugins,
-	Figure.plugins,
-	Heading.plugins,
-	IFrame.plugins,
-	List.plugins,
-	MathEquation.plugins,
-	Table.plugins,
-	Text.plugins,
-	YouTube.plugins,
-	QuestionBank.plugins,
-	Question.plugins,
-	MCAssessment.plugins,
-	MCChoice.plugins,
-	MCAnswer.plugins,
-	MCFeedback.plugins,
-	HTML.plugins,
-	ScoreActions.plugins,
-	Page.plugins,
-	Rubric.plugins,
-	ToggleParameter.plugins,
-	SelectParameter.plugins,
-	TextParameter.plugins,
-	Assessment.plugins,
-	EditorSchema,
-	ClipboardPlugin
-]
+
 
 class PageEditor extends React.Component {
 	constructor(props) {
@@ -123,7 +66,7 @@ class PageEditor extends React.Component {
 					value={this.state.value}
 					ref={this.ref.bind(this)}
 					onChange={change => this.onChange(change)}
-					plugins={plugins}
+					plugins={this.props.plugins}
 				/>
 				{this.renderExportButton()}
 			</div>

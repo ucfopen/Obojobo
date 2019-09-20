@@ -12,10 +12,99 @@ import PageEditor from './page-editor'
 import React from 'react'
 import generateId from '../generate-ids'
 
+// PLUGINS
+import ClipboardPlugin from '../plugins/clipboard-plugin'
+import EditorSchema from '../plugins/editor-schema'
+import Component from './node/editor'
+import SelectParameter from './parameter-node/select-parameter'
+import TextParameter from './parameter-node/text-parameter'
+import ToggleParameter from './parameter-node/toggle-parameter'
+import MarkToolbar from './toolbar'
+
+// Modular plugins
+import Assessment from 'obojobo-sections-assessment/editor'
+import Break from 'obojobo-chunks-break/editor'
+import Code from 'obojobo-chunks-code/editor'
+import Figure from 'obojobo-chunks-figure/editor'
+import HTML from 'obojobo-chunks-html/editor'
+import Heading from 'obojobo-chunks-heading/editor'
+import IFrame from 'obojobo-chunks-iframe/editor'
+import List from 'obojobo-chunks-list/editor'
+import MCAnswer from 'obojobo-chunks-multiple-choice-assessment/MCAnswer/editor'
+import MCAssessment from 'obojobo-chunks-multiple-choice-assessment/editor'
+import MCChoice from 'obojobo-chunks-multiple-choice-assessment/MCChoice/editor'
+import MCFeedback from 'obojobo-chunks-multiple-choice-assessment/MCFeedback/editor'
+import MathEquation from 'obojobo-chunks-math-equation/editor'
+import Page from 'obojobo-pages-page/editor'
+import Question from 'obojobo-chunks-question/editor'
+import QuestionBank from 'obojobo-chunks-question-bank/editor'
+import Rubric from 'obojobo-sections-assessment/components/rubric/editor'
+import Table from 'obojobo-chunks-table/editor'
+import Text from 'obojobo-chunks-text/editor'
+import YouTube from 'obojobo-chunks-youtube/editor'
+import ScoreActions from 'obojobo-sections-assessment/post-assessment/editor-component'
+
 const { ModalContainer } = Common.components
 const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
 const { OboModel } = Common.models
+
+
+let plugins = [
+	Component.plugins,
+	MarkToolbar.plugins,
+	Break.plugins,
+	Code.plugins,
+	Figure.plugins,
+	Heading.plugins,
+	IFrame.plugins,
+	List.plugins,
+	MathEquation.plugins,
+	Table.plugins,
+	Text.plugins,
+	YouTube.plugins,
+	QuestionBank.plugins,
+	Question.plugins,
+	MCAssessment.plugins,
+	MCChoice.plugins,
+	MCAnswer.plugins,
+	MCFeedback.plugins,
+	HTML.plugins,
+	ScoreActions.plugins,
+	Page.plugins,
+	Rubric.plugins,
+	ToggleParameter.plugins,
+	SelectParameter.plugins,
+	TextParameter.plugins,
+	Assessment.plugins,
+	EditorSchema,
+	ClipboardPlugin
+]
+
+const registerNodes = () => {
+	const pluginsFromModules = [...require('obojobo-chunks-action-button').obojobo.editorScripts]
+
+	pluginsFromModules.forEach(p => {
+		// register the node
+		Common.Registry.registerModel(p.name, {
+			name: p.menuLabel,
+			icon: p.icon,
+			isInsertable: p.isInsertable,
+			insertJSON: p.json.emptyNode,
+			slateToObo: p.helpers.slateToObo,
+			oboToSlate: p.helpers.oboToSlate,
+			plugins: p.plugins
+		})
+
+		// register plugins
+		// @TODO - this could happen inside registerModel
+		// and later be extracted directly by PageEditor?
+		plugins.push(p.plugins)
+	})
+}
+
+registerNodes()
+
 
 class EditorApp extends React.Component {
 	constructor(props) {
@@ -115,6 +204,7 @@ class EditorApp extends React.Component {
 						model={this.state.model}
 						draft={this.state.draft}
 						draftId={this.state.draftId}
+						plugins={plugins}
 					/>
 				</div>
 				{modalItem && modalItem.component ? (
