@@ -15,7 +15,10 @@ const sessionSave = jest.fn()
 // array of mocked express middleware request arguments
 const mockExpressArgs = withLtiData => {
 	const res = {}
-
+	const mockDocument = {
+		draftId: '999',
+		contentId: '12'
+	}
 	const req = {
 		session: { save: sessionSave },
 		connection: { remoteAddress: '1.1.1.1' },
@@ -24,10 +27,9 @@ const mockExpressArgs = withLtiData => {
 		},
 		setCurrentUser: jest.fn(),
 		setCurrentDocument: jest.fn(),
-		requireCurrentDocument: jest.fn().mockResolvedValue({
-			draftId: '999',
-			contentId: '12'
-		}),
+		requireCurrentDocument: jest.fn().mockResolvedValue(),
+		currentDocument: mockDocument,
+		currentUser: new User({ id: 8 }),
 		hostname: 'dummyhost'
 	}
 
@@ -104,7 +106,7 @@ describe('lti launch middleware', () => {
 						roles: ['saviour', 'explorer', 'doctor']
 					},
 					draftId: '999',
-					userId: 1
+					userId: 8
 				})
 			)
 
@@ -120,7 +122,7 @@ describe('lti launch middleware', () => {
 					payload: {
 						launchId: 88
 					},
-					userId: 1
+					userId: 8
 				})
 			)
 		})
@@ -151,7 +153,7 @@ describe('lti launch middleware', () => {
 					},
 					draftId: '999',
 					ltiConsumerKey: undefined, //eslint-disable-line no-undefined
-					userId: 1
+					userId: 8
 				})
 			)
 
@@ -167,7 +169,7 @@ describe('lti launch middleware', () => {
 					payload: {
 						launchId: 88
 					},
-					userId: 1
+					userId: 8
 				})
 			)
 		})
