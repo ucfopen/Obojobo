@@ -73,6 +73,16 @@
 				border-bottom: 1px solid $color-shadow;
 				position: relative;
 
+				&.assessment-settings {
+					label {
+						width: 5em;
+					}
+
+					input {
+						width: 23em;
+					}
+				}
+
 				label {
 					display: inline-block;
 					width: 3em;
@@ -84,7 +94,7 @@
 					width: 25.55em;
 
 					&.id-input {
-						width: 19.6em;
+						width: 20.7em;
 					}
 				}
 
@@ -104,10 +114,13 @@
 				}
 
 				.triggers {
-					font-weight: normal;
-					padding-left: 0.5em;
 					padding-right: 3.5em;
-					width: 100%
+					display: inline-block;
+
+					span {
+						padding-left: 0.5em;
+						font-weight: normal;
+					}
 				}
 
 				.trigger-button {
@@ -132,5 +145,23 @@
 		.button {
 			font-size: 0.8em;
 		}
+	}
+
+	.select-item {
+		font-family: $font-default;
+		border-radius: 3px;
+		font-size: 0.7em;
+		background-color: white;
+		min-width: 26.25em;
+		padding: 0.7em 2em 0.7em 0.5em;
+
+		appearance: none;
+		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+			linear-gradient(135deg, gray 50%, transparent 50%);
+		background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
+			calc(100% - 2.5em) 0.5em;
+		background-size: 5px 5px, 5px 5px, 1px 1.5em;
+		background-repeat: no-repeat;
+		margin-bottom: 0.5em;
 	}
 }

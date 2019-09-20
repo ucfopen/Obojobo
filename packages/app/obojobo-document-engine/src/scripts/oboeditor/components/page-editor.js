@@ -236,6 +236,8 @@ class PageEditor extends React.Component {
 					break
 			}
 
+			console.log(contentJSON)
+
 			json.children.push(contentJSON)
 		})
 		this.setState({ saved: true })

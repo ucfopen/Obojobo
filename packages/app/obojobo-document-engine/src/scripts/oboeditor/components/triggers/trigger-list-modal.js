@@ -213,7 +213,7 @@ class TriggerListModal extends React.Component {
 			<ListDialog
 				close
 				title="Triggers"
-				onConfirm={() => this.props.onConfirm(this.state)}>
+				onClose={() => this.props.onClose(this.state)}>
 				<div className="trigger-list-modal">
 					{this.state.triggers.map((trigger, triggerIndex) => (
 						<div className="trigger" key={triggerIndex}>
