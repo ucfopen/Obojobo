@@ -284,6 +284,8 @@ class PageEditor extends React.Component {
 			})
 		}
 
+		console.log(json)
+
 		return json
 	}
 }

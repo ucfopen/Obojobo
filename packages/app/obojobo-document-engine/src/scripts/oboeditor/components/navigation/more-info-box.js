@@ -9,8 +9,14 @@ import generateId from '../../generate-ids'
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 
+import {
+	getTriggersWithActionsAdded,
+	getTriggersWithActionsRemoved,
+	hasTriggerTypeWithActionType
+} from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
+
 const { SimpleDialog } = Common.components.modal
-const { Button } = Common.components
+const { Button, Slider } = Common.components
 const { ModalUtil } = Common.util
 
 const { OboModel } = Common.models
@@ -20,13 +26,20 @@ class MoreInfoBox extends React.Component {
 		super(props)
 
 		this.model = OboModel.models[this.props.item.id]
+		const content = this.model.get('content')
+
+		const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
+		const endAttemptUnlock =
+			hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
+			hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
 
 		this.state = {
 			currentId: this.props.item.id,
 			currentTitle: this.props.item.label,
 			error: null,
 			isOpen: false,
-			content: this.model.get('content')
+			content: content,
+			isNavLock: startAttemptLock && endAttemptUnlock
 		}
 
 		this.toggleOpen = this.toggleOpen.bind(this)
@@ -44,6 +57,8 @@ class MoreInfoBox extends React.Component {
 
 		this.showTriggersModal = this.showTriggersModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
+
+		this.toggleLockNav = this.toggleLockNav.bind(this)
 
 		this.node = React.createRef()
 	}
@@ -167,8 +182,27 @@ class MoreInfoBox extends React.Component {
 		}))
 	}
 
+	toggleLockNav(isNavLock) {
+		const content = this.model.get('content')
+		if (isNavLock) {
+			content.triggers = getTriggersWithActionsAdded(content.triggers || [], {
+				onNavEnter: { type: 'nav:lock' },
+				onEndAttempt: { type: 'nav:unlock' },
+				onNavExit: { type: 'nav:unlock' }
+			})
+		} else if (content.triggers) {
+			const updatedTriggers = getTriggersWithActionsRemoved(content.triggers, {
+				onNavEnter: 'nav:lock',
+				onEndAttempt: 'nav:unlock',
+				onNavExit: 'nav:unlock'
+			})
+			content.triggers = updatedTriggers
+		}
+
+		return this.setState({ content, isNavLock })
+	}
+
 	renderAssessmentSettings() {
-		console.log(this.model.get('content'))
 		return (
 			<div className="assessment-settings">
 				<div>
@@ -190,6 +224,10 @@ class MoreInfoBox extends React.Component {
 						<option value="no-attempts-remaining">Show answers in review after last attempt</option>
 					</select>
 				</div>
+				<Slider
+					title="Lock Navigation During Attempts"
+					initialChecked={this.state.isNavLock}
+					handleCheckChange={this.toggleLockNav}/>
 			</div>
 		)
 	}
