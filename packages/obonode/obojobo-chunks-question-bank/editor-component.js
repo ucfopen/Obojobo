@@ -6,16 +6,17 @@ import { Block } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import emptyQB from './empty-node.json'
-import emptyQuestion from 'obojobo-chunks-question/empty-node.json'
 
 const { Button } = Common.components
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 
 const remove = (editor, node) => {
 	editor.removeNodeByKey(node.key)
 }
 
 const addQuestion = (editor, node) => {
-	const newQuestion = Block.create(emptyQuestion)
+	const Question = Common.Registry.getItemForType(QUESTION_NODE)
+	const newQuestion = Block.create(Question.insertJSON)
 	editor.insertNodeByKey(node.key, node.nodes.size, newQuestion)
 }
 

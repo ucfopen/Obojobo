@@ -1,23 +1,21 @@
-const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
-const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
-const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
-const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
+import Common from 'obojobo-document-engine/src/scripts/common'
+import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
+import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
+import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
+import ScoreActions from './post-assessment/editor-registration'
+import Rubric from './components/rubric/editor-registration'
 import {
 	getTriggersWithActionsAdded,
 	getTriggersWithActionsRemoved,
 	hasTriggerTypeWithActionType
 } from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
 
-import Page from 'obojobo-pages-page/editor-registration'
-import QuestionBank from 'obojobo-chunks-question-bank/editor-registration'
-import Rubric from './components/rubric/editor-registration'
-import ScoreActions from './post-assessment/editor-registration'
-import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
-import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
-import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
+const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
+const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
+const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
+const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
+const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 const slateToObo = node => {
 	const content = node.data.get('content')
@@ -28,10 +26,12 @@ const slateToObo = node => {
 	node.nodes.forEach(child => {
 		switch (child.type) {
 			case PAGE_NODE:
-				children.push(Page.helpers.slateToObo(child))
+				const Page = Common.Registry.getItemForType(PAGE_NODE)
+				children.push(Page.slateToObo(child))
 				break
 			case QUESTION_BANK_NODE:
-				children.push(QuestionBank.helpers.slateToObo(child))
+				const QuestionBank = Common.Registry.getItemForType(QUESTION_BANK_NODE)
+				children.push(QuestionBank.slateToObo(child))
 				break
 			case ACTIONS_NODE:
 				content.scoreActions = ScoreActions.helpers.slateToObo(child)
@@ -101,14 +101,18 @@ const oboToSlate = node => {
 
 	node.attributes.children.forEach(child => {
 		if (child.type === PAGE_NODE) {
-			nodes.push(Page.helpers.oboToSlate(child))
+			const Page = Common.Registry.getItemForType(PAGE_NODE)
+			nodes.push(Page.oboToSlate(child))
 		} else {
-			nodes.push(QuestionBank.helpers.oboToSlate(child))
+			const QuestionBank = Common.Registry.getItemForType(QUESTION_BANK_NODE)
+			nodes.push(QuestionBank.oboToSlate(child))
 		}
 	})
 
 	nodes.push(ScoreActions.helpers.oboToSlate(content.scoreActions))
-	if (content.rubric) nodes.push(Rubric.helpers.oboToSlate(content.rubric))
+	if (content.rubric){
+		nodes.push(Rubric.helpers.oboToSlate(content.rubric))
+	}
 
 	return {
 		object: 'block',

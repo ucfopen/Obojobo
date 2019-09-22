@@ -4,7 +4,6 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { Block } from 'slate'
 
-import Page from 'obojobo-pages-page/editor-registration'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 import RangeModal from './range-modal'
 
@@ -98,6 +97,7 @@ class Node extends React.Component {
 }
 
 const slateToObo = node => {
+	const Page = Common.Registry.getItemForType(PAGE_NODE)
 	const json = []
 
 	node.nodes.forEach(action => {
@@ -106,7 +106,7 @@ const slateToObo = node => {
 		}
 
 		action.nodes.forEach(page => {
-			slateAction.page = Page.helpers.slateToObo(page)
+			slateAction.page = Page.slateToObo(page)
 		})
 
 		json.push(slateAction)
@@ -116,6 +116,7 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
+	const Page = Common.Registry.getItemForType(PAGE_NODE)
 	const json = {}
 	json.object = 'block'
 	json.type = ACTIONS_NODE
@@ -129,7 +130,7 @@ const oboToSlate = node => {
 			nodes: []
 		}
 
-		slateAction.nodes.push(Page.helpers.oboToSlate(action.page))
+		slateAction.nodes.push(Page.oboToSlate(action.page))
 
 		json.nodes.push(slateAction)
 	})
