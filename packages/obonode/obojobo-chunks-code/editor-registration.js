@@ -102,7 +102,6 @@ const plugins = {
 	}
 }
 
-
 const Code = {
 	name: CODE_NODE,
 	icon: Icon,

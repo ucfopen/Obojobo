@@ -41,7 +41,7 @@ class _Registry {
 	}
 
 	// convenience method for editor nodes to register
-	registerEditorModel(EditorNode){
+	registerEditorModel(EditorNode) {
 		this.registerModel(EditorNode.name, {
 			name: EditorNode.menuLabel,
 			icon: EditorNode.icon,
@@ -52,7 +52,7 @@ class _Registry {
 			plugins: EditorNode.plugins,
 			getNavItem: EditorNode.getNavItem,
 			supportsChildren: EditorNode.supportsChildren || false,
-			ignore: EditorNode.ignore || false,
+			ignore: EditorNode.ignore || false
 		})
 	}
 

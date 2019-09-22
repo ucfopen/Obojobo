@@ -55,7 +55,7 @@ class EditorApp extends React.Component {
 		// and later be extracted directly by PageEditor?
 		Common.Registry.getItems(items => {
 			items.forEach(i => {
-				if(i.plugins){
+				if (i.plugins) {
 					console.log('adding plugins for ' + i.name)
 					plugins.push(i.plugins)
 				}

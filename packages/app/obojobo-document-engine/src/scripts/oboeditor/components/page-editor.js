@@ -103,9 +103,7 @@ class PageEditor extends React.Component {
 
 	exportToJSON(page, value) {
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = this.assessment.slateToObo(
-				value.document.nodes.get(0)
-			)
+			const json = this.assessment.slateToObo(value.document.nodes.get(0))
 			page.set('children', json.children)
 			page.set('content', json.content)
 

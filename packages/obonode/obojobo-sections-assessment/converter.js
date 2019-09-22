@@ -110,7 +110,7 @@ const oboToSlate = node => {
 	})
 
 	nodes.push(ScoreActions.helpers.oboToSlate(content.scoreActions))
-	if (content.rubric){
+	if (content.rubric) {
 		nodes.push(Rubric.helpers.oboToSlate(content.rubric))
 	}
 

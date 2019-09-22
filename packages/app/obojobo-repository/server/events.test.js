@@ -26,26 +26,29 @@ describe('Server Events', () => {
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_NOT_AUTHORIZED', expect.any(Function))
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_NOT_FOUND', expect.any(Function))
 		expect(oboEvents.on).toHaveBeenCalledWith('HTTP_UNEXPECTED', expect.any(Function))
-		expect(oboEvents.on).toHaveBeenCalledWith(DraftModel.EVENT_NEW_DRAFT_CREATED, expect.any(Function))
+		expect(oboEvents.on).toHaveBeenCalledWith(
+			DraftModel.EVENT_NEW_DRAFT_CREATED,
+			expect.any(Function)
+		)
 		expect(oboEvents.on).toHaveBeenCalledWith(DraftModel.EVENT_DRAFT_DELETED, expect.any(Function))
 	})
 
 	test('maps a user to a module when its created', () => {
 		// verify we have the right callback
-		const [ eventName, newDraftListener ] = oboEvents.on.mock.calls[0]
+		const [eventName, newDraftListener] = oboEvents.on.mock.calls[0]
 		expect(eventName).toBe(DraftModel.EVENT_NEW_DRAFT_CREATED)
 		expect(newDraftListener.length).toBe(1) // callback function arguments
 		expect(db.none).toHaveBeenCalledTimes(0)
 
 		// call the callback
-		newDraftListener({id: 2, user_id: 3})
+		newDraftListener({ id: 2, user_id: 3 })
 		expect(db.none).toHaveBeenCalledTimes(1)
 		expect(db.none.mock.calls[0][0]).toContain('INSERT INTO repository_map_user_to_draft')
 	})
 
 	test('cleans ownership when a draft is deleted', () => {
 		// verify we have the right callback
-		const [ eventName, deleteDraftListener ] = oboEvents.on.mock.calls[1]
+		const [eventName, deleteDraftListener] = oboEvents.on.mock.calls[1]
 		expect(eventName).toBe(DraftModel.EVENT_DRAFT_DELETED)
 		expect(deleteDraftListener.length).toBe(0) // callback function arguments
 		expect(db.none).toHaveBeenCalledTimes(0)
@@ -58,7 +61,7 @@ describe('Server Events', () => {
 
 	test('HTTP_NOT_AUTHORIZED events render a page', () => {
 		// verify we have the right callback
-		const [ eventName, notAuthorizedListener ] = oboEvents.on.mock.calls[2]
+		const [eventName, notAuthorizedListener] = oboEvents.on.mock.calls[2]
 		expect(eventName).toBe('HTTP_NOT_AUTHORIZED')
 		expect(notAuthorizedListener.length).toBe(1) // callback function arguments
 
@@ -72,16 +75,15 @@ describe('Server Events', () => {
 		}
 
 		// call the callback
-		return notAuthorizedListener({req: mockReq, res: mockRes, next: jest.fn()})
-			.then(() => {
-				expect(mockReq).toHaveProperty('responseHandled', true)
-				expect(mockRes.render).toHaveBeenCalled()
-			})
+		return notAuthorizedListener({ req: mockReq, res: mockRes, next: jest.fn() }).then(() => {
+			expect(mockReq).toHaveProperty('responseHandled', true)
+			expect(mockRes.render).toHaveBeenCalled()
+		})
 	})
 
 	test('HTTP_NOT_FOUND events render a page', () => {
 		// verify we have the right callback
-		const [ eventName, notFoundListener ] = oboEvents.on.mock.calls[3]
+		const [eventName, notFoundListener] = oboEvents.on.mock.calls[3]
 		expect(eventName).toBe('HTTP_NOT_FOUND')
 		expect(notFoundListener.length).toBe(1) // callback function arguments
 
@@ -95,16 +97,15 @@ describe('Server Events', () => {
 		}
 
 		// call the callback
-		return notFoundListener({req: mockReq, res: mockRes, next: jest.fn()})
-			.then(() => {
-				expect(mockReq).toHaveProperty('responseHandled', true)
-				expect(mockRes.render).toHaveBeenCalled()
-			})
+		return notFoundListener({ req: mockReq, res: mockRes, next: jest.fn() }).then(() => {
+			expect(mockReq).toHaveProperty('responseHandled', true)
+			expect(mockRes.render).toHaveBeenCalled()
+		})
 	})
 
 	test('HTTP_UNEXPECTED events render a page', () => {
 		// verify we have the right callback
-		const [ eventName, unexpectedListener ] = oboEvents.on.mock.calls[4]
+		const [eventName, unexpectedListener] = oboEvents.on.mock.calls[4]
 		expect(eventName).toBe('HTTP_UNEXPECTED')
 		expect(unexpectedListener.length).toBe(1) // callback function arguments
 
@@ -118,11 +119,9 @@ describe('Server Events', () => {
 		}
 
 		// call the callback
-		return unexpectedListener({req: mockReq, res: mockRes, next: jest.fn()})
-			.then(() => {
-				expect(mockReq).toHaveProperty('responseHandled', true)
-				expect(mockRes.render).toHaveBeenCalled()
-			})
+		return unexpectedListener({ req: mockReq, res: mockRes, next: jest.fn() }).then(() => {
+			expect(mockReq).toHaveProperty('responseHandled', true)
+			expect(mockRes.render).toHaveBeenCalled()
+		})
 	})
-
 })

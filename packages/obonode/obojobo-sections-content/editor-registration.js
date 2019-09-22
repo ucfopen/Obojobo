@@ -7,7 +7,7 @@ const Content = {
 	plugins: null,
 	helpers: {
 		slateToObo: () => {},
-		oboToSlate: () => {},
+		oboToSlate: () => {}
 	},
 	getNavItem: () => ({
 		type: 'hidden',

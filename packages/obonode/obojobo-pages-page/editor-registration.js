@@ -6,7 +6,6 @@ import Converter from './converter'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
-
 const Page = {
 	name: PAGE_NODE,
 	menuLabel: 'Page',
