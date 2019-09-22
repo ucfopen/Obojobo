@@ -168,6 +168,7 @@ const gatherClientScriptsFromModules = () => {
 		})
 	})
 
+	console.log(scripts)
 	return scripts
 }
 

@@ -1,17 +1,6 @@
-const MODULE_NODE = 'ObojoboDraft.Modules.Module'
+// Main entrypoint for editor
+import Common from 'obojobo-document-engine/src/scripts/common'
+import EditorNode from './editor-registration'
 
-const Module = {
-	name: MODULE_NODE,
-	menuLabel: 'Module',
-	ignore: true,
-	isInsertable: false,
-	getNavItem(model) {
-		return {
-			type: 'heading',
-			label: model.title,
-			showChildren: true
-		}
-	}
-}
-
-export default Module
+// register
+Common.Registry.registerEditorModel(EditorNode)

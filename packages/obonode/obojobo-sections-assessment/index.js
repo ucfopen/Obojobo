@@ -4,7 +4,7 @@ module.exports = {
 		expressMiddleware: 'server/express.js',
 		clientScripts: {
 			viewer: 'viewer.js',
-			editor: 'editor2.js'
+			editor: 'editor.js'
 		}
 	}
 }
