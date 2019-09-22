@@ -1,5 +1,4 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import { getEventTransfer } from 'slate-react'
 import { Block } from 'slate'
 
@@ -142,26 +141,13 @@ const plugins = {
 	}
 }
 
-Common.Registry.registerModel('ObojoboDraft.Chunks.List', {
-	name: 'List',
-	icon: Icon,
-	isInsertable: true,
-	insertJSON: emptyNode,
-	slateToObo: Converter.slateToObo,
-	oboToSlate: Converter.oboToSlate,
-	plugins
-})
-
 const List = {
 	name: LIST_NODE,
-	components: {
-		Node,
-		Level,
-		Line,
-		Icon
-	},
+	menuLabel: 'List',
+	icon: Icon,
+	isInsertable: true,
 	helpers: {
-		isType,
+		isType, //@TODO check if this is needed?
 		slateToObo: Converter.slateToObo,
 		oboToSlate: Converter.oboToSlate
 	},

@@ -1,12 +1,10 @@
-import Common from 'obojobo-document-engine/src/scripts/common'
+const MODULE_NODE = 'ObojoboDraft.Modules.Module'
 
-Common.Registry.registerModel('ObojoboDraft.Modules.Module', {
-	name: 'Module',
+const Module = {
+	name: MODULE_NODE,
+	menuLabel: 'Module',
 	ignore: true,
 	isInsertable: false,
-	slateToObo: () => {},
-	oboToSlate: () => {},
-	plugins: null,
 	getNavItem(model) {
 		return {
 			type: 'heading',
@@ -14,4 +12,6 @@ Common.Registry.registerModel('ObojoboDraft.Modules.Module', {
 			showChildren: true
 		}
 	}
-})
+}
+
+export default Module

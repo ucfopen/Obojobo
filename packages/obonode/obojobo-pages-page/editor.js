@@ -1,5 +1,4 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 
 import Node from './editor-component'
 import Schema from './schema'
@@ -7,25 +6,24 @@ import Converter from './converter'
 
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
-const plugins = {
-	renderNode(props, editor, next) {
-		switch (props.node.type) {
-			case PAGE_NODE:
-				return <Node {...props} {...props.attributes} />
-			default:
-				return next()
-		}
-	},
-	schema: Schema
-}
 
-Common.Registry.registerModel('ObojoboDraft.Pages.Page', {
-	name: 'Page',
+const Page = {
+	name: PAGE_NODE,
+	menuLabel: 'Page',
 	isInsertable: false,
-	slateToObo: Converter.slateToObo,
-	oboToSlate: Converter.oboToSlate,
 	supportsChildren: true,
-	plugins,
+	helpers: Converter,
+	plugins: {
+		renderNode(props, editor, next) {
+			switch (props.node.type) {
+				case PAGE_NODE:
+					return <Node {...props} {...props.attributes} />
+				default:
+					return next()
+			}
+		},
+		schema: Schema
+	},
 	getNavItem(model) {
 		let label
 
@@ -45,17 +43,6 @@ Common.Registry.registerModel('ObojoboDraft.Pages.Page', {
 			showChildren: false
 		}
 	}
-})
-
-const Page = {
-	components: {
-		Node
-	},
-	helpers: {
-		slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate
-	},
-	plugins
 }
 
 export default Page

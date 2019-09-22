@@ -195,10 +195,6 @@ const plugins = {
 }
 
 const Actions = {
-	components: {
-		Node,
-		Score
-	},
 	helpers: {
 		slateToObo,
 		oboToSlate

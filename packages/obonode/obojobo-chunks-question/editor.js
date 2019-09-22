@@ -1,8 +1,4 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
-const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
@@ -11,29 +7,32 @@ import Solution from './components/solution/editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
-const plugins = {
-	renderNode(props, editor, next) {
-		switch (props.node.type) {
-			case QUESTION_NODE:
-				return <Node {...props} {...props.attributes} />
-			case SOLUTION_NODE:
-				return <Solution {...props} {...props.attributes} />
-			default:
-				return next()
-		}
-	},
-	schema: Schema
-}
+const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
+const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
-Common.Registry.registerModel('ObojoboDraft.Chunks.Question', {
-	name: 'Question',
+const Question = {
+	name: QUESTION_NODE,
+	menuLabel: 'Question',
 	icon: Icon,
 	isInsertable: true,
-	insertJSON: emptyNode,
-	slateToObo: Converter.slateToObo,
-	oboToSlate: Converter.oboToSlate,
 	supportsChildren: true,
-	plugins,
+	helpers: Converter,
+	json: {
+		emptyNode
+	},
+	plugins: {
+		renderNode(props, editor, next) {
+			switch (props.node.type) {
+				case QUESTION_NODE:
+					return <Node {...props} {...props.attributes} />
+				case SOLUTION_NODE:
+					return <Solution {...props} {...props.attributes} />
+				default:
+					return next()
+			}
+		},
+		schema: Schema
+	},
 	getNavItem(model) {
 		const questions = model.parent.children.models.filter(
 			child => child.get('type') === 'ObojoboDraft.Chunks.Question'
@@ -46,23 +45,6 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.Question', {
 			path: [`#obo-${model.get('id')}`]
 		}
 	}
-})
-
-const Question = {
-	name: QUESTION_NODE,
-	components: {
-		Node,
-		Solution,
-		Icon
-	},
-	helpers: {
-		slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate
-	},
-	json: {
-		emptyNode
-	},
-	plugins
 }
 
 export default Question

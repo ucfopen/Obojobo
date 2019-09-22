@@ -1,4 +1,3 @@
-import Common from 'obojobo-document-engine/src/scripts/common'
 import { getEventTransfer } from 'slate-react'
 import { Block } from 'slate'
 
@@ -103,27 +102,13 @@ const plugins = {
 	}
 }
 
-Common.Registry.registerModel('ObojoboDraft.Chunks.Code', {
-	name: 'Code',
-	icon: Icon,
-	isInsertable: true,
-	insertJSON: emptyNode,
-	slateToObo: Converter.slateToObo,
-	oboToSlate: Converter.oboToSlate,
-	plugins
-})
 
 const Code = {
 	name: CODE_NODE,
-	components: {
-		Node,
-		Line,
-		Icon
-	},
-	helpers: {
-		slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate
-	},
+	icon: Icon,
+	menuLabel: 'Code',
+	isInsertable: true,
+	helpers: Converter,
 	json: {
 		emptyNode
 	},

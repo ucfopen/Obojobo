@@ -1,9 +1,7 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import { getEventTransfer, cloneFragment } from 'slate-react'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
-
 import emptyNode from './empty-node.json'
 import Icon from './icon'
 import Node from './editor-component'
@@ -106,28 +104,12 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Registry.registerModel('ObojoboDraft.Chunks.Table', {
-	name: 'Table',
-	icon: Icon,
-	isInsertable: true,
-	insertJSON: emptyNode,
-	slateToObo: Converter.slateToObo,
-	oboToSlate: Converter.oboToSlate,
-	plugins
-})
-
 const Table = {
 	name: TABLE_NODE,
-	components: {
-		Node,
-		Row,
-		Cell,
-		Icon
-	},
-	helpers: {
-		slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate
-	},
+	menuLabel: 'Table',
+	icon: Icon,
+	isInsertable: true,
+	helpers: Converter,
 	json: {
 		emptyNode
 	},

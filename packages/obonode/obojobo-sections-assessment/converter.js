@@ -14,7 +14,7 @@ import {
 import Page from 'obojobo-pages-page/editor'
 import QuestionBank from 'obojobo-chunks-question-bank/editor'
 import Rubric from './components/rubric/editor'
-import ScoreActions from './post-assessment/editor-component'
+import ScoreActions from './post-assessment/editor'
 import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
 import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
 import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'

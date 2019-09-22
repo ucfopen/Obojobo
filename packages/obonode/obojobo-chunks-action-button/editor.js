@@ -17,10 +17,7 @@ const ActionButton = {
 		Node,
 		Icon
 	},
-	helpers: {
-		slateToObo: Converter.slateToObo,
-		oboToSlate: Converter.oboToSlate
-	},
+	helpers: Converter,
 	json: {
 		emptyNode
 	},

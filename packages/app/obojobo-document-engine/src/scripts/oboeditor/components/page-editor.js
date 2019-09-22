@@ -16,11 +16,13 @@ const { Button } = Common.components
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
-
-
 class PageEditor extends React.Component {
 	constructor(props) {
 		super(props)
+		// @TODO - should this be hard coded by type?
+		// ask the registry for the assessment
+		this.assessment = Common.Registry.getItemForType(ASSESSMENT_NODE)
+
 		const json = this.importFromJSON()
 
 		this.state = {
@@ -101,7 +103,7 @@ class PageEditor extends React.Component {
 
 	exportToJSON(page, value) {
 		if (page.get('type') === ASSESSMENT_NODE) {
-			const json = Common.Registry.getItemForType(ASSESSMENT_NODE).slateToObo(
+			const json = this.assessment.slateToObo(
 				value.document.nodes.get(0)
 			)
 			page.set('children', json.children)
@@ -130,7 +132,7 @@ class PageEditor extends React.Component {
 		const json = { document: { nodes: [] } }
 
 		if (page.get('type') === ASSESSMENT_NODE) {
-			json.document.nodes.push(Assessment.helpers.oboToSlate(page))
+			json.document.nodes.push(this.assessment.oboToSlate(page))
 		} else {
 			page.attributes.children.forEach(child => {
 				json.document.nodes.push(Component.helpers.oboToSlate(child))

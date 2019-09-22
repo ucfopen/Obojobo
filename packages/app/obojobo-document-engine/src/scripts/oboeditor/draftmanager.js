@@ -1,4 +1,3 @@
-import 'whatwg-fetch'
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 

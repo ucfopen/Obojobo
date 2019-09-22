@@ -40,6 +40,22 @@ class _Registry {
 		return this
 	}
 
+	// convenience method for editor nodes to register
+	registerEditorModel(EditorNode){
+		this.registerModel(EditorNode.name, {
+			name: EditorNode.menuLabel,
+			icon: EditorNode.icon,
+			isInsertable: EditorNode.isInsertable,
+			insertJSON: EditorNode.json && EditorNode.json.emptyNode,
+			slateToObo: EditorNode.helpers && EditorNode.helpers.slateToObo,
+			oboToSlate: EditorNode.helpers && EditorNode.helpers.oboToSlate,
+			plugins: EditorNode.plugins,
+			getNavItem: EditorNode.getNavItem,
+			supportsChildren: EditorNode.supportsChildren || false,
+			ignore: EditorNode.ignore || false,
+		})
+	}
+
 	registerModel(className, opts = {}) {
 		const item = items.get(className)
 		if (item) opts = Object.assign(opts, item)
