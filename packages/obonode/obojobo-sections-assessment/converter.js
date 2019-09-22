@@ -19,6 +19,8 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 const slateToObo = node => {
 	const content = node.data.get('content')
+	let Page
+	let QuestionBank
 	// Remove rubric if it has been deleted
 	delete content.rubric
 
@@ -26,11 +28,11 @@ const slateToObo = node => {
 	node.nodes.forEach(child => {
 		switch (child.type) {
 			case PAGE_NODE:
-				const Page = Common.Registry.getItemForType(PAGE_NODE)
+				Page = Common.Registry.getItemForType(PAGE_NODE)
 				children.push(Page.slateToObo(child))
 				break
 			case QUESTION_BANK_NODE:
-				const QuestionBank = Common.Registry.getItemForType(QUESTION_BANK_NODE)
+				QuestionBank = Common.Registry.getItemForType(QUESTION_BANK_NODE)
 				children.push(QuestionBank.slateToObo(child))
 				break
 			case ACTIONS_NODE:

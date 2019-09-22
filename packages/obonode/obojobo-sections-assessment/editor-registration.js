@@ -1,5 +1,4 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import { getEventTransfer } from 'slate-react'
 import { Document } from 'slate'
 

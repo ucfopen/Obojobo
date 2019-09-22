@@ -1,5 +1,5 @@
 import React from 'react'
-import { Block, Document } from 'slate'
+import { Document } from 'slate'
 import { getEventTransfer, setEventTransfer } from 'slate-react'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'

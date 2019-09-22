@@ -26,7 +26,7 @@ const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
 const { OboModel } = Common.models
 
-let plugins = [
+const plugins = [
 	Component.plugins,
 	MarkToolbar.plugins,
 	ToggleParameter.plugins,
@@ -55,10 +55,7 @@ class EditorApp extends React.Component {
 		// and later be extracted directly by PageEditor?
 		Common.Registry.getItems(items => {
 			items.forEach(i => {
-				if (i.plugins) {
-					console.log('adding plugins for ' + i.name)
-					plugins.push(i.plugins)
-				}
+				if (i.plugins) plugins.push(i.plugins)
 			})
 		})
 

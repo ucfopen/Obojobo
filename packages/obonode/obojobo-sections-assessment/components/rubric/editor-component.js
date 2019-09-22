@@ -1,9 +1,11 @@
 import React from 'react'
+import { Block } from 'slate'
 import './editor-component.scss'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import emptyMod from './empty-mod.json'
 
 const { Button } = Common.components
+const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'
 
 class Node extends React.Component {
 	constructor(props) {
