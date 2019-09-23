@@ -9,20 +9,28 @@
 		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed"
 	},
 	"env": {
+		"DB_SSL": {
+			"description": "Do not change. Connects to the database using SSL.",
+			"value": "true"
+		},
 		"OBO_LTI_KEYS_JSON": {
-			"description": "JSON string of key:secret values used for LTI'",
+			"description": "Edit the secret value. JSON string for LTI key:secret values.",
 			"value": "{\"obo-production-lti-key\":\"CHANGE_THIS_VALUE_NOW\"}"
 		},
 		"OBO_COOKIE_SECRET": {
-			"description": "Secret string used to encrypt cookie data",
+			"description": "Do not change. Secret string used to encrypt cookie data",
 			"generator": "secret"
 		},
+		"OBO_COOKIE_SECURE":{
+			"description": "Do not change. Restricts cookies to https.",
+			"value": "true"
+		},
 		"DEBUG": {
-			"description": "Select which logs to write to the error log",
+			"description": "Logging Verbosity. Use obojobo_server:* for more output.",
 			"value": "obojobo_server:error,obojobo_server:warn"
 		},
 		"YARN_PRODUCTION": {
-			"description": "Makes sure yarn install includes dev dependencies",
+			"description": "Do not change. Makes sure yarn install includes dev dependencies",
 			"value": "false"
 		}
 	},
