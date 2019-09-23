@@ -7,6 +7,18 @@
 	border-top: 1px solid $color-border;
 	border-bottom: 1px solid $color-border;
 
+	.response-container {
+		&.selected {
+			margin: -1px;
+			border: 1px solid $color-highlight;
+			background-color: lighten($color-highlight, 19);
+		}
+
+		.add-feedback-btn {
+			margin-bottom: 1rem;
+		}
+	}
+
 	.add-answer-btn {
 		margin: 1rem 0;
 	}

@@ -7,6 +7,36 @@
 	padding: 1rem 3em;
 	border-bottom: 1px solid $color-border;
 
+	&.is-selected {
+		margin: -1px -1px 0 -1px;
+		border: 1px solid $color-highlight;
+		background-color: lighten($color-highlight, 19);
+	}
+
+	.correct-button {
+		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
+
+		position: absolute;
+		top: 2.7em;
+		left: 0.9em;
+		font-size: inherit;
+		background: transparent;
+		border: none;
+		font-family: $correct-font;
+
+		&.is-correct {
+			color: $color-correct;
+		}
+
+		&.is-not-correct {
+			color: $color-incorrect;
+		}
+	}
+
+	.add-feedback-btn {
+		margin-top: 1rem;
+	}
+
 	.delete-button {
 		button {
 			position: absolute;

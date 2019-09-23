@@ -13,7 +13,8 @@ const emptyResponse = {
 	startInput: '',
 	endInput: '',
 	marginType: 'Absolute',
-	precisionType: 'Significant digits'
+	precisionType: 'Significant digits',
+	score: 100
 }
 
 class NumericAssessment extends React.Component {
@@ -21,58 +22,87 @@ class NumericAssessment extends React.Component {
 		super()
 
 		this.state = {
-			responses: [{ ...emptyResponse }]
+			currSelected: null
 		}
 	}
 
-	onDeteteResponse(index) {
-		let updateResponses = this.state.responses
-		updateResponses.splice(index, 1)
+	onDetete(index) {
+		let scoreRules = this.props.node.data.get('scoreRules')
+		scoreRules.splice(index, 1)
 
-		if (updateResponses.length <= 0) {
-			updateResponses = [{ ...emptyResponse }]
+		if (scoreRules.length <= 0) {
+			scoreRules = [{ ...emptyResponse }]
 		}
 
-		this.setState({
-			responses: updateResponses
+		const editor = this.props.editor
+		editor.setNodeByKey(this.props.node.key, {
+			data: { scoreRules }
 		})
 	}
 
 	onClickDropdown(responseIndex, event) {
 		const { name, value } = event.target
 
-		const updateResponses = this.state.responses
-		updateResponses[responseIndex][name] = value
+		const scoreRules = this.props.node.data.get('scoreRules')
+		scoreRules[responseIndex][name] = value
 
-		this.setState({ responses: updateResponses })
+		const editor = this.props.editor
+		editor.setNodeByKey(this.props.node.key, {
+			data: { scoreRules }
+		})
 	}
 
 	onAddNumericInput() {
-		this.setState({
-			responses: [...this.state.responses, { ...emptyResponse }]
+		const scoreRules = this.props.node.data.get('scoreRules')
+		scoreRules.push({ ...emptyResponse })
+
+		const editor = this.props.editor
+		editor.setNodeByKey(this.props.node.key, {
+			data: { scoreRules }
 		})
 	}
 
 	onInputChange(responseIndex, event) {
 		const { name, value } = event.target
 
-		const updateResponses = this.state.responses
-		updateResponses[responseIndex][name] = value
+		const scoreRules = this.props.node.data.get('scoreRules')
+		scoreRules[responseIndex][name] = value
 
-		this.setState({
-			responses: updateResponses
+		const editor = this.props.editor
+		editor.setNodeByKey(this.props.node.key, {
+			data: { scoreRules }
+		})
+	}
+
+	onSetCurrSelected(index) {
+		this.setState({ currSelected: index })
+	}
+
+	onHandleScoreChange(index) {
+		const scoreRules = this.props.node.data.get('scoreRules')
+		scoreRules[index].score = scoreRules[index].score == 100 ? 0 : 100
+
+		const editor = this.props.editor
+		editor.setNodeByKey(this.props.node.key, {
+			data: { scoreRules }
 		})
 	}
 
 	render() {
+		const scoreRules = this.props.node.data.get('scoreRules')
+
 		return (
 			<div className="component obojobo-draft--chunks--numeric-assessment" contentEditable={false}>
-				{this.state.responses.map((response, index) => (
+				{scoreRules.map((scoreRule, index) => (
 					<NumericInput
-						response={response}
+						isSelected={this.state.currSelected == index}
+						score={scoreRule.score}
+						response={scoreRule}
 						onClickDropdown={event => this.onClickDropdown(index, event)}
-						onDeteteResponse={() => this.onDeteteResponse(index)}
+						onDetete={() => this.onDetete(index)}
 						onInputChange={event => this.onInputChange(index, event)}
+						onSetCurrSelected={() => this.onSetCurrSelected(index)}
+						onHandleScoreChange={() => this.onHandleScoreChange(index)}
 					/>
 				))}
 

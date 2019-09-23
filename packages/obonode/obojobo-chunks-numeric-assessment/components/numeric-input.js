@@ -169,8 +169,20 @@ class NumericInput extends React.Component {
 	}
 
 	render() {
+		const className = 'numeric-input-container' + (this.props.isSelected ? ' is-selected' : '')
+
 		return (
-			<div className="numeric-input-container">
+			<div className={className} onClick={this.props.onSetCurrSelected}>
+				<button
+					className={
+						'correct-button ' + (this.props.score == 100 ? 'is-correct' : 'is-not-correct')
+					}
+					tabIndex="0"
+					onClick={() => this.props.onHandleScoreChange()}
+				>
+					{this.props.score == 100 ? '✔' : '✖'}
+				</button>
+
 				<table>
 					<tr>
 						<th>Requirement</th>
@@ -191,9 +203,14 @@ class NumericInput extends React.Component {
 						{this.renderOption(this.props)}
 					</tr>
 				</table>
-				<Button className="delete-button" onClick={() => this.props.onDeteteResponse()}>
+				<Button className="delete-button" onClick={() => this.props.onDetete()}>
 					×
 				</Button>
+				{this.props.isSelected ? (
+					<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn">
+						<button className="button">Add Feedback</button>
+					</div>
+				) : null}
 			</div>
 		)
 	}
