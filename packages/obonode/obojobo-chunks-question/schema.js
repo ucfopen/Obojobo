@@ -1,11 +1,11 @@
 import { Block } from 'slate'
-
-import emptyAssessment from './empty-assessment.json'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
+import emptyAssessment from './empty-assessment.json'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const TEXT_NODE = 'ObojoboDraft.Chunks.Text'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
@@ -15,7 +15,7 @@ const schema = {
 		'ObojoboDraft.Chunks.Question': {
 			nodes: [
 				{ match: [{ type: 'oboeditor.component' }], min: 1 },
-				{ match: [MCASSESSMENT_NODE], min: 1 },
+				{ match: [MCASSESSMENT_NODE, NUMERIC_ASSESSMENT_NODE], min: 1 },
 				{ match: [SOLUTION_NODE] }
 			],
 

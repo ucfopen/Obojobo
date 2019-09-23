@@ -39,7 +39,7 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.Heading', {
 	name: 'Heading',
 	icon: Icon,
 	isInsertable: true,
-	insertJSON: emptyNode,
+	templateObject: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
 	plugins,
@@ -84,9 +84,6 @@ const Heading = {
 	helpers: {
 		slateToObo: Converter.slateToObo,
 		oboToSlate: Converter.oboToSlate
-	},
-	json: {
-		emptyNode
 	},
 	plugins
 }

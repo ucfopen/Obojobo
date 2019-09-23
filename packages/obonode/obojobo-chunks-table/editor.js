@@ -110,7 +110,7 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.Table', {
 	name: 'Table',
 	icon: Icon,
 	isInsertable: true,
-	insertJSON: emptyNode,
+	templateObject: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
 	plugins
@@ -127,9 +127,6 @@ const Table = {
 	helpers: {
 		slateToObo: Converter.slateToObo,
 		oboToSlate: Converter.oboToSlate
-	},
-	json: {
-		emptyNode
 	},
 	plugins
 }

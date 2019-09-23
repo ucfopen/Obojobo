@@ -621,7 +621,7 @@ export default class ViewerApp extends React.Component {
 				ref={this.idleTimerRef}
 				element={window}
 				timeout={IDLE_TIMEOUT_DURATION_MS}
-				idleAction={this.onIdle}
+				onIdle={this.onIdle}
 				activeAction={this.onReturnFromIdle}
 			>
 				<div
