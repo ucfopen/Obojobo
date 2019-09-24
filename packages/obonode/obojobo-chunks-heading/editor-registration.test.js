@@ -1,11 +1,4 @@
-jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
-	Registry: {
-		registerModel: jest.fn()
-	}
-}))
-
 import Heading from './editor-registration'
-import Common from 'obojobo-document-engine/src/scripts/common/index'
 const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 describe('Heading editor', () => {
@@ -103,8 +96,6 @@ describe('Heading editor', () => {
 	})
 
 	test('getNavItem returns expected object', () => {
-		const headingMock = Common.Registry.registerModel.mock.calls[0][1]
-
 		const model = {
 			modelState: {
 				headingLevel: 1,
@@ -119,10 +110,10 @@ describe('Heading editor', () => {
 			toText: () => 'test string'
 		}
 
-		expect(headingMock.getNavItem(model)).toBe(null)
+		expect(Heading.getNavItem(model)).toBe(null)
 
 		model.modelState.headingLevel = 2
-		expect(headingMock.getNavItem(model)).toEqual({
+		expect(Heading.getNavItem(model)).toEqual({
 			type: 'sub-link',
 			label: 'testText',
 			path: ['test-string'],
@@ -130,6 +121,6 @@ describe('Heading editor', () => {
 		})
 
 		model.modelState.headingLevel = 3
-		expect(headingMock.getNavItem(model)).toBe(null)
+		expect(Heading.getNavItem(model)).toBe(null)
 	})
 })

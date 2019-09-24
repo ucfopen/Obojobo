@@ -1,139 +1,19 @@
+jest.mock('./editor-component', () => mockReactComponent(this, 'Assessment'))
+jest.mock('./components/settings/editor-component', () => mockReactComponent(this, 'Settings'))
+jest.mock('./schema', () => ({mock: 'schema'}))
+jest.mock('./converter', () => ({mock: 'converter'}))
+jest.mock('slate-react')
+
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import renderer from 'react-test-renderer'
-
 import SlateReact from 'slate-react'
-jest.mock('slate-react')
-
-jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
-	Registry: {
-		registerModel: jest.fn()
-	},
-	components: {
-		Button: jest.fn(),
-		modal: {
-			SimpleDialog: jest.fn()
-		}
-	},
-	util: {
-		RangeParsing: {
-			getParsedRange: jest.fn()
-		}
-	}
-}))
-jest.mock('obojobo-pages-page/editor')
-jest.mock('obojobo-chunks-question-bank/editor')
-jest.mock('./components/rubric/editor')
-jest.mock('./post-assessment/editor-component')
-
 import Assessment from './editor-registration'
 
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
-const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
-const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
-const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 describe('Assessment editor', () => {
-	test('ModList component', () => {
-		const Node = Assessment.components.Settings
-		const component = renderer.create(
-			<Node
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-			/>
-		)
-		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('slateToObo converts a Slate node to an OboNode with content', () => {
-		const slateNode = {
-			key: 'mockKey',
-			type: 'mockType',
-			data: {
-				get: () => {
-					return {}
-				}
-			},
-			nodes: [
-				{
-					type: PAGE_NODE
-				},
-				{
-					type: QUESTION_BANK_NODE
-				},
-				{
-					type: ACTIONS_NODE
-				},
-				{
-					type: RUBRIC_NODE
-				},
-				{
-					type: SETTINGS_NODE,
-					nodes: {
-						get: () => {
-							return {
-								text: 'mockText',
-								data: {
-									get: jest.fn()
-								}
-							}
-						}
-					}
-				}
-			]
-		}
-		const oboNode = Assessment.helpers.slateToObo(slateNode)
-
-		expect(oboNode).toMatchSnapshot()
-	})
-
-	test('oboToSlate converts an OboComponent to a Slate node', () => {
-		const oboNode = {
-			get: jest.fn().mockReturnValueOnce({}),
-			attributes: {
-				children: [
-					{
-						type: PAGE_NODE
-					},
-					{
-						type: QUESTION_BANK_NODE
-					}
-				]
-			}
-		}
-		const slateNode = Assessment.helpers.oboToSlate(oboNode)
-
-		expect(slateNode).toMatchSnapshot()
-	})
-
-	test('oboToSlate converts an OboComponent to a Slate node', () => {
-		const oboNode = {
-			get: jest.fn().mockReturnValueOnce({ rubric: 'mockRubric' }),
-			attributes: {
-				children: [
-					{
-						type: PAGE_NODE
-					},
-					{
-						type: QUESTION_BANK_NODE
-					}
-				]
-			}
-		}
-		const slateNode = Assessment.helpers.oboToSlate(oboNode)
-
-		expect(slateNode).toMatchSnapshot()
-	})
-
 	test('plugins.onPaste pastes anything other than an Assessment', () => {
 		SlateReact.getEventTransfer.mockReturnValueOnce({
 			type: 'fragment',
@@ -226,8 +106,6 @@ describe('Assessment editor', () => {
 	})
 
 	test('getNavItem returns expected object', () => {
-		const assessmentMock = Common.Registry.registerModel.mock.calls[0][1]
-
 		const model = {
 			parent: {
 				children: {
@@ -237,7 +115,7 @@ describe('Assessment editor', () => {
 			title: 'Test Title'
 		}
 
-		expect(assessmentMock.getNavItem(model)).toEqual({
+		expect(Assessment.getNavItem(model)).toEqual({
 			type: 'link',
 			label: 'Test Title',
 			path: ['test-title'],
@@ -246,7 +124,7 @@ describe('Assessment editor', () => {
 		})
 
 		model.title = null
-		expect(assessmentMock.getNavItem(model)).toEqual({
+		expect(Assessment.getNavItem(model)).toEqual({
 			type: 'link',
 			label: 'Assessment',
 			path: ['assessment'],

@@ -81,7 +81,7 @@ const getAllOboNodeScriptPathsByType = type => {
 const gatherAllMigrations = () => {
 	const modules = searchNodeModulesForOboNodes()
 	const allDirs = []
-	modules.forEachs(module => {
+	modules.forEach(module => {
 		const dir = getOboNodeScriptPathsFromPackage(module, 'migrations')
 		if (!dir) return
 		const basedir = path.dirname(resolver(module))

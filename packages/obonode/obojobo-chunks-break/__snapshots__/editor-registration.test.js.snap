@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Break editor plugins.renderNode calls next 1`] = `undefined`;
+
+exports[`Break editor plugins.renderNode renders a break when passed 1`] = `
+<Break
+  attributes={
+    Object {
+      "dummy": "dummyData",
+    }
+  }
+  dummy="dummyData"
+  node={
+    Object {
+      "data": Object {
+        "get": [Function],
+      },
+      "type": "ObojoboDraft.Chunks.Break",
+    }
+  }
+/>
+`;

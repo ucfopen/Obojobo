@@ -1,98 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Rubric editor Mod component 1`] = `
-<div
-  className="mod pad"
->
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
-    >
-      ×
-    </button>
-  </div>
-</div>
-`;
-
-exports[`Rubric editor Mod component deletes self 1`] = `"<div class=\\"mod pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
-
-exports[`Rubric editor Mod component deletes self and parent 1`] = `"<div class=\\"mod pad\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
-
-exports[`Rubric editor ModList component 1`] = `
-<div>
-  <p
-    contentEditable={false}
-  >
-    Mods:
-  </p>
-</div>
-`;
-
-exports[`Rubric editor Node component 1`] = `
-<div
-  className="rubric pad"
->
-  <h1
-    contentEditable={false}
-  >
-    Rubric
-  </h1>
-  <div
-    className="parameter-node"
-    contentEditable={false}
-  >
-    Type: undefined
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center add-button"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
-    >
-      Add Mod
-    </button>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
-    >
-      ×
-    </button>
-  </div>
-</div>
-`;
-
-exports[`Rubric editor Node component adds child 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-button\\"><button class=\\"button\\">Add Mod</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
-
-exports[`Rubric editor Node component adds child to existing mod list 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-button\\"><button class=\\"button\\">Add Mod</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
-
-exports[`Rubric editor Rubric component deletes self 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-button\\"><button class=\\"button\\">Add Mod</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
-
 exports[`Rubric editor extractTextToFragment copies the current text 1`] = `
 Immutable.Record {
   "data": Immutable.Map {},
-  "key": "11",
+  "key": "0",
   "nodes": Immutable.List [
     Immutable.Record {
       "data": Immutable.Map {},
-      "key": "12",
+      "key": "1",
       "nodes": Immutable.List [
         Immutable.Record {
           "data": Immutable.Map {},
-          "key": "13",
+          "key": "2",
           "nodes": Immutable.List [
             Immutable.Record {
               "data": Immutable.Map {
                 "indent": 0,
               },
-              "key": "14",
+              "key": "3",
               "nodes": Immutable.List [
                 Immutable.Record {
                   "leaves": Immutable.List [
@@ -101,7 +26,7 @@ Immutable.Record {
                       "text": "selected text",
                     },
                   ],
-                  "key": "15",
+                  "key": "4",
                 },
               ],
               "type": "ObojoboDraft.Chunks.Text.TextLine",

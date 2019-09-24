@@ -1,15 +1,17 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
-
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import Page from './editor-registration'
-
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		registerModel: jest.fn()
 	}
 }))
+
+jest.mock('./editor-component', () => mockReactComponent(this, 'Page'))
+jest.mock('./schema', () => ({mock: 'schema'}))
+jest.mock('./converter', () => ({mock: 'converter'}))
+
+import Page from './editor-registration'
+
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
 describe('Page editor', () => {
 	test('plugins.renderNode renders a solution when passed', () => {
@@ -47,44 +49,7 @@ describe('Page editor', () => {
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.schema.normalize fixes invalid children', () => {
-		const editor = {
-			removeNodeByKey: jest.fn(),
-			insertNodeByKey: jest.fn()
-		}
-
-		editor.withoutNormalizing = jest.fn().mockImplementationOnce(funct => {
-			funct(editor)
-		})
-
-		Page.plugins.schema.blocks[PAGE_NODE].normalize(editor, {
-			code: CHILD_TYPE_INVALID,
-			node: { key: 'mockNode' },
-			child: { key: 'mockKey' },
-			index: null
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
-	test('plugins.schema.normalize adds required children', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
-
-		Page.plugins.schema.blocks[PAGE_NODE].normalize(editor, {
-			code: 'child_min_invalid',
-			node: { key: 'mockKey' },
-			child: null,
-			index: 0
-		})
-
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
-	})
-
 	test('getNavItem returns expected object', () => {
-		const pageMock = Common.Registry.registerModel.mock.calls[0][1]
-
 		const model = {
 			parent: {
 				children: {
@@ -94,7 +59,7 @@ describe('Page editor', () => {
 			title: 'Test Title'
 		}
 
-		expect(pageMock.getNavItem(model)).toEqual({
+		expect(Page.getNavItem(model)).toEqual({
 			type: 'link',
 			label: 'Test Title',
 			path: ['test-title'],
@@ -102,7 +67,7 @@ describe('Page editor', () => {
 		})
 
 		model.title = null
-		expect(pageMock.getNavItem(model)).toEqual({
+		expect(Page.getNavItem(model)).toEqual({
 			type: 'link',
 			label: 'Page 0',
 			path: ['page-0'],

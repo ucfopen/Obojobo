@@ -1,40 +1,30 @@
-/* eslint no-undefined: 0 */
-
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import './editor-registration'
-
-jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
-	Registry: {
-		registerModel: jest.fn()
-	}
-}))
+import Content from './editor-registration'
 
 describe('Sections/Content editor', () => {
+
 	test('registers model with expected values', () => {
-		const sectionsContentMock = Common.Registry.registerModel.mock.calls[0][1]
-
-		expect(sectionsContentMock.slateToObo()).toBe(undefined)
-		expect(sectionsContentMock.oboToSlate()).toBe(undefined)
-
-		expect(JSON.stringify(sectionsContentMock)).toEqual(
-			JSON.stringify({
-				name: 'Section Content',
-				ignore: true,
-				isInsertable: false,
-				slateToObo: () => {},
-				oboToSlate: () => {},
-				plugins: null,
-				getNavItem: () => ({
-					type: 'hidden',
-					showChildren: true
-				})
-			})
-		)
+		expect(Content).toMatchInlineSnapshot(`
+		Object {
+		  "getNavItem": [Function],
+		  "helpers": Object {
+		    "oboToSlate": [Function],
+		    "slateToObo": [Function],
+		  },
+		  "ignore": true,
+		  "isInsertable": false,
+		  "name": "ObojoboDraft.Sections.Content",
+		  "plugins": null,
+		}
+	`)
 	})
-	test('getNavItem returns expected object', () => {
-		const sectionsContentMock = Common.Registry.registerModel.mock.calls[0][1]
 
-		expect(sectionsContentMock.getNavItem()).toEqual({
+	test('helpers return nothing', () => {
+		expect(Content.helpers.slateToObo()).toBeUndefined()
+		expect(Content.helpers.oboToSlate()).toBeUndefined()
+	})
+
+	test('getNavItem returns expected object', () => {
+		expect(Content.getNavItem()).toEqual({
 			showChildren: true,
 			type: 'hidden'
 		})

@@ -5,40 +5,56 @@ const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 
-// Page
-jest.mock('obojobo-pages-page/editor', () => ({
-	helpers: {
-		slateToObo: () => 'PageChild',
-		oboToSlate: () => 'PageOboToSlate'
-	}
-}))
-
-// QuestionBank
-jest.mock('obojobo-chunks-question-bank/editor', () => ({
-	helpers: {
-		slateToObo: () => 'QuestionBankChild',
-		oboToSlate: () => 'QuestionBankChildOboToSlate'
-	}
-}))
-
-// ScoreActions
-jest.mock('./post-assessment/editor-component', () => ({
+jest.mock('./post-assessment/editor-registration', () => ({
 	helpers: {
 		slateToObo: () => 'ActionsChild',
 		oboToSlate: () => 'ActionsChildOboToSlate'
 	}
 }))
 
-// Rubric
-jest.mock('./components/rubric/editor', () => ({
+jest.mock('./components/rubric/editor-registration', () => ({
 	helpers: {
 		slateToObo: () => 'RubricChild',
 		oboToSlate: () => 'RubricChildOboToSlate'
 	}
 }))
+
+// Page
+Common.Registry.registerEditorModel({
+	name: PAGE_NODE,
+	menuLabel: 'PAGE_NODE',
+	isInsertable: false,
+	supportsChildren: true,
+	helpers: {
+		slateToObo: () => 'PageChild',
+		oboToSlate: () => 'PageOboToSlate'
+	},
+	plugins: {
+		renderNode: jest.fn(),
+		schema: {}
+	},
+	getNavItem: jest.fn()
+})
+
+// QuestionBank
+Common.Registry.registerEditorModel({
+	name: QUESTION_BANK_NODE,
+	menuLabel: 'QUESTION_BANK_NODE',
+	isInsertable: false,
+	supportsChildren: true,
+	helpers: {
+		slateToObo: () => 'QuestionBankChild',
+		oboToSlate: () => 'QuestionBankChildOboToSlate'
+	},
+	plugins: {
+		renderNode: jest.fn(),
+		schema: {}
+	},
+	getNavItem: jest.fn()
+})
 
 describe('Assessment Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode', () => {
@@ -78,6 +94,7 @@ describe('Assessment Converter', () => {
 				}
 			]
 		})
+
 		let slateNode = createSlateNode(true, [])
 		let oboNode = Converter.slateToObo(slateNode)
 
