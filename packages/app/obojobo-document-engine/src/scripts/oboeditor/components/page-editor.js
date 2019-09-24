@@ -46,33 +46,30 @@ class PageEditor extends React.Component {
 	}
 
 	getPlugins() {
-		const nodePlugins = Common.Registry.getItems(this.convertItemsToArray).map(item => item.plugins).filter(item => item)
+		const nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
+			.map(item => item.plugins)
+			.filter(item => item)
 		const markPlugins = [
 			BasicMarks.plugins,
 			LinkMark.plugins,
 			ScriptMarks.plugins,
 			AlignMarks.plugins,
-			IndentMarks.plugins,
+			IndentMarks.plugins
 		]
 		const componentPlugins = [
 			Component.plugins,
 			ToggleParameter.plugins,
 			SelectParameter.plugins,
-			TextParameter.plugins,
+			TextParameter.plugins
 		]
 
 		const editorPlugins = [
 			EditorSchema,
 			ClipboardPlugin,
-			hotKeyPlugin(() => this.saveModule(this.props.draftId)),
+			hotKeyPlugin(() => this.saveModule(this.props.draftId))
 		]
 
-		return [
-			...nodePlugins,
-			...markPlugins,
-			...componentPlugins,
-			...editorPlugins
-		]
+		return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
 	}
 
 	convertItemsToArray(items) {
@@ -81,11 +78,11 @@ class PageEditor extends React.Component {
 
 	componentDidMount() {
 		// Setup unload to prompt user before closing
-		window.addEventListener("beforeunload", this.checkIfSaved)
+		window.addEventListener('beforeunload', this.checkIfSaved)
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener("beforeunload", this.checkIfSaved)
+		window.removeEventListener('beforeunload', this.checkIfSaved)
 	}
 
 	checkIfSaved(event) {
@@ -104,25 +101,25 @@ class PageEditor extends React.Component {
 		}
 
 		// If updating from an existing page to no page, set the user alert message
-		if(prevProps.page && !this.props.page) {
-			return this.setState({ value: Value.fromJSON({ 
-				document: { 
-					nodes: [
-						{
-							type: 'oboeditor.ErrorMessage',
-							object: 'block',
-							nodes: [
-								{
-									object: 'text',
-									leaves: [
-										{ text: 'No content available, create a page to start editing'}
-									]
-								}
-							]
-						}
-					] 
-				} 
-			})})
+		if (prevProps.page && !this.props.page) {
+			return this.setState({
+				value: Value.fromJSON({
+					document: {
+						nodes: [
+							{
+								type: 'oboeditor.ErrorMessage',
+								object: 'block',
+								nodes: [
+									{
+										object: 'text',
+										leaves: [{ text: 'No content available, create a page to start editing' }]
+									}
+								]
+							}
+						]
+					}
+				})
+			})
 		}
 
 		// If updating from no page to an existing page, load the new page into the editor

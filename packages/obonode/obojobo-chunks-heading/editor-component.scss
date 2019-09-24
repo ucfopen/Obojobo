@@ -1,6 +1,24 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--heading {
+	h1 {
+		display: inline-block;
+	}
+	h2 {
+		display: inline-block;
+	}
+	h3 {
+		display: inline-block;
+	}
+	h4 {
+		display: inline-block;
+	}
+	h5 {
+		display: inline-block;
+	}
+	h6 {
+		display: inline-block;
+	}
 	.dropdown-heading {
 		position: absolute;
 		right: 0;

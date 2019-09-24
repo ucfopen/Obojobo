@@ -51,25 +51,14 @@ class Heading extends React.Component {
 		this.setState({ isOpen: false })
 	}
 
-	render() {
+	renderDropdown() {
+
 		const content = this.props.node.data.get('content')
-		const HTag = `h${content.level || 1}`
 		const text = this.props.node.text
 		const dropText = text.slice(0, 15) || 'Your Heading'
-
 		return (
-			<div
-				className={'text-chunk obojobo-draft--chunks--heading pad'}
-				ref={node => {
-					this.node = node
-				}}
-			>
-				<HTag>
-					<span className={'text align-' + content.align}>{this.props.children}</span>
-				</HTag>
-
-				<div className={'dropdown-heading'} contentEditable={false}>
-					<button onClick={() => this.toggleLevelSelect()}>{'▼'}</button>
+			<div className={'dropdown-heading'} contentEditable={false}>
+					<button onClick={() => this.toggleLevelSelect()}>{'Heading ' + content.level}<span>{(this.state.isOpen ? '▲' : '▼')}</span></button>
 					<div className={'drop-content-heading ' + isOrNot(this.state.isOpen, 'open')}>
 						<button onClick={() => this.handleLevelChange(1)}>
 							<h1>{dropText}</h1>
@@ -91,6 +80,24 @@ class Heading extends React.Component {
 						</button>
 					</div>
 				</div>
+		)
+	}
+
+	render() {
+		const content = this.props.node.data.get('content')
+		const HTag = `h${content.level || 1}`
+		return (
+			<div
+				className={'text-chunk obojobo-draft--chunks--heading pad'}
+				ref={node => {
+					this.node = node
+				}}
+			>
+				<HTag>
+					<span className={'text align-' + content.align}>{this.props.children}</span>
+				</HTag>
+
+				{this.props.isSelected ? this.renderDropdown() : null }
 			</div>
 		)
 	}

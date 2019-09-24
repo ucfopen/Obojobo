@@ -99,8 +99,7 @@ class SubMenu extends React.Component {
 
 	saveId(oldId, newId) {
 		const model = OboModel.models[oldId]
-		if(!model.setId(newId)) return 'The id "' + newId + '" already exists. Please choose a unique id'
-
+		if (!model.setId(newId)) return 'The id "' + newId + '" already exists. Please choose a unique id'
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 
@@ -113,8 +112,8 @@ class SubMenu extends React.Component {
 
 		model.set({ content: newContent })
 		model.triggers = newContent.triggers ? newContent.triggers : []
-		model.title = newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
-
+		model.title =
+			newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
 	}
 
 	render() {
@@ -141,21 +140,20 @@ class SubMenu extends React.Component {
 		}
 
 		const model = OboModel.models[item.id]
-		console.log(model)
 
 		return (
-			<li
-				onClick={this.props.onClick}
-				className={className}>
+			<li onClick={this.props.onClick} className={className}>
 				{this.renderLinkButton(item.label, ariaLabel, item.id)}
-				{isSelected ? 
-					<MoreInfoBox 
-						id={item.id} 
-						content={model.get('content')} 
-						saveId={this.saveId} 
+				{isSelected ? (
+					<MoreInfoBox
+						id={item.id}
+						content={model.get('content')}
+						saveId={this.saveId}
 						saveContent={this.saveContent}
-						savePage={this.props.savePage}/> : null}
-				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null }
+						savePage={this.props.savePage}
+					/>
+				) : null}
+				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null}
 			</li>
 		)
 	}

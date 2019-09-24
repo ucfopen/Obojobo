@@ -60,15 +60,15 @@ class Node extends React.Component {
 					</div>
 				) : null}
 				{this.props.children}
-				{ this.props.isSelected ? (
-					<MoreInfoBox 
-						className="content-node" 
+				{this.props.isSelected ? (
+					<MoreInfoBox
+						className="content-node"
 						id={node.key}
 						content={node.data.toJSON()}
 						saveId={this.saveId}
-						saveContent={this.saveContent}/>
-				) : null }
-				
+						saveContent={this.saveContent}
+					/>
+				) : null}
 			</div>
 		)
 	}

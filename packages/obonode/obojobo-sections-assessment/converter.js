@@ -39,27 +39,6 @@ const slateToObo = node => {
 			case RUBRIC_NODE:
 				content.rubric = Rubric.helpers.slateToObo(child)
 				break
-			case SETTINGS_NODE: {
-				content.attempts = child.nodes.get(0).text
-				content.review = child.nodes.get(1).data.get('current')
-				const shouldLockAssessment = child.nodes.get(2).data.get('checked')
-
-				if (shouldLockAssessment) {
-					content.triggers = getTriggersWithActionsAdded(content.triggers || [], {
-						onNavEnter: { type: 'nav:lock' },
-						onEndAttempt: { type: 'nav:unlock' },
-						onNavExit: { type: 'nav:unlock' }
-					})
-				} else if (content.triggers) {
-					const updatedTriggers = getTriggersWithActionsRemoved(content.triggers, {
-						onNavEnter: 'nav:lock',
-						onEndAttempt: 'nav:unlock',
-						onNavExit: 'nav:unlock'
-					})
-					content.triggers = updatedTriggers
-					if (content.triggers.length === 0) delete content.triggers
-				}
-			}
 		}
 	})
 
@@ -74,36 +53,11 @@ const slateToObo = node => {
 const oboToSlate = node => {
 	const content = node.get('content')
 
-	const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
-	const endAttemptUnlock =
-		hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
-		hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
-
-	const nodes = [
-		{
-			object: 'block',
-			type: SETTINGS_NODE,
-			nodes: [
-				TextParameter.helpers.oboToSlate('attempts', content.attempts + '', 'Attempts'),
-				SelectParameter.helpers.oboToSlate('review', content.review, 'Review', [
-					'always',
-					'never',
-					'no-attempts-remaining'
-				]),
-				ToggleParameter.helpers.oboToSlate(
-					'assessment lock',
-					startAttemptLock && endAttemptUnlock,
-					'Lock Assessment on Start'
-				)
-			]
-		}
-	]
-
-	node.attributes.children.forEach(child => {
+	const nodes = node.attributes.children.map(child => {
 		if (child.type === PAGE_NODE) {
-			nodes.push(Page.helpers.oboToSlate(child))
+			return Page.helpers.oboToSlate(child)
 		} else {
-			nodes.push(QuestionBank.helpers.oboToSlate(child))
+			return QuestionBank.helpers.oboToSlate(child)
 		}
 	})
 
