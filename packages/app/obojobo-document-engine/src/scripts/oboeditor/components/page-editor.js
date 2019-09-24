@@ -173,7 +173,7 @@ class PageEditor extends React.Component {
 						ref={this.ref.bind(this)}
 						onChange={change => this.onChange(change)}
 						plugins={this.plugins}
-						readOnly={!this.props.page}
+						readOnly={true}
 					/>
 				</div>
 			</div>

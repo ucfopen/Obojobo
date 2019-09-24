@@ -21,25 +21,30 @@ const { ModalUtil } = Common.util
 
 const { OboModel } = Common.models
 
+// Expected Props:
+// id: String - the id of the item to edit
+// content: Object - the item data for the node.  Each key-value pair would be edited independantly
+// saveId: Function(oldId, newId) - updates the id.  Returns a string error if the id couldn't save
+// saveContent: Function(oldContent, newContent) - updates the content. Returns a string error if the content is invalid
 class MoreInfoBox extends React.Component {
 	constructor(props) {
 		super(props)
 
-		this.model = OboModel.models[this.props.item.id]
-		const content = this.model.get('content')
+		this.model = OboModel.models[this.props.id]
 
-		const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
-		const endAttemptUnlock =
-			hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
-			hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
+		// const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
+		// const endAttemptUnlock =
+			// hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
+			// hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
 
 		this.state = {
-			currentId: this.props.item.id,
-			currentTitle: this.props.item.label,
+			currentId: this.props.id,
+			needsUpdate: false,
+			// currentTitle: this.props.item.label,
 			error: null,
 			isOpen: false,
-			content: content,
-			isNavLock: startAttemptLock && endAttemptUnlock
+			content: this.props.content,
+			// isNavLock: startAttemptLock && endAttemptUnlock
 		}
 
 		this.toggleOpen = this.toggleOpen.bind(this)
@@ -75,21 +80,9 @@ class MoreInfoBox extends React.Component {
 		if (!this.node.current || this.node.current.contains(event.target)) return
 
 		// When the click is outside the box, close the box
-		this.onSave()
-	}
+		if(this.state.needsUpdate) return this.onSave()
 
-	renamePage(pageId, label) {
-		if (this.isWhiteSpace(label)) label = null
-
-		EditorUtil.renamePage(pageId, label)
-	}
-
-	movePage(pageId, index) {
-		EditorUtil.movePage(pageId, index)
-	}
-
-	setStartPage(pageId) {
-		EditorUtil.setStartPage(pageId)
+		this.close()
 	}
 
 	duplicatePage() {
@@ -109,22 +102,22 @@ class MoreInfoBox extends React.Component {
 	handleIdChange(event) {
 		const currentId = event.target.value
 
-		return this.setState({ currentId })
+		return this.setState({ currentId, needsUpdate: true })
 	}
 
 	handleTitleChange(event) {
-		const currentTitle = event.target.value
+		const title = event.target.value
 
-		return this.setState({ currentTitle })
+		return this.setState(prevState => ({ content: { ...prevState.content, title }, needsUpdate: true }))
 	}
 
 	onSave() {
-		if(this.model.setId(this.state.currentId)) {
-			this.renamePage(this.state.currentId, this.state.currentTitle)
+		const error = this.props.saveId(this.props.id, this.state.currentId) || this.props.saveContent(this.props.content, this.state.content)
+		if(!error) {
 			return this.close()
 		}
 		
-		this.setState(state => ({ error: 'The id "' + state.currentId + '" already exists. Please choose a unique id'}))
+		this.setState({ error })
 	}
 
 	toggleOpen() {
@@ -160,13 +153,13 @@ class MoreInfoBox extends React.Component {
 		document.removeEventListener('mousedown', this.handleClick, false)
 		ModalUtil.show(
 			<TriggerListModal 
-				content={this.model.get('content')} 
+				content={this.state.content} 
 				onClose={this.closeModal}/>
 		)
 	}
 
 	closeModal(modalState) {
-		this.model.setStateProp('triggers', modalState.triggers)
+		this.setState(prevState => ({ content: { ...prevState.content, triggers: modalState.triggers} }))
 		document.addEventListener('mousedown', this.handleClick, false)
 		ModalUtil.hide()
 	}
@@ -233,7 +226,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	renderInfoBox() {
-		const triggers = this.model.get('content').triggers
+		const triggers = this.state.content.triggers
 		return (
 			<div className="more-info-box">
 				<div className="container">
@@ -261,11 +254,10 @@ class MoreInfoBox extends React.Component {
 								<input
 									type="text"
 									id="oboeditor--components--more-info-box--title-input"
-									value={this.state.currentTitle}
+									value={this.state.content.title}
 									onChange={this.handleTitleChange}/>
 							</div>
 						</div>
-						{ this.props.item.flags.assessment ? this.renderAssessmentSettings() : null }
 						<div>
 							<span className="triggers">
 								Triggers:
@@ -309,7 +301,7 @@ class MoreInfoBox extends React.Component {
 
 	render() {
 		return (
-			<div ref={this.node} className="more-info">
+			<div ref={this.node} className={'more-info ' + this.props.className}>
 				<button 
 					className={'more-info-button ' + ( this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}>

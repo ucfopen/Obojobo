@@ -10,6 +10,8 @@ import generatePage from '../../documents/generate-page'
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
 
+const { OboModel } = Common.models
+
 class SubMenu extends React.Component {
 	constructor(props) {
 		super(props)
@@ -23,27 +25,15 @@ class SubMenu extends React.Component {
 		this.timeOutId = null
 
 		this.showAddPageModal = this.showAddPageModal.bind(this)
+		this.saveId = this.saveId.bind(this)
+		this.saveContent = this.saveContent.bind(this)
 	}
 
 	deletePage(pageId) {
 		EditorUtil.deletePage(pageId)
 	}
 
-	showRenamePageModal(page) {
-		ModalUtil.show(
-			<Prompt
-				cancelOk
-				title="Rename Page"
-				message="Enter the new title for the page:"
-				value={page.label}
-				onConfirm={this.renamePage.bind(this, page.id)}
-			/>
-		)
-	}
-
 	renamePage(pageId, label) {
-		ModalUtil.hide()
-
 		// Fix page titles that are whitespace strings
 		if (!/[^\s]/.test(label)) label = null
 
@@ -107,6 +97,26 @@ class SubMenu extends React.Component {
 		return !/[\S]/.test(str)
 	}
 
+	saveId(oldId, newId) {
+		const model = OboModel.models[oldId]
+		if(!model.setId(newId)) return 'The id "' + newId + '" already exists. Please choose a unique id'
+
+
+		EditorUtil.rebuildMenu(OboModel.getRoot())
+
+		this.setState({ navTargetId: newId })
+	}
+
+	saveContent(oldContent, newContent) {
+		const item = this.props.list[this.props.index]
+		const model = OboModel.models[item.id]
+
+		model.set({ content: newContent })
+		model.triggers = newContent.triggers ? newContent.triggers : []
+		model.title = newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
+
+	}
+
 	render() {
 		const { index, isSelected, list } = this.props
 		const item = list[index]
@@ -130,12 +140,21 @@ class SubMenu extends React.Component {
 			ariaLabel = 'Go to ' + ariaLabel
 		}
 
+		const model = OboModel.models[item.id]
+		console.log(model)
+
 		return (
 			<li
 				onClick={this.props.onClick}
 				className={className}>
 				{this.renderLinkButton(item.label, ariaLabel, item.id)}
-				{isSelected ? <MoreInfoBox item={item} savePage={this.props.savePage}/> : null}
+				{isSelected ? 
+					<MoreInfoBox 
+						id={item.id} 
+						content={model.get('content')} 
+						saveId={this.saveId} 
+						saveContent={this.saveContent}
+						savePage={this.props.savePage}/> : null}
 				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null }
 			</li>
 		)

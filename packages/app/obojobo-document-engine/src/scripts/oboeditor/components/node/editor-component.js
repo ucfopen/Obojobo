@@ -3,6 +3,9 @@ import { Block } from 'slate'
 import Common from 'Common'
 
 import DropMenu from './components/insert-menu'
+import MoreInfoIcon from '../../assets/more-info-icon'
+
+import MoreInfoBox from '../navigation/more-info-box'
 
 import './editor-component.scss'
 
@@ -27,7 +30,17 @@ class Node extends React.Component {
 		return Array.from(items.values())
 	}
 
+	saveId() {
+		console.log('mblargh')
+	}
+
+	saveContent() {
+		console.log('aaaaaaaaaaaah')
+	}
+
 	render() {
+		const node = this.props.node.nodes.get(0)
+
 		return (
 			<div className={'oboeditor-component component'} data-obo-component="true">
 				{this.props.isSelected ? (
@@ -47,6 +60,15 @@ class Node extends React.Component {
 					</div>
 				) : null}
 				{this.props.children}
+				{ this.props.isSelected ? (
+					<MoreInfoBox 
+						className="content-node" 
+						id={node.key}
+						content={node.data.toJSON()}
+						saveId={this.saveId}
+						saveContent={this.saveContent}/>
+				) : null }
+				
 			</div>
 		)
 	}
