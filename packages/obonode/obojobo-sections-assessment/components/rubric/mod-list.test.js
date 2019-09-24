@@ -19,4 +19,22 @@ describe('ModList', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
+
+	test('ModList component', () => {
+		const component = renderer.create(
+			<ModList
+				node={{
+					data: {
+						get: () => {
+							return {}
+						}
+					}
+				}}
+			/>
+		)
+		const tree = component.toJSON()
+
+		expect(tree).toMatchSnapshot()
+	})
+
 })

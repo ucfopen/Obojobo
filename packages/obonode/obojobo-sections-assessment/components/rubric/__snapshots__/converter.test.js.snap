@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "failedResult": 0,
+      "mods": Array [
+        Object {
+          "attemptCondition": 1,
+          "reward": 10,
+        },
+      ],
+      "passedResult": 100,
+      "passingAttemptScore": 0,
+      "unableToPassResult": 0,
+    },
+  },
+  "nodes": Array [
+    "ActionsChildOboToSlate",
+    "ActionsChildOboToSlate",
+    "ActionsChildOboToSlate",
+    "ActionsChildOboToSlate",
+    Object {
+      "nodes": Array [
+        Object {
+          "nodes": Array [
+            "ActionsChildOboToSlate",
+            "ActionsChildOboToSlate",
+          ],
+          "object": "block",
+          "type": "ObojoboDraft.Sections.Assessment.Rubric.Mod",
+        },
+      ],
+      "object": "block",
+      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
+    },
+  ],
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.Rubric",
+}
+`;
+
+exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node without mods 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "failedResult": 0,
+      "passedResult": 100,
+      "passingAttemptScore": 0,
+      "unableToPassResult": 0,
+    },
+  },
+  "nodes": Array [
+    "ActionsChildOboToSlate",
+    "ActionsChildOboToSlate",
+    "ActionsChildOboToSlate",
+    "ActionsChildOboToSlate",
+  ],
+  "object": "block",
+  "type": "ObojoboDraft.Sections.Assessment.Rubric",
+}
+`;
+
+exports[`Assessment Converter slateToObo converts a Slate node to an OboNode with no mods 1`] = `
+Object {
+  "type": "pass-fail",
+}
+`;

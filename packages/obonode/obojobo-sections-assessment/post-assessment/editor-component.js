@@ -9,8 +9,14 @@ const { Button } = Common.components
 const SCORE_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 
 class PostAssessment extends React.Component {
+	constructor(props) {
+		super(props)
+		this.showRangeModal = this.showRangeModal.bind(this)
+		this.addAction = this.addAction.bind(this)
+	}
+
 	showRangeModal() {
-		ModalUtil.show(<RangeModal for={'100'} onConfirm={this.addAction.bind(this)} />)
+		ModalUtil.show(<RangeModal for={'100'} onConfirm={this.addAction} />)
 	}
 
 	addAction(rangeString) {
@@ -27,7 +33,7 @@ class PostAssessment extends React.Component {
 			<div className={'scoreactions'}>
 				<h1 contentEditable={false}>Score Actions</h1>
 				{this.props.children}
-				<Button onClick={this.showRangeModal.bind(this)}>Add Action</Button>
+				<Button onClick={this.showRangeModal}>Add Action</Button>
 			</div>
 		)
 	}

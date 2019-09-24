@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rubric editor component adds child 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-button\\"><button class=\\"button\\">Add Mod</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+
+exports[`Rubric editor component adds child to existing mod list 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-button\\"><button class=\\"button\\">Add Mod</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+
+exports[`Rubric editor component deletes self 1`] = `"<div class=\\"rubric pad\\"><h1 contenteditable=\\"false\\">Rubric</h1><div class=\\"parameter-node\\" contenteditable=\\"false\\">Type: undefined</div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-button\\"><button class=\\"button\\">Add Mod</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+
+exports[`Rubric editor component renders 1`] = `
+<div
+  className="rubric pad"
+>
+  <h1
+    contentEditable={false}
+  >
+    Rubric
+  </h1>
+  <div
+    className="parameter-node"
+    contentEditable={false}
+  >
+    Type: undefined
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center add-button"
+  >
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      Add Mod
+    </button>
+  </div>
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+  >
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
+</div>
+`;

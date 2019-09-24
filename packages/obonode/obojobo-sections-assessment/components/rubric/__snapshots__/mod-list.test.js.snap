@@ -1,5 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ModList ModList component 1`] = `
+<div>
+  <p
+    contentEditable={false}
+  >
+    Mods:
+  </p>
+</div>
+`;
+
 exports[`ModList renders as expected 1`] = `
 <div>
   <p

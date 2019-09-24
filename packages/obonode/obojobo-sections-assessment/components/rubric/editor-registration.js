@@ -4,7 +4,7 @@ import { getEventTransfer, setEventTransfer } from 'slate-react'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 
-import Node from './editor-component'
+import RubricComponent from './editor-component'
 import Mod from './mod'
 import ModList from './mod-list'
 import Schema from './schema'
@@ -57,7 +57,7 @@ const plugins = {
 			case MOD_LIST_NODE:
 				return <ModList {...props} {...props.attributes} />
 			case RUBRIC_NODE:
-				return <Node {...props} {...props.attributes} />
+				return <RubricComponent {...props} {...props.attributes} />
 			default:
 				return next()
 		}

@@ -2,6 +2,11 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 const { Button } = Common.components
 class Mod extends React.Component {
+	constructor(props) {
+		super(props)
+		this.deleteNode = this.deleteNode.bind(this)
+	}
+
 	deleteNode() {
 		const editor = this.props.editor
 
@@ -21,7 +26,7 @@ class Mod extends React.Component {
 		return (
 			<div className={'mod pad'}>
 				{this.props.children}
-				<Button className={'delete-button'} onClick={() => this.deleteNode()}>
+				<Button className={'delete-button'} onClick={this.deleteNode}>
 					×
 				</Button>
 			</div>

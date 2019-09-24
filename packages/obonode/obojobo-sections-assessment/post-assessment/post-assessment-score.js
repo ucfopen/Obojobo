@@ -5,9 +5,16 @@ const { ModalUtil } = Common.util
 const { Button } = Common.components
 
 class PostAssessmentScore extends React.Component {
+	constructor(props) {
+		super(props)
+		this.showRangeModal = this.showRangeModal.bind(this)
+		this.deleteNode = this.deleteNode.bind(this)
+		this.changeRange = this.changeRange.bind(this)
+	}
+
 	showRangeModal() {
 		ModalUtil.show(
-			<RangeModal for={this.props.node.data.get('for')} onConfirm={this.changeRange.bind(this)} />
+			<RangeModal for={this.props.node.data.get('for')} onConfirm={this.changeRange} />
 		)
 	}
 
@@ -27,7 +34,7 @@ class PostAssessmentScore extends React.Component {
 					<h2>{'Score Range: ' + dataFor + ' '}</h2>
 					<button
 						className="range-edit"
-						onClick={this.showRangeModal.bind(this)}
+						onClick={this.showRangeModal}
 						aria-label="Edit Score Range"
 					>
 						✎
@@ -35,7 +42,7 @@ class PostAssessmentScore extends React.Component {
 				</div>
 				<div className={'score-actions-page pad'}>
 					{this.props.children}
-					<Button className={'delete-button'} onClick={() => this.deleteNode()}>
+					<Button className={'delete-button'} onClick={this.deleteNode}>
 						×
 					</Button>
 				</div>
