@@ -227,6 +227,10 @@ class Node extends React.Component {
 				case TEXT_LINE_NODE:
 					dataJSON.hangingIndent = (dataJSON.hangingIndent == true) ? false : true
 					return editor.setNodeByKey(block.key, { data: dataJSON })
+
+				case LIST_LINE_NODE:
+					dataJSON.hangingIndent = (dataJSON.hangingIndent == true) ? false : true
+					return editor.setNodeByKey(block.key, { data: dataJSON })
 			}
 		})
 	}
