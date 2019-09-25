@@ -42,7 +42,7 @@ const QuestionBank = ({ editor, node, children }) => (
 				addQuestion(editor, node)
 			}}
 		>
-			{'Add Question'}
+			Add Question
 		</Button>
 		<Button
 			className="buffer"
@@ -50,7 +50,7 @@ const QuestionBank = ({ editor, node, children }) => (
 				addQuestionBank(editor, node)
 			}}
 		>
-			{'Add Question Bank'}
+			Add Question Bank
 		</Button>
 	</div>
 )

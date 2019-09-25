@@ -10,6 +10,13 @@ const { Button } = Common.components
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
 class Question extends React.Component {
+	constructor(props){
+		super(props)
+		this.addSolution = this.addSolution.bind(this)
+		this.delete = this.delete.bind(this)
+		this.onSetType = this.onSetType.bind(this)
+	}
+
 	onSetType(event) {
 		const questionData = this.props.node.data
 		const questionDataContent = questionData.get('content')
@@ -32,10 +39,12 @@ class Question extends React.Component {
 			}
 		})
 	}
+
 	delete() {
 		const editor = this.props.editor
 		return editor.removeNodeByKey(this.props.node.key)
 	}
+
 	addSolution() {
 		const editor = this.props.editor
 		const newQuestion = Block.create({
@@ -56,7 +65,7 @@ class Question extends React.Component {
 					className="question-type"
 					contentEditable={false}
 					value={state.type}
-					onChange={this.onSetType.bind(this)}
+					onChange={this.onSetType}
 				>
 					<option value="default">Default</option>
 					<option value="survey">Survey</option>
@@ -65,13 +74,13 @@ class Question extends React.Component {
 					<div className="content-back">
 						{this.props.children}
 						{hasSolution ? null : (
-							<Button className="add-solution" onClick={() => this.addSolution()}>
+							<Button className="add-solution" onClick={this.addSolution}>
 								Add Solution
 							</Button>
 						)}
 					</div>
 				</div>
-				<Button className="delete-button" onClick={() => this.delete()}>
+				<Button className="delete-button" onClick={this.delete}>
 					×
 				</Button>
 			</div>

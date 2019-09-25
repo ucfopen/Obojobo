@@ -25,23 +25,19 @@ describe('Rubric editor', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 
-		const editor = {
-			insertNodeByKey: jest.fn()
+		const props = {
+			node:{
+				data: {
+					get: () => ({})
+				},
+				nodes: { size: 0 }
+			},
+			editor: {
+				insertNodeByKey: jest.fn()
+			}
 		}
 
-		const component = mount(
-			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: { size: 0 }
-				}}
-				editor={editor}
-			/>
-		)
+		const component = mount(<Rubric {... props} />)
 		const tree = component.html()
 
 		component
@@ -55,30 +51,25 @@ describe('Rubric editor', () => {
 	test('component adds child to existing mod list', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
-
-		const editor = {
-			insertNodeByKey: jest.fn()
+		const props = {
+			node:{
+				data: {
+					get: () => ({})
+				},
+				nodes: {
+					size: 5,
+					get: jest.fn().mockReturnValueOnce({
+						key: 'mockModList',
+						nodes: { size: 0 }
+					})
+				}
+			},
+			editor: {
+				insertNodeByKey: jest.fn()
+			}
 		}
 
-		const component = mount(
-			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					},
-					nodes: {
-						size: 5,
-						get: jest.fn().mockReturnValueOnce({
-							key: 'mockModList',
-							nodes: { size: 0 }
-						})
-					}
-				}}
-				editor={editor}
-			/>
-		)
+		const component = mount(<Rubric {... props} />)
 		const tree = component.html()
 
 		component
@@ -90,22 +81,20 @@ describe('Rubric editor', () => {
 	})
 
 	test('component deletes self', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
+		const props = {
+			node:{
+				data: {
+					get: () => {
+						return {}
+					}
+				}
+			},
+			editor: {
+				removeNodeByKey: jest.fn()
+			}
 		}
 
-		const component = mount(
-			<Rubric
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-				editor={editor}
-			/>
-		)
+		const component = mount(<Rubric {... props} />)
 		const tree = component.html()
 
 		component
@@ -114,7 +103,7 @@ describe('Rubric editor', () => {
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(props.editor.removeNodeByKey).toHaveBeenCalled()
 	})
 
 })

@@ -158,8 +158,6 @@ describe('Question editor', () => {
 	})
 
 	test('getNavItem returns expected object', () => {
-		const questionMock = Common.Registry.registerModel.mock.calls[0][1]
-
 		const model = {
 			parent: {
 				children: {
@@ -173,21 +171,21 @@ describe('Question editor', () => {
 			get: () => 'testId'
 		}
 
-		expect(questionMock.getNavItem(model)).toEqual({
+		expect(Question.getNavItem(model)).toEqual({
 			label: 'TestTitle',
 			path: ['#obo-testId'],
 			type: 'sub-link'
 		})
 
 		model.title = null
-		expect(questionMock.getNavItem(model)).toEqual({
+		expect(Question.getNavItem(model)).toEqual({
 			label: 'Question 0',
 			path: ['#obo-testId'],
 			type: 'sub-link'
 		})
 
 		model.modelState.mode = null
-		expect(questionMock.getNavItem(model)).toEqual({
+		expect(Question.getNavItem(model)).toEqual({
 			label: 'Question 0',
 			path: ['#obo-testId'],
 			type: 'sub-link'

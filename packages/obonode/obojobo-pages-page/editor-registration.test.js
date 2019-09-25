@@ -1,4 +1,3 @@
-
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
 		registerModel: jest.fn()

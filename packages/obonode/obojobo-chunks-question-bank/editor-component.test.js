@@ -1,61 +1,60 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
-
+import { Registry } from 'obojobo-document-engine/src/scripts/common/registry'
 import QuestionBank from './editor-component'
+
+jest.mock('./icon', () => mockReactComponent(this, 'Icon'))
+jest.mock('./components/settings/editor-component', () => mockReactComponent(this, 'Settings'))
+jest.mock('./schema', () => ({mock: 'schema'}))
+jest.mock('./converter', () => ({mock: 'converter'}))
+jest.mock('obojobo-document-engine/src/scripts/common/registry', () => ({
+	Registry: {
+		registerModel: jest.fn(),
+		getItemForType: jest.fn()
+	}
+}))
 
 describe('QuestionBank editor', () => {
 	test('QuestionBank builds the expected component', () => {
-		const component = renderer.create(
-			<QuestionBank
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
+		const props = {
+			node: {
+				data: {
+					get: () => {
+						return {}
 					}
-				}}
-			/>
-		)
+				}
+			}
+		}
+
+		const component = renderer.create(<QuestionBank {... props} />)
 		const tree = component.toJSON()
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('QuestionBank builds the expected component', () => {
-		const component = renderer.create(
-			<QuestionBank
-				node={{
-					data: {
-						get: () => {
-							return {}
-						}
-					}
-				}}
-			/>
-		)
-		const tree = component.toJSON()
-
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('QuestionBank component deletes self', () => {
-		const editor = {
-			removeNodeByKey: jest.fn()
-		}
+		Registry.getItemForType.mockReturnValueOnce({
+			insertJSON: {
+				type: 'Mock'
+			}
+		})
 
-		const component = mount(
-			<QuestionBank
-				node={{
+		const props = {
+			node: {
+				data: {
 					data: {
 						get: () => {
 							return { choose: 8, select: 'sequential' }
 						}
 					}
-				}}
-				editor={editor}
-			/>
-		)
+				}
+			},
+			editor: {
+				removeNodeByKey: jest.fn()
+			}
+		}
+
+		const component = mount(<QuestionBank {... props} />)
 		const tree = component.html()
 
 		component
@@ -63,63 +62,65 @@ describe('QuestionBank editor', () => {
 			.at(0)
 			.simulate('click')
 
-		expect(editor.removeNodeByKey).toHaveBeenCalled()
+		expect(props.editor.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('QuestionBank component adds question', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
-		}
+		Registry.getItemForType.mockReturnValueOnce({
+			insertJSON: {
+				type: 'Mock'
+			}
+		})
 
-		const component = mount(
-			<QuestionBank
-				node={{
+		const props = {
+			node: {
+				data: {
 					data: {
 						get: () => ({ content: {} })
-					},
-					nodes: []
-				}}
-				editor={editor}
-			/>
-		)
-		const tree = component.html()
+					}
+				},
+				nodes: []
+			},
+			editor: {
+				insertNodeByKey: jest.fn()
+			}
+		}
 
+		const component = mount(<QuestionBank {... props} />)
+		const tree = component.html()
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(props.editor.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('QuestionBank component adds question bank', () => {
-		const editor = {
-			insertNodeByKey: jest.fn()
+		const props = {
+			node: {
+				data: {
+					data: {
+						get: () => ({ choose: 8, select: 'sequential' })
+					}
+				},
+				nodes: []
+			},
+			editor: {
+				insertNodeByKey: jest.fn()
+			}
 		}
 
-		const component = mount(
-			<QuestionBank
-				node={{
-					data: {
-						get: () => {
-							return { choose: 8, select: 'sequential' }
-						}
-					},
-					nodes: []
-				}}
-				editor={editor}
-			/>
-		)
+		const component = mount(<QuestionBank {... props} />)
 		const tree = component.html()
-
 		component
 			.find('button')
 			.at(2)
 			.simulate('click')
 
-		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(props.editor.insertNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()
 	})
 })

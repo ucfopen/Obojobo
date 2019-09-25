@@ -4,6 +4,8 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
+
 import Common from 'obojobo-document-engine/src/scripts/common/index'
 
 describe('Math Equation editor script', () => {
@@ -12,10 +14,11 @@ describe('Math Equation editor script', () => {
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
 		const EditorClientEntry = require('./editor')
+		const EditorRegistration = require('./editor-registration')
 
 		// the editor script should have registered the model
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
 
-		expect(Common.Registry.registerEditorModel.mock.calls[0][0]).toMatchInlineSnapshot()
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(EditorRegistration)
 	})
 })

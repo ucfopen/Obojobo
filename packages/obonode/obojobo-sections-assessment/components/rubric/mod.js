@@ -1,6 +1,7 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 const { Button } = Common.components
+
 class Mod extends React.Component {
 	constructor(props) {
 		super(props)
@@ -9,9 +10,7 @@ class Mod extends React.Component {
 
 	deleteNode() {
 		const editor = this.props.editor
-
 		const parent = editor.value.document.getDescendant(this.props.parent.key)
-
 		const sibling = parent.nodes.get(1)
 
 		// If this is the only row in the list, delete the list
@@ -24,9 +23,9 @@ class Mod extends React.Component {
 
 	render() {
 		return (
-			<div className={'mod pad'}>
+			<div className='mod pad'>
 				{this.props.children}
-				<Button className={'delete-button'} onClick={this.deleteNode}>
+				<Button className='delete-button' onClick={this.deleteNode}>
 					×
 				</Button>
 			</div>

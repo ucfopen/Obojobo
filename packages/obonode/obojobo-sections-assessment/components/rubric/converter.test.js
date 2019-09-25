@@ -1,8 +1,5 @@
 /* eslint-disable no-undefined */
 
-// const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
-// const PAGE_NODE = 'ObojoboDraft.Pages.Page'
-// import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'
 jest.mock(

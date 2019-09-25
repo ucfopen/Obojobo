@@ -4,14 +4,21 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 
-import EditorClientEntry from './editor'
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
+
 import Common from 'obojobo-document-engine/src/scripts/common/index'
-const HEADING_NODE = 'ObojoboDraft.Chunks.Heading'
 
 describe('Heading editor script', () => {
 	test('registers node', () => {
-		expect(Client.Registry.registerEditorModel).toHaveBeenCalled()
-		expect(Common.Registry.registerEditorModel.mock.calls).toMatchInlineSnapShot()
+		// shouldn't have been called yet
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
+		const EditorClientEntry = require('./editor')
+		const EditorRegistration = require('./editor-registration')
+
+		// the editor script should have registered the model
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
+
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(EditorRegistration)
 	})
 })
