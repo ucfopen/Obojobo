@@ -25,7 +25,11 @@ class PostAssessment extends React.Component {
 			data: { for: rangeString }
 		})
 
-		return this.props.editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newScore)
+		return this.props.editor.insertNodeByKey(
+			this.props.node.key,
+			this.props.node.nodes.size,
+			newScore
+		)
 	}
 
 	render() {

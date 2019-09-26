@@ -11,7 +11,6 @@ describe('Conetent editor script', () => {
 		// shouldn't have been called yet
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-
 		require('./editor')
 		const EditorRegistration = require('./editor-registration')
 

@@ -4,7 +4,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 
-jest.mock('./editor-registration', () => ({EditorNode: 1}))
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
 
 import Common from 'obojobo-document-engine/src/scripts/common/index'
 

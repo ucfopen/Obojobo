@@ -1,7 +1,9 @@
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'Assessment'))
-jest.mock('./components/settings/editor-component', () => global.mockReactComponent(this, 'Settings'))
-jest.mock('./schema', () => ({mock: 'schema'}))
-jest.mock('./converter', () => ({mock: 'converter'}))
+jest.mock('./components/settings/editor-component', () =>
+	global.mockReactComponent(this, 'Settings')
+)
+jest.mock('./schema', () => ({ mock: 'schema' }))
+jest.mock('./converter', () => ({ mock: 'converter' }))
 jest.mock('slate-react')
 
 import SlateReact from 'slate-react'

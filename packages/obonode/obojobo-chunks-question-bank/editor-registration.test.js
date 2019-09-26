@@ -6,9 +6,11 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'QuestionBank'))
 jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
-jest.mock('./components/settings/editor-component', () => global.mockReactComponent(this, 'Settings'))
-jest.mock('./schema', () => ({mock: 'schema'}))
-jest.mock('./converter', () => ({mock: 'converter'}))
+jest.mock('./components/settings/editor-component', () =>
+	global.mockReactComponent(this, 'Settings')
+)
+jest.mock('./schema', () => ({ mock: 'schema' }))
+jest.mock('./converter', () => ({ mock: 'converter' }))
 
 import QuestionBank from './editor-registration'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
@@ -64,5 +66,4 @@ describe('QuestionBank editor', () => {
 
 		expect(QuestionBank.plugins.renderNode(props)).toMatchSnapshot()
 	})
-
 })

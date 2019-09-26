@@ -1,9 +1,10 @@
 import React from 'react'
 
-const ModList = props =>
+const ModList = props => (
 	<div>
-		<p contentEditable={false} >Mods:</p>
+		<p contentEditable={false}>Mods:</p>
 		{props.children}
 	</div>
+)
 
 export default ModList

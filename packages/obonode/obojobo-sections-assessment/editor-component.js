@@ -17,7 +17,11 @@ class Assessment extends React.Component {
 
 	addRubric() {
 		const newRubric = Block.create(emptyRubric)
-		return this.props.editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newRubric)
+		return this.props.editor.insertNodeByKey(
+			this.props.node.key,
+			this.props.node.nodes.size,
+			newRubric
+		)
 	}
 
 	render() {

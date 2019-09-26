@@ -46,7 +46,9 @@ describe('Actions editor', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
-		const component = shallow(<PostAssessmentScore node={{ data: { get: () => ({}) } }} editor={editor} />)
+		const component = shallow(
+			<PostAssessmentScore node={{ data: { get: () => ({}) } }} editor={editor} />
+		)
 		const tree = component.html()
 
 		component.instance().changeRange('mock range')
@@ -79,5 +81,4 @@ describe('Actions editor', () => {
 		expect(tree).toMatchSnapshot()
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
 	})
-
 })

@@ -2,7 +2,6 @@ import Converter from './converter'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-
 // Page
 Common.Registry.registerEditorModel({
 	name: PAGE_NODE,
@@ -11,7 +10,7 @@ Common.Registry.registerEditorModel({
 	helpers: {
 		slateToObo: () => 'PageChild',
 		oboToSlate: () => 'PageOboToSlate'
-	},
+	}
 })
 
 describe('PostAssessment Converter', () => {

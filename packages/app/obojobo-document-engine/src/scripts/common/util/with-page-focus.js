@@ -10,13 +10,8 @@ function withPageFocus(BaseComponent) {
 		render() {
 			// Assign the custom prop "forwardedRef" as a ref
 			// see forwardRef
-			const {forwardedRef, ...rest} = this.props
-			return <BaseComponent
-				{...rest}
-				ref={forwardedRef}
-				focus={focus}
-				withPageFocus={true}
-			/>
+			const { forwardedRef, ...rest } = this.props
+			return <BaseComponent {...rest} ref={forwardedRef} focus={focus} withPageFocus={true} />
 		}
 	}
 

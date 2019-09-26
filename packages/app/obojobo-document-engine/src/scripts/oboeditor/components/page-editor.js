@@ -66,19 +66,19 @@ class PageEditor extends React.Component {
 		if (this.props.page === null) return this.renderEmpty()
 
 		return (
-			<div className='editor--page-editor'>
-				<div className='toolbar'>
+			<div className="editor--page-editor">
+				<div className="toolbar">
 					<ToolBarComponent getEditor={this.getEditor} />
 				</div>
 				<Editor
-					className='component obojobo-draft--pages--page'
+					className="component obojobo-draft--pages--page"
 					value={this.state.value}
 					ref={this.ref}
 					onChange={this.onChange}
 					plugins={this.props.plugins}
 				/>
 				<div className="footer-menu">
-					<Button className='exporter' onClick={this.saveDraft}>
+					<Button className="exporter" onClick={this.saveDraft}>
 						Save Document
 					</Button>
 				</div>
@@ -139,7 +139,7 @@ class PageEditor extends React.Component {
 		const json = { document: { nodes: [] } }
 		const { page } = this.props
 
-		if(!page) return json // if page is empty, exit
+		if (!page) return json // if page is empty, exit
 
 		if (page.get('type') === ASSESSMENT_NODE) {
 			json.document.nodes.push(this.assessment.oboToSlate(page))
@@ -196,7 +196,7 @@ class PageEditor extends React.Component {
 			.catch(error => {
 				// eslint-disable-next-line no-console
 				console.error(error)
-				ModalUtil.show(<SimpleDialog ok title='Unkown error saving draft' />)
+				ModalUtil.show(<SimpleDialog ok title="Unkown error saving draft" />)
 			})
 	}
 }

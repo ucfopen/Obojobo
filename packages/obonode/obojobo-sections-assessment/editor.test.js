@@ -26,6 +26,5 @@ describe('Assessment editor script', () => {
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(AssessmentReg)
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(RubricReg)
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(PostAssessmentReg)
-
 	})
 })

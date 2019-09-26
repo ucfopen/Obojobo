@@ -23,9 +23,9 @@ class Mod extends React.Component {
 
 	render() {
 		return (
-			<div className='mod pad'>
+			<div className="mod pad">
 				{this.props.children}
-				<Button className='delete-button' onClick={this.deleteNode}>
+				<Button className="delete-button" onClick={this.deleteNode}>
 					×
 				</Button>
 			</div>

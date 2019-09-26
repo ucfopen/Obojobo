@@ -26,7 +26,7 @@ describe('Rubric editor', () => {
 		window.prompt.mockReturnValueOnce(null)
 
 		const props = {
-			node:{
+			node: {
 				data: {
 					get: () => ({})
 				},
@@ -37,7 +37,7 @@ describe('Rubric editor', () => {
 			}
 		}
 
-		const component = mount(<Rubric {... props} />)
+		const component = mount(<Rubric {...props} />)
 		const tree = component.html()
 
 		component
@@ -52,7 +52,7 @@ describe('Rubric editor', () => {
 		jest.spyOn(window, 'prompt')
 		window.prompt.mockReturnValueOnce(null)
 		const props = {
-			node:{
+			node: {
 				data: {
 					get: () => ({})
 				},
@@ -69,7 +69,7 @@ describe('Rubric editor', () => {
 			}
 		}
 
-		const component = mount(<Rubric {... props} />)
+		const component = mount(<Rubric {...props} />)
 		const tree = component.html()
 
 		component
@@ -82,7 +82,7 @@ describe('Rubric editor', () => {
 
 	test('component deletes self', () => {
 		const props = {
-			node:{
+			node: {
 				data: {
 					get: () => {
 						return {}
@@ -94,7 +94,7 @@ describe('Rubric editor', () => {
 			}
 		}
 
-		const component = mount(<Rubric {... props} />)
+		const component = mount(<Rubric {...props} />)
 		const tree = component.html()
 
 		component
@@ -105,5 +105,4 @@ describe('Rubric editor', () => {
 		expect(tree).toMatchSnapshot()
 		expect(props.editor.removeNodeByKey).toHaveBeenCalled()
 	})
-
 })

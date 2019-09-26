@@ -36,5 +36,4 @@ describe('ModList', () => {
 
 		expect(tree).toMatchSnapshot()
 	})
-
 })

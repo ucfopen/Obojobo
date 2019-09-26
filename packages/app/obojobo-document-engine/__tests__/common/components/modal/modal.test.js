@@ -21,7 +21,7 @@ describe('Modal', () => {
 			className: 'mockClassName'
 		}
 
-		const component = renderer.create(<Modal {...props} >Content</Modal>)
+		const component = renderer.create(<Modal {...props}>Content</Modal>)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()

@@ -23,7 +23,11 @@ class Rubric extends React.Component {
 				type: MOD_LIST_NODE,
 				nodes: [emptyMod]
 			})
-			return this.props.editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, modlist)
+			return this.props.editor.insertNodeByKey(
+				this.props.node.key,
+				this.props.node.nodes.size,
+				modlist
+			)
 		}
 
 		const modlist = this.props.node.nodes.get(4)
@@ -38,16 +42,16 @@ class Rubric extends React.Component {
 
 	render() {
 		return (
-			<div className='rubric pad'>
+			<div className="rubric pad">
 				<h1 contentEditable={false}>Rubric</h1>
-				<div className='parameter-node' contentEditable={false}>
+				<div className="parameter-node" contentEditable={false}>
 					{`Type: ${this.state.type}`}
 				</div>
 				{this.props.children}
-				<Button className='add-button' onClick={this.addMod}>
+				<Button className="add-button" onClick={this.addMod}>
 					Add Mod
 				</Button>
-				<Button className='delete-button' onClick={this.deleteNode}>
+				<Button className="delete-button" onClick={this.deleteNode}>
 					×
 				</Button>
 			</div>

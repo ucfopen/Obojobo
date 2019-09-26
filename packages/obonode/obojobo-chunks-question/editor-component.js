@@ -10,7 +10,7 @@ const { Button } = Common.components
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
 class Question extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.addSolution = this.addSolution.bind(this)
 		this.delete = this.delete.bind(this)

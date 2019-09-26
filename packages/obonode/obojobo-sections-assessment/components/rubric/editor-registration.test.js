@@ -3,8 +3,8 @@ jest.mock('slate-react')
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'Rubric'))
 jest.mock('./mod', () => global.mockReactComponent(this, 'Mod'))
 jest.mock('./mod-list', () => global.mockReactComponent(this, 'ModList'))
-jest.mock('./schema', () => ({mock: 'schema'}))
-jest.mock('./converter', () => ({mock: 'converter'}))
+jest.mock('./schema', () => ({ mock: 'schema' }))
+jest.mock('./converter', () => ({ mock: 'converter' }))
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 import SlateReact from 'slate-react'
@@ -15,7 +15,6 @@ const MOD_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.Mod'
 const MOD_LIST_NODE = 'ObojoboDraft.Sections.Assessment.Rubric.ModList'
 
 describe('Rubric editor', () => {
-
 	test('plugins.onPaste deals with no rubric', () => {
 		const editor = {
 			value: {

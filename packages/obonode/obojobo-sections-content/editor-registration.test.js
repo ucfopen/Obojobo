@@ -1,7 +1,6 @@
 import Content from './editor-registration'
 
 describe('Sections/Content editor', () => {
-
 	test('registers model with expected values', () => {
 		expect(Content).toMatchInlineSnapshot(`
 		Object {

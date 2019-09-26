@@ -5,9 +5,11 @@ import { Registry } from 'obojobo-document-engine/src/scripts/common/registry'
 import QuestionBank from './editor-component'
 
 jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
-jest.mock('./components/settings/editor-component', () => global.mockReactComponent(this, 'Settings'))
-jest.mock('./schema', () => ({mock: 'schema'}))
-jest.mock('./converter', () => ({mock: 'converter'}))
+jest.mock('./components/settings/editor-component', () =>
+	global.mockReactComponent(this, 'Settings')
+)
+jest.mock('./schema', () => ({ mock: 'schema' }))
+jest.mock('./converter', () => ({ mock: 'converter' }))
 jest.mock('obojobo-document-engine/src/scripts/common/registry', () => ({
 	Registry: {
 		registerModel: jest.fn(),
@@ -27,7 +29,7 @@ describe('QuestionBank editor', () => {
 			}
 		}
 
-		const component = renderer.create(<QuestionBank {... props} />)
+		const component = renderer.create(<QuestionBank {...props} />)
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
 	})
@@ -54,7 +56,7 @@ describe('QuestionBank editor', () => {
 			}
 		}
 
-		const component = mount(<QuestionBank {... props} />)
+		const component = mount(<QuestionBank {...props} />)
 		const tree = component.html()
 
 		component
@@ -87,7 +89,7 @@ describe('QuestionBank editor', () => {
 			}
 		}
 
-		const component = mount(<QuestionBank {... props} />)
+		const component = mount(<QuestionBank {...props} />)
 		const tree = component.html()
 		component
 			.find('button')
@@ -113,7 +115,7 @@ describe('QuestionBank editor', () => {
 			}
 		}
 
-		const component = mount(<QuestionBank {... props} />)
+		const component = mount(<QuestionBank {...props} />)
 		const tree = component.html()
 		component
 			.find('button')
