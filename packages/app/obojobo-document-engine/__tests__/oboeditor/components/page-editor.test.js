@@ -403,60 +403,6 @@ describe('PageEditor', () => {
 		})
 	})
 
-	test('EditorNav component alters value majorly', () => {
-		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = shallow(<PageEditor {...props} />)
-		const tree = component.html()
-
-		const change = {
-			value: Value.create({}),
-			operations: {
-				toJSON: () => [
-					{
-						type: 'set_mark'
-					}
-				]
-			}
-		}
-
-		component.find('.obojobo-draft--pages--page').simulate('change', change)
-
-		expect(tree).toMatchSnapshot()
-	})
-
-	test('EditorNav component alters value minorly', () => {
-		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
-		const props = {
-			page: {
-				attributes: { children: [] },
-				get: jest.fn()
-			}
-		}
-		const component = shallow(<PageEditor {...props} />)
-		const tree = component.html()
-
-		const change = {
-			value: Value.create({}),
-			operations: {
-				toJSON: () => [
-					{
-						type: 'set_selection'
-					}
-				]
-			}
-		}
-
-		component.find('.obojobo-draft--pages--page').simulate('change', change)
-
-		expect(tree).toMatchSnapshot()
-	})
-
 	test('EditorNav component stores reference', () => {
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		const props = {
