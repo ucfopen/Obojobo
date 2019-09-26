@@ -26,6 +26,7 @@ const schema = {
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
+
 					case CHILD_TYPE_INVALID: {
 						const block = Block.fromJSON({
 							object: 'block',

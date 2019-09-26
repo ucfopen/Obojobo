@@ -117,7 +117,6 @@ class PageEditor extends React.Component {
 			const json = this.assessment.slateToObo(value.document.nodes.get(0))
 			page.set('children', json.children)
 			page.set('content', json.content)
-
 			return json
 		} else {
 			// Build page wrapper

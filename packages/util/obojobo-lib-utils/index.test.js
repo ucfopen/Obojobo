@@ -1,6 +1,8 @@
 jest.mock('child_process')
 require('./mock-virtual')
+import mockConsole from 'jest-mock-console'
 
+let restoreConsole
 const yarnList = `yarn list v1.13.0
 ├─ not-obojobo-chunks-thing@2.4.5
 ├─ obojobo-chunks-action-button@1.3.0
@@ -10,8 +12,7 @@ const yarnList = `yarn list v1.13.0
 ✨  Done in 698.89s.`
 
 describe('obojobo lib utils', () => {
-	beforeAll(() => {})
-	afterAll(() => {})
+
 	beforeEach(() => {
 		jest.resetModules() // needed to completely reset draft_node_store
 		// fake the response from yarn list
@@ -25,8 +26,12 @@ describe('obojobo lib utils', () => {
 		mockVirtual('obojobo-sections-content').obojobo = {
 			migrations: 'path-to-obojobo-sections-content-migrations'
 		}
+		restoreConsole = mockConsole()
 	})
-	afterEach(() => {})
+
+	afterEach(() => {
+		restoreConsole()
+	})
 
 	test('searchNodeModulesForOboNodes attempts to load all yarn packages', () => {
 		const { searchNodeModulesForOboNodes } = require('obojobo-lib-utils')

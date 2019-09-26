@@ -56,6 +56,7 @@ let restoreConsole
 describe('PageEditor', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
+		jest.resetModules()
 		restoreConsole = mockConsole('error')
 	})
 
@@ -164,7 +165,7 @@ describe('PageEditor', () => {
 		}
 
 		const spy = jest.spyOn(PageEditor.prototype, 'exportToJSON')
-		spy.mockReturnValue() // override the default method
+		spy.mockReturnValueOnce() // override the default method
 
 		// render
 		const thing = mount(<PageEditor {...prevProps} />)
@@ -179,6 +180,7 @@ describe('PageEditor', () => {
 		// save action should have occured
 		expect(spy).toHaveBeenCalledTimes(1)
 		expect(spy).toHaveBeenCalledWith(prevProps.page, prevState.value)
+		spy.mockClear()
 	})
 
 	test('EditorNav component with content', () => {
@@ -415,5 +417,249 @@ describe('PageEditor', () => {
 		instance.ref('mockEditor')
 
 		expect(instance.getEditor()).toEqual('mockEditor')
+	})
+
+	test('sends onChange to the Editor', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+
+		// render
+		const thing = mount(<PageEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		const EditorProps = thing.find('Editor').props()
+		expect(EditorProps).toHaveProperty('onChange', expect.any(Function))
+	})
+
+	test('onChange updates state', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+
+		// render
+		const thing = mount(<PageEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		const EditorProps = thing.find('Editor').props()
+
+		// make sure state.value isnt the value we're changing it to
+		expect(thing.state()).not.toHaveProperty('value', 'mockChangeValue')
+
+		// now call onChange to make sure it has the expected effects
+		EditorProps.onChange({
+			operations: {
+				toJSON: () => ({
+					some: jest.fn().mockReturnValue(true)
+				})
+			},
+			value: 'mockChangeValue' // this should be placed in the state
+		})
+
+		expect(thing.state()).toHaveProperty('value', 'mockChangeValue')
+	})
+
+	test('onChange calls ModalHide if nodes changed', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+
+		// render
+		const thing = mount(<PageEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		const EditorProps = thing.find('Editor').props()
+
+		expect(Common.util.ModalUtil.hide).toHaveBeenCalledTimes(0)
+		// now call onChange to make sure it has the expected effects
+		EditorProps.onChange({
+			operations: {
+				toJSON: () => ({
+					some: () => true // indicates something changed
+				})
+			},
+			value: 'mockChangeValue'
+		})
+		expect(Common.util.ModalUtil.hide).toHaveBeenCalledTimes(1)
+	})
+
+	test('onChange doesnt call ModalHide if node hasnt changed', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+
+		// render
+		const thing = mount(<PageEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		const EditorProps = thing.find('Editor').props()
+
+		expect(Common.util.ModalUtil.hide).toHaveBeenCalledTimes(0)
+		// now call onChange to make sure it has the expected effects
+		EditorProps.onChange({
+			operations: {
+				toJSON: () => ({
+					some: () => false // indicates nothing changed
+				})
+			},
+			value: 'mockChangeValue'
+		})
+		expect(Common.util.ModalUtil.hide).toHaveBeenCalledTimes(0)
+	})
+
+	test('onChange callback tests for changes correctly', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+
+		const thing = mount(<PageEditor {...props} />)
+
+		// make sure onChange is registered with the Editor
+		const EditorProps = thing.find('Editor').props()
+		const mockSome = jest.fn()
+
+		// now call onChange to make sure it has the expected effects
+		EditorProps.onChange({
+			operations: {
+				toJSON: () => ({
+					some: mockSome
+				})
+			}
+		})
+
+		// some should have been called
+		expect(mockSome).toHaveBeenCalledTimes(1)
+
+		// make sure a callback was sent to it
+		const someCallback = mockSome.mock.calls[0][0]
+		expect(someCallback).toEqual(expect.any(Function))
+
+		// test all the slate operation types
+		expect(someCallback({ type: 'set_node' })).toBe(true)
+		expect(someCallback({ type: 'insert_node' })).toBe(true)
+		expect(someCallback({ type: 'add_mark' })).toBe(true)
+		expect(someCallback({ type: 'set_mark' })).toBe(true)
+
+		// test one that doesn't count
+		expect(someCallback({ type: 'not_a_change' })).toBe(false)
+	})
+
+	test('exportToJSON returns expected json for assesment node', () => {
+		Common.Registry.getItemForType.mockReturnValueOnce({
+			slateToObo: jest.fn().mockReturnValue({
+				children: 'mock-children',
+				content: 'mock-content'
+			})
+		})
+
+		const page = {
+			get: () => 'ObojoboDraft.Sections.Assessment',
+			set: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+
+		const value = {
+			document: {
+				nodes: {
+					get: () => ({
+						children: 'mock-children',
+						content: 'mock-content'
+					})
+				}
+			}
+		}
+
+		const thing = mount(<PageEditor {...props} />)
+
+		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
+
+		const result = thing.instance().exportToJSON(page, value)
+		expect(result).toMatchInlineSnapshot(`
+				Object {
+				  "children": "mock-children",
+				  "content": "mock-content",
+				}
+		`)
+
+		expect(page.set).toHaveBeenCalledWith('children', 'mock-children')
+		expect(page.set).toHaveBeenCalledWith('content', 'mock-content')
+	})
+
+	test('exportToJSON returns expected json for assesment node', () => {
+		Common.Registry.getItemForType.mockReturnValueOnce({
+			slateToObo: jest.fn().mockReturnValue({
+				children: 'mock-children',
+				content: 'mock-content'
+			})
+		})
+
+		Component.helpers.slateToObo.mockReturnValue('mock-converted-node-value')
+
+		const page = {
+			get: () => 'will-result-in-else-path-taken',
+			set: jest.fn()
+		}
+
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			}
+		}
+
+		const value = {
+			document: {
+				nodes: ['node-one', 'node-two']
+			}
+		}
+
+		const thing = mount(<PageEditor {...props} />)
+
+		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
+
+		const result = thing.instance().exportToJSON(page, value)
+
+		// make sure the nodes are passed to the converter
+		expect(Component.helpers.slateToObo).toHaveBeenCalledTimes(2)
+		expect(Component.helpers.slateToObo).toHaveBeenCalledWith('node-one')
+		expect(Component.helpers.slateToObo).toHaveBeenCalledWith('node-two')
+
+		// make sure the updated children are set on the page
+		expect(page.set).toHaveBeenCalledTimes(1)
+		expect(page.set).toHaveBeenCalledWith('children', [
+			'mock-converted-node-value',
+			'mock-converted-node-value'
+		])
+
+		// make sure the return matches
+		expect(result).toMatchInlineSnapshot(`
+		Object {
+		  "children": Array [
+		    "mock-converted-node-value",
+		    "mock-converted-node-value",
+		  ],
+		}
+	`)
 	})
 })

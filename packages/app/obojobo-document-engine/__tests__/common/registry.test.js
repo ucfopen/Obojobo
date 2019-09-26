@@ -26,6 +26,174 @@ describe('Registry', () => {
 		})
 	})
 
+	test('registerEditorModel registers a model', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			json: {
+				emptyNode: 'mockjson'
+			},
+			helpers: {
+				slateToObo: 'mockSlateToObo',
+				oboToSlate: 'mockOboToSlate'
+			},
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem',
+			supportsChildren: true,
+			ignore: true
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+												Object {
+												  "getNavItem": "mockGetNavItem",
+												  "icon": "mockIcon",
+												  "ignore": true,
+												  "insertJSON": "mockjson",
+												  "isInsertable": true,
+												  "name": "mockLabel",
+												  "oboToSlate": "mockOboToSlate",
+												  "plugins": "mockPlugins",
+												  "slateToObo": "mockSlateToObo",
+												  "supportsChildren": true,
+												}
+								`)
+		})
+	})
+
+	test('registerEditorModel registers a model with no json', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			helpers: {
+				slateToObo: 'mockSlateToObo',
+				oboToSlate: 'mockOboToSlate'
+			},
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem',
+			supportsChildren: true,
+			ignore: true
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+									Object {
+									  "getNavItem": "mockGetNavItem",
+									  "icon": "mockIcon",
+									  "ignore": true,
+									  "insertJSON": undefined,
+									  "isInsertable": true,
+									  "name": "mockLabel",
+									  "oboToSlate": "mockOboToSlate",
+									  "plugins": "mockPlugins",
+									  "slateToObo": "mockSlateToObo",
+									  "supportsChildren": true,
+									}
+						`)
+		})
+	})
+
+	test('registerEditorModel registers a model with helpers', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem',
+			supportsChildren: true,
+			ignore: true
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+						Object {
+						  "getNavItem": "mockGetNavItem",
+						  "icon": "mockIcon",
+						  "ignore": true,
+						  "insertJSON": undefined,
+						  "isInsertable": true,
+						  "name": "mockLabel",
+						  "oboToSlate": undefined,
+						  "plugins": "mockPlugins",
+						  "slateToObo": undefined,
+						  "supportsChildren": true,
+						}
+				`)
+		})
+	})
+
+	test('registerEditorModel registers a model with no supportsChildren', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem',
+			ignore: true
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+			Object {
+			  "getNavItem": "mockGetNavItem",
+			  "icon": "mockIcon",
+			  "ignore": true,
+			  "insertJSON": undefined,
+			  "isInsertable": true,
+			  "name": "mockLabel",
+			  "oboToSlate": undefined,
+			  "plugins": "mockPlugins",
+			  "slateToObo": undefined,
+			  "supportsChildren": false,
+			}
+		`)
+		})
+	})
+
+	test('registerEditorModel registers a model with no ignore', () => {
+		expect.hasAssertions()
+		Registry.registerEditorModel({
+			name: 'mockType',
+			menuLabel: 'mockLabel',
+			icon: 'mockIcon',
+			isInsertable: true,
+			plugins: 'mockPlugins',
+			getNavItem: 'mockGetNavItem'
+		})
+
+		Registry.getItems(items => {
+			expect(items.size).toBe(1)
+			expect(items.get('mockType')).toMatchInlineSnapshot(`
+			Object {
+			  "getNavItem": "mockGetNavItem",
+			  "icon": "mockIcon",
+			  "ignore": false,
+			  "insertJSON": undefined,
+			  "isInsertable": true,
+			  "name": "mockLabel",
+			  "oboToSlate": undefined,
+			  "plugins": "mockPlugins",
+			  "slateToObo": undefined,
+			  "supportsChildren": false,
+			}
+		`)
+		})
+	})
+
 	test('registers calls init', () => {
 		expect.assertions(1)
 		const init = jest.fn()

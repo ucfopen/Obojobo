@@ -13,7 +13,7 @@ jest.mock(
 )
 
 describe('Assessment Converter', () => {
-	test.only('slateToObo converts a Slate node to an OboNode with content', () => {
+	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
 			key: 'mockKey',
 			type: 'mockType',
@@ -75,19 +75,19 @@ describe('Assessment Converter', () => {
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchInlineSnapshot(`
-		Object {
-		  "mock-name-1": undefined,
-		  "mock-name-2": "mock-node-2-text",
-		  "mods": Array [
-		    Object {
-		      "attemptCondition": "mockParameter",
-		      "reward": "mockParameter",
-		    },
-		  ],
-		  "null": undefined,
-		  "type": "pass-fail",
-		}
-	`)
+				Object {
+				  "mock-name-1": undefined,
+				  "mock-name-2": "mock-node-2-text",
+				  "mods": Array [
+				    Object {
+				      "attemptCondition": "mockParameter",
+				      "reward": "mockParameter",
+				    },
+				  ],
+				  "null": undefined,
+				  "type": "pass-fail",
+				}
+		`)
 	})
 
 	test('slateToObo converts a Slate node to an OboNode with no mods', () => {
@@ -102,10 +102,10 @@ describe('Assessment Converter', () => {
 		const oboNode = Converter.slateToObo(slateNode)
 
 		expect(oboNode).toMatchInlineSnapshot(`
-								Object {
-								  "type": "pass-fail",
-								}
-				`)
+										Object {
+										  "type": "pass-fail",
+										}
+					`)
 	})
 
 	test('oboToSlate converts an OboComponent to a Slate node', () => {
@@ -126,6 +126,19 @@ describe('Assessment Converter', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
+	test.skip('oboToSlate converts an OboComponent to a Slate node with no mods', () => {
+		const oboNode = {
+			passingAttemptScore: 0,
+			passedResult: 100,
+			failedResult: 0,
+			unableToPassResult: 0,
+			mods: []
+		}
+		const slateNode = Converter.oboToSlate(oboNode)
+
+		expect(slateNode).toMatchSnapshot()
+	})
+
 	test('oboToSlate converts an OboComponent to a Slate node without mods', () => {
 		const oboNode = {
 			passingAttemptScore: 0,
@@ -135,25 +148,6 @@ describe('Assessment Converter', () => {
 		}
 		const slateNode = Converter.oboToSlate(oboNode)
 
-		expect(slateNode).toMatchInlineSnapshot(`
-						Object {
-						  "data": Object {
-						    "content": Object {
-						      "failedResult": 0,
-						      "passedResult": 100,
-						      "passingAttemptScore": 0,
-						      "unableToPassResult": 0,
-						    },
-						  },
-						  "nodes": Array [
-						    "ActionsChildOboToSlate",
-						    "ActionsChildOboToSlate",
-						    "ActionsChildOboToSlate",
-						    "ActionsChildOboToSlate",
-						  ],
-						  "object": "block",
-						  "type": "ObojoboDraft.Sections.Assessment.Rubric",
-						}
-			`)
+		expect(slateNode).toMatchSnapshot()
 	})
 })
