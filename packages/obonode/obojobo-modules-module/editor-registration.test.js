@@ -1,47 +1,20 @@
-/* eslint no-undefined: 0 */
-
-import Common from 'obojobo-document-engine/src/scripts/common/index'
-import './editor-registration'
-
-jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
-	Registry: {
-		registerModel: jest.fn()
-	}
-}))
+import Module from './editor-registration'
 
 describe('Modules/Module editor', () => {
 	test('registers model with expected values', () => {
-		const modulesModuleMock = Common.Registry.registerModel.mock.calls[0][1]
-
-		expect(modulesModuleMock.slateToObo()).toBe(undefined)
-		expect(modulesModuleMock.oboToSlate()).toBe(undefined)
-
-		expect(JSON.stringify(modulesModuleMock)).toEqual(
-			JSON.stringify({
-				name: 'Module',
-				ignore: true,
-				isInsertable: false,
-				slateToObo: () => {},
-				oboToSlate: () => {},
-				plugins: null,
-				getNavItem(model) {
-					return {
-						type: 'heading',
-						label: model.title,
-						showChildren: true
-					}
-				}
-			})
-		)
+		expect(Module).toHaveProperty('name', 'ObojoboDraft.Modules.Module')
+		expect(Module).toHaveProperty('menuLabel', 'Module')
+		expect(Module).toHaveProperty('ignore', true)
+		expect(Module).toHaveProperty('isInsertable', false)
+		expect(Module).toHaveProperty('getNavItem')
 	})
-	test('getNavItem returns expected object', () => {
-		const modulesModuleMock = Common.Registry.registerModel.mock.calls[0][1]
 
+	test('getNavItem returns expected object', () => {
 		const model = {
 			title: 'TestTitle'
 		}
 
-		expect(modulesModuleMock.getNavItem(model)).toEqual({
+		expect(Module.getNavItem(model)).toEqual({
 			type: 'heading',
 			label: 'TestTitle',
 			showChildren: true

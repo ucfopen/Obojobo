@@ -15,15 +15,13 @@ describe('Modal', () => {
 	})
 
 	test('Modal', () => {
-		const component = renderer.create(
-			<Modal
-				onClose={onClose}
-				focusOnFirstElement={focusOnFirstElement}
-				className={'mockClassName'}
-			>
-				Content
-			</Modal>
-		)
+		const props = {
+			onClose,
+			focusOnFirstElement,
+			className: 'mockClassName'
+		}
+
+		const component = renderer.create(<Modal {...props} >Content</Modal>)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
@@ -120,7 +118,7 @@ describe('Modal', () => {
 		expect(focusOnFirstElement).toHaveBeenCalledTimes(1)
 	})
 
-	test.skip('Tab will focus on the close button if it exists', () => {
+	test('Tab will focus on the close button if it exists', () => {
 		const component = mount(
 			<Modal onClose={onClose} focusOnFirstElement={focusOnFirstElement}>
 				<textarea />

@@ -1,8 +1,8 @@
 import './modal.scss'
 
+import React from 'react'
 import DeleteButton from '../delete-button'
 import ModalUtil from '../../util/modal-util'
-import React from 'react'
 
 class Modal extends React.Component {
 	constructor() {

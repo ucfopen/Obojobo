@@ -4,6 +4,8 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
+
 import Common from 'obojobo-document-engine/src/scripts/common/index'
 
 describe('Module editor script', () => {
@@ -18,11 +20,7 @@ describe('Module editor script', () => {
 
 		expect(Common.Registry.registerEditorModel.mock.calls[0][0]).toMatchInlineSnapshot(`
 		Object {
-		  "getNavItem": [Function],
-		  "ignore": true,
-		  "isInsertable": false,
-		  "menuLabel": "Module",
-		  "name": "ObojoboDraft.Modules.Module",
+		  "EditorNode": 1,
 		}
 	`)
 	})

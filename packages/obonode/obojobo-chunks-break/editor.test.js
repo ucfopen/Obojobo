@@ -20,6 +20,5 @@ describe('Break editor script', () => {
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
 
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(EditorRegistration)
-	`)
 	})
 })

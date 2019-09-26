@@ -12,6 +12,7 @@ import Component from './node/editor'
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 const { Button } = Common.components
+const ToolBarComponent = MarkToolbar.components.Node
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -31,10 +32,12 @@ class PageEditor extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
+		console.log('UPDATE')
 		// Deal with deleted page
 		if (!this.props.page) {
 			return
 		}
+
 		if (!prevProps.page) {
 			this.setState({ value: Value.fromJSON(this.importFromJSON()) })
 			return
@@ -59,12 +62,12 @@ class PageEditor extends React.Component {
 		if (this.props.page === null) return this.renderEmpty()
 
 		return (
-			<div className={'editor--page-editor'}>
-				<div className={'toolbar'}>
-					<MarkToolbar.components.Node getEditor={this.getEditor.bind(this)} />
+			<div className='editor--page-editor'>
+				<div className='toolbar'>
+					<ToolBarComponent getEditor={this.getEditor.bind(this)} />
 				</div>
 				<Editor
-					className={'component obojobo-draft--pages--page'}
+					className='component obojobo-draft--pages--page'
 					value={this.state.value}
 					ref={this.ref.bind(this)}
 					onChange={change => this.onChange(change)}
@@ -125,9 +128,10 @@ class PageEditor extends React.Component {
 	}
 
 	importFromJSON() {
+		const json = { document: { nodes: [] } }
 		const { page } = this.props
 
-		const json = { document: { nodes: [] } }
+		if(!page) return json // if page is empty, exit
 
 		if (page.get('type') === ASSESSMENT_NODE) {
 			json.document.nodes.push(this.assessment.oboToSlate(page))
@@ -143,8 +147,8 @@ class PageEditor extends React.Component {
 	renderExportButton() {
 		return (
 			<div className="footer-menu">
-				<Button className={'exporter'} onClick={() => this.saveDraft(EditorStore.state.startingId)}>
-					{'Save Document'}
+				<Button className='exporter' onClick={() => this.saveDraft(EditorStore.state.startingId)}>
+					Save Document
 				</Button>
 			</div>
 		)
@@ -193,7 +197,7 @@ class PageEditor extends React.Component {
 			.catch(error => {
 				// eslint-disable-next-line no-console
 				console.error(error)
-				ModalUtil.show(<SimpleDialog ok title={'Unkown error saving draft'} />)
+				ModalUtil.show(<SimpleDialog ok title='Unkown error saving draft' />)
 			})
 	}
 }
