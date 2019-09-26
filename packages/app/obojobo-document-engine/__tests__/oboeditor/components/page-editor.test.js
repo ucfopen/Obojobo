@@ -1,17 +1,16 @@
-import { mount, shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 import APIUtil from 'src/scripts/viewer/util/api-util'
 import EditorStore from '../../../src/scripts/oboeditor/stores/editor-store'
 import PageEditor from 'src/scripts/oboeditor/components/page-editor'
 import React from 'react'
-import { Value } from 'slate'
 import mockConsole from 'jest-mock-console'
 import Common from 'src/scripts/common'
 import Component from 'src/scripts/oboeditor/components/node/editor'
 
 jest.mock('src/scripts/oboeditor/components/toolbar', () => ({
 	components: {
-		Node: mockReactComponent(this, 'MockToolBar')
+		Node: global.mockReactComponent(this, 'MockToolBar')
 	}
 }))
 jest.mock('slate-react')
@@ -43,6 +42,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 		modal: {
 			SimpleDialog: () => 'MockSimpleDialog'
 		},
+		// eslint-disable-next-line react/display-name
 		Button: props => <button {...props}>{props.children}</button>
 	}
 }))
@@ -209,8 +209,7 @@ describe('PageEditor', () => {
 		}
 
 		const component = renderer.create(<PageEditor {...props} />)
-		const tree = component.toJSON()
-		expect(tree).toMatchSnapshot()
+		expect(component.toJSON()).toMatchSnapshot()
 	})
 
 	test('EditorNav component with content exports to database', () => {
@@ -286,7 +285,6 @@ describe('PageEditor', () => {
 		}
 
 		const component = mount(<PageEditor {...props} />)
-		const tree = component.html()
 
 		const saveButton = component.find('button').at(0)
 		const saveButtonProps = saveButton.props()
@@ -336,7 +334,6 @@ describe('PageEditor', () => {
 		}
 
 		const component = mount(<PageEditor {...props} />)
-		const tree = component.html()
 
 		const saveButton = component.find('button').at(0)
 		const saveButtonProps = saveButton.props()

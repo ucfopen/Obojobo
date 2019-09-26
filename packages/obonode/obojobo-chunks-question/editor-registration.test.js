@@ -1,6 +1,5 @@
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-import Common from 'obojobo-document-engine/src/scripts/common/index'
 import Question from './editor-registration'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'

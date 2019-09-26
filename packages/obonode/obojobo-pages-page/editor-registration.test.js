@@ -4,7 +4,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	}
 }))
 
-jest.mock('./editor-component', () => mockReactComponent(this, 'Page'))
+jest.mock('./editor-component', () => global.mockReactComponent(this, 'Page'))
 jest.mock('./schema', () => ({mock: 'schema'}))
 jest.mock('./converter', () => ({mock: 'converter'}))
 

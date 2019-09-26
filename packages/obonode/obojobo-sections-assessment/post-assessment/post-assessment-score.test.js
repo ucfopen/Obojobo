@@ -1,7 +1,6 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
+import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
-// import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 import PostAssessmentScore from './post-assessment-score'
 

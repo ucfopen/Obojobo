@@ -15,7 +15,7 @@ describe('Action Button editor script', () => {
 		// shouldn't have been called yet
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-		const EditorClientEntry = require('./editor')
+		require('./editor')
 
 		// the editor script should have registered the model
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)

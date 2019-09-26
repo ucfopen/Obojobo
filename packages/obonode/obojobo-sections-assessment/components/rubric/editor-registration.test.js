@@ -1,22 +1,12 @@
-/* eslint no-undefined: 0 */
-
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
 jest.mock('slate-react')
-jest.mock('./editor-component', () => mockReactComponent(this, 'Rubric'))
-jest.mock('./mod', () => mockReactComponent(this, 'Mod'))
-jest.mock('./mod-list', () => mockReactComponent(this, 'ModList'))
+jest.mock('./editor-component', () => global.mockReactComponent(this, 'Rubric'))
+jest.mock('./mod', () => global.mockReactComponent(this, 'Mod'))
+jest.mock('./mod-list', () => global.mockReactComponent(this, 'ModList'))
 jest.mock('./schema', () => ({mock: 'schema'}))
 jest.mock('./converter', () => ({mock: 'converter'}))
 
-import React from 'react'
-// import { mount } from 'enzyme'
-// import renderer from 'react-test-renderer'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
-// import Node from './editor-component'
-// import Mod from './mod'
-// import ModList from './mod-list'
-// import Schema from './schema'
-// import Converter from './converter'
 import SlateReact from 'slate-react'
 import Rubric from './editor-registration'
 

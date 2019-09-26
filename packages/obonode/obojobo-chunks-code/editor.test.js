@@ -13,7 +13,7 @@ describe('Code editor script', () => {
 		// shouldn't have been called yet
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-		const EditorClientEntry = require('./editor')
+		require('./editor')
 		const EditorRegistration = require('./editor-registration')
 
 		// the editor script should have registered the model

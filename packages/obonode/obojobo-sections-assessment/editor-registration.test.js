@@ -1,12 +1,9 @@
-jest.mock('./editor-component', () => mockReactComponent(this, 'Assessment'))
-jest.mock('./components/settings/editor-component', () => mockReactComponent(this, 'Settings'))
+jest.mock('./editor-component', () => global.mockReactComponent(this, 'Assessment'))
+jest.mock('./components/settings/editor-component', () => global.mockReactComponent(this, 'Settings'))
 jest.mock('./schema', () => ({mock: 'schema'}))
 jest.mock('./converter', () => ({mock: 'converter'}))
 jest.mock('slate-react')
 
-import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
-import renderer from 'react-test-renderer'
 import SlateReact from 'slate-react'
 import Assessment from './editor-registration'
 

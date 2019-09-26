@@ -4,8 +4,8 @@ import renderer from 'react-test-renderer'
 import { Registry } from 'obojobo-document-engine/src/scripts/common/registry'
 import QuestionBank from './editor-component'
 
-jest.mock('./icon', () => mockReactComponent(this, 'Icon'))
-jest.mock('./components/settings/editor-component', () => mockReactComponent(this, 'Settings'))
+jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
+jest.mock('./components/settings/editor-component', () => global.mockReactComponent(this, 'Settings'))
 jest.mock('./schema', () => ({mock: 'schema'}))
 jest.mock('./converter', () => ({mock: 'converter'}))
 jest.mock('obojobo-document-engine/src/scripts/common/registry', () => ({

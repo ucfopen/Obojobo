@@ -79,7 +79,10 @@
 		-webkit-text-stroke: $stroke-width * 2 $color-banner-bg;
 		// In case we're not in webkit, throw a text-shadow on to at least get
 		// a pixel of glow to keep the background from mixing with the font too much
-		text-shadow: -1px -1px 0 $color-banner-bg, 1px -1px 0 $color-banner-bg,
-			-1px 1px 0 $color-banner-bg, 1px 1px 0 $color-banner-bg;
+		text-shadow:
+			-1px -1px 0 $color-banner-bg,
+			1px -1px 0 $color-banner-bg,
+			-1px 1px 0 $color-banner-bg,
+			1px 1px 0 $color-banner-bg;
 	}
 }

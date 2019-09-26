@@ -16,7 +16,7 @@ describe('Multiple Choice editor script', () => {
 		// shouldn't have been called yet
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-		const EditorClientEntry = require('./editor')
+		require('./editor')
 		const EditorRegistration = require('./editor-registration')
 		const MCAnswerReg = require('./MCAnswer/editor-registration')
 		const MCChoiceReg = require('./MCChoice/editor-registration')

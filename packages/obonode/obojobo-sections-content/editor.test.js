@@ -11,23 +11,13 @@ describe('Conetent editor script', () => {
 		// shouldn't have been called yet
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-		const EditorClientEntry = require('./editor')
+
+		require('./editor')
+		const EditorRegistration = require('./editor-registration')
 
 		// the editor script should have registered the model
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(1)
 
-		expect(Common.Registry.registerEditorModel.mock.calls[0][0]).toMatchInlineSnapshot(`
-		Object {
-		  "getNavItem": [Function],
-		  "helpers": Object {
-		    "oboToSlate": [Function],
-		    "slateToObo": [Function],
-		  },
-		  "ignore": true,
-		  "isInsertable": false,
-		  "name": "ObojoboDraft.Sections.Content",
-		  "plugins": null,
-		}
-	`)
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(EditorRegistration)
 	})
 })

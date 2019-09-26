@@ -18,7 +18,6 @@ const oboToSlate = node => {
 	json.type = COMPONENT_NODE
 	json.nodes = []
 
-	console.log(node.type)
 	const editorModel = Common.Registry.getItemForType(node.type)
 	if (!editorModel.ignore) {
 		json.nodes.push(editorModel.oboToSlate(node))

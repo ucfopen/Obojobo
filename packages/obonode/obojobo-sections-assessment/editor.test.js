@@ -4,22 +4,9 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	}
 }))
 
-// mock out each of the nodes  - we're just testing that assessment registers them
-jest.mock('./editor-registration', () => ({
-	EditorNode: 1
-}))
-jest.mock('./components/rubric/editor-registration', () => ({
-	Rubric: 1
-}))
-jest.mock('./post-assessment/editor-registration', () => ({
-	PostAssessment: 1
-}))
-
-jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
-	Registry: {
-		registerEditorModel: jest.fn()
-	}
-}))
+jest.mock('./editor-registration', () => ({ EditorNode: 1 }))
+jest.mock('./components/rubric/editor-registration', () => ({ RubricNode: 1 }))
+jest.mock('./post-assessment/editor-registration', () => ({ PostAssessmentNode: 1 }))
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 
@@ -28,29 +15,17 @@ describe('Assessment editor script', () => {
 		// shouldn't have been called yet
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(0)
 
-		const EditorClientEntry = require('./editor')
+		require('./editor')
+		const AssessmentReg = require('./editor-registration')
+		const RubricReg = require('./components/rubric/editor-registration')
+		const PostAssessmentReg = require('./post-assessment/editor-registration')
 
 		// the editor script should have registered the model
 		expect(Common.Registry.registerEditorModel).toHaveBeenCalledTimes(3)
 
-		expect(Common.Registry.registerEditorModel.mock.calls).toMatchInlineSnapshot(`
-		Array [
-		  Array [
-		    Object {
-		      "EditorNode": 1,
-		    },
-		  ],
-		  Array [
-		    Object {
-		      "Rubric": 1,
-		    },
-		  ],
-		  Array [
-		    Object {
-		      "PostAssessment": 1,
-		    },
-		  ],
-		]
-	`)
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(AssessmentReg)
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(RubricReg)
+		expect(Common.Registry.registerEditorModel).toHaveBeenCalledWith(PostAssessmentReg)
+
 	})
 })

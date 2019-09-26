@@ -36,7 +36,7 @@ const buildMockReactComponent = name => {
 }
 
 // helper to quickly create a standin mock react component with a name
-// : jest.mock('./icon', () => mockReactComponent(this, 'Icon'))
+// : jest.mock('./icon', () => global.mockReactComponent(this, 'Icon'))
 global.mockReactComponent = (target, name) => {
 	return buildMockReactComponent.call(target, name)
 }
