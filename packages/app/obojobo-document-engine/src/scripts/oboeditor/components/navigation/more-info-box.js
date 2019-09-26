@@ -2,20 +2,11 @@ import './more-info-box.scss'
 
 import ClipboardUtil from '../../util/clipboard-util'
 import Common from 'Common'
-import EditorUtil from '../../util/editor-util'
 import React from 'react'
-import generateId from '../../generate-ids'
 
 import MoreInfoIcon from '../../assets/more-info-icon'
 import TriggerListModal from '../triggers/trigger-list-modal'
 
-import {
-	getTriggersWithActionsAdded,
-	getTriggersWithActionsRemoved,
-	hasTriggerTypeWithActionType
-} from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
-
-const { SimpleDialog } = Common.components.modal
 const { Button, Slider } = Common.components
 const { ModalUtil } = Common.util
 
@@ -26,6 +17,8 @@ const { OboModel } = Common.models
 // content: Object - the item data for the node.  Each key-value pair would be edited independantly
 // saveId: Function(oldId, newId) - updates the id.  Returns a string error if the id couldn't save
 // saveContent: Function(oldContent, newContent) - updates the content. Returns a string error if the content is invalid
+// contentDescription: [Object] - a list of descriptions that tells which content attributes to display and how
+// 			Each description should have a name, a description, and a type
 class MoreInfoBox extends React.Component {
 	constructor(props) {
 		super(props)
@@ -40,30 +33,21 @@ class MoreInfoBox extends React.Component {
 		this.state = {
 			currentId: this.props.id,
 			needsUpdate: false,
-			// currentTitle: this.props.item.label,
 			error: null,
 			isOpen: false,
 			content: this.props.content,
-			// isNavLock: startAttemptLock && endAttemptUnlock
 		}
+
+		this.handleClick = this.handleClick.bind(this)
 
 		this.toggleOpen = this.toggleOpen.bind(this)
 		this.close = this.close.bind(this)
 
 		this.handleIdChange = this.handleIdChange.bind(this)
-		this.handleTitleChange = this.handleTitleChange.bind(this)
 		this.onSave = this.onSave.bind(this)
-		this.handleClick = this.handleClick.bind(this)
-
-		this.duplicatePage = this.duplicatePage.bind(this)
-
-		this.showDeleteModal = this.showDeleteModal.bind(this)
-		this.deletePage = this.deletePage.bind(this)
 
 		this.showTriggersModal = this.showTriggersModal.bind(this)
 		this.closeModal = this.closeModal.bind(this)
-
-		this.toggleLockNav = this.toggleLockNav.bind(this)
 
 		this.node = React.createRef()
 	}
@@ -85,30 +69,23 @@ class MoreInfoBox extends React.Component {
 		this.close()
 	}
 
-	duplicatePage() {
-		this.props.savePage()
-		const newPage = this.model.flatJSON()
-		newPage.children= this.model.get('children')
-		// Removes duplicate ids from duplicated pages
-		newPage.id = generateId()
-		newPage.content.title = this.props.item.label + ' - (Copy)'
-		EditorUtil.addPage(newPage, this.props.item.id)
-	}
-
-	isWhiteSpace(str) {
-		return !/[\S]/.test(str)
-	}
-
 	handleIdChange(event) {
 		const currentId = event.target.value
 
 		return this.setState({ currentId, needsUpdate: true })
 	}
 
-	handleTitleChange(event) {
-		const title = event.target.value
+	handleContentChange(key, event) {
+		const newContent = {}
+		newContent[key] = event.target.value
 
-		return this.setState(prevState => ({ content: { ...prevState.content, title }, needsUpdate: true }))
+		this.setState(prevState => ({
+			content: Object.assign(prevState.content, newContent)
+		}))
+	}
+
+	handleAbstractToggleChange(changeFn, booleanValue) {
+		this.setState(prevState => ({ content: changeFn(prevState.content, booleanValue) }))
 	}
 
 	onSave() {
@@ -132,22 +109,6 @@ class MoreInfoBox extends React.Component {
 		return this.setState({ isOpen: false })
 	}
 
-	showDeleteModal() {
-		ModalUtil.show(
-			<SimpleDialog cancelOk onConfirm={this.deletePage}>
-				{'Are you sure you want to delete ' +
-					this.props.item.label +
-					'? This will permanately delete all content in the page'}
-			</SimpleDialog>
-		)
-	}
-
-	deletePage() {
-		ModalUtil.hide()
-
-		EditorUtil.deletePage(this.props.item.id)
-	}
-
 	showTriggersModal() {
 		// Prevent info box from closing when modal is opened
 		document.removeEventListener('mousedown', this.handleClick, false)
@@ -164,65 +125,52 @@ class MoreInfoBox extends React.Component {
 		ModalUtil.hide()
 	}
 
-	editContent(key, event) {
-		const newContent = {}
-		newContent[key] = event.target.value
-
-		this.model.setStateProp(key, event.target.value)
-
-		this.setState(prevState => ({
-			content: Object.assign(prevState.content, newContent)
-		}))
-	}
-
-	toggleLockNav(isNavLock) {
-		const content = this.model.get('content')
-		if (isNavLock) {
-			content.triggers = getTriggersWithActionsAdded(content.triggers || [], {
-				onNavEnter: { type: 'nav:lock' },
-				onEndAttempt: { type: 'nav:unlock' },
-				onNavExit: { type: 'nav:unlock' }
-			})
-		} else if (content.triggers) {
-			const updatedTriggers = getTriggersWithActionsRemoved(content.triggers, {
-				onNavEnter: 'nav:lock',
-				onEndAttempt: 'nav:unlock',
-				onNavExit: 'nav:unlock'
-			})
-			content.triggers = updatedTriggers
+	renderItem(description) {
+		switch(description.type) {
+			case 'input':
+				return (
+					<div>
+						<label>{description.description}</label>
+						<input
+							type="text"
+							value={this.state.content[description.name]}
+							onChange={this.handleContentChange.bind(this, description.name)}/>
+					</div>
+				)
+			case 'select':
+				return (
+					<div>
+						<label>{description.description}</label>
+						<select 
+							className="select-item" 
+							value={this.state.content[description.name]}
+							onChange={this.handleContentChange.bind(this, description.name)}>
+							{description.values.map(option => (
+								<option value={option.value} key={option.value}>{option.description}</option>
+							))}
+						</select>
+					</div>
+				)
+			case 'toggle':
+				return (
+					<div>
+						<label>{description.description}</label>
+						<input
+							type="text"
+							value={this.state.content[description.name]}
+							onChange={this.handleContentChange}/>
+					</div>
+				)
+			// Toggles complex things, like Lock Nav during Assessment Attempt
+			case 'abstract-toggle':
+				return (
+					<Slider
+						title={description.description}
+						initialChecked={description.value(this.state.content)}
+						handleCheckChange={this.handleAbstractToggleChange.bind(this, description.onChange)}/>
+				)
 		}
-
-		return this.setState({ content, isNavLock })
-	}
-
-	renderAssessmentSettings() {
-		return (
-			<div className="assessment-settings">
-				<div>
-					<label htmlFor="oboeditor--components--more-info-box--attempts-input">Attempts</label>
-					<input
-						type="text"
-						id="oboeditor--components--more-info-box--attempts-input"
-						value={this.state.content.attempts} 
-						onChange={this.editContent.bind(this, 'attempts')}/>
-				</div>
-				<div key="1">
-					<label htmlFor="oboeditor--components--more-info-box--review-select">Review</label>
-					<select 
-						className="select-item" 
-						value={this.state.content.review} 
-						onChange={this.editContent.bind(this, 'review')}>
-						<option value="always">Always show answers in review</option>
-						<option value="never">Never show answers in review</option>
-						<option value="no-attempts-remaining">Show answers in review after last attempt</option>
-					</select>
-				</div>
-				<Slider
-					title="Lock Navigation During Attempts"
-					initialChecked={this.state.isNavLock}
-					handleCheckChange={this.toggleLockNav}/>
-			</div>
-		)
+				
 	}
 
 	renderInfoBox() {
@@ -249,14 +197,7 @@ class MoreInfoBox extends React.Component {
 										Copy Id
 								</Button>
 							</div>
-							<div>
-								<label htmlFor="oboeditor--components--more-info-box--title-input">Title</label>
-								<input
-									type="text"
-									id="oboeditor--components--more-info-box--title-input"
-									value={this.state.content.title}
-									onChange={this.handleTitleChange}/>
-							</div>
+							{this.props.contentDescription.map(description => this.renderItem(description))}
 						</div>
 						<div>
 							<span className="triggers">

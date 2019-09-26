@@ -64,9 +64,16 @@ class Node extends React.Component {
 					<MoreInfoBox
 						className="content-node"
 						id={node.key}
-						content={node.data.toJSON()}
+						content={node.data.toJSON().content}
 						saveId={this.saveId}
 						saveContent={this.saveContent}
+						contentDescription={[
+							{
+								name: 'title',
+								description: 'Title',
+								type: 'string'
+							}
+						]}
 					/>
 				) : null}
 			</div>

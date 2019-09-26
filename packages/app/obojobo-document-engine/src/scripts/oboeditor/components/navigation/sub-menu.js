@@ -7,6 +7,12 @@ import MoreInfoBox from './more-info-box'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import generatePage from '../../documents/generate-page'
 
+import {
+	getTriggersWithActionsAdded,
+	getTriggersWithActionsRemoved,
+	hasTriggerTypeWithActionType
+} from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
+
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
 
@@ -140,6 +146,74 @@ class SubMenu extends React.Component {
 		}
 
 		const model = OboModel.models[item.id]
+		const contentDescription = [
+			{
+				name: 'title',
+				description: 'Title',
+				type: 'input'
+			}
+		]
+
+		if (item.flags.assessment) {
+			contentDescription.push(
+				{
+					name: 'attempts',
+					description: 'Attempts',
+					type: 'input'
+				},
+				{
+					name: 'review',
+					description: 'Review',
+					type: 'select',
+					values: [
+						{
+							value: 'always',
+							description: 'Always show answers in review'
+						},
+						{
+							value: 'never',
+							description: 'Never show answers in review'
+						},
+						{
+							value: 'no-attempts-remaining',
+							description: 'Show answers in review after last attempt'
+						}
+					]
+				},
+				{
+					name: 'lock-nav',
+					description: 'Lock Navigation During Attempts',
+					type: 'abstract-toggle',
+					value: content => {
+						const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
+						const endAttemptUnlock =
+							hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
+							hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
+
+						return startAttemptLock && endAttemptUnlock
+					},
+					// onChange is called inside the MoreInfoBox, so prevState references previous the MoreInfoBox state
+					onChange: (content, isNavLock) => {
+						let triggers
+						if (isNavLock) {
+							triggers = getTriggersWithActionsAdded(content.triggers || [], {
+								onNavEnter: { type: 'nav:lock' },
+								onEndAttempt: { type: 'nav:unlock' },
+								onNavExit: { type: 'nav:unlock' }
+							})
+						} else if (content.triggers) {
+							triggers = getTriggersWithActionsRemoved(content.triggers, {
+								onNavEnter: 'nav:lock',
+								onEndAttempt: 'nav:unlock',
+								onNavExit: 'nav:unlock'
+							})
+						}
+
+						return { ...content, triggers }
+					}
+				}
+			)
+		}
 
 		return (
 			<li onClick={this.props.onClick} className={className}>
@@ -151,6 +225,7 @@ class SubMenu extends React.Component {
 						saveId={this.saveId}
 						saveContent={this.saveContent}
 						savePage={this.props.savePage}
+						contentDescription={contentDescription}
 					/>
 				) : null}
 				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null}

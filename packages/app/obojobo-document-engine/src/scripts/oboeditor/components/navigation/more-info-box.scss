@@ -83,16 +83,16 @@
 
 				label {
 					display: inline-block;
-					width: 3em;
+					width: 5em;
 				}
 
 				input {
 					@include text-input();
 
-					width: 25.55em;
+					width: 23em;
 
 					&.id-input {
-						width: 20.7em;
+						width: 18.1em;
 					}
 				}
 
@@ -147,12 +147,18 @@
 
 	&.content-node {
 		.more-info-box {
-			right: 1em;
+			right: 2em;
+			top: 0.3em;
 
 			&::before {
 				right: -0.5em;
 				left: auto;
 			}
+		}
+
+		.more-info-button {
+			top: 2.2em;
+			right: 0em;
 		}
 	}
 
