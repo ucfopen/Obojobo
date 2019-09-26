@@ -43,7 +43,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 		modal: {
 			SimpleDialog: () => 'MockSimpleDialog'
 		},
-		Button: props => <button>{props.children}</button>
+		Button: props => <button {...props}>{props.children}</button>
 	}
 }))
 
@@ -179,7 +179,6 @@ describe('PageEditor', () => {
 		// save action should have occured
 		expect(spy).toHaveBeenCalledTimes(1)
 		expect(spy).toHaveBeenCalledWith(prevProps.page, prevState.value)
-
 	})
 
 	test('EditorNav component with content', () => {
@@ -282,23 +281,30 @@ describe('PageEditor', () => {
 						get: () => 'mockNode'
 					}
 				],
-				flatJSON: () => {
-					return { content: {}, children: [] }
-				}
+				flatJSON: () => ({ content: {}, children: [] })
 			}
 		}
+
 		const component = mount(<PageEditor {...props} />)
 		const tree = component.html()
 
-		const saveButton = component.find('button').at(14)
-		expect(saveButton.props().children).toBe('Save Document')
-		saveButton.simulate('click')
+		const saveButton = component.find('button').at(0)
+		const saveButtonProps = saveButton.props()
+		expect(saveButtonProps).toHaveProperty('children', 'Save Document')
+		expect(saveButtonProps).toHaveProperty('onClick', expect.any(Function))
 
-		expect(tree).toMatchSnapshot()
+		saveButtonProps.onClick()
+
 		expect(APIUtil.postDraft).toHaveBeenCalled()
 	})
 
 	test('EditorNav component with content fails to export to database', () => {
+		Component.helpers.oboToSlate.mockReturnValueOnce({
+			object: 'block',
+			type: 'oboeditor.component',
+			nodes: []
+		})
+
 		APIUtil.postDraft.mockResolvedValueOnce({
 			status: 'not ok',
 			value: { message: 'mock error message' }
@@ -328,19 +334,24 @@ describe('PageEditor', () => {
 				}
 			}
 		}
+
 		const component = mount(<PageEditor {...props} />)
 		const tree = component.html()
 
-		const saveButton = component.find('button').at(14)
-		expect(saveButton.props().children).toBe('Save Document')
+		const saveButton = component.find('button').at(0)
+		const saveButtonProps = saveButton.props()
+		expect(saveButtonProps).toHaveProperty('children', 'Save Document')
+		expect(saveButtonProps).toHaveProperty('onClick', expect.any(Function))
+		expect(Common.util.ModalUtil.show).toHaveBeenCalledTimes(0)
 		saveButton.simulate('click')
 
 		// eslint-disable-next-line no-undef
 		return flushPromises().then(() => {
-			expect(APIUtil.postDraft).toHaveBeenCalled()
-			expect(tree).toMatchSnapshot()
 			// eslint-disable-next-line no-console
 			expect(console.error).not.toHaveBeenCalled()
+			expect(APIUtil.postDraft).toHaveBeenCalled()
+			expect(Common.util.ModalUtil.show).toHaveBeenCalledTimes(1)
+			expect(Common.util.ModalUtil.show.mock.calls[0][0]).toMatchSnapshot()
 			// restore startingId
 			EditorStore.state = { startingId: null }
 		})
@@ -348,7 +359,11 @@ describe('PageEditor', () => {
 
 	test('EditorNav component console errors on invalid postDraft response', () => {
 		APIUtil.postDraft.mockResolvedValueOnce({ status: 'not ok', throwsError: 'you bet!' })
-
+		Component.helpers.oboToSlate.mockReturnValueOnce({
+			object: 'block',
+			type: 'oboeditor.component',
+			nodes: []
+		})
 		// remove startingId for test coverage
 		EditorStore.state = {}
 
@@ -374,7 +389,7 @@ describe('PageEditor', () => {
 			}
 		}
 		const component = mount(<PageEditor {...props} />)
-		const saveButton = component.find('button').at(14)
+		const saveButton = component.find('button').at(0)
 		expect(saveButton.props().children).toBe('Save Document')
 		saveButton.simulate('click')
 

@@ -24,6 +24,11 @@ class PageEditor extends React.Component {
 		// ask the registry for the assessment
 		this.assessment = Common.Registry.getItemForType(ASSESSMENT_NODE)
 
+		this.onChange = this.onChange.bind(this)
+		this.getEditor = this.getEditor.bind(this)
+		this.ref = this.ref.bind(this)
+		this.saveDraft = this.saveDraft.bind(this)
+
 		const json = this.importFromJSON()
 
 		this.state = {
@@ -32,7 +37,6 @@ class PageEditor extends React.Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		console.log('UPDATE')
 		// Deal with deleted page
 		if (!this.props.page) {
 			return
@@ -64,16 +68,20 @@ class PageEditor extends React.Component {
 		return (
 			<div className='editor--page-editor'>
 				<div className='toolbar'>
-					<ToolBarComponent getEditor={this.getEditor.bind(this)} />
+					<ToolBarComponent getEditor={this.getEditor} />
 				</div>
 				<Editor
 					className='component obojobo-draft--pages--page'
 					value={this.state.value}
-					ref={this.ref.bind(this)}
-					onChange={change => this.onChange(change)}
+					ref={this.ref}
+					onChange={this.onChange}
 					plugins={this.props.plugins}
 				/>
-				{this.renderExportButton()}
+				<div className="footer-menu">
+					<Button className='exporter' onClick={this.saveDraft}>
+						Save Document
+					</Button>
+				</div>
 			</div>
 		)
 	}
@@ -144,17 +152,8 @@ class PageEditor extends React.Component {
 		return json
 	}
 
-	renderExportButton() {
-		return (
-			<div className="footer-menu">
-				<Button className='exporter' onClick={() => this.saveDraft(EditorStore.state.startingId)}>
-					Save Document
-				</Button>
-			</div>
-		)
-	}
-
-	saveDraft(startPage = null) {
+	saveDraft() {
+		const startPage = EditorStore.state.startingId
 		this.exportToJSON(this.props.page, this.state.value)
 		const json = this.props.model.flatJSON()
 		json.content.start = startPage
