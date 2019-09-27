@@ -1,15 +1,20 @@
+import React from 'react'
+
+import constant from './constant'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 import Node from './editor-component'
-import React from 'react'
+import NumericInput from './components/numeric-input/numeric-input'
 
-const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
+const { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE } = constant
 
 const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case NUMERIC_ASSESSMENT_NODE:
 				return <Node {...props} {...props.attributes} />
+			case SCORE_RULE_NODE:
+				return <NumericInput {...props} {...props.attributes} />
 			default:
 				return next()
 		}
