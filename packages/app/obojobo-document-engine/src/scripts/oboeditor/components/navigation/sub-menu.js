@@ -6,6 +6,7 @@ import React from 'react'
 import MoreInfoBox from './more-info-box'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import generatePage from '../../documents/generate-page'
+import generateId from '../../generate-ids'
 
 import {
 	getTriggersWithActionsAdded,
@@ -13,7 +14,7 @@ import {
 	hasTriggerTypeWithActionType
 } from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
 
-const { Prompt } = Common.components.modal
+const { Prompt, SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
 const { OboModel } = Common.models
@@ -33,10 +34,11 @@ class SubMenu extends React.Component {
 		this.showAddPageModal = this.showAddPageModal.bind(this)
 		this.saveId = this.saveId.bind(this)
 		this.saveContent = this.saveContent.bind(this)
-	}
 
-	deletePage(pageId) {
-		EditorUtil.deletePage(pageId)
+		this.showDeleteModal = this.showDeleteModal.bind(this)
+		this.deletePage = this.deletePage.bind(this)
+
+		this.duplicatePage = this.duplicatePage.bind(this)
 	}
 
 	renamePage(pageId, label) {
@@ -120,6 +122,38 @@ class SubMenu extends React.Component {
 		model.triggers = newContent.triggers ? newContent.triggers : []
 		model.title =
 			newContent.title || model.title ? this.renamePage(item.id, newContent.title) : null
+	}
+
+	showDeleteModal() {
+		const item = this.props.list[this.props.index]
+
+		ModalUtil.show(
+			<SimpleDialog cancelOk onConfirm={this.deletePage}>
+				{'Are you sure you want to delete ' +
+					item.label +
+					'? This will permanately delete all content in the page'}
+			</SimpleDialog>
+		)
+	}
+
+	deletePage() {
+		ModalUtil.hide()
+		const item = this.props.list[this.props.index]
+
+		EditorUtil.deletePage(item.id)
+	}
+
+	duplicatePage() {
+		const item = this.props.list[this.props.index]
+		const model = OboModel.models[item.id]
+
+		this.props.savePage()
+		const newPage = model.flatJSON()
+		newPage.children = model.get('children')
+		// Removes duplicate ids from duplicated pages
+		newPage.id = generateId()
+		newPage.content.title = item.label + ' - (Copy)'
+		EditorUtil.addPage(newPage, item.id)
 	}
 
 	render() {
@@ -221,12 +255,15 @@ class SubMenu extends React.Component {
 				{isSelected ? (
 					<MoreInfoBox
 						id={item.id}
+						type={model.get('type')}
 						content={model.get('content')}
 						saveId={this.saveId}
 						saveContent={this.saveContent}
 						savePage={this.props.savePage}
 						contentDescription={contentDescription}
-					/>
+						deleteNode={this.showDeleteModal}
+						duplicateNode={this.duplicatePage}
+						markUnsaved={this.props.markUnsaved}/>
 				) : null}
 				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null}
 			</li>

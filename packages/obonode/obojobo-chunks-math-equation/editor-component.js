@@ -4,6 +4,7 @@ import './editor-component.scss'
 import React from 'react'
 import katex from 'katex'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 import MathEquationProperties from './math-equation-properties-modal'
 
@@ -77,16 +78,17 @@ class MathEquation extends React.Component {
 	render() {
 		const content = this.props.node.data.get('content')
 		return (
-			<div
-				className={
-					'component obojobo-draft--chunks--math-equation pad ' +
-					'align-' +
-					(content.align || 'center')
-				}
-			>
-				{this.renderLatex()}
-				<Button onClick={this.showMathEquationPropertiesModal.bind(this)}>Edit</Button>
-			</div>
+			<Node {...this.props}>
+				<div
+					className={
+						'component obojobo-draft--chunks--math-equation pad ' +
+						'align-' +
+						(content.align || 'center')
+					}>
+					{this.renderLatex()}
+					<Button onClick={this.showMathEquationPropertiesModal.bind(this)}>Edit</Button>
+				</div>
+			</Node>
 		)
 	}
 }

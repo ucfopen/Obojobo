@@ -3,6 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 import NewActionModal from './new-action-modal'
 
@@ -79,12 +80,14 @@ class ActionButton extends React.Component {
 		const { isSelected } = this.props
 
 		return (
-			<div className="text-chunk obojobo-draft--chunks--action-button pad">
-				<div className="obojobo-draft--components--button align-center">
-					<div className="button">{this.props.children}</div>
+			<Node {...this.props}>
+				<div className="text-chunk obojobo-draft--chunks--action-button pad">
+					<div className="obojobo-draft--components--button align-center">
+						<div className="button">{this.props.children}</div>
+					</div>
+					{isSelected ? this.renderTriggers() : null}
 				</div>
-				{isSelected ? this.renderTriggers() : null}
-			</div>
+			</Node>
 		)
 	}
 }

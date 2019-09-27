@@ -3,6 +3,7 @@ import './editor-component.scss'
 
 import { Block } from 'slate'
 import React from 'react'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'
 
@@ -90,21 +91,23 @@ class Table extends React.Component {
 
 	render() {
 		return (
-			<div className={'obojobo-draft--chunks--table viewer pad'}>
-				<div className={'container'}>
-					<table className="view" key="table">
-						<tbody>
-							{this.props.children}
-							{this.renderColDelete()}
-						</tbody>
-					</table>
+			<Node {...this.props}>
+				<div className={'obojobo-draft--chunks--table viewer pad'}>
+					<div className={'container'}>
+						<table className="view" key="table">
+							<tbody>
+								{this.props.children}
+								{this.renderColDelete()}
+							</tbody>
+						</table>
+					</div>
+					<div className={'table-editor-buttons'}>
+						<button onClick={() => this.addRow()}>{'Add Row'}</button>
+						<button onClick={() => this.addCol()}>{'Add Column'}</button>
+						<button onClick={() => this.toggleHeader()}>{'Toggle Header'}</button>
+					</div>
 				</div>
-				<div className={'table-editor-buttons'}>
-					<button onClick={() => this.addRow()}>{'Add Row'}</button>
-					<button onClick={() => this.addCol()}>{'Add Column'}</button>
-					<button onClick={() => this.toggleHeader()}>{'Toggle Header'}</button>
-				</div>
-			</div>
+			</Node>
 		)
 	}
 }

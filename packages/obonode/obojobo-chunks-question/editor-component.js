@@ -4,6 +4,7 @@ import './editor-component.scss'
 import { Block } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 const { Button } = Common.components
 
@@ -47,34 +48,34 @@ class Question extends React.Component {
 		const state = this.props.node.data.get('content')
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
 		return (
-			<div
-				className={`component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-${
-					state.type
-				}`}
-			>
-				<select
-					className="question-type"
-					contentEditable={false}
-					value={state.type}
-					onChange={this.onSetType.bind(this)}
-				>
-					<option value="default">Default</option>
-					<option value="survey">Survey</option>
-				</select>
-				<div className="flipper question-editor">
-					<div className="content-back">
-						{this.props.children}
-						{hasSolution ? null : (
-							<Button className="add-solution" onClick={() => this.addSolution()}>
-								Add Solution
-							</Button>
-						)}
+			<Node {...this.props}>
+				<div
+					className={`component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-${
+						state.type
+					}`}>
+					<select
+						className="question-type"
+						contentEditable={false}
+						value={state.type}
+						onChange={this.onSetType.bind(this)}>
+						<option value="default">Default</option>
+						<option value="survey">Survey</option>
+					</select>
+					<div className="flipper question-editor">
+						<div className="content-back">
+							{this.props.children}
+							{hasSolution ? null : (
+								<Button className="add-solution" onClick={() => this.addSolution()}>
+									Add Solution
+								</Button>
+							)}
+						</div>
 					</div>
+					<Button className="delete-button" onClick={() => this.delete()}>
+						×
+					</Button>
 				</div>
-				<Button className="delete-button" onClick={() => this.delete()}>
-					×
-				</Button>
-			</div>
+			</Node>
 		)
 	}
 }

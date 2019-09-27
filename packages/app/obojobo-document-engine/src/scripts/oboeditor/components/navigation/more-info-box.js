@@ -19,16 +19,10 @@ const { OboModel } = Common.models
 // saveContent: Function(oldContent, newContent) - updates the content. Returns a string error if the content is invalid
 // contentDescription: [Object] - a list of descriptions that tells which content attributes to display and how
 // 			Each description should have a name, a description, and a type
+// markUnsaved: Function() - marks the editor content as unsaved
 class MoreInfoBox extends React.Component {
 	constructor(props) {
 		super(props)
-
-		this.model = OboModel.models[this.props.id]
-
-		// const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
-		// const endAttemptUnlock =
-			// hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
-			// hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
 
 		this.state = {
 			currentId: this.props.id,
@@ -89,8 +83,11 @@ class MoreInfoBox extends React.Component {
 	}
 
 	onSave() {
+		// Save the internal content to the editor state
 		const error = this.props.saveId(this.props.id, this.state.currentId) || this.props.saveContent(this.props.content, this.state.content)
 		if(!error) {
+			// Mark the editor content as having changes that need to be saved
+			this.props.markUnsaved()
 			return this.close()
 		}
 		
@@ -101,11 +98,13 @@ class MoreInfoBox extends React.Component {
 		if(this.state.isOpen) {
 			this.onSave()
 		} else {
+			if(this.props.onOpen) this.props.onOpen()
 			this.setState({ isOpen: true })
 		}
 	}
 
 	close() {
+		if(this.props.onClose) this.props.onClose()
 		return this.setState({ isOpen: false })
 	}
 
@@ -180,7 +179,7 @@ class MoreInfoBox extends React.Component {
 				<div className="container">
 					<div className="properties">
 						<div>
-							{this.model.get('type')}
+							{this.props.type}
 						</div>
 						<div>
 							<div>
@@ -219,10 +218,10 @@ class MoreInfoBox extends React.Component {
 						<div>
 							<Button 
 								className="delete-page-button"
-								onClick={this.showDeleteModal}>Delete</Button>
+								onClick={this.props.deleteNode}>Delete</Button>
 							<Button 
 								className="duplicate-button"
-								onClick={this.duplicatePage}>
+								onClick={this.props.duplicateNode}>
 								Duplicate
 							</Button>
 						</div>

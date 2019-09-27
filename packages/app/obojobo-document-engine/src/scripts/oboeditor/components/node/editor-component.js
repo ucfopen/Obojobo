@@ -3,7 +3,6 @@ import { Block } from 'slate'
 import Common from 'Common'
 
 import DropMenu from './components/insert-menu'
-import MoreInfoIcon from '../../assets/more-info-icon'
 
 import MoreInfoBox from '../navigation/more-info-box'
 
@@ -13,7 +12,11 @@ class Node extends React.Component {
 	insertBlockAtStart(item) {
 		const editor = this.props.editor
 
-		return editor.insertNodeByKey(this.props.node.key, 0, Block.create(item.insertJSON))
+		console.log(this.props)
+		console.log(this.props.node)
+		console.log(this.props.parent.getPath(this.props.node.key).get(0))
+
+		return editor.insertNodeByKey(this.props.parent.key, this.props.parent.getPath(this.props.node.key).get(0), Block.create(item.insertJSON))
 	}
 
 	insertBlockAtEnd(item) {
@@ -38,9 +41,26 @@ class Node extends React.Component {
 		console.log('aaaaaaaaaaaah')
 	}
 
-	render() {
-		const node = this.props.node.nodes.get(0)
+	deleteNode() {
+		// Cursor focus is automatically returned to the editor by the onChange function
+		this.props.editor.removeNodeByKey(this.props.node.key)
+	}
 
+	duplicateNode() {
+		console.log(this.props.node)
+	}
+
+	onOpen() {
+		// Lock the editor into readOnly to prevent it from stealing cursor focus
+		this.props.editor.toggleEditable(false)
+	}
+
+	onClose() {
+		// Give cursor focus back to the editor
+		this.props.editor.toggleEditable(true)
+	}
+
+	render() {
 		return (
 			<div className={'oboeditor-component component'} data-obo-component="true">
 				{this.props.isSelected ? (
@@ -59,14 +79,15 @@ class Node extends React.Component {
 						/>
 					</div>
 				) : null}
-				{this.props.children}
+
 				{this.props.isSelected ? (
 					<MoreInfoBox
 						className="content-node"
-						id={node.key}
-						content={node.data.toJSON().content}
+						id={this.props.node.key}
+						type={this.props.node.type}
+						content={this.props.node.data.toJSON().content}
 						saveId={this.saveId}
-						saveContent={this.saveContent}
+						saveContent={this.saveContent.bind(this)}
 						contentDescription={[
 							{
 								name: 'title',
@@ -74,8 +95,13 @@ class Node extends React.Component {
 								type: 'string'
 							}
 						]}
-					/>
+						deleteNode={this.deleteNode.bind(this)}
+						duplicateNode={this.duplicateNode.bind(this)}
+						markUnsaved={this.props.editor.markUnsaved}
+						onOpen={this.onOpen.bind(this)}
+						onClose={this.onClose.bind(this)}/>
 				) : null}
+				{this.props.children}
 			</div>
 		)
 	}

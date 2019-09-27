@@ -114,7 +114,7 @@ class EditorNav extends React.Component {
 							list={list}
 							onClick={this.onNavItemClick.bind(this, item)}
 							savePage={this.props.savePage}
-						/>
+							markUnsaved={this.props.markUnsaved}/>
 					)
 				case 'no-pages':
 					return (

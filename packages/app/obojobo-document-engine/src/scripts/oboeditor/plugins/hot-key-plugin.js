@@ -1,4 +1,4 @@
-const HotKeyPlugin = (saveFunction) => {
+const HotKeyPlugin = (saveFunction, markUnsavedFunction, toggleEditableFunction) => {
 	// HotKeys are registered on keyup and keydown for cross browser compatability
 	const onKeyPress = (event, editor, next) => {
 		if (!(event.ctrlKey || event.metaKey)) return next()
@@ -27,6 +27,14 @@ const HotKeyPlugin = (saveFunction) => {
 		},
 		onKeyUp(event, editor, next) {
 			return onKeyPress(event, editor, next)
+		},
+		commands: {
+			markUnsaved() {
+				return markUnsavedFunction()
+			},
+			toggleEditable(editor, editable){
+				return toggleEditableFunction(editable)
+			}
 		}
 	}
 }

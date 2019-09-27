@@ -4,6 +4,8 @@ import './editor-component.scss'
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+
 class Heading extends React.Component {
 	constructor(props) {
 		super(props)
@@ -87,18 +89,20 @@ class Heading extends React.Component {
 		const content = this.props.node.data.get('content')
 		const HTag = `h${content.level || 1}`
 		return (
-			<div
-				className={'text-chunk obojobo-draft--chunks--heading pad'}
-				ref={node => {
-					this.node = node
-				}}
-			>
-				<HTag>
-					<span className={'text align-' + content.align}>{this.props.children}</span>
-				</HTag>
+			<Node {...this.props}>
+				<div
+					className={'text-chunk obojobo-draft--chunks--heading pad'}
+					ref={node => {
+						this.node = node
+					}}
+				>
+					<HTag>
+						<span className={'text align-' + content.align}>{this.props.children}</span>
+					</HTag>
 
-				{this.props.isSelected ? this.renderDropdown() : null }
-			</div>
+					{this.props.isSelected ? this.renderDropdown() : null }
+				</div>
+			</Node>
 		)
 	}
 }

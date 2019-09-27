@@ -36,19 +36,34 @@ class PageEditor extends React.Component {
 
 		this.state = {
 			value: Value.fromJSON(json),
-			saved: true
+			saved: true,
+			editable: true
 		}
 
 		this.exportToJSON = this.exportToJSON.bind(this)
 		this.saveModule = this.saveModule.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
+
+		this.toggleEditable = this.toggleEditable.bind(this)
+		this.markUnsaved = this.markUnsaved.bind(this)
+
 		this.plugins = this.getPlugins()
+	}
+
+	toggleEditable(editable) {
+		console.log('he-hewwo?')
+		return this.setState({ editable })
+	}
+
+	markUnsaved() {
+		return this.setState({ saved: false })
 	}
 
 	getPlugins() {
 		const nodePlugins = Common.Registry.getItems(this.convertItemsToArray)
 			.map(item => item.plugins)
 			.filter(item => item)
+
 		const markPlugins = [
 			BasicMarks.plugins,
 			LinkMark.plugins,
@@ -66,7 +81,7 @@ class PageEditor extends React.Component {
 		const editorPlugins = [
 			EditorSchema,
 			ClipboardPlugin,
-			hotKeyPlugin(() => this.saveModule(this.props.draftId))
+			hotKeyPlugin(() => this.saveModule(this.props.draftId), this.markUnsaved, this.toggleEditable)
 		]
 
 		return [...nodePlugins, ...markPlugins, ...componentPlugins, ...editorPlugins]
@@ -151,8 +166,7 @@ class PageEditor extends React.Component {
 						onSave={this.saveModule}
 						switchMode={this.props.switchMode}
 						saved={this.state.saved}
-						mode={'visual'}
-					/>
+						mode={'visual'}/>
 					<ContentToolbar getEditor={this.getEditor.bind(this)} />
 				</div>
 
@@ -161,7 +175,7 @@ class PageEditor extends React.Component {
 					model={this.props.model}
 					draftId={this.props.draftId}
 					savePage={this.exportToJSON.bind(this, this.props.page, this.state.value)}
-				/>
+					markUnsaved={this.markUnsaved}/>
 
 				<div className="component obojobo-draft--modules--module" role="main">
 					<Editor
@@ -170,8 +184,7 @@ class PageEditor extends React.Component {
 						ref={this.ref.bind(this)}
 						onChange={change => this.onChange(change)}
 						plugins={this.plugins}
-						readOnly={!this.props.page}
-					/>
+						readOnly={!this.props.page || !this.state.editable}/>
 				</div>
 			</div>
 		)
@@ -199,7 +212,8 @@ class PageEditor extends React.Component {
 			ModalUtil.hide()
 		}
 
-		this.setState({ value: change.value, saved: false })
+		// When changing the value, mark the changes as unsaved and return the cursor focus to the editor
+		this.setState({ value: change.value, saved: false, editable: true })
 	}
 
 	saveModule(draftId) {
@@ -232,8 +246,6 @@ class PageEditor extends React.Component {
 					contentJSON.content = child.get('content')
 					break
 			}
-
-			console.log(contentJSON)
 
 			json.children.push(contentJSON)
 		})

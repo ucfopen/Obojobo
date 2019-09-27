@@ -4,6 +4,7 @@ import './editor-component.scss'
 import React, { memo } from 'react'
 import { Block } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 import emptyQB from './empty-node.json'
 import emptyQuestion from 'obojobo-chunks-question/empty-node.json'
@@ -24,34 +25,36 @@ const addQuestionBank = (editor, node) => {
 	editor.insertNodeByKey(node.key, node.nodes.size, newQuestion)
 }
 
-const QuestionBank = ({ editor, node, children }) => (
-	<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
-		<Button
-			className="delete-button"
-			onClick={() => {
-				remove(editor, node)
-			}}
-		>
-			&times;
-		</Button>
-		{children}
-		<Button
-			className="buffer"
-			onClick={() => {
-				addQuestion(editor, node)
-			}}
-		>
-			{'Add Question'}
-		</Button>
-		<Button
-			className="buffer"
-			onClick={() => {
-				addQuestionBank(editor, node)
-			}}
-		>
-			{'Add Question Bank'}
-		</Button>
-	</div>
-)
+const QuestionBank = props => {
+	const { editor, node, children } = props
+	return (
+		<Node {...props}>
+			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
+				<Button
+					className="delete-button"
+					onClick={() => {
+						remove(editor, node)
+					}}>
+					&times;
+				</Button>
+				{children}
+				<Button
+					className="buffer"
+					onClick={() => {
+						addQuestion(editor, node)
+					}}>
+					{'Add Question'}
+				</Button>
+				<Button
+					className="buffer"
+					onClick={() => {
+						addQuestionBank(editor, node)
+					}}>
+					{'Add Question Bank'}
+				</Button>
+			</div>
+		</Node>
+	)
+}
 
 export default memo(QuestionBank)

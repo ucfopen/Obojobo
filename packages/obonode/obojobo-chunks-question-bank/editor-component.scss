@@ -5,6 +5,8 @@
 	border: 1px solid $color-action;
 	border-radius: $dimension-rounded-radius;
 	overflow: visible;
+	margin-left: 3em;
+	margin-right: 3em;
 
 	.delete-button {
 		position: absolute;
@@ -18,6 +20,35 @@
 			padding: 0;
 			min-width: 1.4em;
 			border-radius: 50%;
+		}
+	}
+
+	.obojobo-draft--chunks--question {
+		.delete-button {
+			right: 0;
+		}
+
+		.question-type {
+			right: 4;
+		}
+	}
+
+	.obojobo-draft--chunks--question:first-child:last-child {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+
+	> .component[data-obo-component='true'] {
+		padding-top: 0;
+		padding-bottom: 0;
+
+		> .component-toolbar{
+			display: none;
+		}
+
+		> .pad {
+			padding-left: 0;
+			padding-right: 0;
 		}
 	}
 }

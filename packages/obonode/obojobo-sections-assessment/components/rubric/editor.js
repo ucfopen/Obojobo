@@ -163,22 +163,16 @@ const plugins = {
 				nodes: [
 					{
 						object: 'block',
-						type: 'oboeditor.component',
+						type: 'ObojoboDraft.Chunks.Text',
 						nodes: [
 							{
 								object: 'block',
-								type: 'ObojoboDraft.Chunks.Text',
+								type: 'ObojoboDraft.Chunks.Text.TextLine',
+								data: { indent: 0 },
 								nodes: [
 									{
-										object: 'block',
-										type: 'ObojoboDraft.Chunks.Text.TextLine',
-										data: { indent: 0 },
-										nodes: [
-											{
-												object: 'text',
-												leaves: [{ object: 'leaf', text: cutText, marks: [] }]
-											}
-										]
+										object: 'text',
+										leaves: [{ object: 'leaf', text: cutText, marks: [] }]
 									}
 								]
 							}
