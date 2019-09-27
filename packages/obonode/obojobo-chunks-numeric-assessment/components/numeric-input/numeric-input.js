@@ -1,15 +1,22 @@
 import './numeric-input.scss'
 
 import React from 'react'
+
 import Common from 'obojobo-document-engine/src/scripts/common'
-import constant from '../../constant'
-import renderHeader from './render-header'
-import renderOption from './render-option'
+import NumericHeader from './numeric-header'
+import NumericOption from './numeric-option'
 
 const { Button } = Common.components
-const { requirementDropdown } = constant
 
 class NumericInput extends React.Component {
+	constructor() {
+		super()
+
+		this.state = {
+			isEditting: false
+		}
+	}
+
 	onHandleScoreChange() {
 		const scoreRule = this.props.node.data.get('scoreRule')
 		scoreRule.score = scoreRule.score == '100' ? '0' : '100'
@@ -50,6 +57,10 @@ class NumericInput extends React.Component {
 		return editor.removeNodeByKey(this.props.node.key)
 	}
 
+	onAddFeedback() {
+		this.setState({ isEditting: true })
+	}
+
 	render() {
 		const scoreRule = this.props.node.data.get('scoreRule')
 		const { score } = scoreRule
@@ -58,7 +69,7 @@ class NumericInput extends React.Component {
 		const className = 'numeric-input-container' + (isSelected ? ' is-selected' : '')
 
 		return (
-			<div className={className} onClick={this.props.onSetCurrSelected} contentEditable={false}>
+			<div className={className} onClick={this.props.onSetCurrSelected}>
 				<button
 					className={'correct-button ' + (score == 100 ? 'is-correct' : 'is-not-correct')}
 					tabIndex="0"
@@ -67,38 +78,28 @@ class NumericInput extends React.Component {
 					{score == 100 ? '✔' : '✖'}
 				</button>
 
-				<table>
-					<tr>
-						<th>Requirement</th>
-						{renderHeader(scoreRule.requirement)}
-					</tr>
-					<tr>
-						<td>
-							<select
-								className="select-item"
-								name="requirement"
-								onChange={event => this.onClickDropdown(event)}
-							>
-								{requirementDropdown.map(requirement => (
-									<option>{requirement}</option>
-								))}
-							</select>
-						</td>
-						{renderOption(
-							scoreRule,
-							event => this.onHandleInputChange(event),
-							event => this.onClickDropdown(event)
-						)}
-					</tr>
+				<table contentEditable={false}>
+					<NumericHeader requirement={scoreRule.requirement} />
+					<NumericOption
+						scoreRule={scoreRule}
+						onHandleInputChange={event => this.onHandleInputChange(event)}
+						onClickDropdown={event => this.onClickDropdown(event)}
+					/>
 				</table>
+
 				<Button className="delete-button" onClick={() => this.onDelete(event)}>
 					×
 				</Button>
-				{isSelected ? (
+
+				{this.state.isEditting ? (
+					<div className="numeric-feedback-editor">{this.props.children}</div>
+				) : (
 					<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn">
-						<button className="button">Add Feedback</button>
+						<button className="button" onClick={() => this.onAddFeedback()} contentEditable={false}>
+							Add Feedback
+						</button>
 					</div>
-				) : null}
+				)}
 			</div>
 		)
 	}

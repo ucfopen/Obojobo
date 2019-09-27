@@ -5,8 +5,9 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 import Node from './editor-component'
 import NumericInput from './components/numeric-input/numeric-input'
+import NumericFeedback from './components/numeric-feedback/editor-component'
 
-const { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE } = constant
+const { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_FEEDBACK } = constant
 
 const plugins = {
 	renderNode(props, editor, next) {
@@ -15,6 +16,8 @@ const plugins = {
 				return <Node {...props} {...props.attributes} />
 			case SCORE_RULE_NODE:
 				return <NumericInput {...props} {...props.attributes} />
+			case NUMERIC_FEEDBACK:
+				return <NumericFeedback {...props} {...props.attributes} />
 			default:
 				return next()
 		}

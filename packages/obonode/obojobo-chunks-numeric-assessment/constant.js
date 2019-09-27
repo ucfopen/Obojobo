@@ -1,6 +1,6 @@
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const SCORE_RULE_NODE = 'ScoreRule'
-const NUMERIC_FEEDBACK = 'ScoreRule.Feedback'
+const NUMERIC_FEEDBACK = 'NumericFeedback'
 
 const EXACT_ANSWER = 'Exact answer'
 const MARGIN_OF_ERROR = 'Margin of error'

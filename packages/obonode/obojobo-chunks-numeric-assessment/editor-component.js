@@ -45,7 +45,7 @@ class NumericAssessment extends React.Component {
 
 	render() {
 		return (
-			<div className="component obojobo-draft--chunks--numeric-assessment" contentEditable={true}>
+			<div className="component obojobo-draft--chunks--numeric-assessment">
 				{/* Use React.Children.map to add `onClick` function and pass `isSelected` to each child as props */}
 				{React.Children.map(this.props.children, (child, index) => (
 					<div onClick={() => this.onSetCurrSelected(index)}>
@@ -54,7 +54,11 @@ class NumericAssessment extends React.Component {
 						})}
 					</div>
 				))}
-				<Button className="add-answer-btn pad" onClick={() => this.onAddNumericInput()}>
+				<Button
+					className="add-answer-btn pad"
+					onClick={() => this.onAddNumericInput()}
+					contentEditable={false}
+				>
 					Add possible answer
 				</Button>
 			</div>
