@@ -12,7 +12,8 @@
 			"urlencodedOptions": {
 				"extended": false
 			}
-		}
+		},
+		"demoPurgeMode": "none"
 	},
 	"test": {
 		"key": "value",
@@ -25,6 +26,7 @@
 		"secureCookie": {"ENV": "OBO_COOKIE_SECURE"},
 		"cookieSecret": {
 			"ENV": "OBO_COOKIE_SECRET"
-		}
+		},
+		"demoPurgeMode": {"ENV": "OBO_DEMO_PURGE_MODE"}
 	}
 }
