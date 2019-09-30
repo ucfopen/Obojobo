@@ -1,8 +1,11 @@
 import React from 'react'
+import { getEventTransfer } from 'slate-react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
+const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
 
 import emptyNode from './empty-node.json'
 import Icon from './icon'
@@ -22,7 +25,54 @@ const plugins = {
 				return next()
 		}
 	},
+	queries: {
+		
+	
+	},
 	schema: Schema
+}
+
+const getPasteNode = (question) => {
+	// If passed a 'whole' question return the question
+	// 'Whole' questions are defined as questions that contain more than one child
+	// and at least one child is a MCAssessment 
+	// (Ex: the user selected on node in the question body and one node in an MCAssessment)
+	const mcAssess = question.nodes.filter(node => node.type === MCASSESSMENT_NODE).get(0)
+	if(mcAssess && question.nodes.size > 1) return question
+
+	// If the question is not whole, get the content nodes
+	// get the index of the mc assessment
+	const nodes = []
+
+	// Get all the content nodes in the question body
+	for(const node of question.nodes) {
+		if(node.type === MCASSESSMENT_NODE || node.type === SOLUTION_NODE) break
+
+		nodes.push(node)
+	}
+
+	// Extract out the content nodes in the MCAssessment
+	if(mcAssess) {
+		mcAssess.nodes.forEach(choiceListOrSettings => {
+			if(choiceListOrSettings.type === CHOICE_LIST_NODE) {
+				choiceListOrSettings.nodes.forEach(mcChoice => {
+					mcChoice.nodes.forEach(ansOrFeedback => {
+						ansOrFeedback.nodes.forEach(contentNode => nodes.push(contentNode))
+					})
+				})
+			}
+		})		
+	}
+
+	// Extract out the content nodes in the Solution
+	const solution = question.nodes.filter(node => node.type === SOLUTION_NODE).get(0)
+	if(solution) {
+		solution.nodes.forEach(page => {
+			page.nodes.forEach(contentNode => nodes.push(contentNode))
+		})
+	}
+
+	return nodes
 }
 
 Common.Registry.registerModel('ObojoboDraft.Chunks.Question', {
@@ -45,7 +95,8 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.Question', {
 			label,
 			path: [`#obo-${model.get('id')}`]
 		}
-	}
+	},
+	getPasteNode
 })
 
 const Question = {
@@ -62,7 +113,7 @@ const Question = {
 	json: {
 		emptyNode
 	},
-	plugins
+	plugins,
 }
 
 export default Question

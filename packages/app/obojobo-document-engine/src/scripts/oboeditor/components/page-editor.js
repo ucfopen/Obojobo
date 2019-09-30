@@ -51,7 +51,6 @@ class PageEditor extends React.Component {
 	}
 
 	toggleEditable(editable) {
-		console.log('he-hewwo?')
 		return this.setState({ editable })
 	}
 

@@ -44,8 +44,6 @@ class _Registry {
 		const item = items.get(className)
 		if (item) opts = Object.assign(opts, item)
 
-		items.set(className, opts)
-
 		opts = Object.assign(
 			{
 				type: null,
@@ -63,10 +61,13 @@ class _Registry {
 				slateToObo: null,
 				oboToSlate: null,
 				plugins: null,
+				getPasteNode: node => node,
 				supportsChildren: false
 			},
 			opts
 		)
+
+		items.set(className, opts)
 
 		if (opts.default) {
 			defaults.set(opts.type, className)
