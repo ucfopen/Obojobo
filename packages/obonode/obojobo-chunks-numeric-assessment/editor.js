@@ -1,13 +1,13 @@
 import React from 'react'
 
-import constant from './constant'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 import Node from './editor-component'
 import NumericInput from './components/numeric-input/numeric-input'
 import NumericFeedback from './components/numeric-feedback/editor-component'
+import Schema from './schema'
 
-const { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_FEEDBACK } = constant
+import { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_FEEDBACK } from './constant'
 
 const plugins = {
 	renderNode(props, editor, next) {
@@ -21,7 +21,8 @@ const plugins = {
 			default:
 				return next()
 		}
-	}
+	},
+	schema: Schema
 }
 
 Common.Registry.registerModel(NUMERIC_ASSESSMENT_NODE, {

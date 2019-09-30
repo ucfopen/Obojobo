@@ -15,11 +15,10 @@ const requirementDropdown = [EXACT_ANSWER, MARGIN_OF_ERROR, WITHIN_A_RANGE, PREC
 const marginDropdown = [PERCENT, ABSOLUTE]
 const precisionDropdown = [SIGNIFICANT_DIGITS, DECIMAL_PLACES]
 
-const constant = {
+export {
 	NUMERIC_ASSESSMENT_NODE,
 	SCORE_RULE_NODE,
 	NUMERIC_FEEDBACK,
-
 	EXACT_ANSWER,
 	MARGIN_OF_ERROR,
 	WITHIN_A_RANGE,
@@ -28,10 +27,7 @@ const constant = {
 	ABSOLUTE,
 	SIGNIFICANT_DIGITS,
 	DECIMAL_PLACES,
-
 	requirementDropdown,
 	marginDropdown,
 	precisionDropdown
 }
-
-export default constant

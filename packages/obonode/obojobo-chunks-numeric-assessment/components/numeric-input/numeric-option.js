@@ -1,8 +1,6 @@
 import React from 'react'
 
-import constant from '../../constant'
-
-const {
+import {
 	EXACT_ANSWER,
 	MARGIN_OF_ERROR,
 	WITHIN_A_RANGE,
@@ -10,7 +8,7 @@ const {
 	requirementDropdown,
 	marginDropdown,
 	precisionDropdown
-} = constant
+} from '../../constant'
 
 const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 	const {

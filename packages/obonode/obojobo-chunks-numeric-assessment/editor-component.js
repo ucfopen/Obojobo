@@ -4,10 +4,9 @@ import React from 'react'
 import { Block } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-import constant from './constant'
+import { SCORE_RULE_NODE } from './constant'
 
 const { Button } = Common.components
-const { SCORE_RULE_NODE } = constant
 
 const emptyResponse = {
 	requirement: 'Exact answer',

@@ -1,10 +1,12 @@
 import './numeric-input.scss'
 
 import React from 'react'
+import { Block } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import NumericHeader from './numeric-header'
 import NumericOption from './numeric-option'
+import { NUMERIC_FEEDBACK } from '../../constant'
 
 const { Button } = Common.components
 
@@ -58,7 +60,22 @@ class NumericInput extends React.Component {
 	}
 
 	onAddFeedback() {
-		this.setState({ isEditting: true })
+		const editor = this.props.editor
+
+		const scoreRule = this.props.node.data.get('scoreRule')
+
+		if (!scoreRule.feedback) {
+			const newFeedback = Block.create({
+				object: 'block',
+				type: NUMERIC_FEEDBACK
+			})
+
+			editor.insertNodeByKey(this.props.node.key, 0, newFeedback)
+		}
+
+		this.setState({
+			isEditting: true
+		})
 	}
 
 	render() {
@@ -66,8 +83,8 @@ class NumericInput extends React.Component {
 		const { score } = scoreRule
 
 		const isSelected = this.props.isSelected
+		const hasFeedback = !!scoreRule.feedback
 		const className = 'numeric-input-container' + (isSelected ? ' is-selected' : '')
-
 		return (
 			<div className={className} onClick={this.props.onSetCurrSelected}>
 				<button
@@ -91,7 +108,7 @@ class NumericInput extends React.Component {
 					×
 				</Button>
 
-				{this.state.isEditting ? (
+				{hasFeedback || this.state.isEditting ? (
 					<div className="numeric-feedback-editor">{this.props.children}</div>
 				) : (
 					<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn">

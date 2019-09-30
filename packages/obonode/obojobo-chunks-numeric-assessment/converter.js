@@ -1,10 +1,10 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
-import constant from './constant'
 
-const { SCORE_RULE_NODE, NUMERIC_FEEDBACK } = constant
+import { SCORE_RULE_NODE, NUMERIC_FEEDBACK } from './constant'
 
 const slateToObo = node => {
 	const scoreRules = []
+
 	node.nodes.forEach(child => {
 		switch (child.type) {
 			case SCORE_RULE_NODE:
@@ -12,16 +12,12 @@ const slateToObo = node => {
 
 				child.nodes.forEach(component => {
 					if (component.type === NUMERIC_FEEDBACK) {
-						const feedback = {
-							type: NUMERIC_FEEDBACK,
-							children: []
+						scoreRule.feedback = {
+							type: 'NumericFeedback',
+							children: component.nodes.map(c =>
+								Common.Registry.getItemForType(c.type).slateToObo(c)
+							)
 						}
-
-						component.nodes.forEach(c => {
-							feedback.children.push(Common.Registry.getItemForType(c.type).slateToObo(c))
-						})
-
-						scoreRule.feedback = feedback
 					}
 				})
 
@@ -39,32 +35,24 @@ const slateToObo = node => {
 }
 
 const oboToSlate = node => {
-	const nodes = []
-	node.scoreRules.forEach(scoreRule => {
+	const nodes = node.scoreRules.map(scoreRule => {
 		const node = {
 			object: 'block',
 			type: SCORE_RULE_NODE,
-			nodes: [],
+			nodes: [
+				{
+					object: 'block',
+					type: NUMERIC_FEEDBACK,
+					nodes: scoreRule.feedback.children.map(child =>
+						Common.Registry.getItemForType(child.type).oboToSlate(child)
+					),
+					data: {}
+				}
+			],
 			data: { scoreRule }
 		}
 
-		if (scoreRule.feedback) {
-			const feedbackNode = {
-				object: 'block',
-				type: scoreRule.feedback.type,
-				nodes: [],
-				data: {}
-			}
-
-			scoreRule.feedback.children.forEach(child => {
-				if (child && child.type == 'ObojoboDraft.Pages.Page')
-					feedbackNode.nodes.push(Common.Registry.getItemForType(child.type).oboToSlate(child))
-			})
-
-			node.nodes.push(feedbackNode)
-		}
-
-		nodes.push(node)
+		return node
 	})
 
 	return {
