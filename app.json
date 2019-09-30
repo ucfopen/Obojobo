@@ -19,7 +19,7 @@
 		},
 		"OBO_LTI_USERNAME_PARAM": {
 			"description": "Which LTI Launch Param should Obojobo Use as a Username?",
-			"value": "custom_canvas_user_id"
+			"value": "user_id"
 		},
 		"OBO_COOKIE_SECRET": {
 			"description": "Do not change. Secret string used to encrypt cookie data",
