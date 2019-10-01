@@ -2,14 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const logger = require('./logger')
 const configuration = {}
-
 const CONFIG_DIR = path.resolve(__dirname, 'config')
-
-let env = 'development'
-
-if (process.env.NODE_ENV) {
-	env = process.env.NODE_ENV
-}
+const env = process.env.NODE_ENV || 'development'
 
 // if DATABASE_URL is set, use it to override the other database params
 // expects DATABASE_URL to be HEROKU format like 'postgres://user:password@domain:port/dbname'
@@ -85,12 +79,12 @@ const getConfigFileData = (configFile, env) => {
 			envObject = JSON.parse(hydratedJson)
 		}
 
-		return Object.assign({}, defaultObject, envObject) // combine with default if it exists
+		// combine with default if it exists
+		return Object.freeze({...defaultObject, ...envObject})
 	} catch (error) {
 		logger.error(`Error loading config file: ${configFile}`)
 		logger.error(error.toString())
-
-		return {}
+		return Object.freeze({})
 	}
 }
 
