@@ -29,7 +29,7 @@
 		"react": "16.8.6",
 		"react-dom": "16.8.6",
 		"react-idle-timer": "^4.2.3",
-		"react-transition-group": "^2.5.3"
+		"react-transition-group": "^4.3.0"
 	},
 	"devDependencies": {
 		"@babel/core": "^7.6.2",
