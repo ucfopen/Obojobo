@@ -13,7 +13,8 @@
 				"extended": false
 			}
 		},
-		"demoPurgeMode": "none"
+		"demoPurgeMode": "none",
+		"demoPurgeDaysAgo": 7
 	},
 	"test": {
 		"key": "value",
@@ -27,6 +28,7 @@
 		"cookieSecret": {
 			"ENV": "OBO_COOKIE_SECRET"
 		},
-		"demoPurgeMode": {"ENV": "OBO_DEMO_PURGE_MODE"}
+		"demoPurgeMode": {"ENV": "OBO_DEMO_PURGE_MODE"},
+		"demoPurgeDaysAgo": {"ENV": "OBO_DEMO_PURGE_DAYS_AGO"}
 	}
 }

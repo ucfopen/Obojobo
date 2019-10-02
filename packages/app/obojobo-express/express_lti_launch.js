@@ -4,6 +4,7 @@ const User = oboRequire('models/user')
 const logger = oboRequire('logger')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
+const oboEvents = oboRequire('obo_events')
 
 const saveSessionPromise = req =>
 	new Promise((resolve, reject) => {
@@ -107,6 +108,9 @@ const userFromLaunch = (req, ltiBody) => {
 			req.setCurrentUser(newUser)
 			return saveSessionPromise(req)
 		})
+		.then(() => {
+			oboEvents.emit('server:lti:user_launch', newUser)
+		})
 		.then(() => newUser)
 }
 
@@ -137,7 +141,8 @@ exports.assignment = (req, res, next) => {
 				launchId,
 				body: req.lti.body
 			}
-			return next()
+
+			next()
 		})
 		.catch(error => {
 			logger.error('LTI Launch Error', error)
