@@ -4,6 +4,7 @@ const logger = require('./logger')
 const configuration = {}
 const CONFIG_DIR = path.resolve(__dirname, 'config')
 const env = process.env.NODE_ENV || 'development'
+const deepFreeze = require('deep-freeze')
 
 // if DATABASE_URL is set, use it to override the other database params
 // expects DATABASE_URL to be HEROKU format like 'postgres://user:password@domain:port/dbname'
@@ -80,11 +81,11 @@ const getConfigFileData = (configFile, env) => {
 		}
 
 		// combine with default if it exists
-		return Object.freeze({...defaultObject, ...envObject})
+		return deepFreeze({ ...defaultObject, ...envObject })
 	} catch (error) {
 		logger.error(`Error loading config file: ${configFile}`)
 		logger.error(error.toString())
-		return Object.freeze({})
+		return deepFreeze({})
 	}
 }
 
@@ -94,5 +95,6 @@ configuration.permissions = getConfigFileData(`${CONFIG_DIR}/permission_groups.j
 configuration.draft = getConfigFileData(`${CONFIG_DIR}/draft.json`, env)
 configuration.general = getConfigFileData(`${CONFIG_DIR}/general.json`, env)
 configuration.media = getConfigFileData(`${CONFIG_DIR}/media.json`, env)
+deepFreeze(configuration)
 
 module.exports = configuration
