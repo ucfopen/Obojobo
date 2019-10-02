@@ -37,5 +37,11 @@
 				transform: translate(-50%, 0);
 			}
 		}
+
+		&.align-right {
+			&:before{
+				right: 2em;
+			}
+		}
 	}
 }

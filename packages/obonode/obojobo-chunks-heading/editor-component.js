@@ -88,14 +88,21 @@ class Heading extends React.Component {
 	render() {
 		const content = this.props.node.data.get('content')
 		const HTag = `h${content.level || 1}`
+
+		const contentDescription = [
+			{
+				name: 'level',
+				description: 'Level',
+				type: 'input'
+			}
+		]
 		return (
-			<Node {...this.props}>
+			<Node {...this.props} contentDescription={contentDescription}>
 				<div
 					className={'text-chunk obojobo-draft--chunks--heading pad'}
 					ref={node => {
 						this.node = node
-					}}
-				>
+					}}>
 					<HTag>
 						<span className={'text align-' + content.align}>{this.props.children}</span>
 					</HTag>

@@ -19,9 +19,7 @@ const plugins = {
 			<span
 				className={'placeholder align-' + node.data.get('content').align}
 				contentEditable={false}
-			>
-				{'Type Your Heading Here'}
-			</span>
+				data-placeholder="Type Your Heading Here"/>
 		)
 	},
 	renderNode(props, editor, next) {
