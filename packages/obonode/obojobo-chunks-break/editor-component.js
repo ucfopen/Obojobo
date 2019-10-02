@@ -19,8 +19,25 @@ class Break extends React.Component {
 
 	render() {
 		const { isSelected } = this.props
+		const contentDescription = [
+			{
+				name: 'width',
+				description: 'Width',
+				type: 'select',
+				values: [
+					{
+						value: 'normal',
+						description: 'Normal'
+					},
+					{
+						value: 'large',
+						description: 'Large'
+					},
+				]
+			}
+		]
 		return (
-			<Node {...this.props}>
+			<Node {...this.props} contentDescription={contentDescription}>
 				<div
 					className={`non-editable-chunk obojobo-draft--chunks--break viewer width-${
 						this.props.node.data.get('content').width

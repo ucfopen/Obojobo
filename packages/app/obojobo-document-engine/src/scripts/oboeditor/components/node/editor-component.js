@@ -33,12 +33,25 @@ class Node extends React.Component {
 		return Array.from(items.values())
 	}
 
-	saveId() {
-		console.log('mblargh')
+	saveId(prevId, newId) {
+		if(prevId === newId) return
+
+		const jsonNode = this.props.node.toJSON()
+		jsonNode.key = newId
+
+		this.props.editor
+			.insertNodeByKey(
+				this.props.parent.key, 
+				this.props.parent.getPath(this.props.node.key).get(0), 
+				Block.create(jsonNode))
+			.removeNodeByKey(prevId)
 	}
 
-	saveContent() {
-		console.log('aaaaaaaaaaaah')
+	saveContent(prevContent, newContent) {
+		this.props.editor.setNodeByKey(
+			this.props.node.key, 
+			{ data: { ...this.props.node.data.toJSON(), content: newContent } }
+		)
 	}
 
 	deleteNode() {
@@ -47,7 +60,13 @@ class Node extends React.Component {
 	}
 
 	duplicateNode() {
-		console.log(this.props.node)
+		const editor = this.props.editor
+
+		// Inserts a sibling node after the current node
+		return editor.insertNodeByKey(
+			this.props.parent.key, 
+			this.props.parent.getPath(this.props.node.key).get(0) + 1, 
+			Block.create(this.props.node.toJSON()))
 	}
 
 	onOpen() {
@@ -85,16 +104,10 @@ class Node extends React.Component {
 						className="content-node"
 						id={this.props.node.key}
 						type={this.props.node.type}
-						content={this.props.node.data.toJSON().content}
-						saveId={this.saveId}
+						content={this.props.node.data.toJSON().content || {}}
+						saveId={this.saveId.bind(this)}
 						saveContent={this.saveContent.bind(this)}
-						contentDescription={[
-							{
-								name: 'title',
-								description: 'Title',
-								type: 'string'
-							}
-						]}
+						contentDescription={this.props.contentDescription || []}
 						deleteNode={this.deleteNode.bind(this)}
 						duplicateNode={this.duplicateNode.bind(this)}
 						markUnsaved={this.props.editor.markUnsaved}

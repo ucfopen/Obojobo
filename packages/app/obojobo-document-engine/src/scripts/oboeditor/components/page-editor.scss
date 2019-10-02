@@ -25,7 +25,17 @@
 		color: $color-bg;
 	}
 
-	.placeholder {
-		opacity: 0.4;
+	span[data-placeholder]{
+		&:before {
+			content: attr(data-placeholder);
+			opacity: 0.5;
+			position: absolute;
+		}
+			
+		&.align-center {
+			&:before{
+				transform: translate(-50%, 0);
+			}
+		}
 	}
 }

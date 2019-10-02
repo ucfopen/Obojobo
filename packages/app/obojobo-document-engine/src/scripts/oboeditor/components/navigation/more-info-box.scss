@@ -1,5 +1,9 @@
 @import '../../../../scss/includes';
 .more-info {
+	position: relative;
+	z-index: 99;
+	top: -1em;
+
 	.more-info-button {
 		width: 1.7em;
 		height: 1.7em;
@@ -177,6 +181,9 @@
 			calc(100% - 2.5em) 0.5em;
 		background-size: 5px 5px, 5px 5px, 1px 1.5em;
 		background-repeat: no-repeat;
-		margin-bottom: 0.5em;
+	}
+
+	.obojobo-draft--components--slider {
+		margin-top: 0.5em;
 	}
 }

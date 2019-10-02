@@ -70,6 +70,7 @@ class MoreInfoBox extends React.Component {
 	}
 
 	handleContentChange(key, event) {
+		event.stopPropagation()
 		const newContent = {}
 		newContent[key] = event.target.value
 
@@ -84,19 +85,27 @@ class MoreInfoBox extends React.Component {
 
 	onSave() {
 		// Save the internal content to the editor state
-		const error = this.props.saveId(this.props.id, this.state.currentId) || this.props.saveContent(this.props.content, this.state.content)
+		const error = this.props.saveContent(this.props.content, this.state.content) || this.props.saveId(this.props.id, this.state.currentId)
 		if(!error) {
-			// Mark the editor content as having changes that need to be saved
-			this.props.markUnsaved()
-			return this.close()
+			// Wrapping these methods in a Timeout prevents a race condition with editor updates
+			return setTimeout(() => {
+				this.props.markUnsaved()
+				return this.close()
+			}, 0);
 		}
 		
 		this.setState({ error })
 	}
 
-	toggleOpen() {
+	toggleOpen(event) {
+		event.stopPropagation()
+		
 		if(this.state.isOpen) {
-			this.onSave()
+			if(this.state.needsUpdate){
+				this.onSave()
+			} else {
+				this.close()
+			}
 		} else {
 			if(this.props.onOpen) this.props.onOpen()
 			this.setState({ isOpen: true })
@@ -133,7 +142,8 @@ class MoreInfoBox extends React.Component {
 						<input
 							type="text"
 							value={this.state.content[description.name]}
-							onChange={this.handleContentChange.bind(this, description.name)}/>
+							onChange={this.handleContentChange.bind(this, description.name)}
+							onClick={event => event.stopPropagation()}/>
 					</div>
 				)
 			case 'select':
@@ -143,7 +153,8 @@ class MoreInfoBox extends React.Component {
 						<select 
 							className="select-item" 
 							value={this.state.content[description.name]}
-							onChange={this.handleContentChange.bind(this, description.name)}>
+							onChange={this.handleContentChange.bind(this, description.name)}
+							onClick={event => event.stopPropagation()}>
 							{description.values.map(option => (
 								<option value={option.value} key={option.value}>{option.description}</option>
 							))}
@@ -157,7 +168,8 @@ class MoreInfoBox extends React.Component {
 						<input
 							type="text"
 							value={this.state.content[description.name]}
-							onChange={this.handleContentChange}/>
+							onChange={this.handleContentChange}
+							onClick={event => event.stopPropagation()}/>
 					</div>
 				)
 			// Toggles complex things, like Lock Nav during Assessment Attempt
@@ -189,7 +201,8 @@ class MoreInfoBox extends React.Component {
 									id="oboeditor--components--more-info-box--id-input"
 									value={this.state.currentId}
 									onChange={this.handleIdChange}
-									className="id-input"/>
+									className="id-input"
+									onClick={event => event.stopPropagation()}/>
 								<Button 
 									className="input-aligned-button"
 									onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}>

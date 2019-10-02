@@ -68,9 +68,7 @@ const plugins = {
 		if (node.text !== '') return next()
 
 		return (
-			<span className={'placeholder'} contentEditable={false}>
-				{'Type Your Code Here'}
-			</span>
+			<span className={'placeholder'} contentEditable={false} data-placeholder="Type Your Code Here"/>
 		)
 	},
 	renderNode(props, editor, next) {

@@ -16,9 +16,10 @@ const plugins = {
 		if (node.text !== '') return next()
 
 		return (
-			<span className={'placeholder align-center'} contentEditable={false}>
-				{'Type Your Caption Here'}
-			</span>
+			<span 
+				className={'placeholder align-center'} 
+				contentEditable={false} 
+				data-placeholder="Type Your Caption Here"/>
 		)
 	},
 	renderNode(props, editor, next) {

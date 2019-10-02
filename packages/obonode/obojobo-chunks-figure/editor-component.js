@@ -75,13 +75,61 @@ class Figure extends React.Component {
 
 		const hasAltText = content.alt && content.alt.length !== 0
 
+		const contentDescription = [
+			{
+				name: 'alt',
+				description: 'Alt Text',
+				type: 'input'
+			},
+			{
+				name: 'url',
+				description: 'URL',
+				type: 'input'
+			},
+			{
+				name: 'size',
+				description: 'Size',
+				type: 'select',
+				values: [
+					{
+						value: 'small',
+						description: 'Small'
+					},
+					{
+						value: 'medium',
+						description: 'Medium'
+					},
+					{
+						value: 'large',
+						description: 'Large'
+					},
+					{
+						value: 'custom',
+						description: 'Custom'
+					},
+				]
+			},
+			{
+				name: 'width',
+				description: 'Width',
+				type: 'input'
+			},
+			{
+				name: 'height',
+				description: 'Height',
+				type: 'input'
+			}
+		]
+
 		return (
-			<Node {...this.props}>
+			<Node {...this.props} contentDescription={contentDescription}>
 				<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
 					<div className="container">
-						{hasAltText ? null : <div>Accessibility Warning: No Alt Text!</div>}
-						<div className="figure-box">
-							<Button className="delete-button" onClick={this.deleteNode.bind(this)}>
+						{hasAltText ? null : <div contentEditable={false}>Accessibility Warning: No Alt Text!</div>}
+						<div className="figure-box" contentEditable={false}>
+							<Button 
+								className="delete-button" 
+								onClick={this.deleteNode.bind(this)}>
 								×
 							</Button>
 							<div className="image-toolbar">
