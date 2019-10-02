@@ -1,6 +1,6 @@
 const oboEvents = oboRequire('obo_events')
 const viewerState = oboRequire('viewer/viewer_state')
-const VisitModel = require('obojobo-express/models/visit')
+const VisitModel = oboRequire('models/visit')
 const { isPurgeEnabled, purgeData } = oboRequire('util/purge_data')
 
 // @TODO: Enable this when we're able to restore the user to their last page
@@ -31,8 +31,8 @@ const setNavOpen = (userId, draftId, contentId, value, visitId) => {
 }
 
 // if purge data mode is enabled, add a listener to events for us to execute the purge
-if(isPurgeEnabled()){
-	oboEvents.on('server:lti:user_launch', event => {purgeData()})
+if (isPurgeEnabled()) {
+	oboEvents.on('server:lti:user_launch', () => purgeData())
 }
 
 // @TODO: Enable this when we're able to restore the user to their last page

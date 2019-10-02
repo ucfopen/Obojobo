@@ -24,6 +24,14 @@
 		"YARN_PRODUCTION": {
 			"description": "Makes sure yarn install includes dev dependencies",
 			"value": "false"
+		},
+		"OBO_DEMO_PURGE_MODE": {
+			"description": "Automatically purge old data for demo purposes or to limit database growth.",
+			"value": "disabled"
+		},
+		"OBO_DEMO_PURGE_DAYS_AGO": {
+			"description": "If purge mode is enabled, purge data older than this many days",
+			"value": "7"
 		}
 	},
 	"formation": {
