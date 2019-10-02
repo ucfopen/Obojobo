@@ -1,6 +1,7 @@
 import focus from '../page/focus'
 import React from 'react'
 
+/* istanbul ignore next */
 function getDisplayName(BaseComponent) {
 	return BaseComponent.displayName || BaseComponent.name || 'Component'
 }

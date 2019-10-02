@@ -84,30 +84,37 @@ describe('PageEditor', () => {
 		expect(component.toJSON()).toMatchSnapshot()
 	})
 
-	test('EditorNav component with no page updating to a page', () => {
-		const propsWithoutPage = {
+	test('updating a component with no page doesnt update state', () => {
+		const props = {
 			page: null
 		}
+		const thing = renderer.create(<PageEditor {...props} />)
 
-		const propsWithPage = {
+		const instance = thing.getInstance()
+		const spyImport = jest.spyOn(instance, 'importFromJSON')
+		const spyExport = jest.spyOn(instance, 'exportToJSON')
+		instance.componentDidUpdate()
+		expect(spyImport).not.toHaveBeenCalled()
+		expect(spyExport).not.toHaveBeenCalled()
+	})
+
+	test('updating a component from no page to a page updates state', () => {
+		const props = {
 			page: {
 				attributes: { children: [] },
 				get: jest.fn()
 			}
 		}
+		const thing = renderer.create(<PageEditor {...props} />)
 
-		let thing
-		renderer.act(() => {
-			thing = renderer.create(<PageEditor {...propsWithoutPage} />)
-		})
-
-		expect(thing.toJSON()).toMatchSnapshot()
-
-		renderer.act(() => {
-			thing.update(<PageEditor {...propsWithPage} />)
-		})
-
-		expect(thing.toJSON()).toMatchSnapshot()
+		const instance = thing.getInstance()
+		const spyImport = jest.spyOn(instance, 'importFromJSON')
+		const spyExport = jest.spyOn(instance, 'exportToJSON')
+		const spyState = jest.spyOn(instance, 'setState')
+		instance.componentDidUpdate({})
+		expect(spyImport).toHaveBeenCalledTimes(1)
+		expect(spyState).toHaveBeenCalledTimes(1)
+		expect(spyExport).not.toHaveBeenCalled()
 	})
 
 	test('EditorNav component changes pages', () => {
@@ -596,11 +603,11 @@ describe('PageEditor', () => {
 
 		const result = thing.instance().exportToJSON(page, value)
 		expect(result).toMatchInlineSnapshot(`
-				Object {
-				  "children": "mock-children",
-				  "content": "mock-content",
-				}
-		`)
+						Object {
+						  "children": "mock-children",
+						  "content": "mock-content",
+						}
+			`)
 
 		expect(page.set).toHaveBeenCalledWith('children', 'mock-children')
 		expect(page.set).toHaveBeenCalledWith('content', 'mock-content')
@@ -654,12 +661,12 @@ describe('PageEditor', () => {
 
 		// make sure the return matches
 		expect(result).toMatchInlineSnapshot(`
-		Object {
-		  "children": Array [
-		    "mock-converted-node-value",
-		    "mock-converted-node-value",
-		  ],
-		}
-	`)
+				Object {
+				  "children": Array [
+				    "mock-converted-node-value",
+				    "mock-converted-node-value",
+				  ],
+				}
+		`)
 	})
 })

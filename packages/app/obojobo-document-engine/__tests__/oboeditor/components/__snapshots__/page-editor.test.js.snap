@@ -100,31 +100,3 @@ exports[`PageEditor EditorNav component with no page 1`] = `
   No content available, click on a page to start editing
 </p>
 `;
-
-exports[`PageEditor EditorNav component with no page updating to a page 1`] = `
-<p>
-  No content available, click on a page to start editing
-</p>
-`;
-
-exports[`PageEditor EditorNav component with no page updating to a page 2`] = `
-<div
-  className="editor--page-editor"
->
-  <div
-    className="toolbar"
-  >
-    MockToolBar
-  </div>
-  <div
-    className="footer-menu"
-  >
-    <button
-      className="exporter"
-      onClick={[Function]}
-    >
-      Save Document
-    </button>
-  </div>
-</div>
-`;

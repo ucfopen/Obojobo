@@ -31,10 +31,15 @@ describe('EditorApp', () => {
 	})
 
 	test('EditorApp component', done => {
-		expect.assertions(1)
+		expect.hasAssertions()
 
-		jest.spyOn(Common.models.OboModel, 'create')
-		Common.models.OboModel.create.mockReturnValueOnce({
+		const spyGetItems = jest.spyOn(Common.Registry, 'getItems')
+		spyGetItems.mockImplementationOnce(cb => {
+			cb([{ plugins: 'mock-plugin' }, { noplugins: 'mock-plugin' }])
+		})
+
+		const spyModelCreate = jest.spyOn(Common.models.OboModel, 'create')
+		spyModelCreate.mockReturnValueOnce({
 			modelState: { start: 'mockStart' }
 		})
 
@@ -44,9 +49,7 @@ describe('EditorApp', () => {
 		const component = mount(<EditorApp />)
 		setTimeout(() => {
 			component.update()
-
 			expect(component.html()).toMatchSnapshot()
-
 			component.unmount()
 			done()
 		})
