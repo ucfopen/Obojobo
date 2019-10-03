@@ -73,7 +73,7 @@
 		"packages/util/stylelint-config-obojobo"
 	],
 	"engines": {
-		"yarn": "^1.19.0",
+		"yarn": "^1.15.2",
 		"node": "^12.11.1"
 	}
 }
