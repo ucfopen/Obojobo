@@ -150,9 +150,10 @@ module.exports = app => {
 	// builds a valid document view lti launch and submits it
 	app.get('/lti/dev/launch/view', (req, res) => {
 		const resource_link_id = req.query.resource_link_id || defaultResourceLinkId
+		const draftId = req.query.draft_id || '00000000-0000-0000-0000-000000000000'
 		const person = req.query.student ? ltiLearner : ltiInstructor
 		const method = 'POST'
-		const endpoint = `${baseUrl(req)}/view/00000000-0000-0000-0000-000000000000`
+		const endpoint = `${baseUrl(req)}/view/${draftId}`
 		const params = {
 			lis_outcome_service_url: 'https://example.fake/outcomes/fake',
 			lti_message_type: 'basic-lti-launch-request',

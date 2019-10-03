@@ -10,6 +10,7 @@ const { Button } = Common.components
 const { StyleableText, StyleableTextComponent } = Common.text
 const { isOrNot } = Common.util
 const { Dispatcher } = Common.flux
+const TIMER_MOBILE_NAV_COLLAPSE = 900
 
 const getLabelTextFromLabel = label => {
 	if (!label) return ''
@@ -21,46 +22,54 @@ export default class Nav extends React.Component {
 		super(props)
 		this.selfRef = React.createRef()
 		this.onWindowClick = this.onWindowClick.bind(this)
+		this.hideOrShowOnResize = this.hideOrShowOnResize.bind(this)
+	}
+
+	isMobileSize(){
+		return window.matchMedia('(max-width: 480px)').matches
 	}
 
 	onWindowClick(event){
-
-		if(window.innerWidth < 480 && event.x > this.selfRef.current.offsetWidth){
+		if(this.isMobileSize() && !this.selfRef.current.contains(event.target)){
 			NavUtil.close()
 		}
 	}
 
 	hideOrShowOnResize(){
-		// getting bigger
-		if(window.innerWidth > this.lastWidth){
-			if(window.innerWidth > 480){
+		const isMobile = this.isMobileSize()
+		if(window.innerWidth > this.prevWidth){
+			console.log('bigger',isMobile)
+			// window size is increasing
+			if(!isMobile){
 				NavUtil.open()
 			}
 		}
 		else{
-			if(window.innerWidth < 480){
+			console.log('smaller', isMobile)
+			// window size is decreasing
+			if(isMobile){
 				NavUtil.close()
 			}
 		}
 
-		this.lastWidth = window.innerWidth
+		this.prevWidth = window.innerWidth
 	}
 
 	componentDidMount(){
-		this.lastWidth = window.innerWidth
-		window.addEventListener('mouseUp', this.onWindowClick)
+		this.prevWidth = window.innerWidth
+		window.addEventListener('mouseup', this.onWindowClick)
 		window.addEventListener('pointerup', this.onWindowClick)
 		window.onresize = this.hideOrShowOnResize
 
-		if(window.innerWidth < 480){
+		if(this.isMobileSize()){
 			setTimeout(() => {
 				NavUtil.close()
-			}, 900)
+			}, TIMER_MOBILE_NAV_COLLAPSE)
 		}
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('mouseUp', this.onWindowClick)
+		window.removeEventListener('mouseup', this.onWindowClick)
 		window.removeEventListener('pointerup', this.onWindowClick)
 	}
 

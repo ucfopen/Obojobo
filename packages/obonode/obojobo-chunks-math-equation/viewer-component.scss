@@ -23,9 +23,28 @@
 
 	.equation-label {
 		position: absolute;
-		top: 50%;
+		top: 40%;
 		right: 3em;
 		transform: translate(0, -50%);
+
+		// when there's less room - move the label under the equation
+		@include mq($until: desktop){
+			position: relative;
+			text-align: center;
+			transform: none;
+			right: 0;
+			left: 0;
+			top: 0;
+			text-align: center;
+			font-size: .8em;
+			color: lighten($color-text, 30%);
+
+			&:before{
+				content: "Equation: ";
+				font-style: italic;
+				color: lighten($color-text, 50%);
+			}
+		}
 	}
 
 	.katex-error {

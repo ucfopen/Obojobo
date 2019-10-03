@@ -16,9 +16,18 @@
 		left: 3em;
 		transform: translate(0, -50%) translate(0, 0.5px);
 		margin: 0;
+
+		@include mq($until: desktop){
+			left: 2em;
+		}
+
+		@include mq($until: tablet){
+			left: 1em;
+		}
 	}
 
 	> .children {
+
 		margin-left: 0;
 		margin-right: 0;
 

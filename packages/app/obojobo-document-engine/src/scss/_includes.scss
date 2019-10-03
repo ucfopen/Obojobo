@@ -52,9 +52,9 @@ $z-index-above-most: 9999;
 $z-index-above-all: 99999;
 $z-index-preview: 999999;
 
-@mixin pad() {
-	padding-left: $dimension-padding;
-	padding-right: $dimension-padding;
+@mixin pad($scalePercent: 1) {
+	padding-left: $dimension-padding * $scalePercent;
+	padding-right: $dimension-padding * $scalePercent;
 }
 
 @mixin placeholder($height) {
