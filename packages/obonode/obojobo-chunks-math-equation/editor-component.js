@@ -75,7 +75,61 @@ class MathEquation extends React.Component {
 		)
 	}
 
+	onChangeContent(key, event) {
+		event.stopPropagation()
+		const newContent = {}
+		newContent[key] = event.target.value
+
+		const content = this.props.node.data.get('content')
+
+		this.props.editor.setNodeByKey(this.props.node.key, {
+			data: { content: { ...content, ...newContent } }
+		})
+	}
+
+	renderAttributes() {
+		const content = this.props.node.data.get('content')
+		return (
+			<div className="attributes-box" contentEditable={false}>
+				<div className="box-border">
+					<div className="attributes-list">
+						<div>
+							<label>Latex:</label>
+							<input
+								value={content.latex}
+								onClick={event => event.stopPropagation()}
+								onChange={this.onChangeContent.bind(this, 'latex')}/>
+						</div>
+						<div>
+							<label>Optional Label:</label>
+							<input
+								value={content.label}
+								onClick={event => event.stopPropagation()}
+								onChange={this.onChangeContent.bind(this, 'label')}/>
+						</div>
+						<div>
+							<label>Alt Text:</label>
+							<input
+								value={content.alt}
+								onClick={event => event.stopPropagation()}
+								onChange={this.onChangeContent.bind(this, 'alt')}/>
+						</div>
+						<div>
+							<label>Size:</label>
+							<input
+								value={content.size || 1}
+								type="number"
+								onClick={event => event.stopPropagation()}
+								onChange={this.onChangeContent.bind(this, 'size')}/>
+						</div>
+					</div>
+				</div>
+			</div>
+		)
+	}
+
 	render() {
+		const { isSelected } = this.props
 		const content = this.props.node.data.get('content')
 		return (
 			<Node {...this.props}>
@@ -83,10 +137,9 @@ class MathEquation extends React.Component {
 					className={
 						'component obojobo-draft--chunks--math-equation pad ' +
 						'align-' +
-						(content.align || 'center')
-					}>
+						(content.align || 'center')}>
 					{this.renderLatex()}
-					<Button onClick={this.showMathEquationPropertiesModal.bind(this)}>Edit</Button>
+					{isSelected ? this.renderAttributes() : null}
 				</div>
 			</Node>
 		)

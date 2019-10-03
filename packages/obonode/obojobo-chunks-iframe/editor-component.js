@@ -61,8 +61,81 @@ class IFrame extends React.Component {
 			isOrNot(!content.src, 'missing-src') +
 			isOrNot(content.initialZoom > 1, 'scaled-up')
 
+		const contentDescription = [
+			{
+				name: 'src',
+				description: 'Source',
+				type: 'input'
+			},
+			{
+				name: 'title',
+				description: 'Title',
+				type: 'input'
+			},
+			{
+				name: 'type',
+				description: 'Type',
+				type: 'select',
+				values: [
+					{
+						value: 'media',
+						description: 'Media'
+					},
+					{
+						value: 'webpage',
+						description: 'Webpage'
+					}
+				]
+			},
+			{
+				name: 'border',
+				description: 'Display Border',
+				type: 'toggle'
+			},
+			{
+				name: 'fit',
+				description: 'Display',
+				type: 'select',
+				values: [
+					{
+						value: 'scale',
+						description: 'Scale down width, height, and content'
+					},
+					{
+						value: 'scroll',
+						description: 'Reduce width, but maintain height'
+					}
+				]
+			},
+			{
+				name: 'width',
+				description: 'Width',
+				type: 'input'
+			},
+			{
+				name: 'height',
+				description: 'Height',
+				type: 'input'
+			},
+			{
+				name: 'initialZoom',
+				description: 'Zoom',
+				type: 'input'
+			},
+			{
+				name: 'autoload',
+				description: 'Autoload',
+				type: 'toggle'
+			},
+			{
+				name: 'controls',
+				description: 'Controls',
+				type: 'input'
+			},
+		]
+
 		return (
-			<Node {...this.props} >
+			<Node {...this.props} contentDescription={contentDescription}>
 				<div className={className}>
 					<div className={'editor-container'} style={previewStyle}>
 						<div className="iframe-toolbar">

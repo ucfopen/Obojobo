@@ -79,6 +79,15 @@ class MoreInfoBox extends React.Component {
 		}))
 	}
 
+	handleSliderChange(key, booleanValue) {
+		const newContent = {}
+		newContent[key] = booleanValue
+
+		this.setState(prevState => ({
+			content: Object.assign(prevState.content, newContent)
+		}))
+	}
+
 	handleAbstractToggleChange(changeFn, booleanValue) {
 		this.setState(prevState => ({ content: changeFn(prevState.content, booleanValue) }))
 	}
@@ -163,14 +172,10 @@ class MoreInfoBox extends React.Component {
 				)
 			case 'toggle':
 				return (
-					<div>
-						<label>{description.description}</label>
-						<input
-							type="text"
-							value={this.state.content[description.name]}
-							onChange={this.handleContentChange}
-							onClick={event => event.stopPropagation()}/>
-					</div>
+					<Slider
+						title={description.description}
+						initialChecked={this.state.content[description.name]}
+						handleCheckChange={this.handleSliderChange.bind(this, description.name)}/>
 				)
 			// Toggles complex things, like Lock Nav during Assessment Attempt
 			case 'abstract-toggle':
