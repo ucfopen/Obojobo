@@ -22,12 +22,26 @@
 	"devDependencies": {
 		"concurrently": "^3.5.0",
 		"husky": "^0.13.3",
+		"jest-runner-eslint": "^0.7.4",
 		"lerna": "^3.13.1",
 		"nodemon": "^1.18.8"
 	},
 	"jest": {
 		"projects": [
-			"<rootDir>/packages/*/*"
+			"<rootDir>/packages/*/*",
+			{
+				"runner": "jest-runner-eslint",
+				"displayName": "lint",
+				"testMatch": [
+					"<rootDir>/packages/*/*/**/*.js"
+				],
+				"testPathIgnorePatterns": [
+					"<rootDir>.*\\.min\\.js$",
+					"<rootDir>.*\\.custom\\.js$",
+					"<rootDir>.*/migrations/.*",
+					"<rootDir>.*obojobo-express/public/picker/.*"
+				]
+			}
 		],
 		"transformIgnorePatterns": [
 			"<rootDir>.*(node_modules)(?!.*obojobo-.*).*$"
