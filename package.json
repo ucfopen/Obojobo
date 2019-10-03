@@ -25,6 +25,9 @@
 		"lerna": "^3.16.4",
 		"nodemon": "^1.19.3"
 	},
+	"resolutions": {
+		"node-gyp": "^5.0.2"
+	},
 	"jest": {
 		"projects": [
 			"<rootDir>/packages/*/*"
@@ -70,7 +73,7 @@
 		"packages/util/stylelint-config-obojobo"
 	],
 	"engines": {
-		"yarn": "^1.0",
-		"node": "^10.4.1"
+		"yarn": "^1.19.0",
+		"node": "^12.11.1"
 	}
 }

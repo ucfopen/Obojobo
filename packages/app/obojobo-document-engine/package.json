@@ -4,8 +4,8 @@
 	"license": "AGPL-3.0-only",
 	"description": "",
 	"engines": {
-		"yarn": "^1.0",
-		"node": "^10.4.1"
+		"yarn": "^1.19.0",
+		"node": "^12.11.1"
 	},
 	"main": "index.js",
 	"scripts": {
