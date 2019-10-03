@@ -65,7 +65,7 @@
 		"url-parse": "^1.4.7 "
 	},
 	"devDependencies": {
-		"lint-staged": "^6.1.1"
+		"lint-staged": "^9.4.1"
 	},
 	"jest": {
 		"testURL": "http://localhost:3000/view/00000000-0000-0000-0000-000000000000/visit/1",

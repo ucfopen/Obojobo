@@ -5,7 +5,7 @@
     "xml-js": "^1.0.2"
   },
   "devDependencies": {
-    "lint-staged": "^6.1.1"
+    "lint-staged": "^9.4.1"
   },
   "name": "obojobo-document-xml-parser",
   "version": "5.0.1",

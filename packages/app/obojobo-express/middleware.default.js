@@ -8,6 +8,7 @@ const config = require('./config')
 const compression = require('compression')
 const logger = require('./logger')
 const ObojoboDocumentServer = require('./obo_express')
+const db = require('./db')
 const IS_WEBPACK = process.env.IS_WEBPACK || false
 
 module.exports = app => {
@@ -28,7 +29,7 @@ module.exports = app => {
 	app.use(
 		session({
 			store: new (pgSession(session))({
-				conString: config.db,
+				pgPromise: db,
 				tableName: 'sessions'
 			}),
 			secret: config.general.cookieSecret,
