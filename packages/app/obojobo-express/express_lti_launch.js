@@ -1,9 +1,11 @@
 const db = oboRequire('db')
 const insertEvent = oboRequire('insert_event')
 const User = oboRequire('models/user')
+const config = oboRequire('config')
 const logger = oboRequire('logger')
 const createCaliperEvent = oboRequire('routes/api/events/create_caliper_event')
 const { ACTOR_USER } = oboRequire('routes/api/events/caliper_constants')
+const oboEvents = oboRequire('obo_events')
 
 const saveSessionPromise = req =>
 	new Promise((resolve, reject) => {
@@ -83,9 +85,10 @@ const storeLtiPickerLaunchEvent = (user, ip, ltiBody, ltiConsumerKey, hostname) 
 // clears all previous sesions created for this user
 // saves the current user id to the session
 const userFromLaunch = (req, ltiBody) => {
+	const usernameParam = config.lti.usernameParam
 	// Save/Create the user
 	const newUser = new User({
-		username: ltiBody.lis_person_sourcedid,
+		username: ltiBody[usernameParam],
 		email: ltiBody.lis_person_contact_email_primary,
 		firstName: ltiBody.lis_person_name_given,
 		lastName: ltiBody.lis_person_name_family,
@@ -106,6 +109,9 @@ const userFromLaunch = (req, ltiBody) => {
 		.then(() => {
 			req.setCurrentUser(newUser)
 			return saveSessionPromise(req)
+		})
+		.then(() => {
+			oboEvents.emit('server:lti:user_launch', newUser)
 		})
 		.then(() => newUser)
 }
@@ -137,7 +143,8 @@ exports.assignment = (req, res, next) => {
 				launchId,
 				body: req.lti.body
 			}
-			return next()
+
+			next()
 		})
 		.catch(error => {
 			logger.error('LTI Launch Error', error)

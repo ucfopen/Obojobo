@@ -1,4 +1,4 @@
-// @import '~styles/includes';
+@import '~styles/includes';
 
 .obojobo-draft--sections--assessment--components--score-report {
 	$color-hr: transparentize(rgba(0, 0, 0, 0.3), 0.2);
@@ -9,14 +9,20 @@
 	$dimension-rounded-radius: 0.25em;
 
 	background: $color-bg2;
-	min-width: 23em;
 
 	> .text-items {
 		text-align: left;
 		border-radius: $dimension-rounded-radius;
 		background: $color-bg;
 		padding: 1em 2em;
-		// margin-bottom: 1em;
+
+		@include mq($until: tablet) {
+			padding: 1em 1.2em;
+		}
+
+		@include mq($until: mobileLandscape) {
+			padding: 0.8em 0.8em;
+		}
 
 		> * {
 			font-size: 0.7em;
@@ -26,13 +32,20 @@
 
 			&:only-child {
 				margin-top: 0;
-				// font-size: 1em;
 			}
 
 			&.divider {
 				height: 1px; /* stylelint-disable-line unit-blacklist */
 				border: none;
 				background: $color-hr;
+			}
+
+			&.extra-credit,
+			&.penalty,
+			&.value,
+			&.total {
+				display: flex;
+				justify-content: space-between;
 			}
 
 			&.extra-credit {
@@ -49,10 +62,6 @@
 				}
 			}
 
-			&.value {
-				padding-right: 4em;
-			}
-
 			&.total {
 				font-size: 1em;
 			}
@@ -60,19 +69,24 @@
 			> .amount {
 				white-space: nowrap;
 				text-align: right;
-				position: absolute;
+				// position: absolute;
 				bottom: 0;
 				right: 0;
 				font-weight: bold;
+				padding-left: 0.5rem;
 
 				> .great-job-you-rock {
-					position: absolute;
-					top: 50%;
-					right: -0.5rem;
-					transform: translate(100%, -50%);
-					display: block;
-					line-height: 1em;
-					font-size: 1em;
+					display: none;
+
+					@include mq($from: tablet) {
+						position: absolute;
+						top: 50%;
+						right: -0.5rem;
+						transform: translate(100%, -50%);
+						display: block;
+						line-height: 1em;
+						font-size: 1em;
+					}
 				}
 			}
 		}

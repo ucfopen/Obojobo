@@ -52,6 +52,7 @@
 		"db-migrate-pg": "^1.0.0",
 		"debug": "~4.1.1",
 		"debug-logger": "^0.4.1",
+		"deep-freeze": "^0.0.1",
 		"ejs": "^2.7.1",
 		"eventemitter": "^0.3.3",
 		"express": "~4.17.1",

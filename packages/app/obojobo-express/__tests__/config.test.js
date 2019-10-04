@@ -166,4 +166,89 @@ describe('config', () => {
 		delete process.env.DB_CONFIG_JSON
 		delete process.env.DB_PORT
 	})
+
+	test('config top level values can not be changed', () => {
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+
+		const changeConfigValue = () => {
+			config.db = {}
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot assign to read only property 'db' of object '#<Object>'"`
+		)
+
+		// make sure it didn't change
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+	})
+
+	test('config nested values can not be changed', () => {
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+
+		const changeConfigValue = () => {
+			config.db.host = 'my-hijacked-database'
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot assign to read only property 'host' of object '#<Object>'"`
+		)
+
+		// make sure it didn't change
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+	})
+
+	test('custom configs cant be added', () => {
+		const config = oboRequire('config')
+		expect(config).not.toHaveProperty('custom')
+
+		const changeConfigValue = () => {
+			config.custom = 'test'
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot add property custom, object is not extensible"`
+		)
+
+		// make sure it didn't change
+		expect(config).not.toHaveProperty('custom')
+	})
+
+	test('config values cant be deleted', () => {
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+
+		const changeConfigValue = () => {
+			delete config.db
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot delete property 'db' of #<Object>"`
+		)
+
+		// make sure it didn't change
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+	})
+
+	test('config nested values cant be deleted', () => {
+		const config = oboRequire('config')
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+
+		const changeConfigValue = () => {
+			delete config.db.host
+		}
+
+		// attempt to change the value, it should throw an error
+		expect(changeConfigValue).toThrowErrorMatchingInlineSnapshot(
+			`"Cannot delete property 'host' of #<Object>"`
+		)
+
+		// make sure it didn't change
+		expect(config).toHaveProperty('db.host', 'itsdev!')
+	})
 })

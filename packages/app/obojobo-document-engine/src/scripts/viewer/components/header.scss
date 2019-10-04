@@ -10,6 +10,11 @@
 	padding-left: 4rem;
 	box-sizing: border-box;
 	text-align: left;
+	overflow: hidden;
+
+	@include mq($until: desktop) {
+		padding-left: 2.5rem;
+	}
 
 	> .wrapper {
 		position: relative;

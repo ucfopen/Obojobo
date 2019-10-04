@@ -3,12 +3,14 @@ jest.mock('../models/user')
 jest.mock('../models/draft')
 jest.mock('../db')
 jest.mock('../logger')
+jest.mock('../config') // to prevent config object freezing
 
 const insertEvent = oboRequire('insert_event')
 const User = oboRequire('models/user')
 const DraftDocument = oboRequire('models/draft')
 const logger = oboRequire('logger')
 const db = oboRequire('db')
+const config = oboRequire('config')
 const ltiLaunch = oboRequire('express_lti_launch')
 const sessionSave = jest.fn()
 
@@ -38,6 +40,7 @@ const mockExpressArgs = withLtiData => {
 	if (withLtiData) {
 		req.lti = {
 			body: {
+				custom_canvas_user_id: '90210',
 				lis_person_sourcedid: '2020',
 				lis_person_contact_email_primary: 'mann@internet.com',
 				lis_person_name_given: 'Hugh',
@@ -72,7 +75,10 @@ describe('lti launch middleware', () => {
 			})
 		)
 	})
-	afterEach(() => {})
+	afterEach(() => {
+		// reset the usernameParam
+		config.lti.usernameParam = 'lis_person_sourcedid'
+	})
 
 	test('assignment returns a promise and short circuits to next if not a LTI request, skipping launch logic', () => {
 		expect.assertions(2)
@@ -99,6 +105,7 @@ describe('lti launch middleware', () => {
 				expect.stringContaining('INSERT INTO launches'),
 				expect.objectContaining({
 					ltiBody: {
+						custom_canvas_user_id: '90210',
 						lis_person_contact_email_primary: 'mann@internet.com',
 						lis_person_name_family: 'Mann',
 						lis_person_name_given: 'Hugh',
@@ -145,6 +152,7 @@ describe('lti launch middleware', () => {
 				expect.objectContaining({
 					contentId: '12',
 					ltiBody: {
+						custom_canvas_user_id: '90210',
 						lis_person_contact_email_primary: 'mann@internet.com',
 						lis_person_name_family: 'Mann',
 						lis_person_name_given: 'Hugh',
@@ -235,6 +243,25 @@ describe('lti launch middleware', () => {
 			expect(req.setCurrentUser).toBeCalledWith(
 				expect.objectContaining({
 					username: '2020',
+					email: 'mann@internet.com',
+					firstName: 'Hugh',
+					lastName: 'Mann',
+					roles: expect.any(Array)
+				})
+			)
+		})
+	})
+
+	test('assignment allows a custom user id param', () => {
+		expect.assertions(2)
+		// change the config to use a different launch param
+		config.lti.usernameParam = 'custom_canvas_user_id'
+		const [req, res, mockNext] = mockExpressArgs(true)
+		return ltiLaunch.assignment(req, res, mockNext).then(() => {
+			expect(req.setCurrentUser).toBeCalledWith(expect.any(User))
+			expect(req.setCurrentUser).toBeCalledWith(
+				expect.objectContaining({
+					username: '90210', // This comes from custom_canvas_user_id
 					email: 'mann@internet.com',
 					firstName: 'Hugh',
 					lastName: 'Mann',
