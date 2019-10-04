@@ -13,6 +13,15 @@
 
 		> .dialog-content {
 			margin-bottom: 3em;
+
+			@include mq($until: tablet) {
+				margin-bottom: 2em;
+			}
+
+			@include mq($until: mobileLandscape) {
+				margin-bottom: 1.7em;
+			}
+
 		}
 
 		> .controls {

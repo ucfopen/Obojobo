@@ -115,6 +115,10 @@
 		@include mq($until: mobileLandscape) {
 			padding-left: 1em;
 		}
+
+		> .component {
+
+		}
 	}
 
 	.instructions {
@@ -185,6 +189,7 @@
 		padding-right: 1em;
 		padding-top: 1em;
 		padding-bottom: 1em;
+		line-height: 1em;;
 
 		@include mq($until: mobile) {
 			display: block;
@@ -210,12 +215,11 @@
 			margin: 0;
 			display: inline-block;
 			border-radius: 9999px;
-			padding: 0 1.5em;
+			padding: .5em 1.5em;
 			font-size: 0.8em;
 			transform: scale(0);
 			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
 			animation-delay: $duration-animation-default * 1.5;
-			// animation-delay: $duration-animation-default * 2;
 			animation-fill-mode: forwards;
 
 			&.correct {
@@ -326,6 +330,11 @@
 				display: block;
 				transform: scale(0.7);
 				transform-origin: top left;
+
+				@include mq($until: tablet) {
+					margin-top: .5em;
+					margin-left: .5em;
+				}
 			}
 
 			&.solution-enter {
@@ -384,6 +393,13 @@
 			> div > .component[data-obo-component='true'] {
 				margin-left: -1em;
 				margin-right: -1em;
+			}
+
+			.obojobo-draft--pages--page{
+				font-size: .85em;
+				@include mq($until: tablet) {
+					padding-top: 2px;
+				}
 			}
 		}
 
@@ -464,6 +480,10 @@
 				}
 			}
 		}
+
+		.obojobo-draft--chunks--mc-assessment--mc-answer > .component {
+			padding-top: 1em + $dimension-review-answer-flag-padding;
+		}
 	}
 
 	.obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag {
@@ -480,7 +500,6 @@
 
 		&::before {
 			@include point();
-
 			z-index: -1;
 			box-shadow: 0 1px 1px $color-shadow;
 		}
@@ -504,26 +523,21 @@
 		box-sizing: border-box;
 		min-height: 2.5em;
 
+
 		@include mq($until: desktop) {
-			font-size: 0.65em;
-			left: -4.2em;
-			top: 0.4em;
-			transform: rotate(-19deg);
+			font-size: 0.50em;
+			left: -1.9em;
+			top: 0.3em;
 			padding-left: 0.2em;
 			padding-right: 0.2em;
-
 			&::before,
 			&::after {
 				display: none;
 			}
+			margin-top: -6px;
 		}
 
-		@include mq($until: tablet) {
-			font-size: 0.45em;
-			left: -1.9em;
-			top: 0.4em;
-			transform: rotate(-19deg);
-		}
+
 
 		> p {
 			margin: 0.25em;

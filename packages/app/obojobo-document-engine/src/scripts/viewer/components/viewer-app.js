@@ -648,7 +648,7 @@ export default class ViewerApp extends React.Component {
 					{hideViewer ? null : nextComp}
 					{this.state.isPreviewing ? (
 						<div className="preview-banner">
-							<span>You are previewing this module</span>
+							<span>Preview mode</span>
 							<div className="controls">
 								<span>Preview options:</span>
 								<button

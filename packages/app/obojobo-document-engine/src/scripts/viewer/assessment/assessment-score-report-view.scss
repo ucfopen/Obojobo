@@ -20,6 +20,10 @@
 			padding: 1em 1.2em;
 		}
 
+		@include mq($until: mobileLandscape) {
+			padding: .8em .8em;
+		}
+
 		> * {
 			font-size: 0.7em;
 			line-height: 1.5em;
@@ -36,6 +40,14 @@
 				background: $color-hr;
 			}
 
+			&.extra-credit,
+			&.penalty,
+			&.value,
+			&.total{
+				display: flex;
+				justify-content: space-between;
+			}
+
 			&.extra-credit {
 				> .label > span {
 					color: $color-correct;
@@ -50,10 +62,6 @@
 				}
 			}
 
-			&.value {
-				padding-right: 4em;
-			}
-
 			&.total {
 				font-size: 1em;
 			}
@@ -61,22 +69,23 @@
 			> .amount {
 				white-space: nowrap;
 				text-align: right;
-				position: absolute;
+				// position: absolute;
 				bottom: 0;
 				right: 0;
 				font-weight: bold;
+				padding-left: 5px;
 
 				> .great-job-you-rock {
-					position: absolute;
-					top: 50%;
-					right: -0.5rem;
-					transform: translate(100%, -50%);
-					display: block;
-					line-height: 1em;
-					font-size: 1em;
+					display: none;
 
-					@include mq($until: tablet) {
-						right: -0.1rem;
+					@include mq($from: tablet) {
+						position: absolute;
+						top: 50%;
+						right: -0.5rem;
+						transform: translate(100%, -50%);
+						display: block;
+						line-height: 1em;
+						font-size: 1em;
 					}
 				}
 			}
