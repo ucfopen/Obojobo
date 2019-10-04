@@ -54,7 +54,7 @@ export default class Nav extends React.Component {
 		this.prevWidth = window.innerWidth
 		window.addEventListener('mouseup', this.onWindowClick)
 		window.addEventListener('pointerup', this.onWindowClick)
-		window.onresize = this.hideOrShowOnResize
+		window.addEventListener('onresize', this.hideOrShowOnResize)
 
 		if(this.isMobileSize()) {
 			setTimeout(() => {
@@ -66,6 +66,7 @@ export default class Nav extends React.Component {
 	componentWillUnmount() {
 		window.removeEventListener('mouseup', this.onWindowClick)
 		window.removeEventListener('pointerup', this.onWindowClick)
+		window.removeEventListener('onresize', this.hideOrShowOnResize)
 	}
 
 	onClick(item) {
