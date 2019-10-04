@@ -11,8 +11,14 @@ window.ReactDOM = require('react-dom')
 window._ = require('underscore')
 window.Backbone = require('backbone')
 window.katex = require('katex')
-
 window.focus = () => ({})
+window.matchMedia = jest.fn().mockImplementation(query => ({
+	matches: false,
+	media: query,
+	onchange: null,
+	addListener: jest.fn(),
+	removeListener: jest.fn(),
+}))
 
 jest.mock('fs')
 

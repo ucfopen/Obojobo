@@ -2,7 +2,6 @@ const db = oboRequire('db')
 const config = oboRequire('config')
 const logger = oboRequire('logger')
 const moment = require('moment')
-const oboEvents = oboRequire('obo_events')
 const MODE_PURGE_HISTORY = "DANGER-delete-HISTORY-data"
 const MODE_PURGE_ALL = "DANGER-delete-ALL-data"
 
@@ -121,6 +120,7 @@ exports.purgeData = async () => {
 
 exports.isPurgeEnabled = () => {
 	const configMode = config.general.demoPurgeMode || "none"
+	/* eslint-disable-next-line eqeqeq */
 	return configMode == MODE_PURGE_ALL || configMode == MODE_PURGE_HISTORY
 }
 
