@@ -20,16 +20,26 @@
 
 	.delete-button {
 		position: absolute;
-		right: 3em;
-		top: 0;
+		right: 3.7em;
+		left: auto;
+		top: 0.7em;
 		transform: translate(50%, -50%);
 		z-index: 3;
 
-		button {
+		.button {
 			font-size: 1.2em;
 			padding: 0;
 			min-width: 1.4em;
 			border-radius: 50%;
+			border: none;
+			background: none;
+			font-weight: bold;
+			color: $color-shadow;
+
+			&:hover {
+				background: none;
+				color: $color-text;
+			}
 		}
 	}
 

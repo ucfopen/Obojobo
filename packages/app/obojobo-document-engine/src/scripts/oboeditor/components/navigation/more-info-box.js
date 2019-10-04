@@ -10,8 +10,6 @@ import TriggerListModal from '../triggers/trigger-list-modal'
 const { Button, Slider } = Common.components
 const { ModalUtil } = Common.util
 
-const { OboModel } = Common.models
-
 // Expected Props:
 // id: String - the id of the item to edit
 // content: Object - the item data for the node.  Each key-value pair would be edited independantly
@@ -44,14 +42,6 @@ class MoreInfoBox extends React.Component {
 		this.closeModal = this.closeModal.bind(this)
 
 		this.node = React.createRef()
-	}
-
-	componentDidMount() {
-		document.addEventListener('mousedown', this.handleClick, false)
-	}
-
-	componentWillUnmount() {
-		document.removeEventListener('mousedown', this.handleClick, false)
 	}
 
 	handleClick(event) {
@@ -116,12 +106,14 @@ class MoreInfoBox extends React.Component {
 				this.close()
 			}
 		} else {
+			document.addEventListener('mousedown', this.handleClick, false)
 			if(this.props.onOpen) this.props.onOpen()
 			this.setState({ isOpen: true })
 		}
 	}
 
 	close() {
+		document.removeEventListener('mousedown', this.handleClick, false)
 		if(this.props.onClose) this.props.onClose()
 		return this.setState({ isOpen: false })
 	}

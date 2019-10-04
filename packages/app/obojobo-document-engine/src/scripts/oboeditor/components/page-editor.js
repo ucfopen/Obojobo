@@ -154,6 +154,7 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
+		console.log('editable? ', this.state.editable)
 		return (
 			<div className="editor--page-editor">
 				<div className="draft-toolbars">
