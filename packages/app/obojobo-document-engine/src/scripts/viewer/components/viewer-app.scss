@@ -64,8 +64,8 @@
 		justify-content: space-between;
 		align-items: center;
 
-		@include mq($until: mobileLandscape){
-			font-size: .6em;
+		@include mq($until: mobileLandscape) {
+			font-size: 0.6em;
 
 			.controls > span {
 				display: none;
@@ -78,8 +78,6 @@
 			align-items: center;
 			text-align: right;
 			margin-left: 1em;
-
-
 
 			button {
 				appearance: none;
@@ -125,7 +123,6 @@
 		@include mq($until: mobileLandscape) {
 			padding-left: 0;
 		}
-
 
 		> header {
 			top: -2.5rem;

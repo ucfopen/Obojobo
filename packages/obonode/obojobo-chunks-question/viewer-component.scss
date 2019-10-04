@@ -24,7 +24,7 @@
 		max-width: $dimension-column-width;
 		background: $color-bg;
 
-		@include mq($until: desktop){
+		@include mq($until: desktop) {
 			border-radius: 0;
 		}
 
@@ -80,7 +80,7 @@
 			cursor: pointer;
 			border-radius: $dimension-rounded-radius;
 
-			@include mq($until: desktop){
+			@include mq($until: desktop) {
 				border-radius: 0;
 			}
 

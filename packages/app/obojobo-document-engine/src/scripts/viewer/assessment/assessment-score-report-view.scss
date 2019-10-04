@@ -21,7 +21,7 @@
 		}
 
 		@include mq($until: mobileLandscape) {
-			padding: .8em .8em;
+			padding: 0.8em 0.8em;
 		}
 
 		> * {
@@ -43,7 +43,7 @@
 			&.extra-credit,
 			&.penalty,
 			&.value,
-			&.total{
+			&.total {
 				display: flex;
 				justify-content: space-between;
 			}
@@ -73,7 +73,7 @@
 				bottom: 0;
 				right: 0;
 				font-weight: bold;
-				padding-left: 5px;
+				padding-left: 0.5rem;
 
 				> .great-job-you-rock {
 					display: none;

@@ -37,14 +37,12 @@
 
 	@include mq($until: tablet) {
 		width: $dimension-nav-menu-xsmall;
-		padding: 2px;
+		padding: 0.1rem;
 		padding-right: $padding * 0.2;
 		padding-bottom: $padding * 0.2;
 		padding-top: 0;
 		font-size: 0.7rem;
 	}
-
-
 
 	hr {
 		border: none;
@@ -124,17 +122,16 @@
 
 		@include mq($until: desktop) {
 			font-size: 1rem;
-			margin-bottom: .5em;
+			margin-bottom: 0.5em;
 
 			&::after {
-				top: .5rem;
+				top: 0.5rem;
 			}
 		}
 
 		@include mq($until: tablet) {
-			font-size: .9rem;
-			padding-bottom: .5rem;
-
+			font-size: 0.9rem;
+			padding-bottom: 0.5rem;
 		}
 	}
 

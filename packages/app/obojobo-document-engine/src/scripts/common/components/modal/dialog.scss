@@ -19,9 +19,8 @@
 			}
 
 			@include mq($until: mobileLandscape) {
-				margin-bottom: 1.7em;
+				margin-bottom: 1.5em;
 			}
-
 		}
 
 		> .controls {

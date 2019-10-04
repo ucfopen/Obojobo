@@ -1,7 +1,7 @@
 @import '~styles/includes';
 
-.component[data-obo-component='true'] .obojobo-draft--chunks--code,
-.obojobo-draft--chunks--code {
+.obojobo-draft--chunks--code,
+.component[data-obo-component='true'] .obojobo-draft--chunks--code {
 	pre {
 		$font-size: 0.9em;
 
@@ -18,12 +18,12 @@
 		padding: $dimension-padding / 4 $dimension-padding / 3 / ($font-size / 1em);
 		tab-size: 2;
 
-		@include mq($until: desktop){
-			font-size: $font-size * .9;
+		@include mq($until: desktop) {
+			font-size: $font-size * 0.9;
 		}
 
-		@include mq($until: tablet){
-			font-size: $font-size * .8;
+		@include mq($until: tablet) {
+			font-size: $font-size * 0.8;
 		}
 	}
 

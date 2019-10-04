@@ -7,12 +7,12 @@
 		margin-top: 0;
 		padding-left: 2em;
 
-		@include mq($until: desktop){
+		@include mq($until: desktop) {
 			padding-left: 1em;
 		}
 
-		@include mq($until: tablet){
-			padding-left: .8em;
+		@include mq($until: tablet) {
+			padding-left: 0.8em;
 		}
 	}
 }

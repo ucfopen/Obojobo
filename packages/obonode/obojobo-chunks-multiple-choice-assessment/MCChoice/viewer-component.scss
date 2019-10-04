@@ -1,14 +1,5 @@
 @import '~styles/includes';
 
-// when in a review, push the input down to make room for review flags
-.component.obojobo-draft--chunks--mc-assessment {
-	&.is-mode-review {
-		.obojobo-draft--chunks--mc-assessment--mc-choice > input {
-			top: 1.7em + $dimension-review-answer-flag-padding;
-		}
-	}
-}
-
 .obojobo-draft--chunks--mc-assessment--mc-choice {
 	list-style-type: none;
 	min-height: 3.5em;
@@ -26,17 +17,16 @@
 		transform: translate(0, -50%) translate(0, 0.5px);
 		margin: 0;
 
-		@include mq($until: desktop){
+		@include mq($until: desktop) {
 			left: 2em;
 		}
 
-		@include mq($until: tablet){
+		@include mq($until: tablet) {
 			left: 1em;
 		}
 	}
 
 	> .children {
-
 		margin-left: 0;
 		margin-right: 0;
 
@@ -108,5 +98,14 @@
 
 	&:hover {
 		background: transparentize($color-highlight, 0.85);
+	}
+}
+
+// when in a review, push the input down to make room for review flags
+.component.obojobo-draft--chunks--mc-assessment {
+	&.is-mode-review {
+		.obojobo-draft--chunks--mc-assessment--mc-choice > input {
+			top: 1.7em + $dimension-review-answer-flag-padding;
+		}
 	}
 }

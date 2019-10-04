@@ -10,7 +10,23 @@
 		overflow-x: scroll; // prevent whole page side scrolling
 
 		@include mq($until: tablet) {
-			font-size: .9em; // squish a little on smaller screens
+			font-size: 0.9em; // squish a little on smaller screens
+		}
+	}
+
+	.equation-label {
+		position: relative;
+		text-align: center;
+		right: 0;
+		left: 0;
+		top: 0;
+		font-size: 0.8em;
+		color: lighten($color-text, 30%); // stylelint-disable-line sh-waqar/declaration-use-variable
+
+		&::before {
+			content: "Equation ";
+			font-style: italic;
+			color: lighten($color-text, 50%); // stylelint-disable-line sh-waqar/declaration-use-variable
 		}
 	}
 
@@ -26,24 +42,6 @@
 
 	&.align-center .katex-display {
 		text-align: center;
-	}
-
-	.equation-label {
-		position: relative;
-		text-align: center;
-
-		right: 0;
-		left: 0;
-		top: 0;
-		text-align: center;
-		font-size: .8em;
-		color: lighten($color-text, 30%);
-
-		&:before{
-			content: "Equation ";
-			font-style: italic;
-			color: lighten($color-text, 50%);
-		}
 	}
 
 	.katex-error {
