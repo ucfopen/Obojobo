@@ -402,7 +402,7 @@ describe('Nav', () => {
 
 		const component = mount(<Nav {...props} />)
 
-		expect(spy).toHaveBeenCalledWith('onresize', component.instance().hideOrShowOnResize)
+		expect(spy).toHaveBeenCalledWith('resize', component.instance().hideOrShowOnResize)
 	})
 
 	test('hideOrShowOnResize calls open when increasing to non-mobile size', () => {
@@ -497,7 +497,7 @@ describe('Nav', () => {
 		// execute resize listener
 		component.instance().componentWillUnmount()
 
-		expect(spy).toHaveBeenCalledWith('onresize', expect.any(Function))
+		expect(spy).toHaveBeenCalledWith('resize', expect.any(Function))
 		expect(spy).toHaveBeenCalledWith('mouseup', expect.any(Function))
 		expect(spy).toHaveBeenCalledWith('pointerup', expect.any(Function))
 	})
