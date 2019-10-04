@@ -376,7 +376,7 @@ describe('Nav', () => {
 		const props = {navState: {}}
 		window.matchMedia.mockReturnValueOnce({matches: true})
 
-		const component = mount(<Nav {...props} />)
+		mount(<Nav {...props} />)
 		expect(NavUtil.close).not.toHaveBeenCalled()
 		jest.runAllTimers();
 
@@ -389,7 +389,7 @@ describe('Nav', () => {
 		const props = {navState: {}}
 		window.matchMedia.mockReturnValueOnce({matches: false})
 
-		const component = mount(<Nav {...props} />)
+		mount(<Nav {...props} />)
 		jest.runAllTimers();
 
 		expect(NavUtil.close).not.toHaveBeenCalled()
@@ -497,9 +497,9 @@ describe('Nav', () => {
 		// execute resize listener
 		component.instance().componentWillUnmount()
 
-		expect(window.removeEventListener).toHaveBeenCalledWith('onresize', expect.any(Function))
-		expect(window.removeEventListener).toHaveBeenCalledWith('mouseup', expect.any(Function))
-		expect(window.removeEventListener).toHaveBeenCalledWith('pointerup', expect.any(Function))
+		expect(spy).toHaveBeenCalledWith('onresize', expect.any(Function))
+		expect(spy).toHaveBeenCalledWith('mouseup', expect.any(Function))
+		expect(spy).toHaveBeenCalledWith('pointerup', expect.any(Function))
 	})
 
 	test('registers window click listeners', () => {
@@ -508,9 +508,9 @@ describe('Nav', () => {
 		const props = {navState: {}}
 
 		// begin
-		const component = mount(<Nav {...props} />)
-		expect(window.addEventListener).toHaveBeenCalledWith('mouseup', expect.any(Function))
-		expect(window.addEventListener).toHaveBeenCalledWith('pointerup', expect.any(Function))
+		mount(<Nav {...props} />)
+		expect(spy).toHaveBeenCalledWith('mouseup', expect.any(Function))
+		expect(spy).toHaveBeenCalledWith('pointerup', expect.any(Function))
 	})
 
 	test('does nothing when clicked outside on desktop', () => {
