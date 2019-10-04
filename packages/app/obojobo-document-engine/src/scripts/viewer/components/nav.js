@@ -25,12 +25,12 @@ export default class Nav extends React.Component {
 		this.hideOrShowOnResize = this.hideOrShowOnResize.bind(this)
 	}
 
-	isMobileSize(){
+	isMobileSize() {
 		return window.matchMedia('(max-width: 480px)').matches
 	}
 
-	onWindowClick(event){
-		if(this.isMobileSize() && !this.selfRef.current.contains(event.target)){
+	onWindowClick(event) {
+		if(this.isMobileSize() && !this.selfRef.current.contains(event.target)) {
 			NavUtil.close()
 		}
 	}
@@ -39,27 +39,24 @@ export default class Nav extends React.Component {
 		const isMobile = this.isMobileSize()
 		if(window.innerWidth > this.prevWidth){
 			// window size is increasing
-			if(!isMobile){
+			if(!isMobile) {
 				NavUtil.open()
 			}
-		}
-		else{
+		} else if(isMobile) {
 			// window size is decreasing
-			if(isMobile){
 				NavUtil.close()
-			}
 		}
 
 		this.prevWidth = window.innerWidth
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		this.prevWidth = window.innerWidth
 		window.addEventListener('mouseup', this.onWindowClick)
 		window.addEventListener('pointerup', this.onWindowClick)
 		window.onresize = this.hideOrShowOnResize
 
-		if(this.isMobileSize()){
+		if(this.isMobileSize()) {
 			setTimeout(() => {
 				NavUtil.close()
 			}, TIMER_MOBILE_NAV_COLLAPSE)
