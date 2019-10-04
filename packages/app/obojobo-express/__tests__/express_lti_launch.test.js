@@ -3,6 +3,7 @@ jest.mock('../models/user')
 jest.mock('../models/draft')
 jest.mock('../db')
 jest.mock('../logger')
+jest.mock('../config') // to prevent config object freezing
 
 const insertEvent = oboRequire('insert_event')
 const User = oboRequire('models/user')
