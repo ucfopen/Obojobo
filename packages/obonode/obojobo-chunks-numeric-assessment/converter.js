@@ -1,19 +1,115 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-import { SCORE_RULE_NODE, NUMERIC_FEEDBACK } from './constant'
+import {
+	SCORE_RULE_NODE,
+	NUMERIC_FEEDBACK,
+	EXACT_ANSWER,
+	WITHIN_A_RANGE,
+	PRECISE_RESPONSE,
+	MARGIN_OF_ERROR
+} from './constant'
+
+const complexifiedNumericRule = numericRule => {
+	switch (numericRule.requirement) {
+		case 'exact':
+			return {
+				requirement: EXACT_ANSWER,
+				answerInput: numericRule.answer,
+				score: numericRule.score,
+				hasFeedback: !!numericRule.feedback,
+				feedback: numericRule.feedback
+			}
+		case 'range':
+			return {
+				requirement: WITHIN_A_RANGE,
+				startInput: numericRule.start,
+				endInput: numericRule.end,
+				score: numericRule.score,
+				feedback: numericRule.feedback,
+				hasFeedback: !!numericRule.feedback
+			}
+		case 'precise':
+			return {
+				requirement: PRECISE_RESPONSE,
+				type: numericRule.precisionType == 'sig-figs' ? 'Significant digits' : 'Decimal places',
+				answerInput: numericRule.answer,
+				precisionInput: numericRule.precision,
+				score: numericRule.score,
+				feedback: numericRule.feedback,
+				hasFeedback: !!numericRule.feedback
+			}
+		case 'margin':
+			return {
+				requirement: MARGIN_OF_ERROR,
+				type: numericRule.marginType == 'absolute' ? 'Absolute' : 'Percent',
+				answerInput: numericRule.answer,
+				marginInput: numericRule.margin,
+				score: numericRule.score,
+				feedback: numericRule.feedback,
+				hasFeedback: !!numericRule.feedback
+			}
+		default:
+			return {
+				requirement: EXACT_ANSWER,
+				score: numericRule.score,
+				feedback: numericRule.feedback,
+				hasFeedback: !!numericRule.feedback
+			}
+	}
+}
+
+const simplifedNumericRule = numericRule => {
+	switch (numericRule.requirement) {
+		case EXACT_ANSWER:
+			return {
+				requirement: 'exact',
+				answer: numericRule.answerInput,
+				score: numericRule.score
+			}
+		case WITHIN_A_RANGE:
+			return {
+				requirement: 'range',
+				start: numericRule.startInput,
+				end: numericRule.endInput,
+				score: numericRule.score
+			}
+		case PRECISE_RESPONSE:
+			return {
+				requirement: 'precise',
+				type: numericRule.precisionType == 'Significant digits' ? 'sig-figs' : 'dec',
+				answer: numericRule.answerInput,
+				precision: numericRule.precisionInput,
+				score: numericRule.score
+			}
+		case MARGIN_OF_ERROR:
+			return {
+				requirement: 'margin',
+				type: numericRule.marginType == 'Absolute' ? 'absolute' : 'percent',
+				answer: numericRule.answerInput,
+				margin: numericRule.marginInput
+			}
+		default:
+			return {
+				requirement: 'exact',
+				score: numericRule.score
+			}
+	}
+}
 
 const slateToObo = node => {
-	const scoreRules = []
+	const NumericRules = []
 
+	// Parse each scoreRule node
 	node.nodes.forEach(child => {
 		switch (child.type) {
 			case SCORE_RULE_NODE:
-				const scoreRule = child.data.get('scoreRule')
+				const numericRule = simplifedNumericRule(child.data.get('numericRule'))
 
+				// Parse feedback node
 				child.nodes.forEach(component => {
 					if (component.type === NUMERIC_FEEDBACK) {
-						scoreRule.feedback = {
-							type: 'NumericFeedback',
+						numericRule.feedback = {
+							type: NUMERIC_FEEDBACK,
 							children: component.nodes.map(c =>
 								Common.Registry.getItemForType(c.type).slateToObo(c)
 							)
@@ -21,7 +117,8 @@ const slateToObo = node => {
 					}
 				})
 
-				scoreRules.push(scoreRule)
+				NumericRules.push(numericRule)
+
 				break
 		}
 	})
@@ -30,26 +127,32 @@ const slateToObo = node => {
 		id: node.key,
 		type: node.type,
 		children: [],
-		scoreRules
+		content: { NumericRules }
 	}
 }
 
 const oboToSlate = node => {
-	const nodes = node.scoreRules.map(scoreRule => {
+	// Parse each scoreRule node
+	const nodes = node.content.numericRules.map(numericRule => {
 		const node = {
 			object: 'block',
 			type: SCORE_RULE_NODE,
-			nodes: [
-				{
-					object: 'block',
-					type: NUMERIC_FEEDBACK,
-					nodes: scoreRule.feedback.children.map(child =>
-						Common.Registry.getItemForType(child.type).oboToSlate(child)
-					),
-					data: {}
-				}
-			],
-			data: { scoreRule }
+			nodes: [],
+			data: { numericRule: complexifiedNumericRule(numericRule) }
+		}
+
+		// Parse feedback node
+		if (numericRule.feedback) {
+			const feedbackNode = {
+				object: 'block',
+				type: NUMERIC_FEEDBACK,
+				nodes: numericRule.feedback.children.map(child =>
+					Common.Registry.getItemForType(child.type).oboToSlate(child)
+				),
+				data: {}
+			}
+
+			node.nodes.push(feedbackNode)
 		}
 
 		return node

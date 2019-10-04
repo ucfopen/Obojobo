@@ -10,116 +10,105 @@ import { NUMERIC_FEEDBACK } from '../../constant'
 
 const { Button } = Common.components
 
-class NumericInput extends React.Component {
-	constructor() {
-		super()
+const NumericInput = props => {
+	const onHandleScoreChange = () => {
+		const numericRule = props.node.data.get('numericRule')
+		numericRule.score = numericRule.score == '100' ? '0' : '100'
 
-		this.state = {
-			isEditting: false
-		}
-	}
-
-	onHandleScoreChange() {
-		const scoreRule = this.props.node.data.get('scoreRule')
-		scoreRule.score = scoreRule.score == '100' ? '0' : '100'
-
-		const editor = this.props.editor
-		editor.setNodeByKey(this.props.node.key, {
-			data: { scoreRule }
+		const editor = props.editor
+		editor.setNodeByKey(props.node.key, {
+			data: { numericRule }
 		})
 	}
 
-	onHandleInputChange(event) {
+	const onHandleInputChange = event => {
 		const { name, value } = event.target
 
-		const scoreRule = this.props.node.data.get('scoreRule')
-		scoreRule[name] = value
+		const numericRule = props.node.data.get('numericRule')
+		numericRule[name] = value
 
-		const editor = this.props.editor
-		editor.setNodeByKey(this.props.node.key, {
-			data: { scoreRule }
+		const editor = props.editor
+		editor.setNodeByKey(props.node.key, {
+			data: { numericRule }
 		})
 	}
 
-	onClickDropdown(event) {
+	const onClickDropdown = event => {
 		const { name, value } = event.target
 
-		const scoreRule = this.props.node.data.get('scoreRule')
-		scoreRule[name] = value
+		const numericRule = props.node.data.get('numericRule')
+		numericRule[name] = value
 
-		const editor = this.props.editor
-		editor.setNodeByKey(this.props.node.key, {
-			data: { scoreRule }
+		const editor = props.editor
+		editor.setNodeByKey(props.node.key, {
+			data: { numericRule }
 		})
 	}
 
-	onDelete(event) {
+	const onDelete = event => {
 		event.stopPropagation()
-		const editor = this.props.editor
-		return editor.removeNodeByKey(this.props.node.key)
+		const editor = props.editor
+		return editor.removeNodeByKey(props.node.key)
 	}
 
-	onAddFeedback() {
-		const editor = this.props.editor
+	const onAddFeedback = () => {
+		const editor = props.editor
 
-		const scoreRule = this.props.node.data.get('scoreRule')
-
-		if (!scoreRule.feedback) {
+		const numericRule = props.node.data.get('numericRule')
+		if (!numericRule.hasFeedback) {
+			numericRule.hasFeedback = true
 			const newFeedback = Block.create({
 				object: 'block',
 				type: NUMERIC_FEEDBACK
 			})
 
-			editor.insertNodeByKey(this.props.node.key, 0, newFeedback)
+			editor.insertNodeByKey(props.node.key, 0, newFeedback)
+			editor.setNodeByKey(props.node.key, {
+				data: { numericRule }
+			})
 		}
-
-		this.setState({
-			isEditting: true
-		})
 	}
 
-	render() {
-		const scoreRule = this.props.node.data.get('scoreRule')
-		const { score } = scoreRule
+	const numericRule = props.node.data.get('numericRule')
+	const { score } = numericRule
 
-		const isSelected = this.props.isSelected
-		const hasFeedback = !!scoreRule.feedback
-		const className = 'numeric-input-container' + (isSelected ? ' is-selected' : '')
-		return (
-			<div className={className} onClick={this.props.onSetCurrSelected}>
-				<button
-					className={'correct-button ' + (score == 100 ? 'is-correct' : 'is-not-correct')}
-					tabIndex="0"
-					onClick={() => this.onHandleScoreChange()}
-				>
-					{score == 100 ? '✔' : '✖'}
-				</button>
+	const isSelected = props.isSelected
+	const hasFeedback = numericRule.hasFeedback
+	const className = 'numeric-input-container' + (isSelected ? ' is-selected' : '')
+	return (
+		<div className={className} onClick={props.onSetCurrSelected}>
+			<button
+				className={'correct-button ' + (score == 100 ? 'is-correct' : 'is-not-correct')}
+				tabIndex="0"
+				onClick={onHandleScoreChange}
+			>
+				{score == 100 ? '✔' : '✖'}
+			</button>
 
-				<table contentEditable={false}>
-					<NumericHeader requirement={scoreRule.requirement} />
-					<NumericOption
-						scoreRule={scoreRule}
-						onHandleInputChange={event => this.onHandleInputChange(event)}
-						onClickDropdown={event => this.onClickDropdown(event)}
-					/>
-				</table>
+			<table contentEditable={false}>
+				<NumericHeader requirement={numericRule.requirement} />
+				<NumericOption
+					numericRule={numericRule}
+					onHandleInputChange={onHandleInputChange}
+					onClickDropdown={onClickDropdown}
+				/>
+			</table>
 
-				<Button className="delete-button" onClick={() => this.onDelete(event)}>
-					×
-				</Button>
+			<Button className="delete-button" onClick={onDelete} contentEditable={false}>
+				×
+			</Button>
 
-				{hasFeedback || this.state.isEditting ? (
-					<div className="numeric-feedback-editor">{this.props.children}</div>
-				) : (
-					<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn">
-						<button className="button" onClick={() => this.onAddFeedback()} contentEditable={false}>
-							Add Feedback
-						</button>
-					</div>
-				)}
-			</div>
-		)
-	}
+			{hasFeedback ? (
+				props.children
+			) : (
+				<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn">
+					<button className="button" onClick={onAddFeedback} contentEditable={false}>
+						Add Feedback
+					</button>
+				</div>
+			)}
+		</div>
+	)
 }
 
 export default NumericInput

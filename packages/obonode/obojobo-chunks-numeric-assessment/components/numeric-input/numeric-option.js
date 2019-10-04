@@ -10,7 +10,7 @@ import {
 	precisionDropdown
 } from '../../constant'
 
-const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
+const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) => {
 	const {
 		requirement,
 		answerInput,
@@ -20,7 +20,7 @@ const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 		precisionInput,
 		marginType,
 		precisionType
-	} = scoreRule
+	} = numericRule
 
 	switch (requirement) {
 		case EXACT_ANSWER:
@@ -42,7 +42,7 @@ const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 						<input
 							className="input-item"
 							name="answerInput"
-							value={answerInput}
+							value={answerInput || ''}
 							onChange={() => onHandleInputChange(event)}
 							contentEditable={false}
 						/>
@@ -80,7 +80,7 @@ const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 						<input
 							className="input-item"
 							name="answerInput"
-							value={answerInput}
+							value={answerInput || ''}
 							onChange={event => onHandleInputChange(event)}
 						/>
 					</td>
@@ -88,7 +88,7 @@ const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 						<input
 							className="input-item"
 							name="precisionInput"
-							value={precisionInput}
+							value={precisionInput || ''}
 							onChange={() => onHandleInputChange(event)}
 						/>
 					</td>
@@ -113,7 +113,7 @@ const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 						<input
 							className="input-item"
 							name="startInput"
-							value={startInput}
+							value={startInput || ''}
 							onChange={() => onHandleInputChange(event)}
 						/>
 					</td>
@@ -121,7 +121,7 @@ const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 						<input
 							className="input-item"
 							name="endInput"
-							value={endInput}
+							value={endInput || ''}
 							onChange={() => onHandleInputChange(event)}
 						/>
 					</td>
@@ -158,7 +158,7 @@ const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 						<input
 							className="input-item"
 							name="answerInput"
-							value={answerInput}
+							value={answerInput || ''}
 							onChange={() => onHandleInputChange(event)}
 						/>
 					</td>
@@ -166,12 +166,14 @@ const NumericOption = ({ scoreRule, onHandleInputChange, onClickDropdown }) => {
 						<input
 							className="input-item"
 							name="marginInput"
-							value={marginInput}
+							value={marginInput || ''}
 							onChange={() => onHandleInputChange(event)}
 						/>
 					</td>
 				</tr>
 			)
+		default:
+			return null
 	}
 }
 

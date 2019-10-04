@@ -1,0 +1,33 @@
+@import '~styles/includes';
+
+.numeric-feedback-editor {
+	position: relative;
+	margin-top: 1rem;
+	padding: 1.1rem 0;
+
+	border: 1px solid #ececec;
+	background: white;
+
+	&:before {
+		color: $color-text-minor;
+		content: 'Feedback';
+		display: block;
+		font-family: $font-default;
+		position: absolute;
+		left: 3.15em;
+		top: 0.5em;
+		transform: scale(0.7);
+		transform-origin: top left;
+	}
+
+	.feedback-delete-button {
+		position: absolute;
+		right: 0;
+		top: 0.2rem;
+		border: white;
+
+		button {
+			pointer-events: none;
+		}
+	}
+}

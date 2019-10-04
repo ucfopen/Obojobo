@@ -4,7 +4,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 import Node from './editor-component'
 import NumericInput from './components/numeric-input/numeric-input'
-import NumericFeedback from './components/numeric-feedback/editor-component'
+import NumericFeedback from './components/numeric-feedback/numeric-feedback'
 import Schema from './schema'
 
 import { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_FEEDBACK } from './constant'

@@ -32,7 +32,7 @@ class NumericAssessment extends React.Component {
 
 		const newNumericInput = Block.create({
 			type: SCORE_RULE_NODE,
-			data: { scoreRule: { ...emptyResponse } }
+			data: { numericRule: { ...emptyResponse } }
 		})
 
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newNumericInput)
@@ -45,9 +45,9 @@ class NumericAssessment extends React.Component {
 	render() {
 		return (
 			<div className="component obojobo-draft--chunks--numeric-assessment">
-				{/* Use React.Children.map to add `onClick` function and pass `isSelected` to each child as props */}
+				{/* Use React.Children.map to pass `isSelected` to each child as props */}
 				{React.Children.map(this.props.children, (child, index) => (
-					<div onClick={() => this.onSetCurrSelected(index)}>
+					<div onClick={this.onSetCurrSelected.bind(this, index)}>
 						{React.cloneElement(child, {
 							isSelected: index == this.state.currSelected
 						})}
@@ -55,7 +55,7 @@ class NumericAssessment extends React.Component {
 				))}
 				<Button
 					className="add-answer-btn pad"
-					onClick={() => this.onAddNumericInput()}
+					onClick={this.onAddNumericInput.bind(this)}
 					contentEditable={false}
 				>
 					Add possible answer
