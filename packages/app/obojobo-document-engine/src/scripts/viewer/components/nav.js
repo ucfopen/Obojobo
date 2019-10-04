@@ -38,14 +38,12 @@ export default class Nav extends React.Component {
 	hideOrShowOnResize(){
 		const isMobile = this.isMobileSize()
 		if(window.innerWidth > this.prevWidth){
-			console.log('bigger',isMobile)
 			// window size is increasing
 			if(!isMobile){
 				NavUtil.open()
 			}
 		}
 		else{
-			console.log('smaller', isMobile)
 			// window size is decreasing
 			if(isMobile){
 				NavUtil.close()
