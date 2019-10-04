@@ -95,7 +95,8 @@
 		"whatwg-fetch": "^3.0.0"
 	},
 	"bin": {
-		"start_obojobo_server": "./bin/start_obojobo_server"
+		"start_obojobo_server": "./bin/start_obojobo_server",
+		"obojobo_purge_data": "./bin/obojobo_purge_data.js"
 	},
 	"jest": {
 		"setupFilesAfterEnv": [

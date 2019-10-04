@@ -2,7 +2,6 @@ jest.mock('../config')
 jest.mock('../viewer/viewer_state', () => ({ set: jest.fn() }))
 jest.mock('../obo_events', () => ({ on: jest.fn(), emit: jest.fn() }))
 jest.mock('../models/visit')
-jest.mock('../util/purge_data')
 
 const mockEvent = {
 	userId: 'mockUserId',
@@ -121,47 +120,6 @@ describe('viewer events', () => {
 				'yep',
 				'mockResourceLinkId'
 			)
-		})
-	})
-
-	test('doesnt register purge data when disabled', () => {
-		expect.hasAssertions()
-		const { isPurgeEnabled } = oboRequire('util/purge_data')
-		isPurgeEnabled.mockReturnValueOnce(false)
-		ve = oboRequire('viewer_events')
-		expect(oboEvents.on).not.toHaveBeenCalledWith('server:lti:user_launch', expect.anything())
-	})
-
-	test('doesnt register purge data when is undefined', () => {
-		expect.hasAssertions()
-		const { isPurgeEnabled } = oboRequire('util/purge_data')
-		isPurgeEnabled.mockReturnValueOnce(undefined) //eslint-disable-line no-undefined
-		ve = oboRequire('viewer_events')
-		expect(oboEvents.on).not.toHaveBeenCalledWith('server:lti:user_launch', expect.anything())
-	})
-
-	test('does register when purge data is enabled', () => {
-		expect.hasAssertions()
-		const { isPurgeEnabled } = oboRequire('util/purge_data')
-		isPurgeEnabled.mockReturnValue(true)
-		ve = oboRequire('viewer_events')
-		expect(oboEvents.on).toHaveBeenCalledWith('server:lti:user_launch', expect.anything())
-	})
-
-	test('purge data callback calls purgeData', () => {
-		expect.hasAssertions()
-		const { isPurgeEnabled, purgeData } = oboRequire('util/purge_data')
-		purgeData.mockResolvedValueOnce(true)
-		isPurgeEnabled.mockReturnValue(true)
-		ve = oboRequire('viewer_events')
-
-		const [eventName, callback] = oboEvents.on.mock.calls[3]
-		expect(eventName).toBe('server:lti:user_launch')
-		expect(callback).toHaveLength(0) // callback has 0 arguments
-		expect(purgeData).not.toHaveBeenCalled()
-
-		return callback(mockEvent).then(() => {
-			expect(purgeData).toHaveBeenCalled()
 		})
 	})
 })
