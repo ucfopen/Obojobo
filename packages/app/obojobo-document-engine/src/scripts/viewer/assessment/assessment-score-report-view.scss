@@ -1,4 +1,4 @@
-// @import '~styles/includes';
+@import '~styles/includes';
 
 .obojobo-draft--sections--assessment--components--score-report {
 	$color-hr: transparentize(rgba(0, 0, 0, 0.3), 0.2);
@@ -9,14 +9,16 @@
 	$dimension-rounded-radius: 0.25em;
 
 	background: $color-bg2;
-	min-width: 23em;
 
 	> .text-items {
 		text-align: left;
 		border-radius: $dimension-rounded-radius;
 		background: $color-bg;
 		padding: 1em 2em;
-		// margin-bottom: 1em;
+
+		@include mq($until: tablet) {
+			padding: 1em 1.2em;
+		}
 
 		> * {
 			font-size: 0.7em;
@@ -26,7 +28,6 @@
 
 			&:only-child {
 				margin-top: 0;
-				// font-size: 1em;
 			}
 
 			&.divider {
@@ -73,6 +74,10 @@
 					display: block;
 					line-height: 1em;
 					font-size: 1em;
+
+					@include mq($until: tablet) {
+						right: -0.1rem;
+					}
 				}
 			}
 		}

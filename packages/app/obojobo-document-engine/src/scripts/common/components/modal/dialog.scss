@@ -1,6 +1,8 @@
 @import '../../../../scss/includes';
 
 .obojobo-draft--components--modal--dialog {
+	max-width: 100vw;
+
 	.obojobo-draft--components--modal--modal > .content {
 		> .heading {
 			margin: 0;
@@ -15,6 +17,9 @@
 
 		> .controls {
 			text-align: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 
 			.obojobo-draft--components--button {
 				margin-left: 0.5em;
