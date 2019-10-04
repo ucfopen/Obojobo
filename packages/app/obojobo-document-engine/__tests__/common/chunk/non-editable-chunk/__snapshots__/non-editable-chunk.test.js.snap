@@ -4,9 +4,11 @@ exports[`NonEditableChunk renders NonEditableChunk component with className, ind
 <div
   className="non-editable-chunk testClass"
   contentEditable={false}
+  data-hanging-indent={false}
   data-indent={2}
 >
   Stuff here
+  }
 </div>
 `;
 
@@ -14,6 +16,9 @@ exports[`NonEditableChunk renders NonEditableChunk component without className, 
 <div
   className="non-editable-chunk"
   contentEditable={false}
+  data-hanging-indent={false}
   data-indent={0}
-/>
+>
+  }
+</div>
 `;

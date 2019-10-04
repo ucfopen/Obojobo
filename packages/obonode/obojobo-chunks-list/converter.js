@@ -17,7 +17,7 @@ const flattenLevels = (node, currLevel, textGroup, indents) => {
 
 		const listLine = {
 			text: { value: child.text, styleList: [] },
-			data: { indent: currLevel }
+			data: { indent: currLevel, hangingIndent: false }
 		}
 
 		child.nodes.forEach(text => {

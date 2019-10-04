@@ -188,8 +188,7 @@ describe('PageEditor', () => {
 		}
 		const component = mount(<PageEditor {...props} />)
 		const tree = component.html()
-
-		const saveButton = component.find('button').at(14)
+		const saveButton = component.find('button').at(15)
 		expect(saveButton.props().children).toBe('Save Document')
 		saveButton.simulate('click')
 
@@ -229,8 +228,7 @@ describe('PageEditor', () => {
 		}
 		const component = mount(<PageEditor {...props} />)
 		const tree = component.html()
-
-		const saveButton = component.find('button').at(14)
+		const saveButton = component.find('button').at(15)
 		expect(saveButton.props().children).toBe('Save Document')
 		saveButton.simulate('click')
 
@@ -273,7 +271,7 @@ describe('PageEditor', () => {
 			}
 		}
 		const component = mount(<PageEditor {...props} />)
-		const saveButton = component.find('button').at(14)
+		const saveButton = component.find('button').at(15)
 		expect(saveButton.props().children).toBe('Save Document')
 		saveButton.simulate('click')
 

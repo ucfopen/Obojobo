@@ -39,13 +39,13 @@ const schema = {
 
 						return editor.wrapBlockByKey(child.key, {
 							type: LIST_LEVEL_NODE,
-							data: { content: { type: type, bulletStyle: bulletList[0] } }
+							data: { hangingIndent: false, content: { type: type, bulletStyle: bulletList[0] } }
 						})
 					}
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: LIST_LEVEL_NODE,
-							data: { content: { type: type, bulletStyle: bulletList[0] } }
+							data: { hangingIndent: false, content: { type: type, bulletStyle: bulletList[0] } }
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}

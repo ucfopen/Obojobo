@@ -13,9 +13,11 @@ exports[`Break Break component with textGroup 1`] = `
   <div
     className="non-editable-chunk obojobo-draft--chunks--break viewer width-normal"
     contentEditable={false}
+    data-hanging-indent={false}
     data-indent={0}
   >
     <hr />
+    }
   </div>
 </div>
 `;

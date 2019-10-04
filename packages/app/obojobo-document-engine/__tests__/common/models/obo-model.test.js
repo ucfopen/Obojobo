@@ -978,7 +978,7 @@ describe('OboModel', () => {
 			content: {
 				textGroup: [
 					{
-						data: { align: 'left', indent: 0 },
+						data: { align: 'left', hangingIndent: false, indent: 0 },
 						text: { styleList: null, value: '' }
 					}
 				]

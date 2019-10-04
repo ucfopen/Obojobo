@@ -47,6 +47,7 @@ describe('Caliper event from req', () => {
 		'question:view': { questionId },
 		'question:hide': { questionId },
 		'question:checkAnswer': { questionId },
+		'question:submitResponse': { questionId },
 		'question:showExplanation': { questionId },
 		'question:hideExplanation': { questionId, actor: 'user' },
 		'question:setResponse': {

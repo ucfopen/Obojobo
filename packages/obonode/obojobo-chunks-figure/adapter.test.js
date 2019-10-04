@@ -62,6 +62,7 @@ describe('Figure adapter', () => {
 						},
 						data: {
 							align: 'left',
+							hangingIndent: false,
 							indent: 0
 						}
 					}

@@ -124,7 +124,7 @@ module.exports = req => {
 				sessionIds
 			})
 
-		case 'question:submitReponse':
+		case 'question:submitResponse':
 			return caliperEvents.createPracticeQuestionSubmittedEvent({
 				actor: actorFromType(ACTOR_USER),
 				draftId: currentDocument.draftId,

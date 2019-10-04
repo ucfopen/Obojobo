@@ -297,6 +297,23 @@ Event {
 }
 `;
 
+exports[`Caliper event from req question:submitResponse returns the expected snapshot 1`] = `
+Event {
+  "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",
+  "action": "Submitted",
+  "actor": "https://hostnameReq/api/user/testUserIdReq",
+  "edApp": "https://hostnameReq/api/system",
+  "eventTime": "2016-09-22T16:57:14.500Z",
+  "extensions": Object {},
+  "federatedSession": "https://hostnameReq/api/launch/OboLtiLaunchIdReq",
+  "id": "urn:uuid:DEADBEEF-0000-DEAD-BEEF-1234DEADBEEF",
+  "object": "https://hostnameReq/api/draft-content/testContentIdReq#testQuestionIdReq",
+  "session": "https://hostnameReq/api/session/SessionIdReq",
+  "target": "https://hostnameReq/api/draft-content/testContentIdReq/practice/testQuestionIdReq",
+  "type": "Event",
+}
+`;
+
 exports[`Caliper event from req question:view returns the expected snapshot 1`] = `
 Event {
   "@context": "http://purl.imsglobal.org/ctx/caliper/v1p1",

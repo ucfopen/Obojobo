@@ -292,6 +292,7 @@ Object {
     "textGroup": Array [
       Object {
         "data": Object {
+          "hangingIndent": false,
           "indent": 0,
         },
         "text": Object {
@@ -301,6 +302,7 @@ Object {
       },
       Object {
         "data": Object {
+          "hangingIndent": false,
           "indent": 1,
         },
         "text": Object {

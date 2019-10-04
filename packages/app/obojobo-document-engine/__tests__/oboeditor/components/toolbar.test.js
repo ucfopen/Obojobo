@@ -339,6 +339,89 @@ describe('Editor Toolbar', () => {
 		expect(editor.unwrapNodeByKey).toHaveBeenCalled()
 	})
 
+	test('Node component toggles hangingIndent', () => {
+		const Node = Toolbar.components.Node
+		const editor = {
+			setNodeByKey: jest.fn(),
+			wrapBlockByKey: jest.fn(),
+			value: {
+				marks: {
+					some: funct => {
+						return funct({ type: 'mockMark' })
+					}
+				},
+				blocks: {
+					forEach: funct => {
+						funct({
+							data: { toJSON: () => ({ hangingIndent: true }) },
+							type: TEXT_LINE_NODE
+						})
+
+						funct({
+							data: { toJSON: () => ({ hangingIndent: false }) },
+							type: TEXT_LINE_NODE
+						})
+
+						funct({
+							data: { toJSON: () => ({ content: {} }) },
+							type: CODE_LINE_NODE
+						})
+
+						// unordered list
+						funct({
+							data: { toJSON: () => ({ hangingIndent: true }) },
+							type: LIST_LINE_NODE
+						})
+
+						// ordered list
+						funct({
+							data: { toJSON: () => ({}) },
+							type: LIST_LINE_NODE
+						})
+
+						funct({
+							data: { toJSON: () => ({ content: {} }) },
+							type: 'mockNode'
+						})
+					}
+				},
+				document: {
+					getClosest: jest
+						.fn()
+						.mockImplementationOnce((key, funct) => {
+							funct({ type: LIST_LEVEL_NODE })
+							return {
+								data: {
+									get: () => ({
+										bulletStyle: 'disc',
+										type: 'unordered'
+									})
+								}
+							}
+						})
+						.mockReturnValueOnce({
+							data: {
+								get: () => ({
+									bulletStyle: 'decimal',
+									type: 'ordered'
+								})
+							}
+						})
+				}
+			}
+		}
+		const component = shallow(<Node getEditor={() => editor} />)
+		const tree = component.html()
+
+		component
+			.find('button')
+			.at(14)
+			.simulate('click', { preventDefault: jest.fn() })
+
+		expect(tree).toMatchSnapshot()
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+	})
+
 	test('Bold component', () => {
 		const Node = Toolbar.components.Bold
 		const component = shallow(<Node />)
