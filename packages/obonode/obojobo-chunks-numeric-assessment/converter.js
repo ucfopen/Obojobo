@@ -2,7 +2,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 
 import {
 	SCORE_RULE_NODE,
-	NUMERIC_FEEDBACK,
+	NUMERIC_FEEDBACK_NODE,
 	EXACT_ANSWER,
 	WITHIN_A_RANGE,
 	PRECISE_RESPONSE,
@@ -15,18 +15,14 @@ const complexifiedNumericRule = numericRule => {
 			return {
 				requirement: EXACT_ANSWER,
 				answerInput: numericRule.answer,
-				score: numericRule.score,
-				hasFeedback: !!numericRule.feedback,
-				feedback: numericRule.feedback
+				score: numericRule.score
 			}
 		case 'range':
 			return {
 				requirement: WITHIN_A_RANGE,
 				startInput: numericRule.start,
 				endInput: numericRule.end,
-				score: numericRule.score,
-				feedback: numericRule.feedback,
-				hasFeedback: !!numericRule.feedback
+				score: numericRule.score
 			}
 		case 'precise':
 			return {
@@ -34,9 +30,7 @@ const complexifiedNumericRule = numericRule => {
 				type: numericRule.precisionType == 'sig-figs' ? 'Significant digits' : 'Decimal places',
 				answerInput: numericRule.answer,
 				precisionInput: numericRule.precision,
-				score: numericRule.score,
-				feedback: numericRule.feedback,
-				hasFeedback: !!numericRule.feedback
+				score: numericRule.score
 			}
 		case 'margin':
 			return {
@@ -44,16 +38,12 @@ const complexifiedNumericRule = numericRule => {
 				type: numericRule.marginType == 'absolute' ? 'Absolute' : 'Percent',
 				answerInput: numericRule.answer,
 				marginInput: numericRule.margin,
-				score: numericRule.score,
-				feedback: numericRule.feedback,
-				hasFeedback: !!numericRule.feedback
+				score: numericRule.score
 			}
 		default:
 			return {
 				requirement: EXACT_ANSWER,
-				score: numericRule.score,
-				feedback: numericRule.feedback,
-				hasFeedback: !!numericRule.feedback
+				score: numericRule.score
 			}
 	}
 }
@@ -86,7 +76,8 @@ const simplifedNumericRule = numericRule => {
 				requirement: 'margin',
 				type: numericRule.marginType == 'Absolute' ? 'absolute' : 'percent',
 				answer: numericRule.answerInput,
-				margin: numericRule.marginInput
+				margin: numericRule.marginInput,
+				score: numericRule.score
 			}
 		default:
 			return {
@@ -107,16 +98,12 @@ const slateToObo = node => {
 
 				// Parse feedback node
 				child.nodes.forEach(component => {
-					if (component.type === NUMERIC_FEEDBACK) {
-						numericRule.feedback = {
-							type: NUMERIC_FEEDBACK,
-							children: component.nodes.map(c =>
-								Common.Registry.getItemForType(c.type).slateToObo(c)
-							)
-						}
+					if (component.type === NUMERIC_FEEDBACK_NODE) {
+						numericRule.feedback = Common.Registry.getItemForType(component.type).slateToObo(
+							component
+						)
 					}
 				})
-
 				NumericRules.push(numericRule)
 
 				break
@@ -143,14 +130,9 @@ const oboToSlate = node => {
 
 		// Parse feedback node
 		if (numericRule.feedback) {
-			const feedbackNode = {
-				object: 'block',
-				type: NUMERIC_FEEDBACK,
-				nodes: numericRule.feedback.children.map(child =>
-					Common.Registry.getItemForType(child.type).oboToSlate(child)
-				),
-				data: {}
-			}
+			const feedbackNode = Common.Registry.getItemForType(numericRule.feedback.type).oboToSlate(
+				numericRule.feedback
+			)
 
 			node.nodes.push(feedbackNode)
 		}

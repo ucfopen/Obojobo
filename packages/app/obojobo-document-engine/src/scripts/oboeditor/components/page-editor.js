@@ -23,6 +23,7 @@ import MCFeedback from 'obojobo-chunks-multiple-choice-assessment/MCFeedback/edi
 import MarkToolbar from './toolbar'
 import MathEquation from 'obojobo-chunks-math-equation/editor'
 import NumericAssessment from 'obojobo-chunks-numeric-assessment/editor'
+import NumericFeedback from 'obojobo-chunks-numeric-assessment/components/NumericFeedback/editor'
 import Page from 'obojobo-pages-page/editor'
 import Question from 'obojobo-chunks-question/editor'
 import QuestionBank from 'obojobo-chunks-question-bank/editor'
@@ -62,6 +63,7 @@ const plugins = [
 	Question.plugins,
 	MCAssessment.plugins,
 	NumericAssessment.plugins,
+	NumericFeedback.plugins,
 	MCChoice.plugins,
 	MCAnswer.plugins,
 	MCFeedback.plugins,

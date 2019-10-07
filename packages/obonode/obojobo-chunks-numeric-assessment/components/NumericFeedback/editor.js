@@ -1,20 +1,17 @@
 import React from 'react'
-
 import Common from 'obojobo-document-engine/src/scripts/common'
-import Converter from './converter'
-import Node from './editor-component'
-import NumericInput from './components/numeric-input/numeric-input'
-import Schema from './schema'
 
-import { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE } from './constant'
+import Node from './editor-component'
+import Schema from './schema'
+import Converter from './converter'
+
+import { NUMERIC_FEEDBACK_NODE } from '../../constant'
 
 const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
-			case NUMERIC_ASSESSMENT_NODE:
+			case NUMERIC_FEEDBACK_NODE:
 				return <Node {...props} {...props.attributes} />
-			case SCORE_RULE_NODE:
-				return <NumericInput {...props} {...props.attributes} />
 			default:
 				return next()
 		}
@@ -22,16 +19,16 @@ const plugins = {
 	schema: Schema
 }
 
-Common.Registry.registerModel(NUMERIC_ASSESSMENT_NODE, {
-	name: 'Numeric Assessment',
+Common.Registry.registerModel(NUMERIC_FEEDBACK_NODE, {
+	name: 'Numeric Choice Feedback',
 	isInsertable: false,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
-	supportsChildren: false,
+	supportsChildren: true,
 	plugins
 })
 
-const NumericAssessment = {
+const NumericFeedback = {
 	components: {
 		Node
 	},
@@ -42,4 +39,4 @@ const NumericAssessment = {
 	plugins
 }
 
-export default NumericAssessment
+export default NumericFeedback

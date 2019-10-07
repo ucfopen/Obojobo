@@ -1,6 +1,6 @@
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const SCORE_RULE_NODE = 'ScoreRule'
-const NUMERIC_FEEDBACK = 'NumericFeedback'
+const NUMERIC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback'
 
 const EXACT_ANSWER = 'Exact answer'
 const MARGIN_OF_ERROR = 'Margin of error'
@@ -15,24 +15,10 @@ const requirementDropdown = [EXACT_ANSWER, MARGIN_OF_ERROR, WITHIN_A_RANGE, PREC
 const marginDropdown = [PERCENT, ABSOLUTE]
 const precisionDropdown = [SIGNIFICANT_DIGITS, DECIMAL_PLACES]
 
-const simplified = {
-	[EXACT_ANSWER]: 'exact',
-	[MARGIN_OF_ERROR]: 'margin',
-	[WITHIN_A_RANGE]: 'range',
-	[PRECISE_RESPONSE]: 'precise'
-}
-
-const complexified = {
-	exact: EXACT_ANSWER,
-	margin: MARGIN_OF_ERROR,
-	range: WITHIN_A_RANGE,
-	precise: PRECISE_RESPONSE
-}
-
 export {
 	NUMERIC_ASSESSMENT_NODE,
 	SCORE_RULE_NODE,
-	NUMERIC_FEEDBACK,
+	NUMERIC_FEEDBACK_NODE,
 	EXACT_ANSWER,
 	MARGIN_OF_ERROR,
 	WITHIN_A_RANGE,
@@ -43,7 +29,5 @@ export {
 	DECIMAL_PLACES,
 	requirementDropdown,
 	marginDropdown,
-	precisionDropdown,
-	simplified,
-	complexified
+	precisionDropdown
 }

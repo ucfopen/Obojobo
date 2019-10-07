@@ -6,13 +6,15 @@ import { Block } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import NumericHeader from './numeric-header'
 import NumericOption from './numeric-option'
-import { NUMERIC_FEEDBACK } from '../../constant'
+import { NUMERIC_FEEDBACK_NODE } from '../../constant'
 
 const { Button } = Common.components
 
 const NumericInput = props => {
 	const onHandleScoreChange = () => {
-		const numericRule = props.node.data.get('numericRule')
+		const numericRule = {
+			...props.node.data.get('numericRule')
+		}
 		numericRule.score = numericRule.score == '100' ? '0' : '100'
 
 		const editor = props.editor
@@ -24,8 +26,7 @@ const NumericInput = props => {
 	const onHandleInputChange = event => {
 		const { name, value } = event.target
 
-		const numericRule = props.node.data.get('numericRule')
-		numericRule[name] = value
+		const numericRule = { ...props.node.data.get('numericRule'), [name]: value }
 
 		const editor = props.editor
 		editor.setNodeByKey(props.node.key, {
@@ -36,8 +37,7 @@ const NumericInput = props => {
 	const onClickDropdown = event => {
 		const { name, value } = event.target
 
-		const numericRule = props.node.data.get('numericRule')
-		numericRule[name] = value
+		const numericRule = { ...props.node.data.get('numericRule'), [name]: value }
 
 		const editor = props.editor
 		editor.setNodeByKey(props.node.key, {
@@ -54,27 +54,23 @@ const NumericInput = props => {
 	const onAddFeedback = () => {
 		const editor = props.editor
 
-		const numericRule = props.node.data.get('numericRule')
-		if (!numericRule.hasFeedback) {
-			numericRule.hasFeedback = true
-			const newFeedback = Block.create({
-				object: 'block',
-				type: NUMERIC_FEEDBACK
-			})
+		const newFeedback = Block.create({
+			type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+			// type: NUMERIC_FEEDBACK_NODE
+		})
 
-			editor.insertNodeByKey(props.node.key, 0, newFeedback)
-			editor.setNodeByKey(props.node.key, {
-				data: { numericRule }
-			})
-		}
+		editor.insertNodeByKey(props.node.key, 0, newFeedback)
 	}
 
 	const numericRule = props.node.data.get('numericRule')
 	const { score } = numericRule
 
 	const isSelected = props.isSelected
-	const hasFeedback = numericRule.hasFeedback
+
+	const hasFeedback =
+		props.node.nodes.toJSON()[0].type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
 	const className = 'numeric-input-container' + (isSelected ? ' is-selected' : '')
+
 	return (
 		<div className={className} onClick={props.onSetCurrSelected}>
 			<button
