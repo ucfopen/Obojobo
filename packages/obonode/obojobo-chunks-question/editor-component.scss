@@ -5,9 +5,16 @@
 		&.question-editor {
 			background: $color-bg;
 		}
+	}
 
-		> .content-back > div:first-child {
-			padding-top: 2em;
+	.question-settings {
+		padding-left: 3em;
+		padding-top: 1em;
+		font-family: "Libre Franklin", Arial, sans-serif;
+		font-weight: bold;
+
+		label {
+			padding-right: 0.5em;
 		}
 	}
 
@@ -38,16 +45,14 @@
 
 			&:hover {
 				background: none;
-				color: $color-text;
+				color: $color-obojobo-blue;
 			}
 		}
 	}
 
-	> .question-type {
+	.question-type {
 		position: absolute;
-		right: 7em;
-		top: 1em;
-		z-index: 99;
+		right: 4.5em;
 	}
 
 	&.is-type-survey {
@@ -55,5 +60,30 @@
 		.solution-editor {
 			display: none;
 		}
+
+		.component.obojobo-draft--chunks--mc-assessment.editor--mc-assessment {
+			.obojobo-draft--chunks--mc-assessment--mc-choice {
+				.obojobo-draft--chunks--mc-assessment--mc-answer {
+					padding-top: 0;
+				}
+			}
+		}
+	}
+
+	select {
+		font-family: $font-default;
+		border-radius: 3px;
+		font-size: 0.7em;
+		background-color: white;
+		min-width: 10em;
+		padding: 0.7em 2em 0.7em 0.5em;
+
+		appearance: none;
+		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
+			linear-gradient(135deg, gray 50%, transparent 50%);
+		background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
+			calc(100% - 2.5em) 0.5em;
+		background-size: 5px 5px, 5px 5px, 1px 1.5em;
+		background-repeat: no-repeat;
 	}
 }

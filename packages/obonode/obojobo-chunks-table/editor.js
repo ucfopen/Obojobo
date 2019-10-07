@@ -80,7 +80,7 @@ const plugins = {
 
 		// Normalize Rows with the wrong number of cells
 		const numCols = node.data.get('content').numCols
-		if (node.nodes.size !== numCols) {
+		if (node.nodes.size < numCols) {
 			const header = node.data.get('content').header
 
 			// Insert missing cells at the end of the row
@@ -98,6 +98,20 @@ const plugins = {
 						]
 					})
 				}
+			}
+		}
+
+		if (node.nodes.size > numCols) {
+			return editor => {
+				editor.setNodeByKey(node.key, { 
+					data: { 
+						content: {
+							...node.data.get('content'),
+							numCols: node.nodes.size
+						} 
+
+					} 
+				})
 			}
 		}
 

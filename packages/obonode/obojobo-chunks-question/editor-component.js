@@ -10,6 +10,24 @@ const { Button } = Common.components
 
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
+const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+
+const contentDescription = [
+	{
+		name: 'type',
+		description: 'Survey Question',
+		type: 'abstract-toggle',
+		value: content => (content.type === 'survey'),
+		onChange: (content, isSurvey) => {
+			if (isSurvey) {
+				return { ...content, type: 'survey'}
+			} 
+
+			return { ...content, type: 'default' }
+		}
+	}
+]
+
 class Question extends React.Component {
 	onSetType(event) {
 		const questionData = this.props.node.data
@@ -44,25 +62,61 @@ class Question extends React.Component {
 		})
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 	}
-	render() {
-		const state = this.props.node.data.get('content')
+
+	onChangeQuestionType(event) {
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
+		let prevQuestionType
+		// The question type is determined by the MCAssessment or the NumericAssessement
+		// This is either the last node or the second to last node
+		if(hasSolution){
+			questionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
+		} else {
+			questionType = this.props.node.nodes.last().type
+		}
+
+		const newQuestionType = event.target.value
+
+		console.log('hewwo', prevQuestionType, newQuestionType)
+	}
+
+	render() {
+		const content = this.props.node.data.get('content')
+		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
+		let questionType
+
+		// The question type is determined by the MCAssessment or the NumericAssessement
+		// This is either the last node or the second to last node
+		if(hasSolution){
+			questionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
+		} else {
+			questionType = this.props.node.nodes.last().type
+		}
+
 		return (
-			<Node {...this.props}>
+			<Node {...this.props} contentDescription={contentDescription}>
 				<div
-					className={`component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-${
-						state.type
+					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${
+						content.type
 					}`}>
-					<select
-						className="question-type"
-						contentEditable={false}
-						value={state.type}
-						onChange={this.onSetType.bind(this)}>
-						<option value="default">Default</option>
-						<option value="survey">Survey</option>
-					</select>
 					<div className="flipper question-editor">
 						<div className="content-back">
+							<div className="question-settings">
+								<label>Question Type</label>
+								<select
+									contentEditable={false}
+									value={questionType}
+									onChange={this.onChangeQuestionType.bind(this)}>
+									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
+								</select>
+								<select
+									className="question-type"
+									contentEditable={false}
+									value={content.type}
+									onChange={this.onSetType.bind(this)}>
+									<option value="default">Default</option>
+									<option value="survey">Survey</option>
+								</select>
+							</div>
 							{this.props.children}
 							{hasSolution ? null : (
 								<Button className="add-solution" onClick={() => this.addSolution()}>

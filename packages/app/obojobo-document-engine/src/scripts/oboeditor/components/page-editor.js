@@ -154,7 +154,6 @@ class PageEditor extends React.Component {
 	}
 
 	render() {
-		console.log('editable? ', this.state.editable)
 		return (
 			<div className="editor--page-editor">
 				<div className="draft-toolbars">
@@ -292,8 +291,6 @@ class PageEditor extends React.Component {
 				json.document.nodes.push(Component.helpers.oboToSlate(child))
 			})
 		}
-
-		console.log(json)
 
 		return json
 	}

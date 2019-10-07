@@ -11,6 +11,33 @@ import emptyQuestion from 'obojobo-chunks-question/empty-node.json'
 
 const { Button } = Common.components
 
+const contentDescription = [
+	{
+		name: 'choose',
+		description: 'Choose',
+		type: 'input'
+	},
+	{
+		name: 'select',
+		description: 'Select',
+		type: 'select',
+		values: [
+			{
+				value: 'sequential',
+				description: 'Select unseen questions in order'
+			},
+			{
+				value: 'random',
+				description: 'Select randomly from all questions'
+			},
+			{
+				value: 'random-unseen',
+				description: 'Select unseen questions randomly'
+			}
+		]
+	}
+]
+
 const remove = (editor, node) => {
 	editor.removeNodeByKey(node.key)
 }
@@ -28,30 +55,24 @@ const addQuestionBank = (editor, node) => {
 const QuestionBank = props => {
 	const { editor, node, children } = props
 	return (
-		<Node {...props}>
+		<Node {...props} contentDescription={contentDescription}>
 			<div className={'obojobo-draft--chunks--question-bank editor-bank'}>
 				<Button
 					className="delete-button"
-					onClick={() => {
-						remove(editor, node)
-					}}>
+					onClick={remove.bind(this, editor, node)}>
 					&times;
 				</Button>
 				{children}
-				<Button
-					className="buffer"
-					onClick={() => {
-						addQuestion(editor, node)
-					}}>
-					{'Add Question'}
-				</Button>
-				<Button
-					className="buffer"
-					onClick={() => {
-						addQuestionBank(editor, node)
-					}}>
-					{'Add Question Bank'}
-				</Button>
+				<div className="button-bar">
+					<Button
+						onClick={addQuestion.bind(this, editor, node)}>
+						{'Add Question'}
+					</Button>
+					<Button
+						onClick={addQuestionBank.bind(this, editor, node)}>
+						{'Add Question Bank'}
+					</Button>
+				</div>
 			</div>
 		</Node>
 	)

@@ -6,6 +6,14 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
+const contentDescription = [
+	{
+		name: 'level',
+		description: 'Level',
+		type: 'input'
+	}
+]
+
 class Heading extends React.Component {
 	constructor(props) {
 		super(props)
@@ -89,13 +97,6 @@ class Heading extends React.Component {
 		const content = this.props.node.data.get('content')
 		const HTag = `h${content.level || 1}`
 
-		const contentDescription = [
-			{
-				name: 'level',
-				description: 'Level',
-				type: 'input'
-			}
-		]
 		return (
 			<Node {...this.props} contentDescription={contentDescription}>
 				<div
