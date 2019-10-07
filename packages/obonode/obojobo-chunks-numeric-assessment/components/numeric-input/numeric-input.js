@@ -55,8 +55,7 @@ const NumericInput = props => {
 		const editor = props.editor
 
 		const newFeedback = Block.create({
-			type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
-			// type: NUMERIC_FEEDBACK_NODE
+			type: NUMERIC_FEEDBACK_NODE
 		})
 
 		editor.insertNodeByKey(props.node.key, 0, newFeedback)
@@ -67,8 +66,7 @@ const NumericInput = props => {
 
 	const isSelected = props.isSelected
 
-	const hasFeedback =
-		props.node.nodes.toJSON()[0].type === 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+	const hasFeedback = props.node.nodes.toJSON()[0].type === NUMERIC_FEEDBACK_NODE
 	const className = 'numeric-input-container' + (isSelected ? ' is-selected' : '')
 
 	return (
