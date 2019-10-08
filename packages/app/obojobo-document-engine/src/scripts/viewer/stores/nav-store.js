@@ -20,19 +20,18 @@ class NavStore extends Store {
 		// to handle multiple simultaneous events
 		// that occur like when someone clicks outside
 		// the nav (causing a close) ON a nav toggle button
-		this.updateOpenState = debounce(state => {
-			this.tmpOpenState = state
-			if(this.tmpOpenState == this.state.open) return
+		this.updateOpenState = debounce(1, newOpen => {
+			if(newOpen == this.state.open) return
 
-			const action = this.tmpOpenState ? 'nav:close' : 'nav:open'
+			const action = newOpen ? 'nav:open' : 'nav:close'
 			APIUtil.postEvent({
 				draftId: this.state.draftId,
 				action: action,
 				eventVersion: '1.0.0',
 				visitId: this.state.visitId
 			})
-			this.setAndTrigger({ open: this.tmpOpenState })
-		}, 1)
+			this.setAndTrigger({ open: newOpen })
+		})
 
 		Dispatcher.on(
 			{

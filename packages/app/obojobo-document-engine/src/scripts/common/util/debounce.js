@@ -1,4 +1,4 @@
-const debounce = (fn, time) => {
+const debounce = (time, fn) => {
 	let timeout;
 
 	return function() {

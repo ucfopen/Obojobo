@@ -10,11 +10,6 @@ const urlTokens = document.location.pathname.split('/')
 const visitId = urlTokens[4] ? urlTokens[4] : null
 const draftId = urlTokens[2] ? urlTokens[2] : null
 
-const debounce = function(ms, cb) {
-	clearTimeout(debounce.id)
-	return (debounce.id = setTimeout(cb, ms))
-}
-debounce.id = null
 
 // Set up listeners for window for blur/focus
 const onFocus = function() {

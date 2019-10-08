@@ -61,8 +61,8 @@ export default class Nav extends React.Component {
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener('mouseup', this.onWindowClick)
-		window.removeEventListener('pointerup', this.onWindowClick)
+		window.removeEventListener('mouseup', this.closeNavOnMobile)
+		window.removeEventListener('pointerup', this.closeNavOnMobile)
 		window.removeEventListener('resize', this.hideOrShowOnResize)
 	}
 

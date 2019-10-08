@@ -269,6 +269,7 @@ describe('NavStore', () => {
 	})
 
 	test('nav:close event fires and updates state', () => {
+		jest.useFakeTimers()
 		NavStore.setState({
 			locked: 'unchanged',
 			open: 'unchanged',
@@ -279,6 +280,7 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:close']()
+		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
@@ -286,7 +288,101 @@ describe('NavStore', () => {
 		expect(NavStore.getState()).toMatchSnapshot()
 	})
 
+	test('nav:close twice only fires one event', () => {
+		jest.useFakeTimers()
+		NavStore.setState({
+			locked: 'unchanged',
+			open: 'unchanged',
+			draftId: 'mockDraftId'
+		})
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:close']()
+		eventCallbacks['nav:close']()
+		jest.runOnlyPendingTimers()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0][0]).toBe('navstore:change')
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(NavStore.getState()).toHaveProperty('open', false)
+	})
+
+	test('calling the same nav state twice with delay only fires one event', () => {
+		jest.useFakeTimers()
+		NavStore.setState({
+			locked: 'unchanged',
+			open: 'unchanged',
+			draftId: 'mockDraftId'
+		})
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:close']()
+		jest.runOnlyPendingTimers()
+
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(NavStore.getState()).toHaveProperty('open', false)
+
+		eventCallbacks['nav:close']()
+		jest.runOnlyPendingTimers()
+
+		// no change
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(NavStore.getState()).toHaveProperty('open', false)
+	})
+
+	test('nav:close followed by nav:toggle doesnt call open', () => {
+		jest.useFakeTimers()
+		NavStore.setState({
+			locked: 'unchanged',
+			open: 'unchanged',
+			draftId: 'mockDraftId'
+		})
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:close']()
+		eventCallbacks['nav:toggle']()
+		jest.runOnlyPendingTimers()
+		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
+		expect(Dispatcher.trigger.mock.calls[0][0]).toBe('navstore:change')
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
+		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(NavStore.getState()).toHaveProperty('open', false)
+	})
+
+	test('nav:close followed by nav:toggle with delay DOES call open', () => {
+		jest.useFakeTimers()
+		NavStore.setState({
+			locked: 'unchanged',
+			open: 'unchanged',
+			draftId: 'mockDraftId'
+		})
+		// simulate trigger
+		Dispatcher.trigger.mockReturnValueOnce()
+
+		// go
+		eventCallbacks['nav:close']()
+		jest.runOnlyPendingTimers()
+
+		eventCallbacks['nav:toggle']()
+		jest.runOnlyPendingTimers()
+
+		expect(APIUtil.postEvent).toHaveBeenCalledTimes(2)
+		expect(APIUtil.postEvent.mock.calls[0][0]).toHaveProperty('action', 'nav:close')
+		expect(APIUtil.postEvent.mock.calls[1][0]).toHaveProperty('action', 'nav:open')
+		expect(NavStore.getState()).toHaveProperty('open', true)
+	})
+
 	test('nav:open event fires and updates state', () => {
+		jest.useFakeTimers()
 		NavStore.setState({
 			locked: 'unchanged',
 			open: 'unchanged',
@@ -297,6 +393,7 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:open']()
+		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
@@ -305,9 +402,11 @@ describe('NavStore', () => {
 	})
 
 	test('nav:close event fires and updates state', () => {
+		jest.useFakeTimers()
+
 		NavStore.setState({
 			locked: 'unchanged',
-			open: 'unchanged',
+			open: 'open',
 			draftId: 'mockDraftId'
 		})
 		// simulate trigger
@@ -315,6 +414,7 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:close']()
+		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
@@ -323,6 +423,7 @@ describe('NavStore', () => {
 	})
 
 	test('nav:toggle event fires and updates state', () => {
+		jest.useFakeTimers()
 		NavStore.setState({
 			locked: 'unchanged',
 			open: false,
@@ -333,6 +434,7 @@ describe('NavStore', () => {
 
 		// go
 		eventCallbacks['nav:toggle']()
+		jest.runOnlyPendingTimers()
 		expect(Dispatcher.trigger).toHaveBeenCalledTimes(1)
 		expect(Dispatcher.trigger.mock.calls[0]).toMatchSnapshot()
 		expect(APIUtil.postEvent).toHaveBeenCalledTimes(1)
