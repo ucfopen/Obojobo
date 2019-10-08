@@ -1,9 +1,10 @@
 import './image-properties-modal.scss'
 
-import { debounce, isUrlUUID } from './utils'
+import { isUrlUUID } from './utils'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import debounce from 'obojobo-document-engine/src/scripts/common/util/debounce'
 import Image from './image'
 import React from 'react'
 
