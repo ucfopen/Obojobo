@@ -15,6 +15,7 @@
 	}
 
 	.equation-label {
+		font-family: $font-default;
 		position: relative;
 		text-align: center;
 		right: 0;
@@ -24,7 +25,7 @@
 		color: lighten($color-text, 30%); // stylelint-disable-line sh-waqar/declaration-use-variable
 
 		&::before {
-			content: "Equation ";
+			content: 'Equation ';
 			font-style: italic;
 			color: lighten($color-text, 50%); // stylelint-disable-line sh-waqar/declaration-use-variable
 		}

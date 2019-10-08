@@ -25,6 +25,10 @@
 		@include mq($until: tablet) {
 			font-size: $font-size * 0.8;
 		}
+
+		code {
+			font-family: inherit; /* stylelint-disable-line sh-waqar/declaration-use-variable */
+		}
 	}
 
 	.text {
