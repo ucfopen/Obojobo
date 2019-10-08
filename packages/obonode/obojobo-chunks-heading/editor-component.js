@@ -6,14 +6,6 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
-const contentDescription = [
-	{
-		name: 'level',
-		description: 'Level',
-		type: 'input'
-	}
-]
-
 class Heading extends React.Component {
 	constructor(props) {
 		super(props)
@@ -98,7 +90,7 @@ class Heading extends React.Component {
 		const HTag = `h${content.level || 1}`
 
 		return (
-			<Node {...this.props} contentDescription={contentDescription}>
+			<Node {...this.props}>
 				<div
 					className={'text-chunk obojobo-draft--chunks--heading pad'}
 					ref={node => {

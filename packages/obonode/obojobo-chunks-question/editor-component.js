@@ -12,24 +12,9 @@ const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 
-const contentDescription = [
-	{
-		name: 'type',
-		description: 'Survey Question',
-		type: 'abstract-toggle',
-		value: content => (content.type === 'survey'),
-		onChange: (content, isSurvey) => {
-			if (isSurvey) {
-				return { ...content, type: 'survey'}
-			} 
-
-			return { ...content, type: 'default' }
-		}
-	}
-]
-
 class Question extends React.Component {
 	onSetType(event) {
+		const type = event.target.checked ? 'survey' : 'default'
 		const questionData = this.props.node.data
 		const questionDataContent = questionData.get('content')
 		const mcAssessmentNode = this.props.node.nodes.get(1)
@@ -39,7 +24,7 @@ class Question extends React.Component {
 			data: {
 				content: {
 					...questionDataContent,
-					type: event.target.value
+					type
 				}
 			}
 		})
@@ -47,7 +32,7 @@ class Question extends React.Component {
 		this.props.editor.setNodeByKey(mcAssessmentNode.key, {
 			data: {
 				...mcAssessmentData,
-				questionType: event.target.value
+				questionType: type
 			}
 		})
 	}
@@ -69,9 +54,9 @@ class Question extends React.Component {
 		// The question type is determined by the MCAssessment or the NumericAssessement
 		// This is either the last node or the second to last node
 		if(hasSolution){
-			questionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
+			prevQuestionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
 		} else {
-			questionType = this.props.node.nodes.last().type
+			prevQuestionType = this.props.node.nodes.last().type
 		}
 
 		const newQuestionType = event.target.value
@@ -93,7 +78,7 @@ class Question extends React.Component {
 		}
 
 		return (
-			<Node {...this.props} contentDescription={contentDescription}>
+			<Node {...this.props}>
 				<div
 					className={`component obojobo-draft--chunks--question is-viewed pad is-type-${
 						content.type
@@ -108,14 +93,15 @@ class Question extends React.Component {
 									onChange={this.onChangeQuestionType.bind(this)}>
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
 								</select>
-								<select
-									className="question-type"
-									contentEditable={false}
-									value={content.type}
-									onChange={this.onSetType.bind(this)}>
-									<option value="default">Default</option>
-									<option value="survey">Survey</option>
-								</select>
+								<div className="question-type" contentEditable={false}>
+									<input 
+										type="checkbox" 
+										name="vehicle1" 
+										value="Bike"
+										checked={content.type === 'survey'}
+										onChange={this.onSetType.bind(this)}/>
+									<label>Survey Only</label>
+								</div>
 							</div>
 							{this.props.children}
 							{hasSolution ? null : (

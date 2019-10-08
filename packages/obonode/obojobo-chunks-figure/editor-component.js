@@ -11,52 +11,6 @@ import React from 'react'
 const { ModalUtil } = Common.util
 const { Button } = Common.components
 
-const contentDescription = [
-	{
-		name: 'alt',
-		description: 'Alt Text',
-		type: 'input'
-	},
-	{
-		name: 'url',
-		description: 'URL',
-		type: 'input'
-	},
-	{
-		name: 'size',
-		description: 'Size',
-		type: 'select',
-		values: [
-			{
-				value: 'small',
-				description: 'Small'
-			},
-			{
-				value: 'medium',
-				description: 'Medium'
-			},
-			{
-				value: 'large',
-				description: 'Large'
-			},
-			{
-				value: 'custom',
-				description: 'Custom'
-			},
-		]
-	},
-	{
-		name: 'width',
-		description: 'Width',
-		type: 'input'
-	},
-	{
-		name: 'height',
-		description: 'Height',
-		type: 'input'
-	}
-]
-
 class Figure extends React.Component {
 	constructor(props) {
 		super(props)
@@ -122,7 +76,7 @@ class Figure extends React.Component {
 		const hasAltText = content.alt && content.alt.length !== 0
 
 		return (
-			<Node {...this.props} contentDescription={contentDescription}>
+			<Node {...this.props}>
 				<div className={`obojobo-draft--chunks--figure viewer ${content.size}`}>
 					<div className="container">
 						{hasAltText ? null : <div contentEditable={false}>Accessibility Warning: No Alt Text!</div>}

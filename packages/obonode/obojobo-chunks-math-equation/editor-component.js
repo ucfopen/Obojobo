@@ -9,7 +9,6 @@ import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/
 import MathEquationProperties from './math-equation-properties-modal'
 
 const { ModalUtil } = Common.util
-const { Button } = Common.components
 
 const getLatexHtml = latex => {
 	try {

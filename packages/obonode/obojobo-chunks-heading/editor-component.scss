@@ -10,8 +10,8 @@
 	.dropdown-heading {
 		position: absolute;
 		left: 3em;
-		top: 3em;
-		z-index: $z-index-above-content;
+		top: -0.9em;
+		z-index: 9;
 
 		> button {
 			display: block;
