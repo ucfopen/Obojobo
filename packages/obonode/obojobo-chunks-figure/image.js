@@ -87,6 +87,7 @@ class Image extends React.Component {
 				style={imgStyles}
 				onLoad={this.boundOnLoad}
 				onError={this.boundOnError}
+				loading="lazy"
 			/>
 		)
 	}
