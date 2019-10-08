@@ -31,17 +31,17 @@
 		}
 	}
 
-	&.align-left .katex-display,
+	&.align-left .katex-display > .katex,
 	&.align-left .equation-label {
 		text-align: left;
 	}
 
-	&.align-right .katex-display,
+	&.align-right .katex-display > .katex,
 	&.align-right .equation-label {
 		text-align: right;
 	}
 
-	&.align-center .katex-display {
+	&.align-center .katex-display > .katex {
 		text-align: center;
 	}
 
