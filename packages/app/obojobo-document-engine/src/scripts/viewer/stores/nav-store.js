@@ -3,6 +3,7 @@ import NavUtil from '../../viewer/util/nav-util'
 import APIUtil from '../../viewer/util/api-util'
 import FocusUtil from '../../viewer/util/focus-util'
 import { startHeartBeat } from '../../viewer/util/stop-viewer'
+import debounce from '../../common/util/debounce'
 
 const { Store } = Common.flux
 const { Dispatcher } = Common.flux
@@ -14,6 +15,24 @@ class NavStore extends Store {
 		let item
 		let oldNavTargetId
 		super('navstore')
+
+		// create a debounced state change function
+		// to handle multiple simultaneous events
+		// that occur like when someone clicks outside
+		// the nav (causing a close) ON a nav toggle button
+		this.updateOpenState = debounce(state => {
+			this.tmpOpenState = state
+			if(this.tmpOpenState == this.state.open) return
+
+			const action = this.tmpOpenState ? 'nav:close' : 'nav:open'
+			APIUtil.postEvent({
+				draftId: this.state.draftId,
+				action: action,
+				eventVersion: '1.0.0',
+				visitId: this.state.visitId
+			})
+			this.setAndTrigger({ open: this.tmpOpenState })
+		}, 1)
 
 		Dispatcher.on(
 			{
@@ -115,33 +134,13 @@ class NavStore extends Store {
 					this.setAndTrigger({ locked: false })
 				},
 				'nav:close': () => {
-					APIUtil.postEvent({
-						draftId: this.state.draftId,
-						action: 'nav:close',
-						eventVersion: '1.0.0',
-						visitId: this.state.visitId
-					})
-					this.setAndTrigger({ open: false })
+					this.updateOpenState(false)
 				},
 				'nav:open': () => {
-					APIUtil.postEvent({
-						draftId: this.state.draftId,
-						action: 'nav:open',
-						eventVersion: '1.0.0',
-						visitId: this.state.visitId
-					})
-					this.setAndTrigger({ open: true })
+					this.updateOpenState(true)
 				},
 				'nav:toggle': () => {
-					const updatedState = { open: !this.state.open }
-					APIUtil.postEvent({
-						draftId: this.state.draftId,
-						action: 'nav:toggle',
-						eventVersion: '1.0.0',
-						visitId: this.state.visitId,
-						payload: updatedState
-					})
-					this.setAndTrigger(updatedState)
+					this.updateOpenState(!this.state.open)
 				},
 				'nav:openExternalLink': payload => {
 					window.open(payload.value.url)

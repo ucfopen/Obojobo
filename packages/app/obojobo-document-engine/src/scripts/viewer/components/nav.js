@@ -21,16 +21,16 @@ export default class Nav extends React.Component {
 	constructor(props) {
 		super(props)
 		this.selfRef = React.createRef()
-		this.onWindowClick = this.onWindowClick.bind(this)
 		this.hideOrShowOnResize = this.hideOrShowOnResize.bind(this)
+		this.closeNavOnMobile = this.closeNavOnMobile.bind(this)
 	}
 
 	isMobileSize() {
 		return window.matchMedia('(max-width: 480px)').matches
 	}
 
-	onWindowClick(event) {
-		if(this.isMobileSize() && !this.selfRef.current.contains(event.target)) {
+	closeNavOnMobile(event) {
+		if(this.isMobileSize() && !this.selfRef.current.contains(event.target)){
 			NavUtil.close()
 		}
 	}
@@ -49,8 +49,8 @@ export default class Nav extends React.Component {
 
 	componentDidMount() {
 		this.prevWidth = window.innerWidth
-		window.addEventListener('mouseup', this.onWindowClick)
-		window.addEventListener('pointerup', this.onWindowClick)
+		window.addEventListener('mouseup', this.closeNavOnMobile)
+		window.addEventListener('pointerup', this.closeNavOnMobile)
 		window.addEventListener('resize', this.hideOrShowOnResize)
 
 		if(this.isMobileSize()) {
