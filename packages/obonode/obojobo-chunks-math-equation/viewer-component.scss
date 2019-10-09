@@ -7,7 +7,10 @@
 
 	.katex-display {
 		margin: 0;
-		overflow-x: scroll; // prevent whole page side scrolling
+		overflow-x: auto; // prevent whole page side scrolling
+		overflow-y: hidden;
+		padding-top: 0.1em; // extra padding prevents vertical scrolling
+		padding-bottom: 0.1em;
 
 		@include mq($until: tablet) {
 			font-size: 0.9em; // squish a little on smaller screens
