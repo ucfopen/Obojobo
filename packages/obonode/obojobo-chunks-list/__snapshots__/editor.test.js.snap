@@ -67,11 +67,10 @@ exports[`List editor plugins.renderPlaceholder exits when not relevent 3`] = `un
 
 exports[`List editor plugins.renderPlaceholder renders a placeholder 1`] = `
 <span
-  className="placeholder align-left"
+  className="placeholder"
   contentEditable={false}
->
-  Type Your Text Here
-</span>
+  data-placeholder="Type Your Text Here"
+/>
 `;
 
 exports[`List editor queries.createCodeLinesFromText builds text lines 1`] = `

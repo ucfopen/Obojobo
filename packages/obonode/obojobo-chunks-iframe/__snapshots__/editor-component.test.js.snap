@@ -2,34 +2,39 @@
 
 exports[`IFrame Editor Node IFrame component 1`] = `
 <div
-  className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="editor-container"
-    style={
-      Object {
-        "height": "200px",
-      }
-    }
+    className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
   >
     <div
-      className="iframe-toolbar"
+      className="editor-container"
+      style={
+        Object {
+          "height": "200px",
+        }
+      }
     >
-      <span
-        aria-hidden={true}
-        className="title"
-      >
-        mockTitle
-      </span>
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        className="iframe-toolbar"
       >
-        <button
-          className="button"
-          onClick={[Function]}
+        <span
+          aria-hidden={true}
+          className="title"
         >
-          IFrame Properties
-        </button>
+          mockTitle
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            IFrame Properties
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -38,34 +43,39 @@ exports[`IFrame Editor Node IFrame component 1`] = `
 
 exports[`IFrame Editor Node IFrame renders with no size correctly 1`] = `
 <div
-  className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="editor-container"
-    style={
-      Object {
-        "height": "500px",
-      }
-    }
+    className="obojobo-draft--chunks--iframe viewer pad is-previewing  is-not-bordered is-not-showing  is-controls-enabled  is-not-missing-src is-not-scaled-up"
   >
     <div
-      className="iframe-toolbar"
+      className="editor-container"
+      style={
+        Object {
+          "height": "500px",
+        }
+      }
     >
-      <span
-        aria-hidden={true}
-        className="title"
-      >
-        mockSrc
-      </span>
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        className="iframe-toolbar"
       >
-        <button
-          className="button"
-          onClick={[Function]}
+        <span
+          aria-hidden={true}
+          className="title"
         >
-          IFrame Properties
-        </button>
+          mockSrc
+        </span>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            IFrame Properties
+          </button>
+        </div>
       </div>
     </div>
   </div>

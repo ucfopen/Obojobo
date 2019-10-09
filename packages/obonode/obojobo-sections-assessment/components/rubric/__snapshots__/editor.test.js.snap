@@ -85,32 +85,25 @@ Immutable.Record {
       "key": "12",
       "nodes": Immutable.List [
         Immutable.Record {
-          "data": Immutable.Map {},
+          "data": Immutable.Map {
+            "indent": 0,
+          },
           "key": "13",
           "nodes": Immutable.List [
             Immutable.Record {
-              "data": Immutable.Map {
-                "indent": 0,
-              },
-              "key": "14",
-              "nodes": Immutable.List [
+              "leaves": Immutable.List [
                 Immutable.Record {
-                  "leaves": Immutable.List [
-                    Immutable.Record {
-                      "marks": Immutable.Set [],
-                      "text": "selected text",
-                    },
-                  ],
-                  "key": "15",
+                  "marks": Immutable.Set [],
+                  "text": "selected text",
                 },
               ],
-              "type": "ObojoboDraft.Chunks.Text.TextLine",
+              "key": "14",
             },
           ],
-          "type": "ObojoboDraft.Chunks.Text",
+          "type": "ObojoboDraft.Chunks.Text.TextLine",
         },
       ],
-      "type": "oboeditor.component",
+      "type": "ObojoboDraft.Chunks.Text",
     },
   ],
 }

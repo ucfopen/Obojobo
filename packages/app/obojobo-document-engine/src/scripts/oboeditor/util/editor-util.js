@@ -1,12 +1,10 @@
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 const domParser = new DOMParser()
 
 const XML_MODE = 'xml'
-const JSON_MODE = 'json'
-const VISUAL_MODE = 'visual'
 
 const getFlatList = function(item) {
 	let list = []

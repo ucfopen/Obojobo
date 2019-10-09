@@ -1,15 +1,8 @@
 import React from 'react'
-import Common from 'Common'
-import EditorUtil from '../../util/editor-util'
-import ClipboardUtil from '../../util/clipboard-util'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
-const { Prompt } = Common.components.modal
-const { ModalUtil } = Common.util
-
 import './drop-down-menu.scss'
-
-const { OboModel } = Common.models
 
 class DropMenu extends React.Component {
 	constructor(props) {

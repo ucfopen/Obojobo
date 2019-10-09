@@ -1,6 +1,6 @@
 import React from 'react'
 import { Block } from 'slate'
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import DropMenu from './components/insert-menu'
 

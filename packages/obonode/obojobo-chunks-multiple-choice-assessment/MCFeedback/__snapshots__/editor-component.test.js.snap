@@ -4,12 +4,16 @@ exports[`MCFeedback Editor Node MCFeedback builds the expected component 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback"
 >
-  <button
-    className="editor--page-editor--delete-node-button"
-    onClick={[Function]}
+  <div
+    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
   >
-    X
-  </button>
+    <button
+      className="button"
+      onClick={[Function]}
+    >
+      ×
+    </button>
+  </div>
   <span
     className="label"
     contentEditable={false}

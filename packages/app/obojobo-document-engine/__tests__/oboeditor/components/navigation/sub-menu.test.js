@@ -4,7 +4,7 @@ import EditorStore from '../../../src/scripts/oboeditor/stores/editor-store'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
 import ModalUtil from 'src/scripts/common/util/modal-util'
 import React from 'react'
-import SubMenu from 'src/scripts/oboeditor/components/sub-menu'
+import SubMenu from 'src/scripts/oboeditor/components/navigation/sub-menu'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 

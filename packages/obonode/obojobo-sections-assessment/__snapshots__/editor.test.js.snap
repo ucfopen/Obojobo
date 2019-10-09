@@ -21,53 +21,6 @@ Object {
   },
   "key": undefined,
   "nodes": Array [
-    Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "display": "Attempts",
-            "name": "attempts",
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                Object {
-                  "text": "undefined",
-                },
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "oboeditor.text-parameter",
-        },
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Review",
-            "name": "review",
-            "options": Array [
-              "always",
-              "never",
-              "no-attempts-remaining",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-        Object {
-          "data": Object {
-            "checked": false,
-            "display": "Lock Assessment on Start",
-            "name": "assessment lock",
-          },
-          "object": "block",
-          "type": "oboeditor.toggle-parameter",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Settings",
-    },
     undefined,
     undefined,
     undefined,
@@ -86,53 +39,6 @@ Object {
   },
   "key": undefined,
   "nodes": Array [
-    Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "display": "Attempts",
-            "name": "attempts",
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                Object {
-                  "text": "undefined",
-                },
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "oboeditor.text-parameter",
-        },
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Review",
-            "name": "review",
-            "options": Array [
-              "always",
-              "never",
-              "no-attempts-remaining",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-        Object {
-          "data": Object {
-            "checked": false,
-            "display": "Lock Assessment on Start",
-            "name": "assessment lock",
-          },
-          "object": "block",
-          "type": "oboeditor.toggle-parameter",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Settings",
-    },
     undefined,
     undefined,
     undefined,
@@ -190,8 +96,6 @@ Object {
     undefined,
   ],
   "content": Object {
-    "attempts": "mockText",
-    "review": undefined,
     "rubric": undefined,
     "scoreActions": undefined,
   },

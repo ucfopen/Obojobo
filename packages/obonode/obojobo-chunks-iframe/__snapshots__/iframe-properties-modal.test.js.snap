@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IFrame Properties Modal IFrameProperties component 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`IFrame Properties Modal IFrameProperties component 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog undefined\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
 exports[`IFrame Properties Modal IFrameProperties component changes New Window 1`] = `
 <div
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -128,7 +128,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -152,7 +152,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -222,7 +222,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -244,7 +244,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -266,7 +266,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 1
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -325,7 +325,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -446,7 +446,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -470,7 +470,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -540,7 +540,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -562,7 +562,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -584,7 +584,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes New Window 2
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -643,7 +643,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -764,7 +764,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -788,7 +788,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -858,7 +858,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -880,7 +880,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -902,7 +902,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 1`] =
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -961,7 +961,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -1082,7 +1082,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -1106,7 +1106,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -1176,7 +1176,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -1198,7 +1198,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -1220,7 +1220,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Reload 2`] =
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -1279,7 +1279,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -1400,7 +1400,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -1424,7 +1424,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -1494,7 +1494,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -1516,7 +1516,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -1538,7 +1538,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 1`] = `
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -1597,7 +1597,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -1718,7 +1718,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -1742,7 +1742,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -1812,7 +1812,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -1834,7 +1834,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -1856,7 +1856,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes Zoom 2`] = `
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -1915,7 +1915,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -2036,7 +2036,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -2060,7 +2060,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -2130,7 +2130,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -2152,7 +2152,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -2174,7 +2174,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 1`]
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -2233,7 +2233,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -2354,7 +2354,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -2378,7 +2378,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -2448,7 +2448,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -2470,7 +2470,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -2492,7 +2492,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes autoload 2`]
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -2551,7 +2551,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -2672,7 +2672,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -2696,7 +2696,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -2766,7 +2766,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -2788,7 +2788,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -2810,7 +2810,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 1`] =
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -2869,7 +2869,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
   className="obojobo-draft--components--modal--simple-dialog"
 >
   <div
-    className="obojobo-draft--components--modal--dialog"
+    className="obojobo-draft--components--modal--dialog undefined"
     style={null}
   >
     <div
@@ -2990,7 +2990,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
                   <span
                     contentEditable={false}
                   >
-                    Border: 
+                    Border
                   </span>
                   <label
                     className="switch"
@@ -3014,7 +3014,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
                   <span
                     contentEditable={false}
                   >
-                    Autoload: 
+                    Autoload
                   </span>
                   <label
                     className="switch"
@@ -3084,7 +3084,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
                 <span
                   contentEditable={false}
                 >
-                  Reload: 
+                  Reload
                 </span>
                 <label
                   className="switch"
@@ -3106,7 +3106,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
                 <span
                   contentEditable={false}
                 >
-                  New Window: 
+                  New Window
                 </span>
                 <label
                   className="switch"
@@ -3128,7 +3128,7 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
                 <span
                   contentEditable={false}
                 >
-                  Zoom: 
+                  Zoom
                 </span>
                 <label
                   className="switch"
@@ -3182,16 +3182,16 @@ exports[`IFrame Properties Modal IFrameProperties component changes border 2`] =
 </div>
 `;
 
-exports[`IFrame Properties Modal IFrameProperties component changes fit 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`IFrame Properties Modal IFrameProperties component changes fit 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog undefined\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`IFrame Properties Modal IFrameProperties component changes height 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"999\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`IFrame Properties Modal IFrameProperties component changes height 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog undefined\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"999\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`IFrame Properties Modal IFrameProperties component changes initial zoom 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"333\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`IFrame Properties Modal IFrameProperties component changes initial zoom 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog undefined\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"333\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`IFrame Properties Modal IFrameProperties component changes src 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"changed\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`IFrame Properties Modal IFrameProperties component changes src 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog undefined\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"changed\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`IFrame Properties Modal IFrameProperties component changes title 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"changed\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`IFrame Properties Modal IFrameProperties component changes title 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog undefined\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"changed\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`IFrame Properties Modal IFrameProperties component changes width 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"600\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`IFrame Properties Modal IFrameProperties component changes width 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog undefined\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"600\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
 
-exports[`IFrame Properties Modal IFrameProperties component focuses on first element 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom: </span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;
+exports[`IFrame Properties Modal IFrameProperties component focuses on first element 1`] = `"<div class=\\"obojobo-draft--components--modal--simple-dialog\\"><div class=\\"obojobo-draft--components--modal--dialog undefined\\"><div class=\\"obojobo-draft--components--modal--modal\\" role=\\"dialog\\" aria-labelledby=\\"obojobo-draft--components--modal--modal--content\\"><input class=\\"first-tab\\" type=\\"text\\"><div class=\\"content\\" id=\\"obojobo-draft--components--modal--modal--content\\"><h1 class=\\"heading\\" style=\\"text-align: center;\\">IFrame Properties</h1><div class=\\"dialog-content\\" style=\\"text-align: center;\\"><div class=\\"iframe-properties\\"><div class=\\"info\\"><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--title\\">Title:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--title\\" placeholder=\\"IFrame Title\\" value=\\"\\"></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--src\\">Source:</label><input type=\\"text\\" id=\\"obojobo-draft--chunks--iframe--properties-modal--src\\" placeholder=\\"Web Address\\" value=\\"\\"></div></div><div class=\\"options\\"><h2>Options:</h2><div><label>Dimensions:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-width\\" name=\\"custom-width\\" min=\\"1\\" max=\\"20000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Width\\" aria-label=\\"Width\\" value=\\"640\\"><span class=\\"px-label\\">px ×</span><input id=\\"obojobo-draft--chunks--iframe--properties-modal--custom-height\\" min=\\"1\\" max=\\"200000\\" step=\\"1\\" type=\\"number\\" placeholder=\\"Height\\" aria-label=\\"Height\\" value=\\"480\\"><span class=\\"px-label\\">px</span></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Border</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Autoload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\">Fit:</label><select id=\\"obojobo-draft--chunks--iframe--properties-modal--fit\\"><option value=\\"scale\\">Scale</option><option value=\\"scroll\\">Scroll</option></select></div><div><label for=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\">Initial Zoom:</label><input id=\\"obojobo-draft--chunks--iframe--properties-modal--zoom\\" min=\\"0.01\\" max=\\"1000\\" step=\\".01\\" type=\\"number\\" placeholder=\\"Decimal Value\\" value=\\"1\\"></div></div><div class=\\"controls\\"><h2>Controls:</h2><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Reload</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">New Window</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div><div class=\\"obojobo-draft--components--slider\\"><span contenteditable=\\"false\\">Zoom</span><label class=\\"switch\\"><input class=\\"slider\\" type=\\"checkbox\\"><div class=\\"slider round\\"></div></label></div></div></div></div><div class=\\"controls\\"><div class=\\"obojobo-draft--components--button alt-action is-not-dangerous align-center\\"><button class=\\"button\\">Cancel</button></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\" tabindex=\\"0\\">OK</button></div></div></div><input class=\\"last-tab\\" type=\\"text\\"></div></div></div>"`;

@@ -8,7 +8,7 @@ exports[`ErrorDialog ErrorDialog component 1`] = `
     className="obojobo-draft--components--modal--simple-dialog"
   >
     <div
-      className="obojobo-draft--components--modal--dialog"
+      className="obojobo-draft--components--modal--dialog undefined"
       style={null}
     >
       <div

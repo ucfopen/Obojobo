@@ -1,4 +1,4 @@
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Editor from './index'
 
 import React from 'react'

@@ -1,6 +1,6 @@
 import { getEventTransfer } from 'slate-react'
 import { Document, Block } from 'slate'
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const ClipboardPlugin = {
 	onPaste(event, editor, next) {

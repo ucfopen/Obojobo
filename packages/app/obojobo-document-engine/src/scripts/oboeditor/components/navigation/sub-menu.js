@@ -1,6 +1,6 @@
 import './sub-menu.scss'
 
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../../util/editor-util'
 import React from 'react'
 import MoreInfoBox from './more-info-box'

@@ -11,53 +11,6 @@ Object {
   },
   "key": "mockKey",
   "nodes": Array [
-    Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "display": "Attempts",
-            "name": "attempts",
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                Object {
-                  "text": "undefined",
-                },
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "oboeditor.text-parameter",
-        },
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Review",
-            "name": "review",
-            "options": Array [
-              "always",
-              "never",
-              "no-attempts-remaining",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-        Object {
-          "data": Object {
-            "checked": false,
-            "display": "Lock Assessment on Start",
-            "name": "assessment lock",
-          },
-          "object": "block",
-          "type": "oboeditor.toggle-parameter",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Settings",
-    },
     "PageOboToSlate",
     "QuestionBankChildOboToSlate",
     "ActionsChildOboToSlate",
@@ -104,53 +57,6 @@ Object {
   },
   "key": "mockKey",
   "nodes": Array [
-    Object {
-      "nodes": Array [
-        Object {
-          "data": Object {
-            "display": "Attempts",
-            "name": "attempts",
-          },
-          "nodes": Array [
-            Object {
-              "leaves": Array [
-                Object {
-                  "text": "undefined",
-                },
-              ],
-              "object": "text",
-            },
-          ],
-          "object": "block",
-          "type": "oboeditor.text-parameter",
-        },
-        Object {
-          "data": Object {
-            "current": undefined,
-            "display": "Review",
-            "name": "review",
-            "options": Array [
-              "always",
-              "never",
-              "no-attempts-remaining",
-            ],
-          },
-          "object": "block",
-          "type": "oboeditor.select-parameter",
-        },
-        Object {
-          "data": Object {
-            "checked": true,
-            "display": "Lock Assessment on Start",
-            "name": "assessment lock",
-          },
-          "object": "block",
-          "type": "oboeditor.toggle-parameter",
-        },
-      ],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Settings",
-    },
     "PageOboToSlate",
     "QuestionBankChildOboToSlate",
     "ActionsChildOboToSlate",
@@ -167,36 +73,9 @@ Object {
     "QuestionBankChild",
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
     "rubric": "RubricChild",
     "scoreActions": "ActionsChild",
-    "triggers": Array [
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:lock",
-          },
-        ],
-        "type": "onNavEnter",
-      },
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:unlock",
-          },
-        ],
-        "type": "onEndAttempt",
-      },
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:unlock",
-          },
-        ],
-        "type": "onNavExit",
-      },
-    ],
+    "triggers": Array [],
   },
   "id": "mockKey",
   "type": "mockType",
@@ -210,36 +89,9 @@ Object {
     "QuestionBankChild",
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
     "rubric": "RubricChild",
     "scoreActions": "ActionsChild",
-    "triggers": Array [
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:lock",
-          },
-        ],
-        "type": "onNavEnter",
-      },
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:unlock",
-          },
-        ],
-        "type": "onEndAttempt",
-      },
-      Object {
-        "actions": Array [
-          Object {
-            "type": "nav:unlock",
-          },
-        ],
-        "type": "onNavExit",
-      },
-    ],
+    "triggers": undefined,
   },
   "id": "mockKey",
   "type": "mockType",
@@ -253,10 +105,9 @@ Object {
     "QuestionBankChild",
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
     "rubric": "RubricChild",
     "scoreActions": "ActionsChild",
+    "triggers": Array [],
   },
   "id": "mockKey",
   "type": "mockType",
@@ -270,8 +121,6 @@ Object {
     "QuestionBankChild",
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
     "rubric": "RubricChild",
     "scoreActions": "ActionsChild",
     "triggers": Array [
@@ -292,8 +141,6 @@ Object {
     "QuestionBankChild",
   ],
   "content": Object {
-    "attempts": "someAttemptText",
-    "review": "someReview",
     "rubric": "RubricChild",
     "scoreActions": "ActionsChild",
     "triggers": undefined,

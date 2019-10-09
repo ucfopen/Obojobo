@@ -2,30 +2,25 @@
 
 exports[`MathEquation Editor Node MathEquation component 1`] = `
 <div
-  className="component obojobo-draft--chunks--math-equation pad align-center"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="non-editable-chunk"
+    className="component obojobo-draft--chunks--math-equation pad align-center"
   >
     <div
-      className="katex-display"
+      className="non-editable-chunk"
     >
-      <span
-        className="placeholder align-center"
+      <div
+        className="katex-display"
       >
-        No Equation
-      </span>
+        <span
+          className="placeholder align-center"
+        >
+          No Equation
+        </span>
+      </div>
     </div>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
-    >
-      Edit
-    </button>
   </div>
 </div>
 `;
@@ -34,53 +29,43 @@ exports[`MathEquation Editor Node MathEquation component edits properties 1`] = 
 
 exports[`MathEquation Editor Node MathEquation component with error 1`] = `
 <div
-  className="component obojobo-draft--chunks--math-equation pad align-center"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="katex-container katex-error"
+    className="component obojobo-draft--chunks--math-equation pad align-center"
   >
-    <p>
-      KaTeX parse error: Double subscript at position 4: x_0_̲0
-    </p>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
+    <div
+      className="katex-container katex-error"
     >
-      Edit
-    </button>
+      <p>
+        KaTeX parse error: Double subscript at position 4: x_0_̲0
+      </p>
+    </div>
   </div>
 </div>
 `;
 
 exports[`MathEquation Editor Node MathEquation component with label 1`] = `
 <div
-  className="component obojobo-draft--chunks--math-equation pad align-center"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="non-editable-chunk"
+    className="component obojobo-draft--chunks--math-equation pad align-center"
   >
     <div
-      className="katex-container"
-      dangerouslySetInnerHTML={
-        Object {
-          "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.64444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"base\\"><span class=\\"mord\\">1</span></span></span></span></span>",
-        }
-      }
-    />
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
+      className="non-editable-chunk"
     >
-      Edit
-    </button>
+      <div
+        className="katex-container"
+        dangerouslySetInnerHTML={
+          Object {
+            "__html": "<span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"strut\\" style=\\"height:0.64444em;\\"></span><span class=\\"strut bottom\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"base\\"><span class=\\"mord\\">1</span></span></span></span></span>",
+          }
+        }
+      />
+    </div>
   </div>
 </div>
 `;

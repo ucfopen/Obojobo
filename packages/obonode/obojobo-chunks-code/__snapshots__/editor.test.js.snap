@@ -50,9 +50,8 @@ exports[`Code editor plugins.renderPlaceholder renders a placeholder 1`] = `
 <span
   className="placeholder"
   contentEditable={false}
->
-  Type Your Code Here
-</span>
+  data-placeholder="Type Your Code Here"
+/>
 `;
 
 exports[`Code editor queries.createCodeLinesFromText builds text lines 1`] = `

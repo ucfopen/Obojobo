@@ -1,7 +1,7 @@
 import './more-info-box.scss'
 
 import ClipboardUtil from '../../util/clipboard-util'
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 
 import MoreInfoIcon from '../../assets/more-info-icon'

@@ -29,9 +29,8 @@ exports[`Text editor plugins.renderPlaceholder renders a placeholder 1`] = `
 <span
   className="placeholder align-left"
   contentEditable={false}
->
-  Type Your Text Here
-</span>
+  data-placeholder="Type Your Text Here"
+/>
 `;
 
 exports[`Text editor queries.createTextLinesFromText builds text lines 1`] = `

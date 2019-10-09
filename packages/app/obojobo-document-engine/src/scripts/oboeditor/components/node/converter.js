@@ -1,4 +1,4 @@
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 const slateToObo = node => Common.Registry.getItemForType(node.type).slateToObo(node)
 

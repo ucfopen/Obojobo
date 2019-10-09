@@ -4,14 +4,19 @@ exports[`ActionButton Editor Node ActionButton adds action 1`] = `"<div class=\\
 
 exports[`ActionButton Editor Node ActionButton builds the expected component 1`] = `
 <div
-  className="text-chunk obojobo-draft--chunks--action-button pad"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="obojobo-draft--components--button align-center"
+    className="text-chunk obojobo-draft--chunks--action-button pad"
   >
     <div
-      className="button"
-    />
+      className="obojobo-draft--components--button align-center"
+    >
+      <div
+        className="button"
+      />
+    </div>
   </div>
 </div>
 `;

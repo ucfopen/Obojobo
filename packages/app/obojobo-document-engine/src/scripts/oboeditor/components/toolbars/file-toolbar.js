@@ -1,5 +1,5 @@
 import React from 'react'
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
 import ViewMenu from './view-menu'

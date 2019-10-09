@@ -1,15 +1,12 @@
-import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
-import EditorNav from 'src/scripts/oboeditor/components/editor-nav'
-import EditorStore from 'src/scripts/oboeditor/stores/editor-store'
+import EditorNav from 'src/scripts/oboeditor/components/navigation/editor-nav'
 import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
-import ModalUtil from 'src/scripts/common/util/modal-util'
 import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 jest.mock('src/scripts/oboeditor/util/editor-util')
 // SubMenu
-jest.mock('src/scripts/oboeditor/components/sub-menu')
+jest.mock('src/scripts/oboeditor/components/navigation/sub-menu')
 // Editor Store
 jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }

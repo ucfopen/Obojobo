@@ -1,6 +1,6 @@
 /* eslint eqeqeq: 0 */
 
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../util/editor-util'
 
 const { Store } = Common.flux

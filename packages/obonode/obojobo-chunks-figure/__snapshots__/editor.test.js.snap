@@ -31,7 +31,6 @@ exports[`Figure editor plugins.renderPlaceholder renders a placeholder 1`] = `
 <span
   className="placeholder align-center"
   contentEditable={false}
->
-  Type Your Caption Here
-</span>
+  data-placeholder="Type Your Caption Here"
+/>
 `;
