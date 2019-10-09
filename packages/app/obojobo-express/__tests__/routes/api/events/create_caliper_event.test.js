@@ -654,33 +654,6 @@ describe('Caliper event creator', () => {
 
 	////////////////////////////////////////////////////////////////////////////////////////////////
 
-	test('createNavMenuToggledEvent', () => {
-		const createNavMenuToggledEvent = caliperEvents.createNavMenuToggledEvent({
-			actor,
-			draftId,
-			contentId,
-			sessionIds,
-			extensions
-		})
-		expect(createNavMenuToggledEvent).toMatchSnapshot()
-	})
-
-	test('createNavMenuToggledEvent - throws error given a bad actor', () => {
-		expect(() =>
-			caliperEvents.createNavMenuToggledEvent({
-				actor: { type: 'bad' },
-				draftId,
-				contentId,
-				sessionIds,
-				extensions
-			})
-		).toThrow(
-			`createEvent actor must be one of "user", "viewerClient" or "serverApp". Instead was given "bad".`
-		)
-	})
-
-	////////////////////////////////////////////////////////////////////////////////////////////////
-
 	test('createNavMenuActivatedEvent', () => {
 		const createNavMenuActivatedEvent = caliperEvents.createNavMenuActivatedEvent({
 			actor,
