@@ -10,23 +10,19 @@ import './editor-component.scss'
 
 class Node extends React.Component {
 	insertBlockAtStart(item) {
-		const editor = this.props.editor
-
 		// Inserts a sibling node before the current node
-		return editor.insertNodeByKey(
+		return this.props.editor.insertNodeByKey(
 			this.props.parent.key, 
 			this.props.parent.getPath(this.props.node.key).get(0), 
-			Block.create(item.insertJSON))
+			Block.create(item.cloneBlankNode()))
 	}
 
 	insertBlockAtEnd(item) {
-		const editor = this.props.editor
-
 		// Inserts a sibling node after the current node
-		return editor.insertNodeByKey(
+		return this.props.editor.insertNodeByKey(
 			this.props.parent.key, 
 			this.props.parent.getPath(this.props.node.key).get(0) + 1, 
-			Block.create(item.insertJSON))
+			Block.create(item.cloneBlankNode()))
 	}
 
 	convertItemsToArray(items) {

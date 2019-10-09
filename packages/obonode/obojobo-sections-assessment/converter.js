@@ -1,26 +1,23 @@
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
-import {
-	getTriggersWithActionsAdded,
-	getTriggersWithActionsRemoved,
-	hasTriggerTypeWithActionType
-} from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
-
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Page from 'obojobo-pages-page/editor'
 import QuestionBank from 'obojobo-chunks-question-bank/editor'
 import Rubric from './components/rubric/editor'
 import ScoreActions from './post-assessment/editor-component'
-import SelectParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/select-parameter'
-import TextParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/text-parameter'
-import ToggleParameter from 'obojobo-document-engine/src/scripts/oboeditor/components/parameter-node/toggle-parameter'
+
+const { OboModel } = Common.models
 
 const slateToObo = node => {
-	const content = node.data.get('content')
+	// Mix the model.content and the node.content to make sure that
+	// all settings are properly preserved
+	const model = OboModel.models[node.key]
+	const content = { ...node.data.get('content'), ...model.get('content') }
+
 	// Remove rubric if it has been deleted
 	delete content.rubric
 

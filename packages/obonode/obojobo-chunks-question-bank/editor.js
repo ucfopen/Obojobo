@@ -59,7 +59,7 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.QuestionBank', {
 	name: 'Question Bank',
 	icon: Icon,
 	isInsertable: true,
-	insertJSON: emptyNode,
+	templateObject: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
 	supportsChildren: true,
@@ -77,9 +77,6 @@ const QuestionBank = {
 	helpers: {
 		slateToObo: Converter.slateToObo,
 		oboToSlate: Converter.oboToSlate
-	},
-	json: {
-		emptyNode
 	},
 	plugins
 }

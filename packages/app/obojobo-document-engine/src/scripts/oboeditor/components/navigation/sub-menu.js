@@ -46,6 +46,7 @@ class SubMenu extends React.Component {
 		if (!/[^\s]/.test(label)) label = null
 
 		EditorUtil.renamePage(pageId, label)
+		return label
 	}
 
 	movePage(pageId, index) {
@@ -98,7 +99,7 @@ class SubMenu extends React.Component {
 		const newPage = generatePage()
 		newPage.content.title = this.isWhiteSpace(title) ? null : title
 		EditorUtil.addPage(newPage, afterPageId)
-		this.setState({ navTargetId: newPage.id })
+		this.props.updateNavTargetId(newPage.id)
 	}
 
 	isWhiteSpace(str) {
@@ -110,8 +111,6 @@ class SubMenu extends React.Component {
 		if (!model.setId(newId)) return 'The id "' + newId + '" already exists. Please choose a unique id'
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
-
-		this.setState({ navTargetId: newId })
 	}
 
 	saveContent(oldContent, newContent) {

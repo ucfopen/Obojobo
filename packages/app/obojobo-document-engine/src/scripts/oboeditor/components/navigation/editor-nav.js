@@ -23,6 +23,7 @@ class EditorNav extends React.Component {
 		this.showAddAssessmentModal = this.showAddAssessmentModal.bind(this)
 		this.addAssessment = this.addAssessment.bind(this)
 		this.addPage = this.addPage.bind(this)
+		this.updateNavTargetId = this.updateNavTargetId.bind(this)
 	}
 
 	onNavItemClick(item) {
@@ -92,6 +93,10 @@ class EditorNav extends React.Component {
 		)
 	}
 
+	updateNavTargetId(itemId) {
+		this.setState({ navTargetId: itemId })
+	}
+
 	renderItems(list) {
 		// If there are no pages in the nav list, add a placeholder item
 		// The placeholder will render an Add Page button
@@ -114,7 +119,8 @@ class EditorNav extends React.Component {
 							list={list}
 							onClick={this.onNavItemClick.bind(this, item)}
 							savePage={this.props.savePage}
-							markUnsaved={this.props.markUnsaved}/>
+							markUnsaved={this.props.markUnsaved}
+							updateNavTargetId={this.updateNavTargetId}/>
 					)
 				case 'no-pages':
 					return (

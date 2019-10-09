@@ -5,9 +5,9 @@
 			let title = 'Obojobo Editor'
 			let assetForEnv = oboRequire('asset_resolver').assetForEnv
 			let headerJs = [
-				assetForEnv('//unpkg.com/react@16.8.6/umd/react.production.min.js'),
-				assetForEnv('//unpkg.com/react-dom@16.8.6/umd/react-dom.production.min.js'),
-				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore$[-min].js'),
+				assetForEnv('//unpkg.com/react@16.10.1/umd/react.production.min.js'),
+				assetForEnv('//unpkg.com/react-dom@16.10.1/umd/react-dom.production.min.js'),
+				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore$[-min].js'),
 				assetForEnv('//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.3.3/backbone$[-min].js'),
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/codemirror.min.js",
 				"//cdnjs.cloudflare.com/ajax/libs/codemirror/5.30.0/mode/xml/xml.min.js",
@@ -160,10 +160,10 @@
 			</div>
 			<ul id="list">
 				<% drafts.sort(function(a, b) {
-					let aTime = (new Date(a.createdAt)).getTime()
-					let bTime = (new Date(b.createdAt)).getTime()
-					let aTitle = a.content && a.content.content ? '' + a.content.content.title : null
-					let bTitle = b.content && b.content.content ? '' + b.content.content.title : null
+					let aTime = (new Date(a && a.createdAt ? a.createdAt : 0)).getTime()
+					let bTime = (new Date(b && b.createdAt ? b.createdAt : 0)).getTime()
+					let aTitle = a && a.content && a.content.content ? '' + a.content.content.title : ''
+					let bTitle = b && b.content && b.content.content ? '' + b.content.content.title : ''
 					if(aTitle.toLowerCase() < bTitle.toLowerCase()) return -1;
 					if(aTitle.toLowerCase() > bTitle.toLowerCase()) return 1;
 					if(aTitle < bTitle) return 1;

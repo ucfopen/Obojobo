@@ -105,7 +105,7 @@ Common.Registry.registerModel('ObojoboDraft.Chunks.Code', {
 	name: 'Code',
 	icon: Icon,
 	isInsertable: true,
-	insertJSON: emptyNode,
+	templateObject: emptyNode,
 	slateToObo: Converter.slateToObo,
 	oboToSlate: Converter.oboToSlate,
 	plugins
@@ -121,9 +121,6 @@ const Code = {
 	helpers: {
 		slateToObo: Converter.slateToObo,
 		oboToSlate: Converter.oboToSlate
-	},
-	json: {
-		emptyNode
 	},
 	plugins
 }

@@ -1,4 +1,4 @@
-@import '../../../../scss/includes';
+@import '~styles/includes';
 
 .visual-editor--content-toolbar {
 	margin: 0 auto;
@@ -6,7 +6,7 @@
 	padding-left: 0.4em;
 	border-bottom: 1px solid $color-shadow;
 
-	@media screen and (max-width: $breakpoint-nav-small) {
+	@include mq($from: mobile, $until: desktop) {
 		left: $dimension-nav-menu-small;
 	}
 

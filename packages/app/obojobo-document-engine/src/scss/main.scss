@@ -1,5 +1,5 @@
-@import '../scss/includes';
-@import '../scss/indents';
+@import './includes';
+@import './indents';
 
 html {
 	height: 100%;
@@ -158,8 +158,15 @@ body {
 	}
 
 	.pad {
-		padding-left: $dimension-padding;
-		padding-right: $dimension-padding;
+		@include pad();
+
+		@include mq($until: desktop) {
+			@include pad(0.75);
+		}
+
+		@include mq($until: tablet) {
+			@include pad(0.3);
+		}
 	}
 
 	h1,
@@ -190,8 +197,6 @@ body {
 	}
 
 	pre,
-	code,
-	pre code,
 	textarea {
 		font-family: $font-monospace;
 		font-size: 1em;

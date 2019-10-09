@@ -8,7 +8,8 @@ jest.mock('Common', () => ({
 						isInsertable: true,
 						icon: null,
 						name: 'mockItem',
-						insertJSON: 'mockNode'
+						templateObject: 'mockNode',
+						cloneBlankNode: () => ({ type: 'mockNode' })
 					}
 				]
 			})

@@ -48,7 +48,7 @@ describe('preview route', () => {
 	beforeAll(() => {})
 	afterAll(() => {})
 	beforeEach(() => {
-		mockCurrentUser = { id: 66, canViewDrafts: true }
+		mockCurrentUser = { id: 66, canPreviewDrafts: true }
 		Visit.createPreviewVisit.mockResolvedValueOnce({
 			visitId: 'mocked-visit-id',
 			deactivatedVisitId: 'mocked-deactivated-visit-id'
@@ -56,9 +56,9 @@ describe('preview route', () => {
 	})
 	afterEach(() => {})
 
-	test('preview requires user with canViewDrafts permission', () => {
+	test('preview requires user with canPreviewDrafts permission', () => {
 		expect.assertions(3)
-		mockCurrentUser = { id: 66, canViewDrafts: false }
+		mockCurrentUser = { id: 66, canPreviewDrafts: false }
 		return request(app)
 			.get(`/${validUUID()}/`)
 			.then(response => {

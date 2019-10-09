@@ -7,25 +7,41 @@
 
 	.katex-display {
 		margin: 0;
+		overflow-x: scroll; // prevent whole page side scrolling
+
+		@include mq($until: tablet) {
+			font-size: 0.9em; // squish a little on smaller screens
+		}
 	}
 
-	&.align-left .katex-display {
+	.equation-label {
+		position: relative;
+		text-align: center;
+		right: 0;
+		left: 0;
+		top: 0;
+		font-size: 0.8em;
+		color: lighten($color-text, 30%); // stylelint-disable-line sh-waqar/declaration-use-variable
+
+		&::before {
+			content: "Equation ";
+			font-style: italic;
+			color: lighten($color-text, 50%); // stylelint-disable-line sh-waqar/declaration-use-variable
+		}
+	}
+
+	&.align-left .katex-display,
+	&.align-left .equation-label {
 		text-align: left;
 	}
 
-	&.align-right .katex-display {
+	&.align-right .katex-display,
+	&.align-right .equation-label {
 		text-align: right;
 	}
 
 	&.align-center .katex-display {
 		text-align: center;
-	}
-
-	.equation-label {
-		position: absolute;
-		top: 50%;
-		right: 3em;
-		transform: translate(0, -50%);
 	}
 
 	.katex-error {

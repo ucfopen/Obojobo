@@ -60,8 +60,6 @@ class Question extends React.Component {
 		}
 
 		const newQuestionType = event.target.value
-
-		console.log('hewwo', prevQuestionType, newQuestionType)
 	}
 
 	render() {

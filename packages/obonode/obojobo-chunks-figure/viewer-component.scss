@@ -59,6 +59,14 @@
 	&.medium {
 		@include pad();
 
+		@include mq($until: desktop) {
+			@include pad(0.75);
+		}
+
+		@include mq($until: tablet) {
+			@include pad(0.3);
+		}
+
 		.container {
 			img {
 				width: 100%;

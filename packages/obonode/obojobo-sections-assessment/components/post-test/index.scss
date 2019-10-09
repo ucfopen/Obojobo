@@ -17,6 +17,10 @@
 		padding: 2em 3em;
 		margin-bottom: 3em;
 
+		@include mq($until: tablet) {
+			padding: 2em 2em;
+		}
+
 		> h1 {
 			width: 100%;
 			display: inline-block;
@@ -38,6 +42,11 @@
 			border-radius: $dimension-rounded-radius;
 			padding: 0.8em 2em;
 			padding-bottom: 0.5em;
+
+			@include mq($until: tablet) {
+				width: auto;
+				padding: 0.8em 1em;
+			}
 
 			h2 {
 				// color: #a20e83;

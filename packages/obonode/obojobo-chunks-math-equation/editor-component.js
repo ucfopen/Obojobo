@@ -68,7 +68,11 @@ class MathEquation extends React.Component {
 
 		return (
 			<div className="non-editable-chunk">
-				<div className="katex-container" dangerouslySetInnerHTML={{ __html: katexHtml }} />
+				<div
+					className="katex-container"
+					style={{ fontSize: content.size + 'em' }}
+					dangerouslySetInnerHTML={{ __html: katexHtml }}
+				/>
 				{content.label === '' ? null : <div className="equation-label">{content.label}</div>}
 			</div>
 		)
