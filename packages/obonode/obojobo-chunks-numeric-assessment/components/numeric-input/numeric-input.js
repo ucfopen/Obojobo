@@ -67,7 +67,7 @@ const NumericInput = props => {
 	const isSelected = props.isSelected
 
 	const hasFeedback = props.node.nodes.toJSON()[0].type === NUMERIC_FEEDBACK_NODE
-	const className = 'numeric-input-container' + (isSelected ? ' is-selected' : '')
+	const className = 'numeric-input-container' + isOrNot(isSelected, 'selected')
 
 	return (
 		<div className={className} onClick={props.onSetCurrSelected}>
