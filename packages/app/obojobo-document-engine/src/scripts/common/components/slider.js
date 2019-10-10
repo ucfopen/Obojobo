@@ -7,7 +7,7 @@ const noOp = () => {}
 
 const Slider = ({ title = '', initialChecked = false, handleCheckChange = noOp }) => (
 	<div className="obojobo-draft--components--slider">
-		<span contentEditable={false}>{title + ': '}</span>
+		<span contentEditable={false}>{title}</span>
 		<label className="switch">
 			<input
 				className="slider"

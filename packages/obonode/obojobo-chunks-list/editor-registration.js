@@ -88,9 +88,7 @@ const plugins = {
 		if (node.object !== 'block' || node.type !== LIST_LINE_NODE || node.text !== '') return next()
 
 		return (
-			<span className={'placeholder align-' + node.data.get('align')} contentEditable={false}>
-				{'Type Your Text Here'}
-			</span>
+			<span className="placeholder" contentEditable={false} data-placeholder="Type Your Text Here"/>
 		)
 	},
 	normalizeNode(node, editor, next) {

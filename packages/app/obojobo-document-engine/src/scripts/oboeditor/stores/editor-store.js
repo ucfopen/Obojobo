@@ -1,6 +1,6 @@
 /* eslint eqeqeq: 0 */
 
-import Common from 'Common'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../util/editor-util'
 
 const { Store } = Common.flux
@@ -31,7 +31,7 @@ class EditorStore extends Store {
 					this.gotoItem(this.state.itemsByPath[payload.value.path])
 				},
 				'editor:addPage': payload => {
-					this.addPage(payload.value.newPage)
+					this.addPage(payload.value.newPage, payload.value.afterPageId)
 				},
 				'editor:addAssessment': payload => {
 					this.addAssessment(payload.value.newAssessment)
@@ -173,19 +173,26 @@ class EditorStore extends Store {
 		return navItem
 	}
 
-	addPage(newPage) {
+	addPage(newPage, afterPageId) {
 		const rootModel = OboModel.getRoot()
+		let newPageModel
 
-		// Add the newPage to the content
-		const pageModel = OboModel.create(newPage)
-		rootModel.children.forEach(child => {
-			if (child.get('type') === CONTENT_NODE) {
-				child.children.add(pageModel)
-			}
-		})
+		if(afterPageId) {
+			const pageModel = OboModel.models[afterPageId]
+			newPageModel = OboModel.create(newPage)
+			pageModel.addChildAfter(newPageModel)
+		} else {
+			// Add the newPage to the end of the content
+			newPageModel = OboModel.create(newPage)
+			rootModel.children.forEach(child => {
+				if (child.get('type') === CONTENT_NODE) {
+					child.children.add(newPageModel)
+				}
+			})
+		}
 
 		EditorUtil.rebuildMenu(rootModel)
-		EditorUtil.goto(pageModel.id)
+		EditorUtil.goto(newPageModel.id)
 	}
 
 	addAssessment(newAssessment) {
@@ -208,11 +215,14 @@ class EditorStore extends Store {
 
 		this.state.currentPageModel = null
 		this.triggerChange()
+
+		const first = EditorUtil.getFirst(this.state)
+		if (first && first.id) EditorUtil.goto(first.id)
 	}
 
 	renamePage(pageId, newName) {
 		const pageModel = OboModel.models[pageId]
-		pageModel.set('content', { title: newName })
+		pageModel.setStateProp('title', newName)
 		pageModel.title = newName
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())

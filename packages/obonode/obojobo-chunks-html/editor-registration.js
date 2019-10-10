@@ -18,6 +18,18 @@ const HTML = {
 		emptyNode
 	},
 	plugins: {
+		renderPlaceholder(props, editor, next) {
+			const { node } = props
+			if (node.object !== 'block' || node.type !== HTML_NODE) return next()
+			if (node.text !== '') return next()
+
+			return (
+				<span
+					className="placeholder"
+					contentEditable={false}
+					data-placeholder="<!-- HTML code here -->"/>
+			)
+		},
 		renderNode(props, editor, next) {
 			switch (props.node.type) {
 				case HTML_NODE:

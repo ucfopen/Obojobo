@@ -2,47 +2,30 @@
 
 exports[`Table Editor Node Table component 1`] = `
 <div
-  className="obojobo-draft--chunks--table viewer pad"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="container"
+    className="obojobo-draft--chunks--table viewer pad"
   >
-    <table
-      className="view"
+    <div
+      className="container"
     >
-      <tbody>
-        <tr>
-          <td
-            className="delete-cell"
-          >
-            <button
-              onClick={[Function]}
-            >
-              X
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div
-    className="table-editor-buttons"
-  >
-    <button
-      onClick={[Function]}
+      <table
+        className="view"
+      >
+        <tbody />
+      </table>
+    </div>
+    <div
+      className="table-editor-buttons"
     >
-      Add Row
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Add Column
-    </button>
-    <button
-      onClick={[Function]}
-    >
-      Toggle Header
-    </button>
+      <button
+        onClick={[Function]}
+      >
+        Toggle Header
+      </button>
+    </div>
   </div>
 </div>
 `;

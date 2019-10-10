@@ -2,11 +2,14 @@ import '../../../scss/main.scss'
 // uses viewer css for styling
 import '../../viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
+import './editor-app.scss'
 
 import APIUtil from '../../viewer/util/api-util'
 import Common from '../../common'
+import CodeEditor from './code-editor'
 import EditorNav from './editor-nav'
 import EditorStore from '../stores/editor-store'
+import EditorUtil from '../util/editor-util'
 import { KeyUtils } from 'slate'
 import PageEditor from './page-editor'
 import React from 'react'
@@ -25,6 +28,10 @@ const { ModalContainer } = Common.components
 const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
 const { OboModel } = Common.models
+
+const XML_MODE = 'xml'
+const JSON_MODE = 'json'
+const VISUAL_MODE = 'visual'
 
 const plugins = [
 	Component.plugins,
@@ -47,7 +54,9 @@ class EditorApp extends React.Component {
 			navTargetId: null,
 			loading: true,
 			draftId: null,
-			draft: null
+			draft: null,
+			mode: VISUAL_MODE,
+			code: null
 		}
 
 		// register plugins
@@ -68,36 +77,83 @@ class EditorApp extends React.Component {
 		// === SET UP DATA STORES ===
 		EditorStore.onChange(this.onEditorStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
+
+		this.switchMode = this.switchMode.bind(this)
 	}
 
-	componentDidMount() {
-		const urlTokens = document.location.pathname.split('/')
-		const draftId = urlTokens[2] ? urlTokens[2] : null
+	getVisualEditorState(draftId, draftModel) {
+		const json = JSON.parse(draftModel)
+		const obomodel = OboModel.create(json)
+		EditorStore.init(
+			obomodel,
+			json.content.start,
+			this.props.settings,
+			window.location.pathname
+		)
 
-		return APIUtil.getFullDraft(draftId)
+		return {
+			modalState: ModalStore.getState(),
+			editorState: EditorStore.getState(),
+			draftId,
+			draft: json,
+			model: obomodel,
+			loading: false
+		}
+	}
+
+	getCodeEditorState(draftId, draftModel) {
+		const obomodel = OboModel.create({
+			type: "ObojoboDraft.Modules.Module",
+			content: {
+				title: EditorUtil.getTitleFromString(draftModel, this.state.mode)
+			}
+		})
+
+		EditorStore.init(
+			obomodel,
+			null,
+			this.props.settings,
+			window.location.pathname
+		)
+
+		return {
+			modalState: ModalStore.getState(),
+			editorState: EditorStore.getState(),
+			code: draftModel,
+			draftId,
+			draft: draftModel,
+			model: obomodel,
+			loading: false
+		}
+	}
+
+	switchMode(mode) {
+		this.setState({ mode, loading: true })
+		this.reloadDraft(this.state.draftId, mode)
+	}
+
+	reloadDraft(draftId, mode) {
+		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? JSON_MODE : mode)
 			.then(response => {
-				ModalStore.init()
+				let json
+				switch(mode) {
+					case XML_MODE:
+						// Calling getFullDraft with xml will return plain text xml
+						return response
+					default:
+						json = JSON.parse(response)
+						if(json.status === 'error') throw json.value
 
-				if (response.status === 'error') throw response.value
-				return response
+						return JSON.stringify(json.value, null, 4)
+				}
 			})
-			.then(({ value: draftModel }) => {
-				const obomodel = OboModel.create(draftModel)
-				EditorStore.init(
-					obomodel,
-					draftModel.content.start,
-					this.props.settings,
-					window.location.pathname
-				)
-
-				return this.setState({
-					modalState: ModalStore.getState(),
-					editorState: EditorStore.getState(),
-					draftId,
-					draft: draftModel,
-					model: obomodel,
-					loading: false
-				})
+			.then(draftModel => {
+				switch(mode) {
+					case VISUAL_MODE:
+						return this.setState(this.getVisualEditorState(draftId, draftModel))
+					default:
+						return this.setState(this.getCodeEditorState(draftId, draftModel))
+				}
 			})
 			.catch(err => {
 				// eslint-disable-next-line no-console
@@ -106,9 +162,40 @@ class EditorApp extends React.Component {
 			})
 	}
 
+	componentDidMount() {
+		const urlTokens = document.location.pathname.split('/')
+		const draftId = urlTokens[2] ? urlTokens[2] : null
+		ModalStore.init()
+
+		return this.reloadDraft(draftId, this.state.mode)
+	}
+
 	componentWillUnmount() {
 		EditorStore.offChange(this.onEditorStoreChange)
 		ModalStore.offChange(this.onModalStoreChange)
+	}
+
+	renderCodeEditor() {
+		return <CodeEditor
+			initialCode={this.state.code}
+			model={this.state.model}
+			draftId={this.state.draftId}
+			mode={this.state.mode}
+			switchMode={this.switchMode}/>
+	}
+
+	renderVisualEditor() {
+		return (
+			<PageEditor
+				page={this.state.editorState.currentPageModel}
+				navState={this.state.editorState}
+				context={this.state.editorState.context}
+				model={this.state.model}
+				draft={this.state.draft}
+				draftId={this.state.draftId}
+				switchMode={this.switchMode}
+			/>
+		)
 	}
 
 	render() {
@@ -126,26 +213,11 @@ class EditorApp extends React.Component {
 
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
-			<div
-				className={
-					'viewer--viewer-app editor--editor-app is-loaded is-unlocked-nav is-open-nav is-enabled-nav is-focus-state-inactive'
-				}
-			>
-				<EditorNav
-					navState={this.state.editorState}
-					model={this.state.model}
-					draftId={this.state.draftId}
-				/>
-				<div className={'component obojobo-draft--modules--module'} role="main" data-obo-component>
-					<PageEditor
-						page={this.state.editorState.currentPageModel}
-						context={this.state.editorState.context}
-						model={this.state.model}
-						draft={this.state.draft}
-						draftId={this.state.draftId}
-						plugins={plugins}
-					/>
-				</div>
+			<div className="visual-editor--editor-app">
+				{this.state.mode === VISUAL_MODE ?
+				this.renderVisualEditor() :
+				this.renderCodeEditor()}
+
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
 				) : null}

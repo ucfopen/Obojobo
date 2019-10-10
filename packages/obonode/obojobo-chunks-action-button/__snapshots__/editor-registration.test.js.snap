@@ -31,7 +31,6 @@ exports[`ActionButton editor plugins.renderPlaceholder renders a placeholder 1`]
 <span
   className="placeholder align-center"
   contentEditable={false}
->
-  Your Label Here
-</span>
+  data-placeholder="Your Label Here"
+/>
 `;

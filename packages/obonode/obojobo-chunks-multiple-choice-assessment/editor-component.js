@@ -7,7 +7,7 @@ const MCAssessment = props => {
 
 	return (
 		<div
-			className={`component obojobo-draft--chunks--mc-assessment is-response-type-pick-one-multiple-correct is-mode-practice is-not-showing-explanation is-not-scored is-type-${questionType}`}
+			className={`component obojobo-draft--chunks--mc-assessment editor--mc-assessment is-type-${questionType}`}
 		>
 			{props.children}
 		</div>

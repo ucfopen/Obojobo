@@ -2,9 +2,14 @@
 
 exports[`Break Editor Node Node builds the expected component 1`] = `
 <div
-  className="non-editable-chunk obojobo-draft--chunks--break viewer width-undefined"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
-  <hr />
+  <div
+    className="non-editable-chunk obojobo-draft--chunks--break viewer width-undefined"
+  >
+    <hr />
+  </div>
 </div>
 `;
 

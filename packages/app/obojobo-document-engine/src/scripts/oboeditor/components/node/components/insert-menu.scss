@@ -3,7 +3,7 @@
 .editor--component--insert-menu {
 	position: absolute;
 	white-space: nowrap;
-	z-index: 2;
+	z-index: 10;
 
 	&.align-left {
 		left: 0;
@@ -15,14 +15,15 @@
 
 	.drop-icon {
 		display: inline-block;
-		font-size: 1.3em;
-		min-width: 1.5em;
+		font-size: 1em;
+		width: 2em;
+		height: 2em;
 		text-align: center;
 		text-decoration: none;
 		font-weight: bold;
-		background-color: $color-bg2;
-		border: solid 1px $color-shadow;
-		border-radius: $dimension-rounded-radius;
+		border: solid 3px $color-shadow;
+		border-radius: 50%;
+		color: $color-shadow;
 	}
 
 	.insert-button {

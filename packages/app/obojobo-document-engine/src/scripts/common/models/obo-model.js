@@ -166,6 +166,24 @@ class OboModel extends Backbone.Model {
 		return (OboModel.models[this.get('id')] = this)
 	}
 
+	// Returns false and fails to change the ID if the newId already exists
+	// Otherwise, sets the new id and deletes the old id
+	setId(newId) {
+		if(this.get('id') === newId) {
+			return true
+		}
+		
+		if(OboModel.models[newId]) {
+			return false
+		}
+
+		delete OboModel.models[this.get('id')]
+
+		this.set('id', newId)
+
+		return (OboModel.models[this.get('id')] = this)
+	}
+
 	// should be overridden
 	clone(deep = false) {
 		const clone = new OboModel(this.attributes, this.adapter.constructor)

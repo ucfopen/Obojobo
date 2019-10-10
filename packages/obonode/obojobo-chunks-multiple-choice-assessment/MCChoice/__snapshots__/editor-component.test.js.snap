@@ -2,7 +2,7 @@
 
 exports[`MCChoice Editor Node MCChoice component 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct is-not-selected editor-mc-choice"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct editor-mc-choice"
 >
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -18,7 +18,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
     className="correct-button"
     onClick={[Function]}
   >
-    ✖
+    ✖ Incorrect
   </button>
   <div
     className="children"
@@ -36,7 +36,7 @@ exports[`MCChoice Editor Node MCChoice component 1`] = `
 
 exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
 <div
-  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-correct is-not-selected editor-mc-choice"
+  className="component obojobo-draft--chunks--mc-assessment--mc-choice is-correct editor-mc-choice"
 >
   <div
     className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
@@ -52,7 +52,7 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
     className="correct-button"
     onClick={[Function]}
   >
-    ✔
+    ✔ Correct
   </button>
   <div
     className="children"
@@ -62,4 +62,4 @@ exports[`MCChoice Editor Node MCChoice component correct choice 1`] = `
 </div>
 `;
 
-exports[`MCChoice Editor Node MCChoice component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct is-not-selected editor-mc-choice\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><button class=\\"correct-button\\">✖</button><div class=\\"children\\"><div></div></div><button class=\\"add-feedback\\">Add Feedback</button></div>"`;
+exports[`MCChoice Editor Node MCChoice component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-choice is-not-correct editor-mc-choice\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><button class=\\"correct-button\\">✖ Incorrect</button><div class=\\"children\\"><div></div></div><button class=\\"add-feedback\\">Add Feedback</button></div>"`;

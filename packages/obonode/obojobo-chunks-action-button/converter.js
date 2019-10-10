@@ -3,17 +3,6 @@ import TextUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/text-ut
 const slateToObo = node => {
 	const content = node.data.get('content')
 
-	const actions = content.actions.map(action => ({
-		type: action.type,
-		value: action.value === '' ? {} : JSON.parse(action.value)
-	}))
-	content.triggers = [
-		{
-			type: 'onClick',
-			actions
-		}
-	]
-
 	const labelLine = {
 		text: { value: node.text, styleList: [] },
 		data: null
@@ -48,12 +37,18 @@ const oboToSlate = node => {
 		}))
 	}
 
-	let actions = []
-	if (node.content.triggers) {
-		actions = node.content.triggers[0].actions.map(action => ({
-			type: action.type,
-			value: action.value ? JSON.stringify(action.value) : ''
-		}))
+	// Make sure that buttons have an onClick trigger
+	const onClickTrigger = {
+		type: 'onClick',
+		actions: []
+	}
+	if (!node.content.triggers) {
+		node.content.triggers = [
+			onClickTrigger
+		]
+	} else {
+		const hasOnClickTrigger = node.content.triggers.filter(trigger => trigger.type === 'onClick').length > 0
+		if (!hasOnClickTrigger) node.content.triggers.push(onClickTrigger)
 	}
 
 	return {
@@ -61,9 +56,7 @@ const oboToSlate = node => {
 		key: node.id,
 		type: node.type,
 		data: {
-			content: {
-				actions
-			}
+			content: node.content
 		},
 		nodes
 	}

@@ -2,7 +2,7 @@
 
 exports[`AttemptIncompleteDialog AttemptIncompleteDialog component 1`] = `
 <div
-  className="obojobo-draft--components--modal--dialog"
+  className="obojobo-draft--components--modal--dialog undefined"
   style={
     Object {
       "width": "35rem",

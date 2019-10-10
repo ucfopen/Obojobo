@@ -1,4 +1,5 @@
 import React from 'react'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import { getEventTransfer, cloneFragment } from 'slate-react'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
@@ -96,6 +97,19 @@ const plugins = {
 						]
 					})
 				}
+			}
+		}
+
+		if (node.nodes.size > numCols) {
+			return editor => {
+				editor.setNodeByKey(node.key, {
+					data: {
+						content: {
+							...node.data.get('content'),
+							numCols: node.nodes.size
+						}
+					}
+				})
 			}
 		}
 

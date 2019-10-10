@@ -2,6 +2,7 @@ import './viewer-component.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 import IframeProperties from './iframe-properties-modal'
 
@@ -61,21 +62,23 @@ class IFrame extends React.Component {
 			isOrNot(content.initialZoom > 1, 'scaled-up')
 
 		return (
-			<div className={className}>
-				<div className={'editor-container'} style={previewStyle}>
-					<div className="iframe-toolbar">
-						<span className="title" aria-hidden>
-							{this.getTitle(content.src || null, content.title)}
-						</span>
-						<Button
-							className="properties-button"
-							onClick={this.showIFramePropertiesModal.bind(this)}
-						>
-							IFrame Properties
-						</Button>
+			<Node {...this.props}>
+				<div className={className}>
+					<div className={'editor-container'} style={previewStyle}>
+						<div className="iframe-toolbar">
+							<span className="title" aria-hidden>
+								{this.getTitle(content.src || null, content.title)}
+							</span>
+							<Button
+								className="properties-button"
+								onClick={this.showIFramePropertiesModal.bind(this)}
+							>
+								IFrame Properties
+							</Button>
+						</div>
 					</div>
 				</div>
-			</div>
+			</Node>
 		)
 	}
 }

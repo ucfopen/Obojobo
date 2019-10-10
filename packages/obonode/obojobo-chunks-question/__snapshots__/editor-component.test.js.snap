@@ -2,57 +2,78 @@
 
 exports[`Question Editor Node Question builds the expected component 1`] = `
 <div
-  className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
-  <select
-    className="question-type"
-    contentEditable={false}
-    onChange={[Function]}
-    value="default"
-  >
-    <option
-      value="default"
-    >
-      Default
-    </option>
-    <option
-      value="survey"
-    >
-      Survey
-    </option>
-  </select>
   <div
-    className="flipper question-editor"
+    className="component obojobo-draft--chunks--question is-viewed pad is-type-default"
   >
     <div
-      className="content-back"
+      className="flipper question-editor"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+        className="content-back"
       >
-        <button
-          className="button"
-          onClick={[Function]}
+        <div
+          className="question-settings"
         >
-          Add Solution
-        </button>
+          <label>
+            Question Type
+          </label>
+          <select
+            contentEditable={false}
+            onChange={[Function]}
+            value="ObojoboDraft.Chunks.Break"
+          >
+            <option
+              value="ObojoboDraft.Chunks.MCAssessment"
+            >
+              Multiple Choice
+            </option>
+          </select>
+          <div
+            className="question-type"
+            contentEditable={false}
+          >
+            <input
+              checked={false}
+              name="vehicle1"
+              onChange={[Function]}
+              type="checkbox"
+              value="Bike"
+            />
+            <label>
+              Survey Only
+            </label>
+          </div>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Add Solution
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
     >
-      ×
-    </button>
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
   </div>
 </div>
 `;
 
-exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
+exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><div class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\"><label>Survey Only</label></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div></div>"`;
 
 exports[`Question Editor Node Question component allows you to change question type 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
 
@@ -60,52 +81,73 @@ exports[`Question Editor Node Question component deletes self 1`] = `"<div class
 
 exports[`Question Editor Node Survey Question builds the expected component 1`] = `
 <div
-  className="component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-survey"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
-  <select
-    className="question-type"
-    contentEditable={false}
-    onChange={[Function]}
-    value="survey"
-  >
-    <option
-      value="default"
-    >
-      Default
-    </option>
-    <option
-      value="survey"
-    >
-      Survey
-    </option>
-  </select>
   <div
-    className="flipper question-editor"
+    className="component obojobo-draft--chunks--question is-viewed pad is-type-survey"
   >
     <div
-      className="content-back"
+      className="flipper question-editor"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+        className="content-back"
       >
-        <button
-          className="button"
-          onClick={[Function]}
+        <div
+          className="question-settings"
         >
-          Add Solution
-        </button>
+          <label>
+            Question Type
+          </label>
+          <select
+            contentEditable={false}
+            onChange={[Function]}
+            value="ObojoboDraft.Chunks.Break"
+          >
+            <option
+              value="ObojoboDraft.Chunks.MCAssessment"
+            >
+              Multiple Choice
+            </option>
+          </select>
+          <div
+            className="question-type"
+            contentEditable={false}
+          >
+            <input
+              checked={true}
+              name="vehicle1"
+              onChange={[Function]}
+              type="checkbox"
+              value="Bike"
+            />
+            <label>
+              Survey Only
+            </label>
+          </div>
+        </div>
+        <div
+          className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+        >
+          <button
+            className="button"
+            onClick={[Function]}
+          >
+            Add Solution
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-  >
-    <button
-      className="button"
-      onClick={[Function]}
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
     >
-      ×
-    </button>
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
   </div>
 </div>
 `;

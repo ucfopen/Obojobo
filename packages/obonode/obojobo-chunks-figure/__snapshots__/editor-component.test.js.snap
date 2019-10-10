@@ -2,215 +2,239 @@
 
 exports[`Figure Editor Node Figure component 1`] = `
 <div
-  className="obojobo-draft--chunks--figure viewer small"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="container"
+    className="obojobo-draft--chunks--figure viewer small"
   >
     <div
-      className="figure-box"
+      className="container"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-      >
-        <button
-          className="button"
-          onClick={[Function]}
-        >
-          ×
-        </button>
-      </div>
-      <div
-        className="image-toolbar"
+        className="figure-box"
+        contentEditable={false}
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
         >
           <button
             className="button"
             onClick={[Function]}
           >
-            Image Properties
+            ×
           </button>
         </div>
+        <div
+          className="image-toolbar"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          >
+            <button
+              className="button"
+              onClick={[Function]}
+            >
+              Image Properties
+            </button>
+          </div>
+        </div>
+        <img
+          alt="mockAlt"
+          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          onError={[Function]}
+          onLoad={[Function]}
+          src="mockUrl"
+          style={Object {}}
+          unselectable="on"
+        />
       </div>
-      <img
-        alt="mockAlt"
-        className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-        onError={[Function]}
-        onLoad={[Function]}
-        src="mockUrl"
-        style={Object {}}
-        unselectable="on"
-      />
+      <figcaption />
     </div>
-    <figcaption />
   </div>
 </div>
 `;
 
-exports[`Figure Editor Node Figure component handles clicks 1`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
+exports[`Figure Editor Node Figure component handles clicks 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div contenteditable=\\"false\\">Accessibility Warning: No Alt Text!</div><div class=\\"figure-box\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div></div>"`;
 
-exports[`Figure Editor Node Figure component handles clicks 2`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
+exports[`Figure Editor Node Figure component handles clicks 2`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div contenteditable=\\"false\\">Accessibility Warning: No Alt Text!</div><div class=\\"figure-box\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div></div>"`;
 
-exports[`Figure Editor Node Figure component handles clicks 3`] = `"<div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div>Accessibility Warning: No Alt Text!</div><div class=\\"figure-box\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div>"`;
+exports[`Figure Editor Node Figure component handles clicks 3`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"obojobo-draft--chunks--figure viewer undefined\\"><div class=\\"container\\"><div contenteditable=\\"false\\">Accessibility Warning: No Alt Text!</div><div class=\\"figure-box\\" contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div><div class=\\"image-toolbar\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center properties-button\\"><button class=\\"button\\">Image Properties</button></div></div><div class=\\"img-placeholder\\"></div></div><figcaption></figcaption></div></div></div>"`;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 1`] = `
 <div
-  className="obojobo-draft--chunks--figure viewer custom"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="container"
+    className="obojobo-draft--chunks--figure viewer custom"
   >
     <div
-      className="figure-box"
+      className="container"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-      >
-        <button
-          className="button"
-          onClick={[Function]}
-        >
-          ×
-        </button>
-      </div>
-      <div
-        className="image-toolbar"
+        className="figure-box"
+        contentEditable={false}
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
         >
           <button
             className="button"
             onClick={[Function]}
           >
-            Image Properties
+            ×
           </button>
         </div>
-      </div>
-      <img
-        alt="mockAlt"
-        className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-        onError={[Function]}
-        onLoad={[Function]}
-        src="mockUrl"
-        style={
-          Object {
-            "height": "customHeightpx",
-            "width": "customWidthpx",
+        <div
+          className="image-toolbar"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          >
+            <button
+              className="button"
+              onClick={[Function]}
+            >
+              Image Properties
+            </button>
+          </div>
+        </div>
+        <img
+          alt="mockAlt"
+          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          onError={[Function]}
+          onLoad={[Function]}
+          src="mockUrl"
+          style={
+            Object {
+              "height": "customHeightpx",
+              "width": "customWidthpx",
+            }
           }
-        }
-        unselectable="on"
-      />
+          unselectable="on"
+        />
+      </div>
+      <figcaption />
     </div>
-    <figcaption />
   </div>
 </div>
 `;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 2`] = `
 <div
-  className="obojobo-draft--chunks--figure viewer custom"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="container"
+    className="obojobo-draft--chunks--figure viewer custom"
   >
     <div
-      className="figure-box"
+      className="container"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-      >
-        <button
-          className="button"
-          onClick={[Function]}
-        >
-          ×
-        </button>
-      </div>
-      <div
-        className="image-toolbar"
+        className="figure-box"
+        contentEditable={false}
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
         >
           <button
             className="button"
             onClick={[Function]}
           >
-            Image Properties
+            ×
           </button>
         </div>
-      </div>
-      <img
-        alt="mockAlt"
-        className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-        onError={[Function]}
-        onLoad={[Function]}
-        src="mockUrl"
-        style={
-          Object {
-            "height": "customHeightpx",
+        <div
+          className="image-toolbar"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          >
+            <button
+              className="button"
+              onClick={[Function]}
+            >
+              Image Properties
+            </button>
+          </div>
+        </div>
+        <img
+          alt="mockAlt"
+          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          onError={[Function]}
+          onLoad={[Function]}
+          src="mockUrl"
+          style={
+            Object {
+              "height": "customHeightpx",
+            }
           }
-        }
-        unselectable="on"
-      />
+          unselectable="on"
+        />
+      </div>
+      <figcaption />
     </div>
-    <figcaption />
   </div>
 </div>
 `;
 
 exports[`Figure Editor Node Figure renders with custom size correctly 3`] = `
 <div
-  className="obojobo-draft--chunks--figure viewer custom"
+  className="oboeditor-component component"
+  data-obo-component="true"
 >
   <div
-    className="container"
+    className="obojobo-draft--chunks--figure viewer custom"
   >
     <div
-      className="figure-box"
+      className="container"
     >
       <div
-        className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
-      >
-        <button
-          className="button"
-          onClick={[Function]}
-        >
-          ×
-        </button>
-      </div>
-      <div
-        className="image-toolbar"
+        className="figure-box"
+        contentEditable={false}
       >
         <div
-          className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
         >
           <button
             className="button"
             onClick={[Function]}
           >
-            Image Properties
+            ×
           </button>
         </div>
-      </div>
-      <img
-        alt="mockAlt"
-        className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
-        onError={[Function]}
-        onLoad={[Function]}
-        src="mockUrl"
-        style={
-          Object {
-            "width": "mockWidthpx",
+        <div
+          className="image-toolbar"
+        >
+          <div
+            className="obojobo-draft--components--button is-not-dangerous align-center properties-button"
+          >
+            <button
+              className="button"
+              onClick={[Function]}
+            >
+              Image Properties
+            </button>
+          </div>
+        </div>
+        <img
+          alt="mockAlt"
+          className="obojobo-draft--chunks--figure--image is-valid is-not-loaded"
+          onError={[Function]}
+          onLoad={[Function]}
+          src="mockUrl"
+          style={
+            Object {
+              "width": "mockWidthpx",
+            }
           }
-        }
-        unselectable="on"
-      />
+          unselectable="on"
+        />
+      </div>
+      <figcaption />
     </div>
-    <figcaption />
   </div>
 </div>
 `;

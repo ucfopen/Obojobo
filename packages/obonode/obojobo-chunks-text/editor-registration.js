@@ -1,3 +1,4 @@
+import Common from 'obojobo-document-engine/src/scripts/common'
 import { getEventTransfer } from 'slate-react'
 import { Block } from 'slate'
 
@@ -90,9 +91,10 @@ const plugins = {
 		if (node.object !== 'block' || node.type !== TEXT_LINE_NODE || node.text !== '') return next()
 
 		return (
-			<span className={'placeholder align-' + node.data.get('align')} contentEditable={false}>
-				{'Type Your Text Here'}
-			</span>
+			<span
+				className={'placeholder align-' + node.data.get('align')}
+				contentEditable={false}
+				data-placeholder="Type Your Text Here" />
 		)
 	},
 	schema: Schema,

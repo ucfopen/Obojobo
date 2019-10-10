@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditorNav EditorNav component 1`] = `
+<div
+  className="visual-editor--draft-nav  is-not-locked is-not-open is-enabled"
+>
+  <ul>
+    <li
+      className="no-pages-item"
+    >
+      <button
+        className="add-node-button"
+        onClick={[Function]}
+      >
+        + Page ⚡
+      </button>
+    </li>
+  </ul>
+  <button
+    className="add-node-button"
+    onClick={[Function]}
+  >
+    + Add Assessment
+  </button>
+</div>
+`;

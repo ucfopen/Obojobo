@@ -85,6 +85,7 @@ class _Registry {
 				slateToObo: null,
 				oboToSlate: null,
 				plugins: null,
+				getPasteNode: node => node,
 				supportsChildren: false
 			},
 			opts

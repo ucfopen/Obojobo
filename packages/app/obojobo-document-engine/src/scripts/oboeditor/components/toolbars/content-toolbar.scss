@@ -1,16 +1,9 @@
 @import '~styles/includes';
 
-.toolbar {
-	text-align: center;
-	position: fixed;
-	top: 0;
-	z-index: $z-index-above-all;
+.visual-editor--content-toolbar {
 	margin: 0 auto;
-	padding-right: 3em;
-	padding-left: 3em;
-	left: $dimension-nav-menu;
-	right: 0;
-	background-color: $color-bg2;
+	padding-right: 0.4em;
+	padding-left: 0.4em;
 	border-bottom: 1px solid $color-shadow;
 
 	@include mq($from: mobile, $until: desktop) {

@@ -3,6 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 const { ModalUtil } = Common.util
 const { Prompt } = Common.components.modal
@@ -54,10 +55,12 @@ class YouTube extends React.Component {
 		const content = this.props.node.data.get('content')
 
 		return (
-			<div className={'obojobo-draft--chunks--you-tube viewer pad'}>
-				{content.videoId ? this.renderVideo(content.videoId) : this.renderNoVideo()}
-				<Button onClick={this.showSourceModal.bind(this)}>Edit</Button>
-			</div>
+			<Node {...this.props}>
+				<div className={'obojobo-draft--chunks--you-tube viewer pad'}>
+					{content.videoId ? this.renderVideo(content.videoId) : this.renderNoVideo()}
+					<Button onClick={this.showSourceModal.bind(this)}>Edit</Button>
+				</div>
+			</Node>
 		)
 	}
 }

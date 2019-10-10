@@ -1,0 +1,24 @@
+@import '../../../scss/includes';
+
+.editor--code-editor {
+	position: absolute; 
+	left: 0; 
+	top: 3.7em; 
+	right: 0; 
+	bottom: 0; 
+
+	.react-codemirror2 {
+		height: 100%;
+		font-size: 11pt;
+
+		.CodeMirror {
+			border-left: 1px solid black;
+			border-bottom: 1px solid black;
+			height: 100%; 
+		}
+
+		.CodeMirror-wrap {
+			background: #1d1d1b !important;
+		}
+	}
+}

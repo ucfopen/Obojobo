@@ -36,9 +36,7 @@ const ActionButton = {
 			if (node.text !== '') return next()
 
 			return (
-				<span className={'placeholder align-center'} contentEditable={false}>
-					{'Your Label Here'}
-				</span>
+				<span className={'placeholder align-center'} contentEditable={false} data-placeholder="Your Label Here" />
 			)
 		},
 		schema: Schema

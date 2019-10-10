@@ -9,6 +9,8 @@ let restoreConsole
 describe('apiutil', () => {
 	let mockJsonResult
 	let post
+	let postWithFormat
+	let deleteMethod
 	let get
 
 	beforeEach(() => {
@@ -20,12 +22,26 @@ describe('apiutil', () => {
 		mockJsonResult = {}
 		post = jest.spyOn(APIUtil, 'post')
 		post.mockResolvedValueOnce({
-			json: () => mockJsonResult
+			json: () => mockJsonResult,
+			text: () => JSON.stringify(mockJsonResult)
 		})
 
 		get = jest.spyOn(APIUtil, 'get')
 		get.mockResolvedValueOnce({
-			json: () => mockJsonResult
+			json: () => mockJsonResult,
+			text: () => JSON.stringify(mockJsonResult)
+		})
+
+		postWithFormat = jest.spyOn(APIUtil, 'postWithFormat')
+		postWithFormat.mockResolvedValueOnce({
+			json: () => mockJsonResult,
+			text: () => JSON.stringify(mockJsonResult)
+		})
+
+		deleteMethod = jest.spyOn(APIUtil, 'delete')
+		deleteMethod.mockResolvedValueOnce({
+			json: () => mockJsonResult,
+			text: () => JSON.stringify(mockJsonResult)
 		})
 	})
 
@@ -44,7 +60,7 @@ describe('apiutil', () => {
 
 	test('get fetches with the correct args', () => {
 		get.mockRestore() // disable our mock
-		APIUtil.get('mockEndpoint')
+		APIUtil.get('mockEndpoint', 'json')
 
 		expect(fetch).toHaveBeenCalled()
 		const calledEndpoint = fetch.mock.calls[0][0]
@@ -93,6 +109,60 @@ describe('apiutil', () => {
 				'Content-Type': 'application/json'
 			},
 			method: 'POST'
+		})
+	})
+
+	test('postWithFormat fetches with the correct args', () => {
+		postWithFormat.mockRestore() // disable our mock
+		APIUtil.postWithFormat('mockEndpoint', '{"arg":"value"}', 'application/json')
+		expect(fetch).toHaveBeenCalled()
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
+		expect(calledEndpoint).toBe('mockEndpoint')
+		expect(calledOptions).toEqual({
+			body: JSON.stringify({ arg: 'value' }),
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+	})
+
+	test('postWithFormat fetches with blank body', () => {
+		postWithFormat.mockRestore() // disable our mock
+		APIUtil.postWithFormat('mockEndpoint', null, 'application/json')
+		expect(fetch).toHaveBeenCalled()
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
+		expect(calledEndpoint).toBe('mockEndpoint')
+		expect(calledOptions).toEqual({
+			body: JSON.stringify({}),
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			method: 'POST'
+		})
+	})
+
+	test('delete fetches with the correct args', () => {
+		deleteMethod.mockRestore() // disable our mock
+		APIUtil.delete('mockEndpoint', 'json')
+
+		expect(fetch).toHaveBeenCalled()
+		const calledEndpoint = fetch.mock.calls[0][0]
+		const calledOptions = fetch.mock.calls[0][1]
+		expect(calledEndpoint).toBe('mockEndpoint')
+		expect(calledOptions).toEqual({
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			method: 'DELETE'
 		})
 	})
 
@@ -267,7 +337,7 @@ describe('apiutil', () => {
 		expect.hasAssertions()
 
 		return APIUtil.getDraft('mockId').then(result => {
-			expect(get).toHaveBeenCalledWith('/api/drafts/mockId')
+			expect(get).toHaveBeenCalledWith('/api/drafts/mockId', 'json')
 			expect(result).toEqual(mockJsonResult)
 		})
 	})
@@ -276,8 +346,8 @@ describe('apiutil', () => {
 		expect.hasAssertions()
 
 		return APIUtil.getFullDraft('mockId').then(result => {
-			expect(get).toHaveBeenCalledWith('/api/drafts/mockId/full')
-			expect(result).toEqual(mockJsonResult)
+			expect(get).toHaveBeenCalledWith('/api/drafts/mockId/full', 'json')
+			expect(result).toEqual(JSON.stringify(mockJsonResult))
 		})
 	})
 
@@ -415,7 +485,7 @@ describe('apiutil', () => {
 		})
 
 		return APIUtil.postDraft('mockDraftId', {}).then(result => {
-			expect(post).toHaveBeenCalledWith('/api/drafts/mockDraftId', {})
+			expect(postWithFormat).toHaveBeenCalledWith('/api/drafts/mockDraftId', {}, 'application/json')
 
 			expect(result).toEqual(mockJsonResult)
 		})
@@ -424,8 +494,8 @@ describe('apiutil', () => {
 	test('processJsonResults logs json value on error', () => {
 		expect.hasAssertions()
 
-		post.mockReset()
-		post.mockResolvedValueOnce({
+		postWithFormat.mockReset()
+		postWithFormat.mockResolvedValueOnce({
 			json: () => ({
 				status: 'error',
 				value: 'mockError'
@@ -433,7 +503,7 @@ describe('apiutil', () => {
 		})
 
 		return APIUtil.postDraft('mockDraftId', {}).then(() => {
-			expect(post).toHaveBeenCalledWith('/api/drafts/mockDraftId', {})
+			expect(postWithFormat).toHaveBeenCalledWith('/api/drafts/mockDraftId', {}, 'application/json')
 			expect(console.error).toHaveBeenCalledWith('mockError') //eslint-disable-line no-console
 		})
 	})
@@ -473,7 +543,34 @@ describe('apiutil', () => {
 		expect.hasAssertions()
 
 		return APIUtil.getVisitSessionStatus('mock-draft-id').then(result => {
-			expect(get).toHaveBeenCalledWith('/api/visits/mock-draft-id/status')
+			expect(get).toHaveBeenCalledWith('/api/visits/mock-draft-id/status', 'json')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('createNewDraft calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.createNewDraft().then(result => {
+			expect(post).toHaveBeenCalledWith('/api/drafts/new')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('deleteDraft calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.deleteDraft('mock-draft-id').then(result => {
+			expect(deleteMethod).toHaveBeenCalledWith('/api/drafts/mock-draft-id')
+			expect(result).toEqual(mockJsonResult)
+		})
+	})
+
+	test('getAllDrafts calls fetch and returns', async () => {
+		expect.hasAssertions()
+
+		return APIUtil.getAllDrafts('mock-draft-id').then(result => {
+			expect(get).toHaveBeenCalledWith('/api/drafts', 'json')
 			expect(result).toEqual(mockJsonResult)
 		})
 	})

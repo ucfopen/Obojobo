@@ -73,7 +73,7 @@ const oboToSlate = node => {
 		object: 'block',
 		key: node.id,
 		type: node.type,
-		nodes: [choiceList, settings],
+		nodes: [settings, choiceList],
 		data: {
 			content: node.content,
 			questionType: questionType

@@ -12,7 +12,23 @@ const EditorSchema = {
 		document: {
 			nodes: [
 				{
-					match: [{ type: 'oboeditor.component' }, { type: 'ObojoboDraft.Sections.Assessment' }],
+					match: [
+						{ type: 'ObojoboDraft.Chunks.ActionButton' },
+						{ type: 'ObojoboDraft.Chunks.Break' },
+						{ type: 'ObojoboDraft.Chunks.Code' },
+						{ type: 'ObojoboDraft.Chunks.Figure' },
+						{ type: 'ObojoboDraft.Chunks.Heading' },
+						{ type: 'ObojoboDraft.Chunks.HTML' },
+						{ type: 'ObojoboDraft.Chunks.IFrame' },
+						{ type: 'ObojoboDraft.Chunks.List' },
+						{ type: 'ObojoboDraft.Chunks.MathEquation' },
+						{ type: 'ObojoboDraft.Chunks.Table' },
+						{ type: 'ObojoboDraft.Chunks.Text' },
+						{ type: 'ObojoboDraft.Chunks.YouTube' },
+						{ type: 'ObojoboDraft.Chunks.QuestionBank' },
+						{ type: 'ObojoboDraft.Chunks.Question' },
+						{ type: 'ObojoboDraft.Sections.Assessment' },
+						{ type: 'oboeditor.ErrorMessage'}],
 					min: 1
 				}
 			],
@@ -22,30 +38,14 @@ const EditorSchema = {
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							object: 'block',
-							type: 'oboeditor.component',
-							nodes: [
-								{
-									object: 'block',
-									type: TEXT_NODE
-								}
-							]
+							type: TEXT_NODE
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
-						if (child.object === 'block') {
-							return editor.wrapBlockByKey(child.key, 'oboeditor.component')
-						}
-
 						const block = Block.fromJSON({
 							object: 'block',
-							type: 'oboeditor.component',
-							nodes: [
-								{
-									object: 'block',
-									type: TEXT_NODE
-								}
-							]
+							type: TEXT_NODE
 						})
 						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)

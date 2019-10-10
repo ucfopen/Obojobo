@@ -1,5 +1,5 @@
-import Common from 'Common'
-import Viewer from 'Viewer'
+import Common from 'obojobo-document-engine/src/scripts/common'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './polyfills'

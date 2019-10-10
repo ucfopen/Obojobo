@@ -2,10 +2,44 @@
 
 .obojobo-draft--chunks--table.viewer {
 	.view {
-		.delete-cell {
-			border: none;
-			width: 1em;
-			text-align: center;
+		th {
+			position: relative;
+		}
+
+		td {
+			position: relative;
+		}
+	}
+
+	.dropdown-cell {
+		text-align: right;
+		position: absolute;
+		top: -0.3em;
+		right: 0;
+		z-index: 99;
+
+		.drop-content-cell {
+			display: none;
+			text-align: right;
+			border: 1px solid $color-shadow;
+			border-radius: $dimension-rounded-radius;
+			overflow: hidden;
+
+			&.is-open {
+				display: block;
+			}
+
+			button {
+				display: block;
+				width: 100%;
+				text-align: right;
+				border: none;
+
+				&:hover {
+					background-color: $color-obojobo-blue;
+					color: $color-bg;
+				}
+			}
 		}
 	}
 
