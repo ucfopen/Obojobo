@@ -1,4 +1,4 @@
-@import '../../../../scss/includes';
+@import '~styles/includes';
 
 .obojobo-draft--components--modal--modal {
 	background: $color-bg;
@@ -6,8 +6,16 @@
 	min-width: 15em;
 	box-shadow: 0 1px 1px $color-shadow;
 	border-radius: 2px;
-	max-height: 70vh;
+	max-height: 80vh;
 	overflow: auto;
+
+	@include mq($until: tablet) {
+		padding: 1.5rem 1.5em;
+	}
+
+	@include mq($until: mobileLandscape) {
+		padding: 1.5rem 1em;
+	}
 
 	.obojobo-draft--components--delete-button {
 		top: 0.5em;

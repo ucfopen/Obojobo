@@ -1,5 +1,4 @@
-/* eslint-disable no-alert */
-/* eslint-disable no-console */
+/* eslint-disable */
 
 let childWindow = null
 let isCtrlPressed = false
@@ -20,44 +19,50 @@ window.onbeforeunload = function() {
 
 // Reload preview windows:
 //eslint-disable-next-line
-function preview() {
-	childWindow = window.open(`/preview/${editingDraftId}`, 'preview')
+function preview(draftId, url) {
+	if (!draftId) {
+		if (!editingDraftId) return
+		draftId = editingDraftId
+	}
+	if (!url) {
+		url = `/preview/${draftId}`
+	}
+	childWindow = window.open(url, 'preview')
 }
 
+// Download current editing document with current format if draftId and fotmat are not specified
 //eslint-disable-next-line
-function downloadDocument(draftId, format = 'json') {
-	if (format === 'json') {
-		fetch(`/api/drafts/${draftId}/full`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
+function downloadDocument(draftId, format) {
+	let formatResults
+
+	switch (format) {
+		case 'json':
+			formatResults = text => {
+				const json = JSON.parse(text)
+				return JSON.stringify(json, null, 2)
 			}
-		})
-			.then(res => res.json())
-			.then(json => JSON.stringify(json.value, null, 2))
-			.then(contents => {
-				// use downloadjs to locally build a file to download
-				// eslint-disable-next-line no-undef
-				download(contents, `obojobo-draft-${draftId}.json`, 'application/json')
-			})
-	} else {
-		fetch(`/api/drafts/${draftId}/full`, {
-			method: 'GET',
-			credentials: 'include',
-			headers: {
-				Accept: 'application/xml',
-				'Content-Type': 'application/xml'
-			}
-		})
-			.then(res => res.text())
-			.then(contents => {
-				// use downloadjs to locally build a file to download
-				// eslint-disable-next-line no-undef
-				download(contents, `obojobo-draft-${draftId}.xml`, 'application/xml')
-			})
+			break
+
+		case 'xml':
+			formatResults = text => text
+			break
 	}
+
+	fetch(`/api/drafts/${draftId}/full`, {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			Accept: `application/${format}`,
+			'Content-Type': `application/${format}`
+		}
+	})
+		.then(res => res.text())
+		.then(formatResults)
+		.then(contents => {
+			// use downloadjs to locally build a file to download
+			// eslint-disable-next-line no-undef
+			download(contents, `obojobo-draft-${draftId}.${format}`, `application/${format}`)
+		})
 }
 
 // listen for Ctrl-S for saving
@@ -66,12 +71,32 @@ document.addEventListener('keydown', function(event) {
 		isCtrlPressed = true
 		return
 	}
+
+	// Save
 	if (event.keyCode === 83 && isCtrlPressed) {
 		event.preventDefault()
 		saveDraft()
 	}
+
+	// Undo and Redo
+	if ((event.keyCode === 90 || event.keyCode === 89) && isCtrlPressed) {
+		event.preventDefault()
+
+		if (editor.getValue().charAt(0) === '<') {
+			editor.setOption('mode', 'text/xml')
+			const el = document.getElementById(editingDraftId)
+			el.setAttribute('data-content-type', 'xml')
+		} else {
+			editor.setOption('mode', 'application/json')
+			const el = document.getElementById(editingDraftId)
+			el.setAttribute('data-content-type', 'json')
+		}
+
+		updateToolBar()
+	}
 	isCtrlPressed = false
 })
+
 document.addEventListener('keyup', function(event) {
 	if (event.keyCode === 83 && event.ctrlKey) {
 		event.preventDefault()
@@ -92,6 +117,190 @@ const editor = CodeMirror(document.getElementById('edit'), {
 	gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
 	theme: 'monokai'
 })
+
+// wire up (edit) buttons:
+const editLinks = document.getElementsByClassName('link-edit')
+for (let i = 0; i < editLinks.length; i++) {
+	editLinks[i].addEventListener('click', function(event) {
+		edit(event.target.getAttribute('data-id'))
+	})
+}
+
+const delLinks = document.getElementsByClassName('link-delete')
+for (let i = 0; i < delLinks.length; i++) {
+	delLinks[i].addEventListener('click', function(event) {
+		del(event.target.getAttribute('data-id'))
+	})
+}
+
+// wire up get url buttons
+const urlLinks = document.getElementsByClassName('link-url')
+for (let i = 0; i < urlLinks.length; i++) {
+	urlLinks[i].addEventListener('click', function(event) {
+		event.preventDefault()
+		event.stopPropagation()
+		getURL(event.target.getAttribute('data-id'))
+		return false
+	})
+}
+
+// Event to show/hide Toolbar
+const dropdownEls = document.getElementsByClassName('dropdown')
+for (let i = 0; i < dropdownEls.length; i++) {
+	// Display dropdown content when `mouseover`
+	dropdownEls[i].addEventListener('mouseover', () => {
+		dropdownContentEl.style.display = 'block'
+	})
+	// Hide dropdown content when `click` or `mouseout`
+	const dropdownContentEl = dropdownEls[i].getElementsByClassName('dropdown-content')[0]
+	dropdownContentEl.addEventListener('click', () => {
+		dropdownContentEl.style.display = 'none'
+	})
+	dropdownEls[i].addEventListener('mouseout', () => {
+		dropdownContentEl.style.display = 'none'
+	})
+}
+
+//eslint-disable-next-line
+function switchEditorFormat(format) {
+	if (!format) return
+
+	if (format === 'json') {
+		if (editor.options.mode === 'application/json') return
+
+		const confirm = window.confirm(
+			'Convert a document from XML to JSON will delete all comments. Are you sure you want to continue?'
+		)
+		if (!confirm) return
+
+		saveDraft()
+		fetch(`/api/drafts/${editingDraftId}/full`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}
+		})
+			.then(res => res.json())
+			.then(result => JSON.stringify(result.value, null, 2))
+			.then(json => {
+				editor.setValue(json)
+
+				// Change editor type
+				editor.setOption('mode', 'application/json')
+				editor.focus()
+				const el = document.getElementById(editingDraftId)
+				el.setAttribute('data-content-type', 'json')
+
+				// Disable `Edit as JSON` and enable `Edit as XML`
+				const editAsJsonEl = document.getElementById('edit-as-json')
+				editAsJsonEl.className = 'disable'
+				const editAsXmlEl = document.getElementById('edit-as-xml')
+				editAsXmlEl.className = ''
+				saveDraft()
+
+				updateToolBar()
+			})
+			.catch(error => {
+				console.log(error)
+			})
+	} else if (format === 'xml') {
+		if (editor.options.mode === 'text/xml') return
+
+		saveDraft()
+		fetch(`/api/drafts/${editingDraftId}/full`, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				Accept: 'application/xml',
+				'Content-Type': 'application/xml'
+			}
+		})
+			.then(res => res.text())
+			.then(xml => {
+				editor.setValue(xml)
+
+				// Change editor type
+				editor.setOption('mode', 'text/xml')
+				const el = document.getElementById(editingDraftId)
+				el.setAttribute('data-content-type', 'xml')
+				editor.focus()
+
+				// Disable `Edit as Json`
+				const editAsXmlEl = document.getElementById('edit-as-xml')
+				editAsXmlEl.className = 'disable'
+				const editAsJsonEl = document.getElementById('edit-as-json')
+				editAsJsonEl.className = ''
+				saveDraft()
+
+				// Enable/Disable Toolbar Menu based on new Editor
+				updateToolBar()
+			})
+			.catch(error => {
+				console.log(error)
+			})
+	}
+}
+
+document.getElementById('button-create-new-draft').addEventListener('click', function() {
+	fetch('/api/drafts/new', {
+		method: 'POST',
+		credentials: 'include',
+		body: '',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(function(resp) {
+			resp.json().then(function(json) {
+				if (json.value.id) {
+					location.hash = 'id:' + json.value.id
+					location.reload()
+				} else {
+					alert('Something went wrong, please try again')
+					console.error(json)
+				}
+			})
+		})
+		.catch(function(error) {
+			alert('Error: ' + error)
+			console.error(error)
+		})
+})
+
+// Set up OboEditor items
+function createTutorialDraft() {
+	fetch('/api/drafts/tutorial', {
+		method: 'POST',
+		credentials: 'include',
+		body: '',
+		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(function(resp) {
+			resp.json().then(function(json) {
+				if (json.value.id) {
+					window.location.hash = 'id:' + json.value.id
+					window.location.reload()
+				} else {
+					window.alert('Something went wrong, please try again')
+					console.error(json)
+				}
+			})
+		})
+		.catch(function(error) {
+			window.alert('Error: ' + error)
+			console.error(error)
+		})
+}
+// Add tutorial draft if the user has no drafts
+if (draftEls.length === 0) {
+	createTutorialDraft()
+}
 
 document.getElementById('button-save-draft').addEventListener('click', saveDraft)
 //eslint-disable-next-line
@@ -256,6 +465,48 @@ function saveDraft() {
 		})
 }
 
+// Enable and disable Toolbar Menu based on editor type
+function updateToolBar() {
+	// Disable all Menu
+	const dropdownEls = document.getElementsByClassName('dropdown')
+	for (let i = 0; i < dropdownEls.length; i++) {
+		const dropdownContentEls = dropdownEls[i]
+			.getElementsByClassName('dropdown-content')[0]
+			.getElementsByTagName('a')
+
+		for (let j = 0; j < dropdownContentEls.length; j++) {
+			dropdownContentEls[j].classList.add('disable')
+		}
+	}
+
+	for (let i = 0; i < dropdownEls.length; i++) {
+		// Keep Insert Menu disable for json editor
+		if (editor.options.mode === 'application/json') {
+			const dropdownBtn = dropdownEls[i].getElementsByTagName('button')[0]
+			if (dropdownBtn.innerHTML === 'Insert') {
+				continue
+			}
+		}
+
+		const dropdownContentEls = dropdownEls[i]
+			.getElementsByClassName('dropdown-content')[0]
+			.getElementsByTagName('a')
+
+		for (let j = 0; j < dropdownContentEls.length; j++) {
+			// Keep `Edit as JSON`/`Edit as XML` disable if current editor are `JSON`/`XML`
+			if (
+				(dropdownContentEls[j].innerHTML === 'Edit as JSON' &&
+					editor.options.mode === 'application/json') ||
+				(dropdownContentEls[j].innerHTML === 'Edit as XML' && editor.options.mode === 'text/xml')
+			) {
+				continue
+			}
+
+			dropdownContentEls[j].classList.remove('disable')
+		}
+	}
+}
+
 function edit(draftId) {
 	if (!draftId) return
 
@@ -319,6 +570,25 @@ function animateSavedButton() {
 function refreshPreviewWindow() {
 	if (childWindow && childWindow.location && childWindow.location.reload) {
 		childWindow.location.reload()
+	}
+}
+
+// Open current document if draftId is not specified
+//eslint-disable-next-line
+function openInBetaEditor(draftId) {
+	if (!draftId) {
+		if (!editingDraftId) return
+		draftId = editingDraftId
+	}
+	const el = document.getElementById(draftId)
+	let confirm = true
+	if (el.getAttribute('data-content-type') === 'xml') {
+		confirm = window.confirm(
+			'Wait! Editing this document in the Beta OboEditor will convert your document from XML to JSON. Are you sure you want to continue?'
+		)
+	}
+	if (confirm) {
+		window.open('/editor/' + draftId, '_blank')
 	}
 }
 

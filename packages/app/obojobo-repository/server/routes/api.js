@@ -2,7 +2,7 @@ const router = require('express').Router() //eslint-disable-line new-cap
 const RepositoryCollection = require('../models/collection')
 const DraftSummary = require('../models/draft_summary')
 const {
-	requireCanViewDrafts,
+	requireCanPreviewDrafts,
 	requireCurrentUser,
 	requireCurrentDocument
 } = require('obojobo-express/express_validators')
@@ -38,7 +38,7 @@ router.route('/drafts-public').get((req, res) => {
 // mounted as /api/drafts
 router
 	.route('/drafts')
-	.get([requireCurrentUser, requireCanViewDrafts])
+	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
 		return DraftSummary.fetchByUserId(req.currentUser.id)
 			.then(res.success)
@@ -47,7 +47,7 @@ router
 
 router
 	.route('/users/search')
-	.get([requireCurrentUser, requireCanViewDrafts])
+	.get([requireCurrentUser, requireCanPreviewDrafts])
 	.get((req, res) => {
 		if (!req.query.q || !req.query.q.trim()) {
 			res.success([])
@@ -79,7 +79,7 @@ router
 // list a draft's permissions
 router
 	.route('/drafts/:draftId/permission')
-	.get([requireCurrentUser, requireCurrentDocument, requireCanViewDrafts])
+	.get([requireCurrentUser, requireCurrentDocument, requireCanPreviewDrafts])
 	.get((req, res) => {
 		return db
 			.manyOrNone(
@@ -97,7 +97,7 @@ router
 // @TODO: make sure the user being added exists
 router
 	.route('/drafts/:draftId/permission')
-	.post([requireCurrentUser, requireCurrentDocument /*requireCanViewDrafts*/])
+	.post([requireCurrentUser, requireCurrentDocument /*requireCanPreviewDrafts*/])
 	.post((req, res) => {
 		return Promise.resolve()
 			.then(() => {
@@ -118,7 +118,7 @@ router
 // @TODO: make sure the user removing the permission has permission
 router
 	.route('/drafts/:draftId/permission/:userId')
-	.delete([requireCurrentUser, requireCurrentDocument /*requireCanViewDrafts*/])
+	.delete([requireCurrentUser, requireCurrentDocument /*requireCanPreviewDrafts*/])
 	.delete((req, res) => {
 		return UserModel.fetchById(req.params.userId)
 			.then(user => {

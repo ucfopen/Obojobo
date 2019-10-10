@@ -5,6 +5,7 @@ const logger = oboRequire('logger')
 const setCurrentUser = (req, user) => {
 	if (!(user instanceof User)) throw new Error('Invalid User for Current user')
 	req.session.currentUserId = user.id
+	req.currentUser = user
 }
 
 const resetCurrentUser = req => {

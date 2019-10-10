@@ -20,10 +20,13 @@
 		"test:ci:all": "lerna run test:ci"
 	},
 	"devDependencies": {
-		"concurrently": "^3.5.0",
-		"husky": "^0.13.3",
-		"lerna": "^3.13.1",
-		"nodemon": "^1.18.8"
+		"concurrently": "^4.1.2",
+		"husky": "^3.0.8",
+		"lerna": "^3.16.4",
+		"nodemon": "^1.19.3"
+	},
+	"resolutions": {
+		"node-gyp": "^5.0.2"
 	},
 	"jest": {
 		"projects": [
@@ -72,7 +75,7 @@
 		"packages/util/stylelint-config-obojobo"
 	],
 	"engines": {
-		"yarn": "^1.0",
-		"node": "^10.4.1"
+		"yarn": "^1.15.2",
+		"node": "^12.11.1"
 	}
 }

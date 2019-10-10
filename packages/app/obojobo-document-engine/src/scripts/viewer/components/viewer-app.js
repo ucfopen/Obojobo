@@ -91,7 +91,7 @@ export default class ViewerApp extends React.Component {
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
 		this.onBeforeWindowClose = this.onBeforeWindowClose.bind(this)
-		this.onWindowClose = this.onWindowClose.bind(this)
+		this.sendCloseEvent = this.sendCloseEvent.bind(this)
 		this.onVisibilityChange = this.onVisibilityChange.bind(this)
 		this.onMouseDown = this.onMouseDown.bind(this)
 		this.onFocus = this.onFocus.bind(this)
@@ -154,7 +154,6 @@ export default class ViewerApp extends React.Component {
 				AssessmentStore.init(attemptHistory)
 
 				window.onbeforeunload = this.onBeforeWindowClose
-				window.onunload = this.onWindowClose
 				window.onresize = this.onResize
 
 				this.boundOnDelayResize = this.onDelayResize.bind(this)
@@ -474,17 +473,26 @@ export default class ViewerApp extends React.Component {
 			return true // Returning true will cause browser to ask user to confirm leaving page
 		}
 
+		this.sendCloseEvent()
+
 		/* eslint-disable-next-line */
 		return undefined // Returning undefined will allow browser to close normally
 	}
 
-	onWindowClose() {
-		APIUtil.postEvent({
+	sendCloseEvent() {
+		const body = {
 			draftId: this.state.model.get('draftId'),
-			action: 'viewer:close',
-			eventVersion: '1.0.0',
-			visitId: this.state.navState.visitId
-		})
+			visitId: this.state.navState.visitId,
+			event: {
+				action: 'viewer:close',
+				draft_id: this.state.model.get('draftId'),
+				actor_time: new Date().toISOString(),
+				event_version: '1.0.0',
+				visitId: this.state.navState.visitId
+			}
+		}
+
+		navigator.sendBeacon('/api/events', JSON.stringify(body))
 	}
 
 	clearPreviewScores() {
@@ -627,7 +635,7 @@ export default class ViewerApp extends React.Component {
 				ref={this.idleTimerRef}
 				element={window}
 				timeout={IDLE_TIMEOUT_DURATION_MS}
-				idleAction={this.onIdle}
+				onIdle={this.onIdle}
 				activeAction={this.onReturnFromIdle}
 			>
 				<div
@@ -646,7 +654,7 @@ export default class ViewerApp extends React.Component {
 					{hideViewer ? null : nextComp}
 					{this.state.isPreviewing ? (
 						<div className="preview-banner">
-							<span>You are previewing this module</span>
+							<span>Preview mode</span>
 							<div className="controls">
 								<span>Preview options:</span>
 								<button onClick={this.unlockNavigation} disabled={!this.state.navState.locked}>

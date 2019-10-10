@@ -52,7 +52,9 @@ jest.mock('../../../src/scripts/viewer/util/nav-util', () => ({
 	gotoPath: jest.fn(),
 	toggle: jest.fn(),
 	getOrderedList: jest.fn(),
-	getNavTarget: jest.fn()
+	getNavTarget: jest.fn(),
+	close: jest.fn(),
+	open: jest.fn()
 }))
 
 // NavStore
@@ -364,6 +366,200 @@ describe('Nav', () => {
 		const mockSelfRef = jest.fn()
 		component.getInstance().selfRef = mockSelfRef
 		component.getInstance().focus()
+
 		expect(mockFocus).toHaveBeenCalledWith(mockSelfRef)
+	})
+
+	test('closes nav on mount if mobile', () => {
+		jest.useFakeTimers()
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+
+		mount(<Nav {...props} />)
+		expect(NavUtil.close).not.toHaveBeenCalled()
+		jest.runAllTimers()
+
+		expect(NavUtil.close).toHaveBeenCalled()
+	})
+
+	test('doesnt close nav on mount if not mobile', () => {
+		jest.useFakeTimers()
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+
+		mount(<Nav {...props} />)
+		jest.runAllTimers()
+
+		expect(NavUtil.close).not.toHaveBeenCalled()
+	})
+
+	test('registers resize listener on mount', () => {
+		const spy = jest.spyOn(window, 'addEventListener')
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+
+		const component = mount(<Nav {...props} />)
+
+		expect(spy).toHaveBeenCalledWith('resize', component.instance().hideOrShowOnResize)
+	})
+
+	test('hideOrShowOnResize calls open when increasing to non-mobile size', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		window.innerWidth = 10 // small size on mount
+
+		// begin
+		const component = mount(<Nav {...props} />)
+		expect(NavUtil.open).not.toHaveBeenCalled()
+
+		// increse width & no longer mobile
+		window.innerWidth = 20
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+
+		// execute resize listener
+		component.instance().hideOrShowOnResize()
+
+		expect(NavUtil.open).toHaveBeenCalled()
+	})
+
+	test('hideOrShowOnResize does nothing increasing in mobile size', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		window.innerWidth = 10 // small size on mount
+
+		// begin
+		const component = mount(<Nav {...props} />)
+		expect(NavUtil.open).not.toHaveBeenCalled()
+
+		// increse width & no longer mobile
+		window.innerWidth = 20
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+
+		// execute resize listener
+		component.instance().hideOrShowOnResize()
+
+		expect(NavUtil.open).not.toHaveBeenCalled()
+	})
+
+	test('hideOrShowOnResize calls close when decreasing to mobile size', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+		window.innerWidth = 20 // larger size on mount
+
+		// begin
+		const component = mount(<Nav {...props} />)
+		expect(NavUtil.close).not.toHaveBeenCalled()
+
+		// decrease ans is mobile
+		window.innerWidth = 10
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+
+		// execute resize listener
+		component.instance().hideOrShowOnResize()
+
+		expect(NavUtil.close).toHaveBeenCalled()
+	})
+
+	test('hideOrShowOnResize does nothing when decreasing to desktop size', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+		window.innerWidth = 20 // larger size on mount
+
+		// begin
+		const component = mount(<Nav {...props} />)
+		expect(NavUtil.close).not.toHaveBeenCalled()
+
+		// decrease ans is mobile
+		window.innerWidth = 10
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+
+		// execute resize listener
+		component.instance().hideOrShowOnResize()
+
+		expect(NavUtil.close).not.toHaveBeenCalled()
+	})
+
+	test('removes listeners on unmount', () => {
+		const spy = jest.spyOn(window, 'removeEventListener')
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+
+		// begin
+		const component = mount(<Nav {...props} />)
+
+		// execute resize listener
+		component.instance().componentWillUnmount()
+
+		expect(spy).toHaveBeenCalledWith('resize', expect.any(Function))
+		expect(spy).toHaveBeenCalledWith('mouseup', expect.any(Function))
+		expect(spy).toHaveBeenCalledWith('pointerup', expect.any(Function))
+	})
+
+	test('registers window click listeners', () => {
+		const spy = jest.spyOn(window, 'addEventListener')
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		const props = { navState: {} }
+
+		// begin
+		mount(<Nav {...props} />)
+		expect(spy).toHaveBeenCalledWith('mouseup', expect.any(Function))
+		expect(spy).toHaveBeenCalledWith('pointerup', expect.any(Function))
+	})
+
+	test('does nothing when clicked outside on desktop', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+		window.matchMedia.mockReturnValueOnce({ matches: false })
+		const props = { navState: {} }
+
+		// begin
+		const component = mount(<Nav {...props} />)
+		component.instance().selfRef = {
+			current: {
+				contains: () => false
+			}
+		}
+		component.instance().onWindowClick({ target: true })
+		expect(NavUtil.close).not.toHaveBeenCalled()
+	})
+
+	test('does nothing when clicked inside mobile', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		const props = { navState: {} }
+
+		// begin
+		const component = mount(<Nav {...props} />)
+		component.instance().selfRef = {
+			current: {
+				contains: () => true
+			}
+		}
+		component.instance().onWindowClick({ target: true })
+		expect(NavUtil.close).not.toHaveBeenCalled()
+	})
+
+	test('closes when clicked outside on mobile', () => {
+		NavUtil.getOrderedList.mockReturnValueOnce([])
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		window.matchMedia.mockReturnValueOnce({ matches: true })
+		const props = { navState: {} }
+
+		// begin
+		const component = mount(<Nav {...props} />)
+		component.instance().selfRef = {
+			current: {
+				contains: () => false
+			}
+		}
+		component.instance().onWindowClick({ target: true })
+		expect(NavUtil.close).toHaveBeenCalled()
 	})
 })

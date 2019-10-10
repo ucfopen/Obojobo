@@ -24,6 +24,7 @@ jest.mock('../logger')
 jest.mock('connect-pg-simple', () => {
 	return jest.fn().mockReturnValueOnce(jest.fn())
 })
+jest.mock('../db')
 jest.mock('express-session')
 
 const originalWEBPACK = process.env.IS_WEBPACK

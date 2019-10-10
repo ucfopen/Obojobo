@@ -50,20 +50,20 @@ $dimension-editor: $dimension-column-width + 3em + 3em;
 $dimension-toolbar-height: 2.7em;
 $dimension-nav-menu: 18rem;
 $dimension-nav-menu-small: 14rem;
+$dimension-nav-menu-xsmall: 10rem;
 $dimension-rounded-radius: 0.25em;
 $dimension-header-padding: 1rem;
 $dimension-preview-banner: 3rem;
-
-$breakpoint-nav-small: 1000px; /* stylelint-disable-line unit-blacklist */
+$dimension-review-answer-flag-padding: 0.2em;
 
 $z-index-above-content: 999;
 $z-index-above-most: 9999;
 $z-index-above-all: 99999;
 $z-index-preview: 999999;
 
-@mixin pad() {
-	padding-left: $dimension-padding;
-	padding-right: $dimension-padding;
+@mixin pad($scalePercent: 1) {
+	padding-left: $dimension-padding * $scalePercent;
+	padding-right: $dimension-padding * $scalePercent;
 }
 
 @mixin placeholder($height) {
@@ -87,3 +87,5 @@ $z-index-preview: 999999;
 	font-size: 0.8em;
 	padding: 0.4em;
 }
+
+@import './media-queries';
