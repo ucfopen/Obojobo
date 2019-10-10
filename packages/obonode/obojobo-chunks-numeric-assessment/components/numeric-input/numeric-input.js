@@ -76,7 +76,7 @@ const NumericInput = props => {
 				tabIndex="0"
 				onClick={onHandleScoreChange}
 			>
-				{score == 100 ? '✔' : '✖'}
+				{score === 100 ? '✔' : '✖'}
 			</button>
 
 			<table contentEditable={false}>
