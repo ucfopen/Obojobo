@@ -11,7 +11,7 @@ const NumericFeedback = props => {
 	return (
 		<div className="component numeric-feedback-editor">
 			<button className="feedback-delete-button" onClick={() => onDelete()}>
-				X
+				×
 			</button>
 			{props.children}
 		</div>
