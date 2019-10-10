@@ -9,7 +9,7 @@ const MCFeedback = props => (
 	<OboComponent
 		model={props.model}
 		moduleData={props.moduleData}
-		className={`obojobo-draft--chunks--mc-assessment--mc-feedback${
+		className={`obojobo-draft--chunks--numeric-assessment--numeric-feedback${
 			props.model.parent.modelState.score === 100
 				? ' is-correct-feedback'
 				: ' is-not-correct-feedback'

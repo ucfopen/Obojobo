@@ -1,14 +1,14 @@
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
-import MCFeedback from './editor'
-const MCFEEDBACK_NODE = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+import NumericFeedback from './editor'
+import { NUMERIC_FEEDBACK_NODE } from '../../constant'
 
-describe('MCFeedback editor', () => {
+describe('NumericFeedback editor', () => {
 	test('plugins.renderNode renders a node', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
 			node: {
-				type: MCFEEDBACK_NODE,
+				type: NUMERIC_FEEDBACK_NODE,
 				data: {
 					get: () => {
 						return {}
@@ -17,7 +17,7 @@ describe('MCFeedback editor', () => {
 			}
 		}
 
-		expect(MCFeedback.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
+		expect(NumericFeedback.plugins.renderNode(props, null, jest.fn())).toMatchSnapshot()
 	})
 
 	test('plugins.renderNode calls next', () => {
@@ -35,7 +35,7 @@ describe('MCFeedback editor', () => {
 
 		const next = jest.fn()
 
-		expect(MCFeedback.plugins.renderNode(props, null, next)).toMatchSnapshot()
+		expect(NumericFeedback.plugins.renderNode(props, null, next)).toMatchSnapshot()
 		expect(next).toHaveBeenCalled()
 	})
 
@@ -49,7 +49,7 @@ describe('MCFeedback editor', () => {
 			funct(editor)
 		})
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(editor, {
+		NumericFeedback.plugins.schema.blocks[NUMERIC_FEEDBACK_NODE].normalize(editor, {
 			code: CHILD_TYPE_INVALID,
 			node: {},
 			child: { key: 'mockKey', object: 'text' },
@@ -64,7 +64,7 @@ describe('MCFeedback editor', () => {
 			insertNodeByKey: jest.fn()
 		}
 
-		MCFeedback.plugins.schema.blocks[MCFEEDBACK_NODE].normalize(editor, {
+		NumericFeedback.plugins.schema.blocks[NUMERIC_FEEDBACK_NODE].normalize(editor, {
 			code: 'child_min_invalid',
 			node: {},
 			child: null,

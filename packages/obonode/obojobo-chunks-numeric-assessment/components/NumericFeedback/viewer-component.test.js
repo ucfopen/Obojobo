@@ -1,28 +1,24 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import MCFeedback from './viewer-component'
+import NumericFeedback from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
-require('./viewer') // used to register this oboModel
-require('../MCChoice/viewer') // used to register the MCChoice chunk as a dep
-require('../MCFeedback/viewer') // // dependency on Obojobo.Chunks.MCAssessment.MCFeedback
-require('obojobo-chunks-text/viewer') // used to register the Text chunk as a dep
+import { NUMERIC_FEEDBACK_NODE, SCORE_RULE_NODE } from '../../constant'
 
-describe('MCFeedback', () => {
-	test('MCFeedback component for a correct item', () => {
+describe('NumericFeedback', () => {
+	test('NumericFeedback component for a correct item', () => {
 		const moduleData = {
 			focusState: {}
 		}
 		OboModel.create({
 			id: 'parent',
-			type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+			type: SCORE_RULE_NODE,
 			content: {
-				score: 100
 			},
 			children: [
 				{
 					id: 'feedback',
-					type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+					type: NUMERIC_FEEDBACK_NODE,
 					children: [
 						{
 							id: 'choice1-feedback-text',
@@ -42,7 +38,7 @@ describe('MCFeedback', () => {
 			]
 		})
 		const component = renderer.create(
-			<MCFeedback moduleData={moduleData} model={OboModel.models.feedback} />
+			<NumericFeedback moduleData={moduleData} model={OboModel.models.feedback} />
 		)
 		const tree = component.toJSON()
 
@@ -55,14 +51,14 @@ describe('MCFeedback', () => {
 		}
 		OboModel.create({
 			id: 'parent',
-			type: 'ObojoboDraft.Chunks.MCAssessment.MCChoice',
+			type: SCORE_RULE_NODE,
 			content: {
 				score: 0
 			},
 			children: [
 				{
 					id: 'feedback',
-					type: 'ObojoboDraft.Chunks.MCAssessment.MCFeedback',
+					type: NUMERIC_FEEDBACK_NODE,
 					children: [
 						{
 							id: 'choice1-feedback-text',
@@ -82,7 +78,7 @@ describe('MCFeedback', () => {
 			]
 		})
 		const component = renderer.create(
-			<MCFeedback moduleData={moduleData} model={OboModel.models.feedback} />
+			<NumericFeedback moduleData={moduleData} model={OboModel.models.feedback} />
 		)
 		const tree = component.toJSON()
 

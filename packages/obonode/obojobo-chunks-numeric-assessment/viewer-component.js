@@ -47,7 +47,7 @@ class NumericAssessment extends React.Component {
 	render() {
 		const className =
 			`component` +
-			` obojobo-draft--chunks--nuremic-assessment` +
+			` obojobo-draft--chunks--numeric-assessment` +
 			isOrNot(this.state.isScored, 'scored') +
 			isOrNot(this.state.isCorrect, 'correct')
 
