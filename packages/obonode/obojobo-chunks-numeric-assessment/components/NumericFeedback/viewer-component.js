@@ -15,7 +15,7 @@ const MCFeedback = props => (
 				: ' is-not-correct-feedback'
 		}`}
 	>
-		<span className="for-screen-reader-only">. Feedback for this answer choice:</span>
+		<span className="for-screen-reader-only">. Feedback for your answer:</span>
 		{props.model.children.models.map(child => {
 			const Component = child.getComponentClass()
 			return <Component key={child.get('id')} model={child} moduleData={props.moduleData} />
