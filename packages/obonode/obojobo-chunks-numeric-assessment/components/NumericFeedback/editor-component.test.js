@@ -2,12 +2,12 @@ import React from 'react'
 import { shallow } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import MCFeedback from './editor-component'
+import NumericFeedback from './editor-component'
 
-describe('MCFeedback Editor Node', () => {
-	test('MCFeedback builds the expected component', () => {
+describe('NumericFeedback Editor Node', () => {
+	test('NumericFeedback builds the expected component', () => {
 		const component = renderer.create(
-			<MCFeedback
+			<NumericFeedback
 				node={{
 					data: {
 						get: () => {
@@ -22,13 +22,13 @@ describe('MCFeedback Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MCFeedback component deletes itself', () => {
+	test('NumericFeedback component deletes itself', () => {
 		const editor = {
 			removeNodeByKey: jest.fn()
 		}
 
 		const component = shallow(
-			<MCFeedback
+			<NumericFeedback
 				node={{
 					key: 'mockKey',
 					nodes: [],

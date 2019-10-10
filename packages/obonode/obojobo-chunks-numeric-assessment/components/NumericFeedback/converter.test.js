@@ -8,9 +8,9 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 }))
 
 import Converter from './converter'
-const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
+import { NUMERIC_FEEDBACK_NODE } from '../../constant'
 
-describe('MCFeedback Converter', () => {
+describe('NumericFeedback Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {
 		const slateNode = {
 			key: 'mockKey',
@@ -40,7 +40,7 @@ describe('MCFeedback Converter', () => {
 			type: 'mockType',
 			children: [
 				{
-					type: BREAK_NODE
+					type: NUMERIC_FEEDBACK_NODE
 				},
 				{
 					type: 'notADefinedNode'
