@@ -4,12 +4,6 @@ import Editor from './index'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const debounce = function(ms, cb) {
-	clearTimeout(debounce.id)
-	return (debounce.id = setTimeout(cb, ms))
-}
-debounce.id = null
-
 // set up global event listeners
 const { Dispatcher } = Common.flux
 

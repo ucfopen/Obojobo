@@ -41,7 +41,6 @@ describe('Caliper event from req', () => {
 		'nav:goto': { from: 'fromReq', to: 'toReq' },
 		'nav:open': {},
 		'nav:close': {},
-		'nav:toggle': { isOpen: true },
 		'nav:lock': {},
 		'nav:unlock': {},
 		'question:view': { questionId },

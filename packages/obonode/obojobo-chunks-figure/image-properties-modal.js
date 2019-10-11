@@ -1,6 +1,6 @@
 import './image-properties-modal.scss'
 
-import { debounce, isUrlUUID } from './utils'
+import { isUrlUUID } from './utils'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import Common from 'obojobo-document-engine/src/scripts/common'
@@ -8,6 +8,8 @@ import Image from './image'
 import React from 'react'
 
 const { SimpleDialog } = Common.components.modal
+const { debounce } = Common.util
+
 const URL_UPDATE_DELAY = 750
 
 class ImageProperties extends React.Component {
