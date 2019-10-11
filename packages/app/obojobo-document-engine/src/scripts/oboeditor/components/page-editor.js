@@ -26,6 +26,8 @@ import EditorNav from './navigation/editor-nav'
 
 const { ModalUtil } = Common.util
 
+const { OboModel } = Common.models
+
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
@@ -253,7 +255,7 @@ class PageEditor extends React.Component {
 	}
 
 	exportToJSON(page, value) {
-		if (this.props.page === null) return
+		if (this.props.page === null) return;
 
 		if (page.get('type') === ASSESSMENT_NODE) {
 			const json = Common.Registry.getItemForType(ASSESSMENT_NODE).slateToObo(
@@ -274,6 +276,8 @@ class PageEditor extends React.Component {
 			})
 
 			page.set('children', json.children)
+			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
+			page.children.set(childrenModels)
 
 			return json
 		}

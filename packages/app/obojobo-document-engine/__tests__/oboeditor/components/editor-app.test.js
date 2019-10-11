@@ -1,9 +1,7 @@
 import React from 'react'
 import { mount } from 'enzyme'
 
-import EditorApp from 'src/scripts/oboeditor/components/editor-app'
-
-jest.mock('src/scripts/oboeditor/components/editor-nav')
+jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
 jest.mock('src/scripts/oboeditor/components/page-editor')
 jest.mock('src/scripts/oboeditor/components/code-editor')
 
@@ -19,6 +17,11 @@ import Common from 'src/scripts/common'
 import testObject from 'test-object.json'
 import mockConsole from 'jest-mock-console'
 let restoreConsole
+
+// Mock up the serializer
+const XMLSerializer = {}
+
+const EditorApp = require('src/scripts/oboeditor/components/editor-app')
 
 const XML_MODE = 'xml'
 

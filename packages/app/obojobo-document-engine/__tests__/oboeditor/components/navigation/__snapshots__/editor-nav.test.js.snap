@@ -12,7 +12,7 @@ exports[`EditorNav EditorNav component 1`] = `
         className="add-node-button"
         onClick={[Function]}
       >
-        + Page ⚡
+        + Page
       </button>
     </li>
   </ul>
@@ -23,4 +23,42 @@ exports[`EditorNav EditorNav component 1`] = `
     + Add Assessment
   </button>
 </div>
+`;
+
+exports[`EditorNav EditorNav component adds assessment 1`] = `"<div class=\\"visual-editor--draft-nav  is-not-locked is-not-open is-enabled\\"><ul><li class=\\"no-pages-item\\"><button class=\\"add-node-button\\">+ Page</button></li></ul><button class=\\"add-node-button\\">+ Add Assessment</button></div>"`;
+
+exports[`EditorNav EditorNav component adds page 1`] = `"<div class=\\"visual-editor--draft-nav  is-not-locked is-not-open is-enabled\\"><ul><li class=\\"no-pages-item\\"><button class=\\"add-node-button\\">+ Page</button></li></ul><button class=\\"add-node-button\\">+ Add Assessment</button></div>"`;
+
+exports[`EditorNav EditorNav component with all list item types 1`] = `
+<div
+  className="visual-editor--draft-nav  is-locked is-not-open is-enabled"
+>
+  <ul>
+    <li
+      className="heading is-not-selected"
+    >
+      <span>
+        label4
+      </span>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`EditorNav addAssessment hides the modal and calls EditorUtil 1`] = `undefined`;
+
+exports[`EditorNav addAssessment hides the modal and calls EditorUtil 2`] = `undefined`;
+
+exports[`EditorNav addAssessment hides the modal and calls EditorUtil 3`] = `undefined`;
+
+exports[`EditorNav addPage hides the modal and calls EditorUtil 1`] = `undefined`;
+
+exports[`EditorNav addPage hides the modal and calls EditorUtil 2`] = `undefined`;
+
+exports[`EditorNav addPage hides the modal and calls EditorUtil 3`] = `undefined`;
+
+exports[`EditorNav updateNavTargetId changes the state 1`] = `
+Object {
+  "navTargetId": "mock-id",
+}
 `;

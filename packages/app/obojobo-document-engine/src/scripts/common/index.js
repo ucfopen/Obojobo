@@ -11,7 +11,6 @@ import ErrorDialog from './components/modal/error-dialog'
 import ErrorUtil from './util/error-util'
 import FluxStore from './flux/store'
 import FocusBlocker from './components/focus-blocker'
-import ListDialog from './components/modal/list-dialog'
 import MockElement from './mockdom/mock-element'
 import MockTextNode from './mockdom/mock-text-node'
 import Modal from './components/modal/modal'
@@ -77,8 +76,7 @@ export default {
 			Modal,
 			Dialog,
 			SimpleDialog,
-			ErrorDialog,
-			ListDialog
+			ErrorDialog
 		},
 		TextMenu,
 		ModalContainer,

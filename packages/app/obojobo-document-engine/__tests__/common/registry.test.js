@@ -88,8 +88,17 @@ describe('Registry', () => {
 		})
 	})
 
+	test('registers calls getPasteNode', () => {
+		Registry.registerModel('mockType')
+
+		const inputNode = { nockKey: 'mockValue' }
+		const node = Registry.getItemForType('mockType').getPasteNode(inputNode)
+
+		expect(node).toEqual(inputNode)
+	})
+
 	test('registers default', () => {
-		expect.assertions(2)
+		expect.assertions(3)
 		Registry.registerModel('chunk', {
 			type: 'chunk',
 			default: false,
@@ -114,6 +123,7 @@ describe('Registry', () => {
 		Registry.getItems(() => {
 			expect(Registry.getDefaultItemForModelType('chunk').__testValue).toBe(2)
 			expect(Registry.getDefaultItemForModelType('page').__testValue).toBe(4)
+			expect(Registry.getDefaultItemForModelType('non-existant')).toBe(null)
 		})
 	})
 

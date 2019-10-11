@@ -35,13 +35,6 @@ class SimpleDialog extends React.Component {
 					default: true
 				}
 			]
-		} else if (this.props.close) {
-			buttons = [
-				{
-					value: '×',
-					onClick: this.props.onConfirm
-				}
-			]
 		} else if (this.props.yesOrNo) {
 			buttons = [
 				{

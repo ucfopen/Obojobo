@@ -1,5 +1,6 @@
 jest.mock('Common', () => ({
 	components: { modal: {} },
+	util: {},
 	Registry: {
 		getItems: funct => {
 			return funct({

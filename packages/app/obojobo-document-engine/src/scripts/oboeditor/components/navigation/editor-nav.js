@@ -4,6 +4,7 @@ import '../../../viewer/components/nav.scss'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../../util/editor-util'
+import MoreInfoBox from './more-info-box'
 import React from 'react'
 import SubMenu from './sub-menu'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
@@ -12,6 +13,8 @@ import generateAssessment from '../../documents/generate-assessment'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
+
+const { OboModel } = Common.models
 
 class EditorNav extends React.Component {
 	constructor(props) {
@@ -35,10 +38,40 @@ class EditorNav extends React.Component {
 		return <span>{label}</span>
 	}
 
-	renderHeading(index, item) {
+	renderHeading(index, item, list) {
+		const model = OboModel.models[item.id]
+
+		const contentDescription = [
+			{
+				name: 'title',
+				description: 'Title',
+				type: 'input'
+			},
+			{
+				name: 'start',
+				description: 'Start Page',
+				type: 'select',
+				values: list.filter(item => item.type === 'link').map(item => ({
+					value: item.id,
+					description: item.label
+				}))
+			}
+		]
+
 		return (
 			<li key={index} className={'heading is-not-selected'}>
 				{this.renderLabel(item.label)}
+				<MoreInfoBox
+					id={item.id}
+					type={model.get('type')}
+					content={model.get('content')}
+					saveId={this.saveId}
+					saveContent={this.saveContent}
+					savePage={this.props.savePage}
+					contentDescription={contentDescription}
+					deleteNode={this.showDeleteModal}
+					duplicateNode={this.duplicatePage}
+					markUnsaved={this.props.markUnsaved}/>
 			</li>
 		)
 	}
@@ -100,7 +133,10 @@ class EditorNav extends React.Component {
 	renderItems(list) {
 		// If there are no pages in the nav list, add a placeholder item
 		// The placeholder will render an Add Page button
-		if(list.filter(item => item.type !== 'heading' && !item.flags.assessment).length < 1) {
+		if(list
+			.filter(item => item.type === 'no-pages' || (item.type !== 'heading' && !item.flags.assessment))
+			.length < 1) {
+
 			list.splice(1,0, {
 				type: 'no-pages'
 			})
@@ -109,7 +145,7 @@ class EditorNav extends React.Component {
 		return list.map((item, index) => {
 			switch(item.type){
 				case 'heading': 
-					return this.renderHeading(index, item)
+					return this.renderHeading(index, item, list)
 				case 'link':
 					return (
 						<SubMenu
@@ -128,7 +164,7 @@ class EditorNav extends React.Component {
 							<button 
 								className="add-node-button"
 								onClick={this.showAddPageModal}>
-								+ Page ⚡
+								+ Page
 							</button>
 						</li>
 					)
@@ -147,7 +183,7 @@ class EditorNav extends React.Component {
 
 		const list = EditorUtil.getOrderedList(this.props.navState)
 
-		const containsAssessment = list.filter(item => item.flags.assessment).length > 0
+		const containsAssessment = list.filter(item => item.flags && item.flags.assessment).length > 0
 
 		return (
 			<div className={className}>
