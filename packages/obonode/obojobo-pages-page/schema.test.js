@@ -74,16 +74,9 @@ describe('Page editor schema', () => {
 		  0,
 		  Immutable.Record {
 		    "data": Immutable.Map {},
-		    "key": "4",
-		    "nodes": Immutable.List [
-		      Immutable.Record {
-		        "data": Immutable.Map {},
-		        "key": "5",
-		        "nodes": Immutable.List [],
-		        "type": "ObojoboDraft.Chunks.Text",
-		      },
-		    ],
-		    "type": "oboeditor.component",
+		    "key": "2",
+		    "nodes": Immutable.List [],
+		    "type": "ObojoboDraft.Chunks.Text",
 		  },
 		]
 	`)

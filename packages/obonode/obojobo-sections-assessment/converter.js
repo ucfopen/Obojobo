@@ -1,15 +1,8 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-import {
-	getTriggersWithActionsAdded,
-	getTriggersWithActionsRemoved,
-	hasTriggerTypeWithActionType
-} from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
-
 const { OboModel } = Common.models
 
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
 const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
@@ -19,7 +12,8 @@ const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const slateToObo = node => {
 	let Page
 	let QuestionBank
-
+	let Rubric
+	let ScoreActions
 	// Mix the model.content and the node.content to make sure that
 	// all settings are properly preserved
 	const model = OboModel.models[node.key]
@@ -40,33 +34,13 @@ const slateToObo = node => {
 				children.push(QuestionBank.slateToObo(child))
 				break
 			case ACTIONS_NODE:
+				ScoreActions = Common.Registry.getItemForType(RUBRIC_NODE)
 				content.scoreActions = ScoreActions.slateToObo(child)
 				break
 			case RUBRIC_NODE:
-				const Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
+				Rubric = Common.Registry.getItemForType(RUBRIC_NODE)
 				content.rubric = Rubric.slateToObo(child)
 				break
-			case SETTINGS_NODE: {
-				content.attempts = child.nodes.get(0).text
-				content.review = child.nodes.get(1).data.get('current')
-				const shouldLockAssessment = child.nodes.get(2).data.get('checked')
-
-				if (shouldLockAssessment) {
-					content.triggers = getTriggersWithActionsAdded(content.triggers || [], {
-						onNavEnter: { type: 'nav:lock' },
-						onEndAttempt: { type: 'nav:unlock' },
-						onNavExit: { type: 'nav:unlock' }
-					})
-				} else if (content.triggers) {
-					const updatedTriggers = getTriggersWithActionsRemoved(content.triggers, {
-						onNavEnter: 'nav:lock',
-						onEndAttempt: 'nav:unlock',
-						onNavExit: 'nav:unlock'
-					})
-					content.triggers = updatedTriggers
-					if (content.triggers.length === 0) delete content.triggers
-				}
-			}
 		}
 	})
 

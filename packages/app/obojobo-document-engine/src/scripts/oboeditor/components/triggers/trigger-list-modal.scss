@@ -1,6 +1,14 @@
 @import '~styles/includes';
 
 .trigger-list-modal {
+	background: $color-bg2;
+	padding: 1em;
+	width: 35em;
+	max-height: 60vh;
+	overflow: auto;
+	box-shadow: 1px 1px 5px $color-shadow inset;
+	border-radius: $dimension-rounded-radius;
+
 	.trigger {
 		position: relative;
 		border: 1px solid $color-shadow;

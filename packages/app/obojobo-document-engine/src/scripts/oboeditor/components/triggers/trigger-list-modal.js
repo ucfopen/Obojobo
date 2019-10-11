@@ -3,7 +3,7 @@ import './trigger-list-modal.scss'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import React from 'react'
 
-const { ListDialog } = Common.components.modal
+const { SimpleDialog } = Common.components.modal
 const { Button, Slider } = Common.components
 
 class TriggerListModal extends React.Component {
@@ -210,10 +210,10 @@ class TriggerListModal extends React.Component {
 
 	render() {
 		return (
-			<ListDialog
-				close
+			<SimpleDialog
+				ok
 				title="Triggers"
-				onClose={() => this.props.onClose(this.state)}>
+				onConfirm={() => this.props.onClose(this.state)}>
 				<div className="trigger-list-modal">
 					{this.state.triggers.map((trigger, triggerIndex) => (
 						<div className="trigger" key={triggerIndex}>
@@ -268,7 +268,7 @@ class TriggerListModal extends React.Component {
 						</div>))}
 					<Button onClick={this.createTrigger}>+ Add Trigger</Button>
 				</div>
-			</ListDialog>
+			</SimpleDialog>
 		)
 	}
 }

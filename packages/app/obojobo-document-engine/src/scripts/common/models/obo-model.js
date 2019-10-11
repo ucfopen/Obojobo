@@ -152,6 +152,7 @@ class OboModel extends Backbone.Model {
 
 	onChildrenReset(collection, options) {
 		options.previousModels.map(child => (child.parent = null))
+		collection.map(child => this.onChildAdd(child))
 	}
 
 	createNewLocalId() {
@@ -184,14 +185,16 @@ class OboModel extends Backbone.Model {
 		return (OboModel.models[this.get('id')] = this)
 	}
 
-	// should be overridden
 	clone(deep = false) {
-		const clone = new OboModel(this.attributes, this.adapter.constructor)
+		const clone = new OboModel(
+			{ ...this.attributes, ...{ id: this.createNewLocalId() }}, 
+			this.adapter.constructor
+		)
 		this.adapter.clone(this, clone)
 
 		if (deep && this.hasChildren()) {
 			for (const child of Array.from(this.children.models)) {
-				clone.children.add(child.clone(true))
+				clone.children.add(child.clone(true), { at: clone.children.length })
 			}
 		}
 

@@ -12,7 +12,7 @@ exports[`EditorNav EditorNav component 1`] = `
         className="add-node-button"
         onClick={[Function]}
       >
-        + Page ⚡
+        + Page
       </button>
     </li>
   </ul>

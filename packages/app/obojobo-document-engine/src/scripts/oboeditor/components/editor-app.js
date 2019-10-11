@@ -4,10 +4,9 @@ import '../../viewer/components/viewer-app.scss'
 import 'obojobo-modules-module/viewer-component.scss'
 import './editor-app.scss'
 
-import APIUtil from '../../viewer/util/api-util'
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import Common from '../../common'
 import CodeEditor from './code-editor'
-import EditorNav from './editor-nav'
 import EditorStore from '../stores/editor-store'
 import EditorUtil from '../util/editor-util'
 import { KeyUtils } from 'slate'
@@ -22,7 +21,7 @@ import Component from './node/editor'
 import SelectParameter from './parameter-node/select-parameter'
 import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
-import MarkToolbar from './toolbar'
+import MarkToolbar from './toolbars/content-toolbar'
 
 const { ModalContainer } = Common.components
 const { ModalUtil } = Common.util
@@ -116,7 +115,7 @@ class EditorApp extends React.Component {
 			window.location.pathname
 		)
 
-		return {
+		return { 
 			modalState: ModalStore.getState(),
 			editorState: EditorStore.getState(),
 			code: draftModel,
@@ -217,7 +216,6 @@ class EditorApp extends React.Component {
 				{this.state.mode === VISUAL_MODE ?
 				this.renderVisualEditor() :
 				this.renderCodeEditor()}
-
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
 				) : null}

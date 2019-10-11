@@ -6,7 +6,6 @@ import React from 'react'
 import MoreInfoBox from './more-info-box'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import generatePage from '../../documents/generate-page'
-import generateId from '../../generate-ids'
 
 import {
 	getTriggersWithActionsAdded,
@@ -51,10 +50,6 @@ class SubMenu extends React.Component {
 
 	movePage(pageId, index) {
 		EditorUtil.movePage(pageId, index)
-	}
-
-	setStartPage(pageId) {
-		EditorUtil.setStartPage(pageId)
 	}
 
 	renderLabel(label) {
@@ -147,12 +142,39 @@ class SubMenu extends React.Component {
 		const model = OboModel.models[item.id]
 
 		this.props.savePage()
-		const newPage = model.flatJSON()
-		newPage.children = model.get('children')
-		// Removes duplicate ids from duplicated pages
-		newPage.id = generateId()
-		newPage.content.title = item.label + ' - (Copy)'
-		EditorUtil.addPage(newPage, item.id)
+		const clonedPage = model.clone(true).toJSON()
+		// Make a shallow copy of the content, to prevent problems with two pages sharing the same content
+		clonedPage.content = Object.assign({}, model.get('content'))
+		clonedPage.content.title = item.label + ' - (Copy)'
+		EditorUtil.addPage(clonedPage, item.id)
+	}
+
+	lockValue(content) {
+		const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
+		const endAttemptUnlock =
+			hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
+			hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
+
+		return startAttemptLock && endAttemptUnlock
+	}
+
+	onChangeLock(content, isNavLock) {
+		let triggers
+		if (isNavLock) {
+			triggers = getTriggersWithActionsAdded(content.triggers || [], {
+				onNavEnter: { type: 'nav:lock' },
+				onEndAttempt: { type: 'nav:unlock' },
+				onNavExit: { type: 'nav:unlock' }
+			})
+		} else if (content.triggers) {
+			triggers = getTriggersWithActionsRemoved(content.triggers, {
+				onNavEnter: 'nav:lock',
+				onEndAttempt: 'nav:unlock',
+				onNavExit: 'nav:unlock'
+			})
+		}
+
+		return { ...content, triggers }
 	}
 
 	render() {
@@ -217,33 +239,8 @@ class SubMenu extends React.Component {
 					name: 'lock-nav',
 					description: 'Lock Navigation During Attempts',
 					type: 'abstract-toggle',
-					value: content => {
-						const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
-						const endAttemptUnlock =
-							hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
-							hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
-
-						return startAttemptLock && endAttemptUnlock
-					},
-					// onChange is called inside the MoreInfoBox, so prevState references previous the MoreInfoBox state
-					onChange: (content, isNavLock) => {
-						let triggers
-						if (isNavLock) {
-							triggers = getTriggersWithActionsAdded(content.triggers || [], {
-								onNavEnter: { type: 'nav:lock' },
-								onEndAttempt: { type: 'nav:unlock' },
-								onNavExit: { type: 'nav:unlock' }
-							})
-						} else if (content.triggers) {
-							triggers = getTriggersWithActionsRemoved(content.triggers, {
-								onNavEnter: 'nav:lock',
-								onEndAttempt: 'nav:unlock',
-								onNavExit: 'nav:unlock'
-							})
-						}
-
-						return { ...content, triggers }
-					}
+					value: this.lockValue,
+					onChange: this.onChangeLock
 				}
 			)
 		}

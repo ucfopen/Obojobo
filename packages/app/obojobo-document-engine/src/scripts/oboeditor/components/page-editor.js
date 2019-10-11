@@ -1,13 +1,13 @@
 import './page-editor.scss'
 
-import APIUtil from '../../viewer/util/api-util'
+import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import AlignMarks from './marks/align-marks'
 import Assessment from 'obojobo-sections-assessment/editor'
 import BasicMarks from './marks/basic-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
-import Common from '../../common'
-import ContentToolbar from './toolbars/content-toolbar'
+import Common from 'obojobo-document-engine/src/scripts/common'
 import Component from './node/editor'
+import ContentToolbar from './toolbars/content-toolbar'
 import { Editor } from 'slate-react'
 import EditorSchema from '../plugins/editor-schema'
 import EditorStore from '../stores/editor-store'
@@ -21,9 +21,12 @@ import SelectParameter from './parameter-node/select-parameter'
 import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
+
 import EditorNav from './navigation/editor-nav'
 
 const { ModalUtil } = Common.util
+
+const { OboModel } = Common.models
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
@@ -162,14 +165,13 @@ class PageEditor extends React.Component {
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
-						getEditor={this.getEditor}
+						getEditor={this.getEditor.bind(this)}
 						model={this.props.model}
 						draftId={this.props.draftId}
 						onSave={this.saveModule}
 						switchMode={this.props.switchMode}
 						saved={this.state.saved}
-						mode={'visual'}
-					/>
+						mode={'visual'}/>
 					<ContentToolbar getEditor={this.getEditor} />
 				</div>
 
@@ -178,12 +180,11 @@ class PageEditor extends React.Component {
 					model={this.props.model}
 					draftId={this.props.draftId}
 					savePage={this.exportToJSON.bind(this, this.props.page, this.state.value)}
-					markUnsaved={this.markUnsaved}
-				/>
+					markUnsaved={this.markUnsaved}/>
 
 				<div className="component obojobo-draft--modules--module" role="main">
 					<Editor
-						className={'component obojobo-draft--pages--page'}
+						className="component obojobo-draft--pages--page"
 						value={this.state.value}
 						ref={this.ref}
 						onChange={this.onChange}
@@ -277,6 +278,8 @@ class PageEditor extends React.Component {
 			})
 
 			page.set('children', json.children)
+			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
+			page.children.set(childrenModels)
 
 			return json
 		}

@@ -31,7 +31,6 @@ exports[`Heading editor plugins.renderPlaceholder renders a placeholder 1`] = `
 <span
   className="placeholder align-left"
   contentEditable={false}
->
-  Type Your Heading Here
-</span>
+  data-placeholder="Type Your Heading Here"
+/>
 `;

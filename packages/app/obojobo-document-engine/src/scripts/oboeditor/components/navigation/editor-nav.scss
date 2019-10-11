@@ -56,18 +56,18 @@
 
 	.heading {
 		$color-heading-text: lighten($color-text, 25%);
+		position: relative;
 
 		padding-top: 2em;
 		margin-bottom: 1em;
 		z-index: 5;
-		background: $color-nav-bg;
+		background: rgba($color-nav-bg, 0.9);
 		top: 0;
 		font-size: 1.1rem;
 		font-weight: bold;
-		opacity: 0.9;
-		color: $color-heading-text;
+		color: rgba($color-heading-text, 0.9);
 		cursor: default;
-		border-left: solid 1px $color-nav-bg;
+		border-left: solid 1px rgba($color-nav-bg, 0.9);
 
 		&::after {
 			content: '';
