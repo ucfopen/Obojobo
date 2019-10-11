@@ -7,21 +7,9 @@ const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex
 	.map(i => `.${i}`)
 	.join(',')
 
-const displayEditorPicker = (req, res) => {
-	return res.render('editor_picker')
-}
-
 const displayVisualEditor = (req, res) => {
 	res.render('editor', { settings: { allowedUploadTypes } })
 }
-
-// Display the Editor Picker
-// and XML Document Editor
-// mounted as /editor
-router
-	.route('/')
-	.get(requireCanViewEditor)
-	.get(displayEditorPicker)
 
 // Display the visual editor
 // mounted as /editor/draftId/page
