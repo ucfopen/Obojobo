@@ -3,6 +3,7 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import {
 	SCORE_RULE_NODE,
 	NUMERIC_FEEDBACK_NODE,
+	NUMERIC_ANSWER,
 	EXACT_ANSWER,
 	WITHIN_A_RANGE,
 	PRECISE_RESPONSE,
@@ -93,11 +94,15 @@ const slateToObo = node => {
 	// Parse each scoreRule node
 	node.nodes.forEach(child => {
 		switch (child.type) {
-			case SCORE_RULE_NODE:
-				const numericRule = simplifedNumericRule(child.data.get('numericRule'))
+			case NUMERIC_ANSWER:
+				// const numericRule = simplifedNumericRule(child[0].data.get('numericRule'))
 
 				// Parse feedback node
+				let numericRule = {}
 				child.nodes.forEach(component => {
+					if (component.type === SCORE_RULE_NODE) {
+						numericRule = simplifedNumericRule(component.data.get('numericRule'))
+					}
 					if (component.type === NUMERIC_FEEDBACK_NODE) {
 						numericRule.feedback = Common.Registry.getItemForType(component.type).slateToObo(
 							component
@@ -123,9 +128,14 @@ const oboToSlate = node => {
 	const nodes = node.content.numericRules.map(numericRule => {
 		const node = {
 			object: 'block',
-			type: SCORE_RULE_NODE,
-			nodes: [],
-			data: { numericRule: complexifiedNumericRule(numericRule) }
+			type: NUMERIC_ANSWER,
+			nodes: [
+				{
+					object: 'block',
+					type: SCORE_RULE_NODE,
+					data: { numericRule: complexifiedNumericRule(numericRule) }
+				}
+			]
 		}
 
 		// Parse feedback node

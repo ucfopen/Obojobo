@@ -4,9 +4,10 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 import Node from './editor-component'
 import NumericInput from './components/numeric-input/numeric-input'
+import NumericAnswer from './components/answer-choice/answer-choice'
 import Schema from './schema'
 
-import { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE } from './constant'
+import { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_ANSWER } from './constant'
 
 const plugins = {
 	renderNode(props, editor, next) {
@@ -15,6 +16,8 @@ const plugins = {
 				return <Node {...props} {...props.attributes} />
 			case SCORE_RULE_NODE:
 				return <NumericInput {...props} {...props.attributes} />
+			case NUMERIC_ANSWER:
+				return <NumericAnswer {...props} {...props.attributes} />
 			default:
 				return next()
 		}
@@ -33,7 +36,9 @@ Common.Registry.registerModel(NUMERIC_ASSESSMENT_NODE, {
 
 const NumericAssessment = {
 	components: {
-		Node
+		Node,
+		NumericInput,
+		NumericAnswer
 	},
 	helpers: {
 		slateToObo: Converter.slateToObo,

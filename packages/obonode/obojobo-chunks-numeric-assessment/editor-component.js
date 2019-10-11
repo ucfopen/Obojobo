@@ -4,7 +4,7 @@ import React from 'react'
 import { Block } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-import { SCORE_RULE_NODE } from './constant'
+import { NUMERIC_ANSWER } from './constant'
 
 const { Button } = Common.components
 
@@ -31,8 +31,7 @@ class NumericAssessment extends React.Component {
 		const editor = this.props.editor
 
 		const newNumericInput = Block.create({
-			type: SCORE_RULE_NODE,
-			data: { numericRule: { ...emptyResponse } }
+			type: NUMERIC_ANSWER
 		})
 
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newNumericInput)
@@ -55,7 +54,7 @@ class NumericAssessment extends React.Component {
 				))}
 				<Button
 					className="add-answer-btn pad"
-					onClick={this.onAddNumericInput.bind(this)}
+					onClick={() => this.onAddNumericInput()}
 					contentEditable={false}
 				>
 					Add possible answer
