@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-pages-page",
-	"version": "6.0.0-alpha.0",
+	"version": "6.0.0",
 	"license": "AGPL-3.0-only",
 	"description": "Page chunk for Obojobo",
 	"scripts": {
@@ -31,7 +31,7 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^6.0.0-alpha.0"
+		"obojobo-lib-utils": "^6.0.0"
 	},
 	"devDependencies": {
 		"lint-staged": "^9.4.1"
