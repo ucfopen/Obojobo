@@ -78,6 +78,10 @@
 			height: 1px; /* stylelint-disable-line unit-blacklist */
 			background: lighten($color-text, 95%);
 		}
+
+		.more-info {
+			top: 2em;
+		}
 	}
 
 	.sub-link {

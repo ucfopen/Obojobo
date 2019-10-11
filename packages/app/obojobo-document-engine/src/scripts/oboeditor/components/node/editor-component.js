@@ -99,6 +99,8 @@ class Node extends React.Component {
 					<MoreInfoBox
 						className="content-node"
 						id={this.props.node.key}
+						isFirst
+						isLast
 						type={this.props.node.type}
 						content={this.props.node.data.toJSON().content || {}}
 						saveId={this.saveId.bind(this)}

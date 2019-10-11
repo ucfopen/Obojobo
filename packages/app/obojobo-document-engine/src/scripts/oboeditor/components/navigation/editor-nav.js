@@ -4,17 +4,15 @@ import '../../../viewer/components/nav.scss'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
 import EditorUtil from '../../util/editor-util'
-import MoreInfoBox from './more-info-box'
 import React from 'react'
 import SubMenu from './sub-menu'
+import Header from './header'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import generatePage from '../../documents/generate-page'
 import generateAssessment from '../../documents/generate-assessment'
 
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
-
-const { OboModel } = Common.models
 
 class EditorNav extends React.Component {
 	constructor(props) {
@@ -32,48 +30,6 @@ class EditorNav extends React.Component {
 	onNavItemClick(item) {
 		EditorUtil.gotoPath(item.fullPath)
 		this.setState({ navTargetId: item.id })
-	}
-
-	renderLabel(label) {
-		return <span>{label}</span>
-	}
-
-	renderHeading(index, item, list) {
-		const model = OboModel.models[item.id]
-
-		const contentDescription = [
-			{
-				name: 'title',
-				description: 'Title',
-				type: 'input'
-			},
-			{
-				name: 'start',
-				description: 'Start Page',
-				type: 'select',
-				values: list.filter(item => item.type === 'link').map(item => ({
-					value: item.id,
-					description: item.label
-				}))
-			}
-		]
-
-		return (
-			<li key={index} className={'heading is-not-selected'}>
-				{this.renderLabel(item.label)}
-				<MoreInfoBox
-					id={item.id}
-					type={model.get('type')}
-					content={model.get('content')}
-					saveId={this.saveId}
-					saveContent={this.saveContent}
-					savePage={this.props.savePage}
-					contentDescription={contentDescription}
-					deleteNode={this.showDeleteModal}
-					duplicateNode={this.duplicatePage}
-					markUnsaved={this.props.markUnsaved}/>
-			</li>
-		)
 	}
 
 	showAddAssessmentModal() {
@@ -145,7 +101,13 @@ class EditorNav extends React.Component {
 		return list.map((item, index) => {
 			switch(item.type){
 				case 'heading': 
-					return this.renderHeading(index, item, list)
+					return (
+						<Header
+							key={index}
+							index={index}
+							list={list}
+							markUnsaved={this.props.markUnsaved}/>
+					)
 				case 'link':
 					return (
 						<SubMenu

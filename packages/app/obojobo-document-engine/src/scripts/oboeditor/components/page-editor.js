@@ -2,7 +2,6 @@ import './page-editor.scss'
 
 import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 import AlignMarks from './marks/align-marks'
-import Assessment from 'obojobo-sections-assessment/editor'
 import BasicMarks from './marks/basic-marks'
 import ClipboardPlugin from '../plugins/clipboard-plugin'
 import Common from 'obojobo-document-engine/src/scripts/common'
@@ -256,6 +255,7 @@ class PageEditor extends React.Component {
 			json.children.push(contentJSON)
 		})
 		this.setState({ saved: true })
+		console.log(json)
 		return APIUtil.postDraft(draftId, JSON.stringify(json))
 	}
 

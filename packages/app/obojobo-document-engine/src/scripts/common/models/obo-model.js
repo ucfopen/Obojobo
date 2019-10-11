@@ -152,7 +152,6 @@ class OboModel extends Backbone.Model {
 
 	onChildrenReset(collection, options) {
 		options.previousModels.map(child => (child.parent = null))
-		collection.map(child => this.onChildAdd(child))
 	}
 
 	createNewLocalId() {

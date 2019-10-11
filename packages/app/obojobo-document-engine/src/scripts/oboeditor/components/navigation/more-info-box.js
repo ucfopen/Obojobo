@@ -225,16 +225,31 @@ class MoreInfoBox extends React.Component {
 								✎ Edit
 							</Button>
 						</div>
-						<div>
-							<Button 
-								className="delete-page-button"
-								onClick={this.props.deleteNode}>Delete</Button>
-							<Button 
-								className="duplicate-button"
-								onClick={this.props.duplicateNode}>
-								Duplicate
-							</Button>
-						</div>
+						{ this.props.hideButtonBar ? null :
+							<div className="button-bar">
+								<Button 
+									className="delete-page-button"
+									onClick={this.props.deleteNode}>
+									Delete
+								</Button>
+								<Button
+									onClick={this.props.duplicateNode}>
+									Duplicate
+								</Button>
+								{ this.props.isFirst ? null :
+									<Button
+										onClick={() => this.props.moveNode(this.props.index - 1)}>
+										Move Up
+									</Button>
+								}
+								{ this.props.isLast ? null : 
+									<Button
+										onClick={() => this.props.moveNode(this.props.index + 1)}>
+										Move Down
+									</Button>
+								}
+							</div>
+						}
 					</div>
 					<div>
 						{this.state.error ? <p>{this.state.error}</p> : null }

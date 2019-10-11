@@ -43,6 +43,7 @@ const EditorSchema = {
 						return editor.insertNodeByKey(node.key, index, block)
 					}
 					case CHILD_TYPE_INVALID: {
+						console.log(child)
 						const block = Block.fromJSON({
 							object: 'block',
 							type: TEXT_NODE

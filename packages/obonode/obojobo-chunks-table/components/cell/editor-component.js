@@ -73,13 +73,28 @@ class Cell extends React.Component {
 		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
 		const colIndex = this.props.parent.getPath(this.props.node.key).get(0)
 
-		tableParent.nodes.forEach(row => {
-			const newCell = Block.create({
-				type: TABLE_CELL_NODE,
-				data: { content: { header: row.data.get('content').header } }
+		return editor.withoutNormalizing(() => {
+			const tableContent = tableParent.data.get('content')
+			editor.setNodeByKey(tableParent.key, { data: { content: {
+				...tableParent.data.get('content'),
+				numCols: tableContent.numCols + 1
+			}}})
+
+			tableParent.nodes.forEach(row => {
+				const newCell = Block.create({
+					type: TABLE_CELL_NODE,
+					data: { content: { header: row.data.get('content').header } }
+				})
+				
+				editor.setNodeByKey(row.key, { data: { content: {
+					...row.data.get('content'),
+					numCols: tableContent.numCols + 1
+				}}})
+				editor.insertNodeByKey(row.key, colIndex, newCell)
 			})
-			return editor.insertNodeByKey(row.key, colIndex, newCell)
 		})
+
+			
 	}
 
 	addColRight() {
@@ -88,12 +103,25 @@ class Cell extends React.Component {
 		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
 		const colIndex = this.props.parent.getPath(this.props.node.key).get(0)
 
-		tableParent.nodes.forEach(row => {
-			const newCell = Block.create({
-				type: TABLE_CELL_NODE,
-				data: { content: { header: row.data.get('content').header } }
+		return editor.withoutNormalizing(() => {
+			const tableContent = tableParent.data.get('content')
+			editor.setNodeByKey(tableParent.key, { data: { content: {
+				...tableParent.data.get('content'),
+				numCols: tableContent.numCols + 1
+			}}})
+
+			tableParent.nodes.forEach(row => {
+				const newCell = Block.create({
+					type: TABLE_CELL_NODE,
+					data: { content: { header: row.data.get('content').header } }
+				})
+
+				editor.setNodeByKey(row.key, { data: { content: {
+					...row.data.get('content'),
+					numCols: tableContent.numCols + 1
+				}}})
+				editor.insertNodeByKey(row.key, colIndex + 1, newCell)
 			})
-			return editor.insertNodeByKey(row.key, colIndex + 1, newCell)
 		})
 	}
 
@@ -133,14 +161,20 @@ class Cell extends React.Component {
 			return editor.removeNodeByKey(tableParent.key)
 		}
 
-		tableParent.nodes.forEach(row => {
-			const cell = row.nodes.get(colIndex)
-			return editor.withoutNormalizing(() => {
+		return editor.withoutNormalizing(() => {
+			const tableContent = tableParent.data.get('content')
+			editor.setNodeByKey(tableParent.key, { data: { content: {
+				...tableParent.data.get('content'),
+				numCols: tableContent.numCols - 1
+			}}})
+
+			tableParent.nodes.forEach(row => {
+				const cell = row.nodes.get(colIndex)
 				editor.setNodeByKey(row.key, { 
 					data: { 
 						content: {
 							...row.data.get('content'),
-							numCols: row.nodes.size - 1
+							numCols: tableContent.numCols - 1
 						} 
 
 					} 

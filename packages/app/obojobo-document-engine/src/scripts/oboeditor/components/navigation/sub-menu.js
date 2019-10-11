@@ -251,6 +251,9 @@ class SubMenu extends React.Component {
 				{isSelected ? (
 					<MoreInfoBox
 						id={item.id}
+						index={model.getIndex()}
+						isFirst={model.isFirst()}
+						isLast={model.isLast()}
 						type={model.get('type')}
 						content={model.get('content')}
 						saveId={this.saveId}
@@ -259,7 +262,9 @@ class SubMenu extends React.Component {
 						contentDescription={contentDescription}
 						deleteNode={this.showDeleteModal}
 						duplicateNode={this.duplicatePage}
-						markUnsaved={this.props.markUnsaved}/>
+						markUnsaved={this.props.markUnsaved}
+						moveNode={this.movePage.bind(this, item.id)}
+						showMoveButtons/>
 				) : null}
 				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null}
 			</li>

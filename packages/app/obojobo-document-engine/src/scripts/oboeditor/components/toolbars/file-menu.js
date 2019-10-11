@@ -46,6 +46,7 @@ class FileMenu extends React.Component {
 		// If the module name is empty or just whitespace, provide a default value
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 
+		console.log('hewwo?')
 		EditorUtil.renamePage(moduleId, label)
 
 		if(this.props.onRename) {

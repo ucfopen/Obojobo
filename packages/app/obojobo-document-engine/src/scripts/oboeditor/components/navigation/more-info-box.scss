@@ -1,8 +1,9 @@
 @import '../../../../scss/includes';
 .more-info {
-	position: relative;
+	position: absolute;
 	z-index: 9999;
-	top: -1em;
+	top: 0;
+	right: 0;
 
 	.more-info-button {
 		width: 1.7em;
