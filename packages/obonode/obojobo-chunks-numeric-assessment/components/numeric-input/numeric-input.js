@@ -4,6 +4,7 @@ import React from 'react'
 import { Block } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
+import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import NumericHeader from './numeric-header'
 import NumericOption from './numeric-option'
 import { NUMERIC_FEEDBACK_NODE } from '../../constant'
