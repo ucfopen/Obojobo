@@ -53,7 +53,7 @@ class EditorStore extends Store {
 		)
 	}
 
-	init(model, startingId = null, settings, startingPath, viewState = {}) {
+	init(model, startingId = null, settings, startingPath, mode) {
 		this.state = {
 			navItems: {},
 			itemsById: {},
@@ -61,13 +61,14 @@ class EditorStore extends Store {
 			itemsByFullPath: {},
 			navTargetHistory: [],
 			navTargetId: null,
-			locked: viewState['nav:isLocked'] != null ? viewState['nav:isLocked'].value : false,
-			open: viewState['nav:isOpen'] != null ? viewState['nav:isOpen'].value : true,
 			context: 'editor',
 			currentPageModel: null,
+			mode,
 			settings,
 			startingId
 		}
+
+		console.log(this.state)
 
 		this.buildMenu(model)
 		EditorUtil.gotoPath(startingPath)
@@ -108,6 +109,8 @@ class EditorStore extends Store {
 		if (navItem.showChildrenOnNavigation) {
 			navItem.showChildren = true
 		}
+
+		console.log(document.title)
 
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
@@ -163,7 +166,7 @@ class EditorStore extends Store {
 
 			const flatPath = childNavItem.fullPath.join('/')
 			childNavItem.flatPath = flatPath
-			childNavItem.fullFlatPath = ['/editor', model.getRoot().get('draftId'), flatPath].join('/')
+			childNavItem.fullFlatPath = ['/editor', this.state.mode, model.getRoot().get('draftId'), flatPath].join('/')
 			this.state.itemsByPath[flatPath] = childNavItem
 			this.state.itemsByFullPath[childNavItem.fullFlatPath] = childNavItem
 		}

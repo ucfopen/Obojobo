@@ -28,7 +28,7 @@ const { ModalUtil } = Common.util
 const { ModalStore } = Common.stores
 const { OboModel } = Common.models
 
-const XML_MODE = 'xml'
+const CLASSIC_MODE = 'classic'
 const JSON_MODE = 'json'
 const VISUAL_MODE = 'visual'
 
@@ -87,7 +87,8 @@ class EditorApp extends React.Component {
 			obomodel,
 			json.content.start,
 			this.props.settings,
-			window.location.pathname
+			window.location.pathname,
+			this.state.mode
 		)
 
 		return {
@@ -112,7 +113,8 @@ class EditorApp extends React.Component {
 			obomodel,
 			null,
 			this.props.settings,
-			window.location.pathname
+			window.location.pathname,
+			this.state.mode
 		)
 
 		return { 
@@ -132,11 +134,11 @@ class EditorApp extends React.Component {
 	}
 
 	reloadDraft(draftId, mode) {
-		return APIUtil.getFullDraft(draftId, mode === VISUAL_MODE ? JSON_MODE : mode)
+		return APIUtil.getFullDraft(draftId, mode === CLASSIC_MODE ? 'xml' : JSON_MODE)
 			.then(response => {
 				let json
 				switch(mode) {
-					case XML_MODE:
+					case CLASSIC_MODE:
 						// Calling getFullDraft with xml will return plain text xml
 						return response
 					default:
@@ -163,7 +165,8 @@ class EditorApp extends React.Component {
 
 	componentDidMount() {
 		const urlTokens = document.location.pathname.split('/')
-		const draftId = urlTokens[2] ? urlTokens[2] : null
+		const draftId = urlTokens[3] ? urlTokens[3] : null
+		this.state.mode = urlTokens[2] ? urlTokens[2] : VISUAL_MODE
 		ModalStore.init()
 
 		return this.reloadDraft(draftId, this.state.mode)

@@ -134,7 +134,7 @@ class CodeEditor extends React.Component {
 	render() {
 		const options = {
 			lineNumbers: true,
-			mode: this.props.mode === 'xml' ? 'text/xml' : 'text/json',
+			mode: this.props.mode === 'classic' ? 'text/xml' : 'text/json',
 			matchTags: true,
 			foldGutter: true,
 			lineWrapping: true,
