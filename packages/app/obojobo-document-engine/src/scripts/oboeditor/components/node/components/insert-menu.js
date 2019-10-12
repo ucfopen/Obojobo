@@ -3,7 +3,7 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 import './insert-menu.scss'
 
-class DropMenu extends React.Component {
+class InsertMenu extends React.PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -13,8 +13,13 @@ class DropMenu extends React.Component {
 			currentFocus: 0
 		}
 
+		this.refs = {}
 		this.menu = []
 		this.timeOutId = null
+		this.openMenu = this.openMenu.bind(this)
+		this.onKeyDown = this.onKeyDown.bind(this)
+		this.onBlurHandler = this.onBlurHandler.bind(this)
+		this.onFocusHandler = this.onFocusHandler.bind(this)
 	}
 
 	openMenu() {
@@ -31,7 +36,7 @@ class DropMenu extends React.Component {
 		// accessed via up and down arrows
 		this.menu = []
 		this.props.dropOptions.forEach(item => {
-			if (item.isInsertable) this.menu.push(this[item.name])
+			this.menu.push(this.refs[item.name])
 		})
 
 		// When the menu is open, focus on the current dropdown item
@@ -89,18 +94,18 @@ class DropMenu extends React.Component {
 	}
 
 	renderItem(item) {
-		if (!item.isInsertable) return null
 		const Icon = item.icon
 		return (
 			<div key={item.name} className="insert-button">
 				<button
 					tabIndex="-1"
 					ref={button => {
-						this[item.name] = button
+						this.refs[item.name] = button
 					}}
 					onClick={() => {
 						this.props.masterOnClick(item)
 					}}
+					disabled={item.disabled}
 				>
 					{Icon ? <Icon /> : item.name}
 				</button>
@@ -119,25 +124,23 @@ class DropMenu extends React.Component {
 					this.props.className
 				}
 				contentEditable={false}
-				onKeyDown={event => this.onKeyDown(event)}
-				onBlur={() => this.onBlurHandler()}
-				onFocus={() => this.onFocusHandler()}
+				onKeyDown={this.onKeyDown}
+				onBlur={this.onBlurHandler}
+				onFocus={this.onFocusHandler}
 			>
 				<button
 					className={'drop-icon'}
 					ref={button => {
 						this.mainButton = button
 					}}
-					onClick={() => this.openMenu()}
+					onClick={this.openMenu}
 				>
 					{this.props.icon}
 				</button>
-				{this.props.dropOptions.map(item => {
-					return this.renderItem(item)
-				})}
+				{this.props.dropOptions.map(item => this.renderItem(item))}
 			</div>
 		)
 	}
 }
 
-export default DropMenu
+export default InsertMenu

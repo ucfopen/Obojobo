@@ -35,7 +35,6 @@ class CodeEditor extends React.Component {
 		this.saveCode = this.saveCode.bind(this)
 		this.setTitle = this.setTitle.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
-		this.getEditor = this.getEditor.bind(this)
 
 		this.editor = null;
 
@@ -104,22 +103,18 @@ class CodeEditor extends React.Component {
 		this.setState({ saved: true })
 
 		return APIUtil.postDraft(
-			this.props.draftId, 
-			this.state.code, 
+			this.props.draftId,
+			this.state.code,
 			this.props.mode === 'xml' ? 'text/plain' : 'application/json')
-	}
-
-	getEditor() {
-		return this.editor
 	}
 
 	// Makes CodeMirror commands match Slate commands
 	convertCodeMirrorToEditor(codeMirror) {
 		const editor = codeMirror
-		editor.moveToRangeOfDocument = () => { 
+		editor.moveToRangeOfDocument = () => {
 			const lastInfo = editor.lineInfo(editor.lastLine())
-			editor.setSelection( 
-				{ line: editor.firstLine(), ch: 0 }, 
+			editor.setSelection(
+				{ line: editor.firstLine(), ch: 0 },
 				{ line: lastInfo.line, ch: lastInfo.text.length})
 			return editor
 		}
@@ -146,28 +141,32 @@ class CodeEditor extends React.Component {
 		}
 
 		return (
-			<div 
+			<div
 				className={'component editor--code-editor'}
-				onKeyDown={event => this.keyBinding.onKeyDown(event, this.getEditor(), () => undefined)}
-				onKeyUp={event => this.keyBinding.onKeyUp(event, this.getEditor(), () => undefined)}
-				onKeyPress={event => this.keyBinding.onKeyDown(event, this.getEditor(), () => undefined)}>
+				onKeyDown={event => this.keyBinding.onKeyDown(event, this.editor, () => undefined)}
+				onKeyUp={event => this.keyBinding.onKeyUp(event, this.editor, () => undefined)}
+				onKeyPress={event => this.keyBinding.onKeyDown(event, this.editor, () => undefined)}>
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
+						editor={this.editor}
+						undo={this.editor.undo}
+						redo={this.editor.redo}
+						delete={this.editor.delete}
 						model={this.props.model}
 						draftId={this.props.draftId}
 						onSave={this.saveCode}
 						onRename={this.setTitle}
 						switchMode={this.props.switchMode}
 						saved={this.state.saved}
-						getEditor={this.getEditor}
 						mode={this.props.mode}
+						insertableItems={this.props.insertableItems}
 					/>
 				</div>
-				<CodeMirror 
-					options={options} 
-					value={this.state.code} 
-					onBeforeChange={this.onBeforeChange} 
+				<CodeMirror
+					options={options}
+					value={this.state.code}
+					onBeforeChange={this.onBeforeChange}
 					editorDidMount={editor => { this.editor = this.convertCodeMirrorToEditor(editor) }}/>
 			</div>
 		)

@@ -14,7 +14,7 @@ import generateAssessment from '../../documents/generate-assessment'
 const { Prompt } = Common.components.modal
 const { ModalUtil } = Common.util
 
-class EditorNav extends React.Component {
+class EditorNav extends React.PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = this.props.navState
@@ -100,7 +100,7 @@ class EditorNav extends React.Component {
 
 		return list.map((item, index) => {
 			switch(item.type){
-				case 'heading': 
+				case 'heading':
 					return (
 						<Header
 							key={index}
@@ -123,7 +123,7 @@ class EditorNav extends React.Component {
 				case 'no-pages':
 					return (
 						<li key="1" className="no-pages-item">
-							<button 
+							<button
 								className="add-node-button"
 								onClick={this.showAddPageModal}>
 								+ Page

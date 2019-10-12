@@ -5,6 +5,7 @@ let toolbarItems
 let variableHandlers
 
 const noop = () => {}
+let memoInsertable
 
 class _Registry {
 	init() {
@@ -127,16 +128,6 @@ class _Registry {
 		return items.get(type)
 	}
 
-	registerToolbarItem(opts) {
-		registeredToolbarItems[opts.id] = opts
-		return this
-	}
-
-	addToolbarItem(id) {
-		toolbarItems.push(Object.assign({}, registeredToolbarItems[id]))
-		return this
-	}
-
 	getItems(callback) {
 		return callback(items)
 	}
@@ -150,12 +141,12 @@ class _Registry {
 		return cb.call(null, model, viewerState)
 	}
 
-	get registeredToolbarItems() {
-		return registeredToolbarItems
-	}
-
-	get toolbarItems() {
-		return toolbarItems
+	get insertableItems(){
+		if(!memoInsertable){
+			memoInsertable = Array.from(items.values())
+				.filter(item => item.isInsertable)
+		}
+		return memoInsertable
 	}
 }
 

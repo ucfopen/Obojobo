@@ -43,15 +43,15 @@ class PageEditor extends React.Component {
 			editable: true
 		}
 
-		this.ref = this.ref.bind(this)
+		this.editorRef = React.createRef()
 		this.onChange = this.onChange.bind(this)
-		this.getEditor = this.getEditor.bind(this)
 		this.exportToJSON = this.exportToJSON.bind(this)
 		this.saveModule = this.saveModule.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
 		this.toggleEditable = this.toggleEditable.bind(this)
+		this.exportCurrentToJSON = this.exportCurrentToJSON.bind(this)
 		this.markUnsaved = this.markUnsaved.bind(this)
-
+		this.insertableItems = []
 		this.plugins = this.getPlugins()
 	}
 
@@ -152,10 +152,7 @@ class PageEditor extends React.Component {
 			this.exportToJSON(prevProps.page, prevState.value)
 			return this.setState({ value: Value.fromJSON(this.importFromJSON()) })
 		}
-	}
 
-	ref(editor) {
-		this.editor = editor
 	}
 
 	render() {
@@ -164,28 +161,30 @@ class PageEditor extends React.Component {
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
 					<FileToolbar
-						getEditor={this.getEditor.bind(this)}
+						editorRef={this.editorRef}
 						model={this.props.model}
 						draftId={this.props.draftId}
 						onSave={this.saveModule}
 						switchMode={this.props.switchMode}
 						saved={this.state.saved}
-						mode={'visual'}/>
-					<ContentToolbar getEditor={this.getEditor} />
+						mode={'visual'}
+						insertableItems={this.props.insertableItems}
+					/>
+					<ContentToolbar editorRef={this.editorRef} />
 				</div>
 
 				<EditorNav
 					navState={this.props.navState}
 					model={this.props.model}
 					draftId={this.props.draftId}
-					savePage={this.exportToJSON.bind(this, this.props.page, this.state.value)}
+					savePage={this.exportCurrentToJSON}
 					markUnsaved={this.markUnsaved}/>
 
 				<div className="component obojobo-draft--modules--module" role="main">
 					<Editor
 						className="component obojobo-draft--pages--page"
 						value={this.state.value}
-						ref={this.ref}
+						ref={this.editorRef}
 						onChange={this.onChange}
 						plugins={this.plugins}
 						readOnly={!this.props.page || !this.state.editable}
@@ -193,10 +192,6 @@ class PageEditor extends React.Component {
 				</div>
 			</div>
 		)
-	}
-
-	getEditor() {
-		return this.editor
 	}
 
 	onChange(change) {
@@ -222,7 +217,7 @@ class PageEditor extends React.Component {
 	}
 
 	saveModule(draftId) {
-		this.exportToJSON(this.props.page, this.state.value)
+		this.exportCurrentToJSON()
 		const json = this.props.model.flatJSON()
 		json.content.start = EditorStore.state.startingId
 
@@ -255,7 +250,6 @@ class PageEditor extends React.Component {
 			json.children.push(contentJSON)
 		})
 		this.setState({ saved: true })
-		console.log(json)
 		return APIUtil.postDraft(draftId, JSON.stringify(json))
 	}
 
@@ -283,6 +277,11 @@ class PageEditor extends React.Component {
 
 			return json
 		}
+	}
+
+	// convenience method to prevent rerendring nav and duplicate code
+	exportCurrentToJSON(){
+		this.exportToJSON(this.props.page, this.state.value)
 	}
 
 	importFromJSON() {

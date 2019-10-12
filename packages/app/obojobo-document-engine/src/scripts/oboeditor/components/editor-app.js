@@ -58,9 +58,7 @@ class EditorApp extends React.Component {
 			code: null
 		}
 
-		// register plugins
-		// @TODO - this could happen inside registerModel
-		// and later be extracted directly by PageEditor?
+		// register plugins from dynamic registry items
 		Common.Registry.getItems(items => {
 			items.forEach(i => {
 				if (i.plugins) plugins.push(i.plugins)
@@ -70,10 +68,9 @@ class EditorApp extends React.Component {
 		// Make Slate nodes generate with UUIDs
 		KeyUtils.setGenerator(generateId)
 
+		// === SET UP DATA STORES ===
 		this.onEditorStoreChange = () => this.setState({ editorState: EditorStore.getState() })
 		this.onModalStoreChange = () => this.setState({ modalState: ModalStore.getState() })
-
-		// === SET UP DATA STORES ===
 		EditorStore.onChange(this.onEditorStoreChange)
 		ModalStore.onChange(this.onModalStoreChange)
 
@@ -117,7 +114,7 @@ class EditorApp extends React.Component {
 			this.state.mode
 		)
 
-		return { 
+		return {
 			modalState: ModalStore.getState(),
 			editorState: EditorStore.getState(),
 			code: draftModel,
@@ -183,7 +180,9 @@ class EditorApp extends React.Component {
 			model={this.state.model}
 			draftId={this.state.draftId}
 			mode={this.state.mode}
-			switchMode={this.switchMode}/>
+			switchMode={this.switchMode}
+			insertableItems={Common.Registry.insertableItems}
+		/>
 	}
 
 	renderVisualEditor() {
@@ -196,6 +195,7 @@ class EditorApp extends React.Component {
 				draft={this.state.draft}
 				draftId={this.state.draftId}
 				switchMode={this.switchMode}
+				insertableItems={Common.Registry.insertableItems}
 			/>
 		)
 	}

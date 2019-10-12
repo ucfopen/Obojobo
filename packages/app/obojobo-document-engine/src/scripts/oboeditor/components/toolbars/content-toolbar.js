@@ -15,25 +15,20 @@ const contentMarks = [
 	...IndentMarks.marks
 ]
 
-const ContentToolbar = props => {
-	const editor = props.getEditor()
-
-	return (
-			<div className={`visual-editor--content-toolbar`}>
-				{contentMarks.map(mark => {
-					const Icon = mark.icon
-					return (
-						<button
-							key={mark.name}
-							onClick={() => mark.action(editor)}
-							title={mark.name}
-						>
-							<Icon />
-						</button>
-					)
-				})}
-			</div>
-		)
-}
+const ContentToolbar = props =>
+	<div className={`visual-editor--content-toolbar`}>
+		{contentMarks.map(mark => {
+			const Icon = mark.icon
+			return (
+				<button
+					key={mark.name}
+					onClick={() => mark.action(props.editorRef.current)}
+					title={mark.name}
+				>
+					<Icon />
+				</button>
+			)
+		})}
+	</div>
 
 export default ContentToolbar

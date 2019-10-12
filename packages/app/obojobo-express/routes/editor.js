@@ -7,22 +7,13 @@ const allowedUploadTypes = mediaConfig.allowedMimeTypesRegex
 	.map(i => `.${i}`)
 	.join(',')
 
-const displayVisualEditor = (req, res) => {
-	res.render('editor', { settings: { allowedUploadTypes } })
-}
-
 // Display the visual editor
 // mounted as /editor/draftId/page
 router
-	.route('/:draftId/:page?')
+	.route('/visual|classic/:draftId/:page?')
 	.get([requireCanViewEditor, requireCurrentDocument])
-	.get(displayVisualEditor)
-
-// Post to the visual editor
-// mounted as /editor/draftId/page
-router
-	.route('/:draftId/:page?')
-	.post([requireCanViewEditor, requireCurrentDocument])
-	.post(displayVisualEditor)
+	.get((req, res) => {
+		res.render('editor', { settings: { allowedUploadTypes } })
+	})
 
 module.exports = router

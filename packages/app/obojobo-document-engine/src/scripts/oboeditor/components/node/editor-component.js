@@ -2,8 +2,7 @@ import React from 'react'
 import { Block } from 'slate'
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-import DropMenu from './components/insert-menu'
-
+import InsertMenu from './components/insert-menu'
 import MoreInfoBox from '../navigation/more-info-box'
 
 import './editor-component.scss'
@@ -12,21 +11,17 @@ class Node extends React.Component {
 	insertBlockAtStart(item) {
 		// Inserts a sibling node before the current node
 		return this.props.editor.insertNodeByKey(
-			this.props.parent.key, 
-			this.props.parent.getPath(this.props.node.key).get(0), 
+			this.props.parent.key,
+			this.props.parent.getPath(this.props.node.key).get(0),
 			Block.create(item.cloneBlankNode()))
 	}
 
 	insertBlockAtEnd(item) {
 		// Inserts a sibling node after the current node
 		return this.props.editor.insertNodeByKey(
-			this.props.parent.key, 
-			this.props.parent.getPath(this.props.node.key).get(0) + 1, 
+			this.props.parent.key,
+			this.props.parent.getPath(this.props.node.key).get(0) + 1,
 			Block.create(item.cloneBlankNode()))
-	}
-
-	convertItemsToArray(items) {
-		return Array.from(items.values())
 	}
 
 	saveId(prevId, newId) {
@@ -37,15 +32,15 @@ class Node extends React.Component {
 
 		this.props.editor
 			.insertNodeByKey(
-				this.props.parent.key, 
-				this.props.parent.getPath(this.props.node.key).get(0), 
+				this.props.parent.key,
+				this.props.parent.getPath(this.props.node.key).get(0),
 				Block.create(jsonNode))
 			.removeNodeByKey(prevId)
 	}
 
 	saveContent(prevContent, newContent) {
 		this.props.editor.setNodeByKey(
-			this.props.node.key, 
+			this.props.node.key,
 			{ data: { ...this.props.node.data.toJSON(), content: newContent } }
 		)
 	}
@@ -60,8 +55,8 @@ class Node extends React.Component {
 
 		// Inserts a sibling node after the current node
 		return editor.insertNodeByKey(
-			this.props.parent.key, 
-			this.props.parent.getPath(this.props.node.key).get(0) + 1, 
+			this.props.parent.key,
+			this.props.parent.getPath(this.props.node.key).get(0) + 1,
 			Block.create(this.props.node.toJSON()))
 	}
 
@@ -80,14 +75,14 @@ class Node extends React.Component {
 			<div className={'oboeditor-component component'} data-obo-component="true">
 				{this.props.isSelected ? (
 					<div className={'component-toolbar'}>
-						<DropMenu
-							dropOptions={Common.Registry.getItems(this.convertItemsToArray)}
+						<InsertMenu
+							dropOptions={Common.Registry.insertableItems}
 							className={'align-left top'}
 							icon="+"
 							masterOnClick={this.insertBlockAtStart.bind(this)}
 						/>
-						<DropMenu
-							dropOptions={Common.Registry.getItems(this.convertItemsToArray)}
+						<InsertMenu
+							dropOptions={Common.Registry.insertableItems}
 							className={'align-left bottom'}
 							icon="+"
 							masterOnClick={this.insertBlockAtEnd.bind(this)}

@@ -12,7 +12,7 @@ const { Prompt } = Common.components.modal
 const { SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
 
-class FileMenu extends React.Component {
+class FileMenu extends React.PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -102,99 +102,96 @@ class FileMenu extends React.Component {
 
 	render() {
 		const url = window.location.origin + '/view/' + this.props.draftId
-		const menu = {
-			name: 'File',
-			menu: [
-				{
-					name: 'Save',
-					type: 'action',
-					action: () =>
-						this.props.onSave(this.props.draftId).then(result => {
-							if (result.status === 'ok') {
-								ModalUtil.show(<SimpleDialog ok title={'Successfully saved draft'} />)
-							} else {
-								ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
-							}
-						})
-				},
-				{
-					name: 'New',
-					type: 'action',
-					action: () =>
-						APIUtil.createNewDraft().then(result => {
-							if (result.status === 'ok') {
-								window.open(window.location.origin + '/editor/' + result.value.id, '_blank')
-							}
-						})
-				},
-				{
-					name: 'Open',
-					type: 'sub-menu',
-					menu: this.state.drafts
-				},
-				{
-					name: 'Make a copy',
-					type: 'action',
-					action: () =>
-						ModalUtil.show(
-							<Prompt
-								title="Copy Module"
-								message="Enter the title for the copied module:"
-								value={this.props.model.title + ' - Copy'}
-								onConfirm={this.copyModule.bind(this, this.props.model.id)}
-							/>
-						)
-				},
-				{
-					name: 'Download',
-					type: 'sub-menu',
-					menu: [
-						{
-							name: 'XML Document (.xml)',
-							type: 'action',
-							action: () => this.downloadModule(this.props.draftId, 'xml')
-						},
-						{
-							name: 'JSON Document (.json)',
-							type: 'action',
-							action: () => this.downloadModule(this.props.draftId, 'json')
+		const menu = [
+			{
+				name: 'Save',
+				type: 'action',
+				action: () =>
+					this.props.onSave(this.props.draftId).then(result => {
+						if (result.status === 'ok') {
+							ModalUtil.show(<SimpleDialog ok title={'Successfully saved draft'} />)
+						} else {
+							ModalUtil.show(<SimpleDialog ok title={'Error: ' + result.value.message} />)
 						}
-					]
-				},
-				{
-					name: 'Rename',
-					type: 'action',
-					action: () =>
-						ModalUtil.show(
-							<Prompt
-								title="Rename Module"
-								message="Enter the new title for the module:"
-								value={this.props.model.title}
-								onConfirm={this.renameModule.bind(this, this.props.model.id)}
-							/>
-						)
-				},
-				{
-					name: 'Delete',
-					type: 'action',
-					action: () =>
-						ModalUtil.show(
-							<SimpleDialog cancelOk onConfirm={this.deleteModule.bind(this)}>
-								{'Are you sure you want to delete ' +
-									this.props.model.title +
-									'? This will permanately delete all content in the module'}
-							</SimpleDialog>
-						)
-				},
-				{
-					name: 'Copy LTI Link',
-					type: 'action',
-					action: () => ClipboardUtil.copyToClipboard(url)
-				}
-			]
-		}
+					})
+			},
+			{
+				name: 'New',
+				type: 'action',
+				action: () =>
+					APIUtil.createNewDraft().then(result => {
+						if (result.status === 'ok') {
+							window.open(window.location.origin + '/editor/' + result.value.id, '_blank')
+						}
+					})
+			},
+			{
+				name: 'Open',
+				type: 'sub-menu',
+				menu: this.state.drafts
+			},
+			{
+				name: 'Make a copy',
+				type: 'action',
+				action: () =>
+					ModalUtil.show(
+						<Prompt
+							title="Copy Module"
+							message="Enter the title for the copied module:"
+							value={this.props.model.title + ' - Copy'}
+							onConfirm={this.copyModule.bind(this, this.props.model.id)}
+						/>
+					)
+			},
+			{
+				name: 'Download',
+				type: 'sub-menu',
+				menu: [
+					{
+						name: 'XML Document (.xml)',
+						type: 'action',
+						action: () => this.downloadModule(this.props.draftId, 'xml')
+					},
+					{
+						name: 'JSON Document (.json)',
+						type: 'action',
+						action: () => this.downloadModule(this.props.draftId, 'json')
+					}
+				]
+			},
+			{
+				name: 'Rename',
+				type: 'action',
+				action: () =>
+					ModalUtil.show(
+						<Prompt
+							title="Rename Module"
+							message="Enter the new title for the module:"
+							value={this.props.model.title}
+							onConfirm={this.renameModule.bind(this, this.props.model.id)}
+						/>
+					)
+			},
+			{
+				name: 'Delete',
+				type: 'action',
+				action: () =>
+					ModalUtil.show(
+						<SimpleDialog cancelOk onConfirm={this.deleteModule.bind(this)}>
+							{'Are you sure you want to delete ' +
+								this.props.model.title +
+								'? This will permanately delete all content in the module'}
+						</SimpleDialog>
+					)
+			},
+			{
+				name: 'Copy LTI Link',
+				type: 'action',
+				action: () => ClipboardUtil.copyToClipboard(url)
+			}
+		]
 
-		return <DropDownMenu menu={menu} />
+		return <DropDownMenu name="File" menu={menu} />
 	}
 }
 

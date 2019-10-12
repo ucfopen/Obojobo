@@ -110,8 +110,6 @@ class EditorStore extends Store {
 			navItem.showChildren = true
 		}
 
-		console.log(document.title)
-
 		window.history.pushState({}, document.title, navItem.fullFlatPath)
 		this.state.navTargetId = navItem.id
 		const navModel = EditorUtil.getNavTargetModel(this.state)

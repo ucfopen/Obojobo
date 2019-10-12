@@ -4,7 +4,7 @@ import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 import './drop-down-menu.scss'
 
-class DropMenu extends React.Component {
+class DropMenu extends React.PureComponent {
 	constructor(props) {
 		super(props)
 
@@ -16,6 +16,8 @@ class DropMenu extends React.Component {
 
 		this.menu = []
 		this.timeOutId = null
+		this.onBlurHandler = this.onBlurHandler.bind(this)
+		this.onFocusHandler = this.onFocusHandler.bind(this)
 	}
 
 	componentDidUpdate() {
@@ -68,17 +70,17 @@ class DropMenu extends React.Component {
 		clearTimeout(this.timeOutId)
 	}
 
-	renderSubMenu(submenu) {
+	renderSubMenu(name, menu) {
 		return (
 			<div
 				className={'dropdown ' + isOrNot(this.state.isOpen, 'open')}
-				key={submenu.name}>
-				<button className="menu-title">{submenu.name}</button>
+				key={name}>
+				<button className="menu-title">{name}</button>
 				<div className="menu-items">
-					{submenu.menu.map(item => {
+					{menu.map(item => {
 						switch(item.type) {
 							case 'sub-menu':
-								return (this.renderSubMenu(item))
+								return (this.renderSubMenu(item.name, item.menu))
 							default:
 								return (
 									<button
@@ -111,10 +113,10 @@ class DropMenu extends React.Component {
 			<div
 				className="visual-editor--drop-down-menu"
 				onClick={this.props.onClick}
-				onBlur={() => this.onBlurHandler()}
-				onFocus={() => this.onFocusHandler()}
+				onBlur={this.onBlurHandler}
+				onFocus={this.onFocusHandler}
 				onKeyDown={event => this.onKeyDown(event)}>
-				{this.renderSubMenu(this.props.menu)}
+				{this.renderSubMenu(this.props.name, this.props.menu)}
 			</div>
 		)
 	}
