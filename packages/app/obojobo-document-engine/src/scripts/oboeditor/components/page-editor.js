@@ -253,11 +253,13 @@ class PageEditor extends React.Component {
 	}
 
 	exportToJSON(page, value) {
-		if (this.props.page === null) return
+		if (page === null) return
 
 		if (page.get('type') === ASSESSMENT_NODE) {
 			const json = this.assessment.slateToObo(value.document.nodes.get(0))
 			page.set('children', json.children)
+			const childrenModels = json.children.map(newChild => OboModel.create(newChild))
+			page.children.set(childrenModels)
 			page.set('content', json.content)
 			return json
 		} else {
