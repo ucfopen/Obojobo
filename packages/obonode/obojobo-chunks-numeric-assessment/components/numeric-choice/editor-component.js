@@ -30,16 +30,20 @@ const NumericInput = props => {
 		<div className={className}>
 			{props.children}
 			{!hasFeedback ? (
-				<Button
-					className="pad obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn"
-					onClick={addFeedback}
-				>
-					Add Feedback
-				</Button>
+				<div contentEditable={false}>
+					<Button
+						className="pad obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn"
+						onClick={addFeedback}
+					>
+						Add Feedback
+					</Button>
+				</div>
 			) : null}
-			<Button className="delete-button" onClick={onDelete}>
-				×
-			</Button>
+			<div contentEditable={false}>
+				<Button className="delete-button" onClick={onDelete}>
+					×
+				</Button>
+			</div>
 		</div>
 	)
 }
