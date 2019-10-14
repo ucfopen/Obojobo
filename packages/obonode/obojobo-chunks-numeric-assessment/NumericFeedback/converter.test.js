@@ -8,7 +8,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 }))
 
 import Converter from './converter'
-import { NUMERIC_FEEDBACK_NODE } from '../../constant'
+import { NUMERIC_FEEDBACK_NODE } from '../constants'
 
 describe('NumericFeedback Converter', () => {
 	test('slateToObo converts a Slate node to an OboNode with content', () => {

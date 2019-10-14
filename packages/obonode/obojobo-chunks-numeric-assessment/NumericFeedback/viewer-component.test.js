@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer'
 import NumericFeedback from './viewer-component'
 import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
 
-import { NUMERIC_FEEDBACK_NODE, SCORE_RULE_NODE } from '../../constant'
+import { NUMERIC_FEEDBACK_NODE, NUMERIC_ANSWER_NODE } from '../constants'
 
 describe('NumericFeedback', () => {
 	test('NumericFeedback component for a correct item', () => {
@@ -12,9 +12,8 @@ describe('NumericFeedback', () => {
 		}
 		OboModel.create({
 			id: 'parent',
-			type: SCORE_RULE_NODE,
-			content: {
-			},
+			type: NUMERIC_ANSWER_NODE,
+			content: {},
 			children: [
 				{
 					id: 'feedback',
@@ -51,7 +50,7 @@ describe('NumericFeedback', () => {
 		}
 		OboModel.create({
 			id: 'parent',
-			type: SCORE_RULE_NODE,
+			type: NUMERIC_ANSWER_NODE,
 			content: {
 				score: 0
 			},
