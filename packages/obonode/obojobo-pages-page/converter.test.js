@@ -1,20 +1,24 @@
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		getItemForType: () => ({
-			slateToObo: jest.fn(),
-			oboToSlate: jest.fn()
+		getItemForType: type => ({
+			slateToObo: () => ({
+				slateToOboReturnFor: type
+			}),
+			oboToSlate: type => ({
+				oboToSlateReturnFor: type
+			})
 		})
-	},
-	util: {
-		ModalUtil: {
-			hide: jest.fn(),
-			show: jest.fn()
-		}
-	},
-	components: {
-		modal: {
-			SimpleDialog: () => 'MockSimpleDialog'
-		}
+	}
+}))
+
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor', () => ({
+	helpers: {
+		slateToObo: child => ({
+			componentSlateToOboReturnFor: child
+		}),
+		oboToSlate: child => ({
+			componentOboToSlateReturnFor: child
+		})
 	}
 }))
 

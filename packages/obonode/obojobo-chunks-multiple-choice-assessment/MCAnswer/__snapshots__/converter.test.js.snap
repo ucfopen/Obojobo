@@ -8,18 +8,14 @@ Object {
   "key": "mockKey",
   "nodes": Array [
     Object {
-      "nodes": Array [
-        undefined,
-      ],
-      "object": "block",
-      "type": "oboeditor.component",
+      "componentOboToSlateReturnFor": Object {
+        "type": "ObojoboDraft.Chunks.Break",
+      },
     },
     Object {
-      "nodes": Array [
-        undefined,
-      ],
-      "object": "block",
-      "type": "oboeditor.component",
+      "componentOboToSlateReturnFor": Object {
+        "type": "notADefinedNode",
+      },
     },
   ],
   "object": "block",
@@ -30,7 +26,16 @@ Object {
 exports[`MCAnswer Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [
-    undefined,
+    Object {
+      "componentSlateToOboReturnFor": Object {
+        "nodes": Array [
+          Object {
+            "type": "mockNode",
+          },
+        ],
+        "type": "oboeditor.component",
+      },
+    },
   ],
   "content": Object {},
   "id": "mockKey",

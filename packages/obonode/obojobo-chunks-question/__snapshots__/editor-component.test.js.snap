@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Question Editor Node Question builds the expected component 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="component obojobo-draft--chunks--question is-viewed pad is-type-default"
   >
@@ -47,43 +44,32 @@ exports[`Question Editor Node Question builds the expected component 1`] = `
             </label>
           </div>
         </div>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+        <button
+          className="add-solution"
+          onClick={[Function]}
         >
-          <button
-            className="button"
-            onClick={[Function]}
-          >
-            Add Solution
-          </button>
-        </div>
+          Add Solution
+        </button>
       </div>
     </div>
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    <button
+      className="delete-button"
+      onClick={[Function]}
     >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        ×
-      </button>
-    </div>
+      ×
+    </button>
   </div>
 </div>
 `;
 
-exports[`Question Editor Node Question component adds Solution 1`] = `"<div class=\\"oboeditor-component component\\" data-obo-component=\\"true\\"><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><div class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\"><label>Survey Only</label></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div></div>"`;
+exports[`Question Editor Node Question component adds Solution 1`] = `"<div><div class=\\"component obojobo-draft--chunks--question is-viewed pad is-type-default\\"><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"question-settings\\"><label>Question Type</label><select contenteditable=\\"false\\"><option value=\\"ObojoboDraft.Chunks.MCAssessment\\">Multiple Choice</option></select><div class=\\"question-type\\" contenteditable=\\"false\\"><input type=\\"checkbox\\" name=\\"vehicle1\\" value=\\"Bike\\"><label>Survey Only</label></div></div><button class=\\"add-solution\\">Add Solution</button></div></div><button class=\\"delete-button\\">×</button></div></div>"`;
 
 exports[`Question Editor Node Question component allows you to change question type 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-solution\\"><button class=\\"button\\">Add Solution</button></div></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
 
 exports[`Question Editor Node Question component deletes self 1`] = `"<div class=\\"component obojobo-draft--chunks--question is-viewed is-mode-practice pad is-type-default\\"><select class=\\"question-type\\" contenteditable=\\"false\\"><option value=\\"default\\">Default</option><option value=\\"survey\\">Survey</option></select><div class=\\"flipper question-editor\\"><div class=\\"content-back\\"></div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div>"`;
 
 exports[`Question Editor Node Survey Question builds the expected component 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="component obojobo-draft--chunks--question is-viewed pad is-type-survey"
   >
@@ -126,28 +112,20 @@ exports[`Question Editor Node Survey Question builds the expected component 1`] 
             </label>
           </div>
         </div>
-        <div
-          className="obojobo-draft--components--button is-not-dangerous align-center add-solution"
+        <button
+          className="add-solution"
+          onClick={[Function]}
         >
-          <button
-            className="button"
-            onClick={[Function]}
-          >
-            Add Solution
-          </button>
-        </div>
+          Add Solution
+        </button>
       </div>
     </div>
-    <div
-      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    <button
+      className="delete-button"
+      onClick={[Function]}
     >
-      <button
-        className="button"
-        onClick={[Function]}
-      >
-        ×
-      </button>
-    </div>
+      ×
+    </button>
   </div>
 </div>
 `;

@@ -7,9 +7,7 @@ import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 
 const { Button } = Common.components
-
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
-
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 
 class Question extends React.Component {
@@ -102,9 +100,9 @@ class Question extends React.Component {
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
 								</select>
 								<div className="question-type" contentEditable={false}>
-									<input 
-										type="checkbox" 
-										name="vehicle1" 
+									<input
+										type="checkbox"
+										name="vehicle1"
 										value="Bike"
 										checked={content.type === 'survey'}
 										onChange={this.onSetType}/>

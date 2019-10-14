@@ -8,7 +8,6 @@ const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 
-
 const slateToObo = node => {
 	let Page
 	let QuestionBank
