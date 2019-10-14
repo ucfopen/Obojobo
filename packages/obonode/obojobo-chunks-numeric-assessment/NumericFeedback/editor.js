@@ -5,7 +5,7 @@ import Node from './editor-component'
 import Schema from './schema'
 import Converter from './converter'
 
-import { NUMERIC_FEEDBACK_NODE } from '../../constant'
+import { NUMERIC_FEEDBACK_NODE } from '../constant'
 
 const plugins = {
 	renderNode(props, editor, next) {

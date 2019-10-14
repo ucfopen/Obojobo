@@ -1,6 +1,6 @@
 const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
-const SCORE_RULE_NODE = 'ScoreRule'
-const NUMERIC_ANSWER = 'NumericAnswer'
+const NUMERIC_ANSWER_NODE = 'ScoreRule'
+const NUMERIC_CHOICE_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericChoice'
 const NUMERIC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback'
 
 const EXACT_ANSWER = 'Exact answer'
@@ -18,8 +18,8 @@ const precisionDropdown = [SIGNIFICANT_DIGITS, DECIMAL_PLACES]
 
 export {
 	NUMERIC_ASSESSMENT_NODE,
-	NUMERIC_ANSWER,
-	SCORE_RULE_NODE,
+	NUMERIC_CHOICE_NODE,
+	NUMERIC_ANSWER_NODE,
 	NUMERIC_FEEDBACK_NODE,
 	EXACT_ANSWER,
 	MARGIN_OF_ERROR,

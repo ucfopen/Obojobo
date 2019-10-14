@@ -1,7 +1,7 @@
 import { Block } from 'slate'
 
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
-import { NUMERIC_FEEDBACK_NODE } from '../../constant'
+import { NUMERIC_FEEDBACK_NODE } from '../constant'
 
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 

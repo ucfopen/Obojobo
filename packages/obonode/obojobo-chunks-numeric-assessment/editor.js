@@ -3,21 +3,21 @@ import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 import Node from './editor-component'
-import NumericInput from './components/numeric-input/numeric-input'
-import NumericAnswer from './components/answer-choice/answer-choice'
+import NumericAnswer from './components/numeric-answer/editor-component'
+import NumericChoice from './components/numeric-choice/editor-component'
 import Schema from './schema'
 
-import { SCORE_RULE_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_ANSWER } from './constant'
+import { NUMERIC_ANSWER_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_CHOICE_NODE } from './constant'
 
 const plugins = {
 	renderNode(props, editor, next) {
 		switch (props.node.type) {
 			case NUMERIC_ASSESSMENT_NODE:
 				return <Node {...props} {...props.attributes} />
-			case SCORE_RULE_NODE:
-				return <NumericInput {...props} {...props.attributes} />
-			case NUMERIC_ANSWER:
+			case NUMERIC_ANSWER_NODE:
 				return <NumericAnswer {...props} {...props.attributes} />
+			case NUMERIC_CHOICE_NODE:
+				return <NumericChoice {...props} {...props.attributes} />
 			default:
 				return next()
 		}
@@ -37,8 +37,8 @@ Common.Registry.registerModel(NUMERIC_ASSESSMENT_NODE, {
 const NumericAssessment = {
 	components: {
 		Node,
-		NumericInput,
-		NumericAnswer
+		NumericAnswer,
+		NumericChoice
 	},
 	helpers: {
 		slateToObo: Converter.slateToObo,

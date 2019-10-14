@@ -1,17 +1,10 @@
 @import '~styles/includes';
 
-.numeric-answer {
+.numeric-input-container {
 	$color-border: #dfdfdf;
 
 	position: relative;
-	padding-bottom: 1em;
-	border-bottom: 1px solid $color-border;
-
-	&.is-selected {
-		margin: -1px -1px 0 -1px;
-		border: 1px solid $color-highlight;
-		background-color: lighten($color-highlight, 19);
-	}
+	padding: 1rem 3em;
 
 	.correct-button {
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
@@ -33,17 +26,6 @@
 		}
 	}
 
-	.numeric-feedback-editor {
-		margin: 0 3em;
-	}
-
-	.delete-button {
-		button {
-			position: absolute;
-			top: 3.1rem;
-		}
-	}
-
 	table {
 		border-collapse: collapse;
 
@@ -61,7 +43,7 @@
 		border: 1px solid $color-border;
 		border-radius: 3px;
 		font-size: 1rem;
-		background-color: white;
+		background-color: $color-bg;
 		min-width: 11rem;
 		padding: 0.7rem 0 0.7rem 0.5rem;
 

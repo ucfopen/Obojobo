@@ -1,9 +1,9 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
 import {
-	SCORE_RULE_NODE,
+	NUMERIC_ANSWER_NODE,
 	NUMERIC_FEEDBACK_NODE,
-	NUMERIC_ANSWER,
+	NUMERIC_CHOICE_NODE,
 	EXACT_ANSWER,
 	WITHIN_A_RANGE,
 	PRECISE_RESPONSE,
@@ -94,13 +94,13 @@ const slateToObo = node => {
 	// Parse each scoreRule node
 	node.nodes.forEach(child => {
 		switch (child.type) {
-			case NUMERIC_ANSWER:
+			case NUMERIC_CHOICE_NODE:
 				// const numericRule = simplifedNumericRule(child[0].data.get('numericRule'))
 
 				// Parse feedback node
 				let numericRule = {}
 				child.nodes.forEach(component => {
-					if (component.type === SCORE_RULE_NODE) {
+					if (component.type === NUMERIC_ANSWER_NODE) {
 						numericRule = simplifedNumericRule(component.data.get('numericRule'))
 					}
 					if (component.type === NUMERIC_FEEDBACK_NODE) {
@@ -128,11 +128,11 @@ const oboToSlate = node => {
 	const nodes = node.content.numericRules.map(numericRule => {
 		const node = {
 			object: 'block',
-			type: NUMERIC_ANSWER,
+			type: NUMERIC_CHOICE_NODE,
 			nodes: [
 				{
 					object: 'block',
-					type: SCORE_RULE_NODE,
+					type: NUMERIC_ANSWER_NODE,
 					data: { numericRule: complexifiedNumericRule(numericRule) }
 				}
 			]

@@ -3,21 +3,21 @@ import { Block } from 'slate'
 import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util/schema-violations'
 import {
 	NUMERIC_ASSESSMENT_NODE,
-	SCORE_RULE_NODE,
+	NUMERIC_ANSWER_NODE,
 	NUMERIC_FEEDBACK_NODE,
-	NUMERIC_ANSWER
+	NUMERIC_CHOICE_NODE
 } from './constant'
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const schema = {
 	blocks: {
-		[SCORE_RULE_NODE]: {
+		[NUMERIC_ANSWER_NODE]: {
 			isVoid: true
 		},
-		[NUMERIC_ANSWER]: {
+		[NUMERIC_CHOICE_NODE]: {
 			nodes: [
 				{
-					match: [{ type: SCORE_RULE_NODE }],
+					match: [{ type: NUMERIC_ANSWER_NODE }],
 					min: 1
 				},
 				{
@@ -29,7 +29,7 @@ const schema = {
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
-							type: SCORE_RULE_NODE,
+							type: NUMERIC_ANSWER_NODE,
 							isVoid: true,
 							data: {
 								numericRule: {
@@ -51,7 +51,7 @@ const schema = {
 						// multiple answers and feedbacks will be deleted by slate defaults
 						if (index === 1 && child.type !== NUMERIC_FEEDBACK_NODE) return
 						return editor.wrapBlockByKey(child.key, {
-							type: SCORE_RULE_NODE,
+							type: NUMERIC_ANSWER_NODE,
 							isVoid: true,
 							data: {
 								numericRule: {
@@ -70,14 +70,14 @@ const schema = {
 			}
 		},
 		[NUMERIC_ASSESSMENT_NODE]: {
-			nodes: [{ match: [{ type: NUMERIC_ANSWER }], min: 1 }],
+			nodes: [{ match: [{ type: NUMERIC_CHOICE_NODE }], min: 1 }],
 			normalize: (editor, error) => {
 				const { node, child, index } = error
 				switch (error.code) {
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							object: 'block',
-							type: NUMERIC_ANSWER,
+							type: NUMERIC_CHOICE_NODE,
 							nodes: []
 						})
 						return editor.insertNodeByKey(node.key, index, block)
@@ -85,7 +85,7 @@ const schema = {
 					case CHILD_TYPE_INVALID: {
 						const block = Block.fromJSON({
 							object: 'block',
-							type: NUMERIC_ANSWER,
+							type: NUMERIC_CHOICE_NODE,
 							nodes: []
 						})
 						return editor.withoutNormalizing(c => {

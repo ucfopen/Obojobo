@@ -1,12 +1,9 @@
-import './numeric-input.scss'
+import './editor-component.scss'
 
 import React from 'react'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
 import NumericHeader from './numeric-header'
 import NumericOption from './numeric-option'
-
-const { Button } = Common.components
 
 const NumericInput = props => {
 	const onHandleScoreChange = () => {
@@ -43,23 +40,17 @@ const NumericInput = props => {
 		})
 	}
 
-	const onDelete = event => {
-		event.stopPropagation()
-		const editor = props.editor
-		return editor.removeNodeByKey(props.node.key)
-	}
-
 	const numericRule = props.node.data.get('numericRule')
 	const { score } = numericRule
 
 	return (
 		<div className="numeric-input-container" onClick={props.onSetCurrSelected}>
 			<button
-				className={'correct-button ' + (score == 100 ? 'is-correct' : 'is-not-correct')}
+				className={'correct-button ' + (score == '100' ? 'is-correct' : 'is-not-correct')}
 				tabIndex="0"
 				onClick={onHandleScoreChange}
 			>
-				{score == 100 ? '✔' : '✖'}
+				{score == '100' ? '✔' : '✖'}
 			</button>
 
 			<table contentEditable={false}>
@@ -70,10 +61,6 @@ const NumericInput = props => {
 					onClickDropdown={onClickDropdown}
 				/>
 			</table>
-
-			<Button className="delete-button" onClick={onDelete} contentEditable={false}>
-				×
-			</Button>
 		</div>
 	)
 }
