@@ -28,15 +28,30 @@ class CodeEditor extends React.Component {
 
 		this.state = {
 			code: this.props.initialCode,
-			saved: true
+			saved: true,
+			editor: null,
+			mode: props.mode,
+			options: {
+				lineNumbers: true,
+				mode: this.getCodeMirrorMode(props.mode),
+				matchTags: true,
+				foldGutter: true,
+				lineWrapping: true,
+				indentWithTabs: true,
+				tabSize: 4,
+				indentUnit: 4,
+				gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+				theme: 'monokai'
+			}
 		}
 
 		this.onBeforeChange = this.onBeforeChange.bind(this)
 		this.saveCode = this.saveCode.bind(this)
 		this.setTitle = this.setTitle.bind(this)
 		this.checkIfSaved = this.checkIfSaved.bind(this)
-
-		this.editor = null;
+		this.onKeyUp = this.onKeyUp.bind(this)
+		this.onKeyPress = this.onKeyPress.bind(this)
+		this.onKeyDown = this.onKeyDown.bind(this)
 
 		this.keyBinding = hotKeyPlugin(this.saveCode)
 	}
@@ -105,7 +120,7 @@ class CodeEditor extends React.Component {
 		return APIUtil.postDraft(
 			this.props.draftId,
 			this.state.code,
-			this.props.mode === 'xml' ? 'text/plain' : 'application/json')
+			this.props.mode === XML_MODE ? 'text/plain' : 'application/json')
 	}
 
 	// Makes CodeMirror commands match Slate commands
@@ -123,51 +138,62 @@ class CodeEditor extends React.Component {
 			editor.deleteH(1, 'char')
 			return editor
 		}
-		return editor
+		return {current: editor}
+	}
+
+	getCodeMirrorMode(mode){
+		switch(mode){
+			case XML_MODE:
+				return 'text/xml'
+			case JSON_MODE:
+				return 'application/json'
+		}
+	}
+
+	onKeyDown(event){
+		if(!this.state.editor) return
+		this.keyBinding.onKeyDown(event, this.state.editor.current, () => undefined)
+	}
+
+	onKeyUp(event){
+		if(!this.state.editor) return
+		this.keyBinding.onKeyUp(event, this.state.editor.current, () => undefined)
+	}
+
+	onKeyPress(event){
+		if(~this.state.editor) return
+		this.keyBinding.onKeyDown(event, this.state.editor.current, () => undefined)
 	}
 
 	render() {
-		const options = {
-			lineNumbers: true,
-			mode: this.props.mode === 'classic' ? 'text/xml' : 'text/json',
-			matchTags: true,
-			foldGutter: true,
-			lineWrapping: true,
-			indentWithTabs: true,
-			tabSize: 4,
-			indentUnit: 4,
-			gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
-			theme: 'monokai'
-		}
-
 		return (
 			<div
 				className={'component editor--code-editor'}
-				onKeyDown={event => this.keyBinding.onKeyDown(event, this.editor, () => undefined)}
-				onKeyUp={event => this.keyBinding.onKeyUp(event, this.editor, () => undefined)}
-				onKeyPress={event => this.keyBinding.onKeyDown(event, this.editor, () => undefined)}>
+				onKeyDown={this.onKeyDown}
+				onKeyUp={this.onKeyUp}
+				onKeyPress={this.onKeyPress}>
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
-					<FileToolbar
-						editor={this.editor}
-						undo={this.editor.undo}
-						redo={this.editor.redo}
-						delete={this.editor.delete}
-						model={this.props.model}
-						draftId={this.props.draftId}
-						onSave={this.saveCode}
-						onRename={this.setTitle}
-						switchMode={this.props.switchMode}
-						saved={this.state.saved}
-						mode={this.props.mode}
-						insertableItems={this.props.insertableItems}
-					/>
+					{this.state.editor ?
+						<FileToolbar
+							editorRef={this.state.editor}
+							model={this.props.model}
+							draftId={this.props.draftId}
+							onSave={this.saveCode}
+							onRename={this.setTitle}
+							switchMode={this.props.switchMode}
+							saved={this.state.saved}
+							mode={this.props.mode}
+							insertableItems={this.props.insertableItems}
+						/>
+						: null
+					}
 				</div>
 				<CodeMirror
-					options={options}
+					options={this.state.options}
 					value={this.state.code}
 					onBeforeChange={this.onBeforeChange}
-					editorDidMount={editor => { this.editor = this.convertCodeMirrorToEditor(editor) }}/>
+					editorDidMount={editor => this.setState({editor: this.convertCodeMirrorToEditor(editor)})}/>
 			</div>
 		)
 	}

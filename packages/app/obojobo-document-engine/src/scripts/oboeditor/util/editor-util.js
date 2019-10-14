@@ -4,7 +4,7 @@ const { Dispatcher } = Common.flux
 const { OboModel } = Common.models
 const domParser = new DOMParser()
 
-const CLASSIC_MODE = 'classic'
+const XML_MODE = 'xml'
 
 const getFlatList = function(item) {
 	let list = []
@@ -170,7 +170,7 @@ const EditorUtil = {
 	},
 	getTitleFromString(draftModel, mode) {
 		switch(mode) {
-			case CLASSIC_MODE:
+			case XML_MODE:
 				return this.getTitleFromXML(draftModel)
 			default:
 				return this.getTitleFromJSON(draftModel)
