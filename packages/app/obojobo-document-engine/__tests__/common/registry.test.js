@@ -69,18 +69,18 @@ describe('Registry', () => {
 	test('registerModel cloneBlankNode really does clone the template', () => {
 		expect.hasAssertions()
 
-		const templateObject = { mockProperty: {} }
-		Registry.registerModel('mockType', { templateObject })
+		const insertJSON = { mockProperty: {} }
+		Registry.registerModel('mockType', { insertJSON })
 
 		Registry.getItems(items => {
 			const item = items.get('mockType')
 			const clone = item.cloneBlankNode()
 
 			// expect the objects to look the same
-			expect(clone.mockProperty).toEqual(templateObject.mockProperty)
+			expect(clone.mockProperty).toEqual(insertJSON.mockProperty)
 
 			// but not reference the same object
-			expect(clone.mockProperty).not.toBe(templateObject.mockProperty)
+			expect(clone.mockProperty).not.toBe(insertJSON.mockProperty)
 		})
 	})
 
@@ -416,7 +416,7 @@ describe('Registry', () => {
 		})
 	})
 
-	test('registers toolbar items', () => {
+	test.skip('registers toolbar items', () => {
 		Registry.registerToolbarItem({
 			id: 'test',
 			a: 1,
@@ -436,7 +436,7 @@ describe('Registry', () => {
 		})
 	})
 
-	test('adds toolbar items', () => {
+	test.skip('adds toolbar items', () => {
 		Registry.registerToolbarItem({
 			id: 'test',
 			a: 1,

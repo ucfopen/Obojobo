@@ -4,170 +4,64 @@ import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
 import ActionButton from './editor-component'
-
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
+import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
+
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => {
+	return props => <div>{props.children}</div>
+})
 
 const BUTTON_NODE = 'ObojoboDraft.Chunks.ActionButton'
 
 describe('ActionButton Editor Node', () => {
-	test('ActionButton builds the expected component', () => {
-		const nodeData = {
-			type: BUTTON_NODE,
+	let nodeData
+
+	beforeEach(() => {
+		nodeData = {
 			data: {
-				get: () => {
-					return {}
-				}
+				get: () => ({
+					actions: [
+						{
+							type: 'mockType',
+							value: 'mockValue'
+						}
+					],
+					triggers:[{
+						type: 'onClick',
+						actions: []
+					}]
+				}),
 			}
 		}
+	})
+
+	test('builds the expected component', () => {
 		const component = renderer.create(<ActionButton node={nodeData} />)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('ActionButton builds the expected component when selected', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
+	test('builds the expected component when selected', () => {
 		const component = renderer.create(
 			<ActionButton node={nodeData} isSelected={true} isFocused={true} />
 		)
 		const tree = component.toJSON()
 
 		expect(tree).toMatchSnapshot()
+
+		// make sure node recieves props since we're mocking it
+		expect(component.root.find(Node).props).toMatchSnapshot()
 	})
 
-	test('ActionButton adds action', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(1)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
-		expect(ModalUtil.show).toHaveBeenCalled()
+	test.skip('displays actions when selected', () => {
 	})
 
-	test('ActionButton deletes an action', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-		const tree = component.html()
-
-		component
-			.find('button')
-			.at(0)
-			.simulate('click')
-
-		expect(tree).toMatchSnapshot()
+	test.skip('opens modal', () => {
 	})
 
-	test('changeProperties sets the nodes content', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-
-		component.instance().addAction({ mockProperties: 'mock value' })
-
-		expect(editor.setNodeByKey).toHaveBeenCalled()
+	test.skip('closes modal', () => {
 	})
 
-	test('ActionButton deletes a trigger', () => {
-		const nodeData = {
-			data: {
-				get: () => {
-					return {
-						actions: [
-							{
-								type: 'mockType',
-								value: 'mockValue'
-							}
-						]
-					}
-				}
-			}
-		}
-		const editor = {
-			setNodeByKey: jest.fn()
-		}
-
-		const component = mount(
-			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor} />
-		)
-
-		component.instance().addAction({ mockProperties: 'mock value' })
-
-		expect(editor.setNodeByKey).toHaveBeenCalled()
-	})
 })

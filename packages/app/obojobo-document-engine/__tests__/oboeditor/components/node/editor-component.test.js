@@ -1,5 +1,15 @@
 jest.mock('Common', () => ({
-	components: { modal: {} },
+	components: {
+		modal: {
+			SimpleDialog: () => 'MockSimpleDialog'
+		}
+	},
+	util: {
+		ModalUtil: {
+			hide: jest.fn(),
+			show: jest.fn()
+		}
+	},
 	Registry: {
 		getItems: funct => {
 			return funct({

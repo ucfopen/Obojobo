@@ -24,7 +24,7 @@ describe('File Menu', () => {
 		EditorStore.state.startingId = null
 		jest.clearAllMocks()
 	})
-	
+
 	test('File Menu node', () => {
 		APIUtil.getAllDrafts.mockResolvedValueOnce({ value: [
 			{ draftId: "mockDraft" },
@@ -123,7 +123,7 @@ describe('File Menu', () => {
 		expect(APIUtil.createNewDraft).toHaveBeenCalledTimes(2)
 	})
 
-	test.only('FileMenu calls Open', done => {
+	test('FileMenu calls Open', done => {
 		const model = {
 			title: 'mockTitle'
 		}

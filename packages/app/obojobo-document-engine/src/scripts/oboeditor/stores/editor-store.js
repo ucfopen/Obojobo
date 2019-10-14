@@ -68,8 +68,6 @@ class EditorStore extends Store {
 			startingId
 		}
 
-		console.log(this.state)
-
 		this.buildMenu(model)
 		EditorUtil.gotoPath(startingPath)
 

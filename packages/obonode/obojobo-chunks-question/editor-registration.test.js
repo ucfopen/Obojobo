@@ -6,9 +6,21 @@ const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
-		registerModel: jest.fn()
+		getItemForType: jest.fn()
 	},
-	components: { Button: jest.fn() }
+	util: {
+		ModalUtil: {
+			hide: jest.fn(),
+			show: jest.fn()
+		}
+	},
+	components: {
+		modal: {
+			SimpleDialog: () => 'MockSimpleDialog'
+		},
+		// eslint-disable-next-line react/display-name
+		Button: props => <button {...props}>{props.children}</button>
+	}
 }))
 
 describe('Question editor', () => {

@@ -10,32 +10,25 @@ Immutable.Record {
       "key": "1",
       "nodes": Immutable.List [
         Immutable.Record {
-          "data": Immutable.Map {},
+          "data": Immutable.Map {
+            "indent": 0,
+          },
           "key": "2",
           "nodes": Immutable.List [
             Immutable.Record {
-              "data": Immutable.Map {
-                "indent": 0,
-              },
-              "key": "3",
-              "nodes": Immutable.List [
+              "leaves": Immutable.List [
                 Immutable.Record {
-                  "leaves": Immutable.List [
-                    Immutable.Record {
-                      "marks": Immutable.Set [],
-                      "text": "selected text",
-                    },
-                  ],
-                  "key": "4",
+                  "marks": Immutable.Set [],
+                  "text": "selected text",
                 },
               ],
-              "type": "ObojoboDraft.Chunks.Text.TextLine",
+              "key": "3",
             },
           ],
-          "type": "ObojoboDraft.Chunks.Text",
+          "type": "ObojoboDraft.Chunks.Text.TextLine",
         },
       ],
-      "type": "oboeditor.component",
+      "type": "ObojoboDraft.Chunks.Text",
     },
   ],
 }

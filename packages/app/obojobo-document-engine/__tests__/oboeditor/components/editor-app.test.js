@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 
 import EditorApp from 'src/scripts/oboeditor/components/editor-app'
 
-jest.mock('src/scripts/oboeditor/components/editor-nav')
+
 jest.mock('src/scripts/oboeditor/components/page-editor')
 jest.mock('src/scripts/oboeditor/components/code-editor')
 
@@ -20,7 +20,7 @@ import testObject from 'test-object.json'
 import mockConsole from 'jest-mock-console'
 let restoreConsole
 
-const XML_MODE = 'xml'
+const CLASSIC_MODE = 'classic'
 
 describe('EditorApp', () => {
 	beforeEach(() => {
@@ -33,7 +33,7 @@ describe('EditorApp', () => {
 		restoreConsole()
 	})
 
-	test('EditorApp component', done => {
+	test('component renders', done => {
 		expect.hasAssertions()
 
 		const spyGetItems = jest.spyOn(Common.Registry, 'getItems')
@@ -74,8 +74,8 @@ describe('EditorApp', () => {
 		EditorStore.getState.mockReturnValueOnce({})
 
 		const component = mount(<EditorApp />)
-		component.instance().switchMode(XML_MODE)
-		
+		component.instance().switchMode(CLASSIC_MODE)
+
 		setTimeout(() => {
 			component.update()
 			expect(component.html()).toMatchSnapshot()

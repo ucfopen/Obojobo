@@ -182,7 +182,7 @@ describe('PageEditor', () => {
 				get: jest.fn()
 			},
 			model: { title: 'Mock Title' }
-		})
+		}
 
 		const spy = jest.spyOn(PageEditor.prototype, 'exportToJSON')
 		spy.mockReturnValueOnce() // override the default method
@@ -547,12 +547,12 @@ describe('PageEditor', () => {
 
 		// Call the save plugin
 		plugins[16].onKeyDown(
-			{ 
+			{
 				preventDefault: jest.fn(),
 				key: 's',
 				metaKey: true
-			}, 
-			null, 
+			},
+			null,
 			jest.fn())
 
 		expect(APIUtil.postDraft).toHaveBeenCalled()
@@ -818,7 +818,7 @@ describe('PageEditor', () => {
 				}
 		`)
 	})
-	
+
 	test('checkIfSaved return', () => {
 		const eventMap = {};
 		window.addEventListener = jest.fn((event, cb) => {

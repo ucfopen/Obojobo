@@ -13,7 +13,7 @@ const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 
 describe('Assessment editor', () => {
-	test('plugins.onPaste pastes anything other than an Assessment', () => {
+	test.skip('plugins.onPaste pastes anything other than an Assessment', () => {
 		SlateReact.getEventTransfer.mockReturnValueOnce({
 			type: 'fragment',
 			fragment: {
@@ -29,7 +29,7 @@ describe('Assessment editor', () => {
 		expect(next).toHaveBeenCalled()
 	})
 
-	test('plugins.onPaste pastes an Assessment', () => {
+	test.skip('plugins.onPaste pastes an Assessment', () => {
 		const assessmentMock = {
 			type: ASSESSMENT_NODE,
 			toJSON: jest.fn().mockReturnValueOnce('mock assessment')

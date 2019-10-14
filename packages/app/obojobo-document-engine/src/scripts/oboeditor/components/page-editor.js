@@ -20,7 +20,6 @@ import SelectParameter from './parameter-node/select-parameter'
 import TextParameter from './parameter-node/text-parameter'
 import ToggleParameter from './parameter-node/toggle-parameter'
 import { Value } from 'slate'
-
 import EditorNav from './navigation/editor-nav'
 
 const { ModalUtil } = Common.util
