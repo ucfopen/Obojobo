@@ -32,6 +32,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="requirement"
 							value={requirement}
 							onChange={event => onClickDropdown(event)}
+							onClick={event => event.stopPropagation()}
 						>
 							{requirementDropdown.map(requirement => (
 								<option>{requirement}</option>
@@ -44,6 +45,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="answerInput"
 							value={answerInput || ''}
 							onChange={() => onHandleInputChange(event)}
+							onClick={event => event.stopPropagation()}
 							contentEditable={false}
 						/>
 					</td>
@@ -58,6 +60,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="requirement"
 							value={requirement}
 							onChange={event => onClickDropdown(event)}
+							onClick={event => event.stopPropagation()}
 						>
 							{requirementDropdown.map(requirement => (
 								<option>{requirement}</option>
@@ -70,6 +73,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="precisionType"
 							value={precisionType}
 							onChange={() => onClickDropdown(event)}
+							onClick={event => event.stopPropagation()}
 						>
 							{precisionDropdown.map(requirement => (
 								<option>{requirement}</option>
@@ -82,6 +86,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="answerInput"
 							value={answerInput || ''}
 							onChange={event => onHandleInputChange(event)}
+							onClick={event => event.stopPropagation()}
 						/>
 					</td>
 					<td>
@@ -90,6 +95,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="precisionInput"
 							value={precisionInput || ''}
 							onChange={() => onHandleInputChange(event)}
+							onClick={event => event.stopPropagation()}
 						/>
 					</td>
 				</tr>
@@ -103,6 +109,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="requirement"
 							value={requirement}
 							onChange={event => onClickDropdown(event)}
+							onClick={event => event.stopPropagation()}
 						>
 							{requirementDropdown.map(requirement => (
 								<option>{requirement}</option>
@@ -115,6 +122,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="startInput"
 							value={startInput || ''}
 							onChange={() => onHandleInputChange(event)}
+							onClick={event => event.stopPropagation()}
 						/>
 					</td>
 					<td>
@@ -123,6 +131,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="endInput"
 							value={endInput || ''}
 							onChange={() => onHandleInputChange(event)}
+							onClick={event => event.stopPropagation()}
 						/>
 					</td>
 				</tr>
@@ -136,6 +145,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="requirement"
 							value={requirement}
 							onChange={event => onClickDropdown(event)}
+							onClick={event => event.stopPropagation()}
 						>
 							{requirementDropdown.map(requirement => (
 								<option>{requirement}</option>
@@ -148,6 +158,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="marginType"
 							value={marginType}
 							onChange={event => onClickDropdown(event)}
+							onClick={event => event.stopPropagation()}
 						>
 							{marginDropdown.map(requirement => (
 								<option>{requirement}</option>
@@ -160,6 +171,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="answerInput"
 							value={answerInput || ''}
 							onChange={() => onHandleInputChange(event)}
+							onClick={event => event.stopPropagation()}
 						/>
 					</td>
 					<td>
@@ -168,6 +180,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							name="marginInput"
 							value={marginInput || ''}
 							onChange={() => onHandleInputChange(event)}
+							onClick={event => event.stopPropagation()}
 						/>
 					</td>
 				</tr>

@@ -11,6 +11,9 @@ const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const schema = {
 	blocks: {
+		[SCORE_RULE_NODE]: {
+			isVoid: true
+		},
 		[NUMERIC_ANSWER]: {
 			nodes: [
 				{
@@ -27,6 +30,7 @@ const schema = {
 					case CHILD_MIN_INVALID: {
 						const block = Block.create({
 							type: SCORE_RULE_NODE,
+							isVoid: true,
 							data: {
 								numericRule: {
 									requirement: 'Exact answer',
@@ -48,6 +52,7 @@ const schema = {
 						if (index === 1 && child.type !== NUMERIC_FEEDBACK_NODE) return
 						return editor.wrapBlockByKey(child.key, {
 							type: SCORE_RULE_NODE,
+							isVoid: true,
 							data: {
 								numericRule: {
 									requirement: 'Exact answer',
@@ -73,18 +78,7 @@ const schema = {
 						const block = Block.create({
 							object: 'block',
 							type: NUMERIC_ANSWER,
-							nodes: [],
-							data: {
-								numericRule: {
-									requirement: 'Exact answer',
-									answerInput: '',
-									startInput: '',
-									endInput: '',
-									marginType: 'Absolute',
-									precisionType: 'Significant digits',
-									score: 100
-								}
-							}
+							nodes: []
 						})
 						return editor.insertNodeByKey(node.key, index, block)
 					}
@@ -92,18 +86,7 @@ const schema = {
 						const block = Block.fromJSON({
 							object: 'block',
 							type: NUMERIC_ANSWER,
-							nodes: [],
-							data: {
-								numericRule: {
-									requirement: 'Exact answer',
-									answerInput: '',
-									startInput: '',
-									endInput: '',
-									marginType: 'Absolute',
-									precisionType: 'Significant digits',
-									score: 100
-								}
-							}
+							nodes: []
 						})
 						return editor.withoutNormalizing(c => {
 							c.removeNodeByKey(child.key)

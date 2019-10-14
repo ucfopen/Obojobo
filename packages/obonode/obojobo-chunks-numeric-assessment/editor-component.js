@@ -8,16 +8,6 @@ import { NUMERIC_ANSWER } from './constant'
 
 const { Button } = Common.components
 
-const emptyResponse = {
-	requirement: 'Exact answer',
-	answerInput: '',
-	startInput: '',
-	endInput: '',
-	marginType: 'Absolute',
-	precisionType: 'Significant digits',
-	score: 100
-}
-
 class NumericAssessment extends React.Component {
 	constructor() {
 		super()
