@@ -7,7 +7,7 @@ import NumericAnswer from './components/numeric-answer/editor-component'
 import NumericChoice from './components/numeric-choice/editor-component'
 import Schema from './schema'
 
-import { NUMERIC_ANSWER_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_CHOICE_NODE } from './constant'
+import { NUMERIC_ANSWER_NODE, NUMERIC_ASSESSMENT_NODE, NUMERIC_CHOICE_NODE } from './constants'
 
 const plugins = {
 	renderNode(props, editor, next) {

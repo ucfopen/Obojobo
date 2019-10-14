@@ -6,7 +6,7 @@ import {
 	NUMERIC_ANSWER_NODE,
 	NUMERIC_FEEDBACK_NODE,
 	NUMERIC_CHOICE_NODE
-} from './constant'
+} from './constants'
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 const schema = {

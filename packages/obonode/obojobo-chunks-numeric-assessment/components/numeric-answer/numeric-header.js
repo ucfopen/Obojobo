@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { EXACT_ANSWER, MARGIN_OF_ERROR, WITHIN_A_RANGE, PRECISE_RESPONSE } from '../../constant'
+import { EXACT_ANSWER, MARGIN_OF_ERROR, WITHIN_A_RANGE, PRECISE_RESPONSE } from '../../constants'
 
 const NumericHeader = ({ requirement }) => {
 	switch (requirement) {

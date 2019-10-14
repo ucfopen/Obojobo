@@ -4,7 +4,7 @@ import React from 'react'
 import { Block } from 'slate'
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-import { NUMERIC_CHOICE_NODE } from './constant'
+import { NUMERIC_CHOICE_NODE } from './constants'
 
 const { Button } = Common.components
 

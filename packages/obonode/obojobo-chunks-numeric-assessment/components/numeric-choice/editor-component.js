@@ -4,7 +4,7 @@ import React from 'react'
 import { Block } from 'slate'
 
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
-import { NUMERIC_FEEDBACK_NODE } from '../../constant'
+import { NUMERIC_FEEDBACK_NODE } from '../../constants'
 
 const { Button } = Common.components
 

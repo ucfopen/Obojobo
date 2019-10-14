@@ -8,7 +8,7 @@ import {
 	requirementDropdown,
 	marginDropdown,
 	precisionDropdown
-} from '../../constant'
+} from '../../constants'
 
 const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) => {
 	const {

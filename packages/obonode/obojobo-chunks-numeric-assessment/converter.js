@@ -8,7 +8,7 @@ import {
 	WITHIN_A_RANGE,
 	PRECISE_RESPONSE,
 	MARGIN_OF_ERROR
-} from './constant'
+} from './constants'
 
 const complexifiedNumericRule = numericRule => {
 	switch (numericRule.requirement) {
