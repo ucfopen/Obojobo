@@ -1,10 +1,10 @@
 @import '~styles/includes';
 
-.numeric-answer {
+.numeric-choice {
 	$color-border: #dfdfdf;
 
 	position: relative;
-	padding-bottom: 1em;
+	padding-bottom: 1rem;
 	border-bottom: 1px solid $color-border;
 
 	&.is-selected {
@@ -17,8 +17,8 @@
 		$correct-font: 'Segoe UI Symbol', Arial, sans-serif;
 
 		position: absolute;
-		top: 2.7em;
-		left: 0.9em;
+		top: 3.3rem;
+		left: 1rem;
 		font-size: inherit;
 		background: transparent;
 		border: none;
@@ -34,7 +34,7 @@
 	}
 
 	.numeric-feedback-editor {
-		margin: 0 3em;
+		margin: 0 3.5rem;
 	}
 
 	.delete-button {
@@ -42,44 +42,5 @@
 			position: absolute;
 			top: 3.1rem;
 		}
-	}
-
-	table {
-		border-collapse: collapse;
-
-		th,
-		td {
-			font-family: $font-default;
-			text-align: left;
-			padding: 0;
-			padding-right: 1rem;
-		}
-	}
-
-	.select-item {
-		font-family: $font-default;
-		border: 1px solid $color-border;
-		border-radius: 3px;
-		font-size: 1rem;
-		background-color: $color-bg;
-		min-width: 11rem;
-		padding: 0.7rem 0 0.7rem 0.5rem;
-
-		appearance: none;
-		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
-			linear-gradient(135deg, gray 50%, transparent 50%);
-		background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
-			calc(100% - 2.5em) 0.5em;
-		background-size: 5px 5px, 5px 5px, 1px 1.5em;
-		background-repeat: no-repeat;
-	}
-
-	.input-item {
-		font-family: $font-monospace;
-		border: 1px solid $color-border;
-		border-radius: 3px;
-		font-size: 1rem;
-		width: 5rem;
-		padding: 0.7rem 0 0.7rem 0.5rem;
 	}
 }

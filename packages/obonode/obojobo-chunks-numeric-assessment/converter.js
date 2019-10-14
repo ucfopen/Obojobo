@@ -1,107 +1,18 @@
 import Common from 'obojobo-document-engine/src/scripts/common'
 
-import {
-	NUMERIC_ANSWER_NODE,
-	NUMERIC_FEEDBACK_NODE,
-	NUMERIC_CHOICE_NODE,
-	EXACT_ANSWER,
-	WITHIN_A_RANGE,
-	PRECISE_RESPONSE,
-	MARGIN_OF_ERROR
-} from './constants'
-
-const complexifiedNumericRule = numericRule => {
-	switch (numericRule.requirement) {
-		case 'exact':
-			return {
-				requirement: EXACT_ANSWER,
-				answerInput: numericRule.answer,
-				score: numericRule.score
-			}
-		case 'range':
-			return {
-				requirement: WITHIN_A_RANGE,
-				startInput: numericRule.start,
-				endInput: numericRule.end,
-				score: numericRule.score
-			}
-		case 'precise':
-			return {
-				requirement: PRECISE_RESPONSE,
-				type: numericRule.precisionType == 'sig-figs' ? 'Significant digits' : 'Decimal places',
-				answerInput: numericRule.answer,
-				precisionInput: numericRule.precision,
-				score: numericRule.score
-			}
-		case 'margin':
-			return {
-				requirement: MARGIN_OF_ERROR,
-				type: numericRule.marginType == 'absolute' ? 'Absolute' : 'Percent',
-				answerInput: numericRule.answer,
-				marginInput: numericRule.margin,
-				score: numericRule.score
-			}
-		default:
-			return {
-				requirement: EXACT_ANSWER,
-				score: numericRule.score
-			}
-	}
-}
-
-const simplifedNumericRule = numericRule => {
-	switch (numericRule.requirement) {
-		case EXACT_ANSWER:
-			return {
-				requirement: 'exact',
-				answer: numericRule.answerInput,
-				score: numericRule.score
-			}
-		case WITHIN_A_RANGE:
-			return {
-				requirement: 'range',
-				start: numericRule.startInput,
-				end: numericRule.endInput,
-				score: numericRule.score
-			}
-		case PRECISE_RESPONSE:
-			return {
-				requirement: 'precise',
-				type: numericRule.precisionType == 'Significant digits' ? 'sig-figs' : 'dec',
-				answer: numericRule.answerInput,
-				precision: numericRule.precisionInput,
-				score: numericRule.score
-			}
-		case MARGIN_OF_ERROR:
-			return {
-				requirement: 'margin',
-				type: numericRule.marginType == 'Absolute' ? 'absolute' : 'percent',
-				answer: numericRule.answerInput,
-				margin: numericRule.marginInput,
-				score: numericRule.score
-			}
-		default:
-			return {
-				requirement: 'exact',
-				score: numericRule.score
-			}
-	}
-}
+import { NUMERIC_ANSWER_NODE, NUMERIC_FEEDBACK_NODE, NUMERIC_CHOICE_NODE } from './constants'
 
 const slateToObo = node => {
-	const NumericRules = []
+	const numericRules = []
 
 	// Parse each scoreRule node
 	node.nodes.forEach(child => {
 		switch (child.type) {
 			case NUMERIC_CHOICE_NODE:
-				// const numericRule = simplifedNumericRule(child[0].data.get('numericRule'))
-
-				// Parse feedback node
 				let numericRule = {}
 				child.nodes.forEach(component => {
 					if (component.type === NUMERIC_ANSWER_NODE) {
-						numericRule = simplifedNumericRule(component.data.get('numericRule'))
+						numericRule = component.data.get('numericRule')
 					}
 					if (component.type === NUMERIC_FEEDBACK_NODE) {
 						numericRule.feedback = Common.Registry.getItemForType(component.type).slateToObo(
@@ -109,7 +20,7 @@ const slateToObo = node => {
 						)
 					}
 				})
-				NumericRules.push(numericRule)
+				numericRules.push(numericRule)
 
 				break
 		}
@@ -119,7 +30,7 @@ const slateToObo = node => {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content: { NumericRules }
+		content: { numericRules }
 	}
 }
 
@@ -133,7 +44,7 @@ const oboToSlate = node => {
 				{
 					object: 'block',
 					type: NUMERIC_ANSWER_NODE,
-					data: { numericRule: complexifiedNumericRule(numericRule) }
+					data: { numericRule: numericRule }
 				}
 			]
 		}

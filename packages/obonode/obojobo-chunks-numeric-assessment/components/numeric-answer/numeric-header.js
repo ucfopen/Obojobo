@@ -1,9 +1,15 @@
 import React from 'react'
 
-import { EXACT_ANSWER, MARGIN_OF_ERROR, WITHIN_A_RANGE, PRECISE_RESPONSE } from '../../constants'
+import {
+	EXACT_ANSWER,
+	MARGIN_OF_ERROR,
+	WITHIN_A_RANGE,
+	PRECISE_RESPONSE,
+	simplifedToFullText
+} from '../../constants'
 
 const NumericHeader = ({ requirement }) => {
-	switch (requirement) {
+	switch (simplifedToFullText[requirement]) {
 		case EXACT_ANSWER:
 			return (
 				<tr>

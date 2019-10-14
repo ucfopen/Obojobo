@@ -33,12 +33,8 @@ const schema = {
 							isVoid: true,
 							data: {
 								numericRule: {
-									requirement: 'Exact answer',
-									answerInput: '',
-									startInput: '',
-									endInput: '',
-									marginType: 'Absolute',
-									precisionType: 'Significant digits',
+									requirement: 'exact',
+									answer: '',
 									score: 100
 								}
 							}
@@ -55,12 +51,8 @@ const schema = {
 							isVoid: true,
 							data: {
 								numericRule: {
-									requirement: 'Exact answer',
-									answerInput: '',
-									startInput: '',
-									endInput: '',
-									marginType: 'Absolute',
-									precisionType: 'Significant digits',
+									requirement: 'exact',
+									answer: '',
 									score: 100
 								}
 							}

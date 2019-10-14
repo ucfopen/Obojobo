@@ -7,22 +7,14 @@ import {
 	PRECISE_RESPONSE,
 	requirementDropdown,
 	marginDropdown,
-	precisionDropdown
+	precisionDropdown,
+	simplifedToFullText
 } from '../../constants'
 
 const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) => {
-	const {
-		requirement,
-		answerInput,
-		startInput,
-		endInput,
-		marginInput,
-		precisionInput,
-		marginType,
-		precisionType
-	} = numericRule
+	const { requirement, answer, start, end, margin, precision, type } = numericRule
 
-	switch (requirement) {
+	switch (simplifedToFullText[requirement]) {
 		case EXACT_ANSWER:
 			return (
 				<tr>
@@ -30,7 +22,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 						<select
 							className="select-item"
 							name="requirement"
-							value={requirement}
+							value={simplifedToFullText[requirement]}
 							onChange={event => onClickDropdown(event)}
 							onClick={event => event.stopPropagation()}
 						>
@@ -42,8 +34,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<input
 							className="input-item"
-							name="answerInput"
-							value={answerInput || ''}
+							name="answer"
+							value={answer || ''}
 							onChange={() => onHandleInputChange(event)}
 							onClick={event => event.stopPropagation()}
 							contentEditable={false}
@@ -58,7 +50,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 						<select
 							className="select-item"
 							name="requirement"
-							value={requirement}
+							value={simplifedToFullText[requirement]}
 							onChange={event => onClickDropdown(event)}
 							onClick={event => event.stopPropagation()}
 						>
@@ -70,8 +62,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<select
 							className="select-item"
-							name="precisionType"
-							value={precisionType}
+							name="type"
+							value={simplifedToFullText[type]}
 							onChange={() => onClickDropdown(event)}
 							onClick={event => event.stopPropagation()}
 						>
@@ -83,8 +75,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<input
 							className="input-item"
-							name="answerInput"
-							value={answerInput || ''}
+							name="answer"
+							value={answer || ''}
 							onChange={event => onHandleInputChange(event)}
 							onClick={event => event.stopPropagation()}
 						/>
@@ -92,8 +84,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<input
 							className="input-item"
-							name="precisionInput"
-							value={precisionInput || ''}
+							name="precision"
+							value={precision || ''}
 							onChange={() => onHandleInputChange(event)}
 							onClick={event => event.stopPropagation()}
 						/>
@@ -107,7 +99,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 						<select
 							className="select-item"
 							name="requirement"
-							value={requirement}
+							value={simplifedToFullText[requirement]}
 							onChange={event => onClickDropdown(event)}
 							onClick={event => event.stopPropagation()}
 						>
@@ -119,8 +111,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<input
 							className="input-item"
-							name="startInput"
-							value={startInput || ''}
+							name="start"
+							value={start || ''}
 							onChange={() => onHandleInputChange(event)}
 							onClick={event => event.stopPropagation()}
 						/>
@@ -128,8 +120,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<input
 							className="input-item"
-							name="endInput"
-							value={endInput || ''}
+							name="end"
+							value={end || ''}
 							onChange={() => onHandleInputChange(event)}
 							onClick={event => event.stopPropagation()}
 						/>
@@ -143,7 +135,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 						<select
 							className="select-item"
 							name="requirement"
-							value={requirement}
+							value={simplifedToFullText[requirement]}
 							onChange={event => onClickDropdown(event)}
 							onClick={event => event.stopPropagation()}
 						>
@@ -155,8 +147,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<select
 							className="select-item"
-							name="marginType"
-							value={marginType}
+							name="type"
+							value={simplifedToFullText[type]}
 							onChange={event => onClickDropdown(event)}
 							onClick={event => event.stopPropagation()}
 						>
@@ -168,8 +160,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<input
 							className="input-item"
-							name="answerInput"
-							value={answerInput || ''}
+							name="answer"
+							value={answer || ''}
 							onChange={() => onHandleInputChange(event)}
 							onClick={event => event.stopPropagation()}
 						/>
@@ -177,8 +169,8 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 					<td>
 						<input
 							className="input-item"
-							name="marginInput"
-							value={marginInput || ''}
+							name="margin"
+							value={margin || ''}
 							onChange={() => onHandleInputChange(event)}
 							onClick={event => event.stopPropagation()}
 						/>

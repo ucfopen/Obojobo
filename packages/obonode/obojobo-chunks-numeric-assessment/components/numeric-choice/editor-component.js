@@ -25,18 +25,19 @@ const NumericInput = props => {
 	}
 
 	const hasFeedback = props.children.length >= 2
-	const className = 'numeric-answer ' + isOrNot(props.isSelected, 'selected')
+	const className = 'numeric-choice ' + isOrNot(props.isSelected, 'selected')
 	return (
 		<div className={className}>
 			{props.children}
 			{!hasFeedback ? (
-				<div className="pad obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn">
-					<button className="button" onClick={addFeedback} contentEditable={false}>
-						Add Feedback
-					</button>
-				</div>
+				<Button
+					className="pad obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn"
+					onClick={addFeedback}
+				>
+					Add Feedback
+				</Button>
 			) : null}
-			<Button className="delete-button" onClick={onDelete} contentEditable={false}>
+			<Button className="delete-button" onClick={onDelete}>
 				×
 			</Button>
 		</div>

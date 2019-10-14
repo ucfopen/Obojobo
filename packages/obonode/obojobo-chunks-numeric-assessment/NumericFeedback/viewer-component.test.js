@@ -44,7 +44,7 @@ describe('NumericFeedback', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('MCFeedback component for an incorrect item', () => {
+	test('NumericFeedback component for an incorrect item', () => {
 		const moduleData = {
 			focusState: {}
 		}

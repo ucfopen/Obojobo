@@ -7,8 +7,8 @@ const NumericFeedback = props => {
 	const onDelete = () => props.editor.removeNodeByKey(props.node.key)
 
 	return (
-		<div className="component numeric-feedback-editor">
-			<button className="feedback-delete-button" onClick={onDelete}>
+		<div className="component numeric-feedback-editor" contentEditable={true}>
+			<button className="feedback-delete-button" onClick={onDelete} contentEditable={false}>
 				×
 			</button>
 			{props.children}

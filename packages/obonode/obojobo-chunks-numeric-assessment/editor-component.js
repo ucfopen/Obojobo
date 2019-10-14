@@ -33,7 +33,7 @@ class NumericAssessment extends React.Component {
 
 	render() {
 		return (
-			<div className="component obojobo-draft--chunks--numeric-assessment">
+			<div className="component obojobo-draft--chunks--numeric-assessment" contentEditable={false}>
 				{/* Use React.Children.map to pass `isSelected` to each child as props */}
 				{React.Children.map(this.props.children, (child, index) => (
 					<div onClick={() => this.onSetCurrSelected(index)}>
