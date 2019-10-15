@@ -5,6 +5,7 @@ import './code-editor.scss'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 import 'codemirror/mode/xml/xml'
+import 'codemirror/mode/javascript/javascript'
 import 'codemirror/addon/fold/foldcode'
 import 'codemirror/addon/fold/foldgutter'
 import 'codemirror/addon/fold/foldgutter.css'
@@ -54,6 +55,7 @@ class CodeEditor extends React.Component {
 		this.onKeyDown = this.onKeyDown.bind(this)
 
 		this.keyBinding = hotKeyPlugin(this.saveCode)
+		this.setEditor = this.setEditor.bind(this)
 	}
 
 	componentDidMount() {
@@ -161,8 +163,12 @@ class CodeEditor extends React.Component {
 	}
 
 	onKeyPress(event){
-		if(~this.state.editor) return
+		if(!this.state.editor) return
 		this.keyBinding.onKeyDown(event, this.state.editor.current, () => undefined)
+	}
+
+	setEditor(editor) {
+		return this.setState({ editor: this.convertCodeMirrorToEditor(editor) })
 	}
 
 	render() {
@@ -193,7 +199,7 @@ class CodeEditor extends React.Component {
 					options={this.state.options}
 					value={this.state.code}
 					onBeforeChange={this.onBeforeChange}
-					editorDidMount={editor => this.setState({editor: this.convertCodeMirrorToEditor(editor)})}/>
+					editorDidMount={this.setEditor}/>
 			</div>
 		)
 	}

@@ -2,6 +2,7 @@
 
 exports[`PageEditor Ensures the plugins work as expected 1`] = `
 Array [
+  Object {},
   Object {
     "onKeyDown": [Function],
     "renderMark": [Function],

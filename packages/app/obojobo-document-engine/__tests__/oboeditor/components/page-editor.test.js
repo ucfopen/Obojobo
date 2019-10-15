@@ -19,7 +19,7 @@ jest.mock('src/scripts/oboeditor/components/node/editor', () => ({
 }))
 // Editor Store
 jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
-	state: { startingId: 'mock-id'}
+	state: { startingId: 'mock-id' }
 }))
 
 jest.mock('src/scripts/oboeditor/components/navigation/editor-nav')
@@ -148,6 +148,10 @@ describe('PageEditor', () => {
 	})
 
 	test('PageEditor component with page updating to another page', () => {
+		const spy1 = jest.spyOn(Common.Registry, 'getItemForType')
+		spy1.mockReturnValue({
+			oboToSlate: jest.fn().mockReturnValue({ object: 'block', type: 'node' })
+		})
 		Component.helpers.oboToSlate.mockReturnValue({
 			object: 'block',
 			type: 'oboeditor.component',
@@ -167,7 +171,7 @@ describe('PageEditor', () => {
 						}
 					]
 				},
-				get: jest.fn()
+				get: jest.fn().mockReturnValue(ASSESSMENT_NODE)
 			},
 			model: { title: 'Mock Title' }
 		}
@@ -237,7 +241,101 @@ describe('PageEditor', () => {
 		//expect(tree).toMatchSnapshot()
 	})
 
+	test('toggleEditable changes the state', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = shallow(<PageEditor {...props} />)
+		const inst = component.instance()
+
+		inst.toggleEditable(false)
+
+		expect(component.state()).toMatchInlineSnapshot(`
+		Object {
+		  "editable": false,
+		  "saved": true,
+		  "value": Immutable.Record {
+		    "data": Immutable.Map {},
+		    "decorations": Immutable.List [],
+		    "document": Immutable.Record {
+		      "data": Immutable.Map {},
+		      "key": "16",
+		      "nodes": Immutable.List [],
+		    },
+		    "selection": Immutable.Record {
+		      "anchor": Immutable.Record {
+		        "key": null,
+		        "offset": null,
+		        "path": null,
+		      },
+		      "focus": Immutable.Record {
+		        "key": null,
+		        "offset": null,
+		        "path": null,
+		      },
+		      "isFocused": false,
+		      "marks": null,
+		    },
+		  },
+		}
+	`)
+	})
+
+	test('markUnsaved changes the state', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			},
+			model: { title: 'Mock Title' }
+		}
+		const component = shallow(<PageEditor {...props} />)
+		const inst = component.instance()
+
+		inst.markUnsaved()
+
+		expect(component.state()).toMatchInlineSnapshot(`
+		Object {
+		  "editable": true,
+		  "saved": false,
+		  "value": Immutable.Record {
+		    "data": Immutable.Map {},
+		    "decorations": Immutable.List [],
+		    "document": Immutable.Record {
+		      "data": Immutable.Map {},
+		      "key": "17",
+		      "nodes": Immutable.List [],
+		    },
+		    "selection": Immutable.Record {
+		      "anchor": Immutable.Record {
+		        "key": null,
+		        "offset": null,
+		        "path": null,
+		      },
+		      "focus": Immutable.Record {
+		        "key": null,
+		        "offset": null,
+		        "path": null,
+		      },
+		      "isFocused": false,
+		      "marks": null,
+		    },
+		  },
+		}
+	`)
+	})
+
 	test('Ensures the plugins work as expected', () => {
+		const spy1 = jest.spyOn(Common.Registry, 'getItems')
+		spy1.mockReturnValue([
+			{
+				plugins: {}
+			}
+		])
 		window.getSelection = jest.fn().mockReturnValueOnce({ rangeCount: 0 })
 		APIUtil.getAllDrafts.mockResolvedValue({ value: [] })
 		Component.helpers.oboToSlate.mockReturnValueOnce({
@@ -295,7 +393,7 @@ describe('PageEditor', () => {
 		expect(plugins).toMatchSnapshot()
 
 		// Call the save plugin
-		plugins[11].onKeyDown(
+		plugins[12].onKeyDown(
 			{
 				preventDefault: jest.fn(),
 				key: 's',
@@ -314,7 +412,7 @@ describe('PageEditor', () => {
 				attributes: { children: [] },
 				get: jest.fn()
 			},
-			model: { title: 'Mock Title'}
+			model: { title: 'Mock Title' }
 		}
 
 		// render
@@ -331,7 +429,7 @@ describe('PageEditor', () => {
 				attributes: { children: [] },
 				get: jest.fn()
 			},
-			model: { title: 'Mock Title'}
+			model: { title: 'Mock Title' }
 		}
 
 		// render
@@ -362,7 +460,7 @@ describe('PageEditor', () => {
 				attributes: { children: [] },
 				get: jest.fn()
 			},
-			model: { title: 'Mock Title'}
+			model: { title: 'Mock Title' }
 		}
 
 		// render
@@ -390,7 +488,7 @@ describe('PageEditor', () => {
 				attributes: { children: [] },
 				get: jest.fn()
 			},
-			model: { title: 'Mock Title'}
+			model: { title: 'Mock Title' }
 		}
 
 		// render
@@ -418,7 +516,7 @@ describe('PageEditor', () => {
 				attributes: { children: [] },
 				get: jest.fn()
 			},
-			model: { title: 'Mock Title'}
+			model: { title: 'Mock Title' }
 		}
 
 		const thing = mount(<PageEditor {...props} />)
@@ -563,6 +661,24 @@ describe('PageEditor', () => {
 				  ],
 				}
 		`)
+	})
+
+	test('exportToJSON returns undefined for null page', () => {
+		const props = {
+			page: {
+				attributes: { children: [] },
+				get: jest.fn()
+			},
+			model: { title: 'Mock Title' }
+		}
+		const thing = mount(<PageEditor {...props} />)
+
+		expect(thing.instance()).toHaveProperty('exportToJSON', expect.any(Function))
+
+		const result = thing.instance().exportToJSON(null)
+
+		// make sure the return matches
+		expect(result).toMatchInlineSnapshot(`undefined`)
 	})
 
 	test('checkIfSaved return', () => {

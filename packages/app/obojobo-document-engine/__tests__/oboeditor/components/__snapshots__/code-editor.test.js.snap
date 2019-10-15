@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CodeEditor CodeEditor component 1`] = `
+<div
+  className="component editor--code-editor"
+  onKeyDown={[Function]}
+  onKeyPress={[Function]}
+  onKeyUp={[Function]}
+>
+  <div
+    className="draft-toolbars"
+  >
+    <div
+      className="draft-title"
+    >
+      Mock Title
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CodeEditor CodeEditor component in JSON_MODE 1`] = `"<div class=\\"component editor--code-editor\\"><div class=\\"draft-toolbars\\"><div class=\\"draft-title\\">Mock Title</div></div></div>"`;
