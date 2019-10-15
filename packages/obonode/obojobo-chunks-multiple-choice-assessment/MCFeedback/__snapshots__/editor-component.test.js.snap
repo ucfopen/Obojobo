@@ -4,16 +4,12 @@ exports[`MCFeedback Editor Node MCFeedback builds the expected component 1`] = `
 <div
   className="component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback"
 >
-  <div
-    className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+  <button
+    className="delete-button"
+    onClick={[Function]}
   >
-    <button
-      className="button"
-      onClick={[Function]}
-    >
-      ×
-    </button>
-  </div>
+    ×
+  </button>
   <span
     className="label"
     contentEditable={false}
@@ -23,4 +19,4 @@ exports[`MCFeedback Editor Node MCFeedback builds the expected component 1`] = `
 </div>
 `;
 
-exports[`MCFeedback Editor Node MCFeedback component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback\\"><button class=\\"editor--page-editor--delete-node-button\\">X</button><span class=\\"label\\" contenteditable=\\"false\\">Feedback</span></div>"`;
+exports[`MCFeedback Editor Node MCFeedback component deletes itself 1`] = `"<div class=\\"component obojobo-draft--chunks--mc-assessment--mc-feedback editor-feedback\\"><button class=\\"delete-button\\">×</button><span class=\\"label\\" contenteditable=\\"false\\">Feedback</span></div>"`;

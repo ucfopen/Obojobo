@@ -41,7 +41,7 @@ exports[`Table editor plugins.renderNode renders a cell when passed 1`] = `
 `;
 
 exports[`Table editor plugins.renderNode renders a row when passed 1`] = `
-<Row
+<Memo(Row)
   attributes={
     Object {
       "dummy": "dummyData",

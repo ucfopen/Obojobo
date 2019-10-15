@@ -94,6 +94,7 @@ const plugins = {
 }
 
 const Rubric = {
+	name: RUBRIC_NODE,
 	helpers: Converter,
 	plugins
 }

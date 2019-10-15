@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Break Editor Node Node builds the expected component 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="non-editable-chunk obojobo-draft--chunks--break viewer width-undefined"
   >
@@ -13,6 +10,6 @@ exports[`Break Editor Node Node builds the expected component 1`] = `
 </div>
 `;
 
-exports[`Break Editor Node Node component toggles size to large 1`] = `"<div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-normal\\"><hr><button>Toggle Size</button></div>"`;
+exports[`Break Editor Node Node component toggles size to large 1`] = `"<div><div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-normal\\"><hr><button>Toggle Size</button></div></div>"`;
 
-exports[`Break Editor Node Node component toggles size to normal 1`] = `"<div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-large\\"><hr><button>Toggle Size</button></div>"`;
+exports[`Break Editor Node Node component toggles size to normal 1`] = `"<div><div class=\\"non-editable-chunk obojobo-draft--chunks--break viewer width-large\\"><hr><button>Toggle Size</button></div></div>"`;

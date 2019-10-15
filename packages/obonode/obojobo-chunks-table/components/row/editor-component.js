@@ -1,15 +1,7 @@
 import '../../viewer-component.scss'
 
-import React from 'react'
+import React, { memo } from 'react'
 
-class Row extends React.Component {
-	render() {
-		return (
-			<tr>
-				{this.props.children}
-			</tr>
-		)
-	}
-}
+const Row = props => <tr>{props.children}</tr>
 
-export default Row
+export default memo(Row)

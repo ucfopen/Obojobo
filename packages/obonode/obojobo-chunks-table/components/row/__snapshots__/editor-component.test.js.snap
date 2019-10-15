@@ -1,9 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Row Editor Node Row component 1`] = `<tr />`;
-
-exports[`Row Editor Node Row component deletes itself 1`] = `"<tr><td class=\\"delete-cell\\"><button>X</button></td></tr>"`;
-
-exports[`Row Editor Node Row component deletes itself and its table 1`] = `"<tr><td class=\\"delete-cell\\"><button>X</button></td></tr>"`;
-
-exports[`Row Editor Node Row component deletes itself and passes header status to sibling 1`] = `"<tr><td class=\\"delete-cell\\"><button>X</button></td></tr>"`;
+exports[`Row Editor Node Row component 1`] = `
+<tr>
+  children
+</tr>
+`;

@@ -4,6 +4,12 @@ import renderer from 'react-test-renderer'
 
 import MCFeedback from './editor-component'
 
+jest.mock('obojobo-document-engine/src/scripts/common', () => ({
+	components: {
+		Button: props => <button {...props}>{props.children}</button>
+	}
+}))
+
 describe('MCFeedback Editor Node', () => {
 	test('MCFeedback builds the expected component', () => {
 		const component = renderer.create(
@@ -43,7 +49,7 @@ describe('MCFeedback Editor Node', () => {
 		)
 		const tree = component.html()
 
-		component.find('button').simulate('click')
+		component.find('Button').simulate('click')
 
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
 		expect(tree).toMatchSnapshot()

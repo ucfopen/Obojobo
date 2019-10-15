@@ -1,37 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MathEquation Editor Node MathEquation component 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
-  <div
-    className="component obojobo-draft--chunks--math-equation pad align-center"
-  >
-    <div
-      className="non-editable-chunk"
-    >
-      <div
-        className="katex-display"
-      >
-        <span
-          className="placeholder align-center"
-        >
-          No Equation
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-`;
-
 exports[`MathEquation Editor Node MathEquation component edits properties 1`] = `"<div class=\\"component obojobo-draft--chunks--math-equation pad align-center\\"><div class=\\"non-editable-chunk\\"><div class=\\"katex-container\\" style=\\"font-size: 1em;\\"><span class=\\"katex-display\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mn>1</mn></mrow><annotation encoding=\\"application/x-tex\\">1</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.64444em;vertical-align:0em;\\"></span><span class=\\"mord\\">1</span></span></span></span></span></div><div class=\\"equation-label\\">1.1</div></div><div class=\\"obojobo-draft--components--button is-not-dangerous align-center\\"><button class=\\"button\\">Edit</button></div></div>"`;
 
 exports[`MathEquation Editor Node MathEquation component with error 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="component obojobo-draft--chunks--math-equation pad align-center"
   >
@@ -47,10 +19,7 @@ exports[`MathEquation Editor Node MathEquation component with error 1`] = `
 `;
 
 exports[`MathEquation Editor Node MathEquation component with label 1`] = `
-<div
-  className="oboeditor-component component"
-  data-obo-component="true"
->
+<div>
   <div
     className="component obojobo-draft--chunks--math-equation pad align-center"
   >
@@ -70,6 +39,28 @@ exports[`MathEquation Editor Node MathEquation component with label 1`] = `
           }
         }
       />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`MathEquation Editor Node renders with no latex 1`] = `
+<div>
+  <div
+    className="component obojobo-draft--chunks--math-equation pad align-center"
+  >
+    <div
+      className="non-editable-chunk"
+    >
+      <div
+        className="katex-display"
+      >
+        <span
+          className="placeholder align-center"
+        >
+          No Equation
+        </span>
+      </div>
     </div>
   </div>
 </div>

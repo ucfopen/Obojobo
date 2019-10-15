@@ -4,6 +4,10 @@ import renderer from 'react-test-renderer'
 
 import Break from './editor-component'
 
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => {
+	return props => <div>{props.children}</div>
+})
+
 describe('Break Editor Node', () => {
 	test('Node builds the expected component', () => {
 		const component = renderer.create(
