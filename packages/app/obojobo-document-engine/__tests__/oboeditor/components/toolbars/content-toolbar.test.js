@@ -5,7 +5,7 @@ import ContentToolbar from 'obojobo-document-engine/src/scripts/oboeditor/compon
 
 describe('Content Toolbar', () => {
 	test('Toolbar node', () => {
-		const component = shallow(<ContentToolbar getEditor={() => ({})}/>)
+		const component = shallow(<ContentToolbar editorRef={{}}/>)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -15,7 +15,7 @@ describe('Content Toolbar', () => {
 			toggleMark: jest.fn()
 		}
 
-		const component = shallow(<ContentToolbar getEditor={() => editor}/>)
+		const component = shallow(<ContentToolbar editorRef={{ current: editor }}/>)
 		const tree = component.html()
 
 		component

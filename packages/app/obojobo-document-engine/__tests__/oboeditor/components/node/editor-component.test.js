@@ -23,7 +23,16 @@ jest.mock('Common', () => ({
 					}
 				]
 			})
-		}
+		},
+		insertableItems: [
+			{
+				isInsertable: true,
+				icon: null,
+				name: 'mockItem',
+				templateObject: 'mockNode',
+				cloneBlankNode: () => ({ type: 'mockNode' })
+			}
+		]
 	}
 }))
 
@@ -59,8 +68,13 @@ describe('Component Editor Node', () => {
 				isSelected={true}
 				node={{
 					data: {
-						get: () => ({ width: 'normal' })
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
 					}
+				}}
+				parent={{
+					key: 'mock-key',
+					getPath: () => ({ get: jest.fn() })
 				}}
 				editor={editor}
 			/>
@@ -85,9 +99,14 @@ describe('Component Editor Node', () => {
 				isSelected={true}
 				node={{
 					data: {
-						get: () => ({ width: 'normal' })
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
 					},
 					nodes: { size: 0 }
+				}}
+				parent={{
+					key: 'mock-key',
+					getPath: () => ({ get: jest.fn() })
 				}}
 				editor={editor}
 			/>
@@ -100,5 +119,160 @@ describe('Component Editor Node', () => {
 			.simulate('click')
 
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('saveId does nothing if the old and new ids are the same', () => {
+		const editor = {
+			insertNodeByKey: jest.fn(),
+			removeNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 }
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().saveId('mock-id', 'mock-id')
+
+		expect(editor.insertNodeByKey).not.toHaveBeenCalled()
+		expect(editor.removeNodeByKey).not.toHaveBeenCalled()
+	})
+
+	test('saveId adds and removes the node if ids are not the same', () => {
+		const editor = {
+			removeNodeByKey: jest.fn(),
+		}
+		editor.insertNodeByKey = jest.fn().mockReturnValue(editor)
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 },
+					toJSON: () => ({ object: 'block', type: 'mock-node' })
+				}}
+				parent={{
+					key: 'mock-key',
+					getPath: () => ({ get: jest.fn() })
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().saveId('mock-id', 'mock-id2')
+
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
+	})
+
+	test('saveContent calls setNodeByKey', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 },
+					toJSON: () => ({})
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().saveContent({}, {})
+
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+	})
+
+	test('deleteNode calls removeNodeByKey', () => {
+		const editor = {
+			removeNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 },
+					toJSON: () => ({})
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().deleteNode()
+
+		expect(editor.removeNodeByKey).toHaveBeenCalled()
+	})
+
+	test('duplicateNode calls insertNodeByKey', () => {
+		const editor = {
+			insertNodeByKey: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 },
+					toJSON: () => ({ object: 'block', type: 'mock-node' })
+				}}
+				parent={{
+					key: 'mock-key',
+					getPath: () => ({ get: jest.fn() })
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().duplicateNode()
+
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('onOpen and onClose call toggleEditable', () => {
+		const editor = {
+			toggleEditable: jest.fn()
+		}
+
+		const component = mount(
+			<Node
+				isSelected={true}
+				node={{
+					data: {
+						get: () => ({ width: 'normal' }),
+						toJSON: () => ({})
+					},
+					nodes: { size: 0 }
+				}}
+				editor={editor}
+			/>
+		)
+		component.instance().onOpen()
+		component.instance().onClose()
+
+		expect(editor.toggleEditable).toHaveBeenCalledTimes(2)
 	})
 })

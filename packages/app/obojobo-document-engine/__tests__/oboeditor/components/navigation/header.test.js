@@ -17,7 +17,8 @@ describe('Header', () => {
 				getIndex: () => 0,
 				get: jest.fn(),
 				set: jest.fn(),
-				setId: jest.fn()
+				setId: jest.fn(),
+				getRoot: jest.fn()
 			}
 		}
 	})

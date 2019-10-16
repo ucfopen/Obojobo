@@ -32,7 +32,7 @@ class FileMenu extends React.PureComponent {
 							name: draft.title,
 							type: 'action',
 							action: () =>
-								window.open(window.location.origin + '/editor/' + draft.draftId, '_blank')
+								window.open(window.location.origin + '/editor/' + this.props.mode + '/' + draft.draftId, '_blank')
 						}
 					})
 					.filter(Boolean)
@@ -46,7 +46,6 @@ class FileMenu extends React.PureComponent {
 		// If the module name is empty or just whitespace, provide a default value
 		if (!label || !/[^\s]/.test(label)) label = '(Unnamed Module)'
 
-		console.log('hewwo?')
 		EditorUtil.renamePage(moduleId, label)
 
 		if(this.props.onRename) {
@@ -73,7 +72,7 @@ class FileMenu extends React.PureComponent {
 				return this.props.onSave(draftId)
 			})
 			.then(() => {
-				window.open(window.location.origin + '/editor/' + draftId, '_blank')
+				window.open(window.location.origin + '/editor/' + this.props.mode + '/' + draftId, '_blank')
 			})
 	}
 
@@ -121,7 +120,7 @@ class FileMenu extends React.PureComponent {
 				action: () =>
 					APIUtil.createNewDraft().then(result => {
 						if (result.status === 'ok') {
-							window.open(window.location.origin + '/editor/' + result.value.id, '_blank')
+							window.open(window.location.origin + '/editor/' + this.props.mode + '/' + result.value.id, '_blank')
 						}
 					})
 			},

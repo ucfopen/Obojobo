@@ -120,7 +120,8 @@ const FileToolbar = props => {
 				model={props.model}
 				draftId={props.draftId}
 				onSave={props.onSave}
-				onRename={props.onRename}/>
+				onRename={props.onRename}
+				mode={props.mode}/>
 			<DropDownMenu name="Edit" menu={editMenu} />
 			<ViewMenu
 				draftId={props.draftId}
