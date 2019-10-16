@@ -5,6 +5,9 @@ Common.Registry.registerModel('ObojoboDraft.Pages.Page', {
 	componentClass: ViewerComponent,
 	default: true,
 	type: 'page',
+	getTextForVariable(model, varName, varValue) {
+		return varValue.value
+	},
 	getNavItem(model) {
 		let label
 

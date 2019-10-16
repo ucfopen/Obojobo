@@ -345,8 +345,14 @@ export default class ViewerApp extends React.Component {
 		}
 	}
 
-	getTextForVariable(event, variable, textModel) {
-		return (event.text = Common.Registry.getTextForVariable(variable, textModel, this.state))
+	getTextForVariable(event, varName, textModel) {
+		let text = Common.Registry.getTextForVariable(varName, textModel, this.state)
+		if (text) {
+			event.text = text
+			return
+		}
+
+		event.text = textModel.getTextForVariable(varName)
 	}
 
 	scrollToTop(animateScroll = false) {

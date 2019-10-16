@@ -83,11 +83,30 @@ class OboModel extends Backbone.Model {
 		this.adapter = Object.assign(Object.assign({}, DefaultAdapter), adapter)
 		this.adapter.construct(this, attrs)
 
+		this.variables = { ...attrs.content.variables }
+
 		this.children.on('remove', this.onChildRemove, this)
 		this.children.on('add', this.onChildAdd, this)
 		this.children.on('reset', this.onChildrenReset, this)
 
 		OboModel.models[this.get('id')] = this
+	}
+
+	getTextForVariable(varName) {
+		if (this.variables[varName]) {
+			const typeClass = Registry.getItemForType(this.get('type'))
+
+			console.log('gtfv', varName, this.get('type'), typeClass.getTextForVariable)
+
+			if (typeClass.getTextForVariable) {
+				return typeClass.getTextForVariable(this, varName, this.variables[varName])
+			} else {
+				return this.variables[varName]
+			}
+		}
+		if (!this.parent) return null
+
+		return this.parent.getTextForVariable(varName)
 	}
 
 	setStateProp(propName, defaultValue, transformValueFn, allowedValues) {
