@@ -53,40 +53,30 @@ exports[`EditorNav EditorNav component with all list item types 1`] = `
             viewBox="0 0 214 214"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <g>
-              <g
-                id="svg_8"
-              >
-                <ellipse
-                  cx="107"
-                  cy="107"
-                  rx="100"
-                  ry="100"
-                  stroke-width="14"
-                />
-                <ellipse
-                  cx="57"
-                  cy="107"
-                  rx="7"
-                  ry="7"
-                  stroke-width="16"
-                />
-                <ellipse
-                  cx="107"
-                  cy="107"
-                  rx="7"
-                  ry="7"
-                  stroke-width="16"
-                />
-                <ellipse
-                  cx="157"
-                  cy="107"
-                  rx="7"
-                  ry="7"
-                  stroke-width="16"
-                />
-              </g>
-            </g>
+            <circle
+              cx="107"
+              cy="107"
+              r="100"
+              strokeWidth="14"
+            />
+            <circle
+              cx="57"
+              cy="107"
+              r="7"
+              strokeWidth="16"
+            />
+            <circle
+              cx="107"
+              cy="107"
+              r="7"
+              strokeWidth="16"
+            />
+            <circle
+              cx="157"
+              cy="107"
+              r="7"
+              strokeWidth="16"
+            />
           </svg>
         </button>
       </div>

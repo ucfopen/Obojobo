@@ -92,13 +92,13 @@ class MoreInfoBox extends React.Component {
 				return this.close()
 			}, 0);
 		}
-		
+
 		this.setState({ error })
 	}
 
 	toggleOpen(event) {
 		event.stopPropagation()
-		
+
 		if(this.state.isOpen) {
 			if(this.state.needsUpdate){
 				this.onSave()
@@ -122,8 +122,8 @@ class MoreInfoBox extends React.Component {
 		// Prevent info box from closing when modal is opened
 		document.removeEventListener('mousedown', this.handleClick, false)
 		ModalUtil.show(
-			<TriggerListModal 
-				content={this.state.content} 
+			<TriggerListModal
+				content={this.state.content}
 				onClose={this.closeModal}/>
 		)
 	}
@@ -138,7 +138,7 @@ class MoreInfoBox extends React.Component {
 		switch(description.type) {
 			case 'input':
 				return (
-					<div>
+					<div key={description.type}>
 						<label>{description.description}</label>
 						<input
 							type="text"
@@ -149,10 +149,10 @@ class MoreInfoBox extends React.Component {
 				)
 			case 'select':
 				return (
-					<div>
+					<div key={description.type}>
 						<label>{description.description}</label>
-						<select 
-							className="select-item" 
+						<select
+							className="select-item"
 							value={this.state.content[description.name]}
 							onChange={this.handleContentChange.bind(this, description.name)}
 							onClick={event => event.stopPropagation()}>
@@ -165,6 +165,7 @@ class MoreInfoBox extends React.Component {
 			case 'toggle':
 				return (
 					<Slider
+					 	key={description.type}
 						title={description.description}
 						initialChecked={this.state.content[description.name]}
 						handleCheckChange={this.handleSliderChange.bind(this, description.name)}/>
@@ -173,12 +174,13 @@ class MoreInfoBox extends React.Component {
 			case 'abstract-toggle':
 				return (
 					<Slider
+						 key={description.type}
 						title={description.description}
 						initialChecked={description.value(this.state.content)}
 						handleCheckChange={this.handleAbstractToggleChange.bind(this, description.onChange)}/>
 				)
 		}
-				
+
 	}
 
 	renderInfoBox() {
@@ -200,7 +202,7 @@ class MoreInfoBox extends React.Component {
 									onChange={this.handleIdChange}
 									className="id-input"
 									onClick={event => event.stopPropagation()}/>
-								<Button 
+								<Button
 									className="input-aligned-button"
 									onClick={() => ClipboardUtil.copyToClipboard(this.state.currentId)}>
 										Copy Id
@@ -219,7 +221,7 @@ class MoreInfoBox extends React.Component {
 									</span>
 									: null }
 							</span>
-							<Button 
+							<Button
 								className="trigger-button"
 								onClick={this.showTriggersModal}>
 								✎ Edit
@@ -227,7 +229,7 @@ class MoreInfoBox extends React.Component {
 						</div>
 						{ this.props.hideButtonBar ? null :
 							<div className="button-bar">
-								<Button 
+								<Button
 									className="delete-page-button"
 									onClick={this.props.deleteNode}>
 									Delete
@@ -242,7 +244,7 @@ class MoreInfoBox extends React.Component {
 										Move Up
 									</Button>
 								}
-								{ this.props.isLast ? null : 
+								{ this.props.isLast ? null :
 									<Button
 										onClick={() => this.props.moveNode(this.props.index + 1)}>
 										Move Down
@@ -253,7 +255,7 @@ class MoreInfoBox extends React.Component {
 					</div>
 					<div>
 						{this.state.error ? <p>{this.state.error}</p> : null }
-						<Button 
+						<Button
 							onClick={this.onSave}
 							className="cancel-button">
 							Close
@@ -267,7 +269,7 @@ class MoreInfoBox extends React.Component {
 	render() {
 		return (
 			<div ref={this.node} className={'more-info ' + this.props.className}>
-				<button 
+				<button
 					className={'more-info-button ' + ( this.state.isOpen ? 'is-open' : '')}
 					onClick={this.toggleOpen}>
 					<MoreInfoIcon />

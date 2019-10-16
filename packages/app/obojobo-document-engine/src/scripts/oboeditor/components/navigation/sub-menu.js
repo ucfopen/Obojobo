@@ -1,17 +1,17 @@
 import './sub-menu.scss'
 
-import Common from 'obojobo-document-engine/src/scripts/common'
+import Common from '../../../common'
 import EditorUtil from '../../util/editor-util'
 import React from 'react'
 import MoreInfoBox from './more-info-box'
-import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import isOrNot from '../../../common/util/isornot'
 import generatePage from '../../documents/generate-page'
 
 import {
 	getTriggersWithActionsAdded,
 	getTriggersWithActionsRemoved,
 	hasTriggerTypeWithActionType
-} from 'obojobo-document-engine/src/scripts/common/util/trigger-util'
+} from '../../../common/util/trigger-util'
 
 const { Prompt, SimpleDialog } = Common.components.modal
 const { ModalUtil } = Common.util
@@ -33,10 +33,8 @@ class SubMenu extends React.Component {
 		this.showAddPageModal = this.showAddPageModal.bind(this)
 		this.saveId = this.saveId.bind(this)
 		this.saveContent = this.saveContent.bind(this)
-
 		this.showDeleteModal = this.showDeleteModal.bind(this)
 		this.deletePage = this.deletePage.bind(this)
-
 		this.duplicatePage = this.duplicatePage.bind(this)
 	}
 
@@ -50,24 +48,6 @@ class SubMenu extends React.Component {
 
 	movePage(pageId, index) {
 		EditorUtil.movePage(pageId, index)
-	}
-
-	renderLabel(label) {
-		return <span>{label}</span>
-	}
-
-	renderLinkButton(label, ariaLabel, refId) {
-		return (
-			<button
-				ref={item => {
-					this.linkButton = item
-					return refId
-				}}
-				aria-label={ariaLabel}
-			>
-				{this.renderLabel(label)}
-			</button>
-		)
 	}
 
 	renderNewItemButton(pageId) {
@@ -247,7 +227,10 @@ class SubMenu extends React.Component {
 
 		return (
 			<li onClick={this.props.onClick} className={className}>
-				{this.renderLinkButton(item.label, ariaLabel, item.id)}
+				<button aria-label={ariaLabel}>
+					<span>{item.label}</span>
+				</button>
+
 				{isSelected ? (
 					<MoreInfoBox
 						id={item.id}
@@ -266,7 +249,10 @@ class SubMenu extends React.Component {
 						moveNode={this.movePage.bind(this, item.id)}
 						showMoveButtons/>
 				) : null}
-				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null}
+				{isSelected && !item.flags.assessment ?
+					this.renderNewItemButton(item.id)
+					: null
+				}
 			</li>
 		)
 	}

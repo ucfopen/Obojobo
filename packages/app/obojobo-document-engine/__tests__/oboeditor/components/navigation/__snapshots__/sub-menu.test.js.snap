@@ -26,143 +26,6 @@ exports[`SubMenu SubMenu component moves up through the menu 1`] = `"<li class=\
 
 exports[`SubMenu SubMenu component opens menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><div class=\\"more-info undefined\\"><button class=\\"more-info-button \\"><svg viewBox=\\"0 0 214 214\\" xmlns=\\"http://www.w3.org/2000/svg\\" stroke=\\"#000\\" fill=\\"none\\"><g><g id=\\"svg_8\\"><ellipse ry=\\"100\\" rx=\\"100\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"14\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"57\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"157\\" stroke-width=\\"16\\"></ellipse></g></g></svg></button></div><div class=\\"add-page\\"><button>+ Page</button></div></li>"`;
 
-exports[`SubMenu SubMenu component selected 1`] = `
-<li
-  className="editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list"
->
-  <button
-    aria-label="Currently on label6"
-  >
-    <span>
-      label6
-    </span>
-  </button>
-  <div
-    className="more-info undefined"
-  >
-    <button
-      className="more-info-button "
-      onClick={[Function]}
-    >
-      <svg
-        fill="none"
-        stroke="#000"
-        viewBox="0 0 214 214"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g>
-          <g
-            id="svg_8"
-          >
-            <ellipse
-              cx="107"
-              cy="107"
-              rx="100"
-              ry="100"
-              stroke-width="14"
-            />
-            <ellipse
-              cx="57"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-            <ellipse
-              cx="107"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-            <ellipse
-              cx="157"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-          </g>
-        </g>
-      </svg>
-    </button>
-  </div>
-  <div
-    className="add-page"
-  >
-    <button
-      onClick={[Function]}
-    >
-      + Page
-    </button>
-  </div>
-</li>
-`;
-
-exports[`SubMenu SubMenu component selected as assessment 1`] = `
-<li
-  className="editor--editor-nav--submenu link is-selected is-assessment is-first-in-list is-last-in-list"
->
-  <button
-    aria-label="Currently on label6"
-  >
-    <span>
-      label6
-    </span>
-  </button>
-  <div
-    className="more-info undefined"
-  >
-    <button
-      className="more-info-button "
-      onClick={[Function]}
-    >
-      <svg
-        fill="none"
-        stroke="#000"
-        viewBox="0 0 214 214"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g>
-          <g
-            id="svg_8"
-          >
-            <ellipse
-              cx="107"
-              cy="107"
-              rx="100"
-              ry="100"
-              stroke-width="14"
-            />
-            <ellipse
-              cx="57"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-            <ellipse
-              cx="107"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-            <ellipse
-              cx="157"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-          </g>
-        </g>
-      </svg>
-    </button>
-  </div>
-</li>
-`;
-
 exports[`SubMenu SubMenu component selected with no contentType 1`] = `
 <li
   className="editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list"
@@ -175,54 +38,24 @@ exports[`SubMenu SubMenu component selected with no contentType 1`] = `
     </span>
   </button>
   <div
-    className="more-info undefined"
+    mockname="MockMoreInfoBox"
   >
-    <button
-      className="more-info-button "
-      onClick={[Function]}
-    >
-      <svg
-        fill="none"
-        stroke="#000"
-        viewBox="0 0 214 214"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g>
-          <g
-            id="svg_8"
-          >
-            <ellipse
-              cx="107"
-              cy="107"
-              rx="100"
-              ry="100"
-              stroke-width="14"
-            />
-            <ellipse
-              cx="57"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-            <ellipse
-              cx="107"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-            <ellipse
-              cx="157"
-              cy="107"
-              rx="7"
-              ry="7"
-              stroke-width="16"
-            />
-          </g>
-        </g>
-      </svg>
-    </button>
+    {
+  "id": 6,
+  "index": 1,
+  "isFirst": false,
+  "isLast": true,
+  "type": "mock-type",
+  "content": "mock-content",
+  "contentDescription": [
+    {
+      "name": "title",
+      "description": "Title",
+      "type": "input"
+    }
+  ],
+  "showMoveButtons": true
+}
   </div>
   <div
     className="add-page"
