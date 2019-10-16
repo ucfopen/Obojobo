@@ -13,7 +13,7 @@ class InsertMenu extends React.PureComponent {
 			currentFocus: 0
 		}
 
-		this.refs = {}
+		this.itemRefs = {}
 		this.menu = []
 		this.timeOutId = null
 		this.openMenu = this.openMenu.bind(this)
@@ -36,7 +36,7 @@ class InsertMenu extends React.PureComponent {
 		// accessed via up and down arrows
 		this.menu = []
 		this.props.dropOptions.forEach(item => {
-			this.menu.push(this.refs[item.name])
+			this.menu.push(this.itemRefs[item.name])
 		})
 
 		// When the menu is open, focus on the current dropdown item
@@ -100,7 +100,7 @@ class InsertMenu extends React.PureComponent {
 				<button
 					tabIndex="-1"
 					ref={button => {
-						this.refs[item.name] = button
+						this.itemRefs[item.name] = button
 					}}
 					onClick={() => {
 						this.props.masterOnClick(item)
