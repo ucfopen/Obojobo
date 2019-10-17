@@ -66,6 +66,11 @@ jobs:
         - cd packages/app/obojobo-document-xml-parser
 
     - <<: *_npm-package-deploy-on-tag-template
+      stage: obojobo-document-json-parser npm release
+      before_deploy:
+        - cd packages/app/obojobo-document-json-parser
+
+    - <<: *_npm-package-deploy-on-tag-template
       stage: eslint-config-obojobo npm release
       before_deploy:
         - cd packages/util/eslint-config-obojobo
