@@ -4,34 +4,42 @@ const NUMERIC_CHOICE_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericChoice
 const NUMERIC_FEEDBACK_NODE = 'ObojoboDraft.Chunks.NumericAssessment.NumericFeedback'
 
 const EXACT_ANSWER = 'Exact answer'
+const EXACT = 'exact'
 const MARGIN_OF_ERROR = 'Margin of error'
+const MARGIN = 'margin'
 const WITHIN_A_RANGE = 'Within a range'
+const RANGE = 'range'
 const PRECISE_RESPONSE = 'Precise response'
+const PRECISE = 'precise'
 const PERCENT = 'Percent'
+const PERCENT_S = 'percent'
 const ABSOLUTE = 'Absolute'
+const ABSOLUTE_S = 'absolute'
 const SIGNIFICANT_DIGITS = 'Significant digits'
+const SIG_FIGS = 'sig-figs'
 const DECIMAL_PLACES = 'Decimal places'
+const DECIMALS = 'decimals'
 
 const fullTextToSimplifed = {
-	[EXACT_ANSWER]: 'exact',
-	[MARGIN_OF_ERROR]: 'margin',
-	[WITHIN_A_RANGE]: 'range',
-	[PRECISE_RESPONSE]: 'precise',
-	[PERCENT]: 'percent',
-	[ABSOLUTE]: 'absolute',
-	[SIGNIFICANT_DIGITS]: 'sig-figs',
-	[DECIMAL_PLACES]: 'decimals'
+	[EXACT_ANSWER]: EXACT,
+	[MARGIN_OF_ERROR]: MARGIN,
+	[WITHIN_A_RANGE]: RANGE,
+	[PRECISE_RESPONSE]: PRECISE,
+	[PERCENT]: PERCENT_S,
+	[ABSOLUTE]: ABSOLUTE_S,
+	[SIGNIFICANT_DIGITS]: SIG_FIGS,
+	[DECIMAL_PLACES]: DECIMALS
 }
 
 const simplifedToFullText = {
-	exact: EXACT_ANSWER,
-	margin: MARGIN_OF_ERROR,
-	range: WITHIN_A_RANGE,
-	precise: PRECISE_RESPONSE,
-	percent: PERCENT,
-	absolute: ABSOLUTE,
-	'sig-figs': SIGNIFICANT_DIGITS,
-	decimals: DECIMAL_PLACES
+	[EXACT]: EXACT_ANSWER,
+	[MARGIN]: MARGIN_OF_ERROR,
+	[RANGE]: WITHIN_A_RANGE,
+	[PRECISE]: PRECISE_RESPONSE,
+	[PERCENT_S]: PERCENT,
+	[ABSOLUTE_S]: ABSOLUTE,
+	[SIG_FIGS]: SIGNIFICANT_DIGITS,
+	[DECIMALS]: DECIMAL_PLACES
 }
 
 const requirementDropdown = [EXACT_ANSWER, MARGIN_OF_ERROR, WITHIN_A_RANGE, PRECISE_RESPONSE]
