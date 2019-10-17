@@ -2,11 +2,14 @@ import React from 'react'
 import { mount } from 'enzyme'
 import renderer from 'react-test-renderer'
 
-import ClipboardUtil from '../../../../src/scripts/oboeditor/util/clipboard-util'
 import Common from '../../../../src/scripts/common'
 import EditorUtil from '../../../../src/scripts/oboeditor/util/editor-util'
+import {
+	getTriggersWithActionsAdded,
+	getTriggersWithActionsRemoved,
+	hasTriggerTypeWithActionType
+} from '../../../../src/scripts/common/util/trigger-util'
 import SubMenu from '../../../../src/scripts/oboeditor/components/navigation/sub-menu'
-import MoreInfoBox from '../../../../src/scripts/oboeditor/components/navigation/more-info-box'
 
 jest.mock('../../../../src/scripts/oboeditor/util/editor-util', () => ({
 	renamePage: jest.fn(),
@@ -29,6 +32,9 @@ jest.mock('../../../../src/scripts/common', () => ({
 		ModalUtil: {
 			hide: jest.fn(),
 			show: jest.fn()
+		},
+		TriggerUtil: {
+			hasTriggerTypeWithActionType: jest.fn()
 		}
 	},
 	Registry: {
@@ -49,11 +55,10 @@ jest.mock('../../../../src/scripts/common', () => ({
 }))
 
 jest.mock('../../../../src/scripts/oboeditor/util/editor-util')
+jest.mock('../../../../src/scripts/common/util/trigger-util')
 jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null }
 }))
-// jest.mock('src/scripts/oboeditor/util/clipboard-util')
-// jest.mock('src/scripts/common/util/modal-util')
 jest.mock('../../../../src/scripts/oboeditor/components/navigation/more-info-box', () => {
 	return props => <div mockname="MockMoreInfoBox" >{JSON.stringify(props, null, 2)}</div>
 })
@@ -64,7 +69,7 @@ describe('SubMenu', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 
-		let mockGet = key => {
+		const mockGet = key => {
 			switch(key){
 				case 'type':
 					return 'mock-type'
@@ -90,9 +95,14 @@ describe('SubMenu', () => {
 				isFirst: () => false,
 				isLast: () => false,
 				getIndex: () => 2,
-				get: mockGet
+				get: mockGet,
+				setId: jest.fn(),
+				set: jest.fn(),
+				clone: () => ({ toJSON: () => ({}) })
 			}
 		}
+
+		Common.models.OboModel.getRoot = jest.fn()
 	})
 
 	test('SubMenu component', () => {
@@ -113,14 +123,14 @@ describe('SubMenu', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('SubMenu component selected with no contentType', () => {
+	test('SubMenu component selected as assessment', () => {
 		const itemList = [
 			{
 				id: 6,
 				type: 'link',
 				label: 'label6',
 				flags: {
-					assessment: false
+					assessment: true
 				}
 			}
 		]
@@ -128,6 +138,27 @@ describe('SubMenu', () => {
 
 		const tree = component.toJSON()
 		expect(tree).toMatchSnapshot()
+	})
+
+	test('SubMenu component adds page', () => {
+		const itemList = [
+			{
+				id: 5,
+				type: 'link',
+				label: 'label5',
+				contentType: 'Page',
+				flags: {
+					assessment: false
+				}
+			}
+		]
+		const component = mount(<SubMenu index={0} isSelected={true} list={itemList} />)
+		
+		component.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('SubMenu component calls parent onClick function', () => {
@@ -152,78 +183,6 @@ describe('SubMenu', () => {
 			.simulate('click')
 
 		expect(parentOnClick).toHaveBeenCalled()
-	})
-
-	test.skip('SubMenu component moves page up', () => {
-		const itemList = [
-			{
-				id: 7,
-				type: 'link',
-				label: 'label7',
-				flags: {
-					assessment: false
-				}
-			}
-		]
-		const parentOnClick = jest.fn()
-		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
-		)
-
-		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
-			.at(1)
-			.simulate('click')
-
-		expect(EditorUtil.movePage).toHaveBeenCalledWith(7, 1)
-	})
-
-	test.skip('SubMenu component moves page down', () => {
-		const itemList = [
-			{
-				id: 7,
-				type: 'link',
-				label: 'label7',
-				flags: {
-					assessment: false
-				}
-			}
-		]
-		const parentOnClick = jest.fn()
-		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
-		)
-
-		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
-			.at(2)
-			.simulate('click')
-
-		expect(EditorUtil.movePage).toHaveBeenCalledWith(7, 3)
-	})
-
-	test.skip('SubMenu component edits page name', () => {
-		const itemList = [
-			{
-				id: 7,
-				type: 'link',
-				label: 'label7',
-				flags: {
-					assessment: false
-				}
-			}
-		]
-		const parentOnClick = jest.fn()
-		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
-		)
-
-		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
-			.at(3)
-			.simulate('click')
-
-		expect(ModalUtil.show).toHaveBeenCalled()
 	})
 
 	test('renamePage edits page name with empty label', () => {
@@ -268,7 +227,7 @@ describe('SubMenu', () => {
 		expect(EditorUtil.renamePage).toHaveBeenCalled()
 	})
 
-	test('SubMenu component deletes page', () => {
+	test('deletePage calls EditorUtil', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -289,7 +248,7 @@ describe('SubMenu', () => {
 		expect(EditorUtil.deletePage).toHaveBeenCalled()
 	})
 
-	test.skip('SubMenu component copies id to clipboard', () => {
+	test('movePage calls EditorUtil', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -300,20 +259,17 @@ describe('SubMenu', () => {
 				}
 			}
 		]
-		const parentOnClick = jest.fn()
+
 		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+			<SubMenu index={0} list={itemList} />
 		)
 
-		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
-			.at(6)
-			.simulate('click')
+		component.instance().movePage()
 
-		expect(ClipboardUtil.copyToClipboard).toHaveBeenCalled()
+		expect(EditorUtil.movePage).toHaveBeenCalled()
 	})
 
-	test.skip('SubMenu component sets start page', () => {
+	test('addPage calls EditorUtil', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -324,20 +280,37 @@ describe('SubMenu', () => {
 				}
 			}
 		]
-		const parentOnClick = jest.fn()
+
 		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
 		)
 
-		component
-			.find('button') // [Link, Move Up, Move Down, Edit Name, Set Start, Delete, ID]
-			.at(4)
-			.simulate('click')
+		component.instance().addPage('mock-id-1')
+		expect(EditorUtil.addPage).toHaveBeenCalledWith(
+			expect.objectContaining({ content: expect.objectContaining({
+				title: null 
+			})}), 
+			"mock-id-1"
+		)
 
-		expect(EditorUtil.setStartPage).toHaveBeenCalled()
+		component.instance().addPage('mock-id-2', "New Title")
+		expect(EditorUtil.addPage).toHaveBeenCalledWith(
+			expect.objectContaining({ content: expect.objectContaining({
+				title: "New Title"
+			})}), 
+			"mock-id-2"
+		)
+
+		component.instance().addPage('mock-id-3', "     ")
+		expect(EditorUtil.addPage).toHaveBeenCalledWith(
+			expect.objectContaining({ content: expect.objectContaining({
+				title: null 
+			})}), 
+			"mock-id-3"
+		)
 	})
 
-	test.skip('SubMenu component opens menu', () => {
+	test('saveId sends error with bad id', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -348,23 +321,16 @@ describe('SubMenu', () => {
 				}
 			}
 		]
-		const parentOnClick = jest.fn()
+
 		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
 		)
 
-		const html = component
-			.find('li')
-			.at(0)
-			.simulate('keyDown', {
-				key: 'ArrowRight'
-			})
-			.html()
-
-		expect(html).toMatchSnapshot()
+		component.instance().saveId('7' ,'mock-id')
+		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
 	})
 
-	test.skip('SubMenu component closes menu', () => {
+	test('saveId calls rebuildMenu with good id', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -375,23 +341,17 @@ describe('SubMenu', () => {
 				}
 			}
 		]
-		const parentOnClick = jest.fn()
+		Common.models.OboModel.models['7'].setId.mockReturnValueOnce(true)
+
 		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
 		)
 
-		const html = component
-			.find('li')
-			.at(0)
-			.simulate('keyDown', {
-				key: 'ArrowLeft'
-			})
-			.html()
-
-		expect(html).toMatchSnapshot()
+		component.instance().saveId('7' ,'mock-id')
+		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 	})
 
-	test.skip('SubMenu component moves down through the menu', () => {
+	test('saveContent updates model', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -402,23 +362,20 @@ describe('SubMenu', () => {
 				}
 			}
 		]
-		const parentOnClick = jest.fn()
+		Common.models.OboModel.models['7'].setId.mockReturnValueOnce(true)
+
 		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
 		)
 
-		const html = component
-			.find('li')
-			.at(0)
-			.simulate('keyDown', {
-				key: 'ArrowDown'
-			})
-			.html()
+		component.instance().saveContent({} , {})
+		expect(Common.models.OboModel.models['7']).toMatchSnapshot()
 
-		expect(html).toMatchSnapshot()
+		component.instance().saveContent({} , { triggers: [], title: "Mock title" })
+		expect(Common.models.OboModel.models['7']).toMatchSnapshot()
 	})
 
-	test.skip('SubMenu component moves up through the menu', () => {
+	test('showDeleteModal calls show', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -429,23 +386,16 @@ describe('SubMenu', () => {
 				}
 			}
 		]
-		const parentOnClick = jest.fn()
+
 		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
 		)
 
-		const html = component
-			.find('li')
-			.at(0)
-			.simulate('keyDown', {
-				key: 'ArrowUp'
-			})
-			.html()
-
-		expect(html).toMatchSnapshot()
+		component.instance().showDeleteModal()
+		expect(Common.util.ModalUtil.show).toHaveBeenCalled()
 	})
 
-	test.skip('SubMenu component closes menu when unfocused', () => {
+	test('duplicatePage calls addPage', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -456,23 +406,16 @@ describe('SubMenu', () => {
 				}
 			}
 		]
-		const parentOnClick = jest.fn()
+
 		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+			<SubMenu index={0} list={itemList} savePage={jest.fn()}/>
 		)
 
-		const html = component
-			.find('li')
-			.at(0)
-			.simulate('blur')
-			.html()
-
-		jest.runAllTimers()
-
-		expect(html).toMatchSnapshot()
+		component.instance().duplicatePage()
+		expect(EditorUtil.addPage).toHaveBeenCalled()
 	})
 
-	test.skip('SubMenu component cancels menu closure when focused', () => {
+	test('lockValue returns true', () => {
 		const itemList = [
 			{
 				id: 7,
@@ -483,17 +426,56 @@ describe('SubMenu', () => {
 				}
 			}
 		]
-		const parentOnClick = jest.fn()
+
 		const component = mount(
-			<SubMenu index={0} isSelected={true} list={itemList} onClick={parentOnClick} />
+			<SubMenu index={0} list={itemList} savePage={jest.fn()}/>
 		)
 
-		const html = component
-			.find('li')
-			.at(0)
-			.simulate('focus')
-			.html()
+		hasTriggerTypeWithActionType
+			.mockReturnValue(true)
 
-		expect(html).toMatchSnapshot()
+		expect(component.instance().lockValue({})).toEqual(true)
+	})
+
+	test('onChangeLock calls getTriggersWithActionsAdded', () => {
+		const itemList = [
+			{
+				id: 7,
+				type: 'link',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
+			}
+		]
+
+		const component = mount(
+			<SubMenu index={0} list={itemList} savePage={jest.fn()}/>
+		)
+
+		component.instance().onChangeLock({}, true)
+		expect(getTriggersWithActionsAdded).toHaveBeenCalled()
+	})
+
+	test('onChangeLock calls getTriggersWithActionsRemoved', () => {
+		const itemList = [
+			{
+				id: 7,
+				type: 'link',
+				label: 'label7',
+				flags: {
+					assessment: false
+				}
+			}
+		]
+
+		const component = mount(
+			<SubMenu index={0} list={itemList} savePage={jest.fn()}/>
+		)
+		component.instance().onChangeLock({}, false)
+		expect(getTriggersWithActionsRemoved).not.toHaveBeenCalled()
+
+		component.instance().onChangeLock({ triggers: [] }, false)
+		expect(getTriggersWithActionsRemoved).toHaveBeenCalled()
 	})
 })

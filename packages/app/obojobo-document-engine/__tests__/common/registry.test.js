@@ -498,4 +498,23 @@ describe('Registry', () => {
 
 		expect(document.head.appendChild).toHaveBeenCalledTimes(2)
 	})
+
+	test('insertableItems processes the items the first time its called', () => {
+		Registry.registerModel('insertable', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isInsertable: true
+		})
+		expect(Registry.insertableItems.length).toEqual(1)
+
+		Registry.registerModel('insertable', {
+			type: 'chunk',
+			default: false,
+			__testValue: 1,
+			isInsertable: true
+		})
+
+		expect(Registry.insertableItems.length).toEqual(1)
+	})
 })

@@ -318,6 +318,71 @@ describe('MoreInfoBox', () => {
 		expect(markUnsaved).not.toHaveBeenCalled()
 	})
 
+	test('More Info Box with no button bar', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox 
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+				hideButtonBar/>)
+		component.setState({ isOpen: true })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('More Info Box moves up and down', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const moveNode = jest.fn()
+		const component = mount(
+			<MoreInfoBox 
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+				moveNode={moveNode}/>)
+		component.setState({ isOpen: true })
+
+		component
+			.find('button')
+			.at(5)
+			.simulate('click')
+		component
+			.find('button')
+			.at(6)
+			.simulate('click')
+
+		expect(moveNode).toHaveBeenCalledTimes(2)
+	})
+
+	test('More Info Box with no move buttons', () => {
+		const saveId = jest.fn()
+		const saveContent = jest.fn()
+		const markUnsaved = jest.fn()
+		const component = mount(
+			<MoreInfoBox 
+				id="mock-id"
+				content={{}}
+				saveId={saveId}
+				saveContent={saveContent}
+				markUnsaved={markUnsaved}
+				contentDescription={[]}
+				isFirst
+				isLast/>)
+		component.setState({ isOpen: true })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
 	test('More Info Box copies the id', () => {
 		const saveId = jest.fn().mockReturnValue("A simple Error")
 		const saveContent = jest.fn()

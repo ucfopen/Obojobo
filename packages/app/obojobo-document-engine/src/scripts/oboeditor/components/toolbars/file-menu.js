@@ -190,7 +190,12 @@ class FileMenu extends React.PureComponent {
 			}
 		]
 
-		return <DropDownMenu name="File" menu={menu} />
+		return (
+			<div
+				className="visual-editor--drop-down-menu">
+				<DropDownMenu name="File" menu={menu} />
+			</div>
+		)
 	}
 }
 

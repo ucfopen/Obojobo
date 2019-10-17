@@ -14,21 +14,28 @@ exports[`SubMenu SubMenu component 1`] = `
 </li>
 `;
 
-exports[`SubMenu SubMenu component cancels menu closure when focused 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><div class=\\"more-info undefined\\"><button class=\\"more-info-button \\"><svg viewBox=\\"0 0 214 214\\" xmlns=\\"http://www.w3.org/2000/svg\\" stroke=\\"#000\\" fill=\\"none\\"><g><g id=\\"svg_8\\"><ellipse ry=\\"100\\" rx=\\"100\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"14\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"57\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"157\\" stroke-width=\\"16\\"></ellipse></g></g></svg></button></div><div class=\\"add-page\\"><button>+ Page</button></div></li>"`;
+exports[`SubMenu SubMenu component adds page 1`] = `
+"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on Page: label5\\"><span>label5</span></button><div mockname=\\"MockMoreInfoBox\\">{
+  \\"id\\": 5,
+  \\"index\\": 0,
+  \\"isFirst\\": true,
+  \\"isLast\\": false,
+  \\"type\\": \\"mock-type\\",
+  \\"content\\": \\"mock-content\\",
+  \\"contentDescription\\": [
+    {
+      \\"name\\": \\"title\\",
+      \\"description\\": \\"Title\\",
+      \\"type\\": \\"input\\"
+    }
+  ],
+  \\"showMoveButtons\\": true
+}</div><div class=\\"add-page\\"><button>+ Page</button></div></li>"
+`;
 
-exports[`SubMenu SubMenu component closes menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><div class=\\"more-info undefined\\"><button class=\\"more-info-button \\"><svg viewBox=\\"0 0 214 214\\" xmlns=\\"http://www.w3.org/2000/svg\\" stroke=\\"#000\\" fill=\\"none\\"><g><g id=\\"svg_8\\"><ellipse ry=\\"100\\" rx=\\"100\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"14\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"57\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"157\\" stroke-width=\\"16\\"></ellipse></g></g></svg></button></div><div class=\\"add-page\\"><button>+ Page</button></div></li>"`;
-
-exports[`SubMenu SubMenu component closes menu when unfocused 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><div class=\\"more-info undefined\\"><button class=\\"more-info-button \\"><svg viewBox=\\"0 0 214 214\\" xmlns=\\"http://www.w3.org/2000/svg\\" stroke=\\"#000\\" fill=\\"none\\"><g><g id=\\"svg_8\\"><ellipse ry=\\"100\\" rx=\\"100\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"14\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"57\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"157\\" stroke-width=\\"16\\"></ellipse></g></g></svg></button></div><div class=\\"add-page\\"><button>+ Page</button></div></li>"`;
-
-exports[`SubMenu SubMenu component moves down through the menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><div class=\\"more-info undefined\\"><button class=\\"more-info-button \\"><svg viewBox=\\"0 0 214 214\\" xmlns=\\"http://www.w3.org/2000/svg\\" stroke=\\"#000\\" fill=\\"none\\"><g><g id=\\"svg_8\\"><ellipse ry=\\"100\\" rx=\\"100\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"14\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"57\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"157\\" stroke-width=\\"16\\"></ellipse></g></g></svg></button></div><div class=\\"add-page\\"><button>+ Page</button></div></li>"`;
-
-exports[`SubMenu SubMenu component moves up through the menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><div class=\\"more-info undefined\\"><button class=\\"more-info-button \\"><svg viewBox=\\"0 0 214 214\\" xmlns=\\"http://www.w3.org/2000/svg\\" stroke=\\"#000\\" fill=\\"none\\"><g><g id=\\"svg_8\\"><ellipse ry=\\"100\\" rx=\\"100\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"14\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"57\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"157\\" stroke-width=\\"16\\"></ellipse></g></g></svg></button></div><div class=\\"add-page\\"><button>+ Page</button></div></li>"`;
-
-exports[`SubMenu SubMenu component opens menu 1`] = `"<li class=\\"editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list\\"><button aria-label=\\"Currently on label7\\"><span>label7</span></button><div class=\\"more-info undefined\\"><button class=\\"more-info-button \\"><svg viewBox=\\"0 0 214 214\\" xmlns=\\"http://www.w3.org/2000/svg\\" stroke=\\"#000\\" fill=\\"none\\"><g><g id=\\"svg_8\\"><ellipse ry=\\"100\\" rx=\\"100\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"14\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"57\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"107\\" stroke-width=\\"16\\"></ellipse><ellipse ry=\\"7\\" rx=\\"7\\" cy=\\"107\\" cx=\\"157\\" stroke-width=\\"16\\"></ellipse></g></g></svg></button></div><div class=\\"add-page\\"><button>+ Page</button></div></li>"`;
-
-exports[`SubMenu SubMenu component selected with no contentType 1`] = `
+exports[`SubMenu SubMenu component selected as assessment 1`] = `
 <li
-  className="editor--editor-nav--submenu link is-selected is-not-assessment is-first-in-list is-last-in-list"
+  className="editor--editor-nav--submenu link is-selected is-assessment is-first-in-list is-last-in-list"
 >
   <button
     aria-label="Currently on label6"
@@ -52,19 +59,107 @@ exports[`SubMenu SubMenu component selected with no contentType 1`] = `
       "name": "title",
       "description": "Title",
       "type": "input"
+    },
+    {
+      "name": "attempts",
+      "description": "Attempts",
+      "type": "input"
+    },
+    {
+      "name": "review",
+      "description": "Review",
+      "type": "select",
+      "values": [
+        {
+          "value": "always",
+          "description": "Always show answers in review"
+        },
+        {
+          "value": "never",
+          "description": "Never show answers in review"
+        },
+        {
+          "value": "no-attempts-remaining",
+          "description": "Show answers in review after last attempt"
+        }
+      ]
+    },
+    {
+      "name": "lock-nav",
+      "description": "Lock Navigation During Attempts",
+      "type": "abstract-toggle"
     }
   ],
   "showMoveButtons": true
 }
   </div>
-  <div
-    className="add-page"
-  >
-    <button
-      onClick={[Function]}
-    >
-      + Page
-    </button>
-  </div>
 </li>
+`;
+
+exports[`SubMenu saveContent updates model 1`] = `
+Object {
+  "clone": [Function],
+  "get": [Function],
+  "getIndex": [Function],
+  "isFirst": [Function],
+  "isLast": [Function],
+  "set": [MockFunction] {
+    "calls": Array [
+      Array [
+        Object {
+          "content": Object {},
+        },
+      ],
+    ],
+    "results": Array [
+      Object {
+        "type": "return",
+        "value": undefined,
+      },
+    ],
+  },
+  "setId": [MockFunction],
+  "title": null,
+  "triggers": Array [],
+}
+`;
+
+exports[`SubMenu saveContent updates model 2`] = `
+Object {
+  "clone": [Function],
+  "get": [Function],
+  "getIndex": [Function],
+  "isFirst": [Function],
+  "isLast": [Function],
+  "set": [MockFunction] {
+    "calls": Array [
+      Array [
+        Object {
+          "content": Object {},
+        },
+      ],
+      Array [
+        Object {
+          "content": Object {
+            "title": "Mock title",
+            "triggers": Array [],
+          },
+        },
+      ],
+    ],
+    "results": Array [
+      Object {
+        "type": "return",
+        "value": undefined,
+      },
+      Object {
+        "type": "return",
+        "value": undefined,
+      },
+    ],
+  },
+  "setId": [MockFunction],
+  "title": "Mock title",
+  "triggers": Array [],
+}
 `;

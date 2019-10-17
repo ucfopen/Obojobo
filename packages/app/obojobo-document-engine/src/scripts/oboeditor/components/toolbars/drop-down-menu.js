@@ -18,16 +18,21 @@ class DropMenu extends React.PureComponent {
 		this.timeOutId = null
 		this.onBlurHandler = this.onBlurHandler.bind(this)
 		this.onFocusHandler = this.onFocusHandler.bind(this)
+		this.toggleOpen = this.toggleOpen.bind(this)
 	}
 
 	componentDidUpdate() {
 		// When the menu is open, focus on the current dropdown item
 		if (this.state.isOpen) {
+			this.menu = this.menu.filter(Boolean)
 			this.menu[this.state.currentFocus].focus()
 		}
 	}
 
 	onKeyDown(event) {
+		this.menu = this.menu.filter(Boolean)
+		if(this.state.isOpen) event.stopPropagation()
+		console.log(this.menu)
 		switch (event.key) {
 			// Open the menu and set the first item as the current focus
 			case 'ArrowRight':
@@ -70,23 +75,39 @@ class DropMenu extends React.PureComponent {
 		clearTimeout(this.timeOutId)
 	}
 
+	toggleOpen() {
+		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
+	}
+
 	renderSubMenu(name, menu) {
+		this.menu = []
 		return (
 			<div
 				className={'dropdown ' + isOrNot(this.state.isOpen, 'open')}
-				key={name}>
-				<button className="menu-title">{name}</button>
+				key={name}
+				onBlur={this.onBlurHandler}
+				onFocus={this.onFocusHandler}
+				onKeyDown={event => this.onKeyDown(event)}
+				ref={this.props.onRef}
+				tabIndex={-1}>
+				<button 
+					className="menu-title"
+					onClick={this.toggleOpen}
+					ref={item => {this.menu.push(item)}}>
+					{name}
+				</button>
 				<div className="menu-items">
 					{menu.map(item => {
 						switch(item.type) {
 							case 'sub-menu':
-								return (this.renderSubMenu(item.name, item.menu))
+								return <DropMenu name={item.name} menu={item.menu} onRef={item => {this.menu.push(item)}}/>
 							default:
 								return (
 									<button
 										key={item.name}
 										onClick={item.action}
-										disabled={item.disabled}>
+										disabled={item.disabled}
+										ref={item => {this.menu.push(item)}}>
 										{item.name}
 									</button>
 								)
@@ -109,16 +130,7 @@ class DropMenu extends React.PureComponent {
 	}
 
 	render() {
-		return (
-			<div
-				className="visual-editor--drop-down-menu"
-				onClick={this.props.onClick}
-				onBlur={this.onBlurHandler}
-				onFocus={this.onFocusHandler}
-				onKeyDown={event => this.onKeyDown(event)}>
-				{this.renderSubMenu(this.props.name, this.props.menu)}
-			</div>
-		)
+		return this.renderSubMenu(this.props.name, this.props.menu)
 	}
 }
 
