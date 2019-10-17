@@ -59,19 +59,6 @@ module.exports = req => {
 				}
 			})
 
-		case 'nav:toggle':
-			return caliperEvents.createNavMenuToggledEvent({
-				actor: actorFromType(ACTOR_USER),
-				draftId: currentDocument.draftId,
-				contentId: currentDocument.contentId,
-				sessionIds,
-				extensions: {
-					navType: clientEvent.action.split(':')[1],
-					internalName: clientEvent.action,
-					isOpen: clientEvent.payload.open
-				}
-			})
-
 		case 'nav:lock':
 			return caliperEvents.createNavMenuDeactivatedEvent({
 				actor: actorFromType(ACTOR_VIEWER_CLIENT),

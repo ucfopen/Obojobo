@@ -42,6 +42,17 @@
 		transform: translate(-50%, -50%);
 		left: 0.6em;
 		animation: obojobo-draft--chunks--mc-assessment--fadein $duration-animation-default * 2;
+
+		@include mq($until: desktop) {
+			font-size: 1.5em;
+			top: 1.1em;
+		}
+
+		@include mq($until: tablet) {
+			font-size: 1.2em;
+			top: 0.6em;
+			left: 1.1em;
+		}
 	}
 
 	@mixin incorrect() {
@@ -54,6 +65,17 @@
 		transform: translate(-50%, -50%);
 		left: 0.6em;
 		animation: obojobo-draft--chunks--mc-assessment--fadein $duration-animation-default * 2;
+
+		@include mq($until: desktop) {
+			font-size: 1.5em;
+			top: 1.1em;
+		}
+
+		@include mq($until: tablet) {
+			font-size: 1.2em;
+			top: 0.6em;
+			left: 1.1em;
+		}
 	}
 
 	padding-bottom: 0;
@@ -85,13 +107,29 @@
 		padding-top: 0;
 		padding-bottom: 0;
 		padding-left: 2em;
+
+		@include mq($until: desktop) {
+			padding-left: 1.5em;
+		}
+
+		@include mq($until: mobileLandscape) {
+			padding-left: 1em;
+		}
 	}
 
 	.instructions {
 		$font-size: 1em;
 
-		padding-left: $dimension-padding;
-		padding-right: $dimension-padding;
+		@include pad();
+
+		@include mq($until: desktop) {
+			@include pad(0.75);
+		}
+
+		@include mq($until: tablet) {
+			@include pad(0.3);
+		}
+
 		content: 'Practice';
 		display: block;
 		font-family: $font-default;
@@ -104,7 +142,16 @@
 	}
 
 	.submit-and-result-container {
-		margin-left: 3em;
+		@include pad();
+
+		@include mq($until: desktop) {
+			@include pad(0.75);
+		}
+
+		@include mq($until: tablet) {
+			@include pad(0.3);
+		}
+
 		min-height: 4em;
 		display: table;
 	}
@@ -138,13 +185,18 @@
 		padding-right: 1em;
 		padding-top: 1em;
 		padding-bottom: 1em;
+		line-height: 1em;
+
+		@include mq($until: mobile) {
+			display: block;
+		}
 
 		.pick-all-instructions {
 			font-family: $font-default;
 			font-size: 0.8em;
 			font-weight: bold;
 			color: $color-incorrect;
-			width: 24em;
+			max-width: 24em;
 			display: inline-block;
 			line-height: 1.5em;
 			vertical-align: middle;
@@ -159,12 +211,11 @@
 			margin: 0;
 			display: inline-block;
 			border-radius: 9999px;
-			padding: 0 1.5em;
+			padding: 0.5em 1.5em;
 			font-size: 0.8em;
 			transform: scale(0);
 			animation: obojobo-draft--chunks--mc-assessment--bounce 0.4s;
 			animation-delay: $duration-animation-default * 1.5;
-			// animation-delay: $duration-animation-default * 2;
 			animation-fill-mode: forwards;
 
 			&.correct {
@@ -193,6 +244,17 @@
 			margin-top: 1em;
 			margin-bottom: 1em;
 			margin-left: 3em;
+			margin-right: 3em;
+
+			@include mq($until: desktop) {
+				margin-left: 3em * 0.75;
+				margin-right: 3em * 0.75;
+			}
+
+			@include mq($until: tablet) {
+				margin-left: 3em * 0.3;
+				margin-right: 3em * 0.3;
+			}
 
 			button {
 				min-width: 10.5em;
@@ -239,7 +301,7 @@
 		.solution-container {
 			background: $color-bg;
 			text-align: left;
-			padding: 0;
+			padding: 0.5em;
 			margin-bottom: $dimension-padding / 3;
 			margin-left: $dimension-padding / 3;
 			margin-right: $dimension-padding / 3;
@@ -264,6 +326,11 @@
 				display: block;
 				transform: scale(0.7);
 				transform-origin: top left;
+
+				@include mq($until: tablet) {
+					margin-top: 0.5em;
+					margin-left: 0.5em;
+				}
 			}
 
 			&.solution-enter {
@@ -322,6 +389,14 @@
 			> div > .component[data-obo-component='true'] {
 				margin-left: -1em;
 				margin-right: -1em;
+			}
+
+			.obojobo-draft--pages--page {
+				font-size: 0.85em;
+
+				@include mq($until: tablet) {
+					padding-top: 0.5em;
+				}
 			}
 		}
 
@@ -402,6 +477,10 @@
 				}
 			}
 		}
+
+		.obojobo-draft--chunks--mc-assessment--mc-answer > .component {
+			padding-top: 1em + $dimension-review-answer-flag-padding;
+		}
 	}
 
 	.obojobo-draft--chunks--mc-assessment--mc-choice--answer-flag {
@@ -441,6 +520,20 @@
 		padding-right: 0.5em;
 		box-sizing: border-box;
 		min-height: 2.5em;
+
+		@include mq($until: desktop) {
+			font-size: 0.5em;
+			left: -1.9em;
+			top: 0.3em;
+			padding-left: 0.2em;
+			padding-right: 0.2em;
+			margin-top: -0.5em;
+
+			&::before,
+			&::after {
+				display: none;
+			}
+		}
 
 		> p {
 			margin: 0.25em;

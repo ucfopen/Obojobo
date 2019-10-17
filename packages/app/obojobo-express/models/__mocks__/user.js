@@ -4,10 +4,10 @@ let saveOrCreateCallbackFn = jest.fn()
 class MockUser {
 	constructor({
 		id = 1,
-		firstName = 'Guest',
-		lastName = 'Guest',
-		email = 'guest@obojobo.ucf.edu',
-		username = 'guest',
+		firstName = 'MOCK',
+		lastName = 'USER',
+		email = 'mock@obojobo.ucf.edu',
+		username = 'mock',
 		createdAt = Date.now(),
 		roles = []
 	} = {}) {
@@ -52,5 +52,7 @@ class MockUser {
 		return saveOrCreateCallbackFn
 	}
 }
+
+MockUser.clearSessionsForUserById = jest.fn()
 
 module.exports = MockUser

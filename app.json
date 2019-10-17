@@ -6,7 +6,8 @@
 	"logo": "https://ucfopen.github.io/Obojobo-Docs/assets/images/obojobo_blue.svg",
 	"success_url": "/lti",
 	"scripts": {
-		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed"
+		"postdeploy": "cd node_modules/obojobo-express && yarn db:migrateup && yarn sampleDraft:seed",
+		"purgedata": "yarn run obojobo_purge_data"
 	},
 	"env": {
 		"DB_SSL": {
@@ -16,6 +17,10 @@
 		"OBO_LTI_KEYS_JSON": {
 			"description": "Edit the secret value. JSON string for LTI key:secret values.",
 			"value": "{\"obo-production-lti-key\":\"CHANGE_THIS_VALUE_NOW\"}"
+		},
+		"OBO_LTI_USERNAME_PARAM": {
+			"description": "Which LTI Launch Param should Obojobo Use as a Username?",
+			"value": "user_id"
 		},
 		"OBO_COOKIE_SECRET": {
 			"description": "Do not change. Secret string used to encrypt cookie data",
@@ -32,6 +37,14 @@
 		"YARN_PRODUCTION": {
 			"description": "Do not change. Makes sure yarn install includes dev dependencies",
 			"value": "false"
+		},
+		"OBO_DEMO_PURGE_MODE": {
+			"description": "Automatically purge old data for demo purposes or to limit database growth. Additional addon setup required.",
+			"value": "disabled"
+		},
+		"OBO_DEMO_PURGE_DAYS_AGO": {
+			"description": "If purge mode is enabled, purge data older than this many days",
+			"value": "7"
 		}
 	},
 	"formation": {
@@ -47,7 +60,8 @@
 			"options": {
 				"version": "9.6"
 			}
-		}
+		},
+		"scheduler"
 	],
 	"buildpacks": [
 		{

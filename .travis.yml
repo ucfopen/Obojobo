@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-  - '10.4.1'
-  - '10'
+  - '12.11.1'
+  - '12'
 cache:
   yarn: true
   directories:
@@ -26,7 +26,7 @@ _npm-package-deploy-on-tag-template: &_npm-package-deploy-on-tag-template
   # only matches when a semver tag is found
   if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+
   # only run on one node (would inherit the root level node_js otherwise!)
-  node_js: '10.4.1'
+  node_js: '12.11.1'
   # dont bother running the top level script tag (yarn test:ci)
   script: skip
   # copied from another script - this may not be required?

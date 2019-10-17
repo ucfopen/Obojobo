@@ -1,6 +1,6 @@
 {
 	"name": "obojobo-chunks-action-button",
-	"version": "5.0.1",
+	"version": "6.0.1",
 	"license": "AGPL-3.0-only",
 	"scripts": {
 		"test": "TZ='America/New_York' jest --verbose",
@@ -24,10 +24,10 @@
 		]
 	},
 	"dependencies": {
-		"obojobo-lib-utils": "^5.0.1"
+		"obojobo-lib-utils": "^6.0.1"
 	},
 	"devDependencies": {
-		"lint-staged": "^6.1.1"
+		"lint-staged": "^9.4.1"
 	},
 	"jest": {
 		"testMatch": [

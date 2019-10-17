@@ -9,14 +9,14 @@ const {
 	checkValidationRules,
 	requireCurrentDocument,
 	requireDraftId,
-	requireCanViewDrafts
+	requireCanPreviewDrafts
 } = oboRequire('express_validators')
 
 // Start a preview - redirects to visit route
 // mounts at /preview/:draftId
 router
 	.route('/:draftId')
-	.get([requireCanViewDrafts, requireCurrentDocument, requireDraftId, checkValidationRules])
+	.get([requireCanPreviewDrafts, requireCurrentDocument, requireDraftId, checkValidationRules])
 	.get((req, res) => {
 		let visitId
 		return Visit.createPreviewVisit(req.currentUser.id, req.currentDocument.draftId)

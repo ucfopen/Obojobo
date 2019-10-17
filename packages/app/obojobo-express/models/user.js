@@ -54,6 +54,10 @@ class User {
 			})
 	}
 
+	static clearSessionsForUserById(id) {
+		return db.none(`DELETE FROM sessions WHERE sess ->> 'currentUserId' = $[id]`, { id })
+	}
+
 	saveOrCreate() {
 		return db
 			.one(
