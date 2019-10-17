@@ -1,7 +1,7 @@
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 
 import NumericFeedback from './editor'
-import { NUMERIC_FEEDBACK_NODE } from '../../constant'
+import { NUMERIC_FEEDBACK_NODE } from '../constants'
 
 describe('NumericFeedback editor', () => {
 	test('plugins.renderNode renders a node', () => {
