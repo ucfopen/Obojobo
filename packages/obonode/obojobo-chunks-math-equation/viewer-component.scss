@@ -7,7 +7,10 @@
 
 	.katex-display {
 		margin: 0;
-		overflow-x: scroll; // prevent whole page side scrolling
+		overflow-x: auto; // prevent whole page side scrolling
+		overflow-y: hidden;
+		padding-top: 0.1em; // extra padding prevents vertical scrolling
+		padding-bottom: 0.1em;
 
 		@include mq($until: tablet) {
 			font-size: 0.9em; // squish a little on smaller screens
@@ -15,6 +18,7 @@
 	}
 
 	.equation-label {
+		font-family: $font-default;
 		position: relative;
 		text-align: center;
 		right: 0;
@@ -30,17 +34,17 @@
 		}
 	}
 
-	&.align-left .katex-display,
+	&.align-left .katex-display > .katex,
 	&.align-left .equation-label {
 		text-align: left;
 	}
 
-	&.align-right .katex-display,
+	&.align-right .katex-display > .katex,
 	&.align-right .equation-label {
 		text-align: right;
 	}
 
-	&.align-center .katex-display {
+	&.align-center .katex-display > .katex {
 		text-align: center;
 	}
 

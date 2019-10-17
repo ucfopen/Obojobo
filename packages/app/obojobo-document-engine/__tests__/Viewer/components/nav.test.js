@@ -525,7 +525,7 @@ describe('Nav', () => {
 				contains: () => false
 			}
 		}
-		component.instance().onWindowClick({ target: true })
+		component.instance().closeNavOnMobile({target: true})
 		expect(NavUtil.close).not.toHaveBeenCalled()
 	})
 
@@ -542,7 +542,7 @@ describe('Nav', () => {
 				contains: () => true
 			}
 		}
-		component.instance().onWindowClick({ target: true })
+		component.instance().closeNavOnMobile({target: true})
 		expect(NavUtil.close).not.toHaveBeenCalled()
 	})
 
@@ -559,7 +559,7 @@ describe('Nav', () => {
 				contains: () => false
 			}
 		}
-		component.instance().onWindowClick({ target: true })
+		component.instance().closeNavOnMobile({target: true})
 		expect(NavUtil.close).toHaveBeenCalled()
 	})
 })

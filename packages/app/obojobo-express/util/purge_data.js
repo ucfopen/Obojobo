@@ -52,20 +52,16 @@ const purgeMediaBinaries = purgeDate =>
 	)
 
 const fullPurge = async purgeDate => {
+	// excludes migrations and sessions
 	const tablesToClear = [
 		'assessment_scores',
 		'attempts',
 		'attempts_question_responses',
 		'caliper_store',
-		// 'drafts',
-		// 'drafts_content',
 		'events',
 		'launches',
 		'lti_assessment_scores',
 		'media',
-		// 'media_binaries', // created_at field = special case
-		// 'migrations',
-		// 'sessions',
 		'users',
 		'users_auth_identities',
 		'view_state',
@@ -80,22 +76,15 @@ const fullPurge = async purgeDate => {
 }
 
 const historyPurge = async purgeDate => {
+	// excludes migrations, drafts, media, users, etc
 	const tablesToClear = [
 		'assessment_scores',
 		'attempts',
 		'attempts_question_responses',
 		'caliper_store',
-		// 'drafts',
-		// 'drafts_content',
 		'events',
 		'launches',
 		'lti_assessment_scores',
-		// 'media',
-		// 'media_binaries',
-		// 'migrations',
-		// 'sessions',
-		// 'users',
-		// 'users_auth_identities',
 		'view_state',
 		'visits'
 	]
@@ -130,6 +119,5 @@ exports.purgeData = async () => {
 
 exports.isPurgeEnabled = () => {
 	const configMode = config.general.demoPurgeMode || 'none'
-	/* eslint-disable-next-line eqeqeq */
-	return configMode == MODE_PURGE_ALL || configMode == MODE_PURGE_HISTORY
+	return configMode === MODE_PURGE_ALL || configMode === MODE_PURGE_HISTORY
 }
