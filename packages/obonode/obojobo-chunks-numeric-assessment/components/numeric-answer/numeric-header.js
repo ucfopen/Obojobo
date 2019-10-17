@@ -10,13 +10,6 @@ import {
 
 const NumericHeader = ({ requirement }) => {
 	switch (simplifedToFullText[requirement]) {
-		case EXACT_ANSWER:
-			return (
-				<tr>
-					<th>Requirement</th>
-					<th>Answer</th>
-				</tr>
-			)
 		case MARGIN_OF_ERROR:
 			return (
 				<tr>
@@ -44,7 +37,13 @@ const NumericHeader = ({ requirement }) => {
 				</tr>
 			)
 		default:
-			return null
+		case EXACT_ANSWER:
+			return (
+				<tr>
+					<th>Requirement</th>
+					<th>Answer</th>
+				</tr>
+			)
 	}
 }
 export default NumericHeader

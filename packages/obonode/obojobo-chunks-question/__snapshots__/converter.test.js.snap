@@ -51,6 +51,20 @@ Object {
 }
 `;
 
+exports[`Question editor slateToObo converts a Slate node to an OboNode for NumericAssessment 1`] = `
+Object {
+  "children": Array [
+    undefined,
+    undefined,
+  ],
+  "content": Object {
+    "solution": undefined,
+  },
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;
+
 exports[`Question editor slateToObo converts a Slate node to an OboNode with content 1`] = `
 Object {
   "children": Array [

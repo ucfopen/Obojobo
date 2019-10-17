@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericFeedback Converter oboToSlate converts an OboNode to a Slate node 1`] = `
+Object {
+  "data": Object {
+    "content": undefined,
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "nodes": Array [
+        undefined,
+      ],
+      "object": "block",
+      "type": "oboeditor.component",
+    },
+    Object {
+      "nodes": Array [
+        undefined,
+      ],
+      "object": "block",
+      "type": "oboeditor.component",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
+exports[`NumericFeedback Converter slateToObo converts a Slate node to an OboNode with content 1`] = `
+Object {
+  "children": Array [
+    undefined,
+  ],
+  "content": Object {},
+  "id": "mockKey",
+  "type": "mockType",
+}
+`;

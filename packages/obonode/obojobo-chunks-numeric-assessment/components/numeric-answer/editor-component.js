@@ -75,12 +75,16 @@ const NumericInput = props => {
 			</button>
 
 			<table contentEditable={false}>
-				<NumericHeader requirement={numericRule.requirement} />
-				<NumericOption
-					numericRule={numericRule}
-					onHandleInputChange={onHandleInputChange}
-					onClickDropdown={onClickDropdown}
-				/>
+				<thead>
+					<NumericHeader requirement={numericRule.requirement} />
+				</thead>
+				<tbody>
+					<NumericOption
+						numericRule={numericRule}
+						onHandleInputChange={onHandleInputChange}
+						onClickDropdown={onClickDropdown}
+					/>
+				</tbody>
 			</table>
 		</div>
 	)

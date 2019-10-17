@@ -9,14 +9,6 @@ import { NUMERIC_CHOICE_NODE } from './constants'
 const { Button } = Common.components
 
 class NumericAssessment extends React.Component {
-	constructor() {
-		super()
-
-		this.state = {
-			currSelected: null
-		}
-	}
-
 	onAddNumericInput() {
 		const editor = this.props.editor
 
@@ -27,21 +19,10 @@ class NumericAssessment extends React.Component {
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newNumericInput)
 	}
 
-	onSetCurrSelected(index) {
-		this.setState({ currSelected: index })
-	}
-
 	render() {
 		return (
 			<div className="component obojobo-draft--chunks--numeric-assessment">
-				{/* Use React.Children.map to pass `isSelected` to each child as props */}
-				{React.Children.map(this.props.children, (child, index) => (
-					<div onClick={() => this.onSetCurrSelected(index)}>
-						{React.cloneElement(child, {
-							isSelected: index == this.state.currSelected
-						})}
-					</div>
-				))}
+				{this.props.children}
 				<div contentEditable={false}>
 					<Button className="add-answer-btn pad" onClick={() => this.onAddNumericInput()}>
 						Add possible answer

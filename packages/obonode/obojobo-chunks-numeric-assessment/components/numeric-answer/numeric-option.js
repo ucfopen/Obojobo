@@ -15,34 +15,6 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 	const { requirement, answer, start, end, margin, precision, type } = numericRule
 
 	switch (simplifedToFullText[requirement]) {
-		case EXACT_ANSWER:
-			return (
-				<tr>
-					<td>
-						<select
-							className="select-item"
-							name="requirement"
-							value={simplifedToFullText[requirement]}
-							onChange={event => onClickDropdown(event)}
-							onClick={event => event.stopPropagation()}
-						>
-							{requirementDropdown.map(requirement => (
-								<option>{requirement}</option>
-							))}
-						</select>
-					</td>
-					<td>
-						<input
-							className="input-item"
-							name="answer"
-							value={answer || ''}
-							onChange={() => onHandleInputChange(event)}
-							onClick={event => event.stopPropagation()}
-							contentEditable={false}
-						/>
-					</td>
-				</tr>
-			)
 		case PRECISE_RESPONSE:
 			return (
 				<tr>
@@ -51,11 +23,11 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={event => onClickDropdown(event)}
+							onChange={onClickDropdown}
 							onClick={event => event.stopPropagation()}
 						>
 							{requirementDropdown.map(requirement => (
-								<option>{requirement}</option>
+								<option key={requirement}>{requirement}</option>
 							))}
 						</select>
 					</td>
@@ -64,11 +36,11 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="select-item"
 							name="type"
 							value={simplifedToFullText[type]}
-							onChange={() => onClickDropdown(event)}
+							onChange={onClickDropdown}
 							onClick={event => event.stopPropagation()}
 						>
 							{precisionDropdown.map(requirement => (
-								<option>{requirement}</option>
+								<option key={requirement}>{requirement}</option>
 							))}
 						</select>
 					</td>
@@ -77,7 +49,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="input-item"
 							name="answer"
 							value={answer || ''}
-							onChange={event => onHandleInputChange(event)}
+							onChange={onHandleInputChange}
 							onClick={event => event.stopPropagation()}
 						/>
 					</td>
@@ -86,7 +58,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="input-item"
 							name="precision"
 							value={precision || ''}
-							onChange={() => onHandleInputChange(event)}
+							onChange={onHandleInputChange}
 							onClick={event => event.stopPropagation()}
 						/>
 					</td>
@@ -100,11 +72,11 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={event => onClickDropdown(event)}
+							onChange={onClickDropdown}
 							onClick={event => event.stopPropagation()}
 						>
 							{requirementDropdown.map(requirement => (
-								<option>{requirement}</option>
+								<option key={requirement}>{requirement}</option>
 							))}
 						</select>
 					</td>
@@ -113,7 +85,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="input-item"
 							name="start"
 							value={start || ''}
-							onChange={() => onHandleInputChange(event)}
+							onChange={onHandleInputChange}
 							onClick={event => event.stopPropagation()}
 						/>
 					</td>
@@ -122,7 +94,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="input-item"
 							name="end"
 							value={end || ''}
-							onChange={() => onHandleInputChange(event)}
+							onChange={onHandleInputChange}
 							onClick={event => event.stopPropagation()}
 						/>
 					</td>
@@ -136,11 +108,11 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="select-item"
 							name="requirement"
 							value={simplifedToFullText[requirement]}
-							onChange={event => onClickDropdown(event)}
+							onChange={onClickDropdown}
 							onClick={event => event.stopPropagation()}
 						>
 							{requirementDropdown.map(requirement => (
-								<option>{requirement}</option>
+								<option key={requirement}>{requirement}</option>
 							))}
 						</select>
 					</td>
@@ -149,11 +121,11 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="select-item"
 							name="type"
 							value={simplifedToFullText[type]}
-							onChange={event => onClickDropdown(event)}
+							onChange={onClickDropdown}
 							onClick={event => event.stopPropagation()}
 						>
 							{marginDropdown.map(requirement => (
-								<option>{requirement}</option>
+								<option key={requirement}>{requirement}</option>
 							))}
 						</select>
 					</td>
@@ -162,7 +134,7 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="input-item"
 							name="answer"
 							value={answer || ''}
-							onChange={() => onHandleInputChange(event)}
+							onChange={onHandleInputChange}
 							onClick={event => event.stopPropagation()}
 						/>
 					</td>
@@ -171,14 +143,41 @@ const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) =>
 							className="input-item"
 							name="margin"
 							value={margin || ''}
-							onChange={() => onHandleInputChange(event)}
+							onChange={onHandleInputChange}
 							onClick={event => event.stopPropagation()}
 						/>
 					</td>
 				</tr>
 			)
 		default:
-			return null
+		case EXACT_ANSWER:
+			return (
+				<tr>
+					<td>
+						<select
+							className="select-item"
+							name="requirement"
+							value={simplifedToFullText[requirement]}
+							onChange={onClickDropdown}
+							onClick={event => event.stopPropagation()}
+						>
+							{requirementDropdown.map(requirement => (
+								<option key={requirement}>{requirement}</option>
+							))}
+						</select>
+					</td>
+					<td>
+						<input
+							className="input-item"
+							name="answer"
+							value={answer || ''}
+							onChange={onHandleInputChange}
+							onClick={event => event.stopPropagation()}
+							contentEditable={false}
+						/>
+					</td>
+				</tr>
+			)
 	}
 }
 

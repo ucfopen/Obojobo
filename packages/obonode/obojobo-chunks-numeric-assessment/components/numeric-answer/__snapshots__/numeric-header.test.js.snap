@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericHeader NumericHeader renders with default requirement 1`] = `
+<tr>
+  <th>
+    Requirement
+  </th>
+  <th>
+    Answer
+  </th>
+</tr>
+`;
+
+exports[`NumericHeader NumericHeader renders with requirement of \`exact\` 1`] = `
+<tr>
+  <th>
+    Requirement
+  </th>
+  <th>
+    Answer
+  </th>
+</tr>
+`;
+
+exports[`NumericHeader NumericHeader renders with requirement of \`margin\` 1`] = `
+<tr>
+  <th>
+    Requirement
+  </th>
+  <th>
+    Type
+  </th>
+  <th>
+    Answer
+  </th>
+  <th>
+    Margin
+  </th>
+</tr>
+`;
+
+exports[`NumericHeader NumericHeader renders with requirement of \`precise\` 1`] = `
+<tr>
+  <th>
+    Requirement
+  </th>
+  <th>
+    Type
+  </th>
+  <th>
+    Answer
+  </th>
+  <th>
+    Precision
+  </th>
+</tr>
+`;
+
+exports[`NumericHeader NumericHeader renders with requirement of \`range\` 1`] = `
+<tr>
+  <th>
+    Requirement
+  </th>
+  <th>
+    Start
+  </th>
+  <th>
+    End
+  </th>
+</tr>
+`;

@@ -3,6 +3,7 @@ import './editor-component.scss'
 import React from 'react'
 import { Block } from 'slate'
 
+import Common from 'obojobo-document-engine/src/scripts/common'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 import { NUMERIC_FEEDBACK_NODE } from '../../constants'
 
@@ -24,7 +25,7 @@ const NumericInput = props => {
 		return editor.removeNodeByKey(props.node.key)
 	}
 
-	const hasFeedback = props.children.length >= 2
+	const hasFeedback = props.node.nodes.size === 2
 	const className = 'numeric-choice ' + isOrNot(props.isSelected, 'selected')
 	return (
 		<div className={className}>

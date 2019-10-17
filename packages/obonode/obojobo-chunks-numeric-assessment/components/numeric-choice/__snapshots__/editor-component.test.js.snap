@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericChoice Editor Node NumericChoice component 1`] = `
+<div
+  className="numeric-choice  is-not-selected"
+>
+  <div
+    contentEditable={false}
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center pad obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn"
+    >
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Add Feedback
+      </button>
+    </div>
+  </div>
+  <div
+    contentEditable={false}
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    >
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericChoice Editor Node NumericChoice component correct choice 1`] = `
+<div
+  className="numeric-choice  is-not-selected"
+>
+  <div
+    contentEditable={false}
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center delete-button"
+    >
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        ×
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericChoice Editor Node NumericChoice component deletes itself 1`] = `"<div class=\\"numeric-choice  is-not-selected\\"><div contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center pad obojobo-draft--components--button alt-action is-not-dangerous align-center add-feedback-btn\\"><button class=\\"button\\">Add Feedback</button></div></div><div contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center delete-button\\"><button class=\\"button\\">×</button></div></div></div>"`;

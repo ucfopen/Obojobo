@@ -10,6 +10,7 @@ jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 import Converter from './converter'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const NUMERIC_ASSESSMENT_NODE = 'ObojoboDraft.Chunks.NumericAssessment'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 
 describe('Question editor', () => {
@@ -88,5 +89,44 @@ describe('Question editor', () => {
 		const slateNode = Converter.oboToSlate(oboNode)
 
 		expect(slateNode).toMatchSnapshot()
+	})
+
+	test('slateToObo converts a Slate node to an OboNode for NumericAssessment', () => {
+		const slateNode = {
+			key: 'mockKey',
+			type: 'mockType',
+			data: {
+				get: () => null
+			},
+			nodes: [
+				{
+					type: 'oboeditor.component',
+					nodes: [
+						{
+							type: 'mockNode'
+						}
+					]
+				},
+				{
+					type: NUMERIC_ASSESSMENT_NODE
+				},
+				{
+					type: SOLUTION_NODE,
+					nodes: {
+						get: () => ({
+							type: 'oboeditor.component',
+							nodes: [
+								{
+									type: 'mockNode'
+								}
+							]
+						})
+					}
+				}
+			]
+		}
+		const oboNode = Converter.slateToObo(slateNode)
+
+		expect(oboNode).toMatchSnapshot()
 	})
 })

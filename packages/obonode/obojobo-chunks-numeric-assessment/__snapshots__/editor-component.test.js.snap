@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NumericAssessment Editor Node NumericAssessment builds the expected component 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment"
+>
+  <div
+    contentEditable={false}
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center add-answer-btn pad"
+    >
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Add possible answer
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment Editor Node NumericAssessment builds the expected component with defaults 1`] = `
+<div
+  className="component obojobo-draft--chunks--numeric-assessment"
+>
+  <div
+    contentEditable={false}
+  >
+    <div
+      className="obojobo-draft--components--button is-not-dangerous align-center add-answer-btn pad"
+    >
+      <button
+        className="button"
+        onClick={[Function]}
+      >
+        Add possible answer
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`NumericAssessment Editor Node NumericAssessment component adds choice 1`] = `"<div class=\\"component obojobo-draft--chunks--numeric-assessment\\"><div contenteditable=\\"false\\"><div class=\\"obojobo-draft--components--button is-not-dangerous align-center add-answer-btn pad\\"><button class=\\"button\\">Add possible answer</button></div></div></div>"`;
