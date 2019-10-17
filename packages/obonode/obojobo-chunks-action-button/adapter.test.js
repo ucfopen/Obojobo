@@ -68,7 +68,7 @@ describe('ActionButton adapter', () => {
 				]
 			}
 		}
-		const tg = new TextGroup(Infinity, { indent: 0 }, [{ text: new StyleableText('mock-tg') }])
+		const tg = new TextGroup(Infinity, { indent: 0, hangingIndent: false }, [{ text: new StyleableText('mock-tg') }])
 		const expected = {
 			textGroup: tg,
 			align: 'center'
@@ -139,8 +139,8 @@ describe('ActionButton adapter', () => {
 		ActionButtonAdapter.construct(modelA, a)
 		ActionButtonAdapter.clone(modelA, modelB)
 
-		const tgA = new TextGroup(Infinity, { indent: 0 }, [{ text: new StyleableText('mock-tg') }])
-		const tgB = new TextGroup(Infinity, { indent: 0 }, [{ text: new StyleableText('mock-tg') }])
+		const tgA = new TextGroup(Infinity, { indent: 0, hangingIndent: false }, [{ text: new StyleableText('mock-tg') }])
+		const tgB = new TextGroup(Infinity, { indent: 0, hangingIndent: false }, [{ text: new StyleableText('mock-tg') }])
 
 		expect(modelA).not.toBe(modelB)
 		expect(modelA.modelState).toEqual({
@@ -238,7 +238,8 @@ describe('ActionButton adapter', () => {
 							styleList: null
 						},
 						data: {
-							indent: 0
+							indent: 0,
+							hangingIndent: false
 						}
 					}
 				],

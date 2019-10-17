@@ -51,6 +51,7 @@ Object {
       Object {
         "data": Object {
           "align": Object {},
+          "hangingIndent": Object {},
           "indent": Object {},
         },
         "text": Object {

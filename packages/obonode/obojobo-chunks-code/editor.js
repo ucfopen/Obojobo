@@ -90,7 +90,7 @@ const plugins = {
 				Block.create({
 					object: 'block',
 					type: 'ObojoboDraft.Chunks.Code.CodeLine',
-					data: { content: { indent: 0 } },
+					data: { content: { indent: 0, hangingIndent: false } },
 					nodes: [
 						{
 							object: 'text',

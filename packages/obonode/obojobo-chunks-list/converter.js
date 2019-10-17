@@ -8,16 +8,14 @@ const orderedBullets = ['decimal', 'upper-alpha', 'upper-roman', 'lower-alpha', 
 
 const flattenLevels = (node, currLevel, textGroup, indents) => {
 	const indent = node.data.get('content')
-
 	node.nodes.forEach(child => {
 		if (child.type === LIST_LEVEL_NODE) {
 			flattenLevels(child, currLevel + 1, textGroup, indents)
 			return
 		}
-
 		const listLine = {
 			text: { value: child.text, styleList: [] },
-			data: { indent: currLevel, hangingIndent: false }
+			data: { indent: currLevel, hangingIndent: child.data.get('hangingIndent') || false }
 		}
 
 		child.nodes.forEach(text => {
@@ -73,9 +71,9 @@ const oboToSlate = node => {
 
 	// make sure that indents exists
 	if (!node.content.listStyles.indents) node.content.listStyles.indents = {}
-
 	const nodes = node.content.textGroup.map(line => {
 		let indent = line.data ? line.data.indent : 0
+		let hangingIndent = line.data ? line.data.hangingIndent : false
 		let style = node.content.listStyles.indents[indent] || { type, bulletStyle: bulletList[indent] }
 		let listLine = {
 			object: 'block',
@@ -85,6 +83,7 @@ const oboToSlate = node => {
 				{
 					object: 'block',
 					type: LIST_LINE_NODE,
+					data: { hangingIndent },
 					nodes: [
 						{
 							object: 'text',

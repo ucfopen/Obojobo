@@ -85,9 +85,7 @@ Immutable.Record {
       "key": "12",
       "nodes": Immutable.List [
         Immutable.Record {
-          "data": Immutable.Map {
-            "hangingIndent": false,
-          },
+          "data": Immutable.Map {},
           "key": "13",
           "nodes": Immutable.List [
             Immutable.Record {

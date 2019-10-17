@@ -32,10 +32,11 @@ const renderEl = (props, node, index, indent) => {
 
 	switch (node.nodeType) {
 		case 'text':
+			const data = node.data || {}
 			return (
 				<TextGroupEl
 					parentModel={props.model}
-					textItem={{ text: node.text, data: {} }}
+					textItem={{ text: node.text, data: { hangingIndent:node.hangingIndent} }}
 					key={key}
 					groupIndex={node.index}
 				/>
@@ -113,6 +114,7 @@ const List = props => {
 
 		const text = new MockTextNode(item.text)
 		text.index = curIndex
+		text.hangingIndent = item.data.hangingIndent
 		curIndex++
 
 		curUl.lastChild.addChild(text)
@@ -129,7 +131,7 @@ const List = props => {
 	return (
 		<OboComponent model={props.model} moduleData={props.moduleData}>
 			<TextChunk className="obojobo-draft--chunks--list pad">
-				<div data-indent={data.indent} data-hanging-indent={data.hangingIndent}>{renderEl(props, rootUl, 0, 0)}</div>
+				<div data-indent={data.indent}>{renderEl(props, rootUl, 0, 0)}</div>
 			</TextChunk>
 		</OboComponent>
 	)

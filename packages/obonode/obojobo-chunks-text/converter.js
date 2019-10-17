@@ -6,7 +6,7 @@ const slateToObo = node => {
 	const textGroup = node.nodes.map(line => {
 		const textLine = {
 			text: { value: line.text, styleList: [] },
-			data: { indent: line.data.get('indent'), align: line.data.get('align') }
+			data: { indent: line.data.get('indent'), hangingIndent: line.data.get('hangingIndent'), align: line.data.get('align') }
 		}
 
 		line.nodes.forEach(text => {
@@ -34,7 +34,7 @@ const oboToSlate = node => {
 		const textLine = {
 			object: 'block',
 			type: TEXT_LINE_NODE,
-			data: { indent, align, hangingIndent },
+			data: { indent, hangingIndent, align },
 			nodes: [
 				{
 					object: 'text',

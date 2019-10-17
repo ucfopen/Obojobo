@@ -19,7 +19,7 @@ describe('List Converter', () => {
 					type: LIST_LEVEL_NODE,
 					data: {
 						get: () => {
-							return {}
+							return { }
 						}
 					},
 					nodes: [
@@ -76,7 +76,7 @@ describe('List Converter', () => {
 					},
 					{
 						text: { value: 'mockLine1' },
-						data: { indent: 5 }
+						data: { indent: 5, hangingIndent: false }
 					},
 					{
 						text: { value: 'mockLine2' }
@@ -107,7 +107,7 @@ describe('List Converter', () => {
 					},
 					{
 						text: { value: 'mockLine3' },
-						data: { indent: 5 }
+						data: { indent: 5, hangingIndent: false }
 					}
 				]
 			}

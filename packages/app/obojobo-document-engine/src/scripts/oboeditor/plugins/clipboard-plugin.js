@@ -110,7 +110,7 @@ const ClipboardPlugin = {
 						nodes: textList.map(textLine => ({
 							object: 'block',
 							type: 'ObojoboDraft.Chunks.Text.TextLine',
-							data: { indent: 0 },
+							data: { indent: 0, hangingIndent: false },
 							nodes: [
 								{
 									object: 'text',

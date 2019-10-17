@@ -15,6 +15,7 @@ Object {
         },
         Object {
           "data": Object {
+            "hangingIndent": false,
             "indent": 5,
           },
           "text": Object {
@@ -40,6 +41,9 @@ Object {
       },
       "nodes": Array [
         Object {
+          "data": Object {
+            "hangingIndent": false,
+          },
           "nodes": Array [
             Object {
               "leaves": undefined,
@@ -90,6 +94,9 @@ Object {
                           },
                           "nodes": Array [
                             Object {
+                              "data": Object {
+                                "hangingIndent": false,
+                              },
                               "nodes": Array [
                                 Object {
                                   "leaves": undefined,
@@ -120,6 +127,9 @@ Object {
           "type": "ObojoboDraft.Chunks.List.Level",
         },
         Object {
+          "data": Object {
+            "hangingIndent": false,
+          },
           "nodes": Array [
             Object {
               "leaves": undefined,
@@ -160,6 +170,7 @@ Object {
         },
         Object {
           "data": Object {
+            "hangingIndent": false,
             "indent": 5,
           },
           "text": Object {
@@ -180,6 +191,9 @@ Object {
       },
       "nodes": Array [
         Object {
+          "data": Object {
+            "hangingIndent": false,
+          },
           "nodes": Array [
             Object {
               "leaves": undefined,
@@ -190,6 +204,9 @@ Object {
           "type": "ObojoboDraft.Chunks.List.Line",
         },
         Object {
+          "data": Object {
+            "hangingIndent": false,
+          },
           "nodes": Array [
             Object {
               "leaves": undefined,
@@ -240,6 +257,9 @@ Object {
                           },
                           "nodes": Array [
                             Object {
+                              "data": Object {
+                                "hangingIndent": false,
+                              },
                               "nodes": Array [
                                 Object {
                                   "leaves": undefined,

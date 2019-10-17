@@ -60,6 +60,7 @@ Array [
   Immutable.Record {
     "data": Immutable.Map {
       "content": Object {
+        "hangingIndent": false,
         "indent": 0,
       },
     },

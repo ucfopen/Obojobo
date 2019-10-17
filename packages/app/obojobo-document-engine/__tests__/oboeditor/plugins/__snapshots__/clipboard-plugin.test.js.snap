@@ -12,6 +12,7 @@ Immutable.Record {
         Immutable.Record {
           "data": Immutable.Map {
             "indent": 0,
+            "hangingIndent": false,
           },
           "key": "2",
           "nodes": Immutable.List [
@@ -30,6 +31,7 @@ Immutable.Record {
         Immutable.Record {
           "data": Immutable.Map {
             "indent": 0,
+            "hangingIndent": false,
           },
           "key": "4",
           "nodes": Immutable.List [

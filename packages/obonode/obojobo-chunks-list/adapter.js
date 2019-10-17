@@ -7,7 +7,6 @@ const { TextGroupAdapter } = Common.chunk.textChunk
 const Adapter = {
 	construct(model, attrs) {
 		TextGroupAdapter.construct(model, attrs)
-
 		if (attrs && attrs.content && attrs.content.listStyles) {
 			model.modelState.listStyles = ListStyles.fromDescriptor(attrs.content.listStyles)
 		} else {

@@ -168,7 +168,7 @@ const plugins = {
 							{
 								object: 'block',
 								type: 'ObojoboDraft.Chunks.Text',
-								data: { hangingIndent: false },
+								data: {},
 								nodes: [
 									{
 										object: 'block',

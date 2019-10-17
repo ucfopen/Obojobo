@@ -444,5 +444,5 @@ OboModel.getRoot = function() {
 }
 
 class OboModelCollection extends Backbone.Collection {}
-
+window.__s = OboModel
 export default OboModel
