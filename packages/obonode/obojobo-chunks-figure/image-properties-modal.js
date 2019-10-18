@@ -20,7 +20,7 @@ class ImageProperties extends React.Component {
 			height: 100,
 			width: 100
 		}
-		this.inputRef = React.createRef()
+		this.firstRef = React.createRef()
 		this.state = {
 			...defaultState,
 			...props.content,
@@ -56,7 +56,9 @@ class ImageProperties extends React.Component {
 	}
 
 	focusOnFirstElement() {
-		return this.inputRef.current.focus()
+		if (this.firstRef && this.firstRef.current) {
+			return this.firstRef.current.focus()
+		}
 	}
 
 	onCloseChoosingImageModal(mediaId) {
@@ -116,6 +118,7 @@ class ImageProperties extends React.Component {
 							<Button
 								className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
 								onClick={() => this.onOpenChoosingImageModal()}
+								ref={this.firstRef}
 							>
 								Change Image...
 							</Button>
@@ -129,11 +132,10 @@ class ImageProperties extends React.Component {
 							onChange={this.handleAltTextChange.bind(this)}
 							size="50"
 							placeholder="Describe the Image"
-							ref={this.inputRef}
 						/>
 
 						<label htmlFor="obojobo-draft--chunks--figure--size">Size:</label>
-						<fieldset id="obojobo-draft--chunks--figure--size">
+						<div id="obojobo-draft--chunks--figure--size">
 							<div className="size-input">
 								<input
 									type="radio"
@@ -208,7 +210,7 @@ class ImageProperties extends React.Component {
 									</div>
 								) : null}
 							</div>
-						</fieldset>
+						</div>
 					</div>
 				</div>
 			</SimpleDialog>

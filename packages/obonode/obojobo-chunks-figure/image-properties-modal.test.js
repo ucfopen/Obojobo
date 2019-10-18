@@ -142,7 +142,14 @@ describe('Image Properties Modal', () => {
 	})
 
 	test('ImageProperties component focuses on first element', () => {
-		const component = mount(<ImageProperties content={{ url: 'mock_url' }} />)
+		const component = mount(<ImageProperties content={{ url: 'mock_url' }} onConfirm={jest.fn} />)
+
+		component.instance().focusOnFirstElement()
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('ImageProperties component does not focus if ChooseImageModal is opened', () => {
+		const component = mount(<ImageProperties content={{ url: null }} onConfirm={jest.fn} />)
 
 		component.instance().focusOnFirstElement()
 		expect(component.html()).toMatchSnapshot()

@@ -10,6 +10,7 @@ const { SimpleDialog } = Common.components.modal
 class ChooseImageModal extends React.Component {
 	constructor() {
 		super()
+
 		this.state = {
 			medias: [],
 			isFetching: true,
@@ -18,6 +19,8 @@ class ChooseImageModal extends React.Component {
 			url: '',
 			count: 11
 		}
+
+		this.firstRef = React.createRef()
 	}
 
 	componentDidMount() {
@@ -59,6 +62,10 @@ class ChooseImageModal extends React.Component {
 			})
 	}
 
+	focusOnFirstElement() {
+		return this.firstRef.current.focus()
+	}
+
 	render() {
 		return (
 			<SimpleDialog
@@ -66,6 +73,7 @@ class ChooseImageModal extends React.Component {
 				title="Choose an image"
 				onConfirm={() => this.props.onCloseChoosingImageModal(this.state.url)}
 				onCancel={() => this.props.onCloseChoosingImageModal(this.state.url)}
+				focusOnFirstElement={this.focusOnFirstElement.bind(this)}
 			>
 				<div className="choose-image">
 					<div className="choose-image--image-controls">
@@ -76,7 +84,10 @@ class ChooseImageModal extends React.Component {
 								accept={this.props.allowedUploadTypes}
 								onChange={e => this.handleFileChange(e)}
 							/>
-							<span className="upload">+ Upload new image</span>
+
+							<span className="upload" tabIndex={0} ref={this.firstRef}>
+								+ Upload new image
+							</span>
 						</label>
 
 						<div className="choose-image--image-controls--or">or</div>
@@ -94,6 +105,7 @@ class ChooseImageModal extends React.Component {
 					<div className="choose-image--image-gallary">
 						{this.state.medias.map(media => (
 							<img
+								tabIndex={0}
 								key={media.id}
 								id={media.id}
 								className="image-gallary--single-photo"

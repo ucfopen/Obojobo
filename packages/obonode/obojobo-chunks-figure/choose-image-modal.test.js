@@ -22,6 +22,13 @@ describe('Choose Image Modal', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
+	test('ChooseImageModal component focuses on first element', () => {
+		const component = mount(<ChooseImageModal onConfirm={jest.fn} />)
+
+		component.instance().focusOnFirstElement()
+		expect(component.html()).toMatchSnapshot()
+	})
+
 	test('ImageProperties component changes url', () => {
 		const component = mount(<ChooseImageModal onConfirm={jest.fn} />)
 
