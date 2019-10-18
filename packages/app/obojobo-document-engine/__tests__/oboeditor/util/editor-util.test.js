@@ -281,4 +281,51 @@ describe('EditorUtil', () => {
 			value: { pageId: 'mockId', index: 'newIndex' }
 		})
 	})
+
+	test('getTitleFromJSON returns unnamed', () => {
+		const title = EditorUtil.getTitleFromString('{"content":{"title":"  "}}', 'json')
+
+		expect(title).toEqual('(Unnamed Module)')
+	})
+
+	test('getTitleFromJSON returns title', () => {
+		const title = EditorUtil.getTitleFromString('{"content":{"title":"Mock Title"}}', 'json')
+
+		expect(title).toEqual('Mock Title')
+	})
+
+	test('getTitleFromJSON throws error and returns unnamed', () => {
+		const title = EditorUtil.getTitleFromString({},'json')
+		expect(title).toEqual('(Unnamed Module)')
+	})
+
+	test('getTitleFromXML returns unnamed', () => {
+		const title = EditorUtil.getTitleFromString({},'xml')
+		expect(title).toEqual('(Unnamed Module)')
+	})
+
+	test('getTitleFromXML returns title from long name xml', () => {
+		const title = EditorUtil.getTitleFromString(
+			'<?xml version="1.0" encoding="utf-8"?><ObojoboDraft.Modules.Module title="My XML"></ObojoboDraft.Modules.Module>',
+			'xml')
+		expect(title).toEqual('My XML')
+	})
+
+	test('getTitleFromXML returns title from short name xml', () => {
+		const title = EditorUtil.getTitleFromString(
+			'<?xml version="1.0" encoding="utf-8"?><Module title="  "></Module>',
+			'xml')
+		expect(title).toEqual('(Unnamed Module)')
+	})
+
+	test('getTitleFromXML throws error and returns unnamed', () => {
+		jest.spyOn(EditorUtil, 'isEmptyString')
+		EditorUtil.isEmptyString.mockImplementation(() =>{
+			throw new Error()
+		})
+		const title = EditorUtil.getTitleFromString(
+			'<?xml version="1.0" encoding="utf-8"?><Module title="  "></Module>',
+			'xml')
+		expect(title).toEqual('(Unnamed Module)')
+	})
 })

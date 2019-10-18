@@ -375,6 +375,36 @@ describe('EditorStore', () => {
 		expect(EditorUtil.goto).toHaveBeenCalled()
 	})
 
+	test('addPage inserts a page into the content and calls menu rebuild after a page id', () => {
+		jest.spyOn(Common.models.OboModel, 'getRoot')
+		jest.spyOn(Common.models.OboModel, 'create')
+		const childrenlist = []
+		const mockContent = {
+			get: jest.fn().mockReturnValueOnce(CONTENT_NODE),
+			children: {
+				add: child => childrenlist.push(child)
+			},
+			childrenlist // This is a mock construct for the sake of the test, ordinarily
+			// the page would be added into children
+		}
+		Common.models.OboModel.getRoot.mockReturnValueOnce({
+			children: [
+				{
+					get: jest.fn().mockReturnValueOnce('mockNode')
+				},
+				mockContent
+			]
+		})
+		Common.models.OboModel.create.mockReturnValueOnce({ id: 'mockPage' })
+		Common.models.OboModel.models['mock-id'] = { addChildAfter: jest.fn() }
+
+		EditorStore.addPage({ id: 'mockPage' }, 'mock-id')
+
+		expect(Common.models.OboModel.models['mock-id'].addChildAfter).toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
+		expect(EditorUtil.goto).toHaveBeenCalled()
+	})
+
 	test('addAssessment inserts an assessment and calls menu rebuild', () => {
 		jest.spyOn(Common.models.OboModel, 'getRoot')
 		jest.spyOn(Common.models.OboModel, 'create')
@@ -422,13 +452,40 @@ describe('EditorStore', () => {
 		expect(EditorStore.triggerChange).toHaveBeenCalled()
 	})
 
-	test.skip('renamePage calls model.set and rebuilds menu', () => {
+	test('deletePage calls model.remove and rebuilds menu, then goes to first', () => {
+		jest.spyOn(EditorStore, 'triggerChange')
+		EditorStore.triggerChange.mockReturnValueOnce(true)
+
+		EditorStore.setState({
+			currentPageModel: 'mock-current-model'
+		})
+
+		Common.models.OboModel.models.mockId = {
+			remove: jest.fn(),
+			getParentOfType: () => 'mockParentModule'
+		}
+
+		expect(Common.models.OboModel.models.mockId.remove).not.toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
+		expect(EditorStore.getState().currentPageModel).toBe('mock-current-model')
+		expect(EditorStore.triggerChange).not.toHaveBeenCalled()
+
+		EditorUtil.getFirst.mockReturnValueOnce({ id: 'mock-id'})
+		EditorStore.deletePage('mockId')
+
+		expect(Common.models.OboModel.models.mockId.remove).toHaveBeenCalled()
+		expect(EditorUtil.rebuildMenu).toHaveBeenCalledWith('mockParentModule')
+		expect(EditorStore.getState()).toHaveProperty('currentPageModel', null)
+		expect(EditorStore.triggerChange).toHaveBeenCalled()
+		expect(EditorUtil.goto).toHaveBeenCalled()
+	})
+
+	test('renamePage rebuilds menu', () => {
 		jest.spyOn(Common.models.OboModel, 'getRoot')
 		jest.spyOn(EditorStore, 'triggerChange')
 		EditorStore.triggerChange.mockReturnValueOnce(true)
 
-		Common.models.OboModel.models.mockId = {
-			set: jest.fn(),
+		Common.models.OboModel.models['mockId'] = {
 			get: () => ({
 				title: 'mock-title'
 			})
@@ -437,7 +494,6 @@ describe('EditorStore', () => {
 
 		EditorStore.renamePage('mockId', 'mockTitle')
 
-		expect(Common.models.OboModel.models.mockId.set).toHaveBeenCalled()
 		expect(Common.models.OboModel.models.mockId.title).toEqual('mockTitle')
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 		expect(EditorStore.triggerChange).toHaveBeenCalled()
