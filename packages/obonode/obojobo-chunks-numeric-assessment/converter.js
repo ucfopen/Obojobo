@@ -3,24 +3,24 @@ import Common from 'obojobo-document-engine/src/scripts/common'
 import { NUMERIC_ANSWER_NODE, NUMERIC_FEEDBACK_NODE, NUMERIC_CHOICE_NODE } from './constants'
 
 const slateToObo = node => {
-	const numericRules = []
+	const numericChoices = []
 
-	// Parse each scoreRule node
+	// Parse each numericChoice node
 	node.nodes.forEach(child => {
 		switch (child.type) {
 			case NUMERIC_CHOICE_NODE:
-				let numericRule = {}
+				let numericChoice = {}
 				child.nodes.forEach(component => {
 					if (component.type === NUMERIC_ANSWER_NODE) {
-						numericRule = component.data.get('numericRule')
+						numericChoice = component.data.get('numericChoice')
 					}
 					if (component.type === NUMERIC_FEEDBACK_NODE) {
-						numericRule.feedback = Common.Registry.getItemForType(component.type).slateToObo(
+						numericChoice.feedback = Common.Registry.getItemForType(component.type).slateToObo(
 							component
 						)
 					}
 				})
-				numericRules.push(numericRule)
+				numericChoices.push(numericChoice)
 
 				break
 		}
@@ -30,36 +30,40 @@ const slateToObo = node => {
 		id: node.key,
 		type: node.type,
 		children: [],
-		content: { numericRules }
+		content: { numericChoices }
 	}
 }
 
 const oboToSlate = node => {
-	// Parse each scoreRule node
-	const nodes = node.content.numericRules.map(numericRule => {
-		const node = {
-			object: 'block',
-			type: NUMERIC_CHOICE_NODE,
-			nodes: [
-				{
-					object: 'block',
-					type: NUMERIC_ANSWER_NODE,
-					data: { numericRule: numericRule }
-				}
-			]
-		}
+	const nodes = []
 
-		// Parse feedback node
-		if (numericRule.feedback) {
-			const feedbackNode = Common.Registry.getItemForType(numericRule.feedback.type).oboToSlate(
-				numericRule.feedback
-			)
+	// Parse each numericChoice node
+	if (node.content && node.content.numericChoices) {
+		node.content.numericChoices.forEach(numericChoice => {
+			const node = {
+				object: 'block',
+				type: NUMERIC_CHOICE_NODE,
+				nodes: [
+					{
+						object: 'block',
+						type: NUMERIC_ANSWER_NODE,
+						data: { numericChoice }
+					}
+				]
+			}
 
-			node.nodes.push(feedbackNode)
-		}
+			// Parse feedback node
+			if (numericChoice.feedback) {
+				const feedbackNode = Common.Registry.getItemForType(numericChoice.feedback.type).oboToSlate(
+					numericChoice.feedback
+				)
 
-		return node
-	})
+				node.nodes.push(feedbackNode)
+			}
+
+			nodes.push(node)
+		})
+	}
 
 	return {
 		object: 'block',

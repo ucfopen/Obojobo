@@ -8,61 +8,61 @@ import { MARGIN_OF_ERROR, PRECISE_RESPONSE, fullTextToSimplifed } from '../../co
 
 const NumericInput = props => {
 	const onHandleScoreChange = () => {
-		const numericRule = {
-			...props.node.data.get('numericRule')
+		const numericChoice = {
+			...props.node.data.get('numericChoice')
 		}
-		numericRule.score = numericRule.score == '100' ? '0' : '100'
+		numericChoice.score = numericChoice.score == '100' ? '0' : '100'
 
 		const editor = props.editor
 		editor.setNodeByKey(props.node.key, {
-			data: { numericRule }
+			data: { numericChoice }
 		})
 	}
 
 	const onHandleInputChange = event => {
 		const { name, value } = event.target
 
-		const numericRule = { ...props.node.data.get('numericRule'), [name]: value }
+		const numericChoice = { ...props.node.data.get('numericChoice'), [name]: value }
 
 		const editor = props.editor
 		editor.setNodeByKey(props.node.key, {
-			data: { numericRule }
+			data: { numericChoice }
 		})
 	}
 
 	const onClickDropdown = event => {
 		const { name, value } = event.target
 
-		const numericRule = props.node.data.get('numericRule')
-		let updateNumericRule
+		const numericChoice = props.node.data.get('numericChoice')
+		let updatenumericChoice
 
 		if (name === 'requirement') {
-			updateNumericRule = {
+			updatenumericChoice = {
 				[name]: fullTextToSimplifed[value],
-				score: numericRule.score
+				score: numericChoice.score
 			}
 			switch (value) {
 				case PRECISE_RESPONSE: {
-					updateNumericRule.type = 'sig-figs'
+					updatenumericChoice.type = 'sig-figs'
 				}
 				case MARGIN_OF_ERROR: {
-					updateNumericRule.type = 'percent'
+					updatenumericChoice.type = 'percent'
 				}
 			}
 		} else {
-			updateNumericRule = {
-				...numericRule,
+			updatenumericChoice = {
+				...numericChoice,
 				[name]: fullTextToSimplifed[value]
 			}
 		}
 
 		props.editor.setNodeByKey(props.node.key, {
-			data: { numericRule: updateNumericRule }
+			data: { numericChoice: updatenumericChoice }
 		})
 	}
 
-	const numericRule = props.node.data.get('numericRule')
-	const { score } = numericRule
+	const numericChoice = props.node.data.get('numericChoice')
+	const { score } = numericChoice
 
 	return (
 		<div className="numeric-input-container pad" onClick={props.onSetCurrSelected}>
@@ -76,11 +76,11 @@ const NumericInput = props => {
 
 			<table contentEditable={false}>
 				<thead>
-					<NumericHeader requirement={numericRule.requirement} />
+					<NumericHeader requirement={numericChoice.requirement} />
 				</thead>
 				<tbody>
 					<NumericOption
-						numericRule={numericRule}
+						numericChoice={numericChoice}
 						onHandleInputChange={onHandleInputChange}
 						onClickDropdown={onClickDropdown}
 					/>

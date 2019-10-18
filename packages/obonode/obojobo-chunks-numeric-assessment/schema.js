@@ -32,7 +32,7 @@ const schema = {
 							type: NUMERIC_ANSWER_NODE,
 							isVoid: true,
 							data: {
-								numericRule: {
+								numericChoice: {
 									requirement: 'exact',
 									answer: '',
 									score: 100
@@ -50,7 +50,7 @@ const schema = {
 							type: NUMERIC_ANSWER_NODE,
 							isVoid: true,
 							data: {
-								numericRule: {
+								numericChoice: {
 									requirement: 'exact',
 									answer: '',
 									score: 100

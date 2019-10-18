@@ -11,8 +11,8 @@ import {
 	simplifedToFullText
 } from '../../constants'
 
-const NumericOption = ({ numericRule, onHandleInputChange, onClickDropdown }) => {
-	const { requirement, answer, start, end, margin, precision, type } = numericRule
+const NumericOption = ({ numericChoice, onHandleInputChange, onClickDropdown }) => {
+	const { requirement, answer, start, end, margin, precision, type } = numericChoice
 
 	switch (simplifedToFullText[requirement]) {
 		case PRECISE_RESPONSE:
