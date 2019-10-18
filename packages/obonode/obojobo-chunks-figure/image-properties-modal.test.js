@@ -62,18 +62,45 @@ describe('Image Properties Modal', () => {
 	})
 
 	test('ImageProperties component render ChooseImageModal component and onClick `Cancel`', () => {
-		const component = mount(<ImageProperties content={{ url: null }} />)
+		const onConfirm = jest.fn()
+
+		const component = mount(<ImageProperties content={{ url: null }} onConfirm={onConfirm} />)
 		component
 			.find('button')
-			.at(0)
+			.at(1)
 			.simulate('click')
 
 		expect(component.instance().state.isChoosingImage).toBe(false)
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('ImageProperties component render ChooseImageModal component and onClick `Cancel`', () => {
-		const component = mount(<ImageProperties content={{ url: null }} />)
+	test('ImageProperties component open ChooseImageModal component and onClick `Cancel` without a specified URL', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<ImageProperties content={{ url: 'mock_url' }} onConfirm={onConfirm} />)
+
+		expect(component.instance().state.isChoosingImage).toBe(false)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(component.instance().state.isChoosingImage).toBe(true)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(component.instance().state.isChoosingImage).toBe(false)
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('ImageProperties component render ChooseImageModal component and onClick `OK`', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<ImageProperties content={{ url: null }} onConfirm={onConfirm} />)
 		component
 			.find('button')
 			.at(1)

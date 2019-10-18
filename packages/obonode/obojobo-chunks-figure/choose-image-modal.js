@@ -29,8 +29,7 @@ class ChooseImageModal extends React.Component {
 		const formData = new window.FormData()
 		formData.append('userImage', file, file.name)
 		APIUtil.postMultiPart('/api/media/upload', formData).then(mediaData => {
-			this.props.onSetMediaUrl(mediaData.media_id)
-			this.props.onSetIsChoosingImage(false)
+			this.props.onCloseChoosingImageModal(mediaData.media_id)
 		})
 	}
 
@@ -65,11 +64,8 @@ class ChooseImageModal extends React.Component {
 			<SimpleDialog
 				cancelOk
 				title="Choose an image"
-				onConfirm={() => {
-					this.props.onSetIsChoosingImage(false)
-					this.props.onSetMediaUrl(this.state.url)
-				}}
-				onCancel={() => this.props.onSetIsChoosingImage(false)}
+				onConfirm={() => this.props.onCloseChoosingImageModal(this.state.url)}
+				onCancel={() => this.props.onCloseChoosingImageModal(this.state.url)}
 			>
 				<div className="choose-image">
 					<div className="choose-image--image-controls">
@@ -102,10 +98,7 @@ class ChooseImageModal extends React.Component {
 								id={media.id}
 								className="image-gallary--single-photo"
 								src={`/api/media/${media.id}/small`}
-								onClick={() => {
-									this.props.onSetMediaUrl(media.id)
-									this.props.onSetIsChoosingImage(false)
-								}}
+								onClick={() => this.props.onCloseChoosingImageModal(media.id)}
 							/>
 						))}
 

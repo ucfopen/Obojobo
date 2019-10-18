@@ -10,7 +10,7 @@ jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util', () => ({
 	})
 }))
 
-describe('Image Properties Modal', () => {
+describe('Choose Image Modal', () => {
 	beforeEach(() => {
 		jest.clearAllMocks()
 	})
@@ -51,9 +51,7 @@ describe('Image Properties Modal', () => {
 	})
 
 	test('ImageProperties click on `View More...`', () => {
-		const component = mount(
-			<ChooseImageModal onSetIsChoosingImage={jest.fn} onSetMediaUrl={jest.fn} />
-		)
+		const component = mount(<ChooseImageModal onCloseChoosingImageModal={jest.fn} />)
 
 		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: true })
 
@@ -64,18 +62,46 @@ describe('Image Properties Modal', () => {
 		expect(component.html()).toMatchSnapshot()
 	})
 
-	test('ImageProperties click on an image', () => {
-		const onSetMediaUrl = jest.fn()
-		const onSetIsChoosingImage = jest.fn()
+	test('ImageProperties click on `Cancel`', () => {
+		const onCloseChoosingImageModal = jest.fn()
 		const component = mount(
-			<ChooseImageModal onSetIsChoosingImage={onSetIsChoosingImage} onSetMediaUrl={onSetMediaUrl} />
+			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		expect(onCloseChoosingImageModal).toHaveBeenCalled()
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('ImageProperties click on `OK`', () => {
+		const onCloseChoosingImageModal = jest.fn()
+		const component = mount(
+			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
+		)
+
+		component
+			.find('button')
+			.at(1)
+			.simulate('click')
+
+		expect(onCloseChoosingImageModal).toHaveBeenCalled()
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('ImageProperties click on an image', () => {
+		const onCloseChoosingImageModal = jest.fn()
+		const component = mount(
+			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
 		)
 
 		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
 		component.find('.image-gallary--single-photo').simulate('click')
 
-		expect(onSetMediaUrl).toHaveBeenCalled()
-		expect(onSetIsChoosingImage).toHaveBeenCalled()
+		expect(onCloseChoosingImageModal).toHaveBeenCalled()
 
 		expect(component.html()).toMatchSnapshot()
 	})

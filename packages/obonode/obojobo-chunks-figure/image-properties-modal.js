@@ -8,6 +8,7 @@ import Image from './image'
 import { isUrlUUID } from './utils'
 
 const { SimpleDialog } = Common.components.modal
+const { Button } = Common.components
 
 class ImageProperties extends React.Component {
 	constructor(props) {
@@ -28,12 +29,6 @@ class ImageProperties extends React.Component {
 		if (!isUrlUUID(this.props.content.url)) {
 			this.state.urlInputText = this.props.content.url
 		}
-	}
-
-	onSetMediaUrl(mediaId) {
-		this.setState({
-			url: mediaId
-		})
 	}
 
 	handleAltTextChange(event) {
@@ -64,21 +59,33 @@ class ImageProperties extends React.Component {
 		return this.inputRef.current.focus()
 	}
 
-	onSetIsChoosingImage(value) {
-		this.setState({ isChoosingImage: value })
+	onCloseChoosingImageModal(mediaId) {
+		// Close all modals if no url is specified
+		if (!mediaId && !this.state.url) {
+			this.props.onConfirm(this.state)
+		}
+		this.setState({
+			...this.state,
+			isChoosingImage: false,
+			url: mediaId
+		})
+	}
+
+	onOpenChoosingImageModal() {
+		this.setState({ isChoosingImage: true })
 	}
 
 	render() {
 		const size = this.state.size
 
-		if (this.state.isChoosingImage)
+		if (this.state.isChoosingImage) {
 			return (
 				<ChooseImageModal
 					allowedUploadTypes={this.props.allowedUploadTypes}
-					onSetMediaUrl={mediaId => this.onSetMediaUrl(mediaId)}
-					onSetIsChoosingImage={value => this.onSetIsChoosingImage(value)}
+					onCloseChoosingImageModal={mediaId => this.onCloseChoosingImageModal(mediaId)}
 				/>
 			)
+		}
 
 		return (
 			<SimpleDialog
@@ -105,11 +112,13 @@ class ImageProperties extends React.Component {
 							) : (
 								<span className="image-preview image-preview-placeholder">No Image</span>
 							)}
-							<div className="obojobo-draft--components--button alt-action is-not-dangerous align-center">
-								<button className="button" onClick={() => this.onSetIsChoosingImage(true)}>
-									Change Image...
-								</button>
-							</div>
+
+							<Button
+								className="obojobo-draft--components--button alt-action is-not-dangerous align-center"
+								onClick={() => this.onOpenChoosingImageModal()}
+							>
+								Change Image...
+							</Button>
 						</div>
 
 						<label htmlFor="obojobo-draft--chunks--figure--alt">Alt Text:</label>
