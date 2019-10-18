@@ -20,3 +20,17 @@ exports[`HTML editor plugins.renderNode renders HTML when passed 1`] = `
   }
 />
 `;
+
+exports[`HTML editor plugins.renderPlaceholder exits when not relevent 1`] = `undefined`;
+
+exports[`HTML editor plugins.renderPlaceholder exits when not relevent 2`] = `undefined`;
+
+exports[`HTML editor plugins.renderPlaceholder exits when not relevent 3`] = `undefined`;
+
+exports[`HTML editor plugins.renderPlaceholder renders a placeholder 1`] = `
+<span
+  className="placeholder"
+  contentEditable={false}
+  data-placeholder="<!-- HTML code here -->"
+/>
+`;

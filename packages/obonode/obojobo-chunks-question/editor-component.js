@@ -16,7 +16,6 @@ class Question extends React.Component {
 		this.addSolution = this.addSolution.bind(this)
 		this.delete = this.delete.bind(this)
 		this.onSetType = this.onSetType.bind(this)
-		this.onChangeQuestionType = this.onChangeQuestionType.bind(this)
 	}
 
 	onSetType(event) {
@@ -56,20 +55,6 @@ class Question extends React.Component {
 		return editor.insertNodeByKey(this.props.node.key, this.props.node.nodes.size, newQuestion)
 	}
 
-	onChangeQuestionType(event) {
-		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
-		let prevQuestionType
-		// The question type is determined by the MCAssessment or the NumericAssessement
-		// This is either the last node or the second to last node
-		if(hasSolution){
-			prevQuestionType = this.props.node.nodes.get(this.props.node.nodes.size - 2).type
-		} else {
-			prevQuestionType = this.props.node.nodes.last().type
-		}
-
-		const newQuestionType = event.target.value
-	}
-
 	render() {
 		const content = this.props.node.data.get('content')
 		const hasSolution = this.props.node.nodes.last().type === SOLUTION_NODE
@@ -95,8 +80,7 @@ class Question extends React.Component {
 								<label>Question Type</label>
 								<select
 									contentEditable={false}
-									value={questionType}
-									onChange={this.onChangeQuestionType}>
+									value={questionType}>
 									<option value={MCASSESSMENT_NODE}>Multiple Choice</option>
 								</select>
 								<div className="question-type" contentEditable={false}>

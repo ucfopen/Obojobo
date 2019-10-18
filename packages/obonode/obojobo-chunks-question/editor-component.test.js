@@ -34,6 +34,9 @@ const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
 
 describe('Question Editor Node', () => {
+	beforeEach(() => {
+		jest.resetAllMocks()
+	})
 	test('Question builds the expected component', () => {
 		const component = renderer.create(
 			<Question
@@ -94,12 +97,9 @@ describe('Question Editor Node', () => {
 			/>
 		)
 
-		const tree = component.html()
-
 		component.find('Button').simulate('click')
 
 		expect(editor.removeNodeByKey).toHaveBeenCalled()
-		// expect(tree).toMatchSnapshot()
 	})
 
 	test('Question component adds Solution', () => {
@@ -133,7 +133,7 @@ describe('Question Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test.skip('Question component allows you to change question type', () => {
+	test('Question component allows you to change set type', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
@@ -155,12 +155,18 @@ describe('Question Editor Node', () => {
 				editor={editor}
 			/>
 		)
+
+		component
+			.find('input')
+			.at(0)
+			.simulate('change', { target: { checked: true } })
+
 		const tree = component.html()
 
 		component
-			.find('select')
+			.find('input')
 			.at(0)
-			.simulate('change', { target: { value: 'survey' } })
+			.simulate('change', { target: { checked: false } })
 
 		component.update()
 
@@ -174,6 +180,19 @@ describe('Question Editor Node', () => {
 		expect(editor.setNodeByKey).toHaveBeenNthCalledWith(2, 'mock-mca-id', {
 			data: {
 				questionType: 'survey'
+			}
+		})
+
+		expect(editor.setNodeByKey).toHaveBeenNthCalledWith(3, 'mock-id', {
+			data: {
+				content: {
+					type: 'default'
+				}
+			}
+		})
+		expect(editor.setNodeByKey).toHaveBeenNthCalledWith(4, 'mock-mca-id', {
+			data: {
+				questionType: 'default'
 			}
 		})
 

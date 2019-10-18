@@ -29,9 +29,25 @@ describe('ActionButton Editor Node', () => {
 					],
 					triggers:[{
 						type: 'onClick',
-						actions: []
+						actions: [
+							{ type: 'nav:goto', value: {} },
+							{ type: 'nav:prev', value: {} },
+							{ type: 'nav:next', value: {} },
+							{ type: 'nav:openExternalLink', value: {} },
+							{ type: 'nav:lock', value: {} },
+							{ type: 'nav:unlock', value: {} },
+							{ type: 'nav:toggle', value: {} },
+							{ type: 'nav:close', value: {} },
+							{ type: 'nav:open', value: {} },
+							{ type: 'assessment:startAttempt', value: {} },
+							{ type: 'assessment:endAttempt', value: {} },
+							{ type: 'viewer:alert', value: {} },
+							{ type: 'viewer:scrollToTop', value: {} },
+							{ type: 'focus:component', value: {} }
+						]
 					}]
 				}),
+				toJSON: () => ({})
 			}
 		}
 	})
@@ -55,13 +71,31 @@ describe('ActionButton Editor Node', () => {
 		expect(component.root.find(Node).props).toMatchSnapshot()
 	})
 
-	test.skip('displays actions when selected', () => {
+	test('opens modal', () => {
+		const component = mount(
+			<ActionButton node={nodeData} isSelected={true} isFocused={true} />
+		)
+
+		component
+			.find('button')
+			.at(0)
+			.simulate('click')
+
+		const tree = component.html()
+		expect(tree).toMatchSnapshot()
 	})
 
-	test.skip('opens modal', () => {
-	})
+	test('closes modal', () => {
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+		const component = mount(
+			<ActionButton node={nodeData} isSelected={true} isFocused={true} editor={editor}/>
+		)
 
-	test.skip('closes modal', () => {
+		component.instance().closeModal()
+
+		expect(editor.setNodeByKey).toHaveBeenCalled()
 	})
 
 })

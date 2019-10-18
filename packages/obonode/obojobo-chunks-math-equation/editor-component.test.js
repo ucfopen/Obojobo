@@ -62,7 +62,7 @@ describe('MathEquation Editor Node', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test.skip('MathEquation component edits properties', () => {
+	test('MathEquation component edits properties', () => {
 		const editor = {
 			setNodeByKey: jest.fn()
 		}
@@ -72,7 +72,7 @@ describe('MathEquation Editor Node', () => {
 				node={{
 					data: {
 						get: () => {
-							return { latex: '1', label: '1.1', size: 1 }
+							return { latex: '1', label: '1.1' }
 						}
 					}
 				}}
@@ -81,14 +81,28 @@ describe('MathEquation Editor Node', () => {
 				editor={editor}
 			/>
 		)
-		const tree = component.html()
-
 		component
-			.find('button')
+			.find('input')
 			.at(0)
-			.simulate('click')
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(1)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(2)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(3)
+			.simulate('click', { stopPropagation: jest.fn() })
+		component
+			.find('input')
+			.at(1)
+			.simulate('change', { stopPropagation: jest.fn(), target: { value: 'mockValue'} })
 
-		expect(ModalUtil.show).toHaveBeenCalled()
+		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
 

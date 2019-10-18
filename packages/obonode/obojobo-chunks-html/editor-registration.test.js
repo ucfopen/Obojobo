@@ -124,4 +124,61 @@ describe('HTML editor', () => {
 		expect(event.preventDefault).toHaveBeenCalled()
 		expect(editor.insertText).toHaveBeenCalledWith('\t')
 	})
+
+	test('plugins.renderPlaceholder exits when not relevent', () => {
+		expect(
+			HTML.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'text'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+
+		expect(
+			HTML.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: 'mockType'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+
+		expect(
+			HTML.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: HTML_NODE,
+						text: 'Some text'
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+	})
+
+	test('plugins.renderPlaceholder renders a placeholder', () => {
+		expect(
+			HTML.plugins.renderPlaceholder(
+				{
+					node: {
+						object: 'block',
+						type: HTML_NODE,
+						text: ''
+					}
+				},
+				null,
+				jest.fn()
+			)
+		).toMatchSnapshot()
+	})
 })

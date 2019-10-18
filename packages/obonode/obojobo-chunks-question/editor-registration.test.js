@@ -1,8 +1,11 @@
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
+import { Block } from 'slate'
 
 import Question from './editor-registration'
 const QUESTION_NODE = 'ObojoboDraft.Chunks.Question'
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
+const MCASSESSMENT_NODE = 'ObojoboDraft.Chunks.MCAssessment'
+const CHOICE_LIST_NODE = 'ObojoboDraft.Chunks.MCAssessment.ChoiceList'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
 	Registry: {
@@ -201,5 +204,135 @@ describe('Question editor', () => {
 			path: ['#obo-testId'],
 			type: 'sub-link'
 		})
+	})
+
+	test('getPasteNode returns whole question', () => {
+		const question = {
+			type: QUESTION_NODE,
+			object: 'block',
+			nodes: [
+				{
+					type: MCASSESSMENT_NODE,
+					object: 'block'
+				},
+				{
+					type: 'mock-node',
+					object: 'block'
+				}
+			]
+		}
+
+		const qBlock = Block.create(question)
+
+		expect(Question.getPasteNode(qBlock)).toEqual(qBlock)
+	})
+
+	test('getPasteNode returns just content nodes', () => {
+		const question = {
+			type: QUESTION_NODE,
+			object: 'block',
+			nodes: [
+				{
+					type: 'mock-node',
+					object: 'block'
+				}
+			]
+		}
+
+		const qBlock = Block.create(question)
+
+		expect(Question.getPasteNode(Block.create(qBlock))).toMatchInlineSnapshot(`
+		Array [
+		  Immutable.Record {
+		    "data": Immutable.Map {},
+		    "key": "18",
+		    "nodes": Immutable.List [],
+		    "type": "mock-node",
+		  },
+		]
+	`)
+	})
+
+	test('getPasteNode returns just assessment internal nodes', () => {
+		const question = {
+			type: QUESTION_NODE,
+			object: 'block',
+			nodes: [
+				{
+					type: MCASSESSMENT_NODE,
+					object: 'block',
+					nodes: [
+						{
+							type: CHOICE_LIST_NODE,
+							object: 'block',
+							nodes: [
+								{
+									type: 'mockMCChoice',
+									object: 'block',
+									nodes: [
+										{
+											type: 'mockAns',
+											object: 'block',
+											nodes: [{ type: 'mockContent', object: 'block' }]
+										}
+									]
+								}
+							]
+						},
+						{
+							type: 'mockSettingsNode',
+							object: 'block'
+						}
+					]
+				}
+			]
+		}
+
+		const qBlock = Block.create(question)
+
+		expect(Question.getPasteNode(Block.create(qBlock))).toMatchInlineSnapshot(`
+		Array [
+		  Immutable.Record {
+		    "data": Immutable.Map {},
+		    "key": "24",
+		    "nodes": Immutable.List [],
+		    "type": "mockContent",
+		  },
+		]
+	`)
+	})
+
+	test('getPasteNode returns just solution internal nodes', () => {
+		const childNode = { type: 'mockChildNode', object: 'block' }
+		const question = {
+			type: QUESTION_NODE,
+			object: 'block',
+			nodes: [
+				{
+					type: SOLUTION_NODE,
+					object: 'block',
+					nodes: [
+						{
+							type: 'mockPageNode',
+							object: 'block',
+							nodes: [childNode]
+						}
+					]
+				}
+			]
+		}
+
+		const qBlock = Block.create(question)
+
+		expect(Question.getPasteNode(Block.create(qBlock))).toMatchInlineSnapshot(`
+		Array [
+		  Immutable.Record {
+		    "data": Immutable.Map {},
+		    "key": "29",
+		    "nodes": Immutable.List [],
+		    "type": "mockChildNode",
+		  },
+		]
+	`)
 	})
 })

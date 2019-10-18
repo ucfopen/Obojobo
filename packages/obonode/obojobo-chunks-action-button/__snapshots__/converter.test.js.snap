@@ -60,6 +60,45 @@ Object {
 }
 `;
 
+exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node with onClick trigger 1`] = `
+Object {
+  "data": Object {
+    "content": Object {
+      "label": "mockLabel",
+      "triggers": Array [
+        Object {
+          "actions": Array [
+            Object {
+              "type": "mockType",
+            },
+            Object {
+              "type": "mockOtherType",
+              "value": Object {
+                "id": "mockId",
+              },
+            },
+          ],
+          "type": "onClick",
+        },
+      ],
+    },
+  },
+  "key": "mockKey",
+  "nodes": Array [
+    Object {
+      "leaves": Array [
+        Object {
+          "text": "mockLabel",
+        },
+      ],
+      "object": "text",
+    },
+  ],
+  "object": "block",
+  "type": "mockType",
+}
+`;
+
 exports[`ActionButton Converter oboToSlate converts an OboNode to a Slate node with triggers 1`] = `
 Object {
   "data": Object {

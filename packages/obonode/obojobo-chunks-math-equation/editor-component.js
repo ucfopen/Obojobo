@@ -3,12 +3,7 @@ import './editor-component.scss'
 
 import React from 'react'
 import katex from 'katex'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
-
-import MathEquationProperties from './math-equation-properties-modal'
-
-const { ModalUtil } = Common.util
 
 const getLatexHtml = latex => {
 	try {
@@ -22,15 +17,6 @@ const getLatexHtml = latex => {
 class MathEquation extends React.Component {
 	constructor(props) {
 		super(props)
-	}
-
-	showMathEquationPropertiesModal() {
-		ModalUtil.show(
-			<MathEquationProperties
-				content={this.props.node.data.get('content')}
-				onConfirm={this.changeProperties.bind(this)}
-			/>
-		)
 	}
 
 	changeProperties(content) {
