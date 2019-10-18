@@ -18,7 +18,9 @@ class DropMenu extends React.PureComponent {
 		this.timeOutId = null
 		this.onBlurHandler = this.onBlurHandler.bind(this)
 		this.onFocusHandler = this.onFocusHandler.bind(this)
+		this.onKeyDown = this.onKeyDown.bind(this)
 		this.toggleOpen = this.toggleOpen.bind(this)
+		this.menuButton = React.createRef()
 	}
 
 	componentDidUpdate() {
@@ -32,17 +34,18 @@ class DropMenu extends React.PureComponent {
 	onKeyDown(event) {
 		this.menu = this.menu.filter(Boolean)
 		if(this.state.isOpen) event.stopPropagation()
-		console.log(this.menu)
+
 		switch (event.key) {
 			// Open the menu and set the first item as the current focus
 			case 'ArrowRight':
 				this.setState({ isOpen: true, currentFocus: 0 })
+				event.stopPropagation()
 				break
 
 			// Close the menu and return focus to the link item
 			case 'ArrowLeft':
 				this.setState({ isOpen: false })
-				this.linkButton.focus()
+				this.menuButton.current.focus()
 				break
 
 			// Move down through the submenu
@@ -55,7 +58,7 @@ class DropMenu extends React.PureComponent {
 			// Move up through the submenu
 			case 'ArrowUp':
 				this.setState(currentState => ({
-					currentFocus: (currentState.currentFocus - 1) % this.menu.length
+					currentFocus: (currentState.currentFocus + this.menu.length - 1) % this.menu.length
 				}))
 				break
 		}
@@ -79,25 +82,25 @@ class DropMenu extends React.PureComponent {
 		this.setState(prevState => ({ isOpen: !prevState.isOpen }))
 	}
 
-	renderSubMenu(name, menu) {
+	render() {
 		this.menu = []
 		return (
 			<div
 				className={'dropdown ' + isOrNot(this.state.isOpen, 'open')}
-				key={name}
+				key={this.props.name}
 				onBlur={this.onBlurHandler}
 				onFocus={this.onFocusHandler}
-				onKeyDown={event => this.onKeyDown(event)}
+				onKeyDown={this.onKeyDown}
 				ref={this.props.onRef}
 				tabIndex={-1}>
 				<button 
 					className="menu-title"
 					onClick={this.toggleOpen}
-					ref={item => {this.menu.push(item)}}>
-					{name}
+					ref={this.menuButton}>
+					{this.props.name}
 				</button>
 				<div className="menu-items">
-					{menu.map(item => {
+					{this.props.menu.map(item => {
 						switch(item.type) {
 							case 'sub-menu':
 								return <DropMenu name={item.name} menu={item.menu} onRef={item => {this.menu.push(item)}}/>
@@ -116,21 +119,6 @@ class DropMenu extends React.PureComponent {
 				</div>
 			</div>
 		)
-	}
-
-	// This is called after renderDropDown so that the proper ref setup has
-	// already occurred
-	linkReferences() {
-		this.menu = []
-		if (this.moveUp) this.menu.push(this.moveUp)
-		if (this.moveDown) this.menu.push(this.moveDown)
-		this.menu.push(this.editName)
-		this.menu.push(this.delete)
-		this.menu.push(this.getId)
-	}
-
-	render() {
-		return this.renderSubMenu(this.props.name, this.props.menu)
 	}
 }
 

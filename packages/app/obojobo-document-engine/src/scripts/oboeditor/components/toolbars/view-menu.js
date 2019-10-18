@@ -1,18 +1,6 @@
 import React from 'react'
-import download from 'downloadjs'
-import Common from 'obojobo-document-engine/src/scripts/common'
-
-import ClipboardUtil from '../../util/clipboard-util'
-import EditorUtil from '../../util/editor-util'
-import APIUtil from 'obojobo-document-engine/src/scripts/viewer/util/api-util'
 
 import DropDownMenu from './drop-down-menu'
-
-const { Prompt } = Common.components.modal
-const { SimpleDialog } = Common.components.modal
-const { ModalUtil } = Common.util
-
-const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 
 const XML_MODE = 'xml'
 const JSON_MODE = 'json'
@@ -21,29 +9,6 @@ const VISUAL_MODE = 'visual'
 class ViewMenu extends React.PureComponent {
 	constructor(props) {
 		super(props)
-
-		this.state = {
-			drafts: []
-		}
-	}
-
-	componentDidMount() {
-		APIUtil.getAllDrafts().then(result => {
-			this.setState({
-				drafts: result.value
-					.map(draft => {
-						if (draft.draftId === this.props.draftId) return null
-
-						return {
-							name: draft.title,
-							type: 'action',
-							action: () =>
-								window.open(window.location.origin + '/editor/' + draft.draftId, '_blank')
-						}
-					})
-					.filter(Boolean)
-			})
-		})
 	}
 
 	render() {
@@ -86,7 +51,11 @@ class ViewMenu extends React.PureComponent {
 			},
 		]
 
-		return <DropDownMenu name="View" menu={menu} />
+		return (
+			<div className="visual-editor--drop-down-menu">
+				<DropDownMenu name="View" menu={menu} />
+			</div>
+		)
 	}
 }
 

@@ -1,18 +1,18 @@
 import { shallow, mount } from 'enzyme'
 import React from 'react'
 
-import FileMenu from 'obojobo-document-engine/src/scripts/oboeditor/components/toolbars/file-menu'
+import FileMenu from '../../../../src/scripts/oboeditor/components/toolbars/file-menu'
 
 import ModalUtil from 'obojobo-document-engine/src/scripts/common/util/modal-util'
 jest.mock('obojobo-document-engine/src/scripts/common/util/modal-util')
 import APIUtil from 'src/scripts/viewer/util/api-util'
-jest.mock('src/scripts/viewer/util/api-util')
-import ClipboardUtil from 'src/scripts/oboeditor/util/clipboard-util'
-jest.mock('src/scripts/oboeditor/util/clipboard-util')
-import EditorUtil from 'src/scripts/oboeditor/util/editor-util'
-jest.mock('src/scripts/oboeditor/util/editor-util')
-import EditorStore from 'src/scripts/oboeditor/stores/editor-store'
-jest.mock('src/scripts/oboeditor/stores/editor-store', () => ({
+jest.mock('obojobo-document-engine/src/scripts/viewer/util/api-util')
+import ClipboardUtil from '../../../../src/scripts/oboeditor/util/clipboard-util'
+jest.mock('../../../../src/scripts/oboeditor/util/clipboard-util')
+import EditorUtil from '../../../../src/scripts/oboeditor/util/editor-util'
+jest.mock('../../../../src/scripts/oboeditor/util/editor-util')
+import EditorStore from '../../../../src/scripts/oboeditor/stores/editor-store'
+jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null, itemsById: { mockStartingId: { label: 'theLabel' } } }
 }))
 import download from 'downloadjs'

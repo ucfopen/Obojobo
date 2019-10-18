@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Drop Down Menu DropDownMenu component cancels menu closure when focused 1`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><button>Redo</button></div></div>"`;
+
+exports[`Drop Down Menu DropDownMenu component closes menu when unfocused 1`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><button>Redo</button></div></div>"`;
+
+exports[`Drop Down Menu DropDownMenu component moves up and down with keys 1`] = `
+Object {
+  "currentFocus": 1,
+  "isFocused": false,
+  "isOpen": false,
+}
+`;
+
+exports[`Drop Down Menu DropDownMenu component moves up and down with keys 2`] = `
+Object {
+  "currentFocus": 0,
+  "isFocused": false,
+  "isOpen": false,
+}
+`;
+
+exports[`Drop Down Menu DropDownMenu component opens and closes menu with keys 1`] = `"<div class=\\"dropdown  is-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><button>Redo</button></div></div>"`;
+
+exports[`Drop Down Menu DropDownMenu component opens and closes menu with keys 2`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><button>Redo</button></div></div>"`;
+
+exports[`Drop Down Menu DropDownMenu node 1`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><button>Redo</button></div></div>"`;
+
+exports[`Drop Down Menu DropDownMenu node opens and closes 1`] = `"<div class=\\"dropdown  is-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><button>Redo</button></div></div>"`;
+
+exports[`Drop Down Menu DropDownMenu node opens and closes 2`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><button>Redo</button></div></div>"`;
+
+exports[`Drop Down Menu DropDownMenu node with sub-menu 1`] = `"<div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">MockMenu</button><div class=\\"menu-items\\"><button>Undo</button><div class=\\"dropdown  is-not-open\\" tabindex=\\"-1\\"><button class=\\"menu-title\\">subMenu</button><div class=\\"menu-items\\"><button>SubItem</button></div></div></div></div>"`;

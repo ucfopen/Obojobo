@@ -122,14 +122,20 @@ const FileToolbar = props => {
 				onSave={props.onSave}
 				onRename={props.onRename}
 				mode={props.mode}/>
-			<DropDownMenu name="Edit" menu={editMenu} />
+			<div className="visual-editor--drop-down-menu">
+				<DropDownMenu name="Edit" menu={editMenu} />
+			</div>
 			<ViewMenu
 				draftId={props.draftId}
 				switchMode={props.switchMode}
 				onSave={props.onSave}/>
-			<DropDownMenu name="Insert" menu={props.insertableItems}/>
+			<div className="visual-editor--drop-down-menu">
+				<DropDownMenu name="Insert" menu={props.insertableItems}/>
+			</div>
 			{props.mode === 'visual' ?
-				<DropDownMenu name="Format" menu={formatMenu}/>
+				<div className="visual-editor--drop-down-menu">
+					<DropDownMenu name="Format" menu={formatMenu}/>
+				</div>
 				: null
 			}
 			<div className={"saved-message " + saved}>

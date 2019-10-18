@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme'
 import React from 'react'
 
-import ContentToolbar from 'obojobo-document-engine/src/scripts/oboeditor/components/toolbars/content-toolbar'
+import ContentToolbar from '../../../../src/scripts/oboeditor/components/toolbars/content-toolbar'
 
 describe('Content Toolbar', () => {
 	test('Toolbar node', () => {
