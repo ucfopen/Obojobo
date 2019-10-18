@@ -19,11 +19,16 @@ describe('List Converter', () => {
 					type: LIST_LEVEL_NODE,
 					data: {
 						get: () => {
-							return { }
+							return {}
 						}
 					},
 					nodes: [
 						{
+							data: {
+								get: () => {
+									return {}
+								}
+							},
 							text: 'mockText',
 							nodes: [
 								{
@@ -50,6 +55,11 @@ describe('List Converter', () => {
 							},
 							nodes: [
 								{
+									data: {
+										get: () => {
+											return false
+										}
+									},
 									text: 'mockText',
 									nodes: []
 								}
