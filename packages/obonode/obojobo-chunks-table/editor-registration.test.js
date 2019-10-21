@@ -282,4 +282,68 @@ describe('Table editor', () => {
 
 		expect(Table.plugins.renderNode(props, null, next)).toMatchSnapshot()
 	})
+
+	test('plugins.normalizeNode does nothing if all nodes match schema', () => {
+		const nextFunct = jest.fn()
+		const editor = {
+			insertNodeByKey: jest.fn()
+		}
+
+		Table.plugins.normalizeNode({ object: 'text' }, editor, nextFunct)
+		expect(nextFunct).toHaveBeenCalledTimes(1)
+
+		Table.plugins.normalizeNode({ object: 'block', type: 'mockNode' }, editor, nextFunct)
+		expect(nextFunct).toHaveBeenCalledTimes(2)
+
+		const tableRow = {
+			object: 'block',
+			type: TABLE_ROW_NODE,
+			data: { get: () => ({ numCols: 1 }) },
+			nodes: { size: 1 }
+		}
+		Table.plugins.normalizeNode(tableRow, editor, nextFunct)
+		expect(nextFunct).toHaveBeenCalledTimes(3)
+
+		expect(editor.insertNodeByKey).not.toHaveBeenCalled()
+	})
+
+	test('plugins.normalizeNode fixes rows with too few columns', () => {
+		const nextFunct = jest.fn()
+		const editor = {
+			insertNodeByKey: jest.fn()
+		}
+
+		const tableRow = {
+			object: 'block',
+			type: TABLE_ROW_NODE,
+			data: { get: () => ({ numCols: 1 }) },
+			nodes: { size: 0 }
+		}
+		const normalizer = Table.plugins.normalizeNode(tableRow, editor, nextFunct)
+		expect(nextFunct).not.toHaveBeenCalled()
+
+		normalizer(editor)
+
+		expect(editor.insertNodeByKey).toHaveBeenCalled()
+	})
+
+	test('plugins.normalizeNode fixes rows with too many columns', () => {
+		const nextFunct = jest.fn()
+		const editor = {
+			setNodeByKey: jest.fn()
+		}
+
+		const tableRow = {
+			object: 'block',
+			type: TABLE_ROW_NODE,
+			data: { get: () => ({ numCols: 1 }) },
+			nodes: { size: 2 }
+		}
+		const normalizer = Table.plugins.normalizeNode(tableRow, editor, nextFunct)
+		expect(nextFunct).not.toHaveBeenCalled()
+
+		normalizer(editor)
+
+		expect(editor.setNodeByKey).toHaveBeenCalled()
+	})
 })

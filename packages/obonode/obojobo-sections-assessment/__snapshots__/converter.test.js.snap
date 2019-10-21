@@ -102,6 +102,9 @@ Object {
     "rubric": Object {
       "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
     },
+    "scoreActions": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
     "triggers": Array [],
   },
   "id": "mockKey",
@@ -123,6 +126,9 @@ Object {
     "rubric": Object {
       "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
     },
+    "scoreActions": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
     "triggers": undefined,
   },
   "id": "mockKey",
@@ -142,6 +148,9 @@ Object {
   ],
   "content": Object {
     "rubric": Object {
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+    },
+    "scoreActions": Object {
       "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
     },
     "triggers": Array [

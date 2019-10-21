@@ -1,5 +1,39 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Assessment editor getPasteNode extracts content 1`] = `
+Array [
+  Immutable.Record {
+    "data": Immutable.Map {},
+    "key": "2",
+    "nodes": Immutable.List [],
+    "type": "mock-node",
+  },
+  Immutable.Record {
+    "data": Immutable.Map {},
+    "key": "3",
+    "nodes": Immutable.List [],
+    "type": "ObojoboDraft.Chunks.QuestionBank",
+  },
+  Immutable.Record {
+    "data": Immutable.Map {},
+    "key": "7",
+    "nodes": Immutable.List [],
+    "type": "mock-node",
+  },
+]
+`;
+
+exports[`Assessment editor getPasteNode extracts partial qbs 1`] = `
+Array [
+  Immutable.Record {
+    "data": Immutable.Map {},
+    "key": "9",
+    "nodes": Immutable.List [],
+    "type": "ObojoboDraft.Chunks.QuestionBank",
+  },
+]
+`;
+
 exports[`Assessment editor plugins.renderNode calls next 1`] = `undefined`;
 
 exports[`Assessment editor plugins.renderNode renders Settings when passed 1`] = `

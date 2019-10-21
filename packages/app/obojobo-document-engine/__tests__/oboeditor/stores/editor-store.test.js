@@ -152,16 +152,6 @@ describe('EditorStore', () => {
 		expect(EditorStore.getState()).toMatchSnapshot()
 	})
 
-	test.skip('init builds state locked state', () => {
-		EditorStore.init(null, 12, null, '', { 'nav:isLocked': { value: true } })
-		expect(EditorStore.getState()).toMatchSnapshot()
-	})
-
-	test.skip('init builds state open state', () => {
-		EditorStore.init(null, 12, null, '', { 'nav:isOpen': { value: true } })
-		expect(EditorStore.getState()).toMatchSnapshot()
-	})
-
 	test('init builds and goes to starting path', () => {
 		EditorStore.init(null, 12, null, 'startingpath', 'visual')
 		expect(EditorUtil.gotoPath).toHaveBeenCalledWith('startingpath')

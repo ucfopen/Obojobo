@@ -1,7 +1,7 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
 import { getEventTransfer } from 'slate-react'
-import { Document } from 'slate'
+import { Document, Block } from 'slate'
 
 const UNIQUE_NAME = 'ObojoboDraft.Sections.Assessment'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'

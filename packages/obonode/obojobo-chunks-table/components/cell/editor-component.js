@@ -15,17 +15,17 @@ class Cell extends React.Component {
 			isOpen: false
 		}
 
-		// this.handleClick = this.handleClick.bind(this)
 		this.toggleOpen = this.toggleOpen.bind(this)
-		this.setOpen = this.setOpen.bind(this)
+		this.addRowAbove = this.addRowAbove.bind(this)
+		this.addRowBelow = this.addRowBelow.bind(this)
+		this.addColLeft = this.addColLeft.bind(this)
+		this.addColRight = this.addColRight.bind(this)
+		this.deleteRow = this.deleteRow.bind(this)
+		this.deleteCol = this.deleteCol.bind(this)
 	}
 
 	toggleOpen() {
 		this.setState(prevState => ({ isOpen: !prevState.isOpen}))
-	}
-
-	setOpen(isOpen) {
-		this.setState({ isOpen })
 	}
 
 	addRowAbove() {
@@ -141,10 +141,12 @@ class Cell extends React.Component {
 			}
 
 			// Set sibling as new header
+
+			const yesHeader = { header: true }
 			sibling.nodes.forEach(cell => {
-				editor.setNodeByKey(cell.key, { data: { content: { header: isHeader } } })
+				editor.setNodeByKey(cell.key, { data: { content: { ...cell.data.get('content'), ...yesHeader } } })
 			})
-			editor.setNodeByKey(sibling.key, { data: { content: { header: isHeader } } })
+			editor.setNodeByKey(sibling.key, { data: { content: { ...sibling.data.get('content'), ...yesHeader } } })
 		}
 
 		return this.props.editor.removeNodeByKey(this.props.parent.key)
@@ -189,22 +191,22 @@ class Cell extends React.Component {
 			<div className="dropdown-cell" contentEditable={false}>
 					<button onClick={this.toggleOpen}>{(this.state.isOpen ? '▲' : '▼')}</button>
 					<div className={'drop-content-cell ' + isOrNot(this.state.isOpen, 'open')}>
-						<button onClick={this.addRowAbove.bind(this)}>
+						<button onClick={this.addRowAbove}>
 							Insert Row Above
 						</button>
-						<button onClick={this.addRowBelow.bind(this)}>
+						<button onClick={this.addRowBelow}>
 							Insert Row Below
 						</button>
-						<button onClick={this.addColLeft.bind(this)}>
+						<button onClick={this.addColLeft}>
 							Insert Column Left
 						</button>
-						<button onClick={this.addColRight.bind(this)}>
+						<button onClick={this.addColRight}>
 							Insert Column Right
 						</button>
-						<button onClick={this.deleteRow.bind(this)}>
+						<button onClick={this.deleteRow}>
 							Delete Row
 						</button>
-						<button onClick={this.deleteCol.bind(this)}>
+						<button onClick={this.deleteCol}>
 							Delete Column
 						</button>
 					</div>

@@ -730,48 +730,4 @@ describe('api draft route', () => {
 				expect(response.body).toHaveProperty('value', 'mock-db-result')
 			})
 	})
-
-	// list drafts
-	test.skip('list drafts exits when user cant view drafts', () => {
-		expect.assertions(4)
-		db.any.mockResolvedValueOnce('mock-db-result')
-		mockCurrentUser = { id: 99, canPreviewDrafts: false } // mock current logged in user
-		return request(app)
-			.get('/api/drafts')
-			.then(response => {
-				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-db-result')
-			})
-	})
-
-	test.skip('list drafts renders results', () => {
-		expect.assertions(4)
-		mockCurrentUser = { id: 99, canPreviewDrafts: true } // mock current logged in user
-		db.any.mockResolvedValueOnce('mock-db-result') // mock result of query to get all my drafts
-		return request(app)
-			.get('/api/drafts')
-			.then(response => {
-				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(200)
-				expect(response.body).toHaveProperty('status', 'ok')
-				expect(response.body).toHaveProperty('value', 'mock-db-result')
-			})
-	})
-
-	test.skip('list drafts 500s when ', () => {
-		expect.assertions(5)
-		mockCurrentUser = { id: 99, canPreviewDrafts: true } // mock current logged in user
-		db.any.mockRejectedValueOnce('rejected value') // mock result of query to get all my drafts
-		return request(app)
-			.get('/api/drafts')
-			.then(response => {
-				expect(response.header['content-type']).toContain('application/json')
-				expect(response.statusCode).toBe(500)
-				expect(response.body).toHaveProperty('status', 'error')
-				expect(response.body).toHaveProperty('value')
-				expect(response.body.value).toHaveProperty('type', 'unexpected')
-			})
-	})
 })

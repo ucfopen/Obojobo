@@ -126,19 +126,6 @@ describe('Assessment Converter', () => {
 		expect(slateNode).toMatchSnapshot()
 	})
 
-	test.skip('oboToSlate converts an OboComponent to a Slate node with no mods', () => {
-		const oboNode = {
-			passingAttemptScore: 0,
-			passedResult: 100,
-			failedResult: 0,
-			unableToPassResult: 0,
-			mods: []
-		}
-		const slateNode = Converter.oboToSlate(oboNode)
-
-		expect(slateNode).toMatchSnapshot()
-	})
-
 	test('oboToSlate converts an OboComponent to a Slate node without mods', () => {
 		const oboNode = {
 			passingAttemptScore: 0,

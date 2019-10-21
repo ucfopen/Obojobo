@@ -78,7 +78,7 @@ describe('Heading Editor Node', () => {
 							level: 1
 						})
 					},
-					text: 'Your Title Here'
+					text: ''
 				}}
 				isSelected={true}
 			/>
@@ -95,7 +95,7 @@ describe('Heading Editor Node', () => {
 		let tree = component.html()
 		expect(tree).toMatchSnapshot()
 
-		 // click outside
+		// click outside
 		nodeInstance.nodeRef = {
 			current: {
 				contains: () => false

@@ -1,3 +1,9 @@
+jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({
+	Registry: {
+		registerModel: jest.fn(),
+		getItemForType: jest.fn()
+	}
+}))
 jest.mock('./editor-component', () => global.mockReactComponent(this, 'Assessment'))
 jest.mock('./components/settings/editor-component', () =>
 	global.mockReactComponent(this, 'Settings')
@@ -6,53 +12,18 @@ jest.mock('./schema', () => ({ mock: 'schema' }))
 jest.mock('./converter', () => ({ mock: 'converter' }))
 jest.mock('slate-react')
 
+import Common from 'obojobo-document-engine/src/scripts/common'
 import SlateReact from 'slate-react'
+import { Block } from 'slate'
 import Assessment from './editor-registration'
 
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
+const PAGE_NODE = 'ObojoboDraft.Pages.Page'
+const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
+const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 
 describe('Assessment editor', () => {
-	test.skip('plugins.onPaste pastes anything other than an Assessment', () => {
-		SlateReact.getEventTransfer.mockReturnValueOnce({
-			type: 'fragment',
-			fragment: {
-				nodes: {
-					get: () => ({ type: 'mockNode' })
-				}
-			}
-		})
-		const next = jest.fn()
-
-		Assessment.plugins.onPaste(null, null, next)
-
-		expect(next).toHaveBeenCalled()
-	})
-
-	test.skip('plugins.onPaste pastes an Assessment', () => {
-		const assessmentMock = {
-			type: ASSESSMENT_NODE,
-			toJSON: jest.fn().mockReturnValueOnce('mock assessment')
-		}
-
-		SlateReact.getEventTransfer.mockReturnValueOnce({
-			type: 'fragment',
-			fragment: {
-				nodes: {
-					get: () => assessmentMock
-				}
-			}
-		})
-
-		const editor = {
-			insertFragment: jest.fn()
-		}
-
-		Assessment.plugins.onPaste(null, editor, jest.fn())
-
-		expect(editor.insertFragment).toHaveBeenCalled()
-	})
-
 	test('plugins.renderNode renders the Assessment when passed', () => {
 		const props = {
 			attributes: { dummy: 'dummyData' },
@@ -130,5 +101,83 @@ describe('Assessment editor', () => {
 			showChildren: false,
 			showChildrenOnNavigation: false
 		})
+	})
+
+	test('getPasteNode extracts content', () => {
+		const assessment = {
+			object: 'block',
+			type: ASSESSMENT_NODE,
+			nodes: [
+				{
+					object: 'block',
+					type: PAGE_NODE,
+					nodes: [
+						{
+							object: 'block',
+							type: 'mock-node'
+						}
+					]
+				},
+				{
+					object: 'block',
+					type: QUESTION_BANK_NODE
+				},
+				{
+					object: 'block',
+					type: ACTIONS_NODE,
+					nodes: [
+						{
+							object: 'block',
+							type: 'mock-action-node',
+							nodes: [
+								{
+									object: 'block',
+									type: PAGE_NODE,
+									nodes: [
+										{
+											object: 'block',
+											type: 'mock-node'
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+		Common.Registry.getItemForType.mockReturnValueOnce({ getPasteNode: node => node })
+
+		expect(Assessment.getPasteNode(Block.create(assessment))).toMatchSnapshot()
+	})
+
+	test('getPasteNode extracts partial qbs', () => {
+		const assessment = {
+			object: 'block',
+			type: ASSESSMENT_NODE,
+			nodes: [
+				{
+					object: 'block',
+					type: QUESTION_BANK_NODE
+				}
+			]
+		}
+		Common.Registry.getItemForType.mockReturnValueOnce({ getPasteNode: node => [node] })
+
+		expect(Assessment.getPasteNode(Block.create(assessment))).toMatchSnapshot()
+	})
+
+	test('getPasteNode extracts no nodes', () => {
+		const assessment = {
+			object: 'block',
+			type: ASSESSMENT_NODE,
+			nodes: [
+				{
+					object: 'block',
+					type: 'mock-node'
+				}
+			]
+		}
+		expect(Assessment.getPasteNode(Block.create(assessment))).toEqual([])
 	})
 })

@@ -4,7 +4,7 @@ const { OboModel } = Common.models
 
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const RUBRIC_NODE = 'ObojoboDraft.Sections.Assessment.Rubric'
-const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreAction'
+const ACTIONS_NODE = 'ObojoboDraft.Sections.Assessment.ScoreActions'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 

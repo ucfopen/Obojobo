@@ -416,55 +416,6 @@ describe('Registry', () => {
 		})
 	})
 
-	test.skip('registers toolbar items', () => {
-		Registry.registerToolbarItem({
-			id: 'test',
-			a: 1,
-			b: 2
-		})
-
-		expect(Registry.registeredToolbarItems).toEqual({
-			separator: {
-				id: 'separator',
-				type: 'separator'
-			},
-			test: {
-				id: 'test',
-				a: 1,
-				b: 2
-			}
-		})
-	})
-
-	test.skip('adds toolbar items', () => {
-		Registry.registerToolbarItem({
-			id: 'test',
-			a: 1,
-			b: 2
-		})
-
-		Registry.addToolbarItem('test')
-		Registry.addToolbarItem('separator')
-		Registry.addToolbarItem('test')
-
-		expect(Registry.toolbarItems).toEqual([
-			{
-				id: 'test',
-				a: 1,
-				b: 2
-			},
-			{
-				id: 'separator',
-				type: 'separator'
-			},
-			{
-				id: 'test',
-				a: 1,
-				b: 2
-			}
-		])
-	})
-
 	test('loads dependencies registered onload callback for javascript', () => {
 		expect.assertions(2)
 		document.head.appendChild = jest.fn()

@@ -47,37 +47,6 @@ describe('editor route', () => {
 		mockCurrentDocument = {}
 	})
 
-	test.skip('get editor_picker rejects users without canViewEditor permission', () => {
-		expect.hasAssertions()
-
-		// mock the list of drafts
-		db.any.mockResolvedValueOnce([])
-		mockCurrentUser.canViewEditor = false
-
-		return request(app)
-			.get('/')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(401)
-				expect(response.text).toContain('Not Authorized')
-			})
-	})
-
-	test.skip('get editor_picker returns the expected response', () => {
-		expect.hasAssertions()
-
-		// mock the list of drafts
-		db.any.mockResolvedValueOnce([])
-
-		return request(app)
-			.get('/')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain('Obojobo Editor')
-			})
-	})
-
 	test('get editor/draftId returns the expected response', () => {
 		expect.hasAssertions()
 		mockCurrentUser.isGuest = () => false
@@ -144,22 +113,6 @@ describe('editor route', () => {
 				expect(response.statusCode).toBe(401)
 				expect(response.header['content-type']).toContain('text/html')
 				expect(response.text).toBe('Not Authorized')
-			})
-	})
-
-	test.skip('post editor/draftId returns the expected response', () => {
-		expect.hasAssertions()
-		mockCurrentUser.isGuest = () => false
-
-		// mock the list of drafts
-		db.any.mockResolvedValueOnce([])
-
-		return request(app)
-			.post('/visual/draft/mockId')
-			.then(response => {
-				expect(response.header['content-type']).toContain('text/html')
-				expect(response.statusCode).toBe(200)
-				expect(response.text).toContain('Obojobo Visual Editor')
 			})
 	})
 })
