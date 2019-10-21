@@ -45,7 +45,7 @@ describe('Choose Image Modal', () => {
 			<ChooseImageModal onSetMediaUrl={jest.fn} onSetIsChoosingImage={jest.fn} />
 		)
 
-		component.find('#choose-image--image-controls--upload').simulate('change', {
+		component.find('#file').simulate('change', {
 			target: {
 				value: 'changed',
 				files: [
@@ -107,6 +107,38 @@ describe('Choose Image Modal', () => {
 
 		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
 		component.find('.image-gallary--single-photo').simulate('click')
+
+		expect(onCloseChoosingImageModal).toHaveBeenCalled()
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('ImageProperties onPress on an image', () => {
+		const onCloseChoosingImageModal = jest.fn()
+		const component = mount(
+			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
+		)
+
+		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
+		component
+			.find('.image-gallary--single-photo')
+			.at(0)
+			.simulate('keypress', { key: 'mock_key' })
+
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('ImageProperties onKeyPress `enter` on an image', () => {
+		const onCloseChoosingImageModal = jest.fn()
+		const component = mount(
+			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
+		)
+
+		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
+		component
+			.find('.image-gallary--single-photo')
+			.at(0)
+			.simulate('keypress', { key: 'Enter' })
 
 		expect(onCloseChoosingImageModal).toHaveBeenCalled()
 

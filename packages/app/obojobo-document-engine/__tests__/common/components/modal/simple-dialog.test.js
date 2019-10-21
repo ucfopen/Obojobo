@@ -63,23 +63,6 @@ describe('SimpleDialog', () => {
 		expect(tree).toMatchSnapshot()
 	})
 
-	test('Enter closes modal', () => {
-		const onConfirm = jest.fn()
-		const component = mount(
-			<SimpleDialog onCancel={jest.fn()} onConfirm={onConfirm}>
-				Content
-			</SimpleDialog>
-		)
-
-		expect(onConfirm).toHaveBeenCalledTimes(0)
-
-		document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }))
-
-		expect(onConfirm).toHaveBeenCalledTimes(1)
-
-		component.unmount()
-	})
-
 	test('Other keys dont close modal', () => {
 		const onConfirm = jest.fn()
 		const component = mount(

@@ -66,6 +66,12 @@ class ChooseImageModal extends React.Component {
 		return this.firstRef.current.focus()
 	}
 
+	onHandleKeyPress(event, callback) {
+		if (event.key === 'Enter') {
+			callback()
+		}
+	}
+
 	render() {
 		return (
 			<SimpleDialog
@@ -77,18 +83,18 @@ class ChooseImageModal extends React.Component {
 			>
 				<div className="choose-image">
 					<div className="choose-image--image-controls">
-						<label htmlFor="choose-image--image-controls--upload">
+						<div className="choose-image--image-controls--upload">
 							<input
+								tabIndex={0}
 								type="file"
-								id="choose-image--image-controls--upload"
-								accept={this.props.allowedUploadTypes}
-								onChange={e => this.handleFileChange(e)}
+								name="file"
+								id="file"
+								className="inputfile"
+								ref={this.firstRef}
+								onChange={event => this.handleFileChange(event)}
 							/>
-
-							<span className="upload" tabIndex={0} ref={this.firstRef}>
-								+ Upload new image
-							</span>
-						</label>
+							<label htmlFor="file">Upload new image</label>
+						</div>
 
 						<div className="choose-image--image-controls--or">or</div>
 
@@ -106,11 +112,14 @@ class ChooseImageModal extends React.Component {
 						{this.state.medias.map(media => (
 							<img
 								tabIndex={0}
+								className="image-gallary--single-photo"
 								key={media.id}
 								id={media.id}
-								className="image-gallary--single-photo"
 								src={`/api/media/${media.id}/small`}
 								onClick={() => this.props.onCloseChoosingImageModal(media.id)}
+								onKeyPress={event =>
+									this.onHandleKeyPress(event, () => this.props.onCloseChoosingImageModal(media.id))
+								}
 							/>
 						))}
 
