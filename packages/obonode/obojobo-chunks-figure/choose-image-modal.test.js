@@ -58,7 +58,7 @@ describe('Choose Image Modal', () => {
 	})
 
 	test('ImageProperties click on `View More...`', () => {
-		const component = mount(<ChooseImageModal onCloseChoosingImageModal={jest.fn} />)
+		const component = mount(<ChooseImageModal onCloseChooseImageModal={jest.fn} />)
 
 		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: true })
 
@@ -70,54 +70,46 @@ describe('Choose Image Modal', () => {
 	})
 
 	test('ImageProperties click on `Cancel`', () => {
-		const onCloseChoosingImageModal = jest.fn()
-		const component = mount(
-			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
-		)
+		const onCloseChooseImageModal = jest.fn()
+		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
 		component
 			.find('button')
 			.at(0)
 			.simulate('click')
 
-		expect(onCloseChoosingImageModal).toHaveBeenCalled()
+		expect(onCloseChooseImageModal).toHaveBeenCalled()
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('ImageProperties click on `OK`', () => {
-		const onCloseChoosingImageModal = jest.fn()
-		const component = mount(
-			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
-		)
+		const onCloseChooseImageModal = jest.fn()
+		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
 		component
 			.find('button')
 			.at(1)
 			.simulate('click')
 
-		expect(onCloseChoosingImageModal).toHaveBeenCalled()
+		expect(onCloseChooseImageModal).toHaveBeenCalled()
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('ImageProperties click on an image', () => {
-		const onCloseChoosingImageModal = jest.fn()
-		const component = mount(
-			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
-		)
+		const onCloseChooseImageModal = jest.fn()
+		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
 		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
 		component.find('.image-gallary--single-photo').simulate('click')
 
-		expect(onCloseChoosingImageModal).toHaveBeenCalled()
+		expect(onCloseChooseImageModal).toHaveBeenCalled()
 
 		expect(component.html()).toMatchSnapshot()
 	})
 
 	test('ImageProperties onPress on an image', () => {
-		const onCloseChoosingImageModal = jest.fn()
-		const component = mount(
-			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
-		)
+		const onCloseChooseImageModal = jest.fn()
+		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
 		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
 		component
@@ -129,10 +121,8 @@ describe('Choose Image Modal', () => {
 	})
 
 	test('ImageProperties onKeyPress `enter` on an image', () => {
-		const onCloseChoosingImageModal = jest.fn()
-		const component = mount(
-			<ChooseImageModal onCloseChoosingImageModal={onCloseChoosingImageModal} />
-		)
+		const onCloseChooseImageModal = jest.fn()
+		const component = mount(<ChooseImageModal onCloseChooseImageModal={onCloseChooseImageModal} />)
 
 		component.setState({ medias: [{ id: 'mock_id' }], isFetching: false, hasMore: false })
 		component
@@ -140,7 +130,7 @@ describe('Choose Image Modal', () => {
 			.at(0)
 			.simulate('keypress', { key: 'Enter' })
 
-		expect(onCloseChoosingImageModal).toHaveBeenCalled()
+		expect(onCloseChooseImageModal).toHaveBeenCalled()
 
 		expect(component.html()).toMatchSnapshot()
 	})

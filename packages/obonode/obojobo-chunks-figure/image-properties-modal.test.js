@@ -107,7 +107,18 @@ describe('Image Properties Modal', () => {
 			.simulate('click')
 
 		expect(component.instance().state.isChoosingImage).toBe(false)
-		expect(component.instance().state.url).toBe('')
+		expect(component.instance().state.url).toBe(null)
+		expect(component.html()).toMatchSnapshot()
+	})
+
+	test('ImageProperties onCloseChooseImageModal()', () => {
+		const onConfirm = jest.fn()
+
+		const component = mount(<ImageProperties content={{ url: null }} onConfirm={onConfirm} />)
+		component.instance().onCloseChooseImageModal('mock_url')
+
+		expect(component.instance().state.isChoosingImage).toBe(false)
+		expect(component.instance().state.url).toBe('mock_url')
 		expect(component.html()).toMatchSnapshot()
 	})
 

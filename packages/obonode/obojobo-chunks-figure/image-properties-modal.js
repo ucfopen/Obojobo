@@ -61,15 +61,21 @@ class ImageProperties extends React.Component {
 		}
 	}
 
-	onCloseChoosingImageModal(mediaId) {
+	onCloseChooseImageModal(mediaId) {
 		// Close all modals if no url is specified
 		if (!mediaId && !this.state.url) {
 			this.props.onConfirm(this.state)
 		}
+
+		if (mediaId) {
+			this.setState({
+				...this.state,
+				url: mediaId
+			})
+		}
+
 		this.setState({
-			...this.state,
-			isChoosingImage: false,
-			url: mediaId
+			isChoosingImage: false
 		})
 	}
 
@@ -84,7 +90,7 @@ class ImageProperties extends React.Component {
 			return (
 				<ChooseImageModal
 					allowedUploadTypes={this.props.allowedUploadTypes}
-					onCloseChoosingImageModal={mediaId => this.onCloseChoosingImageModal(mediaId)}
+					onCloseChooseImageModal={mediaId => this.onCloseChooseImageModal(mediaId)}
 				/>
 			)
 		}
