@@ -6,6 +6,7 @@ import MCFeedback from './editor-component'
 
 jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	components: {
+		// eslint-disable-next-line react/display-name
 		Button: props => <button {...props}>{props.children}</button>
 	}
 }))

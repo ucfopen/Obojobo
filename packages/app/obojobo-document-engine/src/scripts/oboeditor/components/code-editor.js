@@ -60,11 +60,11 @@ class CodeEditor extends React.Component {
 
 	componentDidMount() {
 		// Setup unload to prompt user before closing
-		window.addEventListener("beforeunload", this.checkIfSaved)
+		window.addEventListener('beforeunload', this.checkIfSaved)
 	}
 
 	componentWillUnmount() {
-		window.removeEventListener("beforeunload", this.checkIfSaved)
+		window.removeEventListener('beforeunload', this.checkIfSaved)
 	}
 
 	checkIfSaved(event) {
@@ -83,7 +83,7 @@ class CodeEditor extends React.Component {
 	setJSONTitle(code, title) {
 		const json = JSON.parse(code)
 		json.content.title = title
-		return { code: JSON.stringify(json, null, 4)}
+		return { code: JSON.stringify(json, null, 4) }
 	}
 
 	setXMLTitle(code, title) {
@@ -96,12 +96,12 @@ class CodeEditor extends React.Component {
 			const el = els[0]
 			el.setAttribute('title', title)
 		}
-		return { code: serial.serializeToString(doc)}
+		return { code: serial.serializeToString(doc) }
 	}
 
 	setTitle(title) {
 		return this.setState((state, props) => {
-			switch(props.mode) {
+			switch (props.mode) {
 				case JSON_MODE:
 					return this.setJSONTitle(state.code, title)
 
@@ -122,7 +122,8 @@ class CodeEditor extends React.Component {
 		return APIUtil.postDraft(
 			this.props.draftId,
 			this.state.code,
-			this.props.mode === XML_MODE ? 'text/plain' : 'application/json')
+			this.props.mode === XML_MODE ? 'text/plain' : 'application/json'
+		)
 	}
 
 	// Makes CodeMirror commands match Slate commands
@@ -132,7 +133,8 @@ class CodeEditor extends React.Component {
 			const lastInfo = editor.lineInfo(editor.lastLine())
 			editor.setSelection(
 				{ line: editor.firstLine(), ch: 0 },
-				{ line: lastInfo.line, ch: lastInfo.text.length})
+				{ line: lastInfo.line, ch: lastInfo.text.length }
+			)
 			return editor
 		}
 		editor.focus = () => editor
@@ -140,11 +142,11 @@ class CodeEditor extends React.Component {
 			editor.deleteH(1, 'char')
 			return editor
 		}
-		return {current: editor}
+		return { current: editor }
 	}
 
-	getCodeMirrorMode(mode){
-		switch(mode){
+	getCodeMirrorMode(mode) {
+		switch (mode) {
 			case XML_MODE:
 				return 'text/xml'
 			case JSON_MODE:
@@ -152,19 +154,19 @@ class CodeEditor extends React.Component {
 		}
 	}
 
-	onKeyDown(event){
-		if(!this.state.editor) return
-		this.keyBinding.onKeyDown(event, this.state.editor.current, () => undefined)
+	onKeyDown(event) {
+		if (!this.state.editor) return
+		this.keyBinding.onKeyDown(event, this.state.editor.current, () => null)
 	}
 
-	onKeyUp(event){
-		if(!this.state.editor) return
-		this.keyBinding.onKeyUp(event, this.state.editor.current, () => undefined)
+	onKeyUp(event) {
+		if (!this.state.editor) return
+		this.keyBinding.onKeyUp(event, this.state.editor.current, () => null)
 	}
 
-	onKeyPress(event){
-		if(!this.state.editor) return
-		this.keyBinding.onKeyDown(event, this.state.editor.current, () => undefined)
+	onKeyPress(event) {
+		if (!this.state.editor) return
+		this.keyBinding.onKeyDown(event, this.state.editor.current, () => null)
 	}
 
 	setEditor(editor) {
@@ -177,10 +179,11 @@ class CodeEditor extends React.Component {
 				className={'component editor--code-editor'}
 				onKeyDown={this.onKeyDown}
 				onKeyUp={this.onKeyUp}
-				onKeyPress={this.onKeyPress}>
+				onKeyPress={this.onKeyPress}
+			>
 				<div className="draft-toolbars">
 					<div className="draft-title">{this.props.model.title}</div>
-					{this.state.editor ?
+					{this.state.editor ? (
 						<FileToolbar
 							editorRef={this.state.editor}
 							model={this.props.model}
@@ -192,14 +195,14 @@ class CodeEditor extends React.Component {
 							mode={this.props.mode}
 							insertableItems={this.props.insertableItems}
 						/>
-						: null
-					}
+					) : null}
 				</div>
 				<CodeMirror
 					options={this.state.options}
 					value={this.state.code}
 					onBeforeChange={this.onBeforeChange}
-					editorDidMount={this.setEditor}/>
+					editorDidMount={this.setEditor}
+				/>
 			</div>
 		)
 	}

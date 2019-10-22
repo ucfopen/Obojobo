@@ -1,4 +1,3 @@
-import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'
 jest.mock('obojobo-document-engine/src/scripts/oboeditor/util/keydown-util')
 import SlateReact from 'slate-react'

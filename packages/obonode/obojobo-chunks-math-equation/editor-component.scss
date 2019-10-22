@@ -1,7 +1,6 @@
 @import '~styles/includes';
 
 .obojobo-draft--chunks--math-equation {
-
 	.attributes-box {
 		position: absolute;
 		text-align: center;
@@ -14,7 +13,6 @@
 		box-sizing: border-box;
 		min-height: 2.5em;
 		width: 40em;
-
 		background-color: $color-bg2;
 		box-shadow: $box-shadow-overlay;
 		z-index: 9;
@@ -30,7 +28,7 @@
 			z-index: -1;
 		}
 
-		.box-border{
+		.box-border {
 			background-color: $color-bg2;
 			padding: 1em;
 		}
@@ -39,7 +37,7 @@
 			@include point();
 
 			background-color: $color-bg2;
-			box-shadow: -$box-shadow-overlay
+			box-shadow: -$box-shadow-overlay;
 		}
 
 		.attributes-list {

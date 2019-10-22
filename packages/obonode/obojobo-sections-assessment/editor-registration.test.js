@@ -13,7 +13,6 @@ jest.mock('./converter', () => ({ mock: 'converter' }))
 jest.mock('slate-react')
 
 import Common from 'obojobo-document-engine/src/scripts/common'
-import SlateReact from 'slate-react'
 import { Block } from 'slate'
 import Assessment from './editor-registration'
 

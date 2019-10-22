@@ -2,7 +2,6 @@ import SchemaViolations from 'obojobo-document-engine/src/scripts/oboeditor/util
 const { CHILD_TYPE_INVALID, CHILD_MIN_INVALID } = SchemaViolations
 
 import Schema from './schema'
-import Common from 'obojobo-document-engine/src/scripts/common'
 
 const TABLE_NODE = 'ObojoboDraft.Chunks.Table'
 const TABLE_ROW_NODE = 'ObojoboDraft.Chunks.Table.Row'

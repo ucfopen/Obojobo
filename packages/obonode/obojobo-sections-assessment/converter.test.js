@@ -1,5 +1,4 @@
 /* eslint-disable no-undefined */
-import Common from 'obojobo-document-engine/src/scripts/common'
 import Converter from './converter'
 
 jest.mock('obojobo-document-engine/src/scripts/common/index', () => ({

@@ -33,7 +33,7 @@ const slateToObo = node => {
 				children.push(QuestionBank.slateToObo(child))
 				break
 			case ACTIONS_NODE:
-				ScoreActions = Common.Registry.getItemForType(RUBRIC_NODE)
+				ScoreActions = Common.Registry.getItemForType(ACTIONS_NODE)
 				content.scoreActions = ScoreActions.slateToObo(child)
 				break
 			case RUBRIC_NODE:

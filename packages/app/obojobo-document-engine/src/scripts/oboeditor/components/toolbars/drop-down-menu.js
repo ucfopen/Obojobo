@@ -1,5 +1,4 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
 
 import './drop-down-menu.scss'
@@ -33,7 +32,7 @@ class DropMenu extends React.PureComponent {
 
 	onKeyDown(event) {
 		this.menu = this.menu.filter(Boolean)
-		if(this.state.isOpen) event.stopPropagation()
+		if (this.state.isOpen) event.stopPropagation()
 
 		switch (event.key) {
 			// Open the menu and set the first item as the current focus
@@ -92,25 +91,34 @@ class DropMenu extends React.PureComponent {
 				onFocus={this.onFocusHandler}
 				onKeyDown={this.onKeyDown}
 				ref={this.props.onRef}
-				tabIndex={-1}>
-				<button 
-					className="menu-title"
-					onClick={this.toggleOpen}
-					ref={this.menuButton}>
+				tabIndex={-1}
+			>
+				<button className="menu-title" onClick={this.toggleOpen} ref={this.menuButton}>
 					{this.props.name}
 				</button>
 				<div className="menu-items">
 					{this.props.menu.map(item => {
-						switch(item.type) {
+						switch (item.type) {
 							case 'sub-menu':
-								return <DropMenu name={item.name} menu={item.menu} onRef={item => {this.menu.push(item)}}/>
+								return (
+									<DropMenu
+										name={item.name}
+										menu={item.menu}
+										onRef={item => {
+											this.menu.push(item)
+										}}
+									/>
+								)
 							default:
 								return (
 									<button
 										key={item.name}
 										onClick={item.action}
 										disabled={item.disabled}
-										ref={item => {this.menu.push(item)}}>
+										ref={item => {
+											this.menu.push(item)
+										}}
+									>
 										{item.name}
 									</button>
 								)

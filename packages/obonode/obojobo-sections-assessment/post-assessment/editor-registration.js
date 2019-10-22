@@ -69,7 +69,7 @@ const plugins = {
 }
 
 const Actions = {
-	name: SCORE_NODE,
+	name: ACTIONS_NODE,
 	isInsertable: false,
 	supportsChildren: true,
 	helpers: Converter,

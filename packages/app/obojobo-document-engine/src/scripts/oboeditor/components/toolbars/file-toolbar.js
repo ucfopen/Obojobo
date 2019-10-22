@@ -1,5 +1,4 @@
 import React, { memo } from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 
 import FileMenu from './file-menu'
 import ViewMenu from './view-menu'
@@ -13,11 +12,7 @@ import IndentMarks from '../marks/indent-marks'
 
 import './file-toolbar.scss'
 
-const textMarks = [
-	...BasicMarks.marks,
-	...LinkMark.marks,
-	...ScriptMarks.marks
-]
+const textMarks = [...BasicMarks.marks, ...LinkMark.marks, ...ScriptMarks.marks]
 
 const textMenu = {
 	name: 'Text',
@@ -44,10 +39,7 @@ const paragraphMenu = {
 	]
 }
 
-const alignIndentMarks = [
-	...AlignMarks.marks,
-	...IndentMarks.marks
-]
+const alignIndentMarks = [...AlignMarks.marks, ...IndentMarks.marks]
 
 const alignMenu = {
 	name: 'Align & indent',
@@ -83,37 +75,36 @@ const bulletsMenu = {
 				{ name: 'Lowercase Alphabet', type: 'action', disabled: true },
 				{ name: 'Lowercase Roman Numerals', type: 'action', disabled: true }
 			]
-		},
+		}
 	]
 }
 
-const formatMenu = [
-	textMenu,
-	paragraphMenu,
-	alignMenu,
-	bulletsMenu
-]
+const formatMenu = [textMenu, paragraphMenu, alignMenu, bulletsMenu]
 
 // Build all the menu objects outside of the render function to prevent re-rendering children
 const editMenu = [
-	{ name: 'Undo', type: 'action'},
-	{ name: 'Redo', type: 'action'},
-	{ name: 'Delete', type: 'action'},
-	{ name: 'Select all', type: 'action'}
+	{ name: 'Undo', type: 'action' },
+	{ name: 'Redo', type: 'action' },
+	{ name: 'Delete', type: 'action' },
+	{ name: 'Select all', type: 'action' }
 ]
 
 const FileToolbar = props => {
 	// insert actions on menu items
 	// note that `editor.current` needs to be evaluated at execution time of the action!
 	const editor = props.editorRef
-	editMenu[0].action = () =>  editor.current.undo()
-	editMenu[1].action = () =>  editor.current.redo()
-	editMenu[2].action = () =>  editor.current.delete()
-	editMenu[3].action = () =>  editor.current.moveToRangeOfDocument().focus()
-	textMenu.menu.forEach(i => {i.action = () => i.markAction(editor.current) })
-	alignMenu.menu.forEach(i => {i.action = () => i.markAction(editor.current) })
+	editMenu[0].action = () => editor.current.undo()
+	editMenu[1].action = () => editor.current.redo()
+	editMenu[2].action = () => editor.current.delete()
+	editMenu[3].action = () => editor.current.moveToRangeOfDocument().focus()
+	textMenu.menu.forEach(i => {
+		i.action = () => i.markAction(editor.current)
+	})
+	alignMenu.menu.forEach(i => {
+		i.action = () => i.markAction(editor.current)
+	})
 
-	const saved = props.saved ? "saved" : ""
+	const saved = props.saved ? 'saved' : ''
 	return (
 		<div className={`visual-editor--file-toolbar`}>
 			<FileMenu
@@ -121,26 +112,21 @@ const FileToolbar = props => {
 				draftId={props.draftId}
 				onSave={props.onSave}
 				onRename={props.onRename}
-				mode={props.mode}/>
+				mode={props.mode}
+			/>
 			<div className="visual-editor--drop-down-menu">
 				<DropDownMenu name="Edit" menu={editMenu} />
 			</div>
-			<ViewMenu
-				draftId={props.draftId}
-				switchMode={props.switchMode}
-				onSave={props.onSave}/>
+			<ViewMenu draftId={props.draftId} switchMode={props.switchMode} onSave={props.onSave} />
 			<div className="visual-editor--drop-down-menu">
-				<DropDownMenu name="Insert" menu={props.insertableItems}/>
+				<DropDownMenu name="Insert" menu={props.insertableItems} />
 			</div>
-			{props.mode === 'visual' ?
+			{props.mode === 'visual' ? (
 				<div className="visual-editor--drop-down-menu">
-					<DropDownMenu name="Format" menu={formatMenu}/>
+					<DropDownMenu name="Format" menu={formatMenu} />
 				</div>
-				: null
-			}
-			<div className={"saved-message " + saved}>
-				Saved!
-			</div>
+			) : null}
+			<div className={'saved-message ' + saved}>Saved!</div>
 		</div>
 	)
 }

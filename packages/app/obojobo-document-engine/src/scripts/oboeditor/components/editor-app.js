@@ -29,7 +29,6 @@ const { ModalStore } = Common.stores
 const { OboModel } = Common.models
 
 const XML_MODE = 'xml'
-const JSON_MODE = 'json'
 const VISUAL_MODE = 'visual'
 
 const plugins = [
@@ -100,19 +99,13 @@ class EditorApp extends React.Component {
 
 	getCodeEditorState(draftId, draftModel) {
 		const obomodel = OboModel.create({
-			type: "ObojoboDraft.Modules.Module",
+			type: 'ObojoboDraft.Modules.Module',
 			content: {
 				title: EditorUtil.getTitleFromString(draftModel, this.state.mode)
 			}
 		})
 
-		EditorStore.init(
-			obomodel,
-			null,
-			this.props.settings,
-			window.location.pathname,
-			this.state.mode
-		)
+		EditorStore.init(obomodel, null, this.props.settings, window.location.pathname, this.state.mode)
 
 		return {
 			modalState: ModalStore.getState(),
@@ -134,29 +127,29 @@ class EditorApp extends React.Component {
 		return APIUtil.getFullDraft(draftId, mode)
 			.then(response => {
 				let json
-				switch(mode) {
+				switch (mode) {
 					case XML_MODE:
 						// Calling getFullDraft with xml will return plain text xml
 						return response
 					default:
 						json = JSON.parse(response)
-						if(json.status === 'error') throw json.value
+						if (json.status === 'error') throw json.value
 
 						return JSON.stringify(json.value, null, 4)
 				}
 			})
 			.then(draftModel => {
-				switch(mode) {
+				switch (mode) {
 					case VISUAL_MODE:
-						return this.setState(this.getVisualEditorState(draftId, draftModel))
+						return this.setState({ ...this.getVisualEditorState(draftId, draftModel), mode })
 					default:
-						return this.setState(this.getCodeEditorState(draftId, draftModel))
+						return this.setState({ ...this.getCodeEditorState(draftId, draftModel), mode })
 				}
 			})
 			.catch(err => {
 				// eslint-disable-next-line no-console
 				console.error(err)
-				return this.setState({ requestStatus: 'invalid', requestError: err })
+				return this.setState({ requestStatus: 'invalid', requestError: err, mode })
 			})
 	}
 
@@ -168,8 +161,7 @@ class EditorApp extends React.Component {
 
 		// get the mode from the location
 		let mode = urlTokens[2] || VISUAL_MODE // default to visual
-		if(mode === 'classic') mode = XML_MODE // convert classic to xml
-		this.state.mode = mode
+		if (mode === 'classic') mode = XML_MODE // convert classic to xml
 
 		ModalStore.init()
 		return this.reloadDraft(draftId, this.state.mode)
@@ -181,14 +173,16 @@ class EditorApp extends React.Component {
 	}
 
 	renderCodeEditor() {
-		return <CodeEditor
-			initialCode={this.state.code}
-			model={this.state.model}
-			draftId={this.state.draftId}
-			mode={this.state.mode}
-			switchMode={this.switchMode}
-			insertableItems={Common.Registry.insertableItems}
-		/>
+		return (
+			<CodeEditor
+				initialCode={this.state.code}
+				model={this.state.model}
+				draftId={this.state.draftId}
+				mode={this.state.mode}
+				switchMode={this.switchMode}
+				insertableItems={Common.Registry.insertableItems}
+			/>
+		)
 	}
 
 	renderVisualEditor() {
@@ -222,9 +216,7 @@ class EditorApp extends React.Component {
 		const modalItem = ModalUtil.getCurrentModal(this.state.modalState)
 		return (
 			<div className="visual-editor--editor-app">
-				{this.state.mode === VISUAL_MODE ?
-				this.renderVisualEditor() :
-				this.renderCodeEditor()}
+				{this.state.mode === VISUAL_MODE ? this.renderVisualEditor() : this.renderCodeEditor()}
 				{modalItem && modalItem.component ? (
 					<ModalContainer>{modalItem.component}</ModalContainer>
 				) : null}

@@ -7,7 +7,6 @@ jest.mock('../logger')
 const realPath = require.requireActual('path')
 const { getAllOboNodeScriptPathsByType } = require('obojobo-lib-utils')
 const express = require('express')
-const logger = require('../logger')
 mockVirtual('mock-obo-node')
 mockVirtual('mock-obo-middleware')
 

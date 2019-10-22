@@ -3,10 +3,6 @@ import React from 'react'
 
 import TriggerListModal from '../../../../src/scripts/oboeditor/components/triggers/trigger-list-modal'
 
-const XML_MODE = 'xml'
-const JSON_MODE = 'json'
-const VISUAL_MODE = 'visual'
-
 describe('TriggerListModal', () => {
 	test('TriggerListModal node', () => {
 		const content = {
@@ -21,12 +17,12 @@ describe('TriggerListModal', () => {
 						{ type: 'viewer:alert', value: {} },
 						{ type: 'viewer:scrollToTop', value: {} },
 						{ type: 'focus:component', value: {} },
-						{ type: 'nav:prev', value: {} },
+						{ type: 'nav:prev', value: {} }
 					]
 				}
 			]
 		}
-		const component = shallow(<TriggerListModal content={content}/>)
+		const component = shallow(<TriggerListModal content={content} />)
 		const tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})
@@ -36,9 +32,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [
-						{ type: 'nav:goto', value: {} },
-					]
+					actions: [{ type: 'nav:goto', value: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -46,7 +40,7 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = shallow(<TriggerListModal content={content}/>)
+		const component = shallow(<TriggerListModal content={content} />)
 
 		component
 			.find('button')
@@ -62,10 +56,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [
-						{ type: 'nav:goto', value: {} },
-						{ type: 'nav:prev', value: {} },
-					]
+					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:prev', value: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -73,7 +64,7 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = shallow(<TriggerListModal content={content}/>)
+		const component = shallow(<TriggerListModal content={content} />)
 
 		component
 			.find('button')
@@ -89,9 +80,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [
-						{ type: 'nav:goto', value: {} },
-					]
+					actions: [{ type: 'nav:goto', value: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -99,7 +88,7 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content}/>)
+		const component = mount(<TriggerListModal content={content} />)
 
 		component
 			.find('button')
@@ -115,9 +104,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [
-						{ type: 'nav:goto', value: {} },
-					]
+					actions: [{ type: 'nav:goto', value: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -125,7 +112,7 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content}/>)
+		const component = mount(<TriggerListModal content={content} />)
 
 		component
 			.find('button')
@@ -141,9 +128,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [
-						{ type: 'nav:goto', value: {} },
-					]
+					actions: [{ type: 'nav:goto', value: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -152,7 +137,7 @@ describe('TriggerListModal', () => {
 			]
 		}
 		const close = jest.fn()
-		const component = mount(<TriggerListModal content={content} onClose={close}/>)
+		const component = mount(<TriggerListModal content={content} onClose={close} />)
 
 		component
 			.find('button')
@@ -167,9 +152,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [
-						{ type: 'nav:goto', value: {} },
-					]
+					actions: [{ type: 'nav:goto', value: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -177,13 +160,13 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content}/>)
+		const component = mount(<TriggerListModal content={content} />)
 
 		component
 			.find('select')
 			.at(0)
 			.simulate('change', {
-				target: { value: 'onNavEnter'}
+				target: { value: 'onNavEnter' }
 			})
 
 		const tree = component.html()
@@ -195,10 +178,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [
-						{ type: 'nav:goto', value: {} },
-						{ type: 'nav:next', value: {} },
-					]
+					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:next', value: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -206,13 +186,13 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content}/>)
+		const component = mount(<TriggerListModal content={content} />)
 
 		component
 			.find('select')
 			.at(1)
 			.simulate('change', {
-				target: { value: 'nav:prev'}
+				target: { value: 'nav:prev' }
 			})
 
 		const tree = component.html()
@@ -224,10 +204,7 @@ describe('TriggerListModal', () => {
 			triggers: [
 				{
 					type: 'onMount',
-					actions: [
-						{ type: 'nav:goto', value: {} },
-						{ type: 'nav:goto', value: {} },
-					]
+					actions: [{ type: 'nav:goto', value: {} }, { type: 'nav:goto', value: {} }]
 				},
 				{
 					type: 'onUnmount',
@@ -235,13 +212,13 @@ describe('TriggerListModal', () => {
 				}
 			]
 		}
-		const component = mount(<TriggerListModal content={content}/>)
+		const component = mount(<TriggerListModal content={content} />)
 
 		component
 			.find('input')
 			.at(2)
 			.simulate('change', {
-				target: { value: 'mock-id'}
+				target: { value: 'mock-id' }
 			})
 
 		component

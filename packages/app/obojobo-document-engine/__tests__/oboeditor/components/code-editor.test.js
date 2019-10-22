@@ -66,6 +66,7 @@ describe('CodeEditor', () => {
 		}
 		const component = mount(<CodeEditor {...props} />)
 
+		// eslint-disable-next-line no-undefined
 		expect(eventMap.beforeunload({})).toEqual(undefined)
 
 		component.setState({ saved: false })

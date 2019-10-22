@@ -29,7 +29,6 @@ jest.mock('src/scripts/oboeditor/components/toolbars/file-toolbar')
 
 const CONTENT_NODE = 'ObojoboDraft.Sections.Content'
 const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
-const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'
 let restoreConsole
 
@@ -697,6 +696,7 @@ describe('PageEditor', () => {
 		}
 		const component = mount(<PageEditor {...props} />)
 
+		// eslint-disable-next-line no-undefined
 		expect(eventMap.beforeunload({})).toEqual(undefined)
 
 		component.setState({ saved: false })

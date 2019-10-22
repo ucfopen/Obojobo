@@ -1,7 +1,6 @@
 import './viewer-component.scss'
 import './editor-component.scss'
 
-import { Block } from 'slate'
 import React from 'react'
 import Node from 'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component'
 

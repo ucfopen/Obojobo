@@ -1,4 +1,5 @@
 @import '../../../../scss/includes';
+
 .more-info {
 	position: absolute;
 	z-index: 9999;
@@ -63,6 +64,10 @@
 			padding: 0.5em;
 		}
 
+		.button {
+			font-size: 0.8em;
+		}
+
 		.properties {
 			background-color: $color-bg;
 			color: $color-text;
@@ -76,16 +81,6 @@
 				border-bottom: 1px solid $color-shadow;
 				position: relative;
 
-				&.assessment-settings {
-					label {
-						width: 5em;
-					}
-
-					input {
-						width: 23em;
-					}
-				}
-
 				label {
 					display: inline-block;
 					width: 5em;
@@ -98,6 +93,16 @@
 
 					&.id-input {
 						width: 18.1em;
+					}
+				}
+
+				&.assessment-settings {
+					label {
+						width: 5em;
+					}
+
+					input {
+						width: 23em;
 					}
 				}
 
@@ -144,10 +149,6 @@
 				}
 			}
 		}
-
-		.button {
-			font-size: 0.8em;
-		}
 	}
 
 	&.content-node {
@@ -169,18 +170,17 @@
 
 	.select-item {
 		font-family: $font-default;
-		border-radius: 3px;
+		border-radius: $dimension-rounded-radius;
 		font-size: 0.7em;
-		background-color: white;
-		min-width: 26.25em;
+		background-color: $color-bg;
+		min-width: 26.3em;
 		padding: 0.7em 2em 0.7em 0.5em;
-
 		appearance: none;
 		background-image: linear-gradient(45deg, transparent 50%, gray 50%),
 			linear-gradient(135deg, gray 50%, transparent 50%);
-		background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px),
+		background-position: calc(100% - 1.5em) 1.1em, calc(100% - 1.1em) 1.1em,
 			calc(100% - 2.5em) 0.5em;
-		background-size: 5px 5px, 5px 5px, 1px 1.5em;
+		background-size: 0.4em 0.4em, 0.4em 0.4em, 0.1em 1.5em;
 		background-repeat: no-repeat;
 	}
 

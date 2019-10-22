@@ -2,7 +2,7 @@
 
 .obojobo-draft--chunks--heading {
 	.placeholder {
-		&:before{
+		&::before {
 			min-width: 12em;
 		}
 	}
@@ -17,7 +17,6 @@
 			display: block;
 			border-radius: $dimension-rounded-radius;
 			background-color: $color-bg;
-			border: none;
 			font-size: 1em;
 			border: 2px solid $color-obojobo-blue;
 		}
@@ -44,7 +43,6 @@
 				border-radius: $dimension-rounded-radius;
 				background-color: $color-bg;
 				border: none;
-				font-size: 1em;
 				font-size: 1em;
 				width: 100%;
 				text-align: left;

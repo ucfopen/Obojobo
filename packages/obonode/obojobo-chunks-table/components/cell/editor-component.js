@@ -130,7 +130,6 @@ class Cell extends React.Component {
 		const doc = editor.value.document
 		const tableParent = doc.getClosest(this.props.node.key, node => node.type === TABLE_NODE)
 		const rowIndex = tableParent.getPath(this.props.parent.key).get(0)
-		const isHeader = this.props.parent.data.get('content').header
 
 		if (rowIndex === 0) {
 			const sibling = tableParent.nodes.get(1)

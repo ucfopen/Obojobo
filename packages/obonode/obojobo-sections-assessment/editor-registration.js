@@ -1,10 +1,8 @@
 import React from 'react'
 import Common from 'obojobo-document-engine/src/scripts/common'
-import { getEventTransfer } from 'slate-react'
-import { Document, Block } from 'slate'
+import { Block } from 'slate'
 
 const UNIQUE_NAME = 'ObojoboDraft.Sections.Assessment'
-const ASSESSMENT_NODE = 'ObojoboDraft.Sections.Assessment'
 const SETTINGS_NODE = 'ObojoboDraft.Sections.Assessment.Settings'
 const PAGE_NODE = 'ObojoboDraft.Pages.Page'
 const QUESTION_BANK_NODE = 'ObojoboDraft.Chunks.QuestionBank'

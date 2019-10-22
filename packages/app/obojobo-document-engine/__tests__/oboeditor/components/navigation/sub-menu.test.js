@@ -16,7 +16,7 @@ jest.mock('../../../../src/scripts/oboeditor/util/editor-util', () => ({
 	movePage: jest.fn(),
 	addPage: jest.fn(),
 	rebuildMenu: jest.fn(),
-	deletePage: jest.fn(),
+	deletePage: jest.fn()
 }))
 
 jest.mock('../../../../src/scripts/common', () => ({
@@ -59,9 +59,9 @@ jest.mock('../../../../src/scripts/common/util/trigger-util')
 jest.mock('../../../../src/scripts/oboeditor/stores/editor-store', () => ({
 	state: { startingId: null }
 }))
-jest.mock('../../../../src/scripts/oboeditor/components/navigation/more-info-box', () => {
-	return props => <div mockname="MockMoreInfoBox" >{JSON.stringify(props, null, 2)}</div>
-})
+jest.mock('../../../../src/scripts/oboeditor/components/navigation/more-info-box', () => props => (
+	<div mockname="MockMoreInfoBox">{JSON.stringify(props, null, 2)}</div>
+))
 
 jest.useFakeTimers()
 
@@ -70,7 +70,7 @@ describe('SubMenu', () => {
 		jest.clearAllMocks()
 
 		const mockGet = key => {
-			switch(key){
+			switch (key) {
 				case 'type':
 					return 'mock-type'
 				case 'content':
@@ -153,8 +153,9 @@ describe('SubMenu', () => {
 			}
 		]
 		const component = mount(<SubMenu index={0} isSelected={true} list={itemList} />)
-		
-		component.find('button')
+
+		component
+			.find('button')
 			.at(1)
 			.simulate('click')
 
@@ -239,9 +240,7 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} />
-		)
+		const component = mount(<SubMenu index={0} list={itemList} />)
 
 		component.instance().deletePage()
 
@@ -260,9 +259,7 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} />
-		)
+		const component = mount(<SubMenu index={0} list={itemList} />)
 
 		component.instance().movePage()
 
@@ -281,32 +278,36 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
 
 		component.instance().addPage('mock-id-1')
 		expect(EditorUtil.addPage).toHaveBeenCalledWith(
-			expect.objectContaining({ content: expect.objectContaining({
-				title: null 
-			})}), 
-			"mock-id-1"
+			expect.objectContaining({
+				content: expect.objectContaining({
+					title: null
+				})
+			}),
+			'mock-id-1'
 		)
 
-		component.instance().addPage('mock-id-2', "New Title")
+		component.instance().addPage('mock-id-2', 'New Title')
 		expect(EditorUtil.addPage).toHaveBeenCalledWith(
-			expect.objectContaining({ content: expect.objectContaining({
-				title: "New Title"
-			})}), 
-			"mock-id-2"
+			expect.objectContaining({
+				content: expect.objectContaining({
+					title: 'New Title'
+				})
+			}),
+			'mock-id-2'
 		)
 
-		component.instance().addPage('mock-id-3', "     ")
+		component.instance().addPage('mock-id-3', '     ')
 		expect(EditorUtil.addPage).toHaveBeenCalledWith(
-			expect.objectContaining({ content: expect.objectContaining({
-				title: null 
-			})}), 
-			"mock-id-3"
+			expect.objectContaining({
+				content: expect.objectContaining({
+					title: null
+				})
+			}),
+			'mock-id-3'
 		)
 	})
 
@@ -322,11 +323,9 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
 
-		component.instance().saveId('7' ,'mock-id')
+		component.instance().saveId('7', 'mock-id')
 		expect(EditorUtil.rebuildMenu).not.toHaveBeenCalled()
 	})
 
@@ -343,11 +342,9 @@ describe('SubMenu', () => {
 		]
 		Common.models.OboModel.models['7'].setId.mockReturnValueOnce(true)
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
 
-		component.instance().saveId('7' ,'mock-id')
+		component.instance().saveId('7', 'mock-id')
 		expect(EditorUtil.rebuildMenu).toHaveBeenCalled()
 	})
 
@@ -364,14 +361,12 @@ describe('SubMenu', () => {
 		]
 		Common.models.OboModel.models['7'].setId.mockReturnValueOnce(true)
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
 
-		component.instance().saveContent({} , {})
+		component.instance().saveContent({}, {})
 		expect(Common.models.OboModel.models['7']).toMatchSnapshot()
 
-		component.instance().saveContent({} , { triggers: [], title: "Mock title" })
+		component.instance().saveContent({}, { triggers: [], title: 'Mock title' })
 		expect(Common.models.OboModel.models['7']).toMatchSnapshot()
 	})
 
@@ -387,9 +382,7 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} updateNavTargetId={jest.fn()} />)
 
 		component.instance().showDeleteModal()
 		expect(Common.util.ModalUtil.show).toHaveBeenCalled()
@@ -407,9 +400,7 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} savePage={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} savePage={jest.fn()} />)
 
 		component.instance().duplicatePage()
 		expect(EditorUtil.addPage).toHaveBeenCalled()
@@ -427,12 +418,9 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} savePage={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} savePage={jest.fn()} />)
 
-		hasTriggerTypeWithActionType
-			.mockReturnValue(true)
+		hasTriggerTypeWithActionType.mockReturnValue(true)
 
 		expect(component.instance().lockValue({})).toEqual(true)
 	})
@@ -449,9 +437,7 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} savePage={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} savePage={jest.fn()} />)
 
 		component.instance().onChangeLock({}, true)
 		expect(getTriggersWithActionsAdded).toHaveBeenCalled()
@@ -469,9 +455,7 @@ describe('SubMenu', () => {
 			}
 		]
 
-		const component = mount(
-			<SubMenu index={0} list={itemList} savePage={jest.fn()}/>
-		)
+		const component = mount(<SubMenu index={0} list={itemList} savePage={jest.fn()} />)
 		component.instance().onChangeLock({}, false)
 		expect(getTriggersWithActionsRemoved).not.toHaveBeenCalled()
 

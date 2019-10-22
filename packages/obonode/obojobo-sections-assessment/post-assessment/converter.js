@@ -28,7 +28,6 @@ const oboToSlate = node => {
 	const json = {}
 	json.object = 'block'
 	json.type = ACTIONS_NODE
-
 	json.nodes = []
 	node.forEach(action => {
 		const slateAction = {

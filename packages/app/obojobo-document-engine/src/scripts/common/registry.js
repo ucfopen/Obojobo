@@ -1,7 +1,5 @@
 let items
 let defaults
-let registeredToolbarItems
-let toolbarItems
 let variableHandlers
 
 const noop = () => {}
@@ -11,11 +9,7 @@ class _Registry {
 	init() {
 		items = new Map()
 		defaults = new Map()
-		toolbarItems = []
 		variableHandlers = new Map()
-		registeredToolbarItems = {
-			separator: { id: 'separator', type: 'separator' }
-		}
 	}
 
 	loadDependency(url, onLoadCallback = () => {}) {
@@ -141,10 +135,9 @@ class _Registry {
 		return cb.call(null, model, viewerState)
 	}
 
-	get insertableItems(){
-		if(!memoInsertable){
-			memoInsertable = Array.from(items.values())
-				.filter(item => item.isInsertable)
+	get insertableItems() {
+		if (!memoInsertable) {
+			memoInsertable = Array.from(items.values()).filter(item => item.isInsertable)
 		}
 		return memoInsertable
 	}

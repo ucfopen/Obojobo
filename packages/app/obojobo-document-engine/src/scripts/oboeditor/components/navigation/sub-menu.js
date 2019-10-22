@@ -53,7 +53,9 @@ class SubMenu extends React.Component {
 	renderNewItemButton(pageId) {
 		return (
 			<div className="add-page">
-				<button onClick={() => this.showAddPageModal(pageId)}>+ Page</button>
+				<button className="add-page-button" onClick={() => this.showAddPageModal(pageId)}>
+					+ Page
+				</button>
 			</div>
 		)
 	}
@@ -83,7 +85,9 @@ class SubMenu extends React.Component {
 
 	saveId(oldId, newId) {
 		const model = OboModel.models[oldId]
-		if (!model.setId(newId)) return 'The id "' + newId + '" already exists. Please choose a unique id'
+		if (!model.setId(newId)) {
+			return 'The id "' + newId + '" already exists. Please choose a unique id'
+		}
 
 		EditorUtil.rebuildMenu(OboModel.getRoot())
 	}
@@ -130,7 +134,11 @@ class SubMenu extends React.Component {
 	}
 
 	lockValue(content) {
-		const startAttemptLock = hasTriggerTypeWithActionType(content.triggers, 'onNavEnter', 'nav:lock')
+		const startAttemptLock = hasTriggerTypeWithActionType(
+			content.triggers,
+			'onNavEnter',
+			'nav:lock'
+		)
 		const endAttemptUnlock =
 			hasTriggerTypeWithActionType(content.triggers, 'onEndAttempt', 'nav:unlock') &&
 			hasTriggerTypeWithActionType(content.triggers, 'onNavExit', 'nav:unlock')
@@ -247,12 +255,10 @@ class SubMenu extends React.Component {
 						duplicateNode={this.duplicatePage}
 						markUnsaved={this.props.markUnsaved}
 						moveNode={this.movePage.bind(this, item.id)}
-						showMoveButtons/>
+						showMoveButtons
+					/>
 				) : null}
-				{isSelected && !item.flags.assessment ?
-					this.renderNewItemButton(item.id)
-					: null
-				}
+				{isSelected && !item.flags.assessment ? this.renderNewItemButton(item.id) : null}
 			</li>
 		)
 	}

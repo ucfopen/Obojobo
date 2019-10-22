@@ -33,7 +33,7 @@ Object.defineProperty(document, 'hidden', {
 })
 
 class XMLSerializer {
-	serializeToString(doc) {
+	serializeToString() {
 		return '<mockSerializedToString/>'
 	}
 }

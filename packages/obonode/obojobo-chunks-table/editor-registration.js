@@ -1,5 +1,4 @@
 import React from 'react'
-import Common from 'obojobo-document-engine/src/scripts/common'
 import { getEventTransfer, cloneFragment } from 'slate-react'
 
 import KeyDownUtil from 'obojobo-document-engine/src/scripts/oboeditor/util/keydown-util'

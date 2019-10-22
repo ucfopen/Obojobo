@@ -1,3 +1,4 @@
+import React from 'react'
 import { CHILD_TYPE_INVALID } from 'slate-schema-violations'
 import { Block } from 'slate'
 

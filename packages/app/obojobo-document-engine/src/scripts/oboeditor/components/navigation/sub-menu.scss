@@ -3,6 +3,37 @@
 .editor--editor-nav--submenu {
 	padding-right: 1em;
 
+	.add-page {
+		position: relative;
+		margin-top: 1em;
+
+		&::after {
+			content: '';
+			position: absolute;
+			display: inline-block;
+			border-radius: 0.8em;
+			top: 0.25em;
+			left: -1.55em;
+			width: 0.8em;
+			height: 0.8em;
+			background: $color-bg;
+			border: solid 2px $color-shadow;
+		}
+
+		.add-page-button {
+			color: $color-obojobo-blue;
+			font-size: 1em;
+			border: 2px solid $color-obojobo-blue;
+			border-radius: $dimension-rounded-radius;
+			background-color: $color-bg;
+
+			&:hover {
+				background-color: $color-obojobo-blue;
+				color: $color-bg;
+			}
+		}
+	}
+
 	.dropdown {
 		position: absolute;
 		right: -1em;
@@ -50,37 +81,6 @@
 				width: 10em;
 				margin-right: 1em;
 			}
-		}
-	}
-
-	.add-page {
-		position: relative;
-		margin-top: 1em;
-
-		&::after {
-			content: '';
-			position: absolute;
-			display: inline-block;
-			border-radius: 0.8em;
-			top: 0.25em;
-			left: -1.55em;
-			width: 0.8em;
-			height: 0.8em;
-			background: $color-bg;
-			border: solid 2px $color-shadow;
-		}
-
-		button {
-			color: $color-obojobo-blue;
-			font-size: 1em;
-			border: 2px solid $color-obojobo-blue;
-			border-radius: $dimension-rounded-radius;
-			background-color: $color-bg;
-		}
-
-		button:hover {
-			background-color: $color-obojobo-blue;
-			color: $color-bg;
 		}
 	}
 }

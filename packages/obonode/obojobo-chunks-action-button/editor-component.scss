@@ -8,7 +8,7 @@
 		display: inline-block;
 		user-select: auto;
 
-		span[data-placeholder]:before {
+		span[data-placeholder]::before {
 			min-width: 10em;
 		}
 	}
@@ -25,7 +25,6 @@
 		box-sizing: border-box;
 		min-height: 2.5em;
 		width: 25em;
-
 		background-color: $color-bg2;
 		box-shadow: $box-shadow-overlay;
 		z-index: $z-index-above-content;
@@ -41,7 +40,7 @@
 			z-index: -1;
 		}
 
-		.box-border{
+		.box-border {
 			background-color: $color-bg2;
 			padding: 1em;
 		}
@@ -50,7 +49,7 @@
 			@include point();
 
 			background-color: $color-bg2;
-			box-shadow: -$box-shadow-overlay
+			box-shadow: -$box-shadow-overlay;
 		}
 
 		.trigger-list {

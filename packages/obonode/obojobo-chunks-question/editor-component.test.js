@@ -15,6 +15,7 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 		})
 	},
 	components: {
+		// eslint-disable-next-line react/display-name
 		Button: props => <button {...props}>{props.children}</button>
 	},
 	util: {
@@ -25,9 +26,9 @@ jest.mock('obojobo-document-engine/src/scripts/common', () => ({
 	},
 }))
 
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => {
-	return props => <div>{props.children}</div>
-})
+jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => (
+	props => <div>{props.children}</div>
+))
 
 const SOLUTION_NODE = 'ObojoboDraft.Chunks.Question.Solution'
 const BREAK_NODE = 'ObojoboDraft.Chunks.Break'

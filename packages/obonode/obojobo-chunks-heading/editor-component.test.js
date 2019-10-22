@@ -4,9 +4,10 @@ import renderer from 'react-test-renderer'
 
 import Heading from './editor-component'
 
-jest.mock('obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component', () => {
-	return props => <div>{props.children}</div>
-})
+jest.mock(
+	'obojobo-document-engine/src/scripts/oboeditor/components/node/editor-component',
+	() => props => <div>{props.children}</div>
+)
 
 describe('Heading Editor Node', () => {
 	test('Heading component', () => {
@@ -109,7 +110,7 @@ describe('Heading Editor Node', () => {
 		nodeInstance.nodeRef = {
 			current: null
 		}
-		nodeInstance.handleClick({target: 'mock'})
+		nodeInstance.handleClick({ target: 'mock' })
 		tree = component.html()
 		expect(tree).toMatchSnapshot()
 	})

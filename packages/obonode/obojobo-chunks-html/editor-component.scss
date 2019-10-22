@@ -2,7 +2,7 @@
 
 .obojobo-draft--chunks--html {
 	pre {
-		&:before {
+		&::before {
 			color: $color-text-minor;
 			content: 'HTML';
 			display: block;
