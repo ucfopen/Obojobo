@@ -209,40 +209,6 @@ Object {
 }
 `;
 
-exports[`EditorStore init builds state locked state 1`] = `
-Object {
-  "context": "editor",
-  "currentPageModel": null,
-  "itemsByFullPath": Object {},
-  "itemsById": Object {},
-  "itemsByPath": Object {},
-  "locked": true,
-  "navItems": Object {},
-  "navTargetHistory": Array [],
-  "navTargetId": null,
-  "open": true,
-  "settings": null,
-  "startingId": 12,
-}
-`;
-
-exports[`EditorStore init builds state open state 1`] = `
-Object {
-  "context": "editor",
-  "currentPageModel": null,
-  "itemsByFullPath": Object {},
-  "itemsById": Object {},
-  "itemsByPath": Object {},
-  "locked": false,
-  "navItems": Object {},
-  "navTargetHistory": Array [],
-  "navTargetId": null,
-  "open": true,
-  "settings": null,
-  "startingId": 12,
-}
-`;
-
 exports[`EditorStore init builds state with basic options 1`] = `
 Object {
   "context": "editor",

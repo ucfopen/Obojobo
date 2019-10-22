@@ -41,33 +41,6 @@ Object {
 }
 `;
 
-exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node with no mods 1`] = `
-Object {
-  "data": Object {
-    "content": Object {
-      "failedResult": 0,
-      "mods": Array [],
-      "passedResult": 100,
-      "passingAttemptScore": 0,
-      "unableToPassResult": 0,
-    },
-  },
-  "nodes": Array [
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    "ActionsChildOboToSlate",
-    Object {
-      "nodes": Array [],
-      "object": "block",
-      "type": "ObojoboDraft.Sections.Assessment.Rubric.ModList",
-    },
-  ],
-  "object": "block",
-  "type": "ObojoboDraft.Sections.Assessment.Rubric",
-}
-`;
-
 exports[`Assessment Converter oboToSlate converts an OboComponent to a Slate node without mods 1`] = `
 Object {
   "data": Object {
