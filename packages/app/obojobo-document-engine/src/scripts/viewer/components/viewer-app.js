@@ -17,6 +17,8 @@ import QuestionStore from '../../viewer/stores/question-store'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import getLTIOutcomeServiceHostname from '../../viewer/util/get-lti-outcome-service-hostname'
+import Variables from '../vars/variables'
+import VariableStore from '../stores/variable-store'
 
 const IDLE_TIMEOUT_DURATION_MS = 600000 // 10 minutes
 const NAV_CLOSE_DURATION_MS = 400
@@ -87,6 +89,10 @@ export default class ViewerApp extends React.Component {
 			this.setState({
 				mediaState: MediaStore.getState()
 			})
+		this.onVariableStoreChange = () =>
+			this.setState({
+				variableState: VariableStore.getState()
+			})
 
 		this.onIdle = this.onIdle.bind(this)
 		this.onReturnFromIdle = this.onReturnFromIdle.bind(this)
@@ -103,6 +109,7 @@ export default class ViewerApp extends React.Component {
 		ModalStore.onChange(this.onModalStoreChange)
 		FocusStore.onChange(this.onFocusStoreChange)
 		MediaStore.onChange(this.onMediaStoreChange)
+		VariableStore.onChange(this.onVariableStoreChange)
 	}
 
 	componentDidMount() {
@@ -123,6 +130,7 @@ export default class ViewerApp extends React.Component {
 				ModalStore.init()
 				FocusStore.init()
 				MediaStore.init()
+				VariableStore.init()
 
 				if (visit.status !== 'ok') throw 'Invalid Visit Id'
 
@@ -165,6 +173,7 @@ export default class ViewerApp extends React.Component {
 						assessmentState: AssessmentStore.getState(),
 						modalState: ModalStore.getState(),
 						focusState: FocusStore.getState(),
+						variableState: VariableStore.getState(),
 						lti: Object.assign(this.state.lti, {
 							outcomeServiceHostname: getLTIOutcomeServiceHostname(outcomeServiceURL)
 						}),
@@ -191,6 +200,7 @@ export default class ViewerApp extends React.Component {
 		ModalStore.offChange(this.onModalStoreChange)
 		FocusStore.offChange(this.onFocusStoreChange)
 		MediaStore.offChange(this.onMediaStoreChange)
+		VariableStore.offChange(this.onVariableStoreChange)
 
 		document.removeEventListener('visibilitychange', this.onVisibilityChange)
 	}
@@ -352,7 +362,9 @@ export default class ViewerApp extends React.Component {
 			return
 		}
 
-		event.text = textModel.getTextForVariable(varName)
+		const results = textModel.getTextForVariable(varName)
+		event.text = results.text
+		event.style = results.style
 	}
 
 	scrollToTop(animateScroll = false) {

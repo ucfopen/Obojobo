@@ -25,9 +25,7 @@ module.exports =
 		)
 
 		console.log(
-			`OboNode client scripts to build | viewer: ${viewerOboNodeScripts.length}, editor: ${
-				editorOboNodeScripts.length
-			}`
+			`OboNode client scripts to build | viewer: ${viewerOboNodeScripts.length}, editor: ${editorOboNodeScripts.length}`
 		)
 		return {
 			stats: { children: false, modules: false },
@@ -114,6 +112,15 @@ module.exports =
 							},
 							'sass-loader'
 						]
+					},
+					{
+						test: /\.pegjs$/,
+						use: {
+							loader: 'pegjs-loader',
+							options: {
+								cache: true
+							}
+						}
 					}
 				]
 			},

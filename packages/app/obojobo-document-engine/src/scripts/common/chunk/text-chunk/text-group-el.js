@@ -8,7 +8,7 @@ const varRegex = /\{\{(.+?)\}\}/
 const getText = props => {
 	let { text } = props.textItem
 
-	if (props.parentModel && text.value.indexOf('{{')) {
+	if (props.parentModel && text.value.indexOf('{{') > -1) {
 		let match = null
 		text = text.clone()
 
@@ -22,7 +22,11 @@ const getText = props => {
 			event.text = `${event.text}`
 
 			const startIndex = text.value.indexOf(match[0], varRegex.lastIndex)
+			console.log('replaceText', event.text)
 			text.replaceText(startIndex, startIndex + match[0].length, event.text)
+			if (event.style) {
+				text.styleText(event.style, startIndex, startIndex + event.text.length)
+			}
 		}
 	}
 
