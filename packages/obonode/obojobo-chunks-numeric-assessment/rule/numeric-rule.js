@@ -37,6 +37,7 @@ const SCHEMA = [
 	'additionalUnits',
 	'unitsAreCaseSensitive',
 	'scientificTypes',
+	'feedback',
 	'value'
 ]
 
@@ -337,6 +338,10 @@ export default class NumericRule {
 		return [...new Set(...types)]
 	}
 
+	static getFeedback(config) {
+		return config.feedback || null
+	}
+
 	/**
 	 * Validates and returns `config.unitsMatch`
 	 * @param {RuleConfigObject} config
@@ -414,11 +419,7 @@ export default class NumericRule {
 	static getRuleValue(config, types) {
 		if (typeof config.value === 'undefined' || config.value === null) return new NumericEntryRange()
 
-		console.log('grv "' + config.value + '"')
-
 		const range = new NumericEntryRange(config.value, types)
-
-		console.log('range:', range)
 
 		if (range.isClosed) throw 'Invalid range given for value'
 
@@ -519,5 +520,10 @@ export default class NumericRule {
 		 * @type {string[]}
 		 */
 		this.scientificTypes = NumericRule.getRuleScientificTypes(config)
+
+		/**
+		 * @type {object}
+		 */
+		this.feedback = NumericRule.getFeedback(config)
 	}
 }

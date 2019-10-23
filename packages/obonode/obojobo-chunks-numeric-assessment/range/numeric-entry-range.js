@@ -74,7 +74,6 @@ export default class NumericEntryRange extends ValueRange {
 	static compareValues(a, b) {
 		// If either numericInstance says that the two values are equal we consider
 		// them equal
-		console.log('con', a, b)
 		const aIsEqualB = a.numericInstance.isEqual(b.numericInstance.bigValue)
 		const bIsEqualA = b.numericInstance.isEqual(a.numericInstance.bigValue)
 
@@ -90,7 +89,6 @@ export default class NumericEntryRange extends ValueRange {
 	 * @return {NumericEntry}
 	 */
 	static parseValue(types, inputString) {
-		console.log('pv', types, inputString, new NumericEntry(inputString, types))
 		return new NumericEntry(inputString, types)
 	}
 

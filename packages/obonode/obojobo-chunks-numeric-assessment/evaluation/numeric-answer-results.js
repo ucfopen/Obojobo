@@ -116,7 +116,6 @@ export default class NumericAnswerResults {
 				break
 
 			case FAILED_VALIDATION:
-				debugger
 				details = {
 					matchingOutcome: validationResult.details.matchingOutcome
 				}

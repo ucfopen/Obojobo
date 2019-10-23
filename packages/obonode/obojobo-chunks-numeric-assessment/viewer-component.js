@@ -2,6 +2,12 @@ import './viewer-component.scss'
 
 import React from 'react'
 import isOrNot from 'obojobo-document-engine/src/scripts/common/util/isornot'
+import Viewer from 'obojobo-document-engine/src/scripts/viewer'
+import QuestionUtil from 'obojobo-document-engine/src/scripts/viewer/util/question-util'
+import NumericAnswerEvaluator from './evaluation/numeric-answer-evaluator'
+import OboModel from 'obojobo-document-engine/src/scripts/common/models/obo-model'
+
+const { OboComponent } = Viewer.components
 
 class NumericAssessment extends React.Component {
 	constructor() {
@@ -14,7 +20,8 @@ class NumericAssessment extends React.Component {
 			incorrectLabel: 'Incorrect',
 			isWarning: false,
 			warningLabel: 'Answer must be an integer',
-			input: ''
+			input: '',
+			feedback: null
 		}
 	}
 
@@ -27,14 +34,14 @@ class NumericAssessment extends React.Component {
 		})
 	}
 
-	onSubmit() {
-		this.setState({
-			...this.state,
-			isScored: true,
-			isCorrect: 4 == this.state.input,
-			isWarning: false
-		})
-	}
+	// onSubmit() {
+	// 	this.setState({
+	// 		...this.state,
+	// 		isScored: true,
+	// 		isCorrect: 4 == this.state.input,
+	// 		isWarning: false
+	// 	})
+	// }
 
 	onRetry() {
 		this.setState({
@@ -44,7 +51,113 @@ class NumericAssessment extends React.Component {
 		})
 	}
 
+	//@TODO - This is duplicated in MCAssessment
+	getQuestionModel() {
+		return this.props.model.getParentOfType('ObojoboDraft.Chunks.Question')
+	}
+
+	onFormChange(event) {
+		console.log('fc', event.target.value)
+		const questionModel = this.getQuestionModel()
+		const response = event.target.value
+
+		QuestionUtil.setResponse(
+			questionModel.get('id'),
+			response,
+			null,
+			this.props.moduleData.navState.context,
+			this.props.moduleData.navState.context.split(':')[1],
+			this.props.moduleData.navState.context.split(':')[2]
+		)
+	}
+
+	calculateScore() {
+		const questionResponse = QuestionUtil.getResponse(
+			this.props.moduleData.questionState,
+			this.getQuestionModel(),
+			this.props.moduleData.navState.context
+		)
+
+		console.log(questionResponse)
+
+		// debugger
+
+		const evaluator = new NumericAnswerEvaluator({
+			scoreRuleConfigs: this.props.model.modelState.scoreRules
+		})
+
+		const results = evaluator.evaluate(questionResponse)
+
+		console.log('results', results)
+
+		this.setState({
+			feedback: results.details.matchingOutcome.rule.feedback
+		})
+
+		return results.details.score
+	}
+
+	onSubmit(event) {
+		event.preventDefault()
+
+		// debugger
+
+		const questionModel = this.getQuestionModel()
+
+		QuestionUtil.setScore(
+			questionModel.get('id'),
+			this.calculateScore(),
+			this.props.moduleData.navState.context
+		)
+
+		// Clear out labels so they are reselected
+		// QuestionUtil.clearData(
+		// 	questionModel.get('id'),
+		// 	this.props.moduleData.navState.context,
+		// 	FEEDBACK_LABELS_TO_SHOW
+		// )
+
+		if (questionModel.modelState.type === 'survey') {
+			QuestionUtil.submitResponse(questionModel.get('id'), this.props.moduleData.navState.context)
+		} else {
+			QuestionUtil.checkAnswer(questionModel.get('id'), this.props.moduleData.navState.context)
+		}
+	}
+
 	render() {
+		const isReview = false
+		const className = 'test'
+
+		var fb = this.state.feedback
+
+		console.log('fb be all', fb)
+
+		var fbc = null
+		if (fb) {
+			fb.type = 'ObojoboDraft.Chunks.MCAssessment.MCFeedback'
+			fb = OboModel.create(fb)
+			const Component = fb.getComponentClass()
+			// debugger
+			fbc = <Component model={fb} moduleData={this.props.moduleData} />
+		}
+
+		return (
+			<OboComponent
+				model={this.props.model}
+				moduleData={this.props.moduleData}
+				onChange={!isReview ? this.onFormChange.bind(this) : null}
+				onSubmit={this.onFormSubmit}
+				tag="form"
+				className={className}
+			>
+				<textarea on></textarea>
+				<button onClick={this.onSubmit.bind(this)}>Submit</button>
+				{fbc}
+			</OboComponent>
+		)
+	}
+
+	renderOLD() {
 		const className =
 			`component` +
 			` obojobo-draft--chunks--numeric-assessment` +

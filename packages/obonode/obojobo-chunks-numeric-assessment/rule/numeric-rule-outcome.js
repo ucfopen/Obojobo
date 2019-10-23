@@ -302,7 +302,6 @@ export default class NumericRuleOutcome {
 				return !numericInstance.isWithUnit
 
 			case MATCHES_UNIT:
-				console.log('kompare', numericInstance.unit, rule.allUnits)
 				if (rule.unitsAreCaseSensitive) {
 					return rule.allUnits.indexOf(numericInstance.unit) > -1
 				} else {
