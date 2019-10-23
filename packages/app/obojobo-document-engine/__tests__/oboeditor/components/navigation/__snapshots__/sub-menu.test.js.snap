@@ -30,7 +30,7 @@ exports[`SubMenu SubMenu component adds page 1`] = `
     }
   ],
   \\"showMoveButtons\\": true
-}</div><div class=\\"add-page\\"><button>+ Page</button></div></li>"
+}</div><div class=\\"add-page\\"><button class=\\"add-page-button\\">+ Page</button></div></li>"
 `;
 
 exports[`SubMenu SubMenu component selected as assessment 1`] = `

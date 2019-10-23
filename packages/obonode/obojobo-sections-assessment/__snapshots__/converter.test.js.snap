@@ -103,7 +103,7 @@ Object {
       "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
     },
     "scoreActions": Object {
-      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
     },
     "triggers": Array [],
   },
@@ -127,7 +127,7 @@ Object {
       "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
     },
     "scoreActions": Object {
-      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
     },
     "triggers": undefined,
   },
@@ -151,7 +151,7 @@ Object {
       "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
     },
     "scoreActions": Object {
-      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.Rubric",
+      "slateToOboReturnFor": "ObojoboDraft.Sections.Assessment.ScoreActions",
     },
     "triggers": Array [
       Object {
