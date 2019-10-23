@@ -54,3 +54,7 @@ Once logged in, visit [https://127.0.0.1:8080/editor](https://127.0.0.1:8080/edi
 ### Testing
 
 `yarn test` or `yarn test:ci`
+
+### Special Thanks
+
+Support for this work was provided by the National Science Foundation Scholarships in Science, Technology, Engineering, and Mathematics (S-STEM) program under [Award No.1643835](https://www.nsf.gov/awardsearch/showAward?AWD_ID=1643835). Any opinions, findings, conclusions and recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
